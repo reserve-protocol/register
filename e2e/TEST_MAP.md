@@ -23,6 +23,106 @@ the directory).
 
 ## General (top-level routes)
 
+[Transaction review canvas](design-system/transaction-review-canvas.spec.ts)
+checks navigation hit-testing over scrolled transaction previews, edge-to-edge
+Stake/Vote Lock backdrops at phone/desktop widths, and contained tall previews.
+These checks protect lab framing, not production overlay behavior.
+
+The separate `playwright.design-system.config.ts` suite includes
+[manual anchors](design-system/manual-anchors.spec.ts): Mint/Redeem layout
+previews in light/dark at 320–1280px, including column-breakpoint containment,
+24px text axes and between-row content gaps, matched 16px/24px identity and primary-value typography, 8px control edges, 32px token marks, address visibility, 16px above/below the Mint approval setting versus an 8px direct Redeem action gap, and stable row geometry/non-overlapping labels across insufficient-balance transitions. Fixture interactions
+live in the focused Manual unit tests; the mounted checks also pin the V1
+checkbox's 28px slot/20px mark, keyboard toggling, and over-balance/long-value
+Redeem containment.
+They also verify equal desktop column surface heights without stretching task
+contents, scroll access to an overflowing ledger, and natural-height stacked
+columns with a 2px seam on mobile. Lifecycle checks pin the lab-only 736px desktop
+workspace height across all states.
+
+[Manual lifecycle](design-system/manual-lifecycle.spec.ts) exercises all 29 lab
+states in light/dark at 320/390/1024/1280px, plus a non-preset Mint journey through
+partial approval failure, individual USDT Revoke/Approve, final rejection,
+recovery, outcome, and reset. Independent per-token progress and finite/max
+allowance policy are reducer-tested. These are simulated lab transitions, not
+production wallet or on-chain verification.
+
+[Issuance stage emphasis](design-system/issuance-stage-emphasis.spec.ts) checks
+Manual and Automated current-stage semantics and computed label/value colors in
+light/dark at 320/390/1280px. It distinguishes complete permissions from sufficient
+collateral, preserves available approvals with an input-level balance message,
+and checks neutral completion text with a small success check. Manual's final
+summary uses the same responsive headline typography and label gap as the amount
+and approval count, rather than a duplicate amount. Geometry checks straddle
+the 360px and 640px text breakpoints. Its explanation
+has a 24px gap to the ordinary action, or 16px to a recovery message followed by
+an 8px message/action gap.
+Reducer/unit checks cover empty/loading inputs,
+permission progress, insufficient balances despite complete allowances, and the
+no-swaps path without a fabricated filled-order check.
+
+[Manual mobile](design-system/manual-mobile.spec.ts) also checks that permission
+and received-value blocks remain beside token identity, visible address text is
+not clipped, approval transitions preserve row geometry, and Switch to Zapper
+shows an honest lab preview without changing the manual amount. Recovery copy
+is checked in the mounted journey because the unit harness stubs Lingui Plural.
+
+[Automated entry](design-system/automated-entry.spec.ts) verifies that the neutral
+Swap guidance icon has a nontransparent, distinct circle fill in both themes at
+desktop/mobile widths, retaining the same 32px height as its adjacent action.
+
+[Issuance outcomes](design-system/issuance-outcomes.spec.ts) compares Automated
+and Manual Mint/Redeem in light/dark at 320/390/1024/1280px: full desktop column
+height, flexible brand region, default-sized footer actions 8px from the bottom,
+width containment, and a single final-transaction footer link without a hash row.
+Both blue result regions retain 24px below the visible fiat row.
+Transaction controls additionally verify keyboard access, secure new-tab footer
+navigation, and compact header restart geometry in both families. Automated
+restart returns to empty configuration in the same operation; unit checks also
+preserve Base/BSC and clear completed state. Manual retains its simulated
+explorer destination and existing header restart/reset.
+
+[Transaction action loading](design-system/transaction-action-loading.spec.ts)
+checks Zapper signing, Vote-lock/Stake/Manual approvals and Automated collateral
+authorization in both themes at 320/390/1280px. Active actions retain primary
+emphasis, a visible animated spinner and busy/disabled semantics; Manual's
+separate upcoming action stays neutral and non-busy.
+
+[Transaction accessibility](design-system/transaction-accessibility.spec.ts)
+checks initial-shell Shift+Tab containment, Escape/focus return and keyboard
+reopening for the Vote Lock/Stake lab modal wrapper. It also verifies reduced
+motion for Zapper/Vote Lock/Stake committed logos and Zapper outcome attachments.
+This does not establish a complete keyboard-only issuance journey or reduced
+motion for the pre-existing shared Button spinner.
+Manual's three-section Mint checks compare amount/progress typography and the
+readiness-led final region, without a duplicate amount or wallet/chain phase.
+They verify stable final-section geometry across readiness/signing/confirmation
+and pin edge-to-edge 2px connected-arrow boundaries,
+24px label insets, 8px horizontal action insets and arrow/button clearance.
+The route alternative is verified inside the first section; factual approval
+help is exercised through its tooltip. The final Mint action is
+present but gated until approvals and balances are sufficient. The readiness check verifies compact completion without hidden controls; the
+final explanation/action gap is 24px and both desktop review hosts have equal dimensions.
+Redeem remains a direct action without a permissions section.
+Manual's non-preset completion journey also checks that its USD share estimate scales
+with the entered amount rather than reverting to a fixed fixture value.
+
+[Manual mobile](design-system/manual-mobile.spec.ts) compares asset/quantity
+positions through approval signing, confirmation, and completion at seven
+widths from 320 to 1024px. Short/landscape viewports cover amount entry, contained
+approval help, retained amount on mode change, and reachable main/last-row
+controls. This is browser viewport coverage, not a native keyboard test.
+Its readiness journey additionally verifies that completed approvals compact
+without reserving hidden controls, then restores Unlimited-off on increased
+requirements; finite aggregate and individual USDT behavior remain unchanged.
+The readiness-summary checks also cover Spanish, Korean and Chinese at
+320/1024px, verifying translated labels and non-clipping text in approvals,
+ready and in-progress states.
+
+[Zapper layering](design-system/zapper-layering.spec.ts) checks that the lower
+half of the direction control remains above the output during Review and Quote
+search at 320/390/1280px in both themes, including its disabled search state.
+
 | Area | Spec file(s) | States covered | Lifecycle | Mobile | Gaps |
 |---|---|---|---|---|---|
 | Bridge | [general/bridge/render](tests/general/bridge/render.spec.ts) | static page render | none (static) | yes | — |

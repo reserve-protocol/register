@@ -43,9 +43,9 @@ export interface CurrentReviewItem {
 export const CURRENT_REVIEW: CurrentReviewItem[] = [
   {
     target: { kind: 'component', id: 'transaction-action' },
-    title: 'Composition-first transaction system',
+    title: 'Transaction checkpoint (paused)',
     reason:
-      'Judge four transaction-family anchors plus the focused Vote Lock / Unlock / Delegate candidate reconstructed from current product implementations. Manual issuance preserves its page split and approval action slot; automated Mint and Redeem begin as one narrow amount-entry task, then share the production-backed Input, Collateral, terminal-output, and paired-order workspace. Operation policy changes assets, order direction, action boundaries, stage count, and outcome facts without forking the layout: Mint retains its separate final action, while Redeem authorizes its final transaction before collateral-sale orders fill. The adjacent desktop order workspace or opt-in narrow-screen ledger owns subordinate per-order evidence, including the existing-collateral-only Redeem branch. The lab exposes quote recovery, funding branches, scoped per-order failure, and completion evidence without adding a second generic lifecycle beneath the same content; Stake, Unstake, and single-role Delegate reconcile the legacy page-to-confirmation flow, current Earn drawer, and existing delegate transaction inside host-independent tasks, preserving conditional approval, immediate reward cessation, and the delayed withdrawal handoff while deferring page-owned management rows; Zapper remains package-owned; Vote Lock preserves quote-backed shares, conditional approval, configured delay, later Portfolio handoff, and explicit normal/fast delegation with truthful sequential-call recovery. Shared lifecycle, recovery, identity, and outcome language must improve consistency without flattening those structures.',
+      'Paused after the consolidated regression checkpoint. Preserve the current human-directed Zapper, Vote Lock, Stake, Automated Mint/Redeem and Manual Mint/Redeem designs; resume only for an explicitly selected question. This checkpoint does not approve the contextual entry cards, standalone selector specimen, Portfolio management rows or production adoption. Manual outcomes and recovery are rendered lab simulations, not receipt-source or approval-policy authority. The active V1 plan and consolidated report own the retained decisions, exclusions and engineering handoff.',
     destination:
       '/internal/design-system/components/transaction-action#transaction-truth-spectrum',
     type: 'visual decision',
@@ -78,7 +78,7 @@ export const CURRENT_REVIEW: CurrentReviewItem[] = [
         area: 'radius',
         status: 'conforms',
         detail:
-          'Structural review surfaces and transaction amount input/output regions remain square while ordinary fields, status pills, actions, and the provisional Inline Message retain their owning radii.',
+          'Structural review surfaces remain square; transaction amount input/output and replacement regions use their accepted 8px radius. Ordinary fields, status pills, actions, and Inline Message retain their owning radii.',
         verification:
           'Inspect amount, quote-search replacement, ordinary Field, status, action, and recovery boundaries in the rendered board.',
       },
@@ -94,7 +94,7 @@ export const CURRENT_REVIEW: CurrentReviewItem[] = [
         area: 'component-dependencies',
         status: 'declared-provisional',
         detail:
-          'Dialog, Field, Entity Identity, Button, Action Group, Segmented Control, Checkbox, Lifecycle Status, Link, and Copyable Value are current baselines; Inline Message, the attached Zapper review region, the outcome attachment, and the theme-aware Organic Brand deep tone remain provisional inside realistic context. The reusable Stake-family tasks own transaction content while the contained lab host owns overlay, focus, dismissal, and placement; this boundary does not promote a universal transaction shell. Organic Brand extra depth applies only in dark mode; light mode retains the standard outcome surface. Attachment states omit the redundant Done action at composition level without changing the Button default. The named Zapper study is strong visual composition evidence rather than authority; the package-owned RFQ and durable-card shells are contextual fixtures, not promoted components.',
+          'Dialog, Field, Entity Identity, Button, Action Group, Segmented Control, Checkbox, Lifecycle Status, Link, Copyable Value, and Inline Message are current baselines; the attached Zapper review region, the outcome attachment, and the theme-aware Organic Brand deep tone remain provisional inside realistic context. The reusable Stake-family tasks own transaction content while the contained lab host owns overlay, focus, dismissal, and placement; this boundary does not promote a universal transaction shell. Organic Brand extra depth applies only in dark mode; light mode retains the standard outcome surface. Attachment states omit the redundant Done action at composition level without changing the Button default. The named Zapper study is strong visual composition evidence rather than authority; the package-owned RFQ and durable-card shells are contextual fixtures, not promoted components.',
         verification:
           'Inspect catalog dependency badges and ensure the specimen remains lab-only and unadopted.',
       },

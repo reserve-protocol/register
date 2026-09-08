@@ -64,6 +64,7 @@ export const StakeTransactionComposition = () => (
     title="Stake, unstake, and delegate"
     description="The complete lifecycle is mounted in a dialog for review. Its amount relationships, acknowledgement, actions, progress, delegation, and outcomes remain host-independent task compositions, so the same tasks can begin inline without inheriting overlay or dialog behavior."
     defaultState="Stake amount"
+    stageInset="flush"
     stateGroups={STATE_GROUPS}
     parts={[
       {
@@ -113,8 +114,8 @@ const StakeProductContext = ({
   }
 
   return (
-    <div className="relative -mx-4 min-h-[680px] w-[calc(100%+2rem)] max-w-4xl overflow-hidden bg-background p-0 sm:mx-auto sm:w-full sm:p-6">
-      <section className="mx-auto max-w-md bg-card p-4 sm:p-6">
+    <div className="relative isolate grid min-h-[680px] w-full grid-cols-1 overflow-hidden bg-background">
+      <section className="col-start-1 row-start-1 mx-auto my-6 w-full max-w-md self-start bg-card p-4 sm:p-6">
         <p className={cn(v1Typography.label, 'text-primary')}>6.18% APY</p>
         <h4 className="mt-6 text-xl font-medium">Stake RSR</h4>
         <dl className="mt-6 grid grid-cols-2 gap-px bg-border">

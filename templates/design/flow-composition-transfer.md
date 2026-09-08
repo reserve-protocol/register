@@ -33,7 +33,7 @@ evidence that already owns a section.
 
 ## Geometry ownership
 
-<!-- Give every visible inset, sibling gap, divider, action seam, and scroll boundary exactly one owner. A divider contributes no spacing. -->
+<!-- Give every visible inset, sibling gap, divider, action seam, and scroll boundary exactly one owner. A divider contributes no spacing. Specify the final edge-to-text/control measurements, including padding already owned by reused children, and where spare height belongs. Verify available column width rather than viewport width alone. -->
 
 | Relationship | Owner | Token or recipe | States and proof |
 | ------------ | ----- | --------------- | ---------------- |
@@ -53,7 +53,7 @@ evidence that already owns a section.
 
 ## First review slice
 
-<!-- Choose one representative happy-path state and one structurally different pressure state. Render and correct their whole composition before multiplying the design across the state matrix. -->
+<!-- Choose one representative happy-path state and one structurally different pressure state. Render and correct their whole composition before multiplying the design across the state matrix. Name which controls work and which are labeled non-executing previews. Even a layout anchor's editable values, maxima and dependent states must agree. Record measured geometry and exercised behavior separately from human acceptance. -->
 
 ## Migration preservation
 

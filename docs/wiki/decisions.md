@@ -1,6 +1,6 @@
 ---
 title: Decisions
-updated: 2026-08-31
+updated: 2026-09-08
 type: decision
 ---
 
@@ -584,8 +584,13 @@ mere preference for a near-white beige.
 
 Once an ordered transaction sequence is underway, the action slot remains
 stable when a later step will require another user click. While the current
-transaction processes, that slot uses a subdued loading Button; once ready, it
-becomes the next primary action. The progress region still owns the sequence and
+transaction processes, that slot uses a loading Button retaining the initiated
+action's hierarchy; once ready, it becomes the next actionable control. Human
+review on 2026-09-08 supersedes the earlier subdued-approval treatment: active
+primary approvals and final transactions both retain primary color, while
+spinner, busy semantics and blocked repeat clicks communicate waiting. Upcoming
+actions blocked by prerequisites stay disabled and neutral. This is composition
+guidance, not a change to shared Button defaults. The progress region still owns the sequence and
 lifecycle truth. It replaces inactive action chrome when remaining steps
 continue automatically, avoiding a duplicate loading Button where no later
 manual action is expected.

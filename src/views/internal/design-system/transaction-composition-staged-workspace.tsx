@@ -37,14 +37,16 @@ import {
   scaleFixtureValue,
 } from './transaction-composition-staged-fixtures'
 import { AutomatedMintOrdersPanel } from './transaction-composition-staged-orders'
-import { AutomatedMintIdentity } from './transaction-composition-staged-support'
+import { AutomatedMintExplorerButton } from './transaction-composition-staged-support'
 import { AutomatedMintTask } from './transaction-composition-staged-task'
 import { TransactionOutcomeDetailRow } from './transaction-outcome-detail-row'
 import { TransactionOutcomeStatus } from './transaction-outcome-status'
 import { transactionOutcomeMotion } from './transaction-outcome-motion'
+import { TransactionWalletAction } from './transaction-wallet-action'
 
 export const AutomatedMintWorkspace = ({
   chain,
+  onRestart,
   hasCollateralSwaps,
   input,
   onUseExistingCollateralChange,
@@ -54,6 +56,7 @@ export const AutomatedMintWorkspace = ({
   useExistingCollateral,
 }: {
   chain: AutomatedIssuanceChain
+  onRestart: () => void
   hasCollateralSwaps: boolean
   input: AutomatedMintInputFixture
   onUseExistingCollateralChange: (checked: boolean) => void
@@ -70,7 +73,7 @@ export const AutomatedMintWorkspace = ({
   return (
     <div
       data-testid="automated-mint-workspace"
-      className="w-full bg-secondary lg:h-[43rem]"
+      className="w-full bg-secondary lg:h-[46rem]"
     >
       <div
         data-testid="automated-mint-workspace-sections"
@@ -78,7 +81,9 @@ export const AutomatedMintWorkspace = ({
       >
         {state === 'Mint complete' || state === 'Redeem complete' ? (
           <AutomatedMintOutcome
+            key={`${operation}-${chain}`}
             chain={chain}
+            onRestart={onRestart}
             hasCollateralSwaps={hasCollateralSwaps}
             input={input}
             operation={operation}
@@ -136,18 +141,21 @@ export const AutomatedMintWorkspace = ({
 
 const AutomatedMintOutcome = ({
   chain,
+  onRestart,
   hasCollateralSwaps,
   input,
   operation,
   useExistingCollateral,
 }: {
   chain: AutomatedIssuanceChain
+  onRestart: () => void
   hasCollateralSwaps: boolean
   input: AutomatedMintInputFixture
   operation: AutomatedIssuanceOperation
   useExistingCollateral: boolean
 }) => {
   const isMint = operation === 'mint'
+  const [isWalletTracked, setIsWalletTracked] = useState(false)
   const inputAmount =
     input.amount ?? (isMint ? INPUT_AMOUNT : REDEEM_INPUT_AMOUNT)
   const normalizedInput = normalizeInputForFixtures(
@@ -169,20 +177,28 @@ const AutomatedMintOutcome = ({
   return (
     <section
       data-testid="automated-mint-outcome"
-      className="flex h-full min-w-0 flex-col bg-card"
+      className="flex h-full min-w-0 flex-col bg-card lg:overflow-y-auto"
     >
-      <div className="relative isolate overflow-hidden text-brand-foreground">
+      <div className="relative isolate flex min-h-64 flex-1 flex-col overflow-hidden text-brand-foreground">
         <OrganicBrandSurface
           data-testid="automated-mint-outcome-surface"
           className={cn('absolute inset-0', transactionOutcomeMotion.surface)}
         />
         <header
           className={cn(
-            'relative z-10 flex items-center px-4 pb-4 pt-4',
+            'relative z-10 flex items-center justify-between gap-4 p-4',
             transactionOutcomeMotion.content
           )}
         >
           <TransactionOutcomeStatus />
+          <Button
+            data-testid="automated-mint-outcome-restart"
+            size="compact"
+            tone="secondary"
+            onClick={onRestart}
+          >
+            {isMint ? <Trans>New mint</Trans> : <Trans>New redeem</Trans>}
+          </Button>
         </header>
         <TransactionAmountObject
           label="Received"
@@ -194,10 +210,18 @@ const AutomatedMintOutcome = ({
           presentation="output"
           tone="inverse"
           className={cn(
-            'relative z-10 bg-transparent px-6 pb-6',
+            'relative z-10 mt-auto bg-transparent px-6 pb-6',
             transactionOutcomeMotion.content
           )}
           unit={isMint ? 'CMC20' : 'USDC'}
+          trailingAction={
+            isMint ? (
+              <TransactionWalletAction
+                isTracked={isWalletTracked}
+                onTrack={() => setIsWalletTracked(true)}
+              />
+            ) : undefined
+          }
           supporting={
             isMint
               ? formatUsdFixture(
@@ -211,7 +235,7 @@ const AutomatedMintOutcome = ({
         />
       </div>
 
-      <div className="flex min-h-0 flex-1 flex-col p-4 sm:p-6">
+      <div className="shrink-0 px-6 py-4">
         <div className="space-y-5">
           <dl data-testid="automated-mint-outcome-facts" className="grid gap-2">
             {isMint ? (
@@ -264,7 +288,6 @@ const AutomatedMintOutcome = ({
                 value={formatFixtureAmount(mintFunding!.unused, 6)}
               />
             )}
-            <AutomatedMintIdentity chain={chain} operation={operation} />
           </dl>
           <div>
             <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
@@ -294,8 +317,18 @@ const AutomatedMintOutcome = ({
             </p>
           </div>
         </div>
-        <ActionGroup className="mt-auto w-full justify-end pt-5">
-          <Button data-testid="automated-mint-view-dtf" size="compact" asChild>
+      </div>
+      <div
+        data-testid="automated-mint-outcome-footer"
+        className="shrink-0 p-2 pt-0"
+      >
+        <ActionGroup className="w-full flex-wrap">
+          <AutomatedMintExplorerButton chain={chain} operation={operation} />
+          <Button
+            data-testid="automated-mint-view-dtf"
+            className="flex-1"
+            asChild
+          >
             <a
               href={getFolioRoute(CMC20_ADDRESS[chain], chain, ROUTES.OVERVIEW)}
             >

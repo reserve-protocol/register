@@ -2248,11 +2248,10 @@ test.describe('design system lab', () => {
       'flex-direction',
       'column'
     )
-    await fitsOwnWidth(
-      staged
-        .getByTestId('staged-orders-header')
-        .getByText('Unfilled order expires in 1m 42s', { exact: true })
-    )
+    await fitsOwnWidth(staged.getByTestId('staged-orders-header'))
+    await expect(
+      staged.getByText('1 order open · expires in 1m 42s')
+    ).toHaveCount(1)
     await fitsOwnWidth(staged.getByTestId('staged-order-direction').first())
 
     await page.setViewportSize({ width: 1023, height: 900 })
@@ -2309,9 +2308,7 @@ test.describe('design system lab', () => {
     await page.goto(
       '/internal/design-system/components/transaction-action#transaction-truth-spectrum'
     )
-    await expect(
-      page.getByTestId('transaction-composition-rfq')
-    ).toBeVisible()
+    await expect(page.getByTestId('transaction-composition-rfq')).toBeVisible()
     await expect(page.getByTestId('reserve-chat-launcher')).toHaveCount(0)
   })
 
@@ -2594,7 +2591,7 @@ test.describe('design system lab', () => {
       expect(Math.abs(taskBox!.height - ordersBox!.height)).toBeLessThanOrEqual(
         1
       )
-      expect(workspaceBox!.height).toBe(688)
+      expect(workspaceBox!.height).toBe(736)
       expect(workspaceBox!.width).toBe(1200)
       expect(
         Math.abs(
@@ -2666,7 +2663,13 @@ test.describe('design system lab', () => {
     }
     await expect(
       composition.getByTestId('automated-mint-final-transaction')
-    ).toBeVisible()
+    ).toHaveCount(0)
+    await expect(
+      composition.getByTestId('automated-mint-view-transaction')
+    ).toHaveAttribute(
+      'href',
+      'https://basescan.org/tx/0x4b9956225163659ad723853515456526280c1e9cc5b842c3df1b9c7443bb01ae'
+    )
     await expect(
       composition.locator('a[href^="https://explorer.cow.fi/orders/0x"]')
     ).toHaveCount(5)
@@ -2702,7 +2705,7 @@ test.describe('design system lab', () => {
       for (const [group, option] of workspaceStates) {
         await chooseState(group, option).click()
         const workspace = composition.getByTestId('automated-mint-workspace')
-        await expect(workspace).toHaveCSS('height', '688px')
+        await expect(workspace).toHaveCSS('height', '736px')
         const leftColumn = composition.locator(
           '[data-testid="automated-mint-task"], [data-testid="automated-mint-outcome"]'
         )
@@ -2778,7 +2781,13 @@ test.describe('design system lab', () => {
     )
     await expect(
       composition.getByTestId('automated-mint-final-transaction')
-    ).toContainText('Final redeem transaction')
+    ).toHaveCount(0)
+    await expect(
+      composition.getByTestId('automated-mint-view-transaction')
+    ).toHaveAttribute(
+      'href',
+      'https://basescan.org/tx/0x7195cb5535dd308cf1c32decb8f787974ff52d9c8a13f70d2e80dad366a4ef2d'
+    )
     await expect(
       composition.getByTestId('automated-mint-mint-action-region')
     ).toHaveCount(0)

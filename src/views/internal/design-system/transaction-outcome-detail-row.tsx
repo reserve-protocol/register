@@ -8,18 +8,25 @@ export const TransactionOutcomeDetailRow = ({
   label,
   testId,
   value,
+  wrap = false,
 }: {
   label: ReactNode
   testId?: string
   value: ReactNode
+  wrap?: boolean
 }) => (
   <div
     data-testid={testId ?? 'transaction-outcome-detail-row'}
-    className="flex min-h-5 items-center justify-between gap-4"
+    className={cn(
+      'flex min-h-5 items-center justify-between gap-4',
+      wrap && 'flex-wrap gap-y-1'
+    )}
   >
     <dt className={cn(v1Typography.supporting, roles.text.supporting)}>
       {label}
     </dt>
-    <dd className={cn(v1Typography.label, 'text-right')}>{value}</dd>
+    <dd className={cn(v1Typography.label, 'text-right', wrap && 'ml-auto')}>
+      {value}
+    </dd>
   </div>
 )

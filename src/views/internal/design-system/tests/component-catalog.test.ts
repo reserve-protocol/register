@@ -638,6 +638,13 @@ describe('current review', () => {
         '/internal/design-system/components/transaction-action#transaction-truth-spectrum',
       type: 'visual decision',
     })
+    expect(CURRENT_REVIEW[0].title).toContain('paused')
+    expect(CURRENT_REVIEW[0].reason).toContain('standalone selector specimen')
+    expect(
+      CURRENT_REVIEW[0].foundationConformance.find(
+        (claim) => claim.area === 'radius'
+      )?.detail
+    ).toContain('accepted 8px radius')
   })
 
   it('keeps accepted layout relationships behind semantic recipes', () => {

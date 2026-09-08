@@ -118,7 +118,7 @@ msgstr ""
 
 #. placeholder {0}: input.usdDisplay
 #. placeholder {1}: formatUsdFixture( EXISTING_COLLATERAL_INPUT_EQUIVALENT.value * 10n ** 12n )
-#: src/views/internal/design-system/transaction-composition-staged-task.tsx:522
+#: src/views/internal/design-system/transaction-composition-staged-task.tsx:543
 msgid "{0} · {1} existing collateral"
 msgstr ""
 
@@ -160,7 +160,7 @@ msgstr ""
 
 #. placeholder {0}: formatFixtureAmount(walletFunding, 2)
 #. placeholder {1}: formatUsdFixture( collateral.value * 10n ** BigInt(18 - collateral.decimals) )
-#: src/views/internal/design-system/transaction-composition-staged-task.tsx:514
+#: src/views/internal/design-system/transaction-composition-staged-task.tsx:535
 msgid "{0} + {1} existing collateral"
 msgstr ""
 
@@ -272,7 +272,7 @@ msgid "{0} of {1}"
 msgstr ""
 
 #. placeholder {0}: orders.length
-#: src/views/internal/design-system/transaction-composition-staged-task.tsx:315
+#: src/views/internal/design-system/transaction-composition-staged-task.tsx:336
 msgid "{0} orders prepared"
 msgstr ""
 
@@ -297,7 +297,7 @@ msgstr ""
 #~ msgstr ""
 
 #. placeholder {0}: orders.length
-#: src/views/internal/design-system/transaction-composition-staged-task.tsx:325
+#: src/views/internal/design-system/transaction-composition-staged-task.tsx:348
 msgid "{0} swaps prepared"
 msgstr ""
 
@@ -341,6 +341,14 @@ msgstr ""
 #: src/components/rtoken-setup/basket/UnitBasket.tsx:157
 msgid "{amount} in {tokenName}"
 msgstr ""
+
+#: src/views/internal/design-system/transaction-composition-manual-mint-stages.tsx:80
+msgid "{approved} of {total}"
+msgstr "{approved} of {total}"
+
+#: src/views/internal/design-system/transaction-composition-manual-mint-stages.tsx:47
+msgid "{approved} of {total} tokens approved"
+msgstr "{approved} of {total} tokens approved"
 
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/changes/auction-settings-changes.tsx:98
 msgid "{auctionLengthChange, plural, one {# minute} other {# minutes}}"
@@ -408,13 +416,20 @@ msgstr ""
 msgid "{delayInHours, plural, one {# hour} other {# hours}}"
 msgstr ""
 
-#: src/views/internal/design-system/transaction-composition-staged-task.tsx:173
+#: src/views/internal/design-system/transaction-composition-staged-task.tsx:183
 msgid "{existingCollateralValue} applied"
 msgstr ""
 
-#: src/views/internal/design-system/transaction-composition-staged-task.tsx:175
+#: src/views/internal/design-system/transaction-composition-staged-task.tsx:185
 msgid "{existingCollateralValue} available"
 msgstr ""
+
+#~ msgid "{failed, plural, one {# approval failed - Retry} other {# approvals failed - Retry}}"
+#~ msgstr "{failed, plural, one {# approval failed - Retry} other {# approvals failed - Retry}}"
+
+#: src/views/internal/design-system/transaction-composition-manual-action.tsx:156
+msgid "{failed, plural, one {Retry # approval} other {Retry # approvals}}"
+msgstr "{failed, plural, one {Retry # approval} other {Retry # approvals}}"
 
 #: src/views/index-dtf/deploy/steps/confirm-deploy/manual/components/approve-all-deploy-button.tsx:85
 #: src/views/index-dtf/issuance/manual/components/approve-all-button.tsx:77
@@ -641,11 +656,11 @@ msgstr ""
 msgid "<0>Reserve Optimistic Governor upgrade</0> introduces a new governor system TBD COPY HERE!. <1/>See the <2>changelog</2> for more details."
 msgstr ""
 
-#: src/views/internal/design-system/transaction-composition-staged-task.tsx:649
+#: src/views/internal/design-system/transaction-composition-staged-task.tsx:675
 msgid "≈{outputValue} · Completing mint..."
 msgstr ""
 
-#: src/views/internal/design-system/transaction-composition-staged-task.tsx:647
+#: src/views/internal/design-system/transaction-composition-staged-task.tsx:673
 msgid "≈{outputValue} · Ready to mint"
 msgstr ""
 
@@ -693,19 +708,19 @@ msgstr ""
 #~ msgid "1 need retry"
 #~ msgstr ""
 
-#: src/views/internal/design-system/transaction-composition-staged-task.tsx:321
+#: src/views/internal/design-system/transaction-composition-staged-task.tsx:342
 msgid "1 order cancelled"
 msgstr ""
 
-#: src/views/internal/design-system/transaction-composition-staged-task.tsx:319
+#: src/views/internal/design-system/transaction-composition-staged-task.tsx:340
 msgid "1 order needs retry"
 msgstr ""
 
-#: src/views/internal/design-system/transaction-composition-staged-task.tsx:758
+#: src/views/internal/design-system/transaction-composition-staged-task.tsx:788
 msgid "1 order needs retrying"
 msgstr ""
 
-#: src/views/internal/design-system/transaction-composition-staged-task.tsx:317
+#: src/views/internal/design-system/transaction-composition-staged-task.tsx:338
 msgid "1 order open · expires in 1m 42s"
 msgstr ""
 
@@ -893,6 +908,14 @@ msgstr ""
 msgid "About this DTF"
 msgstr ""
 
+#: src/views/internal/design-system/transaction-composition-manual-mint-stages.tsx:119
+msgid "About token approvals"
+msgstr "About token approvals"
+
+#: src/views/internal/design-system/transaction-composition-manual-approval-setting.tsx:46
+msgid "About unlimited token approvals"
+msgstr "About unlimited token approvals"
+
 #: src/views/yield-dtf/auctions/auctions-sidebar/Revenue.tsx:99
 msgid "Above minimum trade volume"
 msgstr ""
@@ -918,7 +941,7 @@ msgstr ""
 msgid "Acquire assets before minting"
 msgstr ""
 
-#: src/views/internal/design-system/transaction-composition-staged-task.tsx:336
+#: src/views/internal/design-system/transaction-composition-staged-task.tsx:359
 msgid "Acquire collateral"
 msgstr ""
 
@@ -949,7 +972,7 @@ msgstr ""
 msgid "Actual impact"
 msgstr ""
 
-#: src/views/internal/design-system/transaction-composition-staged-task.tsx:462
+#: src/views/internal/design-system/transaction-composition-staged-task.tsx:481
 msgid "Actual swap impact"
 msgstr ""
 
@@ -1264,6 +1287,10 @@ msgstr ""
 msgid "Almost there..."
 msgstr ""
 
+#: src/views/internal/design-system/transaction-composition-staged-configure.tsx:224
+msgid "Already hold the required basket tokens?"
+msgstr "Already hold the required basket tokens?"
+
 #: src/views/index-dtf/overview/stocks/landing-mint.tsx:51
 msgid "Also available on:"
 msgstr ""
@@ -1288,7 +1315,7 @@ msgstr ""
 msgid "Amount:"
 msgstr ""
 
-#: src/views/internal/design-system/transaction-composition-staged-task.tsx:767
+#: src/views/internal/design-system/transaction-composition-staged-task.tsx:797
 msgid "An error occurred. Please try again."
 msgstr ""
 
@@ -1363,22 +1390,54 @@ msgstr ""
 msgid "Apply"
 msgstr ""
 
+#: src/views/internal/design-system/transaction-composition-manual-permission.tsx:49
+msgid "Approval failed"
+msgstr "Approval failed"
+
+#: src/views/internal/design-system/transaction-composition-manual-action.tsx:64
+msgid "Approval failed: {failedTokens}"
+msgstr "Approval failed: {failedTokens}"
+
+#: src/views/internal/design-system/transaction-composition-manual-action.tsx:65
+msgid "Approvals failed: {failedTokens}"
+msgstr "Approvals failed: {failedTokens}"
+
+#: src/views/internal/design-system/transaction-composition-manual-mint-stages.tsx:57
+msgid "Approvals needed"
+msgstr "Approvals needed"
+
 #: src/views/index-dtf/deploy/steps/confirm-deploy/manual/components/deploy-assets-approvals.tsx:212
 #: src/views/index-dtf/issuance/manual/components/asset-list.tsx:157
+#: src/views/internal/design-system/transaction-composition-manual-permission.tsx:105
 #: src/views/yield-dtf/issuance/components/issue/CollateralApprovals.tsx:119
 #: src/views/yield-dtf/issuance/components/wrapping/CollateralItem.tsx:352
 msgid "Approve"
 msgstr ""
 
+#. placeholder {0}: asset.symbol
 #. placeholder {0}: data.buyingTokenSymbol
+#: src/views/internal/design-system/transaction-composition-manual-permission.tsx:99
 #: src/views/yield-dtf/auctions/dutch/components/AuctionActions.tsx:79
 msgid "Approve {0}"
 msgstr ""
+
+#: src/views/internal/design-system/transaction-composition-manual-action.tsx:165
+msgid "Approve All"
+msgstr "Approve All"
+
+#. placeholder {0}: pending.length
+#: src/views/internal/design-system/transaction-composition-manual-action.tsx:163
+msgid "Approve All ({0})"
+msgstr "Approve All ({0})"
 
 #: src/views/index-dtf/deploy/steps/confirm-deploy/manual/components/approve-all-deploy-button.tsx:93
 #: src/views/index-dtf/issuance/manual/components/approve-all-button.tsx:85
 msgid "Approve All ({totalCount})"
 msgstr ""
+
+#: src/views/internal/design-system/transaction-composition-manual-mint-stages.tsx:121
+msgid "Approve All starts a separate transaction for each token. You can also approve tokens individually."
+msgstr "Approve All starts a separate transaction for each token. You can also approve tokens individually."
 
 #: src/components/transaction-modal/ApprovalStatus.tsx:31
 #: src/views/yield-dtf/issuance/components/zapV2/submit/ZapApprovalButton.tsx:26
@@ -1405,6 +1464,10 @@ msgstr ""
 #: src/views/yield-dtf/staking/components/stake/confirm-stake-button.tsx:57
 msgid "Approve use of RSR"
 msgstr ""
+
+#: src/views/internal/design-system/transaction-composition-manual-permission.tsx:39
+msgid "Approved"
+msgstr "Approved"
 
 #: src/views/index-dtf/settings/components/index-settings-reward-tokens.tsx:64
 msgid "Approved Revenue Tokens"
@@ -1656,17 +1719,17 @@ msgstr ""
 msgid "Automatic"
 msgstr ""
 
-#: src/views/internal/design-system/transaction-composition-staged-task.tsx:337
+#: src/views/internal/design-system/transaction-composition-staged-task.tsx:360
 msgid "Automatic collateral acquisition"
 msgstr ""
 
 #: src/views/index-dtf/issuance/async-mint/steps/configure-mint.tsx:114
-#: src/views/internal/design-system/transaction-composition-staged-configure.tsx:238
+#: src/views/internal/design-system/transaction-composition-staged-configure.tsx:246
 msgid "Automatically acquire assets"
 msgstr ""
 
 #: src/views/index-dtf/issuance/async-mint/steps/configure-mint.tsx:124
-#: src/views/internal/design-system/transaction-composition-staged-configure.tsx:262
+#: src/views/internal/design-system/transaction-composition-staged-configure.tsx:270
 msgid "Automatically sell collateral"
 msgstr ""
 
@@ -1719,6 +1782,14 @@ msgstr ""
 #: src/views/earn/views/yield-dtf/components/staking-positions.tsx:159
 msgid "Avg. 30d%"
 msgstr ""
+
+#: src/views/internal/design-system/transaction-composition-manual-action.tsx:150
+msgid "Awaiting approvals..."
+msgstr "Awaiting approvals..."
+
+#: src/views/internal/design-system/transaction-composition-manual-action.tsx:151
+#~ msgid "Awaiting approvals... ({completed}/{0})"
+#~ msgstr "Awaiting approvals... ({completed}/{0})"
 
 #: src/views/index-dtf/deploy/steps/confirm-deploy/manual/components/approve-all-deploy-button.tsx:74
 #: src/views/index-dtf/issuance/manual/components/approve-all-button.tsx:69
@@ -1802,6 +1873,7 @@ msgstr ""
 
 #: src/components/ui/swap.tsx:218
 #: src/views/index-dtf/issuance/async-mint/steps/configure-mint.tsx:218
+#: src/views/internal/design-system/transaction-composition-manual-asset-row.tsx:160
 #: src/views/portfolio-page/components/available-rewards.tsx:122
 #: src/views/portfolio-page/components/dtf-positions.tsx:134
 #: src/views/portfolio-page/components/pending-withdrawals.tsx:338
@@ -1860,9 +1932,17 @@ msgstr ""
 msgid "Basket APY"
 msgstr ""
 
-#: src/views/internal/design-system/transaction-composition-staged-configure.tsx:142
+#: src/views/internal/design-system/transaction-composition-staged-configure.tsx:137
 msgid "Basket assets are acquired automatically before CMC20 is minted."
 msgstr ""
+
+#: src/views/internal/design-system/transaction-composition-manual-ledger.tsx:70
+msgid "Basket assets received"
+msgstr "Basket assets received"
+
+#: src/views/internal/design-system/transaction-composition-manual-ledger.tsx:68
+msgid "Basket assets used"
+msgstr "Basket assets used"
 
 #: src/views/internal/design-system/transaction-composition-staged-task.tsx:585
 #~ msgid "Basket assets will be sold directly; no CMC20 will be redeemed."
@@ -2064,7 +2144,7 @@ msgid "Both Auction Launchers AND community members can start auctions. Auction 
 msgstr ""
 
 #: src/views/index-dtf/auctions/legacy/components/auction-item.tsx:132
-#: src/views/internal/design-system/transaction-composition-staged-support.tsx:132
+#: src/views/internal/design-system/transaction-composition-staged-support.tsx:130
 #: src/views/yield-dtf/auctions/components/useColumns.tsx:36
 msgid "Bought"
 msgstr ""
@@ -2171,7 +2251,7 @@ msgstr ""
 msgid "Buy / Sell"
 msgstr ""
 
-#: src/views/internal/design-system/transaction-composition-staged-support.tsx:130
+#: src/views/internal/design-system/transaction-composition-staged-support.tsx:128
 msgid "Buy quote"
 msgstr ""
 
@@ -2196,7 +2276,7 @@ msgstr ""
 #. placeholder {0}: leg.asset.symbol
 #. placeholder {0}: order.bought.symbol
 #: src/views/index-dtf/issuance/async-mint/components/leg-row.tsx:173
-#: src/views/internal/design-system/transaction-composition-staged-support.tsx:87
+#: src/views/internal/design-system/transaction-composition-staged-support.tsx:85
 msgid "Buying {0}"
 msgstr ""
 
@@ -2287,7 +2367,7 @@ msgid "Canceled"
 msgstr ""
 
 #: src/views/index-dtf/issuance/async-mint/components/leg-row.tsx:76
-#: src/views/internal/design-system/transaction-composition-staged-support.tsx:55
+#: src/views/internal/design-system/transaction-composition-staged-support.tsx:53
 msgid "Cancelled"
 msgstr ""
 
@@ -2502,6 +2582,7 @@ msgstr ""
 
 #: src/views/index-dtf/deploy/steps/confirm-deploy/manual/components/approve-all-deploy-button.tsx:118
 #: src/views/index-dtf/issuance/manual/components/approve-all-button.tsx:110
+#: src/views/internal/design-system/transaction-composition-manual-action.tsx:116
 msgid "Click retry or use individual approve buttons below."
 msgstr ""
 
@@ -2527,11 +2608,11 @@ msgstr ""
 msgid "Closes"
 msgstr ""
 
-#: src/views/internal/design-system/transaction-composition-staged-configure.tsx:152
+#: src/views/internal/design-system/transaction-composition-staged-configure.tsx:147
 msgid "CMC20 is redeemed and its basket assets are automatically sold for USDC."
 msgstr ""
 
-#: src/views/internal/design-system/transaction-composition-staged-configure.tsx:147
+#: src/views/internal/design-system/transaction-composition-staged-configure.tsx:142
 msgid "CMC20 is redeemed and its basket assets are automatically sold for USDT."
 msgstr ""
 
@@ -2583,11 +2664,11 @@ msgstr ""
 msgid "Collateral Plugins"
 msgstr ""
 
-#: src/views/internal/design-system/transaction-composition-staged-task.tsx:333
+#: src/views/internal/design-system/transaction-composition-staged-task.tsx:356
 msgid "Collateral ready"
 msgstr ""
 
-#: src/views/internal/design-system/transaction-composition-staged-workspace.tsx:249
+#: src/views/internal/design-system/transaction-composition-staged-workspace.tsx:273
 msgid "Collateral swap price impact"
 msgstr ""
 
@@ -2677,6 +2758,10 @@ msgstr ""
 #~ msgid "Complete"
 #~ msgstr ""
 
+#: src/views/internal/design-system/transaction-composition-manual-mint-stages.tsx:171
+#~ msgid "Complete token approvals to continue."
+#~ msgstr "Complete token approvals to continue."
+
 #: src/views/index-dtf/auctions/views/rebalance-list/components/historical-rebalance-item.tsx:29
 msgid "Completed"
 msgstr ""
@@ -2694,8 +2779,12 @@ msgstr ""
 #~ msgid "Completing"
 #~ msgstr ""
 
+#: src/views/internal/design-system/transaction-composition-manual-mint-stages.tsx:147
+#~ msgid "Completing mint..."
+#~ msgstr ""
+
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:101
-#: src/views/internal/design-system/transaction-composition-staged-actions.tsx:144
+#: src/views/internal/design-system/transaction-composition-staged-actions.tsx:135
 msgid "Completing mint…"
 msgstr ""
 
@@ -2766,7 +2855,7 @@ msgstr ""
 msgid "Confirm changes made"
 msgstr ""
 
-#: src/views/internal/design-system/transaction-composition-staged-actions.tsx:133
+#: src/views/internal/design-system/transaction-composition-staged-actions.tsx:124
 msgid "Confirm collateral trades in wallet…"
 msgstr ""
 
@@ -2784,7 +2873,7 @@ msgstr ""
 msgid "Confirm Redeem"
 msgstr ""
 
-#: src/views/internal/design-system/transaction-composition-staged-actions.tsx:135
+#: src/views/internal/design-system/transaction-composition-staged-actions.tsx:126
 msgid "Confirm redeem in wallet…"
 msgstr ""
 
@@ -2817,6 +2906,7 @@ msgid "Confirming transaction"
 msgstr ""
 
 #: src/views/index-dtf/issuance/manual/components/index-manual-issuance.tsx:202
+#: src/views/internal/design-system/transaction-composition-manual-action.tsx:154
 msgid "Confirming transaction..."
 msgstr ""
 
@@ -2833,6 +2923,7 @@ msgstr ""
 #: src/views/index-dtf/deploy/steps/confirm-deploy/manual/components/deploy-assets-approvals.tsx:165
 #: src/views/index-dtf/governance/views/proposal/components/vote-modal.tsx:195
 #: src/views/index-dtf/issuance/manual/components/asset-list.tsx:110
+#: src/views/internal/design-system/transaction-composition-manual-permission.tsx:27
 msgid "Confirming..."
 msgstr ""
 
@@ -2863,6 +2954,7 @@ msgstr ""
 #: src/components/ui/transaction-button.tsx:57
 #: src/components/ui/transaction.tsx:44
 #: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:357
+#: src/views/internal/design-system/transaction-composition-manual-action.tsx:146
 #: src/views/internal/design-system/transaction-composition-staged-entry.tsx:351
 msgid "Connect Wallet"
 msgstr ""
@@ -3697,6 +3789,9 @@ msgstr ""
 msgid "Don’t see your token?"
 msgstr ""
 
+#~ msgid "Done"
+#~ msgstr "Done"
+
 #: src/views/index-dtf/factsheet/components/net-performance-summary.tsx:119
 msgid "Download as CSV"
 msgstr ""
@@ -3976,7 +4071,7 @@ msgstr ""
 
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:763
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:769
-#: src/views/internal/design-system/transaction-composition-staged-task.tsx:594
+#: src/views/internal/design-system/transaction-composition-staged-task.tsx:618
 msgid "Edit amount"
 msgstr ""
 
@@ -4073,7 +4168,7 @@ msgstr ""
 msgid "Enter {0} amount"
 msgstr ""
 
-#: src/views/internal/design-system/transaction-composition-staged-configure.tsx:223
+#: src/views/internal/design-system/transaction-composition-staged-configure.tsx:218
 msgid "Enter amount"
 msgstr ""
 
@@ -4153,11 +4248,11 @@ msgstr ""
 msgid "Enter token name"
 msgstr ""
 
-#: src/views/internal/design-system/transaction-composition-staged-configure.tsx:134
+#: src/views/internal/design-system/transaction-composition-staged-configure.tsx:129
 msgid "Enter USDC amount"
 msgstr ""
 
-#: src/views/internal/design-system/transaction-composition-staged-configure.tsx:132
+#: src/views/internal/design-system/transaction-composition-staged-configure.tsx:127
 msgid "Enter USDT amount"
 msgstr ""
 
@@ -4239,6 +4334,10 @@ msgstr ""
 msgid "Est. Yield Distribution"
 msgstr ""
 
+#: src/views/internal/design-system/transaction-composition-manual-ledger.tsx:90
+msgid "Estimated amounts · {basketTotal} total"
+msgstr "Estimated amounts · {basketTotal} total"
+
 #: src/components/rtoken-setup/basket/PrimaryBasket.tsx:171
 msgid "Estimated basket APY"
 msgstr ""
@@ -4263,23 +4362,23 @@ msgstr ""
 msgid "Estimated output"
 msgstr ""
 
-#: src/views/internal/design-system/transaction-composition-staged-task.tsx:657
+#: src/views/internal/design-system/transaction-composition-staged-task.tsx:683
 msgid "Estimated output · ≈{outputValue} · Upcoming"
 msgstr ""
 
-#: src/views/internal/design-system/transaction-composition-staged-task.tsx:653
+#: src/views/internal/design-system/transaction-composition-staged-task.tsx:679
 msgid "Estimated output · Collateral sales in progress"
 msgstr ""
 
-#: src/views/internal/design-system/transaction-composition-staged-task.tsx:651
+#: src/views/internal/design-system/transaction-composition-staged-task.tsx:677
 msgid "Estimated output · Confirm redeem in your wallet"
 msgstr ""
 
-#: src/views/internal/design-system/transaction-composition-staged-task.tsx:655
+#: src/views/internal/design-system/transaction-composition-staged-task.tsx:681
 msgid "Estimated output · One order needs retry"
 msgstr ""
 
-#: src/views/internal/design-system/transaction-composition-staged-task.tsx:441
+#: src/views/internal/design-system/transaction-composition-staged-task.tsx:461
 msgid "Estimated swap impact"
 msgstr ""
 
@@ -4306,8 +4405,8 @@ msgstr ""
 
 #: src/views/index-dtf/issuance/async-mint/steps/configure-mint.tsx:238
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:967
-#: src/views/internal/design-system/transaction-composition-staged-configure.tsx:198
-#: src/views/internal/design-system/transaction-composition-staged-task.tsx:719
+#: src/views/internal/design-system/transaction-composition-staged-configure.tsx:193
+#: src/views/internal/design-system/transaction-composition-staged-task.tsx:749
 msgid "Exceeds available balance"
 msgstr ""
 
@@ -4393,8 +4492,8 @@ msgstr ""
 msgid "Execution progress"
 msgstr ""
 
-#: src/views/internal/design-system/transaction-composition-staged-workspace.tsx:233
-#: src/views/internal/design-system/transaction-composition-staged-workspace.tsx:255
+#: src/views/internal/design-system/transaction-composition-staged-workspace.tsx:257
+#: src/views/internal/design-system/transaction-composition-staged-workspace.tsx:279
 msgid "Existing collateral"
 msgstr ""
 
@@ -4434,6 +4533,7 @@ msgstr ""
 #: src/views/index-dtf/auctions/legacy/components/proposal-trades-skeleton.tsx:37
 #: src/views/index-dtf/governance/components/proposal-preview/rebalance-preview/rebalance-basket-preview.tsx:77
 #: src/views/index-dtf/governance/views/propose/basket/components/proposal-basket-preview.tsx:166
+#: src/views/internal/design-system/transaction-composition-manual-asset-row.tsx:94
 msgid "Expected"
 msgstr ""
 
@@ -4446,7 +4546,7 @@ msgstr ""
 #: src/views/explorer/components/governance/filters.tsx:23
 #: src/views/index-dtf/governance/views/proposal/components/proposal-deadline-alert.tsx:35
 #: src/views/index-dtf/issuance/async-mint/components/leg-row.tsx:74
-#: src/views/internal/design-system/transaction-composition-staged-support.tsx:54
+#: src/views/internal/design-system/transaction-composition-staged-support.tsx:52
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalAlert.tsx:56
 msgid "Expired"
 msgstr ""
@@ -4512,7 +4612,7 @@ msgid "Extra collateral to keep"
 msgstr ""
 
 #: src/views/index-dtf/issuance/async-mint/components/leg-row.tsx:77
-#: src/views/internal/design-system/transaction-composition-staged-support.tsx:53
+#: src/views/internal/design-system/transaction-composition-staged-support.tsx:51
 msgid "Failed"
 msgstr ""
 
@@ -4651,8 +4751,8 @@ msgstr ""
 
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1205
 #: src/views/internal/design-system/transaction-composition-staged-actions.tsx:28
-#: src/views/internal/design-system/transaction-composition-staged-task.tsx:309
-#: src/views/internal/design-system/transaction-composition-staged-task.tsx:645
+#: src/views/internal/design-system/transaction-composition-staged-task.tsx:330
+#: src/views/internal/design-system/transaction-composition-staged-task.tsx:671
 msgid "Fetching quotes..."
 msgstr ""
 
@@ -4684,7 +4784,7 @@ msgid "Fill out the information below and ABC Labs will reach out!"
 msgstr ""
 
 #: src/views/index-dtf/issuance/async-mint/components/leg-row.tsx:71
-#: src/views/internal/design-system/transaction-composition-staged-support.tsx:52
+#: src/views/internal/design-system/transaction-composition-staged-support.tsx:50
 msgid "Filled"
 msgstr ""
 
@@ -4693,7 +4793,7 @@ msgid "Filled: {totalDistribution}%"
 msgstr ""
 
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:99
-#: src/views/internal/design-system/transaction-composition-staged-actions.tsx:139
+#: src/views/internal/design-system/transaction-composition-staged-actions.tsx:130
 msgid "Filling orders…"
 msgstr ""
 
@@ -4706,9 +4806,9 @@ msgstr ""
 msgid "Filter by Role"
 msgstr ""
 
-#: src/views/internal/design-system/transaction-composition-staged-support.tsx:224
-msgid "Final mint transaction"
-msgstr ""
+#: src/views/internal/design-system/transaction-composition-staged-support.tsx:221
+#~ msgid "Final mint transaction"
+#~ msgstr ""
 
 #: src/views/yield-dtf/auctions/dutch/components/DutchAuction.tsx:50
 msgid "Final price"
@@ -4718,9 +4818,9 @@ msgstr ""
 msgid "Final price in:"
 msgstr ""
 
-#: src/views/internal/design-system/transaction-composition-staged-support.tsx:226
-msgid "Final redeem transaction"
-msgstr ""
+#: src/views/internal/design-system/transaction-composition-staged-support.tsx:223
+#~ msgid "Final redeem transaction"
+#~ msgstr ""
 
 #: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:331
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalDetailStats.tsx:105
@@ -4768,6 +4868,7 @@ msgid "For larger amounts, split your order into multiple transactions."
 msgstr ""
 
 #: src/views/index-dtf/components/compliance-alert.tsx:20
+#: src/views/internal/design-system/transaction-composition-manual-anchor.tsx:89
 msgid "For more information, see our <0>Terms of Use</0>."
 msgstr ""
 
@@ -4871,7 +4972,7 @@ msgid "Get easy exposure to narratives, indexes, and ecosystems"
 msgstr ""
 
 #: src/views/index-dtf/issuance/async-mint/steps/configure-mint.tsx:249
-#: src/views/internal/design-system/transaction-composition-staged-configure.tsx:221
+#: src/views/internal/design-system/transaction-composition-staged-configure.tsx:216
 msgid "Get quote"
 msgstr ""
 
@@ -5068,6 +5169,10 @@ msgstr ""
 msgid "Having issues minting? Zaps are in beta"
 msgstr ""
 
+#: src/views/internal/design-system/transaction-composition-manual-task.tsx:175
+msgid "Having issues redeeming?"
+msgstr "Having issues redeeming?"
+
 #: src/views/internal/design-system/transaction-composition-staged-task.tsx:590
 #~ msgid "Held basket assets selected"
 #~ msgstr ""
@@ -5077,7 +5182,7 @@ msgid "hero-splash"
 msgstr ""
 
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:502
-#: src/views/internal/design-system/transaction-composition-staged-workspace.tsx:115
+#: src/views/internal/design-system/transaction-composition-staged-workspace.tsx:120
 msgid "Hide orders"
 msgstr ""
 
@@ -5371,7 +5476,7 @@ msgid "Input address"
 msgstr ""
 
 #: src/views/index-dtf/issuance/async-mint/steps/success.tsx:220
-#: src/views/internal/design-system/transaction-composition-staged-workspace.tsx:220
+#: src/views/internal/design-system/transaction-composition-staged-workspace.tsx:244
 msgid "Input amount"
 msgstr ""
 
@@ -5463,6 +5568,10 @@ msgstr ""
 msgid "Inspect"
 msgstr ""
 
+#: src/views/internal/design-system/transaction-composition-manual-asset-row.tsx:156
+msgid "Insufficient"
+msgstr "Insufficient"
+
 #: src/views/index-dtf/deploy/steps/confirm-deploy/manual/components/confirm-manual-deploy-button.tsx:288
 msgid "Insufficient asset balance"
 msgstr ""
@@ -5470,6 +5579,10 @@ msgstr ""
 #: src/views/index-dtf/deploy/steps/confirm-deploy/simple/index.tsx:154
 #: src/views/index-dtf/issuance/manual/components/index-manual-issuance.tsx:45
 #: src/views/index-dtf/overview/components/zap-mint/submit-zap.tsx:46
+#: src/views/internal/design-system/transaction-composition-manual-action.tsx:71
+#: src/views/internal/design-system/transaction-composition-manual-asset-row.tsx:140
+#: src/views/internal/design-system/transaction-composition-manual-asset-row.tsx:153
+#: src/views/internal/design-system/transaction-composition-manual-task.tsx:160
 msgid "Insufficient balance"
 msgstr ""
 
@@ -5722,7 +5835,7 @@ msgid "Leftover collateral is not included in the DTF output value. It may remai
 msgstr ""
 
 #: src/views/index-dtf/issuance/async-mint/steps/success.tsx:252
-#: src/views/internal/design-system/transaction-composition-staged-workspace.tsx:272
+#: src/views/internal/design-system/transaction-composition-staged-workspace.tsx:295
 msgid "Leftover dust"
 msgstr ""
 
@@ -5963,7 +6076,6 @@ msgid "Mandate Update"
 msgstr ""
 
 #: src/views/index-dtf/governance/components/governance-vote-lock.tsx:424
-#: src/views/internal/design-system/transaction-composition-staged-manual-link.tsx:61
 msgid "Manual"
 msgstr ""
 
@@ -6031,7 +6143,7 @@ msgstr ""
 
 #: src/components/ui/swap.tsx:228
 #: src/views/index-dtf/issuance/async-mint/steps/configure-mint.tsx:232
-#: src/views/internal/design-system/transaction-composition-staged-configure.tsx:185
+#: src/views/internal/design-system/transaction-composition-staged-configure.tsx:180
 #: src/views/yield-dtf/issuance/components/zapV2/input/ZapInputMaxButton.tsx:39
 #: src/views/yield-dtf/staking/components/stake/stake-input.tsx:67
 #: src/views/yield-dtf/staking/components/unstake/unstake-input.tsx:70
@@ -6049,7 +6161,7 @@ msgstr ""
 
 #: src/components/ui/swap.tsx:479
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1284
-#: src/views/internal/design-system/transaction-composition-staged-task.tsx:464
+#: src/views/internal/design-system/transaction-composition-staged-task.tsx:483
 msgid "Max slippage"
 msgstr ""
 
@@ -6197,6 +6309,8 @@ msgstr ""
 #: src/views/index-dtf/issuance/manual/components/index-manual-issuance.tsx:195
 #: src/views/index-dtf/overview/components/index-transaction-table-with-swaps/columns.tsx:23
 #: src/views/index-dtf/overview/components/index-transaction-table.tsx:24
+#: src/views/internal/design-system/transaction-composition-manual-mint-stages.tsx:151
+#: src/views/internal/design-system/transaction-composition-manual-mint-stages.tsx:165
 #: src/views/internal/design-system/transaction-composition-staged-configure.tsx:106
 #: src/views/yield-dtf/issuance/components/issue/Issue.tsx:97
 #: src/views/yield-dtf/issuance/components/zapV2/ZapTabs.tsx:22
@@ -6217,6 +6331,11 @@ msgstr ""
 #: src/views/yield-dtf/issuance/components/zapV2/context/ZapTxContext.tsx:233
 msgid "Mint {0}"
 msgstr ""
+
+#. placeholder {0}: s.amount || '0'
+#: src/views/internal/design-system/transaction-composition-manual-action.tsx:168
+msgid "Mint {0} CMC20"
+msgstr "Mint {0} CMC20"
 
 #. placeholder {0}: formatCurrency(holders, 1)
 #. placeholder {0}: token.tokenApy.toFixed(1)
@@ -6247,9 +6366,10 @@ msgstr ""
 msgid "Mint Amount:"
 msgstr ""
 
+#: src/views/internal/design-system/transaction-composition-manual-mint-stages.tsx:53
 #: src/views/internal/design-system/transaction-composition-staged-actions.tsx:94
-#: src/views/internal/design-system/transaction-composition-staged-configure.tsx:253
-#: src/views/internal/design-system/transaction-composition-staged-task.tsx:668
+#: src/views/internal/design-system/transaction-composition-staged-configure.tsx:261
+#: src/views/internal/design-system/transaction-composition-staged-task.tsx:694
 msgid "Mint CMC20"
 msgstr ""
 
@@ -6265,7 +6385,7 @@ msgstr ""
 msgid "Mint Completed"
 msgstr ""
 
-#: src/views/internal/design-system/transaction-composition-staged-manual-link.tsx:44
+#: src/views/internal/design-system/transaction-composition-staged-manual-link.tsx:43
 msgid "Mint directly with basket assets"
 msgstr ""
 
@@ -6295,6 +6415,10 @@ msgstr ""
 msgid "Mint Fee must be 5% or less"
 msgstr ""
 
+#: src/views/internal/design-system/transaction-composition-manual-mint-stages.tsx:50
+msgid "Mint in progress"
+msgstr "Mint in progress"
+
 #: src/views/internal/design-system/transaction-composition-staged-entry.tsx:138
 #~ msgid "Mint large USDC amounts through batched CoW Swap orders, or redeem DTF shares through batched collateral sales. Recommended for market makers or transactions over 50,000 USDC."
 #~ msgstr ""
@@ -6307,6 +6431,9 @@ msgstr ""
 #: src/views/yield-dtf/issuance/components/zapV2/settings/ZapSettingsModal.tsx:65
 msgid "Mint RTokens?"
 msgstr ""
+
+#~ msgid "Mint transaction"
+#~ msgstr "Mint transaction"
 
 #: src/views/yield-dtf/issuance/components/zapV2/token-selector/ZapTokensModal.tsx:109
 msgid "Mint using"
@@ -6321,12 +6448,17 @@ msgid "Mintable now"
 msgstr ""
 
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1399
+#: src/views/internal/design-system/transaction-composition-manual-outcome.tsx:69
 msgid "Minted"
 msgstr ""
 
 #: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:112
 msgid "Minting {symbol} is currently unavailable and we couldn't find another route to buy it."
 msgstr ""
+
+#: src/views/internal/design-system/transaction-composition-manual-mint-stages.tsx:103
+#~ msgid "Minting exchanges your basket assets for DTF shares."
+#~ msgstr "Minting exchanges your basket assets for DTF shares."
 
 #: src/views/index-dtf/overview/components/fees-stats.tsx:47
 #: src/views/index-dtf/settings/components/index-settings-fees.tsx:145
@@ -6486,6 +6618,7 @@ msgstr ""
 #: src/components/tables/ListedTokensTable.tsx:60
 #: src/views/explorer/components/collaterals/index.tsx:71
 #: src/views/explorer/components/tokens/index.tsx:136
+#: src/views/internal/design-system/transaction-composition-manual-outcome.tsx:90
 #: src/views/tokens/components/TableFilters.tsx:43
 #: src/views/tokens/components/UnlistedTokensTable.tsx:125
 msgid "Network"
@@ -6526,6 +6659,8 @@ msgstr ""
 
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1540
 #: src/views/index-dtf/issuance/async-mint/steps/success.tsx:173
+#: src/views/internal/design-system/transaction-composition-manual-outcome.tsx:56
+#: src/views/internal/design-system/transaction-composition-staged-workspace.tsx:200
 msgid "New mint"
 msgstr ""
 
@@ -6543,6 +6678,8 @@ msgstr ""
 
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1540
 #: src/views/index-dtf/issuance/async-mint/steps/success.tsx:173
+#: src/views/internal/design-system/transaction-composition-manual-outcome.tsx:58
+#: src/views/internal/design-system/transaction-composition-staged-workspace.tsx:200
 msgid "New redeem"
 msgstr ""
 
@@ -6752,7 +6889,7 @@ msgstr ""
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:442
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1727
 #: src/views/internal/design-system/transaction-composition-staged-orders.tsx:101
-#: src/views/internal/design-system/transaction-composition-staged-task.tsx:307
+#: src/views/internal/design-system/transaction-composition-staged-task.tsx:328
 msgid "No swaps needed"
 msgstr ""
 
@@ -6862,6 +6999,7 @@ msgstr ""
 
 #: src/hooks/use-compliance-restrictions.ts:45
 #: src/hooks/use-compliance-restrictions.ts:53
+#: src/views/internal/design-system/transaction-composition-manual-anchor.tsx:82
 msgid "Not available in your region"
 msgstr ""
 
@@ -6939,6 +7077,7 @@ msgstr ""
 
 #: src/views/index-dtf/deploy/steps/confirm-deploy/manual/components/approve-all-deploy-button.tsx:115
 #: src/views/index-dtf/issuance/manual/components/approve-all-button.tsx:107
+#: src/views/internal/design-system/transaction-composition-manual-action.tsx:114
 msgid "One or more approvals failed"
 msgstr ""
 
@@ -7024,15 +7163,15 @@ msgstr ""
 msgid "Open Safe website"
 msgstr ""
 
-#: src/views/internal/design-system/transaction-composition-staged-support.tsx:242
+#: src/views/internal/design-system/transaction-composition-staged-support.tsx:219
 msgid "Opens Basescan in a new tab"
 msgstr ""
 
-#: src/views/internal/design-system/transaction-composition-staged-support.tsx:241
+#: src/views/internal/design-system/transaction-composition-staged-support.tsx:218
 msgid "Opens BscScan in a new tab"
 msgstr ""
 
-#: src/views/internal/design-system/transaction-composition-staged-support.tsx:179
+#: src/views/internal/design-system/transaction-composition-staged-support.tsx:177
 msgid "Opens CoW Explorer in a new tab"
 msgstr ""
 
@@ -7101,7 +7240,7 @@ msgstr ""
 #~ msgid "Orders expire in 1m 42s"
 #~ msgstr ""
 
-#: src/views/internal/design-system/transaction-composition-staged-task.tsx:323
+#: src/views/internal/design-system/transaction-composition-staged-task.tsx:346
 msgid "Orders filled"
 msgstr ""
 
@@ -7264,7 +7403,7 @@ msgstr ""
 
 #: src/views/explorer/components/governance/filters.tsx:16
 #: src/views/index-dtf/issuance/async-mint/components/leg-row.tsx:80
-#: src/views/internal/design-system/transaction-composition-staged-support.tsx:51
+#: src/views/internal/design-system/transaction-composition-staged-support.tsx:49
 #: src/views/yield-dtf/issuance/components/issue/CollateralApprovals.tsx:109
 msgid "Pending"
 msgstr ""
@@ -7307,6 +7446,7 @@ msgstr ""
 #: src/views/index-dtf/deploy/steps/confirm-deploy/manual/components/confirm-manual-deploy-button.tsx:298
 #: src/views/index-dtf/deploy/steps/confirm-deploy/simple/simple-deploy-button.tsx:134
 #: src/views/index-dtf/overview/components/zap-mint/submit-zap.tsx:216
+#: src/views/internal/design-system/transaction-composition-rfq-support.tsx:1085
 #: src/views/yield-dtf/deploy/components/DeployOverview.tsx:25
 #: src/views/yield-dtf/deploy/components/GovernanceOverview.tsx:25
 #: src/views/yield-dtf/governance/views/proposal/components/ConfirmProposalOverview.tsx:59
@@ -7479,6 +7619,7 @@ msgid "Please select an asset to claim"
 msgstr ""
 
 #: src/views/index-dtf/issuance/manual/components/index-manual-issuance.tsx:200
+#: src/views/internal/design-system/transaction-composition-manual-action.tsx:152
 msgid "Please sign in wallet..."
 msgstr ""
 
@@ -7581,7 +7722,7 @@ msgstr ""
 msgid "Prepare redeem"
 msgstr ""
 
-#: src/views/internal/design-system/transaction-composition-staged-support.tsx:50
+#: src/views/internal/design-system/transaction-composition-staged-support.tsx:48
 msgid "Prepared"
 msgstr ""
 
@@ -7624,6 +7765,10 @@ msgstr ""
 #: src/views/yield-dtf/governance/views/proposal/components/ProposalOverview.tsx:31
 msgid "Preview of function calls & adding of a proposal description is added in the next step."
 msgstr ""
+
+#: src/views/internal/design-system/transaction-composition-manual-task.tsx:197
+msgid "Preview: Switch to Zapper opens the buy/sell flow for this DTF. No swap is executed and your manual amount is unchanged."
+msgstr "Preview: Switch to Zapper opens the buy/sell flow for this DTF. No swap is executed and your manual amount is unchanged."
 
 #: src/views/yield-dtf/issuance/components/redeem/RedeemNonceModal.tsx:72
 msgid "Previous basket"
@@ -7688,7 +7833,7 @@ msgstr ""
 
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:239
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:305
-#: src/views/internal/design-system/transaction-composition-staged-task.tsx:531
+#: src/views/internal/design-system/transaction-composition-staged-task.tsx:552
 msgid "Price unavailable"
 msgstr ""
 
@@ -8005,11 +8150,11 @@ msgstr ""
 msgid "Quote fetch canceled. Your amount is saved. You may <0>fetch quotes again</0>, or <1>edit the amount</1> and try again."
 msgstr ""
 
-#: src/views/internal/design-system/transaction-composition-staged-task.tsx:728
+#: src/views/internal/design-system/transaction-composition-staged-task.tsx:758
 msgid "Quote paused · Amount saved"
 msgstr ""
 
-#: src/views/internal/design-system/transaction-composition-staged-support.tsx:49
+#: src/views/internal/design-system/transaction-composition-staged-support.tsx:47
 msgid "Quote ready"
 msgstr ""
 
@@ -8018,7 +8163,7 @@ msgid "Quote review"
 msgstr ""
 
 #: src/views/internal/design-system/transaction-composition-staged-orders.tsx:80
-#: src/views/internal/design-system/transaction-composition-staged-task.tsx:311
+#: src/views/internal/design-system/transaction-composition-staged-task.tsx:332
 msgid "Quote search paused"
 msgstr ""
 
@@ -8030,9 +8175,9 @@ msgstr ""
 #: src/views/index-dtf/issuance/async-mint/components/leg-row.tsx:176
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1702
 #: src/views/internal/design-system/transaction-composition-staged-orders.tsx:95
-#: src/views/internal/design-system/transaction-composition-staged-support.tsx:56
-#: src/views/internal/design-system/transaction-composition-staged-support.tsx:90
-#: src/views/internal/design-system/transaction-composition-staged-task.tsx:313
+#: src/views/internal/design-system/transaction-composition-staged-support.tsx:54
+#: src/views/internal/design-system/transaction-composition-staged-support.tsx:88
+#: src/views/internal/design-system/transaction-composition-staged-task.tsx:334
 msgid "Quote unavailable"
 msgstr ""
 
@@ -8040,7 +8185,7 @@ msgstr ""
 msgid "Quoted impact"
 msgstr ""
 
-#: src/views/internal/design-system/transaction-composition-staged-task.tsx:439
+#: src/views/internal/design-system/transaction-composition-staged-task.tsx:459
 msgid "Quoted swap impact"
 msgstr ""
 
@@ -8099,6 +8244,7 @@ msgstr ""
 
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:519
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1404
+#: src/views/internal/design-system/transaction-composition-manual-mint-stages.tsx:58
 msgid "Ready to mint"
 msgstr ""
 
@@ -8142,17 +8288,17 @@ msgstr ""
 msgid "Rebalance progress"
 msgstr ""
 
-#: src/views/internal/design-system/transaction-composition-staged-task.tsx:671
+#: src/views/internal/design-system/transaction-composition-staged-task.tsx:697
 msgid "Receive USDC"
 msgstr ""
 
-#: src/views/internal/design-system/transaction-composition-staged-task.tsx:670
+#: src/views/internal/design-system/transaction-composition-staged-task.tsx:696
 msgid "Receive USDT"
 msgstr ""
 
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1401
 #: src/views/index-dtf/issuance/async-mint/steps/success.tsx:240
-#: src/views/internal/design-system/transaction-composition-staged-workspace.tsx:242
+#: src/views/internal/design-system/transaction-composition-staged-workspace.tsx:266
 msgid "Received"
 msgstr ""
 
@@ -8216,6 +8362,11 @@ msgstr ""
 msgid "Redeem {0}"
 msgstr ""
 
+#. placeholder {0}: s.amount || '0'
+#: src/views/internal/design-system/transaction-composition-manual-action.tsx:170
+msgid "Redeem {0} CMC20"
+msgstr "Redeem {0} CMC20"
+
 #. placeholder {0}: indexDTF.token.symbol
 #. placeholder {1}: inputToken.symbol
 #: src/views/index-dtf/issuance/async-mint/steps/configure-mint.tsx:175
@@ -8224,7 +8375,7 @@ msgstr ""
 
 #: src/views/index-dtf/issuance/async-mint/steps/configure-mint.tsx:170
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:739
-#: src/views/internal/design-system/transaction-composition-staged-configure.tsx:137
+#: src/views/internal/design-system/transaction-composition-staged-configure.tsx:132
 #: src/views/yield-dtf/issuance/components/redeem/RedeemInput.tsx:17
 msgid "Redeem amount"
 msgstr ""
@@ -8253,9 +8404,13 @@ msgstr ""
 msgid "Redeem Completed"
 msgstr ""
 
-#: src/views/internal/design-system/transaction-composition-staged-manual-link.tsx:42
+#: src/views/internal/design-system/transaction-composition-staged-configure.tsx:226
+#: src/views/internal/design-system/transaction-composition-staged-manual-link.tsx:41
 msgid "Redeem directly to basket assets"
 msgstr ""
+
+#~ msgid "Redeem transaction"
+#~ msgstr "Redeem transaction"
 
 #: src/views/yield-dtf/issuance/components/zapV2/token-selector/ZapTokensModal.tsx:111
 msgid "Redeem using"
@@ -8266,7 +8421,8 @@ msgid "Redeemable now"
 msgstr ""
 
 #: src/views/index-dtf/issuance/async-mint/steps/success.tsx:236
-#: src/views/internal/design-system/transaction-composition-staged-workspace.tsx:237
+#: src/views/internal/design-system/transaction-composition-manual-outcome.tsx:69
+#: src/views/internal/design-system/transaction-composition-staged-workspace.tsx:261
 msgid "Redeemed"
 msgstr ""
 
@@ -8279,6 +8435,10 @@ msgstr ""
 #: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:117
 msgid "Redeeming {symbol} is currently unavailable and we couldn't find another route to sell it."
 msgstr ""
+
+#: src/views/internal/design-system/transaction-composition-manual-task.tsx:131
+#~ msgid "Redeeming exchanges your DTF shares for basket assets."
+#~ msgstr "Redeeming exchanges your DTF shares for basket assets."
 
 #: src/views/yield-dtf/issuance/components/zapV2/ZapRedeemDisabled.tsx:12
 msgid "Redeems not available during re-collateralization"
@@ -8488,6 +8648,7 @@ msgstr ""
 
 #: src/views/index-dtf/deploy/components/deploy-coming-soon.tsx:25
 #: src/views/index-dtf/overview/components/eligibility-card.tsx:24
+#: src/views/internal/design-system/transaction-composition-manual-asset-row.tsx:126
 msgid "Required"
 msgstr ""
 
@@ -8506,6 +8667,10 @@ msgstr ""
 #: src/views/yield-dtf/settings/components/governance-prompt.tsx:17
 msgid "Required setup:"
 msgstr ""
+
+#: src/views/internal/design-system/transaction-composition-manual-mint-stages.tsx:105
+msgid "Required tokens approved"
+msgstr "Required tokens approved"
 
 #: src/views/index-dtf/deploy/steps/confirm-deploy/manual/components/deploy-assets-approvals.tsx:69
 #: src/views/index-dtf/issuance/manual/components/asset-list.tsx:206
@@ -8583,8 +8748,14 @@ msgid "Retrieving historical prices..."
 msgstr ""
 
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1141
+#: src/views/internal/design-system/transaction-composition-manual-permission.tsx:103
 msgid "Retry"
 msgstr ""
+
+#. placeholder {0}: asset.symbol
+#: src/views/internal/design-system/transaction-composition-manual-permission.tsx:98
+msgid "Retry {0}"
+msgstr "Retry {0}"
 
 #. placeholder {0}: retryableLegIds.length
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1088
@@ -8725,8 +8896,14 @@ msgstr ""
 
 #: src/views/index-dtf/deploy/steps/confirm-deploy/manual/components/deploy-assets-approvals.tsx:187
 #: src/views/index-dtf/issuance/manual/components/asset-list.tsx:132
+#: src/views/internal/design-system/transaction-composition-manual-permission.tsx:78
 msgid "Revoke"
 msgstr ""
+
+#. placeholder {0}: asset.symbol
+#: src/views/internal/design-system/transaction-composition-manual-permission.tsx:69
+msgid "Revoke {0}"
+msgstr "Revoke {0}"
 
 #. placeholder {0}: tokenIn.symbol
 #: src/views/yield-dtf/issuance/components/zapV2/submit/ZapRevokeButton.tsx:43
@@ -8743,6 +8920,7 @@ msgstr ""
 
 #: src/views/index-dtf/deploy/steps/confirm-deploy/manual/components/deploy-assets-approvals.tsx:187
 #: src/views/index-dtf/issuance/manual/components/asset-list.tsx:132
+#: src/views/internal/design-system/transaction-composition-manual-permission.tsx:29
 #: src/views/yield-dtf/issuance/components/zapV2/submit/ZapRevokeButton.tsx:41
 msgid "Revoking..."
 msgstr ""
@@ -9133,11 +9311,11 @@ msgid "Sell ${0}"
 msgstr ""
 
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1008
-#: src/views/internal/design-system/transaction-composition-staged-task.tsx:338
+#: src/views/internal/design-system/transaction-composition-staged-task.tsx:361
 msgid "Sell collateral"
 msgstr ""
 
-#: src/views/internal/design-system/transaction-composition-staged-support.tsx:111
+#: src/views/internal/design-system/transaction-composition-staged-support.tsx:109
 msgid "Sell quote"
 msgstr ""
 
@@ -9157,7 +9335,7 @@ msgstr ""
 msgid "Selling {0}"
 msgstr ""
 
-#: src/views/internal/design-system/transaction-composition-staged-actions.tsx:141
+#: src/views/internal/design-system/transaction-composition-staged-actions.tsx:132
 msgid "Selling collateral…"
 msgstr ""
 
@@ -9376,6 +9554,11 @@ msgstr ""
 #~ msgid "Signing"
 #~ msgstr ""
 
+#: src/views/internal/design-system/transaction-composition-manual-action.tsx:68
+#: src/views/internal/design-system/transaction-composition-manual-action.tsx:126
+msgid "Signing declined"
+msgstr "Signing declined"
+
 #: src/views/yield-dtf/deploy/components/NavigationSidebar.tsx:51
 msgid "Signing Tx 1"
 msgstr ""
@@ -9386,6 +9569,7 @@ msgstr ""
 
 #: src/views/index-dtf/deploy/steps/confirm-deploy/manual/components/deploy-assets-approvals.tsx:156
 #: src/views/index-dtf/issuance/manual/components/asset-list.tsx:101
+#: src/views/internal/design-system/transaction-composition-manual-permission.tsx:31
 msgid "Signing..."
 msgstr ""
 
@@ -9502,7 +9686,7 @@ msgid "Socials"
 msgstr ""
 
 #: src/views/index-dtf/auctions/legacy/components/auction-item.tsx:90
-#: src/views/internal/design-system/transaction-composition-staged-support.tsx:113
+#: src/views/internal/design-system/transaction-composition-staged-support.tsx:111
 #: src/views/yield-dtf/auctions/components/useColumns.tsx:32
 msgid "Sold"
 msgstr ""
@@ -9514,7 +9698,7 @@ msgstr ""
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1628
 #: src/views/internal/design-system/transaction-composition-staged-orders.tsx:96
 #: src/views/internal/design-system/transaction-composition-staged-orders.tsx:195
-#: src/views/internal/design-system/transaction-composition-staged-task.tsx:749
+#: src/views/internal/design-system/transaction-composition-staged-task.tsx:779
 msgid "Some quotes couldn't be fetched."
 msgstr ""
 
@@ -9542,7 +9726,7 @@ msgstr ""
 msgid "Sorry, your request exceeds the Global Max Redeem limit. The Global Max Redeem is set at {maxFormatted} {0}. You can only zap a maximum of {maxZap} {1}."
 msgstr ""
 
-#: src/views/internal/design-system/transaction-composition-staged-workspace.tsx:232
+#: src/views/internal/design-system/transaction-composition-staged-workspace.tsx:256
 #: src/views/portfolio-page/components/pending-withdrawals.tsx:332
 msgid "Source"
 msgstr ""
@@ -9578,7 +9762,7 @@ msgid "Spell 2"
 msgstr ""
 
 #: src/views/index-dtf/issuance/async-mint/steps/success.tsx:224
-#: src/views/internal/design-system/transaction-composition-staged-workspace.tsx:224
+#: src/views/internal/design-system/transaction-composition-staged-workspace.tsx:248
 msgid "Spent"
 msgstr ""
 
@@ -9776,11 +9960,11 @@ msgstr ""
 msgid "Stay up to date in long form"
 msgstr ""
 
-#: src/views/internal/design-system/transaction-composition-staged-task.tsx:374
+#: src/views/internal/design-system/transaction-composition-staged-task.tsx:399
 msgid "Step 1 of 1"
 msgstr ""
 
-#: src/views/internal/design-system/transaction-composition-staged-task.tsx:372
+#: src/views/internal/design-system/transaction-composition-staged-task.tsx:397
 msgid "Step 1 of 2"
 msgstr ""
 
@@ -9796,7 +9980,7 @@ msgstr ""
 #~ msgid "Step 1/2 · Start collateral trades"
 #~ msgstr ""
 
-#: src/views/internal/design-system/transaction-composition-staged-task.tsx:689
+#: src/views/internal/design-system/transaction-composition-staged-task.tsx:719
 msgid "Step 2 of 2"
 msgstr ""
 
@@ -9942,7 +10126,7 @@ msgid "Swapped {inputSymbol} for {outputSymbol}"
 msgstr ""
 
 #: src/views/index-dtf/issuance/async-mint/steps/success.tsx:255
-#: src/views/internal/design-system/transaction-composition-staged-workspace.tsx:284
+#: src/views/internal/design-system/transaction-composition-staged-workspace.tsx:307
 msgid "Swaps leave a small residue in your wallet."
 msgstr ""
 
@@ -9958,13 +10142,16 @@ msgstr ""
 msgid "Switch to {0}"
 msgstr ""
 
+#: src/views/internal/design-system/transaction-composition-manual-action.tsx:148
+msgid "Switch to Ethereum"
+msgstr "Switch to Ethereum"
+
 #: src/views/index-dtf/issuance/panel-mode-switch.tsx:41
 msgid "Switch to Manual Mint"
 msgstr ""
 
 #: src/views/index-dtf/issuance/async-mint/components/switch-to-manual-link.tsx:39
-#: src/views/internal/design-system/transaction-composition-staged-manual-link.tsx:67
-#: src/views/internal/design-system/transaction-composition-staged-manual-link.tsx:85
+#: src/views/internal/design-system/transaction-composition-staged-manual-link.tsx:59
 #: src/views/yield-dtf/issuance/components/zapV2/ZapToggleBottom.tsx:34
 msgid "Switch to manual minting"
 msgstr ""
@@ -9974,8 +10161,7 @@ msgid "switch to manual redeeming"
 msgstr ""
 
 #: src/views/index-dtf/issuance/async-mint/components/switch-to-manual-link.tsx:37
-#: src/views/internal/design-system/transaction-composition-staged-manual-link.tsx:65
-#: src/views/internal/design-system/transaction-composition-staged-manual-link.tsx:83
+#: src/views/internal/design-system/transaction-composition-staged-manual-link.tsx:57
 msgid "Switch to manual redeeming"
 msgstr ""
 
@@ -9990,6 +10176,10 @@ msgstr ""
 #: src/views/index-dtf/issuance/manual/components/index-manual-issuance.tsx:263
 msgid "Switch to zap redeeming"
 msgstr ""
+
+#: src/views/internal/design-system/transaction-composition-manual-task.tsx:185
+msgid "Switch to Zapper"
+msgstr "Switch to Zapper"
 
 #: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:326
 #: src/views/internal/design-system/transaction-composition-staged-entry.tsx:349
@@ -10063,11 +10253,11 @@ msgid "Thank you! We'll be in touch soon."
 msgstr ""
 
 #: src/views/index-dtf/issuance/async-mint/steps/configure-mint.tsx:119
-#: src/views/internal/design-system/transaction-composition-staged-configure.tsx:255
+#: src/views/internal/design-system/transaction-composition-staged-configure.tsx:263
 msgid "The acquired assets are used to mint your DTF."
 msgstr ""
 
-#: src/views/internal/design-system/transaction-composition-staged-task.tsx:740
+#: src/views/internal/design-system/transaction-composition-staged-task.tsx:770
 msgid "The amount may be too small to cover fees."
 msgstr ""
 
@@ -10122,6 +10312,10 @@ msgstr ""
 #: src/components/rtoken-setup/basket/EmergencyCollateral.tsx:160
 msgid "The diversity factor determines the amount of emergency collateral that will be deployed to the RToken basket in the case of a default."
 msgstr ""
+
+#: src/views/internal/design-system/transaction-composition-manual-task.tsx:117
+#~ msgid "The DTF shares you want to mint."
+#~ msgstr "The DTF shares you want to mint."
 
 #: src/components/rtoken-setup/token/BackingForm.tsx:76
 msgid "The dutch auction length is how many seconds long falling-price dutch auctions should be. A longer period will result in less slippage due to better price granularity, and a shorter period will result in more slippage."
@@ -10313,7 +10507,7 @@ msgstr ""
 msgid "The sum of the tokens distribution must be 100% ({displayDifference}% missing)."
 msgstr ""
 
-#: src/views/internal/design-system/transaction-composition-staged-task.tsx:737
+#: src/views/internal/design-system/transaction-composition-staged-task.tsx:767
 msgid "The swap quote is unavailable"
 msgstr ""
 
@@ -10485,6 +10679,8 @@ msgstr ""
 
 #: src/views/index-dtf/deploy/steps/confirm-deploy/manual/components/deploy-assets-approvals.tsx:192
 #: src/views/index-dtf/issuance/manual/components/asset-list.tsx:137
+#: src/views/internal/design-system/transaction-composition-manual-permission.tsx:54
+#: src/views/internal/design-system/transaction-composition-manual-permission.tsx:56
 msgid "This is a USDT token or a fork of USDT. You need to revoke the approval before you can approve it."
 msgstr ""
 
@@ -10506,6 +10702,7 @@ msgstr ""
 
 #: src/hooks/use-compliance-restrictions.ts:46
 #: src/hooks/use-compliance-restrictions.ts:54
+#: src/views/internal/design-system/transaction-composition-manual-anchor.tsx:85
 msgid "This product isn't available in your region due to local restrictions."
 msgstr ""
 
@@ -10635,6 +10832,17 @@ msgstr ""
 msgid "Token already exists in the list"
 msgstr ""
 
+#: src/views/internal/design-system/transaction-composition-manual-mint-stages.tsx:48
+#: src/views/internal/design-system/transaction-composition-manual-mint-stages.tsx:65
+#: src/views/internal/design-system/transaction-composition-manual-mint-stages.tsx:79
+msgid "Token approvals"
+msgstr "Token approvals"
+
+#: src/views/internal/design-system/transaction-composition-manual-mint-stages.tsx:71
+#: src/views/internal/design-system/transaction-composition-manual-task.tsx:132
+#~ msgid "Token approvals allow the mint to use your basket assets."
+#~ msgstr "Token approvals allow the mint to use your basket assets."
+
 #: src/components/layout/navigation/TokenNavigation.tsx:214
 #: src/views/yield-dtf/settings/components/navigation-sidebar.tsx:11
 msgid "Token details"
@@ -10737,6 +10945,10 @@ msgstr ""
 #: src/views/yield-dtf/overview/components/backing/asset-breakdown.tsx:38
 msgid "Tokens"
 msgstr ""
+
+#: src/views/internal/design-system/transaction-composition-manual-mint-stages.tsx:116
+msgid "Tokens approved"
+msgstr "Tokens approved"
 
 #: src/views/index-dtf/auctions/views/rebalance/components/manage-weights/manage-weights-content.tsx:198
 #: src/views/index-dtf/governance/views/propose/basket/components/proposal-basket-setup/basket-csv-setup.tsx:267
@@ -10897,7 +11109,7 @@ msgid "Trading has been temporarily paused due to an abundance of caution relate
 msgstr ""
 
 #: src/views/index-dtf/issuance/async-mint/components/ondo-limits-banner.tsx:62
-#: src/views/internal/design-system/transaction-composition-staged-configure.tsx:204
+#: src/views/internal/design-system/transaction-composition-staged-configure.tsx:199
 msgid "Trading paused"
 msgstr ""
 
@@ -10941,6 +11153,9 @@ msgstr ""
 
 #: src/components/transaction-modal/index.tsx:145
 #: src/views/index-dtf/issuance/manual/components/index-manual-issuance.tsx:228
+#: src/views/internal/design-system/transaction-composition-manual-action.tsx:69
+#: src/views/internal/design-system/transaction-composition-manual-action.tsx:126
+#: src/views/internal/design-system/transaction-composition-staged-task.tsx:344
 msgid "Transaction failed"
 msgstr ""
 
@@ -11327,7 +11542,7 @@ msgid "Unsupported Vote Lock Address"
 msgstr ""
 
 #: src/views/index-dtf/issuance/async-mint/steps/success.tsx:229
-#: src/views/internal/design-system/transaction-composition-staged-workspace.tsx:263
+#: src/views/internal/design-system/transaction-composition-staged-workspace.tsx:287
 msgid "Unused (returned)"
 msgstr ""
 
@@ -11481,7 +11696,7 @@ msgstr ""
 msgid "Use connected wallet."
 msgstr ""
 
-#: src/views/internal/design-system/transaction-composition-staged-task.tsx:163
+#: src/views/internal/design-system/transaction-composition-staged-task.tsx:173
 msgid "Use existing collateral"
 msgstr ""
 
@@ -11519,7 +11734,7 @@ msgstr ""
 msgid "Users will not be able to mint / redeem using zaps in the US"
 msgstr ""
 
-#: src/views/internal/design-system/transaction-composition-staged-task.tsx:585
+#: src/views/internal/design-system/transaction-composition-staged-task.tsx:609
 msgid "Using basket assets only; no CMC20 will be redeemed."
 msgstr ""
 
@@ -11535,6 +11750,7 @@ msgstr ""
 msgid "Valuation & NAV Calculation Risk – The DTF’s NAV depends on accurate, timely marks for tokenized equities and any associated components. Pricing inputs may be derived from thinly traded on-chain markets, off-chain reference feeds, or oracle mechanisms that can be stale, interrupted, manipulated, or subject to methodology changes. Market-hour mismatches, delayed corporate action processing, and settlement lags can further distort marks. Misvaluation may cause incorrect mint/redeem pricing, unfair dilution among holders, and adverse or mistimed rebalances."
 msgstr ""
 
+#: src/views/internal/design-system/transaction-composition-manual-asset-row.tsx:102
 #: src/views/portfolio-page/components/available-rewards.tsx:135
 #: src/views/portfolio-page/components/dtf-positions.tsx:151
 #: src/views/portfolio-page/components/pending-withdrawals.tsx:351
@@ -11678,7 +11894,8 @@ msgstr ""
 
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1554
 #: src/views/index-dtf/issuance/async-mint/steps/success.tsx:179
-#: src/views/internal/design-system/transaction-composition-staged-workspace.tsx:302
+#: src/views/internal/design-system/transaction-composition-manual-outcome.tsx:111
+#: src/views/internal/design-system/transaction-composition-staged-workspace.tsx:335
 msgid "View DTF"
 msgstr ""
 
@@ -11748,12 +11965,12 @@ msgstr ""
 msgid "View on Tenderly"
 msgstr ""
 
-#: src/views/internal/design-system/transaction-composition-staged-support.tsx:177
+#: src/views/internal/design-system/transaction-composition-staged-support.tsx:175
 msgid "View order"
 msgstr ""
 
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:505
-#: src/views/internal/design-system/transaction-composition-staged-workspace.tsx:117
+#: src/views/internal/design-system/transaction-composition-staged-workspace.tsx:122
 msgid "View orders"
 msgstr ""
 
@@ -11786,7 +12003,9 @@ msgstr ""
 msgid "View settle tx"
 msgstr ""
 
-#: src/views/internal/design-system/transaction-composition-staged-support.tsx:247
+#: src/views/internal/design-system/transaction-composition-manual-outcome.tsx:104
+#: src/views/internal/design-system/transaction-composition-staged-support.tsx:230
+#: src/views/internal/design-system/transaction-composition-staged-support.tsx:235
 msgid "View transaction"
 msgstr ""
 
@@ -12122,7 +12341,7 @@ msgid "Waiting for allowance..."
 msgstr ""
 
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:583
-#: src/views/internal/design-system/transaction-composition-staged-task.tsx:260
+#: src/views/internal/design-system/transaction-composition-staged-task.tsx:278
 msgid "Waiting for collateral"
 msgstr ""
 
@@ -12143,6 +12362,10 @@ msgstr ""
 msgid "Waiting for orders"
 msgstr ""
 
+#: src/views/internal/design-system/transaction-composition-manual-mint-stages.tsx:151
+#~ msgid "Waiting for token approvals."
+#~ msgstr "Waiting for token approvals."
+
 #: src/views/explorer/components/transactions/Filters.tsx:17
 msgid "Wallet"
 msgstr ""
@@ -12156,6 +12379,10 @@ msgstr ""
 #: src/hooks/use-compliance-restrictions.ts:41
 msgid "Wallet restricted"
 msgstr ""
+
+#: src/views/internal/design-system/transaction-composition-manual-task.tsx:173
+msgid "Want to buy with a single token?"
+msgstr "Want to buy with a single token?"
 
 #: src/views/index-dtf/deploy/components/deploy-coming-soon.tsx:100
 msgid "Want to create an Index DTF?"
@@ -12200,7 +12427,7 @@ msgstr ""
 msgid "Watch Video"
 msgstr ""
 
-#: src/views/internal/design-system/transaction-composition-staged-configure.tsx:207
+#: src/views/internal/design-system/transaction-composition-staged-configure.tsx:202
 msgid "WBTC is outside trading hours, so minting and redeeming is unavailable right now."
 msgstr ""
 
@@ -12230,7 +12457,7 @@ msgstr ""
 msgid "We redeem your {0} and sell the collateral for {1}."
 msgstr ""
 
-#: src/views/internal/design-system/transaction-composition-staged-configure.tsx:264
+#: src/views/internal/design-system/transaction-composition-staged-configure.tsx:272
 msgid "We redeem your CMC20 and sell the collateral for USDC."
 msgstr ""
 
@@ -12239,11 +12466,11 @@ msgstr ""
 msgid "We use your {0} to get the assets needed for the mint."
 msgstr ""
 
-#: src/views/internal/design-system/transaction-composition-staged-configure.tsx:245
+#: src/views/internal/design-system/transaction-composition-staged-configure.tsx:253
 msgid "We use your USDC to get the assets needed for the mint."
 msgstr ""
 
-#: src/views/internal/design-system/transaction-composition-staged-configure.tsx:241
+#: src/views/internal/design-system/transaction-composition-staged-configure.tsx:249
 msgid "We use your USDT to get the assets needed for the mint."
 msgstr ""
 
@@ -12338,6 +12565,10 @@ msgstr ""
 #: src/views/earn/views/index-dtf/components/faq.tsx:78
 msgid "When rewards are added to a self-appreciating vault like vlRSR, they become redeemable gradually rather than all at once. This is often called streaming or dripping."
 msgstr ""
+
+#: src/views/internal/design-system/transaction-composition-manual-approval-setting.tsx:48
+msgid "When selected, approvals set the token spending allowance to its maximum. This does not change the amount you mint."
+msgstr "When selected, approvals set the token spending allowance to its maximum. This does not change the amount you mint."
 
 #: src/views/yield-dtf/staking/components/overview/about.tsx:14
 msgid "When staking RSR, you are putting your RSR at risk in the case of a collateral default in exchange for 1) the rights to govern the RToken and 2) for a portion of the revenue generated by the collateral. The revenue sent to the staked RSR pool will be distributed amongst RSR stakers proportionally to their stake in the pool."
@@ -12683,6 +12914,10 @@ msgstr ""
 #: src/views/internal/design-system/transaction-composition-staged-task.tsx:730
 #~ msgid "Your amount is saved."
 #~ msgstr ""
+
+#: src/views/internal/design-system/transaction-composition-manual-mint-stages.tsx:187
+msgid "Your basket tokens will be exchanged for CMC20."
+msgstr "Your basket tokens will be exchanged for CMC20."
 
 #: src/views/portfolio-page/components/dtf-positions.tsx:177
 msgid "Your Decentralized Token Fund investments."

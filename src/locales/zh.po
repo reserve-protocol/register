@@ -118,7 +118,7 @@ msgstr "{0} — 处于非交易时段或超过 Ondo 单笔最大交易额。超�
 
 #. placeholder {0}: input.usdDisplay
 #. placeholder {1}: formatUsdFixture( EXISTING_COLLATERAL_INPUT_EQUIVALENT.value * 10n ** 12n )
-#: src/views/internal/design-system/transaction-composition-staged-task.tsx:522
+#: src/views/internal/design-system/transaction-composition-staged-task.tsx:543
 msgid "{0} · {1} existing collateral"
 msgstr ""
 
@@ -160,7 +160,7 @@ msgstr "{0} {noun}"
 
 #. placeholder {0}: formatFixtureAmount(walletFunding, 2)
 #. placeholder {1}: formatUsdFixture( collateral.value * 10n ** BigInt(18 - collateral.decimals) )
-#: src/views/internal/design-system/transaction-composition-staged-task.tsx:514
+#: src/views/internal/design-system/transaction-composition-staged-task.tsx:535
 msgid "{0} + {1} existing collateral"
 msgstr "{0} + {1} 现有抵押品"
 
@@ -272,7 +272,7 @@ msgid "{0} of {1}"
 msgstr "{0} / {1}"
 
 #. placeholder {0}: orders.length
-#: src/views/internal/design-system/transaction-composition-staged-task.tsx:315
+#: src/views/internal/design-system/transaction-composition-staged-task.tsx:336
 msgid "{0} orders prepared"
 msgstr "已准备 {0} 个订单"
 
@@ -297,7 +297,7 @@ msgstr "已选择 {0} 项"
 #~ msgstr "{0} 个兑换报价已就绪"
 
 #. placeholder {0}: orders.length
-#: src/views/internal/design-system/transaction-composition-staged-task.tsx:325
+#: src/views/internal/design-system/transaction-composition-staged-task.tsx:348
 msgid "{0} swaps prepared"
 msgstr ""
 
@@ -341,6 +341,14 @@ msgstr "卖出价值 ${1} 的 {2} 换取 {3} 时价格影响为 {0}%"
 #: src/components/rtoken-setup/basket/UnitBasket.tsx:157
 msgid "{amount} in {tokenName}"
 msgstr "{amount}（以 {tokenName} 计）"
+
+#: src/views/internal/design-system/transaction-composition-manual-mint-stages.tsx:80
+msgid "{approved} of {total}"
+msgstr "{approved}/{total}"
+
+#: src/views/internal/design-system/transaction-composition-manual-mint-stages.tsx:47
+msgid "{approved} of {total} tokens approved"
+msgstr "已授权 {approved}/{total} 种代币"
 
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/changes/auction-settings-changes.tsx:98
 msgid "{auctionLengthChange, plural, one {# minute} other {# minutes}}"
@@ -408,13 +416,20 @@ msgstr "{delayInDays, plural, one {# 天} other {# 天}}"
 msgid "{delayInHours, plural, one {# hour} other {# hours}}"
 msgstr "{delayInHours, plural, one {# 小时} other {# 小时}}"
 
-#: src/views/internal/design-system/transaction-composition-staged-task.tsx:173
+#: src/views/internal/design-system/transaction-composition-staged-task.tsx:183
 msgid "{existingCollateralValue} applied"
 msgstr "{existingCollateralValue} 已应用"
 
-#: src/views/internal/design-system/transaction-composition-staged-task.tsx:175
+#: src/views/internal/design-system/transaction-composition-staged-task.tsx:185
 msgid "{existingCollateralValue} available"
 msgstr "{existingCollateralValue} 可用"
+
+#~ msgid "{failed, plural, one {# approval failed - Retry} other {# approvals failed - Retry}}"
+#~ msgstr "{failed, plural, other {# 项授权失败 - 重试}}"
+
+#: src/views/internal/design-system/transaction-composition-manual-action.tsx:156
+msgid "{failed, plural, one {Retry # approval} other {Retry # approvals}}"
+msgstr "{failed, plural, other {重试 # 项授权}}"
 
 #: src/views/index-dtf/deploy/steps/confirm-deploy/manual/components/approve-all-deploy-button.tsx:85
 #: src/views/index-dtf/issuance/manual/components/approve-all-button.tsx:77
@@ -641,11 +656,11 @@ msgstr "<0>5.0.0 版本</0>引入了改进的再平衡功能，支持单代币�
 msgid "<0>Reserve Optimistic Governor upgrade</0> introduces a new governor system TBD COPY HERE!. <1/>See the <2>changelog</2> for more details."
 msgstr "<0>Reserve Optimistic Governor 升级</0>引入了全新的治理者系统 TBD COPY HERE!。<1/>详情请参阅<2>更新日志</2>。"
 
-#: src/views/internal/design-system/transaction-composition-staged-task.tsx:649
+#: src/views/internal/design-system/transaction-composition-staged-task.tsx:675
 msgid "≈{outputValue} · Completing mint..."
 msgstr "≈{outputValue} · 正在完成铸造..."
 
-#: src/views/internal/design-system/transaction-composition-staged-task.tsx:647
+#: src/views/internal/design-system/transaction-composition-staged-task.tsx:673
 msgid "≈{outputValue} · Ready to mint"
 msgstr "≈{outputValue} · 可铸造"
 
@@ -693,19 +708,19 @@ msgstr "1 个月"
 #~ msgid "1 need retry"
 #~ msgstr "1 个订单需要重试"
 
-#: src/views/internal/design-system/transaction-composition-staged-task.tsx:321
+#: src/views/internal/design-system/transaction-composition-staged-task.tsx:342
 msgid "1 order cancelled"
 msgstr ""
 
-#: src/views/internal/design-system/transaction-composition-staged-task.tsx:319
+#: src/views/internal/design-system/transaction-composition-staged-task.tsx:340
 msgid "1 order needs retry"
 msgstr ""
 
-#: src/views/internal/design-system/transaction-composition-staged-task.tsx:758
+#: src/views/internal/design-system/transaction-composition-staged-task.tsx:788
 msgid "1 order needs retrying"
 msgstr "需要重试 1 个订单"
 
-#: src/views/internal/design-system/transaction-composition-staged-task.tsx:317
+#: src/views/internal/design-system/transaction-composition-staged-task.tsx:338
 msgid "1 order open · expires in 1m 42s"
 msgstr ""
 
@@ -893,6 +908,14 @@ msgstr ""
 msgid "About this DTF"
 msgstr "关于此 DTF"
 
+#: src/views/internal/design-system/transaction-composition-manual-mint-stages.tsx:119
+msgid "About token approvals"
+msgstr "关于代币授权"
+
+#: src/views/internal/design-system/transaction-composition-manual-approval-setting.tsx:46
+msgid "About unlimited token approvals"
+msgstr "关于无限额代币授权"
+
 #: src/views/yield-dtf/auctions/auctions-sidebar/Revenue.tsx:99
 msgid "Above minimum trade volume"
 msgstr "高于最低交易量"
@@ -918,7 +941,7 @@ msgstr "接受 unstake 延迟"
 msgid "Acquire assets before minting"
 msgstr "在 Mint 之前获取资产"
 
-#: src/views/internal/design-system/transaction-composition-staged-task.tsx:336
+#: src/views/internal/design-system/transaction-composition-staged-task.tsx:359
 msgid "Acquire collateral"
 msgstr "获取抵押品"
 
@@ -949,7 +972,7 @@ msgstr "活动历史"
 msgid "Actual impact"
 msgstr "实际影响"
 
-#: src/views/internal/design-system/transaction-composition-staged-task.tsx:462
+#: src/views/internal/design-system/transaction-composition-staged-task.tsx:481
 msgid "Actual swap impact"
 msgstr ""
 
@@ -1264,6 +1287,10 @@ msgstr "启用权重控制后，再平衡可以调整篮子中代币的权重；
 msgid "Almost there..."
 msgstr "即将完成..."
 
+#: src/views/internal/design-system/transaction-composition-staged-configure.tsx:224
+msgid "Already hold the required basket tokens?"
+msgstr "已经持有所需的篮子代币？"
+
 #: src/views/index-dtf/overview/stocks/landing-mint.tsx:51
 msgid "Also available on:"
 msgstr ""
@@ -1288,7 +1315,7 @@ msgstr "数量"
 msgid "Amount:"
 msgstr "金额："
 
-#: src/views/internal/design-system/transaction-composition-staged-task.tsx:767
+#: src/views/internal/design-system/transaction-composition-staged-task.tsx:797
 msgid "An error occurred. Please try again."
 msgstr ""
 
@@ -1363,22 +1390,54 @@ msgstr "任何人都可以点击上方按钮，检查并触发针对任何已累
 msgid "Apply"
 msgstr "应用"
 
+#: src/views/internal/design-system/transaction-composition-manual-permission.tsx:49
+msgid "Approval failed"
+msgstr "授权失败"
+
+#: src/views/internal/design-system/transaction-composition-manual-action.tsx:64
+msgid "Approval failed: {failedTokens}"
+msgstr "授权失败：{failedTokens}"
+
+#: src/views/internal/design-system/transaction-composition-manual-action.tsx:65
+msgid "Approvals failed: {failedTokens}"
+msgstr "授权失败：{failedTokens}"
+
+#: src/views/internal/design-system/transaction-composition-manual-mint-stages.tsx:57
+msgid "Approvals needed"
+msgstr "需要批准"
+
 #: src/views/index-dtf/deploy/steps/confirm-deploy/manual/components/deploy-assets-approvals.tsx:212
 #: src/views/index-dtf/issuance/manual/components/asset-list.tsx:157
+#: src/views/internal/design-system/transaction-composition-manual-permission.tsx:105
 #: src/views/yield-dtf/issuance/components/issue/CollateralApprovals.tsx:119
 #: src/views/yield-dtf/issuance/components/wrapping/CollateralItem.tsx:352
 msgid "Approve"
 msgstr "授权"
 
+#. placeholder {0}: asset.symbol
 #. placeholder {0}: data.buyingTokenSymbol
+#: src/views/internal/design-system/transaction-composition-manual-permission.tsx:99
 #: src/views/yield-dtf/auctions/dutch/components/AuctionActions.tsx:79
 msgid "Approve {0}"
 msgstr "授权 {0}"
+
+#: src/views/internal/design-system/transaction-composition-manual-action.tsx:165
+msgid "Approve All"
+msgstr "全部授权"
+
+#. placeholder {0}: pending.length
+#: src/views/internal/design-system/transaction-composition-manual-action.tsx:163
+msgid "Approve All ({0})"
+msgstr "全部授权 ({0})"
 
 #: src/views/index-dtf/deploy/steps/confirm-deploy/manual/components/approve-all-deploy-button.tsx:93
 #: src/views/index-dtf/issuance/manual/components/approve-all-button.tsx:85
 msgid "Approve All ({totalCount})"
 msgstr "全部授权 ({totalCount})"
+
+#: src/views/internal/design-system/transaction-composition-manual-mint-stages.tsx:121
+msgid "Approve All starts a separate transaction for each token. You can also approve tokens individually."
+msgstr "全部授权会为每个代币发起一笔独立交易。你也可以逐个授权代币。"
 
 #: src/components/transaction-modal/ApprovalStatus.tsx:31
 #: src/views/yield-dtf/issuance/components/zapV2/submit/ZapApprovalButton.tsx:26
@@ -1405,6 +1464,10 @@ msgstr "授权使用 {inputSymbol}"
 #: src/views/yield-dtf/staking/components/stake/confirm-stake-button.tsx:57
 msgid "Approve use of RSR"
 msgstr "授权使用 RSR"
+
+#: src/views/internal/design-system/transaction-composition-manual-permission.tsx:39
+msgid "Approved"
+msgstr "已授权"
 
 #: src/views/index-dtf/settings/components/index-settings-reward-tokens.tsx:64
 msgid "Approved Revenue Tokens"
@@ -1656,17 +1719,17 @@ msgstr "自动 Mint 是一项高级功能。对大多数人而言，推荐使用
 msgid "Automatic"
 msgstr "自动"
 
-#: src/views/internal/design-system/transaction-composition-staged-task.tsx:337
+#: src/views/internal/design-system/transaction-composition-staged-task.tsx:360
 msgid "Automatic collateral acquisition"
 msgstr ""
 
 #: src/views/index-dtf/issuance/async-mint/steps/configure-mint.tsx:114
-#: src/views/internal/design-system/transaction-composition-staged-configure.tsx:238
+#: src/views/internal/design-system/transaction-composition-staged-configure.tsx:246
 msgid "Automatically acquire assets"
 msgstr "自动获取资产"
 
 #: src/views/index-dtf/issuance/async-mint/steps/configure-mint.tsx:124
-#: src/views/internal/design-system/transaction-composition-staged-configure.tsx:262
+#: src/views/internal/design-system/transaction-composition-staged-configure.tsx:270
 msgid "Automatically sell collateral"
 msgstr "自动出售抵押品"
 
@@ -1719,6 +1782,14 @@ msgstr "平均成本"
 #: src/views/earn/views/yield-dtf/components/staking-positions.tsx:159
 msgid "Avg. 30d%"
 msgstr "30 天平均%"
+
+#: src/views/internal/design-system/transaction-composition-manual-action.tsx:150
+msgid "Awaiting approvals..."
+msgstr "等待授权..."
+
+#: src/views/internal/design-system/transaction-composition-manual-action.tsx:151
+#~ msgid "Awaiting approvals... ({completed}/{0})"
+#~ msgstr "等待授权... ({completed}/{0})"
 
 #: src/views/index-dtf/deploy/steps/confirm-deploy/manual/components/approve-all-deploy-button.tsx:74
 #: src/views/index-dtf/issuance/manual/components/approve-all-button.tsx:69
@@ -1802,6 +1873,7 @@ msgstr "备用项"
 
 #: src/components/ui/swap.tsx:218
 #: src/views/index-dtf/issuance/async-mint/steps/configure-mint.tsx:218
+#: src/views/internal/design-system/transaction-composition-manual-asset-row.tsx:160
 #: src/views/portfolio-page/components/available-rewards.tsx:122
 #: src/views/portfolio-page/components/dtf-positions.tsx:134
 #: src/views/portfolio-page/components/pending-withdrawals.tsx:338
@@ -1860,9 +1932,17 @@ msgstr "篮子"
 msgid "Basket APY"
 msgstr "篮子 APY"
 
-#: src/views/internal/design-system/transaction-composition-staged-configure.tsx:142
+#: src/views/internal/design-system/transaction-composition-staged-configure.tsx:137
 msgid "Basket assets are acquired automatically before CMC20 is minted."
 msgstr ""
+
+#: src/views/internal/design-system/transaction-composition-manual-ledger.tsx:70
+msgid "Basket assets received"
+msgstr "已收到的篮子资产"
+
+#: src/views/internal/design-system/transaction-composition-manual-ledger.tsx:68
+msgid "Basket assets used"
+msgstr "已使用的篮子资产"
 
 #: src/views/internal/design-system/transaction-composition-staged-task.tsx:585
 #~ msgid "Basket assets will be sold directly; no CMC20 will be redeemed."
@@ -2064,7 +2144,7 @@ msgid "Both Auction Launchers AND community members can start auctions. Auction 
 msgstr "拍卖发起者和社区成员均可启动拍卖。拍卖发起者仍将拥有专属启动窗口，但在此之后，社区中的任何人都可以启动拍卖。请指定在专属启动窗口结束后，社区成员可以启动拍卖的时长。"
 
 #: src/views/index-dtf/auctions/legacy/components/auction-item.tsx:132
-#: src/views/internal/design-system/transaction-composition-staged-support.tsx:132
+#: src/views/internal/design-system/transaction-composition-staged-support.tsx:130
 #: src/views/yield-dtf/auctions/components/useColumns.tsx:36
 msgid "Bought"
 msgstr "已买入"
@@ -2171,7 +2251,7 @@ msgstr "购买 {0}"
 msgid "Buy / Sell"
 msgstr "买入 / 卖出"
 
-#: src/views/internal/design-system/transaction-composition-staged-support.tsx:130
+#: src/views/internal/design-system/transaction-composition-staged-support.tsx:128
 msgid "Buy quote"
 msgstr "买入报价"
 
@@ -2196,7 +2276,7 @@ msgstr "买入（当前价格）"
 #. placeholder {0}: leg.asset.symbol
 #. placeholder {0}: order.bought.symbol
 #: src/views/index-dtf/issuance/async-mint/components/leg-row.tsx:173
-#: src/views/internal/design-system/transaction-composition-staged-support.tsx:87
+#: src/views/internal/design-system/transaction-composition-staged-support.tsx:85
 msgid "Buying {0}"
 msgstr "买入 {0}"
 
@@ -2287,7 +2367,7 @@ msgid "Canceled"
 msgstr "已取消"
 
 #: src/views/index-dtf/issuance/async-mint/components/leg-row.tsx:76
-#: src/views/internal/design-system/transaction-composition-staged-support.tsx:55
+#: src/views/internal/design-system/transaction-composition-staged-support.tsx:53
 msgid "Cancelled"
 msgstr "已取消"
 
@@ -2502,6 +2582,7 @@ msgstr "清除"
 
 #: src/views/index-dtf/deploy/steps/confirm-deploy/manual/components/approve-all-deploy-button.tsx:118
 #: src/views/index-dtf/issuance/manual/components/approve-all-button.tsx:110
+#: src/views/internal/design-system/transaction-composition-manual-action.tsx:116
 msgid "Click retry or use individual approve buttons below."
 msgstr "点击重试或使用下方的单独授权按钮。"
 
@@ -2527,11 +2608,11 @@ msgstr "休市"
 msgid "Closes"
 msgstr "收盘"
 
-#: src/views/internal/design-system/transaction-composition-staged-configure.tsx:152
+#: src/views/internal/design-system/transaction-composition-staged-configure.tsx:147
 msgid "CMC20 is redeemed and its basket assets are automatically sold for USDC."
 msgstr ""
 
-#: src/views/internal/design-system/transaction-composition-staged-configure.tsx:147
+#: src/views/internal/design-system/transaction-composition-staged-configure.tsx:142
 msgid "CMC20 is redeemed and its basket assets are automatically sold for USDT."
 msgstr ""
 
@@ -2583,11 +2664,11 @@ msgstr "抵押品插件包装器"
 msgid "Collateral Plugins"
 msgstr "抵押品插件"
 
-#: src/views/internal/design-system/transaction-composition-staged-task.tsx:333
+#: src/views/internal/design-system/transaction-composition-staged-task.tsx:356
 msgid "Collateral ready"
 msgstr "抵押资产已准备就绪"
 
-#: src/views/internal/design-system/transaction-composition-staged-workspace.tsx:249
+#: src/views/internal/design-system/transaction-composition-staged-workspace.tsx:273
 msgid "Collateral swap price impact"
 msgstr "抵押资产兑换价格影响"
 
@@ -2677,6 +2758,10 @@ msgstr "社区 Telegram"
 #~ msgid "Complete"
 #~ msgstr "已完成"
 
+#: src/views/internal/design-system/transaction-composition-manual-mint-stages.tsx:171
+#~ msgid "Complete token approvals to continue."
+#~ msgstr "完成代币授权以继续。"
+
 #: src/views/index-dtf/auctions/views/rebalance-list/components/historical-rebalance-item.tsx:29
 msgid "Completed"
 msgstr "已完成"
@@ -2694,8 +2779,12 @@ msgstr "已完成："
 #~ msgid "Completing"
 #~ msgstr "正在完成"
 
+#: src/views/internal/design-system/transaction-composition-manual-mint-stages.tsx:147
+#~ msgid "Completing mint..."
+#~ msgstr ""
+
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:101
-#: src/views/internal/design-system/transaction-composition-staged-actions.tsx:144
+#: src/views/internal/design-system/transaction-composition-staged-actions.tsx:135
 msgid "Completing mint…"
 msgstr "正在完成 Mint…"
 
@@ -2766,7 +2855,7 @@ msgstr "确认变更"
 msgid "Confirm changes made"
 msgstr "确认所做的更改"
 
-#: src/views/internal/design-system/transaction-composition-staged-actions.tsx:133
+#: src/views/internal/design-system/transaction-composition-staged-actions.tsx:124
 msgid "Confirm collateral trades in wallet…"
 msgstr ""
 
@@ -2784,7 +2873,7 @@ msgstr "确认 Mint"
 msgid "Confirm Redeem"
 msgstr "确认 Redeem"
 
-#: src/views/internal/design-system/transaction-composition-staged-actions.tsx:135
+#: src/views/internal/design-system/transaction-composition-staged-actions.tsx:126
 msgid "Confirm redeem in wallet…"
 msgstr ""
 
@@ -2817,6 +2906,7 @@ msgid "Confirming transaction"
 msgstr "交易确认中"
 
 #: src/views/index-dtf/issuance/manual/components/index-manual-issuance.tsx:202
+#: src/views/internal/design-system/transaction-composition-manual-action.tsx:154
 msgid "Confirming transaction..."
 msgstr "确认交易中……"
 
@@ -2833,6 +2923,7 @@ msgstr "确认交易中..."
 #: src/views/index-dtf/deploy/steps/confirm-deploy/manual/components/deploy-assets-approvals.tsx:165
 #: src/views/index-dtf/governance/views/proposal/components/vote-modal.tsx:195
 #: src/views/index-dtf/issuance/manual/components/asset-list.tsx:110
+#: src/views/internal/design-system/transaction-composition-manual-permission.tsx:27
 msgid "Confirming..."
 msgstr "确认中..."
 
@@ -2863,6 +2954,7 @@ msgstr "连接 Wallet"
 #: src/components/ui/transaction-button.tsx:57
 #: src/components/ui/transaction.tsx:44
 #: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:357
+#: src/views/internal/design-system/transaction-composition-manual-action.tsx:146
 #: src/views/internal/design-system/transaction-composition-staged-entry.tsx:351
 msgid "Connect Wallet"
 msgstr "连接 Wallet"
@@ -3697,6 +3789,9 @@ msgstr "文档"
 msgid "Don’t see your token?"
 msgstr "没看到你的代币？"
 
+#~ msgid "Done"
+#~ msgstr "完成"
+
 #: src/views/index-dtf/factsheet/components/net-performance-summary.tsx:119
 msgid "Download as CSV"
 msgstr "下载为 CSV"
@@ -3976,7 +4071,7 @@ msgstr "编辑{variant}封面图片"
 
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:763
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:769
-#: src/views/internal/design-system/transaction-composition-staged-task.tsx:594
+#: src/views/internal/design-system/transaction-composition-staged-task.tsx:618
 msgid "Edit amount"
 msgstr "修改金额"
 
@@ -4073,7 +4168,7 @@ msgstr "请确保你要取消注册的资产没有待领取的收入，否则它
 msgid "Enter {0} amount"
 msgstr "输入 {0} 数量"
 
-#: src/views/internal/design-system/transaction-composition-staged-configure.tsx:223
+#: src/views/internal/design-system/transaction-composition-staged-configure.tsx:218
 msgid "Enter amount"
 msgstr "输入金额"
 
@@ -4153,11 +4248,11 @@ msgstr "输入将对 <0/> 拥有中心化控制权的 Wallet 地址。请注意�
 msgid "Enter token name"
 msgstr "输入代币名称"
 
-#: src/views/internal/design-system/transaction-composition-staged-configure.tsx:134
+#: src/views/internal/design-system/transaction-composition-staged-configure.tsx:129
 msgid "Enter USDC amount"
 msgstr "输入 USDC 金额"
 
-#: src/views/internal/design-system/transaction-composition-staged-configure.tsx:132
+#: src/views/internal/design-system/transaction-composition-staged-configure.tsx:127
 msgid "Enter USDT amount"
 msgstr ""
 
@@ -4239,6 +4334,10 @@ msgstr "预计交易价值："
 msgid "Est. Yield Distribution"
 msgstr "收益产出"
 
+#: src/views/internal/design-system/transaction-composition-manual-ledger.tsx:90
+msgid "Estimated amounts · {basketTotal} total"
+msgstr "预估数量 · 总计 {basketTotal}"
+
 #: src/components/rtoken-setup/basket/PrimaryBasket.tsx:171
 msgid "Estimated basket APY"
 msgstr "预计篮子 APY"
@@ -4263,23 +4362,23 @@ msgstr "预计损失：~${0}"
 msgid "Estimated output"
 msgstr "预计产出"
 
-#: src/views/internal/design-system/transaction-composition-staged-task.tsx:657
+#: src/views/internal/design-system/transaction-composition-staged-task.tsx:683
 msgid "Estimated output · ≈{outputValue} · Upcoming"
 msgstr "预估输出 · ≈{outputValue} · 即将开始"
 
-#: src/views/internal/design-system/transaction-composition-staged-task.tsx:653
+#: src/views/internal/design-system/transaction-composition-staged-task.tsx:679
 msgid "Estimated output · Collateral sales in progress"
 msgstr ""
 
-#: src/views/internal/design-system/transaction-composition-staged-task.tsx:651
+#: src/views/internal/design-system/transaction-composition-staged-task.tsx:677
 msgid "Estimated output · Confirm redeem in your wallet"
 msgstr ""
 
-#: src/views/internal/design-system/transaction-composition-staged-task.tsx:655
+#: src/views/internal/design-system/transaction-composition-staged-task.tsx:681
 msgid "Estimated output · One order needs retry"
 msgstr ""
 
-#: src/views/internal/design-system/transaction-composition-staged-task.tsx:441
+#: src/views/internal/design-system/transaction-composition-staged-task.tsx:461
 msgid "Estimated swap impact"
 msgstr ""
 
@@ -4306,8 +4405,8 @@ msgstr "平均分配"
 
 #: src/views/index-dtf/issuance/async-mint/steps/configure-mint.tsx:238
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:967
-#: src/views/internal/design-system/transaction-composition-staged-configure.tsx:198
-#: src/views/internal/design-system/transaction-composition-staged-task.tsx:719
+#: src/views/internal/design-system/transaction-composition-staged-configure.tsx:193
+#: src/views/internal/design-system/transaction-composition-staged-task.tsx:749
 msgid "Exceeds available balance"
 msgstr "超出可用余额"
 
@@ -4393,8 +4492,8 @@ msgstr "执行失败"
 msgid "Execution progress"
 msgstr "执行进度"
 
-#: src/views/internal/design-system/transaction-composition-staged-workspace.tsx:233
-#: src/views/internal/design-system/transaction-composition-staged-workspace.tsx:255
+#: src/views/internal/design-system/transaction-composition-staged-workspace.tsx:257
+#: src/views/internal/design-system/transaction-composition-staged-workspace.tsx:279
 msgid "Existing collateral"
 msgstr "现有抵押资产"
 
@@ -4434,6 +4533,7 @@ msgstr "预计价格较差"
 #: src/views/index-dtf/auctions/legacy/components/proposal-trades-skeleton.tsx:37
 #: src/views/index-dtf/governance/components/proposal-preview/rebalance-preview/rebalance-basket-preview.tsx:77
 #: src/views/index-dtf/governance/views/propose/basket/components/proposal-basket-preview.tsx:166
+#: src/views/internal/design-system/transaction-composition-manual-asset-row.tsx:94
 msgid "Expected"
 msgstr "预期"
 
@@ -4446,7 +4546,7 @@ msgstr "预期波动率"
 #: src/views/explorer/components/governance/filters.tsx:23
 #: src/views/index-dtf/governance/views/proposal/components/proposal-deadline-alert.tsx:35
 #: src/views/index-dtf/issuance/async-mint/components/leg-row.tsx:74
-#: src/views/internal/design-system/transaction-composition-staged-support.tsx:54
+#: src/views/internal/design-system/transaction-composition-staged-support.tsx:52
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalAlert.tsx:56
 msgid "Expired"
 msgstr "已过期"
@@ -4512,7 +4612,7 @@ msgid "Extra collateral to keep"
 msgstr "额外保留的抵押品"
 
 #: src/views/index-dtf/issuance/async-mint/components/leg-row.tsx:77
-#: src/views/internal/design-system/transaction-composition-staged-support.tsx:53
+#: src/views/internal/design-system/transaction-composition-staged-support.tsx:51
 msgid "Failed"
 msgstr "已失败"
 
@@ -4651,8 +4751,8 @@ msgstr "从 CoW 获取报价的时间比平常更长。"
 
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1205
 #: src/views/internal/design-system/transaction-composition-staged-actions.tsx:28
-#: src/views/internal/design-system/transaction-composition-staged-task.tsx:309
-#: src/views/internal/design-system/transaction-composition-staged-task.tsx:645
+#: src/views/internal/design-system/transaction-composition-staged-task.tsx:330
+#: src/views/internal/design-system/transaction-composition-staged-task.tsx:671
 msgid "Fetching quotes..."
 msgstr "正在获取报价..."
 
@@ -4684,7 +4784,7 @@ msgid "Fill out the information below and ABC Labs will reach out!"
 msgstr "填写以下信息，ABC Labs 将与您联系！"
 
 #: src/views/index-dtf/issuance/async-mint/components/leg-row.tsx:71
-#: src/views/internal/design-system/transaction-composition-staged-support.tsx:52
+#: src/views/internal/design-system/transaction-composition-staged-support.tsx:50
 msgid "Filled"
 msgstr "已成交"
 
@@ -4693,7 +4793,7 @@ msgid "Filled: {totalDistribution}%"
 msgstr "已填充：{totalDistribution}%"
 
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:99
-#: src/views/internal/design-system/transaction-composition-staged-actions.tsx:139
+#: src/views/internal/design-system/transaction-composition-staged-actions.tsx:130
 msgid "Filling orders…"
 msgstr "正在成交 Orders…"
 
@@ -4706,9 +4806,9 @@ msgstr "按 DTFs 筛选"
 msgid "Filter by Role"
 msgstr "按角色筛选"
 
-#: src/views/internal/design-system/transaction-composition-staged-support.tsx:224
-msgid "Final mint transaction"
-msgstr "最终铸造交易"
+#: src/views/internal/design-system/transaction-composition-staged-support.tsx:221
+#~ msgid "Final mint transaction"
+#~ msgstr "最终铸造交易"
 
 #: src/views/yield-dtf/auctions/dutch/components/DutchAuction.tsx:50
 msgid "Final price"
@@ -4718,9 +4818,9 @@ msgstr "最终价格"
 msgid "Final price in:"
 msgstr "最终价格倒计时："
 
-#: src/views/internal/design-system/transaction-composition-staged-support.tsx:226
-msgid "Final redeem transaction"
-msgstr ""
+#: src/views/internal/design-system/transaction-composition-staged-support.tsx:223
+#~ msgid "Final redeem transaction"
+#~ msgstr ""
 
 #: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:331
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalDetailStats.tsx:105
@@ -4768,6 +4868,7 @@ msgid "For larger amounts, split your order into multiple transactions."
 msgstr "如需更大金额，请将订单拆分为多笔交易。"
 
 #: src/views/index-dtf/components/compliance-alert.tsx:20
+#: src/views/internal/design-system/transaction-composition-manual-anchor.tsx:89
 msgid "For more information, see our <0>Terms of Use</0>."
 msgstr "如需了解更多信息，请参阅我们的<0>使用条款</0>。"
 
@@ -4871,7 +4972,7 @@ msgid "Get easy exposure to narratives, indexes, and ecosystems"
 msgstr "轻松获得对各类主题、指数和生态系统的敞口"
 
 #: src/views/index-dtf/issuance/async-mint/steps/configure-mint.tsx:249
-#: src/views/internal/design-system/transaction-composition-staged-configure.tsx:221
+#: src/views/internal/design-system/transaction-composition-staged-configure.tsx:216
 msgid "Get quote"
 msgstr "获取报价"
 
@@ -5068,6 +5169,10 @@ msgstr "Mint 遇到问题？（Zap 处于测试阶段）"
 msgid "Having issues minting? Zaps are in beta"
 msgstr "Mint 遇到问题？Zaps 处于 beta 阶段"
 
+#: src/views/internal/design-system/transaction-composition-manual-task.tsx:175
+msgid "Having issues redeeming?"
+msgstr "Redeem 遇到问题？"
+
 #: src/views/internal/design-system/transaction-composition-staged-task.tsx:590
 #~ msgid "Held basket assets selected"
 #~ msgstr ""
@@ -5077,7 +5182,7 @@ msgid "hero-splash"
 msgstr "hero-splash"
 
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:502
-#: src/views/internal/design-system/transaction-composition-staged-workspace.tsx:115
+#: src/views/internal/design-system/transaction-composition-staged-workspace.tsx:120
 msgid "Hide orders"
 msgstr "隐藏 Orders"
 
@@ -5371,7 +5476,7 @@ msgid "Input address"
 msgstr "输入地址"
 
 #: src/views/index-dtf/issuance/async-mint/steps/success.tsx:220
-#: src/views/internal/design-system/transaction-composition-staged-workspace.tsx:220
+#: src/views/internal/design-system/transaction-composition-staged-workspace.tsx:244
 msgid "Input amount"
 msgstr "输入数量"
 
@@ -5463,6 +5568,10 @@ msgstr "补充了缺失的日期——通知日期、获准交易起始日期和
 msgid "Inspect"
 msgstr "查看"
 
+#: src/views/internal/design-system/transaction-composition-manual-asset-row.tsx:156
+msgid "Insufficient"
+msgstr "不足"
+
 #: src/views/index-dtf/deploy/steps/confirm-deploy/manual/components/confirm-manual-deploy-button.tsx:288
 msgid "Insufficient asset balance"
 msgstr "资产余额不足"
@@ -5470,6 +5579,10 @@ msgstr "资产余额不足"
 #: src/views/index-dtf/deploy/steps/confirm-deploy/simple/index.tsx:154
 #: src/views/index-dtf/issuance/manual/components/index-manual-issuance.tsx:45
 #: src/views/index-dtf/overview/components/zap-mint/submit-zap.tsx:46
+#: src/views/internal/design-system/transaction-composition-manual-action.tsx:71
+#: src/views/internal/design-system/transaction-composition-manual-asset-row.tsx:140
+#: src/views/internal/design-system/transaction-composition-manual-asset-row.tsx:153
+#: src/views/internal/design-system/transaction-composition-manual-task.tsx:160
 msgid "Insufficient balance"
 msgstr "余额不足"
 
@@ -5722,7 +5835,7 @@ msgid "Leftover collateral is not included in the DTF output value. It may remai
 msgstr "剩余抵押品不计入 DTF 产出价值。由于 Mint 使用固定的篮子比例，可能会有剩余。"
 
 #: src/views/index-dtf/issuance/async-mint/steps/success.tsx:252
-#: src/views/internal/design-system/transaction-composition-staged-workspace.tsx:272
+#: src/views/internal/design-system/transaction-composition-staged-workspace.tsx:295
 msgid "Leftover dust"
 msgstr "剩余零头"
 
@@ -5963,7 +6076,6 @@ msgid "Mandate Update"
 msgstr "使命更新"
 
 #: src/views/index-dtf/governance/components/governance-vote-lock.tsx:424
-#: src/views/internal/design-system/transaction-composition-staged-manual-link.tsx:61
 msgid "Manual"
 msgstr "手动"
 
@@ -6031,7 +6143,7 @@ msgstr "市场休市"
 
 #: src/components/ui/swap.tsx:228
 #: src/views/index-dtf/issuance/async-mint/steps/configure-mint.tsx:232
-#: src/views/internal/design-system/transaction-composition-staged-configure.tsx:185
+#: src/views/internal/design-system/transaction-composition-staged-configure.tsx:180
 #: src/views/yield-dtf/issuance/components/zapV2/input/ZapInputMaxButton.tsx:39
 #: src/views/yield-dtf/staking/components/stake/stake-input.tsx:67
 #: src/views/yield-dtf/staking/components/unstake/unstake-input.tsx:70
@@ -6049,7 +6161,7 @@ msgstr "最大精度为 0.01%"
 
 #: src/components/ui/swap.tsx:479
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1284
-#: src/views/internal/design-system/transaction-composition-staged-task.tsx:464
+#: src/views/internal/design-system/transaction-composition-staged-task.tsx:483
 msgid "Max slippage"
 msgstr "最大滑点"
 
@@ -6197,6 +6309,8 @@ msgstr "细微文本修改"
 #: src/views/index-dtf/issuance/manual/components/index-manual-issuance.tsx:195
 #: src/views/index-dtf/overview/components/index-transaction-table-with-swaps/columns.tsx:23
 #: src/views/index-dtf/overview/components/index-transaction-table.tsx:24
+#: src/views/internal/design-system/transaction-composition-manual-mint-stages.tsx:151
+#: src/views/internal/design-system/transaction-composition-manual-mint-stages.tsx:165
 #: src/views/internal/design-system/transaction-composition-staged-configure.tsx:106
 #: src/views/yield-dtf/issuance/components/issue/Issue.tsx:97
 #: src/views/yield-dtf/issuance/components/zapV2/ZapTabs.tsx:22
@@ -6217,6 +6331,11 @@ msgstr "Mint - 全局限流"
 #: src/views/yield-dtf/issuance/components/zapV2/context/ZapTxContext.tsx:233
 msgid "Mint {0}"
 msgstr "Mint {0}"
+
+#. placeholder {0}: s.amount || '0'
+#: src/views/internal/design-system/transaction-composition-manual-action.tsx:168
+msgid "Mint {0} CMC20"
+msgstr "铸造 {0} CMC20"
 
 #. placeholder {0}: formatCurrency(holders, 1)
 #. placeholder {0}: token.tokenApy.toFixed(1)
@@ -6247,9 +6366,10 @@ msgstr "Mint 数量超过全局最大 Mint 量"
 msgid "Mint Amount:"
 msgstr "Mint 数量："
 
+#: src/views/internal/design-system/transaction-composition-manual-mint-stages.tsx:53
 #: src/views/internal/design-system/transaction-composition-staged-actions.tsx:94
-#: src/views/internal/design-system/transaction-composition-staged-configure.tsx:253
-#: src/views/internal/design-system/transaction-composition-staged-task.tsx:668
+#: src/views/internal/design-system/transaction-composition-staged-configure.tsx:261
+#: src/views/internal/design-system/transaction-composition-staged-task.tsx:694
 msgid "Mint CMC20"
 msgstr "铸造 CMC20"
 
@@ -6265,7 +6385,7 @@ msgstr "Mint 已完成"
 msgid "Mint Completed"
 msgstr "Mint 已完成"
 
-#: src/views/internal/design-system/transaction-composition-staged-manual-link.tsx:44
+#: src/views/internal/design-system/transaction-composition-staged-manual-link.tsx:43
 msgid "Mint directly with basket assets"
 msgstr ""
 
@@ -6295,6 +6415,10 @@ msgstr "Mint 费用必须大于或等于 0.15%"
 msgid "Mint Fee must be 5% or less"
 msgstr "Mint 费用必须小于或等于 5%"
 
+#: src/views/internal/design-system/transaction-composition-manual-mint-stages.tsx:50
+msgid "Mint in progress"
+msgstr "Mint 进行中"
+
 #: src/views/internal/design-system/transaction-composition-staged-entry.tsx:138
 #~ msgid "Mint large USDC amounts through batched CoW Swap orders, or redeem DTF shares through batched collateral sales. Recommended for market makers or transactions over 50,000 USDC."
 #~ msgstr ""
@@ -6307,6 +6431,9 @@ msgstr "通过批量 CoW Swap orders Mint 大额 USDC，或将 DTFs Redeem 为�
 #: src/views/yield-dtf/issuance/components/zapV2/settings/ZapSettingsModal.tsx:65
 msgid "Mint RTokens?"
 msgstr "Mint RTokens？"
+
+#~ msgid "Mint transaction"
+#~ msgstr "铸造交易"
 
 #: src/views/yield-dtf/issuance/components/zapV2/token-selector/ZapTokensModal.tsx:109
 msgid "Mint using"
@@ -6321,12 +6448,17 @@ msgid "Mintable now"
 msgstr "当前可 Mint 量"
 
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1399
+#: src/views/internal/design-system/transaction-composition-manual-outcome.tsx:69
 msgid "Minted"
 msgstr "已 Mint"
 
 #: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:112
 msgid "Minting {symbol} is currently unavailable and we couldn't find another route to buy it."
 msgstr "{symbol} 的 Mint 当前不可用，且我们未能找到其他买入路径。"
+
+#: src/views/internal/design-system/transaction-composition-manual-mint-stages.tsx:103
+#~ msgid "Minting exchanges your basket assets for DTF shares."
+#~ msgstr "Mint 将你的篮子资产兑换为 DTF 份额。"
 
 #: src/views/index-dtf/overview/components/fees-stats.tsx:47
 #: src/views/index-dtf/settings/components/index-settings-fees.tsx:145
@@ -6486,6 +6618,7 @@ msgstr "净表现摘要"
 #: src/components/tables/ListedTokensTable.tsx:60
 #: src/views/explorer/components/collaterals/index.tsx:71
 #: src/views/explorer/components/tokens/index.tsx:136
+#: src/views/internal/design-system/transaction-composition-manual-outcome.tsx:90
 #: src/views/tokens/components/TableFilters.tsx:43
 #: src/views/tokens/components/UnlistedTokensTable.tsx:125
 msgid "Network"
@@ -6526,6 +6659,8 @@ msgstr "新使命："
 
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1540
 #: src/views/index-dtf/issuance/async-mint/steps/success.tsx:173
+#: src/views/internal/design-system/transaction-composition-manual-outcome.tsx:56
+#: src/views/internal/design-system/transaction-composition-staged-workspace.tsx:200
 msgid "New mint"
 msgstr "新建 Mint"
 
@@ -6543,6 +6678,8 @@ msgstr "新提案阈值："
 
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1540
 #: src/views/index-dtf/issuance/async-mint/steps/success.tsx:173
+#: src/views/internal/design-system/transaction-composition-manual-outcome.tsx:58
+#: src/views/internal/design-system/transaction-composition-staged-workspace.tsx:200
 msgid "New redeem"
 msgstr "新建 Redeem"
 
@@ -6752,7 +6889,7 @@ msgstr "此操作无需进行 Swaps。"
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:442
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1727
 #: src/views/internal/design-system/transaction-composition-staged-orders.tsx:101
-#: src/views/internal/design-system/transaction-composition-staged-task.tsx:307
+#: src/views/internal/design-system/transaction-composition-staged-task.tsx:328
 msgid "No swaps needed"
 msgstr "无需 Swaps"
 
@@ -6862,6 +6999,7 @@ msgstr "不可用"
 
 #: src/hooks/use-compliance-restrictions.ts:45
 #: src/hooks/use-compliance-restrictions.ts:53
+#: src/views/internal/design-system/transaction-composition-manual-anchor.tsx:82
 msgid "Not available in your region"
 msgstr "你所在的地区不可用"
 
@@ -6939,6 +7077,7 @@ msgstr "Ondo 代币化股票。最大交易额为该时段每个账户的单笔�
 
 #: src/views/index-dtf/deploy/steps/confirm-deploy/manual/components/approve-all-deploy-button.tsx:115
 #: src/views/index-dtf/issuance/manual/components/approve-all-button.tsx:107
+#: src/views/internal/design-system/transaction-composition-manual-action.tsx:114
 msgid "One or more approvals failed"
 msgstr "一项或多项授权失败"
 
@@ -7024,15 +7163,15 @@ msgstr "打开导航菜单"
 msgid "Open Safe website"
 msgstr "打开 Safe 网站"
 
-#: src/views/internal/design-system/transaction-composition-staged-support.tsx:242
+#: src/views/internal/design-system/transaction-composition-staged-support.tsx:219
 msgid "Opens Basescan in a new tab"
 msgstr "在新标签页中打开 Basescan"
 
-#: src/views/internal/design-system/transaction-composition-staged-support.tsx:241
+#: src/views/internal/design-system/transaction-composition-staged-support.tsx:218
 msgid "Opens BscScan in a new tab"
 msgstr ""
 
-#: src/views/internal/design-system/transaction-composition-staged-support.tsx:179
+#: src/views/internal/design-system/transaction-composition-staged-support.tsx:177
 msgid "Opens CoW Explorer in a new tab"
 msgstr "在新标签页中打开 CoW Explorer"
 
@@ -7101,7 +7240,7 @@ msgstr "Orders 将于 {0} 后过期"
 #~ msgid "Orders expire in 1m 42s"
 #~ msgstr "订单将在 1 分 42 秒后过期"
 
-#: src/views/internal/design-system/transaction-composition-staged-task.tsx:323
+#: src/views/internal/design-system/transaction-composition-staged-task.tsx:346
 msgid "Orders filled"
 msgstr ""
 
@@ -7264,7 +7403,7 @@ msgstr "锚定："
 
 #: src/views/explorer/components/governance/filters.tsx:16
 #: src/views/index-dtf/issuance/async-mint/components/leg-row.tsx:80
-#: src/views/internal/design-system/transaction-composition-staged-support.tsx:51
+#: src/views/internal/design-system/transaction-composition-staged-support.tsx:49
 #: src/views/yield-dtf/issuance/components/issue/CollateralApprovals.tsx:109
 msgid "Pending"
 msgstr "待处理"
@@ -7307,6 +7446,7 @@ msgstr "待处理的提取"
 #: src/views/index-dtf/deploy/steps/confirm-deploy/manual/components/confirm-manual-deploy-button.tsx:298
 #: src/views/index-dtf/deploy/steps/confirm-deploy/simple/simple-deploy-button.tsx:134
 #: src/views/index-dtf/overview/components/zap-mint/submit-zap.tsx:216
+#: src/views/internal/design-system/transaction-composition-rfq-support.tsx:1085
 #: src/views/yield-dtf/deploy/components/DeployOverview.tsx:25
 #: src/views/yield-dtf/deploy/components/GovernanceOverview.tsx:25
 #: src/views/yield-dtf/governance/views/proposal/components/ConfirmProposalOverview.tsx:59
@@ -7479,6 +7619,7 @@ msgid "Please select an asset to claim"
 msgstr "请选择要领取的资产"
 
 #: src/views/index-dtf/issuance/manual/components/index-manual-issuance.tsx:200
+#: src/views/internal/design-system/transaction-composition-manual-action.tsx:152
 msgid "Please sign in wallet..."
 msgstr "请在 Wallet 中签名……"
 
@@ -7581,7 +7722,7 @@ msgstr "通过授权 {0} 来准备出价"
 msgid "Prepare redeem"
 msgstr "准备 Redeem"
 
-#: src/views/internal/design-system/transaction-composition-staged-support.tsx:50
+#: src/views/internal/design-system/transaction-composition-staged-support.tsx:48
 msgid "Prepared"
 msgstr ""
 
@@ -7624,6 +7765,10 @@ msgstr "无法预览：{signature}"
 #: src/views/yield-dtf/governance/views/proposal/components/ProposalOverview.tsx:31
 msgid "Preview of function calls & adding of a proposal description is added in the next step."
 msgstr "函数调用预览及添加提案说明将在下一步进行。"
+
+#: src/views/internal/design-system/transaction-composition-manual-task.tsx:197
+msgid "Preview: Switch to Zapper opens the buy/sell flow for this DTF. No swap is executed and your manual amount is unchanged."
+msgstr "预览：切换到 Zapper 将打开此 DTF 的买入/卖出流程。不会执行兑换，手动输入的数量保持不变。"
 
 #: src/views/yield-dtf/issuance/components/redeem/RedeemNonceModal.tsx:72
 msgid "Previous basket"
@@ -7688,7 +7833,7 @@ msgstr "价格设置"
 
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:239
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:305
-#: src/views/internal/design-system/transaction-composition-staged-task.tsx:531
+#: src/views/internal/design-system/transaction-composition-staged-task.tsx:552
 msgid "Price unavailable"
 msgstr "价格不可用"
 
@@ -8005,11 +8150,11 @@ msgstr "报价获取已取消"
 msgid "Quote fetch canceled. Your amount is saved. You may <0>fetch quotes again</0>, or <1>edit the amount</1> and try again."
 msgstr "报价获取已取消。你的金额已保存。你可以<0>重新获取报价</0>，或<1>修改金额</1>后重试。"
 
-#: src/views/internal/design-system/transaction-composition-staged-task.tsx:728
+#: src/views/internal/design-system/transaction-composition-staged-task.tsx:758
 msgid "Quote paused · Amount saved"
 msgstr ""
 
-#: src/views/internal/design-system/transaction-composition-staged-support.tsx:49
+#: src/views/internal/design-system/transaction-composition-staged-support.tsx:47
 msgid "Quote ready"
 msgstr "报价已就绪"
 
@@ -8018,7 +8163,7 @@ msgid "Quote review"
 msgstr "报价审阅"
 
 #: src/views/internal/design-system/transaction-composition-staged-orders.tsx:80
-#: src/views/internal/design-system/transaction-composition-staged-task.tsx:311
+#: src/views/internal/design-system/transaction-composition-staged-task.tsx:332
 msgid "Quote search paused"
 msgstr "报价搜索已暂停"
 
@@ -8030,9 +8175,9 @@ msgstr "报价来源"
 #: src/views/index-dtf/issuance/async-mint/components/leg-row.tsx:176
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1702
 #: src/views/internal/design-system/transaction-composition-staged-orders.tsx:95
-#: src/views/internal/design-system/transaction-composition-staged-support.tsx:56
-#: src/views/internal/design-system/transaction-composition-staged-support.tsx:90
-#: src/views/internal/design-system/transaction-composition-staged-task.tsx:313
+#: src/views/internal/design-system/transaction-composition-staged-support.tsx:54
+#: src/views/internal/design-system/transaction-composition-staged-support.tsx:88
+#: src/views/internal/design-system/transaction-composition-staged-task.tsx:334
 msgid "Quote unavailable"
 msgstr "报价不可用"
 
@@ -8040,7 +8185,7 @@ msgstr "报价不可用"
 msgid "Quoted impact"
 msgstr "报价影响"
 
-#: src/views/internal/design-system/transaction-composition-staged-task.tsx:439
+#: src/views/internal/design-system/transaction-composition-staged-task.tsx:459
 msgid "Quoted swap impact"
 msgstr ""
 
@@ -8099,6 +8244,7 @@ msgstr "可执行"
 
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:519
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1404
+#: src/views/internal/design-system/transaction-composition-manual-mint-stages.tsx:58
 msgid "Ready to mint"
 msgstr "可 Mint"
 
@@ -8142,17 +8288,17 @@ msgstr "再平衡进行中"
 msgid "Rebalance progress"
 msgstr "再平衡进度"
 
-#: src/views/internal/design-system/transaction-composition-staged-task.tsx:671
+#: src/views/internal/design-system/transaction-composition-staged-task.tsx:697
 msgid "Receive USDC"
 msgstr ""
 
-#: src/views/internal/design-system/transaction-composition-staged-task.tsx:670
+#: src/views/internal/design-system/transaction-composition-staged-task.tsx:696
 msgid "Receive USDT"
 msgstr ""
 
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1401
 #: src/views/index-dtf/issuance/async-mint/steps/success.tsx:240
-#: src/views/internal/design-system/transaction-composition-staged-workspace.tsx:242
+#: src/views/internal/design-system/transaction-composition-staged-workspace.tsx:266
 msgid "Received"
 msgstr "已收到"
 
@@ -8216,6 +8362,11 @@ msgstr "Redeem - 全局限流"
 msgid "Redeem {0}"
 msgstr "Redeem {0}"
 
+#. placeholder {0}: s.amount || '0'
+#: src/views/internal/design-system/transaction-composition-manual-action.tsx:170
+msgid "Redeem {0} CMC20"
+msgstr "赎回 {0} CMC20"
+
 #. placeholder {0}: indexDTF.token.symbol
 #. placeholder {1}: inputToken.symbol
 #: src/views/index-dtf/issuance/async-mint/steps/configure-mint.tsx:175
@@ -8224,7 +8375,7 @@ msgstr "将 {0} Redeem 为 {1}。"
 
 #: src/views/index-dtf/issuance/async-mint/steps/configure-mint.tsx:170
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:739
-#: src/views/internal/design-system/transaction-composition-staged-configure.tsx:137
+#: src/views/internal/design-system/transaction-composition-staged-configure.tsx:132
 #: src/views/yield-dtf/issuance/components/redeem/RedeemInput.tsx:17
 msgid "Redeem amount"
 msgstr "Redeem 数量"
@@ -8253,9 +8404,13 @@ msgstr "Redeem 已完成"
 msgid "Redeem Completed"
 msgstr "Redeem 已完成"
 
-#: src/views/internal/design-system/transaction-composition-staged-manual-link.tsx:42
+#: src/views/internal/design-system/transaction-composition-staged-configure.tsx:226
+#: src/views/internal/design-system/transaction-composition-staged-manual-link.tsx:41
 msgid "Redeem directly to basket assets"
 msgstr ""
+
+#~ msgid "Redeem transaction"
+#~ msgstr "赎回交易"
 
 #: src/views/yield-dtf/issuance/components/zapV2/token-selector/ZapTokensModal.tsx:111
 msgid "Redeem using"
@@ -8266,7 +8421,8 @@ msgid "Redeemable now"
 msgstr "当前可 Redeem 量"
 
 #: src/views/index-dtf/issuance/async-mint/steps/success.tsx:236
-#: src/views/internal/design-system/transaction-composition-staged-workspace.tsx:237
+#: src/views/internal/design-system/transaction-composition-manual-outcome.tsx:69
+#: src/views/internal/design-system/transaction-composition-staged-workspace.tsx:261
 msgid "Redeemed"
 msgstr "已 Redeem"
 
@@ -8279,6 +8435,10 @@ msgstr "正在将 {0} Redeem 为 {1}。"
 #: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:117
 msgid "Redeeming {symbol} is currently unavailable and we couldn't find another route to sell it."
 msgstr "{symbol} 的 Redeem 当前不可用，且我们未能找到其他卖出路径。"
+
+#: src/views/internal/design-system/transaction-composition-manual-task.tsx:131
+#~ msgid "Redeeming exchanges your DTF shares for basket assets."
+#~ msgstr "Redeem 将你的 DTF 份额兑换为篮子资产。"
 
 #: src/views/yield-dtf/issuance/components/zapV2/ZapRedeemDisabled.tsx:12
 msgid "Redeems not available during re-collateralization"
@@ -8488,6 +8648,7 @@ msgstr "申请插件"
 
 #: src/views/index-dtf/deploy/components/deploy-coming-soon.tsx:25
 #: src/views/index-dtf/overview/components/eligibility-card.tsx:24
+#: src/views/internal/design-system/transaction-composition-manual-asset-row.tsx:126
 msgid "Required"
 msgstr "必填"
 
@@ -8506,6 +8667,10 @@ msgstr "所需资产已就绪，可进行 Mint。"
 #: src/views/yield-dtf/settings/components/governance-prompt.tsx:17
 msgid "Required setup:"
 msgstr "所需设置:"
+
+#: src/views/internal/design-system/transaction-composition-manual-mint-stages.tsx:105
+msgid "Required tokens approved"
+msgstr "所需代币已获授权"
 
 #: src/views/index-dtf/deploy/steps/confirm-deploy/manual/components/deploy-assets-approvals.tsx:69
 #: src/views/index-dtf/issuance/manual/components/asset-list.tsx:206
@@ -8583,8 +8748,14 @@ msgid "Retrieving historical prices..."
 msgstr "正在获取历史价格..."
 
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1141
+#: src/views/internal/design-system/transaction-composition-manual-permission.tsx:103
 msgid "Retry"
 msgstr "重试"
+
+#. placeholder {0}: asset.symbol
+#: src/views/internal/design-system/transaction-composition-manual-permission.tsx:98
+msgid "Retry {0}"
+msgstr "重试 {0}"
 
 #. placeholder {0}: retryableLegIds.length
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1088
@@ -8725,8 +8896,14 @@ msgstr "查看 Stake"
 
 #: src/views/index-dtf/deploy/steps/confirm-deploy/manual/components/deploy-assets-approvals.tsx:187
 #: src/views/index-dtf/issuance/manual/components/asset-list.tsx:132
+#: src/views/internal/design-system/transaction-composition-manual-permission.tsx:78
 msgid "Revoke"
 msgstr "撤销"
+
+#. placeholder {0}: asset.symbol
+#: src/views/internal/design-system/transaction-composition-manual-permission.tsx:69
+msgid "Revoke {0}"
+msgstr "撤销 {0} 授权"
 
 #. placeholder {0}: tokenIn.symbol
 #: src/views/yield-dtf/issuance/components/zapV2/submit/ZapRevokeButton.tsx:43
@@ -8743,6 +8920,7 @@ msgstr "撤销角色"
 
 #: src/views/index-dtf/deploy/steps/confirm-deploy/manual/components/deploy-assets-approvals.tsx:187
 #: src/views/index-dtf/issuance/manual/components/asset-list.tsx:132
+#: src/views/internal/design-system/transaction-composition-manual-permission.tsx:29
 #: src/views/yield-dtf/issuance/components/zapV2/submit/ZapRevokeButton.tsx:41
 msgid "Revoking..."
 msgstr "撤销中…"
@@ -9133,11 +9311,11 @@ msgid "Sell ${0}"
 msgstr "卖出 ${0}"
 
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1008
-#: src/views/internal/design-system/transaction-composition-staged-task.tsx:338
+#: src/views/internal/design-system/transaction-composition-staged-task.tsx:361
 msgid "Sell collateral"
 msgstr "出售抵押品"
 
-#: src/views/internal/design-system/transaction-composition-staged-support.tsx:111
+#: src/views/internal/design-system/transaction-composition-staged-support.tsx:109
 msgid "Sell quote"
 msgstr "卖出报价"
 
@@ -9157,7 +9335,7 @@ msgstr "卖出中"
 msgid "Selling {0}"
 msgstr "出售 {0}"
 
-#: src/views/internal/design-system/transaction-composition-staged-actions.tsx:141
+#: src/views/internal/design-system/transaction-composition-staged-actions.tsx:132
 msgid "Selling collateral…"
 msgstr ""
 
@@ -9376,6 +9554,11 @@ msgstr "签名"
 #~ msgid "Signing"
 #~ msgstr "正在签名"
 
+#: src/views/internal/design-system/transaction-composition-manual-action.tsx:68
+#: src/views/internal/design-system/transaction-composition-manual-action.tsx:126
+msgid "Signing declined"
+msgstr "已拒绝签名"
+
 #: src/views/yield-dtf/deploy/components/NavigationSidebar.tsx:51
 msgid "Signing Tx 1"
 msgstr "正在签署 Tx 1"
@@ -9386,6 +9569,7 @@ msgstr "正在签署 Tx 2"
 
 #: src/views/index-dtf/deploy/steps/confirm-deploy/manual/components/deploy-assets-approvals.tsx:156
 #: src/views/index-dtf/issuance/manual/components/asset-list.tsx:101
+#: src/views/internal/design-system/transaction-composition-manual-permission.tsx:31
 msgid "Signing..."
 msgstr "签署中…"
 
@@ -9502,7 +9686,7 @@ msgid "Socials"
 msgstr "社交媒体"
 
 #: src/views/index-dtf/auctions/legacy/components/auction-item.tsx:90
-#: src/views/internal/design-system/transaction-composition-staged-support.tsx:113
+#: src/views/internal/design-system/transaction-composition-staged-support.tsx:111
 #: src/views/yield-dtf/auctions/components/useColumns.tsx:32
 msgid "Sold"
 msgstr "已卖出"
@@ -9514,7 +9698,7 @@ msgstr "来自 Aave 和 Convex 等协议的某些抵押品代币在技术上与�
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1628
 #: src/views/internal/design-system/transaction-composition-staged-orders.tsx:96
 #: src/views/internal/design-system/transaction-composition-staged-orders.tsx:195
-#: src/views/internal/design-system/transaction-composition-staged-task.tsx:749
+#: src/views/internal/design-system/transaction-composition-staged-task.tsx:779
 msgid "Some quotes couldn't be fetched."
 msgstr "部分报价无法获取。"
 
@@ -9542,7 +9726,7 @@ msgstr "抱歉，你的请求超过了 Global Max Mint 限额。Global Max Mint 
 msgid "Sorry, your request exceeds the Global Max Redeem limit. The Global Max Redeem is set at {maxFormatted} {0}. You can only zap a maximum of {maxZap} {1}."
 msgstr "抱歉，你的请求超过了 Global Max Redeem 限额。Global Max Redeem 限额设为 {maxFormatted} {0}。你最多只能 zap {maxZap} {1}。"
 
-#: src/views/internal/design-system/transaction-composition-staged-workspace.tsx:232
+#: src/views/internal/design-system/transaction-composition-staged-workspace.tsx:256
 #: src/views/portfolio-page/components/pending-withdrawals.tsx:332
 msgid "Source"
 msgstr "来源"
@@ -9578,7 +9762,7 @@ msgid "Spell 2"
 msgstr "Spell 2"
 
 #: src/views/index-dtf/issuance/async-mint/steps/success.tsx:224
-#: src/views/internal/design-system/transaction-composition-staged-workspace.tsx:224
+#: src/views/internal/design-system/transaction-composition-staged-workspace.tsx:248
 msgid "Spent"
 msgstr "已花费"
 
@@ -9776,11 +9960,11 @@ msgstr "交易进行期间请耐心等待，并且不要关闭此窗口，以免
 msgid "Stay up to date in long form"
 msgstr "通过长文保持最新动态"
 
-#: src/views/internal/design-system/transaction-composition-staged-task.tsx:374
+#: src/views/internal/design-system/transaction-composition-staged-task.tsx:399
 msgid "Step 1 of 1"
 msgstr ""
 
-#: src/views/internal/design-system/transaction-composition-staged-task.tsx:372
+#: src/views/internal/design-system/transaction-composition-staged-task.tsx:397
 msgid "Step 1 of 2"
 msgstr "第 1 步，共 2 步"
 
@@ -9796,7 +9980,7 @@ msgstr "步骤 1. 授权使用 {inputSymbol}"
 #~ msgid "Step 1/2 · Start collateral trades"
 #~ msgstr "第 1/2 步 · 开始抵押品交易"
 
-#: src/views/internal/design-system/transaction-composition-staged-task.tsx:689
+#: src/views/internal/design-system/transaction-composition-staged-task.tsx:719
 msgid "Step 2 of 2"
 msgstr "第 2 步，共 2 步"
 
@@ -9942,7 +10126,7 @@ msgid "Swapped {inputSymbol} for {outputSymbol}"
 msgstr "已将 {inputSymbol} 兑换为 {outputSymbol}"
 
 #: src/views/index-dtf/issuance/async-mint/steps/success.tsx:255
-#: src/views/internal/design-system/transaction-composition-staged-workspace.tsx:284
+#: src/views/internal/design-system/transaction-composition-staged-workspace.tsx:307
 msgid "Swaps leave a small residue in your wallet."
 msgstr "Swaps 会在你的 Wallet 中留下少量残余。"
 
@@ -9958,13 +10142,16 @@ msgstr "Swaps 通过 CoW Protocol solvers 结算。"
 msgid "Switch to {0}"
 msgstr "切换到 {0}"
 
+#: src/views/internal/design-system/transaction-composition-manual-action.tsx:148
+msgid "Switch to Ethereum"
+msgstr "切换至 Ethereum"
+
 #: src/views/index-dtf/issuance/panel-mode-switch.tsx:41
 msgid "Switch to Manual Mint"
 msgstr "切换到手动 Mint"
 
 #: src/views/index-dtf/issuance/async-mint/components/switch-to-manual-link.tsx:39
-#: src/views/internal/design-system/transaction-composition-staged-manual-link.tsx:67
-#: src/views/internal/design-system/transaction-composition-staged-manual-link.tsx:85
+#: src/views/internal/design-system/transaction-composition-staged-manual-link.tsx:59
 #: src/views/yield-dtf/issuance/components/zapV2/ZapToggleBottom.tsx:34
 msgid "Switch to manual minting"
 msgstr "切换到手动 Mint"
@@ -9974,8 +10161,7 @@ msgid "switch to manual redeeming"
 msgstr "切换到手动 Redeem"
 
 #: src/views/index-dtf/issuance/async-mint/components/switch-to-manual-link.tsx:37
-#: src/views/internal/design-system/transaction-composition-staged-manual-link.tsx:65
-#: src/views/internal/design-system/transaction-composition-staged-manual-link.tsx:83
+#: src/views/internal/design-system/transaction-composition-staged-manual-link.tsx:57
 msgid "Switch to manual redeeming"
 msgstr "切换到手动 Redeem"
 
@@ -9990,6 +10176,10 @@ msgstr "切换到 zap Mint"
 #: src/views/index-dtf/issuance/manual/components/index-manual-issuance.tsx:263
 msgid "Switch to zap redeeming"
 msgstr "切换到 zap Redeem"
+
+#: src/views/internal/design-system/transaction-composition-manual-task.tsx:185
+msgid "Switch to Zapper"
+msgstr "切换到 Zapper"
 
 #: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:326
 #: src/views/internal/design-system/transaction-composition-staged-entry.tsx:349
@@ -10063,11 +10253,11 @@ msgid "Thank you! We'll be in touch soon."
 msgstr "谢谢！我们会尽快与您联系。"
 
 #: src/views/index-dtf/issuance/async-mint/steps/configure-mint.tsx:119
-#: src/views/internal/design-system/transaction-composition-staged-configure.tsx:255
+#: src/views/internal/design-system/transaction-composition-staged-configure.tsx:263
 msgid "The acquired assets are used to mint your DTF."
 msgstr "所获取的资产将用于 Mint 你的 DTF。"
 
-#: src/views/internal/design-system/transaction-composition-staged-task.tsx:740
+#: src/views/internal/design-system/transaction-composition-staged-task.tsx:770
 msgid "The amount may be too small to cover fees."
 msgstr "该金额可能过低，无法支付手续费。"
 
@@ -10122,6 +10312,10 @@ msgstr ""
 #: src/components/rtoken-setup/basket/EmergencyCollateral.tsx:160
 msgid "The diversity factor determines the amount of emergency collateral that will be deployed to the RToken basket in the case of a default."
 msgstr "多样性因子决定了在发生违约时将部署到 RToken 篮子中的紧急抵押品数量。"
+
+#: src/views/internal/design-system/transaction-composition-manual-task.tsx:117
+#~ msgid "The DTF shares you want to mint."
+#~ msgstr "你希望 Mint 的 DTF 份额。"
 
 #: src/components/rtoken-setup/token/BackingForm.tsx:76
 msgid "The dutch auction length is how many seconds long falling-price dutch auctions should be. A longer period will result in less slippage due to better price granularity, and a shorter period will result in more slippage."
@@ -10313,7 +10507,7 @@ msgstr "代币分配之和必须为 100%（超出 {displayDifference}%）。"
 msgid "The sum of the tokens distribution must be 100% ({displayDifference}% missing)."
 msgstr "代币分配之和必须为 100%（缺少 {displayDifference}%）。"
 
-#: src/views/internal/design-system/transaction-composition-staged-task.tsx:737
+#: src/views/internal/design-system/transaction-composition-staged-task.tsx:767
 msgid "The swap quote is unavailable"
 msgstr "无法获取兑换报价"
 
@@ -10496,6 +10690,8 @@ msgstr "此 Index DTF 将…"
 
 #: src/views/index-dtf/deploy/steps/confirm-deploy/manual/components/deploy-assets-approvals.tsx:192
 #: src/views/index-dtf/issuance/manual/components/asset-list.tsx:137
+#: src/views/internal/design-system/transaction-composition-manual-permission.tsx:54
+#: src/views/internal/design-system/transaction-composition-manual-permission.tsx:56
 msgid "This is a USDT token or a fork of USDT. You need to revoke the approval before you can approve it."
 msgstr "这是 USDT 代币或 USDT 的分叉。你需要先撤销授权才能对其进行授权。"
 
@@ -10517,6 +10713,7 @@ msgstr "根据当地法规，本产品仅向您所在地区的合格投资者提
 
 #: src/hooks/use-compliance-restrictions.ts:46
 #: src/hooks/use-compliance-restrictions.ts:54
+#: src/views/internal/design-system/transaction-composition-manual-anchor.tsx:85
 msgid "This product isn't available in your region due to local restrictions."
 msgstr "由于当地限制，本产品在你所在的地区不可用。"
 
@@ -10646,6 +10843,17 @@ msgstr "代币地址"
 msgid "Token already exists in the list"
 msgstr "代币已存在于列表中"
 
+#: src/views/internal/design-system/transaction-composition-manual-mint-stages.tsx:48
+#: src/views/internal/design-system/transaction-composition-manual-mint-stages.tsx:65
+#: src/views/internal/design-system/transaction-composition-manual-mint-stages.tsx:79
+msgid "Token approvals"
+msgstr "代币授权"
+
+#: src/views/internal/design-system/transaction-composition-manual-mint-stages.tsx:71
+#: src/views/internal/design-system/transaction-composition-manual-task.tsx:132
+#~ msgid "Token approvals allow the mint to use your basket assets."
+#~ msgstr "代币授权允许 Mint 使用你的篮子资产。"
+
 #: src/components/layout/navigation/TokenNavigation.tsx:214
 #: src/views/yield-dtf/settings/components/navigation-sidebar.tsx:11
 msgid "Token details"
@@ -10748,6 +10956,10 @@ msgstr "tokens"
 #: src/views/yield-dtf/overview/components/backing/asset-breakdown.tsx:38
 msgid "Tokens"
 msgstr "代币"
+
+#: src/views/internal/design-system/transaction-composition-manual-mint-stages.tsx:116
+msgid "Tokens approved"
+msgstr "已授权代币"
 
 #: src/views/index-dtf/auctions/views/rebalance/components/manage-weights/manage-weights-content.tsx:198
 #: src/views/index-dtf/governance/views/propose/basket/components/proposal-basket-setup/basket-csv-setup.tsx:267
@@ -10908,7 +11120,7 @@ msgid "Trading has been temporarily paused due to an abundance of caution relate
 msgstr "出于对 Kelp DAO 攻击事件的高度谨慎，交易已暂时暂停。本协议会保留可用的 staked RSR 作为安全措施，以备在需要重新抵押时使用——这意味着在交易恢复之前，提取将被阻止。"
 
 #: src/views/index-dtf/issuance/async-mint/components/ondo-limits-banner.tsx:62
-#: src/views/internal/design-system/transaction-composition-staged-configure.tsx:204
+#: src/views/internal/design-system/transaction-composition-staged-configure.tsx:199
 msgid "Trading paused"
 msgstr "交易已暂停"
 
@@ -10952,6 +11164,9 @@ msgstr "交易已确认"
 
 #: src/components/transaction-modal/index.tsx:145
 #: src/views/index-dtf/issuance/manual/components/index-manual-issuance.tsx:228
+#: src/views/internal/design-system/transaction-composition-manual-action.tsx:69
+#: src/views/internal/design-system/transaction-composition-manual-action.tsx:126
+#: src/views/internal/design-system/transaction-composition-staged-task.tsx:344
 msgid "Transaction failed"
 msgstr "交易失败"
 
@@ -11338,7 +11553,7 @@ msgid "Unsupported Vote Lock Address"
 msgstr "不支持的投票锁定地址"
 
 #: src/views/index-dtf/issuance/async-mint/steps/success.tsx:229
-#: src/views/internal/design-system/transaction-composition-staged-workspace.tsx:263
+#: src/views/internal/design-system/transaction-composition-staged-workspace.tsx:287
 msgid "Unused (returned)"
 msgstr "未使用（已返还）"
 
@@ -11492,7 +11707,7 @@ msgstr "使用任意 ERC20 来治理 Index DTF，以换取 Mint 费用和 TVL �
 msgid "Use connected wallet."
 msgstr "使用已连接的 Wallet。"
 
-#: src/views/internal/design-system/transaction-composition-staged-task.tsx:163
+#: src/views/internal/design-system/transaction-composition-staged-task.tsx:173
 msgid "Use existing collateral"
 msgstr "使用现有抵押品"
 
@@ -11530,7 +11745,7 @@ msgstr "用户追踪"
 msgid "Users will not be able to mint / redeem using zaps in the US"
 msgstr "在美国，用户将无法使用 Zap 进行 Mint / Redeem"
 
-#: src/views/internal/design-system/transaction-composition-staged-task.tsx:585
+#: src/views/internal/design-system/transaction-composition-staged-task.tsx:609
 msgid "Using basket assets only; no CMC20 will be redeemed."
 msgstr ""
 
@@ -11546,6 +11761,7 @@ msgstr "验证中..."
 msgid "Valuation & NAV Calculation Risk – The DTF’s NAV depends on accurate, timely marks for tokenized equities and any associated components. Pricing inputs may be derived from thinly traded on-chain markets, off-chain reference feeds, or oracle mechanisms that can be stale, interrupted, manipulated, or subject to methodology changes. Market-hour mismatches, delayed corporate action processing, and settlement lags can further distort marks. Misvaluation may cause incorrect mint/redeem pricing, unfair dilution among holders, and adverse or mistimed rebalances."
 msgstr "估值与 NAV 计算风险——DTF 的 NAV 依赖于对代币化股票及相关组成部分的准确、及时定价。定价输入可能来自交易稀少的链上市场、链下参考数据源或预言机机制，这些来源可能过时、中断、被操纵或发生方法论变更。市场时间错配、公司行动处理延迟和结算滞后可能进一步扭曲估值。错误估值可能导致 Mint/Redeem 定价不准确、持有人之间的不公平稀释，以及不利或时机不当的再平衡。"
 
+#: src/views/internal/design-system/transaction-composition-manual-asset-row.tsx:102
 #: src/views/portfolio-page/components/available-rewards.tsx:135
 #: src/views/portfolio-page/components/dtf-positions.tsx:151
 #: src/views/portfolio-page/components/pending-withdrawals.tsx:351
@@ -11689,7 +11905,8 @@ msgstr "查看各 Network 上的所有 Index DTF,用于内部测试"
 
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1554
 #: src/views/index-dtf/issuance/async-mint/steps/success.tsx:179
-#: src/views/internal/design-system/transaction-composition-staged-workspace.tsx:302
+#: src/views/internal/design-system/transaction-composition-manual-outcome.tsx:111
+#: src/views/internal/design-system/transaction-composition-staged-workspace.tsx:335
 msgid "View DTF"
 msgstr "查看 DTF"
 
@@ -11759,12 +11976,12 @@ msgstr "在浏览器中查看"
 msgid "View on Tenderly"
 msgstr "在 Tenderly 上查看"
 
-#: src/views/internal/design-system/transaction-composition-staged-support.tsx:177
+#: src/views/internal/design-system/transaction-composition-staged-support.tsx:175
 msgid "View order"
 msgstr "查看订单"
 
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:505
-#: src/views/internal/design-system/transaction-composition-staged-workspace.tsx:117
+#: src/views/internal/design-system/transaction-composition-staged-workspace.tsx:122
 msgid "View orders"
 msgstr "查看 Orders"
 
@@ -11797,7 +12014,9 @@ msgstr "查看奖励代币"
 msgid "View settle tx"
 msgstr "查看结算交易"
 
-#: src/views/internal/design-system/transaction-composition-staged-support.tsx:247
+#: src/views/internal/design-system/transaction-composition-manual-outcome.tsx:104
+#: src/views/internal/design-system/transaction-composition-staged-support.tsx:230
+#: src/views/internal/design-system/transaction-composition-staged-support.tsx:235
 msgid "View transaction"
 msgstr ""
 
@@ -12133,7 +12352,7 @@ msgid "Waiting for allowance..."
 msgstr "等待授权……"
 
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:583
-#: src/views/internal/design-system/transaction-composition-staged-task.tsx:260
+#: src/views/internal/design-system/transaction-composition-staged-task.tsx:278
 msgid "Waiting for collateral"
 msgstr "等待抵押品"
 
@@ -12154,6 +12373,10 @@ msgstr "等待确认中……"
 msgid "Waiting for orders"
 msgstr "等待 Orders"
 
+#: src/views/internal/design-system/transaction-composition-manual-mint-stages.tsx:151
+#~ msgid "Waiting for token approvals."
+#~ msgstr "正在等待代币授权。"
+
 #: src/views/explorer/components/transactions/Filters.tsx:17
 msgid "Wallet"
 msgstr "Wallet"
@@ -12167,6 +12390,10 @@ msgstr "Wallet 地址"
 #: src/hooks/use-compliance-restrictions.ts:41
 msgid "Wallet restricted"
 msgstr "Wallet 受限"
+
+#: src/views/internal/design-system/transaction-composition-manual-task.tsx:173
+msgid "Want to buy with a single token?"
+msgstr "想使用单一代币购买？"
 
 #: src/views/index-dtf/deploy/components/deploy-coming-soon.tsx:100
 msgid "Want to create an Index DTF?"
@@ -12211,7 +12438,7 @@ msgstr "观看讲解"
 msgid "Watch Video"
 msgstr "观看视频"
 
-#: src/views/internal/design-system/transaction-composition-staged-configure.tsx:207
+#: src/views/internal/design-system/transaction-composition-staged-configure.tsx:202
 msgid "WBTC is outside trading hours, so minting and redeeming is unavailable right now."
 msgstr ""
 
@@ -12241,7 +12468,7 @@ msgstr "我们建议在 <0>CreateMyToken</0> 上发行你的新 ERC20 代币"
 msgid "We redeem your {0} and sell the collateral for {1}."
 msgstr "我们 Redeem 你的 {0} 并出售抵押品换取 {1}。"
 
-#: src/views/internal/design-system/transaction-composition-staged-configure.tsx:264
+#: src/views/internal/design-system/transaction-composition-staged-configure.tsx:272
 msgid "We redeem your CMC20 and sell the collateral for USDC."
 msgstr ""
 
@@ -12250,11 +12477,11 @@ msgstr ""
 msgid "We use your {0} to get the assets needed for the mint."
 msgstr "我们用你的 {0} 获取 Mint 所需的资产。"
 
-#: src/views/internal/design-system/transaction-composition-staged-configure.tsx:245
+#: src/views/internal/design-system/transaction-composition-staged-configure.tsx:253
 msgid "We use your USDC to get the assets needed for the mint."
 msgstr "我们使用你的 USDC 获取铸造所需的资产。"
 
-#: src/views/internal/design-system/transaction-composition-staged-configure.tsx:241
+#: src/views/internal/design-system/transaction-composition-staged-configure.tsx:249
 msgid "We use your USDT to get the assets needed for the mint."
 msgstr ""
 
@@ -12349,6 +12576,10 @@ msgstr ""
 #: src/views/earn/views/index-dtf/components/faq.tsx:78
 msgid "When rewards are added to a self-appreciating vault like vlRSR, they become redeemable gradually rather than all at once. This is often called streaming or dripping."
 msgstr ""
+
+#: src/views/internal/design-system/transaction-composition-manual-approval-setting.tsx:48
+msgid "When selected, approvals set the token spending allowance to its maximum. This does not change the amount you mint."
+msgstr "选中后，授权会将代币支出额度设为最大值。这不会改变你 Mint 的数量。"
 
 #: src/views/yield-dtf/staking/components/overview/about.tsx:14
 msgid "When staking RSR, you are putting your RSR at risk in the case of a collateral default in exchange for 1) the rights to govern the RToken and 2) for a portion of the revenue generated by the collateral. The revenue sent to the staked RSR pool will be distributed amongst RSR stakers proportionally to their stake in the pool."
@@ -12694,6 +12925,10 @@ msgstr "你的 {0} 已被 Redeem。"
 #: src/views/internal/design-system/transaction-composition-staged-task.tsx:730
 #~ msgid "Your amount is saved."
 #~ msgstr "你的金额已保存。"
+
+#: src/views/internal/design-system/transaction-composition-manual-mint-stages.tsx:187
+msgid "Your basket tokens will be exchanged for CMC20."
+msgstr "你的篮子 tokens 将兑换为 CMC20。"
 
 #: src/views/portfolio-page/components/dtf-positions.tsx:177
 msgid "Your Decentralized Token Fund investments."

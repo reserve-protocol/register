@@ -9,7 +9,12 @@ behavior, production UI, shared component defaults, or product copy.
 
 ## Current state
 
-- The working tree started clean at the requested fixed point on branch
+Paused at the [verified transaction checkpoint](transaction-consolidated-regression.md#checkpoint-disposition).
+Retain the current human-directed flow design. Review notes below remain
+resumption evidence, not a requirement for another broad review or permission
+to migrate production. Contextual launchers and Portfolio rows are excluded.
+
+- Historical starting point: the working tree was clean at the requested fixed point on branch
   `design-system-v1`.
 - Production enters automated mint either through the issuance page's Auto panel
   or the lazy `/issuance/automated` route, then gates the flow on compliance,
@@ -335,9 +340,9 @@ workspace omits duplicate wallet inventory and begins directly with
 
 The expanded desktop workspace consumes the full content width of its beige lab
 stage, uses the production-backed equal-width column split, and holds both
-columns to one 688px review height. That value is the
-smallest 8px-grid height that contains the current tallest left-side outcome at
-the supported desktop widths. Flexible space belongs after the Mint stage
+columns to one 736px review height, matching Manual's desktop review host.
+Both use a 1200px maximum width; this is lab-host geometry, not a production
+height requirement. Flexible space belongs after the Mint stage
 instead of interrupting the collateral-to-Mint sequence, so each action remains
 attached to the section it advances and unused height trails the complete
 high-level journey. The right column keeps its header fixed and owns an
@@ -348,11 +353,24 @@ order-scroll behavior without transferring production's viewport-constrained
 page shell into the lab.
 
 The final state now uses the shared outcome hierarchy for status, received DTF
-amount, supporting fiat value, final transaction identity, and next actions.
-Final transaction identity precedes tertiary leftover-dust detail so verification
-evidence is not visually subordinated to residue disclosure.
+amount, supporting fiat value, transaction access, and next actions.
+The footer owns the single final-transaction explorer link; no redundant
+transaction-label/hash/copy row competes with the outcome details.
 Completed CoW orders remain adjacent as flow-owned evidence because they are
 material to reconciliation; approval transactions remain intentionally absent.
+The outcome's brand region absorbs spare column height between status and
+received amount; details remain content-sized. There is 24px between the fiat
+row and the blue region's bottom edge. The footer pairs default-sized secondary
+View transaction with primary View DTF at the 8px edge. Individual CoW order
+links remain in the order ledger. A compact secondary New mint / New redeem
+header action returns directly to empty configuration, preserving operation
+and network while resetting completed funding choices and order inspection.
+This is page navigation, not a promoted continuation CTA. Active collateral
+and final-mint actions retain primary tone while loading, with busy/disabled
+semantics; upcoming actions blocked by collateral stay neutral. Mint reuses
+the Zapper bookmark beside its received DTF (simulated
+feedback only); Redeem does not bookmark the DTF being redeemed. Funding,
+unused amounts, swap impact, dust, and individual-order evidence remain intact.
 Order-row styling and the embedded two-stage composition remain provisional and
 require human visual review before migration.
 
@@ -364,9 +382,22 @@ order workspace and its individual evidence rows use the existing
 to the automated-mint composition and do not change a shared component or
 token.
 
+Within this local hierarchy, the current stage's label and main amount/count
+use primary blue; completed content stays normal foreground, and upcoming
+labels are muted without fading financial values. `aria-current="step"`
+tracks the same region. An editable over-balance input takes attention back
+to funding; otherwise attention follows collateral work and then final Mint.
+A small green check beside normal-foreground “Orders filled” confirms actual
+fixture completion, not merely submission. No-swaps paths do not claim filled
+orders, and transaction failure does not fall through to an “Orders filled”
+sublabel. Arrows remain structural and section surfaces stay unchanged. These
+are lab-local presentation choices, not new transaction or shared-default rules.
+
 The collateral stage also retains the production risk summary. Before fills it
 shows estimated swap impact beside maximum slippage; after every collateral
 order fills it changes to quoted swap impact beside actual swap impact. The
+two facts stack their labels above their values and align to opposite edges;
+there is no vertical divider between them. The
 explicit `swap` qualifier prevents these values from being read as the mint or
 redeem conversion's impact. The lab values are
 deterministic presentation fixtures, not new pricing logic or executed-amount

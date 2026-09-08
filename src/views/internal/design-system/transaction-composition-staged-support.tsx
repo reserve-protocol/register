@@ -6,7 +6,6 @@ import type { ReactNode } from 'react'
 
 import { Button } from '@/components/button'
 import { CopyableValue } from '@/components/design-system-v1/copyable-value'
-import { Link } from '@/components/design-system-v1/link'
 import { v1Typography } from '@/components/design-system-v1/typography'
 import {
   LifecycleStatusPill,
@@ -27,7 +26,6 @@ import {
   FINAL_REDEEM_TRANSACTION,
   formatFixtureAmount,
 } from './transaction-composition-staged-fixtures'
-import { TransactionOutcomeDetailRow } from './transaction-outcome-detail-row'
 import { TransactionAssetLogo } from './transaction-system-assets'
 
 const ORDER_STATUS_ROLES: Record<
@@ -205,7 +203,7 @@ const OrderAmount = ({
   </div>
 )
 
-export const AutomatedMintIdentity = ({
+export const AutomatedMintExplorerButton = ({
   chain,
   operation,
 }: {
@@ -215,39 +213,28 @@ export const AutomatedMintIdentity = ({
   const { t } = useLingui()
   const transaction =
     operation === 'mint' ? FINAL_MINT_TRANSACTION : FINAL_REDEEM_TRANSACTION
+  const externalAnnouncement =
+    chain === ChainId.BSC
+      ? t`Opens BscScan in a new tab`
+      : t`Opens Basescan in a new tab`
 
   return (
-    <TransactionOutcomeDetailRow
-      testId="automated-mint-final-transaction"
-      label={
-        operation === 'mint' ? (
-          <Trans>Final mint transaction</Trans>
-        ) : (
-          <Trans>Final redeem transaction</Trans>
-        )
-      }
-      value={
-        <span className="flex flex-wrap items-center justify-end gap-2">
-          <CopyableValue
-            treatment="inline"
-            tone="neutral"
-            value={transaction}
-            visibleValue={operation === 'mint' ? '0x4B99…01AE' : '0x7195…EF2D'}
-          />
-          <Link
-            external
-            externalAnnouncement={
-              chain === ChainId.BSC
-                ? t`Opens BscScan in a new tab`
-                : t`Opens Basescan in a new tab`
-            }
-            href={`https://${chain === ChainId.BSC ? 'bscscan.com' : 'basescan.org'}/tx/${transaction}`}
-            treatment="standalone"
-          >
-            <Trans>View transaction</Trans>
-          </Link>
-        </span>
-      }
-    />
+    <Button
+      asChild
+      data-testid="automated-mint-view-transaction"
+      className="flex-1"
+      tone="secondary"
+      trailingIcon={<ArrowUpRight aria-hidden="true" />}
+    >
+      <a
+        aria-label={`${t`View transaction`}, ${externalAnnouncement}`}
+        href={`https://${chain === ChainId.BSC ? 'bscscan.com' : 'basescan.org'}/tx/${transaction}`}
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <Trans>View transaction</Trans>
+        <span className="sr-only"> {externalAnnouncement}</span>
+      </a>
+    </Button>
   )
 }

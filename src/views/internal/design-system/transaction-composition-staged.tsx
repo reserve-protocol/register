@@ -31,6 +31,13 @@ export const StagedTransactionComposition = () => {
   const [useExistingCollateral, setUseExistingCollateral] = useState(false)
   const [hasCollateralSwaps, setHasCollateralSwaps] = useState(true)
 
+  const restart = () => {
+    setInput(emptyInputFor(operation, chain))
+    setUseExistingCollateral(false)
+    setHasCollateralSwaps(true)
+    setState('Initial configuration')
+  }
+
   const changeOperation = (nextOperation: AutomatedIssuanceOperation) => {
     setOperation(nextOperation)
     setInput(emptyInputFor(nextOperation, chain))
@@ -183,6 +190,7 @@ export const StagedTransactionComposition = () => {
           ) : (
             <AutomatedMintWorkspace
               chain={chain}
+              onRestart={restart}
               hasCollateralSwaps={hasCollateralSwaps}
               input={input.amount ? input : defaultInputFor(operation, chain)}
               onUseExistingCollateralChange={setUseExistingCollateral}

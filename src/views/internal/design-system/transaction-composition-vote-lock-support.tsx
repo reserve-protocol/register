@@ -130,7 +130,7 @@ export const VoteLockAction = ({
 }) => {
   if (state === 'Approval signing') {
     return (
-      <Button className="w-full" tone="secondary" loading>
+      <Button className="w-full" loading>
         Approval in progress…
       </Button>
     )
@@ -143,10 +143,7 @@ export const VoteLockAction = ({
       </Button>
     )
   }
-  if (
-    state === 'Lock wallet' ||
-    state === 'Unlock wallet'
-  ) {
+  if (state === 'Lock wallet' || state === 'Unlock wallet') {
     return (
       <Button className="w-full" loading>
         Pending, sign in wallet

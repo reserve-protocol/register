@@ -21,7 +21,7 @@ const flows = [
       'Preserve|Editable share input, approval-to-mint action slot, and persistent per-asset requirements.',
       'Standardize visually|Amount field, requirement rows, permission statuses, actions, and confirmed result language.',
       'Consolidate|Asset identity, financial values, and transaction identity—not the approval sequence itself.',
-      'Deliberately improve|A consequential in-context mint result is shown as a proposal; current product only toasts and resets.',
+      'Deliberately improve|An in-context result is now a lab trial; current product only toasts and resets. Submitted shares and expected basket values are not receipt-verified amounts.',
       'Do not touch yet|Buy/sell math, allowance batching, unlimited approval, and reset behavior.',
     ],
     guardrail:

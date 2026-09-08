@@ -113,11 +113,6 @@ export const AutomatedMintConfigure = ({
                 </SegmentedControlItem>
               </SegmentedControl>
             </div>
-            <AutomatedIssuanceManualLink
-              chain={chain}
-              operation={operation}
-              presentation="compact-button"
-            />
           </div>
           <header
             data-testid="automated-configure-step-content"
@@ -223,6 +218,19 @@ export const AutomatedMintConfigure = ({
               <Trans>Enter amount</Trans>
             )}
           </Button>
+          <div className="mt-4 flex flex-col items-start gap-1 px-4 pb-4">
+            <p className={cn(v1Typography.supporting, roles.text.supporting)}>
+              {isMint ? (
+                <Trans>Already hold the required basket tokens?</Trans>
+              ) : (
+                <Trans>Redeem directly to basket assets</Trans>
+              )}
+            </p>
+            <AutomatedIssuanceManualLink
+              chain={chain}
+              operation={operation}
+            />
+          </div>
         </div>
         <div
           data-testid="automated-mint-configure-upcoming"

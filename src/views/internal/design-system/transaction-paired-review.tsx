@@ -145,7 +145,7 @@ const ReviewStage = ({
   children: React.ReactNode
   title: string
 }) => (
-  <article className="min-w-0 overflow-hidden border border-border bg-card">
+  <article className="isolate min-w-0 overflow-hidden border border-border bg-card">
     <header className="border-b border-border px-4 py-3">
       <h4 className={v1Typography.label}>{title}</h4>
     </header>

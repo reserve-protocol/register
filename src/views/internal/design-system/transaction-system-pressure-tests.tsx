@@ -48,9 +48,10 @@ export const TransactionSystemPressureTests = () => (
           roles.text.supporting
         )}
       >
-        This is not another transaction family. It exercises the local
-        asset-selection job that several families depend on. Viewport attachment
-        remains a separate Dialog behavior check.
+        Unreviewed static specimen, not another transaction family or an
+        approved selector flow. Search and confirmation are not wired here.
+        Working selection inside a transaction does not approve this separate
+        layout.
       </p>
     </header>
     <div className="bg-border">

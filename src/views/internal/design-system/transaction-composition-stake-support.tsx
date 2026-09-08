@@ -82,12 +82,7 @@ export const StakeAction = ({
 }) => {
   if (state === 'Approval signing') {
     return (
-      <Button
-        data-testid="stake-action-button"
-        className="w-full"
-        tone="secondary"
-        loading
-      >
+      <Button data-testid="stake-action-button" className="w-full" loading>
         Approval in progress…
       </Button>
     )

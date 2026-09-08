@@ -1,165 +1,140 @@
-import { useState } from 'react'
-
-import { Button } from '@/components/button'
 import { candidateSemanticRoles as semanticRoles } from '@/components/design-system-v1/semantic-roles'
-import { TransactionRequirementRow } from '@/components/design-system-v1/transaction-requirement-row'
 import { v1Typography } from '@/components/design-system-v1/typography'
-import { Checkbox } from '@/components/ui/checkbox'
 import { v1SemanticRecipes as roles } from '@/components/ui/v1-semantic-recipes'
 import { cn } from '@/lib/utils'
-import { ChainId } from '@/utils/chains'
+import { Trans } from '@lingui/react/macro'
 
 import {
   manualBasketValueForAmount,
-  manualAssetsForAmount,
-  type ManualAssetFixture,
   type ManualIssuanceOperation,
 } from './transaction-composition-manual-fixtures'
-import { TransactionAssetIdentity } from './transaction-system-assets'
+import { ManualAssetRow } from './transaction-composition-manual-asset-row'
+import { Skeleton } from '@/components/design-system-v1/loading'
+import {
+  manualIsBusy,
+  manualIsBlocked,
+  manualSessionAssets,
+  type ManualSession,
+  type ManualEvent,
+} from './transaction-composition-manual-lifecycle'
 
 export const ManualIssuanceLedger = ({
   amount,
   operation,
+  session,
+  dispatch,
 }: {
   amount: string
   operation: ManualIssuanceOperation
+  session: ManualSession
+  dispatch: (event: ManualEvent) => void
 }) => {
-  const [isUnlimited, setIsUnlimited] = useState(true)
-  const assets = manualAssetsForAmount(amount)
+  const unknownWallet = session.gate === 'disconnected'
+  const assets = manualSessionAssets(session).map((asset) =>
+    unknownWallet
+      ? { ...asset, balance: '—', permission: null, isInsufficient: false }
+      : asset
+  )
   const basketValue = manualBasketValueForAmount(amount)
-  const isMint = operation === 'mint'
+  const basketTotal = basketValue ?? '—'
+  const outcome = session.transaction === 'success'
+  const isMint = operation === 'mint' && !outcome
+  const approveCount = assets.filter(
+    (asset) => asset.permission === 'approve'
+  ).length
+  const revokeCount = assets.filter(
+    (asset) => asset.permission === 'revoke'
+  ).length
+  const hasAmount = assets.some((asset) => asset.permission !== null)
 
   return (
     <section
       data-testid="manual-issuance-ledger"
       className={cn(
-        'flex min-h-full min-w-0 flex-col',
+        'flex min-h-full min-w-0 flex-col lg:min-h-0 lg:overflow-y-auto',
         semanticRoles.surface.recessedContent
       )}
       aria-labelledby="manual-issuance-ledger-title"
     >
-      <header className="flex min-h-24 flex-wrap items-end justify-between gap-4 p-4 sm:p-6">
-        <div>
-          <h5
-            id="manual-issuance-ledger-title"
-            className={v1Typography.itemTitle}
-          >
-            {isMint ? 'Required Approvals' : 'You will receive'}
-          </h5>
-          <p className={cn(v1Typography.supporting, roles.text.supporting)}>
-            {isMint
-              ? '2 approvals and 1 revoke required'
-              : `${basketValue ?? '—'} estimated basket value`}
-          </p>
-        </div>
-        {isMint && (
-          <label className="flex h-8 cursor-pointer items-center gap-2 rounded-full border border-border bg-card px-3 text-sm font-medium">
-            <span>Unlimited</span>
-            <Checkbox
-              aria-label="Unlimited approval"
-              checked={isUnlimited}
-              onCheckedChange={(checked) => setIsUnlimited(checked === true)}
-            />
-          </label>
-        )}
+      <header className="shrink-0 px-6 pb-2 pt-6">
+        <h5
+          id="manual-issuance-ledger-title"
+          className={v1Typography.itemTitle}
+        >
+          {isMint ? (
+            'Required Approvals'
+          ) : outcome ? (
+            operation === 'mint' ? (
+              <Trans>Basket assets used</Trans>
+            ) : (
+              <Trans>Basket assets received</Trans>
+            )
+          ) : (
+            'You will receive'
+          )}
+        </h5>
+        <p className={cn(v1Typography.supporting, roles.text.supporting)}>
+          {session.gate === 'loading' ? (
+            '—'
+          ) : isMint ? (
+            hasAmount ? (
+              approveCount + revokeCount === 0 ? (
+                'Approved'
+              ) : (
+                `${approveCount} approvals and ${revokeCount} revoke required`
+              )
+            ) : (
+              '—'
+            )
+          ) : outcome ? (
+            <Trans>Estimated amounts · {basketTotal} total</Trans>
+          ) : (
+            `${basketValue ?? '—'} estimated basket value`
+          )}
+        </p>
       </header>
-
       <div
         data-testid="transaction-requirements-list"
-        className="mx-2 mb-2 border-y border-border"
+        className="mx-2 mb-2 shrink-0 py-1"
+        aria-busy={session.gate === 'loading'}
       >
-        {(assets ?? EMPTY_MANUAL_ASSETS).map((asset) => (
-          <ManualAssetRow
-            key={asset.symbol}
-            asset={asset}
-            isPending={!assets}
-            operation={operation}
-          />
-        ))}
+        {session.gate === 'loading'
+          ? Array.from({ length: 5 }, (_, index) => (
+              <div
+                key={index}
+                className="px-4 py-3 [container-type:inline-size]"
+                data-testid="manual-asset-skeleton"
+              >
+                <div className="grid min-w-0 grid-cols-[minmax(0,1fr)_auto] items-center gap-2 [@container(max-width:20rem)]:grid-cols-2">
+                  <div className="flex min-w-0 items-center gap-2">
+                    <Skeleton className="size-8 shrink-0 rounded-full" />
+                    <Skeleton className="h-11 min-w-0 flex-1" />
+                  </div>
+                  <div className="flex min-h-7 items-center justify-end">
+                    <Skeleton className="h-7 w-20 rounded-full" />
+                  </div>
+                </div>
+                {isMint && (
+                  <div className="mt-2 flex justify-between gap-4">
+                    <Skeleton className="h-11 w-24" />
+                    <Skeleton className="h-11 w-24" />
+                  </div>
+                )}
+              </div>
+            ))
+          : assets.map((asset) => (
+              <ManualAssetRow
+                key={asset.address}
+                asset={asset}
+                operation={outcome ? 'redeem' : operation}
+                approval={session.approvals[asset.symbol]}
+                disabled={manualIsBusy(session) || manualIsBlocked(session)}
+                onAction={() =>
+                  dispatch({ type: 'token', symbol: asset.symbol })
+                }
+              />
+            ))}
       </div>
     </section>
   )
 }
-
-const ManualAssetRow = ({
-  asset,
-  isPending,
-  operation,
-}: {
-  asset: ManualAssetFixture
-  isPending: boolean
-  operation: ManualIssuanceOperation
-}) => {
-  const identity = (
-    <TransactionAssetIdentity
-      chain={ChainId.Base}
-      symbol={asset.symbol}
-      name={asset.symbol}
-      supporting={asset.name}
-    />
-  )
-
-  if (isPending) {
-    return (
-      <TransactionRequirementRow
-        identity={identity}
-        required="—"
-        requiredLabel={operation === 'mint' ? 'Required' : 'Expected'}
-        balance="—"
-        balanceLabel={operation === 'mint' ? 'Balance' : 'Value'}
-      />
-    )
-  }
-
-  if (operation === 'redeem') {
-    return (
-      <TransactionRequirementRow
-        identity={identity}
-        required={asset.required}
-        requiredLabel="Expected"
-        balance={asset.value}
-        balanceLabel="Value"
-      />
-    )
-  }
-
-  if (asset.permission === 'approved') {
-    return (
-      <TransactionRequirementRow
-        identity={identity}
-        required={asset.required}
-        balance={asset.balance}
-        status="Approved"
-        statusRole="success"
-      />
-    )
-  }
-
-  return (
-    <TransactionRequirementRow
-      identity={identity}
-      required={asset.required}
-      balance={asset.balance}
-      action={
-        <Button size="micro" tone="secondary">
-          {asset.permission === 'revoke' ? 'Revoke' : 'Approve'}
-        </Button>
-      }
-    />
-  )
-}
-
-const EMPTY_MANUAL_ASSETS: ManualAssetFixture[] = [
-  'WBTC',
-  'WETH',
-  'WBNB',
-  'AAVE',
-  'RSR',
-].map((symbol) => ({
-  balance: '—',
-  name: symbol,
-  permission: 'approved',
-  required: '—',
-  symbol,
-  value: '—',
-}))

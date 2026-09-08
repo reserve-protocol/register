@@ -2,11 +2,15 @@
 
 ## Goal
 
-Deeply reconcile the current automated Mint/Redeem Design System V1 lab with
-the production automated-issuance flow, identify the remaining visual,
-behavioral, and human-decision risks, and leave a source-backed manual
-Mint/Redeem readiness map that makes the next design pass fast without
-pre-designing or changing the production flow.
+Keep the production audit, reuse boundaries, and geometry owners for Manual
+Mint/Redeem in one source-backed reference. The initial readiness audit and
+two-anchor proof are complete. Current lifecycle implementation and verification
+are owned by [the lifecycle lab contract](manual-issuance-lifecycle-lab.md).
+Neither document authorizes production or security-policy changes.
+
+Current status: paused at the [verified transaction checkpoint](transaction-consolidated-regression.md#checkpoint-disposition).
+The preparation and anchor milestones below are completed evidence. Use the
+lifecycle contract for present coverage; do not restart the two-anchor phase.
 
 ## Current state
 
@@ -29,11 +33,13 @@ pre-designing or changing the production flow.
 - Do not change production automated or manual issuance behavior, SDK/package
   code, on-chain math, transaction builders, shared component defaults, or
   global design tokens.
-- Do not implement or visually redesign the manual Mint/Redeem flow yet.
+- Manual visual implementation is authorized in the lab only; its lifecycle
+  contract names the current review slice and acceptance evidence.
 - Do not silently resolve product, engineering, or design questions whose
   answer is not established by current production evidence or accepted V1
   authority.
-- Do not commit or push.
+- Checkpoints require explicit user authorization; production adoption and pushes
+  remain separate actions.
 
 ## Acceptance evidence
 
@@ -149,7 +155,7 @@ second production contract unless engineering identifies an external entry.
 
 - The recoverable-failure left column exceeded the fixed review workspace by
   about 22px and clipped the waiting Mint action. The desktop workspace is now
-  688px high, the smallest 8px-grid height used by this audit that fits every
+  736px high, aligned with Manual's review host, and fits every
   current left state while preserving a constant two-column frame.
 - Order rows and collateral-logo stacks no longer use the asset symbol alone as
   a React key. A capacity-split asset can legitimately produce multiple orders,
@@ -157,10 +163,11 @@ second production contract unless engineering identifies an external entry.
 - No production automated behavior, SDK code, transaction math, or shared
   component default changed.
 
-Production completion includes `New mint` / `New redeem`, while the lab
-intentionally keeps `View DTF` as the sole terminal action. This is a reviewed
-presentation choice, not a forgotten production feature; do not restore the
-restart action without new human direction.
+Production completion includes `New mint` / `New redeem`. The current lab keeps
+that reset as a compact header action, with default-sized `View transaction`
+and `View DTF` footer actions. The footer is the sole final-transaction link;
+the former duplicate hash/copy row is removed. This supersedes the earlier
+single-action outcome experiment and does not remove the ability to restart.
 
 ### Automated decisions applied for human review
 
@@ -248,12 +255,13 @@ manual Mint/Redeem candidate.
 | Route entry without settled wallet reads        | The page renders its Manual surface; account-dependent balances, allowances, and actions remain unavailable until reads settle. There is no manual-flow-owned Connect Wallet screen. | Preserve the host behavior; do not invent a dedicated wallet gate without current product evidence.                          |
 | Basket loading                                  | The right ledger renders five placeholder rows while basket data is unavailable.                                                                                                     | Visually standardize with the eventual ledger geometry so loading does not introduce a different row rhythm.                 |
 | Empty or edited Mint amount                     | Buy is selected, the DTF-share amount owns USD and Max, and basket requirements derive from the same amount.                                                                         | Reuse the accepted amount grammar; keep the ledger causally tied to the entered share goal.                                  |
-| Insufficient basket balance                     | The affected requirement is marked insufficient and the aggregate action is unavailable.                                                                                             | Preserve the per-asset cause and summarize it at the stable action seam without replacing the ledger with one generic error. |
+| Insufficient basket balance                     | The affected requirement is marked insufficient. The direct Mint action validates balances; Approve All can still be offered while allowances are insufficient. | Preserve the per-asset cause and distinguish permission readiness from balance readiness; do not silently change approval policy. |
 | Permissions required                            | Each basket row retains balance, requirement, allowance state, and an individual action; the main action becomes Approve All. Unlimited permission defaults on.                      | Visually standardize, but preserve every permission boundary and keep the unlimited choice visible.                          |
-| Revoke required                                 | A USDT-like row requires Revoke before its later Approve action.                                                                                                                     | Preserve as a distinct row-owned transaction sequence; it is not covered by generic Approve All.                             |
+| Token identity and explanation                  | Rows expose token name, symbol and a token-address explorer link. Revoke has a USDT-specific explanation. | Preserve these secondary affordances as well as the main actions; the two anchors now expose real token links and the unchanged Revoke explanation. |
+| Revoke required                                 | A USDT-like row requires Revoke before its later Approve action. The aggregate selector still counts insufficient allowances without excluding this special case. | Preserve the row sequence; do not imply the aggregate path safely skips or handles it. Keep its known mismatch engineering-owned. |
 | Aggregate approvals in progress                 | Separate token transactions expose signing, confirming, success, or failure per asset while the aggregate action reports progress.                                                   | Reuse lifecycle language and stable action placement; do not call the work one batch or one signature.                       |
 | Partial approval failure                        | Completed permissions remain complete; failed rows expose their own fallback and the aggregate action retries only failures.                                                         | Preserve progress and retry scope. Recovery must not reset the amount or completed permissions.                              |
-| All permissions ready                           | The same main action location becomes Mint while the requirement ledger remains visible.                                                                                             | Preserve the action-slot transition without adding a second global timeline.                                                 |
+| All permissions ready                           | The same main action location becomes Mint while the requirement ledger remains visible.                                                                                             | The current lab retains a separate final Mint action and completes the approval region; no extra global timeline.                                                 |
 | Mint wallet request, confirmation, or failure   | One Folio transaction follows permissions. Failure remains inline and the amount survives for retry.                                                                                 | Reuse the simple transaction lifecycle and one-line recovery treatment.                                                      |
 | Empty or edited Redeem amount                   | Sell is selected; the left input is DTF shares and the right ledger shows the expected basket assets and values.                                                                     | Reuse input grammar, but use a receive-only ledger relationship rather than permission or order anatomy.                     |
 | Redeem wallet request, confirmation, or failure | Redeem is one Folio transaction with client-computed minimums; there is no approval stage.                                                                                           | Reuse the simple one-transaction lifecycle and never inherit Mint's permission stage.                                        |
@@ -270,27 +278,69 @@ manual Mint/Redeem candidate.
   every asset with required quantity, wallet balance, permission state, and
   applicable action. Redeem associates every asset with expected quantity and
   value.
-- Aggregate approval progress belongs in the stable task action and the affected
-  rows. Do not add an automated-order header or a separate global stepper merely
+- Aggregate approval progress belongs in the left Token approvals amount-style summary and the affected
+  rows. The current Mint trial separates desired amount, approvals and the final
+  Mint action; Redeem remains direct. Do not add an automated-order header or a separate global stepper merely
   to repeat those states.
 - The page host owns the two-column workspace. The transaction composition owns
   its task and ledger; neither a Dialog nor the automated narrow-to-wide
   transition is inferred.
-- On narrow screens the high-level task leads and basket detail becomes an
-  explicit inspection region without breaking the asset-to-value/action
-  association.
+- On narrow screens the task leads and the ledger follows visibly. Unlike the
+  automated order ledger, Manual rows contain required user actions. Do not hide
+  them behind optional inspection without a reviewed way to expose blockers.
+
+#### Verified component owners for the two anchors
+
+This is the current import/variant audit, not authority for unbuilt execution or
+outcome states. Catalog `implementationSource` wins over a same-named legacy
+export; the generic production `ui/checkbox` is not the V1 Checkbox.
+
+| Visible use | Exact owner and configuration | Audit disposition |
+| --- | --- | --- |
+| Mint/Redeem tabs | `design-system-v1/segmented-control`, contained / compact / intrinsic | Retained; matches the compact transaction mode control. |
+| Share amount | `design-system-v1/transaction-amount-object`, input; `TransactionAmountAsset` | Retained: 8px radius, 16px internal inset, explicit `0` and zero USD placeholders. |
+| Approval setting | `components/checkbox`, binary 28px slot / 20px mark; `v1Typography.label` | Corrected legacy import; native keyboard and whole-label toggle verified. Row geometry stays flow-owned. |
+| Primary / per-token actions | `components/button`, primary / default, quiet / micro and neutral InlineAction; Approve has a local soft-blue trial (`TX-P21`) | 44px minimum primary, 28px Approve actions; Revoke uses the 20px inline action inside the stable minimum-height permission region to align its visible text without ghost padding. Approve tests token-based blue fill/text without an outline. Primary opts into wrapping for long amount labels without consuming its side inset; ordinary height is unchanged. Preview-only execution remains explicit. |
+| Max and alternate action | `components/button` InlineAction | Retained: standard 20px text treatment with expanded hit area. |
+| Asset identity | `components/entity-identity`, default; retained TokenLogo renderer at 32px | Standard 16px name matches primary quantities in both modes; name/address, 8px mark-to-copy relationship and full explorer destination survive narrow layouts. |
+| Explorer link | `design-system-v1/link`, return / external | Corrected manual glyph to the owner's external icon and standard new-tab announcement. Muted resting treatment stays unchanged. |
+| Approved / Revoke help | `components/lifecycle-status`, success; `design-system-v1/help-tooltip` | Retained: 28px intrinsic status, standard tooltip surface and production explanation. |
+| Text and validation | `v1Typography` body / itemTitle / supporting / label; semantic danger for insufficiency | Retained; amount validation uses compact field-adjacent feedback. Amount, approval count and final Mint readiness share the responsive headline scale: 22px/28px below 360px, 28px/32px below 640px, then 32px/38px. Final Mint keeps the same 16px label and label-to-headline spacing, existing 32px CMC20 mark, and 14px explanation. It distinguishes step readiness from the button's exact amount and wallet/chain phase, without claiming readiness for an empty, unavailable or insufficient amount. |
+| Surfaces and spacing | `bg-card`, semantic recessed ledger, `bg-secondary` host seam | Retained; no nested asset cards, added shadows, or per-row dividers. Measurements are below. |
 
 #### Geometry ownership
 
 | Relationship                                    | Owner              | Starting contract and proof                                                                                                                                           |
 | ----------------------------------------------- | ------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Page width, two columns, and column separation  | Manual page host   | Preserve the production page host while using the semantic substrate or owned gap for separation; the content cards do not repair the page edge.                      |
-| Task and ledger content axes                    | Each visible panel | Use the ordinary 24px complete-group axis unless a named compact recipe owns a narrower region. Verify both panels align at their top-level axes.                     |
+| Task control edges and text axis                 | Task shell plus amount primitive | Shell owns 8px padding; amount owns its existing 16px padding, giving a 24px text axis. The top amount begins 16px after compact tabs, without another visible heading. Do not wrap the amount in another 24px content inset. |
+| Compact mode header                             | Task shell plus header | 8px shell plus 8px header inset gives the established 16px compact-header axis. |
+| Ledger header and row text axes                  | Header plus list/row | Header owns 24px top/side inset and 8px bottom inset; the following row owns 16px top inset, totaling 24px between groups. List owns 8px horizontal inset and row owns 16px, totaling 24px at every width. |
 | Directly related label/value and control groups | Their local parent | Use accepted 4px tight pairs and 8px direct relationships; do not accumulate child margins.                                                                           |
-| Task regions and action seam                    | Task composition   | Use a 16px internal-region relationship. The stable action slot owns its relation to the preceding context; recovery messaging does not add a second independent gap. |
-| Asset-row padding                               | Ledger row         | Start from symmetric 16px inset. Identity, quantities, status, and action align inside the same row owner.                                                            |
-| Row boundaries                                  | Ledger list        | A divider contributes no spacing. Row inset owns density, and scrolling cuts at the list boundary rather than inside row padding.                                     |
-| Ledger overflow                                 | Ledger body        | The header remains stable and the body owns scrolling for realistic baskets; page overflow remains available on narrow screens.                                       |
+| Task regions and action seam | Manual task / ManualMintStages | Mint has desired amount, approvals and final transaction regions, separated by full-width 2px secondary boundaries. The Zapper alternative stays in the amount section with 24px bottom inset. Connected down-arrow boundaries share Automated's local owner. The amount and approval count use TransactionAmountObject; the final readiness summary follows the same 24px text axis and label top inset. Supporting/control gaps are 24px and checkbox/action gaps are 16px. Buttons have 8px side inset, 24px bottom clearance before an arrow boundary, and 8px at the final footer. Completed approvals keep the count and short confirmation with 24px bottom inset, without hidden controls. Final recovery uses 16px explanation/message and 8px message/action gaps. English ready, signing and confirming share geometry; longer text wraps rather than truncating. Redeem retains its direct 8px input/action gap. Alternative navigation keeps the 24px text axis. |
+| Asset-row padding                               | Ledger row         | 16px horizontal and 12px vertical inset. Identity, quantities, status, and action align inside the same row owner. |
+| Row boundaries                                  | Ledger list        | No separators or per-asset containers. Adjacent 12px row insets create 24px between asset contents without an extra list gap. The list adds 4px top/bottom; the final row's 12px, list's 4px, and outer 8px retain the 24px bottom inset. |
+| Asset-row type hierarchy | Entity identity and financial values | Use standard-density EntityIdentity: names and primary amounts share 16px/24px typography in Mint and Redeem. Names and required/received values use medium weight; wallet balances retain light weight. Labels, addresses, and USD values stay 14px/20px. Compact identity would wrongly demote the name beside a 16px received amount. |
+| Responsive ledger                               | Manual asset row / lab host | Mint: 32px logo with name/address and permission action, then Required beside Balance with 8px between tiers. Both quantities use foreground; Required has stronger weight. Insufficient balance replaces the Balance label without adding height; intrinsic labels share horizontal space. Redeem: identity beside expected quantity and supporting USD value, without a second comparison tier. Wrap actions/values only when needed. Test actual half-width columns and phones. Desktop lab columns scroll within the 736px review host; mobile uses page scrolling. Production scroll ownership remains a migration decision. |
+| Unlimited control                               | Task action group  | Plain checkbox labeled “Approve unlimited token amounts” inside the middle Token approvals region, on the 24px text axis. Standard HelpTooltip sits at the far right, centered, outside the clickable label. Its factual copy describes maximum allowance without advice or assumptions about unchecked behavior. No pill enclosure. The choice survives mode changes; default and scope across batch/individual approvals remain unchanged. |
+
+The former fixed 128px permission slot is superseded by container-aware columns:
+natural trailing width in wide rows and equal tracks below 320px of row content.
+Controls stay beside the wrapping identity through signing/confirmation/success;
+loading follows the same column layout. The 28px permission-region minimum stays,
+without changing shared Button or Status Pill sizes. At narrow widths the address
+shows its identifying suffix, with the complete address retained accessibly and
+on hover. Below 272px of content, units occupy a consistent second line in both
+comparison columns. Insufficient balance has shorter visible wording under width
+pressure; error meaning is not hidden in a tooltip or conveyed only by color.
+
+The user-authorized readiness trial replaces the Unlimited setting with
+`Required tokens approved` when a positive Mint amount has sufficient
+allowances and account reads are ready. The completed section wraps naturally
+without invisible controls; the setting value is retained and the control returns
+when requirements change. This changes presentation, not allowance policy.
+Failed assets keep their existing Revoke/Retry action with an alert marker;
+the main summary names affected symbols without adding an asset row.
 
 These are relationship owners, not approval of one visual layout. Any departure
 must be recorded as a manual-flow pressure item before human review rather than
@@ -303,7 +353,7 @@ patched with an unowned margin.
 | Empty → amount entered            | Mode, task shell, asset identities, action location   | Placeholder values become calculated requirements or expected receipts | Input/ledger jump, placeholder collapse, or mismatched row height                                |
 | Permissions required → approving  | Amount, Max, every asset row, completed permissions   | Row statuses and aggregate action copy                                 | Reordered rows, disappearing action slot, or loss of individual fallback                         |
 | Partial failure → retry           | Amount, successful permissions, failed asset identity | Summary recovery and failed-row action                                 | Replaying successful approvals or replacing specific failure with a generic reset                |
-| All permissions ready → Mint      | Amount and approved ledger                            | Aggregate approval action becomes Mint                                 | New panel height or a disconnected final action                                                  |
+| All permissions ready → Mint      | Amount and approved ledger                            | Approval region shows readiness; the already-visible final Mint action enables                                 | New panel height or a disconnected final action                                                  |
 | Transaction failure → ready retry | Amount, requirements/receipts, relevant permissions   | Waiting state becomes recovery action                                  | Cleared input or lost supporting evidence                                                        |
 | Confirmation → outcome            | Operation and authoritative result identity           | Editable task becomes consequential result                             | Invented exact facts, unexplained shrink, or loss of the basket evidence needed for verification |
 | Mint ↔ Redeem before execution    | Page host and DTF identity                            | Amount, ledger semantics, action policy                                | Mint-only permissions leaking into Redeem or exit paths becoming blocked                         |
@@ -313,19 +363,57 @@ patched with an unowned margin.
 - Treat the entered DTF shares as user input, basket quantities as protocol
   requirements or expected outputs, allowance as refreshed on-chain state, and
   approval/Mint/Redeem hashes as separate submitted records.
-- Do not label a requirement or expected amount as received. Persistent outcome
-  amounts remain provisional until receipt/RPC source priority is approved.
+- Distinguish the intended outcome from its available evidence: Basket assets
+  used/received describes the completed operation, while the fixture's amounts
+  remain explicitly estimated in its visible subtitle. Confirmed quantities and
+  persistent result sourcing remain engineering-owned. The View transaction
+  preview must remain present without fabricating an on-chain identity.
 - First render one Mint state with multiple permissions including a Revoke row,
   plus one Redeem state with receive-only basket values. Correct their complete
   hierarchy, geometry, theme, and narrow behavior before multiplying the design
   across execution and recovery fixtures.
-- The atomic lab now contains only those two first-review anchors. The Mint task
-  exposes five production-shaped requirements, independent Approved/Approve/
-  Revoke boundaries, and the existing unlimited-approval choice; Redeem keeps
-  the same amount task and turns the ledger into receive-only evidence.
-- These anchors remain human-review-required and are not a complete manual
-  state contract. Execution, recovery, outcomes, wallet/compliance gates, and
-  narrow-screen disclosure must not be inferred from them or copied wholesale.
+- The atomic lab retains the two reviewed anchors with an explicitly synthetic
+  five-token Ethereum basket, including a USDT reset-allowance pressure case.
+  Raw balances, allowances, scaled requirements, permission counts and separate
+  Mint/Redeem Max values share one fixture source. Six-decimal share entry and
+  conservative fixture rounding are lab bounds, not a production parser/math contract.
+- Amount, Max, mode and Unlimited controls are interactive. Transaction controls
+  now drive a deterministic lab lifecycle, with separate external simulator
+  controls for wallet responses. Navigation is explicitly preview-only. This
+  is not production execution or wallet integration. The approved clarification
+  “Approve unlimited token amounts” retains production's default without new
+  security guidance or a changed allowance policy.
+- The 29-state lifecycle now includes configuration/access gates, independent
+  approval progress, recovery, and direct Mint/Redeem outcomes. The lifecycle
+  contract owns the coverage and human-review queue. Optional narrow-screen
+  disclosure is not introduced: required asset actions stay visible.
+
+The asset-led row replaces the earlier four-column requirement candidate for
+this flow; it reuses Entity Identity, Token Logo, Link, Help Tooltip, Button,
+Lifecycle Status and financial typography without promoting a new generic row.
+The rejected alternative was to keep adding responsive/visual props to the
+shared requirement candidate. Stable local anatomy is easier to scan and keeps
+the approval and token-address association intact. It costs more desktop height;
+the desktop lab now supplies a fixed-height review host with column scrolling,
+while stacked mobile retains page scrolling.
+Production functionality is a minimum, not a visual-template constraint.
+Engineering/security policy remains unchanged, including Unlimited.
+The desktop lab workspace supplies a 736px review height shared by both columns
+across configuration, permissions, execution and outcomes. Both columns scroll
+at their outer edges if content exceeds that height. Task contents remain
+natural-height and top-grouped; spare space stays below the content, not before
+the amount or between controls. Beige remains the 2px seam. This fixed height
+simulates a page host for review; it is not a production height requirement.
+On stacked mobile layouts the column wraps its contents. Outcome minimum height
+still measures the task contents, not the stretched column surface. This is a
+Manual page-host decision, not a change to dialog/outcome no-shrink behavior.
+
+Alternate-flow guidance stays beneath the primary action, inside the card, with
+supporting context and a descriptive text action. Manual Mint offers “Want
+to buy with a single token?” / “Switch to Zapper”: label left, action at the
+right content edge, wrapping only when needed. Automated configuration
+offers “Already hold the required basket tokens?” / “Switch to manual minting”.
+The header remains for Mint/Redeem modes, not an abbreviated “Manual” shortcut.
 
 #### Process evaluation gate
 
@@ -333,7 +421,8 @@ The manual pass is the first organic pressure test of this preflight. Before UI
 code changes, a fresh worker must be able to recover the production state
 transfer, hierarchy, exact reuse boundaries, geometry owners, continuity risks,
 and truth constraints from the routed files without relying on session history.
-Review the first Mint and Redeem anchors before state expansion, then record:
+The two anchors were refined before the user authorized lifecycle expansion.
+For each expansion, record:
 
 - any production-visible branch the worker omitted or reinterpreted;
 - any accepted component default or spacing relationship the reviewer had to
@@ -342,10 +431,18 @@ Review the first Mint and Redeem anchors before state expansion, then record:
 - whether the two anchors were structurally sound enough to multiply without a
   correction loop.
 
-The new routing has deterministic documentation coverage but unproven
-behavioral confidence until that run. If the same omission survives, revise the
+The routing has deterministic documentation coverage, but is not a guarantee
+of visual quality. If the same omission survives, revise the
 smallest owner or route; do not add a new generic skill merely to repeat this
 brief.
+
+The first fresh-eyes review found nested 40px amount text versus 24px headings,
+half-width ledger overflow, a hardcoded invalid Max, and inert unlabeled actions.
+The correction pass tests empty/zero, non-preset, Max and over-balance values and
+measures the resulting card-to-text/control axes and row containment. Tests that
+only find labels or count rows are not evidence for those relationships. Record
+content, behavior, measured geometry and human acceptance separately. These are
+visible pressure cases, not an independent held-out evaluation.
 
 ### Manual reuse map
 
@@ -358,7 +455,7 @@ brief.
 | Submit direct Mint                              | Accepted transaction action/result grammar             | Reuse the named wallet-request/confirming action states and consequential outcome structure. Do not reuse automated collateral-order progress.                                             |
 | Submit direct Redeem                            | Accepted simple transaction flow                       | Reuse the direct one-transaction action and outcome. The expected basket is detail, not a second process stage.                                                                            |
 | Partial approval failure                        | Accepted recovery relationship plus flow-owned rows    | One summary action retries failed approvals; completed approvals remain complete; each failed row keeps its own fallback action.                                                           |
-| Result and next action                          | Accepted outcome hierarchy, manual-owned facts         | Show received/minted amount, transaction identity, relevant basket details, and View DTF. Approval transactions remain out of the final outcome unless troubleshooting requires them.      |
+| Result and next action                          | Accepted outcome hierarchy, manual-owned facts         | Trial the submitted share amount and expected basket, not unverified received amounts. Do not fabricate a transaction identity. View DTF is a navigation preview until connected to the same chain/DTF; receipt sourcing remains engineering-owned. |
 | Responsive host                                 | Page composition, not Dialog                           | Keep the same structured task and ledger usable in a page/card host. A modal shell is not required and must not own the transaction state.                                                 |
 
 ### Patterns not to reuse from automated issuance
@@ -378,23 +475,28 @@ brief.
    the balance updater keeps read-call addresses in their original case. Max,
    validation, and row values later index these records inconsistently. The
    current mixed-case unit test does not reproduce production because it seeds
-   the requirement map in the token's original case. Normalize every address
-   boundary and add a production-shaped regression before redesign work.
+   the requirement map in the token's original case. Engineering must investigate
+   and regression-test normalization before production adoption; this is not
+   authorization to change production during the lab design pass.
 2. **Parallel approval prompts.** `Approve All` fires every token transaction in
    parallel. Preserve the observed behavior for the design lab, but engineering
    must confirm supported-wallet behavior and whether sequential submission is
    required. The UI must not call it one batch or one signature.
 3. **USDT Revoke path is not included in Approve All.** The global hook uses the
    generic ERC-20 ABI and does not reflect the row-level `needsRevoke` branch.
-   The future lab needs a realistic token requiring Revoke → Approve rather than
-   implying `Approve All` handles every token uniformly.
+   The lab exposes the aggregate failure and the individual Revoke → Approve
+   recovery rather than implying `Approve All` handles every token uniformly.
+   Finite aggregate allowances remain required × 2; individual USDT still uses
+   maximum allowance even with Unlimited off, matching current source.
 4. **Zero minimum-output leg.** An existing E2E `fixme` proves a small Redeem can
    round one low-decimal asset's `minAmountsOut` to zero, silently removing
    protection for that leg. The UI must not invent a display workaround; an
    engineer must choose a nonzero floor or block unsafe dust Redeems.
-5. **Unlimited permission consequence.** Unlimited approval defaults on. The
-   future design must retain a clear control and explain its scope without
-   burying it in a tooltip. Changing the default is a product/security decision.
+5. **Unlimited permission consequence.** Preserve the default-on choice and
+   allowance behavior. The user approved clearer labeling and placement near
+   Approve All and a factual maximum-allowance tooltip, not a policy change, and explicitly deferred
+   new security explanations and policy changes to engineering/security review;
+   neither is part of this design-system pass.
 6. **Outcome truth source.** The current toast repeats the entered share amount,
    not receipt-decoded assets or refreshed balances. A persistent V1 outcome is
    appropriate, but its exact facts require receipt/RPC source decisions.
@@ -406,7 +508,7 @@ brief.
    `minSharesOut` calculation must remain explicit implementation policy even if
    the visible UI is identical.
 
-### Fast manual-design implementation order
+### Implemented manual-design sequence
 
 1. Build one page-hosted lab shell with independent Mint and Redeem modes,
    realistic five-asset fixtures, and no production writes.
@@ -416,13 +518,13 @@ brief.
    authorizing, confirming, partial failure, failed-only retry, and all ready.
 4. Add direct Mint wallet request, confirmation, failure recovery, and a
    receipt-shaped outcome using only facts whose truth category is explicit.
-5. Add Redeem expected-assets review, simple transaction lifecycle, dust-safety
-   blocked state, and outcome.
-6. Verify desktop first, then make the high-level task primary and the asset
-   ledger opt-in on narrow screens. Manual issuance is uncommon on phones, but
-   it must remain usable and truthful.
+5. Add Redeem expected-assets review, simple transaction lifecycle and outcome.
+   Track zero-minimum dust protection for engineering; do not invent a blocked
+   UI state absent from production.
+6. Verify desktop, intermediate column widths and narrow stacked layouts.
+   Keep required row actions visible; optional disclosure needs separate review.
 
-### Future manual-lab acceptance checklist
+### Manual-lab acceptance checklist
 
 - The requested share amount, required basket quantities, balances, allowances,
   and transaction calls all derive from one bigint-backed fixture graph.

@@ -555,7 +555,7 @@ export const ZapperInlineReference = ({
               )}
               <div
                 data-testid="zapper-output-transition"
-                className="relative transition-transform duration-180 motion-reduce:transition-none"
+                className="relative isolate transition-transform duration-180 motion-reduce:transition-none"
               >
                 <TransactionAmountObject
                   label={

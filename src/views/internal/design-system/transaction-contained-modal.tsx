@@ -43,7 +43,18 @@ export const TransactionContainedModal = ({
     )
     const first = focusable[0]
     const last = focusable.at(-1)
-    if (!first || !last) return
+    if (!first || !last) {
+      event.preventDefault()
+      return
+    }
+
+    const dialog = layerRef.current?.querySelector('[role="dialog"]')
+    if (document.activeElement === dialog) {
+      event.preventDefault()
+      const target = event.shiftKey ? last : first
+      target.focus()
+      return
+    }
 
     if (event.shiftKey && document.activeElement === first) {
       event.preventDefault()
@@ -62,7 +73,7 @@ export const TransactionContainedModal = ({
     <div
       ref={layerRef}
       data-testid="transaction-contained-modal-layer"
-      className="absolute inset-0 z-20 flex items-end justify-center bg-black/50 p-0 sm:items-center sm:p-4"
+      className="relative z-20 col-start-1 row-start-1 flex items-end justify-center bg-black/50 p-0 sm:items-center sm:p-6"
       onKeyDown={handleKeyDown}
       onMouseDown={handleBackdropMouseDown}
     >

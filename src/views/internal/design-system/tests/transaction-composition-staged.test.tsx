@@ -62,6 +62,115 @@ const inspectOrders = (composition: HTMLElement) => {
 }
 
 describe('automated mint design-system lab', () => {
+  it('moves stage emphasis from collateral work to Mint and back for recovery', () => {
+    const composition = renderComposition()
+    for (const [state, current] of [
+      ['Input only ready', 'collateral'],
+      ['Authorizing orders', 'collateral'],
+      ['Orders filling', 'collateral'],
+      ['Collateral ready', 'mint'],
+      ['Final mint signing', 'mint'],
+      ['Recoverable failure', 'collateral'],
+      ['Transaction failed', 'collateral'],
+      ['No swaps needed', 'mint'],
+    ]) {
+      selectState(composition, state)
+      const task = within(composition).getByTestId('automated-mint-task')
+      expect(task.querySelectorAll('[aria-current="step"]')).toHaveLength(1)
+      expect(
+        within(task).getByTestId(`automated-mint-${current}-step`)
+      ).toHaveAttribute('aria-current', 'step')
+      const amount = within(task).getByTestId(
+        current === 'collateral'
+          ? 'automated-mint-collateral-stage'
+          : 'automated-mint-output-amount'
+      )
+      expect(amount).toHaveAttribute('data-stage-emphasis', 'current')
+      const complete = within(task).queryByTestId(
+        'automated-mint-collateral-complete'
+      )
+      if (state === 'Collateral ready' || state === 'Final mint signing') {
+        expect(complete).toBeVisible()
+      } else {
+        expect(complete).not.toBeInTheDocument()
+      }
+      if (state === 'Transaction failed') {
+        expect(amount).toHaveTextContent('Transaction failed')
+        expect(amount).not.toHaveTextContent('Orders filled')
+      }
+    }
+  })
+
+  it.each([
+    [
+      'Mint complete',
+      'New mint',
+      'Mint',
+      'You provide amount',
+      'Initial configuration',
+      'USDC',
+    ],
+    [
+      'Redeem complete',
+      'New redeem',
+      'Redeem',
+      'You redeem amount',
+      'Initial configuration',
+      'CMC20',
+    ],
+    [
+      'Mint complete',
+      'New mint',
+      'Mint',
+      'You provide amount',
+      'BSC configuration',
+      'USDT',
+    ],
+    [
+      'Redeem complete',
+      'New redeem',
+      'Redeem',
+      'You redeem amount',
+      'BSC configuration',
+      'CMC20',
+    ],
+  ])(
+    'restarts %s with %s from %s/%s/%s/%s without completed state',
+    (state, action, operation, inputName, configuration, asset) => {
+      const composition = renderComposition()
+      selectState(composition, configuration)
+      fireEvent.change(within(composition).getByRole('textbox'), {
+        target: { value: '73.25' },
+      })
+      selectState(composition, state)
+      const explorer = within(composition).getByTestId(
+        'automated-mint-view-transaction'
+      )
+      expect(explorer.getAttribute('href')).toContain(
+        configuration === 'BSC configuration' ? 'bscscan.com' : 'basescan.org'
+      )
+      const restart = within(composition).getByRole('button', { name: action })
+      expect(restart).toHaveAttribute('data-tone', 'secondary')
+      expect(restart).toHaveAttribute('data-size', 'compact')
+      fireEvent.click(restart)
+      expect(
+        within(composition).queryByTestId('automated-mint-outcome')
+      ).toBeNull()
+      expect(within(composition).queryByTestId('staged-order-row')).toBeNull()
+      expect(
+        within(composition).getByRole('radio', { name: operation, exact: true })
+      ).toBeChecked()
+      expect(
+        within(composition).getByRole('textbox', { name: inputName })
+      ).toHaveValue('')
+      expect(
+        within(composition).getByTestId('automated-issuance-configure-amount')
+      ).toHaveTextContent(asset)
+      expect(
+        within(composition).getByTestId('automated-mint-get-quote')
+      ).toBeDisabled()
+    }
+  )
   it('exposes the production configuration gates and chain identity', () => {
     const composition = renderComposition()
 
@@ -412,7 +521,12 @@ describe('automated mint design-system lab', () => {
       'href',
       '/base/index-dtf/0xa0a8481fc246cd12f75227abb96220ff5360fad3/issuance/manual'
     )
-    expect(within(configureActive).getByText('Manual')).toBeVisible()
+    expect(within(configureActive).queryByText('Manual')).toBeNull()
+    expect(
+      within(configureActive).getByText(
+        'Already hold the required basket tokens?'
+      )
+    ).toBeVisible()
     expect(
       within(configureFrame).getByTestId('automated-mint-configure-upcoming')
     ).toHaveClass('bg-[var(--surface-recessed-content)]')
@@ -1000,7 +1114,7 @@ describe('automated mint design-system lab', () => {
     expect(within(composition).queryByText('Mint completed')).toBeNull()
   })
 
-  it('shows final identity and keeps completed orders inspectable', () => {
+  it('links the final transaction once and keeps completed orders inspectable', () => {
     const composition = renderComposition()
 
     selectState(composition, 'Mint complete')
@@ -1017,11 +1131,23 @@ describe('automated mint design-system lab', () => {
     expect(
       within(outcomeFacts).getAllByTestId('transaction-outcome-detail-row')
     ).toHaveLength(4)
-    const finalTransaction = within(composition).getByTestId(
-      'automated-mint-final-transaction'
+    expect(
+      within(composition).queryByTestId('automated-mint-final-transaction')
+    ).toBeNull()
+    expect(
+      within(composition).getByTestId('automated-mint-outcome-footer')
+    ).toContainElement(
+      within(composition).getByRole('link', { name: /View transaction/ })
     )
-    expect(finalTransaction).toBeVisible()
-    expect(outcomeFacts).toContainElement(finalTransaction)
+    const wallet = within(composition).getByRole('button', {
+      name: 'Track token in your wallet',
+    })
+    expect(wallet).toHaveAttribute('aria-pressed', 'false')
+    fireEvent.click(wallet)
+    expect(wallet).toHaveAttribute('aria-pressed', 'true')
+    expect(
+      within(composition).getByTestId('automated-mint-view-dtf')
+    ).toHaveClass('min-h-11')
     expect(outcomeFacts.nextElementSibling).toHaveTextContent('Leftover dust')
     expect(
       within(composition).getByRole('link', { name: /View transaction/ })
@@ -1191,6 +1317,16 @@ describe('automated mint design-system lab', () => {
 
     selectState(composition, 'Authorizing orders')
     inspectOrders(composition)
+    expect(
+      within(composition).getByRole('button', {
+        name: /Confirm collateral trades in wallet/,
+      })
+    ).toHaveAttribute('data-tone', 'primary')
+    expect(
+      within(composition).getByRole('button', {
+        name: /Confirm collateral trades in wallet/,
+      })
+    ).toHaveAttribute('aria-busy', 'true')
 
     expect(
       within(composition).getByRole('button', {
@@ -1261,12 +1397,16 @@ describe('automated mint design-system lab', () => {
     ).toBeVisible()
   })
 
-  it('uses View DTF as the sole terminal action', () => {
+  it('keeps View DTF primary and restart separate in the header', () => {
     const composition = renderComposition()
 
     selectState(composition, 'Mint complete')
 
-    expect(within(composition).queryByText('New mint')).toBeNull()
+    const restart = within(composition).getByRole('button', {
+      name: 'New mint',
+    })
+    expect(restart.closest('header')).not.toBeNull()
+    expect(restart).toHaveAttribute('data-tone', 'secondary')
     expect(
       within(composition).getByRole('link', { name: 'View DTF' })
     ).toHaveAttribute(
@@ -1415,8 +1555,14 @@ describe('automated mint design-system lab', () => {
     ).toHaveTextContent('USDC')
     expect(within(composition).getByText('Redeemed')).toBeVisible()
     expect(
-      within(composition).getByTestId('automated-mint-final-transaction')
-    ).toHaveTextContent('Final redeem transaction')
+      within(composition).queryByTestId('automated-mint-final-transaction')
+    ).toBeNull()
+    expect(
+      within(composition).getByTestId('automated-mint-view-transaction')
+    ).toHaveAttribute(
+      'href',
+      'https://basescan.org/tx/0x7195cb5535dd308cf1c32decb8f787974ff52d9c8a13f70d2e80dad366a4ef2d'
+    )
     expect(
       within(composition).queryByRole('button', { name: 'Mint CMC20' })
     ).toBeNull()

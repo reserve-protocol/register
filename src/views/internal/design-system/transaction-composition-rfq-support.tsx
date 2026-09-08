@@ -1,4 +1,5 @@
 import { useEffect, useId, useRef, useState, type ReactNode } from 'react'
+import { Trans } from '@lingui/react/macro'
 import { ArrowUpRight, ChevronDown, Settings } from 'lucide-react'
 
 import { Button } from '@/components/button'
@@ -1079,7 +1080,11 @@ export const ZapperPackageState = ({
   }
 
   if (state === 'Sign order') {
-    return <Button className="w-full">Sign order in wallet</Button>
+    return (
+      <Button className="w-full" loading>
+        <Trans>Pending, sign in wallet</Trans>
+      </Button>
+    )
   }
 
   if (state === 'Atomic confirmation') {

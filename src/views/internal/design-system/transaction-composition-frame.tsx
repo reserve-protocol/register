@@ -155,9 +155,9 @@ export const TransactionCompositionFrame = <
         <div
           data-testid={`transaction-composition-${id}-stage`}
           className={cn(
-            'border-y border-border',
+            'relative isolate border-y border-border',
             presentation === 'modal-backdrop'
-              ? 'relative flex h-[980px] items-end justify-center overflow-hidden bg-background p-0 sm:items-center sm:p-6 [@container(min-width:980px)]:h-[760px]'
+              ? 'flex min-h-[680px] items-end justify-center bg-background p-0 sm:items-center sm:p-6'
               : cn(
                   'bg-secondary',
                   stageInset === 'flush'

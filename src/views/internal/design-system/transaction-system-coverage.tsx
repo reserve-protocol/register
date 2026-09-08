@@ -80,7 +80,7 @@ const COVERAGE_ITEMS: {
     requirement: 'Local asset selection',
     kind: 'Shared candidate and recipe',
     coverage:
-      'Bounded local selector pressure test with search, identity, balance, selected, and long-address content.',
+      'Unreviewed standalone static selector specimen; search and confirmation are not wired here. Working Zapper selection is exercised inside its own flow and does not approve this separate composition.',
     status: 'Proposed candidate',
   },
   {
@@ -94,7 +94,7 @@ const COVERAGE_ITEMS: {
     requirement: 'Approval and requirement rows',
     kind: 'Shared candidate',
     coverage:
-      'Manual mint preserves five per-asset requirements with independent Approved, Approve, and Revoke boundaries; execution and retry remain deferred. Vote Lock and Stake preserve conditional underlying approval before the primary transaction.',
+      'Manual mint renders five per-asset requirements, independent approval/revoke progress and failed-only retry through lab simulation. Vote Lock and Stake retain conditional approval before the primary transaction. Production approval policy remains engineering-owned.',
     status: 'Proposed candidate',
   },
   {
@@ -108,7 +108,7 @@ const COVERAGE_ITEMS: {
     requirement: 'Action-required versus waiting language',
     kind: 'Shared candidate',
     coverage:
-      'Conditional Stake and Vote Lock approval, package open order, automated recovery, and delayed initiation use one semantic vocabulary. Manual approval waiting and recovery remain deferred.',
+      'Conditional Stake and Vote Lock approval, package open order, automated recovery, delayed initiation and Manual approval waiting/recovery distinguish a busy initiated action from a separate gated upcoming action.',
     status: 'Proposed candidate',
   },
   {
@@ -122,14 +122,14 @@ const COVERAGE_ITEMS: {
     requirement: 'Transaction and order identity',
     kind: 'Shared candidate',
     coverage:
-      'Automated issuance keeps each submitted CoW identity with its quoted sell amount, estimated buy amount, and status, then completion adds the separate final mint or redeem transaction. Stake/Unstake and Vote Lock outcomes show their primary transaction identity. Manual result identity remains deferred; approval transactions stay omitted, and RFQ order identity remains package-owned.',
+      'Automated issuance keeps each submitted CoW identity with its quoted sell amount, estimated buy amount, and status, then completion links the separate final mint or redeem transaction. Stake/Unstake and Vote Lock outcomes show their primary transaction identity. Manual renders an explicit explorer simulation without fabricating a hash; real result sourcing remains engineering-owned. Approval transactions stay omitted, and RFQ order identity remains package-owned.',
     status: 'Proposed candidate',
   },
   {
     requirement: 'Consequential outcome composition',
     kind: 'Independent family compositions',
     coverage:
-      'RFQ, automated, Stake, Unstake, single-role Stake delegation, Vote Lock, Vote Unlock, and Vote Lock delegation one/two-change outcomes are rendered independently. Manual Mint and Redeem outcomes remain deferred until result truth is approved.',
+      'RFQ, automated, Stake, Unstake, single-role Stake delegation, Vote Lock, Vote Unlock, and Vote Lock delegation one/two-change outcomes are rendered independently. Manual Mint and Redeem outcomes are rendered with submitted shares and explicitly expected basket values; executed result truth and production adoption remain deferred.',
     status: 'Flow-owned',
   },
   {
@@ -150,7 +150,7 @@ const COVERAGE_ITEMS: {
     requirement: 'Partial success and retry scope',
     kind: 'Flow-owned recovery',
     coverage:
-      'Automated WBTC completion and existing wallet collateral remain intact while only the expired WETH order is retried. Delegation likewise preserves a completed normal update when the following fast update fails and scopes Update to the remaining change.',
+      'Automated WBTC completion and existing wallet collateral remain intact while only the expired WETH order is retried. Manual retains completed permissions while retrying failed tokens. Delegation preserves a completed normal update when the following fast update fails and scopes Update to the remaining change.',
     status: 'Flow-owned',
   },
   {

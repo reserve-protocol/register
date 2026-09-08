@@ -57,6 +57,7 @@ export const VoteLockTransactionComposition = () => (
     title="Vote-lock, unlock, and delegate"
     description="The candidate preserves the current three-mode shell: quote-backed Lock and Unlock, the configured delay and later Portfolio withdrawal, plus explicit normal and fast governance delegation. Delegate reuses the transaction task geometry without being forced into amount-pair anatomy; first-lock self-delegation remains an SDK-owned side effect, not a separate user step."
     defaultState="Lock amount"
+    stageInset="flush"
     stateGroups={STATE_GROUPS}
     parts={[
       {
@@ -99,11 +100,13 @@ export const VoteLockProductContext = ({
   }
 
   return (
-    <div className="relative -mx-4 min-h-[680px] w-[calc(100%+2rem)] max-w-4xl overflow-hidden bg-background p-0 sm:mx-auto sm:w-full sm:p-6">
-      <VoteLockGovernanceContext
-        openButtonRef={openButtonRef}
-        onOpen={() => setIsOpen(true)}
-      />
+    <div className="relative isolate grid min-h-[680px] w-full grid-cols-1 overflow-hidden bg-background">
+      <div className="col-start-1 row-start-1 p-6">
+        <VoteLockGovernanceContext
+          openButtonRef={openButtonRef}
+          onOpen={() => setIsOpen(true)}
+        />
+      </div>
       <TransactionContainedModal
         isOpen={isOpen}
         onOpenChange={handleOpenChange}

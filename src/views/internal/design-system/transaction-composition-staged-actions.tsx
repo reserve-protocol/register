@@ -118,16 +118,7 @@ export const AutomatedMintActions = ({
     )
   }
   return (
-    <Button
-      className="w-full"
-      tone={
-        state === 'Authorizing orders' || state === 'Orders filling'
-          ? 'secondary'
-          : 'primary'
-      }
-      loading
-      disabled
-    >
+    <Button className="w-full" loading disabled>
       {state === 'Authorizing orders' ? (
         operation === 'mint' ? (
           <Trans>Confirm collateral trades in wallet…</Trans>

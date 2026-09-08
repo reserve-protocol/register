@@ -1,6 +1,6 @@
 ---
 title: Design System
-updated: 2026-09-04
+updated: 2026-09-08
 type: domain
 sources:
   - docs/plans/design-system-v1.md
@@ -191,6 +191,12 @@ enough.
 
 ## Current Review
 
+The transaction entry is retained as a paused checkpoint, not an automatic next
+assignment. Its review-ready flag describes availability for later review, not
+blanket acceptance. The [checkpoint disposition](../../plans/transaction-consolidated-regression.md#checkpoint-disposition)
+separates current flow-local designs from unreviewed entry cards, the standalone
+selector, future Portfolio row/table work and engineering-owned adoption.
+
 Current Review contains one nearly complete candidate at the boundary of human
 judgment. It is not a backlog, a promotion queue, or an authority source. Its
 typed conformance record must name accepted or explicitly provisional
@@ -207,6 +213,8 @@ copy its transient status into this router.
   requirements, lifecycle, source, and correctness evidence.
 - [Transaction feedback postmortem](../../plans/transaction-review-feedback-postmortem.md)
   — failure classification and routing lessons, not visual authority.
+- [Transaction checkpoint](../../plans/transaction-consolidated-regression.md)
+  — regression evidence, retained scope, exclusions and migration limits.
 - `/internal/design-system/studies` — unresolved alternatives and active
   pressure tests only; rendered output does not promote itself.
 

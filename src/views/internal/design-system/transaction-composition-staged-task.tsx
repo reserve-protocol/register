@@ -1,5 +1,5 @@
 import { Trans, useLingui } from '@lingui/react/macro'
-import { ArrowDown } from 'lucide-react'
+import { Check } from 'lucide-react'
 
 import { Button, InlineAction } from '@/components/button'
 import {
@@ -44,6 +44,8 @@ import {
   TransactionAssetLogo,
 } from './transaction-system-assets'
 import { TransactionMetricValue } from './transaction-metric-value'
+import { TransactionStageBoundary } from './transaction-stage-boundary'
+import { transactionStageAmountClasses } from './transaction-stage-emphasis'
 
 type AutomatedMintTaskProps = {
   chain: AutomatedIssuanceChain
@@ -103,6 +105,12 @@ export const AutomatedMintTask = ({
     state === 'Collateral ready' ||
     state === 'Final mint signing' ||
     state === 'No swaps needed'
+  const currentStage =
+    canEditAmount && input.exceedsBalance
+      ? 'funding'
+      : isMintStage && isMint
+        ? 'mint'
+        : 'collateral'
   const taskInputAmount =
     input.amount ?? (isMint ? INPUT_AMOUNT : REDEEM_INPUT_AMOUNT)
   const availableCollateralValue = formatUsdFixture(
@@ -137,11 +145,13 @@ export const AutomatedMintTask = ({
         >
           <div
             data-testid="automated-mint-funding-stage"
+            aria-current={currentStage === 'funding' ? 'step' : undefined}
             className="bg-card p-2"
           >
             <AutomatedMintInputAmount
               chain={chain}
               canEdit={canEditAmount}
+              isCurrent={currentStage === 'funding'}
               input={input}
               operation={operation}
               onEdit={() => setState('Initial configuration')}
@@ -193,9 +203,9 @@ export const AutomatedMintTask = ({
               </>
             )}
           </div>
-          <AutomatedMintAmountBoundary />
+          <TransactionStageBoundary testId="automated-mint-amount-boundary" />
           <section
-            aria-current={!isMintStage ? 'step' : undefined}
+            aria-current={currentStage === 'collateral' ? 'step' : undefined}
             className="bg-card p-2"
             data-stage-state={isMintStage ? 'complete' : 'current'}
             data-testid="automated-mint-collateral-step"
@@ -203,6 +213,13 @@ export const AutomatedMintTask = ({
             <AutomatedMintCollateralStage
               chain={chain}
               input={input}
+              emphasis={
+                currentStage === 'collateral'
+                  ? 'current'
+                  : isMintStage
+                    ? 'neutral'
+                    : 'upcoming'
+              }
               operation={operation}
               state={state}
               useExistingCollateral={useExistingCollateral}
@@ -229,9 +246,9 @@ export const AutomatedMintTask = ({
             )}
             <AutomatedMintCollateralFacts state={state} />
           </section>
-          <AutomatedMintAmountBoundary />
+          <TransactionStageBoundary testId="automated-mint-amount-boundary" />
           <section
-            aria-current={isMintStage ? 'step' : undefined}
+            aria-current={currentStage === 'mint' ? 'step' : undefined}
             className="bg-card p-2"
             data-stage-state={isMintStage ? 'current' : 'upcoming'}
             data-testid="automated-mint-mint-step"
@@ -239,6 +256,7 @@ export const AutomatedMintTask = ({
             <AutomatedMintOutputAmount
               chain={chain}
               input={input}
+              isCurrent={currentStage === 'mint'}
               operation={operation}
               state={state}
               useExistingCollateral={useExistingCollateral}
@@ -276,12 +294,14 @@ export const AutomatedMintTask = ({
 
 const AutomatedMintCollateralStage = ({
   chain,
+  emphasis,
   input,
   operation,
   state,
   useExistingCollateral,
 }: {
   chain: AutomatedIssuanceChain
+  emphasis: keyof typeof transactionStageAmountClasses
   input: AutomatedMintInputFixture
   operation: AutomatedIssuanceOperation
   state: AutomatedMintReviewState
@@ -296,6 +316,7 @@ const AutomatedMintCollateralStage = ({
     chain
   )
   const filledCount = orders.filter((order) => order.status === 'Filled').length
+  const allOrdersFilled = orders.length > 0 && filledCount === orders.length
   const quotePending = state === 'Quote searching'
   const quotePaused = state === 'Quote paused'
   const quoteUnavailable = state === 'Quote unavailable'
@@ -319,6 +340,8 @@ const AutomatedMintCollateralStage = ({
       <Trans>1 order needs retry</Trans>
     ) : state === 'Cancelled order' ? (
       <Trans>1 order cancelled</Trans>
+    ) : state === 'Transaction failed' ? (
+      <Trans>Transaction failed</Trans>
     ) : execution ? (
       <Trans>Orders filled</Trans>
     ) : (
@@ -346,6 +369,8 @@ const AutomatedMintCollateralStage = ({
       }
       readOnly
       presentation="output"
+      data-stage-emphasis={emphasis}
+      className={transactionStageAmountClasses[emphasis]}
       asset={
         <span
           aria-hidden="true"
@@ -375,7 +400,22 @@ const AutomatedMintCollateralStage = ({
             )}
           </span>
           <span aria-hidden="true">·</span>
-          <span className="min-w-0 whitespace-normal">
+          <span
+            data-testid={
+              allOrdersFilled ? 'automated-mint-collateral-complete' : undefined
+            }
+            className={cn(
+              'min-w-0 whitespace-normal',
+              allOrdersFilled &&
+                'inline-flex items-center gap-2 text-foreground'
+            )}
+          >
+            {allOrdersFilled && (
+              <Check
+                aria-hidden="true"
+                className="size-4 shrink-0 text-feedback-success-foreground"
+              />
+            )}
             {supporting}
           </span>
         </span>
@@ -383,26 +423,6 @@ const AutomatedMintCollateralStage = ({
     />
   )
 }
-
-const AutomatedMintAmountBoundary = () => (
-  <div
-    aria-hidden="true"
-    data-testid="automated-mint-amount-boundary"
-    className="relative z-10 h-0.5 bg-secondary"
-  >
-    <span
-      data-testid="automated-mint-amount-boundary-indicator"
-      className="absolute left-1/2 top-1/2 flex size-9 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-secondary"
-    >
-      <span
-        data-testid="automated-mint-amount-boundary-indicator-core"
-        className="flex size-8 items-center justify-center rounded-full bg-card text-muted-foreground"
-      >
-        <ArrowDown className="size-4" strokeWidth={1.5} />
-      </span>
-    </span>
-  </div>
-)
 
 const AutomatedMintCollateralFacts = ({
   state,
@@ -429,7 +449,7 @@ const AutomatedMintCollateralFacts = ({
       <dl
         data-testid="automated-mint-collateral-facts"
         className={cn(
-          'mx-4 grid grid-cols-[minmax(0,1fr)_1px_minmax(0,1fr)] items-center gap-4',
+          'mx-4 grid grid-cols-2 items-center gap-4',
           hasFilledOrders ? 'pb-4 pt-6' : 'py-4'
         )}
       >
@@ -455,7 +475,6 @@ const AutomatedMintCollateralFacts = ({
             )}
           </dd>
         </div>
-        <div aria-hidden="true" className="self-stretch bg-border" />
         <div className="flex min-w-0 flex-col items-end gap-0.5 text-right">
           <dt className={cn(v1Typography.supporting, roles.text.supporting)}>
             {hasFilledOrders ? (
@@ -480,6 +499,7 @@ const AutomatedMintCollateralFacts = ({
 const AutomatedMintInputAmount = ({
   chain,
   canEdit,
+  isCurrent,
   input,
   onEdit,
   operation,
@@ -488,6 +508,7 @@ const AutomatedMintInputAmount = ({
 }: {
   chain: AutomatedIssuanceChain
   canEdit: boolean
+  isCurrent: boolean
   input: AutomatedMintInputFixture
   onEdit: () => void
   operation: AutomatedIssuanceOperation
@@ -556,6 +577,9 @@ const AutomatedMintInputAmount = ({
       }
       readOnly
       presentation="input"
+      className={
+        transactionStageAmountClasses[isCurrent ? 'current' : 'neutral']
+      }
       asset={
         (isMint && useExistingCollateral) || collateralOnlyRedeem ? (
           <span
@@ -603,12 +627,14 @@ const AutomatedMintInputAmount = ({
 const AutomatedMintOutputAmount = ({
   chain,
   input,
+  isCurrent,
   operation,
   state,
   useExistingCollateral,
 }: {
   chain: AutomatedIssuanceChain
   input: AutomatedMintInputFixture
+  isCurrent: boolean
   operation: AutomatedIssuanceOperation
   state: AutomatedMintReviewState
   useExistingCollateral: boolean
@@ -680,6 +706,10 @@ const AutomatedMintOutputAmount = ({
       }
       readOnly
       presentation="output"
+      data-stage-emphasis={isCurrent ? 'current' : 'upcoming'}
+      className={
+        transactionStageAmountClasses[isCurrent ? 'current' : 'upcoming']
+      }
       asset={<TransactionAmountAsset chain={chain} symbol={outputSymbol} />}
       supporting={
         <span className="inline-flex min-w-0 items-baseline gap-1.5">

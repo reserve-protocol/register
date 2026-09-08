@@ -1,6 +1,6 @@
 ---
 title: Design System Reference
-updated: 2026-09-04
+updated: 2026-09-05
 type: domain
 sources:
   - tailwind.config.ts
@@ -1235,8 +1235,10 @@ nested generic success card. These are provisional transaction-composition
 decisions, not changes to accepted lower-level baselines.
 
 Direct current-flow reconciliation is now a required evidence layer for this
-board. Manual issuance retains its editable amount, single approval-to-mint
-action slot, and persistent requirement region. Automated mint retains its
+board. Production Manual issuance supplies its editable amount, approval-to-mint
+action slot, and persistent requirement region as evidence. The current Manual
+lab deliberately separates desired amount, approvals and final Mint; this is a
+flow-local review trial, not an inherited production requirement. Automated mint retains its
 narrow configure step, later widening into the flow-owned order workspace,
 scoped retry, final-mint boundary, and dedicated outcome. Delayed unstake
 retains separate input-page, confirmation-Dialog, and durable-queue surfaces.
@@ -1250,22 +1252,141 @@ The correction pass removed three false system signals. Audit explanations do
 not become task copy unless they change the user's decision; dense financial
 tasks use the accepted 8px shell edge rather than inheriting the ordinary 24px
 Dialog content axis; and outcome similarity is not evidence for a reusable
-layout until independently composed families converge. Manual requirements now
-report state while the one approval-to-mint action slot owns action. Automated
+layout until independently composed families converge. Manual requirements retain
+individual approval/revoke actions alongside the aggregate approval-to-mint slot. Automated
 configuration keeps its real fixed USDC input and one visually continuous
 three-step surface. Delayed confirmation states cooldown timing once, then
 dismiss the task shell and move the durable queue ahead of the old input form.
 RFQ, automated, and delayed outcomes share semantic ingredients but retain
-family-specific composition. Manual outcomes remain deferred until result
-truth is approved. Max/Use fixtures update every visibly dependent value so the
+family-specific composition. Manual outcomes are a review trial using submitted
+shares and explicitly expected basket values; receipt-derived result truth remains
+engineering-owned. Max/Use fixtures update every visibly dependent value so the
 lab does not teach stale financial relationships.
 
-The first Manual Mint/Redeem proof deliberately stops at two anchors. Mint
+The Manual/Automated outcome review now borrows Zapper's flexible brand-region
+spacing, default-sized footer actions and received-DTF bookmark. These are
+local composition refinements, not a universal outcome controller: Automated
+retains order and funding evidence, while Manual keeps its estimated basket
+and explicit explorer simulation without fabricating a transaction hash.
+
+Transaction access follows its job, not one universal placement. Manual and
+Automated outcomes use a default-sized secondary View transaction footer action
+beside primary View DTF. For one final transaction, the footer is sufficient:
+Automated omits its former labeled hash/copy row, while Manual keeps its honest
+explorer simulation without fabricating a hash. Both page-based outcomes keep
+a compact secondary New mint / New redeem action in the header because they
+have no modal close-to-form path. Automated restarts with an empty amount,
+preserving operation and chain while clearing the completed session's funding
+choices and order inspection. Simple Zapper, Vote-lock
+and Stake outcomes retain their explorer/Done footer arrangement. Multiple
+transactions stay associated with their respective result rows through labeled
+text links, as in two-role Delegation. Do not duplicate an explorer destination
+between facts and footer or confuse a collateral order with the final transaction.
+
+An active primary action keeps its primary tone while loading, whether it is
+an approval, collateral authorization/execution, or the final transaction.
+Spinner, busy semantics and disabled repeat clicks communicate waiting;
+secondary styling is not a prerequisite-status code. A separate upcoming action
+remains neutral and disabled until its prerequisites are satisfied. Zapper's
+Sign order specimen represents an already-open wallet request and uses the
+existing “Pending, sign in wallet” loading treatment, not an actionable prompt.
+These are lab composition choices; shared Button defaults and transaction
+preparation remain unchanged.
+
+Dense identity rows must not pair padded ghost copy/explorer buttons merely to
+match nominal control sizes: invisible circular insets distort the visible gap
+and trailing alignment. Use the accepted inline Copyable Value for compact copy
+jobs, and a labeled Link when navigation belongs to a specific result row.
+Check visible glyph alignment as well as interaction targets; do not repair
+alignment by shrinking or overlapping targets. Shared Button defaults remain
+unchanged. The rejected twin-micro-control experiment is not precedent.
+
+The Manual Mint/Redeem proof started with two anchors, then expanded to a
+29-state lab lifecycle. Mint
 keeps one high-level share task beside a five-asset requirement ledger with
 independent Approved, Approve, and Revoke boundaries plus the retained
 unlimited-approval control. Redeem reuses the amount and ledger geometry but
 removes every approval and order affordance. The ledger is flow-owned; only its
 amount, identity, status, and action primitives are shared candidates.
+Transaction controls drive simulated wallet/chain states; navigation previews
+remain explicitly non-executing. No wallet or production writes occur.
+Input, Max and dependent fixture requirements remain interactive and consistent;
+Mint capacity is basket-limited while Redeem Max comes from held DTF shares.
+The ledger stays visible on narrow screens because its permission rows can be
+required work, not merely optional order detail. The readiness brief owns the
+exact geometry measurements and deferred production/engineering boundaries;
+[the lifecycle contract](../../plans/manual-issuance-lifecycle-lab.md) owns
+current state coverage. Approval progress is independently tracked per token,
+not one batch signature. USDT's aggregate reset mismatch remains visible.
+Manual's current row proposal stays asset-led and flow-local. Mint places
+identity/explorer and approval above a Required/Balance comparison; an
+insufficient balance replaces the balance label without adding a row. Redeem
+places expected quantity and USD value beside identity, without redundant
+comparison labels. Standard-density identity names and primary amounts share
+16px/24px typography; supporting addresses, labels, and USD values stay 14px/20px.
+Existing 32px marks, 28px actions/statuses and 24px content
+axes remain; 12px vertical row padding gives 24px between assets without separators or
+individual cards. Unlimited uses a plain checkbox labeled “Approve unlimited
+token amounts” within the left Token approvals section, with 24px from its
+supporting row to the setting and 16px to the aggregate action on the 24px text axis.
+The first two left regions consume the amount primitive's light label, prominent
+value/progress and smaller supporting row. The final region instead pairs a
+16px Mint label with the approval count's responsive light headline scale
+(22px/28px below 360px, 28px/32px below 640px, then 32px/38px), the existing 32px CMC20 mark
+and a 14px explanation of exchanging basket tokens for CMC20. “Approvals needed,”
+“Ready to mint” and “Mint in progress” summarize the step; the button alone owns
+exact amount and wallet/chain phase. Empty, unavailable or insufficient states
+do not claim readiness. Automated's distinct numeric output summary stays.
+Manual and Automated share a lab-local stage-emphasis recipe: primary label and
+main value/count for the current task, readable neutral completion and muted
+upcoming labels. `aria-current="step"` identifies the same stage. Structural
+arrows and card surfaces do not encode completion. A small green check uses
+normal-foreground supporting text. Manual's neutral inactive input retains its
+focus ring; shared amount defaults are unchanged. Insufficient collateral is
+explained near that input, while production-supported approvals remain available.
+Sufficient allowances are not sufficient balances: Mint stays blocked until both
+are satisfied. Manual's summary shares the label-to-headline spacing, 24px content axis and label top inset.
+Its explanation sits 24px above the ordinary action, or 16px above a recovery
+message followed by an 8px message/action gap. Only the current stage's label
+and readiness text use primary emphasis; financial values are not repeated.
+Separate-request explanation is available in
+the approval summary's factual help. Switch to Zapper belongs to the top amount
+section. Both boundaries consume Automated's connected arrow treatment through
+the local TransactionStageBoundary owner. A middle-section button needs 24px
+bottom clearance to avoid the arrow circle; a terminal button keeps its 8px edge.
+The final Mint action remains below the second boundary, unavailable
+until requirements are met. Redeem's direct input/action gap is 8px. The default and policy
+are unchanged. Preserve token explorer links and Revoke help.
+
+Transaction review canvases isolate their local layers below the sticky lab
+navigation. Stake/Vote Lock backdrop hosts fill the unpadded stage; their
+contained modal layer participates in a single grid cell so tall content can
+grow the canvas. Zapper uses the same 680px minimum review height rather than
+its obsolete 980/760px fixed preview heights. These are lab framing rules, not
+production modal sizes. Intentional narrow task and page maximum widths remain.
+
+Manual's authorized refinement replaces the approval controls with a readiness
+message when allowances suffice, removing their old geometry while retaining the setting for later
+requirement edits. Progress counts sufficiently approved tokens outside the
+button, including existing allowances, rather than counting this attempt's
+transactions. The final readiness headline and explanation remain mounted;
+the explanation/action gap is 24px. Ready, signing and confirming share this
+geometry for single-line headlines, without duplicating wallet/chain phase copy.
+Longer translations wrap naturally. Failure summaries name affected assets and mark their
+existing action slots. Known wallet rejection is informational; transaction
+failure remains danger. Outcomes state completion once, identify basket assets
+used/received and explicitly qualify fixture amounts as estimated. A transaction
+footer action previews the final record without inventing a hash; New mint / New
+redeem in the header and View DTF retain reset and continuation roles. These remain Manual composition trials, not
+new shared behavior or production error/receipt contracts.
+
+Manual's desktop lab host matches Automated's 1200px maximum review width and 736px height; both columns fill that
+height and scroll at their outer edges when needed. This simulates a stable page
+workspace, not a production height requirement. Task contents remain top-grouped
+at their natural height. Spare white space belongs
+below that group; beige is the 2px column seam, not an accidental cutout beneath
+the task. Mobile stays natural-height. Outcome height measurements use task
+contents, not the stretched surface.
 
 The Zapper pressure test now distinguishes review qualification from outcome
 follow-up. The current production-derived capacity, market-hours, and

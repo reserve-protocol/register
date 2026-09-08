@@ -1,5 +1,4 @@
 import { Trans } from '@lingui/react/macro'
-import { ArrowLeftRight } from 'lucide-react'
 
 import { Button } from '@/components/button'
 import { Link } from '@/components/design-system-v1/link'
@@ -22,7 +21,7 @@ export const AutomatedIssuanceManualLink = ({
   chain: AutomatedIssuanceChain
   className?: string
   operation: AutomatedIssuanceOperation
-  presentation?: 'button' | 'compact-button' | 'link'
+  presentation?: 'button' | 'link'
 }) => {
   const href = getFolioRoute(
     CMC20_ADDRESS[chain],
@@ -48,37 +47,12 @@ export const AutomatedIssuanceManualLink = ({
     )
   }
 
-  if (presentation === 'compact-button') {
-    return (
-      <Button
-        asChild
-        className={cn('shrink-0', className)}
-        size="compact"
-        tone="secondary"
-      >
-        <a href={href}>
-          <span aria-hidden="true">
-            <Trans>Manual</Trans>
-          </span>
-          <span className="sr-only">
-            {operation === 'redeem' ? (
-              <Trans>Switch to manual redeeming</Trans>
-            ) : (
-              <Trans>Switch to manual minting</Trans>
-            )}
-          </span>
-        </a>
-      </Button>
-    )
-  }
-
   return (
     <Link
-      className={cn('inline-flex self-center', className)}
+      className={cn('inline-flex', className)}
       href={href}
       treatment="standalone"
     >
-      <ArrowLeftRight aria-hidden="true" className="size-4" />
       {operation === 'redeem' ? (
         <Trans>Switch to manual redeeming</Trans>
       ) : (

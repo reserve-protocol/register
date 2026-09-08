@@ -238,10 +238,10 @@ export const PRIMARY_COMPONENT_GROUPS: ComponentGroup[] = [
               'V1 distinguishes direct wallet instructions before submission from transaction lifecycle status after submission.',
               'In dialogs, the anchored action remains stable while complex workflow bodies may update; recoverable errors preserve inputs and expose a contextual retry.',
               'A named provisional transaction-task geometry recipe now owns the shared 432px substantial width, compact header axis, submitted-content boundary, facts-region divider ownership, and action-footer relationship consumed by Zapper and Vote Lock.',
-              'Transaction amount input/output regions use square structural geometry across editable, read-only, submitted, and loading replacements; ordinary Field inputs retain their own full-radius control geometry.',
+              'Transaction amount input/output regions use the accepted 8px geometry across editable, read-only, submitted, and loading replacements; ordinary Field inputs retain their own full-radius control geometry.',
             ],
             decisionPrompts: [
-              'Judge whether the four family anchors and focused Vote Lock flow feel like one product family without implying identical orchestration or information volume.',
+              'On explicit resumption, judge the five transaction families without implying identical orchestration or information volume; contextual launchers and the standalone selector remain outside this checkpoint.',
               'Confirm the narrow lifecycle vocabulary, stable action hierarchy, identity treatment, recovery prominence, and consequential outcome anatomy.',
               'Keep money, chain, order, queue, and package behavior in existing trusted seams while reviewing presentation.',
               'Preserve or improve every successful quality from the named strongest predecessor; if one is removed, record the stronger evidence or product constraint that replaces it.',
@@ -262,7 +262,7 @@ export const PRIMARY_COMPONENT_GROUPS: ComponentGroup[] = [
               },
               {
                 id: 'alert',
-                note: 'Uses the provisional Inline Message anatomy for persistent contextual recovery.',
+                note: 'Uses the accepted Inline Message anatomy for persistent contextual recovery; exact copy and recovery remain flow-owned.',
               },
               {
                 id: 'copy-value',
@@ -274,7 +274,7 @@ export const PRIMARY_COMPONENT_GROUPS: ComponentGroup[] = [
               },
             ],
             nextAction:
-              'Review the shared truth spectrum and focused Vote Lock flow, then extract only the lifecycle, identity, and outcome seams that remain stable across the models.',
+              'Paused at the verified transaction checkpoint. Resume only the human-selected scope; preserve recorded local decisions without promoting the whole specimen or migrating production.',
           }
         ),
         outputStatus: 'rendered',
@@ -287,6 +287,13 @@ export const PRIMARY_COMPONENT_GROUPS: ComponentGroup[] = [
             role: 'implementation',
             label: 'Provisional transaction review composition',
             path: 'src/views/internal/design-system/transaction-truth-spectrum.tsx',
+          },
+          {
+            role: 'visual-evidence',
+            label: 'Transaction checkpoint scope and regression evidence',
+            path: 'docs/plans/transaction-consolidated-regression.md',
+            detail:
+              'Verified lab checkpoint, not blanket design acceptance or production adoption; names retained local decisions and unreviewed surrounding surfaces.',
           },
           {
             role: 'implementation',
@@ -381,7 +388,7 @@ export const PRIMARY_COMPONENT_GROUPS: ComponentGroup[] = [
           ],
         },
         statusDetail:
-          'Four deterministic family anchors plus a focused Vote Lock / Unlock / Delegate slice now compose financial intent, address-based governance settings, current lifecycle focus, consequential result, and evidence-backed recovery/follow-up on top of the current product’s real page, package, progressive-workspace, modal, and durable-queue structures. Zapper and Vote Lock consume one provisional task-geometry recipe while Delegate keeps canonical Field anatomy and a truthful one/two-call lifecycle; the active-plan pressure register records where current composition choices depart from current baselines or retained precedent. The work defines no universal controller, adopted transaction component, or production behavior.',
+          'Five transaction families are rendered and regression-checked: Zapper, Vote Lock, Stake, Automated Mint/Redeem and Manual Mint/Redeem. This checkpoint preserves human-directed local refinements without promoting the transaction system as a shared component. Entry cards, the standalone selector and persistent Portfolio rows remain unreviewed or deferred. Receipt sources, approval/security behavior and production adoption remain engineering-owned. See the consolidated regression report for evidence and limits.',
       },
     ],
   },

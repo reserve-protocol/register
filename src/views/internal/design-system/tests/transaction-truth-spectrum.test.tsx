@@ -1,5 +1,6 @@
 import { fireEvent, render, screen, within } from '@testing-library/react'
-import { describe, expect, it } from 'vitest'
+import type { ImgHTMLAttributes } from 'react'
+import { describe, expect, it, vi } from 'vitest'
 
 import {
   FAST_DELEGATE,
@@ -8,7 +9,52 @@ import {
 import { StakeTransactionTask } from '../transaction-composition-stake-task'
 import TransactionTruthSpectrum from '../transaction-truth-spectrum'
 
+// Image fetching is browser-covered; jsdom leaves the production loader pending after teardown.
+vi.mock('@/components/token-logo', () => ({
+  default: ({
+    symbol: _symbol,
+    size = 'md',
+    address: _address,
+    chain: _chain,
+    src,
+    width,
+    height,
+    ...props
+  }: ImgHTMLAttributes<HTMLImageElement> & {
+    symbol?: string
+    size?: 'sm' | 'md' | 'lg' | 'xl'
+    address?: string
+    chain?: number
+  }) => {
+    const pixels = { sm: 16, md: 20, lg: 24, xl: 32 }[size]
+    return (
+      <img
+        {...props}
+        src={src ?? '/svgs/defaultLogo.svg'}
+        width={width ?? pixels}
+        height={height ?? pixels}
+      />
+    )
+  },
+}))
+
 describe('composition-first transaction-system review', () => {
+  it('shows Zapper wallet signing as busy while pre-request approval remains actionable', () => {
+    render(<TransactionTruthSpectrum />)
+    const zapper = screen.getByTestId('transaction-composition-rfq')
+    fireEvent.click(within(zapper).getByRole('radio', { name: 'Approval' }))
+    expect(
+      within(zapper).getByRole('button', { name: 'Approve use of USDC' })
+    ).toBeEnabled()
+    fireEvent.click(within(zapper).getByRole('radio', { name: 'Sign order' }))
+    const signing = within(zapper).getByRole('button', {
+      name: 'Pending, sign in wallet',
+    })
+    expect(signing).toBeDisabled()
+    expect(signing).toHaveAttribute('aria-busy', 'true')
+    expect(signing).toHaveAttribute('data-tone', 'primary')
+    expect(signing.querySelector('svg.animate-spin')).not.toBeNull()
+  })
   it('puts direct flow navigation and reviewable compositions before reference material', () => {
     render(<TransactionTruthSpectrum />)
 
@@ -364,7 +410,8 @@ describe('composition-first transaction-system review', () => {
       name: 'Approval in progress…',
     })
     expect(voteLockApprovalAction).toBeDisabled()
-    expect(voteLockApprovalAction).toHaveAttribute('data-tone', 'secondary')
+    expect(voteLockApprovalAction).toHaveAttribute('data-tone', 'primary')
+    expect(voteLockApprovalAction).toHaveAttribute('aria-busy', 'true')
     expect(
       within(voteLock).queryByTestId('vote-lock-acknowledgement')
     ).not.toBeInTheDocument()
@@ -1402,9 +1449,9 @@ describe('composition-first transaction-system review', () => {
       within(atomic).getByRole('textbox', { name: 'Shares to mint amount' })
     ).toHaveValue('100')
     expect(
-      within(atomic).getByRole('button', { name: 'Approve All (2)' })
+      within(atomic).getByRole('button', { name: 'Approve All (3)' })
     ).toBeVisible()
-    expect(within(atomic).getByText('Max 124.63 CMC20')).toBeVisible()
+    expect(within(atomic).getByText('Max 105.100042 CMC20')).toBeVisible()
     expect(
       within(atomic).queryByText('Balance 124.63 CMC20')
     ).not.toBeInTheDocument()
@@ -1423,9 +1470,11 @@ describe('composition-first transaction-system review', () => {
       within(atomic).getAllByTestId('transaction-requirement-row')
     ).toHaveLength(5)
     expect(
-      within(atomic).getAllByRole('button', { name: 'Approve' })
+      within(atomic).getAllByRole('button', { name: /^Approve (WETH|AAVE)$/ })
     ).toHaveLength(2)
-    expect(within(atomic).getByRole('button', { name: 'Revoke' })).toBeVisible()
+    expect(
+      within(atomic).getByRole('button', { name: 'Revoke USDT' })
+    ).toBeVisible()
     expect(within(atomic).getAllByText('Approved')).toHaveLength(2)
   })
 
@@ -1510,8 +1559,8 @@ describe('composition-first transaction-system review', () => {
 
     const rfq = screen.getByTestId('transaction-composition-rfq')
     expect(screen.getByTestId('transaction-composition-rfq-stage')).toHaveClass(
-      'h-[980px]',
-      '[@container(min-width:980px)]:h-[760px]',
+      'min-h-[680px]',
+      'isolate',
       'items-end',
       'sm:items-center',
       'justify-center',
@@ -2843,7 +2892,8 @@ describe('composition-first transaction-system review', () => {
       name: 'Approval in progress…',
     })
     expect(stakeApprovalAction).toBeDisabled()
-    expect(stakeApprovalAction).toHaveAttribute('data-tone', 'secondary')
+    expect(stakeApprovalAction).toHaveAttribute('data-tone', 'primary')
+    expect(stakeApprovalAction).toHaveAttribute('aria-busy', 'true')
     expect(
       within(staking).queryByRole('checkbox', {
         name: 'Acknowledge unstake delay',
@@ -3298,10 +3348,9 @@ describe('composition-first transaction-system review', () => {
     for (const row of within(board).getAllByTestId(
       'transaction-requirement-row'
     )) {
-      expect(row).toHaveClass('grid-cols-[minmax(0,1fr)_auto]')
-      expect(
-        within(row).getByTestId('transaction-requirement-identity')
-      ).toHaveClass('min-w-0')
+      expect(within(row).getByRole('link')).toHaveAttribute('target', '_blank')
+      expect(within(row).getByText('Required')).toBeVisible()
+      expect(within(row).getByText('Balance')).toBeVisible()
     }
     expect(
       within(board).getByText('Package interaction and internals')
@@ -3440,7 +3489,9 @@ describe('composition-first transaction-system review', () => {
     expect(within(atomic).getAllByText('Value')).toHaveLength(5)
     expect(within(atomic).queryByText('Required Approvals')).toBeNull()
     expect(
-      within(atomic).queryByRole('checkbox', { name: 'Unlimited approval' })
+      within(atomic).queryByRole('checkbox', {
+        name: 'Approve unlimited token amounts',
+      })
     ).not.toBeInTheDocument()
     expect(
       within(atomic).queryByRole('button', { name: 'Approve' })
@@ -3521,7 +3572,9 @@ describe('composition-first transaction-system review', () => {
     expect(within(rfq).queryByRole('button', { name: 'Max' })).toBeNull()
 
     const atomic = screen.getByTestId('transaction-composition-atomic')
-    const atomicInput = within(atomic).getByTestId('transaction-amount-object')
+    const atomicInput = within(
+      within(atomic).getByTestId('manual-amount-section')
+    ).getByTestId('transaction-amount-object')
     expect(atomicInput).toHaveClass('rounded-lg')
     expect(
       within(atomicInput).queryByRole('button', { name: 'Use' })
@@ -3586,7 +3639,12 @@ describe('composition-first transaction-system review', () => {
     ).toBeVisible()
     expect(
       within(coverage).getByText(
-        /Manual Mint and Redeem outcomes remain deferred/
+        /Manual Mint and Redeem outcomes are rendered with submitted shares/
+      )
+    ).toBeVisible()
+    expect(
+      within(coverage).getByText(
+        /Unreviewed standalone static selector specimen/
       )
     ).toBeVisible()
     expect(
@@ -3617,9 +3675,17 @@ describe('composition-first transaction-system review', () => {
     fireEvent.click(within(atomic).getByRole('button', { name: 'Use' }))
     expect(
       within(atomic).getByRole('textbox', { name: 'Shares to mint amount' })
-    ).toHaveValue('124.63')
-    expect(within(atomic).getByText('$12,514.35')).toBeVisible()
-    expect(within(atomic).getByText('0.00224 WBTC')).toBeVisible()
+    ).toHaveValue('105.100042')
+    expect(within(atomic).getByText('$10,553.31')).toBeVisible()
+    const wbtc = within(atomic)
+      .getAllByTestId('transaction-requirement-row')
+      .find((row) => row.dataset.tokenSymbol === 'WBTC')!
+    expect(within(wbtc).getAllByRole('definition')[0]).toHaveTextContent(
+      '0.00189 WBTC'
+    )
+    expect(
+      within(atomic).queryByText('Insufficient balance')
+    ).not.toBeInTheDocument()
 
     const rfq = screen.getByTestId('transaction-composition-rfq')
     fireEvent.click(within(rfq).getByRole('radio', { name: 'Review' }))
@@ -3639,9 +3705,18 @@ describe('composition-first transaction-system review', () => {
       { target: { value: '200' } }
     )
     expect(within(atomic).getByText('$20,082.40')).toBeVisible()
-    expect(within(atomic).getByText('0.0036 WBTC')).toBeVisible()
-    expect(within(atomic).getByText('2.048 WETH')).toBeVisible()
-    expect(within(atomic).getByText('2.756 WBNB')).toBeVisible()
+    for (const [symbol, amount] of [
+      ['WBTC', '0.0036 WBTC'],
+      ['WETH', '2.048 WETH'],
+      ['USDT', '2,500.00 USDT'],
+    ]) {
+      const row = within(atomic)
+        .getAllByTestId('transaction-requirement-row')
+        .find((item) => item.dataset.tokenSymbol === symbol)!
+      expect(within(row).getAllByRole('definition')[0]).toHaveTextContent(
+        amount
+      )
+    }
 
     fireEvent.change(
       within(rfq).getByRole('textbox', { name: 'You use amount' }),

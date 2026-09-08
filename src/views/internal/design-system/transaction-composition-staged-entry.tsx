@@ -87,7 +87,7 @@ const AutomatedMintIntroduction = ({
         <InlineMessage
           className={cn(
             semanticRoles.surface.content,
-            'ring-border [--inline-message-icon-surface:var(--muted)]'
+            'ring-border [--inline-message-icon-surface:hsl(var(--muted))]'
           )}
           icon={<Info className="text-muted-foreground" />}
           iconPresentation="contained"

@@ -1,6 +1,6 @@
 ---
 title: Log
-updated: 2026-09-04
+updated: 2026-09-08
 type: log
 ---
 
@@ -503,3 +503,173 @@ Play-by-play lives in git (PRs #1053/#1054/#1055/#1063, SDK PR #27). Durable out
 
 - The coarse generic atomic prototype was replaced by the deliberately bounded first Manual Mint/Redeem proof. Mint now keeps a sufficient page-hosted share task beside five realistic basket requirements, including independent Approved, Approve, and USDT-like Revoke boundaries plus the production unlimited-approval choice. Redeem keeps the same geometry but presents only expected basket amounts and values; no CoW, order, expiry, approval, or stepper semantics leak across.
 - The pass caught two process failures while reconciling the lab: the first Redeem total did not update with the entered amount, and the coverage map still claimed that manual execution, recovery, and outcomes were rendered after those speculative states had been removed. Bigint-backed fixtures now update every visible dependent value, and the lab explicitly marks execution, recovery, and result identity as deferred. Human review of these two anchors remains required before state multiplication.
+
+## 2026-09-04 — Manual anchor fresh-eyes corrections
+
+- The first proof's visual checks and bigint claims were insufficient: nested child padding produced a 40px amount-text axis, viewport breakpoints could overflow a narrow ledger column, Max exceeded basket capacity, and clearing the amount retained permissions. The bounded correction pass measures the actual 8px control/24px text axes, tests container width independently of viewport width, derives lab Max and allowances from raw fixtures, and labels transaction/navigation controls as non-executing previews. The basket is explicitly synthetic, not a production CMC20 basket or math contract.
+- The existing transfer template now requires measured composite geometry and an explicit interaction boundary, not just named spacing tokens. Both original layout regressions were reproduced before their browser tests passed. Focused tests passed 51/51; mounted light/dark tests passed at nine widths plus a narrow embedded host; desktop/mobile compositions were visually inspected. This verifies the two anchors, not execution, recovery, or outcome completeness.
+- Human clarification: preserve the current app's Unlimited label, default, and behavior. Approval/security explanations and policy are not design-review decisions. The readiness plan no longer demands new explanatory copy, a production address-normalization fix before lab work, or an invented dust-blocked state. These engineering boundaries remain deferred until adoption; production behavior is unchanged.
+
+## 2026-09-05 — Manual anchor composition refinement
+
+- Human clarification makes production functionality the floor, not a requirement to copy legacy presentation. The bounded two-anchor pass restores the token-address explorer links and exact production USDT Revoke explanation that the first inventory overlooked. Token addresses are repository-backed Ethereum fixtures; they do not imply the synthetic basket is CMC20's production basket. Unlimited and approval mechanics remain unchanged.
+- Manual rows now use existing identity, 32px token logo, Link, Help Tooltip, 28px Button/status and typography primitives in one flow-owned two-tier arrangement. Required/expected amounts lead; balances/values are supporting. Inset gray separators sit on the 24px axis, and narrow rows wrap actions instead of clipping addresses. The earlier generic-row container extension is no longer needed and was removed without changing shared defaults.
+- The left task now wraps its content instead of stretching to the ledger: the previous dependency added a 318px header gap at the desktop column transition. Its regression fails on that old layout and passes with the intended 24px gap. The tradeoff is more vertical space for readable asset rows and independent column heights; long-basket scrolling and execution remain the next pressure work, not completed features. Alternate Zapper navigation keeps its wording but uses the existing text action.
+- Process correction: inventory secondary links and explanatory controls, not just primary actions and field values. Verify geometry in the rendered host, and distinguish flow-local layout from shared primitives. Focused tests and mounted width/theme checks support the current review; no production adoption or design acceptance is implied.
+- Follow-up human review replaces the separators above with spacing-only grouping (16px symmetric row padding, 8px within Mint rows), a plain Unlimited checkbox, and simpler receive-only Redeem rows. Mint balance numbers use foreground; insufficiency replaces the Balance label. A new mounted regression reproduced the former 40px warning-induced jump at 320px and now verifies stable row heights/positions and non-overlapping labels through sufficient/insufficient transitions. Approval defaults and security policy are untouched; this remains a flow-local candidate.
+- The next approved refinement moves the setting out of the ledger heading and into the Mint input/action group, labeled “Approve unlimited token amounts.” It uses the 24px text axis and 16px above/below; Redeem's direct input/action gap now matches automated configuration at 8px. The choice stays at composition scope and survives mode changes. Production defaults, allowance semantics, and non-executing preview boundaries remain unchanged. Focused tests verify label-click toggling and persistence; mounted tests verify both spacing relationships across nine widths in light/dark.
+
+## 2026-09-05 — Zapper loading-layer correction
+
+- The output's absolute loading overlay escaped its wrapper and competed at z-10 with the direction-control parent. Later DOM order covered the arrow's lower half. Isolating the output wrapper contains its overlay and detail rule below the shared arrow without changing shared z-index defaults or geometry. A mounted paint-order regression failed in Quote search before the fix, then passed in Review/search at 320/390/1280px in both themes. Disabled hit testing is temporarily enabled only for the probe; the test separately verifies the control remains disabled during search.
+
+## 2026-09-05 — Manual soft-action trial
+
+- Human requested a local soft-blue Approve / neutral quiet Revoke comparison. Canonical micro dimensions, main primary CTA, approval policy, and success status are unchanged. `TX-P21` keeps this provisional: any later shared-variant promotion must include a retrospective review of earlier transaction action choices, not only future adoption. Navigation selected-state styling is explicitly deferred.
+
+## 2026-09-05 — Manual canonical-owner audit
+
+- The Manual approval setting incorrectly imported the legacy 16px `ui/checkbox`; previous interaction and spacing checks did not establish canonical ownership. It now imports the catalog's `components/checkbox` (28px slot, 20px mark) and uses the shared label typography, without a local size override. Token explorer links also now use Link's external API instead of a manually drawn glyph, retaining the muted treatment while adding the standard new-tab announcement.
+- The readiness brief now records exact import owners and variants for every visible dependency in both anchors. No new generic rule or skill was needed: the existing exact-owner requirement was not followed. Regression tests failed on the legacy checkbox and missing external announcement before correction; mounted checks now verify actual mark/slot dimensions and keyboard toggling as well as the existing geometry. The remaining reviewed layouts, production mechanics, shared defaults, and deferred execution boundary are preserved.
+- The maximum-length Redeem stress case exposed another weak assertion: outer-width containment passed even though the primary label painted into its 24px padding. A line-box test now measures the actual text against the button's inner edge and failed before the local wrapping fix. This preserves the full label and shared default size instead of clipping meaningful numbers or changing copy.
+- Human approved factual approval help without security advice. The setting now uses the standard right-aligned HelpTooltip outside the checkbox label: “When selected, approvals set the token spending allowance to its maximum. This does not change the amount you mint.” Checked/unchecked policy is unchanged, and no exact-amount claim is made for unchecked approvals. Focused tests verify opening help cannot toggle the setting; mounted checks cover right-edge/vertical alignment, narrow wrapping, and whole-card containment including the standard expanded help hit area. The two new messages were extracted in isolation, translated, and catalog compilation verified without unrelated extraction churn.
+
+## 2026-09-05 — Alternate issuance paths and Manual row rhythm
+
+- Human approved contextual text actions beneath the primary action instead of an abbreviated header pill. Automated configuration now uses the full manual Mint/Redeem link with context inside the active card; Manual keeps its Zapper alternative below the CTA. Existing route destinations, non-executing Manual preview boundary, and initial introduction actions remain unchanged.
+- Manual asset content now has 24px between items (12px row insets), reduced from 32px. List edge padding preserves the existing 24px outer content axis and bottom inset. The task retains its natural height: stretching to a variable basket would separate the amount and CTA or create arbitrary internal whitespace. This remains a page-specific choice, not a change to modal no-shrink rules.
+
+## 2026-09-05 — Manual identity and amount typography
+
+- Corrected a density mismatch rather than adding a typography variant: standard EntityIdentity now gives token names the same 16px/24px rhythm as Required, Balance, and received amounts. Compact identity had demoted names to 14px, especially visibly beside Redeem quantities. Supporting labels, addresses, and USD remain 14px/20px; weights, colors, logos, and 24px row gaps are preserved. Mounted checks now verify the actual name/value typography across both modes and all tested widths.
+
+## 2026-09-05 — Manual lifecycle expansion
+
+- Expanded the two anchors into 29 reviewable configuration, permission, direct Mint/Redeem, recovery, and outcome states. One bigint-backed lab session drives dependent values; explicit external simulator controls exercise independent wallet responses without production writes. The task stays natural-height and asset actions remain visible on narrow screens. Existing geometry and local soft-Approve trial are preserved, not promoted.
+- Independent review caught missing failure reasons, an aggregate-versus-individual USDT allowance distinction, insufficient mixed-progress simulation, stale two-anchor-only documentation, and repeated accessible names. All were reconciled. Production's parallel approvals and aggregate USDT reset mismatch remain explicit engineering boundaries rather than being repaired in a design fixture.
+- Mounted testing caught an outcome route constructed for a synthetic Ethereum CMC20 identity with no live deployment. View DTF now demonstrates navigation explicitly without sending the reviewer to a different-chain asset. Persistent results reuse the existing outcome grammar, but submitted shares and expected basket quantities do not claim receipt decoding. Production currently toasts and resets; this result screen remains a visual proposal.
+- Verified 169 design-system tests and six mounted Manual checks, including every state in light/dark and four widths, plus nine-width anchor geometry and a non-preset recovery journey. Visual inspection corrected floating processing actions, recovery-help alignment, and a premature loading approval count. Readiness, reference, state-contract, and coverage docs now point to the lifecycle owner. No new skill was needed: the useful process improvement was enforcing existing source, geometry, and truth owners with actual interaction/paint evidence.
+
+## 2026-09-05 — Manual mobile continuity
+
+- Static state containment missed a 36px layout jump when short Approve actions became longer signing/status pills at 320px. Measured approval transitions reproduced it; a local 128px-wide, 28px-minimum-height permission slot fixes inconsistent wrapping without changing shared controls. Loading placeholders now use the same wrapping anatomy. The regression compares quantity and subsequent-row positions, not just absence of horizontal overflow.
+- Fresh Manual browser suite: 8/8, including light/dark lifecycle states, seven-width approval transitions, and short/landscape reachability. Focused unit tests 19/19 and app/E2E types passed. Native mobile keyboards remain outside this browser-emulated evidence.
+
+## 2026-09-05 — Manual recovery and outcome refinements
+
+- Applied the user-authorized small-improvement list: failed symbols in the existing summary and an alert in the existing token action, informational known signing rejection, a same-height readiness replacement for the retained Unlimited setting, and removal of duplicated completion facts. Expected basket requirements/return remain estimates; no executed amounts or approval-policy changes were introduced.
+- Readiness is derived from sufficient allowances, not a count of successful requests. A mounted finite-allowance journey verifies that setting value and action position survive completion and changed requirements. Keeping visual continuity at the composition owner avoids another shared component variant. No new workflow rule was needed.
+
+## 2026-09-05 — Transaction lab canvas cleanup
+
+- Reproduced section navigation covered by preview descendants and incomplete Stake/Vote Lock backdrop coverage (17px vertical offset on mobile, capped nested host on desktop). Preview-level stacking isolation fixes navigation without a z-index escalation. Flush stages and full-width hosts remove the extra beige gutters; one grid cell keeps backdrop coverage while allowing tall dialog content to determine canvas height. Explicit zero-minimum grid tracks prevent narrow intrinsic-width overflow.
+- Removed Zapper's obsolete 980/760px fixed preview-height rule in favor of a 680px minimum that grows for content. Intentional transaction widths, page caps, internal task spacing and production overlays are unchanged. Browser regressions cover navigation hit-testing, backdrop bounds and tall previews; existing Zapper arrow layering remains covered separately.
+
+## 2026-09-06 — Manual alternate-flow alignment
+
+- User-approved Manual helper copy now says “Want to buy with a single token?” because Zapper may swap or mint. The helper stays left and the existing action aligns to the right 24px content axis, sharing a line when they fit and wrapping naturally when narrow. Redeem inherits the layout with its existing wording; no navigation behavior changed.
+
+## 2026-09-06 — Manual column surface continuity
+
+- Distinguished surface height from content distribution: the desktop left card now fills its grid column, leaving spare space below the unchanged task group. Mobile remains natural-height, and the outcome floor still measures intrinsic task content. No shared defaults changed.
+- Mounted geometry reproduced the old desktop bottom-edge mismatch, then passed with the local background wrapper; existing spacing checks retain the control/content axes across Mint/Redeem and light/dark breakpoints.
+
+## 2026-09-06 — Stable Manual desktop review host
+
+- User review found that content-driven workspace height still shrank between Mint, Redeem and outcomes. The lab now supplies a 720px desktop host, with both columns filling it and scrolling at their outer edges if needed. Content grouping, the 2px seam and natural-height mobile layout remain unchanged; this does not define a production page height.
+- The mounted lifecycle regression failed against the prior 692px Mint height. Coverage now pins desktop height across all 29 states and checks access to the final asset when constrained column width forces overflow.
+
+## 2026-09-06 — Manual outcome evidence and actions
+
+- Corrected a fixture limitation leaking into design: Manual now includes the final Mint/Redeem transaction action as a standard detail row. Its lab action explains the Etherscan destination without inventing a real hash; production must retain its transaction identity through confirmation.
+- Minted/Redeemed leads the result; Basket assets used/received describes the completed operation with a visible Estimated amounts qualifier for fixture quantities and total. View DTF stays primary and Done returns to configuration; internal navigation no longer carries an external arrow. No receipt sourcing, approval policy or production behavior changed.
+
+## 2026-09-06 — Issuance outcomes aligned with Zapper
+
+- Automated and Manual now fill desktop outcome columns with flexible brand space above the amount, not white space below the facts/actions. Automated View DTF uses a full-width default-sized Button at the 8px edge; Manual retains its default-sized Done/View DTF pair.
+- Mint reuses the existing received-DTF bookmark; Redeem does not offer to track burned shares. Automated keeps hash/copy/explorer evidence with icon-only navigation; Manual retains an icon-only simulated explorer action without fabricating a hash. Wallet feedback is lab-only; production integration remains deferred.
+- Focused regression tests first failed for missing wallet actions and the old 24px footer inset. Browser checks cover both operations/families and light/dark at 320, 390, 1024 and 1280px. No production behavior or shared defaults changed.
+
+## 2026-09-06 — Outcome fiat row and blue-region inset
+
+- Corrected Automated's local padding override: the blue region now retains 24px below the fiat row, matching Zapper's 16px amount inset plus 8px wrapper. Flexible space still stays above the amount.
+- Manual Mint/Redeem restores the existing input's indicative share-value estimate below the result amount. The supporting row had been explicitly hidden; its removal was not a result-truth requirement. This is a fixture valuation, not executed cash proceeds.
+- Regression checks first failed for the missing Manual estimate and Automated's 8px inset; coverage includes both themes, four viewport widths and a non-preset Manual amount. No shared defaults or production behavior changed.
+
+## 2026-09-06 — Transaction evidence controls: rejected trial and correction
+
+- Human review rejected the twin 28px quiet copy/explorer trial: equal button boxes did not produce good visible glyph spacing or trailing alignment. The accepted integrated Copyable Value decision already addressed this pressure; nominal geometry tests were not evidence of good composition. The trial is not retained guidance.
+- Manual and Automated now pair default-sized secondary View transaction with primary View DTF in the footer. Automated keeps an inline copyable hash with no adjacent explorer action. Manual keeps its honest explorer simulation and relocates the prior reset to New mint / New redeem in the header. Multi-transaction Delegation retains labeled per-result links; individual CoW order evidence is unchanged.
+- The new regressions failed first for the old detail-row explorer and absent Manual footer. Checks now target copying, footer placement, reset and visible trailing alignment rather than matching ghost-button dimensions. Detail-density proposals remain unimplemented; no shared defaults, transaction mechanics or production behavior changed.
+- Final verification: 50 focused tests and six mounted-browser tests passed, including all 29 Manual states and a non-preset completion/reset journey. Inspected both families/operations in light/dark at desktop and narrow mobile widths. Footer actions wrap naturally when their full labels do not fit; typecheck, scoped lint, wiki lint and diff checks passed.
+
+## 2026-09-06 — Manual dense-row review follow-through
+
+- Revoke now consumes neutral InlineAction, removing the invisible trailing button inset while retaining its help and failure marker. Approve's local soft-blue trial is unchanged. Narrow rows use explicit identity/trailing columns instead of the old identity minimum plus 128px permission slot; units and insufficient-balance wording adapt without adding an error tier. Token explorer addresses retain a readable suffix and full accessible identity.
+- Switch to Zapper now gives a nearby lab-only navigation preview without executing a swap or losing the manual amount. Retry labels state the action while the banner names the failure. Active approvals/mint/redeem show explanatory context instead of stale configuration instructions, with the original description geometry reserved.
+- The navigation-preview and processing-context tests failed before implementation. Existing browser pressure checks caught a long fiat-value wrapping regression; it was fixed rather than weakening the test. The new browser relationship checks cover sibling placement and visible address clipping in addition to viewport containment. Lingui Plural is stubbed by the unit harness, so the recovery label is verified in the mounted journey. No approval policy, financial derivation, shared default, or production flow changed.
+
+## 2026-09-07 — Automated introduction icon fill
+
+- Restored the intended muted circle by wrapping the local HSL-channel token in `hsl()`. The previous raw variable produced a transparent background, leaving invisible 32px geometry. Banner tone, copy, button and shared Inline Message defaults are unchanged. A mounted regression failed for transparency in both themes before the fix and passed afterwards at desktop/mobile widths; inspected the rendered results and updated TEST_MAP.
+
+## 2026-09-07 — Manual Mint section hierarchy
+
+- The lab now separates desired amount, token approvals and final Mint in the left column. Full-width secondary boundaries, 24px heading insets and 8px action edges reuse the established section rhythm. Approve All and Unlimited belong to the middle section; individual ledger actions remain available without a separate mode. Redeem retains its direct action.
+- The final Mint action remains mounted and gated while approvals run. Readiness replaces the approval controls while preserving their geometry, so enabling Mint does not move it. Approval recovery and final-transaction recovery belong to their respective regions. Loading does not expose fixture approval counts prematurely.
+- Verification: 26 focused unit tests and 11 mounted-browser tests passed, including the 29-state lifecycle, non-preset recovery journey, both themes and 320/390/1024/1280px widths. Final screenshots were inspected; typecheck and scoped lint passed. Existing amount locking, per-token pending locks, allowance defaults and production transaction preparation are unchanged. Explicit Edit amount and approval concurrency remain separate follow-ups, not inferred requirements of this layout.
+
+## 2026-09-07 — Manual section refinement against Automated
+
+- The comparison exposed a tradeoff hidden by geometry tests: reserving the entire approval-control group kept Mint stationary but left a poor completed section. The authorized refinement now removes that reservation and compacts completion with 24px bottom inset. The final action stays mounted, follows the completed region, and uses a true 24px summary/action gap without hidden wrapping text. Spare height belongs after the task content.
+- Token readiness now has a separate live status line, counting sufficient allowances including pre-existing approvals. The loading action no longer repeats an attempt-based fraction. Checkbox/action spacing stays 16px; individual approvals, defaults, USDT behavior and reducer rules are unchanged.
+- Manual and Automated now share a 1200px maximum review width and 736px desktop height. Simply shrinking Manual to Automated's former 688px clipped normal task content; the bounded browser check caught this and the common host was sized to fit. These are lab presentation dimensions, not production layout rules.
+- The new unit regression failed before implementation for the missing progress line. Final evidence: 67 focused unit tests, 14 Manual/outcome browser tests and two Automated workspace regressions passed; app/E2E types, scoped lint and wiki/diff checks passed. Light/dark and narrow-screen states were inspected. The local preview stopped during verification and was restarted on port 3005; the initial connection failures were not treated as UI test results.
+
+## 2026-09-08 — Manual hierarchy correction after human review
+
+- Human review rejected the paragraph-led three-section trial: correct inset measurements did not establish a clear hierarchy. The dominant introductory heading and similar-sized title/count/explanation stack failed to transfer Automated's actual composition. The prior rationale against arrows also misread the desired stage relationship; they now explicitly connect Manual's ordered stages without implying asset swaps.
+- Manual now consumes TransactionAmountObject across editable shares, approval progress and final Mint confirmation. Labels share the light 16px role; amounts/counts use the same prominent financial scale and supporting status is 14px. The separate-transactions explanation remains accessible in factual help. Switch to Zapper moved into the first section. Final shares/USD confirm the requested amount and are not an executed result.
+- Automated and Manual share the same local TransactionStageBoundary implementation. Visual inspection caught its circle overlapping the middle approval button at an 8px bottom edge; that boundary now has 24px button clearance, while the terminal footer retains 8px. Ready state removes controls without hidden space. Approval policy, reducer rules and individual ledger actions are unchanged.
+- New regression evidence failed first for missing connected boundaries. Verification covers relative label/value hierarchy, whole-width boundaries, circle centering, button clearance, top-section navigation and tooltip disclosure, not merely token use. The 68 focused unit tests and 11 Manual browser checks passed, including light/dark and narrow screens; typecheck, scoped lint and wiki/diff checks passed. Automated divider extraction is covered by its two existing workspace regressions. Visual approval remains with the user.
+
+## 2026-09-08 — Manual final action simplification
+
+- Human feedback rejected both the repeated final amount/fiat and a second large signing/processing status. The final region now uses a quiet Mint CMC20 heading matching the section-label role. The exact requested amount remains in the input and action; existing button states own wallet signing and confirmation. Outstanding approvals get the approved short prerequisite helper.
+- Visual review rejected reserving that helper's hidden text box: on narrow screens it left a large empty gap. The helper now leaves with its space when no longer needed. Ready, signing and confirming share a compact heading-to-action relationship of 24px; completed approval controls still compact as before. No transaction, allowance, reducer, or shared-default change.
+- Verification: the new presentation assertions failed before implementation, then 34 focused unit tests and eight mounted-browser checks passed, including all 29 Manual states in light/dark at 320/390/1024/1280px and the non-preset recovery journey. Inspected populated, ready, processing and recovery renders. Current contracts and test mapping were reconciled; the change remains lab-only.
+
+## 2026-09-08 — Loading hierarchy and issuance outcome follow-through
+
+- Zapper's existing Sign order state now visibly waits for the wallet using the canonical loading Button. Active primary approvals retain primary emphasis in Manual, Vote Lock, Stake and Automated collateral authorization; the upcoming blocked Mint stays neutral and non-busy. The current decision and composition guidance now supersede the earlier subdued-loading instruction without changing shared Button defaults.
+- Automated outcomes now offer the same quiet header New mint / New redeem action as Manual. Restart clears the input and session choices while retaining operation and chain. The redundant final-transaction hash row is removed; the default-sized footer View transaction remains the sole explorer link for that final transaction. Individual order evidence and links are unchanged.
+- Regression assertions failed before implementation, then 125 focused unit tests and seven browser tests passed. Coverage includes both operations and chains for restart, exact final explorer destinations, loading semantics, header/footer geometry and both themes at mobile/desktop widths. Visually inspected Zapper, Manual, Vote Lock, Stake and Automated outcomes. App/E2E types, scoped lint, extraction, wiki lint and diff checks passed. These are lab presentation changes; approval policy, transaction preparation, production behavior and shared defaults remain unchanged.
+
+## 2026-09-08 — Issuance current-stage emphasis and recovery clarity
+
+- Manual and Automated now use a local label/value emphasis recipe to identify the current task, with matching `aria-current` semantics. Completed content remains readable and neutral; small success checks sit beside normal-foreground confirmation. Structural arrows and section backgrounds stay unchanged. Manual's final heading remains quiet rather than restoring a duplicate amount or processing message.
+- Manual's insufficient-collateral message now belongs beside the amount. Full allowances still show truthful permission completion without implying sufficient balances or highlighting a blocked Mint. Production-supported approval availability, defaults and transaction preparation remain unchanged. Recovery has a measured 16px heading/message gap and 8px message/action gap; ordinary readiness retains 24px. Automated failure no longer falls through to an inaccurate “Orders filled” sublabel, and its stacked swap facts retain their opposite-edge alignment without a vertical divider.
+- Regression assertions failed before implementation. Verification passed 137 focused unit tests and 15 browser checks, covering all 29 Manual states, recovery, both themes and narrow/desktop widths. Inspected approval, ready, insufficient, failure and fill-progress renders. Contracts and TEST_MAP now distinguish permissions, balances and current-task emphasis; no shared defaults or production behavior changed.
+
+## 2026-09-08 — Manual final action-only region
+
+- Human review found the remaining Mint heading redundant with the explicit amount-bearing button. The final region now contains only its action and any applicable recovery message; the separate prerequisite paragraph is also removed. Its accessible section name and current-stage semantics remain. The region owns 24px top inset to clear the structural arrow, 8px side/bottom edges, and an 8px recovery message/action gap. Automated retains its distinct output summary.
+- Eight new/updated assertions failed before implementation; all 40 focused unit tests and 10 browser checks passed afterwards. Browser coverage includes the 29-state Manual lifecycle, stable ready/signing/confirming geometry, recovery, arrow clearance and mobile/light/dark rendering. Inspected ready and failure screenshots; typecheck, scoped lint, extraction and documentation checks passed. No transaction or approval behavior changed.
+
+## 2026-09-08 — Manual readiness-led Mint summary
+
+- The action-only region removed redundancy but failed human review for visual structure. The new local proposal restores label, prominent readiness text, CMC20 mark and explanatory supporting copy, without restoring the repeated numeric amount. It deliberately separates coarse step readiness from the button's exact wallet/chain phase. Empty, blocked and insufficient states cannot claim “Ready to mint”; approval policy and transaction gates are unchanged.
+- The summary uses the existing 24px/30px light section-heading role rather than financial-number styling, the canonical 32px asset mark, and the established 24px text axis. Ordinary explanation/action spacing is 24px; recovery uses 16px to its message and 8px to its button. Current-stage emphasis stays local. Automated retains its numeric output summary.
+- Eleven updated assertions failed before implementation. All 42 focused unit tests and 13 distinct browser checks passed, covering the 29-state Manual lifecycle, recovery, English ready/signing/confirming geometry, light/dark and narrow/desktop views. Added and checked the approved copy in es/ko/zh, including translated-label wrapping. Visually inspected desktop readiness, narrow dark signing, and the longer Spanish summary. App/E2E types, scoped lint, extraction and wiki/diff checks passed; current contracts and TEST_MAP were reconciled without promoting shared defaults.
+
+## 2026-09-08 — Consolidated transaction regression
+
+- Checked the current Zapper, Vote Lock, Stake and Automated/Manual issuance lab as one batch, without promoting entry cards, standalone selection or Portfolio rows. The new browser keyboard check reproduced a Shift+Tab escape from the initially focused Vote Lock/Stake dialog shell; the lab wrapper now contains it and preserves Escape/focus return/reopening.
+- Corrected an obsolete duplicate-expiry browser assertion and isolated the composition unit test's asynchronous image loader after it produced teardown errors. Transaction behavior stays real in those tests; remote artwork and real wallet/RPC behavior remain outside the harness's proof. Reduced-motion checks explicitly cover committed logos and attachments, not the existing shared Button spinner.
+- Final evidence: focused unit 243/243 without unhandled errors; desktop browser 37/37; mobile browser 9/9; types, scoped lint, catalogs, formatting, wiki and diff checks green. Independent intent/risk review and bounded fix re-review passed. Exact evidence and limits are in [the consolidated report](../plans/transaction-consolidated-regression.md). No production mechanics, approval/security policy or shared defaults changed; no commit or push.
+
+## 2026-09-08 — Transaction checkpoint documentation closeout
+
+- The user authorized documentation closeout and a checkpoint after the regression pass. Current Review now explicitly retains a paused transaction checkpoint; the catalog remains exploratory, specimen-only and unadopted. Existing local human decisions remain intact. Entry cards, the standalone static selector, and Portfolio balance/cooldown/withdrawal rows do not gain acceptance; review the latter later with the row/table system in page context.
+- Reconciled stale square-amount, 4px seam, acknowledgement-gap, Manual deferred-coverage and Automated sole-terminal-action claims. Current contracts now route to one checkpoint disposition rather than asking a fresh worker to restart the anchor phase or an open-ended transaction review. No new skill or generic abstraction was needed.
+- Fresh catalog/composition tests 75/75, types, scoped lint/format/wiki/diff checks passed; the mounted client's coverage and selector notes are current. Generated JavaScript catalogs stay local and ignored; tracked PO sources remain authoritative. No production behavior, approval policy or transaction layout changed in this closeout; no push is authorized.
