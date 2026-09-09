@@ -56,6 +56,9 @@ import Discover from './views/home/discover'
 const AsyncMintWizard = lazy(
   () => import('./views/index-dtf/issuance/async-mint')
 )
+const OngoingGovernance = lazy(
+  () => import('./views/explorer/components/governance/ongoing')
+)
 
 // TODO: Fix recoll call on yield dtf auction page
 const AppRoutes = () => (
@@ -176,6 +179,14 @@ const AppRoutes = () => (
       <Route
         path={ROUTES.EXPLORER_GOVERNANCE}
         element={<ExploreGovernance />}
+      />
+      <Route
+        path={ROUTES.EXPLORER_ONGOING_GOVERNANCE}
+        element={
+          <Suspense fallback={<Spinner />}>
+            <OngoingGovernance />
+          </Suspense>
+        }
       />
       <Route path={ROUTES.EXPLORER_REVENUE} element={<AvailableRevenue />} />
     </Route>

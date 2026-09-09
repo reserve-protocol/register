@@ -12186,3 +12186,79 @@ msgstr "Zapper 错误"
 #: src/views/index-dtf/overview/components/zap-mint/zap-healthcheck.tsx:24
 msgid "Zaps are currently experiencing issues"
 msgstr "Zap 当前出现问题"
+
+#: src/views/explorer/components/governance/ongoing/proposal-card.tsx
+msgid "Critical setting"
+msgstr "关键设置"
+
+#: src/views/explorer/components/governance/ongoing/proposal-card.tsx
+msgid "Untitled proposal"
+msgstr "未命名提案"
+
+#: src/views/explorer/components/governance/ongoing/proposal-card.tsx
+msgid "Voting starts"
+msgstr "投票开始"
+
+#: src/views/explorer/components/governance/ongoing/proposal-card.tsx
+msgid "Voting ends"
+msgstr "投票结束"
+
+#: src/views/explorer/components/governance/ongoing/proposal-card.tsx
+msgid "Veto shortfall"
+msgstr "否决票缺口"
+
+#: src/views/explorer/components/governance/ongoing/proposal-card.tsx
+msgid "Quorum shortfall"
+msgstr "法定人数缺口"
+
+#: src/views/explorer/components/governance/ongoing/proposal-card.tsx
+msgid "Additional votes to pass"
+msgstr "通过提案所需的额外票数"
+
+#: src/views/explorer/components/governance/ongoing/proposal-card.tsx
+msgid "Additional votes to defeat"
+msgstr "否决提案所需的额外票数"
+
+#: src/views/explorer/components/governance/ongoing/proposal-card.tsx
+msgid "USD unavailable"
+msgstr "美元价值不可用"
+
+#: src/views/explorer/components/governance/ongoing/proposal-card.tsx
+msgid "Has votes"
+msgstr "是否已有投票"
+
+#: src/views/explorer/components/governance/ongoing/proposal-card.tsx
+msgid "Proposer voted"
+msgstr "提案人是否投票"
+
+#: src/views/explorer/components/governance/ongoing/index.tsx
+msgid "Ongoing Index DTF proposals"
+msgstr "进行中的 Index DTF 提案"
+
+#: src/views/explorer/components/governance/ongoing/index.tsx
+msgid "No ongoing Index DTF proposals"
+msgstr "暂无进行中的 Index DTF 提案"
+
+#: src/views/explorer/components/governance/ongoing/index.tsx
+msgid "Active and pending proposals will appear here."
+msgstr "活跃和待处理的提案将显示在此处。"
+
+#: src/views/explorer/components/governance/ongoing/index.tsx
+msgid "Index DTF discovery is currently unavailable."
+msgstr "当前无法获取 Index DTF 列表。"
+
+#: src/views/explorer/components/governance/ongoing/index.tsx
+msgid "Active and pending proposals across Ethereum, Base, and BSC. Values refresh periodically, and USD estimates use the governance token's underlying asset price."
+msgstr "Ethereum、Base 和 BSC 上的活跃及待处理提案。数据会定期刷新，美元估值使用治理代币底层资产的价格。"
+
+#: src/views/explorer/components/governance/ongoing/index.tsx
+msgid "Proposal data for chain {0} is currently unavailable."
+msgstr "当前无法获取链 {0} 的提案数据。"
+
+#: src/views/explorer/components/governance/ongoing/index.tsx
+msgid "The proposal result limit was reached, so some proposals may be unavailable."
+msgstr "已达到提案结果上限，因此部分提案可能无法显示。"
+
+#: src/views/explorer/components/governance/ongoing/index.tsx
+msgid "The governance query limit was reached, so that chain is not displayed."
+msgstr "已达到治理查询上限，因此不显示该链。"

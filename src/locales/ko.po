@@ -12186,3 +12186,79 @@ msgstr "Zapper 오류"
 #: src/views/index-dtf/overview/components/zap-mint/zap-healthcheck.tsx:24
 msgid "Zaps are currently experiencing issues"
 msgstr "현재 Zap에 문제가 발생하고 있습니다"
+
+#: src/views/explorer/components/governance/ongoing/proposal-card.tsx
+msgid "Critical setting"
+msgstr "주요 설정"
+
+#: src/views/explorer/components/governance/ongoing/proposal-card.tsx
+msgid "Untitled proposal"
+msgstr "제목 없는 제안"
+
+#: src/views/explorer/components/governance/ongoing/proposal-card.tsx
+msgid "Voting starts"
+msgstr "투표 시작"
+
+#: src/views/explorer/components/governance/ongoing/proposal-card.tsx
+msgid "Voting ends"
+msgstr "투표 종료"
+
+#: src/views/explorer/components/governance/ongoing/proposal-card.tsx
+msgid "Veto shortfall"
+msgstr "거부권 부족분"
+
+#: src/views/explorer/components/governance/ongoing/proposal-card.tsx
+msgid "Quorum shortfall"
+msgstr "정족수 부족분"
+
+#: src/views/explorer/components/governance/ongoing/proposal-card.tsx
+msgid "Additional votes to pass"
+msgstr "통과에 필요한 추가 표"
+
+#: src/views/explorer/components/governance/ongoing/proposal-card.tsx
+msgid "Additional votes to defeat"
+msgstr "부결에 필요한 추가 표"
+
+#: src/views/explorer/components/governance/ongoing/proposal-card.tsx
+msgid "USD unavailable"
+msgstr "USD 가치 확인 불가"
+
+#: src/views/explorer/components/governance/ongoing/proposal-card.tsx
+msgid "Has votes"
+msgstr "투표 있음"
+
+#: src/views/explorer/components/governance/ongoing/proposal-card.tsx
+msgid "Proposer voted"
+msgstr "제안자 투표 여부"
+
+#: src/views/explorer/components/governance/ongoing/index.tsx
+msgid "Ongoing Index DTF proposals"
+msgstr "진행 중인 Index DTF 제안"
+
+#: src/views/explorer/components/governance/ongoing/index.tsx
+msgid "No ongoing Index DTF proposals"
+msgstr "진행 중인 Index DTF 제안이 없습니다"
+
+#: src/views/explorer/components/governance/ongoing/index.tsx
+msgid "Active and pending proposals will appear here."
+msgstr "활성 및 대기 중인 제안이 여기에 표시됩니다."
+
+#: src/views/explorer/components/governance/ongoing/index.tsx
+msgid "Index DTF discovery is currently unavailable."
+msgstr "현재 Index DTF 목록을 불러올 수 없습니다."
+
+#: src/views/explorer/components/governance/ongoing/index.tsx
+msgid "Active and pending proposals across Ethereum, Base, and BSC. Values refresh periodically, and USD estimates use the governance token's underlying asset price."
+msgstr "Ethereum, Base 및 BSC의 활성 및 대기 중인 제안입니다. 값은 주기적으로 새로 고쳐지며 USD 추정치는 거버넌스 토큰의 기초 자산 가격을 사용합니다."
+
+#: src/views/explorer/components/governance/ongoing/index.tsx
+msgid "Proposal data for chain {0} is currently unavailable."
+msgstr "현재 체인 {0}의 제안 데이터를 사용할 수 없습니다."
+
+#: src/views/explorer/components/governance/ongoing/index.tsx
+msgid "The proposal result limit was reached, so some proposals may be unavailable."
+msgstr "제안 결과 한도에 도달하여 일부 제안을 사용할 수 없을 수 있습니다."
+
+#: src/views/explorer/components/governance/ongoing/index.tsx
+msgid "The governance query limit was reached, so that chain is not displayed."
+msgstr "거버넌스 쿼리 한도에 도달하여 해당 체인은 표시되지 않습니다."
