@@ -11426,6 +11426,10 @@ msgstr "投票延迟"
 msgid "Voting delay begins"
 msgstr "投票延迟开始"
 
+#: src/views/explorer/components/governance/index.tsx:120
+msgid "Voting Ends"
+msgstr "投票结束"
+
 #: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/form-fields.ts:9
 msgid "Voting delay is required"
 msgstr "投票延迟为必填项"

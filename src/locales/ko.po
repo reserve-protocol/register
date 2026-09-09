@@ -11426,6 +11426,10 @@ msgstr "투표 지연"
 msgid "Voting delay begins"
 msgstr "투표 지연 시작"
 
+#: src/views/explorer/components/governance/index.tsx:120
+msgid "Voting Ends"
+msgstr "투표 종료"
+
 #: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/form-fields.ts:9
 msgid "Voting delay is required"
 msgstr "투표 지연은 필수입니다"
