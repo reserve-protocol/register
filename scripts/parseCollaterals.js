@@ -99,6 +99,10 @@ const protocols = {
     underlying: 'eETH',
     rewardTokens: ['KING'],
   },
+  MORPHOV2: {
+    key: 'MORPHOV2',
+    underlying: 'asset',
+  },
 }
 
 const wrappedTokenMap = {
@@ -155,6 +159,19 @@ const wrappedTokenMap = {
   saEthRLUSD: protocols.AAVEv3,
   wsuperOETHb: protocols.ORIGIN,
   weETH: protocols.ETHERFI,
+  steakUSDCPrime: protocols.MORPHOV2,
+  sentoraPYUSD: protocols.MORPHOV2,
+  gauntletUSDCFrontier: protocols.MORPHOV2,
+  steakUSDTPrime: protocols.MORPHOV2,
+  galaxyUSDTQuality: protocols.MORPHOV2,
+  gauntletUSDCPrime: protocols.MORPHOV2,
+  galaxyUSDCQuality: protocols.MORPHOV2,
+  skyUSDTSavings: protocols.MORPHOV2,
+}
+
+// Register keys everything by symbol, so a plugin whose on-chain symbol collides with a listed one gets its own
+const symbolOverrides = {
+  steakUSDCPrime: 'steakUSDCPrime', // Morpho Vault V2 shares also report `steakUSDC`, the listed V1 symbol
 }
 
 // Default: run all collateral chains - you can comment which chain you want to run
@@ -261,10 +278,12 @@ const chainsMap = [
         address: plugin.erc20,
         abi: collateralAbi,
       }
-      plugin.symbol = await client.readContract({
-        ...erc20Call,
-        functionName: 'symbol',
-      })
+      plugin.symbol =
+        symbolOverrides[collateral] ??
+        (await client.readContract({
+          ...erc20Call,
+          functionName: 'symbol',
+        }))
       plugin.decimals = await client.readContract({
         ...erc20Call,
         functionName: 'decimals',
@@ -310,6 +329,15 @@ const chainsMap = [
 
       console.log(`${collateral} parsed...`)
       plugins.push(plugin)
+    }
+
+    const duplicates = plugins
+      .map((p) => p.symbol)
+      .filter((symbol, i, all) => all.indexOf(symbol) !== i)
+    if (duplicates.length) {
+      throw new Error(
+        `Duplicate symbols on ${data.prefix}: ${duplicates.join(', ')} - add a symbolOverrides entry`
+      )
     }
 
     const path = `${OUTPUT_PATH}${data.prefix}.json`

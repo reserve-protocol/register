@@ -1,7 +1,6 @@
 ---
 title: Log
-updated: 2026-08-19
-updated: 2026-08-18
+updated: 2026-09-10
 type: log
 ---
 
@@ -140,3 +139,10 @@ Play-by-play lives in git (PRs #1053/#1054/#1055/#1063, SDK PR #27). Durable out
 - Register's local area-guide drift detection (`scope.mjs` `area-guide:` lines) was upstreamed into the kit (now AGENTS.md/CLAUDE.md-aware, with a kit test) instead of being clobbered by the wholesale update; the kit had already absorbed the wiki-lint duplicate-key check and the one-line comment rules. Zero local rules lost.
 - Kit installer gap found and fixed upstream: skills reference `templates/{design,evaluation,evidence,verification}` in-repo but the installer never shipped them; they are now kit-owned dirs and live at `templates/` here.
 - All Overrides in [[project]] re-checked: none absorbed, all stand. Config schema unchanged. Chatty's capsule pilot is explicitly Chatty-only and was not ported; chatty itself is behind the current kit.
+
+## 2026-09-10
+
+- Listed the 8 Morpho Vault V2 mainnet plugins from protocol PR #1291 (Steakhouse Prime USDC/USDT, Sentora PYUSD, Gauntlet USDC Frontier/Prime, Galaxy USDC/USDT Quality, sky.money USDT Savings) through the usual data flow: source JSON → `parseCollaterals` (mainnet only, public RPC swapped locally) → generated plugin JSON → display names → DefiLlama pool ids → in-repo CMS → curator logos. No wrapping code: V2 shares are held directly (`GENERIC`).
+- V2 "Steakhouse Prime USDC" shares the on-chain symbol `steakUSDC` with the V1 plugin still in USD3/USDC+, and every register lookup is symbol-keyed. Resolved (Juampi): the V2 plugin is listed as `steakUSDCPrime` via a new `symbolOverrides` map in `parseCollaterals` (which now throws on duplicate symbols; a unit test guards the committed data), and `rTokenAtom` resolves a basket's plugin by erc20 (`getPluginByErc20`) before falling back to symbol. The subgraph/calldata-fed sites (`useTokenList`, historical APY chart, governance `getTokensMeta`/`targetUnit`) resolve through the same helper, which also removed the checksum-sensitive `collateralsMap` lookup. The flow lives in [[yield-protocol]] § Listing a collateral plugin; the Notion page is stale.
+- Deploy-modal collateral search only matched `targetName+symbol`, so "morpho"/"aave" found nothing although the rows display those names; the filter now also includes the `collateralDisplay` name (placeholder copy unchanged).
+- Wrapping enabled for the V2 vaults (Juampi's call; V1 rows stay GENERIC): new `MORPHOV2` protocol on the shared ERC-4626 deposit/redeem case, verified on chain that V2 exposes `asset`/`previewDeposit`/`previewRedeem` (only `maxDeposit` is 0). With the symbol override the V1 `steakUSDC` in USD3/USDC+ stays GENERIC and gets no wrap row; the group label stays `Morpho Vaults`.

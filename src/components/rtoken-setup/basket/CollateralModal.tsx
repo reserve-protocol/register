@@ -15,6 +15,7 @@ import {
 import CustomCollateral from './CustomCollateral'
 import PluginItem from './PluginItem'
 import collateralPlugins from 'utils/plugins'
+import { collateralDisplay } from 'utils/constants'
 import { chainIdAtom } from 'state/atoms'
 import { SearchInput } from '@/components/ui/input'
 
@@ -104,11 +105,13 @@ const CollateralModal = ({
   }
 
   const filteredCollaterals = useMemo(() => {
+    const query = search.toLowerCase()
+
     return Object.values<Collateral | CollateralPlugin>(collaterals).filter(
       (plugin) =>
-        `${plugin.targetName}${plugin.symbol}`
+        `${plugin.targetName}${plugin.symbol} ${collateralDisplay[plugin.symbol.toLowerCase()] ?? ''}`
           .toLowerCase()
-          .includes(search.toLowerCase())
+          .includes(query)
     )
   }, [collaterals, search])
 
