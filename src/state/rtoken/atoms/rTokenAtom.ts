@@ -11,7 +11,6 @@ import { collateralDisplay } from 'utils/constants'
 import { collateralsProtocolMap, getPluginByErc20 } from 'utils/plugins'
 import { Address, formatEther, hexToString } from 'viem'
 import { readContracts } from 'wagmi/actions'
-import { base } from 'wagmi/chains'
 
 // RToken meta, pulled directly from the listed list or validated for unlisted tokens
 // Tokens without "logo" are unlisted

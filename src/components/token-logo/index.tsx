@@ -28,6 +28,9 @@ interface Props extends React.ImgHTMLAttributes<HTMLImageElement> {
 const TokenLogo = React.forwardRef<HTMLImageElement, Props>((props, ref) => {
   const indexDTFIcons = useAtomValue(indexDTFIconsAtom)
   const [routeCache, setRouteCache] = useAtom(routeCacheAtom)
+  // Read through a ref: depending on the shared cache would re-run every logo on each cache write
+  const routeCacheRef = React.useRef(routeCache)
+  routeCacheRef.current = routeCache
   const {
     symbol,
     size = 'md',
@@ -45,7 +48,7 @@ const TokenLogo = React.forwardRef<HTMLImageElement, Props>((props, ref) => {
   const h = height || sizeMap[size].height
   const w = width || sizeMap[size].width
   const [currentSrc, setCurrentSrc] = React.useState('')
-  const [isWrapped, setIsWrapped] = React.useState(false)
+  const [, setIsWrapped] = React.useState(false)
 
   const tryLoadImage = async (url: string): Promise<string> => {
     return new Promise((resolve, reject) => {
@@ -70,14 +73,17 @@ const TokenLogo = React.forwardRef<HTMLImageElement, Props>((props, ref) => {
     })
   }
 
-  const cacheUrl = (url: string) => {
-    if (address && chain) {
-      setRouteCache((prev) => ({
-        ...prev,
-        [`${address.toLowerCase()}-${chain}`]: url,
-      }))
-    }
-  }
+  const cacheUrl = React.useCallback(
+    (url: string) => {
+      if (address && chain) {
+        setRouteCache((prev) => ({
+          ...prev,
+          [`${address.toLowerCase()}-${chain}`]: url,
+        }))
+      }
+    },
+    [address, chain, setRouteCache]
+  )
 
   const loadImage = React.useCallback(async () => {
     try {
@@ -91,8 +97,9 @@ const TokenLogo = React.forwardRef<HTMLImageElement, Props>((props, ref) => {
       // check cache first
       if (address && chain) {
         const cacheKey = `${address.toLowerCase()}-${chain}`
-        if (routeCache[cacheKey]) {
-          setCurrentSrc(routeCache[cacheKey])
+        const cached = routeCacheRef.current[cacheKey]
+        if (cached) {
+          setCurrentSrc(cached)
           return
         }
       }
@@ -147,7 +154,7 @@ const TokenLogo = React.forwardRef<HTMLImageElement, Props>((props, ref) => {
           setCurrentSrc(url)
           setIsWrapped(true)
           return
-        } catch (error) {
+        } catch {
           console.debug(`Failed to load dexscreener image for ${address}`)
         }
       }
@@ -160,7 +167,7 @@ const TokenLogo = React.forwardRef<HTMLImageElement, Props>((props, ref) => {
           cacheUrl(url)
           setCurrentSrc(url)
           return
-        } catch (error) {
+        } catch {
           console.debug(`Failed to load smoldapp image for ${address}`)
         }
 
@@ -173,7 +180,7 @@ const TokenLogo = React.forwardRef<HTMLImageElement, Props>((props, ref) => {
             cacheUrl(url)
             setCurrentSrc(url)
             return
-          } catch (error) {
+          } catch {
             console.debug(`Failed to load trust wallet image for ${address}`)
           }
         }
@@ -184,7 +191,7 @@ const TokenLogo = React.forwardRef<HTMLImageElement, Props>((props, ref) => {
           cacheUrl(url)
           setCurrentSrc(url)
           return
-        } catch (error) {
+        } catch {
           console.debug(`Failed to load llama image for ${address}`)
         }
       }
@@ -194,7 +201,7 @@ const TokenLogo = React.forwardRef<HTMLImageElement, Props>((props, ref) => {
       console.debug('Failed to load token logo:', error)
       setCurrentSrc('/svgs/defaultLogo.svg')
     }
-  }, [propsSrc, symbol, address, chain, h, w])
+  }, [propsSrc, symbol, address, chain, h, w, cacheUrl, indexDTFIcons])
 
   React.useEffect(() => {
     setCurrentSrc('')

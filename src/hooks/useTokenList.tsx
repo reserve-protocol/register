@@ -148,7 +148,7 @@ const useTokenList = () => {
       (chain) => data?.[chain]?.tokens?.map((token: any) => token.id) ?? []
     )
     return [_calls, _rTokenAddresses]
-  }, [data, supportedChainList])
+  }, [data])
 
   const { data: collateralized }: { data: boolean[] | undefined } =
     useWatchReadContracts({
@@ -267,7 +267,14 @@ const useTokenList = () => {
 
       setList(tokens)
     }
-  }, [data, collateralYield, currentRsrPrice, collateralized, rTokenAddresses])
+  }, [
+    data,
+    collateralYield,
+    currentRsrPrice,
+    collateralized,
+    rTokenAddresses,
+    setList,
+  ])
 
   return { list, isLoading }
 }

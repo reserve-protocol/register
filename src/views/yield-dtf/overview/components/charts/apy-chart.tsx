@@ -85,7 +85,7 @@ const APYChart = ({ className }: { className?: string }) => {
   const currentYields = useAtomValue(estimatedApyAtom)
   const [current, setCurrent] = useState(TIME_RANGES.MONTH)
   const fromTime = useTimeFrom(current)
-  const [selectedOption, setSelectedOption] = useState<APYOptions>('rTokenAPY')
+  const [selectedOption] = useState<APYOptions>('rTokenAPY')
 
   const { data: historicalBaskets } = useQuery(
     rToken ? historicalBasketsQuery : null,
@@ -129,7 +129,7 @@ const APYChart = ({ className }: { className?: string }) => {
           .filter((c: any) => symbolMap[c.toLowerCase()] !== undefined)
       ),
     ],
-    [baskets, symbolMap]
+    [baskets]
   )
 
   const { data: historicalAPY } = useMultiFetch(

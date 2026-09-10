@@ -1,6 +1,6 @@
 import { atom } from 'jotai'
 import { chainIdAtom, rTokenAssetsAtom, rTokenAtom } from 'state/atoms'
-import { CollateralPlugin, ProtocolKey, StringMap } from 'types'
+import { CollateralPlugin, StringMap } from 'types'
 import collateralPlugins from 'utils/plugins'
 
 const protocolLabels: StringMap = {

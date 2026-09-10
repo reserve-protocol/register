@@ -1,4 +1,3 @@
-import { AvailableChain } from '@/utils/chains'
 import type { IndexDtfData } from '@reserve-protocol/react-sdk'
 import { Address, Hex } from 'viem'
 
