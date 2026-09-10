@@ -84,24 +84,19 @@ export const collateralsProtocolMap: {
   ),
 }
 
-export const collateralsMap = Object.keys(collateralPlugins).reduce(
-  (acc, chain) => {
-    const chainId = Number(chain)
-    if (!acc[chainId]) {
-      acc[chainId] = {}
-    }
+const pluginsByErc20: { [chainId: number]: Record<string, CollateralPlugin> } =
+  Object.fromEntries(
+    Object.entries(collateralPlugins).map(([chainId, plugins]) => [
+      chainId,
+      Object.fromEntries(plugins.map((p) => [p.erc20.toLowerCase(), p])),
+    ])
+  )
 
-    return {
-      ...acc,
-      [chain]: collateralPlugins[chainId].reduce((acc, plugin) => {
-        return {
-          ...acc,
-          [plugin.erc20]: plugin,
-        }
-      }),
-    }
-  },
-  {} as { [chainId: number]: Record<string, CollateralPlugin> }
-)
+// Symbols are not unique on chain (Morpho V1/V2 vaults both report `steakUSDC`); the erc20 is
+export const getPluginByErc20 = (
+  chainId: number,
+  erc20: string
+): CollateralPlugin | undefined =>
+  pluginsByErc20[chainId]?.[erc20.toLowerCase()]
 
 export default collateralPlugins

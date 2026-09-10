@@ -320,6 +320,10 @@ export const SVGS = new Set([
   'weeth',
   'king',
   'usdi',
+  'steakusdcprime',
+  'steakusdt',
+  'gtusdcf',
+  'gtusdcp',
 ])
 
 export const PNGS = new Set([
@@ -349,6 +353,10 @@ export const PNGS = new Set([
   'wtao',
   'glwon',
   'tsemon',
+  'senpyusdmain',
+  'gusdcq',
+  'gusdtq',
+  'skymoneyusdtsavings',
 ])
 
 export const WEBP = new Set([

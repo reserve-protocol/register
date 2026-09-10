@@ -18,6 +18,7 @@ const protocolLabels: StringMap = {
   SKY: 'Sky Protocol',
   ORIGIN: 'Origin Protocol',
   ETHERFI: 'Ether.fi',
+  MORPHOV2: 'Morpho Vaults',
 }
 
 // TODO: Remove when this collaterals are swapped from current listed RTokens
