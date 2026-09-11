@@ -18,8 +18,9 @@ import {
 } from '@reserve-protocol/dtf-chat'
 import '@reserve-protocol/dtf-chat/styles.css'
 import './overrides.css'
+import { useDraggableLauncher } from './use-draggable-launcher'
 import { useAtomValue } from 'jotai'
-import { forwardRef } from 'react'
+import { forwardRef, useRef } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 
 // Public Turnstile site key for the chat.reserve.org deployment (paired with
@@ -105,6 +106,12 @@ const DtfChat = forwardRef<ReserveChatHandle, DtfChatProps>(function DtfChat(
   const gap = isDesktop ? 24 : 12
   const bottomOffset = gap
   const rightOffset = gap
+  const launcherContainerRef = useRef<HTMLDivElement>(null)
+  useDraggableLauncher(
+    launcherContainerRef,
+    !embedded &&
+      !(isIndexDtfOverviewPathname(pathname) && isLargeDesktop)
+  )
 
   const dtfContext: DtfContext | undefined = onDtf
     ? {
@@ -141,6 +148,7 @@ const DtfChat = forwardRef<ReserveChatHandle, DtfChatProps>(function DtfChat(
 
   return (
     <div
+      ref={launcherContainerRef}
       className={cn(
         // The overview's floating action bar carries its own chat button up to
         // xl, where the rail embeds the chat — no launcher on that route. Other
