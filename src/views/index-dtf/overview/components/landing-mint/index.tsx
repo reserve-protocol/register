@@ -146,10 +146,11 @@ const InlineSwapBox = () => {
         </Alert>
       ) : (
         isLargeDesktop && (
-          // Zero the package's tabpanel mt-2: nothing sits above it here.
+          // Zero the package's tabpanel mt-2 only when it leads: an alert above
+          // it (low liquidity, healthcheck) needs that gap back.
           <div
             data-testid="overview-inline-zapper"
-            className="[&_[role=tabpanel]]:mt-0"
+            className="[&_[role=tabpanel]:first-child]:mt-0"
           >
             <ZapperWrapper
               chain={dtf.chainId}
