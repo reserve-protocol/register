@@ -37,6 +37,7 @@ interface BridgeInfoDialogProps {
     bridge: Bridge
     mapping: {
       symbol?: string
+      ticker?: string
       wrappedVersion?: boolean
     }
   } | null
@@ -178,7 +179,13 @@ const BridgeInfoDialog = ({
                     {native.address
                       ? shortenAddress(native.address)
                       : isExchange
-                        ? formatExchangeSymbol(exchangeTokenSymbol, exchangeLabel)
+                        ? formatExchangeSymbol(
+                            {
+                              symbol: exchangeTokenSymbol,
+                              ticker: mapping.ticker,
+                            },
+                            exchangeLabel
+                          )
                         : t`Native L1 Asset`}
                   </span>
                 </div>
