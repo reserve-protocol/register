@@ -1,7 +1,6 @@
 ---
 title: Log
-updated: 2026-08-19
-updated: 2026-08-18
+updated: 2026-09-11
 type: log
 ---
 
@@ -140,3 +139,7 @@ Play-by-play lives in git (PRs #1053/#1054/#1055/#1063, SDK PR #27). Durable out
 - Register's local area-guide drift detection (`scope.mjs` `area-guide:` lines) was upstreamed into the kit (now AGENTS.md/CLAUDE.md-aware, with a kit test) instead of being clobbered by the wholesale update; the kit had already absorbed the wiki-lint duplicate-key check and the one-line comment rules. Zero local rules lost.
 - Kit installer gap found and fixed upstream: skills reference `templates/{design,evaluation,evidence,verification}` in-repo but the installer never shipped them; they are now kit-owned dirs and live at `templates/` here.
 - All Overrides in [[project]] re-checked: none absorbed, all stand. Config schema unchanged. Chatty's capsule pilot is explicitly Chatty-only and was not ported; chatty itself is behind the current kit.
+
+## 2026-09-11
+
+- The floating Ask Reserve AI launcher now supports pointer dragging inside the viewport without opening the panel; ordinary activation still opens chat, and arrow keys provide a non-drag repositioning path. The behavior stays local to Register's existing `dtf-chat` compatibility wrapper because package 0.0.7 exposes no launcher-drag API. Desktop mouse and mobile touch/CDP Playwright coverage pins movement, edge clamping, touch cancellation, keyboard movement, and click/Enter activation.

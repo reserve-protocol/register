@@ -69,6 +69,7 @@ the directory).
 
 Cross-cutting offline renders reused as the fast gate (`pnpm e2e:smoke`), not
 additional state coverage: [boot](tests/smoke/boot.spec.ts) (home shell),
+[chat-launcher](tests/smoke/chat-launcher.spec.ts) (desktop/mobile drag, viewport clamp, keyboard move, activation),
 [home](tests/smoke/home.spec.ts) (discover table), [overview](tests/smoke/overview.spec.ts)
 (×3 chains), [dtf-data](tests/smoke/dtf-data.spec.ts), [issuance](tests/smoke/issuance.spec.ts),
 [zap](tests/smoke/zap.spec.ts), [governance](tests/smoke/governance.spec.ts),
