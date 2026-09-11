@@ -71,7 +71,7 @@ export const ExposureTableRows = ({
                       )}
                     </span>
                     <span className="block max-w-48 break-words text-[10px] font-normal text-legend sm:text-xs md:max-w-72 lg:max-w-80">
-                      {formatExchangeSymbol(token.symbol, exchange)}
+                      {formatExchangeSymbol(token, exchange)}
                     </span>
                   </div>
                 </div>

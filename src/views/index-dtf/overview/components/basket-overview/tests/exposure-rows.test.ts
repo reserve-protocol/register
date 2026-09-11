@@ -1,7 +1,11 @@
 import { ExposureGroup } from '@/state/dtf/atoms'
 import { formatMarketCap } from '@/utils'
 import { describe, expect, it } from 'vitest'
-import { ExposureRow, getExposureMarketCap } from '../exposure-rows'
+import {
+  ExposureRow,
+  formatExchangeSymbol,
+  getExposureMarketCap,
+} from '../exposure-rows'
 
 const makeGroup = (partial: Partial<ExposureGroup>): ExposureGroup =>
   ({ tokens: [], totalWeight: 0, ...partial }) as ExposureGroup
@@ -76,5 +80,22 @@ describe('getExposureMarketCap', () => {
 
   it('treats a zero market cap as missing', () => {
     expect(getExposureMarketCap(tokenRow('0xabc', 0), {})).toBeUndefined()
+  })
+})
+
+describe('formatExchangeSymbol', () => {
+  it('prefers the api ticker over the on-chain symbol', () => {
+    expect(
+      formatExchangeSymbol({ symbol: 'AAPLc', ticker: 'AAPL' }, 'NASDAQ')
+    ).toBe('NASDAQ: $AAPL')
+    expect(
+      formatExchangeSymbol({ symbol: 'GLWon', ticker: 'GLW' }, 'NYSE')
+    ).toBe('NYSE: $GLW')
+  })
+
+  it('strips the Ondo suffix when the payload has no ticker', () => {
+    expect(formatExchangeSymbol({ symbol: 'MRVLon' }, 'NASDAQ')).toBe(
+      'NASDAQ: $MRVL'
+    )
   })
 })
