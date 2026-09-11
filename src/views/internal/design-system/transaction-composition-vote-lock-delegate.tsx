@@ -22,7 +22,7 @@ import {
   DialogTitle,
 } from '@/components/dialog'
 import { IconButton } from '@/components/icon-button'
-import { v1SemanticRecipes as roles } from '@/components/ui/v1-semantic-recipes'
+import { v1SemanticRoles as roles } from '@/components/design-system-v1/semantic-roles'
 import { cn } from '@/lib/utils'
 import { shortenAddress } from '@/utils'
 

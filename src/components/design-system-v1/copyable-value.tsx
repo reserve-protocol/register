@@ -12,7 +12,7 @@ import {
 } from '@/components/ui/tooltip'
 import { cn } from '@/lib/utils'
 import { isAddress, shortenAddress } from '@/utils'
-import { candidateSemanticRoles as roles } from './semantic-roles'
+import { v1SemanticRoles as roles } from '@/components/design-system-v1/semantic-roles'
 import { tooltipSurfaceRecipe } from './tooltip-surface'
 
 export interface CopyableValueProps {

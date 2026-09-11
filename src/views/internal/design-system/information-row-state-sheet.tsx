@@ -54,51 +54,56 @@ const InformationRowStateSheet = () => (
     </div>
 
     <div
-      className="overflow-hidden bg-card"
+      className="overflow-x-auto bg-card"
       data-testid="canonical-index-data-slice"
+      tabIndex={0}
+      role="region"
+      aria-labelledby="information-row-state-sheet-title"
     >
-      <div className="grid grid-cols-[minmax(14rem,1fr)_5.5rem_7rem_6.5rem] items-center gap-4 px-6 py-3 text-sm font-light text-muted-foreground">
-        <span>Exposure</span>
-        <span className="text-right">Weight</span>
-        <span className="text-right">30d change</span>
-        <span className="text-right">Market cap</span>
-      </div>
-      <div className="px-6 pb-6">
-        {ROWS.map((row) => (
-          <div
-            key={row.symbol}
-            className="grid min-h-16 grid-cols-[minmax(14rem,1fr)_5.5rem_7rem_6.5rem] items-center gap-4"
-          >
-            <EntityIdentity
-              className="max-w-full"
-              mark={
-                <TokenLogo
-                  src={row.logo}
-                  symbol={row.symbol.slice(1)}
-                  size="xl"
-                  chain={ChainId.BSC}
-                  alt={row.name}
-                />
-              }
-              name={row.name}
-              supporting={row.symbol}
-            />
-            <MetricValue align="end">{row.weight}</MetricValue>
-            <MetricValue
-              align="end"
-              className={
-                row.direction === 'positive'
-                  ? PERFORMANCE_TEXT_CLASSES.positive
-                  : row.direction === 'negative'
-                    ? PERFORMANCE_TEXT_CLASSES.negative
-                    : 'text-muted-foreground'
-              }
+      <div className="min-w-[39rem]">
+        <div className="grid grid-cols-[minmax(14rem,1fr)_5.5rem_7rem_6.5rem] items-center gap-4 px-6 py-3 text-sm font-light text-muted-foreground">
+          <span>Exposure</span>
+          <span className="text-right">Weight</span>
+          <span className="text-right">30d change</span>
+          <span className="text-right">Market cap</span>
+        </div>
+        <div className="px-6 pb-6">
+          {ROWS.map((row) => (
+            <div
+              key={row.symbol}
+              className="grid min-h-16 grid-cols-[minmax(14rem,1fr)_5.5rem_7rem_6.5rem] items-center gap-4"
             >
-              {row.performance}
-            </MetricValue>
-            <MetricValue align="end">{row.marketCap}</MetricValue>
-          </div>
-        ))}
+              <EntityIdentity
+                className="max-w-full"
+                mark={
+                  <TokenLogo
+                    src={row.logo}
+                    symbol={row.symbol.slice(1)}
+                    size="xl"
+                    chain={ChainId.BSC}
+                    alt={row.name}
+                  />
+                }
+                name={row.name}
+                supporting={row.symbol}
+              />
+              <MetricValue align="end">{row.weight}</MetricValue>
+              <MetricValue
+                align="end"
+                className={
+                  row.direction === 'positive'
+                    ? PERFORMANCE_TEXT_CLASSES.positive
+                    : row.direction === 'negative'
+                      ? PERFORMANCE_TEXT_CLASSES.negative
+                      : 'text-muted-foreground'
+                }
+              >
+                {row.performance}
+              </MetricValue>
+              <MetricValue align="end">{row.marketCap}</MetricValue>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   </section>

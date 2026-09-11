@@ -1,6 +1,5 @@
-import { candidateSemanticRoles as roles } from '@/components/design-system-v1/semantic-roles'
+import { v1SemanticRoles as roles } from '@/components/design-system-v1/semantic-roles'
 import { v1Typography } from '@/components/design-system-v1/typography'
-import { v1SemanticRecipes } from '@/components/ui/v1-semantic-recipes'
 import { cn } from '@/lib/utils'
 import {
   CircleAlert,
@@ -183,7 +182,7 @@ export const InlineMessageDescription = React.forwardRef<
     ref={ref}
     className={cn(
       v1Typography.supporting,
-      v1SemanticRecipes.text.supporting,
+      roles.text.supporting,
       '[&_a]:font-medium [&_a]:text-foreground [&_a]:underline [&_a]:underline-offset-2',
       className
     )}

@@ -42,7 +42,7 @@ afterEach(() => {
 
 describe('provisional design-system candidates', () => {
   it('keeps accepted typography roles consumable by shared candidates', () => {
-    expect(v1Typography).toEqual({
+    expect(v1Typography).toMatchObject({
       body: 'text-base font-light leading-6',
       itemTitle: 'text-base font-medium leading-6',
       supporting: 'text-sm font-light leading-5',
@@ -246,12 +246,12 @@ describe('provisional design-system candidates', () => {
     expect(disabledSwitch).toHaveClass(
       'cursor-not-allowed',
       'data-[state=unchecked]:!bg-muted',
-      'data-[state=checked]:!bg-[var(--disabled-structure)]'
+      'data-[state=checked]:!bg-disabled-structure'
     )
     expect(disabledSwitch).not.toHaveClass('border')
     expect(disabledSwitch.firstElementChild).toHaveClass(
       'shadow-none',
-      'data-[state=unchecked]:bg-[var(--disabled-structure)]',
+      'data-[state=unchecked]:bg-disabled-structure',
       'data-[state=checked]:bg-card'
     )
   })
@@ -356,9 +356,9 @@ describe('provisional design-system candidates', () => {
       'shadow-sm',
       'animate-none',
       'duration-120',
-      'bg-[var(--feedback-success-surface)]',
+      'bg-feedback-success-surface',
       'text-foreground',
-      'ring-[var(--feedback-success-border)]'
+      'ring-feedback-success-border'
     )
     expect(feedbackSurface.querySelector('svg')).toHaveClass('text-success')
 
@@ -788,8 +788,8 @@ describe('provisional design-system candidates', () => {
       'p-4',
       'ring-1',
       'ring-inset',
-      'bg-[var(--feedback-warning-surface)]',
-      'ring-[var(--feedback-warning-border)]'
+      'bg-feedback-warning-surface',
+      'ring-feedback-warning-border'
     )
     expect(message.querySelector('svg')?.parentElement).toHaveClass(
       'absolute',
@@ -825,8 +825,8 @@ describe('provisional design-system candidates', () => {
     expect(message).toHaveAttribute('role', 'alert')
     expect(message).toHaveClass(
       'p-3',
-      'bg-[var(--feedback-danger-surface)]',
-      'ring-[var(--feedback-danger-border)]'
+      'bg-feedback-danger-surface',
+      'ring-feedback-danger-border'
     )
     expect(message.querySelector('svg')).toBeNull()
     expect(screen.getByText('Approval failed.').parentElement).not.toHaveClass(

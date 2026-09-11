@@ -32,14 +32,20 @@ import TabsStateSheet from './tabs-state-sheet'
 import TextAreaStateSheet from './textarea-state-sheet'
 import TransactionTruthSpectrum from './transaction-truth-spectrum'
 
-const ComponentVisualOutput = ({ itemId }: { itemId: string }) => {
+const ComponentVisualOutput = ({
+  itemId,
+  autoFocus = false,
+}: {
+  itemId: string
+  autoFocus?: boolean
+}) => {
   if (itemId === 'button') return <ButtonStateSheet />
   if (itemId === 'transaction-action') return <TransactionTruthSpectrum />
   if (itemId === 'accordion') return <AccordionStateSheet />
   if (itemId === 'collapsible') return <CollapsibleStateSheet />
   if (itemId === 'icon-button') return <IconButtonStateSheet />
   if (itemId === 'button-group') return <ActionGroupStateSheet />
-  if (itemId === 'checkbox') return <CheckboxStateSheet />
+  if (itemId === 'checkbox') return <CheckboxStateSheet autoFocus={autoFocus} />
   if (itemId === 'dialog') return <DialogStateSheet />
   if (itemId === 'drawer') return <DrawerStateSheet />
   if (itemId === 'badge') return <LifecycleStatusStateSheet />

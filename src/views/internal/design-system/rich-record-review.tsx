@@ -3,7 +3,7 @@ import { Metric } from '@/components/metric'
 import { v1LayoutRecipes } from '@/components/ui/v1-layout-recipes'
 import { cn } from '@/lib/utils'
 import { PERFORMANCE_TEXT_CLASSES } from '@/utils/chart-performance-colors'
-import { candidateSemanticRoles as roles } from './candidate-semantic-roles'
+import { v1SemanticRoles as roles } from '@/components/design-system-v1/semantic-roles'
 import GovernanceProposalStateReview from './governance-proposal-state-review'
 import { LifecycleStatusPill } from '@/components/lifecycle-status'
 
@@ -285,7 +285,7 @@ const RebalanceRecordTitle = ({
   >
     <h4
       className={cn(
-        'min-w-0 flex-[1_1_16rem] text-base font-medium leading-6 group-hover:text-primary',
+        'min-w-0 flex-[1_1_16rem] text-base font-medium leading-6 text-foreground',
         selected && 'text-primary'
       )}
     >

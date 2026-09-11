@@ -1,0 +1,169 @@
+{
+  "recordedAt": "2026-09-09T20:15:21.010Z",
+  "scope": "Exploratory Holdings candidate with Portfolio keyboard regressions; no production adoption",
+  "sourceBoundary": "Public digest compared before/after each case; no private environment hash retained. Preview process startup and dependencies are not source-attested.",
+  "result": {
+    "startTime": "2026-09-09T20:14:08.776Z",
+    "duration": 53101.687000000005,
+    "expected": 8,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "cases": [
+    {
+      "name": "holdings family light 320",
+      "status": "passed",
+      "sourceDigest": "080bc44d1f26ecfb9147f5378b5209b83dad14f6501fb4951aae33bfa308bc44",
+      "observations": []
+    },
+    {
+      "name": "holdings family light 375",
+      "status": "passed",
+      "sourceDigest": "080bc44d1f26ecfb9147f5378b5209b83dad14f6501fb4951aae33bfa308bc44",
+      "observations": []
+    },
+    {
+      "name": "holdings family light 1400",
+      "status": "passed",
+      "sourceDigest": "080bc44d1f26ecfb9147f5378b5209b83dad14f6501fb4951aae33bfa308bc44",
+      "observations": []
+    },
+    {
+      "name": "holdings family dark 320",
+      "status": "passed",
+      "sourceDigest": "080bc44d1f26ecfb9147f5378b5209b83dad14f6501fb4951aae33bfa308bc44",
+      "observations": []
+    },
+    {
+      "name": "holdings family dark 375",
+      "status": "passed",
+      "sourceDigest": "080bc44d1f26ecfb9147f5378b5209b83dad14f6501fb4951aae33bfa308bc44",
+      "observations": []
+    },
+    {
+      "name": "holdings family dark 1400",
+      "status": "passed",
+      "sourceDigest": "080bc44d1f26ecfb9147f5378b5209b83dad14f6501fb4951aae33bfa308bc44",
+      "observations": []
+    },
+    {
+      "name": "table hardening light",
+      "status": "passed",
+      "sourceDigest": "080bc44d1f26ecfb9147f5378b5209b83dad14f6501fb4951aae33bfa308bc44",
+      "observations": []
+    },
+    {
+      "name": "table hardening dark",
+      "status": "passed",
+      "sourceDigest": "080bc44d1f26ecfb9147f5378b5209b83dad14f6501fb4951aae33bfa308bc44",
+      "observations": []
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "holdings-family-light-320-exposure.png",
+      "sha256": "60b18b9a9b5d82d5093a678051e9bbe1bbf26f7c71178d56c7be34567f41e6df"
+    },
+    {
+      "path": "holdings-family-light-320-collateral.png",
+      "sha256": "e657043766af2a24dabceb46eb020e2b0d33c8ac62db2b977a0e7cf968d80390"
+    },
+    {
+      "path": "holdings-family-light-320-long-content.png",
+      "sha256": "7f779a93cb8c9eab8f5eb76d18a81e9b66d09afc0651e99fabc31a551510ce2e"
+    },
+    {
+      "path": "holdings-family-light-375-exposure.png",
+      "sha256": "d5328865e1b29d1ef7ea7acafc06708509d22f87a0271b011aea4d35ec1f84dc"
+    },
+    {
+      "path": "holdings-family-light-375-collateral.png",
+      "sha256": "9c89f6484e19b041ffce2f63cbdc86a2c7becc3563af1d4eddd7f62f0a97eef1"
+    },
+    {
+      "path": "holdings-family-light-375-new-asset.png",
+      "sha256": "dde7fa089ffb2965fae050cda8324bc04ee6a05697c72cb7d2138fca4d39b9c3"
+    },
+    {
+      "path": "holdings-family-light-375-performance-loading.png",
+      "sha256": "be15a87b9c87d7c65ae4256d8d4149117ec106f6ac6e12a38bb3363d162198fd"
+    },
+    {
+      "path": "holdings-family-light-375-basket-loading.png",
+      "sha256": "f3e877ff1e3a9a255c6352228173b71b9f8b2ea9b8d03b4ee56e5ec13ec22219"
+    },
+    {
+      "path": "holdings-family-light-375-stock-exposure.png",
+      "sha256": "b54428451fd4c07659089288617fbcbfb2c964310a3fae01591f6a61e6825338"
+    },
+    {
+      "path": "holdings-family-light-1400-exposure.png",
+      "sha256": "bfa355f68f2874cc18ffabaf90bb41d4834e9d6fbb4fa3dda7006a490f109418"
+    },
+    {
+      "path": "holdings-family-light-1400-collateral.png",
+      "sha256": "d38572c29366b91379b0f6b0e376afecb9ea2fa7e976df16b997ccfe478f274d"
+    },
+    {
+      "path": "holdings-family-light-1400-stock-exposure.png",
+      "sha256": "473fdb583a6478ac719ccaaebb0a86eb9dd240295358bf0a1965ef57fceba7fd"
+    },
+    {
+      "path": "holdings-family-light-1400-boundary-767.png",
+      "sha256": "c5a2757055f7ce912b6c450f8d420f828294a9d0755cea97ee93103b7d80f5ea"
+    },
+    {
+      "path": "holdings-family-light-1400-boundary-768.png",
+      "sha256": "11dba1b3d4f57748544d9c4be365d3aa76b8bbd753c0d3feac6cb06307178720"
+    },
+    {
+      "path": "holdings-family-light-1400-constrained.png",
+      "sha256": "cfea563470bcc658010a2588db03177f379e76efc5720a2a490e5048e8c289c9"
+    },
+    {
+      "path": "holdings-family-dark-320-exposure.png",
+      "sha256": "8048fa1f15e253abc80c04e1320ee8be1b2a0fac329200d7e8ddf245cb41fade"
+    },
+    {
+      "path": "holdings-family-dark-320-collateral.png",
+      "sha256": "f5cfa85c24ce73b13edbff505913ffc324478ed584d3527203c1a671c77b689a"
+    },
+    {
+      "path": "holdings-family-dark-320-long-content.png",
+      "sha256": "c1b08310289b4a944d6b2dbabb8b46dcd3758b0733f0d1d456e3dd5164462802"
+    },
+    {
+      "path": "holdings-family-dark-320-stock-collateral.png",
+      "sha256": "22b8cd64034efbb3a60505ab0dc497c69ae545b7fc0fe34b4d8ed9b8bf24c3cf"
+    },
+    {
+      "path": "holdings-family-dark-375-exposure.png",
+      "sha256": "3464a68543ae86abe95504aca0dc62a039f9478ea77b0424c6b6422d497ef2fe"
+    },
+    {
+      "path": "holdings-family-dark-375-collateral.png",
+      "sha256": "833d81679a47ba18cb61ac5cdb174ce1650a898661a2c30a1c6788f0fe24e50a"
+    },
+    {
+      "path": "holdings-family-dark-1400-exposure.png",
+      "sha256": "eefa7a20cd468693cbfcf281ba5e562035f4d520f5ab69a3dfcfd8a8c066505f"
+    },
+    {
+      "path": "holdings-family-dark-1400-collateral.png",
+      "sha256": "30813c8269a52c8908b6f27e26eb7c0f78b0edeb7af554ff7264d0a0405b84ab"
+    },
+    {
+      "path": "holdings-family-dark-1400-stock-exposure.png",
+      "sha256": "e39f628f1663353fb6d74d9067a53f667796bb8a9d682fad01ff2da4c133342d"
+    },
+    {
+      "path": "holdings-family-dark-1400-boundary-768.png",
+      "sha256": "77e5e35060ab7d08c290d2edae612320c1941239f4ffd2b33fc668155095c1fa"
+    },
+    {
+      "path": "holdings-family-dark-1400-constrained.png",
+      "sha256": "078ead5509884a12331a43b1e120aa995b8375b7ef7f3924a2aca43b6ab048ac"
+    }
+  ]
+}

@@ -1,6 +1,9 @@
 import { fireEvent, render, screen, within } from '@testing-library/react'
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it, vi } from 'vitest'
 import { AtomicTransactionComposition } from '../transaction-composition-atomic'
+
+// Browser checks own logo loading; these lifecycle assertions must not leave fetches after teardown.
+vi.mock('@/components/token-logo', () => ({ default: () => <img alt="" /> }))
 
 describe('Manual lifecycle presentation', () => {
   it.each([

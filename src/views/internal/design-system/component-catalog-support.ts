@@ -185,6 +185,15 @@ export const SUPPORT_COMPONENT_GROUPS: ComponentGroup[] = [
         designAuthority: 'current-baseline',
         implementationStatus: 'canonical-candidate',
         implementationSource: 'src/components/design-system-v1/popover.tsx',
+        contextSources: [
+          {
+            role: 'authority',
+            label: 'Minimal Popover recorded baseline',
+            path: 'docs/wiki/domains/design-system-reference.md#minimal-popover-shell',
+            detail:
+              'No dedicated decision entry is recorded. The baseline classification predates this reconciliation; direct human-approval provenance has not been independently recovered. Preserve the existing contract without promoting provisional density or elevation.',
+          },
+        ],
         compositionSource: {
           componentId: 'multi-select-filter',
           label: 'Popover shell in the Multi-select filter state sheet',
@@ -240,6 +249,15 @@ export const SUPPORT_COMPONENT_GROUPS: ComponentGroup[] = [
         designAuthority: 'current-baseline',
         implementationStatus: 'canonical-candidate',
         implementationSource: 'src/components/design-system-v1/menu.tsx',
+        contextSources: [
+          {
+            role: 'authority',
+            label: 'Action Menu recorded baseline',
+            path: 'docs/wiki/domains/design-system-reference.md#action-menu',
+            detail:
+              'No dedicated decision entry is recorded. The baseline classification predates this reconciliation; direct human-approval provenance has not been independently recovered. Preserve the existing contract without promoting provisional density or elevation.',
+          },
+        ],
         adoptionStatus: 'none',
         review: {
           status: 'ready',
@@ -285,6 +303,13 @@ export const SUPPORT_COMPONENT_GROUPS: ComponentGroup[] = [
         implementationStatus: 'canonical-candidate',
         implementationSource:
           'src/components/design-system-v1/help-tooltip.tsx',
+        contextSources: [
+          {
+            role: 'accepted-decision',
+            label: 'Explanatory HelpTooltip baseline accepted',
+            path: 'docs/wiki/decisions.md#2026-08-19--explanatory-helptooltip-baseline-accepted',
+          },
+        ],
         adoptionStatus: 'none',
         review: {
           status: 'ready',
@@ -470,6 +495,15 @@ export const SUPPORT_COMPONENT_GROUPS: ComponentGroup[] = [
         designAuthority: 'current-baseline',
         implementationStatus: 'canonical-candidate',
         implementationSource: 'src/components/design-system-v1/loading.tsx',
+        contextSources: [
+          {
+            role: 'authority',
+            label: 'Spinner recorded baseline',
+            path: 'docs/wiki/domains/design-system-reference.md#skeleton-and-spinner',
+            detail:
+              'No dedicated decision entry is recorded. This synthesis documents the current baseline; retain the catalog review exclusions and provisional dependencies.',
+          },
+        ],
         adoptionStatus: 'none',
         review: {
           status: 'ready',
@@ -505,6 +539,15 @@ export const SUPPORT_COMPONENT_GROUPS: ComponentGroup[] = [
         designAuthority: 'current-baseline',
         implementationStatus: 'canonical-candidate',
         implementationSource: 'src/components/design-system-v1/loading.tsx',
+        contextSources: [
+          {
+            role: 'authority',
+            label: 'Skeleton recorded baseline',
+            path: 'docs/wiki/domains/design-system-reference.md#skeleton-and-spinner',
+            detail:
+              'No dedicated decision entry is recorded. This synthesis documents the current baseline; retain the catalog review exclusions and provisional dependencies.',
+          },
+        ],
         adoptionStatus: 'none',
         review: {
           status: 'ready',
@@ -545,6 +588,15 @@ export const SUPPORT_COMPONENT_GROUPS: ComponentGroup[] = [
         designAuthority: 'current-baseline',
         implementationStatus: 'canonical-candidate',
         implementationSource: 'src/components/empty-state/index.tsx',
+        contextSources: [
+          {
+            role: 'authority',
+            label: 'EmptyState recorded baseline',
+            path: 'docs/wiki/domains/design-system-reference.md#emptystate',
+            detail:
+              'No dedicated decision entry is recorded. This synthesis documents the current baseline; retain the catalog review exclusions and provisional dependencies.',
+          },
+        ],
         adoptionStatus: 'none',
         review: {
           status: 'ready',
@@ -610,6 +662,15 @@ export const SUPPORT_COMPONENT_GROUPS: ComponentGroup[] = [
         designAuthority: 'current-baseline',
         implementationStatus: 'canonical-candidate',
         implementationSource: 'src/components/lifecycle-status/index.tsx',
+        contextSources: [
+          {
+            role: 'accepted-decision',
+            label: 'Lifecycle Status roles accepted; sizing reopened',
+            path: 'docs/wiki/decisions.md#2026-08-18--lifecycle-status-is-canonical-other-compact-labels-are-not',
+            detail:
+              'Roles remain accepted; the same decision explicitly leaves the later 28px geometry trial unaccepted.',
+          },
+        ],
         adoptionStatus: 'none',
         review: {
           status: 'ready',
@@ -650,6 +711,27 @@ export const SUPPORT_COMPONENT_GROUPS: ComponentGroup[] = [
         designAuthority: 'current-baseline',
         implementationStatus: 'canonical-candidate',
         implementationSource: 'src/components/entity-identity/index.ts',
+        contextSources: [
+          {
+            role: 'implementation',
+            label: 'Canonical identity-family exports',
+            path: 'src/components/entity-identity/index.ts',
+          },
+          {
+            role: 'accepted-decision',
+            label: 'Stacked identity artwork and axis decision',
+            path: 'docs/wiki/decisions.md#2026-08-19--stacked-identity-separators-preserve-artwork-size-and-axis',
+            detail:
+              'This decision scopes stack separators and alignment, not every identity or asset-picker composition.',
+          },
+          {
+            role: 'implementation',
+            label: 'Provisional token-stack trigger',
+            path: 'src/components/entity-identity/token-stack-trigger.tsx',
+            detail:
+              'Opt-in 44px logo-led trigger under Discover review; not part of accepted ordinary Button geometry or production adoption.',
+          },
+        ],
         adoptionStatus: 'none',
         review: {
           status: 'ready',
@@ -689,6 +771,22 @@ export const SUPPORT_COMPONENT_GROUPS: ComponentGroup[] = [
         designAuthority: 'current-baseline',
         implementationStatus: 'canonical-candidate',
         implementationSource: 'src/components/metric/index.tsx',
+        contextSources: [
+          {
+            role: 'authority',
+            label: 'Metric recorded baseline',
+            path: 'docs/wiki/domains/design-system-reference.md#metric-anatomy',
+            detail:
+              'This synthesis covers the broader Metric anatomy. The linked rich-record decision below supports auction-selector composition only, not a universal value-weight default.',
+          },
+          {
+            role: 'accepted-decision',
+            label: 'Rich-record Metric composition boundary',
+            path: 'docs/wiki/decisions.md#2026-08-18--rich-records-share-foundations-not-a-universal-row',
+            detail:
+              'Auction selectors reuse inline Metric anatomy with parent-owned 16px/500 value emphasis. Keep generic inline defaults and headline anatomy separate.',
+          },
+        ],
         adoptionStatus: 'none',
         review: {
           status: 'ready',
@@ -725,6 +823,15 @@ export const SUPPORT_COMPONENT_GROUPS: ComponentGroup[] = [
         outputStatus: 'rendered',
         designAuthority: 'current-baseline',
         implementationStatus: 'specimen',
+        contextSources: [
+          {
+            role: 'accepted-decision',
+            label: 'Structural regions and Home card review boundary',
+            path: 'docs/wiki/decisions.md#2026-08-18--structural-content-regions-and-interactive-cards-are-separate-jobs',
+            detail:
+              'The Home delta and preservation contract do not establish a universal Card API or other card families.',
+          },
+        ],
         adoptionStatus: 'none',
         review: {
           status: 'provisional',
@@ -749,7 +856,7 @@ export const SUPPORT_COMPONENT_GROUPS: ComponentGroup[] = [
             ...mapped,
             evidence: [
               '27 imports use Table, 18 DataTable, and 13 legacy Table; at least three table systems coexist.',
-              'Overview holdings establishes a divider-free dense row with 32px two-line identity and equally sized, right-aligned numeric peers.',
+              'Overview holdings supplies the identity/allocation-first narrow precedent; the local candidate retains ordinary 16px peers without defining a dense variant.',
               'Governance proposals and Auctions rebalances prove that rich navigable records need a distinct composition.',
               'The reviewed fixtures map real CMC20 proposal and rebalance mechanics with deterministic names, values, dates, vote distribution, metrics, and provenance; fixture copy is not a migration source.',
             ],
@@ -764,17 +871,61 @@ export const SUPPORT_COMPONENT_GROUPS: ComponentGroup[] = [
               },
             ],
             nextAction:
-              'Use the reviewed Governance proposal and Auction selector compositions as evidence for the next product-facing component; keep rich navigable records distinct from dense Table rows.',
+              'Review Discover classified identity, basket inspection and performance trends, plus the compact/full-chart narrow cards transferred from Home/Discover. Portfolio and Exposure/Collateral remain checkpoints. Rich records, bridge-dialog design and production adoption remain separate; no universal row API is proposed.',
           }
         ),
         outputStatus: 'rendered',
         designAuthority: 'exploratory',
         implementationStatus: 'specimen',
+        implementationSource:
+          'src/views/internal/design-system/table-family/review.tsx',
+        contextSources: [
+          {
+            role: 'implementation',
+            label: 'Bounded table-family candidate',
+            path: 'src/views/internal/design-system/table-family/review.tsx',
+          },
+          {
+            role: 'product-evidence',
+            label: 'Production transfer and review boundary',
+            path: 'docs/plans/design-system-table-family-first-slice.md',
+          },
+          {
+            role: 'visual-evidence',
+            label: 'Holdings mobile predecessor',
+            path: 'docs/plans/design-system-table-family-evidence/index.md',
+          },
+          {
+            role: 'implementation',
+            label: 'Exposure and Collateral candidate',
+            path: 'src/views/internal/design-system/table-family/holdings-review.tsx',
+          },
+          {
+            role: 'product-evidence',
+            label: 'Holdings source transfer and verification boundary',
+            path: 'docs/plans/design-system-table-family-holdings-slice.md',
+          },
+          {
+            role: 'implementation',
+            label: 'Discover browsing-cell candidate',
+            path: 'src/views/internal/design-system/table-family/discover-review.tsx',
+          },
+          {
+            role: 'product-evidence',
+            label: 'Discover source transfer and scoped proof',
+            path: 'docs/plans/design-system-table-family-discover-slice.md',
+          },
+          {
+            role: 'product-evidence',
+            label: 'Discover mobile card transfer and review boundary',
+            path: 'docs/plans/design-system-discover-mobile-cards.md',
+          },
+        ],
         adoptionStatus: 'none',
         review: {
           status: 'provisional',
           scope:
-            'The source-grounded dense data slice and reviewed rich proposal/rebalance compositions remain separate evidence. Accepted per-record constrained-width wrapping does not define a universal Table/Row API, final Auctions split, dense-table transformation, route-to-detail behavior, or production adoption.',
+            'Bounded Portfolio, Holdings and Discover candidates share cell vocabulary and sorting ownership. Discover adds classifications, basket inspection, return/trends and a narrow card preview using the production chart/ticker. Rich records, bridge-dialog design and page-level controls remain separate. No universal Table/Row API, chart-system acceptance or production adoption.',
           dependencies: [
             { name: 'Entity identity', status: 'canonical' },
             { name: 'Metric value', status: 'canonical' },
@@ -788,32 +939,51 @@ export const SUPPORT_COMPONENT_GROUPS: ComponentGroup[] = [
           ],
         },
       },
-      component(
-        'data-table',
-        'Data table',
-        'Adds sorting, filtering, selection, or pagination to tabular data.',
-        'Interactive tables need consistent controls without turning every table into a framework.',
-        {
-          priority: 'v1-core',
-          ...mapped,
-          evidence: [
-            '18 product imports use DataTable across Discover, Overview, Earn, and Portfolio.',
+      {
+        ...component(
+          'data-table',
+          'Data table',
+          'Adds sorting, filtering, selection, or pagination to tabular data.',
+          'Interactive tables need consistent controls without turning every table into a framework.',
+          {
+            priority: 'v1-core',
+            ...mapped,
+            evidence: [
+              '18 product imports use DataTable across Discover, Overview, Earn, and Portfolio.',
+            ],
+            decisionPrompts: [
+              'Define sorting, filtering, selection, pagination, loading, error, empty, sticky regions, and responsive behavior.',
+              'Allow product-specific columns and cells; standardize interaction contracts and geometry.',
+            ],
+            stateAdditions: [
+              'Sorted',
+              'Filtered',
+              'Selected rows',
+              'Paginated',
+              'No results',
+            ],
+            nextAction:
+              'Use Discover/Earn plus Portfolio as complementary stress tests after base Table anatomy.',
+          }
+        ),
+        outputStatus: 'in-composition',
+        designAuthority: 'exploratory',
+        implementationStatus: 'specimen',
+        implementationSource: 'src/components/ui/data-table.tsx',
+        compositionSource: {
+          componentId: 'table',
+          anchor: 'table-family-review',
+          label: 'Portfolio table-family candidate',
+        },
+        review: {
+          status: 'provisional',
+          scope:
+            'The first Table slice exercises existing sorting and row rendering through local cells, plus opt-in accessible table naming/sort state. Filtering, selection, pagination and other table families are not newly designed or approved.',
+          dependencies: [
+            { name: 'Table / row anatomy', status: 'provisional' },
           ],
-          decisionPrompts: [
-            'Define sorting, filtering, selection, pagination, loading, error, empty, sticky regions, and responsive behavior.',
-            'Allow product-specific columns and cells; standardize interaction contracts and geometry.',
-          ],
-          stateAdditions: [
-            'Sorted',
-            'Filtered',
-            'Selected rows',
-            'Paginated',
-            'No results',
-          ],
-          nextAction:
-            'Use Discover/Earn plus Portfolio as complementary stress tests after base Table anatomy.',
-        }
-      ),
+        },
+      },
       component(
         'chart',
         'Chart',
@@ -863,6 +1033,15 @@ export const SUPPORT_COMPONENT_GROUPS: ComponentGroup[] = [
         implementationStatus: 'canonical-candidate',
         implementationSource:
           'src/components/design-system-v1/copyable-value.tsx',
+        contextSources: [
+          {
+            role: 'accepted-decision',
+            label: 'Copyable Value integrated treatment accepted',
+            path: 'docs/wiki/decisions.md#2026-08-31--copyable-value-supports-an-integrated-dense-row-treatment',
+            detail:
+              'The default remains separated; paired explorer and native/bridged lists remain composition-owned.',
+          },
+        ],
         adoptionStatus: 'none',
         review: {
           status: 'ready',
@@ -944,6 +1123,13 @@ export const SUPPORT_COMPONENT_GROUPS: ComponentGroup[] = [
         designAuthority: 'current-baseline',
         implementationStatus: 'canonical-candidate',
         implementationSource: 'src/components/design-system-v1/accordion.tsx',
+        contextSources: [
+          {
+            role: 'accepted-decision',
+            label: 'Informational Accordion baseline accepted',
+            path: 'docs/wiki/decisions.md#2026-08-21--informational-accordion-baseline-accepted',
+          },
+        ],
         adoptionStatus: 'none',
         review: {
           status: 'ready',
@@ -987,7 +1173,7 @@ export const SUPPORT_COMPONENT_GROUPS: ComponentGroup[] = [
               },
             ],
             nextAction:
-              'Human-review the one-region disclosure anatomy and its inheritance from the accepted Accordion presentation; keep hosted content and production migration outside.',
+              'Use the accepted one-region disclosure baseline and its shared Accordion presentation; hosted content, bespoke triggers and production adoption remain separate.',
           }
         ),
         outputStatus: 'rendered',
@@ -995,6 +1181,13 @@ export const SUPPORT_COMPONENT_GROUPS: ComponentGroup[] = [
         auditStatus: 'mapped',
         implementationStatus: 'canonical-candidate',
         implementationSource: 'src/components/design-system-v1/collapsible.tsx',
+        contextSources: [
+          {
+            role: 'accepted-decision',
+            label: 'Independent Collapsible baseline accepted',
+            path: 'docs/wiki/decisions.md#2026-08-21--independent-collapsible-baseline-accepted',
+          },
+        ],
         adoptionStatus: 'none',
         review: {
           status: 'ready',

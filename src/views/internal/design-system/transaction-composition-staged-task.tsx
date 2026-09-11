@@ -12,7 +12,7 @@ import { TransactionAmountObject } from '@/components/design-system-v1/transacti
 import { v1Typography } from '@/components/design-system-v1/typography'
 import { TokenLogoStack } from '@/components/entity-identity'
 import { Skeleton } from '@/components/design-system-v1/loading'
-import { v1SemanticRecipes as roles } from '@/components/ui/v1-semantic-recipes'
+import { v1SemanticRoles as roles } from '@/components/design-system-v1/semantic-roles'
 import { cn } from '@/lib/utils'
 
 import { AutomatedMintActions } from './transaction-composition-staged-actions'

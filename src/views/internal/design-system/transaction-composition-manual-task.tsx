@@ -11,7 +11,7 @@ import {
 } from '@/components/design-system-v1/inline-message'
 import { v1Typography } from '@/components/design-system-v1/typography'
 import { InlineAction } from '@/components/button'
-import { v1SemanticRecipes as roles } from '@/components/ui/v1-semantic-recipes'
+import { v1SemanticRoles as roles } from '@/components/design-system-v1/semantic-roles'
 import { cn } from '@/lib/utils'
 import { ChainId } from '@/utils/chains'
 import {

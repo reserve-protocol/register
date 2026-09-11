@@ -1,0 +1,67 @@
+name: Design system
+
+on:
+  pull_request:
+    paths:
+      - 'src/components/design-system-v1/**'
+      - 'src/components/button/**'
+      - 'src/components/icon-button/**'
+      - 'src/components/checkbox/**'
+      - 'src/components/dialog/**'
+      - 'src/components/entity-identity/**'
+      - 'src/components/metric/**'
+      - 'src/components/lifecycle-status/**'
+      - 'src/components/empty-state/**'
+      - 'src/components/ui/v1-*'
+      - 'src/views/internal/design-system/**'
+      - 'src/styles/**'
+      - 'src/app.css'
+      - 'public/**'
+      - 'index.html'
+      - 'tsconfig*.json'
+      - 'src/utils/chart-performance-colors.ts'
+      - 'e2e/design-system/**'
+      - 'e2e/fixtures/**'
+      - 'e2e/helpers/**'
+      - 'playwright.design-system.config.ts'
+      - 'tailwind.config.*'
+      - 'vite.config.*'
+      - 'postcss.config.*'
+      - 'lingui.config.*'
+      - 'package.json'
+      - 'pnpm-lock.yaml'
+      - 'pnpm-workspace.yaml'
+      - 'llm-workflow.config.json'
+      - '.github/workflows/design-system.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: design-system-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  rendered-review:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm typecheck
+      - run: pnpm test:run
+      - run: pnpm exec playwright install --with-deps chromium
+      - name: Viewport, interaction and source-bound capture checks
+        run: pnpm design-system:review
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: design-system-review
+          path: |
+            playwright-report/design-system/
+            test-results/design-system/
+          retention-days: 30
+          if-no-files-found: error

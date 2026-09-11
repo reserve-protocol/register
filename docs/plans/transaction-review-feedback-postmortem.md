@@ -288,7 +288,9 @@ expense of truth and quality.
 
 ## Required review discipline going forward
 
-Before asking for human design feedback on a transaction composition:
+The current procedure is owned by the [lab area guide](../../src/views/internal/design-system/CLAUDE.md).
+The list below records the original postmortem recommendation, not a second
+maintained workflow. Before asking for human design feedback it called for:
 
 1. **Source-fidelity pass:** classify important relationships as preserve,
    visually standardize, consolidate, deliberately improve, or do not touch.

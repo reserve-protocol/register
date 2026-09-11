@@ -1,0 +1,210 @@
+{
+  "scope": "Supplemental coordinator evidence; original 44-entry package untouched. JSON receipts are allowlisted extracts of raw reports, not byte-identical full reports. Geometry paths contain parsed/reformatted attachment data; attachment sha256 hashes refer to original attachment bytes. Capture scripts preserve the exact historical local paths and depend on retained snapshots, not a portable reproduction bundle.",
+  "files": [
+    {
+      "path": "Cedar-dark-375-open-number-format.png",
+      "sha256": "ea7935ec3b513b0c32362f02e735866827aab77d222ee9d88b3ab2b8432174ba",
+      "bytes": 22791
+    },
+    {
+      "path": "Cedar-dark-375-open-time-zone.png",
+      "sha256": "49bb9b4be5503586a2cdde733acf3bdc9bfa2c39bb9c596db43d9b9caa6992c5",
+      "bytes": 21097
+    },
+    {
+      "path": "Cedar-original-dark-1400-geometry.json",
+      "sha256": "f04c6b7ebdb172fb9ba71facd929479e6db844f80a49a9c060810a475fc2c70b",
+      "bytes": 1254
+    },
+    {
+      "path": "Cedar-original-dark-375-geometry.json",
+      "sha256": "8923902222aaef7d4ae80190293228c48dda4835e9a6a6c38448941f25e08326",
+      "bytes": 1200
+    },
+    {
+      "path": "Cedar-original-light-1400-geometry.json",
+      "sha256": "f04c6b7ebdb172fb9ba71facd929479e6db844f80a49a9c060810a475fc2c70b",
+      "bytes": 1254
+    },
+    {
+      "path": "Cedar-original-light-375-geometry.json",
+      "sha256": "8923902222aaef7d4ae80190293228c48dda4835e9a6a6c38448941f25e08326",
+      "bytes": 1200
+    },
+    {
+      "path": "Cedar-receipts.json",
+      "sha256": "300768ada2d8ed8f39d53fe4e86eb5d8ab464a4ff04b62a1ae4c53802c1c78df",
+      "bytes": 7926
+    },
+    {
+      "path": "Cedar-supplemental-dark-1400-geometry.json",
+      "sha256": "9e1ada4c48384d5a9cc48d5f1fe14329b23de36a72605ec776237f72e43ff63e",
+      "bytes": 3102
+    },
+    {
+      "path": "Cedar-supplemental-dark-375-geometry.json",
+      "sha256": "b0e8a0eec964b77bd060150a0256b083da1f3e5747eca300763c5b5525711b9e",
+      "bytes": 3003
+    },
+    {
+      "path": "Cedar-supplemental-light-1400-geometry.json",
+      "sha256": "9e1ada4c48384d5a9cc48d5f1fe14329b23de36a72605ec776237f72e43ff63e",
+      "bytes": 3102
+    },
+    {
+      "path": "Cedar-supplemental-light-375-geometry.json",
+      "sha256": "b0e8a0eec964b77bd060150a0256b083da1f3e5747eca300763c5b5525711b9e",
+      "bytes": 3003
+    },
+    {
+      "path": "Flint-dark-375-open-number-format.png",
+      "sha256": "fa33aaf6b2d5f5d8445159d63a79e7cf830c82b437fc08fad17eee6da791abea",
+      "bytes": 22681
+    },
+    {
+      "path": "Flint-dark-375-open-time-zone.png",
+      "sha256": "fe074283f7dc5a7135450f614427b64abbfaacc9f29b1d978234b45adf0eb6e5",
+      "bytes": 21346
+    },
+    {
+      "path": "Flint-original-dark-1400-geometry.json",
+      "sha256": "21ffaf6ae56cd9017e51a17c70a4b8554e908047ede5e986672f17d87453ab42",
+      "bytes": 1260
+    },
+    {
+      "path": "Flint-original-dark-375-geometry.json",
+      "sha256": "8a65b0bb791d7b54cc3237f63a36f21627c800cd99e950d2d8a629a02adec8d2",
+      "bytes": 1243
+    },
+    {
+      "path": "Flint-original-light-1400-geometry.json",
+      "sha256": "21ffaf6ae56cd9017e51a17c70a4b8554e908047ede5e986672f17d87453ab42",
+      "bytes": 1260
+    },
+    {
+      "path": "Flint-original-light-375-geometry.json",
+      "sha256": "8a65b0bb791d7b54cc3237f63a36f21627c800cd99e950d2d8a629a02adec8d2",
+      "bytes": 1243
+    },
+    {
+      "path": "Flint-receipts.json",
+      "sha256": "495f24c322b3dbfcd16042c46cfd85bdf276f19157be9f11cc1588bb88b088af",
+      "bytes": 8328
+    },
+    {
+      "path": "Flint-supplemental-dark-1400-geometry.json",
+      "sha256": "da2088ae74a11a5fd06d5b02ce0a51485b14df21d4b91534336262d6d5711271",
+      "bytes": 3115
+    },
+    {
+      "path": "Flint-supplemental-dark-375-geometry.json",
+      "sha256": "7058bb0f25631b2aec2b22e1fb1a8beac348b29c51eb8733d45ac1dec414c737",
+      "bytes": 3089
+    },
+    {
+      "path": "Flint-supplemental-light-1400-geometry.json",
+      "sha256": "da2088ae74a11a5fd06d5b02ce0a51485b14df21d4b91534336262d6d5711271",
+      "bytes": 3115
+    },
+    {
+      "path": "Flint-supplemental-light-375-geometry.json",
+      "sha256": "7058bb0f25631b2aec2b22e1fb1a8beac348b29c51eb8733d45ac1dec414c737",
+      "bytes": 3089
+    },
+    {
+      "path": "Quartz-dark-375-open-number-format.png",
+      "sha256": "f2c4d09dc493f607f38436facf692f352e6479190ff637ce3f76d6cc6dbb0853",
+      "bytes": 23562
+    },
+    {
+      "path": "Quartz-dark-375-open-time-zone.png",
+      "sha256": "16dd1d25e760bc3e75941e961e8cac0e0d9f596e39020be7571aeed1b8092354",
+      "bytes": 21554
+    },
+    {
+      "path": "Quartz-original-dark-1400-geometry.json",
+      "sha256": "c2efabeb25cff6db6661bd8c20ba2b9c367d51b21a6422fdb5f06999578eb3f4",
+      "bytes": 1257
+    },
+    {
+      "path": "Quartz-original-dark-375-geometry.json",
+      "sha256": "92c3ff277a080d7e412d07040927cc609e9d343699ac7f8dbea5d7576e821412",
+      "bytes": 1241
+    },
+    {
+      "path": "Quartz-original-light-1400-geometry.json",
+      "sha256": "c2efabeb25cff6db6661bd8c20ba2b9c367d51b21a6422fdb5f06999578eb3f4",
+      "bytes": 1257
+    },
+    {
+      "path": "Quartz-original-light-375-geometry.json",
+      "sha256": "92c3ff277a080d7e412d07040927cc609e9d343699ac7f8dbea5d7576e821412",
+      "bytes": 1241
+    },
+    {
+      "path": "Quartz-receipts.json",
+      "sha256": "ffd0d86bd90fee6d30de9bfff619b538e066062b9e3d213b8d8b6874038e7583",
+      "bytes": 8154
+    },
+    {
+      "path": "Quartz-supplemental-dark-1400-geometry.json",
+      "sha256": "06e1d8ba78792814cb70bd3d5557bf106b82fe89710caab13d61f8846cc996f9",
+      "bytes": 3112
+    },
+    {
+      "path": "Quartz-supplemental-dark-375-geometry.json",
+      "sha256": "27253d39d2e17caa7c544df01f0e47b43defd7f6c22a24bdf237acd78eb71f5f",
+      "bytes": 3085
+    },
+    {
+      "path": "Quartz-supplemental-light-1400-geometry.json",
+      "sha256": "06e1d8ba78792814cb70bd3d5557bf106b82fe89710caab13d61f8846cc996f9",
+      "bytes": 3112
+    },
+    {
+      "path": "Quartz-supplemental-light-375-geometry.json",
+      "sha256": "27253d39d2e17caa7c544df01f0e47b43defd7f6c22a24bdf237acd78eb71f5f",
+      "bytes": 3085
+    },
+    {
+      "path": "README.md",
+      "sha256": "3337b037db42ba16dfc42ae172cfbfd34ae47819dec1e41f13b25b4db92612ac",
+      "bytes": 1622
+    },
+    {
+      "path": "original-matched-proof.spec.ts",
+      "sha256": "564c9426ac755f147b2f5e8f21c4f2a81437d875c5b47b32c0220eaf41d941f4",
+      "bytes": 3263
+    },
+    {
+      "path": "package.json",
+      "sha256": "1239d4d885dcad42201a27ed9324f8f0f760b78700d8db9ced39a511cffe7eae",
+      "bytes": 18
+    },
+    {
+      "path": "read-events.json",
+      "sha256": "4192371fa7ab3f44180be4476f386821b15a38ccf7888d8f25de1822a8a76b80",
+      "bytes": 26888
+    },
+    {
+      "path": "run-supplement.mjs",
+      "sha256": "9b45f7a1ac014325fbcfc6352a0e526c98ee57a1503cf93e3326d1316e48cbf0",
+      "bytes": 2771
+    },
+    {
+      "path": "summary.json",
+      "sha256": "46ae3480540d6b88198359d2a3b7ffa5a510d8516faa6500af76dcef796828bb",
+      "bytes": 2516
+    },
+    {
+      "path": "supplement.config.ts",
+      "sha256": "0de3a6d8997e1482fe6f2c7594fa01e83fd45de8067eb63e12907e34b5dec423",
+      "bytes": 713
+    },
+    {
+      "path": "supplement.spec.ts",
+      "sha256": "dce33a31bbb2b33a0c853b8881bbdf1b4908119771115fad29d124b41af76a8d",
+      "bytes": 4305
+    }
+  ]
+}

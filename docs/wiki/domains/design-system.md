@@ -1,6 +1,6 @@
 ---
 title: Design System
-updated: 2026-09-08
+updated: 2026-09-09
 type: domain
 sources:
   - docs/plans/design-system-v1.md
@@ -26,7 +26,9 @@ implementation details owned elsewhere.
    [the active V1 plan](../../plans/design-system-v1.md).
 4. Find the target in the typed foundation or component catalog. Follow only
    its declared foundation IDs, implementation source, accepted decision, and
-   relevant evidence paths.
+   relevant evidence paths. Component entries use `component('<id>', ...)`:
+   search the quoted ID or display name in `component-catalog*.ts`, not just
+   `id:` declarations.
 5. Read [Current Review](../../../src/views/internal/design-system/current-review.ts)
    only when preparing or responding to the active human-review target.
 
@@ -47,6 +49,9 @@ implementation details owned elsewhere.
 When sources appear to conflict, use the precedence in the active plan. A
 generic Skill default never silently overrides an explicit Register decision.
 A historical or visual source informs work only in its declared evidence role.
+Keep current maturity/adoption claims in the typed catalog, not duplicate
+status lists in reference prose. Preserve scoped acceptance evidence where the
+catalog explicitly routes to the reference; it is not a competing live tracker.
 
 Inventory readiness is not an assignment or approval. Unprepared review work is
 not automatically blocked; deferred work has no review scheduled. Entries with
@@ -102,22 +107,11 @@ geometry, continuity, truth, and first-slice sections of the same composition
 brief; replace production dispositions with an intended state contract and
 explicit non-goals.
 
-The automated-mint review is a provisional example of a flow-owned
-page-workspace exception: it narrows for amount-entry configuration and widens
-only when quotes create independently inspectable orders. Its detailed
-production/SDK state map
-and classified reuse gaps live in the
-[transaction-system audit](../../plans/transaction-system-audit.md#12-automated-mint-lab-reconciliation-2026-09-03).
-Its entry sequence preserves the production distinction between advanced-flow
-guidance, a disconnected smart-account requirement, and a connected but
-incompatible wallet before configuration; do not collapse these into a generic
-empty state or infer that the lab's simulated actions are wallet behavior.
-Treat the current product and SDK mechanics as the behavioral baseline: improve
-their hierarchy and presentation in the lab, but do not reinterpret funding,
-execution, result sourcing, or recovery without an explicit product or
-engineering decision.
-Do not infer a Dialog host, universal stepper, shared order row, or production
-adoption from that lab composition.
+For transaction compositions only, load the [retained transfer contract](../../plans/transaction-consolidated-regression.md#fresh-flow-transfer-contract)
+and the relevant family audit. Automated issuance's page-workspace exception,
+entry gates, operation-specific stages and reuse gaps are [domain evidence](../../plans/transaction-system-audit.md#12-automated-issuance-lab-reconciliation-2026-09-04),
+not a universal Dialog, stepper or order-row contract. Ordinary component work
+does not require those transaction documents.
 
 ### Respond to designer feedback
 
@@ -125,8 +119,8 @@ Classify the correction as local, component, composition/pattern, foundation,
 or reusable heuristic. Update the smallest justified current owner and its
 typed route. Do not turn an intermediate composition into broad authority.
 When a transaction composition intentionally pressures a current baseline or
-strong retained precedent, add or update its row in the active plan's
-Transaction composition pressure register before treating the experiment as a
+strong retained precedent, add or update its row in the
+[transaction pressure register](../../plans/transaction-consolidated-regression.md#transaction-composition-pressure-register) before treating the experiment as a
 reusable direction. Ordinary conformance and implementation bugs are corrected
 at their owner and do not become exceptions.
 
@@ -211,6 +205,9 @@ copy its transient status into this router.
 
 ## Evidence and studies
 
+- [Foundation consolidation plan](../../plans/design-system-foundation-consolidation.md)
+  — active post-audit work, revised after independent review; bounded
+  implementation is authorized. Not a new component contract or routine reading prerequisite.
 - [Detailed design-system reference](design-system-reference.md) — accepted
   detailed guidance plus dated evidence; load on demand.
 - [Historical V1 plan](../../plans/design-system-v1-history.md) — completed

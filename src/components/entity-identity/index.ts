@@ -6,6 +6,10 @@ export {
 export { ChainLogoStack, type ChainLogoStackProps } from './chain-logo-stack'
 export { EntityIdentity, type EntityIdentityProps } from './entity-identity'
 export {
+  TokenStackTrigger,
+  type TokenStackTriggerProps,
+} from './token-stack-trigger'
+export {
   TokenLogoStack,
   type TokenLogoStackItem,
   type TokenLogoStackProps,

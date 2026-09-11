@@ -4,10 +4,9 @@ import { useState } from 'react'
 import { Button } from '@/components/button'
 import { ActionGroup } from '@/components/design-system-v1/action-group'
 import { OrganicBrandSurface } from '@/components/design-system-v1/organic-brand-surface'
-import { candidateSemanticRoles as semanticRoles } from '@/components/design-system-v1/semantic-roles'
+import { v1SemanticRoles as semanticRoles } from '@/components/design-system-v1/semantic-roles'
 import { TransactionAmountObject } from '@/components/design-system-v1/transaction-amount-object'
 import { v1Typography } from '@/components/design-system-v1/typography'
-import { v1SemanticRecipes as roles } from '@/components/ui/v1-semantic-recipes'
 import { useIsDesktop } from '@/hooks/use-media-query'
 import { cn } from '@/lib/utils'
 import { getFolioRoute } from '@/utils'
@@ -303,14 +302,19 @@ const AutomatedMintOutcome = ({
                 · 3 assets
               </p>
             </div>
-            <p className={cn(v1Typography.supporting, roles.text.supporting)}>
+            <p
+              className={cn(
+                v1Typography.supporting,
+                semanticRoles.text.supporting
+              )}
+            >
               <Trans>Swaps leave a small residue in your wallet.</Trans>
             </p>
             <p
               className={cn(
                 'mt-2 tabular-nums',
                 v1Typography.supporting,
-                roles.text.supporting
+                semanticRoles.text.supporting
               )}
             >
               0.00000012 WBTC · 0.00008 WETH · 0.01 USDC

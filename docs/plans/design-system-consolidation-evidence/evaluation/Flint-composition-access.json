@@ -1,0 +1,202 @@
+[
+  {
+    "tool": "Glob",
+    "path": null,
+    "pattern": "src/views/internal/design-system/**"
+  },
+  {
+    "tool": "Glob",
+    "path": null,
+    "pattern": "**/package.json"
+  },
+  {
+    "tool": "Read",
+    "path": "package.json",
+    "pattern": null
+  },
+  {
+    "tool": "Read",
+    "path": "src/views/internal/design-system/select-state-sheet.tsx",
+    "pattern": null
+  },
+  {
+    "tool": "Glob",
+    "path": null,
+    "pattern": "src/components/design-system-v1/**"
+  },
+  {
+    "tool": "Read",
+    "path": "src/views/internal/design-system/tests/select-review.test.tsx",
+    "pattern": null
+  },
+  {
+    "tool": "Read",
+    "path": "src/components/design-system-v1/field.tsx",
+    "pattern": null
+  },
+  {
+    "tool": "Read",
+    "path": "src/components/design-system-v1/action-group.tsx",
+    "pattern": null
+  },
+  {
+    "tool": "Read",
+    "path": "src/components/design-system-v1/inline-message.tsx",
+    "pattern": null
+  },
+  {
+    "tool": "Glob",
+    "path": null,
+    "pattern": "src/components/ui/button*.tsx"
+  },
+  {
+    "tool": "Read",
+    "path": "src/components/design-system-v1/typography.ts",
+    "pattern": null
+  },
+  {
+    "tool": "Read",
+    "path": "src/components/ui/button.tsx",
+    "pattern": null
+  },
+  {
+    "tool": "Grep",
+    "path": null,
+    "pattern": "useState"
+  },
+  {
+    "tool": "Read",
+    "path": "src/views/internal/design-system/button-hierarchy-decision.tsx",
+    "pattern": null
+  },
+  {
+    "tool": "Glob",
+    "path": null,
+    "pattern": "src/components/button*"
+  },
+  {
+    "tool": "Read",
+    "path": "src/views/internal/design-system/switch-state-sheet.tsx",
+    "pattern": null
+  },
+  {
+    "tool": "Glob",
+    "path": null,
+    "pattern": "src/components/button/**"
+  },
+  {
+    "tool": "Read",
+    "path": "src/components/button/index.tsx",
+    "pattern": null
+  },
+  {
+    "tool": "Read",
+    "path": "src/components/ui/v1-semantic-recipes.ts",
+    "pattern": null
+  },
+  {
+    "tool": "Read",
+    "path": "src/components/design-system-v1/select.tsx",
+    "pattern": null
+  },
+  {
+    "tool": "Glob",
+    "path": null,
+    "pattern": "**/{vitest.config,vite.config}*"
+  },
+  {
+    "tool": "Grep",
+    "path": null,
+    "pattern": "hasPointerCapture|scrollIntoView|setupFiles"
+  },
+  {
+    "tool": "Read",
+    "path": "src/setup-tests.ts",
+    "pattern": null
+  },
+  {
+    "tool": "Read",
+    "path": "vite.config.ts",
+    "pattern": null
+  },
+  {
+    "tool": "Grep",
+    "path": null,
+    "pattern": "role: 'combobox'|role=\\\"combobox\\\""
+  },
+  {
+    "tool": "Grep",
+    "path": null,
+    "pattern": "userEvent"
+  },
+  {
+    "tool": "Read",
+    "path": "src/views/internal/design-system/tests/contained-form-row-review.test.tsx",
+    "pattern": null
+  },
+  {
+    "tool": "Grep",
+    "path": null,
+    "pattern": "presentation=\"summary\""
+  },
+  {
+    "tool": "Read",
+    "path": "src/views/internal/design-system/card-content-region-review.tsx",
+    "pattern": null
+  },
+  {
+    "tool": "Read",
+    "path": "src/views/internal/design-system/spacing-rhythm-study.tsx",
+    "pattern": null
+  },
+  {
+    "tool": "Grep",
+    "path": null,
+    "pattern": "Responsive content inset|p-4 sm:p-6|p-5 sm:p-6|RecommendedSpacingRules"
+  },
+  {
+    "tool": "Grep",
+    "path": null,
+    "pattern": "ResponsiveInsetSpecimens"
+  },
+  {
+    "tool": "Grep",
+    "path": null,
+    "pattern": "Recommendation value="
+  },
+  {
+    "tool": "Grep",
+    "path": null,
+    "pattern": "FormInsetSpecimen|form rhythm|Form rhythm"
+  },
+  {
+    "tool": "Grep",
+    "path": null,
+    "pattern": "Field className|space-y-|grid gap-"
+  },
+  {
+    "tool": "Write",
+    "path": "src/views/internal/design-system/display-preferences-study.tsx",
+    "pattern": null
+  },
+  {
+    "tool": "Write",
+    "path": "src/views/internal/design-system/tests/display-preferences-study.test.tsx",
+    "pattern": null
+  },
+  {
+    "tool": "Edit",
+    "path": "src/views/internal/design-system/display-preferences-study.tsx",
+    "pattern": null
+  },
+  {
+    "tool": "Grep",
+    "path": null,
+    "pattern": "export (const|function) cn"
+  },
+  {
+    "tool": "Edit",
+    "path": "src/views/internal/design-system/display-preferences-study.tsx",
+    "pattern": null
+  }
+]

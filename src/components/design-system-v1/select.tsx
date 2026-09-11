@@ -7,7 +7,7 @@ import {
   type ReactNode,
 } from 'react'
 
-import { v1SemanticRecipes as roles } from '@/components/ui/v1-semantic-recipes'
+import { v1SemanticRoles as roles } from '@/components/design-system-v1/semantic-roles'
 import { cn } from '@/lib/utils'
 import { popupItemGeometry, popupItemTypography } from './popup-item-geometry'
 import {
@@ -44,7 +44,7 @@ export const SelectTrigger = forwardRef<
     data-size={size}
     className={cn(
       'group flex w-full items-center justify-between rounded-full border border-input bg-card font-light leading-none text-foreground outline-none transition-colors duration-120 data-[placeholder]:text-muted-foreground disabled:pointer-events-none [&>span]:min-w-0 [&>span]:truncate',
-      roles.focus.onContent,
+      roles.focus.visibleOnContent,
       triggerSizeClasses[size],
       disabled && roles.disabled.control,
       className

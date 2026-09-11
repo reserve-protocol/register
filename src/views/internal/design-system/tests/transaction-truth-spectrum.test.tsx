@@ -1077,11 +1077,7 @@ describe('composition-first transaction-system review', () => {
     ).toHaveClass('py-2')
     expect(
       within(recovery).getAllByTestId('transaction-progress-step')[1]
-    ).not.toHaveClass(
-      'border',
-      'rounded-full',
-      'bg-[var(--feedback-danger-surface)]'
-    )
+    ).not.toHaveClass('border', 'rounded-full', 'bg-feedback-danger-surface')
     expect(within(voteLock).getByLabelText(/Voting delegate/)).toBeDisabled()
     expect(within(voteLock).getByLabelText(/Challenge delegate/)).toBeEnabled()
     const retryFastDelegation = within(voteLock).getByRole('button', {

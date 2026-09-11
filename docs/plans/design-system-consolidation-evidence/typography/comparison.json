@@ -1,0 +1,126 @@
+{
+  "comparisons": [
+    {
+      "theme": "light",
+      "width": 375,
+      "beforeDigest": "8ffbad8e30a77d2ce09328588a53ae6c69e89eedbc946c7def6743d29979a1b7",
+      "afterDigest": "bd596c56d7450fdd7069c5dab94cd918913d2fed7d8b62f57282f7f9a62eb73e",
+      "typography": [
+        {
+          "name": "typography-display",
+          "computedParity": true,
+          "pixelIdentical": true,
+          "before": "3df3165ae8c7833443db10ba29fdd54c0ca7b2ed6e30cc000ccfcedacbd99df4",
+          "after": "3df3165ae8c7833443db10ba29fdd54c0ca7b2ed6e30cc000ccfcedacbd99df4"
+        },
+        {
+          "name": "typography-panel",
+          "computedParity": true,
+          "pixelIdentical": true,
+          "before": "45b857b458f3e29afe450c16ba1a486e21c4cabe9bef9a717759667242441ff1",
+          "after": "45b857b458f3e29afe450c16ba1a486e21c4cabe9bef9a717759667242441ff1"
+        },
+        {
+          "name": "typography-auxiliary",
+          "computedParity": true,
+          "pixelIdentical": true,
+          "before": "41e65631a722b9f19db91ac58699ea91cdbc55f2b29b20c1f85ea27797d63d17",
+          "after": "41e65631a722b9f19db91ac58699ea91cdbc55f2b29b20c1f85ea27797d63d17"
+        }
+      ]
+    },
+    {
+      "theme": "light",
+      "width": 1400,
+      "beforeDigest": "8ffbad8e30a77d2ce09328588a53ae6c69e89eedbc946c7def6743d29979a1b7",
+      "afterDigest": "bd596c56d7450fdd7069c5dab94cd918913d2fed7d8b62f57282f7f9a62eb73e",
+      "typography": [
+        {
+          "name": "typography-display",
+          "computedParity": true,
+          "pixelIdentical": true,
+          "before": "c7aa971533377159e8c9c5ab2b5e0fd1265037f89fb37b8af9d19174720376c8",
+          "after": "c7aa971533377159e8c9c5ab2b5e0fd1265037f89fb37b8af9d19174720376c8"
+        },
+        {
+          "name": "typography-panel",
+          "computedParity": true,
+          "pixelIdentical": true,
+          "before": "c7aa971533377159e8c9c5ab2b5e0fd1265037f89fb37b8af9d19174720376c8",
+          "after": "c7aa971533377159e8c9c5ab2b5e0fd1265037f89fb37b8af9d19174720376c8"
+        },
+        {
+          "name": "typography-auxiliary",
+          "computedParity": true,
+          "pixelIdentical": true,
+          "before": "d60531ccf977382d46c6229a2fd3cd33a1ebc81ef48e5de4922fecb8bd565a81",
+          "after": "d60531ccf977382d46c6229a2fd3cd33a1ebc81ef48e5de4922fecb8bd565a81"
+        }
+      ]
+    },
+    {
+      "theme": "dark",
+      "width": 375,
+      "beforeDigest": "8ffbad8e30a77d2ce09328588a53ae6c69e89eedbc946c7def6743d29979a1b7",
+      "afterDigest": "bd596c56d7450fdd7069c5dab94cd918913d2fed7d8b62f57282f7f9a62eb73e",
+      "typography": [
+        {
+          "name": "typography-display",
+          "computedParity": true,
+          "pixelIdentical": true,
+          "before": "ddf4b6ff39488361af56b98ea3ef7d56f4b12e4ab3f1ea4916b754521337af90",
+          "after": "ddf4b6ff39488361af56b98ea3ef7d56f4b12e4ab3f1ea4916b754521337af90"
+        },
+        {
+          "name": "typography-panel",
+          "computedParity": true,
+          "pixelIdentical": true,
+          "before": "6a724deac4a779cddcc617c8e6a50f19663ee32c888a4703e305ce8c78f77936",
+          "after": "6a724deac4a779cddcc617c8e6a50f19663ee32c888a4703e305ce8c78f77936"
+        },
+        {
+          "name": "typography-auxiliary",
+          "computedParity": true,
+          "pixelIdentical": true,
+          "before": "2d5b69c054e21d2bf7ac89c623ce4068c2c781fc668653c956e95c6af778a5b9",
+          "after": "2d5b69c054e21d2bf7ac89c623ce4068c2c781fc668653c956e95c6af778a5b9"
+        }
+      ]
+    },
+    {
+      "theme": "dark",
+      "width": 1400,
+      "beforeDigest": "8ffbad8e30a77d2ce09328588a53ae6c69e89eedbc946c7def6743d29979a1b7",
+      "afterDigest": "bd596c56d7450fdd7069c5dab94cd918913d2fed7d8b62f57282f7f9a62eb73e",
+      "typography": [
+        {
+          "name": "typography-display",
+          "computedParity": true,
+          "pixelIdentical": true,
+          "before": "f29d3e11c50fec98d98c0e571978007ef85ad639ff34201fb77ee250eff721d7",
+          "after": "f29d3e11c50fec98d98c0e571978007ef85ad639ff34201fb77ee250eff721d7"
+        },
+        {
+          "name": "typography-panel",
+          "computedParity": true,
+          "pixelIdentical": true,
+          "before": "f29d3e11c50fec98d98c0e571978007ef85ad639ff34201fb77ee250eff721d7",
+          "after": "f29d3e11c50fec98d98c0e571978007ef85ad639ff34201fb77ee250eff721d7"
+        },
+        {
+          "name": "typography-auxiliary",
+          "computedParity": true,
+          "pixelIdentical": true,
+          "before": "52303480c7227d6e66ff6f29ec1d6e75ba3384beb1a8d877376f821536e71d2e",
+          "after": "52303480c7227d6e66ff6f29ec1d6e75ba3384beb1a8d877376f821536e71d2e"
+        }
+      ]
+    }
+  ],
+  "sourceDelta": [
+    "src/components/design-system-v1/tests/candidate-behavior.test.tsx",
+    "src/components/design-system-v1/typography.ts",
+    "src/views/internal/design-system/typography-review-contract.ts",
+    "src/components/design-system-v1/tests/typography.test.ts"
+  ]
+}

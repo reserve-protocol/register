@@ -1,0 +1,956 @@
+[
+  {
+    "title": "Automated introduction icon has a visible neutral container in light",
+    "project": "design-system-desktop",
+    "status": "passed",
+    "duration": 13664
+  },
+  {
+    "title": "Automated introduction icon has a visible neutral container in dark",
+    "project": "design-system-desktop",
+    "status": "passed",
+    "duration": 2483
+  },
+  {
+    "title": "Automated introduction icon has a visible neutral container in light",
+    "project": "design-system-mobile",
+    "status": "passed",
+    "duration": 2713
+  },
+  {
+    "title": "Automated introduction icon has a visible neutral container in dark",
+    "project": "design-system-mobile",
+    "status": "passed",
+    "duration": 2452
+  },
+  {
+    "title": "Automated outcomes expose one final transaction link and a quiet restart",
+    "project": "design-system-desktop",
+    "status": "passed",
+    "duration": 3670
+  },
+  {
+    "title": "Issuance results fill their columns with brand space in light",
+    "project": "design-system-desktop",
+    "status": "passed",
+    "duration": 3966
+  },
+  {
+    "title": "Issuance results fill their columns with brand space in dark",
+    "project": "design-system-desktop",
+    "status": "passed",
+    "duration": 4035
+  },
+  {
+    "title": "Automated outcomes expose one final transaction link and a quiet restart",
+    "project": "design-system-mobile",
+    "status": "passed",
+    "duration": 2003
+  },
+  {
+    "title": "Issuance results fill their columns with brand space in light",
+    "project": "design-system-mobile",
+    "status": "passed",
+    "duration": 3975
+  },
+  {
+    "title": "Issuance results fill their columns with brand space in dark",
+    "project": "design-system-mobile",
+    "status": "passed",
+    "duration": 3967
+  },
+  {
+    "title": "Issuance stage emphasis and recovery spacing in light",
+    "project": "design-system-desktop",
+    "status": "passed",
+    "duration": 5518
+  },
+  {
+    "title": "Issuance stage emphasis and recovery spacing in dark",
+    "project": "design-system-desktop",
+    "status": "passed",
+    "duration": 5480
+  },
+  {
+    "title": "Issuance stage emphasis and recovery spacing in light",
+    "project": "design-system-mobile",
+    "status": "passed",
+    "duration": 5528
+  },
+  {
+    "title": "Issuance stage emphasis and recovery spacing in dark",
+    "project": "design-system-mobile",
+    "status": "passed",
+    "duration": 5680
+  },
+  {
+    "title": "prepares the comprehensive typography foundation review",
+    "project": "design-system-desktop",
+    "status": "passed",
+    "duration": 3185
+  },
+  {
+    "title": "records the cross-theme color contrast baseline",
+    "project": "design-system-desktop",
+    "status": "passed",
+    "duration": 1853
+  },
+  {
+    "title": "records the radius working baseline from accepted owners",
+    "project": "design-system-desktop",
+    "status": "passed",
+    "duration": 1783
+  },
+  {
+    "title": "preserves the accepted Link and informational Accordion baselines",
+    "project": "design-system-desktop",
+    "status": "passed",
+    "duration": 3387
+  },
+  {
+    "title": "routes through adaptive drawer shell",
+    "project": "design-system-desktop",
+    "status": "passed",
+    "duration": 2532
+  },
+  {
+    "title": "positions mobile utilities below the header at matched control heights",
+    "project": "design-system-desktop",
+    "status": "passed",
+    "duration": 1945
+  },
+  {
+    "title": "routes through coordinated navigation systems",
+    "project": "design-system-desktop",
+    "status": "passed",
+    "duration": 4412
+  },
+  {
+    "title": "routes through expected and available capability states",
+    "project": "design-system-desktop",
+    "status": "passed",
+    "duration": 29922
+  },
+  {
+    "title": "distinguishes specimens, canonical candidates, and adoption",
+    "project": "design-system-desktop",
+    "status": "passed",
+    "duration": 30996
+  },
+  {
+    "title": "routes through the adaptive dialog presentation",
+    "project": "design-system-desktop",
+    "status": "passed",
+    "duration": 2096
+  },
+  {
+    "title": "renders the source-grounded rich record review",
+    "project": "design-system-desktop",
+    "status": "passed",
+    "duration": 2187
+  },
+  {
+    "title": "shows the shared lifecycle status roles without generalizing every badge job",
+    "project": "design-system-desktop",
+    "status": "passed",
+    "duration": 1915
+  },
+  {
+    "title": "preserves the Home feature card while reviewing only foundation corrections",
+    "project": "design-system-desktop",
+    "status": "passed",
+    "duration": 2536
+  },
+  {
+    "title": "keeps the dialog close action inside the header content axis",
+    "project": "design-system-desktop",
+    "status": "passed",
+    "duration": 2198
+  },
+  {
+    "title": "separates checkbox alignment geometry from its visible mark",
+    "project": "design-system-desktop",
+    "status": "passed",
+    "duration": 1914
+  },
+  {
+    "title": "keeps mounted transaction geometry stable across lifecycle changes",
+    "project": "design-system-desktop",
+    "status": "passed",
+    "duration": 2192
+  },
+  {
+    "title": "keeps transaction task hierarchy readable at the narrow phone boundary",
+    "project": "design-system-desktop",
+    "status": "passed",
+    "duration": 2565
+  },
+  {
+    "title": "keeps every reviewed transaction state inside the narrow phone viewport",
+    "project": "design-system-desktop",
+    "status": "passed",
+    "duration": 1621
+  },
+  {
+    "title": "keeps the global assistant launcher out of design-system reviews",
+    "project": "design-system-desktop",
+    "status": "passed",
+    "duration": 2464
+  },
+  {
+    "title": "keeps the automated mint workspace truthful at desktop and constrained widths",
+    "project": "design-system-desktop",
+    "status": "passed",
+    "duration": 4708
+  },
+  {
+    "title": "keeps automated redeem on the shared issuance structure",
+    "project": "design-system-desktop",
+    "status": "passed",
+    "duration": 3115
+  },
+  {
+    "title": "keeps mounted Vote Lock relationships aligned across action and submitted states",
+    "project": "design-system-desktop",
+    "status": "passed",
+    "duration": 2275
+  },
+  {
+    "title": "keeps mounted Stake relationships aligned across task and outcome states",
+    "project": "design-system-desktop",
+    "status": "passed",
+    "duration": 3105
+  },
+  {
+    "title": "captures the light routed capability map: foundations-overview",
+    "project": "design-system-desktop",
+    "status": "passed",
+    "duration": 2026
+  },
+  {
+    "title": "captures the light routed capability map: foundation-detail-color",
+    "project": "design-system-desktop",
+    "status": "passed",
+    "duration": 2567
+  },
+  {
+    "title": "captures the light routed capability map: foundation-detail-typography",
+    "project": "design-system-desktop",
+    "status": "passed",
+    "duration": 2355
+  },
+  {
+    "title": "captures the light routed capability map: foundation-detail-radius",
+    "project": "design-system-desktop",
+    "status": "passed",
+    "duration": 2038
+  },
+  {
+    "title": "captures the light routed capability map: components-overview",
+    "project": "design-system-desktop",
+    "status": "passed",
+    "duration": 7970
+  },
+  {
+    "title": "captures the light routed capability map: component-detail-tabs",
+    "project": "design-system-desktop",
+    "status": "passed",
+    "duration": 1913
+  },
+  {
+    "title": "captures the light routed capability map: component-detail-button",
+    "project": "design-system-desktop",
+    "status": "passed",
+    "duration": 2014
+  },
+  {
+    "title": "captures the light routed capability map: screens-overview",
+    "project": "design-system-desktop",
+    "status": "passed",
+    "duration": 1889
+  },
+  {
+    "title": "captures the light routed capability map: project-status-page",
+    "project": "design-system-desktop",
+    "status": "passed",
+    "duration": 2162
+  },
+  {
+    "title": "captures the dark routed capability map: foundations-overview",
+    "project": "design-system-desktop",
+    "status": "passed",
+    "duration": 1951
+  },
+  {
+    "title": "captures the dark routed capability map: foundation-detail-color",
+    "project": "design-system-desktop",
+    "status": "passed",
+    "duration": 2506
+  },
+  {
+    "title": "captures the dark routed capability map: foundation-detail-typography",
+    "project": "design-system-desktop",
+    "status": "passed",
+    "duration": 2412
+  },
+  {
+    "title": "captures the dark routed capability map: foundation-detail-radius",
+    "project": "design-system-desktop",
+    "status": "passed",
+    "duration": 2115
+  },
+  {
+    "title": "captures the dark routed capability map: components-overview",
+    "project": "design-system-desktop",
+    "status": "passed",
+    "duration": 7877
+  },
+  {
+    "title": "captures the dark routed capability map: component-detail-tabs",
+    "project": "design-system-desktop",
+    "status": "passed",
+    "duration": 1904
+  },
+  {
+    "title": "captures the dark routed capability map: component-detail-button",
+    "project": "design-system-desktop",
+    "status": "passed",
+    "duration": 1889
+  },
+  {
+    "title": "captures the dark routed capability map: screens-overview",
+    "project": "design-system-desktop",
+    "status": "passed",
+    "duration": 1840
+  },
+  {
+    "title": "captures the dark routed capability map: project-status-page",
+    "project": "design-system-desktop",
+    "status": "passed",
+    "duration": 2144
+  },
+  {
+    "title": "prepares the comprehensive typography foundation review",
+    "project": "design-system-mobile",
+    "status": "passed",
+    "duration": 3152
+  },
+  {
+    "title": "records the cross-theme color contrast baseline",
+    "project": "design-system-mobile",
+    "status": "passed",
+    "duration": 1725
+  },
+  {
+    "title": "records the radius working baseline from accepted owners",
+    "project": "design-system-mobile",
+    "status": "passed",
+    "duration": 1714
+  },
+  {
+    "title": "preserves the accepted Link and informational Accordion baselines",
+    "project": "design-system-mobile",
+    "status": "passed",
+    "duration": 3387
+  },
+  {
+    "title": "routes through adaptive drawer shell",
+    "project": "design-system-mobile",
+    "status": "passed",
+    "duration": 2582
+  },
+  {
+    "title": "positions mobile utilities below the header at matched control heights",
+    "project": "design-system-mobile",
+    "status": "passed",
+    "duration": 2066
+  },
+  {
+    "title": "routes through coordinated navigation systems",
+    "project": "design-system-mobile",
+    "status": "passed",
+    "duration": 2988
+  },
+  {
+    "title": "routes through expected and available capability states",
+    "project": "design-system-mobile",
+    "status": "passed",
+    "duration": 30379
+  },
+  {
+    "title": "distinguishes specimens, canonical candidates, and adoption",
+    "project": "design-system-mobile",
+    "status": "passed",
+    "duration": 31193
+  },
+  {
+    "title": "routes through the adaptive dialog presentation",
+    "project": "design-system-mobile",
+    "status": "passed",
+    "duration": 2021
+  },
+  {
+    "title": "renders the source-grounded rich record review",
+    "project": "design-system-mobile",
+    "status": "passed",
+    "duration": 2054
+  },
+  {
+    "title": "shows the shared lifecycle status roles without generalizing every badge job",
+    "project": "design-system-mobile",
+    "status": "passed",
+    "duration": 1913
+  },
+  {
+    "title": "preserves the Home feature card while reviewing only foundation corrections",
+    "project": "design-system-mobile",
+    "status": "passed",
+    "duration": 1980
+  },
+  {
+    "title": "keeps the dialog close action inside the header content axis",
+    "project": "design-system-mobile",
+    "status": "passed",
+    "duration": 1960
+  },
+  {
+    "title": "separates checkbox alignment geometry from its visible mark",
+    "project": "design-system-mobile",
+    "status": "passed",
+    "duration": 1790
+  },
+  {
+    "title": "keeps mounted transaction geometry stable across lifecycle changes",
+    "project": "design-system-mobile",
+    "status": "passed",
+    "duration": 2072
+  },
+  {
+    "title": "keeps transaction task hierarchy readable at the narrow phone boundary",
+    "project": "design-system-mobile",
+    "status": "passed",
+    "duration": 2477
+  },
+  {
+    "title": "keeps every reviewed transaction state inside the narrow phone viewport",
+    "project": "design-system-mobile",
+    "status": "passed",
+    "duration": 1525
+  },
+  {
+    "title": "keeps the global assistant launcher out of design-system reviews",
+    "project": "design-system-mobile",
+    "status": "passed",
+    "duration": 2314
+  },
+  {
+    "title": "keeps the automated mint workspace truthful at desktop and constrained widths",
+    "project": "design-system-mobile",
+    "status": "passed",
+    "duration": 2561
+  },
+  {
+    "title": "keeps automated redeem on the shared issuance structure",
+    "project": "design-system-mobile",
+    "status": "passed",
+    "duration": 2243
+  },
+  {
+    "title": "keeps mounted Vote Lock relationships aligned across action and submitted states",
+    "project": "design-system-mobile",
+    "status": "passed",
+    "duration": 2114
+  },
+  {
+    "title": "keeps mounted Stake relationships aligned across task and outcome states",
+    "project": "design-system-mobile",
+    "status": "passed",
+    "duration": 3055
+  },
+  {
+    "title": "captures the light routed capability map: foundations-overview",
+    "project": "design-system-mobile",
+    "status": "passed",
+    "duration": 1902
+  },
+  {
+    "title": "captures the light routed capability map: foundation-detail-color",
+    "project": "design-system-mobile",
+    "status": "passed",
+    "duration": 2243
+  },
+  {
+    "title": "captures the light routed capability map: foundation-detail-typography",
+    "project": "design-system-mobile",
+    "status": "passed",
+    "duration": 2174
+  },
+  {
+    "title": "captures the light routed capability map: foundation-detail-radius",
+    "project": "design-system-mobile",
+    "status": "passed",
+    "duration": 1914
+  },
+  {
+    "title": "captures the light routed capability map: components-overview",
+    "project": "design-system-mobile",
+    "status": "passed",
+    "duration": 20027
+  },
+  {
+    "title": "captures the light routed capability map: component-detail-tabs",
+    "project": "design-system-mobile",
+    "status": "passed",
+    "duration": 1929
+  },
+  {
+    "title": "captures the light routed capability map: component-detail-button",
+    "project": "design-system-mobile",
+    "status": "passed",
+    "duration": 1875
+  },
+  {
+    "title": "captures the light routed capability map: screens-overview",
+    "project": "design-system-mobile",
+    "status": "passed",
+    "duration": 1909
+  },
+  {
+    "title": "captures the light routed capability map: project-status-page",
+    "project": "design-system-mobile",
+    "status": "passed",
+    "duration": 2003
+  },
+  {
+    "title": "captures the dark routed capability map: foundations-overview",
+    "project": "design-system-mobile",
+    "status": "passed",
+    "duration": 1828
+  },
+  {
+    "title": "captures the dark routed capability map: foundation-detail-color",
+    "project": "design-system-mobile",
+    "status": "passed",
+    "duration": 2148
+  },
+  {
+    "title": "captures the dark routed capability map: foundation-detail-typography",
+    "project": "design-system-mobile",
+    "status": "passed",
+    "duration": 2153
+  },
+  {
+    "title": "captures the dark routed capability map: foundation-detail-radius",
+    "project": "design-system-mobile",
+    "status": "passed",
+    "duration": 1937
+  },
+  {
+    "title": "captures the dark routed capability map: components-overview",
+    "project": "design-system-mobile",
+    "status": "passed",
+    "duration": 19782
+  },
+  {
+    "title": "captures the dark routed capability map: component-detail-tabs",
+    "project": "design-system-mobile",
+    "status": "passed",
+    "duration": 1859
+  },
+  {
+    "title": "captures the dark routed capability map: component-detail-button",
+    "project": "design-system-mobile",
+    "status": "passed",
+    "duration": 1898
+  },
+  {
+    "title": "captures the dark routed capability map: screens-overview",
+    "project": "design-system-mobile",
+    "status": "passed",
+    "duration": 1821
+  },
+  {
+    "title": "captures the dark routed capability map: project-status-page",
+    "project": "design-system-mobile",
+    "status": "passed",
+    "duration": 1992
+  },
+  {
+    "title": "routes through adaptive drawer shell",
+    "project": "design-system-phone",
+    "status": "passed",
+    "duration": 2836
+  },
+  {
+    "title": "routes through coordinated navigation systems",
+    "project": "design-system-phone",
+    "status": "passed",
+    "duration": 3241
+  },
+  {
+    "title": "routes through expected and available capability states",
+    "project": "design-system-phone",
+    "status": "passed",
+    "duration": 29185
+  },
+  {
+    "title": "routes through the adaptive dialog presentation",
+    "project": "design-system-phone",
+    "status": "passed",
+    "duration": 1936
+  },
+  {
+    "title": "manual balance warnings do not move asset rows",
+    "project": "design-system-desktop",
+    "status": "passed",
+    "duration": 2579
+  },
+  {
+    "title": "manual anchors preserve their content axes and fit column transitions in light",
+    "project": "design-system-desktop",
+    "status": "passed",
+    "duration": 8383
+  },
+  {
+    "title": "manual anchors preserve their content axes and fit column transitions in dark",
+    "project": "design-system-desktop",
+    "status": "passed",
+    "duration": 8565
+  },
+  {
+    "title": "manual balance warnings do not move asset rows",
+    "project": "design-system-mobile",
+    "status": "passed",
+    "duration": 2803
+  },
+  {
+    "title": "manual anchors preserve their content axes and fit column transitions in light",
+    "project": "design-system-mobile",
+    "status": "passed",
+    "duration": 8709
+  },
+  {
+    "title": "manual anchors preserve their content axes and fit column transitions in dark",
+    "project": "design-system-mobile",
+    "status": "passed",
+    "duration": 8431
+  },
+  {
+    "title": "Manual lifecycle states fit and preserve evidence in light",
+    "project": "design-system-desktop",
+    "status": "passed",
+    "duration": 15174
+  },
+  {
+    "title": "Manual lifecycle states fit and preserve evidence in dark",
+    "project": "design-system-desktop",
+    "status": "passed",
+    "duration": 14856
+  },
+  {
+    "title": "Manual custom-amount journey retains successful approvals and final recovery",
+    "project": "design-system-desktop",
+    "status": "passed",
+    "duration": 2518
+  },
+  {
+    "title": "Manual lifecycle states fit and preserve evidence in light",
+    "project": "design-system-mobile",
+    "status": "passed",
+    "duration": 15294
+  },
+  {
+    "title": "Manual lifecycle states fit and preserve evidence in dark",
+    "project": "design-system-mobile",
+    "status": "passed",
+    "duration": 14775
+  },
+  {
+    "title": "Manual custom-amount journey retains successful approvals and final recovery",
+    "project": "design-system-mobile",
+    "status": "passed",
+    "duration": 2474
+  },
+  {
+    "title": "Manual readiness summary fits translated es copy",
+    "project": "design-system-desktop",
+    "status": "passed",
+    "duration": 2489
+  },
+  {
+    "title": "Manual readiness summary fits translated ko copy",
+    "project": "design-system-desktop",
+    "status": "passed",
+    "duration": 2476
+  },
+  {
+    "title": "Manual readiness summary fits translated zh copy",
+    "project": "design-system-desktop",
+    "status": "passed",
+    "duration": 2539
+  },
+  {
+    "title": "Manual Mint shares section geometry without duplicating the final amount or status",
+    "project": "design-system-desktop",
+    "status": "passed",
+    "duration": 4770
+  },
+  {
+    "title": "Manual compact rows retain identity and action relationships",
+    "project": "design-system-desktop",
+    "status": "passed",
+    "duration": 2644
+  },
+  {
+    "title": "Manual permission transitions preserve mobile row geometry",
+    "project": "design-system-desktop",
+    "status": "passed",
+    "duration": 3466
+  },
+  {
+    "title": "Manual mobile controls and help remain reachable in short viewports",
+    "project": "design-system-desktop",
+    "status": "passed",
+    "duration": 2565
+  },
+  {
+    "title": "Manual readiness preserves the setting value and compacts completed content",
+    "project": "design-system-desktop",
+    "status": "passed",
+    "duration": 3511
+  },
+  {
+    "title": "Manual readiness summary fits translated es copy",
+    "project": "design-system-mobile",
+    "status": "passed",
+    "duration": 2452
+  },
+  {
+    "title": "Manual readiness summary fits translated ko copy",
+    "project": "design-system-mobile",
+    "status": "passed",
+    "duration": 2487
+  },
+  {
+    "title": "Manual readiness summary fits translated zh copy",
+    "project": "design-system-mobile",
+    "status": "passed",
+    "duration": 2469
+  },
+  {
+    "title": "Manual Mint shares section geometry without duplicating the final amount or status",
+    "project": "design-system-mobile",
+    "status": "passed",
+    "duration": 4727
+  },
+  {
+    "title": "Manual compact rows retain identity and action relationships",
+    "project": "design-system-mobile",
+    "status": "passed",
+    "duration": 2542
+  },
+  {
+    "title": "Manual permission transitions preserve mobile row geometry",
+    "project": "design-system-mobile",
+    "status": "passed",
+    "duration": 3450
+  },
+  {
+    "title": "Manual mobile controls and help remain reachable in short viewports",
+    "project": "design-system-mobile",
+    "status": "passed",
+    "duration": 2616
+  },
+  {
+    "title": "Manual readiness preserves the setting value and compacts completed content",
+    "project": "design-system-mobile",
+    "status": "passed",
+    "duration": 3539
+  },
+  {
+    "title": "Transaction modal keyboard focus stays inside from the initial shell focus",
+    "project": "design-system-desktop",
+    "status": "passed",
+    "duration": 2018
+  },
+  {
+    "title": "Transaction committed logos and outcome attachments respect reduced motion",
+    "project": "design-system-desktop",
+    "status": "passed",
+    "duration": 2120
+  },
+  {
+    "title": "Transaction modal keyboard focus stays inside from the initial shell focus",
+    "project": "design-system-mobile",
+    "status": "passed",
+    "duration": 1961
+  },
+  {
+    "title": "Transaction committed logos and outcome attachments respect reduced motion",
+    "project": "design-system-mobile",
+    "status": "passed",
+    "duration": 2078
+  },
+  {
+    "title": "Active transaction actions retain primary emphasis while waiting in light",
+    "project": "design-system-desktop",
+    "status": "passed",
+    "duration": 3565
+  },
+  {
+    "title": "Active transaction actions retain primary emphasis while waiting in dark",
+    "project": "design-system-desktop",
+    "status": "passed",
+    "duration": 3606
+  },
+  {
+    "title": "Active transaction actions retain primary emphasis while waiting in light",
+    "project": "design-system-mobile",
+    "status": "passed",
+    "duration": 3600
+  },
+  {
+    "title": "Active transaction actions retain primary emphasis while waiting in dark",
+    "project": "design-system-mobile",
+    "status": "passed",
+    "duration": 3561
+  },
+  {
+    "title": "Transaction section navigation stays above contained previews while scrolling",
+    "project": "design-system-desktop",
+    "status": "passed",
+    "duration": 2318
+  },
+  {
+    "title": "Contained dialog backdrops cover the entire transaction canvas",
+    "project": "design-system-desktop",
+    "status": "passed",
+    "duration": 2000
+  },
+  {
+    "title": "Tall transaction previews fit their canvas without clipping",
+    "project": "design-system-desktop",
+    "status": "passed",
+    "duration": 2765
+  },
+  {
+    "title": "Transaction section navigation stays above contained previews while scrolling",
+    "project": "design-system-mobile",
+    "status": "passed",
+    "duration": 2328
+  },
+  {
+    "title": "Contained dialog backdrops cover the entire transaction canvas",
+    "project": "design-system-mobile",
+    "status": "passed",
+    "duration": 1914
+  },
+  {
+    "title": "Tall transaction previews fit their canvas without clipping",
+    "project": "design-system-mobile",
+    "status": "passed",
+    "duration": 2588
+  },
+  {
+    "title": "Zapper direction control stays above quote search in light",
+    "project": "design-system-desktop",
+    "status": "passed",
+    "duration": 2454
+  },
+  {
+    "title": "Zapper direction control stays above quote search in dark",
+    "project": "design-system-desktop",
+    "status": "passed",
+    "duration": 2363
+  },
+  {
+    "title": "Zapper direction control stays above quote search in light",
+    "project": "design-system-mobile",
+    "status": "passed",
+    "duration": 2374
+  },
+  {
+    "title": "Zapper direction control stays above quote search in dark",
+    "project": "design-system-mobile",
+    "status": "passed",
+    "duration": 2374
+  },
+  {
+    "title": "overview preserves its starting scroll position at 320px",
+    "project": "design-system-review",
+    "status": "passed",
+    "duration": 2505
+  },
+  {
+    "title": "overview preserves its starting scroll position at 375px",
+    "project": "design-system-review",
+    "status": "passed",
+    "duration": 2274
+  },
+  {
+    "title": "overview preserves its starting scroll position at 1400px",
+    "project": "design-system-review",
+    "status": "passed",
+    "duration": 2379
+  },
+  {
+    "title": "narrow table keeps its last column reachable without page overflow",
+    "project": "design-system-review",
+    "status": "passed",
+    "duration": 1811
+  },
+  {
+    "title": "Stake label fits its intended boundary at 320px",
+    "project": "design-system-review",
+    "status": "passed",
+    "duration": 1866
+  },
+  {
+    "title": "Stake label fits its intended boundary at 359px",
+    "project": "design-system-review",
+    "status": "passed",
+    "duration": 1838
+  },
+  {
+    "title": "Stake label fits its intended boundary at 360px",
+    "project": "design-system-review",
+    "status": "passed",
+    "duration": 1855
+  },
+  {
+    "title": "Stake label fits its intended boundary at 375px",
+    "project": "design-system-review",
+    "status": "passed",
+    "duration": 2011
+  },
+  {
+    "title": "an opened contained dialog retains focus trapping and returns focus when closed",
+    "project": "design-system-review",
+    "status": "passed",
+    "duration": 2026
+  },
+  {
+    "title": "source-bound viewport capture: light 375",
+    "project": "design-system-review",
+    "status": "passed",
+    "duration": 30579
+  },
+  {
+    "title": "source-bound viewport capture: light 1400",
+    "project": "design-system-review",
+    "status": "passed",
+    "duration": 32797
+  },
+  {
+    "title": "source-bound viewport capture: dark 375",
+    "project": "design-system-review",
+    "status": "passed",
+    "duration": 32403
+  },
+  {
+    "title": "source-bound viewport capture: dark 1400",
+    "project": "design-system-review",
+    "status": "passed",
+    "duration": 34079
+  }
+]

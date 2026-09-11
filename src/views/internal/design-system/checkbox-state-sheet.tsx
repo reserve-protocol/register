@@ -1,6 +1,6 @@
 import { Checkbox } from '@/components/checkbox'
 
-const CheckboxStateSheet = () => (
+const CheckboxStateSheet = ({ autoFocus = false }: { autoFocus?: boolean }) => (
   <section
     data-testid="checkbox-state-sheet"
     className="space-y-4"
@@ -25,7 +25,7 @@ const CheckboxStateSheet = () => (
         <Checkbox aria-label="Checked checkbox" checked />
       </State>
       <State label="Focus-visible">
-        <Checkbox aria-label="Focused checkbox" autoFocus />
+        <Checkbox aria-label="Focused checkbox" autoFocus={autoFocus} />
       </State>
       <State label="Unchecked · disabled">
         <Checkbox aria-label="Disabled unchecked checkbox" disabled />

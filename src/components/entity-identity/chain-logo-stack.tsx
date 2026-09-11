@@ -1,5 +1,5 @@
 import ChainLogo from '@/components/icons/ChainLogo'
-import { type V1SurfaceRole } from '@/components/ui/v1-semantic-recipes'
+import { type V1SurfaceRole } from '@/components/design-system-v1/semantic-roles'
 import * as React from 'react'
 
 import { LogoStackFrames, SEPARATOR_WIDTH } from './logo-stack-frames'

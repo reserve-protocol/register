@@ -1,3 +1,4 @@
+import { v1Typography } from '@/components/design-system-v1/typography'
 import * as DialogPrimitive from '@radix-ui/react-dialog'
 import {
   forwardRef,
@@ -167,10 +168,7 @@ export const DrawerDescription = forwardRef<
 >(({ className, ...props }, ref) => (
   <DialogPrimitive.Description
     ref={ref}
-    className={cn(
-      'mt-1 text-base font-light leading-6 text-muted-foreground',
-      className
-    )}
+    className={cn(`mt-1 ${v1Typography.body} text-muted-foreground`, className)}
     {...props}
   />
 ))

@@ -6,7 +6,7 @@ import {
   SegmentedControl,
   SegmentedControlItem,
 } from '@/components/design-system-v1/segmented-control'
-import { candidateSemanticRoles as semanticRoles } from '@/components/design-system-v1/semantic-roles'
+import { v1SemanticRoles as semanticRoles } from '@/components/design-system-v1/semantic-roles'
 import {
   transactionAttachedRegionGeometry,
   transactionTaskGeometry,
@@ -18,7 +18,6 @@ import {
 } from '@/components/design-system-v1/inline-message'
 import { TransactionAmountObject } from '@/components/design-system-v1/transaction-amount-object'
 import { v1Typography } from '@/components/design-system-v1/typography'
-import { v1SemanticRecipes as roles } from '@/components/ui/v1-semantic-recipes'
 import { cn } from '@/lib/utils'
 import { ChainId } from '@/utils/chains'
 
@@ -132,7 +131,12 @@ export const AutomatedMintConfigure = ({
                 <Trans>Redeem amount</Trans>
               )}
             </h4>
-            <p className={cn(v1Typography.supporting, roles.text.supporting)}>
+            <p
+              className={cn(
+                v1Typography.supporting,
+                semanticRoles.text.supporting
+              )}
+            >
               {isMint ? (
                 <Trans>
                   Basket assets are acquired automatically before CMC20 is
@@ -140,13 +144,13 @@ export const AutomatedMintConfigure = ({
                 </Trans>
               ) : chain === ChainId.BSC ? (
                 <Trans>
-                  CMC20 is redeemed and its basket assets are automatically
-                  sold for USDT.
+                  CMC20 is redeemed and its basket assets are automatically sold
+                  for USDT.
                 </Trans>
               ) : (
                 <Trans>
-                  CMC20 is redeemed and its basket assets are automatically
-                  sold for USDC.
+                  CMC20 is redeemed and its basket assets are automatically sold
+                  for USDC.
                 </Trans>
               )}
             </p>
@@ -219,17 +223,19 @@ export const AutomatedMintConfigure = ({
             )}
           </Button>
           <div className="mt-4 flex flex-col items-start gap-1 px-4 pb-4">
-            <p className={cn(v1Typography.supporting, roles.text.supporting)}>
+            <p
+              className={cn(
+                v1Typography.supporting,
+                semanticRoles.text.supporting
+              )}
+            >
               {isMint ? (
                 <Trans>Already hold the required basket tokens?</Trans>
               ) : (
                 <Trans>Redeem directly to basket assets</Trans>
               )}
             </p>
-            <AutomatedIssuanceManualLink
-              chain={chain}
-              operation={operation}
-            />
+            <AutomatedIssuanceManualLink chain={chain} operation={operation} />
           </div>
         </div>
         <div
@@ -303,7 +309,7 @@ const UpcomingStep = ({
     <StepNumber number={number} />
     <div>
       <p className={v1Typography.label}>{title}</p>
-      <p className={cn(v1Typography.supporting, roles.text.supporting)}>
+      <p className={cn(v1Typography.supporting, semanticRoles.text.supporting)}>
         {detail}
       </p>
     </div>

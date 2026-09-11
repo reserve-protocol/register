@@ -1,0 +1,55 @@
+{
+  "recordedAt": "2026-09-09T14:32:32.373Z",
+  "head": "adef9ee76ffe2a579f6811cae2f5cf152cd0cf99",
+  "branch": "design-system-v1",
+  "sourceScope": "Selected public files hashed at closeout; not whole-runtime or before/after source attestation.",
+  "route": "/base/index-dtf/0x4dA9A0f397dB1397902070f93a4D6ddBC0E0E6e8/overview",
+  "fixture": "REGISTRY slug lcap; existing strict harness snapshots, no per-test data overrides.",
+  "viewportHeights": [
+    900
+  ],
+  "ownedPort": 3042,
+  "versions": {
+    "node": "v20.20.0",
+    "playwright": "1.59.1",
+    "vite": "7.3.2"
+  },
+  "results": {
+    "startTime": "2026-09-09T14:31:03.178Z",
+    "duration": 43615.382,
+    "expected": 8,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "artifacts": {
+    "holdings-light-375-exposure.png": "c538e910ea67cc4369ad0a2e699ae78e98497c8f928c8bb7d65ed47449326e6d",
+    "holdings-light-375-collateral.png": "2a09a147e17b88b4a5bd72f0d7aeffd036b964b4f769d4425cb14c15070f074f",
+    "holdings-dark-375-exposure.png": "309377d5eae439e37146dd587eca4d04e72656bfcdaa3099724ebe7b6ed35cd9",
+    "holdings-dark-375-collateral.png": "364dcd0694c21e76daebe5df02d3a235369e478797e21db9b82d3fabe9bcde62",
+    "holdings-light-639-collateral.png": "494344c58c506a1a659e325420a9a8666669dc22d4abd2dd01ff3acd2d01d9c6",
+    "holdings-light-640-collateral.png": "0b4d1510cb2896a873d199b9fe44ee309be424e6a74a9a37ba754b52e808021b",
+    "holdings-light-1400-exposure.png": "eb772d857188ffe0259b4f3bd7e78e49111a5c6cdf6b8cfc363d6dbc1950bf13",
+    "observations.json": "35b17f984443e772078bc79891c280537d3b5925e4c8b8f1a4628a7a8112bcaa",
+    "holdings-observation.spec.ts": "a7d41aca878a802395c804436a31c4e02d17b5d96f6ef0b8348460eb3ee012c6"
+  },
+  "publicSources": {
+    "src/views/index-dtf/overview/components/basket-overview/index.tsx": "346524c0bc1b529a247d6c527557159748ec658325e017d334dfb0ab2127b5e1",
+    "src/views/index-dtf/overview/components/basket-overview/mobile-row-layout.tsx": "4164b0654fa1666e6743f77e3a8a3c2a35d5023a10cbf44f6fad49db285c62f0",
+    "src/views/index-dtf/overview/components/basket-overview/mobile-exposure-rows.tsx": "71faf92cf2b688e16b9039b797afd399f31e86dc06af07d984c714b56ed6618a",
+    "src/views/index-dtf/overview/components/basket-overview/mobile-collateral-rows.tsx": "2920e14a58eb5827c7520b28e5aac54cd6a2fd7aa3f492368c5cb2fa9ea0d446",
+    "src/views/index-dtf/overview/components/basket-overview/basket-table-body.tsx": "0fe39ae5ce4ddfbfa158eb2f199e9ebcfddaf617ef3b41d7d6cec3b7dea8f2f6",
+    "src/views/index-dtf/overview/components/basket-overview/basket-table-header.tsx": "30a8af74f929d234154a5cc64fd8660660b6493421eab7792e9d978d1d665e4b",
+    "src/views/portfolio-page/components/dtf-positions.tsx": "09758860047857101221c06efccac17b8ea42b118b7483e422078235c1204c86",
+    "src/views/portfolio-page/components/pending-withdrawals.tsx": "34431db540aa9dff52cf45d7c7fffb49f3e46102c5575bfe1dcbe1488b1f32fa",
+    "e2e/helpers/registry.ts": "d89f9be113e54d003e4f83093a1b1846436f6d7f33da2faaf58739d4bc9f9eb7",
+    "e2e/fixtures/base.ts": "22549a3326057bee92729f5498e5b2c23cd728593e2a44099bd2c0ef1c8c54ef",
+    "e2e/fixtures/wallet.ts": "67eded3ef66ddd9cf2ad822dfdf4409b79d3ec2b9a3f2ef88ca167c79ec2733e",
+    "e2e/snapshots/base/lcap/exposure.json": "75318b19f52923ed6394af31aa3b3ac1a742566fb945520ddb6a62e1322161ae",
+    "e2e/snapshots/base/lcap/dtf.json": "42a2d70cf066dafe6b5120a4dbdaf49c4e8313ff88fa634f09886c51be79a46a",
+    "e2e/snapshots/base/lcap/token-prices.json": "26e16b0c52d76eec57e6a90738f84109c76b1c872f74b5cb9b49cdc52b59d800",
+    "e2e/snapshots/base/lcap/current-price.json": "268ee1b99c7712eb75f2078f76dd40ad1262485083c184b3c06464cc5927f36e",
+    "e2e/snapshots/base/lcap/chain-state.json": "ea6ba92827bb08ec37d9cdd23010afe85d5dbd2ce9fc0ff9ecba18d367b2eba6",
+    "pnpm-lock.yaml": "a205659b1464680eb72fceedbdd2ec0fbe7d9108346ff99bcb4dcf2ac4007b33"
+  }
+}

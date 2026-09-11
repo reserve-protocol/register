@@ -1,0 +1,93 @@
+{
+  "recordedAt": "2026-09-09T21:25:44.801Z",
+  "scope": "Local desktop Holdings 12px vertical cell-padding trial; narrow 24px padding unchanged. Mocked-logo fallbacks are not logo-quality evidence.",
+  "sourceBoundary": "Public digest compared before/after each case; no private environment hash retained. Preview process startup and dependencies are not source-attested.",
+  "result": {
+    "startTime": "2026-09-09T21:24:48.952Z",
+    "duration": 48094.687,
+    "expected": 6,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "cases": [
+    {
+      "name": "holdings family light 320",
+      "status": "passed",
+      "sourceDigest": "edf11fc575309e45eefff49e30190c596adb8c7405f21e5a7da32095bc6c42b8",
+      "observations": []
+    },
+    {
+      "name": "holdings family light 375",
+      "status": "passed",
+      "sourceDigest": "edf11fc575309e45eefff49e30190c596adb8c7405f21e5a7da32095bc6c42b8",
+      "observations": []
+    },
+    {
+      "name": "holdings family light 1400",
+      "status": "passed",
+      "sourceDigest": "edf11fc575309e45eefff49e30190c596adb8c7405f21e5a7da32095bc6c42b8",
+      "observations": [
+        {
+          "name": "header-geometry",
+          "data": {
+            "tabsCenter": 3003,
+            "labelCenter": 3003
+          }
+        }
+      ]
+    },
+    {
+      "name": "holdings family dark 320",
+      "status": "passed",
+      "sourceDigest": "edf11fc575309e45eefff49e30190c596adb8c7405f21e5a7da32095bc6c42b8",
+      "observations": []
+    },
+    {
+      "name": "holdings family dark 375",
+      "status": "passed",
+      "sourceDigest": "edf11fc575309e45eefff49e30190c596adb8c7405f21e5a7da32095bc6c42b8",
+      "observations": []
+    },
+    {
+      "name": "holdings family dark 1400",
+      "status": "passed",
+      "sourceDigest": "edf11fc575309e45eefff49e30190c596adb8c7405f21e5a7da32095bc6c42b8",
+      "observations": [
+        {
+          "name": "header-geometry",
+          "data": {
+            "tabsCenter": 3003,
+            "labelCenter": 3003
+          }
+        }
+      ]
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "holdings-family-light-375-exposure.png",
+      "sha256": "f6c7a672ae87cbd77421b95a1ceae9283e5731951d8f7d3c16c5323ddd97deb1"
+    },
+    {
+      "path": "holdings-family-light-1400-exposure.png",
+      "sha256": "65eae5866feb2c8bb0b2bc4b87c9ccf39d28b1b5d1db0c524e9517e445dbedb9"
+    },
+    {
+      "path": "holdings-family-light-1400-collateral.png",
+      "sha256": "8434c7e94f8088361bee1fa2b13a6d14b28c1b4f4248fddf77dd7283f770a9b3"
+    },
+    {
+      "path": "holdings-family-light-1400-long-content.png",
+      "sha256": "81433851b28defd8b732b8e93d428dbaa55fea892981657054335a6f0335b693"
+    },
+    {
+      "path": "holdings-family-dark-320-exposure.png",
+      "sha256": "d09339cbcf0ddde6788a2825bf432808c4d67c7ed50960c63639efbf6bf8e0be"
+    },
+    {
+      "path": "holdings-family-dark-1400-collateral.png",
+      "sha256": "6066c558ea2e2f024d8a2980b3e65d65c53918b44405ad20a087c22e4f064148"
+    }
+  ]
+}

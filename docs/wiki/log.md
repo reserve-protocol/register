@@ -1,6 +1,6 @@
 ---
 title: Log
-updated: 2026-09-08
+updated: 2026-09-11
 type: log
 ---
 
@@ -679,3 +679,182 @@ Play-by-play lives in git (PRs #1053/#1054/#1055/#1063, SDK PR #27). Durable out
 - Separated unprepared, deferred and dependency-blocked review work; linked Amount, Asset picker, Stepper and Popover to existing composition evidence without promoting transaction ingredients. Accepted navigation, Metric and Empty state baselines no longer remain in stale review queues. Breadcrumb stays low priority; generic Combobox stays unnecessary. Historical layout measurements are not current V1 contracts.
 - Removed the unused blanket Verified milestone in favor of scoped evidence, and stopped presenting an empty schedule as blocked inventory. The active plan retains strong defaults with composition-level judgment; the outside audit should assess overall simplicity and future-feature quality as well as migration reliability.
 - Low-profile, lab-only metadata/display changes: the mechanical medium size hint comes from catalog, presentation and documentation files, not a wider product radius. Six regression tests failed before implementation; final focused coverage is 40 passing tests, with types, scoped lint, formatting and wiki/diff checks green. Mounted desktop links and narrow-screen wrapping were checked on a temporary preview; no component defaults, transaction designs or production behavior changed. The outside audit is not started.
+
+## 2026-09-08 — Post-audit consolidation planning
+
+- Prepared one [bounded plan](../plans/design-system-foundation-consolidation.md) from the outside audit and its reconciliation. It proposes a source-bound rendered-review loop, consolidated semantic/type owners, a shorter truthful authority path, fresh-agent validation, and a separately authorized integration rehearsal. The audit remains independent evidence; the plan is pending Claude review, not implementation permission.
+- Retained accepted square structure, component defaults, transaction behavior, partial acceptance and pending trials. Historical progress labels do not become approval records. Updated the active plan's stale audit-not-started claim and added an on-demand router link; no UI, verification tooling, shared tokens, or production code changed.
+- Planning verification: seven contract sections and twelve local links/anchors checked; scoped formatting, lint, wiki and diff checks passed. The scope inventory also reports unmapped documentation/evidence and an empty-catch flag in the unchanged external audit capture script; neither is presented as runtime verification. Independent plan review remains pending; no commit or push.
+
+## 2026-09-09 — Consolidation plan review reconciled
+
+- Revised the [same plan](../plans/design-system-foundation-consolidation.md) after Claude's ready-with-adjustments review: earlier controls and guidance cleanup, narrower capture prerequisite for role work, explicit read-only baselines, source provenance, CI artifacts and failing hygiene tests. One owner may interleave slices; no extra stages or parallel agents are required.
+- Retained mixed-scope historical dispositions, existing workflow status vocabulary, component defaults and accepted square structure. Added a bounded full-page context proof distinct from the one-section migration rehearsal. Removed the planning document's drift-source coupling while keeping its on-demand link. The original external reports remain unchanged; this revision authorizes no implementation, experiment, commit or push.
+
+## 2026-09-09 — Consolidation first implementation slice
+
+- User authorized the bounded plan. Preserved two isolated checkpoint controls before changing guidance; initial outputs, read events, hashes and limitations are retained in the [evaluation record](../plans/design-system-consolidation-evaluation.md). No comparison verdict or production rehearsal yet.
+- Added owned-preview captures with source manifests, fail-closed change/attachment checks, read-only baseline mode, and retained light/dark desktop/phone images. Final helper tests 81/81 and captures 4/4 passed; all twelve images inspected. Native watching requires execution outside this host sandbox. The scoped run stopped there; no generic smoke/full-gate claim. [Evidence and remaining scope](../plans/design-system-consolidation-capture.md).
+- Corrected stale ActionGroup/Field acceptance claims without promoting adoption or pending designs. The control repeated an obsolete reference claim, reinforcing the need for evidence-backed cleanup; it is not yet an independent comparative finding. No new skill or workflow ceremony was added: the concrete fixes fit existing docs and test seams. The program remains active; external reports, app code and design defaults are unchanged.
+
+## 2026-09-09 — Bounded guidance and acceptance-link cleanup
+
+- Moved transaction-only contracts and all 18 pressure rows unchanged into the existing transaction checkpoint; moved the dated upstream reconciliation into the audit. The required V1 plan now routes to them instead of embedding them. Its source precedence, migration-preservation rule and cross-project engineering register remain intact.
+- Added scoped evidence links to the 28 previously unlinked recorded baselines. Seven explicitly use existing synthesized records without inventing dedicated decisions. Reconciled eight historical progress rows while keeping pending density/elevation trials, deferred engineer review and production adoption distinct. Catalog authority, review, implementation and adoption fields did not change. Two obsolete Textarea/Collapsible next-action prompts now consume accepted scope rather than requesting its completed review again.
+- Fresh catalog/UI tests, app typecheck, scoped lint/format/wiki/diff and link/content-preservation checks passed; exact counts are in the active stage. Self-review is not independent acceptance; no fresh visual proof or full repository gate is claimed for this documentation slice. A generated metadata insertion initially failed parsing; it was corrected and checked for field parity, apart from the intended context links and two routing prompts. No shared component defaults, production behavior or kit skill changed. The saved guidance-only candidate still needs performer-safe packaging and focused Claude review before further foundation work; no treatment or comparison verdict yet.
+
+## 2026-09-09 — Capture privacy and typography owner
+
+- Reconciled the focused first-slice review: private fingerprints now stay in memory, historical retained records are sanitized/deduplicated, source watchers avoid the dependency tree, and captures record inner scrolling and test-environment limits. Raw credentials were not stored. A synthetic secret-file regression fails before the fix and passes afterward without weakening drift rejection.
+- Narrowed uncertain approval provenance without inventing decisions or downgrading pre-existing classifications. Added dated loading/empty acceptance pointers and Metric's composition-scoped decision; reused existing ledger statuses. The guidance-only fixture is assembled from the original archive with ten allowed changes and no coordinator findings; 186 links and 20 wiki pages pass. One overlong ledger row was caught and corrected before freezing the final fixture. No treatment has run; private retention remains bounded by 2026-09-16.
+- Began S2 with the ten-role shared typography owner and unchanged usage descriptions. Fresh before/after light/dark phone/desktop captures show twelve byte-identical image pairs and equal computed type/geometry. The wider suite caught a legacy exact-four-keys assertion; its compatibility scope is now explicit, and final source-bound captures were rerun. Full unit 1164/1164, helpers 82/82, mounted 4/4, app/e2e types and lint pass. Program remains active, not a completed integration gate or new design acceptance. No kit change was justified; fixes belong at the existing code, test and documentation owners.
+
+## 2026-09-09 — Consolidation implementation verified; comparison pending
+
+- S1–S3b are implemented: one semantic owner accounts for 61 original modules, ten type roles are shared, twelve aliases preserve existing theme values, thirteen layout relationships retain explicit owners, and all 45 catalog entries expose a lossless five-question view. No component-default or production adoption changes. The [capture record](../plans/design-system-consolidation-capture.md) owns fresh proof and exceptions.
+- The final review pair's confirmed CI coverage, hygiene-bypass and engineering-register findings were corrected. Unit gate 1172/1172, helpers 84/84, read-only browser 159/159 and app smoke 58 passed/one existing fixme are green. Final browser runs had no retries. Earlier baseline/assertion drift, observer timing, watcher setup and asynchronous test teardown failures remain disclosed; assertion counts alone did not prove a green process exit. Twelve final normal-viewport captures were inspected. Remote CI remains unobserved.
+- All six original fresh-agent outputs are retained, with no repairs or feedback. All three compositions pass the same mounted behavior checks; the [evaluation record](../plans/design-system-consolidation-evaluation.md) discloses invalid setup, frozen-input differences, usage and privacy limits. This does not establish better first-pass design quality. Independent comparative judgment is next; the Downloadable resources pilot is source-inspected but not approved or implemented. Raw private evidence expires by 2026-09-16 unless explicitly extended.
+- Self-improvement conclusion: no kit rewrite or new ritual is justified by this slice. Concrete fixes belong in the existing owners, capture/tests and one lab area guide. The expensive full-sheet check remains checkpoint evidence, not a requirement for every small lab edit. Preserve source inspection and whole-composition judgment; do not mistake cleaner docs or passing checks for acceptance. No commit or push.
+
+## 2026-09-09 — Comparative review reconciled
+
+- [Reconciled the independent comparison](../plans/design-system-consolidation-reconciliation.md) against original receipts, read events and fresh unchanged-candidate checks. Unit 12/12 and supplemental browser 12/12 pass. The predicted Quartz failure did not reproduce; no shared stubs added. Cedar's limited reads did not return the relevant authority, so a whole-catalog read count was not evidence it ignored a received decision. Mobile feedback shifts are 44px, not the report's 60/56px.
+- Added an exact catalog-search hint, distinguished lab chrome from the accepted scoped repeated-field pattern, clarified width ownership, and removed duplicate live reference status lists while preserving scoped acceptance evidence. The Intent review caught this pass initially trusting the specimen's stale provisional badge; the corrected guidance cites the higher-authority acceptance decision. Corrected the project router's review-reconciliation link: the similarly named kit-refresh skill is not a review tool. No kit change, component/default change, candidate repair, new experiment or table implementation.
+- S4 has a mixed result, not its promised positive reliability proof. Keep the useful owner consolidation; do not promote the synthetic specimens or silently clear the production-pilot gate. New guidance has static/source support, not a new causal performance result. Original evidence and the independent report remain unchanged; private retention still ends by 2026-09-16. No commit or push.
+
+## 2026-09-09 — First table-family candidates
+
+- Added shared cell examples and two bounded Portfolio-derived anchors: ordinary Index/Yield positions and pending/ready withdrawals. Direct production source inspection and fresh fixtures informed the candidate; the outside report remained a discovery map. Holdings supplied the stacked-record precedent, not a universal responsive policy. Current Review now targets only these anchors; transaction and rich-record acceptance did not change.
+- Reused DataTable and canonical cell/action owners. Explicit name wrapping and accessible table metadata are opt-in shared additions, recorded for project-closeout engineering review. Product sources, defaults, wallet/chain logic, financial calculations and SDK contracts remain unchanged. Source-sidebar/receipt controls are explicitly non-executing lab simulations.
+- Visual inspection found overlap that ordinary overflow checks missed. The regression now checks intersecting text bounds and fails when the old layout is restored. Independent review caught lost intermediate-width sorting, missing accessible direction, coarse countdowns and an omitted Action header; fixes and affected-axis rechecks are complete. [Evidence](../plans/design-system-table-family-evidence/first-slice.md) distinguishes the 51 focused tests, 7 source/viewport checks, retained detail checks and production observations from unproved live transactions and human design acceptance.
+- Process conclusion: no new skill or generic enforcement layer. Check visible behavior at every projection band, not just DOM control counts; inspect actual text relationships in addition to overflow. These checks belong in the existing transfer brief, lab guide and test seam. Density, mobile hierarchy and readiness emphasis remain human-review questions. No commit or push.
+
+## 2026-09-09 — Shared chain-badge optical trial
+
+- User authorized the core change after comparing visible artwork rather than outer border boxes. All four ChainBadgedLogo sizes now keep the colored badge flush below and 1px beyond the token at the right. Badge dimensions, the 1px surface separator, identity text spacing and stacked-logo geometry are unchanged. Legacy production wrappers remain outside scope.
+- Focused unit 21/21 and source-bound browser 6/6 passed; rendered light/dark single-line, two-line and compact identities inspected. App/E2E types and scoped lint pass; independent Intent/Risk reviews found no blocker. Visual acceptance remains with the user; shared-default engineer review is recorded for project closeout. No commit or push.
+- The subsequent user-approved border trial uses 2px for xl and 1.5px for smaller badges, keeping outer dimensions and compensating offsets. Live Chrome on the user's preview renders the intended thickness and colored-edge geometry. Headless Chromium rounds fractional borders even under scale-2 emulation; an initial exact check exposed this, and bounded half-pixel expectations now cover both densities. Six table cases and two high-density identity cases pass; no component workaround was added for emulation.
+
+## 2026-09-09 — Table Source and column rhythm
+
+- Added opt-in neutral contextual Link/InlineAction for Source; navigation keeps an external arrow and local details a chevron. Defaults remain unchanged. Source uses body type on desktop and supporting type in mobile identity. Desktop Withdraw is compact, mobile remains touch-sized; independent column gutters now total 24px with unchanged edge insets.
+- Related tables share spacing, not a forced page-wide Value axis: the two current anchors place different jobs after Value. No empty-track grid or dense variant was introduced. Exact shared financial axes remain a future page-composition decision.
+- Initial mounted checks failed before implementation. Initial browser checks and independent Light/Dark review caught processing width growth; local 128px desktop/144px mobile reservations and matching skeletons fix it without modifying Button defaults. All 36 focused mounted tests and eight browser cases pass; screenshots inspected in light/dark and across projection boundaries. App/E2E types and focused lint pass. The broad scope command attempted the accumulated 425-file tree and stopped at pnpm dependency-verification setup; no full-repository gate is claimed or required for this bounded lab iteration. Shared opt-in adoption is recorded for project-closeout engineer review; no commit or push.
+
+- Subsequent user review rejected that width reservation: compact actions should wrap content. Removed the local desktop/mobile minimum widths and kept stable alignment in the action column. The regression now checks intrinsic width and a stable right edge/height across idle, processing and withdrawn states. Its negative control measured 128px against approximately 91px of required content/padding. The earlier test proved the wrong design invariant; width changes caused by a real label/icon change are legitimate. Shared Button defaults remain untouched.
+
+## 2026-09-09 — 32px identity gap trial
+
+- User requested 12px after comparing the existing 8px logo-to-copy gap. ChainBadgedLogo exposes its size; EntityIdentity applies 12px to a direct xl mark and retains 8px for smaller/custom/stacked marks. The table loading placeholder mirrors the gap. No badge geometry, typography, text-stack rhythm or legacy wrapper changes.
+- Focused mounted tests pass 23/23 and the initial source-bound table/identity browser matrix passes 8/8. Independent Intent/Risk review found no component blocker; the risk review identified an over-broad gap oracle, corrected to use direct-mark classification with an explicit unclassified fallback check. The change remains a visual trial, with shared engineering review deferred to adoption.
+- Corrected oracle and manual-anchor checks pass 3/3, covering light/dark manual column transitions and the shared desktop identity specimens. Rendered table, single/two-line identity and mobile manual examples inspected; E2E types, scoped lint, formatting and wiki checks pass. No commit or push.
+
+## 2026-09-09 — Combined Withdrawal region
+
+- User authorized replacing the separate Progress/Action columns with one Withdrawal column. Countdown replaces the disabled button; Withdraw alone conveys ready; submitted/receipt previews replace the button with processing/completion feedback. Mobile uses the same sequence. The feedback region preserves height/right alignment without stretching the ready button. Keyboard activation moves focus to that persistent region, with polite state announcements.
+- Lifecycle and readiness remain separate fixture inputs, and live wallet/network/prepared-call conditions are not rewritten. This composition is appropriate for alternate phases of one job, not a universal requirement to hide independent status/actions. Shared status vocabulary and Button defaults stay unchanged.
+- Mounted RED→GREEN, table/catalog 46/46, six light/dark desktop/phone browser cases, E2E types and scoped lint/format checks pass. Inspected initial, processing and withdrawn captures; updated current-review claims for the combined region and the preceding 12px identity-gap trial. No commit, push or production migration.
+
+## 2026-09-09 — Table header spacing trial
+
+- Removed the header-to-body divider from the two table-family anchors and their inherited header minimum height. Header bottom padding is 8px with unchanged 16px first-row top padding; mobile record separators and global DataTable defaults remain unchanged.
+- Browser RED proved the old border, then all six light/dark desktop/phone cases passed with measured header height and insets, including constrained containers. Inspected both tables and mobile captures; E2E types and scoped lint pass. This remains a local visual trial, not production adoption.
+
+## 2026-09-09 — Collapsed table record hierarchy
+
+- User review exposed mixed financial-fact treatments and an orphaned withdrawal footer that previous containment checks had not caught. Collapsed Index/Yield positions now put consistently stacked Balance/Value facts below identity; withdrawals group availability/action with identity above those facts. Existing breakpoints, desktop tables, typography and production behavior remain unchanged. Content-driven wrapping is intentional, including left-aligned availability when it moves below identity.
+- Browser RED reproduced the old hierarchy, then the corrected six-case light/dark matrix passed at phone, constrained and intermediate widths, with both position families and long values captured explicitly. The expanded test initially retained a desktop-only right-edge assumption and Index-only logo fixtures; both oracles were corrected without changing the UI to satisfy them. Mounted tests and app/E2E types pass. Inspected full compositions, loading and lifecycle feedback, not just bounds. Human visual acceptance is still separate; no commit or production adoption.
+
+## 2026-09-09 — Identity supporting-line investigation
+
+- Investigated the reported larger visual text gap with an external icon. Both the owned browser check and the live Chrome preview measured 20px supporting rows, identical text offsets, and no gap between the name/supporting boxes; the icon is 14px. Neither the initial height probe nor the stronger identical-text baseline comparison reproduced an icon-induced spacing defect. No component or spacing change was made from an unconfirmed cause.
+- Added characterization coverage comparing actual text position with an identical plain-text probe, alongside the line-height assertion. This protects the existing relationship; it is not a RED→GREEN fix or a claim that differing glyphs and colors look optically identical.
+
+## 2026-09-09 — Compact collapsed withdrawal actions
+
+- User explicitly chose compact Withdraw actions for phone/constrained rows as well as desktop. The local action and feedback region now use 32px height; the button shares the logo's horizontal centerline. This is a bounded table-action choice, not a change to shared Button defaults or other mobile flows.
+- Mounted RED→GREEN passes 13/13; six light/dark browser cases verify actual 32px height and logo-center alignment across phone, desktop and constrained containers. Inspected fresh 320px, 375px dark and constrained captures. E2E types, scoped lint and formatting pass; production transaction behavior is unchanged.
+
+## 2026-09-09 — Table header alignment and collapsed insets
+
+- User authorized title-baseline section navigation, shared standalone Link hover underlines, and equal 24px vertical/horizontal padding for divided collapsed records. Desktop row padding remains 16px; internal fact spacing, link geometry, navigation and keyboard-focus behavior stay unchanged. Shared Link hover feedback is recorded for deferred engineering review before production adoption.
+- Browser RED reproduced all three previous treatments; the six-case light/dark matrix then passed with hover, baseline alignment and row-inset assertions. Inspected desktop Yield header, phone positions and constrained withdrawals. Mounted tests pass 32/32; E2E types, scoped lint, formatting and wiki/diff checks pass. No production migration or commit.
+
+## 2026-09-09 — Constrained table sorting
+
+- Replaced constrained position column headings with one canonical-menu Sort by control for the six existing fields and ascending/descending direction. The optional DataTable toolbar receives the same TanStack instance as desktop headers, avoiding duplicated sort state. Withdrawals have no interactive sort headers to preserve, so their constrained Token header is removed without adding sorting. Existing DataTable callers and production behavior are unchanged.
+- Corrected the previous inset pass's missed divider offset: CSS row padding was 24px but the absolute separator still used 16px. Both collapsed record types now use the matching 24px offset, with a browser assertion against actual separator geometry.
+- Mounted RED was missing-menu behavior; menu/desktop synchronization and existing DataTable tests pass 24/24. App/E2E types and scoped lint pass. Independent scoped Intent/Risk review found no confirmed blocker. Broad scope verification remains unavailable because its package-manager preflight attempts an install; this bounded change uses explicit targeted receipts, not a claimed whole-tree gate. Shared toolbar API is listed for deferred engineering review before adoption.
+- The six-case light/dark browser matrix passes at 320/375/1400px, including constrained and intermediate containers, menu field/direction selection, return focus and popup containment. Inspected opened mobile menus, constrained Yield and header-free withdrawals. Formatting, wiki lint and diff checks pass; no commit or production adoption.
+
+## 2026-09-09 — Desktop header breathing room trial
+
+- User requested trying 16px rather than 8px below desktop column labels. Together with the unchanged 16px first-row top padding, this matches the 32px combined padding between desktop rows. Constrained headers remain hidden, and their Sort by control and record spacing are unchanged. This is a local table-family visual trial, not a shared DataTable default.
+- Both light/dark desktop browser cases pass, including constrained/boundary projections; inspected fresh table captures. Scoped lint, formatting and wiki/diff checks pass. No commit or production migration.
+
+## 2026-09-09 — Table hardening and Holdings preparation
+
+- Corrected lab preview ordering: TanStack sorts the complete eligible list before the optional five-row render limit. Show all appends the remaining rows; production's older slice-before-sort behavior is explicitly an adoption difference. Existing DataTable defaults remain unchanged.
+- Narrow sorting retains meaning by showing the selected supporting metric, including its loading skeleton. Local projection focus follows active sort/identity/source/withdrawal controls without pulling back deliberately blurred or outside focus. Independent review's stale-focus finding reproduced RED in Chromium, then passed after clearing visible-control blur. An immediate double menu click in the loading test raced dismissal; waiting for close/return focus and reopening by keyboard made the sequence explicit.
+- Mounted table/DataTable/hygiene checks pass 22/22, types and scoped lint pass, and ten source-bound browser cases pass across themes and layout boundaries. Current evidence replaces stale review prose, while original records/hashes remain historical. Header spacing remains provisional; no production migration or commit. The broad inventory test's not-started expectation was stale and now pins provisional/non-adopted table status.
+- Directly inspected Exposure/Collateral owners and prepared the next bounded brief: underlying versus held-token market cap, grouped crypto and exchange-qualified stocks, bridge information, independent loading and expansion. Sorting/tab-reset, bridge focus and expanded/exchange fixture interactions remain to inspect before new lab composition. Research is a map, not the implementation specification.
+- Final sequential full gate passed: pnpm typecheck + pnpm lint + pnpm test:run, 1190/1190. Earlier sandbox watcher failure cleared with native watcher access; an unchanged transaction test timed out under concurrent browser/full-suite load but passed sequentially without timeout changes. Final source-bound browser rerun passed 10/10; retained 17 attached images, verified all 33 old/new image hashes and 183 scoped links/anchors. No workflow rule or new enforcement layer added: the concrete fixes belong in the existing implementation, tests and evidence owners.
+
+## 2026-09-09 — Holdings table-family candidate
+
+- Direct production interaction checks preceded implementation: crypto desktop/mobile expansion, sorting/tab reset and stock/crypto bridge dialogs. Three cases passed; original bridge return focus failed as an observation, not a production fix. Source imagery includes explicit logo fallbacks.
+- Added local Exposure/Collateral cells and composition alongside Portfolio. Native versus held-token capitalization remains distinct; 27 literal rows and bridge metadata match source replay JSON. Synthetic pressure controls cover zero/unavailable, new-asset help, independent loading and long content. Ordinary type/identity/inset owners carry forward; no dense variant or universal Table API.
+- Independent review found two focus gaps, both confirmed/fixed: keyed help across projections and stable return fallback after a modal's source row disappears. The late-row modal failure reproduced before correction. Active late-row links instead preserve expansion when narrowing. Existing Portfolio focus/blur/menu tests remain green.
+- Final focused unit 56/56, source-bound candidate/Portfolio browser 8/8, app/E2E types and scoped lint/format pass. Retained 26 selected candidate screenshots plus six source observations; the Holdings brief owns current limits and handoff. No full repository gate was claimed for this lab-only checkpoint, per the project override. No new workflow rules; source fidelity, visual judgment and production adoption remain separate. Engineer review remains required before adopting the bridge reference/adapter seam.
+
+## 2026-09-11 — Discover closed-trigger refinement
+
+- Added an opt-in TokenStackTrigger rather than altering ordinary Button or logo-stack defaults. Its 24px artwork sits in a balanced 44px control; the wide Basket header aligns with the artwork, not the outer border. Ordinary tags retain one line with a local 1152px table threshold. Row-hover reveal and direct hover/keyboard focus remain distinct.
+- Sizing RED reproduced 48px instead of 44px. Final browser 9/9, focused unit/catalog 46/46, types, lint/format and evidence checks pass. Independent review's keyboard-focus oracle gap was fixed by moving the pointer away and entering by Tab. See the Discover brief for retained evidence and remaining visual review.
+- The vertical expanded list is explicitly pending replacement, not accepted. Preserve the original scrolling strip's speed, delay, easing and loop behavior in the next pass; accessibility improvements do not justify silently substituting a different visual interaction.
+
+## 2026-09-11 — Discover horizontal hover strip
+
+- Replaced the rejected expanded list with a local horizontal strip, retaining Discover's 72px/second cruise and 1.2-second acceleration. The homepage's separate 18-second loop is unchanged. Equal-width repeat padding removes the source seam discrepancy; pointer transit, pause, manual keyboard/touch and reduced-motion access are explicit additions.
+- Hover RED reproduced the missing popup. Final browser 11/11, focused unit/catalog 52/52, types and lint/format pass; 40 captures and motion samples are retained in the Discover evidence index. The measured cruise was 71.993px/second. No physical-device or screen-reader proof is claimed.
+- Review corrected keyboard entry and stale pin state across responsive projections. Browser checks caught Radix's hover-then-click focus suppression; explicit Escape/resize restoration excludes outside interactions so the next control retains focus. The earlier trigger geometry remains intact. Human motion/visual review and production-adoption approval remain separate.
+
+## 2026-09-11 — Discover strip overflow refinement
+
+- Added conditional 12px surface-colored edge fades; start/end content is not faded once fully reached. Fitting baskets render a single stationary sequence. A clearly labeled synthetic Short basket preview exercises one asset at 100% without mutating source fixtures.
+- Browser checks caught manual mode surviving a quick reopen during the closing animation; local close lifecycle now resets it. Touch verification waits for native scrollend before keyboard input. Final scoped browser 7/7, focused unit 5/5, types and lint/format pass; source-bound captures are linked from the existing evidence index. Low-risk self-review only; no shared-default or production changes. Opening delay, acceleration and speed remain unchanged.
+
+## 2026-09-11 — Basket count padding
+
+- At the user's request, count-ended TokenStackTrigger controls use 16px trailing padding instead of 12px. Leading logo inset, 44px height and logo-only controls are unchanged. Three scoped browser cases and two unit tests pass; fresh desktop/phone images are retained in the Discover evidence index. No production adoption or ordinary Button default change.
+
+## 2026-09-11 — Whole-row navigation styling
+
+- Removed redundant identity hover underlines from Discover and Index/Yield position rows, plus hover-only title accents from rich governance/rebalance records. Governance gains surface hover in place of its former title-only cue; rebalance selected styling remains. Native links, keyboard focus, independent explorer/source/bridge links, section navigation and basket actions are preserved. Ordinary shared Link defaults and production remain unchanged.
+- The pre-change browser case reproduced the targeted underlines/title accents. Seven final browser cases pass, including 390/1400 light/dark and basket interaction checks; 22 focused unit tests pass. Retained hover/focus screenshots are linked from the first-slice brief and evidence index. Self-review covered all lab table/record owners, distinct-action exceptions, keyboard focus and scope; this does not accept the wider rich-record design.
+
+## 2026-09-11 — Discover mobile card lab
+
+- Brought the Home/Discover card pattern into the narrow Discover lab, reusing the actual production chart, ticker, timing and visibility behavior. Compact/full-chart previews share the same 30-day data; the lab wrapper applies accepted card spacing, type, shape and identity owners. One DataTable instance retains sorting while mounting only the table or card list. No production consumer is migrated.
+- Dark/Light review corrected interrupted name/market hierarchy, missing weights rendered as zero, chart reduced motion, and outside-click focus theft on resize. Direct screenshot review also replaced the legacy dark ticker skeleton with canonical loading material at unchanged geometry. Browser REDs and scoped rechecks cover these findings; a local 4px toolbar inset contains the sort control's expanded target.
+- Final verification: 21 source-bound lab browser cases, 7 existing Home/Discover smoke/flow cases and 51 focused unit/catalog tests pass; app/E2E types, scoped lint/format and documentation checks are green. The evidence index retains 24 current captures, not duplicate intermediate records. Compact/full chart preference remains human review; shared alternative-renderer and chart-animation opt-ins require engineer review before adoption.
+
+## 2026-09-11 — Discover connected card surfaces
+
+- User-directed local trial: steady card-colored square cards/media, a list-owned 2px secondary surround and 2px seams. Internal spacing and production chart/ticker behavior stay unchanged. Local production ties its mobile gradient activation to transcript-enabled highlights; Discover disables that flag. The accepted Home card and production defaults are untouched.
+- Eight focused browser cases pass, including surface geometry across compact/full, long, missing and loading states, sorting/focus and motion. The old surround failed the pre-change check. Types, scoped lint/format and wiki checks pass; six source-bound captures and a direct 390px live inspection support the existing mobile-card brief. Low-risk self-review; visual preference remains human review.
+
+## 2026-09-11 — Card framing clarification and inset diagnosis
+
+- The user clarified that the secondary surround/gaps were only contrast for inspecting the cards, not a saved container preference. Corrected the active review and mobile-card brief; page-host composition remains undecided. Historical preview receipts do not establish a product container contract.
+- Direct measurement of the current constrained preview found 32px card-edge-to-title/top-row spacing (8px shell + 24px inner), versus 24px in production source (4px + 20px). The gradient had obscured ownership of the outer shell. Recommended 24px total visible inset; diagnosis only, no card layout or production change.
+
+## 2026-09-11 — Discover card inset correction
+
+- Applied the authorized lab correction: removed redundant 8px shell padding, leaving 24px total header/Market Cap edge insets; footer owns its 24px bottom inset. Chart/ticker edge geometry stays region-owned, with no shared Home/default change. The secondary surround remains inspection-only framing, not a saved preference.
+- The pre-change geometry test failed with five 32px measurements against 24px. All eight final card browser cases pass, including narrow long content, both chart placements/themes, loading parity, sorting/focus and ticker motion. Types and scoped lint/format pass. Six source-bound captures and a live phone check were visually reviewed; receipts are in the existing mobile-card brief. Low-risk self-review; no production adoption.
+
+## 2026-09-11 — Independent table-family review checkpoint
+
+- User authorized a local checkpoint and isolated Claude review handoff. The snapshot includes the accumulated foundation/table work and retained evidence, not production adoption or blanket design approval. The handoff prioritizes existing-family completeness and Earn source evidence, with report-only output in a detached worktree; contrast-only card framing stays outside product preferences.
+- Fresh checks: 64 selected unit/catalog tests, eight Discover card browser cases and app/E2E types pass. The initial unit run caught an assertion tied to superseded radius prose; it now checks the actual provisional authority status. The bounded receipt is linked from `docs/plans/design-system-table-family-independent-review-handoff.md`. No full repository or CI claim. Candidate-file privacy checks found no matching environment values, private-file hashes or credential-pattern hits; ignored private/runtime files are excluded.

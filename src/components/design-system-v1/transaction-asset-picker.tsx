@@ -7,7 +7,7 @@ import {
 } from 'react'
 
 import { v1Typography } from '@/components/design-system-v1/typography'
-import { v1SemanticRecipes as roles } from '@/components/ui/v1-semantic-recipes'
+import { v1SemanticRoles as roles } from '@/components/design-system-v1/semantic-roles'
 import { cn } from '@/lib/utils'
 
 export interface TransactionAssetPickerTriggerProps extends ButtonHTMLAttributes<HTMLButtonElement> {
@@ -26,7 +26,7 @@ export const TransactionAssetPickerTrigger = forwardRef<
     className={cn(
       'group flex h-10 items-center gap-1 rounded-full border border-input bg-card px-2 text-foreground transition-colors duration-120',
       roles.interaction.subtleHover,
-      roles.focus.onContentInset,
+      roles.focus.visibleInset,
       'disabled:pointer-events-none disabled:opacity-50',
       className
     )}
@@ -80,7 +80,7 @@ export const TransactionAssetPickerOption = ({
     data-testid="transaction-asset-picker-option"
     className={cn(
       'grid w-full grid-cols-[minmax(0,1fr)_auto] items-center gap-3 rounded p-3 text-left transition-colors duration-120 hover:bg-muted',
-      roles.focus.onContent,
+      roles.focus.visibleOnContent,
       selected && 'bg-accent/60',
       className
     )}

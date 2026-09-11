@@ -155,6 +155,15 @@ export const PRIMARY_COMPONENT_GROUPS: ComponentGroup[] = [
         designAuthority: 'current-baseline',
         implementationStatus: 'canonical-candidate',
         implementationSource: 'src/components/icon-button/index.tsx',
+        contextSources: [
+          {
+            role: 'accepted-decision',
+            label: 'Compact named IconButton scope in canonical compositions',
+            path: 'docs/wiki/decisions.md#2026-08-14--canonical-composition-review-requires-canonical-or-retained-dependencies',
+            detail:
+              'Only the compact named-action kernel; tooltip, toggle and target expansion remain outside.',
+          },
+        ],
         adoptionStatus: 'none',
         review: {
           status: 'ready',
@@ -206,6 +215,13 @@ export const PRIMARY_COMPONENT_GROUPS: ComponentGroup[] = [
         implementationStatus: 'reusable-recipe',
         implementationSource:
           'src/components/design-system-v1/action-group.tsx',
+        contextSources: [
+          {
+            role: 'accepted-decision',
+            label: 'ActionGroup composition baseline accepted',
+            path: 'docs/wiki/decisions.md#2026-08-19--actiongroup-composition-baseline-accepted',
+          },
+        ],
         adoptionStatus: 'none',
         review: {
           status: 'ready',
@@ -493,13 +509,20 @@ export const PRIMARY_COMPONENT_GROUPS: ComponentGroup[] = [
               'Confirm restrained radius, vertical resize, and inherited Field states; add character guidance only when a real limit requires it.',
             ],
             nextAction:
-              'Review the provisional multiline Field candidate before any opt-in adoption.',
+              'Use the accepted multiline Field baseline in source-grounded compositions; character count, rich text and production adoption remain separate.',
           }
         ),
         outputStatus: 'rendered',
         designAuthority: 'current-baseline',
         implementationStatus: 'canonical-candidate',
         implementationSource: 'src/components/design-system-v1/field.tsx',
+        contextSources: [
+          {
+            role: 'accepted-decision',
+            label: 'Textarea baseline accepted',
+            path: 'docs/wiki/decisions.md#2026-08-20--textarea-baseline-accepted',
+          },
+        ],
         adoptionStatus: 'none',
         review: {
           status: 'ready',
@@ -542,6 +565,15 @@ export const PRIMARY_COMPONENT_GROUPS: ComponentGroup[] = [
         designAuthority: 'current-baseline',
         implementationStatus: 'canonical-candidate',
         implementationSource: 'src/components/design-system-v1/select.tsx',
+        contextSources: [
+          {
+            role: 'accepted-decision',
+            label: 'Bounded-value Select baseline accepted',
+            path: 'docs/wiki/decisions.md#2026-08-19--bounded-value-select-baseline-accepted',
+            detail:
+              'The accepted bounded-value contract does not approve the later popup-density trial or searchable choices.',
+          },
+        ],
         adoptionStatus: 'none',
         review: {
           status: 'ready',
@@ -635,6 +667,15 @@ export const PRIMARY_COMPONENT_GROUPS: ComponentGroup[] = [
         implementationStatus: 'canonical-candidate',
         implementationSource:
           'src/components/design-system-v1/multi-select-filter.tsx',
+        contextSources: [
+          {
+            role: 'authority',
+            label: 'MultiSelectFilter recorded baseline',
+            path: 'docs/wiki/domains/design-system-reference.md#multiselectfilter',
+            detail:
+              'No dedicated decision entry is recorded. The baseline classification predates this reconciliation; direct human-approval provenance has not been independently recovered. Preserve the existing contract without promoting provisional density or elevation.',
+          },
+        ],
         adoptionStatus: 'none',
         review: {
           status: 'ready',
@@ -688,6 +729,13 @@ export const PRIMARY_COMPONENT_GROUPS: ComponentGroup[] = [
         implementationStatus: 'canonical-candidate',
         implementationSource:
           'src/components/design-system-v1/search-field.tsx',
+        contextSources: [
+          {
+            role: 'accepted-decision',
+            label: 'SearchField baseline accepted',
+            path: 'docs/wiki/decisions.md#2026-08-20--searchfield-baseline-accepted',
+          },
+        ],
         adoptionStatus: 'none',
         review: {
           status: 'ready',
@@ -854,6 +902,15 @@ export const PRIMARY_COMPONENT_GROUPS: ComponentGroup[] = [
         designAuthority: 'current-baseline',
         implementationStatus: 'canonical-candidate',
         implementationSource: 'src/components/checkbox/index.tsx',
+        contextSources: [
+          {
+            role: 'accepted-decision',
+            label: 'Binary Checkbox scope in canonical compositions',
+            path: 'docs/wiki/decisions.md#2026-08-14--canonical-composition-review-requires-canonical-or-retained-dependencies',
+            detail:
+              'Only the binary kernel; indeterminate, invalid and row-composition scope remain outside.',
+          },
+        ],
         adoptionStatus: 'none',
         review: {
           status: 'ready',
@@ -902,6 +959,13 @@ export const PRIMARY_COMPONENT_GROUPS: ComponentGroup[] = [
         implementationStatus: 'canonical-candidate',
         implementationSource:
           'src/components/design-system-v1/single-choice-group.tsx',
+        contextSources: [
+          {
+            role: 'accepted-decision',
+            label: 'SingleChoice default presentation accepted',
+            path: 'docs/wiki/decisions.md#2026-08-19--singlechoice-default-presentation-accepted',
+          },
+        ],
         adoptionStatus: 'none',
         review: {
           status: 'ready',
@@ -937,6 +1001,13 @@ export const PRIMARY_COMPONENT_GROUPS: ComponentGroup[] = [
         designAuthority: 'current-baseline',
         implementationStatus: 'canonical-candidate',
         implementationSource: 'src/components/design-system-v1/switch.tsx',
+        contextSources: [
+          {
+            role: 'accepted-decision',
+            label: 'Switch and disabled structure baseline accepted',
+            path: 'docs/wiki/decisions.md#2026-08-20--switch-and-disabled-structure-baseline-accepted',
+          },
+        ],
         adoptionStatus: 'none',
         review: {
           status: 'ready',
@@ -982,6 +1053,13 @@ export const PRIMARY_COMPONENT_GROUPS: ComponentGroup[] = [
         implementationStatus: 'canonical-candidate',
         implementationSource:
           'src/components/design-system-v1/segmented-control.tsx',
+        contextSources: [
+          {
+            role: 'accepted-decision',
+            label: 'Segmented Control presentations accepted',
+            path: 'docs/wiki/decisions.md#2026-08-20--segmented-control-presentations-accepted',
+          },
+        ],
         adoptionStatus: 'none',
         review: {
           status: 'ready',
@@ -1080,6 +1158,15 @@ export const PRIMARY_COMPONENT_GROUPS: ComponentGroup[] = [
         designAuthority: 'current-baseline',
         implementationStatus: 'canonical-candidate',
         implementationSource: 'src/components/design-system-v1/navigation.tsx',
+        contextSources: [
+          {
+            role: 'accepted-decision',
+            label: 'Global navigation baseline accepted',
+            path: 'docs/wiki/decisions.md#2026-08-25--global-and-product-navigation-baselines-accepted',
+            detail:
+              'Global application navigation only; Product navigation remains a separate contract.',
+          },
+        ],
         adoptionStatus: 'none',
         review: {
           status: 'ready',
@@ -1138,6 +1225,15 @@ export const PRIMARY_COMPONENT_GROUPS: ComponentGroup[] = [
         designAuthority: 'current-baseline',
         implementationStatus: 'canonical-candidate',
         implementationSource: 'src/components/design-system-v1/navigation.tsx',
+        contextSources: [
+          {
+            role: 'accepted-decision',
+            label: 'Product navigation baseline accepted',
+            path: 'docs/wiki/decisions.md#2026-08-25--global-and-product-navigation-baselines-accepted',
+            detail:
+              'DTF-specific navigation only; Global navigation and live data sourcing remain separate.',
+          },
+        ],
         adoptionStatus: 'none',
         review: {
           status: 'ready',
@@ -1193,6 +1289,13 @@ export const PRIMARY_COMPONENT_GROUPS: ComponentGroup[] = [
         designAuthority: 'current-baseline',
         implementationStatus: 'canonical-candidate',
         implementationSource: 'src/components/design-system-v1/link.tsx',
+        contextSources: [
+          {
+            role: 'accepted-decision',
+            label: 'Navigation Link baseline accepted',
+            path: 'docs/wiki/decisions.md#2026-08-21--navigation-link-baseline-accepted',
+          },
+        ],
         adoptionStatus: 'none',
         review: {
           status: 'ready',
@@ -1246,6 +1349,13 @@ export const PRIMARY_COMPONENT_GROUPS: ComponentGroup[] = [
         designAuthority: 'current-baseline',
         implementationStatus: 'canonical-candidate',
         implementationSource: 'src/components/design-system-v1/tabs.tsx',
+        contextSources: [
+          {
+            role: 'accepted-decision',
+            label: 'Contained Tabs baseline accepted',
+            path: 'docs/wiki/decisions.md#2026-08-20--contained-tabs-baseline-accepted',
+          },
+        ],
         review: {
           status: 'ready',
           scope:
@@ -1288,6 +1398,13 @@ export const PRIMARY_COMPONENT_GROUPS: ComponentGroup[] = [
         designAuthority: 'current-baseline',
         implementationStatus: 'canonical-candidate',
         implementationSource: 'src/components/design-system-v1/pagination.tsx',
+        contextSources: [
+          {
+            role: 'accepted-decision',
+            label: 'Pagination baseline accepted',
+            path: 'docs/wiki/decisions.md#2026-08-20--pagination-baseline-accepted',
+          },
+        ],
         adoptionStatus: 'none',
         review: {
           status: 'ready',

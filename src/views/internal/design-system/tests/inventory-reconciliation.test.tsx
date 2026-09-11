@@ -9,9 +9,13 @@ import ProgressDashboard from '../progress-dashboard'
 
 describe('inventory reconciliation', () => {
   it('distinguishes unprepared review work from a blocking dependency', () => {
-    for (const id of ['data-table', 'chart', 'toast', 'slider', 'progress']) {
+    for (const id of ['chart', 'toast', 'slider', 'progress']) {
       expect(getComponentItem(id).item?.review.status).toBe('not-started')
     }
+    expect(getComponentItem('data-table').item?.review.status).toBe(
+      'provisional'
+    )
+    expect(getComponentItem('data-table').item?.adoptionStatus).toBe('none')
     for (const item of COMPONENT_ITEMS) {
       if (item.review.status === 'blocked') {
         expect(

@@ -1,3 +1,4 @@
+import { v1Typography } from '@/components/design-system-v1/typography'
 import { Languages, Moon, Search, Sun } from 'lucide-react'
 import {
   useEffect,
@@ -306,7 +307,5 @@ const UtilitySection = ({
 )
 
 const UtilitySectionLabel = ({ children }: { children: ReactNode }) => (
-  <p className="text-sm font-medium leading-5 text-muted-foreground">
-    {children}
-  </p>
+  <p className={`${v1Typography.label} text-muted-foreground`}>{children}</p>
 )

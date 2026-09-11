@@ -73,16 +73,15 @@ export const DesignAuthorityBadge = ({ item }: { item: CatalogItem }) => (
 
 export const CatalogBadges = ({ item }: { item: CatalogItem }) => (
   <span className="flex flex-wrap items-center gap-2">
-    {isComponentItem(item) && <ComponentPriorityBadge item={item} />}
-    <StatusBadge item={item} />
+    {(!isComponentItem(item) || item.status === 'not-needed') && (
+      <StatusBadge item={item} />
+    )}
     <DesignAuthorityBadge item={item} />
     <OutputBadge item={item} />
     {isComponentItem(item) && item.implementationStatus !== 'none' && (
       <ComponentDeliveryBadge item={item} />
     )}
-    {isComponentItem(item) && item.outputStatus !== 'none' && (
-      <ComponentReviewBadge review={item.review} />
-    )}
+    {isComponentItem(item) && <ComponentReviewBadge review={item.review} />}
   </span>
 )
 
@@ -240,12 +239,23 @@ export const CatalogCard = ({
       </p>
     </div>
     <CatalogBadges item={item} />
-    {isComponentItem(item) && <ComponentAuditBadge item={item} />}
+    {isComponentItem(item) && <ComponentCatalogMetadata item={item} />}
   </Link>
 )
 
 const isComponentItem = (item: CatalogItem): item is ComponentItem =>
   'priority' in item && 'auditStatus' in item
+
+export const ComponentCatalogMetadata = ({ item }: { item: ComponentItem }) => (
+  <p
+    className="text-xs text-muted-foreground"
+    data-testid="component-catalog-metadata"
+  >
+    {COMPONENT_PRIORITY_LABELS[item.priority]}
+    {' · '}
+    {COMPONENT_AUDIT_LABELS[item.auditStatus]}
+  </p>
+)
 
 export const PageHeader = ({
   eyebrow,

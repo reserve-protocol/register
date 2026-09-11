@@ -1,11 +1,13 @@
 ---
 title: E2E Suite
-updated: 2026-09-02
+updated: 2026-09-09
 type: domain
 sources:
   - e2e/**
   - playwright.config.ts
+  - playwright.design-system.config.ts
   - .github/workflows/playwright.yml
+  - .github/workflows/design-system.yml
 ---
 
 # E2E Suite (Playwright)
@@ -107,6 +109,18 @@ The internal design-system lab has a focused contract suite in
 review semantics, and only the rendered geometry needed to keep a current human
 judgment foundation-conformant; it is not a substitute for product-route
 acceptance or a broad visual-regression suite.
+
+The separate design-system configuration also has an owned-port review-capture
+project with read-only snapshot defaults and source/runtime attachments. Its
+bounded coverage and limitations are in `e2e/TEST_MAP.md`.
+`pnpm design-system:review` is workflow-routed for canonical components, lab,
+styles, fixtures, configuration and dependencies, and runs in a path-filtered
+PR/manual CI job alongside typecheck and the full unit suite, with 30-day
+artifacts. It defaults to the separate owned port
+3022 and never reuses the user's preview. Linux CI captures viewport evidence
+and tests behavior; existing macOS pixel baselines are not compared there.
+This does not replace product-route acceptance. The main production test
+configuration still owns port 3005.
 
 ## Maintenance rules
 

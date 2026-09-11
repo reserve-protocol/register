@@ -9,7 +9,7 @@ import {
 } from '@/components/design-system-v1/transaction-amount-object'
 import { transactionTaskGeometry } from '@/components/design-system-v1/transaction-task-geometry'
 import { v1Typography } from '@/components/design-system-v1/typography'
-import { v1SemanticRecipes as roles } from '@/components/ui/v1-semantic-recipes'
+import { v1SemanticRoles as roles } from '@/components/design-system-v1/semantic-roles'
 import { cn } from '@/lib/utils'
 import { ChainId } from '@/utils/chains'
 

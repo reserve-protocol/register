@@ -55,7 +55,7 @@ const ShapeStudy = () => (
         <RadiusRule
           role="Structural region"
           value="0px"
-          copy="Page regions, cards, dialogs, rich records, and transaction amount input/output regions stay square by default. Replacement states preserve that same boundary."
+          copy="Page regions, cards, dialogs, and rich records stay square by default. Transaction amount input/output regions use the reviewed 8px contained-object role; replacement states preserve that same boundary."
         />
         <RadiusRule
           role="Contained object"

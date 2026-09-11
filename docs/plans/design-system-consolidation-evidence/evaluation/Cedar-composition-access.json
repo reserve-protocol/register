@@ -1,0 +1,207 @@
+[
+  {
+    "tool": "Glob",
+    "path": null,
+    "pattern": "src/views/internal/design-system/**"
+  },
+  {
+    "tool": "Glob",
+    "path": null,
+    "pattern": "**/*.md"
+  },
+  {
+    "tool": "Read",
+    "path": "src/views/internal/design-system/select-state-sheet.tsx",
+    "pattern": null
+  },
+  {
+    "tool": "Read",
+    "path": "docs/wiki/domains/design-system.md",
+    "pattern": null
+  },
+  {
+    "tool": "Read",
+    "path": "src/views/internal/design-system/tests/select-review.test.tsx",
+    "pattern": null
+  },
+  {
+    "tool": "Glob",
+    "path": null,
+    "pattern": "src/components/design-system-v1/**"
+  },
+  {
+    "tool": "Read",
+    "path": "src/components/design-system-v1/field.tsx",
+    "pattern": null
+  },
+  {
+    "tool": "Read",
+    "path": "src/components/design-system-v1/action-group.tsx",
+    "pattern": null
+  },
+  {
+    "tool": "Read",
+    "path": "src/components/design-system-v1/typography.ts",
+    "pattern": null
+  },
+  {
+    "tool": "Grep",
+    "path": null,
+    "pattern": "from '@/components/ui/button'"
+  },
+  {
+    "tool": "Read",
+    "path": "src/components/design-system-v1/inline-message.tsx",
+    "pattern": null
+  },
+  {
+    "tool": "Read",
+    "path": "src/views/internal/design-system/button-hierarchy-decision.tsx",
+    "pattern": null
+  },
+  {
+    "tool": "Grep",
+    "path": null,
+    "pattern": "v1Button|buttonRecipe|variant=\\\"primary\\\""
+  },
+  {
+    "tool": "Read",
+    "path": "src/components/button.tsx",
+    "pattern": null
+  },
+  {
+    "tool": "Glob",
+    "path": null,
+    "pattern": "src/components/button/**"
+  },
+  {
+    "tool": "Read",
+    "path": "src/components/button/index.tsx",
+    "pattern": null
+  },
+  {
+    "tool": "Grep",
+    "path": null,
+    "pattern": "useState"
+  },
+  {
+    "tool": "Grep",
+    "path": null,
+    "pattern": "rounded-3xl|bg-card"
+  },
+  {
+    "tool": "Read",
+    "path": "src/views/internal/design-system/transaction-composition-frame.tsx",
+    "pattern": null
+  },
+  {
+    "tool": "Read",
+    "path": "src/components/ui/v1-layout-recipes.ts",
+    "pattern": null
+  },
+  {
+    "tool": "Read",
+    "path": "src/components/ui/v1-semantic-recipes.ts",
+    "pattern": null
+  },
+  {
+    "tool": "Read",
+    "path": "src/components/design-system-v1/select.tsx",
+    "pattern": null
+  },
+  {
+    "tool": "Grep",
+    "path": null,
+    "pattern": "userEvent|hasPointerCapture|scrollIntoView"
+  },
+  {
+    "tool": "Read",
+    "path": "src/views/internal/design-system/tests/contained-form-row-review.test.tsx",
+    "pattern": null
+  },
+  {
+    "tool": "Glob",
+    "path": null,
+    "pattern": "**/{vitest.setup,setupTests,test-setup,vitest.config}*"
+  },
+  {
+    "tool": "Glob",
+    "path": null,
+    "pattern": "{vite.config*,vitest*,src/**/setup*}"
+  },
+  {
+    "tool": "Read",
+    "path": "src/setup-tests.ts",
+    "pattern": null
+  },
+  {
+    "tool": "Grep",
+    "path": null,
+    "pattern": "ActionGroup"
+  },
+  {
+    "tool": "Grep",
+    "path": null,
+    "pattern": "presentation=\"summary\""
+  },
+  {
+    "tool": "Read",
+    "path": "CLAUDE.md",
+    "pattern": null
+  },
+  {
+    "tool": "Grep",
+    "path": null,
+    "pattern": "radius"
+  },
+  {
+    "tool": "Write",
+    "path": "src/views/internal/design-system/display-preferences-study.tsx",
+    "pattern": null
+  },
+  {
+    "tool": "Read",
+    "path": "src/views/internal/design-system/tests/help-tooltip-review.test.tsx",
+    "pattern": null
+  },
+  {
+    "tool": "Write",
+    "path": "src/views/internal/design-system/tests/display-preferences-study.test.tsx",
+    "pattern": null
+  },
+  {
+    "tool": "Grep",
+    "path": null,
+    "pattern": "user-event|@testing-library|vitest"
+  },
+  {
+    "tool": "Grep",
+    "path": null,
+    "pattern": "isLabelableElement"
+  },
+  {
+    "tool": "Glob",
+    "path": null,
+    "pattern": "node_modules/dom-accessibility-api/dist/*.js"
+  },
+  {
+    "tool": "Glob",
+    "path": null,
+    "pattern": "node_modules/@testing-library/**/package.json"
+  },
+  {
+    "tool": "Write",
+    "path": "src/views/internal/design-system/tests/display-preferences-study.test.tsx",
+    "pattern": null
+  },
+  {
+    "tool": "Glob",
+    "path": null,
+    "pattern": "{.eslintrc*,eslint.config*,.prettierrc*}"
+  },
+  {
+    "tool": "Read",
+    "path": ".prettierrc",
+    "pattern": null
+  }
+]

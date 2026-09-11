@@ -1,46 +1,48 @@
-import { v1Typography } from '@/components/design-system-v1/typography'
+import {
+  v1Typography,
+  v1TypographyUsage,
+} from '@/components/design-system-v1/typography'
 
 export const TYPOGRAPHY_REVIEW_ROLES = [
   {
     id: 'display',
     role: 'Display',
     spec: '40 / 46 phone · 48 / 54 otherwise · 300',
-    className:
-      'text-[40px] font-light leading-[46px] tracking-[-0.015em] sm:text-5xl sm:leading-[54px]',
+    className: v1Typography.display,
     sample: 'Build a durable portfolio',
-    use: 'Rare homepage or major product moment. Never routine application chrome.',
+    use: v1TypographyUsage.display,
   },
   {
     id: 'page-title',
     role: 'Page title',
     spec: '32 / 38 · 300',
-    className: 'text-[32px] font-light leading-[38px] tracking-[-0.01em]',
+    className: v1Typography.pageTitle,
     sample: 'Index DTF overview',
-    use: 'One top-level title for an application view or focused workflow.',
+    use: v1TypographyUsage.pageTitle,
   },
   {
     id: 'section-title',
     role: 'Section title',
     spec: '24 / 30 · 300',
-    className: 'text-2xl font-light leading-[30px]',
+    className: v1Typography.sectionTitle,
     sample: 'Portfolio exposure',
-    use: 'A major region inside the page hierarchy.',
+    use: v1TypographyUsage.sectionTitle,
   },
   {
     id: 'lead',
     role: 'Lead',
     spec: '20 / 28 · 300',
-    className: 'text-xl font-light leading-7',
+    className: v1Typography.lead,
     sample: 'Diversified exposure through transparent onchain portfolios.',
-    use: 'Prominent supporting copy below a display or page title.',
+    use: v1TypographyUsage.lead,
   },
   {
     id: 'panel-title',
     role: 'Panel title',
     spec: '20 / 26 · 500',
-    className: 'text-xl font-medium leading-[26px]',
+    className: v1Typography.panelTitle,
     sample: 'Governance activity',
-    use: 'A contained, subordinate panel—not another page section.',
+    use: v1TypographyUsage.panelTitle,
   },
   {
     id: 'item-title',
@@ -48,7 +50,7 @@ export const TYPOGRAPHY_REVIEW_ROLES = [
     spec: '16 / 24 · 500',
     className: v1Typography.itemTitle,
     sample: 'Update the DTF basket',
-    use: 'Repeated records, assets, proposals, and emphasized compact values.',
+    use: v1TypographyUsage.itemTitle,
   },
   {
     id: 'body',
@@ -56,7 +58,7 @@ export const TYPOGRAPHY_REVIEW_ROLES = [
     spec: '16 / 24 · 300',
     className: v1Typography.body,
     sample: 'The basket follows transparent rules that governance can update.',
-    use: 'Default reading copy, entered values, and ordinary financial values.',
+    use: v1TypographyUsage.body,
   },
   {
     id: 'label',
@@ -64,7 +66,7 @@ export const TYPOGRAPHY_REVIEW_ROLES = [
     spec: '14 / 20 · 500',
     className: v1Typography.label,
     sample: 'Voting period',
-    use: 'Field labels, actions, selected controls, and compact structural emphasis.',
+    use: v1TypographyUsage.label,
   },
   {
     id: 'supporting',
@@ -72,15 +74,15 @@ export const TYPOGRAPHY_REVIEW_ROLES = [
     spec: '14 / 20 · 300',
     className: v1Typography.supporting,
     sample: 'Changes take effect after the proposal executes.',
-    use: 'Descriptions, metadata, secondary values, and multiline supporting copy.',
+    use: v1TypographyUsage.supporting,
   },
   {
     id: 'auxiliary',
     role: 'Auxiliary · limited use',
     spec: '12 / 16 · 300',
-    className: 'text-xs font-light leading-4',
+    className: v1Typography.auxiliary,
     sample: 'Chart label · 14:23 UTC',
-    use: 'Only space-constrained chart or truly auxiliary metadata. Never body copy.',
+    use: v1TypographyUsage.auxiliary,
   },
 ] as const
 

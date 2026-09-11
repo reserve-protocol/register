@@ -1,6 +1,6 @@
 import type { HTMLAttributes } from 'react'
 
-import { candidateSemanticRoles as roles } from './semantic-roles'
+import { v1SemanticRoles as roles } from '@/components/design-system-v1/semantic-roles'
 import { cn } from '@/lib/utils'
 
 export type NavigationIndicatorTone = 'active' | 'notable'

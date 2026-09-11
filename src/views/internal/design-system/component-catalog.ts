@@ -1,6 +1,7 @@
 import { PRIMARY_COMPONENT_GROUPS } from './component-catalog-primary'
 import { SUPPORT_COMPONENT_GROUPS } from './component-catalog-support'
 import { getFoundationItem } from './foundation-catalog'
+import type { ComponentItem } from './catalog-types'
 
 export const COMPONENT_GROUPS = [
   ...PRIMARY_COMPONENT_GROUPS,
@@ -8,6 +9,23 @@ export const COMPONENT_GROUPS = [
 ]
 
 export const COMPONENT_ITEMS = COMPONENT_GROUPS.flatMap((group) => group.items)
+
+export const getComponentDisposition = (item: ComponentItem) => ({
+  authority: {
+    status: item.designAuthority,
+    sources:
+      item.contextSources?.filter(
+        ({ role }) => role === 'authority' || role === 'accepted-decision'
+      ) ?? [],
+  },
+  implementation: {
+    status: item.implementationStatus,
+    source: item.implementationSource,
+  },
+  output: { status: item.outputStatus, composition: item.compositionSource },
+  adoption: item.adoptionStatus,
+  review: item.review,
+})
 
 export const getComponentItem = (id?: string) => {
   const group = COMPONENT_GROUPS.find((candidate) =>
@@ -23,6 +41,7 @@ export const getComponentContextRoute = (id?: string) => {
 
   return {
     target: item,
+    disposition: getComponentDisposition(item),
     foundations: group.foundationDependencies.map((foundationId) => {
       const foundation = getFoundationItem(foundationId)
 

@@ -1,5 +1,5 @@
 import { Spinner } from '@/components/design-system-v1/loading'
-import { candidateSemanticRoles as roles } from '@/components/design-system-v1/semantic-roles'
+import { v1SemanticRoles as roles } from '@/components/design-system-v1/semantic-roles'
 import { cn } from '@/lib/utils'
 import {
   ArrowRight,

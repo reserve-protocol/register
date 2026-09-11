@@ -629,6 +629,9 @@ behavior or authorize production adoption. The inspected fixed point is
 
 ### Entry, gating, ownership, and reset
 
+Advertise the intrinsic multi-step flow upfront. This high-capital, professional
+page workflow must not be forced into the simpler Zapper/Vote-lock shell.
+
 | Boundary         | Evidence-backed behavior                                                                                                                                                                                                                                                                        | Owner                                      |
 | ---------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------ |
 | Entry            | The issuance Auto panel and lazy `/issuance/automated` route mount the async-mint provider and wizard.                                                                                                                                                                                          | Register route and issuance composition    |
@@ -827,3 +830,63 @@ Until these questions are answered, this audit authorizes only deterministic
 lab boards and review of presentation seams. It does not authorize production
 migration, shared-default changes, package overrides, or transaction behavior
 changes.
+
+## 14. Versioned upstream transaction reconciliation (2026-09-02)
+
+Task contract for this reconciliation:
+
+- **In scope:** inspect the installed Zapper boundary after the `master` merge,
+  add lab coverage for materially different current behavior, and keep exact
+  current-product copy distinguishable from design proposals;
+- **Out of scope:** changing production Zapper behavior, restyling package
+  internals, replacing accepted lab proposals, or treating the current release
+  as permanent product authority;
+- **Success:** current defaults, supported alternatives, recovery behavior, and
+  proposals remain separately inspectable without a newer default erasing a
+  still-valid state;
+- **Validation:** focused transaction tests, catalog/type checks, and inspection
+  of the actual mounted review surface.
+
+The branch now includes current `master` and
+`@reserve-protocol/react-zapper@2.10.5`. This updates product evidence without
+changing the authority of the reviewed V1 work: generic upstream workflow and
+design guidance remains subordinate to the project overrides, this plan, and
+accepted V1 owners for this scope.
+
+The current Zapper boundary differs from the earlier audit in five consequential
+ways:
+
+- Register keeps one mounted package element across wallet connection state so
+  connection changes do not reset in-flight work;
+- inline mode hides optional Buy/Sell tabs by default and uses the amount-pair
+  direction control, while the lab's visible tabs remain an explicit design
+  comparison rather than a current-product parity claim;
+- all usable providers appear in the Details route list, the best route is
+  selected automatically, and a user-selected route remains sticky until it is
+  unavailable;
+- background refresh preserves the current quote and action, while an exhausted
+  quote round remains in sourcing/retry with editable input and disabled submit
+  instead of becoming the lab's explicit availability-failure message;
+- successful inline work opens a portalled package dialog with exact received
+  output, used USD, transaction or order navigation, and eligible contact/call
+  attachments.
+
+These facts are requirements for later Zapper reconciliation, not permission to
+copy package internals or silently undo reviewed proposals. In particular, the
+lab's package-availability recovery specimen must not be cited as ordinary
+no-route behavior, and its operation tabs must be evaluated as an intentional
+departure. The upstream merge does not materially change Vote Lock,
+Stake/Unstake, automated-mint orchestration, or the existing deferred
+engineering-review boundaries.
+
+Current `master` is versioned product evidence, not a destructive lab migration
+instruction. Reconciliation is additive by default: introduce another state
+when the current release supplies materially different behavior, and preserve a
+semantically valid existing state even when it is not today's default. Replace
+an existing state only when direct implementation evidence makes it impossible
+or misleading, or when it is a true semantic duplicate. Lab controls and notes
+must distinguish current product defaults, supported current alternatives,
+recovery/edge cases, and design proposals; exact production copy and proposed
+copy must not be silently merged.
+
+Production migration follows the [source-backed preservation contract](../wiki/domains/design-system.md#adopt-into-production). This dated package reconciliation is evidence, not current scheduling or design authority.

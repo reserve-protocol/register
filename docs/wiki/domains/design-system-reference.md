@@ -1,6 +1,6 @@
 ---
 title: Design System Reference
-updated: 2026-09-05
+updated: 2026-09-09
 type: domain
 sources:
   - tailwind.config.ts
@@ -20,6 +20,10 @@ sources:
 > plan. Dated sections remain evidence and must not override a newer accepted
 > decision, typed catalog entry, or canonical implementation.
 
+Current maturity, readiness and adoption belong to the typed catalogs, not
+status lists here. Retain scoped acceptance rationale and dated evidence where
+the catalog routes to it; those records do not grant broader acceptance.
+
 Token implementation truth lives in `tailwind.config.ts` plus the semantic CSS
 variables in `src/app.css` (`:root` and `.dark`). Canonical V1 components consume
 the same semantic alias in both themes; the theme boundary owns the light/dark
@@ -28,7 +32,13 @@ while JavaScript theme branching is not a styling owner.
 
 ## Active v1 project
 
-The active contract is [design-system-v1](../../plans/design-system-v1.md). The contained `/internal/design-system` route is a visual-review workspace: Foundations renders the current system as compact specimens, and Components mounts the same complete state sheets used by detail routes for all 33 rendered items, with review readiness, design authority, implementation/adoption, and one 12-item unresolved inventory shown explicitly. Global and Product navigation now render as separate accepted current baselines in one coordinated shell; neither has production adoption or authority over the other. Screens remains a reference to unchanged production routes; it cannot validate an unadopted baseline. Detail pages lead with visual output and local readiness, then add interaction evidence or extended compositions where useful; their group navigation is a closed full-width disclosure rather than a persistent width-reserving sidebar, so large specimens use the complete review canvas. Evidence, dependencies, definition slots, and history are progressively disclosed. Studies contains only unresolved alternatives and active pressure tests. Project Status owns the typed Current Review queue plus the deeper registry-derived tracker and work queue. Expected missing slots remain navigable, but they do not receive large overview cards or imply a commitment to build.
+The active contract is [design-system-v1](../../plans/design-system-v1.md).
+The contained `/internal/design-system` route is a visual-review workspace;
+Components and detail routes share their state sheets. Project Status renders
+the typed inventory and Current Review queue. Screens links unchanged product
+routes, which cannot prove adoption of a lab baseline. Detail pages lead with
+visual output; evidence, dependencies and history are progressively disclosed.
+Expected missing slots remain navigable without implying a commitment to build.
 
 V1 work is canonical-first. Reuse the audits, synthesize the strongest complete
 candidate from accepted owners and strong product evidence, self-review it, and
@@ -118,8 +128,8 @@ Accepted layout relationships live behind the intent-named
 provisional dependency; registry tests reject missing areas while routed
 browser tests verify the composition's important computed geometry.
 
-Canonical product-facing candidates use the narrower production-consumable
-`src/components/ui/v1-semantic-recipes.ts` bridge. It currently exposes
+Canonical candidates and lab compositions share the production-consumable
+`src/components/design-system-v1/semantic-roles.ts` owner. It exposes
 canvas/content/structural surfaces, primary/supporting text, matching
 surface-separation recipes, and the proven focus and disabled-control recipes.
 These still alias existing semantic tokens; they do
@@ -127,13 +137,26 @@ not change global token values or production consumers. Add a recipe only when
 a canonical component proves the role is needed rather than speculating about
 the complete system in advance.
 
+Import `v1SemanticRoles` from that owner. Focus names deliberately distinguish
+`staticOnContent` (persistent demonstration ring), `visibleOnContent` (keyboard
+focus), `visibleInset`, and `withinGroup`; do not substitute one for another.
+Accepted surface/feedback/neutral/disabled aliases are wired in Tailwind to the
+unchanged theme variables. The prior UI recipe map and lab proxy are removed.
+The performance palette retains its existing `src/utils/chart-performance-colors.ts`
+owner; this consolidation does not invent elevation tokens or promote candidate
+palette values. `v1LayoutRecipes` remains the separate owner of accepted spacing
+relationships (insets, stacks, clusters and seams). Retain its live consumers;
+use a recipe only for the matching relationship, not merely an equal pixel value.
+IconButton's compact/secondary defaults differ from Button's default/primary;
+see its [API guide](../../../src/components/icon-button/README.md). Both defaults stay unchanged.
+
 Pagination proves that unavailable quiet actions must remain bare and muted;
 they do not inherit the bordered disabled-control recipe used by structured
 controls. This distinction is owned by the shared Button/semantic recipe rather
 than a Pagination-local override.
 
 Switch pressure-testing established one accepted disabled-state role in that
-bridge: `disabled-structure` is an opaque neutral mixed 60/40 between
+owner: `disabled-structure` is an opaque neutral mixed 60/40 between
 `muted-foreground` and the quiet `muted` surface. Stateful disabled controls
 may invert quiet and strong structure to preserve their stored value without
 reusing active color, blanket opacity, borders, or elevation. The role is
@@ -194,20 +217,49 @@ owning row's 20px layout height. This role is limited to terse actions such as
 Max or Use inside an already-labeled field; ordinary actions retain the shaped
 28/32/44px Button treatments, and navigation retains Link.
 
-The lab now implements that width rule as a provisional `ActionGroup` recipe:
-horizontal peers use the accepted 8px gap without wrapping, while an explicitly
-vertical group makes its default actions share full width. The sheet uses the
-real Async Mint completion pair and the real proposal-cancellation action as
-fixtures. This is an exploratory reusable recipe awaiting human review, not a
-current baseline, transaction-lifecycle owner, or production adoption.
+The table-family candidate adds opt-in `treatment="contextual"` to Link and
+InlineAction: neutral foreground, body 16px/24px light type, hover underline and
+the owner's existing keyboard focus. Use Link for destinations and InlineAction
+for opening local details, with an external arrow or chevron respectively.
+Supporting mobile placement uses the existing supporting type role (14px/20px),
+not a dense-table variant. This contextual extension is a lab trial, not a change
+to accepted standalone/default treatment. The [table brief](../../plans/design-system-table-family-first-slice.md)
+owns its column-spacing and responsive button-sizing scope.
+Table action columns may reserve space, but their individual Buttons remain
+content-sized with canonical padding. A spinner or changed label can change
+button width; keep the right edge and height stable rather than adding a local
+minimum width to make all states identical. Explicit full-width action groups
+remain a separate composition choice.
 
-The independent Field/TextInput candidate no longer depends on SingleChoice or
-the blocked repeated-governance composition. It renders the evidenced empty,
-filled, numeric-affix, invalid, read-only, and submission-disabled jobs with the
-accepted 44px atomic geometry, 20px ordinary inset, and 18px adorned inset.
-Labels, help, and errors remain connected to the native input; business
-validation, multiline input, repeated groups, and production adoption stay out
-of scope. The candidate is exploratory and ready for bounded review.
+The withdrawal-table trial combines countdown, available action and execution
+feedback in one column. Use this approach when status and action are alternate
+phases of one job; keep independent status and actions when users can modify or
+cancel something while it remains active, or when recovery/partial progress
+must stay visible. Visual combination must not merge lifecycle and wallet/network
+eligibility in the data model. The [table brief](../../plans/design-system-table-family-first-slice.md#combined-withdrawal-column)
+owns this trial; it is not a universal Table contract.
+
+The [position/withdrawal checkpoint](../../plans/design-system-table-family-evidence/checkpoint.md)
+owns the current table trial and its retained evidence. Its optional DataTable
+toolbar uses the same sorting instance as desktop headers; a render limit is
+applied after sorting, not to source data. Narrow projections retain the active
+sort metric and keyboard focus. Do not infer production adoption, dense-table
+typography, rich-record approval or accepted header spacing from this checkpoint.
+
+`ActionGroup` is an [accepted reusable composition baseline](../decisions.md#2026-08-19--actiongroup-composition-baseline-accepted):
+horizontal peers use the accepted 8px gap without wrapping; a deliberately
+vertical group makes its actions share full width. Button still owns size,
+tone and state. The state sheet demonstrates those relationships, not accepted
+completion actions, copy or transaction lifecycle. Production adoption remains
+separate; consume `src/components/design-system-v1/action-group.tsx`.
+
+Independent [Field/TextInput anatomy is accepted](../decisions.md#2026-08-19--field-and-textinput-baseline-accepted),
+including empty, filled, adorned, invalid, read-only and disabled states. Consume
+`src/components/design-system-v1/field.tsx` for its 44px fully rounded control,
+20px ordinary and 18px adorned inset, and 8px label/control/help relationship.
+Labels and supporting text align with the control's outer edge. Business
+validation, repeated compositions and production adoption are separate;
+Textarea has its [own later acceptance](../decisions.md#2026-08-20--textarea-baseline-accepted).
 
 The V1 Dialog behavior contract is partially accepted. Ordinary reversible
 tasks use one visible completion action when shell dismissal already cancels;
@@ -284,7 +336,10 @@ Entity identity is the first canonical product-facing candidate. The lab
 directly renders the shared `EntityIdentity`, `ChainBadgedLogo`,
 `ChainLogoStack`, and `TokenLogoStack` implementations from
 `src/components/entity-identity/` rather than lab-only replicas. `EntityIdentity`
-uses the accepted 8px direct relationship between its mark slot and text. A
+retains the accepted 8px mark-to-text baseline, with a user-requested 12px trial
+for a direct 32px ChainBadgedLogo (`data-entity-logo-size="xl"`). Smaller,
+stacked and unclassified custom marks keep 8px. EntityIdentity owns the gap;
+consumers do not add table-specific spacing. This trial is not yet accepted. A
 host may reserve a larger fixed slot to establish an alignment axis, but must
 not add a second arbitrary gap between that slot and the identity copy. The
 default copy stack uses the 16px/24px item-title role over 14px/20px
@@ -297,8 +352,16 @@ Ordinary entity context is not a use of the restricted 12px auxiliary
 exception. The
 badge follows the strongest recent Index treatment;
 its 16px xl, 14px lg, and 12px md chain marks include the separating border
-rather than growing around it. Floating badges use the standard 1px separator;
-the thicker 2px cutout remains reserved for overlapping logo stacks. Badges
+rather than growing around it. The 2026-09-09 user-authorized optical trial uses
+a 2px surface-colored border for xl and 1.5px for sm/md/lg. The outer badge
+extends by the border width below and the border width plus 1px right, keeping
+the colored interior nominally flush below and 1px right. The logo layout box
+is unchanged; the separate identity-gap trial is described above. Evaluate visible artwork, not only border-box
+overhang. This is a shared candidate trial, not production adoption.
+Headless Chromium can round the 1.5px border to 1px even with scale-2 emulation;
+allow the resulting 0.5px extra optical overhang. The live Chrome preview was
+measured at the intended 1.5px/2px borders and exact nominal offsets.
+Overlapping logo stacks retain their separate 2px cutout geometry. Badges
 use the 4px rounded-square role rather than `rounded-md`, which became
 effectively circular at md. Chain and token stacks
 share one frame recipe: requested size always describes the artwork, the 2px
@@ -413,6 +476,8 @@ recipe with truthful button and `aria-haspopup="dialog"` semantics. It avoids a
 read-only input pretending to accept a query and is not a compact SearchField
 variant.
 
+### Action Menu
+
 The source-grounded action `Menu` is an accepted current baseline. It retains Radix
 keyboard and dismissal behavior, consumes canonical Button/IconButton triggers,
 and reuses the accepted popup surface, item geometry, and subtle interaction
@@ -434,11 +499,21 @@ inherit it automatically.
 Grouped header panels, selection items, shortcuts, submenus, responsive
 substitution, and production adoption remain separate.
 
+### Minimal Popover shell
+
+The baseline classifications for Menu, minimal Popover and MultiSelectFilter
+already appear in checkpoint `9c40640d5` and this reference. Their direct
+human-approval provenance has not been independently recovered; the following
+records those existing contracts, not a new approval. Density/elevation trials
+and adoption remain separate.
+
 The minimal V1 `Popover` shell is accepted by consequence of the Select and
 Menu reviews: it owns the shared 8px trigger offset and shell radius, collision
 inset, semantic floating surface, restrained elevation, and retained Radix
 focus/dismissal behavior. Width, padding, scrolling, and inner anatomy belong
 to the hosted composition.
+
+### MultiSelectFilter
 
 `MultiSelectFilter` is an accepted current baseline derived from the real Earn
 DTF and governance filter jobs; its approval emptied the prior Current Review.
@@ -456,9 +531,7 @@ compact secondary Clear and primary Apply actions grouped right at an 8px gap,
 loading and empty states, token-result density, mobile drawer substitution, and
 production adoption remain separate.
 
-Segmented Control, Textarea, Switch, Pagination, Copyable Value, Skeleton,
-Spinner, EmptyState, Button, Link, Accordion, and Collapsible are accepted
-current baselines. Typography is also an accepted current baseline: nine core
+The accepted Typography baseline defines nine core
 semantic jobs across six core sizes, the restricted 12px auxiliary exception,
 the 300/500 weight split, 16px/24px ordinary reading, 14px/20px supporting text,
 Lausanne tabular financial values, monospace identifiers, natural wrapping, and
@@ -466,7 +539,8 @@ a 48px-to-40px display-only phone exception. The sustained 14px comparison is a
 stress test rather than authorization for long-form supporting copy. All other
 application roles remain stable across breakpoints. Real usage may justify
 evidence-based refinement, but approval authorizes no production migration.
-Current Review is empty. Human review accepted Global and Product navigation as
+Current Review is routed separately; this historical sequence is not its queue.
+Human review accepted Global and Product navigation as
 separate current baselines after judging them together in a realistic shell.
 Human review accepted the Radius role taxonomy so it
 does not block subsequent work: structural surfaces, contained objects, atomic
@@ -494,6 +568,9 @@ The canonical product kernel includes `Button`, `Metric`/`MetricValue`,
 `LifecycleStatusPill`, and `EmptyState`. Button owns the
 accepted action hierarchy, 28/32/44px scale, icon spacing, focus, disabled,
 loading, label-fit, semantic interaction colors, and momentary press behavior.
+
+### Metric anatomy
+
 Metric owns accepted inline and centered-headline
 label/value anatomy. The headline treatment preserves the
 strong Home source's 16px/300 label and 16px/500 value; horizontal peers remain
@@ -629,6 +706,16 @@ Current Review and owns its own focus-entry/return behavior.
 The contained lab is designer/developer working metadata and remains English-only. This is not an exemption for migrated product UI: any copy that reaches product users follows the repository's Lingui and es/ko/zh translation rule. Current Review contains only a nearly complete candidate that has reached the boundary of what Codex can confidently resolve and still needs genuine human visual judgment (`visual decision`, `canonical review`, or `real-screen validation`). It is not a list of unfinished slots. Autonomous component work and evidence preparation stay in the registry-backed Project Status work queue.
 
 Keep Tailwind, Radix, CVA, and local shadcn-style primitives as the implementation base. Storybook is deferred until the in-app lab demonstrates a concrete unmet need. Progress gates are independent: catalog maturity, design authority, rendered output, reusable implementation, production adoption, individual definition decisions, review, and verification must not collapse into one status. In particular, rendered exploratory work may be only a specimen; the catalog must say whether a reusable component or recipe exists, whether its contract is the current baseline, and whether any product consumer has adopted it. Missing capabilities use explicit statuses and subdued styling, never disabled navigation, because their detail pages are part of the planning surface.
+
+For routine component discovery, `getComponentContextRoute(id).disposition`
+answers five questions: design authority (with scope sources), implementation
+owner, rendered output, production adoption, and review scope/readiness. It is
+derived from the existing catalog, not another registry. Priority and evidence
+completeness remain separate metadata; `not-needed` retains its explicit basis.
+The older maturity field remains for foundation/dashboard compatibility, not
+as an approval shortcut. Component badges omit its redundant summary and show
+actual partial/pending/mapped evidence separately. Current Review schedules work;
+neither those badges nor the historical progress ledger create acceptance.
 
 Composition review readiness is a separate gate. A composition is ready for
 canonical V1 review only when every visually meaningful dependency is either
@@ -853,17 +940,21 @@ shadcn/ui primitives in `src/components/ui`: Dialog, Drawer, Modal, Card, Button
 
 Third-party package internals are not a styling surface. The one live exception (`.rc-*` overrides for `@reserve-protocol/dtf-chat` in `src/app.css`) is documented in [[project]] § Active Risks with upstream work backlogged.
 
-## 2026-08-20 — Provisional safe-autonomy candidates stay independent
+## Accepted independent primitives and composition boundaries
 
-The lab now renders accepted Segmented Control, Textarea, Switch, Pagination,
-Copyable Value, Skeleton, Spinner, and EmptyState baselines.
-All retain `adoptionStatus: none`. Segmented Control is a controlled immediate
+Acceptance chronology: [2026-08-20](../log.md#2026-08-20) records Copyable Value
+and Skeleton; [2026-08-21](../log.md#2026-08-21) records Spinner and EmptyState.
+Later extensions retain their own decision links below.
+
+Segmented Control is a controlled immediate
 mode switch and cannot depend on Tabs; Textarea inherits Field's 20px ordinary
 horizontal inset, uses a 16px multiline vertical inset, and does not add
 rich-text or character-count APIs; Switch is 36×20 with a 16px thumb and no
 async lifecycle; Pagination refines the approved DataTable evidence into a
 table-independent 1-based contract without importing TanStack Table or changing
 DataTable defaults.
+
+### Copyable Value
 
 Accepted Copyable Value owns its clipboard action, 14px monospace
 machine-value typography, and two-second copied state. Addresses use deliberate
@@ -886,6 +977,9 @@ write resolves and is announced politely. The open surface stays mounted across
 that state change, ignores pointer dismissal during the two-second confirmation
 interval, remains Escape-dismissible, and uses the accepted 120ms color
 transition without replaying Tooltip entrance motion.
+
+### Skeleton and Spinner
+
 Skeleton uses the existing border neutral for a quiet fill that is darker than
 light surfaces and lighter than dark surfaces. It has no built-in size or shape:
 the host owns truthful width, height, radius, repetition, and loading boundaries.
@@ -900,6 +994,8 @@ each canonical host owns tone; standalone instances supply an accessible label,
 while contexts with visible status copy may hide the redundant mark. It must
 escalate to Skeleton or informative progress when duration or content shape is
 known.
+
+### EmptyState
 
 EmptyState is accepted for two evidenced jobs: quiet title-only absence and
 actionable absence with description and canonical ActionGroup actions. The
@@ -922,13 +1018,15 @@ reserved for semantic outcomes, identity, or a repeated-stack alignment need.
 Host framing, exact request-channel copy, bespoke milestone artwork,
 loading/error states, and production adoption remain outside it.
 
-This candidate owns only one inline value, its copy action, and transient
+Copyable Value owns only one inline value, its copy action, and transient
 feedback. A shortened address plus a paired explorer action is a composed
 address-action pattern. Native/bridged address presentation additionally owns
 chain identity, list or popup anatomy, and per-chain copy/explorer actions.
 Product Navigation now exercises one drawer-specific composition with a group
 label and chain-led Native/Bridged rows, but that composition is not approved
 indirectly through Copyable Value.
+
+### Button interaction and label fit
 
 Button has an accepted momentary active treatment: opaque filled-action
 hover and pressed colors are derived from the theme's primary or destructive
@@ -956,6 +1054,8 @@ consistent application, not evidence for a universal fixed row height.
 Link is an accepted, unadopted current baseline for navigation only. Inline
 links inherit reading typography and remain underlined; standalone links use
 the compact 14px medium role with a 4px label-to-destination-icon relationship.
+Standalone links gain an underline on hover without a background or geometry
+change; the existing keyboard-focus indicator remains.
 The evidenced return-navigation pattern remains unframed and supporting-neutral,
 uses the 14px light supporting role and the same 4px arrow-label relationship,
 and moves to primary with an underline on hover or focus. It is not a universal Back

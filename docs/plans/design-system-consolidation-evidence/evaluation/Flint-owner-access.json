@@ -1,0 +1,157 @@
+[
+  {
+    "tool": "Glob",
+    "path": null,
+    "pattern": "**/*.md"
+  },
+  {
+    "tool": "Glob",
+    "path": null,
+    "pattern": "**/*"
+  },
+  {
+    "tool": "Read",
+    "path": "docs/wiki/domains/design-system.md",
+    "pattern": null
+  },
+  {
+    "tool": "Read",
+    "path": "docs/wiki/domains/design-system-reference.md",
+    "pattern": null
+  },
+  {
+    "tool": "Glob",
+    "path": null,
+    "pattern": "src/views/internal/design-system/*.ts"
+  },
+  {
+    "tool": "Grep",
+    "path": null,
+    "pattern": "id: '(field|text-input|select|button|typography)'"
+  },
+  {
+    "tool": "Grep",
+    "path": null,
+    "pattern": "^      \\{$|name: '|designAuthority:|implementationStatus:|adoptionStatus:|implementationSource:|renderedOutput:|reviewReadiness:"
+  },
+  {
+    "tool": "Read",
+    "path": "src/views/internal/design-system/component-catalog-primary.ts",
+    "pattern": null
+  },
+  {
+    "tool": "Read",
+    "path": "src/views/internal/design-system/component-catalog-primary.ts",
+    "pattern": null
+  },
+  {
+    "tool": "Read",
+    "path": "src/views/internal/design-system/foundation-catalog.ts",
+    "pattern": null
+  },
+  {
+    "tool": "Grep",
+    "path": null,
+    "pattern": "export const|^  [a-zA-Z]+:|gap-|// "
+  },
+  {
+    "tool": "Read",
+    "path": "src/components/ui/v1-layout-recipes.ts",
+    "pattern": null
+  },
+  {
+    "tool": "Grep",
+    "path": null,
+    "pattern": "typography|role scale|export"
+  },
+  {
+    "tool": "Grep",
+    "path": null,
+    "pattern": "export const|^  [a-zA-Z]+: '"
+  },
+  {
+    "tool": "Grep",
+    "path": null,
+    "pattern": "id:|title:|status|componentId"
+  },
+  {
+    "tool": "Read",
+    "path": "src/components/design-system-v1/typography.ts",
+    "pattern": null
+  },
+  {
+    "tool": "Grep",
+    "path": null,
+    "pattern": "2026-08-19--field-and-textinput-baseline-accepted|2026-08-19--bounded-value-select-baseline-accepted|Typography baseline|Button baseline"
+  },
+  {
+    "tool": "Grep",
+    "path": null,
+    "pattern": "^## |^### "
+  },
+  {
+    "tool": "Read",
+    "path": "docs/wiki/decisions.md",
+    "pattern": null
+  },
+  {
+    "tool": "Read",
+    "path": "docs/wiki/decisions.md",
+    "pattern": null
+  },
+  {
+    "tool": "Grep",
+    "path": null,
+    "pattern": "typograph"
+  },
+  {
+    "tool": "Grep",
+    "path": null,
+    "pattern": "text-\\[|font-light|leading-|name:|role"
+  },
+  {
+    "tool": "Grep",
+    "path": null,
+    "pattern": "v1LayoutRecipes\\."
+  },
+  {
+    "tool": "Grep",
+    "path": null,
+    "pattern": "space-y|gap-"
+  },
+  {
+    "tool": "Grep",
+    "path": null,
+    "pattern": "space-y-|gap-"
+  },
+  {
+    "tool": "Grep",
+    "path": null,
+    "pattern": "Repeated|repeated|space-y-6|space-y-4|24px"
+  },
+  {
+    "tool": "Grep",
+    "path": null,
+    "pattern": "space-y-|gap-|p-6|24px"
+  },
+  {
+    "tool": "Grep",
+    "path": null,
+    "pattern": "preset-or-custom|PresetOrCustom"
+  },
+  {
+    "tool": "Grep",
+    "path": null,
+    "pattern": "space-y-|gap-|p-6|className="
+  },
+  {
+    "tool": "Read",
+    "path": "src/views/internal/design-system/contained-form-row-review.tsx",
+    "pattern": null
+  },
+  {
+    "tool": "Read",
+    "path": "src/views/internal/design-system/component-catalog-primary.ts",
+    "pattern": null
+  }
+]

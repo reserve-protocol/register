@@ -1,0 +1,119 @@
+{
+  "recordedAt": "2026-09-10T19:48:23.804Z",
+  "scope": "Scoped 44px narrow tabs and responsive sort placement, metadata separators and bridge affordance, no-shift contextual external arrows, and separated identity skeleton bars. Seven source-bound cases including arrow visibility after container resizing; mock and physical-device limitations remain.",
+  "sourceBoundary": "Public digest compared before/after each case; no private environment hash retained. Preview process startup and dependencies are not source-attested.",
+  "result": {
+    "startTime": "2026-09-10T19:46:49.454Z",
+    "duration": 76967.26400000001,
+    "expected": 7,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "cases": [
+    {
+      "name": "holdings family light 320",
+      "status": "passed",
+      "sourceDigest": "84c34bb1e0903b313ebb572eece9048ee3a0641e025bf72cd0558a3bf80c055d",
+      "observations": []
+    },
+    {
+      "name": "holdings family light 375",
+      "status": "passed",
+      "sourceDigest": "84c34bb1e0903b313ebb572eece9048ee3a0641e025bf72cd0558a3bf80c055d",
+      "observations": []
+    },
+    {
+      "name": "holdings family light 1400",
+      "status": "passed",
+      "sourceDigest": "84c34bb1e0903b313ebb572eece9048ee3a0641e025bf72cd0558a3bf80c055d",
+      "observations": [
+        {
+          "name": "header-geometry",
+          "data": {
+            "tabsCenter": 3003,
+            "labelCenter": 3003
+          }
+        }
+      ]
+    },
+    {
+      "name": "holdings family dark 320",
+      "status": "passed",
+      "sourceDigest": "84c34bb1e0903b313ebb572eece9048ee3a0641e025bf72cd0558a3bf80c055d",
+      "observations": []
+    },
+    {
+      "name": "holdings family dark 375",
+      "status": "passed",
+      "sourceDigest": "84c34bb1e0903b313ebb572eece9048ee3a0641e025bf72cd0558a3bf80c055d",
+      "observations": []
+    },
+    {
+      "name": "holdings family dark 1400",
+      "status": "passed",
+      "sourceDigest": "84c34bb1e0903b313ebb572eece9048ee3a0641e025bf72cd0558a3bf80c055d",
+      "observations": [
+        {
+          "name": "header-geometry",
+          "data": {
+            "tabsCenter": 3003,
+            "labelCenter": 3003
+          }
+        }
+      ]
+    },
+    {
+      "name": "holdings touch pointer 1400",
+      "status": "passed",
+      "sourceDigest": "84c34bb1e0903b313ebb572eece9048ee3a0641e025bf72cd0558a3bf80c055d",
+      "observations": []
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "holdings-family-light-320-collateral.png",
+      "sha256": "8dd78f4cb18987784f52514b6a4827645cbf1a672596583f85f59000e8fb9fb8"
+    },
+    {
+      "path": "holdings-family-light-375-sort-open.png",
+      "sha256": "e2658ec6076366f03edb3f76febf4cfa4c0d8f2bd3f34249d0e069f7e28c4889"
+    },
+    {
+      "path": "holdings-family-light-1400-link-focus.png",
+      "sha256": "68ec648b6e1539a36978c987f080e8da897068fa344e9275c85d470386b509ed"
+    },
+    {
+      "path": "holdings-family-light-1400-basket-loading.png",
+      "sha256": "ec5d6e06dee1b25f7989015daf2bc6ce6bccdc12ca3a7e866b763c6fd225a5b7"
+    },
+    {
+      "path": "holdings-family-light-1400-boundary-512.png",
+      "sha256": "90abd05741992a5e7c6a309d2211cf175955214c694c5116ef4fb79eb7873df9"
+    },
+    {
+      "path": "holdings-family-light-1400-constrained-macom.png",
+      "sha256": "ee989316e64e5ef41f74cb4f28580f43d495a9a3ee422dc47d0f31d25e07c7e1"
+    },
+    {
+      "path": "holdings-family-dark-320-collateral.png",
+      "sha256": "f56c08f864d539efcfcae9271a110fc5f028c20e4ba438596093cff4862039e4"
+    },
+    {
+      "path": "holdings-family-dark-375-sort-open.png",
+      "sha256": "1c8204aec3d2982c97012ff7c1c3bf9035592d1a408782feb49844d248588955"
+    },
+    {
+      "path": "holdings-family-dark-1400-boundary-511.png",
+      "sha256": "994f26720dfc3bf05b69d46506f4f9a10ca188162aa458263b47573d2a14896d"
+    },
+    {
+      "path": "holdings-family-dark-1400-constrained.png",
+      "sha256": "49294470e567d4b896e16ed85d18a691cefb447a6de5664a3e1030b77e4cb4c2"
+    },
+    {
+      "path": "holdings-touch-pointer-1400-touch-arrow.png",
+      "sha256": "88076ed16de976a9b2d328f80cef4211b688300ac6c4f0f53e0fabc6e8424553"
+    }
+  ]
+}

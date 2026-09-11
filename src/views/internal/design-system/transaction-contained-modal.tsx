@@ -19,11 +19,13 @@ export const TransactionContainedModal = ({
   onOpenChange: (open: boolean) => void
 }) => {
   const layerRef = useRef<HTMLDivElement>(null)
+  const wasOpen = useRef(isOpen)
 
   useEffect(() => {
-    if (isOpen) {
+    if (isOpen && !wasOpen.current) {
       layerRef.current?.querySelector<HTMLElement>('[role="dialog"]')?.focus()
     }
+    wasOpen.current = isOpen
   }, [isOpen])
 
   if (!isOpen) return null
@@ -38,8 +40,11 @@ export const TransactionContainedModal = ({
     }
 
     if (event.key !== 'Tab') return
+    const dialog = layerRef.current?.querySelector('[role="dialog"]')
     const focusable = Array.from(
-      layerRef.current?.querySelectorAll<HTMLElement>(FOCUSABLE_SELECTOR) ?? []
+      dialog?.querySelectorAll<HTMLElement>(FOCUSABLE_SELECTOR) ?? []
+    ).filter(
+      (element) => element.tabIndex >= 0 && element.getClientRects().length > 0
     )
     const first = focusable[0]
     const last = focusable.at(-1)
@@ -48,7 +53,6 @@ export const TransactionContainedModal = ({
       return
     }
 
-    const dialog = layerRef.current?.querySelector('[role="dialog"]')
     if (document.activeElement === dialog) {
       event.preventDefault()
       const target = event.shiftKey ? last : first
@@ -56,10 +60,10 @@ export const TransactionContainedModal = ({
       return
     }
 
-    if (event.shiftKey && document.activeElement === first) {
+    if (event.shiftKey && first.contains(document.activeElement)) {
       event.preventDefault()
       last.focus()
-    } else if (!event.shiftKey && document.activeElement === last) {
+    } else if (!event.shiftKey && last.contains(document.activeElement)) {
       event.preventDefault()
       first.focus()
     }

@@ -14,7 +14,9 @@ const AccordionStateSheet = () => (
     aria-labelledby="accordion-state-sheet-title"
   >
     <div>
-      <p className="text-sm font-medium text-primary">Provisional candidate</p>
+      <p className="text-sm font-medium text-primary">
+        Current baseline · informational disclosure
+      </p>
       <h2 id="accordion-state-sheet-title" className="mt-1 text-xl font-medium">
         Informational disclosure stack
       </h2>

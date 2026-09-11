@@ -1,4 +1,4 @@
-import { candidateSemanticRoles as semanticRoles } from './semantic-roles'
+import { v1SemanticRoles as semanticRoles } from '@/components/design-system-v1/semantic-roles'
 
 // Shared relationships only; flow anatomy, mechanics, lifecycle, and copy remain composition-owned.
 export const transactionTaskGeometry = {

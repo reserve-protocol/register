@@ -2,7 +2,7 @@ import * as CollapsiblePrimitive from '@radix-ui/react-collapsible'
 import { ChevronDown } from 'lucide-react'
 import * as React from 'react'
 
-import { v1SemanticRecipes as roles } from '@/components/ui/v1-semantic-recipes'
+import { v1SemanticRoles as roles } from '@/components/design-system-v1/semantic-roles'
 import { cn } from '@/lib/utils'
 import { disclosurePresentation } from './disclosure-presentation'
 import { v1Typography } from './typography'
@@ -28,7 +28,7 @@ export const CollapsibleTrigger = React.forwardRef<
     className={cn(
       disclosurePresentation.trigger,
       v1Typography.itemTitle,
-      roles.focus.onContentInset,
+      roles.focus.visibleInset,
       className
     )}
     {...props}

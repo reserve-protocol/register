@@ -1,0 +1,4636 @@
+{
+  "recordedAt": "2026-09-09T15:43:35.373Z",
+  "branch": "design-system-v1",
+  "base": "adef9ee76ffe2a579f6811cae2f5cf152cd0cf99",
+  "scope": "Lab positions/withdrawals candidate; no visual acceptance or production adoption",
+  "sourceDigest": "91d70934fec610efce5eb3fd22120b1e146cb8bdc90b3a11803bfae48cd2e809",
+  "sourceBoundary": "Selected public source/runtime inputs checked before and after each of six table-family cases; prior narrow-table regression has no source attachment. Private env fingerprints are guard-only, not serialized.",
+  "result": {
+    "startTime": "2026-09-09T15:42:15.802Z",
+    "duration": 43228.159999999996,
+    "expected": 7,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "cases": [
+    {
+      "name": "narrow table keeps its last column reachable without page overflow",
+      "status": "passed",
+      "durationMs": 14554,
+      "geometry": []
+    },
+    {
+      "name": "table family light 320",
+      "status": "passed",
+      "durationMs": 3672,
+      "sourceDigest": "91d70934fec610efce5eb3fd22120b1e146cb8bdc90b3a11803bfae48cd2e809",
+      "geometry": [
+        {
+          "name": "positions-geometry",
+          "data": {
+            "width": 288,
+            "scroll": 288,
+            "table": 288,
+            "cells": [
+              {
+                "width": 288,
+                "scroll": 288,
+                "text": "CF Large Cap Index$LCAPValue$10,432.19Balance1,523.13 LCAPPerformance (7D)+4.21%Unrealized P/L+$1,112.40Avg Cost$6.12Market Cap$4,200,000.00"
+              },
+              {
+                "width": 288,
+                "scroll": 288,
+                "text": "Open Stablecoin Index$OPENValue$2,501.20Balance2,500.00 OPENPerformance (7D)0.00%Unrealized P/L$0.00Avg Cost$1.00Market Cap$25,000,000.00"
+              },
+              {
+                "width": 288,
+                "scroll": 288,
+                "text": "CoinMarketCap 20 Index DTF$CMC20Value$2,473.17Balance24.63 CMC20Performance (7D)−1.28%Unrealized P/L−$32.10Avg Cost$101.72Market Cap$1,200,000.00"
+              },
+              {
+                "width": 288,
+                "scroll": 288,
+                "text": "Reserve AI Photonics DTF$PHOTONValue$818.00Balance100.00 PHOTONPerformance (7D)0.00%Unrealized P/L$0.00Avg Cost$8.18Market Cap$2,500,000.00"
+              },
+              {
+                "width": 288,
+                "scroll": 288,
+                "text": "Zora Index$ZINDEXValue—Balance0.000042 ZINDEXPerformance (7D)—Unrealized P/L—Avg Cost—Market Cap—"
+              }
+            ],
+            "pairs": [
+              {
+                "identity": {
+                  "x": 40,
+                  "y": 435.5,
+                  "width": 240,
+                  "height": 44,
+                  "top": 435.5,
+                  "right": 280,
+                  "bottom": 479.5,
+                  "left": 40
+                },
+                "value": {
+                  "x": 192.4375,
+                  "y": 507.5,
+                  "width": 87.5625,
+                  "height": 24,
+                  "top": 507.5,
+                  "right": 280,
+                  "bottom": 531.5,
+                  "left": 192.4375
+                }
+              },
+              {
+                "identity": {
+                  "x": 40,
+                  "y": 595.5,
+                  "width": 240,
+                  "height": 44,
+                  "top": 595.5,
+                  "right": 280,
+                  "bottom": 639.5,
+                  "left": 40
+                },
+                "value": {
+                  "x": 202.375,
+                  "y": 667.5,
+                  "width": 77.625,
+                  "height": 24,
+                  "top": 667.5,
+                  "right": 280,
+                  "bottom": 691.5,
+                  "left": 202.375
+                }
+              },
+              {
+                "identity": {
+                  "x": 40,
+                  "y": 755.5,
+                  "width": 240,
+                  "height": 68,
+                  "top": 755.5,
+                  "right": 280,
+                  "bottom": 823.5,
+                  "left": 40
+                },
+                "value": {
+                  "x": 202.40625,
+                  "y": 851.5,
+                  "width": 77.59375,
+                  "height": 24,
+                  "top": 851.5,
+                  "right": 280,
+                  "bottom": 875.5,
+                  "left": 202.40625
+                }
+              },
+              {
+                "identity": {
+                  "x": 40,
+                  "y": 939.5,
+                  "width": 160.328125,
+                  "height": 68,
+                  "top": 939.5,
+                  "right": 200.328125,
+                  "bottom": 1007.5,
+                  "left": 40
+                },
+                "value": {
+                  "x": 216.328125,
+                  "y": 971.5,
+                  "width": 63.671875,
+                  "height": 24,
+                  "top": 971.5,
+                  "right": 280,
+                  "bottom": 995.5,
+                  "left": 216.328125
+                }
+              },
+              {
+                "identity": {
+                  "x": 40,
+                  "y": 1071.5,
+                  "width": 189.671875,
+                  "height": 44,
+                  "top": 1071.5,
+                  "right": 229.671875,
+                  "bottom": 1115.5,
+                  "left": 40
+                },
+                "value": {
+                  "x": 245.671875,
+                  "y": 1091.5,
+                  "width": 34.328125,
+                  "height": 24,
+                  "top": 1091.5,
+                  "right": 280,
+                  "bottom": 1115.5,
+                  "left": 245.671875
+                }
+              }
+            ]
+          }
+        },
+        {
+          "name": "withdrawals-geometry",
+          "data": {
+            "width": 288,
+            "scroll": 288,
+            "table": 288,
+            "cells": [
+              {
+                "width": 288,
+                "scroll": 288,
+                "text": "RSReusdRSRValue$1,462.50Balance250,000.00 RSR13dWithdraw"
+              },
+              {
+                "width": 288,
+                "scroll": 288,
+                "text": "RSReusdRSRValue$585.00Balance100,000.00 RSRReadyWithdraw"
+              },
+              {
+                "width": 288,
+                "scroll": 288,
+                "text": "RSRvlRSRValue$234.00Balance40,000.00 RSR2dWithdraw"
+              },
+              {
+                "width": 288,
+                "scroll": 288,
+                "text": "RSRvlRSRValue$117.00Balance20,000.00 RSRReadyWithdraw"
+              },
+              {
+                "width": 288,
+                "scroll": 288,
+                "text": "RSReusdRSRValue$58.50Balance10,000.00 RSR1h 1mWithdraw"
+              }
+            ],
+            "pairs": []
+          }
+        },
+        {
+          "name": "long-content-geometry",
+          "data": {
+            "width": 288,
+            "scroll": 288,
+            "table": 288,
+            "cells": [
+              {
+                "width": 288,
+                "scroll": 288,
+                "text": "CoinMarketCap 20 Index DTF with an unusually long display name$CMC20Value$123,456,789.12Balance1,234,567.890123 CMC20Performance (7D)−1.28%Unrealized P/L−$32.10Avg Cost$101.72Market Cap$1,200,000.00"
+              },
+              {
+                "width": 288,
+                "scroll": 288,
+                "text": "CF Large Cap Index$LCAPValue$10,432.19Balance1,523.13 LCAPPerformance (7D)+4.21%Unrealized P/L+$1,112.40Avg Cost$6.12Market Cap$4,200,000.00"
+              },
+              {
+                "width": 288,
+                "scroll": 288,
+                "text": "Open Stablecoin Index$OPENValue$2,501.20Balance2,500.00 OPENPerformance (7D)0.00%Unrealized P/L$0.00Avg Cost$1.00Market Cap$25,000,000.00"
+              },
+              {
+                "width": 288,
+                "scroll": 288,
+                "text": "Reserve AI Photonics DTF$PHOTONValue$818.00Balance100.00 PHOTONPerformance (7D)0.00%Unrealized P/L$0.00Avg Cost$8.18Market Cap$2,500,000.00"
+              },
+              {
+                "width": 288,
+                "scroll": 288,
+                "text": "Zora Index$ZINDEXValue—Balance0.000042 ZINDEXPerformance (7D)—Unrealized P/L—Avg Cost—Market Cap—"
+              }
+            ],
+            "pairs": [
+              {
+                "identity": {
+                  "x": 40,
+                  "y": 435.5,
+                  "width": 240,
+                  "height": 92,
+                  "top": 435.5,
+                  "right": 280,
+                  "bottom": 527.5,
+                  "left": 40
+                },
+                "value": {
+                  "x": 148.609375,
+                  "y": 555.5,
+                  "width": 131.390625,
+                  "height": 24,
+                  "top": 555.5,
+                  "right": 280,
+                  "bottom": 579.5,
+                  "left": 148.609375
+                }
+              },
+              {
+                "identity": {
+                  "x": 40,
+                  "y": 667.5,
+                  "width": 240,
+                  "height": 44,
+                  "top": 667.5,
+                  "right": 280,
+                  "bottom": 711.5,
+                  "left": 40
+                },
+                "value": {
+                  "x": 192.4375,
+                  "y": 739.5,
+                  "width": 87.5625,
+                  "height": 24,
+                  "top": 739.5,
+                  "right": 280,
+                  "bottom": 763.5,
+                  "left": 192.4375
+                }
+              },
+              {
+                "identity": {
+                  "x": 40,
+                  "y": 827.5,
+                  "width": 240,
+                  "height": 44,
+                  "top": 827.5,
+                  "right": 280,
+                  "bottom": 871.5,
+                  "left": 40
+                },
+                "value": {
+                  "x": 202.375,
+                  "y": 899.5,
+                  "width": 77.625,
+                  "height": 24,
+                  "top": 899.5,
+                  "right": 280,
+                  "bottom": 923.5,
+                  "left": 202.375
+                }
+              },
+              {
+                "identity": {
+                  "x": 40,
+                  "y": 987.5,
+                  "width": 160.328125,
+                  "height": 68,
+                  "top": 987.5,
+                  "right": 200.328125,
+                  "bottom": 1055.5,
+                  "left": 40
+                },
+                "value": {
+                  "x": 216.328125,
+                  "y": 1019.5,
+                  "width": 63.671875,
+                  "height": 24,
+                  "top": 1019.5,
+                  "right": 280,
+                  "bottom": 1043.5,
+                  "left": 216.328125
+                }
+              },
+              {
+                "identity": {
+                  "x": 40,
+                  "y": 1119.5,
+                  "width": 189.671875,
+                  "height": 44,
+                  "top": 1119.5,
+                  "right": 229.671875,
+                  "bottom": 1163.5,
+                  "left": 40
+                },
+                "value": {
+                  "x": 245.671875,
+                  "y": 1139.5,
+                  "width": 34.328125,
+                  "height": 24,
+                  "top": 1139.5,
+                  "right": 280,
+                  "bottom": 1163.5,
+                  "left": 245.671875
+                }
+              }
+            ]
+          }
+        },
+        {
+          "name": "loading-geometry",
+          "data": {
+            "width": 288,
+            "scroll": 288,
+            "table": 288,
+            "cells": [
+              {
+                "width": 288,
+                "scroll": 288,
+                "text": "ValueBalancePerformance (7D)Unrealized P/LAvg CostMarket Cap"
+              },
+              {
+                "width": 288,
+                "scroll": 288,
+                "text": "ValueBalancePerformance (7D)Unrealized P/LAvg CostMarket Cap"
+              },
+              {
+                "width": 288,
+                "scroll": 288,
+                "text": "ValueBalancePerformance (7D)Unrealized P/LAvg CostMarket Cap"
+              },
+              {
+                "width": 288,
+                "scroll": 288,
+                "text": "ValueBalancePerformance (7D)Unrealized P/LAvg CostMarket Cap"
+              },
+              {
+                "width": 288,
+                "scroll": 288,
+                "text": "ValueBalancePerformance (7D)Unrealized P/LAvg CostMarket Cap"
+              }
+            ],
+            "pairs": [
+              {},
+              {},
+              {},
+              {},
+              {}
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "table family light 375",
+      "status": "passed",
+      "durationMs": 3366,
+      "sourceDigest": "91d70934fec610efce5eb3fd22120b1e146cb8bdc90b3a11803bfae48cd2e809",
+      "geometry": [
+        {
+          "name": "positions-geometry",
+          "data": {
+            "width": 343,
+            "scroll": 343,
+            "table": 343,
+            "cells": [
+              {
+                "width": 343,
+                "scroll": 343,
+                "text": "CF Large Cap Index$LCAPValue$10,432.19Balance1,523.13 LCAPPerformance (7D)+4.21%Unrealized P/L+$1,112.40Avg Cost$6.12Market Cap$4,200,000.00"
+              },
+              {
+                "width": 343,
+                "scroll": 343,
+                "text": "Open Stablecoin Index$OPENValue$2,501.20Balance2,500.00 OPENPerformance (7D)0.00%Unrealized P/L$0.00Avg Cost$1.00Market Cap$25,000,000.00"
+              },
+              {
+                "width": 343,
+                "scroll": 343,
+                "text": "CoinMarketCap 20 Index DTF$CMC20Value$2,473.17Balance24.63 CMC20Performance (7D)−1.28%Unrealized P/L−$32.10Avg Cost$101.72Market Cap$1,200,000.00"
+              },
+              {
+                "width": 343,
+                "scroll": 343,
+                "text": "Reserve AI Photonics DTF$PHOTONValue$818.00Balance100.00 PHOTONPerformance (7D)0.00%Unrealized P/L$0.00Avg Cost$8.18Market Cap$2,500,000.00"
+              },
+              {
+                "width": 343,
+                "scroll": 343,
+                "text": "Zora Index$ZINDEXValue—Balance0.000042 ZINDEXPerformance (7D)—Unrealized P/L—Avg Cost—Market Cap—"
+              }
+            ],
+            "pairs": [
+              {
+                "identity": {
+                  "x": 40,
+                  "y": 415.5,
+                  "width": 191.4375,
+                  "height": 44,
+                  "top": 415.5,
+                  "right": 231.4375,
+                  "bottom": 459.5,
+                  "left": 40
+                },
+                "value": {
+                  "x": 247.4375,
+                  "y": 435.5,
+                  "width": 87.5625,
+                  "height": 24,
+                  "top": 435.5,
+                  "right": 335,
+                  "bottom": 459.5,
+                  "left": 247.4375
+                }
+              },
+              {
+                "identity": {
+                  "x": 40,
+                  "y": 523.5,
+                  "width": 201.375,
+                  "height": 68,
+                  "top": 523.5,
+                  "right": 241.375,
+                  "bottom": 591.5,
+                  "left": 40
+                },
+                "value": {
+                  "x": 257.375,
+                  "y": 555.5,
+                  "width": 77.625,
+                  "height": 24,
+                  "top": 555.5,
+                  "right": 335,
+                  "bottom": 579.5,
+                  "left": 257.375
+                }
+              },
+              {
+                "identity": {
+                  "x": 40,
+                  "y": 655.5,
+                  "width": 201.40625,
+                  "height": 68,
+                  "top": 655.5,
+                  "right": 241.40625,
+                  "bottom": 723.5,
+                  "left": 40
+                },
+                "value": {
+                  "x": 257.40625,
+                  "y": 687.5,
+                  "width": 77.59375,
+                  "height": 24,
+                  "top": 687.5,
+                  "right": 335,
+                  "bottom": 711.5,
+                  "left": 257.40625
+                }
+              },
+              {
+                "identity": {
+                  "x": 40,
+                  "y": 787.5,
+                  "width": 215.328125,
+                  "height": 68,
+                  "top": 787.5,
+                  "right": 255.328125,
+                  "bottom": 855.5,
+                  "left": 40
+                },
+                "value": {
+                  "x": 271.328125,
+                  "y": 819.5,
+                  "width": 63.671875,
+                  "height": 24,
+                  "top": 819.5,
+                  "right": 335,
+                  "bottom": 843.5,
+                  "left": 271.328125
+                }
+              },
+              {
+                "identity": {
+                  "x": 40,
+                  "y": 919.5,
+                  "width": 244.671875,
+                  "height": 44,
+                  "top": 919.5,
+                  "right": 284.671875,
+                  "bottom": 963.5,
+                  "left": 40
+                },
+                "value": {
+                  "x": 300.671875,
+                  "y": 939.5,
+                  "width": 34.328125,
+                  "height": 24,
+                  "top": 939.5,
+                  "right": 335,
+                  "bottom": 963.5,
+                  "left": 300.671875
+                }
+              }
+            ]
+          }
+        },
+        {
+          "name": "withdrawals-geometry",
+          "data": {
+            "width": 343,
+            "scroll": 343,
+            "table": 343,
+            "cells": [
+              {
+                "width": 343,
+                "scroll": 343,
+                "text": "RSReusdRSRValue$1,462.50Balance250,000.00 RSR13dWithdraw"
+              },
+              {
+                "width": 343,
+                "scroll": 343,
+                "text": "RSReusdRSRValue$585.00Balance100,000.00 RSRReadyWithdraw"
+              },
+              {
+                "width": 343,
+                "scroll": 343,
+                "text": "RSRvlRSRValue$234.00Balance40,000.00 RSR2dWithdraw"
+              },
+              {
+                "width": 343,
+                "scroll": 343,
+                "text": "RSRvlRSRValue$117.00Balance20,000.00 RSRReadyWithdraw"
+              },
+              {
+                "width": 343,
+                "scroll": 343,
+                "text": "RSReusdRSRValue$58.50Balance10,000.00 RSR1h 1mWithdraw"
+              }
+            ],
+            "pairs": []
+          }
+        },
+        {
+          "name": "long-content-geometry",
+          "data": {
+            "width": 343,
+            "scroll": 343,
+            "table": 343,
+            "cells": [
+              {
+                "width": 343,
+                "scroll": 343,
+                "text": "CoinMarketCap 20 Index DTF with an unusually long display name$CMC20Value$123,456,789.12Balance1,234,567.890123 CMC20Performance (7D)−1.28%Unrealized P/L−$32.10Avg Cost$101.72Market Cap$1,200,000.00"
+              },
+              {
+                "width": 343,
+                "scroll": 343,
+                "text": "CF Large Cap Index$LCAPValue$10,432.19Balance1,523.13 LCAPPerformance (7D)+4.21%Unrealized P/L+$1,112.40Avg Cost$6.12Market Cap$4,200,000.00"
+              },
+              {
+                "width": 343,
+                "scroll": 343,
+                "text": "Open Stablecoin Index$OPENValue$2,501.20Balance2,500.00 OPENPerformance (7D)0.00%Unrealized P/L$0.00Avg Cost$1.00Market Cap$25,000,000.00"
+              },
+              {
+                "width": 343,
+                "scroll": 343,
+                "text": "Reserve AI Photonics DTF$PHOTONValue$818.00Balance100.00 PHOTONPerformance (7D)0.00%Unrealized P/L$0.00Avg Cost$8.18Market Cap$2,500,000.00"
+              },
+              {
+                "width": 343,
+                "scroll": 343,
+                "text": "Zora Index$ZINDEXValue—Balance0.000042 ZINDEXPerformance (7D)—Unrealized P/L—Avg Cost—Market Cap—"
+              }
+            ],
+            "pairs": [
+              {
+                "identity": {
+                  "x": 40,
+                  "y": 415.5,
+                  "width": 295,
+                  "height": 68,
+                  "top": 415.5,
+                  "right": 335,
+                  "bottom": 483.5,
+                  "left": 40
+                },
+                "value": {
+                  "x": 203.609375,
+                  "y": 511.5,
+                  "width": 131.390625,
+                  "height": 24,
+                  "top": 511.5,
+                  "right": 335,
+                  "bottom": 535.5,
+                  "left": 203.609375
+                }
+              },
+              {
+                "identity": {
+                  "x": 40,
+                  "y": 599.5,
+                  "width": 191.4375,
+                  "height": 44,
+                  "top": 599.5,
+                  "right": 231.4375,
+                  "bottom": 643.5,
+                  "left": 40
+                },
+                "value": {
+                  "x": 247.4375,
+                  "y": 619.5,
+                  "width": 87.5625,
+                  "height": 24,
+                  "top": 619.5,
+                  "right": 335,
+                  "bottom": 643.5,
+                  "left": 247.4375
+                }
+              },
+              {
+                "identity": {
+                  "x": 40,
+                  "y": 707.5,
+                  "width": 201.375,
+                  "height": 68,
+                  "top": 707.5,
+                  "right": 241.375,
+                  "bottom": 775.5,
+                  "left": 40
+                },
+                "value": {
+                  "x": 257.375,
+                  "y": 739.5,
+                  "width": 77.625,
+                  "height": 24,
+                  "top": 739.5,
+                  "right": 335,
+                  "bottom": 763.5,
+                  "left": 257.375
+                }
+              },
+              {
+                "identity": {
+                  "x": 40,
+                  "y": 839.5,
+                  "width": 215.328125,
+                  "height": 68,
+                  "top": 839.5,
+                  "right": 255.328125,
+                  "bottom": 907.5,
+                  "left": 40
+                },
+                "value": {
+                  "x": 271.328125,
+                  "y": 871.5,
+                  "width": 63.671875,
+                  "height": 24,
+                  "top": 871.5,
+                  "right": 335,
+                  "bottom": 895.5,
+                  "left": 271.328125
+                }
+              },
+              {
+                "identity": {
+                  "x": 40,
+                  "y": 971.5,
+                  "width": 244.671875,
+                  "height": 44,
+                  "top": 971.5,
+                  "right": 284.671875,
+                  "bottom": 1015.5,
+                  "left": 40
+                },
+                "value": {
+                  "x": 300.671875,
+                  "y": 991.5,
+                  "width": 34.328125,
+                  "height": 24,
+                  "top": 991.5,
+                  "right": 335,
+                  "bottom": 1015.5,
+                  "left": 300.671875
+                }
+              }
+            ]
+          }
+        },
+        {
+          "name": "loading-geometry",
+          "data": {
+            "width": 343,
+            "scroll": 343,
+            "table": 343,
+            "cells": [
+              {
+                "width": 343,
+                "scroll": 343,
+                "text": "ValueBalancePerformance (7D)Unrealized P/LAvg CostMarket Cap"
+              },
+              {
+                "width": 343,
+                "scroll": 343,
+                "text": "ValueBalancePerformance (7D)Unrealized P/LAvg CostMarket Cap"
+              },
+              {
+                "width": 343,
+                "scroll": 343,
+                "text": "ValueBalancePerformance (7D)Unrealized P/LAvg CostMarket Cap"
+              },
+              {
+                "width": 343,
+                "scroll": 343,
+                "text": "ValueBalancePerformance (7D)Unrealized P/LAvg CostMarket Cap"
+              },
+              {
+                "width": 343,
+                "scroll": 343,
+                "text": "ValueBalancePerformance (7D)Unrealized P/LAvg CostMarket Cap"
+              }
+            ],
+            "pairs": [
+              {},
+              {},
+              {},
+              {},
+              {}
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "table family light 1400",
+      "status": "passed",
+      "durationMs": 5559,
+      "sourceDigest": "91d70934fec610efce5eb3fd22120b1e146cb8bdc90b3a11803bfae48cd2e809",
+      "geometry": [
+        {
+          "name": "positions-geometry",
+          "data": {
+            "width": 1352,
+            "scroll": 1352,
+            "table": 1352,
+            "cells": [
+              {
+                "width": 338,
+                "scroll": 338,
+                "text": "CF Large Cap Index$LCAP"
+              },
+              {
+                "width": 195,
+                "scroll": 195,
+                "text": "+4.21%"
+              },
+              {
+                "width": 166,
+                "scroll": 166,
+                "text": "+$1,112.40"
+              },
+              {
+                "width": 122,
+                "scroll": 122,
+                "text": "$6.12"
+              },
+              {
+                "width": 210,
+                "scroll": 210,
+                "text": "$4,200,000.00"
+              },
+              {
+                "width": 137,
+                "scroll": 137,
+                "text": "1,523.13"
+              },
+              {
+                "width": 183,
+                "scroll": 183,
+                "text": "$10,432.19"
+              },
+              {
+                "width": 338,
+                "scroll": 338,
+                "text": "Open Stablecoin Index$OPEN"
+              },
+              {
+                "width": 195,
+                "scroll": 195,
+                "text": "0.00%"
+              },
+              {
+                "width": 166,
+                "scroll": 166,
+                "text": "$0.00"
+              },
+              {
+                "width": 122,
+                "scroll": 122,
+                "text": "$1.00"
+              },
+              {
+                "width": 210,
+                "scroll": 210,
+                "text": "$25,000,000.00"
+              },
+              {
+                "width": 137,
+                "scroll": 137,
+                "text": "2,500.00"
+              },
+              {
+                "width": 183,
+                "scroll": 183,
+                "text": "$2,501.20"
+              },
+              {
+                "width": 338,
+                "scroll": 338,
+                "text": "CoinMarketCap 20 Index DTF$CMC20"
+              },
+              {
+                "width": 195,
+                "scroll": 195,
+                "text": "−1.28%"
+              },
+              {
+                "width": 166,
+                "scroll": 166,
+                "text": "−$32.10"
+              },
+              {
+                "width": 122,
+                "scroll": 122,
+                "text": "$101.72"
+              },
+              {
+                "width": 210,
+                "scroll": 210,
+                "text": "$1,200,000.00"
+              },
+              {
+                "width": 137,
+                "scroll": 137,
+                "text": "24.63"
+              },
+              {
+                "width": 183,
+                "scroll": 183,
+                "text": "$2,473.17"
+              },
+              {
+                "width": 338,
+                "scroll": 338,
+                "text": "Reserve AI Photonics DTF$PHOTON"
+              },
+              {
+                "width": 195,
+                "scroll": 195,
+                "text": "0.00%"
+              },
+              {
+                "width": 166,
+                "scroll": 166,
+                "text": "$0.00"
+              },
+              {
+                "width": 122,
+                "scroll": 122,
+                "text": "$8.18"
+              },
+              {
+                "width": 210,
+                "scroll": 210,
+                "text": "$2,500,000.00"
+              },
+              {
+                "width": 137,
+                "scroll": 137,
+                "text": "100.00"
+              },
+              {
+                "width": 183,
+                "scroll": 183,
+                "text": "$818.00"
+              },
+              {
+                "width": 338,
+                "scroll": 338,
+                "text": "Zora Index$ZINDEX"
+              },
+              {
+                "width": 195,
+                "scroll": 195,
+                "text": "—"
+              },
+              {
+                "width": 166,
+                "scroll": 166,
+                "text": "—"
+              },
+              {
+                "width": 122,
+                "scroll": 122,
+                "text": "—"
+              },
+              {
+                "width": 210,
+                "scroll": 210,
+                "text": "—"
+              },
+              {
+                "width": 137,
+                "scroll": 137,
+                "text": "0.000042"
+              },
+              {
+                "width": 183,
+                "scroll": 183,
+                "text": "—"
+              }
+            ],
+            "pairs": []
+          }
+        },
+        {
+          "name": "withdrawals-geometry",
+          "data": {
+            "width": 1352,
+            "scroll": 1352,
+            "table": 1352,
+            "cells": [
+              {
+                "width": 229,
+                "scroll": 229,
+                "text": "RSR"
+              },
+              {
+                "width": 166,
+                "scroll": 166,
+                "text": "eusdRSR"
+              },
+              {
+                "width": 230,
+                "scroll": 230,
+                "text": "250,000.00"
+              },
+              {
+                "width": 208,
+                "scroll": 208,
+                "text": "$1,462.50"
+              },
+              {
+                "width": 202,
+                "scroll": 202,
+                "text": "13d"
+              },
+              {
+                "width": 318,
+                "scroll": 318,
+                "text": "Withdraw"
+              },
+              {
+                "width": 229,
+                "scroll": 229,
+                "text": "RSR"
+              },
+              {
+                "width": 166,
+                "scroll": 166,
+                "text": "eusdRSR"
+              },
+              {
+                "width": 230,
+                "scroll": 230,
+                "text": "100,000.00"
+              },
+              {
+                "width": 208,
+                "scroll": 208,
+                "text": "$585.00"
+              },
+              {
+                "width": 202,
+                "scroll": 202,
+                "text": "Ready"
+              },
+              {
+                "width": 318,
+                "scroll": 318,
+                "text": "Withdraw"
+              },
+              {
+                "width": 229,
+                "scroll": 229,
+                "text": "RSR"
+              },
+              {
+                "width": 166,
+                "scroll": 166,
+                "text": "vlRSR"
+              },
+              {
+                "width": 230,
+                "scroll": 230,
+                "text": "40,000.00"
+              },
+              {
+                "width": 208,
+                "scroll": 208,
+                "text": "$234.00"
+              },
+              {
+                "width": 202,
+                "scroll": 202,
+                "text": "2d"
+              },
+              {
+                "width": 318,
+                "scroll": 318,
+                "text": "Withdraw"
+              },
+              {
+                "width": 229,
+                "scroll": 229,
+                "text": "RSR"
+              },
+              {
+                "width": 166,
+                "scroll": 166,
+                "text": "vlRSR"
+              },
+              {
+                "width": 230,
+                "scroll": 230,
+                "text": "20,000.00"
+              },
+              {
+                "width": 208,
+                "scroll": 208,
+                "text": "$117.00"
+              },
+              {
+                "width": 202,
+                "scroll": 202,
+                "text": "Ready"
+              },
+              {
+                "width": 318,
+                "scroll": 318,
+                "text": "Withdraw"
+              },
+              {
+                "width": 229,
+                "scroll": 229,
+                "text": "RSR"
+              },
+              {
+                "width": 166,
+                "scroll": 166,
+                "text": "eusdRSR"
+              },
+              {
+                "width": 230,
+                "scroll": 230,
+                "text": "10,000.00"
+              },
+              {
+                "width": 208,
+                "scroll": 208,
+                "text": "$58.50"
+              },
+              {
+                "width": 202,
+                "scroll": 202,
+                "text": "1h 1m"
+              },
+              {
+                "width": 318,
+                "scroll": 318,
+                "text": "Withdraw"
+              }
+            ],
+            "pairs": []
+          }
+        },
+        {
+          "name": "long-content-geometry",
+          "data": {
+            "width": 1352,
+            "scroll": 1352,
+            "table": 1352,
+            "cells": [
+              {
+                "width": 338,
+                "scroll": 338,
+                "text": "CoinMarketCap 20 Index DTF with an unusually long display name$CMC20"
+              },
+              {
+                "width": 167,
+                "scroll": 167,
+                "text": "−1.28%"
+              },
+              {
+                "width": 142,
+                "scroll": 142,
+                "text": "−$32.10"
+              },
+              {
+                "width": 104,
+                "scroll": 104,
+                "text": "$101.72"
+              },
+              {
+                "width": 180,
+                "scroll": 180,
+                "text": "$1,200,000.00"
+              },
+              {
+                "width": 206,
+                "scroll": 206,
+                "text": "1,234,567.890123"
+              },
+              {
+                "width": 214,
+                "scroll": 214,
+                "text": "$123,456,789.12"
+              },
+              {
+                "width": 338,
+                "scroll": 338,
+                "text": "CF Large Cap Index$LCAP"
+              },
+              {
+                "width": 167,
+                "scroll": 167,
+                "text": "+4.21%"
+              },
+              {
+                "width": 142,
+                "scroll": 142,
+                "text": "+$1,112.40"
+              },
+              {
+                "width": 104,
+                "scroll": 104,
+                "text": "$6.12"
+              },
+              {
+                "width": 180,
+                "scroll": 180,
+                "text": "$4,200,000.00"
+              },
+              {
+                "width": 206,
+                "scroll": 206,
+                "text": "1,523.13"
+              },
+              {
+                "width": 214,
+                "scroll": 214,
+                "text": "$10,432.19"
+              },
+              {
+                "width": 338,
+                "scroll": 338,
+                "text": "Open Stablecoin Index$OPEN"
+              },
+              {
+                "width": 167,
+                "scroll": 167,
+                "text": "0.00%"
+              },
+              {
+                "width": 142,
+                "scroll": 142,
+                "text": "$0.00"
+              },
+              {
+                "width": 104,
+                "scroll": 104,
+                "text": "$1.00"
+              },
+              {
+                "width": 180,
+                "scroll": 180,
+                "text": "$25,000,000.00"
+              },
+              {
+                "width": 206,
+                "scroll": 206,
+                "text": "2,500.00"
+              },
+              {
+                "width": 214,
+                "scroll": 214,
+                "text": "$2,501.20"
+              },
+              {
+                "width": 338,
+                "scroll": 338,
+                "text": "Reserve AI Photonics DTF$PHOTON"
+              },
+              {
+                "width": 167,
+                "scroll": 167,
+                "text": "0.00%"
+              },
+              {
+                "width": 142,
+                "scroll": 142,
+                "text": "$0.00"
+              },
+              {
+                "width": 104,
+                "scroll": 104,
+                "text": "$8.18"
+              },
+              {
+                "width": 180,
+                "scroll": 180,
+                "text": "$2,500,000.00"
+              },
+              {
+                "width": 206,
+                "scroll": 206,
+                "text": "100.00"
+              },
+              {
+                "width": 214,
+                "scroll": 214,
+                "text": "$818.00"
+              },
+              {
+                "width": 338,
+                "scroll": 338,
+                "text": "Zora Index$ZINDEX"
+              },
+              {
+                "width": 167,
+                "scroll": 167,
+                "text": "—"
+              },
+              {
+                "width": 142,
+                "scroll": 142,
+                "text": "—"
+              },
+              {
+                "width": 104,
+                "scroll": 104,
+                "text": "—"
+              },
+              {
+                "width": 180,
+                "scroll": 180,
+                "text": "—"
+              },
+              {
+                "width": 206,
+                "scroll": 206,
+                "text": "0.000042"
+              },
+              {
+                "width": 214,
+                "scroll": 214,
+                "text": "—"
+              }
+            ],
+            "pairs": []
+          }
+        },
+        {
+          "name": "loading-geometry",
+          "data": {
+            "width": 1352,
+            "scroll": 1352,
+            "table": 1352,
+            "cells": [
+              {
+                "width": 338,
+                "scroll": 338,
+                "text": ""
+              },
+              {
+                "width": 203,
+                "scroll": 203,
+                "text": ""
+              },
+              {
+                "width": 173,
+                "scroll": 173,
+                "text": ""
+              },
+              {
+                "width": 153,
+                "scroll": 153,
+                "text": ""
+              },
+              {
+                "width": 153,
+                "scroll": 153,
+                "text": ""
+              },
+              {
+                "width": 153,
+                "scroll": 153,
+                "text": ""
+              },
+              {
+                "width": 179,
+                "scroll": 179,
+                "text": ""
+              },
+              {
+                "width": 338,
+                "scroll": 338,
+                "text": ""
+              },
+              {
+                "width": 203,
+                "scroll": 203,
+                "text": ""
+              },
+              {
+                "width": 173,
+                "scroll": 173,
+                "text": ""
+              },
+              {
+                "width": 153,
+                "scroll": 153,
+                "text": ""
+              },
+              {
+                "width": 153,
+                "scroll": 153,
+                "text": ""
+              },
+              {
+                "width": 153,
+                "scroll": 153,
+                "text": ""
+              },
+              {
+                "width": 179,
+                "scroll": 179,
+                "text": ""
+              },
+              {
+                "width": 338,
+                "scroll": 338,
+                "text": ""
+              },
+              {
+                "width": 203,
+                "scroll": 203,
+                "text": ""
+              },
+              {
+                "width": 173,
+                "scroll": 173,
+                "text": ""
+              },
+              {
+                "width": 153,
+                "scroll": 153,
+                "text": ""
+              },
+              {
+                "width": 153,
+                "scroll": 153,
+                "text": ""
+              },
+              {
+                "width": 153,
+                "scroll": 153,
+                "text": ""
+              },
+              {
+                "width": 179,
+                "scroll": 179,
+                "text": ""
+              },
+              {
+                "width": 338,
+                "scroll": 338,
+                "text": ""
+              },
+              {
+                "width": 203,
+                "scroll": 203,
+                "text": ""
+              },
+              {
+                "width": 173,
+                "scroll": 173,
+                "text": ""
+              },
+              {
+                "width": 153,
+                "scroll": 153,
+                "text": ""
+              },
+              {
+                "width": 153,
+                "scroll": 153,
+                "text": ""
+              },
+              {
+                "width": 153,
+                "scroll": 153,
+                "text": ""
+              },
+              {
+                "width": 179,
+                "scroll": 179,
+                "text": ""
+              },
+              {
+                "width": 338,
+                "scroll": 338,
+                "text": ""
+              },
+              {
+                "width": 203,
+                "scroll": 203,
+                "text": ""
+              },
+              {
+                "width": 173,
+                "scroll": 173,
+                "text": ""
+              },
+              {
+                "width": 153,
+                "scroll": 153,
+                "text": ""
+              },
+              {
+                "width": 153,
+                "scroll": 153,
+                "text": ""
+              },
+              {
+                "width": 153,
+                "scroll": 153,
+                "text": ""
+              },
+              {
+                "width": 179,
+                "scroll": 179,
+                "text": ""
+              }
+            ],
+            "pairs": []
+          }
+        },
+        {
+          "name": "boundary-639-geometry",
+          "data": {
+            "width": 639,
+            "scroll": 639,
+            "table": 639,
+            "cells": [
+              {
+                "width": 639,
+                "scroll": 639,
+                "text": "CF Large Cap Index$LCAPValue$10,432.19Balance1,523.13 LCAPPerformance (7D)+4.21%Unrealized P/L+$1,112.40Avg Cost$6.12Market Cap$4,200,000.00"
+              },
+              {
+                "width": 639,
+                "scroll": 639,
+                "text": "Open Stablecoin Index$OPENValue$2,501.20Balance2,500.00 OPENPerformance (7D)0.00%Unrealized P/L$0.00Avg Cost$1.00Market Cap$25,000,000.00"
+              },
+              {
+                "width": 639,
+                "scroll": 639,
+                "text": "CoinMarketCap 20 Index DTF$CMC20Value$2,473.17Balance24.63 CMC20Performance (7D)−1.28%Unrealized P/L−$32.10Avg Cost$101.72Market Cap$1,200,000.00"
+              },
+              {
+                "width": 639,
+                "scroll": 639,
+                "text": "Reserve AI Photonics DTF$PHOTONValue$818.00Balance100.00 PHOTONPerformance (7D)0.00%Unrealized P/L$0.00Avg Cost$8.18Market Cap$2,500,000.00"
+              },
+              {
+                "width": 639,
+                "scroll": 639,
+                "text": "Zora Index$ZINDEXValue—Balance0.000042 ZINDEXPerformance (7D)—Unrealized P/L—Avg Cost—Market Cap—"
+              }
+            ],
+            "pairs": [
+              {
+                "identity": {
+                  "x": 48,
+                  "y": 397.5,
+                  "width": 487.4375,
+                  "height": 44,
+                  "top": 397.5,
+                  "right": 535.4375,
+                  "bottom": 441.5,
+                  "left": 48
+                },
+                "value": {
+                  "x": 551.4375,
+                  "y": 419.5,
+                  "width": 87.5625,
+                  "height": 24,
+                  "top": 419.5,
+                  "right": 639,
+                  "bottom": 443.5,
+                  "left": 551.4375
+                }
+              },
+              {
+                "identity": {
+                  "x": 48,
+                  "y": 509.5,
+                  "width": 497.375,
+                  "height": 44,
+                  "top": 509.5,
+                  "right": 545.375,
+                  "bottom": 553.5,
+                  "left": 48
+                },
+                "value": {
+                  "x": 561.375,
+                  "y": 531.5,
+                  "width": 77.625,
+                  "height": 24,
+                  "top": 531.5,
+                  "right": 639,
+                  "bottom": 555.5,
+                  "left": 561.375
+                }
+              },
+              {
+                "identity": {
+                  "x": 48,
+                  "y": 621.5,
+                  "width": 497.40625,
+                  "height": 44,
+                  "top": 621.5,
+                  "right": 545.40625,
+                  "bottom": 665.5,
+                  "left": 48
+                },
+                "value": {
+                  "x": 561.40625,
+                  "y": 643.5,
+                  "width": 77.59375,
+                  "height": 24,
+                  "top": 643.5,
+                  "right": 639,
+                  "bottom": 667.5,
+                  "left": 561.40625
+                }
+              },
+              {
+                "identity": {
+                  "x": 48,
+                  "y": 733.5,
+                  "width": 511.328125,
+                  "height": 44,
+                  "top": 733.5,
+                  "right": 559.328125,
+                  "bottom": 777.5,
+                  "left": 48
+                },
+                "value": {
+                  "x": 575.328125,
+                  "y": 755.5,
+                  "width": 63.671875,
+                  "height": 24,
+                  "top": 755.5,
+                  "right": 639,
+                  "bottom": 779.5,
+                  "left": 575.328125
+                }
+              },
+              {
+                "identity": {
+                  "x": 48,
+                  "y": 845.5,
+                  "width": 540.671875,
+                  "height": 44,
+                  "top": 845.5,
+                  "right": 588.671875,
+                  "bottom": 889.5,
+                  "left": 48
+                },
+                "value": {
+                  "x": 604.671875,
+                  "y": 867.5,
+                  "width": 34.328125,
+                  "height": 24,
+                  "top": 867.5,
+                  "right": 639,
+                  "bottom": 891.5,
+                  "left": 604.671875
+                }
+              }
+            ]
+          }
+        },
+        {
+          "name": "boundary-640-geometry",
+          "data": {
+            "width": 640,
+            "scroll": 640,
+            "table": 640,
+            "cells": [
+              {
+                "width": 640,
+                "scroll": 640,
+                "text": "CF Large Cap Index$LCAPValue$10,432.19Balance1,523.13 LCAPPerformance (7D)+4.21%Unrealized P/L+$1,112.40Avg Cost$6.12Market Cap$4,200,000.00"
+              },
+              {
+                "width": 640,
+                "scroll": 640,
+                "text": "Open Stablecoin Index$OPENValue$2,501.20Balance2,500.00 OPENPerformance (7D)0.00%Unrealized P/L$0.00Avg Cost$1.00Market Cap$25,000,000.00"
+              },
+              {
+                "width": 640,
+                "scroll": 640,
+                "text": "CoinMarketCap 20 Index DTF$CMC20Value$2,473.17Balance24.63 CMC20Performance (7D)−1.28%Unrealized P/L−$32.10Avg Cost$101.72Market Cap$1,200,000.00"
+              },
+              {
+                "width": 640,
+                "scroll": 640,
+                "text": "Reserve AI Photonics DTF$PHOTONValue$818.00Balance100.00 PHOTONPerformance (7D)0.00%Unrealized P/L$0.00Avg Cost$8.18Market Cap$2,500,000.00"
+              },
+              {
+                "width": 640,
+                "scroll": 640,
+                "text": "Zora Index$ZINDEXValue—Balance0.000042 ZINDEXPerformance (7D)—Unrealized P/L—Avg Cost—Market Cap—"
+              }
+            ],
+            "pairs": [
+              {
+                "identity": {
+                  "x": 48,
+                  "y": 422,
+                  "width": 488.4375,
+                  "height": 44,
+                  "top": 422,
+                  "right": 536.4375,
+                  "bottom": 466,
+                  "left": 48
+                },
+                "value": {
+                  "x": 552.4375,
+                  "y": 444,
+                  "width": 87.5625,
+                  "height": 24,
+                  "top": 444,
+                  "right": 640,
+                  "bottom": 468,
+                  "left": 552.4375
+                }
+              },
+              {
+                "identity": {
+                  "x": 48,
+                  "y": 598,
+                  "width": 498.375,
+                  "height": 44,
+                  "top": 598,
+                  "right": 546.375,
+                  "bottom": 642,
+                  "left": 48
+                },
+                "value": {
+                  "x": 562.375,
+                  "y": 620,
+                  "width": 77.625,
+                  "height": 24,
+                  "top": 620,
+                  "right": 640,
+                  "bottom": 644,
+                  "left": 562.375
+                }
+              },
+              {
+                "identity": {
+                  "x": 48,
+                  "y": 774,
+                  "width": 498.40625,
+                  "height": 44,
+                  "top": 774,
+                  "right": 546.40625,
+                  "bottom": 818,
+                  "left": 48
+                },
+                "value": {
+                  "x": 562.40625,
+                  "y": 796,
+                  "width": 77.59375,
+                  "height": 24,
+                  "top": 796,
+                  "right": 640,
+                  "bottom": 820,
+                  "left": 562.40625
+                }
+              },
+              {
+                "identity": {
+                  "x": 48,
+                  "y": 950,
+                  "width": 512.328125,
+                  "height": 44,
+                  "top": 950,
+                  "right": 560.328125,
+                  "bottom": 994,
+                  "left": 48
+                },
+                "value": {
+                  "x": 576.328125,
+                  "y": 972,
+                  "width": 63.671875,
+                  "height": 24,
+                  "top": 972,
+                  "right": 640,
+                  "bottom": 996,
+                  "left": 576.328125
+                }
+              },
+              {
+                "identity": {
+                  "x": 48,
+                  "y": 1126,
+                  "width": 541.671875,
+                  "height": 44,
+                  "top": 1126,
+                  "right": 589.671875,
+                  "bottom": 1170,
+                  "left": 48
+                },
+                "value": {
+                  "x": 605.671875,
+                  "y": 1148,
+                  "width": 34.328125,
+                  "height": 24,
+                  "top": 1148,
+                  "right": 640,
+                  "bottom": 1172,
+                  "left": 605.671875
+                }
+              }
+            ]
+          }
+        },
+        {
+          "name": "boundary-1023-geometry",
+          "data": {
+            "width": 1023,
+            "scroll": 1023,
+            "table": 1023,
+            "cells": [
+              {
+                "width": 1023,
+                "scroll": 1023,
+                "text": "CF Large Cap Index$LCAPValue$10,432.19Balance1,523.13 LCAPPerformance (7D)+4.21%Unrealized P/L+$1,112.40Avg Cost$6.12Market Cap$4,200,000.00"
+              },
+              {
+                "width": 1023,
+                "scroll": 1023,
+                "text": "Open Stablecoin Index$OPENValue$2,501.20Balance2,500.00 OPENPerformance (7D)0.00%Unrealized P/L$0.00Avg Cost$1.00Market Cap$25,000,000.00"
+              },
+              {
+                "width": 1023,
+                "scroll": 1023,
+                "text": "CoinMarketCap 20 Index DTF$CMC20Value$2,473.17Balance24.63 CMC20Performance (7D)−1.28%Unrealized P/L−$32.10Avg Cost$101.72Market Cap$1,200,000.00"
+              },
+              {
+                "width": 1023,
+                "scroll": 1023,
+                "text": "Reserve AI Photonics DTF$PHOTONValue$818.00Balance100.00 PHOTONPerformance (7D)0.00%Unrealized P/L$0.00Avg Cost$8.18Market Cap$2,500,000.00"
+              },
+              {
+                "width": 1023,
+                "scroll": 1023,
+                "text": "Zora Index$ZINDEXValue—Balance0.000042 ZINDEXPerformance (7D)—Unrealized P/L—Avg Cost—Market Cap—"
+              }
+            ],
+            "pairs": [
+              {
+                "identity": {
+                  "x": 48,
+                  "y": 422,
+                  "width": 871.4375,
+                  "height": 44,
+                  "top": 422,
+                  "right": 919.4375,
+                  "bottom": 466,
+                  "left": 48
+                },
+                "value": {
+                  "x": 935.4375,
+                  "y": 444,
+                  "width": 87.5625,
+                  "height": 24,
+                  "top": 444,
+                  "right": 1023,
+                  "bottom": 468,
+                  "left": 935.4375
+                }
+              },
+              {
+                "identity": {
+                  "x": 48,
+                  "y": 598,
+                  "width": 881.375,
+                  "height": 44,
+                  "top": 598,
+                  "right": 929.375,
+                  "bottom": 642,
+                  "left": 48
+                },
+                "value": {
+                  "x": 945.375,
+                  "y": 620,
+                  "width": 77.625,
+                  "height": 24,
+                  "top": 620,
+                  "right": 1023,
+                  "bottom": 644,
+                  "left": 945.375
+                }
+              },
+              {
+                "identity": {
+                  "x": 48,
+                  "y": 774,
+                  "width": 881.40625,
+                  "height": 44,
+                  "top": 774,
+                  "right": 929.40625,
+                  "bottom": 818,
+                  "left": 48
+                },
+                "value": {
+                  "x": 945.40625,
+                  "y": 796,
+                  "width": 77.59375,
+                  "height": 24,
+                  "top": 796,
+                  "right": 1023,
+                  "bottom": 820,
+                  "left": 945.40625
+                }
+              },
+              {
+                "identity": {
+                  "x": 48,
+                  "y": 950,
+                  "width": 895.328125,
+                  "height": 44,
+                  "top": 950,
+                  "right": 943.328125,
+                  "bottom": 994,
+                  "left": 48
+                },
+                "value": {
+                  "x": 959.328125,
+                  "y": 972,
+                  "width": 63.671875,
+                  "height": 24,
+                  "top": 972,
+                  "right": 1023,
+                  "bottom": 996,
+                  "left": 959.328125
+                }
+              },
+              {
+                "identity": {
+                  "x": 48,
+                  "y": 1126,
+                  "width": 924.671875,
+                  "height": 44,
+                  "top": 1126,
+                  "right": 972.671875,
+                  "bottom": 1170,
+                  "left": 48
+                },
+                "value": {
+                  "x": 988.671875,
+                  "y": 1148,
+                  "width": 34.328125,
+                  "height": 24,
+                  "top": 1148,
+                  "right": 1023,
+                  "bottom": 1172,
+                  "left": 988.671875
+                }
+              }
+            ]
+          }
+        },
+        {
+          "name": "boundary-1024-geometry",
+          "data": {
+            "width": 1024,
+            "scroll": 1024,
+            "table": 1024,
+            "cells": [
+              {
+                "width": 256,
+                "scroll": 256,
+                "text": "CF Large Cap Index$LCAP"
+              },
+              {
+                "width": 148,
+                "scroll": 148,
+                "text": "+4.21%"
+              },
+              {
+                "width": 125,
+                "scroll": 125,
+                "text": "+$1,112.40"
+              },
+              {
+                "width": 92,
+                "scroll": 92,
+                "text": "$6.12"
+              },
+              {
+                "width": 159,
+                "scroll": 159,
+                "text": "$4,200,000.00"
+              },
+              {
+                "width": 104,
+                "scroll": 104,
+                "text": "1,523.13"
+              },
+              {
+                "width": 139,
+                "scroll": 139,
+                "text": "$10,432.19"
+              },
+              {
+                "width": 256,
+                "scroll": 256,
+                "text": "Open Stablecoin Index$OPEN"
+              },
+              {
+                "width": 148,
+                "scroll": 148,
+                "text": "0.00%"
+              },
+              {
+                "width": 125,
+                "scroll": 125,
+                "text": "$0.00"
+              },
+              {
+                "width": 92,
+                "scroll": 92,
+                "text": "$1.00"
+              },
+              {
+                "width": 159,
+                "scroll": 159,
+                "text": "$25,000,000.00"
+              },
+              {
+                "width": 104,
+                "scroll": 104,
+                "text": "2,500.00"
+              },
+              {
+                "width": 139,
+                "scroll": 139,
+                "text": "$2,501.20"
+              },
+              {
+                "width": 256,
+                "scroll": 256,
+                "text": "CoinMarketCap 20 Index DTF$CMC20"
+              },
+              {
+                "width": 148,
+                "scroll": 148,
+                "text": "−1.28%"
+              },
+              {
+                "width": 125,
+                "scroll": 125,
+                "text": "−$32.10"
+              },
+              {
+                "width": 92,
+                "scroll": 92,
+                "text": "$101.72"
+              },
+              {
+                "width": 159,
+                "scroll": 159,
+                "text": "$1,200,000.00"
+              },
+              {
+                "width": 104,
+                "scroll": 104,
+                "text": "24.63"
+              },
+              {
+                "width": 139,
+                "scroll": 139,
+                "text": "$2,473.17"
+              },
+              {
+                "width": 256,
+                "scroll": 256,
+                "text": "Reserve AI Photonics DTF$PHOTON"
+              },
+              {
+                "width": 148,
+                "scroll": 148,
+                "text": "0.00%"
+              },
+              {
+                "width": 125,
+                "scroll": 125,
+                "text": "$0.00"
+              },
+              {
+                "width": 92,
+                "scroll": 92,
+                "text": "$8.18"
+              },
+              {
+                "width": 159,
+                "scroll": 159,
+                "text": "$2,500,000.00"
+              },
+              {
+                "width": 104,
+                "scroll": 104,
+                "text": "100.00"
+              },
+              {
+                "width": 139,
+                "scroll": 139,
+                "text": "$818.00"
+              },
+              {
+                "width": 256,
+                "scroll": 256,
+                "text": "Zora Index$ZINDEX"
+              },
+              {
+                "width": 148,
+                "scroll": 148,
+                "text": "—"
+              },
+              {
+                "width": 125,
+                "scroll": 125,
+                "text": "—"
+              },
+              {
+                "width": 92,
+                "scroll": 92,
+                "text": "—"
+              },
+              {
+                "width": 159,
+                "scroll": 159,
+                "text": "—"
+              },
+              {
+                "width": 104,
+                "scroll": 104,
+                "text": "0.000042"
+              },
+              {
+                "width": 139,
+                "scroll": 139,
+                "text": "—"
+              }
+            ],
+            "pairs": []
+          }
+        },
+        {
+          "name": "constrained-geometry",
+          "data": {
+            "width": 576,
+            "scroll": 576,
+            "table": 576,
+            "cells": [
+              {
+                "width": 576,
+                "scroll": 576,
+                "text": "CF Large Cap Index$LCAPValue$10,432.19Balance1,523.13 LCAPPerformance (7D)+4.21%Unrealized P/L+$1,112.40Avg Cost$6.12Market Cap$4,200,000.00"
+              },
+              {
+                "width": 576,
+                "scroll": 576,
+                "text": "Open Stablecoin Index$OPENValue$2,501.20Balance2,500.00 OPENPerformance (7D)0.00%Unrealized P/L$0.00Avg Cost$1.00Market Cap$25,000,000.00"
+              },
+              {
+                "width": 576,
+                "scroll": 576,
+                "text": "CoinMarketCap 20 Index DTF$CMC20Value$2,473.17Balance24.63 CMC20Performance (7D)−1.28%Unrealized P/L−$32.10Avg Cost$101.72Market Cap$1,200,000.00"
+              },
+              {
+                "width": 576,
+                "scroll": 576,
+                "text": "Reserve AI Photonics DTF$PHOTONValue$818.00Balance100.00 PHOTONPerformance (7D)0.00%Unrealized P/L$0.00Avg Cost$8.18Market Cap$2,500,000.00"
+              },
+              {
+                "width": 576,
+                "scroll": 576,
+                "text": "Zora Index$ZINDEXValue—Balance0.000042 ZINDEXPerformance (7D)—Unrealized P/L—Avg Cost—Market Cap—"
+              }
+            ],
+            "pairs": [
+              {
+                "identity": {
+                  "x": 48,
+                  "y": 397.5,
+                  "width": 424.4375,
+                  "height": 44,
+                  "top": 397.5,
+                  "right": 472.4375,
+                  "bottom": 441.5,
+                  "left": 48
+                },
+                "value": {
+                  "x": 488.4375,
+                  "y": 419.5,
+                  "width": 87.5625,
+                  "height": 24,
+                  "top": 419.5,
+                  "right": 576,
+                  "bottom": 443.5,
+                  "left": 488.4375
+                }
+              },
+              {
+                "identity": {
+                  "x": 48,
+                  "y": 509.5,
+                  "width": 434.375,
+                  "height": 44,
+                  "top": 509.5,
+                  "right": 482.375,
+                  "bottom": 553.5,
+                  "left": 48
+                },
+                "value": {
+                  "x": 498.375,
+                  "y": 531.5,
+                  "width": 77.625,
+                  "height": 24,
+                  "top": 531.5,
+                  "right": 576,
+                  "bottom": 555.5,
+                  "left": 498.375
+                }
+              },
+              {
+                "identity": {
+                  "x": 48,
+                  "y": 621.5,
+                  "width": 434.40625,
+                  "height": 44,
+                  "top": 621.5,
+                  "right": 482.40625,
+                  "bottom": 665.5,
+                  "left": 48
+                },
+                "value": {
+                  "x": 498.40625,
+                  "y": 643.5,
+                  "width": 77.59375,
+                  "height": 24,
+                  "top": 643.5,
+                  "right": 576,
+                  "bottom": 667.5,
+                  "left": 498.40625
+                }
+              },
+              {
+                "identity": {
+                  "x": 48,
+                  "y": 733.5,
+                  "width": 448.328125,
+                  "height": 44,
+                  "top": 733.5,
+                  "right": 496.328125,
+                  "bottom": 777.5,
+                  "left": 48
+                },
+                "value": {
+                  "x": 512.328125,
+                  "y": 755.5,
+                  "width": 63.671875,
+                  "height": 24,
+                  "top": 755.5,
+                  "right": 576,
+                  "bottom": 779.5,
+                  "left": 512.328125
+                }
+              },
+              {
+                "identity": {
+                  "x": 48,
+                  "y": 845.5,
+                  "width": 477.671875,
+                  "height": 44,
+                  "top": 845.5,
+                  "right": 525.671875,
+                  "bottom": 889.5,
+                  "left": 48
+                },
+                "value": {
+                  "x": 541.671875,
+                  "y": 867.5,
+                  "width": 34.328125,
+                  "height": 24,
+                  "top": 867.5,
+                  "right": 576,
+                  "bottom": 891.5,
+                  "left": 541.671875
+                }
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "table family dark 320",
+      "status": "passed",
+      "durationMs": 3244,
+      "sourceDigest": "91d70934fec610efce5eb3fd22120b1e146cb8bdc90b3a11803bfae48cd2e809",
+      "geometry": [
+        {
+          "name": "positions-geometry",
+          "data": {
+            "width": 288,
+            "scroll": 288,
+            "table": 288,
+            "cells": [
+              {
+                "width": 288,
+                "scroll": 288,
+                "text": "CF Large Cap Index$LCAPValue$10,432.19Balance1,523.13 LCAPPerformance (7D)+4.21%Unrealized P/L+$1,112.40Avg Cost$6.12Market Cap$4,200,000.00"
+              },
+              {
+                "width": 288,
+                "scroll": 288,
+                "text": "Open Stablecoin Index$OPENValue$2,501.20Balance2,500.00 OPENPerformance (7D)0.00%Unrealized P/L$0.00Avg Cost$1.00Market Cap$25,000,000.00"
+              },
+              {
+                "width": 288,
+                "scroll": 288,
+                "text": "CoinMarketCap 20 Index DTF$CMC20Value$2,473.17Balance24.63 CMC20Performance (7D)−1.28%Unrealized P/L−$32.10Avg Cost$101.72Market Cap$1,200,000.00"
+              },
+              {
+                "width": 288,
+                "scroll": 288,
+                "text": "Reserve AI Photonics DTF$PHOTONValue$818.00Balance100.00 PHOTONPerformance (7D)0.00%Unrealized P/L$0.00Avg Cost$8.18Market Cap$2,500,000.00"
+              },
+              {
+                "width": 288,
+                "scroll": 288,
+                "text": "Zora Index$ZINDEXValue—Balance0.000042 ZINDEXPerformance (7D)—Unrealized P/L—Avg Cost—Market Cap—"
+              }
+            ],
+            "pairs": [
+              {
+                "identity": {
+                  "x": 40,
+                  "y": 435.5,
+                  "width": 240,
+                  "height": 44,
+                  "top": 435.5,
+                  "right": 280,
+                  "bottom": 479.5,
+                  "left": 40
+                },
+                "value": {
+                  "x": 192.4375,
+                  "y": 507.5,
+                  "width": 87.5625,
+                  "height": 24,
+                  "top": 507.5,
+                  "right": 280,
+                  "bottom": 531.5,
+                  "left": 192.4375
+                }
+              },
+              {
+                "identity": {
+                  "x": 40,
+                  "y": 595.5,
+                  "width": 240,
+                  "height": 44,
+                  "top": 595.5,
+                  "right": 280,
+                  "bottom": 639.5,
+                  "left": 40
+                },
+                "value": {
+                  "x": 202.375,
+                  "y": 667.5,
+                  "width": 77.625,
+                  "height": 24,
+                  "top": 667.5,
+                  "right": 280,
+                  "bottom": 691.5,
+                  "left": 202.375
+                }
+              },
+              {
+                "identity": {
+                  "x": 40,
+                  "y": 755.5,
+                  "width": 240,
+                  "height": 68,
+                  "top": 755.5,
+                  "right": 280,
+                  "bottom": 823.5,
+                  "left": 40
+                },
+                "value": {
+                  "x": 202.40625,
+                  "y": 851.5,
+                  "width": 77.59375,
+                  "height": 24,
+                  "top": 851.5,
+                  "right": 280,
+                  "bottom": 875.5,
+                  "left": 202.40625
+                }
+              },
+              {
+                "identity": {
+                  "x": 40,
+                  "y": 939.5,
+                  "width": 160.328125,
+                  "height": 68,
+                  "top": 939.5,
+                  "right": 200.328125,
+                  "bottom": 1007.5,
+                  "left": 40
+                },
+                "value": {
+                  "x": 216.328125,
+                  "y": 971.5,
+                  "width": 63.671875,
+                  "height": 24,
+                  "top": 971.5,
+                  "right": 280,
+                  "bottom": 995.5,
+                  "left": 216.328125
+                }
+              },
+              {
+                "identity": {
+                  "x": 40,
+                  "y": 1071.5,
+                  "width": 189.671875,
+                  "height": 44,
+                  "top": 1071.5,
+                  "right": 229.671875,
+                  "bottom": 1115.5,
+                  "left": 40
+                },
+                "value": {
+                  "x": 245.671875,
+                  "y": 1091.5,
+                  "width": 34.328125,
+                  "height": 24,
+                  "top": 1091.5,
+                  "right": 280,
+                  "bottom": 1115.5,
+                  "left": 245.671875
+                }
+              }
+            ]
+          }
+        },
+        {
+          "name": "withdrawals-geometry",
+          "data": {
+            "width": 288,
+            "scroll": 288,
+            "table": 288,
+            "cells": [
+              {
+                "width": 288,
+                "scroll": 288,
+                "text": "RSReusdRSRValue$1,462.50Balance250,000.00 RSR13dWithdraw"
+              },
+              {
+                "width": 288,
+                "scroll": 288,
+                "text": "RSReusdRSRValue$585.00Balance100,000.00 RSRReadyWithdraw"
+              },
+              {
+                "width": 288,
+                "scroll": 288,
+                "text": "RSRvlRSRValue$234.00Balance40,000.00 RSR2dWithdraw"
+              },
+              {
+                "width": 288,
+                "scroll": 288,
+                "text": "RSRvlRSRValue$117.00Balance20,000.00 RSRReadyWithdraw"
+              },
+              {
+                "width": 288,
+                "scroll": 288,
+                "text": "RSReusdRSRValue$58.50Balance10,000.00 RSR1h 1mWithdraw"
+              }
+            ],
+            "pairs": []
+          }
+        },
+        {
+          "name": "long-content-geometry",
+          "data": {
+            "width": 288,
+            "scroll": 288,
+            "table": 288,
+            "cells": [
+              {
+                "width": 288,
+                "scroll": 288,
+                "text": "CoinMarketCap 20 Index DTF with an unusually long display name$CMC20Value$123,456,789.12Balance1,234,567.890123 CMC20Performance (7D)−1.28%Unrealized P/L−$32.10Avg Cost$101.72Market Cap$1,200,000.00"
+              },
+              {
+                "width": 288,
+                "scroll": 288,
+                "text": "CF Large Cap Index$LCAPValue$10,432.19Balance1,523.13 LCAPPerformance (7D)+4.21%Unrealized P/L+$1,112.40Avg Cost$6.12Market Cap$4,200,000.00"
+              },
+              {
+                "width": 288,
+                "scroll": 288,
+                "text": "Open Stablecoin Index$OPENValue$2,501.20Balance2,500.00 OPENPerformance (7D)0.00%Unrealized P/L$0.00Avg Cost$1.00Market Cap$25,000,000.00"
+              },
+              {
+                "width": 288,
+                "scroll": 288,
+                "text": "Reserve AI Photonics DTF$PHOTONValue$818.00Balance100.00 PHOTONPerformance (7D)0.00%Unrealized P/L$0.00Avg Cost$8.18Market Cap$2,500,000.00"
+              },
+              {
+                "width": 288,
+                "scroll": 288,
+                "text": "Zora Index$ZINDEXValue—Balance0.000042 ZINDEXPerformance (7D)—Unrealized P/L—Avg Cost—Market Cap—"
+              }
+            ],
+            "pairs": [
+              {
+                "identity": {
+                  "x": 40,
+                  "y": 435.5,
+                  "width": 240,
+                  "height": 92,
+                  "top": 435.5,
+                  "right": 280,
+                  "bottom": 527.5,
+                  "left": 40
+                },
+                "value": {
+                  "x": 148.609375,
+                  "y": 555.5,
+                  "width": 131.390625,
+                  "height": 24,
+                  "top": 555.5,
+                  "right": 280,
+                  "bottom": 579.5,
+                  "left": 148.609375
+                }
+              },
+              {
+                "identity": {
+                  "x": 40,
+                  "y": 667.5,
+                  "width": 240,
+                  "height": 44,
+                  "top": 667.5,
+                  "right": 280,
+                  "bottom": 711.5,
+                  "left": 40
+                },
+                "value": {
+                  "x": 192.4375,
+                  "y": 739.5,
+                  "width": 87.5625,
+                  "height": 24,
+                  "top": 739.5,
+                  "right": 280,
+                  "bottom": 763.5,
+                  "left": 192.4375
+                }
+              },
+              {
+                "identity": {
+                  "x": 40,
+                  "y": 827.5,
+                  "width": 240,
+                  "height": 44,
+                  "top": 827.5,
+                  "right": 280,
+                  "bottom": 871.5,
+                  "left": 40
+                },
+                "value": {
+                  "x": 202.375,
+                  "y": 899.5,
+                  "width": 77.625,
+                  "height": 24,
+                  "top": 899.5,
+                  "right": 280,
+                  "bottom": 923.5,
+                  "left": 202.375
+                }
+              },
+              {
+                "identity": {
+                  "x": 40,
+                  "y": 987.5,
+                  "width": 160.328125,
+                  "height": 68,
+                  "top": 987.5,
+                  "right": 200.328125,
+                  "bottom": 1055.5,
+                  "left": 40
+                },
+                "value": {
+                  "x": 216.328125,
+                  "y": 1019.5,
+                  "width": 63.671875,
+                  "height": 24,
+                  "top": 1019.5,
+                  "right": 280,
+                  "bottom": 1043.5,
+                  "left": 216.328125
+                }
+              },
+              {
+                "identity": {
+                  "x": 40,
+                  "y": 1119.5,
+                  "width": 189.671875,
+                  "height": 44,
+                  "top": 1119.5,
+                  "right": 229.671875,
+                  "bottom": 1163.5,
+                  "left": 40
+                },
+                "value": {
+                  "x": 245.671875,
+                  "y": 1139.5,
+                  "width": 34.328125,
+                  "height": 24,
+                  "top": 1139.5,
+                  "right": 280,
+                  "bottom": 1163.5,
+                  "left": 245.671875
+                }
+              }
+            ]
+          }
+        },
+        {
+          "name": "loading-geometry",
+          "data": {
+            "width": 288,
+            "scroll": 288,
+            "table": 288,
+            "cells": [
+              {
+                "width": 288,
+                "scroll": 288,
+                "text": "ValueBalancePerformance (7D)Unrealized P/LAvg CostMarket Cap"
+              },
+              {
+                "width": 288,
+                "scroll": 288,
+                "text": "ValueBalancePerformance (7D)Unrealized P/LAvg CostMarket Cap"
+              },
+              {
+                "width": 288,
+                "scroll": 288,
+                "text": "ValueBalancePerformance (7D)Unrealized P/LAvg CostMarket Cap"
+              },
+              {
+                "width": 288,
+                "scroll": 288,
+                "text": "ValueBalancePerformance (7D)Unrealized P/LAvg CostMarket Cap"
+              },
+              {
+                "width": 288,
+                "scroll": 288,
+                "text": "ValueBalancePerformance (7D)Unrealized P/LAvg CostMarket Cap"
+              }
+            ],
+            "pairs": [
+              {},
+              {},
+              {},
+              {},
+              {}
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "table family dark 375",
+      "status": "passed",
+      "durationMs": 3479,
+      "sourceDigest": "91d70934fec610efce5eb3fd22120b1e146cb8bdc90b3a11803bfae48cd2e809",
+      "geometry": [
+        {
+          "name": "positions-geometry",
+          "data": {
+            "width": 343,
+            "scroll": 343,
+            "table": 343,
+            "cells": [
+              {
+                "width": 343,
+                "scroll": 343,
+                "text": "CF Large Cap Index$LCAPValue$10,432.19Balance1,523.13 LCAPPerformance (7D)+4.21%Unrealized P/L+$1,112.40Avg Cost$6.12Market Cap$4,200,000.00"
+              },
+              {
+                "width": 343,
+                "scroll": 343,
+                "text": "Open Stablecoin Index$OPENValue$2,501.20Balance2,500.00 OPENPerformance (7D)0.00%Unrealized P/L$0.00Avg Cost$1.00Market Cap$25,000,000.00"
+              },
+              {
+                "width": 343,
+                "scroll": 343,
+                "text": "CoinMarketCap 20 Index DTF$CMC20Value$2,473.17Balance24.63 CMC20Performance (7D)−1.28%Unrealized P/L−$32.10Avg Cost$101.72Market Cap$1,200,000.00"
+              },
+              {
+                "width": 343,
+                "scroll": 343,
+                "text": "Reserve AI Photonics DTF$PHOTONValue$818.00Balance100.00 PHOTONPerformance (7D)0.00%Unrealized P/L$0.00Avg Cost$8.18Market Cap$2,500,000.00"
+              },
+              {
+                "width": 343,
+                "scroll": 343,
+                "text": "Zora Index$ZINDEXValue—Balance0.000042 ZINDEXPerformance (7D)—Unrealized P/L—Avg Cost—Market Cap—"
+              }
+            ],
+            "pairs": [
+              {
+                "identity": {
+                  "x": 40,
+                  "y": 415.5,
+                  "width": 191.4375,
+                  "height": 44,
+                  "top": 415.5,
+                  "right": 231.4375,
+                  "bottom": 459.5,
+                  "left": 40
+                },
+                "value": {
+                  "x": 247.4375,
+                  "y": 435.5,
+                  "width": 87.5625,
+                  "height": 24,
+                  "top": 435.5,
+                  "right": 335,
+                  "bottom": 459.5,
+                  "left": 247.4375
+                }
+              },
+              {
+                "identity": {
+                  "x": 40,
+                  "y": 523.5,
+                  "width": 201.375,
+                  "height": 68,
+                  "top": 523.5,
+                  "right": 241.375,
+                  "bottom": 591.5,
+                  "left": 40
+                },
+                "value": {
+                  "x": 257.375,
+                  "y": 555.5,
+                  "width": 77.625,
+                  "height": 24,
+                  "top": 555.5,
+                  "right": 335,
+                  "bottom": 579.5,
+                  "left": 257.375
+                }
+              },
+              {
+                "identity": {
+                  "x": 40,
+                  "y": 655.5,
+                  "width": 201.40625,
+                  "height": 68,
+                  "top": 655.5,
+                  "right": 241.40625,
+                  "bottom": 723.5,
+                  "left": 40
+                },
+                "value": {
+                  "x": 257.40625,
+                  "y": 687.5,
+                  "width": 77.59375,
+                  "height": 24,
+                  "top": 687.5,
+                  "right": 335,
+                  "bottom": 711.5,
+                  "left": 257.40625
+                }
+              },
+              {
+                "identity": {
+                  "x": 40,
+                  "y": 787.5,
+                  "width": 215.328125,
+                  "height": 68,
+                  "top": 787.5,
+                  "right": 255.328125,
+                  "bottom": 855.5,
+                  "left": 40
+                },
+                "value": {
+                  "x": 271.328125,
+                  "y": 819.5,
+                  "width": 63.671875,
+                  "height": 24,
+                  "top": 819.5,
+                  "right": 335,
+                  "bottom": 843.5,
+                  "left": 271.328125
+                }
+              },
+              {
+                "identity": {
+                  "x": 40,
+                  "y": 919.5,
+                  "width": 244.671875,
+                  "height": 44,
+                  "top": 919.5,
+                  "right": 284.671875,
+                  "bottom": 963.5,
+                  "left": 40
+                },
+                "value": {
+                  "x": 300.671875,
+                  "y": 939.5,
+                  "width": 34.328125,
+                  "height": 24,
+                  "top": 939.5,
+                  "right": 335,
+                  "bottom": 963.5,
+                  "left": 300.671875
+                }
+              }
+            ]
+          }
+        },
+        {
+          "name": "withdrawals-geometry",
+          "data": {
+            "width": 343,
+            "scroll": 343,
+            "table": 343,
+            "cells": [
+              {
+                "width": 343,
+                "scroll": 343,
+                "text": "RSReusdRSRValue$1,462.50Balance250,000.00 RSR13dWithdraw"
+              },
+              {
+                "width": 343,
+                "scroll": 343,
+                "text": "RSReusdRSRValue$585.00Balance100,000.00 RSRReadyWithdraw"
+              },
+              {
+                "width": 343,
+                "scroll": 343,
+                "text": "RSRvlRSRValue$234.00Balance40,000.00 RSR2dWithdraw"
+              },
+              {
+                "width": 343,
+                "scroll": 343,
+                "text": "RSRvlRSRValue$117.00Balance20,000.00 RSRReadyWithdraw"
+              },
+              {
+                "width": 343,
+                "scroll": 343,
+                "text": "RSReusdRSRValue$58.50Balance10,000.00 RSR1h 1mWithdraw"
+              }
+            ],
+            "pairs": []
+          }
+        },
+        {
+          "name": "long-content-geometry",
+          "data": {
+            "width": 343,
+            "scroll": 343,
+            "table": 343,
+            "cells": [
+              {
+                "width": 343,
+                "scroll": 343,
+                "text": "CoinMarketCap 20 Index DTF with an unusually long display name$CMC20Value$123,456,789.12Balance1,234,567.890123 CMC20Performance (7D)−1.28%Unrealized P/L−$32.10Avg Cost$101.72Market Cap$1,200,000.00"
+              },
+              {
+                "width": 343,
+                "scroll": 343,
+                "text": "CF Large Cap Index$LCAPValue$10,432.19Balance1,523.13 LCAPPerformance (7D)+4.21%Unrealized P/L+$1,112.40Avg Cost$6.12Market Cap$4,200,000.00"
+              },
+              {
+                "width": 343,
+                "scroll": 343,
+                "text": "Open Stablecoin Index$OPENValue$2,501.20Balance2,500.00 OPENPerformance (7D)0.00%Unrealized P/L$0.00Avg Cost$1.00Market Cap$25,000,000.00"
+              },
+              {
+                "width": 343,
+                "scroll": 343,
+                "text": "Reserve AI Photonics DTF$PHOTONValue$818.00Balance100.00 PHOTONPerformance (7D)0.00%Unrealized P/L$0.00Avg Cost$8.18Market Cap$2,500,000.00"
+              },
+              {
+                "width": 343,
+                "scroll": 343,
+                "text": "Zora Index$ZINDEXValue—Balance0.000042 ZINDEXPerformance (7D)—Unrealized P/L—Avg Cost—Market Cap—"
+              }
+            ],
+            "pairs": [
+              {
+                "identity": {
+                  "x": 40,
+                  "y": 415.5,
+                  "width": 295,
+                  "height": 68,
+                  "top": 415.5,
+                  "right": 335,
+                  "bottom": 483.5,
+                  "left": 40
+                },
+                "value": {
+                  "x": 203.609375,
+                  "y": 511.5,
+                  "width": 131.390625,
+                  "height": 24,
+                  "top": 511.5,
+                  "right": 335,
+                  "bottom": 535.5,
+                  "left": 203.609375
+                }
+              },
+              {
+                "identity": {
+                  "x": 40,
+                  "y": 599.5,
+                  "width": 191.4375,
+                  "height": 44,
+                  "top": 599.5,
+                  "right": 231.4375,
+                  "bottom": 643.5,
+                  "left": 40
+                },
+                "value": {
+                  "x": 247.4375,
+                  "y": 619.5,
+                  "width": 87.5625,
+                  "height": 24,
+                  "top": 619.5,
+                  "right": 335,
+                  "bottom": 643.5,
+                  "left": 247.4375
+                }
+              },
+              {
+                "identity": {
+                  "x": 40,
+                  "y": 707.5,
+                  "width": 201.375,
+                  "height": 68,
+                  "top": 707.5,
+                  "right": 241.375,
+                  "bottom": 775.5,
+                  "left": 40
+                },
+                "value": {
+                  "x": 257.375,
+                  "y": 739.5,
+                  "width": 77.625,
+                  "height": 24,
+                  "top": 739.5,
+                  "right": 335,
+                  "bottom": 763.5,
+                  "left": 257.375
+                }
+              },
+              {
+                "identity": {
+                  "x": 40,
+                  "y": 839.5,
+                  "width": 215.328125,
+                  "height": 68,
+                  "top": 839.5,
+                  "right": 255.328125,
+                  "bottom": 907.5,
+                  "left": 40
+                },
+                "value": {
+                  "x": 271.328125,
+                  "y": 871.5,
+                  "width": 63.671875,
+                  "height": 24,
+                  "top": 871.5,
+                  "right": 335,
+                  "bottom": 895.5,
+                  "left": 271.328125
+                }
+              },
+              {
+                "identity": {
+                  "x": 40,
+                  "y": 971.5,
+                  "width": 244.671875,
+                  "height": 44,
+                  "top": 971.5,
+                  "right": 284.671875,
+                  "bottom": 1015.5,
+                  "left": 40
+                },
+                "value": {
+                  "x": 300.671875,
+                  "y": 991.5,
+                  "width": 34.328125,
+                  "height": 24,
+                  "top": 991.5,
+                  "right": 335,
+                  "bottom": 1015.5,
+                  "left": 300.671875
+                }
+              }
+            ]
+          }
+        },
+        {
+          "name": "loading-geometry",
+          "data": {
+            "width": 343,
+            "scroll": 343,
+            "table": 343,
+            "cells": [
+              {
+                "width": 343,
+                "scroll": 343,
+                "text": "ValueBalancePerformance (7D)Unrealized P/LAvg CostMarket Cap"
+              },
+              {
+                "width": 343,
+                "scroll": 343,
+                "text": "ValueBalancePerformance (7D)Unrealized P/LAvg CostMarket Cap"
+              },
+              {
+                "width": 343,
+                "scroll": 343,
+                "text": "ValueBalancePerformance (7D)Unrealized P/LAvg CostMarket Cap"
+              },
+              {
+                "width": 343,
+                "scroll": 343,
+                "text": "ValueBalancePerformance (7D)Unrealized P/LAvg CostMarket Cap"
+              },
+              {
+                "width": 343,
+                "scroll": 343,
+                "text": "ValueBalancePerformance (7D)Unrealized P/LAvg CostMarket Cap"
+              }
+            ],
+            "pairs": [
+              {},
+              {},
+              {},
+              {},
+              {}
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "table family dark 1400",
+      "status": "passed",
+      "durationMs": 5687,
+      "sourceDigest": "91d70934fec610efce5eb3fd22120b1e146cb8bdc90b3a11803bfae48cd2e809",
+      "geometry": [
+        {
+          "name": "positions-geometry",
+          "data": {
+            "width": 1352,
+            "scroll": 1352,
+            "table": 1352,
+            "cells": [
+              {
+                "width": 338,
+                "scroll": 338,
+                "text": "CF Large Cap Index$LCAP"
+              },
+              {
+                "width": 195,
+                "scroll": 195,
+                "text": "+4.21%"
+              },
+              {
+                "width": 166,
+                "scroll": 166,
+                "text": "+$1,112.40"
+              },
+              {
+                "width": 122,
+                "scroll": 122,
+                "text": "$6.12"
+              },
+              {
+                "width": 210,
+                "scroll": 210,
+                "text": "$4,200,000.00"
+              },
+              {
+                "width": 137,
+                "scroll": 137,
+                "text": "1,523.13"
+              },
+              {
+                "width": 183,
+                "scroll": 183,
+                "text": "$10,432.19"
+              },
+              {
+                "width": 338,
+                "scroll": 338,
+                "text": "Open Stablecoin Index$OPEN"
+              },
+              {
+                "width": 195,
+                "scroll": 195,
+                "text": "0.00%"
+              },
+              {
+                "width": 166,
+                "scroll": 166,
+                "text": "$0.00"
+              },
+              {
+                "width": 122,
+                "scroll": 122,
+                "text": "$1.00"
+              },
+              {
+                "width": 210,
+                "scroll": 210,
+                "text": "$25,000,000.00"
+              },
+              {
+                "width": 137,
+                "scroll": 137,
+                "text": "2,500.00"
+              },
+              {
+                "width": 183,
+                "scroll": 183,
+                "text": "$2,501.20"
+              },
+              {
+                "width": 338,
+                "scroll": 338,
+                "text": "CoinMarketCap 20 Index DTF$CMC20"
+              },
+              {
+                "width": 195,
+                "scroll": 195,
+                "text": "−1.28%"
+              },
+              {
+                "width": 166,
+                "scroll": 166,
+                "text": "−$32.10"
+              },
+              {
+                "width": 122,
+                "scroll": 122,
+                "text": "$101.72"
+              },
+              {
+                "width": 210,
+                "scroll": 210,
+                "text": "$1,200,000.00"
+              },
+              {
+                "width": 137,
+                "scroll": 137,
+                "text": "24.63"
+              },
+              {
+                "width": 183,
+                "scroll": 183,
+                "text": "$2,473.17"
+              },
+              {
+                "width": 338,
+                "scroll": 338,
+                "text": "Reserve AI Photonics DTF$PHOTON"
+              },
+              {
+                "width": 195,
+                "scroll": 195,
+                "text": "0.00%"
+              },
+              {
+                "width": 166,
+                "scroll": 166,
+                "text": "$0.00"
+              },
+              {
+                "width": 122,
+                "scroll": 122,
+                "text": "$8.18"
+              },
+              {
+                "width": 210,
+                "scroll": 210,
+                "text": "$2,500,000.00"
+              },
+              {
+                "width": 137,
+                "scroll": 137,
+                "text": "100.00"
+              },
+              {
+                "width": 183,
+                "scroll": 183,
+                "text": "$818.00"
+              },
+              {
+                "width": 338,
+                "scroll": 338,
+                "text": "Zora Index$ZINDEX"
+              },
+              {
+                "width": 195,
+                "scroll": 195,
+                "text": "—"
+              },
+              {
+                "width": 166,
+                "scroll": 166,
+                "text": "—"
+              },
+              {
+                "width": 122,
+                "scroll": 122,
+                "text": "—"
+              },
+              {
+                "width": 210,
+                "scroll": 210,
+                "text": "—"
+              },
+              {
+                "width": 137,
+                "scroll": 137,
+                "text": "0.000042"
+              },
+              {
+                "width": 183,
+                "scroll": 183,
+                "text": "—"
+              }
+            ],
+            "pairs": []
+          }
+        },
+        {
+          "name": "withdrawals-geometry",
+          "data": {
+            "width": 1352,
+            "scroll": 1352,
+            "table": 1352,
+            "cells": [
+              {
+                "width": 229,
+                "scroll": 229,
+                "text": "RSR"
+              },
+              {
+                "width": 166,
+                "scroll": 166,
+                "text": "eusdRSR"
+              },
+              {
+                "width": 230,
+                "scroll": 230,
+                "text": "250,000.00"
+              },
+              {
+                "width": 208,
+                "scroll": 208,
+                "text": "$1,462.50"
+              },
+              {
+                "width": 202,
+                "scroll": 202,
+                "text": "13d"
+              },
+              {
+                "width": 318,
+                "scroll": 318,
+                "text": "Withdraw"
+              },
+              {
+                "width": 229,
+                "scroll": 229,
+                "text": "RSR"
+              },
+              {
+                "width": 166,
+                "scroll": 166,
+                "text": "eusdRSR"
+              },
+              {
+                "width": 230,
+                "scroll": 230,
+                "text": "100,000.00"
+              },
+              {
+                "width": 208,
+                "scroll": 208,
+                "text": "$585.00"
+              },
+              {
+                "width": 202,
+                "scroll": 202,
+                "text": "Ready"
+              },
+              {
+                "width": 318,
+                "scroll": 318,
+                "text": "Withdraw"
+              },
+              {
+                "width": 229,
+                "scroll": 229,
+                "text": "RSR"
+              },
+              {
+                "width": 166,
+                "scroll": 166,
+                "text": "vlRSR"
+              },
+              {
+                "width": 230,
+                "scroll": 230,
+                "text": "40,000.00"
+              },
+              {
+                "width": 208,
+                "scroll": 208,
+                "text": "$234.00"
+              },
+              {
+                "width": 202,
+                "scroll": 202,
+                "text": "2d"
+              },
+              {
+                "width": 318,
+                "scroll": 318,
+                "text": "Withdraw"
+              },
+              {
+                "width": 229,
+                "scroll": 229,
+                "text": "RSR"
+              },
+              {
+                "width": 166,
+                "scroll": 166,
+                "text": "vlRSR"
+              },
+              {
+                "width": 230,
+                "scroll": 230,
+                "text": "20,000.00"
+              },
+              {
+                "width": 208,
+                "scroll": 208,
+                "text": "$117.00"
+              },
+              {
+                "width": 202,
+                "scroll": 202,
+                "text": "Ready"
+              },
+              {
+                "width": 318,
+                "scroll": 318,
+                "text": "Withdraw"
+              },
+              {
+                "width": 229,
+                "scroll": 229,
+                "text": "RSR"
+              },
+              {
+                "width": 166,
+                "scroll": 166,
+                "text": "eusdRSR"
+              },
+              {
+                "width": 230,
+                "scroll": 230,
+                "text": "10,000.00"
+              },
+              {
+                "width": 208,
+                "scroll": 208,
+                "text": "$58.50"
+              },
+              {
+                "width": 202,
+                "scroll": 202,
+                "text": "1h 1m"
+              },
+              {
+                "width": 318,
+                "scroll": 318,
+                "text": "Withdraw"
+              }
+            ],
+            "pairs": []
+          }
+        },
+        {
+          "name": "long-content-geometry",
+          "data": {
+            "width": 1352,
+            "scroll": 1352,
+            "table": 1352,
+            "cells": [
+              {
+                "width": 338,
+                "scroll": 338,
+                "text": "CoinMarketCap 20 Index DTF with an unusually long display name$CMC20"
+              },
+              {
+                "width": 167,
+                "scroll": 167,
+                "text": "−1.28%"
+              },
+              {
+                "width": 142,
+                "scroll": 142,
+                "text": "−$32.10"
+              },
+              {
+                "width": 104,
+                "scroll": 104,
+                "text": "$101.72"
+              },
+              {
+                "width": 180,
+                "scroll": 180,
+                "text": "$1,200,000.00"
+              },
+              {
+                "width": 206,
+                "scroll": 206,
+                "text": "1,234,567.890123"
+              },
+              {
+                "width": 214,
+                "scroll": 214,
+                "text": "$123,456,789.12"
+              },
+              {
+                "width": 338,
+                "scroll": 338,
+                "text": "CF Large Cap Index$LCAP"
+              },
+              {
+                "width": 167,
+                "scroll": 167,
+                "text": "+4.21%"
+              },
+              {
+                "width": 142,
+                "scroll": 142,
+                "text": "+$1,112.40"
+              },
+              {
+                "width": 104,
+                "scroll": 104,
+                "text": "$6.12"
+              },
+              {
+                "width": 180,
+                "scroll": 180,
+                "text": "$4,200,000.00"
+              },
+              {
+                "width": 206,
+                "scroll": 206,
+                "text": "1,523.13"
+              },
+              {
+                "width": 214,
+                "scroll": 214,
+                "text": "$10,432.19"
+              },
+              {
+                "width": 338,
+                "scroll": 338,
+                "text": "Open Stablecoin Index$OPEN"
+              },
+              {
+                "width": 167,
+                "scroll": 167,
+                "text": "0.00%"
+              },
+              {
+                "width": 142,
+                "scroll": 142,
+                "text": "$0.00"
+              },
+              {
+                "width": 104,
+                "scroll": 104,
+                "text": "$1.00"
+              },
+              {
+                "width": 180,
+                "scroll": 180,
+                "text": "$25,000,000.00"
+              },
+              {
+                "width": 206,
+                "scroll": 206,
+                "text": "2,500.00"
+              },
+              {
+                "width": 214,
+                "scroll": 214,
+                "text": "$2,501.20"
+              },
+              {
+                "width": 338,
+                "scroll": 338,
+                "text": "Reserve AI Photonics DTF$PHOTON"
+              },
+              {
+                "width": 167,
+                "scroll": 167,
+                "text": "0.00%"
+              },
+              {
+                "width": 142,
+                "scroll": 142,
+                "text": "$0.00"
+              },
+              {
+                "width": 104,
+                "scroll": 104,
+                "text": "$8.18"
+              },
+              {
+                "width": 180,
+                "scroll": 180,
+                "text": "$2,500,000.00"
+              },
+              {
+                "width": 206,
+                "scroll": 206,
+                "text": "100.00"
+              },
+              {
+                "width": 214,
+                "scroll": 214,
+                "text": "$818.00"
+              },
+              {
+                "width": 338,
+                "scroll": 338,
+                "text": "Zora Index$ZINDEX"
+              },
+              {
+                "width": 167,
+                "scroll": 167,
+                "text": "—"
+              },
+              {
+                "width": 142,
+                "scroll": 142,
+                "text": "—"
+              },
+              {
+                "width": 104,
+                "scroll": 104,
+                "text": "—"
+              },
+              {
+                "width": 180,
+                "scroll": 180,
+                "text": "—"
+              },
+              {
+                "width": 206,
+                "scroll": 206,
+                "text": "0.000042"
+              },
+              {
+                "width": 214,
+                "scroll": 214,
+                "text": "—"
+              }
+            ],
+            "pairs": []
+          }
+        },
+        {
+          "name": "loading-geometry",
+          "data": {
+            "width": 1352,
+            "scroll": 1352,
+            "table": 1352,
+            "cells": [
+              {
+                "width": 338,
+                "scroll": 338,
+                "text": ""
+              },
+              {
+                "width": 203,
+                "scroll": 203,
+                "text": ""
+              },
+              {
+                "width": 173,
+                "scroll": 173,
+                "text": ""
+              },
+              {
+                "width": 153,
+                "scroll": 153,
+                "text": ""
+              },
+              {
+                "width": 153,
+                "scroll": 153,
+                "text": ""
+              },
+              {
+                "width": 153,
+                "scroll": 153,
+                "text": ""
+              },
+              {
+                "width": 179,
+                "scroll": 179,
+                "text": ""
+              },
+              {
+                "width": 338,
+                "scroll": 338,
+                "text": ""
+              },
+              {
+                "width": 203,
+                "scroll": 203,
+                "text": ""
+              },
+              {
+                "width": 173,
+                "scroll": 173,
+                "text": ""
+              },
+              {
+                "width": 153,
+                "scroll": 153,
+                "text": ""
+              },
+              {
+                "width": 153,
+                "scroll": 153,
+                "text": ""
+              },
+              {
+                "width": 153,
+                "scroll": 153,
+                "text": ""
+              },
+              {
+                "width": 179,
+                "scroll": 179,
+                "text": ""
+              },
+              {
+                "width": 338,
+                "scroll": 338,
+                "text": ""
+              },
+              {
+                "width": 203,
+                "scroll": 203,
+                "text": ""
+              },
+              {
+                "width": 173,
+                "scroll": 173,
+                "text": ""
+              },
+              {
+                "width": 153,
+                "scroll": 153,
+                "text": ""
+              },
+              {
+                "width": 153,
+                "scroll": 153,
+                "text": ""
+              },
+              {
+                "width": 153,
+                "scroll": 153,
+                "text": ""
+              },
+              {
+                "width": 179,
+                "scroll": 179,
+                "text": ""
+              },
+              {
+                "width": 338,
+                "scroll": 338,
+                "text": ""
+              },
+              {
+                "width": 203,
+                "scroll": 203,
+                "text": ""
+              },
+              {
+                "width": 173,
+                "scroll": 173,
+                "text": ""
+              },
+              {
+                "width": 153,
+                "scroll": 153,
+                "text": ""
+              },
+              {
+                "width": 153,
+                "scroll": 153,
+                "text": ""
+              },
+              {
+                "width": 153,
+                "scroll": 153,
+                "text": ""
+              },
+              {
+                "width": 179,
+                "scroll": 179,
+                "text": ""
+              },
+              {
+                "width": 338,
+                "scroll": 338,
+                "text": ""
+              },
+              {
+                "width": 203,
+                "scroll": 203,
+                "text": ""
+              },
+              {
+                "width": 173,
+                "scroll": 173,
+                "text": ""
+              },
+              {
+                "width": 153,
+                "scroll": 153,
+                "text": ""
+              },
+              {
+                "width": 153,
+                "scroll": 153,
+                "text": ""
+              },
+              {
+                "width": 153,
+                "scroll": 153,
+                "text": ""
+              },
+              {
+                "width": 179,
+                "scroll": 179,
+                "text": ""
+              }
+            ],
+            "pairs": []
+          }
+        },
+        {
+          "name": "boundary-639-geometry",
+          "data": {
+            "width": 639,
+            "scroll": 639,
+            "table": 639,
+            "cells": [
+              {
+                "width": 639,
+                "scroll": 639,
+                "text": "CF Large Cap Index$LCAPValue$10,432.19Balance1,523.13 LCAPPerformance (7D)+4.21%Unrealized P/L+$1,112.40Avg Cost$6.12Market Cap$4,200,000.00"
+              },
+              {
+                "width": 639,
+                "scroll": 639,
+                "text": "Open Stablecoin Index$OPENValue$2,501.20Balance2,500.00 OPENPerformance (7D)0.00%Unrealized P/L$0.00Avg Cost$1.00Market Cap$25,000,000.00"
+              },
+              {
+                "width": 639,
+                "scroll": 639,
+                "text": "CoinMarketCap 20 Index DTF$CMC20Value$2,473.17Balance24.63 CMC20Performance (7D)−1.28%Unrealized P/L−$32.10Avg Cost$101.72Market Cap$1,200,000.00"
+              },
+              {
+                "width": 639,
+                "scroll": 639,
+                "text": "Reserve AI Photonics DTF$PHOTONValue$818.00Balance100.00 PHOTONPerformance (7D)0.00%Unrealized P/L$0.00Avg Cost$8.18Market Cap$2,500,000.00"
+              },
+              {
+                "width": 639,
+                "scroll": 639,
+                "text": "Zora Index$ZINDEXValue—Balance0.000042 ZINDEXPerformance (7D)—Unrealized P/L—Avg Cost—Market Cap—"
+              }
+            ],
+            "pairs": [
+              {
+                "identity": {
+                  "x": 48,
+                  "y": 397.5,
+                  "width": 487.4375,
+                  "height": 44,
+                  "top": 397.5,
+                  "right": 535.4375,
+                  "bottom": 441.5,
+                  "left": 48
+                },
+                "value": {
+                  "x": 551.4375,
+                  "y": 419.5,
+                  "width": 87.5625,
+                  "height": 24,
+                  "top": 419.5,
+                  "right": 639,
+                  "bottom": 443.5,
+                  "left": 551.4375
+                }
+              },
+              {
+                "identity": {
+                  "x": 48,
+                  "y": 509.5,
+                  "width": 497.375,
+                  "height": 44,
+                  "top": 509.5,
+                  "right": 545.375,
+                  "bottom": 553.5,
+                  "left": 48
+                },
+                "value": {
+                  "x": 561.375,
+                  "y": 531.5,
+                  "width": 77.625,
+                  "height": 24,
+                  "top": 531.5,
+                  "right": 639,
+                  "bottom": 555.5,
+                  "left": 561.375
+                }
+              },
+              {
+                "identity": {
+                  "x": 48,
+                  "y": 621.5,
+                  "width": 497.40625,
+                  "height": 44,
+                  "top": 621.5,
+                  "right": 545.40625,
+                  "bottom": 665.5,
+                  "left": 48
+                },
+                "value": {
+                  "x": 561.40625,
+                  "y": 643.5,
+                  "width": 77.59375,
+                  "height": 24,
+                  "top": 643.5,
+                  "right": 639,
+                  "bottom": 667.5,
+                  "left": 561.40625
+                }
+              },
+              {
+                "identity": {
+                  "x": 48,
+                  "y": 733.5,
+                  "width": 511.328125,
+                  "height": 44,
+                  "top": 733.5,
+                  "right": 559.328125,
+                  "bottom": 777.5,
+                  "left": 48
+                },
+                "value": {
+                  "x": 575.328125,
+                  "y": 755.5,
+                  "width": 63.671875,
+                  "height": 24,
+                  "top": 755.5,
+                  "right": 639,
+                  "bottom": 779.5,
+                  "left": 575.328125
+                }
+              },
+              {
+                "identity": {
+                  "x": 48,
+                  "y": 845.5,
+                  "width": 540.671875,
+                  "height": 44,
+                  "top": 845.5,
+                  "right": 588.671875,
+                  "bottom": 889.5,
+                  "left": 48
+                },
+                "value": {
+                  "x": 604.671875,
+                  "y": 867.5,
+                  "width": 34.328125,
+                  "height": 24,
+                  "top": 867.5,
+                  "right": 639,
+                  "bottom": 891.5,
+                  "left": 604.671875
+                }
+              }
+            ]
+          }
+        },
+        {
+          "name": "boundary-640-geometry",
+          "data": {
+            "width": 640,
+            "scroll": 640,
+            "table": 640,
+            "cells": [
+              {
+                "width": 640,
+                "scroll": 640,
+                "text": "CF Large Cap Index$LCAPValue$10,432.19Balance1,523.13 LCAPPerformance (7D)+4.21%Unrealized P/L+$1,112.40Avg Cost$6.12Market Cap$4,200,000.00"
+              },
+              {
+                "width": 640,
+                "scroll": 640,
+                "text": "Open Stablecoin Index$OPENValue$2,501.20Balance2,500.00 OPENPerformance (7D)0.00%Unrealized P/L$0.00Avg Cost$1.00Market Cap$25,000,000.00"
+              },
+              {
+                "width": 640,
+                "scroll": 640,
+                "text": "CoinMarketCap 20 Index DTF$CMC20Value$2,473.17Balance24.63 CMC20Performance (7D)−1.28%Unrealized P/L−$32.10Avg Cost$101.72Market Cap$1,200,000.00"
+              },
+              {
+                "width": 640,
+                "scroll": 640,
+                "text": "Reserve AI Photonics DTF$PHOTONValue$818.00Balance100.00 PHOTONPerformance (7D)0.00%Unrealized P/L$0.00Avg Cost$8.18Market Cap$2,500,000.00"
+              },
+              {
+                "width": 640,
+                "scroll": 640,
+                "text": "Zora Index$ZINDEXValue—Balance0.000042 ZINDEXPerformance (7D)—Unrealized P/L—Avg Cost—Market Cap—"
+              }
+            ],
+            "pairs": [
+              {
+                "identity": {
+                  "x": 48,
+                  "y": 422,
+                  "width": 488.4375,
+                  "height": 44,
+                  "top": 422,
+                  "right": 536.4375,
+                  "bottom": 466,
+                  "left": 48
+                },
+                "value": {
+                  "x": 552.4375,
+                  "y": 444,
+                  "width": 87.5625,
+                  "height": 24,
+                  "top": 444,
+                  "right": 640,
+                  "bottom": 468,
+                  "left": 552.4375
+                }
+              },
+              {
+                "identity": {
+                  "x": 48,
+                  "y": 598,
+                  "width": 498.375,
+                  "height": 44,
+                  "top": 598,
+                  "right": 546.375,
+                  "bottom": 642,
+                  "left": 48
+                },
+                "value": {
+                  "x": 562.375,
+                  "y": 620,
+                  "width": 77.625,
+                  "height": 24,
+                  "top": 620,
+                  "right": 640,
+                  "bottom": 644,
+                  "left": 562.375
+                }
+              },
+              {
+                "identity": {
+                  "x": 48,
+                  "y": 774,
+                  "width": 498.40625,
+                  "height": 44,
+                  "top": 774,
+                  "right": 546.40625,
+                  "bottom": 818,
+                  "left": 48
+                },
+                "value": {
+                  "x": 562.40625,
+                  "y": 796,
+                  "width": 77.59375,
+                  "height": 24,
+                  "top": 796,
+                  "right": 640,
+                  "bottom": 820,
+                  "left": 562.40625
+                }
+              },
+              {
+                "identity": {
+                  "x": 48,
+                  "y": 950,
+                  "width": 512.328125,
+                  "height": 44,
+                  "top": 950,
+                  "right": 560.328125,
+                  "bottom": 994,
+                  "left": 48
+                },
+                "value": {
+                  "x": 576.328125,
+                  "y": 972,
+                  "width": 63.671875,
+                  "height": 24,
+                  "top": 972,
+                  "right": 640,
+                  "bottom": 996,
+                  "left": 576.328125
+                }
+              },
+              {
+                "identity": {
+                  "x": 48,
+                  "y": 1126,
+                  "width": 541.671875,
+                  "height": 44,
+                  "top": 1126,
+                  "right": 589.671875,
+                  "bottom": 1170,
+                  "left": 48
+                },
+                "value": {
+                  "x": 605.671875,
+                  "y": 1148,
+                  "width": 34.328125,
+                  "height": 24,
+                  "top": 1148,
+                  "right": 640,
+                  "bottom": 1172,
+                  "left": 605.671875
+                }
+              }
+            ]
+          }
+        },
+        {
+          "name": "boundary-1023-geometry",
+          "data": {
+            "width": 1023,
+            "scroll": 1023,
+            "table": 1023,
+            "cells": [
+              {
+                "width": 1023,
+                "scroll": 1023,
+                "text": "CF Large Cap Index$LCAPValue$10,432.19Balance1,523.13 LCAPPerformance (7D)+4.21%Unrealized P/L+$1,112.40Avg Cost$6.12Market Cap$4,200,000.00"
+              },
+              {
+                "width": 1023,
+                "scroll": 1023,
+                "text": "Open Stablecoin Index$OPENValue$2,501.20Balance2,500.00 OPENPerformance (7D)0.00%Unrealized P/L$0.00Avg Cost$1.00Market Cap$25,000,000.00"
+              },
+              {
+                "width": 1023,
+                "scroll": 1023,
+                "text": "CoinMarketCap 20 Index DTF$CMC20Value$2,473.17Balance24.63 CMC20Performance (7D)−1.28%Unrealized P/L−$32.10Avg Cost$101.72Market Cap$1,200,000.00"
+              },
+              {
+                "width": 1023,
+                "scroll": 1023,
+                "text": "Reserve AI Photonics DTF$PHOTONValue$818.00Balance100.00 PHOTONPerformance (7D)0.00%Unrealized P/L$0.00Avg Cost$8.18Market Cap$2,500,000.00"
+              },
+              {
+                "width": 1023,
+                "scroll": 1023,
+                "text": "Zora Index$ZINDEXValue—Balance0.000042 ZINDEXPerformance (7D)—Unrealized P/L—Avg Cost—Market Cap—"
+              }
+            ],
+            "pairs": [
+              {
+                "identity": {
+                  "x": 48,
+                  "y": 422,
+                  "width": 871.4375,
+                  "height": 44,
+                  "top": 422,
+                  "right": 919.4375,
+                  "bottom": 466,
+                  "left": 48
+                },
+                "value": {
+                  "x": 935.4375,
+                  "y": 444,
+                  "width": 87.5625,
+                  "height": 24,
+                  "top": 444,
+                  "right": 1023,
+                  "bottom": 468,
+                  "left": 935.4375
+                }
+              },
+              {
+                "identity": {
+                  "x": 48,
+                  "y": 598,
+                  "width": 881.375,
+                  "height": 44,
+                  "top": 598,
+                  "right": 929.375,
+                  "bottom": 642,
+                  "left": 48
+                },
+                "value": {
+                  "x": 945.375,
+                  "y": 620,
+                  "width": 77.625,
+                  "height": 24,
+                  "top": 620,
+                  "right": 1023,
+                  "bottom": 644,
+                  "left": 945.375
+                }
+              },
+              {
+                "identity": {
+                  "x": 48,
+                  "y": 774,
+                  "width": 881.40625,
+                  "height": 44,
+                  "top": 774,
+                  "right": 929.40625,
+                  "bottom": 818,
+                  "left": 48
+                },
+                "value": {
+                  "x": 945.40625,
+                  "y": 796,
+                  "width": 77.59375,
+                  "height": 24,
+                  "top": 796,
+                  "right": 1023,
+                  "bottom": 820,
+                  "left": 945.40625
+                }
+              },
+              {
+                "identity": {
+                  "x": 48,
+                  "y": 950,
+                  "width": 895.328125,
+                  "height": 44,
+                  "top": 950,
+                  "right": 943.328125,
+                  "bottom": 994,
+                  "left": 48
+                },
+                "value": {
+                  "x": 959.328125,
+                  "y": 972,
+                  "width": 63.671875,
+                  "height": 24,
+                  "top": 972,
+                  "right": 1023,
+                  "bottom": 996,
+                  "left": 959.328125
+                }
+              },
+              {
+                "identity": {
+                  "x": 48,
+                  "y": 1126,
+                  "width": 924.671875,
+                  "height": 44,
+                  "top": 1126,
+                  "right": 972.671875,
+                  "bottom": 1170,
+                  "left": 48
+                },
+                "value": {
+                  "x": 988.671875,
+                  "y": 1148,
+                  "width": 34.328125,
+                  "height": 24,
+                  "top": 1148,
+                  "right": 1023,
+                  "bottom": 1172,
+                  "left": 988.671875
+                }
+              }
+            ]
+          }
+        },
+        {
+          "name": "boundary-1024-geometry",
+          "data": {
+            "width": 1024,
+            "scroll": 1024,
+            "table": 1024,
+            "cells": [
+              {
+                "width": 256,
+                "scroll": 256,
+                "text": "CF Large Cap Index$LCAP"
+              },
+              {
+                "width": 148,
+                "scroll": 148,
+                "text": "+4.21%"
+              },
+              {
+                "width": 125,
+                "scroll": 125,
+                "text": "+$1,112.40"
+              },
+              {
+                "width": 92,
+                "scroll": 92,
+                "text": "$6.12"
+              },
+              {
+                "width": 159,
+                "scroll": 159,
+                "text": "$4,200,000.00"
+              },
+              {
+                "width": 104,
+                "scroll": 104,
+                "text": "1,523.13"
+              },
+              {
+                "width": 139,
+                "scroll": 139,
+                "text": "$10,432.19"
+              },
+              {
+                "width": 256,
+                "scroll": 256,
+                "text": "Open Stablecoin Index$OPEN"
+              },
+              {
+                "width": 148,
+                "scroll": 148,
+                "text": "0.00%"
+              },
+              {
+                "width": 125,
+                "scroll": 125,
+                "text": "$0.00"
+              },
+              {
+                "width": 92,
+                "scroll": 92,
+                "text": "$1.00"
+              },
+              {
+                "width": 159,
+                "scroll": 159,
+                "text": "$25,000,000.00"
+              },
+              {
+                "width": 104,
+                "scroll": 104,
+                "text": "2,500.00"
+              },
+              {
+                "width": 139,
+                "scroll": 139,
+                "text": "$2,501.20"
+              },
+              {
+                "width": 256,
+                "scroll": 256,
+                "text": "CoinMarketCap 20 Index DTF$CMC20"
+              },
+              {
+                "width": 148,
+                "scroll": 148,
+                "text": "−1.28%"
+              },
+              {
+                "width": 125,
+                "scroll": 125,
+                "text": "−$32.10"
+              },
+              {
+                "width": 92,
+                "scroll": 92,
+                "text": "$101.72"
+              },
+              {
+                "width": 159,
+                "scroll": 159,
+                "text": "$1,200,000.00"
+              },
+              {
+                "width": 104,
+                "scroll": 104,
+                "text": "24.63"
+              },
+              {
+                "width": 139,
+                "scroll": 139,
+                "text": "$2,473.17"
+              },
+              {
+                "width": 256,
+                "scroll": 256,
+                "text": "Reserve AI Photonics DTF$PHOTON"
+              },
+              {
+                "width": 148,
+                "scroll": 148,
+                "text": "0.00%"
+              },
+              {
+                "width": 125,
+                "scroll": 125,
+                "text": "$0.00"
+              },
+              {
+                "width": 92,
+                "scroll": 92,
+                "text": "$8.18"
+              },
+              {
+                "width": 159,
+                "scroll": 159,
+                "text": "$2,500,000.00"
+              },
+              {
+                "width": 104,
+                "scroll": 104,
+                "text": "100.00"
+              },
+              {
+                "width": 139,
+                "scroll": 139,
+                "text": "$818.00"
+              },
+              {
+                "width": 256,
+                "scroll": 256,
+                "text": "Zora Index$ZINDEX"
+              },
+              {
+                "width": 148,
+                "scroll": 148,
+                "text": "—"
+              },
+              {
+                "width": 125,
+                "scroll": 125,
+                "text": "—"
+              },
+              {
+                "width": 92,
+                "scroll": 92,
+                "text": "—"
+              },
+              {
+                "width": 159,
+                "scroll": 159,
+                "text": "—"
+              },
+              {
+                "width": 104,
+                "scroll": 104,
+                "text": "0.000042"
+              },
+              {
+                "width": 139,
+                "scroll": 139,
+                "text": "—"
+              }
+            ],
+            "pairs": []
+          }
+        },
+        {
+          "name": "constrained-geometry",
+          "data": {
+            "width": 576,
+            "scroll": 576,
+            "table": 576,
+            "cells": [
+              {
+                "width": 576,
+                "scroll": 576,
+                "text": "CF Large Cap Index$LCAPValue$10,432.19Balance1,523.13 LCAPPerformance (7D)+4.21%Unrealized P/L+$1,112.40Avg Cost$6.12Market Cap$4,200,000.00"
+              },
+              {
+                "width": 576,
+                "scroll": 576,
+                "text": "Open Stablecoin Index$OPENValue$2,501.20Balance2,500.00 OPENPerformance (7D)0.00%Unrealized P/L$0.00Avg Cost$1.00Market Cap$25,000,000.00"
+              },
+              {
+                "width": 576,
+                "scroll": 576,
+                "text": "CoinMarketCap 20 Index DTF$CMC20Value$2,473.17Balance24.63 CMC20Performance (7D)−1.28%Unrealized P/L−$32.10Avg Cost$101.72Market Cap$1,200,000.00"
+              },
+              {
+                "width": 576,
+                "scroll": 576,
+                "text": "Reserve AI Photonics DTF$PHOTONValue$818.00Balance100.00 PHOTONPerformance (7D)0.00%Unrealized P/L$0.00Avg Cost$8.18Market Cap$2,500,000.00"
+              },
+              {
+                "width": 576,
+                "scroll": 576,
+                "text": "Zora Index$ZINDEXValue—Balance0.000042 ZINDEXPerformance (7D)—Unrealized P/L—Avg Cost—Market Cap—"
+              }
+            ],
+            "pairs": [
+              {
+                "identity": {
+                  "x": 48,
+                  "y": 397.5,
+                  "width": 424.4375,
+                  "height": 44,
+                  "top": 397.5,
+                  "right": 472.4375,
+                  "bottom": 441.5,
+                  "left": 48
+                },
+                "value": {
+                  "x": 488.4375,
+                  "y": 419.5,
+                  "width": 87.5625,
+                  "height": 24,
+                  "top": 419.5,
+                  "right": 576,
+                  "bottom": 443.5,
+                  "left": 488.4375
+                }
+              },
+              {
+                "identity": {
+                  "x": 48,
+                  "y": 509.5,
+                  "width": 434.375,
+                  "height": 44,
+                  "top": 509.5,
+                  "right": 482.375,
+                  "bottom": 553.5,
+                  "left": 48
+                },
+                "value": {
+                  "x": 498.375,
+                  "y": 531.5,
+                  "width": 77.625,
+                  "height": 24,
+                  "top": 531.5,
+                  "right": 576,
+                  "bottom": 555.5,
+                  "left": 498.375
+                }
+              },
+              {
+                "identity": {
+                  "x": 48,
+                  "y": 621.5,
+                  "width": 434.40625,
+                  "height": 44,
+                  "top": 621.5,
+                  "right": 482.40625,
+                  "bottom": 665.5,
+                  "left": 48
+                },
+                "value": {
+                  "x": 498.40625,
+                  "y": 643.5,
+                  "width": 77.59375,
+                  "height": 24,
+                  "top": 643.5,
+                  "right": 576,
+                  "bottom": 667.5,
+                  "left": 498.40625
+                }
+              },
+              {
+                "identity": {
+                  "x": 48,
+                  "y": 733.5,
+                  "width": 448.328125,
+                  "height": 44,
+                  "top": 733.5,
+                  "right": 496.328125,
+                  "bottom": 777.5,
+                  "left": 48
+                },
+                "value": {
+                  "x": 512.328125,
+                  "y": 755.5,
+                  "width": 63.671875,
+                  "height": 24,
+                  "top": 755.5,
+                  "right": 576,
+                  "bottom": 779.5,
+                  "left": 512.328125
+                }
+              },
+              {
+                "identity": {
+                  "x": 48,
+                  "y": 845.5,
+                  "width": 477.671875,
+                  "height": 44,
+                  "top": 845.5,
+                  "right": 525.671875,
+                  "bottom": 889.5,
+                  "left": 48
+                },
+                "value": {
+                  "x": 541.671875,
+                  "y": 867.5,
+                  "width": 34.328125,
+                  "height": 24,
+                  "top": 867.5,
+                  "right": 576,
+                  "bottom": 891.5,
+                  "left": 541.671875
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "table-lab-light-375-positions.png",
+      "sha256": "eb2083d4c8332eee99354874f9fa0c31cba04103465dc0dadb80b4a72b134e05"
+    },
+    {
+      "path": "table-lab-light-375-withdrawals.png",
+      "sha256": "40110d033ac448cd68f680ae6d766fe40de9048640d2b1bb4a65fb761405e824"
+    },
+    {
+      "path": "table-lab-dark-375-positions.png",
+      "sha256": "f1b1e96a3ec36818e2d8dcd645ec66bf010e13505f3fbeb7fb896883d443f20f"
+    },
+    {
+      "path": "table-lab-dark-375-withdrawals.png",
+      "sha256": "26d68e29e721ac853d847cfe6f7b5f9538b700b563d54966a9448e93c0c42b06"
+    },
+    {
+      "path": "table-lab-light-1400-positions.png",
+      "sha256": "b9d9572f69f962bf054d43981fddf83da97e93d0a6a732f36efe3ed1dadfb76e"
+    },
+    {
+      "path": "table-lab-light-1400-withdrawals.png",
+      "sha256": "ec2a6ef663235cbddc542132b7430cce1910f2e7ece7384378a7d4bf5b4647f2"
+    },
+    {
+      "path": "table-lab-dark-1400-positions.png",
+      "sha256": "4265d3ce59714564e03520d0d44850da14f2055c9324b9e30da542e42002002c"
+    },
+    {
+      "path": "table-lab-dark-1400-withdrawals.png",
+      "sha256": "585e85a113c57a4f0173e0ace14291aea8338a2025983177911736cd2394afa6"
+    },
+    {
+      "path": "table-lab-dark-320-long-content.png",
+      "sha256": "655a9453ae6cbb3ac762fbdb7a25ee6806c493982515441a79fc34f65f1712c2"
+    },
+    {
+      "path": "table-lab-light-375-loading.png",
+      "sha256": "15a8934410a3b93f7acad82252f94d3d245a609613cd3ee0fce40795fa513eb4"
+    },
+    {
+      "path": "table-lab-light-1400-boundary-640.png",
+      "sha256": "32550be2ef0ca567758e4e24be6ba0d384fe18b458435cf2c8df929fa8b2fafa"
+    },
+    {
+      "path": "table-lab-light-1400-boundary-1024.png",
+      "sha256": "bb35d8b4bc1cd72690a36b7e170139ab8166aacc1597900fa847371e213b8489"
+    },
+    {
+      "path": "table-production-375-positions.png",
+      "sha256": "68f3054070039aa11377203bae31cf48019a6d080154ebe1cf4f46c21bc87cfe"
+    },
+    {
+      "path": "table-production-375-withdrawals.png",
+      "sha256": "6d5425532041d859c084550078d81a50eb67328dc917e54f1ca06b1b1b72845d"
+    },
+    {
+      "path": "table-production-1400-positions.png",
+      "sha256": "f420ce30af2562e0de745f3e78b0ee50974f57df4f33c344404214826d022547"
+    },
+    {
+      "path": "table-production-1400-withdrawals.png",
+      "sha256": "0c1845aec8aaa1a89f4e569409effabf83539d677658a91fa0290c2bc2ef6d04"
+    }
+  ],
+  "productionObservation": {
+    "cases": 2,
+    "widths": [
+      375,
+      1400
+    ],
+    "theme": "light",
+    "fixture": "Portfolio Index positions and stRSR pending/ready withdrawals; no wallet/transactions. Vote-lock branch code-inspected, not production-mounted."
+  },
+  "focusedTests": {
+    "suites": 4,
+    "passed": 51
+  },
+  "negativeControls": [
+    "Countdown and stacked-sort focused assertions: two failed before correction.",
+    "Restored pre-fix grid/inline identity at 320 dark: rectangle intersection assertion failed on long-content; fix restored before the seven-case green run."
+  ],
+  "limits": [
+    "Synthetic financial values; no live balance/price correctness.",
+    "No real wallet, chain switch, withdrawal, receipt or source sidebar execution.",
+    "No actual screen reader or focus transfer across desktop/stacked representations.",
+    "Remote brand marks may use canonical fallback; logo assets are not accepted by these captures.",
+    "Geometry assertions and visible pressure cases are not independent held-out visual acceptance."
+  ]
+}

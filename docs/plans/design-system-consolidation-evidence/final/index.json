@@ -1,0 +1,101 @@
+{
+  "files": [
+    {
+      "path": "public-source-manifest.json",
+      "bytes": 375702,
+      "sha256": "78c4c5ed761a8a2f5b7defa049c95918192df7cfa6266fe583e7d190260c962a"
+    },
+    {
+      "path": "light-375-source.json",
+      "bytes": 216538,
+      "sha256": "f8b2654b64b2638980606079a7857fdd2c58b1b42996594f44ea11a59e1564b9"
+    },
+    {
+      "path": "light-375-overview.png",
+      "bytes": 78022,
+      "sha256": "06ec41a1424a6c769b1e07773b746f1118f20bf5fd9fa466a33df1f7e5d05959"
+    },
+    {
+      "path": "light-375-field.png",
+      "bytes": 34781,
+      "sha256": "d313979b9db45eb837f2859307d657d92322a340433b83842b4cc597ed357c02"
+    },
+    {
+      "path": "light-375-inline-message.png",
+      "bytes": 55131,
+      "sha256": "32330bbef50143ae8d9dd57dc3d1ed064e2fccec67b639a9ccb86870da8723d0"
+    },
+    {
+      "path": "light-1400-source.json",
+      "bytes": 236953,
+      "sha256": "6edac495257a6acbfa0aa49fed37ebbbaf42aefd2fc5f1237845debf7f47b6a7"
+    },
+    {
+      "path": "light-1400-button-focus.png",
+      "bytes": 110658,
+      "sha256": "dfbae4a2f3b4281c2506cf40ef59a770850b7f370a387a1f1ad54348321e6313"
+    },
+    {
+      "path": "light-1400-checkbox-focus.png",
+      "bytes": 100993,
+      "sha256": "8fc57b3d4a944ccc4b32fcaad19fb58f2f79d7c8dd61c22f15449bed71bb0ae3"
+    },
+    {
+      "path": "light-1400-select-open.png",
+      "bytes": 135000,
+      "sha256": "12b21f1bfb1a137b746ff4654abca38318a457c808c2106ef85f8279346de97e"
+    },
+    {
+      "path": "dark-375-source.json",
+      "bytes": 217209,
+      "sha256": "d934014f0b947f81e9a8bb755e71ba71f76ada8c6fb148b2e5b28e1d7cee972d"
+    },
+    {
+      "path": "dark-375-overview.png",
+      "bytes": 79222,
+      "sha256": "fbff394bd7e243aaca784b930975308884d380ea425d3988b1d8a46c333026b0"
+    },
+    {
+      "path": "dark-375-field.png",
+      "bytes": 35085,
+      "sha256": "9b7d82e4efd13ad65999d2da1be37ca6aa796b1b518c0d42464c56920a5d4ec3"
+    },
+    {
+      "path": "dark-375-inline-message.png",
+      "bytes": 55936,
+      "sha256": "68b2533a3ad606d27fcba6cf67c530f2a1c8371e60d8e5b87b61a0aa941959e3"
+    },
+    {
+      "path": "dark-1400-source.json",
+      "bytes": 237954,
+      "sha256": "eca180fbd9a6b37e6c499acba598b297dc4b474078682d1274ad557124040395"
+    },
+    {
+      "path": "dark-1400-button-focus.png",
+      "bytes": 112294,
+      "sha256": "48836315ac5a3752f89e5a88103c459e6d047e31de52f210f91ff126a20ade20"
+    },
+    {
+      "path": "dark-1400-checkbox-focus.png",
+      "bytes": 101628,
+      "sha256": "a6e395a8d373f332ff73b01e5cf46a7595df0f73d3ae25ad0046edbf784fe473"
+    },
+    {
+      "path": "dark-1400-select-open.png",
+      "bytes": 135814,
+      "sha256": "6cbba1f50986f72388114df85be54f4d58bea2385ea65b39dddf2ba85456ab25"
+    },
+    {
+      "path": "browser-cases.json",
+      "bytes": 27333,
+      "sha256": "2dfcd5f949de5977e56778f57c9ac2da4d6f1b33c84fc178b01b9bd100dbce8c"
+    },
+    {
+      "path": "verification.json",
+      "bytes": 10230,
+      "sha256": "a37f247dedafcf29d42ffbdccd8ae75b430bee0924db9cecd345ca2a29bda4e8"
+    }
+  ],
+  "sourceDigest": "8451a3c9733e87c48e08b8374fe7debd54f28de8aa23a777b7f815edc29b61e1",
+  "scope": "S1–S3b bounded implementation proof; S4 independent comparative judgment and S5 approval remain separate."
+}

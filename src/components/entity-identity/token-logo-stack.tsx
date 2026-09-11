@@ -1,5 +1,5 @@
 import TokenLogo from '@/components/token-logo'
-import { V1SurfaceRole } from '@/components/ui/v1-semantic-recipes'
+import { V1SurfaceRole } from '@/components/design-system-v1/semantic-roles'
 import * as React from 'react'
 
 import { LogoStackFrames } from './logo-stack-frames'

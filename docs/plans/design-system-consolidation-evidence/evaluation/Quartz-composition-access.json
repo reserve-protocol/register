@@ -1,0 +1,247 @@
+[
+  {
+    "tool": "Glob",
+    "path": null,
+    "pattern": "src/views/internal/design-system/**"
+  },
+  {
+    "tool": "Glob",
+    "path": null,
+    "pattern": "**/package.json"
+  },
+  {
+    "tool": "Read",
+    "path": "package.json",
+    "pattern": null
+  },
+  {
+    "tool": "Read",
+    "path": "src/views/internal/design-system/select-state-sheet.tsx",
+    "pattern": null
+  },
+  {
+    "tool": "Read",
+    "path": "src/views/internal/design-system/tests/select-review.test.tsx",
+    "pattern": null
+  },
+  {
+    "tool": "Glob",
+    "path": null,
+    "pattern": "src/components/design-system-v1/**"
+  },
+  {
+    "tool": "Read",
+    "path": "src/components/design-system-v1/field.tsx",
+    "pattern": null
+  },
+  {
+    "tool": "Read",
+    "path": "src/components/design-system-v1/action-group.tsx",
+    "pattern": null
+  },
+  {
+    "tool": "Read",
+    "path": "src/components/design-system-v1/inline-message.tsx",
+    "pattern": null
+  },
+  {
+    "tool": "Read",
+    "path": "src/components/design-system-v1/typography.ts",
+    "pattern": null
+  },
+  {
+    "tool": "Read",
+    "path": "src/components/design-system-v1/tests/source-hygiene.ts",
+    "pattern": null
+  },
+  {
+    "tool": "Read",
+    "path": "src/components/design-system-v1/semantic-roles.ts",
+    "pattern": null
+  },
+  {
+    "tool": "Grep",
+    "path": null,
+    "pattern": "^import .*[Bb]utton.*from"
+  },
+  {
+    "tool": "Read",
+    "path": "src/components/design-system-v1/tests/source-hygiene.test.ts",
+    "pattern": null
+  },
+  {
+    "tool": "Read",
+    "path": "src/components/button/index.tsx",
+    "pattern": null
+  },
+  {
+    "tool": "Read",
+    "path": "src/views/internal/design-system/field-state-sheet.tsx",
+    "pattern": null
+  },
+  {
+    "tool": "Grep",
+    "path": null,
+    "pattern": "useState"
+  },
+  {
+    "tool": "Read",
+    "path": "src/views/internal/design-system/card-content-region-review.tsx",
+    "pattern": null
+  },
+  {
+    "tool": "Read",
+    "path": "src/views/internal/design-system/switch-state-sheet.tsx",
+    "pattern": null
+  },
+  {
+    "tool": "Grep",
+    "path": null,
+    "pattern": "rounded-3xl|rounded-2xl"
+  },
+  {
+    "tool": "Glob",
+    "path": null,
+    "pattern": "{vitest.config*,vite.config*,src/test/**,src/setupTests*,**/setup*.ts}"
+  },
+  {
+    "tool": "Read",
+    "path": "src/components/design-system-v1/select.tsx",
+    "pattern": null
+  },
+  {
+    "tool": "Read",
+    "path": "src/setup-tests.ts",
+    "pattern": null
+  },
+  {
+    "tool": "Read",
+    "path": "src/views/internal/design-system/tests/multi-select-filter-review.test.tsx",
+    "pattern": null
+  },
+  {
+    "tool": "Grep",
+    "path": null,
+    "pattern": "onPointerUp|onKeyDown|handleSelect"
+  },
+  {
+    "tool": "Glob",
+    "path": null,
+    "pattern": "node_modules/@radix-ui/react-select/**/*.mjs"
+  },
+  {
+    "tool": "Glob",
+    "path": null,
+    "pattern": "node_modules/@radix-ui/react-select/**"
+  },
+  {
+    "tool": "Glob",
+    "path": null,
+    "pattern": "node_modules/*"
+  },
+  {
+    "tool": "Read",
+    "path": "vite.config.ts",
+    "pattern": null
+  },
+  {
+    "tool": "Grep",
+    "path": null,
+    "pattern": "keyDown|pointerDown|pointerUp"
+  },
+  {
+    "tool": "Grep",
+    "path": null,
+    "pattern": "readdirSync|readdir|glob"
+  },
+  {
+    "tool": "Write",
+    "path": "src/views/internal/design-system/display-preferences-study.tsx",
+    "pattern": null
+  },
+  {
+    "tool": "Grep",
+    "path": null,
+    "pattern": "<ActionGroup"
+  },
+  {
+    "tool": "Edit",
+    "path": "src/views/internal/design-system/display-preferences-study.tsx",
+    "pattern": null
+  },
+  {
+    "tool": "Write",
+    "path": "src/views/internal/design-system/tests/display-preferences-study.test.tsx",
+    "pattern": null
+  },
+  {
+    "tool": "Edit",
+    "path": "src/views/internal/design-system/tests/display-preferences-study.test.tsx",
+    "pattern": null
+  },
+  {
+    "tool": "Grep",
+    "path": null,
+    "pattern": "presentation=\"summary\""
+  },
+  {
+    "tool": "Edit",
+    "path": "src/views/internal/design-system/display-preferences-study.tsx",
+    "pattern": null
+  },
+  {
+    "tool": "Edit",
+    "path": "src/views/internal/design-system/display-preferences-study.tsx",
+    "pattern": null
+  },
+  {
+    "tool": "Read",
+    "path": "src/views/internal/design-system/display-preferences-study.tsx",
+    "pattern": null
+  },
+  {
+    "tool": "Edit",
+    "path": "src/views/internal/design-system/display-preferences-study.tsx",
+    "pattern": null
+  },
+  {
+    "tool": "Edit",
+    "path": "src/views/internal/design-system/display-preferences-study.tsx",
+    "pattern": null
+  },
+  {
+    "tool": "Edit",
+    "path": "src/views/internal/design-system/display-preferences-study.tsx",
+    "pattern": null
+  },
+  {
+    "tool": "Read",
+    "path": "src/views/internal/design-system/display-preferences-study.tsx",
+    "pattern": null
+  },
+  {
+    "tool": "Edit",
+    "path": "src/views/internal/design-system/display-preferences-study.tsx",
+    "pattern": null
+  },
+  {
+    "tool": "Edit",
+    "path": "src/views/internal/design-system/display-preferences-study.tsx",
+    "pattern": null
+  },
+  {
+    "tool": "Grep",
+    "path": null,
+    "pattern": "^\\s+// .*$\\n\\s+(className|data-|aria-|value=)"
+  },
+  {
+    "tool": "Edit",
+    "path": "src/views/internal/design-system/display-preferences-study.tsx",
+    "pattern": null
+  },
+  {
+    "tool": "Read",
+    "path": "src/views/internal/design-system/display-preferences-study.tsx",
+    "pattern": null
+  }
+]

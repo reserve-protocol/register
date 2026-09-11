@@ -34,7 +34,7 @@ import {
   TransactionAssetPickerTrigger,
 } from '@/components/design-system-v1/transaction-asset-picker'
 import { v1Typography } from '@/components/design-system-v1/typography'
-import { v1SemanticRecipes as roles } from '@/components/ui/v1-semantic-recipes'
+import { v1SemanticRoles as roles } from '@/components/design-system-v1/semantic-roles'
 import { IconButton } from '@/components/icon-button'
 import { LifecycleStatusPill } from '@/components/lifecycle-status'
 import { cn } from '@/lib/utils'
@@ -341,7 +341,7 @@ export const ZapperQuoteDetails = ({
         className={cn(
           'flex w-full items-center justify-between gap-3 px-4 py-4 text-left transition-colors duration-120',
           roles.interaction.subtleHover,
-          roles.focus.onContentInset
+          roles.focus.visibleInset
         )}
         onClick={() => setOpen((current) => !current)}
       >
@@ -609,7 +609,7 @@ const ZapperRouteOptions = ({
               selected
                 ? 'border-primary/30 bg-accent/60'
                 : cn('border-border bg-card', roles.interaction.subtleHover),
-              roles.focus.onContentInset
+              roles.focus.visibleInset
             )}
             onClick={() => selectSource(route.source)}
           >

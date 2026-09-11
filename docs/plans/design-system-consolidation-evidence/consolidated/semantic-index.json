@@ -1,0 +1,50 @@
+{
+  "images": [
+    {
+      "filename": "semantic-before-light-375-entity-identity.png",
+      "sha256": "28e02ed2b41ce2ded19d959bdc96ab5ed70843da77e4d1a2e41fff5ac981c484"
+    },
+    {
+      "filename": "semantic-before-dark-1400-button-focus.png",
+      "sha256": "48836315ac5a3752f89e5a88103c459e6d047e31de52f210f91ff126a20ade20"
+    },
+    {
+      "filename": "semantic-before-dark-1400-checkbox-focus.png",
+      "sha256": "656fb4dcb337bc0b874a6aefb96c2bfff62c67ea6af6b991295a1f17a54e1d7a"
+    },
+    {
+      "filename": "semantic-before-dark-1400-switch-focus.png",
+      "sha256": "7c295e8f86f1da9fad5270db01415e696eb3881c828216438f4916fafc62e0a4"
+    },
+    {
+      "filename": "semantic-before-dark-1400-select-open.png",
+      "sha256": "6cbba1f50986f72388114df85be54f4d58bea2385ea65b39dddf2ba85456ab25"
+    },
+    {
+      "filename": "semantic-after-light-375-entity-identity.png",
+      "sha256": "748a4e7c188459dbc1577003ce1087dec57f459414d321c0041643519d1b022f"
+    },
+    {
+      "filename": "semantic-after-dark-1400-button-focus.png",
+      "sha256": "48836315ac5a3752f89e5a88103c459e6d047e31de52f210f91ff126a20ade20"
+    },
+    {
+      "filename": "semantic-after-dark-1400-checkbox-focus.png",
+      "sha256": "656fb4dcb337bc0b874a6aefb96c2bfff62c67ea6af6b991295a1f17a54e1d7a"
+    },
+    {
+      "filename": "semantic-after-dark-1400-switch-focus.png",
+      "sha256": "7c295e8f86f1da9fad5270db01415e696eb3881c828216438f4916fafc62e0a4"
+    },
+    {
+      "filename": "semantic-after-dark-1400-select-open.png",
+      "sha256": "6cbba1f50986f72388114df85be54f4d58bea2385ea65b39dddf2ba85456ab25"
+    }
+  ],
+  "limits": [
+    "71/72 full raw image comparisons identical; curated subset retained here, full raw reports expire 2026-09-16.",
+    "The unequal identity pair is retained, not erased; image readiness was subsequently strengthened.",
+    "Desktop geometry comparison false is preserved: differences are four className metadata substitutions per desktop theme, not computed values or bounds.",
+    "Before/after capture had three route-ID fallbacks; later final captures assert actual dedicated routes. Do not count those old views as dedicated field/message/metric proof."
+  ]
+}

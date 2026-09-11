@@ -1,0 +1,126 @@
+{
+  "stats": {
+    "startTime": "2026-09-08T23:11:16.919Z",
+    "duration": 45226.248,
+    "expected": 4,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "runs": [
+    {
+      "id": "light-375",
+      "status": "passed",
+      "sourceDigest": "905992b666cdad9c6663a03614e5e4e170c4a946eb8d24d79f659f82b10ca227",
+      "files": [
+        {
+          "name": "light-375-overview.png",
+          "sha256": "1576a93a4f798f5ad8e77dbcaa530bf96a6f30932ddcb9393fdf318beb0fc359",
+          "bytes": 58244
+        },
+        {
+          "name": "light-375-button-focus.png",
+          "sha256": "0ae9e6a375f16bdbb0a51723d7cc1974092082375f94601e2035c50647894aaf",
+          "bytes": 48182
+        },
+        {
+          "name": "light-375-select-open.png",
+          "sha256": "67acfdb019376ce0a39fc1ce340dab56e7f5fd9b15d6397ddc27ef4e3f308a39",
+          "bytes": 59944
+        },
+        {
+          "name": "light-375-source.json",
+          "sha256": "0adddb12c1391cbd3d7922a971cea3168c0a3e3628ea11117a7aa94395f1986c",
+          "bytes": 71487
+        }
+      ]
+    },
+    {
+      "id": "light-1400",
+      "status": "passed",
+      "sourceDigest": "905992b666cdad9c6663a03614e5e4e170c4a946eb8d24d79f659f82b10ca227",
+      "files": [
+        {
+          "name": "light-1400-overview.png",
+          "sha256": "1a482773d42b93811a9c70defd0dc3d1f252686524e7de4bc73348066455064e",
+          "bytes": 109725
+        },
+        {
+          "name": "light-1400-button-focus.png",
+          "sha256": "dfbae4a2f3b4281c2506cf40ef59a770850b7f370a387a1f1ad54348321e6313",
+          "bytes": 110658
+        },
+        {
+          "name": "light-1400-select-open.png",
+          "sha256": "12b21f1bfb1a137b746ff4654abca38318a457c808c2106ef85f8279346de97e",
+          "bytes": 135000
+        },
+        {
+          "name": "light-1400-source.json",
+          "sha256": "7f32986d849ee5bfd6f500c27ff1ddd283c920f2def0ab1850ceb7fa3d6eb292",
+          "bytes": 73292
+        }
+      ]
+    },
+    {
+      "id": "dark-375",
+      "status": "passed",
+      "sourceDigest": "905992b666cdad9c6663a03614e5e4e170c4a946eb8d24d79f659f82b10ca227",
+      "files": [
+        {
+          "name": "dark-375-overview.png",
+          "sha256": "40422fdb83f6dae8993732bb861d16c2a0353c11718e2e980f5da5228040cdb6",
+          "bytes": 59939
+        },
+        {
+          "name": "dark-375-button-focus.png",
+          "sha256": "dd4ccfed4f17a6491a1216e55623065732c3e429ac67e96bc390da715e853342",
+          "bytes": 49324
+        },
+        {
+          "name": "dark-375-select-open.png",
+          "sha256": "e8982c35d8a74646efd66f4eb0643d13b0b00f1a2e327953db9eab4af58bb0c0",
+          "bytes": 59595
+        },
+        {
+          "name": "dark-375-source.json",
+          "sha256": "75ff210a7b13ec59c342f393056d69ac0795a287461c91c4bde087ea5f34a715",
+          "bytes": 71570
+        }
+      ]
+    },
+    {
+      "id": "dark-1400",
+      "status": "passed",
+      "sourceDigest": "905992b666cdad9c6663a03614e5e4e170c4a946eb8d24d79f659f82b10ca227",
+      "files": [
+        {
+          "name": "dark-1400-overview.png",
+          "sha256": "e63b195a96a76daa3e19bd78e9c759f95f7579931527a91fe92104cf622820ac",
+          "bytes": 109832
+        },
+        {
+          "name": "dark-1400-button-focus.png",
+          "sha256": "f05caaed01c594ad93478d55582f9c21e2a29dde3ab18a7a1b1a0f093a9cb9d8",
+          "bytes": 112293
+        },
+        {
+          "name": "dark-1400-select-open.png",
+          "sha256": "6cbba1f50986f72388114df85be54f4d58bea2385ea65b39dddf2ba85456ab25",
+          "bytes": 135814
+        },
+        {
+          "name": "dark-1400-source.json",
+          "sha256": "5b8753fe032585d191157e621c8df0ada752a95e02f8108ed5f9cd5f9d96b236",
+          "bytes": 73417
+        }
+      ]
+    }
+  ],
+  "manifest": {
+    "name": "public-source-manifest.json",
+    "sha256": "d314806258fdad0883467af8c863713075799c1b8d1d51d2756015db36425470",
+    "bytes": 373687
+  },
+  "retentionNote": "Sanitized historical attachments only; original report fingerprint omitted because its metadata included private-derived fingerprints."
+}

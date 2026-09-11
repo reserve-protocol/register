@@ -1,4 +1,5 @@
-import { v1SemanticRecipes } from '@/components/ui/v1-semantic-recipes'
+import { v1Typography } from '@/components/design-system-v1/typography'
+import { v1SemanticRoles } from '@/components/design-system-v1/semantic-roles'
 import { cn } from '@/lib/utils'
 import * as React from 'react'
 
@@ -23,8 +24,8 @@ export const MetricValue = React.forwardRef<HTMLSpanElement, MetricValueProps>(
       ref={ref}
       data-testid="canonical-metric-value"
       className={cn(
-        'text-base font-light leading-6 tabular-nums',
-        v1SemanticRecipes.text.primary,
+        `${v1Typography.body} tabular-nums`,
+        v1SemanticRoles.text.primary,
         align === 'end' && 'text-right',
         className
       )}
@@ -44,7 +45,7 @@ export const Metric = React.forwardRef<HTMLDivElement, MetricProps>(
       className={cn(
         'min-w-0',
         role === 'inline' &&
-          'flex items-center justify-between gap-4 text-base font-light leading-6',
+          `flex items-center justify-between gap-4 ${v1Typography.body}`,
         role === 'headline' &&
           'flex flex-col items-center justify-center text-center',
         className
@@ -54,9 +55,9 @@ export const Metric = React.forwardRef<HTMLDivElement, MetricProps>(
       <span
         className={cn(
           'min-w-0',
-          role === 'inline' && v1SemanticRecipes.text.supporting,
+          role === 'inline' && v1SemanticRoles.text.supporting,
           role === 'headline' &&
-            `text-base font-light leading-6 ${v1SemanticRecipes.text.supporting}`
+            `${v1Typography.body} ${v1SemanticRoles.text.supporting}`
         )}
       >
         {label}
@@ -64,7 +65,7 @@ export const Metric = React.forwardRef<HTMLDivElement, MetricProps>(
       <MetricValue
         className={cn(
           'min-w-0',
-          role === 'headline' && 'mt-1 text-base font-medium leading-6'
+          role === 'headline' && `mt-1 ${v1Typography.itemTitle}`
         )}
         align={role === 'inline' ? 'end' : 'start'}
       >

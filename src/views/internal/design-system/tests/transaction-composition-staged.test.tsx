@@ -498,7 +498,7 @@ describe('automated mint design-system lab', () => {
       'ring-2',
       'ring-card',
       'ring-offset-0',
-      'bg-[var(--surface-recessed-content)]'
+      'bg-surface-recessed-content'
     )
     const configureActive = within(configureFrame).getByTestId(
       'automated-mint-configure-active'
@@ -529,7 +529,7 @@ describe('automated mint design-system lab', () => {
     ).toBeVisible()
     expect(
       within(configureFrame).getByTestId('automated-mint-configure-upcoming')
-    ).toHaveClass('bg-[var(--surface-recessed-content)]')
+    ).toHaveClass('bg-surface-recessed-content')
     expect(
       within(configureFrame).getByTestId('automated-mint-configure-upcoming')
     ).not.toHaveClass('flex-1')
@@ -776,10 +776,10 @@ describe('automated mint design-system lab', () => {
     ).toBeVisible()
     expect(
       within(composition).getByTestId('automated-mint-orders')
-    ).toHaveClass('bg-[var(--surface-recessed-content)]', 'overflow-hidden')
+    ).toHaveClass('bg-surface-recessed-content', 'overflow-hidden')
     expect(
       within(composition).getByTestId('automated-mint-orders-column')
-    ).toHaveClass('bg-[var(--surface-recessed-content)]')
+    ).toHaveClass('bg-surface-recessed-content')
     expect(
       within(composition).getByTestId('automated-mint-orders-scroll')
     ).toHaveClass('px-2')

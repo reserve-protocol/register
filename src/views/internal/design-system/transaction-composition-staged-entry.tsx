@@ -1,5 +1,11 @@
 import { Trans, useLingui } from '@lingui/react/macro'
-import { ArrowLeft, ArrowRight, ArrowUpRight, Combine, Info } from 'lucide-react'
+import {
+  ArrowLeft,
+  ArrowRight,
+  ArrowUpRight,
+  Combine,
+  Info,
+} from 'lucide-react'
 
 import { Button } from '@/components/button'
 import { ActionGroup } from '@/components/design-system-v1/action-group'
@@ -7,7 +13,7 @@ import {
   InlineMessage,
   InlineMessageTitle,
 } from '@/components/design-system-v1/inline-message'
-import { candidateSemanticRoles as semanticRoles } from '@/components/design-system-v1/semantic-roles'
+import { v1SemanticRoles as semanticRoles } from '@/components/design-system-v1/semantic-roles'
 import {
   transactionAttachedRegionGeometry,
   transactionTaskGeometry,
@@ -15,7 +21,6 @@ import {
 import { v1Typography } from '@/components/design-system-v1/typography'
 import { IconButton } from '@/components/icon-button'
 import { LifecycleStatusPill } from '@/components/lifecycle-status'
-import { v1SemanticRecipes as roles } from '@/components/ui/v1-semantic-recipes'
 import { cn } from '@/lib/utils'
 import { getFolioRoute } from '@/utils'
 import { CMC20_ADDRESS } from '@/utils/addresses'
@@ -117,7 +122,12 @@ const AutomatedMintIntroduction = ({
           <p className={v1Typography.label}>
             <Trans>Before using automated minting</Trans>
           </p>
-          <p className={cn(v1Typography.supporting, roles.text.supporting)}>
+          <p
+            className={cn(
+              v1Typography.supporting,
+              semanticRoles.text.supporting
+            )}
+          >
             <Trans>
               Automated minting is an advanced feature. For most people, simple
               swaps are recommended.
@@ -152,7 +162,13 @@ const AutomatedMintIntroduction = ({
           >
             <Trans>Automated Mint / Redeem</Trans>
           </h4>
-          <p className={cn('mt-1', v1Typography.body, roles.text.supporting)}>
+          <p
+            className={cn(
+              'mt-1',
+              v1Typography.body,
+              semanticRoles.text.supporting
+            )}
+          >
             <Trans>
               Mint large USDC amounts through batched CoW Swap orders, or redeem
               DTFs into the underlying assets. Recommended for market makers or
@@ -291,7 +307,13 @@ const AutomatedMintWalletRequirement = ({
             >
               <Trans>Smart Account Required</Trans>
             </h4>
-            <p className={cn('mt-1', v1Typography.body, roles.text.supporting)}>
+            <p
+              className={cn(
+                'mt-1',
+                v1Typography.body,
+                semanticRoles.text.supporting
+              )}
+            >
               <Trans>
                 Automated minting and redemption require a wallet with smart
                 account support. Hardware Wallets are not supported.
@@ -328,7 +350,7 @@ const AutomatedMintWalletRequirement = ({
               className={cn(
                 'mt-4',
                 v1Typography.supporting,
-                roles.text.supporting
+                semanticRoles.text.supporting
               )}
             >
               <Trans>

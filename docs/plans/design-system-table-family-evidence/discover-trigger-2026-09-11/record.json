@@ -1,0 +1,212 @@
+{
+  "recordedAt": "2026-09-10T22:09:01.049Z",
+  "selection": "^discover (family|trigger)",
+  "scope": "Only the named passing cases are retained; other tests in the run are not endorsed.",
+  "sourceBoundary": "Public source digest checked during each case; no environment hashes retained. Owned server startup and installed dependencies are not source-attested. Fixture assets may use logo fallbacks.",
+  "cases": [
+    {
+      "name": "discover family initial behavior",
+      "status": "passed",
+      "sourceDigest": "8236bc6c63259abcc3ff74b169f247363c298d4a6926498d29b0c0657e840e12",
+      "observations": []
+    },
+    {
+      "name": "discover family light 320",
+      "status": "passed",
+      "sourceDigest": "8236bc6c63259abcc3ff74b169f247363c298d4a6926498d29b0c0657e840e12",
+      "observations": []
+    },
+    {
+      "name": "discover family light 390",
+      "status": "passed",
+      "sourceDigest": "8236bc6c63259abcc3ff74b169f247363c298d4a6926498d29b0c0657e840e12",
+      "observations": []
+    },
+    {
+      "name": "discover family dark 390",
+      "status": "passed",
+      "sourceDigest": "8236bc6c63259abcc3ff74b169f247363c298d4a6926498d29b0c0657e840e12",
+      "observations": []
+    },
+    {
+      "name": "discover family light 1400",
+      "status": "passed",
+      "sourceDigest": "8236bc6c63259abcc3ff74b169f247363c298d4a6926498d29b0c0657e840e12",
+      "observations": []
+    },
+    {
+      "name": "discover family dark 1400",
+      "status": "passed",
+      "sourceDigest": "8236bc6c63259abcc3ff74b169f247363c298d4a6926498d29b0c0657e840e12",
+      "observations": []
+    },
+    {
+      "name": "discover trigger light 1400",
+      "status": "passed",
+      "sourceDigest": "8236bc6c63259abcc3ff74b169f247363c298d4a6926498d29b0c0657e840e12",
+      "observations": []
+    },
+    {
+      "name": "discover trigger dark 1400",
+      "status": "passed",
+      "sourceDigest": "8236bc6c63259abcc3ff74b169f247363c298d4a6926498d29b0c0657e840e12",
+      "observations": []
+    },
+    {
+      "name": "discover trigger light 390",
+      "status": "passed",
+      "sourceDigest": "8236bc6c63259abcc3ff74b169f247363c298d4a6926498d29b0c0657e840e12",
+      "observations": []
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "discover-family-light-320-default.png",
+      "sha256": "b62d6a885bf2c659e1f4436fb35f885d6125618667ff06f31d559715b52b7035"
+    },
+    {
+      "path": "discover-family-light-320-basket-open.png",
+      "sha256": "ad7a47c4e03370a3b77f69ac8a6036c2fe35653667ce59ab3c60da66fe2459e9"
+    },
+    {
+      "path": "discover-family-light-320-zero-unavailable.png",
+      "sha256": "de2dd72d180a5ccdd0d7ff34da12bc218644be1943f2ad0768e9414318b14abd"
+    },
+    {
+      "path": "discover-family-light-320-loading.png",
+      "sha256": "956818f74b756e5de817f3646c287b24fb366704f8d1a94d41d502581b24d98b"
+    },
+    {
+      "path": "discover-family-light-320-long-content.png",
+      "sha256": "d3aff15f6cf439f0e045dd1fb5525717b9c59cc313f4b12d3633466daf64c6be"
+    },
+    {
+      "path": "discover-family-light-390-default.png",
+      "sha256": "2288fd111a2d402ed01b25c8a486825c90c409a1a8b94cde065ac3b3933a8ae5"
+    },
+    {
+      "path": "discover-family-light-390-basket-open.png",
+      "sha256": "01e4c8cf6fa552c0259028d50d2c716493143fbdf5e325aab0995349bf043af8"
+    },
+    {
+      "path": "discover-family-light-390-zero-unavailable.png",
+      "sha256": "a3cb49391fbcbfcbb48c1a6e46c7633ded0687e0436f8d0bcdb69291c7338783"
+    },
+    {
+      "path": "discover-family-light-390-loading.png",
+      "sha256": "614da1dfc48cef749e3d901e2f0b44f40484545e830cd890f30ad04d6f57cc62"
+    },
+    {
+      "path": "discover-family-light-390-long-content.png",
+      "sha256": "5e7fd2eafffd7735e1db9b77bf47b20de9a026d4309a54f4189da3bd307b6d77"
+    },
+    {
+      "path": "discover-family-dark-390-default.png",
+      "sha256": "adbc0fc0c6e5ab084dc0a0919eb2b139f31f8b47a3512a5672269cf80cd07ed2"
+    },
+    {
+      "path": "discover-family-dark-390-basket-open.png",
+      "sha256": "d346b1e9b9cb8d9d7f56620c99661ffa00be8ec97272773d4bc12f7aabdf69ac"
+    },
+    {
+      "path": "discover-family-dark-390-zero-unavailable.png",
+      "sha256": "52194f381ffb6404e35a39bb465f93a9f25771e4a698e638dcd397508ba59e24"
+    },
+    {
+      "path": "discover-family-dark-390-loading.png",
+      "sha256": "5d7e2c9f8f8fe0aa1a98b254bf0e9e6aeb23f9bfb2e2a40032790c6f09a4b840"
+    },
+    {
+      "path": "discover-family-dark-390-long-content.png",
+      "sha256": "a86aa5b23cc10f9553ba23e89378d8c6283ca3704514cfe9796ef19ab6af3e04"
+    },
+    {
+      "path": "discover-family-light-1400-default.png",
+      "sha256": "6b9183af087156dbbb0fb48995c61dd6bd5334b9f5334080b7309e48387067b2"
+    },
+    {
+      "path": "discover-family-light-1400-basket-open.png",
+      "sha256": "7797c1cfa84f94d10b1f655059db7bcffead2937ed69393b3041e8fc8795d6a1"
+    },
+    {
+      "path": "discover-family-light-1400-zero-unavailable.png",
+      "sha256": "dcd815fe51250759d8c55fb2cdd114eaeaae074ed092c6342d4514fbf6cf26ad"
+    },
+    {
+      "path": "discover-family-light-1400-loading.png",
+      "sha256": "e1ed71ea9f3eb66dacafb3657bb50aa595f4e5fa767d0484a93198bf11817647"
+    },
+    {
+      "path": "discover-family-light-1400-long-content.png",
+      "sha256": "190944d85cd8aa1fbbc92e0ae30063aef6ea1cfc927e36255e58a7a99cf7f3e1"
+    },
+    {
+      "path": "discover-family-light-1400-boundary-1151.png",
+      "sha256": "55c69f66bdc45f3a4d96b93d79f3213c89239684cafd6d8be4da19c9858b64e8"
+    },
+    {
+      "path": "discover-family-light-1400-boundary-1152.png",
+      "sha256": "e4a6c0cbd2014b528010178334e6f4a79c0fda2ca49f8e19330ac6277e7fd4ad"
+    },
+    {
+      "path": "discover-family-light-1400-constrained.png",
+      "sha256": "3c3be9e63d31d69e91008082004c6630ae94955d1a12531dd36be401be32689a"
+    },
+    {
+      "path": "discover-family-dark-1400-default.png",
+      "sha256": "63b6ab3f60e0dd7c233f4d05abe9697c60d43777da85a45f3ca1cf1da58d23e0"
+    },
+    {
+      "path": "discover-family-dark-1400-basket-open.png",
+      "sha256": "0eefb49c530d832769d42dacee627ad9da8c6dd68de38ede525cfaad6a197513"
+    },
+    {
+      "path": "discover-family-dark-1400-zero-unavailable.png",
+      "sha256": "91935e6603cb74757ecf7668d5002967c84f60d781516fb700f6faf11e516a35"
+    },
+    {
+      "path": "discover-family-dark-1400-loading.png",
+      "sha256": "9d2c523740c1a4e021bb137799ce9fa25e3bba156e49126080569151913aeac4"
+    },
+    {
+      "path": "discover-family-dark-1400-long-content.png",
+      "sha256": "c701beb8bfdc3d2f1403a3d887b4827fbf28988acf54a57c11021d79441aa677"
+    },
+    {
+      "path": "discover-family-dark-1400-boundary-1151.png",
+      "sha256": "fb37c55c726c4a091a552383bd58a0e2fb8a97b70fbf9795ab35fcd98d017b7b"
+    },
+    {
+      "path": "discover-family-dark-1400-boundary-1152.png",
+      "sha256": "c4c0538f03ee06efc2668d359e52a26403ebb771a37342798225f314a6aeed18"
+    },
+    {
+      "path": "discover-family-dark-1400-constrained.png",
+      "sha256": "32333aa0dcd9bf5482e7652ff5049ccf7c72a8a9196103d607ffaef680d0e26a"
+    },
+    {
+      "path": "discover-trigger-light-1400-row-hover.png",
+      "sha256": "3ce65eb4920c6a1653da71dfa2f3ab9d83e413ec9d3b3c39ce2bd6766f7ebd2e"
+    },
+    {
+      "path": "discover-trigger-light-1400-trigger-focus.png",
+      "sha256": "10020a35f6689bb66cd61b7ad0b65f65324b9edfcd6a03cad5e14f5ebe8db11a"
+    },
+    {
+      "path": "discover-trigger-dark-1400-row-hover.png",
+      "sha256": "c8abb243a1d08db5b7be908573c7a1b1fff308d068cd763a16d50d005873a0e0"
+    },
+    {
+      "path": "discover-trigger-dark-1400-trigger-focus.png",
+      "sha256": "87d1c559144d1945d4285de2ed9b6067dc41f0dcbd22992ce16b11b7509d45d5"
+    },
+    {
+      "path": "discover-trigger-light-390-row-hover.png",
+      "sha256": "09bde0c1285fba209f26212764027b881d64b011130d17c51235976860b40761"
+    },
+    {
+      "path": "discover-trigger-light-390-trigger-focus.png",
+      "sha256": "a4d676a8c0f9c77e2295b47a17414cc61397269a8c8b1fe362058e1eaf61e661"
+    }
+  ]
+}

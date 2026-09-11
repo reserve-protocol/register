@@ -1,0 +1,132 @@
+{
+  "recordedAt": "2026-09-10T23:32:37.551Z",
+  "selection": "table row links|discover trigger",
+  "scope": "Only the named passing cases are retained; other tests in the run are not endorsed.",
+  "sourceBoundary": "Public source digest checked during each case; no environment hashes retained. Owned server startup and installed dependencies are not source-attested. Fixture assets may use logo fallbacks.",
+  "cases": [
+    {
+      "name": "discover trigger light 1400",
+      "status": "passed",
+      "sourceDigest": "df03cc5b9802a19bf0bcb3828e87d75296c2e31c8dd770187b221fc19d93d394",
+      "observations": []
+    },
+    {
+      "name": "discover trigger dark 1400",
+      "status": "passed",
+      "sourceDigest": "df03cc5b9802a19bf0bcb3828e87d75296c2e31c8dd770187b221fc19d93d394",
+      "observations": []
+    },
+    {
+      "name": "discover trigger light 390",
+      "status": "passed",
+      "sourceDigest": "df03cc5b9802a19bf0bcb3828e87d75296c2e31c8dd770187b221fc19d93d394",
+      "observations": []
+    },
+    {
+      "name": "table row links light 390",
+      "status": "passed",
+      "sourceDigest": "df03cc5b9802a19bf0bcb3828e87d75296c2e31c8dd770187b221fc19d93d394",
+      "observations": []
+    },
+    {
+      "name": "table row links light 1400",
+      "status": "passed",
+      "sourceDigest": "df03cc5b9802a19bf0bcb3828e87d75296c2e31c8dd770187b221fc19d93d394",
+      "observations": []
+    },
+    {
+      "name": "table row links dark 390",
+      "status": "passed",
+      "sourceDigest": "df03cc5b9802a19bf0bcb3828e87d75296c2e31c8dd770187b221fc19d93d394",
+      "observations": []
+    },
+    {
+      "name": "table row links dark 1400",
+      "status": "passed",
+      "sourceDigest": "df03cc5b9802a19bf0bcb3828e87d75296c2e31c8dd770187b221fc19d93d394",
+      "observations": []
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "table-row-links-light-390-discover-hover.png",
+      "sha256": "b34d9bf0383885fdb46f29067c260dc4d1e89aa7c811c3b8091877d5f40ba351"
+    },
+    {
+      "path": "table-row-links-light-390-index-focus.png",
+      "sha256": "d76db2e298a7ba334c5846734410022c6b7df2de4ecc55f4523d65fe6ebca172"
+    },
+    {
+      "path": "table-row-links-light-390-yield-hover.png",
+      "sha256": "d8eb60dc4d5c556233c3a25a48e6784b3e8ef65f1e6fe9b06e9b81c0a4e30c78"
+    },
+    {
+      "path": "table-row-links-light-390-governance-hover.png",
+      "sha256": "04222d6c804ff0900e0d0c7056c3ae4ad8d2de088d7bfaf4de9512b8fb1ef408"
+    },
+    {
+      "path": "table-row-links-light-390-rebalance-hover.png",
+      "sha256": "677173923ebffffe27c45231909759d6346e6f90b8ca319171f16d54da7b507c"
+    },
+    {
+      "path": "table-row-links-light-1400-discover-hover.png",
+      "sha256": "d4809b74671a1327e43bcb40d8e44ba0f00f0270099bac9b6478ab73161faabb"
+    },
+    {
+      "path": "table-row-links-light-1400-index-focus.png",
+      "sha256": "032758efed27c2983fccd8f8d1a6d3f6a2cb69b14a8e41b477862872490c0f0e"
+    },
+    {
+      "path": "table-row-links-light-1400-yield-hover.png",
+      "sha256": "941a29f5a305af2693b1804b83c8dd523ccf2d3efa75193d11cf2bb86952d135"
+    },
+    {
+      "path": "table-row-links-light-1400-governance-hover.png",
+      "sha256": "be5088f5536f1c9e0c234871841d1f56c290b16eb66c4913b6b2ba4180a88d2f"
+    },
+    {
+      "path": "table-row-links-light-1400-rebalance-hover.png",
+      "sha256": "46ab3ab7e9c0600980fb5de48f4acb337bbc77855eb6a291b7404a486d93ada1"
+    },
+    {
+      "path": "table-row-links-dark-390-discover-hover.png",
+      "sha256": "4b51250808ba22f77076cbe9a9bdb0bf192871bd60c57d61abbacb740d4b067d"
+    },
+    {
+      "path": "table-row-links-dark-390-index-focus.png",
+      "sha256": "30bb02397d34b31627807e28e20973c004d5bcea2a5d8cced11dd7291a143202"
+    },
+    {
+      "path": "table-row-links-dark-390-yield-hover.png",
+      "sha256": "96729733830bdd61710726090e05e7a3ba5d16a7ee5c77955c4db6307de8f790"
+    },
+    {
+      "path": "table-row-links-dark-390-governance-hover.png",
+      "sha256": "366487ee981382c8143abd56ab43a8d223f11fabfafac0a9cc225effc7be052f"
+    },
+    {
+      "path": "table-row-links-dark-390-rebalance-hover.png",
+      "sha256": "525c8a4bf30c7af89b20b06820f38268b8648642c6f645bbf0cad3f1bbba8b8d"
+    },
+    {
+      "path": "table-row-links-dark-1400-discover-hover.png",
+      "sha256": "2051aaa06053f2503e02bd5183b48ff91b14b426b86a6a9482457c6587fd5757"
+    },
+    {
+      "path": "table-row-links-dark-1400-index-focus.png",
+      "sha256": "f122074fb793f090999dc101a638f12bb730625ac4abcda8aed7928afe0c2ac0"
+    },
+    {
+      "path": "table-row-links-dark-1400-yield-hover.png",
+      "sha256": "7194d307dfad408317ae1a0ed4758122022f77aad76c3d44c92b30edd7bfe934"
+    },
+    {
+      "path": "table-row-links-dark-1400-governance-hover.png",
+      "sha256": "d6931f12efd12e237468323a5482da82f55997b92942869f2bffe31f9592aa06"
+    },
+    {
+      "path": "table-row-links-dark-1400-rebalance-hover.png",
+      "sha256": "7118f9e7a9550a8d81ab61838edf229b201164f005033a924da65b84cc97017a"
+    }
+  ]
+}

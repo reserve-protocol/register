@@ -1,3 +1,4 @@
+import { v1Typography } from '@/components/design-system-v1/typography'
 import {
   forwardRef,
   type ButtonHTMLAttributes,
@@ -7,7 +8,7 @@ import {
 import { LoaderCircle } from 'lucide-react'
 import { Slottable, Slot } from '@radix-ui/react-slot'
 
-import { v1SemanticRecipes as roles } from '@/components/ui/v1-semantic-recipes'
+import { v1SemanticRoles as roles } from '@/components/design-system-v1/semantic-roles'
 import { cn } from '@/lib/utils'
 
 export type ButtonTone = 'primary' | 'secondary' | 'quiet' | 'destructive'
@@ -22,7 +23,9 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   loading?: boolean
 }
 
-export type InlineActionProps = ButtonHTMLAttributes<HTMLButtonElement>
+export type InlineActionProps = ButtonHTMLAttributes<HTMLButtonElement> & {
+  treatment?: 'standalone' | 'contextual'
+}
 
 const sizeClasses: Record<ButtonSize, string> = {
   micro: 'h-7 gap-1.5 px-2.5 text-sm [&>svg]:size-3.5',
@@ -108,7 +111,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         data-size={size}
         className={cn(
           'inline-flex shrink-0 cursor-pointer items-center justify-center whitespace-nowrap rounded-full font-medium transition-[color,background-color,border-color,transform] duration-120 motion-safe:active:scale-[0.98] focus-visible:outline-none disabled:pointer-events-none aria-disabled:pointer-events-none',
-          roles.focus.onContent,
+          roles.focus.visibleOnContent,
           sizeClasses[size],
           unavailable ? disabledToneClasses[tone] : enabledToneClasses[tone],
           effectiveLeadingIcon && leadingPaddingClasses[size],
@@ -128,14 +131,26 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
 Button.displayName = 'Button'
 
 export const InlineAction = forwardRef<HTMLButtonElement, InlineActionProps>(
-  ({ children, className, type = 'button', ...props }, ref) => (
+  (
+    {
+      children,
+      className,
+      type = 'button',
+      treatment = 'standalone',
+      ...props
+    },
+    ref
+  ) => (
     <button
       ref={ref}
       type={type}
       data-testid="inline-action"
+      data-action-treatment={treatment}
       className={cn(
-        "relative inline-flex h-5 shrink-0 cursor-pointer items-center justify-center whitespace-nowrap p-0 text-sm font-medium leading-5 text-primary underline-offset-2 transition-colors duration-120 before:absolute before:-inset-x-1 before:-inset-y-1 before:content-[''] hover:underline active:text-primary-pressed focus-visible:outline-none disabled:pointer-events-none disabled:text-muted-foreground disabled:no-underline",
-        roles.focus.onContentInset,
+        `relative inline-flex h-5 shrink-0 cursor-pointer items-center justify-center whitespace-nowrap p-0 ${v1Typography.label} text-primary underline-offset-2 transition-colors duration-120 before:absolute before:-inset-x-1 before:-inset-y-1 before:content-[''] hover:underline active:text-primary-pressed focus-visible:outline-none disabled:pointer-events-none disabled:text-muted-foreground disabled:no-underline`,
+        roles.focus.visibleInset,
+        treatment === 'contextual' &&
+          `${v1Typography.body} h-auto gap-1 text-foreground`,
         className
       )}
       {...props}

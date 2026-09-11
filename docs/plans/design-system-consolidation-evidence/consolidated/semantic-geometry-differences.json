@@ -1,0 +1,60 @@
+[
+  {
+    "key": "light-375",
+    "differences": []
+  },
+  {
+    "key": "light-1400",
+    "differences": [
+      {
+        "path": "views.0.metrics.scrollContainers.36.className",
+        "before": "flex min-h-full min-w-0 flex-col lg:min-h-0 lg:overflow-y-auto bg-[var(--surface-recessed-content)]",
+        "after": "flex min-h-full min-w-0 flex-col lg:min-h-0 lg:overflow-y-auto bg-surface-recessed-content"
+      },
+      {
+        "path": "views.9.metrics.scrollContainers.36.className",
+        "before": "flex min-h-full min-w-0 flex-col lg:min-h-0 lg:overflow-y-auto bg-[var(--surface-recessed-content)]",
+        "after": "flex min-h-full min-w-0 flex-col lg:min-h-0 lg:overflow-y-auto bg-surface-recessed-content"
+      },
+      {
+        "path": "views.10.metrics.scrollContainers.36.className",
+        "before": "flex min-h-full min-w-0 flex-col lg:min-h-0 lg:overflow-y-auto bg-[var(--surface-recessed-content)]",
+        "after": "flex min-h-full min-w-0 flex-col lg:min-h-0 lg:overflow-y-auto bg-surface-recessed-content"
+      },
+      {
+        "path": "views.11.metrics.scrollContainers.36.className",
+        "before": "flex min-h-full min-w-0 flex-col lg:min-h-0 lg:overflow-y-auto bg-[var(--surface-recessed-content)]",
+        "after": "flex min-h-full min-w-0 flex-col lg:min-h-0 lg:overflow-y-auto bg-surface-recessed-content"
+      }
+    ]
+  },
+  {
+    "key": "dark-375",
+    "differences": []
+  },
+  {
+    "key": "dark-1400",
+    "differences": [
+      {
+        "path": "views.0.metrics.scrollContainers.36.className",
+        "before": "flex min-h-full min-w-0 flex-col lg:min-h-0 lg:overflow-y-auto bg-[var(--surface-recessed-content)]",
+        "after": "flex min-h-full min-w-0 flex-col lg:min-h-0 lg:overflow-y-auto bg-surface-recessed-content"
+      },
+      {
+        "path": "views.9.metrics.scrollContainers.36.className",
+        "before": "flex min-h-full min-w-0 flex-col lg:min-h-0 lg:overflow-y-auto bg-[var(--surface-recessed-content)]",
+        "after": "flex min-h-full min-w-0 flex-col lg:min-h-0 lg:overflow-y-auto bg-surface-recessed-content"
+      },
+      {
+        "path": "views.10.metrics.scrollContainers.36.className",
+        "before": "flex min-h-full min-w-0 flex-col lg:min-h-0 lg:overflow-y-auto bg-[var(--surface-recessed-content)]",
+        "after": "flex min-h-full min-w-0 flex-col lg:min-h-0 lg:overflow-y-auto bg-surface-recessed-content"
+      },
+      {
+        "path": "views.11.metrics.scrollContainers.36.className",
+        "before": "flex min-h-full min-w-0 flex-col lg:min-h-0 lg:overflow-y-auto bg-[var(--surface-recessed-content)]",
+        "after": "flex min-h-full min-w-0 flex-col lg:min-h-0 lg:overflow-y-auto bg-surface-recessed-content"
+      }
+    ]
+  }
+]

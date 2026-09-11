@@ -1,4 +1,4 @@
-import { existsSync } from 'node:fs'
+import { existsSync, readFileSync } from 'node:fs'
 import { resolve } from 'node:path'
 import { describe, expect, it, vi } from 'vitest'
 import {
@@ -6,6 +6,7 @@ import {
   COMPONENT_ITEMS,
   getComponentContextRoute,
   getComponentItem,
+  getComponentDisposition,
 } from '../component-catalog'
 import { FOUNDATION_ITEMS, getFoundationItem } from '../foundation-catalog'
 import { FOUNDATION_IDS } from '../catalog-types'
@@ -18,6 +19,46 @@ import { tabPresentationRecipe } from '@/components/design-system-v1/tab-present
 import { segmentedControlPresentationRecipe } from '@/components/design-system-v1/segmented-control-presentation'
 
 describe('component contract registry', () => {
+  it('derives five independent questions without losing evidence or scheduling distinctions', () => {
+    for (const item of COMPONENT_ITEMS) {
+      const disposition = getComponentDisposition(item)
+      expect(Object.keys(disposition)).toEqual([
+        'authority',
+        'implementation',
+        'output',
+        'adoption',
+        'review',
+      ])
+      expect(disposition.authority.status).toBe(item.designAuthority)
+      expect(disposition.implementation).toEqual({
+        status: item.implementationStatus,
+        source: item.implementationSource,
+      })
+      expect(disposition.output).toEqual({
+        status: item.outputStatus,
+        composition: item.compositionSource,
+      })
+      expect(disposition.adoption).toBe(item.adoptionStatus)
+      expect(disposition.review).toBe(item.review)
+      expect(disposition.authority.sources).toEqual(
+        (item.contextSources ?? []).filter(({ role }) =>
+          ['authority', 'accepted-decision'].includes(role)
+        )
+      )
+      expect(getComponentContextRoute(item.id)?.target.auditStatus).toBe(
+        item.auditStatus
+      )
+    }
+    const statusSet = new Set(COMPONENT_ITEMS.map((item) => item.review.status))
+    for (const state of [
+      'not-started',
+      'deferred',
+      'ready',
+      'provisional',
+      'exploration',
+    ] as const)
+      expect(statusSet.has(state)).toBe(true)
+  })
   it('uses unique ids so every contract remains directly addressable', () => {
     const ids = COMPONENT_ITEMS.map((item) => item.id)
     expect(new Set(ids).size).toBe(ids.length)
@@ -111,6 +152,73 @@ describe('component contract registry', () => {
       expect(item.evidence.length).toBeGreaterThan(0)
       expect(item.decisionPrompts.length).toBeGreaterThan(0)
       expect(item.nextAction.length).toBeGreaterThan(10)
+    }
+  })
+
+  it('routes each recorded baseline to scoped acceptance evidence', () => {
+    for (const item of COMPONENT_ITEMS.filter(
+      ({ designAuthority }) => designAuthority === 'current-baseline'
+    )) {
+      const evidence = item.contextSources?.find(
+        ({ role, path, detail }) =>
+          path.includes('.md#') &&
+          (role === 'accepted-decision' ||
+            (role === 'authority' && detail?.includes('No dedicated decision')))
+      )
+      expect(evidence, item.id).toBeDefined()
+    }
+  })
+
+  it('resolves context anchors to actual document headings', () => {
+    for (const item of COMPONENT_ITEMS) {
+      for (const source of item.contextSources ?? []) {
+        const [path, anchor] = source.path.split('#')
+        if (!anchor) continue
+        const headings = [
+          ...readFileSync(resolve(path), 'utf8').matchAll(/^#{1,6} (.+)$/gm),
+        ].map(([, heading]) =>
+          heading
+            .toLowerCase()
+            .replace(/[^\p{L}\p{N}\s_-]/gu, '')
+            .replace(/ /g, '-')
+        )
+        expect(headings, `${item.id}: ${source.path}`).toContain(anchor)
+      }
+    }
+  })
+
+  it('does not substitute shared geometry evidence for accepted component meaning', () => {
+    for (const [id, anchor] of [
+      ['button-group', '2026-08-19--actiongroup-composition-baseline-accepted'],
+      ['select', '2026-08-19--bounded-value-select-baseline-accepted'],
+      ['accordion', '2026-08-21--informational-accordion-baseline-accepted'],
+    ]) {
+      const sources = getComponentContextRoute(id)?.contextSources ?? []
+      expect(sources).toContainEqual(
+        expect.objectContaining({
+          role: 'accepted-decision',
+          path: `docs/wiki/decisions.md#${anchor}`,
+        })
+      )
+    }
+    for (const id of ['popover', 'multi-select-filter', 'empty-state']) {
+      expect(getComponentContextRoute(id)?.contextSources).toContainEqual(
+        expect.objectContaining({
+          role: 'authority',
+          detail: expect.stringContaining('No dedicated decision'),
+        })
+      )
+    }
+  })
+
+  it('does not route recorded Textarea and Collapsible baselines back to their completed review', () => {
+    for (const id of ['textarea', 'collapsible']) {
+      const item = getComponentItem(id).item
+      if (!item) throw new Error(`Missing catalog entry: ${id}`)
+      expect(item.designAuthority).toBe('current-baseline')
+      expect(item.nextAction).not.toMatch(/provisional|human-review/i)
+      expect(item.nextAction).toContain('accepted')
+      expect(item.adoptionStatus).toBe('none')
     }
   })
 
@@ -633,18 +741,21 @@ describe('current review', () => {
       review: { status: 'ready' },
     })
     expect(CURRENT_REVIEW[0]).toMatchObject({
-      target: { kind: 'component', id: 'transaction-action' },
+      target: { kind: 'component', id: 'table' },
       destination:
-        '/internal/design-system/components/transaction-action#transaction-truth-spectrum',
+        '/internal/design-system/components/table#discover-family-review',
       type: 'visual decision',
     })
-    expect(CURRENT_REVIEW[0].title).toContain('paused')
-    expect(CURRENT_REVIEW[0].reason).toContain('standalone selector specimen')
+    expect(CURRENT_REVIEW[0].reason).toContain('Transactions remain paused')
+    expect(getComponentItem('table').item).toMatchObject({
+      designAuthority: 'exploratory',
+      adoptionStatus: 'none',
+    })
     expect(
       CURRENT_REVIEW[0].foundationConformance.find(
         (claim) => claim.area === 'radius'
-      )?.detail
-    ).toContain('accepted 8px radius')
+      )?.status
+    ).toBe('declared-provisional')
   })
 
   it('keeps accepted layout relationships behind semantic recipes', () => {

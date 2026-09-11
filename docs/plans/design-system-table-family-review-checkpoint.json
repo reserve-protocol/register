@@ -1,0 +1,82 @@
+{
+  "purpose": "Local reproducible review checkpoint, not design acceptance, production adoption, a release or a full repository gate",
+  "fixedPoint": "adef9ee76ffe2a579f6811cae2f5cf152cd0cf99",
+  "snapshot": "The commit containing this receipt and the independent-review handoff; verify the exact SHA supplied in the launch prompt",
+  "publicSourceDigest": "da0b5abd9024a46c3bc022a0f4628ab5fa43371ea2818e82a920dfef5967d8ca",
+  "browser": {
+    "command": "DESIGN_SYSTEM_PORT=3043 pnpm exec playwright test -c playwright.design-system.config.ts --project=design-system-review discover-cards-lab-regressions.spec.ts",
+    "startedAt": "2026-09-11T03:13:06.089Z",
+    "cases": [
+      {
+        "name": "Discover cards retain sorting across the available-width boundary",
+        "status": "passed",
+        "attempts": 1
+      },
+      {
+        "name": "Discover resize does not reclaim focus after an outside interaction",
+        "status": "passed",
+        "attempts": 1
+      },
+      {
+        "name": "Discover card states light 320",
+        "status": "passed",
+        "attempts": 1
+      },
+      {
+        "name": "Discover card states light 390",
+        "status": "passed",
+        "attempts": 1
+      },
+      {
+        "name": "Discover card states dark 390",
+        "status": "passed",
+        "attempts": 1
+      },
+      {
+        "name": "Discover card states light 768",
+        "status": "passed",
+        "attempts": 1
+      },
+      {
+        "name": "Discover card ticker recovery motion",
+        "status": "passed",
+        "attempts": 1
+      },
+      {
+        "name": "Discover card ticker recovery reduced",
+        "status": "passed",
+        "attempts": 1
+      }
+    ]
+  },
+  "unit": {
+    "count": 64,
+    "files": [
+      "src/components/design-system-v1/tests/semantic-roles.test.ts",
+      "src/components/design-system-v1/tests/typography.test.ts",
+      "src/components/ui/tests/data-table.test.tsx",
+      "src/views/internal/design-system/tests/component-catalog.test.ts",
+      "src/views/internal/design-system/tests/discover-family.test.tsx",
+      "src/views/internal/design-system/tests/discover-motion.test.ts",
+      "src/views/internal/design-system/tests/holdings-family.test.tsx",
+      "src/views/internal/design-system/tests/table-family.test.tsx"
+    ],
+    "status": "passed"
+  },
+  "typecheck": {
+    "command": "pnpm typecheck",
+    "status": "passed"
+  },
+  "initialFailure": "One catalog test asserted superseded radius prose. It now asserts the typed declared-provisional status. The rerun passed all 64 tests; no UI change.",
+  "warnings": "Existing app initialization/network/deprecation warnings and ambiguous Tailwind duration warnings; no failing final selected checks.",
+  "visualEvidence": "design-system-table-family-evidence/mobile-card-insets-2026-09-11/record.json; historical visual inspection of unchanged card source, not a new full-product inspection",
+  "exclusions": [
+    "private environment files and fingerprints",
+    "node_modules",
+    "ignored compiled localization files",
+    "ignored test-results and playwright-report",
+    "private temporary control transcripts",
+    "older detached research worktree artifacts"
+  ],
+  "limits": "Only the named checks were freshly run. Broader consolidation and earlier table-family receipts are historical and source-scoped. No full repository/CI or live transaction claim."
+}

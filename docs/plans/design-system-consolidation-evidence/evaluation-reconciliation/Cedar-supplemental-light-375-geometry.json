@@ -1,0 +1,164 @@
+{
+  "initial": {
+    "width": 375,
+    "scrollWidth": 375,
+    "children": [
+      {
+        "text": "1,234.56",
+        "rect": {
+          "x": 17,
+          "y": 121,
+          "width": 341,
+          "height": 44,
+          "top": 121,
+          "right": 358,
+          "bottom": 165,
+          "left": 17
+        }
+      },
+      {
+        "text": "Local time",
+        "rect": {
+          "x": 17,
+          "y": 209,
+          "width": 341,
+          "height": 44,
+          "top": 209,
+          "right": 358,
+          "bottom": 253,
+          "left": 17
+        }
+      },
+      {
+        "text": "Save preferences",
+        "rect": {
+          "x": 17,
+          "y": 277,
+          "width": 341,
+          "height": 44,
+          "top": 277,
+          "right": 358,
+          "bottom": 321,
+          "left": 17
+        }
+      },
+      {
+        "text": "Reset",
+        "rect": {
+          "x": 17,
+          "y": 329,
+          "width": 341,
+          "height": 44,
+          "top": 329,
+          "right": 358,
+          "bottom": 373,
+          "left": 17
+        }
+      },
+      {
+        "text": "",
+        "rect": {
+          "x": 17,
+          "y": 389,
+          "width": 341,
+          "height": 0,
+          "top": 389,
+          "right": 358,
+          "bottom": 389,
+          "left": 17
+        }
+      }
+    ]
+  },
+  "saved": {
+    "width": 375,
+    "scrollWidth": 375,
+    "children": [
+      {
+        "text": "1.234,56",
+        "rect": {
+          "x": 17,
+          "y": 121,
+          "width": 341,
+          "height": 44,
+          "top": 121,
+          "right": 358,
+          "bottom": 165,
+          "left": 17
+        }
+      },
+      {
+        "text": "UTC",
+        "rect": {
+          "x": 17,
+          "y": 209,
+          "width": 341,
+          "height": 44,
+          "top": 209,
+          "right": 358,
+          "bottom": 253,
+          "left": 17
+        }
+      },
+      {
+        "text": "Save preferences",
+        "rect": {
+          "x": 17,
+          "y": 277,
+          "width": 341,
+          "height": 44,
+          "top": 277,
+          "right": 358,
+          "bottom": 321,
+          "left": 17
+        }
+      },
+      {
+        "text": "Reset",
+        "rect": {
+          "x": 17,
+          "y": 329,
+          "width": 341,
+          "height": 44,
+          "top": 329,
+          "right": 358,
+          "bottom": 373,
+          "left": 17
+        }
+      },
+      {
+        "text": "Preferences saved",
+        "rect": {
+          "x": 17,
+          "y": 389,
+          "width": 341,
+          "height": 44,
+          "top": 389,
+          "right": 358,
+          "bottom": 433,
+          "left": 17
+        }
+      }
+    ]
+  },
+  "menus": [
+    {
+      "name": "number-format",
+      "rect": {
+        "x": 17,
+        "y": 173,
+        "width": 341,
+        "height": 98
+      }
+    },
+    {
+      "name": "time-zone",
+      "rect": {
+        "x": 17,
+        "y": 261,
+        "width": 341,
+        "height": 98
+      }
+    }
+  ]
+}

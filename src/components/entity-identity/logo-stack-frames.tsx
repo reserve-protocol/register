@@ -1,7 +1,7 @@
 import {
-  v1SemanticRecipes,
+  v1SemanticRoles,
   type V1SurfaceRole,
-} from '@/components/ui/v1-semantic-recipes'
+} from '@/components/design-system-v1/semantic-roles'
 import { cn } from '@/lib/utils'
 import * as React from 'react'
 
@@ -56,7 +56,7 @@ export const LogoStackFrames = React.forwardRef<
             data-slot="logo-stack-frame"
             className={cn(
               'relative inline-flex shrink-0 border-2',
-              v1SemanticRecipes.surfaceSeparation[surface]
+              v1SemanticRoles.surfaceSeparation[surface]
             )}
             style={{
               borderRadius: frameRadius,

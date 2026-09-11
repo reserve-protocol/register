@@ -1,0 +1,168 @@
+import { useId, useState } from 'react'
+
+import { Button } from '@/components/button'
+import { ActionGroup } from '@/components/design-system-v1/action-group'
+import { Field, FieldLabel } from '@/components/design-system-v1/field'
+import {
+  InlineMessage,
+  InlineMessageTitle,
+} from '@/components/design-system-v1/inline-message'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/design-system-v1/select'
+import { v1Typography } from '@/components/design-system-v1/typography'
+import { v1SemanticRecipes as roles } from '@/components/ui/v1-semantic-recipes'
+import { cn } from '@/lib/utils'
+
+const NUMBER_FORMAT_OPTIONS = ['1,234.56', '1.234,56'] as const
+const TIME_ZONE_OPTIONS = ['Local time', 'UTC'] as const
+
+type NumberFormat = (typeof NUMBER_FORMAT_OPTIONS)[number]
+type TimeZone = (typeof TIME_ZONE_OPTIONS)[number]
+
+interface DisplayPreferences {
+  numberFormat: NumberFormat
+  timeZone: TimeZone
+}
+
+const INITIAL_PREFERENCES: DisplayPreferences = {
+  numberFormat: NUMBER_FORMAT_OPTIONS[0],
+  timeZone: TIME_ZONE_OPTIONS[0],
+}
+
+/**
+ * Local-only specimen: a two-setting preferences panel used to review grouping,
+ * hierarchy, and spacing for a small form with a save/reset pair. Saving keeps
+ * the chosen values in component state for the mounted session only — there is
+ * no network call and no persistent storage.
+ */
+export const DisplayPreferencesStudy = () => {
+  const fieldId = useId()
+  const [preferences, setPreferences] =
+    useState<DisplayPreferences>(INITIAL_PREFERENCES)
+  const [savedPreferences, setSavedPreferences] =
+    useState<DisplayPreferences | null>(null)
+  const [savedFeedbackVisible, setSavedFeedbackVisible] = useState(false)
+
+  const numberFormatId = `${fieldId}-number-format`
+  const timeZoneId = `${fieldId}-time-zone`
+
+  const handleNumberFormatChange = (value: string) => {
+    setPreferences((current) => ({
+      ...current,
+      numberFormat: value as NumberFormat,
+    }))
+    setSavedFeedbackVisible(false)
+  }
+
+  const handleTimeZoneChange = (value: string) => {
+    setPreferences((current) => ({ ...current, timeZone: value as TimeZone }))
+    setSavedFeedbackVisible(false)
+  }
+
+  const handleSave = () => {
+    setSavedPreferences(preferences)
+    setSavedFeedbackVisible(true)
+  }
+
+  const handleReset = () => {
+    setPreferences(INITIAL_PREFERENCES)
+    setSavedFeedbackVisible(false)
+  }
+
+  return (
+    <section
+      aria-labelledby={`${fieldId}-heading`}
+      data-testid="display-preferences-study"
+      data-number-format={preferences.numberFormat}
+      data-time-zone={preferences.timeZone}
+      data-saved-number-format={savedPreferences?.numberFormat}
+      data-saved-time-zone={savedPreferences?.timeZone}
+      className="min-w-0 border border-border bg-card p-4 text-foreground sm:p-6"
+    >
+      <div>
+        <h2 id={`${fieldId}-heading`} className="text-xl font-medium leading-7">
+          Display preferences
+        </h2>
+        <p
+          className={cn(
+            'mt-1 max-w-prose',
+            v1Typography.supporting,
+            roles.text.supporting
+          )}
+        >
+          Choose how amounts and times appear.
+        </p>
+      </div>
+
+      <div className="mt-6 grid gap-6 sm:grid-cols-2">
+        <Field>
+          <FieldLabel htmlFor={numberFormatId}>Number format</FieldLabel>
+          <Select
+            value={preferences.numberFormat}
+            onValueChange={handleNumberFormatChange}
+          >
+            <SelectTrigger id={numberFormatId}>
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              {NUMBER_FORMAT_OPTIONS.map((option) => (
+                <SelectItem key={option} value={option}>
+                  {option}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </Field>
+
+        <Field>
+          <FieldLabel htmlFor={timeZoneId}>Time zone</FieldLabel>
+          <Select
+            value={preferences.timeZone}
+            onValueChange={handleTimeZoneChange}
+          >
+            <SelectTrigger id={timeZoneId}>
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              {TIME_ZONE_OPTIONS.map((option) => (
+                <SelectItem key={option} value={option}>
+                  {option}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </Field>
+      </div>
+
+      <div className="mt-8 flex flex-col gap-4 border-t border-border pt-6 sm:flex-row sm:items-center sm:justify-between">
+        <div role="status" aria-live="polite" className="min-w-0">
+          {savedFeedbackVisible ? (
+            <InlineMessage
+              data-testid="display-preferences-saved"
+              density="compact"
+              presentation="summary"
+              tone="success"
+              className="sm:w-auto"
+            >
+              <InlineMessageTitle>Preferences saved</InlineMessageTitle>
+            </InlineMessage>
+          ) : null}
+        </div>
+
+        <ActionGroup className="flex-wrap justify-end">
+          <Button tone="secondary" onClick={handleReset}>
+            Reset
+          </Button>
+          <Button onClick={handleSave}>Save preferences</Button>
+        </ActionGroup>
+      </div>
+    </section>
+  )
+}
+
+export default DisplayPreferencesStudy

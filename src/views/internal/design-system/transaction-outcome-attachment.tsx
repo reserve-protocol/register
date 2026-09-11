@@ -10,7 +10,7 @@ import {
 } from '@/components/design-system-v1/field'
 import { transactionAttachedRegionGeometry } from '@/components/design-system-v1/transaction-task-geometry'
 import { v1Typography } from '@/components/design-system-v1/typography'
-import { v1SemanticRecipes as roles } from '@/components/ui/v1-semantic-recipes'
+import { v1SemanticRoles as roles } from '@/components/design-system-v1/semantic-roles'
 import { CALENDLY_URL } from '@/utils/schedule-call'
 
 export type TransactionOutcomeAttachmentType = 'updates' | 'intro-call'

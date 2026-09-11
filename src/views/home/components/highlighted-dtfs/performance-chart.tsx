@@ -44,6 +44,7 @@ export const PerformanceChart = ({
   performance,
   showPattern = true,
   useLaunchLabel = false,
+  animate = true,
 }: {
   chartKey: string
   className: string
@@ -54,6 +55,7 @@ export const PerformanceChart = ({
   performance: FeaturedDTFItem['performance']
   showPattern?: boolean
   useLaunchLabel?: boolean
+  animate?: boolean
 }) => {
   const [isLaunchMarkerActive, setIsLaunchMarkerActive] = useState(false)
   const [chartWidth, setChartWidth] = useState(0)
@@ -162,6 +164,7 @@ export const PerformanceChart = ({
             preLaunchDotsPatternId,
             shouldSplit,
             showPattern,
+            animate,
           })}
         </AreaChart>
       </ChartContainer>
@@ -205,6 +208,7 @@ export const PerformanceChart = ({
             lineShadowFilterId,
             performanceColor,
             shouldSplit,
+            animate,
           })}
         </AreaChart>
       </ChartContainer>

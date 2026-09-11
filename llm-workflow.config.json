@@ -9,7 +9,13 @@
     },
     {
       "name": "typecheck",
-      "globs": ["src/**", "tsconfig*.json", "package.json", "vite.config.ts", "tailwind.config.ts"],
+      "globs": [
+        "src/**",
+        "tsconfig*.json",
+        "package.json",
+        "vite.config.ts",
+        "tailwind.config.ts"
+      ],
       "commands": ["pnpm typecheck"]
     },
     {
@@ -32,6 +38,33 @@
         "pnpm exec tsc -p e2e/tsconfig.json --noEmit",
         "pnpm exec vitest run e2e/helpers/tests",
         "pnpm e2e:smoke"
+      ]
+    },
+    {
+      "name": "design-system-browser",
+      "globs": [
+        "src/components/design-system-v1/**",
+        "src/components/{button,icon-button,checkbox,dialog,entity-identity,metric,lifecycle-status,empty-state}/**",
+        "src/components/ui/v1-*",
+        "src/views/internal/design-system/**",
+        "src/styles/**",
+        "src/app.css",
+        "public/**",
+        "index.html",
+        "tsconfig*.json",
+        "src/utils/chart-performance-colors.ts",
+        "e2e/design-system/**",
+        "e2e/fixtures/**",
+        "e2e/helpers/**",
+        "playwright.design-system.config.ts",
+        "{tailwind,vite,postcss,lingui}.config.*",
+        "{package.json,pnpm-lock.yaml,pnpm-workspace.yaml}",
+        "llm-workflow.config.json",
+        ".github/workflows/design-system.yml"
+      ],
+      "commands": [
+        "pnpm exec vitest run e2e/helpers/tests/design-system-*.test.ts",
+        "pnpm design-system:review"
       ]
     },
     {

@@ -69,6 +69,18 @@ const config = {
         substrate: {
           subtle: 'var(--substrate-subtle)',
         },
+        surface: {
+          'recessed-content': 'var(--surface-recessed-content)',
+        },
+        status: {
+          neutral: {
+            surface: 'var(--status-neutral-surface)',
+            border: 'var(--status-neutral-border)',
+          },
+        },
+        disabled: {
+          structure: 'var(--disabled-structure)',
+        },
         destructive: {
           DEFAULT: 'hsl(var(--destructive))',
           foreground: 'hsl(var(--destructive-foreground))',
@@ -110,9 +122,17 @@ const config = {
           DEFAULT: 'hsl(var(--warning))',
         },
         feedback: {
+          'information-surface': 'var(--feedback-information-surface)',
+          'information-border': 'var(--feedback-information-border)',
           'information-foreground': 'var(--feedback-information-foreground)',
+          'success-surface': 'var(--feedback-success-surface)',
+          'success-border': 'var(--feedback-success-border)',
           'success-foreground': 'var(--feedback-success-foreground)',
+          'warning-surface': 'var(--feedback-warning-surface)',
+          'warning-border': 'var(--feedback-warning-border)',
           'warning-foreground': 'var(--feedback-warning-foreground)',
+          'danger-surface': 'var(--feedback-danger-surface)',
+          'danger-border': 'var(--feedback-danger-border)',
           'danger-foreground': 'var(--feedback-danger-foreground)',
         },
         'destructive-action': {

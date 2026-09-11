@@ -2,6 +2,7 @@ import { ArrowLeft, CircleDashed, ExternalLink } from 'lucide-react'
 import { Link, Navigate, useParams } from 'react-router-dom'
 import {
   CatalogBadges,
+  ComponentCatalogMetadata,
   ComponentCompositionSource,
   ComponentReviewReadiness,
   DetailNavigation,
@@ -17,6 +18,9 @@ import { getFoundationItem } from './foundation-catalog'
 import CanonicalComponentsOverview from './canonical-components-overview'
 import { CurrentReviewSpotlight } from './current-review-panel'
 import ComponentVisualOutput from './component-visual-output'
+import { TableFamilyReview } from './table-family/review'
+import { HoldingsReview } from './table-family/holdings-review'
+import { DiscoverReview } from './table-family/discover-review'
 import { EligibilityDialogInteractionReview } from './dialog-state-sheet'
 
 export const ComponentsOverview = () => (
@@ -57,11 +61,24 @@ export const ComponentDetail = () => {
           eyebrow={group.name}
           title={item.name}
           description={item.description}
-          trailing={<CatalogBadges item={item} />}
+          trailing={
+            <div className="space-y-2">
+              <CatalogBadges item={item} />
+              <ComponentCatalogMetadata item={item} />
+            </div>
+          }
         />
         <ComponentReviewReadiness review={item.review} />
         <ComponentCompositionSource item={item} />
-        <ComponentVisualOutput itemId={item.id} />
+        {item.id === 'table' ? (
+          <>
+            <TableFamilyReview />
+            <HoldingsReview />
+            <DiscoverReview />
+          </>
+        ) : (
+          <ComponentVisualOutput itemId={item.id} autoFocus />
+        )}
         {item.id === 'dialog' && <EligibilityDialogInteractionReview />}
         {item.id === 'table' && <RichRecordReview />}
 

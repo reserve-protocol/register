@@ -1,10 +1,9 @@
-import { candidateSemanticRoles as semanticRoles } from '@/components/design-system-v1/semantic-roles'
+import { v1SemanticRoles as semanticRoles } from '@/components/design-system-v1/semantic-roles'
 import { v1Typography } from '@/components/design-system-v1/typography'
 import {
   LifecycleStatusPill,
   type LifecycleStatusRole,
 } from '@/components/lifecycle-status'
-import { v1SemanticRecipes as roles } from '@/components/ui/v1-semantic-recipes'
 import { cn } from '@/lib/utils'
 import { Check, X } from 'lucide-react'
 
@@ -118,7 +117,7 @@ export const TransactionProgressStepper = ({
             data-testid="transaction-progress-position"
             className={cn(
               v1Typography.supporting,
-              roles.text.supporting,
+              semanticRoles.text.supporting,
               'tabular-nums'
             )}
           >

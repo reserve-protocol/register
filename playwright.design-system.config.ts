@@ -1,8 +1,13 @@
 import { defineConfig, devices } from '@playwright/test'
 
 const host = '127.0.0.1'
-const port = 3005
-const externalBaseURL = process.env.DESIGN_SYSTEM_BASE_URL
+const port = Number(process.env.DESIGN_SYSTEM_PORT || 3022)
+if (!Number.isInteger(port) || port < 1024 || port > 65535) {
+  throw new Error(
+    'DESIGN_SYSTEM_PORT must be an integer port from 1024 to 65535'
+  )
+}
+const externalBaseURL = process.env.DESIGN_SYSTEM_BASE_URL || undefined
 const baseURL = externalBaseURL ?? `http://${host}:${port}`
 
 export default defineConfig({
@@ -10,10 +15,19 @@ export default defineConfig({
   fullyParallel: false,
   forbidOnly: true,
   retries: 0,
+  updateSnapshots: 'none',
   workers: 1,
   timeout: 90_000,
   expect: { timeout: 7_500 },
-  reporter: [['list']],
+  reporter: [
+    ['list'],
+    ['json', { outputFile: 'test-results/design-system/report.json' }],
+    [
+      'html',
+      { outputFolder: 'playwright-report/design-system', open: 'never' },
+    ],
+  ],
+  outputDir: 'test-results/design-system/artifacts',
   snapshotPathTemplate:
     '{testDir}/{testFilePath}-snapshots/{arg}-{projectName}{ext}',
   webServer: externalBaseURL
@@ -42,6 +56,7 @@ export default defineConfig({
   projects: [
     {
       name: 'design-system-desktop',
+      testIgnore: /(?:source-capture|lab-regressions)\.spec\.ts/,
       use: {
         ...devices['Desktop Chrome'],
         viewport: { width: 1280, height: 2600 },
@@ -50,6 +65,7 @@ export default defineConfig({
     },
     {
       name: 'design-system-mobile',
+      testIgnore: /(?:source-capture|lab-regressions)\.spec\.ts/,
       use: {
         ...devices['Pixel 7'],
         viewport: { width: 390, height: 3000 },
@@ -58,12 +74,18 @@ export default defineConfig({
     },
     {
       name: 'design-system-phone',
+      testIgnore: /(?:source-capture|lab-regressions)\.spec\.ts/,
       grep: /routes through/,
       use: {
         ...devices['Pixel 7'],
         viewport: { width: 390, height: 844 },
         deviceScaleFactor: 1,
       },
+    },
+    {
+      name: 'design-system-review',
+      testMatch: /(?:source-capture|lab-regressions)\.spec\.ts/,
+      use: { ...devices['Desktop Chrome'], deviceScaleFactor: 1 },
     },
   ],
 })

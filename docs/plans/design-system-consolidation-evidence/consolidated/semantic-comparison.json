@@ -1,0 +1,322 @@
+[
+  {
+    "key": "light-375",
+    "beforeDigest": "f70ae8c8c6ac08eb0aff614e0249efb391d6e6bfb1f04a7db1507c015af3b957",
+    "afterDigest": "f9f1c233fa62cc5c307667822b03cd2715d7d21e3afb9438f52bda2176f9a385",
+    "images": [
+      {
+        "name": "overview",
+        "equal": true
+      },
+      {
+        "name": "button-focus",
+        "equal": true
+      },
+      {
+        "name": "select-open",
+        "equal": true
+      },
+      {
+        "name": "checkbox",
+        "equal": true
+      },
+      {
+        "name": "checkbox-focus",
+        "equal": true
+      },
+      {
+        "name": "checkbox-changed",
+        "equal": true
+      },
+      {
+        "name": "switch",
+        "equal": true
+      },
+      {
+        "name": "switch-focus",
+        "equal": true
+      },
+      {
+        "name": "switch-changed",
+        "equal": true
+      },
+      {
+        "name": "field",
+        "equal": true
+      },
+      {
+        "name": "inline-message",
+        "equal": true
+      },
+      {
+        "name": "lifecycle-status",
+        "equal": true
+      },
+      {
+        "name": "entity-identity",
+        "equal": false
+      },
+      {
+        "name": "metric",
+        "equal": true
+      },
+      {
+        "name": "link",
+        "equal": true
+      },
+      {
+        "name": "typography-display",
+        "equal": true
+      },
+      {
+        "name": "typography-panel",
+        "equal": true
+      },
+      {
+        "name": "typography-auxiliary",
+        "equal": true
+      }
+    ],
+    "geometryEqual": true
+  },
+  {
+    "key": "light-1400",
+    "beforeDigest": "f70ae8c8c6ac08eb0aff614e0249efb391d6e6bfb1f04a7db1507c015af3b957",
+    "afterDigest": "f9f1c233fa62cc5c307667822b03cd2715d7d21e3afb9438f52bda2176f9a385",
+    "images": [
+      {
+        "name": "overview",
+        "equal": true
+      },
+      {
+        "name": "button-focus",
+        "equal": true
+      },
+      {
+        "name": "select-open",
+        "equal": true
+      },
+      {
+        "name": "checkbox",
+        "equal": true
+      },
+      {
+        "name": "checkbox-focus",
+        "equal": true
+      },
+      {
+        "name": "checkbox-changed",
+        "equal": true
+      },
+      {
+        "name": "switch",
+        "equal": true
+      },
+      {
+        "name": "switch-focus",
+        "equal": true
+      },
+      {
+        "name": "switch-changed",
+        "equal": true
+      },
+      {
+        "name": "field",
+        "equal": true
+      },
+      {
+        "name": "inline-message",
+        "equal": true
+      },
+      {
+        "name": "lifecycle-status",
+        "equal": true
+      },
+      {
+        "name": "entity-identity",
+        "equal": true
+      },
+      {
+        "name": "metric",
+        "equal": true
+      },
+      {
+        "name": "link",
+        "equal": true
+      },
+      {
+        "name": "typography-display",
+        "equal": true
+      },
+      {
+        "name": "typography-panel",
+        "equal": true
+      },
+      {
+        "name": "typography-auxiliary",
+        "equal": true
+      }
+    ],
+    "geometryEqual": false
+  },
+  {
+    "key": "dark-375",
+    "beforeDigest": "f70ae8c8c6ac08eb0aff614e0249efb391d6e6bfb1f04a7db1507c015af3b957",
+    "afterDigest": "f9f1c233fa62cc5c307667822b03cd2715d7d21e3afb9438f52bda2176f9a385",
+    "images": [
+      {
+        "name": "overview",
+        "equal": true
+      },
+      {
+        "name": "button-focus",
+        "equal": true
+      },
+      {
+        "name": "select-open",
+        "equal": true
+      },
+      {
+        "name": "checkbox",
+        "equal": true
+      },
+      {
+        "name": "checkbox-focus",
+        "equal": true
+      },
+      {
+        "name": "checkbox-changed",
+        "equal": true
+      },
+      {
+        "name": "switch",
+        "equal": true
+      },
+      {
+        "name": "switch-focus",
+        "equal": true
+      },
+      {
+        "name": "switch-changed",
+        "equal": true
+      },
+      {
+        "name": "field",
+        "equal": true
+      },
+      {
+        "name": "inline-message",
+        "equal": true
+      },
+      {
+        "name": "lifecycle-status",
+        "equal": true
+      },
+      {
+        "name": "entity-identity",
+        "equal": true
+      },
+      {
+        "name": "metric",
+        "equal": true
+      },
+      {
+        "name": "link",
+        "equal": true
+      },
+      {
+        "name": "typography-display",
+        "equal": true
+      },
+      {
+        "name": "typography-panel",
+        "equal": true
+      },
+      {
+        "name": "typography-auxiliary",
+        "equal": true
+      }
+    ],
+    "geometryEqual": true
+  },
+  {
+    "key": "dark-1400",
+    "beforeDigest": "f70ae8c8c6ac08eb0aff614e0249efb391d6e6bfb1f04a7db1507c015af3b957",
+    "afterDigest": "f9f1c233fa62cc5c307667822b03cd2715d7d21e3afb9438f52bda2176f9a385",
+    "images": [
+      {
+        "name": "overview",
+        "equal": true
+      },
+      {
+        "name": "button-focus",
+        "equal": true
+      },
+      {
+        "name": "select-open",
+        "equal": true
+      },
+      {
+        "name": "checkbox",
+        "equal": true
+      },
+      {
+        "name": "checkbox-focus",
+        "equal": true
+      },
+      {
+        "name": "checkbox-changed",
+        "equal": true
+      },
+      {
+        "name": "switch",
+        "equal": true
+      },
+      {
+        "name": "switch-focus",
+        "equal": true
+      },
+      {
+        "name": "switch-changed",
+        "equal": true
+      },
+      {
+        "name": "field",
+        "equal": true
+      },
+      {
+        "name": "inline-message",
+        "equal": true
+      },
+      {
+        "name": "lifecycle-status",
+        "equal": true
+      },
+      {
+        "name": "entity-identity",
+        "equal": true
+      },
+      {
+        "name": "metric",
+        "equal": true
+      },
+      {
+        "name": "link",
+        "equal": true
+      },
+      {
+        "name": "typography-display",
+        "equal": true
+      },
+      {
+        "name": "typography-panel",
+        "equal": true
+      },
+      {
+        "name": "typography-auxiliary",
+        "equal": true
+      }
+    ],
+    "geometryEqual": false
+  }
+]

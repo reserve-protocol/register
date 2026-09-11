@@ -1,0 +1,152 @@
+[
+  {
+    "tool": "Glob",
+    "path": null,
+    "pattern": "**/*.md"
+  },
+  {
+    "tool": "Glob",
+    "path": null,
+    "pattern": "**/*.{ts,tsx,js,jsx}"
+  },
+  {
+    "tool": "Read",
+    "path": "docs/wiki/domains/design-system.md",
+    "pattern": null
+  },
+  {
+    "tool": "Read",
+    "path": "docs/wiki/domains/design-system-reference.md",
+    "pattern": null
+  },
+  {
+    "tool": "Glob",
+    "path": null,
+    "pattern": "src/views/internal/design-system/*.ts"
+  },
+  {
+    "tool": "Glob",
+    "path": null,
+    "pattern": "src/components/ui/v1-layout-recipes.ts"
+  },
+  {
+    "tool": "Grep",
+    "path": null,
+    "pattern": "id: '(field|text-input|select|button|typography|inline-action|spacing)'"
+  },
+  {
+    "tool": "Grep",
+    "path": null,
+    "pattern": "^      id: '[a-z-]+',$"
+  },
+  {
+    "tool": "Grep",
+    "path": null,
+    "pattern": "^      id: '[a-z-]+',$"
+  },
+  {
+    "tool": "Grep",
+    "path": null,
+    "pattern": "^\\s*id: '[a-z0-9-]+',\\s*$"
+  },
+  {
+    "tool": "Read",
+    "path": "src/views/internal/design-system/component-catalog-primary.ts",
+    "pattern": null
+  },
+  {
+    "tool": "Read",
+    "path": "src/views/internal/design-system/component-catalog-primary.ts",
+    "pattern": null
+  },
+  {
+    "tool": "Grep",
+    "path": null,
+    "pattern": "typography"
+  },
+  {
+    "tool": "Read",
+    "path": "src/views/internal/design-system/foundation-catalog.ts",
+    "pattern": null
+  },
+  {
+    "tool": "Read",
+    "path": "src/components/ui/v1-layout-recipes.ts",
+    "pattern": null
+  },
+  {
+    "tool": "Glob",
+    "path": null,
+    "pattern": "src/components/design-system-v1/*"
+  },
+  {
+    "tool": "Grep",
+    "path": null,
+    "pattern": "export const|^  [a-zA-Z]+:"
+  },
+  {
+    "tool": "Grep",
+    "path": null,
+    "pattern": "export (const|function|interface|type)"
+  },
+  {
+    "tool": "Grep",
+    "path": null,
+    "pattern": "id:|title:|status|reviewKind"
+  },
+  {
+    "tool": "Grep",
+    "path": null,
+    "pattern": "^## 2026-0[89].*(Field|Select|Button|Typography|Spacing|typography)"
+  },
+  {
+    "tool": "Grep",
+    "path": null,
+    "pattern": "^#{2,3} .*(field|select|typography|button)"
+  },
+  {
+    "tool": "Read",
+    "path": "docs/wiki/decisions.md",
+    "pattern": null
+  },
+  {
+    "tool": "Grep",
+    "path": null,
+    "pattern": "Typography"
+  },
+  {
+    "tool": "Read",
+    "path": "src/components/design-system-v1/typography.ts",
+    "pattern": null
+  },
+  {
+    "tool": "Grep",
+    "path": null,
+    "pattern": "typograph"
+  },
+  {
+    "tool": "Grep",
+    "path": null,
+    "pattern": "name:|size|weight|role"
+  },
+  {
+    "tool": "Grep",
+    "path": null,
+    "pattern": "^## .*(spacing|Spacing|inset|Typography|typography)"
+  },
+  {
+    "tool": "Read",
+    "path": "src/views/internal/design-system/typography-review-contract.ts",
+    "pattern": null
+  },
+  {
+    "tool": "Grep",
+    "path": null,
+    "pattern": "Field|Select|Button|spacing|inset"
+  },
+  {
+    "tool": "Grep",
+    "path": null,
+    "pattern": "action-group|'Action group'"
+  }
+]

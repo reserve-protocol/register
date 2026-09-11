@@ -1,0 +1,15 @@
+{
+  "fixtureDigest": "0adcf860db32a5c8963f14a5dbea0613b8dae4af36ee51db03dd79b186c3a843",
+  "nonDocumentationFilesDifferent": [
+    "e2e/design-system/lab.spec.ts",
+    "e2e/design-system/lab.spec.ts-snapshots/components-overview-dark-design-system-desktop.png",
+    "e2e/design-system/lab.spec.ts-snapshots/components-overview-dark-design-system-mobile.png",
+    "e2e/design-system/lab.spec.ts-snapshots/components-overview-light-design-system-desktop.png",
+    "e2e/design-system/lab.spec.ts-snapshots/components-overview-light-design-system-mobile.png",
+    "e2e/design-system/lab.spec.ts-snapshots/layout-foundation-study-phone-design-system-phone.png",
+    "e2e/design-system/lab.spec.ts-snapshots/modal-geometry-study-phone-design-system-phone.png",
+    "e2e/helpers/tests/design-system-review-source.test.ts",
+    "src/views/internal/design-system/tests/transaction-composition-manual-states.test.tsx"
+  ],
+  "meaning": "Frozen performer inputs are not silently updated; these are later test/capture changes, not composition runtime changes."
+}

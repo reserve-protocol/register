@@ -1,0 +1,1260 @@
+{
+  "stats": {
+    "startTime": "2026-09-09T14:31:03.178Z",
+    "duration": 43615.382,
+    "expected": 8,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "observations": [
+    {
+      "name": "holdings light 375",
+      "passed": true,
+      "viewport": 375,
+      "documentWidth": 375,
+      "basket": {
+        "x": 0,
+        "y": 0,
+        "width": 375,
+        "height": 1031,
+        "top": 0,
+        "right": 375,
+        "bottom": 1031,
+        "left": 0
+      },
+      "tabs": [
+        {
+          "text": "Exposure",
+          "visible": true,
+          "bounds": {
+            "x": 10,
+            "y": 70,
+            "width": 177.5,
+            "height": 36,
+            "top": 70,
+            "right": 187.5,
+            "bottom": 106,
+            "left": 10
+          }
+        },
+        {
+          "text": "Collateral",
+          "visible": true,
+          "bounds": {
+            "x": 187.5,
+            "y": 70,
+            "width": 177.5,
+            "height": 36,
+            "top": 70,
+            "right": 365,
+            "bottom": 106,
+            "left": 187.5
+          }
+        },
+        {
+          "text": "Exposure",
+          "visible": false,
+          "bounds": {
+            "x": 0,
+            "y": 0,
+            "width": 0,
+            "height": 0,
+            "top": 0,
+            "right": 0,
+            "bottom": 0,
+            "left": 0
+          }
+        },
+        {
+          "text": "Collateral",
+          "visible": false,
+          "bounds": {
+            "x": 0,
+            "y": 0,
+            "width": 0,
+            "height": 0,
+            "top": 0,
+            "right": 0,
+            "bottom": 0,
+            "left": 0
+          }
+        }
+      ],
+      "links": [
+        {
+          "href": "https://basescan.org/token/0xcbb7c0000ab88b473b1f5afd9ef808440eed33bf",
+          "target": "_blank",
+          "rel": "noreferrer"
+        },
+        {
+          "href": "https://basescan.org/token/0x4200000000000000000000000000000000000006",
+          "target": "_blank",
+          "rel": "noreferrer"
+        },
+        {
+          "href": "https://basescan.org/token/0x2615a94df961278dcbc41fb0a54fec5f10a693ae",
+          "target": "_blank",
+          "rel": "noreferrer"
+        },
+        {
+          "href": "https://basescan.org/token/0x9b8df6e244526ab5f6e6400d331db28c8fdddb55",
+          "target": "_blank",
+          "rel": "noreferrer"
+        },
+        {
+          "href": "https://basescan.org/token/0x15d0e0c55a3e7ee67152ad7e89acf164253ff68d",
+          "target": "_blank",
+          "rel": "noreferrer"
+        },
+        {
+          "href": "https://basescan.org/token/0x12e96c2bfea6e835cf8dd38a5834fa61cf723736",
+          "target": "_blank",
+          "rel": "noreferrer"
+        },
+        {
+          "href": "https://basescan.org/token/0xa3a34a0d9a08ccddb6ed422ac0a28a06731335aa",
+          "target": "_blank",
+          "rel": "noreferrer"
+        },
+        {
+          "href": "https://basescan.org/token/0x378c326a472915d38b2d8d41e1345987835fab64",
+          "target": "_blank",
+          "rel": "noreferrer"
+        }
+      ]
+    },
+    {
+      "name": "holdings light 639",
+      "passed": true,
+      "viewport": 639,
+      "documentWidth": 639,
+      "basket": {
+        "x": 0,
+        "y": 0,
+        "width": 639,
+        "height": 1031,
+        "top": 0,
+        "right": 639,
+        "bottom": 1031,
+        "left": 0
+      },
+      "tabs": [
+        {
+          "text": "Exposure",
+          "visible": true,
+          "bounds": {
+            "x": 10,
+            "y": 70,
+            "width": 309.5,
+            "height": 36,
+            "top": 70,
+            "right": 319.5,
+            "bottom": 106,
+            "left": 10
+          }
+        },
+        {
+          "text": "Collateral",
+          "visible": true,
+          "bounds": {
+            "x": 319.5,
+            "y": 70,
+            "width": 309.5,
+            "height": 36,
+            "top": 70,
+            "right": 629,
+            "bottom": 106,
+            "left": 319.5
+          }
+        },
+        {
+          "text": "Exposure",
+          "visible": false,
+          "bounds": {
+            "x": 0,
+            "y": 0,
+            "width": 0,
+            "height": 0,
+            "top": 0,
+            "right": 0,
+            "bottom": 0,
+            "left": 0
+          }
+        },
+        {
+          "text": "Collateral",
+          "visible": false,
+          "bounds": {
+            "x": 0,
+            "y": 0,
+            "width": 0,
+            "height": 0,
+            "top": 0,
+            "right": 0,
+            "bottom": 0,
+            "left": 0
+          }
+        }
+      ],
+      "links": [
+        {
+          "href": "https://basescan.org/token/0xcbb7c0000ab88b473b1f5afd9ef808440eed33bf",
+          "target": "_blank",
+          "rel": "noreferrer"
+        },
+        {
+          "href": "https://basescan.org/token/0x4200000000000000000000000000000000000006",
+          "target": "_blank",
+          "rel": "noreferrer"
+        },
+        {
+          "href": "https://basescan.org/token/0x2615a94df961278dcbc41fb0a54fec5f10a693ae",
+          "target": "_blank",
+          "rel": "noreferrer"
+        },
+        {
+          "href": "https://basescan.org/token/0x9b8df6e244526ab5f6e6400d331db28c8fdddb55",
+          "target": "_blank",
+          "rel": "noreferrer"
+        },
+        {
+          "href": "https://basescan.org/token/0x15d0e0c55a3e7ee67152ad7e89acf164253ff68d",
+          "target": "_blank",
+          "rel": "noreferrer"
+        },
+        {
+          "href": "https://basescan.org/token/0x12e96c2bfea6e835cf8dd38a5834fa61cf723736",
+          "target": "_blank",
+          "rel": "noreferrer"
+        },
+        {
+          "href": "https://basescan.org/token/0xa3a34a0d9a08ccddb6ed422ac0a28a06731335aa",
+          "target": "_blank",
+          "rel": "noreferrer"
+        },
+        {
+          "href": "https://basescan.org/token/0x378c326a472915d38b2d8d41e1345987835fab64",
+          "target": "_blank",
+          "rel": "noreferrer"
+        }
+      ]
+    },
+    {
+      "name": "holdings light 640",
+      "passed": true,
+      "viewport": 640,
+      "documentWidth": 640,
+      "basket": {
+        "x": 4,
+        "y": 0,
+        "width": 632,
+        "height": 608,
+        "top": 0,
+        "right": 636,
+        "bottom": 608,
+        "left": 4
+      },
+      "tabs": [
+        {
+          "text": "Exposure",
+          "visible": false,
+          "bounds": {
+            "x": 0,
+            "y": 0,
+            "width": 0,
+            "height": 0,
+            "top": 0,
+            "right": 0,
+            "bottom": 0,
+            "left": 0
+          }
+        },
+        {
+          "text": "Collateral",
+          "visible": false,
+          "bounds": {
+            "x": 0,
+            "y": 0,
+            "width": 0,
+            "height": 0,
+            "top": 0,
+            "right": 0,
+            "bottom": 0,
+            "left": 0
+          }
+        },
+        {
+          "text": "Exposure",
+          "visible": true,
+          "bounds": {
+            "x": 30,
+            "y": 26,
+            "width": 84.34375,
+            "height": 28,
+            "top": 26,
+            "right": 114.34375,
+            "bottom": 54,
+            "left": 30
+          }
+        },
+        {
+          "text": "Collateral",
+          "visible": true,
+          "bounds": {
+            "x": 114.34375,
+            "y": 26,
+            "width": 85.9375,
+            "height": 28,
+            "top": 26,
+            "right": 200.28125,
+            "bottom": 54,
+            "left": 114.34375
+          }
+        }
+      ],
+      "links": [
+        {
+          "href": "https://basescan.org/token/0xcbb7c0000ab88b473b1f5afd9ef808440eed33bf",
+          "target": "_blank",
+          "rel": "noreferrer"
+        },
+        {
+          "href": "https://basescan.org/token/0xcbb7c0000ab88b473b1f5afd9ef808440eed33bf",
+          "target": "_blank",
+          "rel": "noreferrer"
+        },
+        {
+          "href": "https://basescan.org/token/0xcbb7c0000ab88b473b1f5afd9ef808440eed33bf",
+          "target": "_blank",
+          "rel": "noreferrer"
+        },
+        {
+          "href": "https://basescan.org/token/0x4200000000000000000000000000000000000006",
+          "target": "_blank",
+          "rel": "noreferrer"
+        },
+        {
+          "href": "https://basescan.org/token/0x4200000000000000000000000000000000000006",
+          "target": "_blank",
+          "rel": "noreferrer"
+        },
+        {
+          "href": "https://basescan.org/token/0x4200000000000000000000000000000000000006",
+          "target": "_blank",
+          "rel": "noreferrer"
+        },
+        {
+          "href": "https://basescan.org/token/0x2615a94df961278dcbc41fb0a54fec5f10a693ae",
+          "target": "_blank",
+          "rel": "noreferrer"
+        },
+        {
+          "href": "https://basescan.org/token/0x2615a94df961278dcbc41fb0a54fec5f10a693ae",
+          "target": "_blank",
+          "rel": "noreferrer"
+        },
+        {
+          "href": "https://basescan.org/token/0x2615a94df961278dcbc41fb0a54fec5f10a693ae",
+          "target": "_blank",
+          "rel": "noreferrer"
+        },
+        {
+          "href": "https://basescan.org/token/0x9b8df6e244526ab5f6e6400d331db28c8fdddb55",
+          "target": "_blank",
+          "rel": "noreferrer"
+        },
+        {
+          "href": "https://basescan.org/token/0x9b8df6e244526ab5f6e6400d331db28c8fdddb55",
+          "target": "_blank",
+          "rel": "noreferrer"
+        },
+        {
+          "href": "https://basescan.org/token/0x9b8df6e244526ab5f6e6400d331db28c8fdddb55",
+          "target": "_blank",
+          "rel": "noreferrer"
+        },
+        {
+          "href": "https://basescan.org/token/0x15d0e0c55a3e7ee67152ad7e89acf164253ff68d",
+          "target": "_blank",
+          "rel": "noreferrer"
+        },
+        {
+          "href": "https://basescan.org/token/0x15d0e0c55a3e7ee67152ad7e89acf164253ff68d",
+          "target": "_blank",
+          "rel": "noreferrer"
+        },
+        {
+          "href": "https://basescan.org/token/0x15d0e0c55a3e7ee67152ad7e89acf164253ff68d",
+          "target": "_blank",
+          "rel": "noreferrer"
+        },
+        {
+          "href": "https://basescan.org/token/0x12e96c2bfea6e835cf8dd38a5834fa61cf723736",
+          "target": "_blank",
+          "rel": "noreferrer"
+        },
+        {
+          "href": "https://basescan.org/token/0x12e96c2bfea6e835cf8dd38a5834fa61cf723736",
+          "target": "_blank",
+          "rel": "noreferrer"
+        },
+        {
+          "href": "https://basescan.org/token/0x12e96c2bfea6e835cf8dd38a5834fa61cf723736",
+          "target": "_blank",
+          "rel": "noreferrer"
+        },
+        {
+          "href": "https://basescan.org/token/0xa3a34a0d9a08ccddb6ed422ac0a28a06731335aa",
+          "target": "_blank",
+          "rel": "noreferrer"
+        },
+        {
+          "href": "https://basescan.org/token/0xa3a34a0d9a08ccddb6ed422ac0a28a06731335aa",
+          "target": "_blank",
+          "rel": "noreferrer"
+        },
+        {
+          "href": "https://basescan.org/token/0xa3a34a0d9a08ccddb6ed422ac0a28a06731335aa",
+          "target": "_blank",
+          "rel": "noreferrer"
+        },
+        {
+          "href": "https://basescan.org/token/0x378c326a472915d38b2d8d41e1345987835fab64",
+          "target": "_blank",
+          "rel": "noreferrer"
+        },
+        {
+          "href": "https://basescan.org/token/0x378c326a472915d38b2d8d41e1345987835fab64",
+          "target": "_blank",
+          "rel": "noreferrer"
+        },
+        {
+          "href": "https://basescan.org/token/0x378c326a472915d38b2d8d41e1345987835fab64",
+          "target": "_blank",
+          "rel": "noreferrer"
+        }
+      ]
+    },
+    {
+      "name": "holdings light 1400",
+      "passed": true,
+      "viewport": 1400,
+      "documentWidth": 1400,
+      "basket": {
+        "x": 92,
+        "y": 72,
+        "width": 820,
+        "height": 608,
+        "top": 72,
+        "right": 912,
+        "bottom": 680,
+        "left": 92
+      },
+      "tabs": [
+        {
+          "text": "Exposure",
+          "visible": false,
+          "bounds": {
+            "x": 0,
+            "y": 0,
+            "width": 0,
+            "height": 0,
+            "top": 0,
+            "right": 0,
+            "bottom": 0,
+            "left": 0
+          }
+        },
+        {
+          "text": "Collateral",
+          "visible": false,
+          "bounds": {
+            "x": 0,
+            "y": 0,
+            "width": 0,
+            "height": 0,
+            "top": 0,
+            "right": 0,
+            "bottom": 0,
+            "left": 0
+          }
+        },
+        {
+          "text": "Exposure",
+          "visible": true,
+          "bounds": {
+            "x": 118,
+            "y": 98,
+            "width": 84.34375,
+            "height": 28,
+            "top": 98,
+            "right": 202.34375,
+            "bottom": 126,
+            "left": 118
+          }
+        },
+        {
+          "text": "Collateral",
+          "visible": true,
+          "bounds": {
+            "x": 202.34375,
+            "y": 98,
+            "width": 85.9375,
+            "height": 28,
+            "top": 98,
+            "right": 288.28125,
+            "bottom": 126,
+            "left": 202.34375
+          }
+        }
+      ],
+      "links": [
+        {
+          "href": "https://basescan.org/token/0xcbb7c0000ab88b473b1f5afd9ef808440eed33bf",
+          "target": "_blank",
+          "rel": "noreferrer"
+        },
+        {
+          "href": "https://basescan.org/token/0xcbb7c0000ab88b473b1f5afd9ef808440eed33bf",
+          "target": "_blank",
+          "rel": "noreferrer"
+        },
+        {
+          "href": "https://basescan.org/token/0xcbb7c0000ab88b473b1f5afd9ef808440eed33bf",
+          "target": "_blank",
+          "rel": "noreferrer"
+        },
+        {
+          "href": "https://basescan.org/token/0x4200000000000000000000000000000000000006",
+          "target": "_blank",
+          "rel": "noreferrer"
+        },
+        {
+          "href": "https://basescan.org/token/0x4200000000000000000000000000000000000006",
+          "target": "_blank",
+          "rel": "noreferrer"
+        },
+        {
+          "href": "https://basescan.org/token/0x4200000000000000000000000000000000000006",
+          "target": "_blank",
+          "rel": "noreferrer"
+        },
+        {
+          "href": "https://basescan.org/token/0x2615a94df961278dcbc41fb0a54fec5f10a693ae",
+          "target": "_blank",
+          "rel": "noreferrer"
+        },
+        {
+          "href": "https://basescan.org/token/0x2615a94df961278dcbc41fb0a54fec5f10a693ae",
+          "target": "_blank",
+          "rel": "noreferrer"
+        },
+        {
+          "href": "https://basescan.org/token/0x2615a94df961278dcbc41fb0a54fec5f10a693ae",
+          "target": "_blank",
+          "rel": "noreferrer"
+        },
+        {
+          "href": "https://basescan.org/token/0x9b8df6e244526ab5f6e6400d331db28c8fdddb55",
+          "target": "_blank",
+          "rel": "noreferrer"
+        },
+        {
+          "href": "https://basescan.org/token/0x9b8df6e244526ab5f6e6400d331db28c8fdddb55",
+          "target": "_blank",
+          "rel": "noreferrer"
+        },
+        {
+          "href": "https://basescan.org/token/0x9b8df6e244526ab5f6e6400d331db28c8fdddb55",
+          "target": "_blank",
+          "rel": "noreferrer"
+        },
+        {
+          "href": "https://basescan.org/token/0x15d0e0c55a3e7ee67152ad7e89acf164253ff68d",
+          "target": "_blank",
+          "rel": "noreferrer"
+        },
+        {
+          "href": "https://basescan.org/token/0x15d0e0c55a3e7ee67152ad7e89acf164253ff68d",
+          "target": "_blank",
+          "rel": "noreferrer"
+        },
+        {
+          "href": "https://basescan.org/token/0x15d0e0c55a3e7ee67152ad7e89acf164253ff68d",
+          "target": "_blank",
+          "rel": "noreferrer"
+        },
+        {
+          "href": "https://basescan.org/token/0x12e96c2bfea6e835cf8dd38a5834fa61cf723736",
+          "target": "_blank",
+          "rel": "noreferrer"
+        },
+        {
+          "href": "https://basescan.org/token/0x12e96c2bfea6e835cf8dd38a5834fa61cf723736",
+          "target": "_blank",
+          "rel": "noreferrer"
+        },
+        {
+          "href": "https://basescan.org/token/0x12e96c2bfea6e835cf8dd38a5834fa61cf723736",
+          "target": "_blank",
+          "rel": "noreferrer"
+        },
+        {
+          "href": "https://basescan.org/token/0xa3a34a0d9a08ccddb6ed422ac0a28a06731335aa",
+          "target": "_blank",
+          "rel": "noreferrer"
+        },
+        {
+          "href": "https://basescan.org/token/0xa3a34a0d9a08ccddb6ed422ac0a28a06731335aa",
+          "target": "_blank",
+          "rel": "noreferrer"
+        },
+        {
+          "href": "https://basescan.org/token/0xa3a34a0d9a08ccddb6ed422ac0a28a06731335aa",
+          "target": "_blank",
+          "rel": "noreferrer"
+        },
+        {
+          "href": "https://basescan.org/token/0x378c326a472915d38b2d8d41e1345987835fab64",
+          "target": "_blank",
+          "rel": "noreferrer"
+        },
+        {
+          "href": "https://basescan.org/token/0x378c326a472915d38b2d8d41e1345987835fab64",
+          "target": "_blank",
+          "rel": "noreferrer"
+        },
+        {
+          "href": "https://basescan.org/token/0x378c326a472915d38b2d8d41e1345987835fab64",
+          "target": "_blank",
+          "rel": "noreferrer"
+        }
+      ]
+    },
+    {
+      "name": "holdings dark 375",
+      "passed": true,
+      "viewport": 375,
+      "documentWidth": 375,
+      "basket": {
+        "x": 0,
+        "y": 0,
+        "width": 375,
+        "height": 1031,
+        "top": 0,
+        "right": 375,
+        "bottom": 1031,
+        "left": 0
+      },
+      "tabs": [
+        {
+          "text": "Exposure",
+          "visible": true,
+          "bounds": {
+            "x": 10,
+            "y": 70,
+            "width": 177.5,
+            "height": 36,
+            "top": 70,
+            "right": 187.5,
+            "bottom": 106,
+            "left": 10
+          }
+        },
+        {
+          "text": "Collateral",
+          "visible": true,
+          "bounds": {
+            "x": 187.5,
+            "y": 70,
+            "width": 177.5,
+            "height": 36,
+            "top": 70,
+            "right": 365,
+            "bottom": 106,
+            "left": 187.5
+          }
+        },
+        {
+          "text": "Exposure",
+          "visible": false,
+          "bounds": {
+            "x": 0,
+            "y": 0,
+            "width": 0,
+            "height": 0,
+            "top": 0,
+            "right": 0,
+            "bottom": 0,
+            "left": 0
+          }
+        },
+        {
+          "text": "Collateral",
+          "visible": false,
+          "bounds": {
+            "x": 0,
+            "y": 0,
+            "width": 0,
+            "height": 0,
+            "top": 0,
+            "right": 0,
+            "bottom": 0,
+            "left": 0
+          }
+        }
+      ],
+      "links": [
+        {
+          "href": "https://basescan.org/token/0xcbb7c0000ab88b473b1f5afd9ef808440eed33bf",
+          "target": "_blank",
+          "rel": "noreferrer"
+        },
+        {
+          "href": "https://basescan.org/token/0x4200000000000000000000000000000000000006",
+          "target": "_blank",
+          "rel": "noreferrer"
+        },
+        {
+          "href": "https://basescan.org/token/0x2615a94df961278dcbc41fb0a54fec5f10a693ae",
+          "target": "_blank",
+          "rel": "noreferrer"
+        },
+        {
+          "href": "https://basescan.org/token/0x9b8df6e244526ab5f6e6400d331db28c8fdddb55",
+          "target": "_blank",
+          "rel": "noreferrer"
+        },
+        {
+          "href": "https://basescan.org/token/0x15d0e0c55a3e7ee67152ad7e89acf164253ff68d",
+          "target": "_blank",
+          "rel": "noreferrer"
+        },
+        {
+          "href": "https://basescan.org/token/0x12e96c2bfea6e835cf8dd38a5834fa61cf723736",
+          "target": "_blank",
+          "rel": "noreferrer"
+        },
+        {
+          "href": "https://basescan.org/token/0xa3a34a0d9a08ccddb6ed422ac0a28a06731335aa",
+          "target": "_blank",
+          "rel": "noreferrer"
+        },
+        {
+          "href": "https://basescan.org/token/0x378c326a472915d38b2d8d41e1345987835fab64",
+          "target": "_blank",
+          "rel": "noreferrer"
+        }
+      ]
+    },
+    {
+      "name": "holdings dark 639",
+      "passed": true,
+      "viewport": 639,
+      "documentWidth": 639,
+      "basket": {
+        "x": 0,
+        "y": 0,
+        "width": 639,
+        "height": 1031,
+        "top": 0,
+        "right": 639,
+        "bottom": 1031,
+        "left": 0
+      },
+      "tabs": [
+        {
+          "text": "Exposure",
+          "visible": true,
+          "bounds": {
+            "x": 10,
+            "y": 70,
+            "width": 309.5,
+            "height": 36,
+            "top": 70,
+            "right": 319.5,
+            "bottom": 106,
+            "left": 10
+          }
+        },
+        {
+          "text": "Collateral",
+          "visible": true,
+          "bounds": {
+            "x": 319.5,
+            "y": 70,
+            "width": 309.5,
+            "height": 36,
+            "top": 70,
+            "right": 629,
+            "bottom": 106,
+            "left": 319.5
+          }
+        },
+        {
+          "text": "Exposure",
+          "visible": false,
+          "bounds": {
+            "x": 0,
+            "y": 0,
+            "width": 0,
+            "height": 0,
+            "top": 0,
+            "right": 0,
+            "bottom": 0,
+            "left": 0
+          }
+        },
+        {
+          "text": "Collateral",
+          "visible": false,
+          "bounds": {
+            "x": 0,
+            "y": 0,
+            "width": 0,
+            "height": 0,
+            "top": 0,
+            "right": 0,
+            "bottom": 0,
+            "left": 0
+          }
+        }
+      ],
+      "links": [
+        {
+          "href": "https://basescan.org/token/0xcbb7c0000ab88b473b1f5afd9ef808440eed33bf",
+          "target": "_blank",
+          "rel": "noreferrer"
+        },
+        {
+          "href": "https://basescan.org/token/0x4200000000000000000000000000000000000006",
+          "target": "_blank",
+          "rel": "noreferrer"
+        },
+        {
+          "href": "https://basescan.org/token/0x2615a94df961278dcbc41fb0a54fec5f10a693ae",
+          "target": "_blank",
+          "rel": "noreferrer"
+        },
+        {
+          "href": "https://basescan.org/token/0x9b8df6e244526ab5f6e6400d331db28c8fdddb55",
+          "target": "_blank",
+          "rel": "noreferrer"
+        },
+        {
+          "href": "https://basescan.org/token/0x15d0e0c55a3e7ee67152ad7e89acf164253ff68d",
+          "target": "_blank",
+          "rel": "noreferrer"
+        },
+        {
+          "href": "https://basescan.org/token/0x12e96c2bfea6e835cf8dd38a5834fa61cf723736",
+          "target": "_blank",
+          "rel": "noreferrer"
+        },
+        {
+          "href": "https://basescan.org/token/0xa3a34a0d9a08ccddb6ed422ac0a28a06731335aa",
+          "target": "_blank",
+          "rel": "noreferrer"
+        },
+        {
+          "href": "https://basescan.org/token/0x378c326a472915d38b2d8d41e1345987835fab64",
+          "target": "_blank",
+          "rel": "noreferrer"
+        }
+      ]
+    },
+    {
+      "name": "holdings dark 640",
+      "passed": true,
+      "viewport": 640,
+      "documentWidth": 640,
+      "basket": {
+        "x": 4,
+        "y": 0,
+        "width": 632,
+        "height": 608,
+        "top": 0,
+        "right": 636,
+        "bottom": 608,
+        "left": 4
+      },
+      "tabs": [
+        {
+          "text": "Exposure",
+          "visible": false,
+          "bounds": {
+            "x": 0,
+            "y": 0,
+            "width": 0,
+            "height": 0,
+            "top": 0,
+            "right": 0,
+            "bottom": 0,
+            "left": 0
+          }
+        },
+        {
+          "text": "Collateral",
+          "visible": false,
+          "bounds": {
+            "x": 0,
+            "y": 0,
+            "width": 0,
+            "height": 0,
+            "top": 0,
+            "right": 0,
+            "bottom": 0,
+            "left": 0
+          }
+        },
+        {
+          "text": "Exposure",
+          "visible": true,
+          "bounds": {
+            "x": 30,
+            "y": 26,
+            "width": 84.34375,
+            "height": 28,
+            "top": 26,
+            "right": 114.34375,
+            "bottom": 54,
+            "left": 30
+          }
+        },
+        {
+          "text": "Collateral",
+          "visible": true,
+          "bounds": {
+            "x": 114.34375,
+            "y": 26,
+            "width": 85.9375,
+            "height": 28,
+            "top": 26,
+            "right": 200.28125,
+            "bottom": 54,
+            "left": 114.34375
+          }
+        }
+      ],
+      "links": [
+        {
+          "href": "https://basescan.org/token/0xcbb7c0000ab88b473b1f5afd9ef808440eed33bf",
+          "target": "_blank",
+          "rel": "noreferrer"
+        },
+        {
+          "href": "https://basescan.org/token/0xcbb7c0000ab88b473b1f5afd9ef808440eed33bf",
+          "target": "_blank",
+          "rel": "noreferrer"
+        },
+        {
+          "href": "https://basescan.org/token/0xcbb7c0000ab88b473b1f5afd9ef808440eed33bf",
+          "target": "_blank",
+          "rel": "noreferrer"
+        },
+        {
+          "href": "https://basescan.org/token/0x4200000000000000000000000000000000000006",
+          "target": "_blank",
+          "rel": "noreferrer"
+        },
+        {
+          "href": "https://basescan.org/token/0x4200000000000000000000000000000000000006",
+          "target": "_blank",
+          "rel": "noreferrer"
+        },
+        {
+          "href": "https://basescan.org/token/0x4200000000000000000000000000000000000006",
+          "target": "_blank",
+          "rel": "noreferrer"
+        },
+        {
+          "href": "https://basescan.org/token/0x2615a94df961278dcbc41fb0a54fec5f10a693ae",
+          "target": "_blank",
+          "rel": "noreferrer"
+        },
+        {
+          "href": "https://basescan.org/token/0x2615a94df961278dcbc41fb0a54fec5f10a693ae",
+          "target": "_blank",
+          "rel": "noreferrer"
+        },
+        {
+          "href": "https://basescan.org/token/0x2615a94df961278dcbc41fb0a54fec5f10a693ae",
+          "target": "_blank",
+          "rel": "noreferrer"
+        },
+        {
+          "href": "https://basescan.org/token/0x9b8df6e244526ab5f6e6400d331db28c8fdddb55",
+          "target": "_blank",
+          "rel": "noreferrer"
+        },
+        {
+          "href": "https://basescan.org/token/0x9b8df6e244526ab5f6e6400d331db28c8fdddb55",
+          "target": "_blank",
+          "rel": "noreferrer"
+        },
+        {
+          "href": "https://basescan.org/token/0x9b8df6e244526ab5f6e6400d331db28c8fdddb55",
+          "target": "_blank",
+          "rel": "noreferrer"
+        },
+        {
+          "href": "https://basescan.org/token/0x15d0e0c55a3e7ee67152ad7e89acf164253ff68d",
+          "target": "_blank",
+          "rel": "noreferrer"
+        },
+        {
+          "href": "https://basescan.org/token/0x15d0e0c55a3e7ee67152ad7e89acf164253ff68d",
+          "target": "_blank",
+          "rel": "noreferrer"
+        },
+        {
+          "href": "https://basescan.org/token/0x15d0e0c55a3e7ee67152ad7e89acf164253ff68d",
+          "target": "_blank",
+          "rel": "noreferrer"
+        },
+        {
+          "href": "https://basescan.org/token/0x12e96c2bfea6e835cf8dd38a5834fa61cf723736",
+          "target": "_blank",
+          "rel": "noreferrer"
+        },
+        {
+          "href": "https://basescan.org/token/0x12e96c2bfea6e835cf8dd38a5834fa61cf723736",
+          "target": "_blank",
+          "rel": "noreferrer"
+        },
+        {
+          "href": "https://basescan.org/token/0x12e96c2bfea6e835cf8dd38a5834fa61cf723736",
+          "target": "_blank",
+          "rel": "noreferrer"
+        },
+        {
+          "href": "https://basescan.org/token/0xa3a34a0d9a08ccddb6ed422ac0a28a06731335aa",
+          "target": "_blank",
+          "rel": "noreferrer"
+        },
+        {
+          "href": "https://basescan.org/token/0xa3a34a0d9a08ccddb6ed422ac0a28a06731335aa",
+          "target": "_blank",
+          "rel": "noreferrer"
+        },
+        {
+          "href": "https://basescan.org/token/0xa3a34a0d9a08ccddb6ed422ac0a28a06731335aa",
+          "target": "_blank",
+          "rel": "noreferrer"
+        },
+        {
+          "href": "https://basescan.org/token/0x378c326a472915d38b2d8d41e1345987835fab64",
+          "target": "_blank",
+          "rel": "noreferrer"
+        },
+        {
+          "href": "https://basescan.org/token/0x378c326a472915d38b2d8d41e1345987835fab64",
+          "target": "_blank",
+          "rel": "noreferrer"
+        },
+        {
+          "href": "https://basescan.org/token/0x378c326a472915d38b2d8d41e1345987835fab64",
+          "target": "_blank",
+          "rel": "noreferrer"
+        }
+      ]
+    },
+    {
+      "name": "holdings dark 1400",
+      "passed": true,
+      "viewport": 1400,
+      "documentWidth": 1400,
+      "basket": {
+        "x": 92,
+        "y": 72,
+        "width": 820,
+        "height": 608,
+        "top": 72,
+        "right": 912,
+        "bottom": 680,
+        "left": 92
+      },
+      "tabs": [
+        {
+          "text": "Exposure",
+          "visible": false,
+          "bounds": {
+            "x": 0,
+            "y": 0,
+            "width": 0,
+            "height": 0,
+            "top": 0,
+            "right": 0,
+            "bottom": 0,
+            "left": 0
+          }
+        },
+        {
+          "text": "Collateral",
+          "visible": false,
+          "bounds": {
+            "x": 0,
+            "y": 0,
+            "width": 0,
+            "height": 0,
+            "top": 0,
+            "right": 0,
+            "bottom": 0,
+            "left": 0
+          }
+        },
+        {
+          "text": "Exposure",
+          "visible": true,
+          "bounds": {
+            "x": 118,
+            "y": 98,
+            "width": 84.34375,
+            "height": 28,
+            "top": 98,
+            "right": 202.34375,
+            "bottom": 126,
+            "left": 118
+          }
+        },
+        {
+          "text": "Collateral",
+          "visible": true,
+          "bounds": {
+            "x": 202.34375,
+            "y": 98,
+            "width": 85.9375,
+            "height": 28,
+            "top": 98,
+            "right": 288.28125,
+            "bottom": 126,
+            "left": 202.34375
+          }
+        }
+      ],
+      "links": [
+        {
+          "href": "https://basescan.org/token/0xcbb7c0000ab88b473b1f5afd9ef808440eed33bf",
+          "target": "_blank",
+          "rel": "noreferrer"
+        },
+        {
+          "href": "https://basescan.org/token/0xcbb7c0000ab88b473b1f5afd9ef808440eed33bf",
+          "target": "_blank",
+          "rel": "noreferrer"
+        },
+        {
+          "href": "https://basescan.org/token/0xcbb7c0000ab88b473b1f5afd9ef808440eed33bf",
+          "target": "_blank",
+          "rel": "noreferrer"
+        },
+        {
+          "href": "https://basescan.org/token/0x4200000000000000000000000000000000000006",
+          "target": "_blank",
+          "rel": "noreferrer"
+        },
+        {
+          "href": "https://basescan.org/token/0x4200000000000000000000000000000000000006",
+          "target": "_blank",
+          "rel": "noreferrer"
+        },
+        {
+          "href": "https://basescan.org/token/0x4200000000000000000000000000000000000006",
+          "target": "_blank",
+          "rel": "noreferrer"
+        },
+        {
+          "href": "https://basescan.org/token/0x2615a94df961278dcbc41fb0a54fec5f10a693ae",
+          "target": "_blank",
+          "rel": "noreferrer"
+        },
+        {
+          "href": "https://basescan.org/token/0x2615a94df961278dcbc41fb0a54fec5f10a693ae",
+          "target": "_blank",
+          "rel": "noreferrer"
+        },
+        {
+          "href": "https://basescan.org/token/0x2615a94df961278dcbc41fb0a54fec5f10a693ae",
+          "target": "_blank",
+          "rel": "noreferrer"
+        },
+        {
+          "href": "https://basescan.org/token/0x9b8df6e244526ab5f6e6400d331db28c8fdddb55",
+          "target": "_blank",
+          "rel": "noreferrer"
+        },
+        {
+          "href": "https://basescan.org/token/0x9b8df6e244526ab5f6e6400d331db28c8fdddb55",
+          "target": "_blank",
+          "rel": "noreferrer"
+        },
+        {
+          "href": "https://basescan.org/token/0x9b8df6e244526ab5f6e6400d331db28c8fdddb55",
+          "target": "_blank",
+          "rel": "noreferrer"
+        },
+        {
+          "href": "https://basescan.org/token/0x15d0e0c55a3e7ee67152ad7e89acf164253ff68d",
+          "target": "_blank",
+          "rel": "noreferrer"
+        },
+        {
+          "href": "https://basescan.org/token/0x15d0e0c55a3e7ee67152ad7e89acf164253ff68d",
+          "target": "_blank",
+          "rel": "noreferrer"
+        },
+        {
+          "href": "https://basescan.org/token/0x15d0e0c55a3e7ee67152ad7e89acf164253ff68d",
+          "target": "_blank",
+          "rel": "noreferrer"
+        },
+        {
+          "href": "https://basescan.org/token/0x12e96c2bfea6e835cf8dd38a5834fa61cf723736",
+          "target": "_blank",
+          "rel": "noreferrer"
+        },
+        {
+          "href": "https://basescan.org/token/0x12e96c2bfea6e835cf8dd38a5834fa61cf723736",
+          "target": "_blank",
+          "rel": "noreferrer"
+        },
+        {
+          "href": "https://basescan.org/token/0x12e96c2bfea6e835cf8dd38a5834fa61cf723736",
+          "target": "_blank",
+          "rel": "noreferrer"
+        },
+        {
+          "href": "https://basescan.org/token/0xa3a34a0d9a08ccddb6ed422ac0a28a06731335aa",
+          "target": "_blank",
+          "rel": "noreferrer"
+        },
+        {
+          "href": "https://basescan.org/token/0xa3a34a0d9a08ccddb6ed422ac0a28a06731335aa",
+          "target": "_blank",
+          "rel": "noreferrer"
+        },
+        {
+          "href": "https://basescan.org/token/0xa3a34a0d9a08ccddb6ed422ac0a28a06731335aa",
+          "target": "_blank",
+          "rel": "noreferrer"
+        },
+        {
+          "href": "https://basescan.org/token/0x378c326a472915d38b2d8d41e1345987835fab64",
+          "target": "_blank",
+          "rel": "noreferrer"
+        },
+        {
+          "href": "https://basescan.org/token/0x378c326a472915d38b2d8d41e1345987835fab64",
+          "target": "_blank",
+          "rel": "noreferrer"
+        },
+        {
+          "href": "https://basescan.org/token/0x378c326a472915d38b2d8d41e1345987835fab64",
+          "target": "_blank",
+          "rel": "noreferrer"
+        }
+      ]
+    }
+  ]
+}

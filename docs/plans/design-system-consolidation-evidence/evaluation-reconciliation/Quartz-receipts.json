@@ -1,0 +1,242 @@
+{
+  "label": "Quartz",
+  "sourceHashes": {
+    "display-preferences-study.tsx": "85c874569d656a8e08077ee30e414b84bf35a52e285f6f78d71d6d73ab5c6532",
+    "tests/display-preferences-study.test.tsx": "017210238cbca09c30207efedc10647f239dff233dae770a4af6a331e14d9837"
+  },
+  "unit": {
+    "originalReportSha256": "6641d9ae0eee49ae306170262fb4cf777189a0dad39b1a538284fabe926eb6e1",
+    "command": "node <installed-vitest>/vitest.mjs run src/views/internal/design-system/tests/display-preferences-study.test.tsx --reporter=json --outputFile=<new-report>",
+    "workingDirectory": "Quartz preserved snapshot",
+    "success": true,
+    "total": 4,
+    "passed": 4,
+    "failed": 0,
+    "results": [
+      {
+        "title": "display preferences study starts on the first option of each select with no saved feedback",
+        "status": "passed",
+        "duration": 123.81270799999993,
+        "failureMessages": []
+      },
+      {
+        "title": "display preferences study saves the selected values for the mounted session and confirms",
+        "status": "passed",
+        "duration": 70.75554199999988,
+        "failureMessages": []
+      },
+      {
+        "title": "display preferences study clears the saved feedback when either select changes",
+        "status": "passed",
+        "duration": 77.4708340000002,
+        "failureMessages": []
+      },
+      {
+        "title": "display preferences study restores the initial options and clears the feedback on reset",
+        "status": "passed",
+        "duration": 71.37283300000013,
+        "failureMessages": []
+      }
+    ]
+  },
+  "browser": [
+    {
+      "kind": "original",
+      "originalReportSha256": "6919696513cf05e1e21cb9ff9fff344ea989f00b8c0a866374c31ee3da348b00",
+      "stats": {
+        "startTime": "2026-09-09T04:12:24.375Z",
+        "duration": 5925.532,
+        "expected": 4,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "cells": [
+        {
+          "title": "light 375",
+          "status": "expected",
+          "resultStatus": "passed",
+          "retry": 0,
+          "duration": 2544,
+          "errors": [],
+          "attachments": [
+            {
+              "name": "initial",
+              "sha256": "3457a3611f5203f4e8e11fbf44054aedd3bf98cc873791f9876b60e0e5c0ecf4",
+              "path": "../evaluation/Quartz-light-375-initial.png"
+            },
+            {
+              "name": "saved",
+              "sha256": "58ab6c2aa45a31e25b5b8bf1e32ccbef946104e9ebdf8d5af84d635eb000c7b5",
+              "path": "../evaluation/Quartz-light-375-saved.png"
+            },
+            {
+              "name": "geometry",
+              "sha256": "7737a97fd0f19fe821339b6f87999a1dcdb7c3b5fcd91b84fe0173a8b077932f",
+              "path": "Quartz-original-light-375-geometry.json"
+            }
+          ]
+        },
+        {
+          "title": "light 1400",
+          "status": "expected",
+          "resultStatus": "passed",
+          "retry": 0,
+          "duration": 703,
+          "errors": [],
+          "attachments": [
+            {
+              "name": "initial",
+              "sha256": "bfbe8c7128003d41f5aae97d91317c3ffa45afb999cc1a7b8a4ea653a8cc1294",
+              "path": "../evaluation/Quartz-light-1400-initial.png"
+            },
+            {
+              "name": "saved",
+              "sha256": "5de3770bc44cbd09f33257b91c3720780356c4a6ffa9bd5a25c8b29d81919a86",
+              "path": "../evaluation/Quartz-light-1400-saved.png"
+            },
+            {
+              "name": "geometry",
+              "sha256": "52f6c4cd8e608419ff15ecb9858e3a4cf0073a3686d618283651506e3dbcc065",
+              "path": "Quartz-original-light-1400-geometry.json"
+            }
+          ]
+        },
+        {
+          "title": "dark 375",
+          "status": "expected",
+          "resultStatus": "passed",
+          "retry": 0,
+          "duration": 660,
+          "errors": [],
+          "attachments": [
+            {
+              "name": "initial",
+              "sha256": "ec18fcae8e155fbbca4b104bb2c024af3e5944025417dadf8005aa1fad3d1ecb",
+              "path": "../evaluation/Quartz-dark-375-initial.png"
+            },
+            {
+              "name": "saved",
+              "sha256": "9e4c9c05dca6b2c8ba7bc0383ceb61847b906c829296644300287caf846724fd",
+              "path": "../evaluation/Quartz-dark-375-saved.png"
+            },
+            {
+              "name": "geometry",
+              "sha256": "7737a97fd0f19fe821339b6f87999a1dcdb7c3b5fcd91b84fe0173a8b077932f",
+              "path": "Quartz-original-dark-375-geometry.json"
+            }
+          ]
+        },
+        {
+          "title": "dark 1400",
+          "status": "expected",
+          "resultStatus": "passed",
+          "retry": 0,
+          "duration": 573,
+          "errors": [],
+          "attachments": [
+            {
+              "name": "initial",
+              "sha256": "3e2f6b5b1219731bca07e988048bf82286316c8280900f3eb8ae92191d8009fa",
+              "path": "../evaluation/Quartz-dark-1400-initial.png"
+            },
+            {
+              "name": "saved",
+              "sha256": "7c1475bd32f50bda7366e9096e9799dbaa4dc17a6a745f99289d19907ff89460",
+              "path": "../evaluation/Quartz-dark-1400-saved.png"
+            },
+            {
+              "name": "geometry",
+              "sha256": "52f6c4cd8e608419ff15ecb9858e3a4cf0073a3686d618283651506e3dbcc065",
+              "path": "Quartz-original-dark-1400-geometry.json"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "kind": "supplemental",
+      "originalReportSha256": "17033ddece3220b5698e7e5fca3f1001476a4446f6dca8f4425d798d453b3f7b",
+      "stats": {
+        "startTime": "2026-09-09T14:53:19.119Z",
+        "duration": 7472.619000000001,
+        "expected": 4,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "cells": [
+        {
+          "title": "light 375",
+          "status": "expected",
+          "resultStatus": "passed",
+          "retry": 0,
+          "duration": 3084,
+          "errors": [],
+          "attachments": [
+            {
+              "name": "geometry",
+              "sha256": "3a4c2f67a3f9c0561f85634822b05677269e942054e92c79b0cc9ca57cb3c6d4",
+              "path": "Quartz-supplemental-light-375-geometry.json"
+            }
+          ]
+        },
+        {
+          "title": "light 1400",
+          "status": "expected",
+          "resultStatus": "passed",
+          "retry": 0,
+          "duration": 1166,
+          "errors": [],
+          "attachments": [
+            {
+              "name": "geometry",
+              "sha256": "4b030b6e10811f67505efb3e7b10a93e16b71ae92a5fa5cb26daa4867cd0d5b5",
+              "path": "Quartz-supplemental-light-1400-geometry.json"
+            }
+          ]
+        },
+        {
+          "title": "dark 375",
+          "status": "expected",
+          "resultStatus": "passed",
+          "retry": 0,
+          "duration": 1103,
+          "errors": [],
+          "attachments": [
+            {
+              "name": "open-number-format",
+              "sha256": "f2c4d09dc493f607f38436facf692f352e6479190ff637ce3f76d6cc6dbb0853",
+              "path": "Quartz-dark-375-open-number-format.png"
+            },
+            {
+              "name": "open-time-zone",
+              "sha256": "16dd1d25e760bc3e75941e961e8cac0e0d9f596e39020be7571aeed1b8092354",
+              "path": "Quartz-dark-375-open-time-zone.png"
+            },
+            {
+              "name": "geometry",
+              "sha256": "3a4c2f67a3f9c0561f85634822b05677269e942054e92c79b0cc9ca57cb3c6d4",
+              "path": "Quartz-supplemental-dark-375-geometry.json"
+            }
+          ]
+        },
+        {
+          "title": "dark 1400",
+          "status": "expected",
+          "resultStatus": "passed",
+          "retry": 0,
+          "duration": 901,
+          "errors": [],
+          "attachments": [
+            {
+              "name": "geometry",
+              "sha256": "4b030b6e10811f67505efb3e7b10a93e16b71ae92a5fa5cb26daa4867cd0d5b5",
+              "path": "Quartz-supplemental-dark-1400-geometry.json"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

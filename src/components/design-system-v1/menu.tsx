@@ -7,7 +7,7 @@ import {
   type ReactNode,
 } from 'react'
 
-import { v1SemanticRecipes as roles } from '@/components/ui/v1-semantic-recipes'
+import { v1SemanticRoles as roles } from '@/components/design-system-v1/semantic-roles'
 import { cn } from '@/lib/utils'
 import { popupItemGeometry, popupItemTypography } from './popup-item-geometry'
 

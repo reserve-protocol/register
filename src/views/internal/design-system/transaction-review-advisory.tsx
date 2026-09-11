@@ -1,7 +1,6 @@
-import { candidateSemanticRoles } from '@/components/design-system-v1/semantic-roles'
+import { v1SemanticRoles } from '@/components/design-system-v1/semantic-roles'
 import { v1Typography } from '@/components/design-system-v1/typography'
 import { Link } from '@/components/design-system-v1/link'
-import { v1SemanticRecipes as roles } from '@/components/ui/v1-semantic-recipes'
 import { X } from 'lucide-react'
 
 import { transactionAttachedRegionGeometry } from '@/components/design-system-v1/transaction-task-geometry'
@@ -25,18 +24,20 @@ export const TransactionReviewAdvisory = ({
         <div className="grid gap-1">
           <div className="flex items-center justify-between gap-4">
             <h4
-              className={`${v1Typography.itemTitle} ${candidateSemanticRoles.feedback.warning.foreground}`}
+              className={`${v1Typography.itemTitle} ${v1SemanticRoles.feedback.warning.foreground}`}
             >
               {content.title}
             </h4>
             <AdvisoryDismissAction onDismiss={onDismiss} />
           </div>
-          <p className={`${v1Typography.supporting} ${roles.text.supporting}`}>
+          <p
+            className={`${v1Typography.supporting} ${v1SemanticRoles.text.supporting}`}
+          >
             {content.description}
           </p>
           {content.supporting && (
             <p
-              className={`${v1Typography.supporting} ${roles.text.supporting} mt-1`}
+              className={`${v1Typography.supporting} ${v1SemanticRoles.text.supporting} mt-1`}
             >
               {content.supporting}
             </p>
@@ -63,7 +64,7 @@ const AdvisoryDismissAction = ({ onDismiss }: { onDismiss: () => void }) => (
     type="button"
     aria-label="Dismiss suggestion"
     onClick={onDismiss}
-    className={`relative inline-flex size-5 shrink-0 items-center justify-center rounded-full text-foreground transition-colors duration-120 after:absolute after:-inset-3 after:content-[''] hover:bg-muted active:bg-border/50 focus-visible:outline-none ${roles.focus.onContent}`}
+    className={`relative inline-flex size-5 shrink-0 items-center justify-center rounded-full text-foreground transition-colors duration-120 after:absolute after:-inset-3 after:content-[''] hover:bg-muted active:bg-border/50 focus-visible:outline-none ${v1SemanticRoles.focus.visibleOnContent}`}
   >
     <X aria-hidden="true" className="size-4 stroke-[1.5]" />
   </button>

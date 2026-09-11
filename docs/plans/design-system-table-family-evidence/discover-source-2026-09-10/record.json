@@ -1,0 +1,34 @@
+{
+  "recordedAt": "2026-09-10T20:47:36.074Z",
+  "selection": "discover source",
+  "scope": "Only the named passing cases are retained; other tests in the run are not endorsed.",
+  "sourceBoundary": "Public source digest checked during each case; no environment hashes retained. Owned server startup and installed dependencies are not source-attested. Fixture assets may use logo fallbacks.",
+  "cases": [
+    {
+      "name": "discover source 390",
+      "status": "passed",
+      "sourceDigest": "7a791134121d68a5ee9336d141d53994def79b9e51ac6537d6a85b776359f700",
+      "observations": []
+    },
+    {
+      "name": "discover source 1400",
+      "status": "passed",
+      "sourceDigest": "7a791134121d68a5ee9336d141d53994def79b9e51ac6537d6a85b776359f700",
+      "observations": []
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "discover-source-390-source-default.png",
+      "sha256": "4a2b72b766a237068c45caa343d45fefeca330d7231f568c2833f570d5108fba"
+    },
+    {
+      "path": "discover-source-1400-source-default.png",
+      "sha256": "5945b207b6e991b6b2dabb1ba047a6cdd8277017a66b705a07a51ff3db7455c0"
+    },
+    {
+      "path": "discover-source-1400-source-basket-hover.png",
+      "sha256": "e384544f7777588d6a98e61c5b67dd9f5ffb239a45520804e862a5f9d4e0b01f"
+    }
+  ]
+}

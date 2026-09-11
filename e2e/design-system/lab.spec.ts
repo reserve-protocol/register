@@ -1,4 +1,8 @@
 import { expect, test } from '../fixtures/base'
+import { COMPONENT_ITEMS } from '../../src/views/internal/design-system/component-catalog'
+import { CURRENT_REVIEW } from '../../src/views/internal/design-system/current-review'
+import { loadSnapshot } from '../helpers/snapshots'
+import { advanceTime, freezeTime } from '../helpers/clock'
 
 const THEMES = ['light', 'dark'] as const
 const SURFACES = [
@@ -162,7 +166,7 @@ test.describe('design system lab', () => {
     ).toBe(true)
   })
 
-  test('prepares Link review and keeps Accordion provisional', async ({
+  test('preserves the accepted Link and informational Accordion baselines', async ({
     page,
   }) => {
     await page.addInitScript(() => {
@@ -190,7 +194,7 @@ test.describe('design system lab', () => {
     await expect(accordionSheet).toBeVisible()
     await expect(
       page.getByTestId('component-review-readiness')
-    ).toHaveAttribute('data-review-readiness', 'provisional')
+    ).toHaveAttribute('data-review-readiness', 'ready')
 
     const firstTrigger = accordionSheet.getByTestId(
       'design-system-accordion-staking-trigger'
@@ -202,7 +206,10 @@ test.describe('design system lab', () => {
     await secondTrigger.focus()
     await page.keyboard.press('Enter')
     await expect(secondTrigger).toHaveAttribute('aria-expanded', 'true')
-    await expect(firstTrigger).toHaveAttribute('aria-expanded', 'false')
+    await expect(firstTrigger).toHaveAttribute('aria-expanded', 'true')
+    await secondTrigger.press('Enter')
+    await expect(secondTrigger).toHaveAttribute('aria-expanded', 'false')
+    await expect(firstTrigger).toHaveAttribute('aria-expanded', 'true')
   })
 
   test('routes through adaptive drawer shell', async ({ page }) => {
@@ -680,7 +687,9 @@ test.describe('design system lab', () => {
     await page.goto('/internal/design-system/foundations/color')
     const colorDetail = page.getByTestId('foundation-detail-color')
     await colorDetail.getByTestId('foundation-secondary-details').click()
-    await expect(colorDetail.getByText('Grouping surface')).toBeVisible()
+    await expect(
+      colorDetail.getByText('Structural substrate', { exact: true })
+    ).toBeVisible()
     await expect(colorDetail.getByText('Performance positive')).toBeVisible()
     await expect(
       colorDetail.getByText('Current performance implementation')
@@ -689,7 +698,9 @@ test.describe('design system lab', () => {
       colorDetail.getByText('Smaller V1 performance candidate')
     ).toBeVisible()
     await expect(
-      colorDetail.getByText('--data-positive', { exact: true })
+      colorDetail
+        .getByText('Current performance palette', { exact: true })
+        .first()
     ).toBeVisible()
     await expect(colorDetail.getByText('110 uses')).toBeVisible()
     await expect(
@@ -718,13 +729,16 @@ test.describe('design system lab', () => {
     const componentCatalog = page.getByTestId('components-overview')
     await expect(componentCatalog).toBeVisible()
     const canonicalOverview = page.getByTestId('canonical-component-overview')
+    const renderedCount = COMPONENT_ITEMS.filter(
+      (item) => item.outputStatus === 'rendered'
+    ).length
     await expect(
       canonicalOverview.locator('article[data-testid^="component-overview-"]')
-    ).toHaveCount(33)
+    ).toHaveCount(renderedCount)
     const overviewOutputs = canonicalOverview.getByTestId(
       'component-overview-output'
     )
-    await expect(overviewOutputs).toHaveCount(33)
+    await expect(overviewOutputs).toHaveCount(renderedCount)
     await expect
       .poll(() =>
         overviewOutputs.evaluateAll((outputs) =>
@@ -734,7 +748,7 @@ test.describe('design system lab', () => {
       .toBe(true)
     await expect(
       canonicalOverview.getByTestId('component-overview-authority')
-    ).toHaveCount(33)
+    ).toHaveCount(renderedCount)
     await expect
       .poll(() =>
         page.evaluate(
@@ -750,9 +764,9 @@ test.describe('design system lab', () => {
     await expect(
       canonicalOverview.getByTestId('canonical-checkbox').first()
     ).toBeVisible()
-    const dialogSurfaces = canonicalOverview.getByTestId(
-      'canonical-dialog-surface'
-    )
+    const dialogSurfaces = canonicalOverview
+      .getByTestId('dialog-state-sheet')
+      .getByTestId('canonical-dialog-surface')
     await expect(dialogSurfaces).toHaveCount(3)
     await expect(dialogSurfaces.first()).toHaveAttribute(
       'data-width',
@@ -768,15 +782,19 @@ test.describe('design system lab', () => {
     await expect(
       canonicalOverview.getByTestId('canonical-metric').first()
     ).toBeVisible()
-    const emptyStates = canonicalOverview.getByTestId('canonical-empty-state')
+    const emptyStates = canonicalOverview
+      .getByTestId('empty-state-state-sheet')
+      .getByTestId('canonical-empty-state')
     await expect(emptyStates).toHaveCount(3)
     await expect(emptyStates.first()).toBeVisible()
     await expect(
       canonicalOverview.getByTestId('action-group-state-sheet')
     ).toBeVisible()
     await expect(
-      canonicalOverview.getByTestId('canonical-action-group')
-    ).toHaveCount(5)
+      canonicalOverview
+        .getByTestId('action-group-state-sheet')
+        .getByTestId('canonical-action-group')
+    ).toHaveCount(3)
     await expect(
       componentCatalog.getByTestId('information-row-state-sheet')
     ).toBeVisible()
@@ -791,7 +809,7 @@ test.describe('design system lab', () => {
     ).toHaveCount(2)
     await expect(
       componentCatalog.locator('[data-testid^="component-unrendered-"]')
-    ).toHaveCount(12)
+    ).toHaveCount(COMPONENT_ITEMS.length - renderedCount)
     await expect(
       canonicalOverview.getByTestId('link-state-sheet')
     ).toBeVisible()
@@ -943,14 +961,10 @@ test.describe('design system lab', () => {
     ])
     await expect(page.getByTestId('component-output-missing')).toHaveCount(0)
     await page.goto('/internal/design-system/components/table')
-    await expect(page.getByTestId('information-row-state-sheet')).toBeVisible()
-    await expect(page.getByTestId('canonical-index-data-slice')).toBeVisible()
-    await expect(page.getByTestId('canonical-entity-identity')).toHaveCount(3)
-    await expect(
-      page
-        .getByTestId('canonical-index-data-slice')
-        .getByTestId('canonical-metric-value')
-    ).toHaveCount(9)
+    await expect(page.getByTestId('table-family-review')).toBeVisible()
+    await expect(page.getByTestId('table-family-cells')).toBeVisible()
+    await expect(page.getByTestId('table-family-positions')).toBeVisible()
+    await expect(page.getByTestId('table-family-withdrawals')).toBeVisible()
     await expect(page.getByTestId('component-output-missing')).toHaveCount(0)
     await page.goto('/internal/design-system/components/empty-state')
     await expect(page.getByTestId('empty-state-state-sheet')).toBeVisible()
@@ -1012,12 +1026,12 @@ test.describe('design system lab', () => {
     const currentReview = page
       .getByTestId('project-status-page')
       .locator('section[aria-labelledby="current-review-heading"]')
-    await expect(
-      currentReview.locator(
-        'a[href="/internal/design-system/components/product-navigation"]'
-      )
-    ).toHaveCount(1)
-    await expect(currentReview.locator('a')).toHaveCount(1)
+    for (const item of CURRENT_REVIEW) {
+      await expect(
+        currentReview.locator(`a[href="${item.destination}"]`)
+      ).toHaveCount(1)
+    }
+    await expect(currentReview.locator('a')).toHaveCount(CURRENT_REVIEW.length)
 
     await page.goto('/internal/design-system/studies')
     const studies = page.getByTestId('layout-studies-page')
@@ -1197,12 +1211,16 @@ test.describe('design system lab', () => {
       page.getByTestId('component-review-readiness')
     ).toHaveAttribute('data-review-readiness', 'provisional')
     await expectDelivery('dialog', 'canonical-candidate', 'current-baseline')
-    await expectDelivery('empty-state', 'canonical-candidate', 'exploratory')
-    await expect(page.getByTestId('canonical-button')).toHaveCount(2)
-    await expect(page.getByTestId('canonical-button').first()).toHaveCSS(
-      'height',
-      '44px'
+    await expectDelivery(
+      'empty-state',
+      'canonical-candidate',
+      'current-baseline'
     )
+    const emptyStateActions = page
+      .getByTestId('empty-state-state-sheet')
+      .getByTestId('canonical-button')
+    await expect(emptyStateActions).toHaveCount(3)
+    await expect(emptyStateActions.first()).toHaveCSS('height', '32px')
 
     await expectDelivery('button', 'canonical-candidate', 'current-baseline')
     await expect(
@@ -1708,7 +1726,7 @@ test.describe('design system lab', () => {
     await expect(sheet).toBeVisible()
     await expect(page.getByTestId('component-output-missing')).toHaveCount(0)
     await expect(
-      sheet.getByText('Canonical V1 candidate', { exact: true })
+      sheet.getByText('Canonical V1 · geometry under review', { exact: true })
     ).toBeVisible()
     await expect(
       sheet.getByText('Provisional component', { exact: true })
@@ -1790,7 +1808,13 @@ test.describe('design system lab', () => {
       })
     ).toBeVisible()
     await expect(homeSource.locator('.h-52')).toHaveCount(2)
-    await expect(homeSource).toHaveAttribute('data-source-point-count', '188')
+    const featured = loadSnapshot<{
+      items: { buildout: { performance: unknown[] }[] }
+    }>('shared/featured-dtfs.json')
+    await expect(homeSource).toHaveAttribute(
+      'data-source-point-count',
+      String(featured.items.buildout[0].performance.length)
+    )
     const launchMarker = homeSource.getByTestId('feature-card-launch-marker')
     const launchLine = homeSource.getByTestId('feature-card-launch-line')
     await expect(launchMarker).toBeVisible()
@@ -3017,16 +3041,30 @@ test.describe('design system lab', () => {
   })
 
   for (const theme of THEMES) {
-    test(`captures the ${theme} routed capability map`, async ({ page }) => {
-      await page.addInitScript((mode) => {
-        localStorage.setItem('theme-ui-color-mode', mode)
-      }, theme)
-      await page.emulateMedia({ reducedMotion: 'reduce' })
+    for (const surface of SURFACES)
+      test(`captures the ${theme} routed capability map: ${surface.id}`, async ({
+        page,
+      }) => {
+        test.skip(
+          process.platform !== 'darwin',
+          'Legacy full-content pixel baselines are macOS-only; use design-system:review on other platforms.'
+        )
+        await page.addInitScript((mode) => {
+          localStorage.setItem('theme-ui-color-mode', mode)
+        }, theme)
+        await page.emulateMedia({ reducedMotion: 'reduce' })
 
-      for (const surface of SURFACES) {
+        await freezeTime(page, 1788900000)
         await page.goto(surface.path, { waitUntil: 'domcontentloaded' })
         const region = page.getByTestId(surface.id)
         await expect(region).toBeVisible()
+
+        if (surface.id === 'components-overview') {
+          // Full-sheet geometry must settle before observer-driven controls and charts are captured.
+          await page.addStyleTag({ path: 'e2e/design-system/capture.css' })
+          await page.evaluate(() => document.fonts.ready)
+          await advanceTime(page, 1000)
+        }
 
         if (theme === 'dark') {
           await expect(page.locator('html')).toHaveClass(/dark/)
@@ -3034,13 +3072,20 @@ test.describe('design system lab', () => {
           await expect(page.locator('html')).not.toHaveClass(/dark/)
         }
 
-        await expect(region).toHaveScreenshot(`${surface.id}-${theme}.png`, {
-          animations: 'disabled',
-          caret: 'hide',
-          maxDiffPixels: 20,
-          stylePath: 'e2e/design-system/capture.css',
-        })
-      }
-    })
+        const platform =
+          surface.id === 'foundation-detail-radius'
+            ? `-${process.platform}`
+            : ''
+        await expect(region).toHaveScreenshot(
+          `${surface.id}-${theme}${platform}.png`,
+          {
+            animations: 'disabled',
+            caret: 'hide',
+            maxDiffPixels: 20,
+            timeout: surface.id === 'components-overview' ? 30000 : 7500,
+            stylePath: 'e2e/design-system/capture.css',
+          }
+        )
+      })
   }
 })

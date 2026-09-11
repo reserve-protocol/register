@@ -22,7 +22,7 @@ import {
   DialogTitle,
 } from '@/components/dialog'
 import { IconButton } from '@/components/icon-button'
-import { v1SemanticRecipes as roles } from '@/components/ui/v1-semantic-recipes'
+import { v1SemanticRoles as roles } from '@/components/design-system-v1/semantic-roles'
 import { cn } from '@/lib/utils'
 
 import { TransactionCommittedMode } from './transaction-committed-mode'
@@ -261,7 +261,9 @@ const StakeDialog = ({
               }
             >
               <SegmentedControlItem value="stake" className="max-[359px]:px-2">
-                Stake<span className="max-[359px]:hidden"> RSR</span>
+                <span>
+                  Stake<span className="max-[359px]:hidden"> RSR</span>
+                </span>
               </SegmentedControlItem>
               <SegmentedControlItem
                 value="unstake"

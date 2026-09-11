@@ -1,4 +1,4 @@
-import { v1SemanticRecipes as roles } from '@/components/ui/v1-semantic-recipes'
+import { v1SemanticRoles as roles } from '@/components/design-system-v1/semantic-roles'
 
 export const containedSelectionRecipe = {
   compact: {

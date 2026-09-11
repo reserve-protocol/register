@@ -9,24 +9,40 @@ import {
 import { ChainId } from '@/utils/chains'
 
 describe('canonical stacked identity geometry', () => {
-  it('keeps the medium chain badge legible and rounded-square', () => {
-    render(
-      <ChainBadgedLogo
-        address="0x2f8A339B5889FfaC4c5A956787cdA593b3c36867"
-        chain={ChainId.BSC}
-        size="md"
-        src="/imgs/socials/cmc20.png"
-        symbol="CMC20"
-      />
-    )
+  it.each([
+    ['sm', 10],
+    ['md', 12],
+    ['lg', 14],
+    ['xl', 16],
+  ] as const)(
+    'keeps the %s badge size and optical edge relationship',
+    (size, pixels) => {
+      render(
+        <ChainBadgedLogo
+          address="0x2f8A339B5889FfaC4c5A956787cdA593b3c36867"
+          chain={ChainId.BSC}
+          size={size}
+          src="/imgs/socials/cmc20.png"
+          symbol="CMC20"
+        />
+      )
 
-    const badge = screen.getByTestId('canonical-chain-badge')
-    expect(badge).toHaveAttribute('width', '12')
-    expect(badge).toHaveAttribute('height', '12')
-    expect(badge).toHaveClass('rounded')
-    expect(badge).toHaveClass('border')
-    expect(badge).not.toHaveClass('border-2', 'rounded-md', 'rounded-full')
-  })
+      const badge = screen.getByTestId('canonical-chain-badge')
+      expect(screen.getByTestId('canonical-chain-badged-logo')).toHaveAttribute(
+        'data-entity-logo-size',
+        size
+      )
+      expect(badge).toHaveAttribute('width', String(pixels))
+      expect(badge).toHaveAttribute('height', String(pixels))
+      expect(badge).toHaveClass(
+        ...(size === 'xl'
+          ? ['-bottom-0.5', '-right-[3px]', 'border-2']
+          : ['-bottom-[1.5px]', '-right-[2.5px]', 'border-[1.5px]'])
+      )
+      expect(badge).toHaveClass('rounded')
+      expect(badge).not.toHaveClass('rounded-md', 'rounded-full')
+    }
+  )
 
   it('keeps chain artwork at the requested size while the separator wraps it', () => {
     render(

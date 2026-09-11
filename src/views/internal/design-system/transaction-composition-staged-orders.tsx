@@ -3,9 +3,8 @@ import { Trans, useLingui } from '@lingui/react/macro'
 import { ArrowRight, PauseCircle } from 'lucide-react'
 
 import { Skeleton } from '@/components/design-system-v1/loading'
-import { candidateSemanticRoles as semanticRoles } from '@/components/design-system-v1/semantic-roles'
+import { v1SemanticRoles as semanticRoles } from '@/components/design-system-v1/semantic-roles'
 import { v1Typography } from '@/components/design-system-v1/typography'
-import { v1SemanticRecipes as roles } from '@/components/ui/v1-semantic-recipes'
 import { cn } from '@/lib/utils'
 
 import type {
@@ -65,7 +64,12 @@ export const AutomatedMintOrdersPanel = ({
                   <Trans>Collateral swaps</Trans>
                 )}
               </h5>
-              <p className={cn(v1Typography.supporting, roles.text.supporting)}>
+              <p
+                className={cn(
+                  v1Typography.supporting,
+                  semanticRoles.text.supporting
+                )}
+              >
                 {getOrdersDescription(state, operation)}
               </p>
             </div>
@@ -163,7 +167,7 @@ const EmptyOrders = ({
 }) => (
   <div className="flex min-h-72 items-center justify-center bg-transparent px-4 py-10 text-center">
     <div className="flex max-w-80 flex-col items-center gap-2">
-      {icon && <span className={roles.text.supporting}>{icon}</span>}
+      {icon && <span className={semanticRoles.text.supporting}>{icon}</span>}
       <h6
         className={cn(
           v1Typography.itemTitle,
@@ -172,7 +176,7 @@ const EmptyOrders = ({
       >
         {title}
       </h6>
-      <p className={cn(v1Typography.supporting, roles.text.supporting)}>
+      <p className={cn(v1Typography.supporting, semanticRoles.text.supporting)}>
         {detail}
       </p>
     </div>

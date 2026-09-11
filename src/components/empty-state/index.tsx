@@ -1,6 +1,6 @@
 import { ActionGroup } from '@/components/design-system-v1/action-group'
 import { v1Typography } from '@/components/design-system-v1/typography'
-import { v1SemanticRecipes } from '@/components/ui/v1-semantic-recipes'
+import { v1SemanticRoles } from '@/components/design-system-v1/semantic-roles'
 import { cn } from '@/lib/utils'
 import * as React from 'react'
 
@@ -38,8 +38,8 @@ export const EmptyState = React.forwardRef<HTMLDivElement, EmptyStateProps>(
           className={cn(
             'mb-2 flex size-6 items-center justify-center [&>svg]:size-5',
             mode === 'quiet'
-              ? v1SemanticRecipes.text.supporting
-              : v1SemanticRecipes.text.primary
+              ? v1SemanticRoles.text.supporting
+              : v1SemanticRoles.text.primary
           )}
         >
           {icon}
@@ -48,8 +48,8 @@ export const EmptyState = React.forwardRef<HTMLDivElement, EmptyStateProps>(
       <p
         className={cn(
           mode === 'quiet'
-            ? cn(v1Typography.body, v1SemanticRecipes.text.supporting)
-            : cn(v1Typography.itemTitle, v1SemanticRecipes.text.primary)
+            ? cn(v1Typography.body, v1SemanticRoles.text.supporting)
+            : cn(v1Typography.itemTitle, v1SemanticRoles.text.primary)
         )}
       >
         {title}
@@ -59,7 +59,7 @@ export const EmptyState = React.forwardRef<HTMLDivElement, EmptyStateProps>(
           className={cn(
             'mt-1 max-w-sm',
             v1Typography.supporting,
-            v1SemanticRecipes.text.supporting
+            v1SemanticRoles.text.supporting
           )}
         >
           {description}

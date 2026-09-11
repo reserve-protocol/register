@@ -2,10 +2,11 @@ import { Slottable, Slot } from '@radix-ui/react-slot'
 import { ArrowUpRight } from 'lucide-react'
 import { forwardRef, type AnchorHTMLAttributes, type ReactNode } from 'react'
 
-import { v1SemanticRecipes as roles } from '@/components/ui/v1-semantic-recipes'
+import { v1SemanticRoles as roles } from '@/components/design-system-v1/semantic-roles'
+import { v1Typography } from './typography'
 import { cn } from '@/lib/utils'
 
-export type LinkTreatment = 'inline' | 'standalone' | 'return'
+export type LinkTreatment = 'inline' | 'standalone' | 'return' | 'contextual'
 
 type LinkBaseProps = AnchorHTMLAttributes<HTMLAnchorElement> & {
   asChild?: boolean
@@ -22,7 +23,9 @@ export type LinkProps = LinkBaseProps &
 const treatmentClasses: Record<LinkTreatment, string> = {
   inline:
     'underline decoration-primary/50 underline-offset-2 hover:decoration-primary',
-  standalone: 'inline-flex items-center gap-1 text-sm font-medium',
+  standalone:
+    'inline-flex items-center gap-1 text-sm font-medium underline-offset-2 hover:underline',
+  contextual: `inline-flex items-center gap-1 ${v1Typography.body} text-foreground underline-offset-2 hover:underline`,
   return:
     'inline-flex items-center gap-1 text-sm font-light text-muted-foreground underline-offset-2 hover:text-primary hover:underline focus-visible:text-primary focus-visible:underline',
 }
@@ -62,7 +65,7 @@ export const Link = forwardRef<HTMLAnchorElement, LinkProps>(
         data-link-treatment={treatment}
         className={cn(
           'cursor-pointer text-primary transition-colors duration-120 focus-visible:outline-none',
-          roles.focus.onContent,
+          roles.focus.visibleOnContent,
           treatmentClasses[treatment],
           className
         )}

@@ -10,12 +10,7 @@ test('Transaction section navigation stays above contained previews while scroll
     await page.setViewportSize({ width, height: 900 })
     for (const id of ['rfq', 'stake', 'vote-lock', 'staged', 'atomic']) {
       const stage = page.getByTestId(`transaction-composition-${id}-stage`)
-      await stage.evaluate((el) =>
-        window.scrollTo(
-          0,
-          window.scrollY + el.getBoundingClientRect().top + 120
-        )
-      )
+      await stage.scrollIntoViewIfNeeded()
       const nav = page.locator(
         'nav[aria-labelledby="transaction-system-review-title"]'
       )

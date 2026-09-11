@@ -1,4 +1,5 @@
-[data-testid='design-system-lab'] nav {
+[data-testid='design-system-lab'] nav,
+[data-testid='design-system-lab'] .sticky {
   position: static !important;
 }
 

@@ -1,10 +1,4 @@
-/**
- * Intent-based layout relationships accepted by the V1 spacing foundation.
- *
- * These recipes prevent reviewable compositions from selecting raw spacing
- * values without naming the relationship they represent. Component-specific
- * geometry remains owned by the component contract.
- */
+// Relationships remain separate from component-owned geometry and semantic colors.
 export const v1LayoutRecipes = {
   inset: {
     ordinaryContent: 'p-6',

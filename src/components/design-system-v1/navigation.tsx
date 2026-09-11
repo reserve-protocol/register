@@ -11,7 +11,7 @@ import {
   useId,
 } from 'react'
 
-import { candidateSemanticRoles as roles } from './semantic-roles'
+import { v1SemanticRoles as roles } from '@/components/design-system-v1/semantic-roles'
 import {
   NavigationIndicator,
   type NavigationIndicatorDescriptor,
@@ -20,7 +20,6 @@ import { v1Typography } from './typography'
 import { EntityIdentity } from '@/components/entity-identity'
 import { Link } from './link'
 import { Menu, MenuContent, MenuItemSlot, MenuTrigger } from './menu'
-import { v1SemanticRecipes as semantic } from '@/components/ui/v1-semantic-recipes'
 import { cn } from '@/lib/utils'
 
 type NavigationDestinationBase = {
@@ -45,8 +44,7 @@ export interface NavigationGroup {
   destinations: NavigationDestination[]
 }
 
-export const navigationDestinationDrawerRowRecipe =
-  'min-h-12 gap-3 rounded-full px-4 py-3 text-sm font-medium leading-5 ring-1 ring-inset'
+export const navigationDestinationDrawerRowRecipe = `min-h-12 gap-3 rounded-full px-4 py-3 ${v1Typography.label} ring-1 ring-inset`
 
 export const productNavigationDrawerRowRecipe =
   navigationDestinationDrawerRowRecipe
@@ -97,26 +95,24 @@ const NavigationLink = forwardRef<HTMLAnchorElement, NavigationLinkProps>(
     const hasProductMeta = Boolean(destination.indicator || destination.meta)
     const className = cn(
       'group relative flex min-w-0 items-center text-foreground transition-colors duration-120 focus-visible:outline-none',
-      semantic.focus.onContentInset,
+      roles.focus.visibleInset,
       presentation === 'global' &&
         'h-10 shrink-0 gap-2 whitespace-nowrap rounded-full px-4 text-sm font-medium',
       presentation === 'global' &&
         !destination.unavailable &&
-        semantic.interaction.subtleHover,
+        roles.interaction.subtleHover,
       presentation === 'global-menu' && navigationDestinationPopupRowRecipe,
       isGlobalDrawer && navigationDestinationDrawerRowRecipe,
       isOutlinedDestinationRow &&
         (isCurrent ? 'ring-primary/30' : 'ring-border'),
-      isGlobalMenu &&
-        !destination.unavailable &&
-        semantic.interaction.subtleHover,
+      isGlobalMenu && !destination.unavailable && roles.interaction.subtleHover,
       isProductMenu &&
         !isProductDrawer &&
-        'min-h-11 gap-2 rounded-full p-3 text-sm font-medium leading-5',
+        `min-h-11 gap-2 rounded-full p-3 ${v1Typography.label}`,
       isProductDrawer && productNavigationDrawerRowRecipe,
       isProductMenu &&
         !destination.unavailable &&
-        `${semantic.interaction.subtleHover} ${semantic.interaction.subtleFocus}`,
+        `${roles.interaction.subtleHover} ${roles.interaction.subtleFocus}`,
       isProductRail && 'h-10 gap-1.5 rounded-full px-0',
       isCurrent &&
         presentation === 'global' &&
@@ -417,8 +413,8 @@ export const GlobalNavigation = ({
                   type="button"
                   data-testid="global-navigation-overflow-trigger"
                   className={cn(
-                    `flex h-10 shrink-0 items-center gap-2 whitespace-nowrap rounded-full px-4 text-sm font-medium transition-colors duration-120 focus-visible:outline-none ${semantic.interaction.subtleHover}`,
-                    semantic.focus.onContentInset,
+                    `flex h-10 shrink-0 items-center gap-2 whitespace-nowrap rounded-full px-4 text-sm font-medium transition-colors duration-120 focus-visible:outline-none ${roles.interaction.subtleHover}`,
+                    roles.focus.visibleInset,
                     overflowOpen && `${roles.surface.selected} text-primary`
                   )}
                 >
@@ -579,7 +575,7 @@ export const ProductNavigationMobileIdentityTrigger = forwardRef<
       aria-label={label}
       className={cn(
         'group relative flex h-12 w-auto shrink-0 items-center gap-0.5 rounded-full bg-card/90 p-2 text-foreground shadow-lg backdrop-blur-sm transition-transform duration-120 motion-safe:active:scale-[0.98] focus-visible:outline-none',
-        semantic.focus.onContentInset,
+        roles.focus.visibleInset,
         className
       )}
       {...buttonProps}
@@ -630,13 +626,13 @@ export const ProductNavigationIdentityTrigger = forwardRef<
         aria-label={label}
         className={cn(
           'group relative flex min-w-0 items-center text-left text-foreground transition-colors duration-120 focus-visible:outline-none',
-          semantic.focus.onContentInset,
-          semantic.interaction.subtleHover,
-          semantic.interaction.subtleFocus,
+          roles.focus.visibleInset,
+          roles.interaction.subtleHover,
+          roles.interaction.subtleFocus,
           presentation === 'rail' &&
             'h-10 w-full gap-1.5 overflow-hidden rounded-full ring-1 ring-inset ring-border',
           presentation === 'menu' &&
-            'min-h-11 w-full gap-2 rounded-full p-3 text-sm font-medium leading-5',
+            `min-h-11 w-full gap-2 rounded-full p-3 ${v1Typography.label}`,
           open && 'bg-foreground/5',
           className
         )}
@@ -720,9 +716,7 @@ export const ProductNavigationIdentity = ({
       {identityMark}
       {expanded ? (
         <span className="min-w-0">
-          <span className="block truncate text-sm font-medium leading-5">
-            {name}
-          </span>
+          <span className={`block truncate ${v1Typography.label}`}>{name}</span>
           {supporting && (
             <span className="block truncate text-xs font-light leading-5 text-muted-foreground">
               {supporting}

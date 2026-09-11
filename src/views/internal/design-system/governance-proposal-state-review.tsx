@@ -2,7 +2,7 @@ import ProposalStatusBar from '@/components/proposal-status-bar'
 import { v1LayoutRecipes } from '@/components/ui/v1-layout-recipes'
 import { cn } from '@/lib/utils'
 import { Ban, Shield, ThumbsDown, ThumbsUp, Zap } from 'lucide-react'
-import { candidateSemanticRoles as roles } from './candidate-semantic-roles'
+import { v1SemanticRoles as roles } from '@/components/design-system-v1/semantic-roles'
 import {
   CURRENT_PROPOSAL_FIXTURES,
   HISTORICAL_PROPOSAL_FIXTURES,
@@ -90,7 +90,7 @@ const GovernanceProposalRecord = ({
     target="_blank"
     rel="noreferrer"
     className={cn(
-      'group block bg-card focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring',
+      'group block bg-card hover:bg-muted/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring',
       v1LayoutRecipes.inset.ordinaryContent,
       v1LayoutRecipes.stack.internalRegions
     )}
@@ -101,7 +101,7 @@ const GovernanceProposalRecord = ({
         v1LayoutRecipes.cluster.internalRegions
       )}
     >
-      <h4 className="text-base font-medium leading-6 group-hover:text-primary">
+      <h4 className="text-base font-medium leading-6 text-foreground">
         {record.title}
       </h4>
       {record.qualifier && (

@@ -1,6 +1,5 @@
-import { candidateSemanticRoles as semanticRoles } from '@/components/design-system-v1/semantic-roles'
+import { v1SemanticRoles as semanticRoles } from '@/components/design-system-v1/semantic-roles'
 import { v1Typography } from '@/components/design-system-v1/typography'
-import { v1SemanticRecipes as roles } from '@/components/ui/v1-semantic-recipes'
 import { cn } from '@/lib/utils'
 import { Trans } from '@lingui/react/macro'
 
@@ -73,7 +72,9 @@ export const ManualIssuanceLedger = ({
             'You will receive'
           )}
         </h5>
-        <p className={cn(v1Typography.supporting, roles.text.supporting)}>
+        <p
+          className={cn(v1Typography.supporting, semanticRoles.text.supporting)}
+        >
           {session.gate === 'loading' ? (
             '—'
           ) : isMint ? (
