@@ -139,6 +139,7 @@ const Token = ({ row }: { row: WithdrawalFixture }) => {
     <IdentityCell
       name={row.symbol}
       {...row}
+      nameLeading="default"
       supporting={null}
       loading={loading}
     />
@@ -252,7 +253,7 @@ export function Withdrawals({
     <Preview.Provider value={preview}>
       <section
         data-testid="table-family-withdrawals"
-        className="min-w-0 bg-card"
+        className="min-w-0 bg-card [@container(min-width:64rem)]:pb-2"
         aria-busy={preview.loading || undefined}
       >
         <FamilyHeader

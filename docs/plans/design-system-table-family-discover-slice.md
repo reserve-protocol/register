@@ -173,6 +173,8 @@ apply to product screens.
   Portfolio/Holdings keep their independently reviewed row/divider treatments.
 - Name 16px/500, ordinary values 16px/300, supporting labels 14px/300. No dense
   variant. Tags remain supporting text, not a cluster of colored badges.
+  Separate tags with commas in rows and cards; reserve the middle dot for
+  different metadata groups, such as the ticker followed by the tag list.
 - Narrow cards keep the accepted 8px direct name/market relationship and 16px
   top-region/name gap. Classifications follow the market row; their full text
   wraps rather than removing financial facts. No dense type variant is added.

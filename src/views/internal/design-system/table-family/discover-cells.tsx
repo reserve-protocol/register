@@ -47,7 +47,7 @@ export function DiscoverIdentity({
             supporting={
               <span className="block whitespace-normal break-words">
                 ${row.symbol} <span aria-hidden="true">·</span>{' '}
-                {row.brand.tags.length ? row.brand.tags.join(' · ') : 'No tags'}
+                {row.brand.tags.length ? row.brand.tags.join(', ') : 'No tags'}
               </span>
             }
           />

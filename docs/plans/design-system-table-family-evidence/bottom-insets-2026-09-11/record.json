@@ -1,0 +1,175 @@
+{
+  "fixedPoint": "01a900cdf2589d455d04f78806d2ca8ff2b9122c",
+  "startedAt": "2026-09-11T14:29:33.126Z",
+  "scope": "Lab-only bottom inset: Holdings 12px to 24px; Withdrawals 16px to 24px. Desktop only; row rhythm and mobile unchanged.",
+  "red": [
+    "Holdings light 1400: expected 24px, received 12px",
+    "Withdrawals light 1400: expected 24px, received 16px"
+  ],
+  "cases": [
+    {
+      "name": "holdings family light 320",
+      "status": "passed",
+      "attempts": 1,
+      "publicSourceDigest": "be81f0001948b37e85b215b612582f08a9be05aba47a079ff8239782350b8b50"
+    },
+    {
+      "name": "holdings family light 375",
+      "status": "passed",
+      "attempts": 1,
+      "publicSourceDigest": "be81f0001948b37e85b215b612582f08a9be05aba47a079ff8239782350b8b50"
+    },
+    {
+      "name": "holdings family light 1400",
+      "status": "passed",
+      "attempts": 1,
+      "publicSourceDigest": "be81f0001948b37e85b215b612582f08a9be05aba47a079ff8239782350b8b50"
+    },
+    {
+      "name": "holdings family dark 320",
+      "status": "passed",
+      "attempts": 1,
+      "publicSourceDigest": "be81f0001948b37e85b215b612582f08a9be05aba47a079ff8239782350b8b50"
+    },
+    {
+      "name": "holdings family dark 375",
+      "status": "passed",
+      "attempts": 1,
+      "publicSourceDigest": "be81f0001948b37e85b215b612582f08a9be05aba47a079ff8239782350b8b50"
+    },
+    {
+      "name": "holdings family dark 1400",
+      "status": "passed",
+      "attempts": 1,
+      "publicSourceDigest": "be81f0001948b37e85b215b612582f08a9be05aba47a079ff8239782350b8b50"
+    },
+    {
+      "name": "holdings touch pointer 1400",
+      "status": "passed",
+      "attempts": 1,
+      "publicSourceDigest": "be81f0001948b37e85b215b612582f08a9be05aba47a079ff8239782350b8b50"
+    },
+    {
+      "name": "table family light 320",
+      "status": "passed",
+      "attempts": 1,
+      "publicSourceDigest": "be81f0001948b37e85b215b612582f08a9be05aba47a079ff8239782350b8b50"
+    },
+    {
+      "name": "table family light 375",
+      "status": "passed",
+      "attempts": 1,
+      "publicSourceDigest": "be81f0001948b37e85b215b612582f08a9be05aba47a079ff8239782350b8b50"
+    },
+    {
+      "name": "table family light 1400",
+      "status": "passed",
+      "attempts": 1,
+      "publicSourceDigest": "be81f0001948b37e85b215b612582f08a9be05aba47a079ff8239782350b8b50"
+    },
+    {
+      "name": "table family dark 320",
+      "status": "passed",
+      "attempts": 1,
+      "publicSourceDigest": "be81f0001948b37e85b215b612582f08a9be05aba47a079ff8239782350b8b50"
+    },
+    {
+      "name": "table family dark 375",
+      "status": "passed",
+      "attempts": 1,
+      "publicSourceDigest": "be81f0001948b37e85b215b612582f08a9be05aba47a079ff8239782350b8b50"
+    },
+    {
+      "name": "table family dark 1400",
+      "status": "passed",
+      "attempts": 1,
+      "publicSourceDigest": "be81f0001948b37e85b215b612582f08a9be05aba47a079ff8239782350b8b50"
+    },
+    {
+      "name": "chain badge borders light",
+      "status": "passed",
+      "attempts": 1,
+      "publicSourceDigest": "be81f0001948b37e85b215b612582f08a9be05aba47a079ff8239782350b8b50"
+    },
+    {
+      "name": "chain badge borders dark",
+      "status": "passed",
+      "attempts": 1,
+      "publicSourceDigest": "be81f0001948b37e85b215b612582f08a9be05aba47a079ff8239782350b8b50"
+    }
+  ],
+  "captures": [
+    {
+      "case": "holdings family light 1400",
+      "name": "stock-exposure-bottom",
+      "file": "holdings-family-light-1400-stock-exposure-bottom.png",
+      "sha256": "f21e08e748093d6d754b24ea790dec3e72d80eeb147bcdc60d6e18831d53d629"
+    },
+    {
+      "case": "holdings family light 1400",
+      "name": "stock-collateral-bottom",
+      "file": "holdings-family-light-1400-stock-collateral-bottom.png",
+      "sha256": "6d952353723dafd0af9b2e480470dc2fb6b57b2f095594f60a4e976625f02ceb"
+    },
+    {
+      "case": "holdings family light 1400",
+      "name": "overview-collateral-bottom",
+      "file": "holdings-family-light-1400-overview-collateral-bottom.png",
+      "sha256": "2ba4235b7fe413000e552c67594793dddac8ba8ce8e7d195715bcfc1a9b3e541"
+    },
+    {
+      "case": "holdings family light 1400",
+      "name": "overview-exposure-bottom",
+      "file": "holdings-family-light-1400-overview-exposure-bottom.png",
+      "sha256": "ce3499035e0484b69dd4d0cde7d61d85507a64f4a265ec23aa7f4a04760b83c8"
+    },
+    {
+      "case": "holdings family light 1400",
+      "name": "overview-loading-bottom",
+      "file": "holdings-family-light-1400-overview-loading-bottom.png",
+      "sha256": "3e10dc00fdbfc30943984e52726469d23347f66d89d9d30ae5bd603fb7c66dbb"
+    },
+    {
+      "case": "holdings family dark 1400",
+      "name": "stock-exposure-bottom",
+      "file": "holdings-family-dark-1400-stock-exposure-bottom.png",
+      "sha256": "d5b8174a9a420fc8fee92f6d9dcfa64831b866e18814d36ef4e03c7ce9b791b7"
+    },
+    {
+      "case": "holdings family dark 1400",
+      "name": "stock-collateral-bottom",
+      "file": "holdings-family-dark-1400-stock-collateral-bottom.png",
+      "sha256": "73535893737220cc5142a2b0a57a286f7d3f2f733c12ce98b81ad917761bd963"
+    },
+    {
+      "case": "holdings family dark 1400",
+      "name": "overview-collateral-bottom",
+      "file": "holdings-family-dark-1400-overview-collateral-bottom.png",
+      "sha256": "0a8a3aa7145b85dde8c40bf0f21cac41a2373cebfd30102918215c54f5104cc0"
+    },
+    {
+      "case": "holdings family dark 1400",
+      "name": "overview-exposure-bottom",
+      "file": "holdings-family-dark-1400-overview-exposure-bottom.png",
+      "sha256": "e78e6cf5b96390285467cb964af76de3c8cd2d804fc1ed6edd59e21caf055639"
+    },
+    {
+      "case": "holdings family dark 1400",
+      "name": "overview-loading-bottom",
+      "file": "holdings-family-dark-1400-overview-loading-bottom.png",
+      "sha256": "4d323dc44f5c6e39fe614b25cd7dddddfa14b8e0b22602bc3a94efcee5ec47af"
+    },
+    {
+      "case": "table family light 1400",
+      "name": "withdrawals",
+      "file": "table-family-light-1400-withdrawals.png",
+      "sha256": "0107409109542fee02690501076ba916aeb59d03185ebcdeb663930cc3f773bb"
+    },
+    {
+      "case": "table family dark 1400",
+      "name": "withdrawals",
+      "file": "table-family-dark-1400-withdrawals.png",
+      "sha256": "a66d090f5c13d72156ab6251ab4d54653a7ae1425b799fe8bd782c31e7a46249"
+    }
+  ]
+}

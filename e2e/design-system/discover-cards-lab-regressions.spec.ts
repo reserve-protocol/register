@@ -171,6 +171,9 @@ for (const [theme, width] of [
     await expect(composition.getByRole('table')).toHaveCount(0)
     await expect(cards.first()).toContainText('$162.45')
     await expect(cards.first()).toContainText('+23.81%')
+    await expect(cards.first()).toContainText(
+      'Majors, Bitcoin, L1, DeFi, Perps, Ecosystem'
+    )
     const nameGap = await cards
       .first()
       .evaluate(
@@ -194,6 +197,15 @@ for (const [theme, width] of [
     await select('Discover preview state', 'Zero / unavailable')
     const lcap = cards.filter({ hasText: 'CF Large Cap Index' })
     const cmc = cards.filter({ hasText: 'CoinMarketCap 20 Index DTF' })
+    await expect(
+      lcap.locator('[data-slot="performance-value"]')
+    ).toHaveAccessibleName('1M performance: no data')
+    await expect(
+      cmc.locator('[data-slot="performance-value"]')
+    ).toHaveAccessibleName('1M performance: neutral 0.00 percent')
+    await expect(
+      cmc.locator('[data-slot="performance-value"]')
+    ).toHaveAttribute('title', '1M performance')
     await expect(lcap).toContainText('—')
     await expect(
       lcap.locator('[data-slot="discover-card-chart"] svg')

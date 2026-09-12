@@ -1,0 +1,426 @@
+{
+  "fixedPoint": "01a900cdf2589d455d04f78806d2ca8ff2b9122c",
+  "startedAt": "2026-09-11T13:21:45.948Z",
+  "scope": "Source/candidate inspection, see the Earn transfer brief for fixture limits",
+  "cases": [
+    {
+      "name": "Earn candidate exposes source-backed opportunities",
+      "file": "earn-family-lab-regressions.spec.ts",
+      "status": "passed",
+      "attempts": 1,
+      "publicSourceDigest": "a84544b11d1dac38c7270c0018ae3fac55d889d43187a3292554c7ce42bb2d37"
+    },
+    {
+      "name": "Earn candidate states light 320",
+      "file": "earn-family-lab-regressions.spec.ts",
+      "status": "passed",
+      "attempts": 1,
+      "publicSourceDigest": "a84544b11d1dac38c7270c0018ae3fac55d889d43187a3292554c7ce42bb2d37"
+    },
+    {
+      "name": "Earn candidate states light 390",
+      "file": "earn-family-lab-regressions.spec.ts",
+      "status": "passed",
+      "attempts": 1,
+      "publicSourceDigest": "a84544b11d1dac38c7270c0018ae3fac55d889d43187a3292554c7ce42bb2d37"
+    },
+    {
+      "name": "Earn candidate states light 1400",
+      "file": "earn-family-lab-regressions.spec.ts",
+      "status": "passed",
+      "attempts": 1,
+      "publicSourceDigest": "a84544b11d1dac38c7270c0018ae3fac55d889d43187a3292554c7ce42bb2d37"
+    },
+    {
+      "name": "Earn candidate states dark 320",
+      "file": "earn-family-lab-regressions.spec.ts",
+      "status": "passed",
+      "attempts": 1,
+      "publicSourceDigest": "a84544b11d1dac38c7270c0018ae3fac55d889d43187a3292554c7ce42bb2d37"
+    },
+    {
+      "name": "Earn candidate states dark 390",
+      "file": "earn-family-lab-regressions.spec.ts",
+      "status": "passed",
+      "attempts": 1,
+      "publicSourceDigest": "a84544b11d1dac38c7270c0018ae3fac55d889d43187a3292554c7ce42bb2d37"
+    },
+    {
+      "name": "Earn candidate states dark 1400",
+      "file": "earn-family-lab-regressions.spec.ts",
+      "status": "passed",
+      "attempts": 1,
+      "publicSourceDigest": "a84544b11d1dac38c7270c0018ae3fac55d889d43187a3292554c7ce42bb2d37"
+    },
+    {
+      "name": "Earn candidate interactions light 390",
+      "file": "earn-family-lab-regressions.spec.ts",
+      "status": "passed",
+      "attempts": 1,
+      "publicSourceDigest": "a84544b11d1dac38c7270c0018ae3fac55d889d43187a3292554c7ce42bb2d37"
+    },
+    {
+      "name": "Earn candidate interactions light 1400",
+      "file": "earn-family-lab-regressions.spec.ts",
+      "status": "passed",
+      "attempts": 1,
+      "publicSourceDigest": "a84544b11d1dac38c7270c0018ae3fac55d889d43187a3292554c7ce42bb2d37"
+    },
+    {
+      "name": "Earn candidate interactions dark 390",
+      "file": "earn-family-lab-regressions.spec.ts",
+      "status": "passed",
+      "attempts": 1,
+      "publicSourceDigest": "a84544b11d1dac38c7270c0018ae3fac55d889d43187a3292554c7ce42bb2d37"
+    },
+    {
+      "name": "Earn candidate interactions dark 1400",
+      "file": "earn-family-lab-regressions.spec.ts",
+      "status": "passed",
+      "attempts": 1,
+      "publicSourceDigest": "a84544b11d1dac38c7270c0018ae3fac55d889d43187a3292554c7ce42bb2d37"
+    },
+    {
+      "name": "Earn candidate projection and sorting light",
+      "file": "earn-family-lab-regressions.spec.ts",
+      "status": "passed",
+      "attempts": 1,
+      "publicSourceDigest": "a84544b11d1dac38c7270c0018ae3fac55d889d43187a3292554c7ce42bb2d37"
+    },
+    {
+      "name": "Earn candidate projection and sorting dark",
+      "file": "earn-family-lab-regressions.spec.ts",
+      "status": "passed",
+      "attempts": 1,
+      "publicSourceDigest": "a84544b11d1dac38c7270c0018ae3fac55d889d43187a3292554c7ce42bb2d37"
+    },
+    {
+      "name": "Earn loading geometry and disclosure recovery 390",
+      "file": "earn-recovery-lab-regressions.spec.ts",
+      "status": "passed",
+      "attempts": 1,
+      "publicSourceDigest": "a84544b11d1dac38c7270c0018ae3fac55d889d43187a3292554c7ce42bb2d37"
+    },
+    {
+      "name": "Earn loading geometry and disclosure recovery 1400",
+      "file": "earn-recovery-lab-regressions.spec.ts",
+      "status": "passed",
+      "attempts": 1,
+      "publicSourceDigest": "a84544b11d1dac38c7270c0018ae3fac55d889d43187a3292554c7ce42bb2d37"
+    }
+  ],
+  "captures": [
+    {
+      "case": "Earn candidate states light 320",
+      "name": "index-default",
+      "file": "earn-candidate-states-light-320-index-default.png",
+      "sha256": "c509067d46adf2e5794f39636144e835d1a764aa3ec4a0ef2b51daa71ec525bd"
+    },
+    {
+      "case": "Earn candidate states light 320",
+      "name": "index-wallet",
+      "file": "earn-candidate-states-light-320-index-wallet.png",
+      "sha256": "b4ecc6106ee32b2fa620810b19713eecd9c39239c39bb310d7a0f1ebe7ef4b16"
+    },
+    {
+      "case": "Earn candidate states light 320",
+      "name": "index-long",
+      "file": "earn-candidate-states-light-320-index-long.png",
+      "sha256": "d2951fb02757b0c761295285567513bff2199e8051e3bae0a793ee285989a6a5"
+    },
+    {
+      "case": "Earn candidate states light 320",
+      "name": "wallet-loading",
+      "file": "earn-candidate-states-light-320-wallet-loading.png",
+      "sha256": "2e3589722d0568a14f0c8a4fabef7578abf01474400fa913ecaa09f510f3b206"
+    },
+    {
+      "case": "Earn candidate states light 320",
+      "name": "zero-unavailable",
+      "file": "earn-candidate-states-light-320-zero-unavailable.png",
+      "sha256": "c9d4e04792986feb0a76a56c387c1323a85f3589d74d9adaa5216177e1feb9da"
+    },
+    {
+      "case": "Earn candidate states light 320",
+      "name": "loading",
+      "file": "earn-candidate-states-light-320-loading.png",
+      "sha256": "ebcbc4233da13aefadb2ca80971445da49e62d49860f287123a02a5a75569dbc"
+    },
+    {
+      "case": "Earn candidate states light 320",
+      "name": "yield-wallet",
+      "file": "earn-candidate-states-light-320-yield-wallet.png",
+      "sha256": "511bb8032d54ac39699f6e11c495e80ada2759b39c6a0c867901089e3a06da7b"
+    },
+    {
+      "case": "Earn candidate states light 390",
+      "name": "index-default",
+      "file": "earn-candidate-states-light-390-index-default.png",
+      "sha256": "fc0be3f2cbbebbd99cba83a4939d8a4cfc6a5f7efd12d7d3e63abf55003fdf20"
+    },
+    {
+      "case": "Earn candidate states light 390",
+      "name": "index-wallet",
+      "file": "earn-candidate-states-light-390-index-wallet.png",
+      "sha256": "1ee224f4b715d6e969485a9c7d70f92f155013a92fe5315bd715314c30dd0d97"
+    },
+    {
+      "case": "Earn candidate states light 390",
+      "name": "index-long",
+      "file": "earn-candidate-states-light-390-index-long.png",
+      "sha256": "6d8da3b44052c1849650a4fbe4828d4a7f39034566db4eb7776e9ffa867f206c"
+    },
+    {
+      "case": "Earn candidate states light 390",
+      "name": "wallet-loading",
+      "file": "earn-candidate-states-light-390-wallet-loading.png",
+      "sha256": "4c62be3bc2dde4c1f03985880e9b67bbd526205f3b0542fd731c0074f9d9758d"
+    },
+    {
+      "case": "Earn candidate states light 390",
+      "name": "zero-unavailable",
+      "file": "earn-candidate-states-light-390-zero-unavailable.png",
+      "sha256": "eabc5064c4933e0fe20bd2fa27c6f684b3e7882a207e1d7cff4343b03d781c43"
+    },
+    {
+      "case": "Earn candidate states light 390",
+      "name": "loading",
+      "file": "earn-candidate-states-light-390-loading.png",
+      "sha256": "21d828bbb27838e3639bfb06245cdacdaeaf97bc5245b266ea734d2ebfc13412"
+    },
+    {
+      "case": "Earn candidate states light 390",
+      "name": "yield-wallet",
+      "file": "earn-candidate-states-light-390-yield-wallet.png",
+      "sha256": "db66cf864f6bd70b7b01e1df0190bcb8855cdb2d58191d787377353d8e094a8e"
+    },
+    {
+      "case": "Earn candidate states light 1400",
+      "name": "index-default",
+      "file": "earn-candidate-states-light-1400-index-default.png",
+      "sha256": "3a9deebf344931322997d82dc3f06e434ed71a13ed242f526ba95256a1ced02f"
+    },
+    {
+      "case": "Earn candidate states light 1400",
+      "name": "index-wallet",
+      "file": "earn-candidate-states-light-1400-index-wallet.png",
+      "sha256": "93a9250ee36c7efb7514a218f1865b4af40f2a8e649807afb63d9ea4a3016ba8"
+    },
+    {
+      "case": "Earn candidate states light 1400",
+      "name": "index-long",
+      "file": "earn-candidate-states-light-1400-index-long.png",
+      "sha256": "7fff30b89f2c10abfef560a129fa82fecd9ec81526a9dc6c9aeaefa4dd08f48a"
+    },
+    {
+      "case": "Earn candidate states light 1400",
+      "name": "wallet-loading",
+      "file": "earn-candidate-states-light-1400-wallet-loading.png",
+      "sha256": "287e0bf4002e1c5c5eece7c2b30ef3c721680128f097cb5647b19df092acf729"
+    },
+    {
+      "case": "Earn candidate states light 1400",
+      "name": "zero-unavailable",
+      "file": "earn-candidate-states-light-1400-zero-unavailable.png",
+      "sha256": "c0ab937139eedf14dfbcd42659463ded6cc2dea280cc6d97761f54376a96a08e"
+    },
+    {
+      "case": "Earn candidate states light 1400",
+      "name": "loading",
+      "file": "earn-candidate-states-light-1400-loading.png",
+      "sha256": "7065e49774b94eb4a6a5ca31c28b5dcad722011b483afd778e0fe8d0e2229936"
+    },
+    {
+      "case": "Earn candidate states light 1400",
+      "name": "yield-wallet",
+      "file": "earn-candidate-states-light-1400-yield-wallet.png",
+      "sha256": "8638c60108752eeb943808f85ed45c6eb0fb89157aac7455934e8598847098d9"
+    },
+    {
+      "case": "Earn candidate states dark 320",
+      "name": "index-default",
+      "file": "earn-candidate-states-dark-320-index-default.png",
+      "sha256": "ef75cad5b78dbb682cf649bc945f5013c63aaebb0597de92d98fbefe08084728"
+    },
+    {
+      "case": "Earn candidate states dark 320",
+      "name": "index-wallet",
+      "file": "earn-candidate-states-dark-320-index-wallet.png",
+      "sha256": "2bc2cb5b62b6317451269b8f9a08919ba002ccaf529ec139448472c75c5b46c2"
+    },
+    {
+      "case": "Earn candidate states dark 320",
+      "name": "index-long",
+      "file": "earn-candidate-states-dark-320-index-long.png",
+      "sha256": "5ae3fc95fd9e3fb2bb93fa2a28a27c130d28316c141c800a668b40ba62e0d5ff"
+    },
+    {
+      "case": "Earn candidate states dark 320",
+      "name": "wallet-loading",
+      "file": "earn-candidate-states-dark-320-wallet-loading.png",
+      "sha256": "609860a30f9b4081a9288a20c76706ba2144518067bf198f8aab7260a6abd9c9"
+    },
+    {
+      "case": "Earn candidate states dark 320",
+      "name": "zero-unavailable",
+      "file": "earn-candidate-states-dark-320-zero-unavailable.png",
+      "sha256": "ca43633ce6a22127c71e7d5d8da7b823e7f8c07c54262a5e7e3e9851cf5b0e70"
+    },
+    {
+      "case": "Earn candidate states dark 320",
+      "name": "loading",
+      "file": "earn-candidate-states-dark-320-loading.png",
+      "sha256": "95b4febc98a3d319cec4c0420370e7d767981b37e78b25e345bfec92eece8832"
+    },
+    {
+      "case": "Earn candidate states dark 320",
+      "name": "yield-wallet",
+      "file": "earn-candidate-states-dark-320-yield-wallet.png",
+      "sha256": "70793ea7849fb95024b9e670abee265e91d6d1394b3b2c40aa552efef0697f24"
+    },
+    {
+      "case": "Earn candidate states dark 390",
+      "name": "index-default",
+      "file": "earn-candidate-states-dark-390-index-default.png",
+      "sha256": "d08dc48f3e0bc0a4adf25f302f4556e14e666a0e778dd9522df685c7f64b8b60"
+    },
+    {
+      "case": "Earn candidate states dark 390",
+      "name": "index-wallet",
+      "file": "earn-candidate-states-dark-390-index-wallet.png",
+      "sha256": "e6bcedd1af001850d479fa399bd93cf49c4ddc3336f9e6af75c2e14d5ff5839a"
+    },
+    {
+      "case": "Earn candidate states dark 390",
+      "name": "index-long",
+      "file": "earn-candidate-states-dark-390-index-long.png",
+      "sha256": "93bca76d5904b577ba8808aa54a2035d65ebd785220371c891cc688b6de438d0"
+    },
+    {
+      "case": "Earn candidate states dark 390",
+      "name": "wallet-loading",
+      "file": "earn-candidate-states-dark-390-wallet-loading.png",
+      "sha256": "dbc5bb3dedbe5e40f57b05a0855d0c552f9b07b494d2f2f93cdd8e2bdb582297"
+    },
+    {
+      "case": "Earn candidate states dark 390",
+      "name": "zero-unavailable",
+      "file": "earn-candidate-states-dark-390-zero-unavailable.png",
+      "sha256": "0d2b0d5dc1122e66512aef4abacebfaea8add7cb973cae006f50d0c9269f8c6a"
+    },
+    {
+      "case": "Earn candidate states dark 390",
+      "name": "loading",
+      "file": "earn-candidate-states-dark-390-loading.png",
+      "sha256": "804b96ea7535b54caea9a71c5dc55250241c8ac787067be78c73865efb46bade"
+    },
+    {
+      "case": "Earn candidate states dark 390",
+      "name": "yield-wallet",
+      "file": "earn-candidate-states-dark-390-yield-wallet.png",
+      "sha256": "9ad028d827f2cda20844426d522699f7772396c2dd48f6b2bb4e8920d41d0f9b"
+    },
+    {
+      "case": "Earn candidate states dark 1400",
+      "name": "index-default",
+      "file": "earn-candidate-states-dark-1400-index-default.png",
+      "sha256": "73e8aa87637cf2b9b515f4749c543d4bd84c0b6281c8dea5fa2c5ce9a02a60af"
+    },
+    {
+      "case": "Earn candidate states dark 1400",
+      "name": "index-wallet",
+      "file": "earn-candidate-states-dark-1400-index-wallet.png",
+      "sha256": "855ad70859430065b30707084454048f9ae42485b8c001753fa6ea893c02c18d"
+    },
+    {
+      "case": "Earn candidate states dark 1400",
+      "name": "index-long",
+      "file": "earn-candidate-states-dark-1400-index-long.png",
+      "sha256": "ffe6fe658373e341169d1eedbfbb8d6e7d167dc6d23fb43147ab85c091ef3021"
+    },
+    {
+      "case": "Earn candidate states dark 1400",
+      "name": "wallet-loading",
+      "file": "earn-candidate-states-dark-1400-wallet-loading.png",
+      "sha256": "13315158820697648e9a6af13dfd31de0a06fae6b6d57c9033880c4cdb00b9f1"
+    },
+    {
+      "case": "Earn candidate states dark 1400",
+      "name": "zero-unavailable",
+      "file": "earn-candidate-states-dark-1400-zero-unavailable.png",
+      "sha256": "20f64e9eab82aeee803ef69dc266f33fec8866625a8ebf53160e09392c9d9861"
+    },
+    {
+      "case": "Earn candidate states dark 1400",
+      "name": "loading",
+      "file": "earn-candidate-states-dark-1400-loading.png",
+      "sha256": "cc3792608e678a91a9096eb6de67b6df738b4e4fcef99c59f2fccf8baefe725b"
+    },
+    {
+      "case": "Earn candidate states dark 1400",
+      "name": "yield-wallet",
+      "file": "earn-candidate-states-dark-1400-yield-wallet.png",
+      "sha256": "5e63485bd3742646171e609f83fd8000abb53059ceebe2c58d832e4243340773"
+    },
+    {
+      "case": "Earn candidate interactions light 390",
+      "name": "governed-open",
+      "file": "earn-candidate-interactions-light-390-governed-open.png",
+      "sha256": "eb6930dab9c9d942b7feb0d435f94be42858b7ed283dddf8893389f3b10943cb"
+    },
+    {
+      "case": "Earn candidate interactions light 1400",
+      "name": "governed-open",
+      "file": "earn-candidate-interactions-light-1400-governed-open.png",
+      "sha256": "f34e5e471d8b3aaabaebeebf857e040d468f3957b4cd1daf23ffa5198e467e57"
+    },
+    {
+      "case": "Earn candidate interactions dark 390",
+      "name": "governed-open",
+      "file": "earn-candidate-interactions-dark-390-governed-open.png",
+      "sha256": "9ac65d35bb39db1d59597923ed794d01a99e745fe250924096754597f68af5d9"
+    },
+    {
+      "case": "Earn candidate interactions dark 1400",
+      "name": "governed-open",
+      "file": "earn-candidate-interactions-dark-1400-governed-open.png",
+      "sha256": "6f0eafdbe043cc98bce16cc03165c5aa9d11733a30048fb4dc566201682f135b"
+    },
+    {
+      "case": "Earn candidate projection and sorting light",
+      "name": "constrained-column",
+      "file": "earn-candidate-projection-and-sorting-light-constrained-column.png",
+      "sha256": "6ed8591ae91098ba624869e380b3eb3e30c4eab8eba2c4a323ba27fd8f477f28"
+    },
+    {
+      "case": "Earn candidate projection and sorting dark",
+      "name": "constrained-column",
+      "file": "earn-candidate-projection-and-sorting-dark-constrained-column.png",
+      "sha256": "7d8cc100dd3c86eaf905b928d71f6e669c061ed348f820112e7d9d82dffbfcb6"
+    },
+    {
+      "case": "Earn loading geometry and disclosure recovery 390",
+      "name": "loading-aligned",
+      "file": "earn-loading-geometry-and-disclosure-recovery-390-loading-aligned.png",
+      "sha256": "e022cb9e615136a8160975654b82b5a13d37cdaa3780b1e3c00292f024cc53f0"
+    },
+    {
+      "case": "Earn loading geometry and disclosure recovery 390",
+      "name": "recovered",
+      "file": "earn-loading-geometry-and-disclosure-recovery-390-recovered.png",
+      "sha256": "0c28fb920cb244c323883b5040a4d66b21e3c6eda3126b17cafcaabda836f5ab"
+    },
+    {
+      "case": "Earn loading geometry and disclosure recovery 1400",
+      "name": "loading-aligned",
+      "file": "earn-loading-geometry-and-disclosure-recovery-1400-loading-aligned.png",
+      "sha256": "11fc7303236c0bb57de0f51aa9234ad2f0786a276a28c840ce64023ba3fd5108"
+    },
+    {
+      "case": "Earn loading geometry and disclosure recovery 1400",
+      "name": "recovered",
+      "file": "earn-loading-geometry-and-disclosure-recovery-1400-recovered.png",
+      "sha256": "65bdaa170c0a038fce440d628486e9f33e61cf2beca4a83cc5966f9eadcb64d6"
+    }
+  ]
+}

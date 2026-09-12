@@ -9,6 +9,71 @@ import {
 import { HOLDINGS, previewHoldings } from '../table-family/holdings-fixtures'
 
 describe('Holdings table-family candidate', () => {
+  it('includes Applied Optoelectronics in long content without duplicating the stock holding', () => {
+    const example = HOLDINGS.photon.find((row) => row.symbol === 'AAOIon')
+    expect(example?.name).toBe('Applied Optoelectronics (Ondo Tokenized)')
+    for (const rows of Object.values(HOLDINGS)) {
+      const preview = previewHoldings(rows, 'long')
+      expect(preview.filter((row) => row.symbol === 'AAOIon')).toEqual([
+        example,
+      ])
+      expect(preview[0].name).toBe(
+        'A held token with an unusually long name that needs to wrap'
+      )
+      expect(previewHoldings(rows, 'default')).toEqual(rows)
+    }
+  })
+
+  it('offers overview and phone widths without resetting the selected sort', () => {
+    render(<HoldingsReview />)
+    const width = screen.getByRole('combobox', {
+      name: 'Holdings preview width',
+    })
+    const table = screen.getByRole('table', { name: 'Exposure holdings' })
+    const change = within(table).getByTestId('sort-change')
+    fireEvent.click(change)
+    for (const option of [
+      'DTF overview · 836px',
+      'Mobile · 390px',
+      'Full width',
+    ]) {
+      fireEvent.keyDown(width, { key: 'ArrowDown' })
+      fireEvent.click(screen.getByRole('option', { name: option }))
+      expect(width).toHaveTextContent(option)
+      expect(change.closest('th')).toHaveAttribute('aria-sort', 'descending')
+      expect(within(table).getAllByRole('row')[1]).toHaveTextContent('Zcash')
+    }
+  })
+
+  it('starts newly selected headers descending and toggles only the current field', () => {
+    render(<HoldingsReview />)
+    const table = screen.getByRole('table', { name: 'Exposure holdings' })
+    const names = () =>
+      [...table.querySelectorAll('tbody tr')]
+        .slice(0, 3)
+        .map(
+          (row) =>
+            row.querySelector('[data-slot="entity-identity-name"]')?.textContent
+        )
+    const change = within(table).getByTestId('sort-change')
+    const weight = within(table).getByTestId('sort-weight')
+    expect(names()).toEqual(['Bitcoin', 'Ethereum', 'BNB'])
+    fireEvent.click(change)
+    expect(change.closest('th')).toHaveAttribute('aria-sort', 'descending')
+    expect(names()).toEqual(['Zcash', 'XRP', 'Hyperliquid'])
+    fireEvent.click(change)
+    expect(change.closest('th')).toHaveAttribute('aria-sort', 'ascending')
+    expect(names()).toEqual(['TRON', 'Litecoin', 'BNB'])
+    fireEvent.click(weight)
+    expect(weight.closest('th')).toHaveAttribute('aria-sort', 'descending')
+    expect(names()).toEqual(['Bitcoin', 'Ethereum', 'BNB'])
+    fireEvent.click(weight)
+    expect(weight.closest('th')).toHaveAttribute('aria-sort', 'ascending')
+    expect(names()).toEqual(['Avalanche', 'Shiba Inu', 'Sui'])
+    fireEvent.click(change)
+    expect(names()).toEqual(['Zcash', 'XRP', 'Hyperliquid'])
+  })
+
   it('sorts the complete basket and resets sorting when changing tabs', () => {
     render(<HoldingsReview />)
     const table = screen.getByRole('table', { name: 'Exposure holdings' })

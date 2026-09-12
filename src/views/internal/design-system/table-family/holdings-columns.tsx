@@ -1,6 +1,9 @@
 import type { ColumnDef } from '@tanstack/react-table'
 import type { ReactNode } from 'react'
-import { v1Typography as type } from '@/components/design-system-v1/typography'
+import {
+  v1Typography as type,
+  v1TypographyVariants,
+} from '@/components/design-system-v1/typography'
 import { cn } from '@/lib/utils'
 import { Fact } from './cells'
 import { Sort } from './table'
@@ -33,7 +36,7 @@ export function holdingsColumns(
     {
       id: 'identity',
       header: () => tabs,
-      meta: { className: cn(desktop, 'w-2/5 pl-6 text-left') },
+      meta: { className: cn(desktop, 'w-[51%] pl-6 text-left') },
       cell: ({ row }) => (
         <HoldingIdentity
           row={row.original}
@@ -46,10 +49,11 @@ export function holdingsColumns(
     {
       id: 'weight',
       accessorFn: (row) => row.weight,
+      sortDescFirst: true,
       header: ({ column }) => (
         <Sort column={column} label="Weight" id="weight" />
       ),
-      meta: { className: desktop },
+      meta: { className: cn(desktop, 'w-[12%]') },
       cell: ({ row }) => (
         <Allocation value={row.original.weight} loading={loading} />
       ),
@@ -57,11 +61,12 @@ export function holdingsColumns(
     {
       id: 'change',
       accessorFn: (row) => row.change ?? undefined,
+      sortDescFirst: true,
       sortUndefined: 'last',
       header: ({ column }) => (
         <Sort column={column} label="Price Change (7d)" id="change" />
       ),
-      meta: { className: desktop },
+      meta: { className: cn(desktop, 'w-[20%]') },
       cell: ({ row }) => (
         <HoldingPerformance row={row.original} loading={performanceLoading} />
       ),
@@ -73,7 +78,7 @@ export function holdingsColumns(
           Market Cap
         </span>
       ),
-      meta: { className: cn(desktop, 'pr-6') },
+      meta: { className: cn(desktop, 'w-[17%] pr-6') },
       cell: ({ row }) => (
         <Capitalization value={cap(row.original)} loading={loading} />
       ),
@@ -96,8 +101,8 @@ export function holdingsColumns(
             >
               <div
                 className={cn(
-                  type.itemTitle,
-                  'min-w-0 flex-1 break-words text-foreground'
+                  v1TypographyVariants.compactItemTitle,
+                  'min-h-6 min-w-0 flex-1 break-words text-foreground'
                 )}
                 data-slot="entity-identity-name"
               >

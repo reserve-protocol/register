@@ -33,7 +33,13 @@ export function Sort<T>({
           : undefined
       }
       className={cn(type.supporting, 'ml-auto text-supporting-foreground')}
-      onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+      onClick={() =>
+        column.toggleSorting(
+          column.getIsSorted()
+            ? column.getIsSorted() === 'asc'
+            : (column.columnDef.sortDescFirst ?? false)
+        )
+      }
     >
       {label}
       {column.getIsSorted() &&

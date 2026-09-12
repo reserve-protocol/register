@@ -1,0 +1,365 @@
+{
+  "fixedPoint": "01a900cdf2589d455d04f78806d2ca8ff2b9122c",
+  "startedAt": "2026-09-11T13:14:07.808Z",
+  "scope": "Source/candidate inspection, see the Earn transfer brief for fixture limits",
+  "cases": [
+    {
+      "name": "Discover cards retain sorting across the available-width boundary",
+      "file": "discover-cards-lab-regressions.spec.ts",
+      "status": "passed",
+      "attempts": 1,
+      "publicSourceDigest": "1fa101018a4a77be164884dea8bf6eda18711eff8b4851de4b427b9230b1c6ec"
+    },
+    {
+      "name": "Discover resize does not reclaim focus after an outside interaction",
+      "file": "discover-cards-lab-regressions.spec.ts",
+      "status": "passed",
+      "attempts": 1,
+      "publicSourceDigest": "1fa101018a4a77be164884dea8bf6eda18711eff8b4851de4b427b9230b1c6ec"
+    },
+    {
+      "name": "Discover card states light 320",
+      "file": "discover-cards-lab-regressions.spec.ts",
+      "status": "passed",
+      "attempts": 1,
+      "publicSourceDigest": "1fa101018a4a77be164884dea8bf6eda18711eff8b4851de4b427b9230b1c6ec"
+    },
+    {
+      "name": "Discover card states light 390",
+      "file": "discover-cards-lab-regressions.spec.ts",
+      "status": "passed",
+      "attempts": 1,
+      "publicSourceDigest": "1fa101018a4a77be164884dea8bf6eda18711eff8b4851de4b427b9230b1c6ec"
+    },
+    {
+      "name": "Discover card states dark 390",
+      "file": "discover-cards-lab-regressions.spec.ts",
+      "status": "passed",
+      "attempts": 1,
+      "publicSourceDigest": "1fa101018a4a77be164884dea8bf6eda18711eff8b4851de4b427b9230b1c6ec"
+    },
+    {
+      "name": "Discover card states light 768",
+      "file": "discover-cards-lab-regressions.spec.ts",
+      "status": "passed",
+      "attempts": 1,
+      "publicSourceDigest": "1fa101018a4a77be164884dea8bf6eda18711eff8b4851de4b427b9230b1c6ec"
+    },
+    {
+      "name": "Discover card ticker recovery motion",
+      "file": "discover-cards-lab-regressions.spec.ts",
+      "status": "passed",
+      "attempts": 1,
+      "publicSourceDigest": "1fa101018a4a77be164884dea8bf6eda18711eff8b4851de4b427b9230b1c6ec"
+    },
+    {
+      "name": "Discover card ticker recovery reduced",
+      "file": "discover-cards-lab-regressions.spec.ts",
+      "status": "passed",
+      "attempts": 1,
+      "publicSourceDigest": "1fa101018a4a77be164884dea8bf6eda18711eff8b4851de4b427b9230b1c6ec"
+    },
+    {
+      "name": "discover family initial behavior",
+      "file": "discover-family-lab-regressions.spec.ts",
+      "status": "passed",
+      "attempts": 1,
+      "publicSourceDigest": "1fa101018a4a77be164884dea8bf6eda18711eff8b4851de4b427b9230b1c6ec"
+    },
+    {
+      "name": "discover family light 1400",
+      "file": "discover-family-lab-regressions.spec.ts",
+      "status": "passed",
+      "attempts": 1,
+      "publicSourceDigest": "1fa101018a4a77be164884dea8bf6eda18711eff8b4851de4b427b9230b1c6ec"
+    },
+    {
+      "name": "discover family dark 1400",
+      "file": "discover-family-lab-regressions.spec.ts",
+      "status": "passed",
+      "attempts": 1,
+      "publicSourceDigest": "1fa101018a4a77be164884dea8bf6eda18711eff8b4851de4b427b9230b1c6ec"
+    },
+    {
+      "name": "discover asset strip hover motion",
+      "file": "discover-motion-lab-regressions.spec.ts",
+      "status": "passed",
+      "attempts": 1,
+      "publicSourceDigest": "1fa101018a4a77be164884dea8bf6eda18711eff8b4851de4b427b9230b1c6ec"
+    },
+    {
+      "name": "discover asset strip reduced touch",
+      "file": "discover-motion-lab-regressions.spec.ts",
+      "status": "passed",
+      "attempts": 1,
+      "publicSourceDigest": "1fa101018a4a77be164884dea8bf6eda18711eff8b4851de4b427b9230b1c6ec"
+    },
+    {
+      "name": "discover strip edges light 1400",
+      "file": "discover-strip-edges-lab-regressions.spec.ts",
+      "status": "passed",
+      "attempts": 1,
+      "publicSourceDigest": "1fa101018a4a77be164884dea8bf6eda18711eff8b4851de4b427b9230b1c6ec"
+    },
+    {
+      "name": "discover strip edges dark 1400",
+      "file": "discover-strip-edges-lab-regressions.spec.ts",
+      "status": "passed",
+      "attempts": 1,
+      "publicSourceDigest": "1fa101018a4a77be164884dea8bf6eda18711eff8b4851de4b427b9230b1c6ec"
+    },
+    {
+      "name": "discover trigger light 1400",
+      "file": "discover-trigger-lab-regressions.spec.ts",
+      "status": "passed",
+      "attempts": 1,
+      "publicSourceDigest": "1fa101018a4a77be164884dea8bf6eda18711eff8b4851de4b427b9230b1c6ec"
+    },
+    {
+      "name": "discover trigger dark 1400",
+      "file": "discover-trigger-lab-regressions.spec.ts",
+      "status": "passed",
+      "attempts": 1,
+      "publicSourceDigest": "1fa101018a4a77be164884dea8bf6eda18711eff8b4851de4b427b9230b1c6ec"
+    },
+    {
+      "name": "Earn candidate exposes source-backed opportunities",
+      "file": "earn-family-lab-regressions.spec.ts",
+      "status": "passed",
+      "attempts": 1,
+      "publicSourceDigest": "1fa101018a4a77be164884dea8bf6eda18711eff8b4851de4b427b9230b1c6ec"
+    },
+    {
+      "name": "Earn candidate states light 320",
+      "file": "earn-family-lab-regressions.spec.ts",
+      "status": "passed",
+      "attempts": 1,
+      "publicSourceDigest": "1fa101018a4a77be164884dea8bf6eda18711eff8b4851de4b427b9230b1c6ec"
+    },
+    {
+      "name": "Earn candidate states light 390",
+      "file": "earn-family-lab-regressions.spec.ts",
+      "status": "passed",
+      "attempts": 1,
+      "publicSourceDigest": "1fa101018a4a77be164884dea8bf6eda18711eff8b4851de4b427b9230b1c6ec"
+    },
+    {
+      "name": "Earn candidate states light 1400",
+      "file": "earn-family-lab-regressions.spec.ts",
+      "status": "passed",
+      "attempts": 1,
+      "publicSourceDigest": "1fa101018a4a77be164884dea8bf6eda18711eff8b4851de4b427b9230b1c6ec"
+    },
+    {
+      "name": "Earn candidate states dark 320",
+      "file": "earn-family-lab-regressions.spec.ts",
+      "status": "passed",
+      "attempts": 1,
+      "publicSourceDigest": "1fa101018a4a77be164884dea8bf6eda18711eff8b4851de4b427b9230b1c6ec"
+    },
+    {
+      "name": "Earn candidate states dark 390",
+      "file": "earn-family-lab-regressions.spec.ts",
+      "status": "passed",
+      "attempts": 1,
+      "publicSourceDigest": "1fa101018a4a77be164884dea8bf6eda18711eff8b4851de4b427b9230b1c6ec"
+    },
+    {
+      "name": "Earn candidate states dark 1400",
+      "file": "earn-family-lab-regressions.spec.ts",
+      "status": "passed",
+      "attempts": 1,
+      "publicSourceDigest": "1fa101018a4a77be164884dea8bf6eda18711eff8b4851de4b427b9230b1c6ec"
+    },
+    {
+      "name": "Earn candidate interactions light 390",
+      "file": "earn-family-lab-regressions.spec.ts",
+      "status": "passed",
+      "attempts": 1,
+      "publicSourceDigest": "1fa101018a4a77be164884dea8bf6eda18711eff8b4851de4b427b9230b1c6ec"
+    },
+    {
+      "name": "Earn candidate interactions light 1400",
+      "file": "earn-family-lab-regressions.spec.ts",
+      "status": "passed",
+      "attempts": 1,
+      "publicSourceDigest": "1fa101018a4a77be164884dea8bf6eda18711eff8b4851de4b427b9230b1c6ec"
+    },
+    {
+      "name": "Earn candidate interactions dark 390",
+      "file": "earn-family-lab-regressions.spec.ts",
+      "status": "passed",
+      "attempts": 1,
+      "publicSourceDigest": "1fa101018a4a77be164884dea8bf6eda18711eff8b4851de4b427b9230b1c6ec"
+    },
+    {
+      "name": "Earn candidate interactions dark 1400",
+      "file": "earn-family-lab-regressions.spec.ts",
+      "status": "passed",
+      "attempts": 1,
+      "publicSourceDigest": "1fa101018a4a77be164884dea8bf6eda18711eff8b4851de4b427b9230b1c6ec"
+    },
+    {
+      "name": "Earn candidate projection and sorting light",
+      "file": "earn-family-lab-regressions.spec.ts",
+      "status": "passed",
+      "attempts": 1,
+      "publicSourceDigest": "1fa101018a4a77be164884dea8bf6eda18711eff8b4851de4b427b9230b1c6ec"
+    },
+    {
+      "name": "Earn candidate projection and sorting dark",
+      "file": "earn-family-lab-regressions.spec.ts",
+      "status": "passed",
+      "attempts": 1,
+      "publicSourceDigest": "1fa101018a4a77be164884dea8bf6eda18711eff8b4851de4b427b9230b1c6ec"
+    },
+    {
+      "name": "holdings family light 320",
+      "file": "holdings-family-lab-regressions.spec.ts",
+      "status": "passed",
+      "attempts": 1,
+      "publicSourceDigest": "1fa101018a4a77be164884dea8bf6eda18711eff8b4851de4b427b9230b1c6ec"
+    },
+    {
+      "name": "holdings family light 375",
+      "file": "holdings-family-lab-regressions.spec.ts",
+      "status": "passed",
+      "attempts": 1,
+      "publicSourceDigest": "1fa101018a4a77be164884dea8bf6eda18711eff8b4851de4b427b9230b1c6ec"
+    },
+    {
+      "name": "holdings family light 1400",
+      "file": "holdings-family-lab-regressions.spec.ts",
+      "status": "passed",
+      "attempts": 1,
+      "publicSourceDigest": "1fa101018a4a77be164884dea8bf6eda18711eff8b4851de4b427b9230b1c6ec"
+    },
+    {
+      "name": "holdings family dark 320",
+      "file": "holdings-family-lab-regressions.spec.ts",
+      "status": "passed",
+      "attempts": 1,
+      "publicSourceDigest": "1fa101018a4a77be164884dea8bf6eda18711eff8b4851de4b427b9230b1c6ec"
+    },
+    {
+      "name": "holdings family dark 375",
+      "file": "holdings-family-lab-regressions.spec.ts",
+      "status": "passed",
+      "attempts": 1,
+      "publicSourceDigest": "1fa101018a4a77be164884dea8bf6eda18711eff8b4851de4b427b9230b1c6ec"
+    },
+    {
+      "name": "holdings family dark 1400",
+      "file": "holdings-family-lab-regressions.spec.ts",
+      "status": "passed",
+      "attempts": 1,
+      "publicSourceDigest": "1fa101018a4a77be164884dea8bf6eda18711eff8b4851de4b427b9230b1c6ec"
+    },
+    {
+      "name": "holdings touch pointer 1400",
+      "file": "holdings-family-lab-regressions.spec.ts",
+      "status": "passed",
+      "attempts": 1,
+      "publicSourceDigest": "1fa101018a4a77be164884dea8bf6eda18711eff8b4851de4b427b9230b1c6ec"
+    },
+    {
+      "name": "table hardening light",
+      "file": "table-family-hardening-lab-regressions.spec.ts",
+      "status": "passed",
+      "attempts": 1,
+      "publicSourceDigest": "1fa101018a4a77be164884dea8bf6eda18711eff8b4851de4b427b9230b1c6ec"
+    },
+    {
+      "name": "table hardening dark",
+      "file": "table-family-hardening-lab-regressions.spec.ts",
+      "status": "passed",
+      "attempts": 1,
+      "publicSourceDigest": "1fa101018a4a77be164884dea8bf6eda18711eff8b4851de4b427b9230b1c6ec"
+    },
+    {
+      "name": "table family light 320",
+      "file": "table-family-lab-regressions.spec.ts",
+      "status": "passed",
+      "attempts": 1,
+      "publicSourceDigest": "1fa101018a4a77be164884dea8bf6eda18711eff8b4851de4b427b9230b1c6ec"
+    },
+    {
+      "name": "table family light 375",
+      "file": "table-family-lab-regressions.spec.ts",
+      "status": "passed",
+      "attempts": 1,
+      "publicSourceDigest": "1fa101018a4a77be164884dea8bf6eda18711eff8b4851de4b427b9230b1c6ec"
+    },
+    {
+      "name": "table family light 1400",
+      "file": "table-family-lab-regressions.spec.ts",
+      "status": "passed",
+      "attempts": 1,
+      "publicSourceDigest": "1fa101018a4a77be164884dea8bf6eda18711eff8b4851de4b427b9230b1c6ec"
+    },
+    {
+      "name": "table family dark 320",
+      "file": "table-family-lab-regressions.spec.ts",
+      "status": "passed",
+      "attempts": 1,
+      "publicSourceDigest": "1fa101018a4a77be164884dea8bf6eda18711eff8b4851de4b427b9230b1c6ec"
+    },
+    {
+      "name": "table family dark 375",
+      "file": "table-family-lab-regressions.spec.ts",
+      "status": "passed",
+      "attempts": 1,
+      "publicSourceDigest": "1fa101018a4a77be164884dea8bf6eda18711eff8b4851de4b427b9230b1c6ec"
+    },
+    {
+      "name": "table family dark 1400",
+      "file": "table-family-lab-regressions.spec.ts",
+      "status": "passed",
+      "attempts": 1,
+      "publicSourceDigest": "1fa101018a4a77be164884dea8bf6eda18711eff8b4851de4b427b9230b1c6ec"
+    },
+    {
+      "name": "chain badge borders light",
+      "file": "table-family-lab-regressions.spec.ts",
+      "status": "passed",
+      "attempts": 1,
+      "publicSourceDigest": "1fa101018a4a77be164884dea8bf6eda18711eff8b4851de4b427b9230b1c6ec"
+    },
+    {
+      "name": "chain badge borders dark",
+      "file": "table-family-lab-regressions.spec.ts",
+      "status": "passed",
+      "attempts": 1,
+      "publicSourceDigest": "1fa101018a4a77be164884dea8bf6eda18711eff8b4851de4b427b9230b1c6ec"
+    },
+    {
+      "name": "table row links light 390",
+      "file": "table-row-links-lab-regressions.spec.ts",
+      "status": "passed",
+      "attempts": 1,
+      "publicSourceDigest": "1fa101018a4a77be164884dea8bf6eda18711eff8b4851de4b427b9230b1c6ec"
+    },
+    {
+      "name": "table row links light 1400",
+      "file": "table-row-links-lab-regressions.spec.ts",
+      "status": "passed",
+      "attempts": 1,
+      "publicSourceDigest": "1fa101018a4a77be164884dea8bf6eda18711eff8b4851de4b427b9230b1c6ec"
+    },
+    {
+      "name": "table row links dark 390",
+      "file": "table-row-links-lab-regressions.spec.ts",
+      "status": "passed",
+      "attempts": 1,
+      "publicSourceDigest": "1fa101018a4a77be164884dea8bf6eda18711eff8b4851de4b427b9230b1c6ec"
+    },
+    {
+      "name": "table row links dark 1400",
+      "file": "table-row-links-lab-regressions.spec.ts",
+      "status": "passed",
+      "attempts": 1,
+      "publicSourceDigest": "1fa101018a4a77be164884dea8bf6eda18711eff8b4851de4b427b9230b1c6ec"
+    }
+  ],
+  "captures": []
+}

@@ -1,0 +1,713 @@
+{
+  "fixedPoint": "01a900cdf2589d455d04f78806d2ca8ff2b9122c",
+  "scope": "September 12 local table-family review checkpoint; not design acceptance or production adoption",
+  "stats": {
+    "startTime": "2026-09-12T13:35:03.695Z",
+    "duration": 431027.818,
+    "expected": 85,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "project": "design-system-review",
+  "port": 3043,
+  "records": [
+    {
+      "title": "DeFi rows light 320",
+      "file": "defi-family-lab-regressions.spec.ts",
+      "status": "passed",
+      "attempts": 1,
+      "publicSourceDigest": "efaa79c08e793930f52d62871640ec5188dab9ab4dd9d8cb7bc7e971a93788f8"
+    },
+    {
+      "title": "DeFi rows light 390",
+      "file": "defi-family-lab-regressions.spec.ts",
+      "status": "passed",
+      "attempts": 1,
+      "publicSourceDigest": "efaa79c08e793930f52d62871640ec5188dab9ab4dd9d8cb7bc7e971a93788f8"
+    },
+    {
+      "title": "DeFi rows light 1400",
+      "file": "defi-family-lab-regressions.spec.ts",
+      "status": "passed",
+      "attempts": 1,
+      "publicSourceDigest": "efaa79c08e793930f52d62871640ec5188dab9ab4dd9d8cb7bc7e971a93788f8"
+    },
+    {
+      "title": "DeFi rows dark 320",
+      "file": "defi-family-lab-regressions.spec.ts",
+      "status": "passed",
+      "attempts": 1,
+      "publicSourceDigest": "efaa79c08e793930f52d62871640ec5188dab9ab4dd9d8cb7bc7e971a93788f8"
+    },
+    {
+      "title": "DeFi rows dark 390",
+      "file": "defi-family-lab-regressions.spec.ts",
+      "status": "passed",
+      "attempts": 1,
+      "publicSourceDigest": "efaa79c08e793930f52d62871640ec5188dab9ab4dd9d8cb7bc7e971a93788f8"
+    },
+    {
+      "title": "DeFi rows dark 1400",
+      "file": "defi-family-lab-regressions.spec.ts",
+      "status": "passed",
+      "attempts": 1,
+      "publicSourceDigest": "efaa79c08e793930f52d62871640ec5188dab9ab4dd9d8cb7bc7e971a93788f8"
+    },
+    {
+      "title": "DeFi reflows and transfers link focus at its container boundary",
+      "file": "defi-family-lab-regressions.spec.ts",
+      "status": "passed",
+      "attempts": 1,
+      "publicSourceDigest": "efaa79c08e793930f52d62871640ec5188dab9ab4dd9d8cb7bc7e971a93788f8"
+    },
+    {
+      "title": "DeFi source table 390",
+      "file": "defi-source-capture.spec.ts",
+      "status": "passed",
+      "attempts": 1,
+      "publicSourceDigest": "efaa79c08e793930f52d62871640ec5188dab9ab4dd9d8cb7bc7e971a93788f8"
+    },
+    {
+      "title": "DeFi source table 1400",
+      "file": "defi-source-capture.spec.ts",
+      "status": "passed",
+      "attempts": 1,
+      "publicSourceDigest": "efaa79c08e793930f52d62871640ec5188dab9ab4dd9d8cb7bc7e971a93788f8"
+    },
+    {
+      "title": "Discover cards retain sorting across the available-width boundary",
+      "file": "discover-cards-lab-regressions.spec.ts",
+      "status": "passed",
+      "attempts": 1,
+      "publicSourceDigest": "efaa79c08e793930f52d62871640ec5188dab9ab4dd9d8cb7bc7e971a93788f8"
+    },
+    {
+      "title": "Discover resize does not reclaim focus after an outside interaction",
+      "file": "discover-cards-lab-regressions.spec.ts",
+      "status": "passed",
+      "attempts": 1,
+      "publicSourceDigest": "efaa79c08e793930f52d62871640ec5188dab9ab4dd9d8cb7bc7e971a93788f8"
+    },
+    {
+      "title": "Discover card states light 320",
+      "file": "discover-cards-lab-regressions.spec.ts",
+      "status": "passed",
+      "attempts": 1,
+      "publicSourceDigest": "efaa79c08e793930f52d62871640ec5188dab9ab4dd9d8cb7bc7e971a93788f8"
+    },
+    {
+      "title": "Discover card states light 390",
+      "file": "discover-cards-lab-regressions.spec.ts",
+      "status": "passed",
+      "attempts": 1,
+      "publicSourceDigest": "efaa79c08e793930f52d62871640ec5188dab9ab4dd9d8cb7bc7e971a93788f8"
+    },
+    {
+      "title": "Discover card states dark 390",
+      "file": "discover-cards-lab-regressions.spec.ts",
+      "status": "passed",
+      "attempts": 1,
+      "publicSourceDigest": "efaa79c08e793930f52d62871640ec5188dab9ab4dd9d8cb7bc7e971a93788f8"
+    },
+    {
+      "title": "Discover card states light 768",
+      "file": "discover-cards-lab-regressions.spec.ts",
+      "status": "passed",
+      "attempts": 1,
+      "publicSourceDigest": "efaa79c08e793930f52d62871640ec5188dab9ab4dd9d8cb7bc7e971a93788f8"
+    },
+    {
+      "title": "Discover card ticker recovery motion",
+      "file": "discover-cards-lab-regressions.spec.ts",
+      "status": "passed",
+      "attempts": 1,
+      "publicSourceDigest": "efaa79c08e793930f52d62871640ec5188dab9ab4dd9d8cb7bc7e971a93788f8"
+    },
+    {
+      "title": "Discover card ticker recovery reduced",
+      "file": "discover-cards-lab-regressions.spec.ts",
+      "status": "passed",
+      "attempts": 1,
+      "publicSourceDigest": "efaa79c08e793930f52d62871640ec5188dab9ab4dd9d8cb7bc7e971a93788f8"
+    },
+    {
+      "title": "discover family initial behavior",
+      "file": "discover-family-lab-regressions.spec.ts",
+      "status": "passed",
+      "attempts": 1,
+      "publicSourceDigest": "efaa79c08e793930f52d62871640ec5188dab9ab4dd9d8cb7bc7e971a93788f8"
+    },
+    {
+      "title": "discover family light 1400",
+      "file": "discover-family-lab-regressions.spec.ts",
+      "status": "passed",
+      "attempts": 1,
+      "publicSourceDigest": "efaa79c08e793930f52d62871640ec5188dab9ab4dd9d8cb7bc7e971a93788f8"
+    },
+    {
+      "title": "discover family dark 1400",
+      "file": "discover-family-lab-regressions.spec.ts",
+      "status": "passed",
+      "attempts": 1,
+      "publicSourceDigest": "efaa79c08e793930f52d62871640ec5188dab9ab4dd9d8cb7bc7e971a93788f8"
+    },
+    {
+      "title": "discover asset strip hover motion",
+      "file": "discover-motion-lab-regressions.spec.ts",
+      "status": "passed",
+      "attempts": 1,
+      "publicSourceDigest": "efaa79c08e793930f52d62871640ec5188dab9ab4dd9d8cb7bc7e971a93788f8"
+    },
+    {
+      "title": "discover asset strip reduced touch",
+      "file": "discover-motion-lab-regressions.spec.ts",
+      "status": "passed",
+      "attempts": 1,
+      "publicSourceDigest": "efaa79c08e793930f52d62871640ec5188dab9ab4dd9d8cb7bc7e971a93788f8"
+    },
+    {
+      "title": "discover strip edges light 1400",
+      "file": "discover-strip-edges-lab-regressions.spec.ts",
+      "status": "passed",
+      "attempts": 1,
+      "publicSourceDigest": "efaa79c08e793930f52d62871640ec5188dab9ab4dd9d8cb7bc7e971a93788f8"
+    },
+    {
+      "title": "discover strip edges dark 1400",
+      "file": "discover-strip-edges-lab-regressions.spec.ts",
+      "status": "passed",
+      "attempts": 1,
+      "publicSourceDigest": "efaa79c08e793930f52d62871640ec5188dab9ab4dd9d8cb7bc7e971a93788f8"
+    },
+    {
+      "title": "discover trigger light 1400",
+      "file": "discover-trigger-lab-regressions.spec.ts",
+      "status": "passed",
+      "attempts": 1,
+      "publicSourceDigest": "efaa79c08e793930f52d62871640ec5188dab9ab4dd9d8cb7bc7e971a93788f8"
+    },
+    {
+      "title": "discover trigger dark 1400",
+      "file": "discover-trigger-lab-regressions.spec.ts",
+      "status": "passed",
+      "attempts": 1,
+      "publicSourceDigest": "efaa79c08e793930f52d62871640ec5188dab9ab4dd9d8cb7bc7e971a93788f8"
+    },
+    {
+      "title": "Earn Index drawer 390",
+      "file": "earn-drawer-source-capture.spec.ts",
+      "status": "passed",
+      "attempts": 1,
+      "publicSourceDigest": "efaa79c08e793930f52d62871640ec5188dab9ab4dd9d8cb7bc7e971a93788f8"
+    },
+    {
+      "title": "Earn Index drawer 1400",
+      "file": "earn-drawer-source-capture.spec.ts",
+      "status": "passed",
+      "attempts": 1,
+      "publicSourceDigest": "efaa79c08e793930f52d62871640ec5188dab9ab4dd9d8cb7bc7e971a93788f8"
+    },
+    {
+      "title": "Earn candidate exposes source-backed opportunities",
+      "file": "earn-family-lab-regressions.spec.ts",
+      "status": "passed",
+      "attempts": 1,
+      "publicSourceDigest": "efaa79c08e793930f52d62871640ec5188dab9ab4dd9d8cb7bc7e971a93788f8"
+    },
+    {
+      "title": "Earn candidate states light 320",
+      "file": "earn-family-lab-regressions.spec.ts",
+      "status": "passed",
+      "attempts": 1,
+      "publicSourceDigest": "efaa79c08e793930f52d62871640ec5188dab9ab4dd9d8cb7bc7e971a93788f8"
+    },
+    {
+      "title": "Earn candidate states light 390",
+      "file": "earn-family-lab-regressions.spec.ts",
+      "status": "passed",
+      "attempts": 1,
+      "publicSourceDigest": "efaa79c08e793930f52d62871640ec5188dab9ab4dd9d8cb7bc7e971a93788f8"
+    },
+    {
+      "title": "Earn candidate states light 1400",
+      "file": "earn-family-lab-regressions.spec.ts",
+      "status": "passed",
+      "attempts": 1,
+      "publicSourceDigest": "efaa79c08e793930f52d62871640ec5188dab9ab4dd9d8cb7bc7e971a93788f8"
+    },
+    {
+      "title": "Earn candidate states dark 320",
+      "file": "earn-family-lab-regressions.spec.ts",
+      "status": "passed",
+      "attempts": 1,
+      "publicSourceDigest": "efaa79c08e793930f52d62871640ec5188dab9ab4dd9d8cb7bc7e971a93788f8"
+    },
+    {
+      "title": "Earn candidate states dark 390",
+      "file": "earn-family-lab-regressions.spec.ts",
+      "status": "passed",
+      "attempts": 1,
+      "publicSourceDigest": "efaa79c08e793930f52d62871640ec5188dab9ab4dd9d8cb7bc7e971a93788f8"
+    },
+    {
+      "title": "Earn candidate states dark 1400",
+      "file": "earn-family-lab-regressions.spec.ts",
+      "status": "passed",
+      "attempts": 1,
+      "publicSourceDigest": "efaa79c08e793930f52d62871640ec5188dab9ab4dd9d8cb7bc7e971a93788f8"
+    },
+    {
+      "title": "Earn candidate interactions light 390",
+      "file": "earn-family-lab-regressions.spec.ts",
+      "status": "passed",
+      "attempts": 1,
+      "publicSourceDigest": "efaa79c08e793930f52d62871640ec5188dab9ab4dd9d8cb7bc7e971a93788f8"
+    },
+    {
+      "title": "Earn candidate interactions light 1400",
+      "file": "earn-family-lab-regressions.spec.ts",
+      "status": "passed",
+      "attempts": 1,
+      "publicSourceDigest": "efaa79c08e793930f52d62871640ec5188dab9ab4dd9d8cb7bc7e971a93788f8"
+    },
+    {
+      "title": "Earn candidate interactions dark 390",
+      "file": "earn-family-lab-regressions.spec.ts",
+      "status": "passed",
+      "attempts": 1,
+      "publicSourceDigest": "efaa79c08e793930f52d62871640ec5188dab9ab4dd9d8cb7bc7e971a93788f8"
+    },
+    {
+      "title": "Earn candidate interactions dark 1400",
+      "file": "earn-family-lab-regressions.spec.ts",
+      "status": "passed",
+      "attempts": 1,
+      "publicSourceDigest": "efaa79c08e793930f52d62871640ec5188dab9ab4dd9d8cb7bc7e971a93788f8"
+    },
+    {
+      "title": "Earn candidate projection and sorting light",
+      "file": "earn-family-lab-regressions.spec.ts",
+      "status": "passed",
+      "attempts": 1,
+      "publicSourceDigest": "efaa79c08e793930f52d62871640ec5188dab9ab4dd9d8cb7bc7e971a93788f8"
+    },
+    {
+      "title": "Earn candidate projection and sorting dark",
+      "file": "earn-family-lab-regressions.spec.ts",
+      "status": "passed",
+      "attempts": 1,
+      "publicSourceDigest": "efaa79c08e793930f52d62871640ec5188dab9ab4dd9d8cb7bc7e971a93788f8"
+    },
+    {
+      "title": "Earn Index list light 390",
+      "file": "earn-index-source-capture.spec.ts",
+      "status": "passed",
+      "attempts": 1,
+      "publicSourceDigest": "efaa79c08e793930f52d62871640ec5188dab9ab4dd9d8cb7bc7e971a93788f8"
+    },
+    {
+      "title": "Earn Index list light 1400",
+      "file": "earn-index-source-capture.spec.ts",
+      "status": "passed",
+      "attempts": 1,
+      "publicSourceDigest": "efaa79c08e793930f52d62871640ec5188dab9ab4dd9d8cb7bc7e971a93788f8"
+    },
+    {
+      "title": "Earn Index list dark 390",
+      "file": "earn-index-source-capture.spec.ts",
+      "status": "passed",
+      "attempts": 1,
+      "publicSourceDigest": "efaa79c08e793930f52d62871640ec5188dab9ab4dd9d8cb7bc7e971a93788f8"
+    },
+    {
+      "title": "Earn Index list dark 1400",
+      "file": "earn-index-source-capture.spec.ts",
+      "status": "passed",
+      "attempts": 1,
+      "publicSourceDigest": "efaa79c08e793930f52d62871640ec5188dab9ab4dd9d8cb7bc7e971a93788f8"
+    },
+    {
+      "title": "Earn Index loading and empty 390",
+      "file": "earn-index-source-capture.spec.ts",
+      "status": "passed",
+      "attempts": 1,
+      "publicSourceDigest": "efaa79c08e793930f52d62871640ec5188dab9ab4dd9d8cb7bc7e971a93788f8"
+    },
+    {
+      "title": "Earn Index loading and empty 1400",
+      "file": "earn-index-source-capture.spec.ts",
+      "status": "passed",
+      "attempts": 1,
+      "publicSourceDigest": "efaa79c08e793930f52d62871640ec5188dab9ab4dd9d8cb7bc7e971a93788f8"
+    },
+    {
+      "title": "Earn Index disclosure and help 390",
+      "file": "earn-index-source-capture.spec.ts",
+      "status": "passed",
+      "attempts": 1,
+      "publicSourceDigest": "efaa79c08e793930f52d62871640ec5188dab9ab4dd9d8cb7bc7e971a93788f8"
+    },
+    {
+      "title": "Earn Index disclosure and help 1400",
+      "file": "earn-index-source-capture.spec.ts",
+      "status": "passed",
+      "attempts": 1,
+      "publicSourceDigest": "efaa79c08e793930f52d62871640ec5188dab9ab4dd9d8cb7bc7e971a93788f8"
+    },
+    {
+      "title": "Earn loading geometry and disclosure recovery 390",
+      "file": "earn-recovery-lab-regressions.spec.ts",
+      "status": "passed",
+      "attempts": 1,
+      "publicSourceDigest": "efaa79c08e793930f52d62871640ec5188dab9ab4dd9d8cb7bc7e971a93788f8"
+    },
+    {
+      "title": "Earn loading geometry and disclosure recovery 1400",
+      "file": "earn-recovery-lab-regressions.spec.ts",
+      "status": "passed",
+      "attempts": 1,
+      "publicSourceDigest": "efaa79c08e793930f52d62871640ec5188dab9ab4dd9d8cb7bc7e971a93788f8"
+    },
+    {
+      "title": "Earn Index wallet 390",
+      "file": "earn-wallet-source-capture.spec.ts",
+      "status": "passed",
+      "attempts": 1,
+      "publicSourceDigest": "efaa79c08e793930f52d62871640ec5188dab9ab4dd9d8cb7bc7e971a93788f8"
+    },
+    {
+      "title": "Earn Index wallet 1400",
+      "file": "earn-wallet-source-capture.spec.ts",
+      "status": "passed",
+      "attempts": 1,
+      "publicSourceDigest": "efaa79c08e793930f52d62871640ec5188dab9ab4dd9d8cb7bc7e971a93788f8"
+    },
+    {
+      "title": "Earn Yield list light 390",
+      "file": "earn-yield-source-capture.spec.ts",
+      "status": "passed",
+      "attempts": 1,
+      "publicSourceDigest": "efaa79c08e793930f52d62871640ec5188dab9ab4dd9d8cb7bc7e971a93788f8"
+    },
+    {
+      "title": "Earn Yield list light 1400",
+      "file": "earn-yield-source-capture.spec.ts",
+      "status": "passed",
+      "attempts": 1,
+      "publicSourceDigest": "efaa79c08e793930f52d62871640ec5188dab9ab4dd9d8cb7bc7e971a93788f8"
+    },
+    {
+      "title": "Earn Yield list dark 390",
+      "file": "earn-yield-source-capture.spec.ts",
+      "status": "passed",
+      "attempts": 1,
+      "publicSourceDigest": "efaa79c08e793930f52d62871640ec5188dab9ab4dd9d8cb7bc7e971a93788f8"
+    },
+    {
+      "title": "Earn Yield list dark 1400",
+      "file": "earn-yield-source-capture.spec.ts",
+      "status": "passed",
+      "attempts": 1,
+      "publicSourceDigest": "efaa79c08e793930f52d62871640ec5188dab9ab4dd9d8cb7bc7e971a93788f8"
+    },
+    {
+      "title": "Earn Yield drawer 390",
+      "file": "earn-yield-source-capture.spec.ts",
+      "status": "passed",
+      "attempts": 1,
+      "publicSourceDigest": "efaa79c08e793930f52d62871640ec5188dab9ab4dd9d8cb7bc7e971a93788f8"
+    },
+    {
+      "title": "Earn Yield drawer 1400",
+      "file": "earn-yield-source-capture.spec.ts",
+      "status": "passed",
+      "attempts": 1,
+      "publicSourceDigest": "efaa79c08e793930f52d62871640ec5188dab9ab4dd9d8cb7bc7e971a93788f8"
+    },
+    {
+      "title": "holdings family light 320",
+      "file": "holdings-family-lab-regressions.spec.ts",
+      "status": "passed",
+      "attempts": 1,
+      "publicSourceDigest": "efaa79c08e793930f52d62871640ec5188dab9ab4dd9d8cb7bc7e971a93788f8"
+    },
+    {
+      "title": "holdings family light 375",
+      "file": "holdings-family-lab-regressions.spec.ts",
+      "status": "passed",
+      "attempts": 1,
+      "publicSourceDigest": "efaa79c08e793930f52d62871640ec5188dab9ab4dd9d8cb7bc7e971a93788f8"
+    },
+    {
+      "title": "holdings family light 1400",
+      "file": "holdings-family-lab-regressions.spec.ts",
+      "status": "passed",
+      "attempts": 1,
+      "publicSourceDigest": "efaa79c08e793930f52d62871640ec5188dab9ab4dd9d8cb7bc7e971a93788f8"
+    },
+    {
+      "title": "holdings family dark 320",
+      "file": "holdings-family-lab-regressions.spec.ts",
+      "status": "passed",
+      "attempts": 1,
+      "publicSourceDigest": "efaa79c08e793930f52d62871640ec5188dab9ab4dd9d8cb7bc7e971a93788f8"
+    },
+    {
+      "title": "holdings family dark 375",
+      "file": "holdings-family-lab-regressions.spec.ts",
+      "status": "passed",
+      "attempts": 1,
+      "publicSourceDigest": "efaa79c08e793930f52d62871640ec5188dab9ab4dd9d8cb7bc7e971a93788f8"
+    },
+    {
+      "title": "holdings family dark 1400",
+      "file": "holdings-family-lab-regressions.spec.ts",
+      "status": "passed",
+      "attempts": 1,
+      "publicSourceDigest": "efaa79c08e793930f52d62871640ec5188dab9ab4dd9d8cb7bc7e971a93788f8"
+    },
+    {
+      "title": "holdings touch pointer 1400",
+      "file": "holdings-family-lab-regressions.spec.ts",
+      "status": "passed",
+      "attempts": 1,
+      "publicSourceDigest": "efaa79c08e793930f52d62871640ec5188dab9ab4dd9d8cb7bc7e971a93788f8"
+    },
+    {
+      "title": "Holdings explicit direction survives field and width changes light",
+      "file": "holdings-sort-continuity-lab-regressions.spec.ts",
+      "status": "passed",
+      "attempts": 1,
+      "publicSourceDigest": "efaa79c08e793930f52d62871640ec5188dab9ab4dd9d8cb7bc7e971a93788f8"
+    },
+    {
+      "title": "Holdings explicit direction survives field and width changes dark",
+      "file": "holdings-sort-continuity-lab-regressions.spec.ts",
+      "status": "passed",
+      "attempts": 1,
+      "publicSourceDigest": "efaa79c08e793930f52d62871640ec5188dab9ab4dd9d8cb7bc7e971a93788f8"
+    },
+    {
+      "title": "holdings source cmc20 1400",
+      "file": "holdings-source-lab-regressions.spec.ts",
+      "status": "passed",
+      "attempts": 1,
+      "publicSourceDigest": "efaa79c08e793930f52d62871640ec5188dab9ab4dd9d8cb7bc7e971a93788f8"
+    },
+    {
+      "title": "holdings source cmc20 375",
+      "file": "holdings-source-lab-regressions.spec.ts",
+      "status": "passed",
+      "attempts": 1,
+      "publicSourceDigest": "efaa79c08e793930f52d62871640ec5188dab9ab4dd9d8cb7bc7e971a93788f8"
+    },
+    {
+      "title": "holdings source photon 1400",
+      "file": "holdings-source-lab-regressions.spec.ts",
+      "status": "passed",
+      "attempts": 1,
+      "publicSourceDigest": "efaa79c08e793930f52d62871640ec5188dab9ab4dd9d8cb7bc7e971a93788f8"
+    },
+    {
+      "title": "table hardening light",
+      "file": "table-family-hardening-lab-regressions.spec.ts",
+      "status": "passed",
+      "attempts": 1,
+      "publicSourceDigest": "efaa79c08e793930f52d62871640ec5188dab9ab4dd9d8cb7bc7e971a93788f8"
+    },
+    {
+      "title": "table hardening dark",
+      "file": "table-family-hardening-lab-regressions.spec.ts",
+      "status": "passed",
+      "attempts": 1,
+      "publicSourceDigest": "efaa79c08e793930f52d62871640ec5188dab9ab4dd9d8cb7bc7e971a93788f8"
+    },
+    {
+      "title": "table family light 320",
+      "file": "table-family-lab-regressions.spec.ts",
+      "status": "passed",
+      "attempts": 1,
+      "publicSourceDigest": "efaa79c08e793930f52d62871640ec5188dab9ab4dd9d8cb7bc7e971a93788f8"
+    },
+    {
+      "title": "table family light 375",
+      "file": "table-family-lab-regressions.spec.ts",
+      "status": "passed",
+      "attempts": 1,
+      "publicSourceDigest": "efaa79c08e793930f52d62871640ec5188dab9ab4dd9d8cb7bc7e971a93788f8"
+    },
+    {
+      "title": "table family light 1400",
+      "file": "table-family-lab-regressions.spec.ts",
+      "status": "passed",
+      "attempts": 1,
+      "publicSourceDigest": "efaa79c08e793930f52d62871640ec5188dab9ab4dd9d8cb7bc7e971a93788f8"
+    },
+    {
+      "title": "table family dark 320",
+      "file": "table-family-lab-regressions.spec.ts",
+      "status": "passed",
+      "attempts": 1,
+      "publicSourceDigest": "efaa79c08e793930f52d62871640ec5188dab9ab4dd9d8cb7bc7e971a93788f8"
+    },
+    {
+      "title": "table family dark 375",
+      "file": "table-family-lab-regressions.spec.ts",
+      "status": "passed",
+      "attempts": 1,
+      "publicSourceDigest": "efaa79c08e793930f52d62871640ec5188dab9ab4dd9d8cb7bc7e971a93788f8"
+    },
+    {
+      "title": "table family dark 1400",
+      "file": "table-family-lab-regressions.spec.ts",
+      "status": "passed",
+      "attempts": 1,
+      "publicSourceDigest": "efaa79c08e793930f52d62871640ec5188dab9ab4dd9d8cb7bc7e971a93788f8"
+    },
+    {
+      "title": "chain badge borders light",
+      "file": "table-family-lab-regressions.spec.ts",
+      "status": "passed",
+      "attempts": 1,
+      "publicSourceDigest": "efaa79c08e793930f52d62871640ec5188dab9ab4dd9d8cb7bc7e971a93788f8"
+    },
+    {
+      "title": "chain badge borders dark",
+      "file": "table-family-lab-regressions.spec.ts",
+      "status": "passed",
+      "attempts": 1,
+      "publicSourceDigest": "efaa79c08e793930f52d62871640ec5188dab9ab4dd9d8cb7bc7e971a93788f8"
+    },
+    {
+      "title": "table row links light 390",
+      "file": "table-row-links-lab-regressions.spec.ts",
+      "status": "passed",
+      "attempts": 1,
+      "publicSourceDigest": "efaa79c08e793930f52d62871640ec5188dab9ab4dd9d8cb7bc7e971a93788f8"
+    },
+    {
+      "title": "table row links light 1400",
+      "file": "table-row-links-lab-regressions.spec.ts",
+      "status": "passed",
+      "attempts": 1,
+      "publicSourceDigest": "efaa79c08e793930f52d62871640ec5188dab9ab4dd9d8cb7bc7e971a93788f8"
+    },
+    {
+      "title": "table row links dark 390",
+      "file": "table-row-links-lab-regressions.spec.ts",
+      "status": "passed",
+      "attempts": 1,
+      "publicSourceDigest": "efaa79c08e793930f52d62871640ec5188dab9ab4dd9d8cb7bc7e971a93788f8"
+    },
+    {
+      "title": "table row links dark 1400",
+      "file": "table-row-links-lab-regressions.spec.ts",
+      "status": "passed",
+      "attempts": 1,
+      "publicSourceDigest": "efaa79c08e793930f52d62871640ec5188dab9ab4dd9d8cb7bc7e971a93788f8"
+    }
+  ],
+  "captures": [
+    {
+      "title": "DeFi rows light 390",
+      "state": "default",
+      "file": "DeFi-rows-light-390-default.png",
+      "sha256": "eedec1e8518c980dd9ff953c90a1239c09e03c200dd20a60d9b286d25914bf6a"
+    },
+    {
+      "title": "DeFi rows light 1400",
+      "state": "default",
+      "file": "DeFi-rows-light-1400-default.png",
+      "sha256": "517b18c6efbc0ab36d302e3609bae0accfe2dbecd8094205be561968aaa1720e"
+    },
+    {
+      "title": "DeFi rows dark 320",
+      "state": "Long content",
+      "file": "DeFi-rows-dark-320-Long-content.png",
+      "sha256": "1150b871369c8ee7e12b8b54f7a304d66ac309a74898f94b3305ef7b9ce0949e"
+    },
+    {
+      "title": "DeFi rows dark 320",
+      "state": "Loading opportunities",
+      "file": "DeFi-rows-dark-320-Loading-opportunities.png",
+      "sha256": "5828a004040d4e9eb84757aa3ae5b91680a18d56a92c95b089421bcc15b55d66"
+    },
+    {
+      "title": "Earn candidate states light 390",
+      "state": "index-sparse",
+      "file": "Earn-candidate-states-light-390-index-sparse.png",
+      "sha256": "e39423b3371565e81ced92f54044cf6d094a42004fdd3a42482939fb2817db60"
+    },
+    {
+      "title": "Earn candidate states light 390",
+      "state": "yield-sparse",
+      "file": "Earn-candidate-states-light-390-yield-sparse.png",
+      "sha256": "2272a4974066b04eae7e696eed7f6547e4a539c48ae6c90c44727a36260923f7"
+    },
+    {
+      "title": "Earn candidate states light 1400",
+      "state": "index-wallet",
+      "file": "Earn-candidate-states-light-1400-index-wallet.png",
+      "sha256": "5b39b04fe4dbb7daecad4dc3ed58bcd28bc56df84cedb37d4555f3979fa1c34e"
+    },
+    {
+      "title": "Earn candidate states dark 320",
+      "state": "yield-long",
+      "file": "Earn-candidate-states-dark-320-yield-long.png",
+      "sha256": "afb2d56f899864a767e27051adcc5878b9975660782e04c70bf0d237e7fb40e9"
+    },
+    {
+      "title": "Earn candidate states dark 320",
+      "state": "loading",
+      "file": "Earn-candidate-states-dark-320-loading.png",
+      "sha256": "9d1c6e09dc83c6c4249a0fa152cda8bc24dbeccd6dffa89ad254f1c2dfe77e94"
+    },
+    {
+      "title": "holdings family light 1400",
+      "state": "overview-collateral",
+      "file": "holdings-family-light-1400-overview-collateral.png",
+      "sha256": "30a482ad1a405b8a93dacc75044a4ce1a9e420bc7e94db2afab11cd84dbfd923"
+    },
+    {
+      "title": "holdings family light 1400",
+      "state": "overview-collateral-long",
+      "file": "holdings-family-light-1400-overview-collateral-long.png",
+      "sha256": "8e5a3ee02b1ca1ede450007ca8019fb529286720994b82d6c61429ba99572467"
+    },
+    {
+      "title": "holdings family dark 320",
+      "state": "long-content",
+      "file": "holdings-family-dark-320-long-content.png",
+      "sha256": "0dfad524b844ca3a683c52e81d6529fc8d97481f0b8830710f0f74fed5439145"
+    },
+    {
+      "title": "holdings family light 1400",
+      "state": "overview-loading",
+      "file": "holdings-family-light-1400-overview-loading.png",
+      "sha256": "55b591fbf068cea0bbc4a229eef4eb5008169c19a168c9f48b1c5efd2b09d9e3"
+    },
+    {
+      "title": "Discover card states dark 390",
+      "state": "compact-default",
+      "file": "Discover-card-states-dark-390-compact-default.png",
+      "sha256": "16af61da4a745eff70db4ec574935ca38a647b8f2cd02b045a93c5fc1ad77f5e"
+    },
+    {
+      "title": "discover family light 1400",
+      "state": "default",
+      "file": "discover-family-light-1400-default.png",
+      "sha256": "03e1683813b9eb577f3923b0b506d1804bbc2d915c8dbc3a860f3c766b7d8059"
+    },
+    {
+      "title": "table family light 1400",
+      "state": "withdrawals",
+      "file": "table-family-light-1400-withdrawals.png",
+      "sha256": "e0972754057d0ab6a83d3b25541102a28e990bb07d8d0badbcd3a423c302d803"
+    }
+  ],
+  "limits": [
+    "Offline fixtures; no live financial accuracy or transaction execution proof",
+    "Only listed captures retained; other run artifacts are local generated output"
+  ]
+}

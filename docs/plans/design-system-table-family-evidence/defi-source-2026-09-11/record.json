@@ -1,0 +1,28 @@
+{
+  "stats": {
+    "startTime": "2026-09-11T14:53:46.699Z",
+    "duration": 17104.129,
+    "expected": 2,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "records": [
+    {
+      "title": "DeFi source table 390",
+      "status": "passed",
+      "captures": [
+        "DeFi-source-table-390-source-default.png"
+      ],
+      "digest": "MmU5N2YzZmUxNjAxYTk0YzAyMWZiM2MwODYwYzI4NzgyMGU5OGYwMzQ3M2Q4ZGY3YjcwNzg5MjJlYWNiNTBjOQ=="
+    },
+    {
+      "title": "DeFi source table 1400",
+      "status": "passed",
+      "captures": [
+        "DeFi-source-table-1400-source-default.png"
+      ],
+      "digest": "MmU5N2YzZmUxNjAxYTk0YzAyMWZiM2MwODYwYzI4NzgyMGU5OGYwMzQ3M2Q4ZGY3YjcwNzg5MjJlYWNiNTBjOQ=="
+    }
+  ]
+}

@@ -12,6 +12,10 @@ export const v1Typography = {
   auxiliary: 'text-xs font-light leading-4',
 } as const
 
+export const v1TypographyVariants = {
+  compactItemTitle: 'text-base font-medium leading-5',
+} as const
+
 export const v1TypographyUsage = {
   display:
     'Rare homepage or major product moment. Never routine application chrome.',

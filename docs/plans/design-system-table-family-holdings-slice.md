@@ -14,6 +14,102 @@ legacy type, spacing or control inconsistencies.
 
 ## Active implementation contract
 
+The [2026-09-11 reconciliation](design-system-table-family-reconciliation.md)
+corrects first selection of desktop Weight/Price Change to descending; clicking
+the active header toggles direction. The narrow menu keeps field and direction
+independent, retaining the explicitly selected direction across field changes
+and projection resizing. Other table families' header defaults are unchanged.
+
+### Compact wrapping identity titles — September 12 trial
+
+Medium, opt-in shared presentation seam; fixed point `01a900cdf`. The user
+authorized trying 16px/500 titles with 20px rather than 24px line-height across
+wrapping table identities, conditional on a clear reusable pattern. Keep the
+reviewed typography roles and EntityIdentity defaults unchanged; add one named
+compact-title variant and explicit name-leading opt-in. The name retains a
+24px minimum line box so one-line rows and their loading rhythm do not shrink.
+Two-line titles use 40px, without line-count detection or breakpoint font changes.
+
+Consume it for the lab's Portfolio/Discover/Earn IdentityCell, Holdings names
+(linked and plain, wide and narrow), and DeFi pool identity. Non-wrapping
+withdrawal symbols, platform labels, prose, financial values, supporting text,
+mobile Discover card titles, column widths and row padding remain unchanged.
+No product mechanics, data, copy, production migration or design acceptance.
+
+Proof: shared default/compact unit seam, actual 836px MACOM name line-height and
+40px two-line box, one-line Lumentum 24px box, affected family browser regressions,
+both themes and phone/desktop long/loading states. Catalog marks the variant as
+provisional; human visual acceptance and engineering review precede adoption.
+
+Verified trial: shared opt-in unit RED and the 836px MACOM browser RED both
+confirmed the previous 24px leading. GREEN: 123/123 focused identity, type,
+source-hygiene, family and catalog tests across 12 files; 40/40 browser cases
+without retries across Holdings, Portfolio/withdrawal, Discover, Earn and DeFi;
+app/E2E typecheck and scoped lint/format/wiki/diff. Inspected light/dark overview
+MACOM, phone Collateral, narrow DeFi and Earn, Discover, withdrawal and loading
+captures. The [receipt](design-system-table-family-evidence/compact-titles-2026-09-12/record.json)
+binds browser results and selected captures to the source snapshot.
+
+Dark/Light review caught the common IdentityCell unintentionally compacting
+desktop withdrawal symbols. An explicit ordinary-leading override and failing-
+before-fix mounted/browser coverage now preserve that exclusion; focused intent
+recheck confirmed the repair. The first broad unit run passed 306 assertions but
+had three errors from the already-recorded TokenLogo post-teardown race; it is
+not a green receipt. The final bounded 123-case serial run was clean. One browser
+run was intentionally stopped before the scope repair; only the final 40-case
+run counts. Existing remote-config/deprecation and duration warnings remain.
+
+Verification follows the bounded lab/checkpoint cadence, not a repository or
+production-adoption gate. No role/default/token values, product copy, data,
+transactions, production consumers, commits or user-preview server changed.
+Current state: human-review-required; the opt-in API's adoption review is in the
+V1 engineering register. The compact variant remains provisional.
+
+Long-content follow-up: include Applied Optoelectronics (Ondo Tokenized) from
+the PHOTON snapshot alongside the synthetic long name in the CMC20 pressure
+case. Preserve its AAOIon identity and figures; do not duplicate the existing
+PHOTON row or alter either default basket. The mixed basket is lab-only.
+
+### September 11 overview-width preview
+
+The user requested a realistic middle width for long-name review. The host now
+offers Full width (default), DTF overview · 836px, and Mobile · 390px through one
+canonical Select. Width is independent of dataset, condition, tab and sorting;
+the table remains the same mounted owner. Max-width constraints still shrink
+to the actual parent on smaller screens. No row, column, or breakpoint rule changed.
+
+The estimate retains the existing overview layout and substitutes only the new
+navigation footprint: `1400 − 72 − 480 − 8 − 4 = 836px`.
+
+- [Page shell](../../src/views/index-dtf/index-dtf-container.tsx) and
+  [Tailwind container](../../tailwind.config.ts): 1400px maximum.
+- [Reviewed navigation composition](../../src/views/internal/design-system/navigation-systems-state-sheet.tsx):
+  72px reserved rail; expansion overlays instead of taking more content width.
+- [Overview](../../src/views/index-dtf/overview/index.tsx): flexible left content
+  (chart, basket, fees, governance and subsequent sections), 4px outer frame on
+  each side and 4px gap to the right column.
+- [Trading/about column](../../src/views/index-dtf/overview/components/landing-mint/index.tsx):
+  480px at desktop, shared by cover, trading and supporting information.
+
+Fresh offline production rendering at 1400px measured an 88px navigation
+footprint, 480px right column, 12px frame spacing and 820px Holdings card.
+The candidate rail therefore adds 16px under these assumptions. The navigation
+demo's placeholder max-width and 3:2 content grid are not a real Overview
+contract and are not imported. Additional page gutters, a different right
+column, or another viewport require recalculation at integration. This is
+explicitly a lab estimate, not accepted page geometry or production adoption.
+
+Low-radius verification against `01a900cdf`: new width-control unit RED (missing
+control) → 7/7 unit tests; 12/12 browser cases without retries across the Holdings,
+source and sorting-continuity suites. Cases verify actual 836px geometry, natural
+MACOM wrapping, both PHOTON tabs, synthetic long/loading states, width round-trips,
+and fitting a 390px viewport. App/E2E types and scoped lint/format pass.
+The [receipt](design-system-table-family-evidence/holdings-overview-width-2026-09-11/record.json)
+includes the production measurement and 12 inspected light/dark captures.
+Source/code/correctness self-review found no implementation blocker. The large
+scope-tool size reflects earlier uncommitted work, not this local control change.
+No production/default changes, product analytics, full repository gate or CI claim.
+
 Fixed point: `adef9ee76`, on the inspected in-progress `design-system-v1` tree.
 One bounded lab composition stage; no shared-default or production changes.
 Use existing DataTable sorting, canonical identity/metric/help/action owners and
@@ -30,12 +126,41 @@ Empty fixtures do not invent product error copy.
 
 Hierarchy: identity and allocation first; period-qualified performance and market
 cap support comparison. Row owns 24px outside inset, 12px desktop / 24px narrow
-vertical inset; identity owns its mark gap; facts own 4px label/value gap. Narrow
+vertical inset. The desktop table adds 12px below its last row, making the final
+content-to-card edge 24px without widening the inter-row gap. Identity owns its
+mark gap; facts own 4px label/value gap. Narrow
 records pair the name with allocation, then group compact logo/ticker metadata
 with Price Change and Market Cap. Below 512px available width, metadata spans
 its own line above the two financial facts.
+Desktop columns reserve Name/Weight/Price Change/Market Cap at 51%/12%/20%/17%.
+This gives the name about 426px at the 836px overview estimate, versus the
+previous 385px. Weight and Market Cap give up spare width; the longer Price
+Change header retains enough room for its active sorting arrow at the 768px
+table threshold. No additional breakpoint or minimum-width calculation is needed.
+Applied Optoelectronics (Ondo Tokenized) should fit one line at 836px; substantially
+longer names can still wrap naturally. Cell padding is unchanged.
+EntityIdentity has no extra name-width cap; Collateral retains the external
+icon's reserved space to avoid hover reflow. Mobile projection is unchanged.
 Start the four-column threshold at 768px available width and pressure-test both
 sides before retaining it. The existing Portfolio threshold stays unchanged.
+
+Initial September 12 width verification (51%/12%/21%/16%): Applied
+Optoelectronics failed the new 836px single-line check before the change
+(40px title box), then passed at 24px.
+The revised column measures 426.375px; the old one measured 384.547px. Fresh
+8/8 mounted tests, 9/9 browser cases, app/E2E typecheck, scoped lint/format and
+wiki/diff checks passed. The browser cases include active sorting and loading
+at 768px, both tabs/themes, long names, mobile and focus continuity. Inspected
+six captures retained with the [source-bound receipt](design-system-table-family-evidence/holdings-name-width-2026-09-12/record.json).
+Low-profile lab trial; no shared defaults, typography, row padding, production
+consumers or mobile layout changed.
+
+Balance follow-up: shift one percentage point from Price Change to Market Cap
+(20%/17%), retaining Name/Weight at 51%/12%. Fresh 8/8 mounted tests and 2/2
+light/dark desktop browser cases passed, including 768px active sorting/loading,
+836px single-line Applied Optoelectronics, mobile transitions and full width.
+Scoped lint/format and wiki/diff checks passed. Three inspected captures and the
+updated column measurements are retained in the [balance receipt](design-system-table-family-evidence/holdings-name-width-2026-09-12/balance-record.json).
 
 Proof: direct source interactions before composing; mounted tab/sort/expansion,
 zero/unavailable and bridge-trigger tests; light/dark 320/375/768/1400px browser
@@ -207,9 +332,11 @@ passes all eight Holdings/Portfolio cases at 375/1400px in both themes, includin
 constrained rows. E2E types and scoped lint pass; the live 390px preview was
 visually inspected. No padding or shared default changed.
 
-The constrained-column review toggle now caps the Holdings preview at 390px
-(previously 576px), using an iPhone-width target to inspect two-line names. Only the lab
-host width changes; responsive row rules and the unconstrained table stay intact.
+The Mobile preview option caps the Holdings preview at 390px (previously a
+constrained-column toggle, originally 576px), using an iPhone-width target to
+inspect two-line names. The September 11 three-way width control also offers
+the 836px overview estimate above. Only the lab host width changes; responsive
+row rules and the unconstrained table stay intact.
 The live review client shows MACOM's exposure name wrapping onto two lines.
 Earlier retained captures below preserve their original preview width.
 
@@ -238,7 +365,9 @@ open, then left on PHOTON/long-content/constrained Exposure with the menu closed
 This changes only lab presentation, with no new analytics event or production adoption.
 
 Holding metadata separates independent ticker and Bridged items with a muted,
-decorative middle dot. Keep the dot with the following item when wrapping; do not
+decorative middle dot. The September 12 spacing trial uses 6px on either side
+of the dot (previously 8px), tightening the full group by 4px. Keep the dot with
+the following item when wrapping; do not
 insert one into attached qualifiers such as `(2 sources)` or across stacked lines.
 The shared local metadata renderer applies this to both row projections and the
 cell gallery. Bridged keeps its neutral supporting text with a persistent subtle
@@ -352,3 +481,39 @@ cover both themes at 320/375/1400 for Holdings/Portfolio, plus the existing
 touch-pointer and Retina-badge checks. The 24px controls-to-content gap and
 left-inset/right-flush gray dividers remain checked. This is regression
 hardening, not additional human acceptance of the visual trials.
+
+### Bottom-edge balance — 2026-09-11
+
+Desktop Holdings now adds 12px below the table: its last content block sits 24px
+from the card bottom, matching the side inset. The 12px cell padding and ordinary
+inter-row rhythm remain intact at full and 836px overview widths. Narrow records
+already have 24px padding and remain unchanged. The same audit found 16px below
+the non-navigable Withdrawal section's row/footer; its desktop section adds 8px.
+Discover/Earn and rich records already supply 24px. Clickable Position rows and
+shared defaults are deliberately unchanged.
+
+Both geometry regressions failed before the fix (Holdings 12px; Withdrawals 16px,
+expected 24px). The existing Holdings/Portfolio browser suites then passed 15/15,
+including long/loading and width-boundary checks. App/E2E typecheck, scoped
+lint/format and wiki/diff checks passed. Twelve light/dark captures were inspected
+and retained with the [source-bound receipt](design-system-table-family-evidence/bottom-insets-2026-09-11/record.json).
+Low-profile self-review; no production adoption or full repository/CI claim.
+
+### Name-column room and Earn zero tone — 2026-09-11
+
+This earlier width trial is superseded by the September 12 numeric-column budget
+in the active contract above. The name/Weight split changed from 40%/20% to
+46%/14%; Price Change and Market
+Cap retain their positions and remaining 20% each. At 836px, Lumentum's
+Collateral name now fits one line; MACOM Collateral still wraps and reaches the
+cell's padded right edge. No hidden narrower name wrapper was found. Padding,
+logo gap, external-link space, row rhythm and mobile composition are unchanged.
+
+Earn's corresponding local change mutes known zero wallet values only; its
+[contract](design-system-table-family-earn-preparation.md) keeps TVL/rate and
+loading/unavailable behavior separate. Two Earn zero-tone tests and the
+one-line Lumentum browser check failed before implementation. Fresh verification:
+20/20 units, 20/20 browser cases, app/E2E types, scoped lint/format and wiki/diff.
+Twelve captures were inspected and retained in the [receipt](design-system-table-family-evidence/earn-zero-holdings-width-2026-09-11/record.json).
+Low-profile self-review; these are lab refinements, not shared defaults or
+production adoption.

@@ -43,7 +43,7 @@ export function DiscoverCardMarket({
       >
         <PerformanceValue
           value={finiteValue(row.change)}
-          periodLabel="30D"
+          periodLabel="1M"
           className={type.body}
         />
         <span className={cn(type.supporting, 'text-supporting-foreground')}>

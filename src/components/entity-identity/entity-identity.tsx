@@ -1,4 +1,7 @@
-import { v1Typography } from '@/components/design-system-v1/typography'
+import {
+  v1Typography,
+  v1TypographyVariants,
+} from '@/components/design-system-v1/typography'
 import { v1SemanticRoles } from '@/components/design-system-v1/semantic-roles'
 import { cn } from '@/lib/utils'
 import * as React from 'react'
@@ -12,6 +15,7 @@ export interface EntityIdentityProps extends Omit<
   supporting?: React.ReactNode
   density?: 'compact' | 'default'
   wrapName?: boolean
+  nameLeading?: 'default' | 'compact'
 }
 
 export const EntityIdentity = React.forwardRef<
@@ -25,6 +29,7 @@ export const EntityIdentity = React.forwardRef<
       supporting,
       density = 'default',
       wrapName = false,
+      nameLeading = 'default',
       className,
       ...props
     },
@@ -47,7 +52,11 @@ export const EntityIdentity = React.forwardRef<
             'block',
             wrapName ? 'whitespace-normal break-words' : 'truncate',
             v1SemanticRoles.text.primary,
-            density === 'compact' ? v1Typography.label : v1Typography.itemTitle
+            density === 'compact'
+              ? v1Typography.label
+              : nameLeading === 'compact'
+                ? cn(v1TypographyVariants.compactItemTitle, 'min-h-6')
+                : v1Typography.itemTitle
           )}
         >
           {name}

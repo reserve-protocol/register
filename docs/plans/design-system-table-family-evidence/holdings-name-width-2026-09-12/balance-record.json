@@ -1,0 +1,64 @@
+{
+  "date": "2026-09-12",
+  "scope": "Price Change 21% to 20%, Market Cap 16% to 17%; name unchanged",
+  "sourceDigests": [
+    "5ce4579b4024bed1c95687419a8e90ebaa214716b640a8fb854722207a24b095"
+  ],
+  "browserStats": {
+    "startTime": "2026-09-12T02:22:27.665Z",
+    "duration": 38212.564999999995,
+    "expected": 2,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "columnBudgets": [
+    {
+      "test": "holdings family light 1400",
+      "columns": [
+        {
+          "text": "ExposureCollateral",
+          "width": 426.375
+        },
+        {
+          "text": "Weight",
+          "width": 100.3125
+        },
+        {
+          "text": "Price Change (7d)",
+          "width": 167.1875
+        },
+        {
+          "text": "Market Cap",
+          "width": 142.125
+        }
+      ]
+    },
+    {
+      "test": "holdings family dark 1400",
+      "columns": [
+        {
+          "text": "ExposureCollateral",
+          "width": 426.375
+        },
+        {
+          "text": "Weight",
+          "width": 100.3125
+        },
+        {
+          "text": "Price Change (7d)",
+          "width": 167.1875
+        },
+        {
+          "text": "Market Cap",
+          "width": 142.125
+        }
+      ]
+    }
+  ],
+  "captures": [
+    "balance-holdings-family-light-1400-stock-collateral.png",
+    "balance-holdings-family-light-1400-overview-collateral.png",
+    "balance-holdings-family-dark-1400-overview-collateral.png"
+  ]
+}

@@ -1,0 +1,35 @@
+{
+  "fixedPoint": "01a900cdf2589d455d04f78806d2ca8ff2b9122c",
+  "startedAt": "2026-09-11T13:38:25.534Z",
+  "scope": "Table-family reconciliation: lab regressions and offline Holdings source checks; not production adoption or design acceptance",
+  "cases": [
+    {
+      "name": "Holdings explicit direction survives field and width changes light",
+      "file": "holdings-sort-continuity-lab-regressions.spec.ts",
+      "status": "passed",
+      "attempts": 1,
+      "publicSourceDigest": "12eb1a957b14fe7793e73a776395ad94f9750b1dddfbd1a2a36ece480dcac4cc"
+    },
+    {
+      "name": "Holdings explicit direction survives field and width changes dark",
+      "file": "holdings-sort-continuity-lab-regressions.spec.ts",
+      "status": "passed",
+      "attempts": 1,
+      "publicSourceDigest": "12eb1a957b14fe7793e73a776395ad94f9750b1dddfbd1a2a36ece480dcac4cc"
+    }
+  ],
+  "captures": [
+    {
+      "case": "Holdings explicit direction survives field and width changes light",
+      "name": "ascending-mobile-to-desktop",
+      "file": "holdings-explicit-direction-survives-field-and-width-changes-light-ascending-mobile-to-desktop.png",
+      "sha256": "89e6c07280b8c8c6d190a195b30375aa9020e6c7b19c465b642c57d3e6f08017"
+    },
+    {
+      "case": "Holdings explicit direction survives field and width changes dark",
+      "name": "ascending-mobile-to-desktop",
+      "file": "holdings-explicit-direction-survives-field-and-width-changes-dark-ascending-mobile-to-desktop.png",
+      "sha256": "7038fd91050b2c4ad670624e6e6561ca4fb1e0e3016bf7a49806c826a3434ae0"
+    }
+  ]
+}

@@ -1,0 +1,101 @@
+{
+  "stats": {
+    "startTime": "2026-09-11T20:01:16.700Z",
+    "duration": 56369.548,
+    "expected": 7,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "records": [
+    {
+      "title": "DeFi rows light 320",
+      "status": "passed",
+      "captures": [
+        "DeFi-rows-light-320-default.png",
+        "DeFi-rows-light-320-reward-sort.png",
+        "DeFi-rows-light-320-Long-content.png",
+        "DeFi-rows-light-320-Zero---unavailable.png",
+        "DeFi-rows-light-320-Loading-opportunities.png",
+        "DeFi-rows-light-320-Empty.png"
+      ],
+      "digest": "NTMwNjZiYTBlNmRiOGNhZGY5Y2ZkMzRkMmNmNzNiM2UwNzVlOWRhMzM0ZTM2OTk3YTU3YTc3ZDk0OTNhODI2Mw=="
+    },
+    {
+      "title": "DeFi rows light 390",
+      "status": "passed",
+      "captures": [
+        "DeFi-rows-light-390-default.png",
+        "DeFi-rows-light-390-reward-sort.png",
+        "DeFi-rows-light-390-Long-content.png",
+        "DeFi-rows-light-390-Zero---unavailable.png",
+        "DeFi-rows-light-390-Loading-opportunities.png",
+        "DeFi-rows-light-390-Empty.png"
+      ],
+      "digest": "NTMwNjZiYTBlNmRiOGNhZGY5Y2ZkMzRkMmNmNzNiM2UwNzVlOWRhMzM0ZTM2OTk3YTU3YTc3ZDk0OTNhODI2Mw=="
+    },
+    {
+      "title": "DeFi rows light 1400",
+      "status": "passed",
+      "captures": [
+        "DeFi-rows-light-1400-default.png",
+        "DeFi-rows-light-1400-reward-sort.png",
+        "DeFi-rows-light-1400-Long-content.png",
+        "DeFi-rows-light-1400-Zero---unavailable.png",
+        "DeFi-rows-light-1400-Loading-opportunities.png",
+        "DeFi-rows-light-1400-Empty.png"
+      ],
+      "digest": "NTMwNjZiYTBlNmRiOGNhZGY5Y2ZkMzRkMmNmNzNiM2UwNzVlOWRhMzM0ZTM2OTk3YTU3YTc3ZDk0OTNhODI2Mw=="
+    },
+    {
+      "title": "DeFi rows dark 320",
+      "status": "passed",
+      "captures": [
+        "DeFi-rows-dark-320-default.png",
+        "DeFi-rows-dark-320-reward-sort.png",
+        "DeFi-rows-dark-320-Long-content.png",
+        "DeFi-rows-dark-320-Zero---unavailable.png",
+        "DeFi-rows-dark-320-Loading-opportunities.png",
+        "DeFi-rows-dark-320-Empty.png"
+      ],
+      "digest": "NTMwNjZiYTBlNmRiOGNhZGY5Y2ZkMzRkMmNmNzNiM2UwNzVlOWRhMzM0ZTM2OTk3YTU3YTc3ZDk0OTNhODI2Mw=="
+    },
+    {
+      "title": "DeFi rows dark 390",
+      "status": "passed",
+      "captures": [
+        "DeFi-rows-dark-390-default.png",
+        "DeFi-rows-dark-390-reward-sort.png",
+        "DeFi-rows-dark-390-Long-content.png",
+        "DeFi-rows-dark-390-Zero---unavailable.png",
+        "DeFi-rows-dark-390-Loading-opportunities.png",
+        "DeFi-rows-dark-390-Empty.png"
+      ],
+      "digest": "NTMwNjZiYTBlNmRiOGNhZGY5Y2ZkMzRkMmNmNzNiM2UwNzVlOWRhMzM0ZTM2OTk3YTU3YTc3ZDk0OTNhODI2Mw=="
+    },
+    {
+      "title": "DeFi rows dark 1400",
+      "status": "passed",
+      "captures": [
+        "DeFi-rows-dark-1400-default.png",
+        "DeFi-rows-dark-1400-reward-sort.png",
+        "DeFi-rows-dark-1400-Long-content.png",
+        "DeFi-rows-dark-1400-Zero---unavailable.png",
+        "DeFi-rows-dark-1400-Loading-opportunities.png",
+        "DeFi-rows-dark-1400-Empty.png"
+      ],
+      "digest": "NTMwNjZiYTBlNmRiOGNhZGY5Y2ZkMzRkMmNmNzNiM2UwNzVlOWRhMzM0ZTM2OTk3YTU3YTc3ZDk0OTNhODI2Mw=="
+    },
+    {
+      "title": "DeFi reflows and transfers link focus at its container boundary",
+      "status": "passed",
+      "captures": [
+        "DeFi-reflows-and-transfers-link-focus-at-its-container-boundary-boundary-1023.png",
+        "DeFi-reflows-and-transfers-link-focus-at-its-container-boundary-boundary-1024.png",
+        "DeFi-reflows-and-transfers-link-focus-at-its-container-boundary-boundary-1279.png",
+        "DeFi-reflows-and-transfers-link-focus-at-its-container-boundary-boundary-1280.png"
+      ],
+      "digest": "NTMwNjZiYTBlNmRiOGNhZGY5Y2ZkMzRkMmNmNzNiM2UwNzVlOWRhMzM0ZTM2OTk3YTU3YTc3ZDk0OTNhODI2Mw=="
+    }
+  ]
+}

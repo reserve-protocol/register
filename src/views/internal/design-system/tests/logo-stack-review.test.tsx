@@ -9,6 +9,21 @@ import {
 import { ChainId } from '@/utils/chains'
 
 describe('canonical stacked identity geometry', () => {
+  it('accepts uncropped custom artwork without replacing the shared chain badge', () => {
+    render(
+      <ChainBadgedLogo
+        chain={ChainId.Base}
+        size="lg"
+        mark={<svg data-testid="custom-mark" />}
+      />
+    )
+    expect(screen.getByTestId('custom-mark')).toBeInTheDocument()
+    expect(screen.queryByRole('img', { hidden: true })).not.toBeInTheDocument()
+    expect(screen.getByTestId('canonical-chain-badge')).toHaveAttribute(
+      'width',
+      '14'
+    )
+  })
   it.each([
     ['sm', 10],
     ['md', 12],

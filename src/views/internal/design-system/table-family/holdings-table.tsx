@@ -77,7 +77,7 @@ export function HoldingsTable({
             />
           </div>
         )}
-        className="[&_table]:table-fixed [&_thead]:hidden [@container(min-width:48rem)]:[&_thead]:table-header-group [&_thead_tr]:h-auto [&_thead_tr]:border-b-0 [&_th]:h-auto [&_th]:pb-4 [&_th]:pt-0 [&_tr:last-child_[data-slot=row-seam]]:hidden"
+        className="[@container(min-width:48rem)]:pb-3 [&_table]:table-fixed [&_thead]:hidden [@container(min-width:48rem)]:[&_thead]:table-header-group [&_thead_tr]:h-auto [&_thead_tr]:border-b-0 [&_th]:h-auto [&_th]:pb-4 [&_th]:pt-0 [&_tr:last-child_[data-slot=row-seam]]:hidden"
         getRowClassName={() =>
           'border-b-0 [&:not(:first-child)]:!border-t-0 hover:bg-transparent'
         }

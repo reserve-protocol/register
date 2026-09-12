@@ -18,7 +18,7 @@ import {
   type HoldingsState,
   type HoldingsTab,
 } from './holdings-fixtures'
-import { HoldingsControls } from './holdings-controls'
+import { HoldingsControls, type HoldingsWidth } from './holdings-controls'
 import { HoldingsSpecimens } from './holdings-specimens'
 import { HoldingsTable } from './holdings-table'
 import { HoldingsTabs } from './holdings-tabs'
@@ -27,7 +27,7 @@ export function HoldingsReview() {
   const [dataset, setDataset] = useState<'cmc20' | 'photon'>('cmc20')
   const [state, setState] = useState<HoldingsState>('default')
   const [tab, setTab] = useState<HoldingsTab>('exposure')
-  const [constrained, setConstrained] = useState(false)
+  const [width, setWidth] = useState<HoldingsWidth>('full')
   const composition = useRef<HTMLDivElement>(null)
   const pendingTabFocus = useRef<string | null>(null)
   const panelId = useId()
@@ -92,9 +92,21 @@ export function HoldingsReview() {
         }}
         state={state}
         onState={setState}
-        constrained={constrained}
-        onConstrained={setConstrained}
+        width={width}
+        onWidth={setWidth}
       />
+      {width === 'overview' && (
+        <p
+          className={cn(
+            type.supporting,
+            'max-w-3xl text-supporting-foreground'
+          )}
+        >
+          Overview estimate: 836px card in a 1400px page shell, allowing for the
+          72px navigation rail, 480px trading/about column and existing 12px
+          frame spacing. Final page layout remains a separate review.
+        </p>
+      )}
       <p
         className={cn(type.supporting, 'max-w-3xl text-supporting-foreground')}
       >
@@ -114,7 +126,8 @@ export function HoldingsReview() {
         data-testid="holdings-composition"
         className={cn(
           'min-w-0 bg-card [container-type:inline-size]',
-          constrained && 'max-w-[390px]'
+          width === 'mobile' && 'max-w-[390px]',
+          width === 'overview' && 'max-w-[836px]'
         )}
       >
         <Tabs

@@ -137,6 +137,9 @@ for (const [theme, width] of [
     }
     await expect(rows).toHaveCount(5)
     await expect(rows.first()).toContainText('CoinMarketCap 20 Index DTF')
+    await expect(rows.first()).toContainText(
+      '$CMC20 · Majors, Bitcoin, L1, DeFi, Perps, Ecosystem'
+    )
     await noOverflow()
     await capture('default')
     if (width < 1152) {

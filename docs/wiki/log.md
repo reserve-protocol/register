@@ -1,6 +1,6 @@
 ---
 title: Log
-updated: 2026-09-11
+updated: 2026-09-12
 type: log
 ---
 
@@ -858,3 +858,56 @@ Play-by-play lives in git (PRs #1053/#1054/#1055/#1063, SDK PR #27). Durable out
 
 - User authorized a local checkpoint and isolated Claude review handoff. The snapshot includes the accumulated foundation/table work and retained evidence, not production adoption or blanket design approval. The handoff prioritizes existing-family completeness and Earn source evidence, with report-only output in a detached worktree; contrast-only card framing stays outside product preferences.
 - Fresh checks: 64 selected unit/catalog tests, eight Discover card browser cases and app/E2E types pass. The initial unit run caught an assertion tied to superseded radius prose; it now checks the actual provisional authority status. The bounded receipt is linked from `docs/plans/design-system-table-family-independent-review-handoff.md`. No full repository or CI claim. Candidate-file privacy checks found no matching environment values, private-file hashes or credential-pattern hits; ignored private/runtime files are excluded.
+
+## 2026-09-11 — Table-family baseline and Earn source preparation
+
+- The combined existing-family browser baseline passed 38/38 without retries; focused unit/catalog checks passed 64/64. Retained eight phone captures and bounded receipts. No app source or shared default changed. TEST_MAP no longer contradicts its own existing desktop/stacked focus-transfer coverage.
+- Direct Earn inspection identified governed-asset disclosure, distinct APR/APY meaning, wallet-dependent cells and denomination questions; the public DAO response supplies real relationships. The source-capture prototype incorrectly combined multichain list data with single-chain replay and hit fixture failures. After the retry guard rejected further execution, preserved the unverified prototype outside the test suite and reassessed separate list/wallet/drawer captures. No existing test disabled; no Earn browser pass or candidate implementation claimed. User approval is needed before resuming captures; see `docs/plans/design-system-table-family-earn-preparation.md`.
+
+## 2026-09-11 — Earn source verification and lab candidate
+
+- User approved the narrowed restart. Separate exact-boundary source checks passed 18/18 with 24 captures: populated Index/Yield lists, Index loading/filtered-empty/wallet recovery, governed disclosure/FAQ and both real drawer entry boundaries. Deprecated hyUSD was correctly excluded; active bsdETH supplies the Base Yield example. Empty yield-feed replay remains a rate caveat, not a production defect.
+- Added a bounded Earn lab candidate using the existing DataTable/cell APIs, ordinary typography and explicit non-executing actions. Independent review caught Empty unmounting the sorting owner, source-label drift, missing desktop dividers and absent unavailable-amount coverage. All were corrected and rechecked. Keyboard disclosure focus and a 23px loading-height shift received failing-before/passing-after checks; recovered disclosure observation also remains functional.
+- Fresh evidence: combined existing-family/Earn browser 51/51, then final Earn-only hardening 15/15 with 52 captures; focused unit/catalog 70/70; app/E2E types, scoped lint and formatting pass. Repository lint passed with existing warnings. This follows the bounded design-system checkpoint cadence, not a full repository or CI claim. [Receipt and review agenda](../plans/design-system-table-family-earn-preparation.md#completed-checkpoint-and-next-review).
+- Earn remains human-review-required; source denomination/rate-period questions require engineer review before adoption. Existing Discover card and Portfolio header trials remain open. No production/shared-default edits, new commits or pushes; the preview and isolated Claude worktree were preserved. The setup lesson stays in the local transfer brief; no workflow-kit expansion was needed.
+
+## 2026-09-11 — Independent table review reconciliation
+
+- Fixed the two confirmed lab defects with failing-before/passing-after tests: Holdings headers now honor explicit descending-first columns without changing other families; Discover card accessibility/tooltip uses its visible 1M period. Source and lab checks assert concrete leader/laggard order, not just a changed first row.
+- Fresh unit/catalog/shared-owner checks passed 72/72, affected browser checks 46/46, then final mobile direction/field/767–768px continuity checks 2/2 in both themes. App/E2E types, scoped lint/format, wiki, links, hashes and diff checks passed. A test-only menu-close race was corrected with observable popup lifecycle waits; the interrupted diagnostic run is not counted. No full repository/CI claim.
+- Intent/Risk reviews found no implementation blocker and identified the continuity coverage gap now pinned. The [reconciliation](../plans/design-system-table-family-reconciliation.md) records production adapter contracts, viewed-account withdrawal ownership requiring engineer review, page loading/error differences and remaining fixture/copy work. Claude's frozen report predates the current Earn candidate; Earn's ascending-first new-field behavior actually matches production.
+- Next is human visual review of Earn and the remaining mobile Discover card trials. No production/default/token changes, transactions, commits or pushes. pnpm's dependency-purge guard was left intact; direct checks used the existing runtime without installing dependencies. No workflow-kit change was justified.
+
+## 2026-09-11 — Earn descriptive-column grouping
+
+- User-directed local refinement puts Governs after Gov. Token and before TVL in both Index and Yield. Optional wallet values remain with numeric metrics; proportions give Governs more room without changing number alignment, phone composition, sorting or actions. Four mounted order checks failed before the change; Earn units passed 9/9 and browser checks 15/15 afterward, with 14 retained captures inspected. App/E2E types and scoped lint/format passed; low-profile self-review, no full gate/CI claim. [Scope and evidence](../plans/design-system-table-family-earn-preparation.md#september-11-desktop-column-grouping-follow-up). Production and shared defaults remain unchanged.
+
+## 2026-09-11 — Holdings overview-width preview
+
+- Replaced the lab's binary width toggle with Full width / DTF overview 836px / Mobile 390px. The estimate swaps the existing 88px navigation footprint for the candidate's 72px overlay-expanding rail while retaining the real 1400px shell, 480px trading/about column and 12px frame budget. Source rendering confirms the old 820px card. This does not adopt the navigation demo's placeholder grid or freeze future Overview geometry.
+- Missing-control RED → Holdings units 7/7; browser 12/12, including both PHOTON tabs, long names, loading, width/sort continuity and source geometry. Twelve captures inspected; app/E2E types and scoped lint/format pass. Low-profile self-review and bounded verification only; production and shared defaults unchanged. [Basis and receipt](../plans/design-system-table-family-holdings-slice.md#september-11-overview-width-preview).
+
+## 2026-09-11 — Non-navigable table bottom insets
+
+- User-directed correction separates final card inset from inter-row rhythm: Holdings adds 12px below desktop rows and Withdrawals adds 8px below its desktop section, producing 24px at the bottom in each case. Mobile and clickable Position rows remain unchanged; Discover/Earn and rich records already provide 24px. No shared/default/production changes.
+- Geometry REDs measured 12px and 16px rather than 24px. Existing browser suites passed 15/15 afterward; twelve captures inspected, app/E2E types, scoped lint/format and wiki/diff green. Low-profile self-review covers intent and correctness/product; the cumulative diff's size signal belongs to earlier work, not this two-class local correction. [Receipt](../plans/design-system-table-family-holdings-slice.md#bottom-edge-balance--2026-09-11).
+
+## 2026-09-11 — Earn zero tone and Holdings name room
+
+- Earn wallet zero values now use supporting-text color without changing typography, TVL/rate styling or row actions. The local opt-in checks the value rather than rounded text; missing/loading remain distinct. Holdings reserves 46% for names and 14% for Weight, adding about 50px at overview width while preserving the two rightmost metric axes and all padding. Inspection found no hidden name-width cap.
+- RED: two Earn zero-tone unit assertions and Lumentum's 48px wrapped name versus the desired 24px line. GREEN: 20 unit and 20 browser cases; twelve inspected captures, app/E2E types, scoped lint/format and wiki/diff. Low-radius intent/product/correctness self-review; cumulative size reflects previous work. No production/default changes. [Receipt](../plans/design-system-table-family-holdings-slice.md#name-column-room-and-earn-zero-tone--2026-09-11).
+
+## 2026-09-11 — DeFi Yield added to the Earn lab family
+
+- The prior scope intentionally prioritized governance/staking, with DeFi only a contrast. The new third selector option retains pool, project, chain, APY/base/reward and TVL plus independent pool/DefiLlama links. Native keyboard links replace pointer-only source targets; rows do not pretend to open governance drawers. Wallet-only controls are excluded while retaining their preference on return. Values are illustrative over CMS-backed identities, not live yield facts.
+- Source desktop/phone replay and the combined 22-case browser run passed. Dark/Light review reconciled touch targets, the shared menu's independent direction, a same-name tooltip test selector and intentional help-hit-area geometry. Visual inspection added a 24px loading-height regression and aligned right-hand placeholders. Full type/lint/unit gate passed 1227 tests after allowing native watcher access; no shared defaults, production changes or commits. Final scoped geometry and human-review boundary are recorded in the [slice](../plans/design-system-table-family-defi-slice.md).
+
+## 2026-09-12 — Compact wrapping identity-title trial
+
+- Added a provisional opt-in 16px/20px item-title recipe with a 24px single-line floor across wrapping table identities. The reviewed type roles and shared defaults stay unchanged. Dark/Light found a symbol-only withdrawal caller behind the common identity helper; explicit ordinary leading now preserves that exclusion. The lesson is to audit helper callers against role-based exclusions, not infer uniform meaning from component reuse.
+- Shared and 836px browser REDs preceded implementation; the withdrawal exclusion also failed before repair. Final focused units 123/123 and browser 40/40 pass, with app/E2E types and scoped lint/format/wiki/diff. The initial broad unit run hit the known TokenLogo teardown race and is not counted as green. Rendered overview/phone and long/loading captures were inspected; visual acceptance and engineering adoption review remain pending. [Scope and receipt](../plans/design-system-table-family-holdings-slice.md#compact-wrapping-identity-titles--september-12-trial).
+
+## 2026-09-12 — Table-family review checkpoint
+
+- User authorized a local checkpoint for an independent audit of the newer Earn/DeFi candidates. Accumulated Holdings/Discover/Portfolio refinements and their evidence are retained; no new Auctions work, production adoption or design acceptance. Current Review still points to Discover; the checkpoint supplies the direct Earn audit route. The old overnight plan is explicitly historical.
+- Fresh affected units/helpers passed 211/211 after an unchanged native-watcher rerun resolved the sandbox failure; browser checks passed 85/85 without retries, and 16 current captures were inspected. App/E2E types, scoped lint, wiki and diff checks passed. The pre-existing base-fixture format warning, local runtime versions and visual/production limitations are explicit in the [checkpoint](../plans/design-system-table-family-checkpoint-2026-09-12.md). Intent/Risk review found no blocker. No push or user-preview restart.

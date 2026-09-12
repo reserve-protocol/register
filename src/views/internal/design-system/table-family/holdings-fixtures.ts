@@ -39,7 +39,15 @@ export function previewHoldings(
   state: HoldingsState
 ): Holding[] {
   if (state === 'empty') return []
-  return rows.map((row, index) => ({
+  const longNameExamples =
+    state === 'long'
+      ? HOLDINGS.photon.filter(
+          (example) =>
+            example.symbol === 'AAOIon' &&
+            !rows.some((row) => row.address === example.address)
+        )
+      : []
+  return [...rows, ...longNameExamples].map((row, index) => ({
     ...row,
     ...(state === 'missing' && index < 2
       ? {

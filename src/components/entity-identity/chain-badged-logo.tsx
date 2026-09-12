@@ -27,6 +27,7 @@ export interface ChainBadgedLogoProps extends Omit<
   size?: EntityLogoSize
   surface?: V1SurfaceRole
   alt?: string
+  mark?: React.ReactNode
 }
 
 export const ChainBadgedLogo = React.forwardRef<
@@ -42,6 +43,7 @@ export const ChainBadgedLogo = React.forwardRef<
       size = 'lg',
       surface = 'content',
       alt = '',
+      mark,
       className,
       ...props
     },
@@ -57,14 +59,16 @@ export const ChainBadgedLogo = React.forwardRef<
         className={cn('relative inline-flex shrink-0', className)}
         {...props}
       >
-        <TokenLogo
-          symbol={symbol}
-          address={address}
-          chain={chain}
-          src={src}
-          size={size}
-          alt={alt}
-        />
+        {mark ?? (
+          <TokenLogo
+            symbol={symbol}
+            address={address}
+            chain={chain}
+            src={src}
+            size={size}
+            alt={alt}
+          />
+        )}
         <ChainLogo
           data-testid="canonical-chain-badge"
           chain={chain}

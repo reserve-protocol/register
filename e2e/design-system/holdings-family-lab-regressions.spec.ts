@@ -56,6 +56,22 @@ for (const theme of ['light', 'dark'])
         await page.getByRole('option', { name: option, exact: true }).click()
       }
       const capture = async (name: string) => {
+        if ((await composition.boundingBox())!.width >= 768) {
+          const bottomInset = await composition.evaluate((root) => {
+            const cells = [
+              ...root.querySelectorAll('tbody tr:last-child td'),
+            ].filter((cell) => cell.getClientRects().length)
+            const contentBottom = Math.max(
+              ...cells.flatMap((cell) =>
+                [...cell.children].map(
+                  (child) => child.getBoundingClientRect().bottom
+                )
+              )
+            )
+            return root.getBoundingClientRect().bottom - contentBottom
+          })
+          expect(bottomInset).toBeCloseTo(24, 0)
+        }
         await composition.evaluate((el) => {
           el.style.scrollMarginTop = '120px'
           el.scrollIntoView({ block: 'start' })
@@ -64,12 +80,30 @@ for (const theme of ['light', 'dark'])
           body: await page.screenshot({ animations: 'disabled' }),
           contentType: 'image/png',
         })
+        if (
+          width === 1400 &&
+          [
+            'stock-exposure',
+            'stock-collateral',
+            'overview-exposure',
+            'overview-collateral',
+            'overview-loading',
+          ].includes(name)
+        ) {
+          await composition.evaluate((el) =>
+            el.scrollIntoView({ block: 'end' })
+          )
+          await info.attach(`${name}-bottom`, {
+            body: await page.screenshot({ animations: 'disabled' }),
+            contentType: 'image/png',
+          })
+        }
       }
       const noOverflow = async () => {
         const overflows = await composition.evaluate((root) =>
           [
             ...root.querySelectorAll(
-              'td, [data-slot="entity-identity-name"], [data-testid^="holding-record-"]'
+              'th, td, [data-slot="entity-identity-name"], [data-testid^="holding-record-"]'
             ),
           ]
             .filter(
@@ -202,6 +236,42 @@ for (const theme of ['light', 'dark'])
         await page.keyboard.press('Escape')
         await expect(review.getByTestId('table-sort-menu')).toBeFocused()
       } else {
+        const change = table.getByTestId('sort-change')
+        const weight = table.getByTestId('sort-weight')
+        const names = table.locator(
+          'tbody tr td:first-child [data-slot="entity-identity-name"]'
+        )
+        await change.click()
+        await expect(change.locator('..')).toHaveAttribute(
+          'aria-sort',
+          'descending'
+        )
+        expect((await names.allTextContents()).slice(0, 3)).toEqual([
+          'Zcash',
+          'XRP',
+          'Hyperliquid',
+        ])
+        await capture('price-change-descending')
+        await change.click()
+        await expect(change.locator('..')).toHaveAttribute(
+          'aria-sort',
+          'ascending'
+        )
+        expect((await names.allTextContents()).slice(0, 3)).toEqual([
+          'TRON',
+          'Litecoin',
+          'BNB',
+        ])
+        await weight.click()
+        await expect(weight.locator('..')).toHaveAttribute(
+          'aria-sort',
+          'descending'
+        )
+        expect((await names.allTextContents()).slice(0, 3)).toEqual([
+          'Bitcoin',
+          'Ethereum',
+          'BNB',
+        ])
         await table.getByRole('button', { name: 'Weight', exact: true }).click()
         await expect(bodyRows.first()).not.toContainText('Bitcoin')
       }
@@ -250,6 +320,9 @@ for (const theme of ['light', 'dark'])
       if (width === 1400) await expectIdentitySkeleton(bodyRows.first())
       await capture('basket-loading')
       await select('Holdings preview state', 'Long content')
+      await expect(
+        bodyRows.filter({ hasText: 'Applied Optoelectronics (Ondo Tokenized)' })
+      ).toHaveCount(1)
       await noOverflow()
       await capture('long-content')
       if (width < 768)
@@ -330,13 +403,20 @@ for (const theme of ['light', 'dark'])
           await expectHoldingsToolbar(composition, available)
           await noOverflow()
           await capture(`boundary-${available}`)
+          if (available === 768) {
+            await table.getByTestId('sort-change').click()
+            await noOverflow()
+            await select('Holdings preview state', 'Loading basket')
+            await noOverflow()
+            await capture('boundary-768-loading')
+            await select('Holdings preview state', 'Default')
+            await table.getByTestId('sort-weight').click()
+          }
         }
         await composition.evaluate((el) =>
           (el as HTMLElement).style.removeProperty('width')
         )
-        await review
-          .getByRole('switch', { name: 'Constrained holdings column' })
-          .click()
+        await select('Holdings preview width', 'Mobile · 390px')
         await expect(visibleRecords).toHaveCount(9)
         await noOverflow()
         await capture('constrained')
@@ -353,6 +433,93 @@ for (const theme of ['light', 'dark'])
         await noOverflow()
         await expectHoldingRecordLayout(visibleRecords, 390)
         await capture('constrained-long-content')
+        await select('Holdings preview width', 'DTF overview · 836px')
+        await expect(composition).toHaveCSS('width', '836px')
+        await expect(visibleRecords).toHaveCount(0)
+        await expect(collateralTab).toHaveAttribute('aria-selected', 'true')
+        await expect(
+          review.getByRole('combobox', { name: 'Holdings preview state' })
+        ).toContainText('Long content')
+        await noOverflow()
+        await capture('overview-collateral-long')
+        await select('Holdings preview state', 'Default')
+        const appliedName = bodyRows
+          .filter({ hasText: 'AAOIon' })
+          .locator('[data-slot="entity-identity-name"]:visible')
+        await info.attach('overview-column-budget', {
+          body: Buffer.from(
+            JSON.stringify(
+              await table.locator('thead th:visible').evaluateAll((cells) =>
+                cells.map((cell) => ({
+                  text: cell.textContent,
+                  width: cell.getBoundingClientRect().width,
+                }))
+              )
+            )
+          ),
+          contentType: 'application/json',
+        })
+        await expect(appliedName).toHaveCSS('height', '24px')
+        const lumentumName = table
+          .locator('tbody tr')
+          .filter({ hasText: 'LITEon' })
+          .locator('[data-slot="entity-identity-name"]:visible')
+        await expect(lumentumName).toHaveCSS('height', '24px')
+        const macomName = table
+          .locator('tbody tr')
+          .filter({ hasText: 'MTSIon' })
+          .locator('[data-slot="entity-identity-name"]:visible')
+        await macomName.scrollIntoViewIfNeeded()
+        await expect(macomName).toHaveCSS('line-height', '20px')
+        await expect(macomName).toHaveCSS('height', '40px')
+        expect(
+          await macomName.evaluate(
+            (element) => element.getBoundingClientRect().height
+          )
+        ).toBeGreaterThan(24)
+        const nameSpace = await macomName.evaluate((name) => {
+          const cell = name.closest('td')!
+          const style = getComputedStyle(cell)
+          return {
+            right: name.getBoundingClientRect().right,
+            availableRight:
+              cell.getBoundingClientRect().right -
+              parseFloat(style.paddingRight),
+          }
+        })
+        expect(nameSpace.right).toBeCloseTo(nameSpace.availableRight, 0)
+        await capture('overview-collateral')
+        await exposureTab.click()
+        await noOverflow()
+        await capture('overview-exposure')
+        await select('Holdings preview state', 'Long content')
+        await noOverflow()
+        await capture('overview-exposure-long')
+        await select('Holdings preview state', 'Loading basket')
+        await expect(composition).toHaveCSS('width', '836px')
+        await capture('overview-loading')
+        await select('Holdings preview state', 'Long content')
+        await table.getByTestId('sort-change').click()
+        await expect(table.getByTestId('sort-change')).toHaveAttribute(
+          'aria-description',
+          'descending'
+        )
+        await select('Holdings preview width', 'Full width')
+        await expect(composition).not.toHaveCSS('width', '836px')
+        await expect(table.getByTestId('sort-change')).toHaveAttribute(
+          'aria-description',
+          'descending'
+        )
+        await select('Holdings preview width', 'DTF overview · 836px')
+        await expect(composition).toHaveCSS('width', '836px')
+        await expect(table.getByTestId('sort-change')).toHaveAttribute(
+          'aria-description',
+          'descending'
+        )
+        await page.setViewportSize({ width: 390, height: 900 })
+        await expect(visibleRecords).toHaveCount(9)
+        await noOverflow()
+        await capture('overview-on-phone')
       }
       await select('Holdings preview state', 'Empty')
       await expect(composition.getByRole('table')).toHaveCount(0)

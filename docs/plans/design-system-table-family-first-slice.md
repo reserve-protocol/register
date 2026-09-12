@@ -9,6 +9,12 @@ it does not add a new workflow.
 
 ## Fixed point and scope
 
+The [2026-09-11 independent-review reconciliation](design-system-table-family-reconciliation.md)
+adds adoption requirements for numeric sort keys, missing values, preview limits,
+keyboard access and the viewed-account withdrawal boundary. Production's
+page-level loading gate is not covered by these section-level skeletons.
+Near-zero sign/precision and non-RSR withdrawal fixtures remain open coverage.
+
 ### Whole-row navigation treatment
 
 User-directed lab refinement (2026-09-11): when the identity and the row open
@@ -343,6 +349,7 @@ table tokens. Inspect the whole rows before repeating them across fixtures.
 | -------------------------------------------- | ------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------- |
 | Section boundary to row contents             | Row/cell track supplies a total 24px horizontal axis; do not also pad the parent by 24px.                           | Header and identity/value endpoints align at the same final axis.                                             |
 | Row top/bottom                               | Row track supplies 16px desktop, 24px collapsed; child identity/value blocks add no outer vertical padding.                            | Compare logo and text bounds, not just declared padding.                                                      |
+| Withdrawal section bottom                   | Desktop section adds 8px after its 16px row/footer inset, giving 24px to the card edge. Mobile and clickable Position rows are unchanged. | Check the last content block or expansion button against the actual section edge. |
 | Mark to identity text                        | EntityIdentity trial: 12px for direct 32px ChainBadgedLogo marks; 8px for smaller/custom marks.                     | No second gap added outside the owner; loading placeholders match the applicable gap.                         |
 | Collapsed identity/header to financial facts | Parent supplies 16px; each fact has 4px between label and value, with 24px horizontal/12px wrapped pair separation. | Facts remain consistently stacked; wrapping never changes one fact into a stretched label/value row.          |
 | Desktop row separation                       | First candidate uses divider-free ordinary rows. | Repeated records must still be scannable; avoid card outlines around every cell. |

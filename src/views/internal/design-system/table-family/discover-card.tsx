@@ -87,7 +87,7 @@ export const DiscoverCard = memo(function DiscoverCard({
               )}
             >
               <span className={cn(loading && 'invisible')}>
-                {row.brand.tags.length ? row.brand.tags.join(' · ') : 'No tags'}
+                {row.brand.tags.length ? row.brand.tags.join(', ') : 'No tags'}
               </span>
               {loading && (
                 <Skeleton className="absolute inset-0 [mask-image:repeating-linear-gradient(to_bottom,currentColor_0,currentColor_14px,transparent_14px,transparent_20px)]" />

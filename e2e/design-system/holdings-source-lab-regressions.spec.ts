@@ -22,14 +22,62 @@ for (const [slug, width] of [
     await expect(tabs).toHaveCount(2)
     const count = slug === 'photon' ? 9 : 18
     await expect(rows).toHaveCount(width < 640 ? 10 : count)
+    if (slug === 'cmc20' && width === 1400) {
+      const geometry = await page.evaluate(() => {
+        const card = document.getElementById('basket')!
+        const nav = document.querySelector('[data-testid="dtf-nav"]')!
+        const frame = card.parentElement!.parentElement!.parentElement!
+        const spacing = getComputedStyle(frame)
+        return {
+          pageShell: nav.closest('.container')!.getBoundingClientRect().width,
+          navigation:
+            nav.getBoundingClientRect().width +
+            parseFloat(getComputedStyle(nav).marginRight),
+          rightColumn: frame.lastElementChild!.getBoundingClientRect().width,
+          frameSpacing:
+            parseFloat(spacing.paddingLeft) +
+            parseFloat(spacing.paddingRight) +
+            parseFloat(spacing.columnGap),
+          holdingsCard: card.getBoundingClientRect().width,
+        }
+      })
+      expect(geometry).toEqual({
+        pageShell: 1400,
+        navigation: 88,
+        rightColumn: 480,
+        frameSpacing: 12,
+        holdingsCard: 820,
+      })
+      await info.attach('overview-width-budget', {
+        body: Buffer.from(JSON.stringify(geometry)),
+        contentType: 'application/json',
+      })
+    }
     if (width >= 640) {
       const initial = (await rows.first().textContent())!
       await basket.locator('thead button').filter({ hasText: 'Weight' }).click()
       await expect(rows.first()).not.toHaveText(initial)
-      await basket
+      const change = basket
         .locator('thead button')
         .filter({ hasText: 'Price Change' })
-        .click()
+      await change.click()
+      await expect(change.locator('svg')).toHaveClass(/lucide-arrow-down /)
+      if (slug === 'cmc20') {
+        await expect(rows.nth(0)).toContainText('Zcash')
+        await expect(rows.nth(1)).toContainText('XRP')
+        await expect(rows.nth(2)).toContainText('Hyperliquid')
+        await expect(rows.nth(0)).toContainText('+58.38%')
+        await change.click()
+        await expect(change.locator('svg')).toHaveClass(/lucide-arrow-up /)
+        await expect(rows.nth(0)).toContainText('TRON')
+        await expect(rows.nth(1)).toContainText('Litecoin')
+        await expect(rows.nth(2)).toContainText('BNB')
+        await basket
+          .locator('thead button')
+          .filter({ hasText: 'Weight' })
+          .click()
+        await expect(rows.first()).toHaveText(initial)
+      }
       await tabs.nth(1).click()
       await tabs.first().click()
       await expect(rows.first()).toHaveText(initial)

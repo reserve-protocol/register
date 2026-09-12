@@ -166,6 +166,31 @@ for (const theme of ['light', 'dark']) {
       await page.getByTestId('table-family-index').click()
       const positions = page.getByTestId('table-family-positions')
       const withdrawals = page.getByTestId('table-family-withdrawals')
+      for (const name of await withdrawals
+        .locator('[data-slot="entity-identity-name"]:visible')
+        .all()) {
+        await expect(name).toHaveCSS('line-height', '24px')
+      }
+      if (width === 1400) {
+        const bottomInset = await withdrawals.evaluate((root) => {
+          const lastRow = root.querySelector('tbody tr:last-child')!
+          const contentBottom = Math.max(
+            ...[...lastRow.querySelectorAll('td')]
+              .filter((cell) => cell.getClientRects().length)
+              .flatMap((cell) =>
+                [...cell.children].map(
+                  (child) => child.getBoundingClientRect().bottom
+                )
+              )
+          )
+          const footer = root.querySelector('[data-testid="table-expand"]')
+          return (
+            root.getBoundingClientRect().bottom -
+            (footer?.getBoundingClientRect().bottom ?? contentBottom)
+          )
+        })
+        expect(bottomInset).toBeCloseTo(24, 0)
+      }
       const browse = positions.locator('a[data-link-treatment="standalone"]')
       await browse.hover()
       await expect.soft(browse).toHaveCSS('text-decoration-line', 'underline')

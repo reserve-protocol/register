@@ -8,8 +8,28 @@ import {
   trendDomain,
 } from '../table-family/discover-fixtures'
 import { DiscoverMoney } from '../table-family/discover-cells'
+import { DiscoverCardMarket } from '../table-family/discover-card-market'
 
 describe('Discover fixture meaning', () => {
+  it('uses the visible card period for the accessible value and tooltip', () => {
+    const { container, rerender } = render(
+      <DiscoverCardMarket row={DISCOVER[0]} loading={false} />
+    )
+    expect(screen.getByText('(1M)')).toBeInTheDocument()
+    const performance = () =>
+      container.querySelector('[data-slot="performance-value"]')
+    expect(performance()).toHaveAccessibleName(/^1M performance:/)
+    expect(performance()).toHaveAttribute('title', '1M performance')
+    rerender(
+      <DiscoverCardMarket
+        row={{ ...DISCOVER[0], change: null }}
+        loading={false}
+      />
+    )
+    expect(performance()).toHaveAccessibleName('1M performance: no data')
+    expect(performance()).toHaveTextContent('—')
+  })
+
   it('keeps real held-token counts and percentage units', () => {
     const lcap = DISCOVER.find((row) => row.symbol === 'LCAP')!
     expect(lcap.basket).toHaveLength(8)

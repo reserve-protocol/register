@@ -45,6 +45,11 @@ describe('position and withdrawal table candidates', () => {
   })
   it('keeps withdrawal actions compact in desktop and collapsed rows', () => {
     render(<TableFamilyReview />)
+    for (const name of screen
+      .getByTestId('table-family-withdrawals')
+      .querySelectorAll('[data-slot="entity-identity-name"]')) {
+      expect(name).toHaveClass('leading-6')
+    }
     expect(screen.getByTestId('withdraw-lock-ready')).toHaveAttribute(
       'data-size',
       'compact'

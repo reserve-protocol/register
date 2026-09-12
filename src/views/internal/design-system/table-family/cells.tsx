@@ -64,6 +64,7 @@ export const IdentityCell = ({
   src,
   supporting = `$${symbol}`,
   loading = false,
+  nameLeading = 'compact',
 }: {
   name: ReactNode
   symbol: string
@@ -72,6 +73,7 @@ export const IdentityCell = ({
   src?: string
   supporting?: ReactNode
   loading?: boolean
+  nameLeading?: 'default' | 'compact'
 }) =>
   loading ? (
     <div className="flex min-h-11 min-w-0 flex-1 basis-40 items-center gap-3">
@@ -91,6 +93,7 @@ export const IdentityCell = ({
     <EntityIdentity
       className="flex"
       wrapName
+      nameLeading={nameLeading}
       name={name}
       supporting={supporting}
       mark={

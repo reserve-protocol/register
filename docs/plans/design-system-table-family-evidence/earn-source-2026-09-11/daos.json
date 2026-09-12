@@ -1,0 +1,767 @@
+[
+  {
+    "chainId": 1,
+    "token": {
+      "address": "0x2aea77c4757d897aae2710b8a60280777f504e8c",
+      "name": "Vote Lock vlSQUILL-OPEN",
+      "symbol": "vlSQUILL-OPEN",
+      "decimals": 18,
+      "price": 0.042655932500253055
+    },
+    "underlying": {
+      "token": {
+        "address": "0x7ebab7190d3d574ce82d29f2fa1422f18e29969c",
+        "name": "Squid Pro Quo",
+        "symbol": "SQUILL",
+        "decimals": 18,
+        "price": 0.042655932500253055
+      }
+    },
+    "rewards": [
+      {
+        "token": {
+          "address": "0x320623b8e4ff03373931769a31fc52a4e78b5d70",
+          "name": "Reserve Rights",
+          "symbol": "RSR",
+          "decimals": 18,
+          "price": 0.001396846703007687
+        },
+        "amount": 0,
+        "amountUsd": 0
+      },
+      {
+        "token": {
+          "address": "0x323c03c48660fe31186fa82c289b0766d331ce21",
+          "name": "Open Stablecoin Index",
+          "symbol": "OPEN",
+          "decimals": 18,
+          "price": 0.4642446345196343
+        },
+        "amount": 5745.8883359877,
+        "amountUsd": 2667.4978305312397
+      },
+      {
+        "token": {
+          "address": "0xa0d69e286b938e21cbf7e51d71f6a4c8918f482f",
+          "name": "Electronic Dollar",
+          "symbol": "eUSD",
+          "decimals": 18,
+          "price": 0.9993913088520138
+        },
+        "amount": 0,
+        "amountUsd": 0
+      }
+    ],
+    "dtfs": [
+      {
+        "address": "0x323c03c48660fe31186fa82c289b0766d331ce21",
+        "name": "Open Stablecoin Index",
+        "symbol": "OPEN",
+        "decimals": 18,
+        "price": 0.4642446345196343
+      }
+    ],
+    "lockedAmount": 1310629.287620084,
+    "lockedAmountUsd": 55906.11442557705,
+    "totalRewardAmountUsd": 2667.4978305312397,
+    "avgDailyRewardAmountUsd": 14.122156159144103,
+    "apr": 9.220077358353086
+  },
+  {
+    "chainId": 1,
+    "token": {
+      "address": "0x3676df5d38c18c1bd79cb3fa0a23350fa83ae219",
+      "name": "Vote Lock vlRSR-Coindesk-Re7",
+      "symbol": "vlRSR-Coindesk-Re7",
+      "decimals": 18,
+      "price": 0.001396846703007687
+    },
+    "underlying": {
+      "token": {
+        "address": "0x320623b8e4ff03373931769a31fc52a4e78b5d70",
+        "name": "Reserve Rights",
+        "symbol": "RSR",
+        "decimals": 18,
+        "price": 0.001396846703007687
+      }
+    },
+    "rewards": [
+      {
+        "token": {
+          "address": "0xa0d69e286b938e21cbf7e51d71f6a4c8918f482f",
+          "name": "Electronic Dollar",
+          "symbol": "eUSD",
+          "decimals": 18,
+          "price": 0.9993913088520138
+        },
+        "amount": 0,
+        "amountUsd": 0
+      }
+    ],
+    "dtfs": [
+      {
+        "address": "0x188d12eb13a5eadd0867074ce8354b1ad6f4790b",
+        "name": "CoinDesk DeFi Select Index",
+        "symbol": "DFX",
+        "decimals": 18,
+        "price": 0.9627607545622959
+      }
+    ],
+    "lockedAmount": 3719235.3243750283,
+    "lockedAmountUsd": 5195.201600562984,
+    "totalRewardAmountUsd": 596.7385776941512,
+    "avgDailyRewardAmountUsd": 2.2298997530300064,
+    "apr": 15.666637648243558
+  },
+  {
+    "chainId": 1,
+    "token": {
+      "address": "0x9f65716046ba5920f5385ebda9fc532ecd8014b7",
+      "name": "Vote Lock vlRSR-ixEdel",
+      "symbol": "vlRSR-ixEdel",
+      "decimals": 18,
+      "price": 0.001396846703007687
+    },
+    "underlying": {
+      "token": {
+        "address": "0x320623b8e4ff03373931769a31fc52a4e78b5d70",
+        "name": "Reserve Rights",
+        "symbol": "RSR",
+        "decimals": 18,
+        "price": 0.001396846703007687
+      }
+    },
+    "rewards": [],
+    "dtfs": [
+      {
+        "address": "0xe4a10951f962e6cb93cb843a4ef05d2f99db1f94",
+        "name": "Sagix Club Edelweiss",
+        "symbol": "ixEdel",
+        "decimals": 18,
+        "price": 105.77714171262402
+      }
+    ],
+    "lockedAmount": 1767443.1867897264,
+    "lockedAmountUsd": 2468.8471882206286,
+    "totalRewardAmountUsd": 33.25367151926388,
+    "avgDailyRewardAmountUsd": 0.12911438015519677,
+    "apr": 1.9088564485278032
+  },
+  {
+    "chainId": 1,
+    "token": {
+      "address": "0xc58fb246b97686defddfe2db7ad1637cfce17f85",
+      "name": "Vote Lock vlRSR-TodayinDeFi",
+      "symbol": "vlRSR-TodayinDeFi",
+      "decimals": 18,
+      "price": 0.001396846703007687
+    },
+    "underlying": {
+      "token": {
+        "address": "0x320623b8e4ff03373931769a31fc52a4e78b5d70",
+        "name": "Reserve Rights",
+        "symbol": "RSR",
+        "decimals": 18,
+        "price": 0.001396846703007687
+      }
+    },
+    "rewards": [
+      {
+        "token": {
+          "address": "0x9a1741e151233a82cf69209a2f1bc7442b1fb29c",
+          "name": "DeFi Growth Index",
+          "symbol": "DGI",
+          "decimals": 18,
+          "price": 0.6777983012139983
+        },
+        "amount": 2446.2892258611864,
+        "amountUsd": 1658.0906815668193
+      },
+      {
+        "token": {
+          "address": "0xa0d69e286b938e21cbf7e51d71f6a4c8918f482f",
+          "name": "Electronic Dollar",
+          "symbol": "eUSD",
+          "decimals": 18,
+          "price": 0.9993913088520138
+        },
+        "amount": 0,
+        "amountUsd": 0
+      }
+    ],
+    "dtfs": [
+      {
+        "address": "0x9a1741e151233a82cf69209a2f1bc7442b1fb29c",
+        "name": "DeFi Growth Index",
+        "symbol": "DGI",
+        "decimals": 18,
+        "price": 0.6777983012139983
+      }
+    ],
+    "lockedAmount": 7364273.932647733,
+    "lockedAmountUsd": 10286.761762864438,
+    "totalRewardAmountUsd": 1658.0906815668193,
+    "avgDailyRewardAmountUsd": 6.138072143545718,
+    "apr": 21.779413036297722
+  },
+  {
+    "chainId": 56,
+    "token": {
+      "address": "0xe744c8157c346b2931807f42552c8cbc0bb6d34f",
+      "name": "Vote-Locked Reserve Rights",
+      "symbol": "vlRSR",
+      "decimals": 18,
+      "price": 0.001481612312363507
+    },
+    "underlying": {
+      "token": {
+        "address": "0x23f72a3db61d6cb8abe5d9af1ac4b6c99327bfee",
+        "name": "Reserve Rights",
+        "symbol": "RSR",
+        "decimals": 18,
+        "price": 0.0013953693082855414
+      }
+    },
+    "rewards": [],
+    "dtfs": [
+      {
+        "address": "0x290bcc0fd5096cc3261ae2021841c7bc67cb0f51",
+        "name": "Reserve AI Power DTF (BSC)",
+        "symbol": "POWER",
+        "decimals": 18,
+        "price": 88.4719674439935
+      },
+      {
+        "address": "0x75617e7653f86f074cc30b9fd4ebf52ba9b62247",
+        "name": "Reserve Robotics DTF (BSC)",
+        "symbol": "ROBOTS",
+        "decimals": 18,
+        "price": 91.09604274772806
+      },
+      {
+        "address": "0xa0fe4e0aeca5479705ce996615b2eacb6b6a10fb",
+        "name": "Reserve AI Photonics DTF (BSC)",
+        "symbol": "PHOTON",
+        "decimals": 18,
+        "price": 84.95004763079864
+      },
+      {
+        "address": "0xc561439bd5b6a279f61ea2f8a3f0d25d70ff57ad",
+        "name": "Reserve AI Compute DTF (BSC)",
+        "symbol": "COMPUTE",
+        "decimals": 18,
+        "price": 99.99159448668726
+      },
+      {
+        "address": "0xd7ce7a841310982acd976d1a6fe7bb6063c5689d",
+        "name": "Reserve AI Infrastructure DTF (BSC)",
+        "symbol": "BUILDOUT",
+        "decimals": 18,
+        "price": 90.53975452995276
+      },
+      {
+        "address": "0xdbd6bc5e04b5fd627e0aa67740b06537800fe7db",
+        "name": "Reserve AI Energy Generation DTF (BSC)",
+        "symbol": "ENERGY",
+        "decimals": 18,
+        "price": 99.98167189580688
+      },
+      {
+        "address": "0xf51e0e1fdd6ea5967a4ea72fbdaa37c1e3ba1369",
+        "name": "Reserve Quantum DTF (BSC)",
+        "symbol": "QUANTUM",
+        "decimals": 18,
+        "price": 99.98216900209563
+      },
+      {
+        "address": "0xf571fe3f0d74521bc7310b111faea931c748f27b",
+        "name": "Reserve AI Capacity & Neocloud DTF",
+        "symbol": "NEOCLOUD",
+        "decimals": 18,
+        "price": 71.55713792813823
+      }
+    ],
+    "lockedAmount": 498811419.40337676,
+    "lockedAmountUsd": 696026.145257819,
+    "totalRewardAmountUsd": 44792.804171237505,
+    "avgDailyRewardAmountUsd": 438.9796035556112,
+    "apr": 23.020335714321092
+  },
+  {
+    "chainId": 56,
+    "token": {
+      "address": "0xede6a014caa31e23e9d8c345c022101477a91292",
+      "name": "Vote Lock vlRSR-CMCindex",
+      "symbol": "vlRSR-CMCindex",
+      "decimals": 18,
+      "price": 0.0013953693082855414
+    },
+    "underlying": {
+      "token": {
+        "address": "0x23f72a3db61d6cb8abe5d9af1ac4b6c99327bfee",
+        "name": "Reserve Rights",
+        "symbol": "RSR",
+        "decimals": 18,
+        "price": 0.0013953693082855414
+      }
+    },
+    "rewards": [
+      {
+        "token": {
+          "address": "0x2f8a339b5889ffac4c5a956787cda593b3c36867",
+          "name": "CoinMarketCap 20 Index DTF",
+          "symbol": "CMC20",
+          "decimals": 18,
+          "price": 159.15512854119262
+        },
+        "amount": 72.73549617195988,
+        "amountUsd": 11576.227242755698
+      }
+    ],
+    "dtfs": [
+      {
+        "address": "0x2f8a339b5889ffac4c5a956787cda593b3c36867",
+        "name": "CoinMarketCap 20 Index DTF",
+        "symbol": "CMC20",
+        "decimals": 18,
+        "price": 159.15512854119262
+      }
+    ],
+    "lockedAmount": 77344819.69901748,
+    "lockedAmountUsd": 107924.58756288794,
+    "totalRewardAmountUsd": 11576.227242755698,
+    "avgDailyRewardAmountUsd": 6.778166635896145,
+    "apr": 2.292369957550654
+  },
+  {
+    "chainId": 8453,
+    "token": {
+      "address": "0x25defe25eae15c0f3380ffa7d338a5fdc377666b",
+      "name": "Vote Lock vlRSR-CLX",
+      "symbol": "vlRSR-CLX",
+      "decimals": 18,
+      "price": 0.0013964789095053446
+    },
+    "underlying": {
+      "token": {
+        "address": "0xab36452dbac151be02b16ca17d8919826072f64a",
+        "name": "Reserve Rights",
+        "symbol": "RSR",
+        "decimals": 18,
+        "price": 0.0013964789095053446
+      }
+    },
+    "rewards": [
+      {
+        "token": {
+          "address": "0x44551ca46fa5592bb572e20043f7c3d54c85cad7",
+          "name": "Clanker Index",
+          "symbol": "CLX",
+          "decimals": 18,
+          "price": 0.43839959363369224
+        },
+        "amount": 3046.739353677048,
+        "amountUsd": 1335.6892945597958
+      },
+      {
+        "token": {
+          "address": "0xcfa3ef56d303ae4faaba0592388f19d7c3399fb4",
+          "name": "Electronic Dollar",
+          "symbol": "eUSD",
+          "decimals": 18,
+          "price": 0.9985536097273412
+        },
+        "amount": 0,
+        "amountUsd": 0
+      }
+    ],
+    "dtfs": [
+      {
+        "address": "0x44551ca46fa5592bb572e20043f7c3d54c85cad7",
+        "name": "Clanker Index",
+        "symbol": "CLX",
+        "decimals": 18,
+        "price": 0.43839959363369224
+      }
+    ],
+    "lockedAmount": 13275775.47582758,
+    "lockedAmountUsd": 18539.340459321495,
+    "totalRewardAmountUsd": 1335.6892945597958,
+    "avgDailyRewardAmountUsd": 1.0377336738873137,
+    "apr": 2.043075867774057
+  },
+  {
+    "chainId": 8453,
+    "token": {
+      "address": "0x2f0d6538807a77d4addcd4b4daf214ea2e818e3d",
+      "name": "Vote-Locked Reserve Rights",
+      "symbol": "vlRSR",
+      "decimals": 18,
+      "price": 0.0013964789095053446
+    },
+    "underlying": {
+      "token": {
+        "address": "0xab36452dbac151be02b16ca17d8919826072f64a",
+        "name": "Reserve Rights",
+        "symbol": "RSR",
+        "decimals": 18,
+        "price": 0.0013964789095053446
+      }
+    },
+    "rewards": [],
+    "dtfs": [
+      {
+        "address": "0x4ca35589de6d2c2cb4d3063ab279590b627652bc",
+        "name": "Reserve Magnificent 7 DTF (Base)",
+        "symbol": "MAG7",
+        "decimals": 18,
+        "price": 0
+      },
+      {
+        "address": "0x9adfced43129d7d07a565e93f8d731959aef5a66",
+        "name": "Reserve Magnificent 7 DTF (Base)",
+        "symbol": "MAG7",
+        "decimals": 18,
+        "price": 0
+      },
+      {
+        "address": "0xcef8db49e456f872e288e1c042f916e9ced7c781",
+        "name": "Reserve Magnificent 7 DTF (Base)",
+        "symbol": "MAG7",
+        "decimals": 18,
+        "price": 101.83608854804503
+      }
+    ],
+    "lockedAmount": 26562575.598482065,
+    "lockedAmountUsd": 37094.076605421506,
+    "totalRewardAmountUsd": 1045.2150020269833,
+    "avgDailyRewardAmountUsd": 49.77214295366587,
+    "apr": 48.9750219996927
+  },
+  {
+    "chainId": 8453,
+    "token": {
+      "address": "0x3d72d6e8a5829d02f0153dbbfe71b8d4f5c3b45d",
+      "name": "Vote Lock vlRSR-MVDA25",
+      "symbol": "vlRSR-MVDA25",
+      "decimals": 18,
+      "price": 0.0013964789095053446
+    },
+    "underlying": {
+      "token": {
+        "address": "0xab36452dbac151be02b16ca17d8919826072f64a",
+        "name": "Reserve Rights",
+        "symbol": "RSR",
+        "decimals": 18,
+        "price": 0.0013964789095053446
+      }
+    },
+    "rewards": [
+      {
+        "token": {
+          "address": "0xcfa3ef56d303ae4faaba0592388f19d7c3399fb4",
+          "name": "Electronic Dollar",
+          "symbol": "eUSD",
+          "decimals": 18,
+          "price": 0.9985536097273412
+        },
+        "amount": 0,
+        "amountUsd": 0
+      },
+      {
+        "token": {
+          "address": "0xd600e748c17ca237fcb5967fa13d688aff17be78",
+          "name": "MarketVector Digital Assets 25 Index",
+          "symbol": "MVDA25",
+          "decimals": 18,
+          "price": 1.3173512427138236
+        },
+        "amount": 60.36599108875893,
+        "amountUsd": 79.52321337842818
+      },
+      {
+        "token": {
+          "address": "0xe8b46b116d3bdfa787ce9cf3f5acc78dc7ca380e",
+          "name": "MarketVector Token Terminal Fundamental Index",
+          "symbol": "MVTT10F",
+          "decimals": 18,
+          "price": 0.036598500013073874
+        },
+        "amount": 94030.7807310735,
+        "amountUsd": 3441.38552981554
+      }
+    ],
+    "dtfs": [
+      {
+        "address": "0xd600e748c17ca237fcb5967fa13d688aff17be78",
+        "name": "MarketVector Digital Assets 25 Index",
+        "symbol": "MVDA25",
+        "decimals": 18,
+        "price": 1.3173512427138236
+      },
+      {
+        "address": "0xe8b46b116d3bdfa787ce9cf3f5acc78dc7ca380e",
+        "name": "MarketVector Token Terminal Fundamental Index",
+        "symbol": "MVTT10F",
+        "decimals": 18,
+        "price": 0.036598500013073874
+      }
+    ],
+    "lockedAmount": 23738712.697901048,
+    "lockedAmountUsd": 33150.61162142553,
+    "totalRewardAmountUsd": 3520.908743193968,
+    "avgDailyRewardAmountUsd": 0.6556943596321083,
+    "apr": 0.7219427623200758
+  },
+  {
+    "chainId": 8453,
+    "token": {
+      "address": "0x40d62481a5f584058951be1a74082b6f1c0f67fd",
+      "name": "Vote Lock vlDTF-BDTF",
+      "symbol": "vlDTF-BDTF",
+      "decimals": 18,
+      "price": 0.00009542674332340247
+    },
+    "underlying": {
+      "token": {
+        "address": "0x84054a6b72dd5c58da8106e410e62658083a80e4",
+        "name": "Believe In Something",
+        "symbol": "DTF",
+        "decimals": 18,
+        "price": 0.00009542674332340247
+      }
+    },
+    "rewards": [
+      {
+        "token": {
+          "address": "0xb8753941196692e322846cfee9c14c97ac81928a",
+          "name": "Base MemeIndexer DTF",
+          "symbol": "BDTF",
+          "decimals": 18,
+          "price": 0.2431467626414173
+        },
+        "amount": 2297.283179510733,
+        "amountUsd": 558.5769679686167
+      }
+    ],
+    "dtfs": [
+      {
+        "address": "0xb8753941196692e322846cfee9c14c97ac81928a",
+        "name": "Base MemeIndexer DTF",
+        "symbol": "BDTF",
+        "decimals": 18,
+        "price": 0.2431467626414173
+      }
+    ],
+    "lockedAmount": 42235670.25389862,
+    "lockedAmountUsd": 4030.412464410648,
+    "totalRewardAmountUsd": 558.5769679686167,
+    "avgDailyRewardAmountUsd": 0,
+    "apr": 0
+  },
+  {
+    "chainId": 8453,
+    "token": {
+      "address": "0x45a96cd0e4d89a41eebf3cc4204b00b1cf1582fa",
+      "name": "Vote Lock vlRSR-LCAP",
+      "symbol": "vlRSR-LCAP",
+      "decimals": 18,
+      "price": 0.0013964789095053446
+    },
+    "underlying": {
+      "token": {
+        "address": "0xab36452dbac151be02b16ca17d8919826072f64a",
+        "name": "Reserve Rights",
+        "symbol": "RSR",
+        "decimals": 18,
+        "price": 0.0013964789095053446
+      }
+    },
+    "rewards": [
+      {
+        "token": {
+          "address": "0x4da9a0f397db1397902070f93a4d6ddbc0e0e6e8",
+          "name": "CF Large Cap Index",
+          "symbol": "LCAP",
+          "decimals": 18,
+          "price": 6.69098708337638
+        },
+        "amount": 626.1101925781171,
+        "amountUsd": 4189.295211310479
+      },
+      {
+        "token": {
+          "address": "0xcfa3ef56d303ae4faaba0592388f19d7c3399fb4",
+          "name": "Electronic Dollar",
+          "symbol": "eUSD",
+          "decimals": 18,
+          "price": 0.9985536097273412
+        },
+        "amount": 0,
+        "amountUsd": 0
+      }
+    ],
+    "dtfs": [
+      {
+        "address": "0x4da9a0f397db1397902070f93a4d6ddbc0e0e6e8",
+        "name": "CF Large Cap Index",
+        "symbol": "LCAP",
+        "decimals": 18,
+        "price": 6.69098708337638
+      }
+    ],
+    "lockedAmount": 112338621.50455198,
+    "lockedAmountUsd": 156878.5156540104,
+    "totalRewardAmountUsd": 4189.295211310479,
+    "avgDailyRewardAmountUsd": 12.3569231048529,
+    "apr": 2.8750124989826857
+  },
+  {
+    "chainId": 8453,
+    "token": {
+      "address": "0x6f1fe54c2275dc64ce1ce9cbf2007ef7bd53c117",
+      "name": "Vote Lock vlALTT-ABX",
+      "symbol": "vlALTT-ABX",
+      "decimals": 18,
+      "price": 0.016879484688363335
+    },
+    "underlying": {
+      "token": {
+        "address": "0x1b5ce2a593a840e3ad3549a34d7b3dec697c114d",
+        "name": "Altcoinist",
+        "symbol": "ALTT",
+        "decimals": 18,
+        "price": 0.016879484688363335
+      }
+    },
+    "rewards": [
+      {
+        "token": {
+          "address": "0xcfa3ef56d303ae4faaba0592388f19d7c3399fb4",
+          "name": "Electronic Dollar",
+          "symbol": "eUSD",
+          "decimals": 18,
+          "price": 0.9985536097273412
+        },
+        "amount": 0,
+        "amountUsd": 0
+      },
+      {
+        "token": {
+          "address": "0xebcda5b80f62dd4dd2a96357b42bb6facbf30267",
+          "name": "Alpha Base Index",
+          "symbol": "ABX",
+          "decimals": 18,
+          "price": 0.001353017091299576
+        },
+        "amount": 9072954.120011125,
+        "amountUsd": 12275.861992951955
+      }
+    ],
+    "dtfs": [
+      {
+        "address": "0xebcda5b80f62dd4dd2a96357b42bb6facbf30267",
+        "name": "Alpha Base Index",
+        "symbol": "ABX",
+        "decimals": 18,
+        "price": 0.001353017091299576
+      }
+    ],
+    "lockedAmount": 3915165.918571153,
+    "lockedAmountUsd": 66085.98317492375,
+    "totalRewardAmountUsd": 12275.861992951955,
+    "avgDailyRewardAmountUsd": 9.77932702938265,
+    "apr": 5.40122760416023
+  },
+  {
+    "chainId": 8453,
+    "token": {
+      "address": "0xa276907d6b8bcaf7d240b51e977a694b53db8fb4",
+      "name": "Vote Lock vlRSR-BGCI",
+      "symbol": "vlRSR-BGCI",
+      "decimals": 18,
+      "price": 0.0013964789095053446
+    },
+    "underlying": {
+      "token": {
+        "address": "0xab36452dbac151be02b16ca17d8919826072f64a",
+        "name": "Reserve Rights",
+        "symbol": "RSR",
+        "decimals": 18,
+        "price": 0.0013964789095053446
+      }
+    },
+    "rewards": [
+      {
+        "token": {
+          "address": "0x23418de10d422ad71c9d5713a2b8991a9c586443",
+          "name": "Bloomberg Galaxy Crypto Index",
+          "symbol": "BGCI",
+          "decimals": 18,
+          "price": 2.003953185536742
+        },
+        "amount": 2352.6050157142267,
+        "amountUsd": 4714.510315550242
+      },
+      {
+        "token": {
+          "address": "0xcfa3ef56d303ae4faaba0592388f19d7c3399fb4",
+          "name": "Electronic Dollar",
+          "symbol": "eUSD",
+          "decimals": 18,
+          "price": 0.9985536097273412
+        },
+        "amount": 0,
+        "amountUsd": 0
+      }
+    ],
+    "dtfs": [
+      {
+        "address": "0x23418de10d422ad71c9d5713a2b8991a9c586443",
+        "name": "Bloomberg Galaxy Crypto Index",
+        "symbol": "BGCI",
+        "decimals": 18,
+        "price": 2.003953185536742
+      }
+    ],
+    "lockedAmount": 40283038.20054251,
+    "lockedAmountUsd": 56254.41325785574,
+    "totalRewardAmountUsd": 4714.510315550242,
+    "avgDailyRewardAmountUsd": 5.261031637738449,
+    "apr": 3.413557153236104
+  },
+  {
+    "chainId": 8453,
+    "token": {
+      "address": "0xba06d11c94cb68f0a58087edfb843f4b3ccf46ab",
+      "name": "Vote Lock vlRSR-VLONE",
+      "symbol": "vlRSR-VLONE",
+      "decimals": 18,
+      "price": 0.0013964789095053446
+    },
+    "underlying": {
+      "token": {
+        "address": "0xab36452dbac151be02b16ca17d8919826072f64a",
+        "name": "Reserve Rights",
+        "symbol": "RSR",
+        "decimals": 18,
+        "price": 0.0013964789095053446
+      }
+    },
+    "rewards": [],
+    "dtfs": [
+      {
+        "address": "0xe00cfa595841fb331105b93c19827797c925e3e4",
+        "name": "Reserve Venionaire L1 Select DTF",
+        "symbol": "VLONE",
+        "decimals": 18,
+        "price": 51.105771881385344
+      }
+    ],
+    "lockedAmount": 16061742.556725249,
+    "lockedAmountUsd": 22429.88473037126,
+    "totalRewardAmountUsd": 73.2013299271714,
+    "avgDailyRewardAmountUsd": 0.6719639215217657,
+    "apr": 1.0934823531363944
+  }
+]

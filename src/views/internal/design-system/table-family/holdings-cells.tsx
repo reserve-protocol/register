@@ -5,7 +5,10 @@ import { Link } from '@/components/design-system-v1/link'
 import { MetricValue } from '@/components/metric'
 import { HelpTooltip } from '@/components/design-system-v1/help-tooltip'
 import { Skeleton } from '@/components/design-system-v1/loading'
-import { v1Typography as type } from '@/components/design-system-v1/typography'
+import {
+  v1Typography as type,
+  v1TypographyVariants,
+} from '@/components/design-system-v1/typography'
 import { getTokenName, formatMarketCap } from '@/utils'
 import { cn } from '@/lib/utils'
 import { ArrowUpRight } from 'lucide-react'
@@ -37,6 +40,7 @@ export function HoldingIdentity({
   return (
     <EntityIdentity
       wrapName
+      nameLeading="compact"
       className="flex"
       mark={<HoldingMark row={row} tab={tab} />}
       name={<HoldingName row={row} tab={tab} />}
@@ -63,7 +67,10 @@ export function HoldingName({
       externalAnnouncement="opens in a new tab"
       treatment="contextual"
       data-table-focus={`asset-${row.address}`}
-      className={cn(type.itemTitle, 'group/holding-name max-w-full')}
+      className={cn(
+        v1TypographyVariants.compactItemTitle,
+        'group/holding-name flex min-h-6 max-w-full'
+      )}
       externalIcon={
         <ArrowUpRight
           aria-hidden="true"
@@ -141,10 +148,10 @@ export function HoldingMetadata({
       : `$${row.native.symbol}${(row.sources ?? 1) > 1 ? ` (${row.sources} sources)` : ''}`
   const bridge = row.bridgeId ? BRIDGES[row.bridgeId] : null
   return (
-    <span className="inline-flex max-w-full flex-wrap items-center gap-x-2">
+    <span className="inline-flex max-w-full flex-wrap items-center gap-x-1.5">
       <span>{symbol}</span>
       {collateral && bridge && !bridge.wrappedVersion && (
-        <span className="inline-flex shrink-0 items-center gap-2 whitespace-nowrap">
+        <span className="inline-flex shrink-0 items-center gap-1.5 whitespace-nowrap">
           <span aria-hidden="true" data-slot="metadata-separator">
             ·
           </span>

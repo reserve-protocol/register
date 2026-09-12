@@ -1,0 +1,205 @@
+{
+  "fixedPoint": "01a900cdf2589d455d04f78806d2ca8ff2b9122c",
+  "startedAt": "2026-09-11T14:43:44.122Z",
+  "scope": "Lab-only Earn zero-wallet tone and Holdings 46/14/20/20 desktop columns; existing padding and mobile preserved.",
+  "red": [
+    "Earn zero wallet class missing in Index and Yield (2 unit failures)",
+    "Lumentum collateral at 836px: expected one 24px name line, received 48px"
+  ],
+  "cases": [
+    {
+      "name": "Earn candidate exposes source-backed opportunities",
+      "status": "passed",
+      "attempts": 1,
+      "publicSourceDigest": "f5e50a9a4061393dc8fe9588e8d8cb8a0c45e3b694e78b796140ddc089e1d2b8"
+    },
+    {
+      "name": "Earn candidate states light 320",
+      "status": "passed",
+      "attempts": 1,
+      "publicSourceDigest": "f5e50a9a4061393dc8fe9588e8d8cb8a0c45e3b694e78b796140ddc089e1d2b8"
+    },
+    {
+      "name": "Earn candidate states light 390",
+      "status": "passed",
+      "attempts": 1,
+      "publicSourceDigest": "f5e50a9a4061393dc8fe9588e8d8cb8a0c45e3b694e78b796140ddc089e1d2b8"
+    },
+    {
+      "name": "Earn candidate states light 1400",
+      "status": "passed",
+      "attempts": 1,
+      "publicSourceDigest": "f5e50a9a4061393dc8fe9588e8d8cb8a0c45e3b694e78b796140ddc089e1d2b8"
+    },
+    {
+      "name": "Earn candidate states dark 320",
+      "status": "passed",
+      "attempts": 1,
+      "publicSourceDigest": "f5e50a9a4061393dc8fe9588e8d8cb8a0c45e3b694e78b796140ddc089e1d2b8"
+    },
+    {
+      "name": "Earn candidate states dark 390",
+      "status": "passed",
+      "attempts": 1,
+      "publicSourceDigest": "f5e50a9a4061393dc8fe9588e8d8cb8a0c45e3b694e78b796140ddc089e1d2b8"
+    },
+    {
+      "name": "Earn candidate states dark 1400",
+      "status": "passed",
+      "attempts": 1,
+      "publicSourceDigest": "f5e50a9a4061393dc8fe9588e8d8cb8a0c45e3b694e78b796140ddc089e1d2b8"
+    },
+    {
+      "name": "Earn candidate interactions light 390",
+      "status": "passed",
+      "attempts": 1,
+      "publicSourceDigest": "f5e50a9a4061393dc8fe9588e8d8cb8a0c45e3b694e78b796140ddc089e1d2b8"
+    },
+    {
+      "name": "Earn candidate interactions light 1400",
+      "status": "passed",
+      "attempts": 1,
+      "publicSourceDigest": "f5e50a9a4061393dc8fe9588e8d8cb8a0c45e3b694e78b796140ddc089e1d2b8"
+    },
+    {
+      "name": "Earn candidate interactions dark 390",
+      "status": "passed",
+      "attempts": 1,
+      "publicSourceDigest": "f5e50a9a4061393dc8fe9588e8d8cb8a0c45e3b694e78b796140ddc089e1d2b8"
+    },
+    {
+      "name": "Earn candidate interactions dark 1400",
+      "status": "passed",
+      "attempts": 1,
+      "publicSourceDigest": "f5e50a9a4061393dc8fe9588e8d8cb8a0c45e3b694e78b796140ddc089e1d2b8"
+    },
+    {
+      "name": "Earn candidate projection and sorting light",
+      "status": "passed",
+      "attempts": 1,
+      "publicSourceDigest": "f5e50a9a4061393dc8fe9588e8d8cb8a0c45e3b694e78b796140ddc089e1d2b8"
+    },
+    {
+      "name": "Earn candidate projection and sorting dark",
+      "status": "passed",
+      "attempts": 1,
+      "publicSourceDigest": "f5e50a9a4061393dc8fe9588e8d8cb8a0c45e3b694e78b796140ddc089e1d2b8"
+    },
+    {
+      "name": "holdings family light 320",
+      "status": "passed",
+      "attempts": 1,
+      "publicSourceDigest": "f5e50a9a4061393dc8fe9588e8d8cb8a0c45e3b694e78b796140ddc089e1d2b8"
+    },
+    {
+      "name": "holdings family light 375",
+      "status": "passed",
+      "attempts": 1,
+      "publicSourceDigest": "f5e50a9a4061393dc8fe9588e8d8cb8a0c45e3b694e78b796140ddc089e1d2b8"
+    },
+    {
+      "name": "holdings family light 1400",
+      "status": "passed",
+      "attempts": 1,
+      "publicSourceDigest": "f5e50a9a4061393dc8fe9588e8d8cb8a0c45e3b694e78b796140ddc089e1d2b8"
+    },
+    {
+      "name": "holdings family dark 320",
+      "status": "passed",
+      "attempts": 1,
+      "publicSourceDigest": "f5e50a9a4061393dc8fe9588e8d8cb8a0c45e3b694e78b796140ddc089e1d2b8"
+    },
+    {
+      "name": "holdings family dark 375",
+      "status": "passed",
+      "attempts": 1,
+      "publicSourceDigest": "f5e50a9a4061393dc8fe9588e8d8cb8a0c45e3b694e78b796140ddc089e1d2b8"
+    },
+    {
+      "name": "holdings family dark 1400",
+      "status": "passed",
+      "attempts": 1,
+      "publicSourceDigest": "f5e50a9a4061393dc8fe9588e8d8cb8a0c45e3b694e78b796140ddc089e1d2b8"
+    },
+    {
+      "name": "holdings touch pointer 1400",
+      "status": "passed",
+      "attempts": 1,
+      "publicSourceDigest": "f5e50a9a4061393dc8fe9588e8d8cb8a0c45e3b694e78b796140ddc089e1d2b8"
+    }
+  ],
+  "captures": [
+    {
+      "case": "Earn candidate states light 390",
+      "name": "index-wallet",
+      "file": "earn-candidate-states-light-390-index-wallet.png",
+      "sha256": "c894a9bd8b7df28be2a7a8005dd213994d97b95eabdae73f304406b2500aef51"
+    },
+    {
+      "case": "Earn candidate states light 390",
+      "name": "yield-wallet",
+      "file": "earn-candidate-states-light-390-yield-wallet.png",
+      "sha256": "e18d0b88208c314aaff2541e04638d4255d0fa1e926f40d0db534b2324b96715"
+    },
+    {
+      "case": "Earn candidate states light 1400",
+      "name": "index-wallet",
+      "file": "earn-candidate-states-light-1400-index-wallet.png",
+      "sha256": "8479d361484f57ec00e34bd35c90216d7838577f111a0667a8e802c230c53626"
+    },
+    {
+      "case": "Earn candidate states light 1400",
+      "name": "yield-wallet",
+      "file": "earn-candidate-states-light-1400-yield-wallet.png",
+      "sha256": "efed23de2027dfd6ce886da101dabe1484d88236faf56d0971358e6abb18218c"
+    },
+    {
+      "case": "Earn candidate states dark 1400",
+      "name": "index-wallet",
+      "file": "earn-candidate-states-dark-1400-index-wallet.png",
+      "sha256": "4122a94f7a6a9cc351e9abe4fc6a666c532f608dac7421153e1ae5d86bece53e"
+    },
+    {
+      "case": "Earn candidate states dark 1400",
+      "name": "yield-wallet",
+      "file": "earn-candidate-states-dark-1400-yield-wallet.png",
+      "sha256": "7e046409e5520a83a9532c6d0f215648d5e9bb84c76834818040c769ae689c93"
+    },
+    {
+      "case": "holdings family light 1400",
+      "name": "stock-collateral",
+      "file": "holdings-family-light-1400-stock-collateral.png",
+      "sha256": "2ca33c84ac8978c60a1ea9dfd589a286ec03207b2da77491585e7796693f7ca8"
+    },
+    {
+      "case": "holdings family light 1400",
+      "name": "overview-collateral",
+      "file": "holdings-family-light-1400-overview-collateral.png",
+      "sha256": "45a451c4f453cdcf82abac97525190879028b82dbc6bf3dc5f6df745ec22d843"
+    },
+    {
+      "case": "holdings family light 1400",
+      "name": "overview-exposure",
+      "file": "holdings-family-light-1400-overview-exposure.png",
+      "sha256": "d68025aeec413ec743b16297252795cdff692325738006a062ed11b2c2b6a3f5"
+    },
+    {
+      "case": "holdings family dark 1400",
+      "name": "stock-collateral",
+      "file": "holdings-family-dark-1400-stock-collateral.png",
+      "sha256": "c3d887f43ae2f01f59fd8387f202fb977a5ad69dba64f373b7da54aa3610d6e9"
+    },
+    {
+      "case": "holdings family dark 1400",
+      "name": "overview-collateral",
+      "file": "holdings-family-dark-1400-overview-collateral.png",
+      "sha256": "7f8ff90423bd999acd77fb27844b33cbff08e9a1cedb77d959348e68beecd20d"
+    },
+    {
+      "case": "holdings family dark 1400",
+      "name": "overview-exposure",
+      "file": "holdings-family-dark-1400-overview-exposure.png",
+      "sha256": "44e682d1fdc477c451ed02f94dd483330d8729c75104595e5dc94e6bd53484f3"
+    }
+  ]
+}

@@ -1,0 +1,40 @@
+{
+  "fixedPoint": "01a900cdf2589d455d04f78806d2ca8ff2b9122c",
+  "scope": "Unchanged existing-family unit baseline; no Earn source capture or production acceptance claim",
+  "startTime": 1789098289054,
+  "runner": "vitest run",
+  "success": true,
+  "passed": 64,
+  "failed": 0,
+  "files": [
+    {
+      "name": "src/components/design-system-v1/tests/semantic-roles.test.ts",
+      "passed": 1
+    },
+    {
+      "name": "src/components/design-system-v1/tests/typography.test.ts",
+      "passed": 1
+    },
+    { "name": "src/components/ui/tests/data-table.test.tsx", "passed": 6 },
+    {
+      "name": "src/views/internal/design-system/tests/component-catalog.test.ts",
+      "passed": 33
+    },
+    {
+      "name": "src/views/internal/design-system/tests/discover-family.test.tsx",
+      "passed": 4
+    },
+    {
+      "name": "src/views/internal/design-system/tests/discover-motion.test.ts",
+      "passed": 1
+    },
+    {
+      "name": "src/views/internal/design-system/tests/holdings-family.test.tsx",
+      "passed": 5
+    },
+    {
+      "name": "src/views/internal/design-system/tests/table-family.test.tsx",
+      "passed": 13
+    }
+  ]
+}

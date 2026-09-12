@@ -1,0 +1,7 @@
+{
+  "source": "https://api.reserve.org/dtf/daos",
+  "capturedAt": "2026-09-11T03:30:32.373Z",
+  "sha256": "9363b4502eb14c33b3f8df6ae235c8cd906caa7f4023bd6790e58a945e8a3cdc",
+  "purpose": "Public API replay for source inspection, not live financial truth",
+  "count": 14
+}

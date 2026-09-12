@@ -21,6 +21,7 @@ import ComponentVisualOutput from './component-visual-output'
 import { TableFamilyReview } from './table-family/review'
 import { HoldingsReview } from './table-family/holdings-review'
 import { DiscoverReview } from './table-family/discover-review'
+import { EarnReview } from './table-family/earn-review'
 import { EligibilityDialogInteractionReview } from './dialog-state-sheet'
 
 export const ComponentsOverview = () => (
@@ -75,6 +76,7 @@ export const ComponentDetail = () => {
             <TableFamilyReview />
             <HoldingsReview />
             <DiscoverReview />
+            <EarnReview />
           </>
         ) : (
           <ComponentVisualOutput itemId={item.id} autoFocus />

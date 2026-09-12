@@ -5,9 +5,10 @@ import {
   SelectContent,
   SelectItem,
 } from '@/components/design-system-v1/select'
-import { Switch } from '@/components/design-system-v1/switch'
 import { v1Typography as type } from '@/components/design-system-v1/typography'
 import type { HoldingsState } from './holdings-fixtures'
+
+export type HoldingsWidth = 'full' | 'overview' | 'mobile'
 
 const states: Record<HoldingsState, string> = {
   default: 'Default',
@@ -24,15 +25,15 @@ export function HoldingsControls({
   onDataset,
   state,
   onState,
-  constrained,
-  onConstrained,
+  width,
+  onWidth,
 }: {
   dataset: 'cmc20' | 'photon'
   onDataset: (value: 'cmc20' | 'photon') => void
   state: HoldingsState
   onState: (value: HoldingsState) => void
-  constrained: boolean
-  onConstrained: (value: boolean) => void
+  width: HoldingsWidth
+  onWidth: (value: HoldingsWidth) => void
 }) {
   return (
     <div
@@ -80,12 +81,26 @@ export function HoldingsControls({
           </SelectContent>
         </Select>
       </div>
-      <label
-        className={`flex min-h-11 cursor-pointer items-center gap-2 ${type.supporting}`}
-      >
-        <Switch checked={constrained} onCheckedChange={onConstrained} />
-        Constrained holdings column
-      </label>
+      <div className="space-y-2">
+        <p className={type.supporting}>Preview width</p>
+        <Select
+          value={width}
+          onValueChange={(value) => onWidth(value as HoldingsWidth)}
+        >
+          <SelectTrigger
+            size="compact"
+            className="w-56"
+            aria-label="Holdings preview width"
+          >
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="full">Full width</SelectItem>
+            <SelectItem value="overview">DTF overview · 836px</SelectItem>
+            <SelectItem value="mobile">Mobile · 390px</SelectItem>
+          </SelectContent>
+        </Select>
+      </div>
     </div>
   )
 }

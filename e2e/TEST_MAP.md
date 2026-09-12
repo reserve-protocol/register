@@ -74,6 +74,9 @@ flush right edge; content padding remains independent.
 The narrow expanding 44px tabs and adjacent 44px icon-only sort control are checked
 with an 8px gap, including the active accessible label and selected menu field.
 The controls-to-first-row content gap is checked at 24px.
+Desktop Holdings captures also measure 24px from the final content block to the
+card bottom, including overview width, long content and loading. The 12px cell
+inset remains unchanged; only the outer table bottom supplies the difference.
 Phone metadata sits 8px below the name, with 16px before the financial facts. Additional
 checks cover separated skeleton bars, decorative metadata dots, underlined bridge
 actions, and no-shift external arrows on hover/focus versus an emulated touch pointer.
@@ -92,6 +95,8 @@ including open basket/sort-menu dismissal and no focus theft after outside
 content or an unrelated menu is clicked. Compact/full chart, long content,
 zero/missing, inactive, loading-height parity and native navigation are checked at
 320/390/768px, including dark 390px.
+Card performance checks require accessible `1M` to match visible `(1M)`,
+including zero and unavailable values; desktop period wording is unchanged.
 The captures also check square card/media regions, steady matching fills,
 24px total primary-content edge insets and filled grid cells across content/loading
 states. The 2px secondary surround/seams are inspection-only lab framing, not a
@@ -121,6 +126,21 @@ neutral hover titles in governance/rebalance records, retained row feedback and
 keyboard focus, and unchanged independent link/action affordances at 390/1400px
 in both themes.
 
+The Holdings width selector additionally exercises Full width, the 836px
+overview estimate and 390px Mobile without resetting tab/condition/sorting.
+PHOTON natural and synthetic long names, loading and a narrow parent are covered
+in both themes. The existing source check pins the 1400px overview's 820px card,
+88px navigation footprint, 480px right column and 12px frame budget; the
+72px candidate rail yields the explicitly provisional 836px lab estimate.
+The overview regression checks that Lumentum and Applied Optoelectronics
+(Ondo Tokenized) collateral names fit one line with the tighter numeric columns,
+MACOM can still wrap naturally, and its name block reaches the column's padded
+right edge. The compact-title trial pins 20px leading and a 40px two-line MACOM
+name while preserving Lumentum's 24px single-line box. Shared units retain default
+title leading, compact-density type and supporting text; withdrawal browser and
+mounted checks explicitly retain ordinary 24px symbol leading. Header containment
+is checked alongside body content.
+
 [Table-family regressions](design-system/table-family-lab-regressions.spec.ts)
 are included in the same source-bound review project. They render the two
 position/withdrawal anchors at 320/375/1400px in both themes, and at available
@@ -129,6 +149,7 @@ collapsed identity/availability grouping and label-above-value geometry, long
 content, loading, expansion, keyboard position
 links (including standalone hover underline), title-baseline section navigation,
 divider-free desktop headers with 16px bottom and 16px desktop/24px collapsed row insets,
+24px desktop Withdrawal content/footer-to-card bottom spacing,
 hidden constrained headers, a shared-state Sort by menu (fields, directions,
 return focus, popup containment), measured 24px record-to-divider offsets,
 sorting, accessible sort direction, pending/ready actions and a
@@ -161,9 +182,91 @@ for their smaller variants, including the table and shared identity specimens.
 Two Retina-emulation cases also check badge borders and optical edges;
 both densities allow headless Chromium's measured half-pixel quantization.
 No live wallet/chain gates,
-screen-reader session, cross-projection focus transfer or transaction execution
+screen-reader session or transaction execution
 is claimed. The earlier horizontal-table regression remains on the overview's
 compact information-row specimen, not this new stacked Table detail.
+
+[Earn candidate](design-system/earn-family-lab-regressions.spec.ts) checks
+Index/Yield opportunity states at 320/390/1400px in both themes, including
+zero versus unavailable value/amount, independent wallet loading, Empty
+recovery, nested governed-asset and rate-help actions, and non-executing row
+boundaries. In-place 1023/1024px crossings retain sort/focus, close hidden
+disclosures and restore focus after resized boundary dismissal.
+Desktop checks pin descriptive-before-numeric column order and retained alignment
+in both families/wallet states, plus long-content containment at 1024px.
+Desktop known-zero wallet values retain 16px/300 supporting-text tone; nonzero
+values keep the primary color. Mobile keeps Governs-left/TVL-right geometry
+independent of wallet state and a 4px rate-label gap. Only non-zero or unknown
+positions receive a left-aligned 14px/300 supporting line with an 8px label/value
+gap and dot-separated amounts (44px split-footer RED, 20px ordinary line).
+Long-amount fixtures check wrapping/containment; loading remains explicit.
+Known-zero rows have no wallet footer. Sparse wallet positions renders
+one funded row per family. Units distinguish raw presence from zero USD, unknown
+and loading states, and preserve TVL's default tone. Presence is a local fixture
+fact, not a verified production balance adapter.
+[Earn recovery](design-system/earn-recovery-lab-regressions.spec.ts) additionally
+pins row height through loading (23px-shift RED), inline mobile wallet placeholders
+and retained right-aligned desktop placeholders,
+and functioning disclosure observation after loading at 390/1400px.
+[DeFi candidate](design-system/defi-family-lab-regressions.spec.ts) covers all
+seven source fields in four desktop data columns plus a pool-action column, light/dark 320/390/1400,
+1023/1024 container focus transfer,
+separate keyboard pool/DefiLlama links, exact rate help, numeric sort and
+loading/long/zero-unavailable/empty recovery. The grouped trial checks the
+all-width seven-field sort menu, visible base/reward breakdown, combined APY help
+and the relocated analytics link independently of the pool destination.
+The DeFi identity is not a link and pins 32px horizontal stacked artwork with a 12px text gap.
+Its fifth fixture is the three-token Curve ETH+/eUSD/RSR pool; actual image sources,
+three-logo count, containment, equal 52px two/three-token footprints and matching
+loading name axes are checked.
+The varied RSR/WETH and ETH-based fixtures pin underlying-token artwork separately
+from display labels, including Yearn's LP-token symbol, without new production adapters.
+Desktop keeps the compact “View pool” action with an expanded 44px vertical target.
+Phone uses a top-right 32px square external-link action with a 44px square target,
+platform-specific accessible name/tooltip, keyboard destination, and no footer action.
+Its expanded target stays clear of the identity, including long names. Pool identity includes the
+12px chain icon/name in a 20px supporting line aligned beneath the token names;
+constrained rows add dot-separated platform text with matching 12px artwork.
+Desktop Platform retains the plain uncropped 20px mark, 16px/300 name and 8px gap.
+Narrow APY/TVL facts use 4px label/value gaps; the Base/Rewards breakdown occupies
+the full row width. A single toolbar APY-help control and separate 44px sort
+target are checked for overlap, and help/analytics/pool focus survive the
+1023/1024 projection change. Default rows stay at most 240px tall; per-row loading
+height and name-axis continuity, long names and all rate values remain covered.
+Tests pin both dimensions and line spacing, plus loading continuity.
+The combined APY/arrow analytics link pins its 4px gap, unfilled underline hover,
+24px line box with a separately expanded 44px target, no added breakdown gap,
+right-edge alignment on desktop/left-edge alignment on phone, source-named tooltip,
+Escape dismissal and keyboard destination. The help and label centers align.
+Base/Reward sorting gives only that supporting rate foreground emphasis without
+changing 14px/300 typography; changing to TVL clears the emphasis. Mounted tests
+also cover Base/Reward selection, both directions and the explicit Total APY label.
+[DeFi source](design-system/defi-source-capture.spec.ts) replays CMS-backed pool
+identities with illustrative API values through the
+fixture-owned exact DefiLlama pools route; other tests retain its empty default.
+It observes the production 390/1400 layouts and APY/TVL descending order without
+visiting external destinations. Neither suite proves live yield accuracy,
+filtering, featured-pool cards or transaction execution.
+[Index source](design-system/earn-index-source-capture.spec.ts),
+[wallet source](design-system/earn-wallet-source-capture.spec.ts),
+[vote-lock boundary](design-system/earn-drawer-source-capture.spec.ts), and
+[Yield source](design-system/earn-yield-source-capture.spec.ts) use exact API,
+subgraph and RPC overlays with strict unmocked-request checks and zero
+transactions. They prove selected populated lists, Index loading/filtered-empty
+recovery, governed disclosure/FAQ, a synthetic converted wallet amount and
+drawer entry/dismissal—not live rates, full filtering, errors or transaction
+execution. Yield's empty yield feed makes its 0% captures fixture artifacts.
+See the [source-transfer brief](../docs/plans/design-system-table-family-earn-preparation.md).
+
+The [independent table reconciliation](../docs/plans/design-system-table-family-reconciliation.md)
+pins Holdings' newly selected descending header direction with concrete CMC20
+leader/laggard order in the lab and source checks. Separate mobile direction
+selection remains independent of field selection. [Holdings sort continuity](design-system/holdings-sort-continuity-lab-regressions.spec.ts)
+pins explicit ascending → field change → 767/768px crossing → new descending
+header selection → phone, including actual row order and focus in both themes.
+Production viewer ownership,
+page loading/error, near-zero sign and large-list automatic-comparator coverage
+are adoption gaps, not implied by green lab checks.
 
 [Transaction review canvas](design-system/transaction-review-canvas.spec.ts)
 checks navigation hit-testing over scrolled transaction previews, edge-to-edge

@@ -731,6 +731,13 @@ export const SUPPORT_COMPONENT_GROUPS: ComponentGroup[] = [
             detail:
               'Opt-in 44px logo-led trigger under Discover review; not part of accepted ordinary Button geometry or production adoption.',
           },
+          {
+            role: 'visual-evidence',
+            label: 'Compact wrapping table-title trial',
+            path: 'docs/plans/design-system-table-family-holdings-slice.md#compact-wrapping-identity-titles--september-12-trial',
+            detail:
+              'Opt-in 16px/20px name leading with a 24px single-line floor. Existing identity defaults and reviewed type roles remain unchanged; the table trial is not design acceptance.',
+          },
         ],
         adoptionStatus: 'none',
         review: {
@@ -871,7 +878,7 @@ export const SUPPORT_COMPONENT_GROUPS: ComponentGroup[] = [
               },
             ],
             nextAction:
-              'Review Discover classified identity, basket inspection and performance trends, plus the compact/full-chart narrow cards transferred from Home/Discover. Portfolio and Exposure/Collateral remain checkpoints. Rich records, bridge-dialog design and production adoption remain separate; no universal row API is proposed.',
+              'Review the new Earn opportunities alongside the still-open Discover mobile-card trials. Earn includes governance, staking and DeFi Yield after direct source checks. Portfolio and Exposure/Collateral remain checkpoints. Rich records, transaction design and production adoption remain separate; no universal row API is proposed.',
           }
         ),
         outputStatus: 'rendered',
@@ -920,12 +927,27 @@ export const SUPPORT_COMPONENT_GROUPS: ComponentGroup[] = [
             label: 'Discover mobile card transfer and review boundary',
             path: 'docs/plans/design-system-discover-mobile-cards.md',
           },
+          {
+            role: 'implementation',
+            label: 'Earn opportunity candidate',
+            path: 'src/views/internal/design-system/table-family/earn-review.tsx',
+          },
+          {
+            role: 'product-evidence',
+            label: 'Earn source transfer and bounded verification',
+            path: 'docs/plans/design-system-table-family-earn-preparation.md',
+          },
+          {
+            role: 'product-evidence',
+            label: 'DeFi Yield source transfer and review boundary',
+            path: 'docs/plans/design-system-table-family-defi-slice.md',
+          },
         ],
         adoptionStatus: 'none',
         review: {
           status: 'provisional',
           scope:
-            'Bounded Portfolio, Holdings and Discover candidates share cell vocabulary and sorting ownership. Discover adds classifications, basket inspection, return/trends and a narrow card preview using the production chart/ticker. Rich records, bridge-dialog design and page-level controls remain separate. No universal Table/Row API, chart-system acceptance or production adoption.',
+            'Bounded Portfolio, Holdings, Discover and Earn candidates share cell vocabulary and sorting ownership. Discover adds classifications, basket inspection, return/trends and production chart/ticker previews. Earn adds governed assets, rate kinds and wallet-dependent pairs with non-executing action boundaries; DeFi Yield adds pool identities, rate breakdowns and separate external destinations. Rich records, transaction design and page-level controls remain separate. No universal Table/Row API, chart-system acceptance or production adoption.',
           dependencies: [
             { name: 'Entity identity', status: 'canonical' },
             { name: 'Metric value', status: 'canonical' },

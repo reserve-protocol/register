@@ -194,7 +194,22 @@ trend. This does not accept a chart system, replace the product's mobile cards,
 or migrate the Discover page. Its [mobile card follow-up](design-system-discover-mobile-cards.md)
 now brings production chart/ticker implementations into compact/full-chart lab
 compositions, with the same sorting owner and exclusive table/card mounting.
-Portfolio and Holdings remain available checkpoints.
+Portfolio and Holdings remain available checkpoints. The next source-backed
+[Earn opportunity candidate](design-system-table-family-earn-preparation.md)
+adds governed-asset disclosure, explicit APR/APY and optional wallet value pairs.
+Its action boundary is non-executing; source drawers were inspected separately.
+The [DeFi Yield extension](design-system-table-family-defi-slice.md) adds the
+third Earn family through that selector: pool/project/chain, the APY breakdown
+and TVL, with independent external destinations rather than a drawer boundary.
+Earn and the mobile Discover card trials remain human-review-required, not
+production adoption or new shared defaults.
+The [independent table review reconciliation](design-system-table-family-reconciliation.md)
+tracks the Holdings first-direction and Discover card period corrections,
+explicit production-adoption contracts, and remaining error/fixture coverage.
+The older external report does not assess the newer Earn candidate.
+The [September 12 review checkpoint](design-system-table-family-checkpoint-2026-09-12.md)
+binds the accumulated table-family work for a future independent Earn/DeFi audit;
+it does not promote those candidates or begin Auctions implementation.
 Breadcrumbs remain low-priority and conditional; their catalog entry records when a migration owner should
 reconsider them without depending on the original designer personally.
 
@@ -242,12 +257,15 @@ history from the diff.
 | Manual issuance address normalization, parallel/USDT approvals, zero-minimum Redeem leg, and result source                              | These boundaries can change balance validity, permission ordering, slippage protection, and the facts a consequential outcome may claim                   | Preserve production behavior in the lab; resolve before any production migration                     |
 | Any production migration of the current transaction candidates                                                                          | Adoption may change real flow behavior, shared defaults, analytics, accessibility, and integration boundaries                                             | Requires separate explicit migration scope after human design review is complete                     |
 | Complete shared typography owner API                                                                                                    | Exposes all ten reviewed roles and usage guidance from typography.ts; four earlier keys stay compatible                                                   | Value-preserving lab consumption verified; engineer review before production adoption                |
+| Compact item-title recipe and EntityIdentity nameLeading opt-in | Adds a 16px/20px wrapping-title variant and preserves a 24px single-line floor; reviewed roles and shared defaults unchanged | Table-family lab trial, human visual acceptance pending; engineer review of API and adoption scope before production use |
 | Consolidated semantic owner and Tailwind role aliases                                                                                   | Removes overlapping owner exports and names existing surface, feedback, disabled and neutral-status aliases; distinct focus contracts remain explicit     | Existing CSS values and component defaults preserved; engineer review before production adoption     |
 | EntityIdentity `wrapName`; DataTable `ariaLabel`, `renderToolbar` and `rowLimit` opt-ins | Adds wrapping, accessible sort metadata, a same-instance toolbar and a post-sort preview limit for the position/withdrawal lab slice | Defaults and production callers unchanged; engineer review of shared APIs and real data/action adapters before adoption |
 | ChainBadgedLogo optical edge positioning | User-authorized shared candidate geometry change across all four sizes; verify separator/background relationship when adopting | Visual trial in V1 consumers only; legacy production wrappers and stacked logos unchanged; engineer review before adoption |
+| ChainBadgedLogo optional custom mark | Accepts caller-sized artwork while retaining the existing badge owner; default TokenLogo path unchanged | Unadopted opt-in from the preceding DeFi trial; latest DeFi composition no longer consumes it; engineer review before production adoption |
 | EntityIdentity 32px mark spacing | User-authorized 12px gap trial keyed to direct ChainBadgedLogo size metadata; other marks keep 8px | Shared candidate trial, not accepted migration policy; inspect consumers before adoption |
 | TokenStackTrigger opt-in | Adds a named 44px logo-led trigger over existing Button and TokenLogoStack without altering their defaults | Discover trial; its local horizontal strip and production adoption remain separate review boundaries |
 | DataTable alternative renderer and feature-chart animation opt-in | Keeps one table state owner while rendering a caller-owned card list; lets the lab disable both chart layers for reduced motion without changing existing defaults | Discover card lab only; engineer review before adoption, including list state, focus, and production page integration |
+| Portfolio viewed-account withdrawal ownership and table data adapters | Independent review found enabled withdrawals while viewing another account; source combines the connected account with a viewed row's endId. Sorting/limiting, missing values and precision also differ between lab and product | No production changes or transaction attempts; engineer review of account/row ownership and the [adoption contracts](design-system-table-family-reconciliation.md#production-adoption-contracts) before migration |
 
 Exploratory lab-only treatments do not need an engineering decision merely
 because they exist. Add them to this register only if they are promoted into a
