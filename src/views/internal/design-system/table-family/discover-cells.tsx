@@ -65,14 +65,24 @@ export function DiscoverMoney({
   compact = false,
   loading = false,
   precision,
+  textRole = 'body',
 }: {
   value: number | null
   compact?: boolean
   loading?: boolean
   precision?: number
+  textRole?: 'body' | 'supporting'
 }) {
   const amount = finiteValue(value)
-  if (loading) return <Skeleton className="ml-auto h-6 w-20" />
+  if (loading)
+    return (
+      <Skeleton
+        className={cn(
+          'ml-auto w-20',
+          textRole === 'supporting' ? 'h-5' : 'h-6'
+        )}
+      />
+    )
   const text =
     amount === null
       ? '—'
@@ -87,6 +97,7 @@ export function DiscoverMoney({
     <MetricValue
       align="end"
       className={cn(
+        type[textRole],
         'block whitespace-nowrap',
         amount === null && 'text-supporting-foreground'
       )}

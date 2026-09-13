@@ -771,7 +771,7 @@ export const SUPPORT_COMPONENT_GROUPS: ComponentGroup[] = [
               'Confirm stale-data language only when a real product source distinguishes stale from missing or loading.',
             ],
             nextAction:
-              'Preserve the reviewed inline anatomy in auction selectors; pressure-test any separate full-view outcome composition only when that surface is reviewed.',
+              'Historical rebalance tables reuse ordinary MetricValue. The retained earlier Auctions record trial follows the existing compact 14px/14px inline-pair pattern; neither changes shared Metric defaults.',
           }
         ),
         outputStatus: 'rendered',
@@ -802,7 +802,7 @@ export const SUPPORT_COMPONENT_GROUPS: ComponentGroup[] = [
           dependencies: [],
         },
         statusDetail:
-          'Reusable V1 Metric and MetricValue candidates implement the accepted inline and centered-headline anatomy. Auction selector metrics reuse inline anatomy while their parent owns consistent value emphasis, framing, and layout. Production adoption has not started.',
+          'Reusable V1 Metric and MetricValue candidates implement the accepted inline and centered-headline anatomy. The newer Auctions browse trial uses existing 14px/14px typography roles for compact pairs rather than MetricValue; it does not replace the accepted inline-selector baseline. Production adoption has not started.',
       },
       {
         ...component(
@@ -864,8 +864,8 @@ export const SUPPORT_COMPONENT_GROUPS: ComponentGroup[] = [
             evidence: [
               '27 imports use Table, 18 DataTable, and 13 legacy Table; at least three table systems coexist.',
               'Overview holdings supplies the identity/allocation-first narrow precedent; the local candidate retains ordinary 16px peers without defining a dense variant.',
-              'Governance proposals and Auctions rebalances prove that rich navigable records need a distinct composition.',
-              'The reviewed fixtures map real CMC20 proposal and rebalance mechanics with deterministic names, values, dates, vote distribution, metrics, and provenance; fixture copy is not a migration source.',
+              'Governance proposals retain a rich-record composition. Historical rebalances use ordinary table columns; the separate current-rebalance workspace now trials the full operating lifecycle above history.',
+              'Auction browse fixtures retain snapshot-derived CMC20 identities, dates and windows; metrics and current-auction activity are explicitly illustrative. Governance fixtures remain a separate, partially synthetic study. Fixture copy is not a migration source.',
             ],
             decisionPrompts: [
               'Review rich navigable-record hierarchy separately; it is not a dense Table row variant.',
@@ -878,7 +878,7 @@ export const SUPPORT_COMPONENT_GROUPS: ComponentGroup[] = [
               },
             ],
             nextAction:
-              'Review the new Earn opportunities alongside the still-open Discover mobile-card trials. Earn includes governance, staking and DeFi Yield after direct source checks. Portfolio and Exposure/Collateral remain checkpoints. Rich records, transaction design and production adoption remain separate; no universal row API is proposed.',
+              'Review the current-rebalance workspace above the retained historical table. The lab includes roles, weights, simulated launch/receipt/indexing, live bids, repeat rounds and outcomes. Missing data fails closed. Other table families remain provisional; no real transactions, production adoption or universal row API.',
           }
         ),
         outputStatus: 'rendered',
@@ -891,6 +891,16 @@ export const SUPPORT_COMPONENT_GROUPS: ComponentGroup[] = [
             role: 'implementation',
             label: 'Bounded table-family candidate',
             path: 'src/views/internal/design-system/table-family/review.tsx',
+          },
+          {
+            role: 'implementation',
+            label: 'Owned Portfolio positions',
+            path: 'src/views/internal/design-system/table-family/owned-review.tsx',
+          },
+          {
+            role: 'product-evidence',
+            label: 'Owned-position transfer and verification',
+            path: 'docs/plans/design-system-owned-positions-slice.md',
           },
           {
             role: 'product-evidence',
@@ -942,12 +952,32 @@ export const SUPPORT_COMPONENT_GROUPS: ComponentGroup[] = [
             label: 'DeFi Yield source transfer and review boundary',
             path: 'docs/plans/design-system-table-family-defi-slice.md',
           },
+          {
+            role: 'implementation',
+            label: 'Current workspace and historical table candidate',
+            path: 'src/views/internal/design-system/auctions-browse/history-review.tsx',
+          },
+          {
+            role: 'product-evidence',
+            label: 'Current workspace audit transfer and review boundary',
+            path: 'docs/plans/design-system-current-rebalance-workspace.md',
+          },
+          {
+            role: 'implementation',
+            label: 'Retained earlier Auction record exploration',
+            path: 'src/views/internal/design-system/auctions-browse/record-review.tsx',
+          },
+          {
+            role: 'product-evidence',
+            label: 'Auction record source transfer and review boundary',
+            path: 'docs/plans/design-system-auctions-browse-slice.md',
+          },
         ],
         adoptionStatus: 'none',
         review: {
           status: 'provisional',
           scope:
-            'Bounded Portfolio, Holdings, Discover and Earn candidates share cell vocabulary and sorting ownership. Discover adds classifications, basket inspection, return/trends and production chart/ticker previews. Earn adds governed assets, rate kinds and wallet-dependent pairs with non-executing action boundaries; DeFi Yield adds pool identities, rate breakdowns and separate external destinations. Rich records, transaction design and page-level controls remain separate. No universal Table/Row API, chart-system acceptance or production adoption.',
+            'Bounded Portfolio, Holdings, Discover and Earn candidates share cell vocabulary and sorting ownership. Discover adds basket inspection and chart previews. Earn adds governed assets, rate kinds and wallet-dependent pairs; DeFi Yield adds pools, rate breakdowns and separate external destinations. Historical rebalances add outcome comparison and independent provenance links. Current-rebalance workspaces, Governance records, transactions and page-level controls remain separate. No universal Table/Row API or production adoption.',
           dependencies: [
             { name: 'Entity identity', status: 'canonical' },
             { name: 'Metric value', status: 'canonical' },

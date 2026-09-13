@@ -14,6 +14,12 @@ adds adoption requirements for numeric sort keys, missing values, preview limits
 keyboard access and the viewed-account withdrawal boundary. Production's
 page-level loading gate is not covered by these section-level skeletons.
 Near-zero sign/precision and non-RSR withdrawal fixtures remain open coverage.
+The [Portfolio coverage review](design-system-portfolio-coverage-review.md)
+maps the intentionally excluded sections, including current stakes/vote-locks,
+and their remaining source/fixture work. The subsequent
+[owned-position candidate](design-system-owned-positions-slice.md) adds current
+stakes and vote-locks separately; the first slice itself is unchanged. Neither
+candidate claims full Portfolio coverage.
 
 ### Whole-row navigation treatment
 

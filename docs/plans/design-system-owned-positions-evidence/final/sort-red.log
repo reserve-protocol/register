@@ -1,0 +1,96 @@
+[sentry-vite-plugin] Info: Sending telemetry data on issues and performance to Sentry. To disable telemetry, set `options.telemetry` to `false`.
+
+ RUN  v3.2.4 /Users/lill-kire/Code/register
+
+{"level":10,"time":1789241294693,"pid":12922,"hostname":"Eriks-MacBook-Pro.local","name":"core","context":"core","msg":"Initialized"}
+{"level":10,"time":1789241294695,"pid":12922,"hostname":"Eriks-MacBook-Pro.local","name":"core","context":"core","msg":"Initialized"}
+{"level":10,"time":1789241294698,"pid":12922,"hostname":"Eriks-MacBook-Pro.local","name":"core","context":"core","context":"core/history","msg":"Initialized"}
+{"level":10,"time":1789241294698,"pid":12922,"hostname":"Eriks-MacBook-Pro.local","name":"core","context":"core","context":"core/history","msg":"Initialized"}
+{"level":10,"time":1789241294709,"pid":12922,"hostname":"Eriks-MacBook-Pro.local","name":"core","context":"core","context":"core/expirer","msg":"Initialized"}
+{"level":10,"time":1789241294709,"pid":12922,"hostname":"Eriks-MacBook-Pro.local","name":"core","context":"core","context":"core/expirer","msg":"Initialized"}
+{"level":10,"time":1789241294709,"pid":12922,"hostname":"Eriks-MacBook-Pro.local","name":"core","context":"core","context":"core/relayer","msg":"Initialized"}
+{"level":10,"time":1789241294709,"pid":12922,"hostname":"Eriks-MacBook-Pro.local","name":"core","context":"core","context":"core/relayer","context":"core/relayer/messages","msg":"Initialized"}
+{"level":10,"time":1789241294710,"pid":12922,"hostname":"Eriks-MacBook-Pro.local","name":"core","context":"core","context":"core/relayer","context":"core/relayer/subscription","msg":"Initialized"}
+{"level":10,"time":1789241294710,"pid":12922,"hostname":"Eriks-MacBook-Pro.local","name":"core","context":"core","context":"core/relayer","msg":"Initialized"}
+{"level":10,"time":1789241294710,"pid":12922,"hostname":"Eriks-MacBook-Pro.local","name":"core","context":"core","context":"core/relayer","context":"core/relayer/messages","msg":"Initialized"}
+{"level":10,"time":1789241294710,"pid":12922,"hostname":"Eriks-MacBook-Pro.local","name":"core","context":"core","context":"core/relayer","context":"core/relayer/subscription","msg":"Initialized"}
+{"level":20,"time":1789241294710,"pid":12922,"hostname":"Eriks-MacBook-Pro.local","name":"core","context":"core","context":"core/relayer","context":"core/relayer/messages","msg":"Successfully Restored records for messages"}
+{"level":10,"time":1789241294710,"pid":12922,"hostname":"Eriks-MacBook-Pro.local","name":"core","context":"core","context":"core/relayer","context":"core/relayer/messages","type":"method","method":"restore","size":0}
+{"level":20,"time":1789241294710,"pid":12922,"hostname":"Eriks-MacBook-Pro.local","name":"core","context":"core","context":"core/relayer","context":"core/relayer/messages","msg":"Successfully Restored records for messages"}
+{"level":10,"time":1789241294710,"pid":12922,"hostname":"Eriks-MacBook-Pro.local","name":"core","context":"core","context":"core/relayer","context":"core/relayer/messages","type":"method","method":"restore","size":0}
+{"level":10,"time":1789241294710,"pid":12922,"hostname":"Eriks-MacBook-Pro.local","name":"core","context":"core","context":"core/pairing","context":"core/pairing/pairing","msg":"Initialized"}
+{"level":10,"time":1789241294710,"pid":12922,"hostname":"Eriks-MacBook-Pro.local","name":"core","context":"core","context":"core/pairing","context":"core/pairing/pairing","msg":"Initialized"}
+{"level":10,"time":1789241294710,"pid":12922,"hostname":"Eriks-MacBook-Pro.local","name":"core","context":"core","context":"core/pairing","msg":"Initialized"}
+{"level":10,"time":1789241294710,"pid":12922,"hostname":"Eriks-MacBook-Pro.local","name":"core","context":"core","context":"core/pairing","msg":"Initialized"}
+{"level":30,"time":1789241294710,"pid":12922,"hostname":"Eriks-MacBook-Pro.local","name":"core","context":"core","msg":"Core Initialization Success"}
+{"level":30,"time":1789241294710,"pid":12922,"hostname":"Eriks-MacBook-Pro.local","name":"core","context":"core","msg":"Core Initialization Success"}
+stderr | src/views/internal/design-system/tests/owned-positions.test.tsx
+Lit is in dev mode. Not recommended for production! See https://lit.dev/msg/dev-mode for more information.
+
+stderr | src/views/internal/design-system/tests/owned-positions.test.tsx
+[Reown Config] Failed to fetch remote project configuration. Using local/default values. [TypeError: fetch failed] {
+  [cause]: Error: getaddrinfo ENOTFOUND api.web3modal.org
+      at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:122:26) {
+    errno: -3008,
+    code: 'ENOTFOUND',
+    syscall: 'getaddrinfo',
+    hostname: 'api.web3modal.org'
+  }
+}
+
+stderr | src/views/internal/design-system/tests/owned-positions.test.tsx
+[DEPRECATED] loadable is deprecated and will be removed in v3. Please use a userland util with the `unwrap` util: https://github.com/pmndrs/jotai/pull/3217
+
+stderr | src/views/internal/design-system/tests/owned-positions.test.tsx > owned Portfolio positions > sorts numerical balances before applying the five-row limit with an eleven-row list
+Warning: `ReactDOMTestUtils.act` is deprecated in favor of `React.act`. Import `act` from `react` instead of `react-dom/test-utils`. See https://react.dev/warnings/react-dom-test-utils for more info.
+
+ ❯ src/views/internal/design-system/tests/owned-positions.test.tsx (10 tests | 1 failed | 9 skipped) 77ms
+   ↓ owned Portfolio positions > mounts both families and preserves family when changing preview state
+   ↓ owned Portfolio positions > keeps active shares as eligibility while retaining a successful zero redeemable balance
+   ↓ owned Portfolio positions > keeps tiny holdings, unknown values and an empty governed list distinct
+   ↓ owned Portfolio positions > retains independent links for every governed asset, including duplicate symbols
+   × owned Portfolio positions > sorts numerical balances before applying the five-row limit with an eleven-row list 76ms
+     → expected [ '100', '50', '40', '30', '20' ] to deeply equal [ '2', '3', '4', '5', '6' ]
+   ↓ owned Portfolio positions > keeps missing numeric values last in both sort directions
+   ↓ owned Portfolio positions > does not turn the entire vote-lock row into an action
+   ↓ owned Portfolio positions > keeps staking Modify a native new-tab link with the staking destination
+   ↓ owned Portfolio positions > disables loading Modify and recovers without changing family
+   ↓ owned Portfolio positions > opens only the non-executing vote-lock boundary
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/views/internal/design-system/tests/owned-positions.test.tsx > owned Portfolio positions > sorts numerical balances before applying the five-row limit with an eleven-row list
+AssertionError: expected [ '100', '50', '40', '30', '20' ] to deeply equal [ '2', '3', '4', '5', '6' ]
+
+- Expected
++ Received
+
+  [
+-   "2",
+-   "3",
+-   "4",
+-   "5",
+-   "6",
++   "100",
++   "50",
++   "40",
++   "30",
++   "20",
+  ]
+
+ ❯ src/views/internal/design-system/tests/owned-positions.test.tsx:110:19
+    108|         (row) => row.dataset.ownedRow
+    109|       )
+    110|     expect(ids()).toEqual(['2', '3', '4', '5', '6'])
+       |                   ^
+    111|     fireEvent.click(screen.getByTestId('table-expand'))
+    112|     expect(ids()).toHaveLength(11)
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 9 skipped (10)
+   Start at  21:28:11
+   Duration  3.43s (transform 522ms, setup 101ms, collect 2.33s, tests 77ms, environment 444ms, prepare 58ms)
+

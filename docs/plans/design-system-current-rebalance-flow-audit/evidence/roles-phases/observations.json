@@ -1,0 +1,307 @@
+{
+  "disconnected.restricted": {
+    "title": "August 2026 Rebalance",
+    "headerPill": "1d 0h 0m",
+    "error": null,
+    "cowbotBanner": false,
+    "progress": {
+      "execution": "0%",
+      "nextTarget": "100%"
+    },
+    "overview": {
+      "totalValueTraded": "Total value traded:$0",
+      "deviation": "Current basket deviation:-10.39%",
+      "weightsSaved": null
+    },
+    "round": {
+      "title": "Precision Rebalancing",
+      "round": "2",
+      "description": "Buy/sell tokens to move closer to proposed weights."
+    },
+    "actionOverview": {
+      "estTradeValue": {
+        "text": "Est. trade value:$626,416.81",
+        "logos": 0,
+        "skeleton": false
+      },
+      "selling": {
+        "text": "Selling:",
+        "logos": 7,
+        "skeleton": false
+      },
+      "buying": {
+        "text": "Buying:",
+        "logos": 7,
+        "skeleton": false
+      }
+    },
+    "launch": null,
+    "community": null,
+    "priceUnavailable": null,
+    "communityUnavailable": false,
+    "permissionlessCountdown": "Permissionless in: 41s",
+    "manageWeightsCard": false,
+    "auctions": null,
+    "liquidity": {
+      "text": "LiquiditySellingETH$411,172.12XRP$126,429.76TRX$44,710.30ADA$10,673.57LINK$11,774.97BCH$7,497.68AVAX$4,319.33LTC$5,372.54SHIB$4,466.55BuyingBTCB$552,561.53WBNB$32,317.16SOL$19,774.43DOGE$5,298.02HYPE$7,170.86XLM$2,257.33SUI$1,142.72HBAR$1,223.37ZEC$4,671.40Total trade value$626,416.81Estimated total impact0.00%",
+      "alerts": [],
+      "badges": []
+    },
+    "cowbot": null,
+    "completed": null,
+    "debugPanel": false,
+    "toasts": []
+  },
+  "disconnected.restricted.fixture": {
+    "nonce": "11",
+    "restrictedUntil": "1786227244",
+    "availableUntil": "1786313644"
+  },
+  "disconnected.permissionless.before": {
+    "title": "August 2026 Rebalance",
+    "headerPill": "23h 58m",
+    "error": null,
+    "cowbotBanner": false,
+    "progress": {
+      "execution": "0%",
+      "nextTarget": "100%"
+    },
+    "overview": {
+      "totalValueTraded": "Total value traded:$0",
+      "deviation": "Current basket deviation:-10.39%",
+      "weightsSaved": null
+    },
+    "round": {
+      "title": "Precision Rebalancing",
+      "round": "2",
+      "description": "Buy/sell tokens to move closer to proposed weights."
+    },
+    "actionOverview": {
+      "estTradeValue": {
+        "text": "Est. trade value:$626,416.81",
+        "logos": 0,
+        "skeleton": false
+      },
+      "selling": {
+        "text": "Selling:",
+        "logos": 7,
+        "skeleton": false
+      },
+      "buying": {
+        "text": "Buying:",
+        "logos": 7,
+        "skeleton": false
+      }
+    },
+    "launch": null,
+    "community": {
+      "text": "Start auction 1(30 minutes)",
+      "disabled": false
+    },
+    "priceUnavailable": null,
+    "communityUnavailable": false,
+    "permissionlessCountdown": null,
+    "manageWeightsCard": false,
+    "auctions": null,
+    "liquidity": {
+      "text": "LiquiditySellingETH$411,172.12XRP$126,429.76TRX$44,710.30ADA$10,673.57LINK$11,774.97BCH$7,497.68AVAX$4,319.33LTC$5,372.54SHIB$4,466.55BuyingBTCB$552,561.53WBNB$32,317.16SOL$19,774.43DOGE$5,298.02HYPE$7,170.86XLM$2,257.33SUI$1,142.72HBAR$1,223.37ZEC$4,671.40Total trade value$626,416.81Estimated total impact0.00%",
+      "alerts": [],
+      "badges": []
+    },
+    "cowbot": null,
+    "completed": null,
+    "debugPanel": false,
+    "toasts": []
+  },
+  "disconnected.permissionless.afterClick": {
+    "justAfter": {
+      "community": {
+        "text": "Launching...",
+        "disabled": true
+      },
+      "toasts": []
+    },
+    "after22s": {
+      "community": {
+        "text": "Launching...",
+        "disabled": true
+      },
+      "toasts": []
+    },
+    "txLog": 0,
+    "connectPromptVisible": 1
+  },
+  "disconnected.lcap.zeroWindow": {
+    "title": "June 2026 Rebalance",
+    "headerPill": "40s",
+    "error": null,
+    "cowbotBanner": false,
+    "progress": {
+      "execution": "0%",
+      "nextTarget": "100%"
+    },
+    "overview": {
+      "totalValueTraded": "Total value traded:$0",
+      "deviation": "Current basket deviation:-18.27%",
+      "weightsSaved": "Weights saved:No"
+    },
+    "round": {
+      "title": "Precision Rebalancing",
+      "round": "2",
+      "description": "Buy/sell tokens to move closer to proposed weights."
+    },
+    "actionOverview": {
+      "estTradeValue": {
+        "text": "Est. trade value:$910,098.52",
+        "logos": 0,
+        "skeleton": false
+      },
+      "selling": {
+        "text": "Selling:",
+        "logos": 4,
+        "skeleton": false
+      },
+      "buying": {
+        "text": "Buying:",
+        "logos": 4,
+        "skeleton": false
+      }
+    },
+    "launch": null,
+    "community": null,
+    "priceUnavailable": null,
+    "communityUnavailable": true,
+    "permissionlessCountdown": null,
+    "manageWeightsCard": false,
+    "auctions": null,
+    "liquidity": {
+      "text": "LiquiditySellingWETH$494,699.17uSOL$206,694.50uADA$31,320.91HYPE$177,383.94BuyingcbBTC$643,657.10uXRP$218,664.49uDOGE$34,086.41uXLM$13,690.52Total trade value$910,098.52Estimated total impact0.00%",
+      "alerts": [],
+      "badges": []
+    },
+    "cowbot": null,
+    "completed": null,
+    "debugPanel": false,
+    "toasts": []
+  },
+  "disconnected.lcap.helpTooltip": "Only the auction launcher can start auctions",
+  "nonLauncher.beforeCrossing": {
+    "countdown": "Permissionless in: 1m 11s",
+    "community": null,
+    "launch": null
+  },
+  "nonLauncher.afterCrossing": {
+    "countdown": null,
+    "community": {
+      "text": "Start auction 1(30 minutes)",
+      "disabled": false
+    },
+    "headerPill": "23h 59m"
+  },
+  "nonLauncher.rejected": {
+    "justAfter": {
+      "community": {
+        "text": "Launching...",
+        "disabled": true
+      },
+      "toasts": []
+    },
+    "after23s": {
+      "community": {
+        "text": "Launching...",
+        "disabled": true
+      },
+      "toasts": []
+    },
+    "txLog": 0
+  },
+  "launcher.wrongNetwork": {
+    "state": {
+      "launch": {
+        "text": "Start auction 1(30 minutes)",
+        "disabled": false
+      },
+      "community": null,
+      "round": {
+        "title": "Precision Rebalancing",
+        "round": "2",
+        "description": "Buy/sell tokens to move closer to proposed weights."
+      }
+    },
+    "switchButton": null,
+    "switchButtonCount": 0,
+    "walletSwitchRequests": 0,
+    "switchParams": [],
+    "note": "The injected wallet was configured on Base (8453); the app requests wallet_switchEthereumChain on load and the mock wallet accepts, so the DTF-chain button renders. The decline path (Switch-network button) is source-inspected only."
+  },
+  "launcher.restricted": {
+    "title": "August 2026 Rebalance",
+    "headerPill": "1d 0h 0m",
+    "error": null,
+    "cowbotBanner": false,
+    "progress": {
+      "execution": "0%",
+      "nextTarget": "100%"
+    },
+    "overview": {
+      "totalValueTraded": "Total value traded:$0",
+      "deviation": "Current basket deviation:-10.39%",
+      "weightsSaved": null
+    },
+    "round": {
+      "title": "Precision Rebalancing",
+      "round": "2",
+      "description": "Buy/sell tokens to move closer to proposed weights."
+    },
+    "actionOverview": {
+      "estTradeValue": {
+        "text": "Est. trade value:$626,416.81",
+        "logos": 0,
+        "skeleton": false
+      },
+      "selling": {
+        "text": "Selling:",
+        "logos": 7,
+        "skeleton": false
+      },
+      "buying": {
+        "text": "Buying:",
+        "logos": 7,
+        "skeleton": false
+      }
+    },
+    "launch": {
+      "text": "Start auction 1(30 minutes)",
+      "disabled": false
+    },
+    "community": null,
+    "priceUnavailable": null,
+    "communityUnavailable": false,
+    "permissionlessCountdown": null,
+    "manageWeightsCard": false,
+    "auctions": null,
+    "liquidity": {
+      "text": "LiquiditySellingETH$411,172.12XRP$126,429.76TRX$44,710.30ADA$10,673.57LINK$11,774.97BCH$7,497.68AVAX$4,319.33LTC$5,372.54SHIB$4,466.55BuyingBTCB$552,561.53WBNB$32,317.16SOL$19,774.43DOGE$5,298.02HYPE$7,170.86XLM$2,257.33SUI$1,142.72HBAR$1,223.37ZEC$4,671.40Total trade value$626,416.81Estimated total impact0.00%",
+      "alerts": [],
+      "badges": []
+    },
+    "cowbot": null,
+    "completed": null,
+    "debugPanel": false,
+    "toasts": []
+  },
+  "launcher.restricted.tabTrail": [
+    "a[href=/bsc/index-dtf/0x2f8A339B5889FfaC4c5A956787cdA593b3c36867/auctions/]: ",
+    "button: ",
+    "a[testid=auctions-rebalance-title][href=/bsc/index-dtf/0x2f8A339B5889FfaC4c5A956787cdA593b3c36867/governance/proposal/61599063002015809294990623651485426780864054918295694975209877368266408019309]: August 2026 Rebalance",
+    "button[testid=auctions-launch-btn]: Start auction 1(30 minutes)",
+    "button: ",
+    "button: ",
+    "button[testid=reserve-chat-launcher][label=Open assistant]: Ask Reserve AI",
+    "body",
+    "a[href=/]: ",
+    "a[href=/discover]: Discover DTFs",
+    "a[href=/earn]: Participate & Earn"
+  ],
+  "launcher.restricted.sellingHoverCard": "[data-radix-scroll-area-viewport]{scrollbar-width:none;-ms-overflow-style:none;-webkit-overflow-scrolling:touch;}[data-radix-scroll-area-viewport]::-webkit-scrollbar{display:none}Ethereum Token$ETHXRP Token$XRPTRON$TRXCardano Token$ADAChainLink Token$LINKBitcoin Cash Token$BCHAvalanche$AVAXLitecoin "
+}

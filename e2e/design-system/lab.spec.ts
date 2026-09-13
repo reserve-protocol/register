@@ -1495,196 +1495,46 @@ test.describe('design system lab', () => {
     await expect(
       review.locator('[data-proposal-qualifier="fast"]').first()
     ).toHaveCSS('column-gap', '4px')
+    await page.goto(
+      '/internal/design-system/components/table#auctions-records-review'
+    )
     const rebalanceBrowseList = review.getByTestId('rebalance-browse-list')
     await expect(rebalanceBrowseList).toBeVisible()
-    const ongoingRebalanceHeader = rebalanceBrowseList
-      .getByTestId('rebalance-list-record')
-      .nth(1)
-      .getByTestId('rebalance-record-header')
-    const ongoingTitleBox = await ongoingRebalanceHeader
-      .locator('h4')
-      .boundingBox()
-    const ongoingStatusBox = await ongoingRebalanceHeader
-      .getByTestId('lifecycle-status-pill')
-      .boundingBox()
-    expect(ongoingTitleBox).not.toBeNull()
-    expect(ongoingStatusBox).not.toBeNull()
-    if (ongoingTitleBox && ongoingStatusBox) {
-      if (page.viewportSize()?.width === 390) {
-        expect(ongoingStatusBox.y).toBeGreaterThanOrEqual(
-          ongoingTitleBox.y + ongoingTitleBox.height
-        )
-        expect(ongoingStatusBox.x).toBe(ongoingTitleBox.x)
-      } else {
-        expect(ongoingStatusBox.y).toBeLessThan(
-          ongoingTitleBox.y + ongoingTitleBox.height
-        )
-      }
-    }
     await expect(
-      rebalanceBrowseList.getByText('August 2026 Rebalance', { exact: true })
-    ).toBeVisible()
-    await expect(review.getByTestId('rebalance-list-record')).toHaveCount(4)
-    await expect(
-      rebalanceBrowseList.getByText('September 2026 Rebalance', { exact: true })
-    ).toBeVisible()
-    await expect(
-      rebalanceBrowseList.getByText('Swap Wrapped TONCOIN Basket Component', {
-        exact: true,
-      })
-    ).toBeVisible()
-    await expect(
-      rebalanceBrowseList.getByText('Auction 1 · Ready to start', {
-        exact: true,
-      })
-    ).toBeVisible()
-    await expect(
-      rebalanceBrowseList.getByText('Auction 2 · Ongoing', {
-        exact: true,
-      })
-    ).toBeVisible()
-    await expect(
-      rebalanceBrowseList.getByText('Current auction ends in', { exact: true })
-    ).toBeVisible()
-    await expect(
-      rebalanceBrowseList.getByText('Value traded this auction', {
-        exact: true,
-      })
-    ).toHaveCount(0)
-    await expect(
-      rebalanceBrowseList.getByText('Bids this auction', { exact: true })
-    ).toHaveCount(0)
-    await expect(
-      rebalanceBrowseList.getByText('Execution progress', { exact: true })
-    ).toHaveCount(0)
-    await expect(
-      rebalanceBrowseList.getByText('Next auction target', { exact: true })
-    ).toHaveCount(0)
-    await expect(
-      rebalanceBrowseList.getByText('Auction 2 of 5', { exact: true })
-    ).toHaveCount(0)
-    await expect(
-      rebalanceBrowseList.getByTestId('rebalance-execution-progress')
-    ).toHaveCount(0)
-    await expect(
-      rebalanceBrowseList.getByTestId('lifecycle-status-pill')
+      rebalanceBrowseList.getByTestId('rebalance-list-record')
     ).toHaveCount(4)
-    await expect(
-      rebalanceBrowseList.getByTestId('lifecycle-status-pill').nth(0)
-    ).toHaveAttribute('data-status-role', 'actionable')
-    await expect(
-      rebalanceBrowseList.getByTestId('lifecycle-status-pill').nth(1)
-    ).toHaveAttribute('data-status-role', 'processing')
-    await expect(
-      rebalanceBrowseList.getByTestId('lifecycle-status-pill').nth(2)
-    ).toHaveAttribute('data-status-role', 'closed')
-    await expect(
-      rebalanceBrowseList.getByTestId('lifecycle-status-pill').nth(3)
-    ).toHaveAttribute('data-status-role', 'closed')
+    await expect(rebalanceBrowseList.locator('[aria-current]')).toHaveCount(0)
     await expect(
       rebalanceBrowseList.locator('[data-status-icon="spinner"]')
-    ).toHaveCount(1)
-    await expect(rebalanceBrowseList.locator('[data-timing-icon]')).toHaveCount(
-      0
-    )
-    const evidenceRegions = rebalanceBrowseList.getByTestId(
-      'rebalance-evidence-region'
-    )
-    await expect(evidenceRegions).toHaveCount(4)
-    await expect(evidenceRegions.first()).toHaveCSS('margin-left', '4px')
-    await expect(evidenceRegions.first()).toHaveCSS('padding-left', '16px')
-    const evidenceRails = rebalanceBrowseList.getByTestId(
-      'rebalance-evidence-rail'
-    )
-    await expect(evidenceRails).toHaveCount(4)
-    await expect(evidenceRails.first()).toHaveCSS('top', '8px')
-    await expect(evidenceRails.first()).toHaveCSS('bottom', '8px')
-    await expect(evidenceRails.first()).toHaveCSS('width', '1px')
+    ).toHaveCount(0)
     await expect(
-      rebalanceBrowseList.getByTestId('rebalance-outcome-summary')
-    ).toHaveCount(2)
+      rebalanceBrowseList.getByTestId('rebalance-record-link').first()
+    ).toHaveAttribute('href', /\/auctions\/rebalance\/\d+$/)
     await expect(
-      rebalanceBrowseList.getByTestId('canonical-metric')
-    ).toHaveCount(10)
-    const rebalanceMetricValues = rebalanceBrowseList.getByTestId(
-      'rebalance-metric-value'
-    )
-    await expect(rebalanceMetricValues).toHaveCount(10)
-    for (const metricValue of await rebalanceMetricValues.all()) {
-      await expect(metricValue).toHaveCSS('font-weight', '500')
+      rebalanceBrowseList.getByTestId('lifecycle-status-pill').first()
+    ).toHaveAttribute('data-status-role', 'actionable')
+    await expect(
+      rebalanceBrowseList.getByTestId('rebalance-access').first()
+    ).toHaveText('Only the auction launcher can start auctions')
+    await expect(
+      rebalanceBrowseList.getByTestId('rebalance-evidence-region')
+    ).toHaveCount(0)
+    const activeRebalance = rebalanceBrowseList
+      .getByTestId('rebalance-list-record')
+      .first()
+    const activeBounds = (await activeRebalance.boundingBox())!
+    const summaryBounds = (await activeRebalance
+      .getByTestId('rebalance-operational-summary')
+      .boundingBox())!
+    expect(summaryBounds.x - activeBounds.x).toBe(24)
+    for (const value of await rebalanceBrowseList
+      .getByTestId('rebalance-metric-value')
+      .all()) {
+      await expect(value).toHaveCSS('font-weight', '500')
     }
-    const rebalanceMetadata = rebalanceBrowseList
-      .getByTestId('rebalance-metadata')
-      .first()
-    await expect(rebalanceMetadata).toContainText(
-      'ProposedFri Aug 14, 11:20 amby0xb209…5015'
-    )
-    await expect(rebalanceMetadata).toHaveCSS('justify-content', 'normal')
-    const selectedRebalance = review.getByTestId('rebalance-selected-detail')
-    await expect(selectedRebalance).toBeVisible()
     await expect(
-      selectedRebalance.getByText('September 2026 Rebalance', { exact: true })
-    ).toBeVisible()
-    await expect(
-      selectedRebalance.getByRole('button', { name: 'Start auction 1' })
-    ).toBeVisible()
-    const selectedBrowseRow = rebalanceBrowseList.locator(
-      '[data-selected="true"]'
-    )
-    const recessedBrowseRow = rebalanceBrowseList
-      .locator('[data-selected="false"]')
-      .first()
-    const contentSurface = await selectedRebalance.evaluate(
-      (element) => getComputedStyle(element).backgroundColor
-    )
-    await expect(selectedBrowseRow).toHaveCSS(
-      'background-color',
-      contentSurface
-    )
-    expect(
-      await recessedBrowseRow.evaluate(
-        (element) => getComputedStyle(element).backgroundColor
-      )
-    ).not.toBe(contentSurface)
-    await recessedBrowseRow.hover()
-    await expect(recessedBrowseRow).toHaveCSS(
-      'background-color',
-      contentSurface
-    )
-    const selectedListActionable = rebalanceBrowseList
-      .locator('[data-selected="true"]')
-      .getByTestId('lifecycle-status-pill')
-    const detailActionable = selectedRebalance.getByTestId(
-      'lifecycle-status-pill'
-    )
-    const selectedActionableBackground = await selectedListActionable.evaluate(
-      (element) => getComputedStyle(element).backgroundColor
-    )
-    await expect(detailActionable).toHaveCSS(
-      'background-color',
-      selectedActionableBackground
-    )
-    expect(
-      await selectedListActionable.evaluate((element) => {
-        const color = getComputedStyle(element).backgroundColor
-        const canvas = document.createElement('canvas')
-        canvas.width = 1
-        canvas.height = 1
-        const context = canvas.getContext('2d')
-        if (!context) return false
-
-        const paintOver = (underlay: string) => {
-          context.fillStyle = underlay
-          context.fillRect(0, 0, 1, 1)
-          context.fillStyle = color
-          context.fillRect(0, 0, 1, 1)
-          return Array.from(context.getImageData(0, 0, 1, 1).data).join(',')
-        }
-
-        return paintOver('#000') === paintOver('#fff')
-      })
-    ).toBe(true)
-    await expect(review.getByTestId('canonical-metric')).toHaveCount(12)
+      review.getByTestId('rebalance-selected-detail').locator('button')
+    ).toHaveCount(0)
     await expect(
       review
         .locator('[data-testid="rich-record"][data-record-kind="governance"]')
@@ -1710,10 +1560,10 @@ test.describe('design system lab', () => {
     await expect(
       review.getByText('Auction rebalance browse list', { exact: true })
     ).toBeVisible()
-    await expect(review.getByText('Review now', { exact: true })).toHaveCount(2)
+    await expect(review.getByText('Review now', { exact: true })).toHaveCount(1)
     await expect(
       review.getByText('Leave for later', { exact: true })
-    ).toHaveCount(2)
+    ).toHaveCount(1)
   })
 
   test('shows the shared lifecycle status roles without generalizing every badge job', async ({

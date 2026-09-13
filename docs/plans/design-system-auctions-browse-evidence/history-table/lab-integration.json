@@ -1,0 +1,34 @@
+{
+  "stats": {
+    "startTime": "2026-09-12T23:07:10.848Z",
+    "duration": 12139.6,
+    "expected": 2,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "cases": [
+    {
+      "title": "renders the source-grounded rich record review",
+      "outcome": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 4607,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "renders the source-grounded rich record review",
+      "outcome": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 3727,
+          "errors": []
+        }
+      ]
+    }
+  ]
+}

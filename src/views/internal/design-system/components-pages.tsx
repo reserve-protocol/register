@@ -22,6 +22,7 @@ import { TableFamilyReview } from './table-family/review'
 import { HoldingsReview } from './table-family/holdings-review'
 import { DiscoverReview } from './table-family/discover-review'
 import { EarnReview } from './table-family/earn-review'
+import { OwnedPositionsReview } from './table-family/owned-review'
 import { EligibilityDialogInteractionReview } from './dialog-state-sheet'
 
 export const ComponentsOverview = () => (
@@ -83,6 +84,7 @@ export const ComponentDetail = () => {
         )}
         {item.id === 'dialog' && <EligibilityDialogInteractionReview />}
         {item.id === 'table' && <RichRecordReview />}
+        {item.id === 'table' && <OwnedPositionsReview />}
 
         {item.relationships && item.relationships.length > 0 && (
           <section className="space-y-4">

@@ -1,0 +1,190 @@
+{
+  "confirm.before": {
+    "launch": {
+      "text": "Start auction 1(30 minutes)",
+      "disabled": false
+    },
+    "round": {
+      "title": "Precision Rebalancing",
+      "round": "2",
+      "description": "Buy/sell tokens to move closer to proposed weights."
+    },
+    "progress": {
+      "execution": "0%",
+      "nextTarget": "100%"
+    }
+  },
+  "confirm.pendingWallet": {
+    "launch": {
+      "text": "Launching...",
+      "disabled": true
+    },
+    "toasts": [
+      "Auction launched successfully"
+    ]
+  },
+  "confirm.receipt": {
+    "launch": {
+      "text": "Launching...",
+      "disabled": true
+    },
+    "toasts": [
+      "Auction launched successfully"
+    ],
+    "txLog": 1
+  },
+  "confirm.calldata": {
+    "to": "0x2f8a339b5889ffac4c5a956787cda593b3c36867",
+    "functionName": "openAuction",
+    "nonce": "11",
+    "tokenCount": 18,
+    "weightsCount": 18
+  },
+  "confirm.afterRefresh": {
+    "auctions": {
+      "title": "Auction 1",
+      "subtitle": "Bidding is ongoing...",
+      "pill": "29m 58s",
+      "chart": true,
+      "bidDots": 1
+    },
+    "launch": null,
+    "community": null,
+    "cowbot": null,
+    "cowbotBanner": false,
+    "headerPill": "1d 0h 0m"
+  },
+  "confirm.liveRefetch": {
+    "getRebalanceCallsBeforeLive": 2,
+    "after31s": 19
+  },
+  "lag.buttonStates": {
+    "afterReceipt": {
+      "text": "Launching...",
+      "disabled": true
+    },
+    "after16sMore": {
+      "text": "Start auction 1(30 minutes)",
+      "disabled": false
+    },
+    "auctions": null
+  },
+  "lag.txLog": [
+    {
+      "to": "0x2f8a339b5889ffac4c5a956787cda593b3c36867",
+      "selector": "0x3c46570f"
+    },
+    {
+      "to": "0x2f8a339b5889ffac4c5a956787cda593b3c36867",
+      "selector": "0x3c46570f"
+    }
+  ],
+  "reject": {
+    "launch": {
+      "text": "Launching...",
+      "disabled": true
+    },
+    "toasts": [],
+    "txLog": 0
+  },
+  "revert": {
+    "states": [
+      {
+        "afterMs": 4000,
+        "launch": {
+          "text": "Launching...",
+          "disabled": true
+        },
+        "toasts": []
+      },
+      {
+        "afterMs": 8000,
+        "launch": {
+          "text": "Launching...",
+          "disabled": true
+        },
+        "toasts": []
+      },
+      {
+        "afterMs": 8000,
+        "launch": {
+          "text": "Launching...",
+          "disabled": true
+        },
+        "toasts": []
+      },
+      {
+        "afterMs": 10000,
+        "launch": {
+          "text": "Launching...",
+          "disabled": true
+        },
+        "toasts": []
+      }
+    ],
+    "receiptPolls": 5
+  },
+  "ending.live": {
+    "auctions": {
+      "title": "Auction 1",
+      "subtitle": "Bidding is ongoing...",
+      "pill": "1m 25s",
+      "chart": true,
+      "bidDots": 2
+    },
+    "launch": null,
+    "community": null,
+    "overview": {
+      "totalValueTraded": "Total value traded:$2,476,602.01",
+      "deviation": "Current basket deviation:-10.39%",
+      "weightsSaved": null
+    },
+    "headerPill": "23h 58m"
+  },
+  "ending.afterEnd": {
+    "auctions": null,
+    "launch": {
+      "text": "Start auction 2(30 minutes)",
+      "disabled": false
+    },
+    "round": {
+      "title": "Precision Rebalancing",
+      "round": "2",
+      "description": "Buy/sell tokens to move closer to proposed weights."
+    },
+    "overview": {
+      "totalValueTraded": "Total value traded:$2,476,602.01",
+      "deviation": "Current basket deviation:-10.39%",
+      "weightsSaved": null
+    },
+    "toasts": [],
+    "auctionQueries": 7
+  },
+  "expiry.before": {
+    "headerPill": "1m 10s",
+    "launch": {
+      "text": "Start auction 1(30 minutes)",
+      "disabled": false
+    }
+  },
+  "expiry.after": {
+    "headerPill": null,
+    "launch": null,
+    "completed": "Rebalance - August 2026Rebalance progressRebalance FinishedTotal value traded$0.00Total price impact0%Rebalance accuracy0%NAV Change0%",
+    "round": null
+  },
+  "expiry.afterReload": {
+    "completed": "Rebalance - August 2026Rebalance progressRebalance FinishedTotal value traded$0.00Total price impact0%Rebalance accuracy0%NAV Change0%",
+    "launch": null
+  },
+  "finished.withoutApiMetrics": {
+    "completed": "Rebalance - August 2026Rebalance progressRebalance FinishedTotal value traded$0.00Total price impact0%Rebalance accuracy0%NAV Change0%",
+    "helpTooltips": 4,
+    "skeletons": 0
+  },
+  "finished.tooltips": [
+    "Available after rebalance completion",
+    "Available after rebalance completion",
+    "Available after rebalance completion"
+  ]
+}

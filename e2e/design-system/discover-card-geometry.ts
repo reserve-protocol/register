@@ -15,6 +15,9 @@ export async function expectDiscoverCardSurfaces(composition: Locator) {
       const topRow =
         media.firstElementChild!.firstElementChild!.getBoundingClientRect()
       const footer = card.lastElementChild!
+      const ticker = card
+        .querySelector('[data-slot="card-asset-ticker"]')!
+        .firstElementChild!.getBoundingClientRect()
       return {
         left: rect.left,
         right: rect.right,
@@ -35,6 +38,11 @@ export async function expectDiscoverCardSurfaces(composition: Locator) {
           rect.right - footer.lastElementChild!.getBoundingClientRect().right,
         ],
         footerBottomPadding: getComputedStyle(footer).paddingBottom,
+        tickerInsets: [ticker.left - rect.left, rect.right - ticker.right],
+        footerTypography: [...footer.children].map((child) => {
+          const style = getComputedStyle(child)
+          return { fontSize: style.fontSize, lineHeight: style.lineHeight }
+        }),
       }
     })
     const top = Math.min(...items.map((item) => item.top))
@@ -56,7 +64,12 @@ export async function expectDiscoverCardSurfaces(composition: Locator) {
   expect(geometry.seam).toBe(2)
   for (const item of geometry.items) {
     expect(item.contentInsets).toEqual([24, 24, 24, 24, 24])
+    expect(item.tickerInsets).toEqual([4, 4])
     expect(item.footerBottomPadding).toBe('24px')
+    expect(item.footerTypography).toEqual([
+      { fontSize: '14px', lineHeight: '20px' },
+      { fontSize: '14px', lineHeight: '20px' },
+    ])
     expect(item.filled).toBe(true)
     expect(item.radius).toBe('0px')
     expect(item.mediaRadius).toBe('0px')

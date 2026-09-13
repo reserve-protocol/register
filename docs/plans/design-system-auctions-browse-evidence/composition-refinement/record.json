@@ -1,0 +1,330 @@
+{
+  "base": "404bcbc414cf54eed988a9e6c95b74fa0c6e7251",
+  "stats": {
+    "startTime": "2026-09-12T17:45:19.506Z",
+    "duration": 95139.757,
+    "expected": 24,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "sourceDigest": "f0cf59bff8c99826bc49e79fbbb9e39ff7f73f8ead78fd3e30179e71cb712ca2",
+  "scope": "Offline Auctions browse lab; no production readiness, live authorization or transactions validated.",
+  "proof": "22 source-guarded regression cases and two retained rich-record smoke cases; 28 ordinary 390/1400 × 900 captures, light/dark. Browser viewport, not tall stitched capture. Smoke cases do not carry individual source guards.",
+  "cases": [
+    {
+      "title": "renders the source-grounded rich record review",
+      "project": "design-system-desktop",
+      "status": "passed",
+      "sourceDigest": null
+    },
+    {
+      "title": "renders the source-grounded rich record review",
+      "project": "design-system-mobile",
+      "status": "passed",
+      "sourceDigest": null
+    },
+    {
+      "title": "auction browse states and links light 390",
+      "project": "design-system-review",
+      "status": "passed",
+      "sourceDigest": "f0cf59bff8c99826bc49e79fbbb9e39ff7f73f8ead78fd3e30179e71cb712ca2"
+    },
+    {
+      "title": "auction browse states and links light 1400",
+      "project": "design-system-review",
+      "status": "passed",
+      "sourceDigest": "f0cf59bff8c99826bc49e79fbbb9e39ff7f73f8ead78fd3e30179e71cb712ca2"
+    },
+    {
+      "title": "auction browse states and links dark 390",
+      "project": "design-system-review",
+      "status": "passed",
+      "sourceDigest": "f0cf59bff8c99826bc49e79fbbb9e39ff7f73f8ead78fd3e30179e71cb712ca2"
+    },
+    {
+      "title": "auction browse states and links dark 1400",
+      "project": "design-system-review",
+      "status": "passed",
+      "sourceDigest": "f0cf59bff8c99826bc49e79fbbb9e39ff7f73f8ead78fd3e30179e71cb712ca2"
+    },
+    {
+      "title": "auction browse container boundaries and reduced motion",
+      "project": "design-system-review",
+      "status": "passed",
+      "sourceDigest": "f0cf59bff8c99826bc49e79fbbb9e39ff7f73f8ead78fd3e30179e71cb712ca2"
+    },
+    {
+      "title": "auction composition light 390",
+      "project": "design-system-review",
+      "status": "passed",
+      "sourceDigest": "f0cf59bff8c99826bc49e79fbbb9e39ff7f73f8ead78fd3e30179e71cb712ca2"
+    },
+    {
+      "title": "auction composition light 1400",
+      "project": "design-system-review",
+      "status": "passed",
+      "sourceDigest": "f0cf59bff8c99826bc49e79fbbb9e39ff7f73f8ead78fd3e30179e71cb712ca2"
+    },
+    {
+      "title": "auction composition dark 390",
+      "project": "design-system-review",
+      "status": "passed",
+      "sourceDigest": "f0cf59bff8c99826bc49e79fbbb9e39ff7f73f8ead78fd3e30179e71cb712ca2"
+    },
+    {
+      "title": "auction composition dark 1400",
+      "project": "design-system-review",
+      "status": "passed",
+      "sourceDigest": "f0cf59bff8c99826bc49e79fbbb9e39ff7f73f8ead78fd3e30179e71cb712ca2"
+    },
+    {
+      "title": "auction launcher wallet preview light 390",
+      "project": "design-system-review",
+      "status": "passed",
+      "sourceDigest": "f0cf59bff8c99826bc49e79fbbb9e39ff7f73f8ead78fd3e30179e71cb712ca2"
+    },
+    {
+      "title": "auction launcher wallet preview light 1400",
+      "project": "design-system-review",
+      "status": "passed",
+      "sourceDigest": "f0cf59bff8c99826bc49e79fbbb9e39ff7f73f8ead78fd3e30179e71cb712ca2"
+    },
+    {
+      "title": "auction launcher wallet preview dark 390",
+      "project": "design-system-review",
+      "status": "passed",
+      "sourceDigest": "f0cf59bff8c99826bc49e79fbbb9e39ff7f73f8ead78fd3e30179e71cb712ca2"
+    },
+    {
+      "title": "auction launcher wallet preview dark 1400",
+      "project": "design-system-review",
+      "status": "passed",
+      "sourceDigest": "f0cf59bff8c99826bc49e79fbbb9e39ff7f73f8ead78fd3e30179e71cb712ca2"
+    },
+    {
+      "title": "auction browse whole-record hit regions keep provenance independent",
+      "project": "design-system-review",
+      "status": "passed",
+      "sourceDigest": "f0cf59bff8c99826bc49e79fbbb9e39ff7f73f8ead78fd3e30179e71cb712ca2"
+    },
+    {
+      "title": "auction repeated runs light 390",
+      "project": "design-system-review",
+      "status": "passed",
+      "sourceDigest": "f0cf59bff8c99826bc49e79fbbb9e39ff7f73f8ead78fd3e30179e71cb712ca2"
+    },
+    {
+      "title": "auction repeated runs light 1400",
+      "project": "design-system-review",
+      "status": "passed",
+      "sourceDigest": "f0cf59bff8c99826bc49e79fbbb9e39ff7f73f8ead78fd3e30179e71cb712ca2"
+    },
+    {
+      "title": "auction repeated runs dark 390",
+      "project": "design-system-review",
+      "status": "passed",
+      "sourceDigest": "f0cf59bff8c99826bc49e79fbbb9e39ff7f73f8ead78fd3e30179e71cb712ca2"
+    },
+    {
+      "title": "auction repeated runs dark 1400",
+      "project": "design-system-review",
+      "status": "passed",
+      "sourceDigest": "f0cf59bff8c99826bc49e79fbbb9e39ff7f73f8ead78fd3e30179e71cb712ca2"
+    },
+    {
+      "title": "table row links light 390",
+      "project": "design-system-review",
+      "status": "passed",
+      "sourceDigest": "f0cf59bff8c99826bc49e79fbbb9e39ff7f73f8ead78fd3e30179e71cb712ca2"
+    },
+    {
+      "title": "table row links light 1400",
+      "project": "design-system-review",
+      "status": "passed",
+      "sourceDigest": "f0cf59bff8c99826bc49e79fbbb9e39ff7f73f8ead78fd3e30179e71cb712ca2"
+    },
+    {
+      "title": "table row links dark 390",
+      "project": "design-system-review",
+      "status": "passed",
+      "sourceDigest": "f0cf59bff8c99826bc49e79fbbb9e39ff7f73f8ead78fd3e30179e71cb712ca2"
+    },
+    {
+      "title": "table row links dark 1400",
+      "project": "design-system-review",
+      "status": "passed",
+      "sourceDigest": "f0cf59bff8c99826bc49e79fbbb9e39ff7f73f8ead78fd3e30179e71cb712ca2"
+    }
+  ],
+  "captures": [
+    {
+      "path": "auction-composition-light-390-restricted-repeat.png",
+      "case": "auction composition light 390",
+      "state": "restricted-repeat",
+      "sha256": "4f11f56eb476b13d3141f29aaf6a55bd8f0420448e281466d17e047b37614944"
+    },
+    {
+      "path": "auction-composition-light-390-launcher.png",
+      "case": "auction composition light 390",
+      "state": "launcher",
+      "sha256": "86d6ac80243f891cf60f3ab4e340929ffe41e24bfa0c722de89a71ed0b5fa5b6"
+    },
+    {
+      "path": "auction-composition-light-390-price-unavailable.png",
+      "case": "auction composition light 390",
+      "state": "price-unavailable",
+      "sha256": "25a30c2db6eb30932ececb4e73b1ab349b9d6acf3b8ee6e2174f6ef5aa9cd00d"
+    },
+    {
+      "path": "auction-composition-light-390-ongoing.png",
+      "case": "auction composition light 390",
+      "state": "ongoing",
+      "sha256": "ae3350414d5157d82915f6504e28131bdd8a7df7be8f226fcc9c99010353757f"
+    },
+    {
+      "path": "auction-composition-light-390-permissionless.png",
+      "case": "auction composition light 390",
+      "state": "permissionless",
+      "sha256": "1df657d697e0dab83545dc477d392513344cb139ef8fd8cf6f7f3e0468be90f0"
+    },
+    {
+      "path": "auction-composition-light-390-history-only.png",
+      "case": "auction composition light 390",
+      "state": "history-only",
+      "sha256": "f1f72565180dd57a68d0f959c00d6b0b26d9414609e40b2de6e679b92f7e01b5"
+    },
+    {
+      "path": "auction-composition-light-390-long-history-unavailable.png",
+      "case": "auction composition light 390",
+      "state": "long-history-unavailable",
+      "sha256": "3b5e80a5890a6831011a594d19103bd54c6a7c4d790aa307a7ab42f54ef2e683"
+    },
+    {
+      "path": "auction-composition-light-1400-restricted-repeat.png",
+      "case": "auction composition light 1400",
+      "state": "restricted-repeat",
+      "sha256": "bf31ec6da5f2f212cbbbbca10744129477833bd1768d2db22582bf89bb6e3175"
+    },
+    {
+      "path": "auction-composition-light-1400-launcher.png",
+      "case": "auction composition light 1400",
+      "state": "launcher",
+      "sha256": "fdd7eee97a6de319708304301cb4bbefb845ce67bf1a3db19229be472fa6bd56"
+    },
+    {
+      "path": "auction-composition-light-1400-price-unavailable.png",
+      "case": "auction composition light 1400",
+      "state": "price-unavailable",
+      "sha256": "45d4322fd4e5626ee02b4bd0357d4a2f596314c4e910d8b6fa946c0ef77b4c2d"
+    },
+    {
+      "path": "auction-composition-light-1400-ongoing.png",
+      "case": "auction composition light 1400",
+      "state": "ongoing",
+      "sha256": "c5b09ce601f35d64af9e765f1f94fbd494bf02190e7537f828e3464cd0a91fec"
+    },
+    {
+      "path": "auction-composition-light-1400-permissionless.png",
+      "case": "auction composition light 1400",
+      "state": "permissionless",
+      "sha256": "0ea3c6c53af6504b17a233142dc1a67e28f8224f6950e1af0587133edef3ef47"
+    },
+    {
+      "path": "auction-composition-light-1400-history-only.png",
+      "case": "auction composition light 1400",
+      "state": "history-only",
+      "sha256": "c8b2602bfedeb3f62d7876f94cee9eb45c31bef64b4f5b6e0b725061669f87c9"
+    },
+    {
+      "path": "auction-composition-light-1400-long-history-unavailable.png",
+      "case": "auction composition light 1400",
+      "state": "long-history-unavailable",
+      "sha256": "685cbf418da512e3b3810bb45bcfffc92bb5221f81b186efbd63f084ff3a53fd"
+    },
+    {
+      "path": "auction-composition-dark-390-restricted-repeat.png",
+      "case": "auction composition dark 390",
+      "state": "restricted-repeat",
+      "sha256": "0d512f7f7769094d14b858ebb65da5d6385d74daa77b542be364f1da36bec1c8"
+    },
+    {
+      "path": "auction-composition-dark-390-launcher.png",
+      "case": "auction composition dark 390",
+      "state": "launcher",
+      "sha256": "a4924c4c6fdd08df8d827784812b8574829905f47e07c7853d50f8190acb45d4"
+    },
+    {
+      "path": "auction-composition-dark-390-price-unavailable.png",
+      "case": "auction composition dark 390",
+      "state": "price-unavailable",
+      "sha256": "298159edd5974ba7b2acf11681b032f88ef76ac846fc01399539b1872534ab42"
+    },
+    {
+      "path": "auction-composition-dark-390-ongoing.png",
+      "case": "auction composition dark 390",
+      "state": "ongoing",
+      "sha256": "4f8736b497ed24eabf2f1cbd16a0f0f5136a0ad03405d6307a542d109ffc35dd"
+    },
+    {
+      "path": "auction-composition-dark-390-permissionless.png",
+      "case": "auction composition dark 390",
+      "state": "permissionless",
+      "sha256": "9e6edf338ac0ce4363a34361b4c8f8d4ee7953918e63cece5df2f57a270929b9"
+    },
+    {
+      "path": "auction-composition-dark-390-history-only.png",
+      "case": "auction composition dark 390",
+      "state": "history-only",
+      "sha256": "a7ea7ebe6a60157494997edcaec941632e0af5a98c90df1c29ce0d7eb19c5e49"
+    },
+    {
+      "path": "auction-composition-dark-390-long-history-unavailable.png",
+      "case": "auction composition dark 390",
+      "state": "long-history-unavailable",
+      "sha256": "17a5e5fe47b14aa947ba546c1d1dcb1d20475deb72ac82b27052fb6d9b647a63"
+    },
+    {
+      "path": "auction-composition-dark-1400-restricted-repeat.png",
+      "case": "auction composition dark 1400",
+      "state": "restricted-repeat",
+      "sha256": "c4578e11d4e88983219bd7f340b2291cea2a777b72a9ace9b10f972143b4872a"
+    },
+    {
+      "path": "auction-composition-dark-1400-launcher.png",
+      "case": "auction composition dark 1400",
+      "state": "launcher",
+      "sha256": "931768d6f69e1a8e58288a1ef996c98a65fb3e50ec423512ec672f701aa35ba1"
+    },
+    {
+      "path": "auction-composition-dark-1400-price-unavailable.png",
+      "case": "auction composition dark 1400",
+      "state": "price-unavailable",
+      "sha256": "eb4cb9c45994e27dc49e5768b3171d0503eb801637769fb43c559e4ba25b9cff"
+    },
+    {
+      "path": "auction-composition-dark-1400-ongoing.png",
+      "case": "auction composition dark 1400",
+      "state": "ongoing",
+      "sha256": "bc000cb741191a3dc5d4f402781a26a1d1e9f86a8aad1a9c6469de8c72b822b0"
+    },
+    {
+      "path": "auction-composition-dark-1400-permissionless.png",
+      "case": "auction composition dark 1400",
+      "state": "permissionless",
+      "sha256": "4d7181b17e10a2a139d762a9896b26902993bffd658d6a01e6cef1da7628e4ae"
+    },
+    {
+      "path": "auction-composition-dark-1400-history-only.png",
+      "case": "auction composition dark 1400",
+      "state": "history-only",
+      "sha256": "6aeb5ddbf9fbd17caec8b8114acdd938c292f3857ed3b9d15cf9bc13a42dd026"
+    },
+    {
+      "path": "auction-composition-dark-1400-long-history-unavailable.png",
+      "case": "auction composition dark 1400",
+      "state": "long-history-unavailable",
+      "sha256": "fa1fecba7a0808d224ff8108c7917877fd0765100a38260235edb40b02127f01"
+    }
+  ]
+}

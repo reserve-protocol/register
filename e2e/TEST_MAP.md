@@ -71,6 +71,7 @@ Narrow records verify name/allocation alignment, compact metadata marks, accessi
 Weight labeling, long-name containment, and supporting-group reflow at 511/512px.
 Stacked Holdings and Portfolio row dividers are checked at a 24px left inset and
 flush right edge; content padding remains independent.
+
 The narrow expanding 44px tabs and adjacent 44px icon-only sort control are checked
 with an 8px gap, including the active accessible label and selected menu field.
 The controls-to-first-row content gap is checked at 24px.
@@ -81,6 +82,19 @@ Phone metadata sits 8px below the name, with 16px before the financial facts. Ad
 checks cover separated skeleton bars, decorative metadata dots, underlined bridge
 actions, and no-shift external arrows on hover/focus versus an emulated touch pointer.
 Product dialogs remain reference-only; tests do not adopt them.
+
+[Owned Portfolio lab](design-system/owned-positions-lab-regressions.spec.ts)
+covers current stakes/vote-locks, both families and five states in 320/390/1400
+light/dark views, nested-scroller and value/action containment, 1023/1024 container
+boundaries, a 390px constrained preview, and focus/disclosure recovery after Empty.
+The inline governed-DTF count has hover, click, touch and keyboard popover checks,
+full independent links, stable row height and responsive focus return.
+[Owned source capture](design-system/owned-positions-source-capture.spec.ts)
+uses strict offline holdings and RPC overlays for API fallback, redeemable
+underlying/rate, successful zero, empty-result decode failure and a zero-active
+stake with a separate pending withdrawal. These do not prove transport failures,
+production writes or account authority. See the
+[receipt](../docs/plans/design-system-owned-positions-evidence/index.md).
 
 [Discover source captures](design-system/discover-family-source-capture.spec.ts)
 inspect the existing desktop table/basket hover and mobile card with the frozen
@@ -99,7 +113,9 @@ Card performance checks require accessible `1M` to match visible `(1M)`,
 including zero and unavailable values; desktop period wording is unchanged.
 The captures also check square card/media regions, steady matching fills,
 24px total primary-content edge insets and filled grid cells across content/loading
-states. The 2px secondary surround/seams are inspection-only lab framing, not a
+states. Both sides of the inline Market Cap footer must compute to 14px/20px,
+including missing and loading states in both chart layouts.
+The 2px secondary surround/seams are inspection-only lab framing, not a
 product container contract.
 Separate motion cases check loading recovery, the production 18-second ticker
 cycle, keyboard-focus pause and reduced motion.
@@ -125,6 +141,80 @@ cover neutral identity text on hover in Discover and Index/Yield positions,
 neutral hover titles in governance/rebalance records, retained row feedback and
 keyboard focus, and unchanged independent link/action affordances at 390/1400px
 in both themes.
+
+[Current workspace checks](design-system/current-rebalance-actions-lab-regressions.spec.ts)
+exercise local launch/receipt/indexing, rejection/revert recovery, viewer/network
+gates, mounted phase changes, missing data, live bid access, repeats and history
+handoff without wallet sends. [Editor checks](design-system/current-rebalance-editor-lab-regressions.spec.ts)
+cover all eight hybrid tokens, actual 44px input hits, non-preset units and limits,
+CSV validation/template, save/back, width changes, memory-only reload and
+independent record operations, including guarded browser Back confirmation.
+[Detail checks](design-system/current-rebalance-details-lab-regressions.spec.ts)
+cover token-level liquidity reasons, retry, limited/closed Ondo session facts,
+keyboard/Escape return, and expiry accounting with outcome help and dollar impact
+retained through history. [Lifecycle captures](design-system/current-rebalance-matrix-lab-regressions.spec.ts)
+bind light/dark 390/1400 states, the actual 832px workspace boundary, unknown
+routes and loading recovery to source fingerprints. The local simulator proves
+review behavior, not RPC truth, signatures or production transaction correctness.
+[Hierarchy checks](design-system/current-rebalance-hierarchy-lab-regressions.spec.ts)
+cover shared auction ownership, transparent action surface, separate cumulative
+context, full-width liquidity tables and actual 32px logos at 1400/900/390/320px.
+They check readable failed-row identity, focused disclosure through resize, general
+reference scope, natural outcome spacing and one recovery owner after expiry
+during indexing.
+[Header checks](design-system/current-rebalance-header-lab-regressions.spec.ts)
+cover expiry within compact provenance, normal-weight matched type, transparent hover, actual 44px hits,
+popover/chevron state, Space/Escape focus return and expired inspection across
+light/dark 1400/900/390/320px.
+[Section-boundary checks](design-system/current-rebalance-sections-lab-regressions.spec.ts)
+cover inset header/auction/progress separators, heading hierarchy, 8px inline liquidity/live-timer pairs, compact liquidity
+disclosure/count and full-width expanded tables, keyboard collapse, live/expired
+continuity and light/dark 1400/900/390/320px captures.
+The [workspace contract](../docs/plans/design-system-current-rebalance-workspace.md)
+owns unresolved adoption/copy gates and the retained evidence index.
+
+[Historical table checks](design-system/auctions-history-lab-regressions.spec.ts)
+cover the historical part of `#auctions-browse-review`: full-width desktop
+columns and constrained rows, actual visible-cell width, 896px projection boundary,
+signed/missing/zero metrics, independent lifecycle, loading-height parity,
+empty recovery, static rows without hover/navigation, signed NAV change, dollar
+impact, independent proposer destinations and projection focus transfer.
+It also pins the wider identity column, whole-cell vertical centering, natural
+provenance wrapping and accuracy/NAV help (focus, click, Escape and hit area).
+The [history brief](../docs/plans/design-system-auctions-history-slice.md)
+records source fidelity and the history-only sequencing that preceded the current
+workspace candidate.
+
+The following retained record suites use `#auctions-records-review`.
+[Auction browse-record checks](design-system/auctions-browse-lab-regressions.spec.ts)
+cover snapshot identities, distinct record/proposer destinations, keyboard access,
+independent phase/width/state controls, pending → unavailable → ready metrics,
+list loading, empty and zero-auction outcomes in light/dark at 390/1400px.
+The 512px container transformation and 1280px context-frame boundary are checked
+separately, alongside reduced-motion skeletons. These are frozen lab fixtures:
+live state adapters, routing selection, detail/actions and production metrics
+recovery are not implemented or proven. The [record transfer brief](../docs/plans/design-system-auctions-browse-slice.md)
+owns fixture provenance and retained source-bound evidence.
+The [record hit-target regression](design-system/auctions-record-links-lab-regressions.spec.ts)
+physically clicks date, metric and padding regions, and independently checks the
+proposer destination. Its date target failed before the metadata hit-layer fix.
+The [launcher-wallet preview checks](design-system/auctions-launcher-lab-regressions.spec.ts)
+cover authorized versus ordinary restricted-phase viewers, unchanged countdowns,
+phase/state/width continuity, keyboard toggling and no transaction effects. They
+simulate a role; they do not prove real wallet authorization or launch readiness.
+The [repeated-auction preview checks](design-system/auctions-repeat-lab-regressions.spec.ts)
+cover two auctions already run with the third ready or ongoing, keyboard count
+selection, independent phase/wallet/state/width controls, unchanged history,
+loading-height parity and no transaction effects in both themes at 390/1400px.
+They do not predict a final auction count or derive live rebalance completion.
+The [composition checks](design-system/auctions-composition-lab-regressions.spec.ts)
+cover the 640px reading-width trial, active/history section surfaces, subordinate
+headings, access independent of readiness, a wrapping title/status header and separate round context,
+equal 14px/20px inline labels/values, blocked → ongoing recovery, history-only group omission, loading-height continuity
+and complete inline-fact reflow. Source-bound light/dark captures include repeat, launcher, price failure,
+ongoing, permissionless and unavailable history. The [earlier refinement](../docs/plans/design-system-auctions-composition-refinement.md)
+supersedes the older preparation's viewer-dependent readiness and inline-only
+history composition; actual permissionless preflight remains engineer-owned.
 
 The Holdings width selector additionally exercises Full width, the 836px
 overview estimate and 390px Mobile without resetting tab/condition/sorting.
@@ -374,7 +464,7 @@ search at 320/390/1280px in both themes, including its disabled search state.
 | Discover                    | [general/discover/lifecycle](tests/general/discover/lifecycle.spec.ts), [flows/home-discover](tests/flows/home-discover.spec.ts)                                     | skeleton→rows; search narrow/restore; tab switch; row→overview nav; home hero+featured render                                              | partial       | no                         | —                                                           |
 | Earn                        | [general/earn/render](tests/general/earn/render.spec.ts), [general/earn/tabs](tests/general/earn/tabs.spec.ts)                                                       | DeFi tab empty-state render; index-dtf vote-lock tab render; yield-dtf staking tab render (disconnected empty-state)                       | none          | yes                        | sort, non-empty list, error state                           |
 | Explorer                    | [general/explorer/render](tests/general/explorer/render.spec.ts)                                                                                                     | transactions tab (default) render; governance tab proposals render; one chain returning malformed transactions body doesn't blank the page | none          | no                         | filters, pagination, tokens/collaterals/revenue tabs        |
-| Portfolio                   | [general/portfolio/state-space](tests/general/portfolio/state-space.spec.ts), [general/portfolio/partial-response](tests/general/portfolio/partial-response.spec.ts) | disconnected shows connect prompt; malformed proposal row survives, healthy row still renders                                              | none          | partial (state-space only) | connected-with-holdings render, empty-vs-past-activity-only |
+| Portfolio                   | [general/portfolio/state-space](tests/general/portfolio/state-space.spec.ts), [general/portfolio/partial-response](tests/general/portfolio/partial-response.spec.ts), [owned source](design-system/owned-positions-source-capture.spec.ts) | disconnected prompt; malformed proposal isolation; synthetic owned stake/vote-lock values; held/zero/decode-failed underlying read | none | partial, including held phone source read | account switching and Modify execution; rewards/voting-power/activity interactions; empty-vs-past-activity-only. [Coverage audit](../docs/plans/design-system-portfolio-coverage-review.md) |
 | Tokens                      | [general/tokens/unlisted-partial](tests/general/tokens/unlisted-partial.spec.ts)                                                                                     | one chain returning an rtokens-less bucket doesn't crash the table                                                                         | none          | no                         | plain listed-table render, sort                             |
 | Create (Index/Yield deploy) | —                                                                                                                                                                    | —                                                                                                                                          | —             | —                          | entirely uncovered                                          |
 
@@ -435,8 +525,9 @@ additional state coverage: [boot](tests/smoke/boot.spec.ts) (home shell),
 - Explorer: only 3 of the tab surfaces render-tested (transactions, governance,
   malformed-body edge); tokens/collaterals/revenue tabs, filters, and
   pagination are untested.
-- Portfolio: no connected-with-holdings render test; only disconnected and a
-  malformed-row edge case exist.
+- Portfolio: current stakes/vote-locks now have a separate design-system source
+  capture with synthetic account amounts. No broad connected Portfolio lifecycle,
+  account-switching, rewards/voting-power/activity or Modify write proof is claimed.
 - Mobile: only tagged in `general/`, `index-dtf/`, and `yield-dtf/` render/
   lifecycle specs. The entire `flows/` directory (30 specs — all governance/
   auction/issuance write and edge-case behavior) and all of `smoke/` have zero

@@ -743,7 +743,7 @@ describe('current review', () => {
     expect(CURRENT_REVIEW[0]).toMatchObject({
       target: { kind: 'component', id: 'table' },
       destination:
-        '/internal/design-system/components/table#discover-family-review',
+        '/internal/design-system/components/table#auctions-browse-review',
       type: 'visual decision',
     })
     expect(CURRENT_REVIEW[0].reason).toContain('Transactions remain paused')

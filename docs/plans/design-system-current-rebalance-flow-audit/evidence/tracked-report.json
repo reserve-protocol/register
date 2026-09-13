@@ -1,0 +1,737 @@
+{
+  "config": {
+    "configFile": "/Users/lill-kire/Code/register/docs/plans/design-system-current-rebalance-flow-audit/harness/playwright.tracked.config.ts",
+    "rootDir": "/Users/lill-kire/Code/register/e2e/tests",
+    "forbidOnly": true,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/Users/lill-kire/Code/register/docs/plans/design-system-current-rebalance-flow-audit/evidence/tracked-artifacts",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "smoke",
+        "name": "smoke",
+        "testDir": "/Users/lill-kire/Code/register/e2e/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "/flows\\/auctions\\.spec\\.ts$/",
+          "/flows\\/auctions-multichain\\.spec\\.ts$/",
+          "/index-dtf\\/auctions\\/.*\\.spec\\.ts$/",
+          "/smoke\\/auctions\\.spec\\.ts$/"
+        ],
+        "timeout": 60000
+      },
+      {
+        "outputDir": "/Users/lill-kire/Code/register/docs/plans/design-system-current-rebalance-flow-audit/evidence/tracked-artifacts",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "full",
+        "name": "full",
+        "testDir": "/Users/lill-kire/Code/register/e2e/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "/flows\\/auctions\\.spec\\.ts$/",
+          "/flows\\/auctions-multichain\\.spec\\.ts$/",
+          "/index-dtf\\/auctions\\/.*\\.spec\\.ts$/",
+          "/smoke\\/auctions\\.spec\\.ts$/"
+        ],
+        "timeout": 60000
+      },
+      {
+        "outputDir": "/Users/lill-kire/Code/register/docs/plans/design-system-current-rebalance-flow-audit/evidence/tracked-artifacts",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "mobile",
+        "name": "mobile",
+        "testDir": "/Users/lill-kire/Code/register/e2e/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "/flows\\/auctions\\.spec\\.ts$/",
+          "/flows\\/auctions-multichain\\.spec\\.ts$/",
+          "/index-dtf\\/auctions\\/.*\\.spec\\.ts$/",
+          "/smoke\\/auctions\\.spec\\.ts$/"
+        ],
+        "timeout": 60000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "list",
+        null
+      ],
+      [
+        "json",
+        {
+          "outputFile": "../evidence/tracked-report.json"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.59.1",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "index-dtf/auctions/launch-price-guard.spec.ts",
+      "file": "index-dtf/auctions/launch-price-guard.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "auctions: a {statusCode} price error blocks launch with a visible reason @smoke",
+          "ok": true,
+          "tags": [
+            "smoke"
+          ],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "smoke",
+              "projectName": "smoke",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 10883,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T00:21:48.311Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "1d8cf97230d0b75de21f-2e0a590e075c90778a5a",
+          "file": "index-dtf/auctions/launch-price-guard.spec.ts",
+          "line": 106,
+          "column": 1
+        },
+        {
+          "title": "auctions: a single 0 price in the batch blocks launch with a visible reason @smoke",
+          "ok": true,
+          "tags": [
+            "smoke"
+          ],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "smoke",
+              "projectName": "smoke",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2653,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T00:21:59.544Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "1d8cf97230d0b75de21f-bd976ba37451a5443520",
+          "file": "index-dtf/auctions/launch-price-guard.spec.ts",
+          "line": 122,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "index-dtf/auctions/launch-write.spec.ts",
+      "file": "index-dtf/auctions/launch-write.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "auctions: an auction launcher submits openAuction() to the folio @smoke",
+          "ok": true,
+          "tags": [
+            "smoke"
+          ],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "smoke",
+              "projectName": "smoke",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2830,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T00:22:02.223Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "8d4b8a95f6ff861ed7a6-43d2c86625e4461b705e",
+          "file": "index-dtf/auctions/launch-write.spec.ts",
+          "line": 71,
+          "column": 1
+        },
+        {
+          "title": "auctions: a non-launcher in the permissionless window submits openAuctionUnrestricted() @smoke",
+          "ok": true,
+          "tags": [
+            "smoke"
+          ],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "smoke",
+              "projectName": "smoke",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2720,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T00:22:05.061Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "8d4b8a95f6ff861ed7a6-ebf929d67bbc42e7f310",
+          "file": "index-dtf/auctions/launch-write.spec.ts",
+          "line": 127,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "index-dtf/auctions/lifecycle.spec.ts",
+      "file": "index-dtf/auctions/lifecycle.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "auctions list: skeleton → list @smoke @mobile",
+          "ok": true,
+          "tags": [
+            "smoke",
+            "mobile"
+          ],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "smoke",
+              "projectName": "smoke",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2114,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T00:22:07.794Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "b6af86d7cbb1a6192258-f9e5efad6e26ccf5b9a2",
+          "file": "index-dtf/auctions/lifecycle.spec.ts",
+          "line": 9,
+          "column": 1
+        },
+        {
+          "title": "auctions list: skeleton → list @smoke @mobile",
+          "ok": true,
+          "tags": [
+            "smoke",
+            "mobile"
+          ],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "mobile",
+              "projectName": "mobile",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1726,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T00:22:35.158Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "b6af86d7cbb1a6192258-11bf456d5b2c956b1777",
+          "file": "index-dtf/auctions/lifecycle.spec.ts",
+          "line": 9,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "smoke/auctions.spec.ts",
+      "file": "smoke/auctions.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "auctions list renders idle offline @smoke",
+          "ok": true,
+          "tags": [
+            "smoke"
+          ],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "smoke",
+              "projectName": "smoke",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2359,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T00:22:09.926Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "b2ee16e898b3660d7b7a-6124703d634b25e31cb8",
+          "file": "smoke/auctions.spec.ts",
+          "line": 30,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "flows/auctions-multichain.spec.ts",
+      "file": "flows/auctions-multichain.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "auctions multichain — bsc/cmc20",
+          "file": "flows/auctions-multichain.spec.ts",
+          "line": 96,
+          "column": 8,
+          "specs": [
+            {
+              "title": "historical rebalances render and the active section is empty (idle)",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "full",
+                  "projectName": "full",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 2164,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-09-13T00:22:12.979Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "584a6537d7fb6900834f-1dc6acaa3f3ce8d8eca3",
+              "file": "flows/auctions-multichain.spec.ts",
+              "line": 97,
+              "column": 5
+            },
+            {
+              "title": "an in-window rebalance buckets as an active row",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "full",
+                  "projectName": "full",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 2566,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-09-13T00:22:15.235Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "584a6537d7fb6900834f-e783ff98da84b2cfbc37",
+              "file": "flows/auctions-multichain.spec.ts",
+              "line": 153,
+              "column": 5
+            }
+          ]
+        },
+        {
+          "title": "auctions multichain — mainnet/open",
+          "file": "flows/auctions-multichain.spec.ts",
+          "line": 96,
+          "column": 8,
+          "specs": [
+            {
+              "title": "historical rebalances render and the active section is empty (idle)",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "full",
+                  "projectName": "full",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 2230,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-09-13T00:22:17.808Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "584a6537d7fb6900834f-74cc144abb83886fc268",
+              "file": "flows/auctions-multichain.spec.ts",
+              "line": 97,
+              "column": 5
+            },
+            {
+              "title": "an in-window rebalance buckets as an active row",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "full",
+                  "projectName": "full",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 2767,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-09-13T00:22:20.047Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "584a6537d7fb6900834f-e91915b0bf00db7e3436",
+              "file": "flows/auctions-multichain.spec.ts",
+              "line": 153,
+              "column": 5
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "flows/auctions.spec.ts",
+      "file": "flows/auctions.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "historical rebalances render from snapshot with API metrics",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "full",
+              "projectName": "full",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2148,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T00:22:22.837Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "d38dc9a12b5923fa403e-f5062f3fe1edcc85276e",
+          "file": "flows/auctions.spec.ts",
+          "line": 96,
+          "column": 1
+        },
+        {
+          "title": "an auctions-less rebalance renders 0-auction metrics, not a blank row",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "full",
+              "projectName": "full",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2374,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T00:22:24.994Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "d38dc9a12b5923fa403e-58db22244a21f6017632",
+          "file": "flows/auctions.spec.ts",
+          "line": 158,
+          "column": 1
+        },
+        {
+          "title": "an in-window rebalance renders as an active list row",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "full",
+              "projectName": "full",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2387,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T00:22:27.374Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "d38dc9a12b5923fa403e-8cb6b8297d56852f0cb0",
+          "file": "flows/auctions.spec.ts",
+          "line": 203,
+          "column": 1
+        },
+        {
+          "title": "active rebalance detail renders from an encoded getRebalance()",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "full",
+              "projectName": "full",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2487,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T00:22:29.767Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "d38dc9a12b5923fa403e-16708e3662fb5c5b6597",
+          "file": "flows/auctions.spec.ts",
+          "line": 230,
+          "column": 1
+        },
+        {
+          "title": "expired rebalance detail renders the completed card",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "full",
+              "projectName": "full",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2165,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T00:22:32.262Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "d38dc9a12b5923fa403e-894b14224230035b094d",
+          "file": "flows/auctions.spec.ts",
+          "line": 287,
+          "column": 1
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-09-13T00:21:47.297Z",
+    "duration": 49698.496,
+    "expected": 16,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}

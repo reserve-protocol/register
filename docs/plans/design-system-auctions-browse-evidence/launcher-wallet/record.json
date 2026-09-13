@@ -1,0 +1,112 @@
+{
+  "fixedPoint": "404bcbc414cf54eed988a9e6c95b74fa0c6e7251",
+  "port": 3043,
+  "stats": {
+    "startTime": "2026-09-12T16:53:25.596Z",
+    "duration": 79972.815,
+    "expected": 10,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "records": [
+    {
+      "title": "auction browse states and links light 390",
+      "file": "auctions-browse-lab-regressions.spec.ts",
+      "project": "design-system-review",
+      "attempts": 1,
+      "status": "passed",
+      "sourceDigest": "946b0166bf25f226b7c517a1ee846f79909a5700066c3020635c6ca359fbd4c6"
+    },
+    {
+      "title": "auction browse states and links light 1400",
+      "file": "auctions-browse-lab-regressions.spec.ts",
+      "project": "design-system-review",
+      "attempts": 1,
+      "status": "passed",
+      "sourceDigest": "946b0166bf25f226b7c517a1ee846f79909a5700066c3020635c6ca359fbd4c6"
+    },
+    {
+      "title": "auction browse states and links dark 390",
+      "file": "auctions-browse-lab-regressions.spec.ts",
+      "project": "design-system-review",
+      "attempts": 1,
+      "status": "passed",
+      "sourceDigest": "946b0166bf25f226b7c517a1ee846f79909a5700066c3020635c6ca359fbd4c6"
+    },
+    {
+      "title": "auction browse states and links dark 1400",
+      "file": "auctions-browse-lab-regressions.spec.ts",
+      "project": "design-system-review",
+      "attempts": 1,
+      "status": "passed",
+      "sourceDigest": "946b0166bf25f226b7c517a1ee846f79909a5700066c3020635c6ca359fbd4c6"
+    },
+    {
+      "title": "auction browse container boundaries and reduced motion",
+      "file": "auctions-browse-lab-regressions.spec.ts",
+      "project": "design-system-review",
+      "attempts": 1,
+      "status": "passed",
+      "sourceDigest": "946b0166bf25f226b7c517a1ee846f79909a5700066c3020635c6ca359fbd4c6"
+    },
+    {
+      "title": "auction launcher wallet preview light 390",
+      "file": "auctions-launcher-lab-regressions.spec.ts",
+      "project": "design-system-review",
+      "attempts": 1,
+      "status": "passed",
+      "sourceDigest": "946b0166bf25f226b7c517a1ee846f79909a5700066c3020635c6ca359fbd4c6"
+    },
+    {
+      "title": "auction launcher wallet preview light 1400",
+      "file": "auctions-launcher-lab-regressions.spec.ts",
+      "project": "design-system-review",
+      "attempts": 1,
+      "status": "passed",
+      "sourceDigest": "946b0166bf25f226b7c517a1ee846f79909a5700066c3020635c6ca359fbd4c6"
+    },
+    {
+      "title": "auction launcher wallet preview dark 390",
+      "file": "auctions-launcher-lab-regressions.spec.ts",
+      "project": "design-system-review",
+      "attempts": 1,
+      "status": "passed",
+      "sourceDigest": "946b0166bf25f226b7c517a1ee846f79909a5700066c3020635c6ca359fbd4c6"
+    },
+    {
+      "title": "auction launcher wallet preview dark 1400",
+      "file": "auctions-launcher-lab-regressions.spec.ts",
+      "project": "design-system-review",
+      "attempts": 1,
+      "status": "passed",
+      "sourceDigest": "946b0166bf25f226b7c517a1ee846f79909a5700066c3020635c6ca359fbd4c6"
+    },
+    {
+      "title": "auction browse whole-record hit regions keep provenance independent",
+      "file": "auctions-record-links-lab-regressions.spec.ts",
+      "project": "design-system-review",
+      "attempts": 1,
+      "status": "passed",
+      "sourceDigest": "946b0166bf25f226b7c517a1ee846f79909a5700066c3020635c6ca359fbd4c6"
+    }
+  ],
+  "captures": [
+    {
+      "file": "auction-launcher-wallet-preview-light-390-restricted-launcher.png",
+      "sha256": "55504cc39e0fea95e5397d1e0a0d4ad06877c11239743e8904f9943b7fc2e618"
+    },
+    {
+      "file": "auction-launcher-wallet-preview-light-1400-restricted-launcher.png",
+      "sha256": "d9238841adb5f00595c1b5e1a0d9b9b92e57dd362c49556c1ca4f1392d9fc756"
+    },
+    {
+      "file": "auction-launcher-wallet-preview-dark-390-restricted-launcher.png",
+      "sha256": "29702a213aa17b06017f4e4cb3b15ded8c866e6166812defad824049abec9a0c"
+    },
+    {
+      "file": "auction-launcher-wallet-preview-dark-1400-restricted-launcher.png",
+      "sha256": "e87d0d61c15f985fecd515143720584e9bc222964bab357f0536fed165270bc1"
+    }
+  ]
+}

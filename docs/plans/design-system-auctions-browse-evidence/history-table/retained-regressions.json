@@ -1,0 +1,336 @@
+{
+  "stats": {
+    "startTime": "2026-09-12T23:02:33.273Z",
+    "duration": 154672.83000000002,
+    "expected": 27,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "cases": [
+    {
+      "title": "auction browse states and links light 390",
+      "outcome": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 4735,
+          "errors": [],
+          "source": "NTI4OTk4MDIzNjAxMWQwZjBkNDM3ODcwOTcwNzFlY2QxYjc2OTZhYjA4NmJhZDkyYWU1Y2UyMWUwZDIxZDI4ZA=="
+        }
+      ]
+    },
+    {
+      "title": "auction browse states and links light 1400",
+      "outcome": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 4645,
+          "errors": [],
+          "source": "NTI4OTk4MDIzNjAxMWQwZjBkNDM3ODcwOTcwNzFlY2QxYjc2OTZhYjA4NmJhZDkyYWU1Y2UyMWUwZDIxZDI4ZA=="
+        }
+      ]
+    },
+    {
+      "title": "auction browse states and links dark 390",
+      "outcome": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 6781,
+          "errors": [],
+          "source": "NTI4OTk4MDIzNjAxMWQwZjBkNDM3ODcwOTcwNzFlY2QxYjc2OTZhYjA4NmJhZDkyYWU1Y2UyMWUwZDIxZDI4ZA=="
+        }
+      ]
+    },
+    {
+      "title": "auction browse states and links dark 1400",
+      "outcome": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 8508,
+          "errors": [],
+          "source": "NTI4OTk4MDIzNjAxMWQwZjBkNDM3ODcwOTcwNzFlY2QxYjc2OTZhYjA4NmJhZDkyYWU1Y2UyMWUwZDIxZDI4ZA=="
+        }
+      ]
+    },
+    {
+      "title": "auction browse container boundaries and reduced motion",
+      "outcome": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 6004,
+          "errors": [],
+          "source": "NTI4OTk4MDIzNjAxMWQwZjBkNDM3ODcwOTcwNzFlY2QxYjc2OTZhYjA4NmJhZDkyYWU1Y2UyMWUwZDIxZDI4ZA=="
+        }
+      ]
+    },
+    {
+      "title": "auction composition light 390",
+      "outcome": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 7609,
+          "errors": [],
+          "source": "NTI4OTk4MDIzNjAxMWQwZjBkNDM3ODcwOTcwNzFlY2QxYjc2OTZhYjA4NmJhZDkyYWU1Y2UyMWUwZDIxZDI4ZA=="
+        }
+      ]
+    },
+    {
+      "title": "auction composition light 1400",
+      "outcome": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 9861,
+          "errors": [],
+          "source": "NTI4OTk4MDIzNjAxMWQwZjBkNDM3ODcwOTcwNzFlY2QxYjc2OTZhYjA4NmJhZDkyYWU1Y2UyMWUwZDIxZDI4ZA=="
+        }
+      ]
+    },
+    {
+      "title": "auction composition dark 390",
+      "outcome": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 7449,
+          "errors": [],
+          "source": "NTI4OTk4MDIzNjAxMWQwZjBkNDM3ODcwOTcwNzFlY2QxYjc2OTZhYjA4NmJhZDkyYWU1Y2UyMWUwZDIxZDI4ZA=="
+        }
+      ]
+    },
+    {
+      "title": "auction composition dark 1400",
+      "outcome": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 9439,
+          "errors": [],
+          "source": "NTI4OTk4MDIzNjAxMWQwZjBkNDM3ODcwOTcwNzFlY2QxYjc2OTZhYjA4NmJhZDkyYWU1Y2UyMWUwZDIxZDI4ZA=="
+        }
+      ]
+    },
+    {
+      "title": "auction history table light 390",
+      "outcome": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 6149,
+          "errors": [],
+          "source": "NTI4OTk4MDIzNjAxMWQwZjBkNDM3ODcwOTcwNzFlY2QxYjc2OTZhYjA4NmJhZDkyYWU1Y2UyMWUwZDIxZDI4ZA=="
+        }
+      ]
+    },
+    {
+      "title": "auction history table light 1400",
+      "outcome": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 5463,
+          "errors": [],
+          "source": "NTI4OTk4MDIzNjAxMWQwZjBkNDM3ODcwOTcwNzFlY2QxYjc2OTZhYjA4NmJhZDkyYWU1Y2UyMWUwZDIxZDI4ZA=="
+        }
+      ]
+    },
+    {
+      "title": "auction history table dark 390",
+      "outcome": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 4506,
+          "errors": [],
+          "source": "NTI4OTk4MDIzNjAxMWQwZjBkNDM3ODcwOTcwNzFlY2QxYjc2OTZhYjA4NmJhZDkyYWU1Y2UyMWUwZDIxZDI4ZA=="
+        }
+      ]
+    },
+    {
+      "title": "auction history table dark 1400",
+      "outcome": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 5991,
+          "errors": [],
+          "source": "NTI4OTk4MDIzNjAxMWQwZjBkNDM3ODcwOTcwNzFlY2QxYjc2OTZhYjA4NmJhZDkyYWU1Y2UyMWUwZDIxZDI4ZA=="
+        }
+      ]
+    },
+    {
+      "title": "auction history row links and projection boundary",
+      "outcome": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 4877,
+          "errors": [],
+          "source": "NTI4OTk4MDIzNjAxMWQwZjBkNDM3ODcwOTcwNzFlY2QxYjc2OTZhYjA4NmJhZDkyYWU1Y2UyMWUwZDIxZDI4ZA=="
+        }
+      ]
+    },
+    {
+      "title": "auction launcher wallet preview light 390",
+      "outcome": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 4272,
+          "errors": [],
+          "source": "NTI4OTk4MDIzNjAxMWQwZjBkNDM3ODcwOTcwNzFlY2QxYjc2OTZhYjA4NmJhZDkyYWU1Y2UyMWUwZDIxZDI4ZA=="
+        }
+      ]
+    },
+    {
+      "title": "auction launcher wallet preview light 1400",
+      "outcome": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 4587,
+          "errors": [],
+          "source": "NTI4OTk4MDIzNjAxMWQwZjBkNDM3ODcwOTcwNzFlY2QxYjc2OTZhYjA4NmJhZDkyYWU1Y2UyMWUwZDIxZDI4ZA=="
+        }
+      ]
+    },
+    {
+      "title": "auction launcher wallet preview dark 390",
+      "outcome": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 4162,
+          "errors": [],
+          "source": "NTI4OTk4MDIzNjAxMWQwZjBkNDM3ODcwOTcwNzFlY2QxYjc2OTZhYjA4NmJhZDkyYWU1Y2UyMWUwZDIxZDI4ZA=="
+        }
+      ]
+    },
+    {
+      "title": "auction launcher wallet preview dark 1400",
+      "outcome": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 4222,
+          "errors": [],
+          "source": "NTI4OTk4MDIzNjAxMWQwZjBkNDM3ODcwOTcwNzFlY2QxYjc2OTZhYjA4NmJhZDkyYWU1Y2UyMWUwZDIxZDI4ZA=="
+        }
+      ]
+    },
+    {
+      "title": "auction browse whole-record hit regions keep provenance independent",
+      "outcome": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 4820,
+          "errors": [],
+          "source": "NTI4OTk4MDIzNjAxMWQwZjBkNDM3ODcwOTcwNzFlY2QxYjc2OTZhYjA4NmJhZDkyYWU1Y2UyMWUwZDIxZDI4ZA=="
+        }
+      ]
+    },
+    {
+      "title": "auction repeated runs light 390",
+      "outcome": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 4596,
+          "errors": [],
+          "source": "NTI4OTk4MDIzNjAxMWQwZjBkNDM3ODcwOTcwNzFlY2QxYjc2OTZhYjA4NmJhZDkyYWU1Y2UyMWUwZDIxZDI4ZA=="
+        }
+      ]
+    },
+    {
+      "title": "auction repeated runs light 1400",
+      "outcome": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 4338,
+          "errors": [],
+          "source": "NTI4OTk4MDIzNjAxMWQwZjBkNDM3ODcwOTcwNzFlY2QxYjc2OTZhYjA4NmJhZDkyYWU1Y2UyMWUwZDIxZDI4ZA=="
+        }
+      ]
+    },
+    {
+      "title": "auction repeated runs dark 390",
+      "outcome": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 5208,
+          "errors": [],
+          "source": "NTI4OTk4MDIzNjAxMWQwZjBkNDM3ODcwOTcwNzFlY2QxYjc2OTZhYjA4NmJhZDkyYWU1Y2UyMWUwZDIxZDI4ZA=="
+        }
+      ]
+    },
+    {
+      "title": "auction repeated runs dark 1400",
+      "outcome": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 4646,
+          "errors": [],
+          "source": "NTI4OTk4MDIzNjAxMWQwZjBkNDM3ODcwOTcwNzFlY2QxYjc2OTZhYjA4NmJhZDkyYWU1Y2UyMWUwZDIxZDI4ZA=="
+        }
+      ]
+    },
+    {
+      "title": "table row links light 390",
+      "outcome": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 5455,
+          "errors": [],
+          "source": "NTI4OTk4MDIzNjAxMWQwZjBkNDM3ODcwOTcwNzFlY2QxYjc2OTZhYjA4NmJhZDkyYWU1Y2UyMWUwZDIxZDI4ZA=="
+        }
+      ]
+    },
+    {
+      "title": "table row links light 1400",
+      "outcome": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 4530,
+          "errors": [],
+          "source": "NTI4OTk4MDIzNjAxMWQwZjBkNDM3ODcwOTcwNzFlY2QxYjc2OTZhYjA4NmJhZDkyYWU1Y2UyMWUwZDIxZDI4ZA=="
+        }
+      ]
+    },
+    {
+      "title": "table row links dark 390",
+      "outcome": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 4192,
+          "errors": [],
+          "source": "NTI4OTk4MDIzNjAxMWQwZjBkNDM3ODcwOTcwNzFlY2QxYjc2OTZhYjA4NmJhZDkyYWU1Y2UyMWUwZDIxZDI4ZA=="
+        }
+      ]
+    },
+    {
+      "title": "table row links dark 1400",
+      "outcome": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 6066,
+          "errors": [],
+          "source": "NTI4OTk4MDIzNjAxMWQwZjBkNDM3ODcwOTcwNzFlY2QxYjc2OTZhYjA4NmJhZDkyYWU1Y2UyMWUwZDIxZDI4ZA=="
+        }
+      ]
+    }
+  ]
+}

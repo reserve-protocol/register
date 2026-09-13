@@ -59,8 +59,9 @@ The inset diagnosis measured 32px from the card edge to its title and top row:
 totaling 24px. Removing the gradient exposed this accumulated inset.
 The user authorized the correction: remove the lab card's outer padding so
 header content and Market Cap use a total 24px horizontal inset. Header top and
-footer bottom also use 24px, owned by those regions. The full chart and scrolling
-ticker retain their own edge/fade geometry without a redundant padded shell.
+footer bottom also use 24px, owned by those regions. The full chart retains its
+edge geometry; the scrolling ticker now has a separate 4px horizontal inset
+(September 13) without a redundant padded shell.
 Name/market rhythm, ticker timing and shared Home defaults remain unchanged.
 
 The inspected production visibility hook activates at 85% visibility. Its
@@ -69,6 +70,37 @@ production Discover caller disables that flag. The lab uses the quieter card
 fill for browsing instead of importing the highlighted-card attention effect.
 Keep the actual chart/ticker implementations; do not infer that decorative
 surface parity requires transcript or new viewport state in this composition.
+
+### September 13 — mobile in-view behavior flagged for the next review
+
+The user requires the mobile card's appropriate hover/active presentation to
+activate automatically when clearly in view, rather than depend on unavailable
+hover input. This is recorded now; no behavior changed in this heads-up pass.
+The steady-fill lab preview above is current implementation, not a final mobile
+interaction contract.
+
+The production [visibility hook](../../src/views/home/hooks/use-highlighted-dtf-animation.ts)
+uses an 85% intersection threshold for both ticker visibility and in-view state.
+The [highlighted card](../../src/views/home/components/highlighted-dtfs/feature-card.tsx)
+connects its active surface to that state only when transcripts are enabled;
+the production Discover caller disables transcripts. Preserve the intended
+visual/interaction result without making mobile activation depend on whether
+this card includes a transcript. This is source inspection, not a fresh rendered
+production comparison or a decision to copy every desktop hover style.
+
+Before implementing, compare the rendered production highlight and Discover
+variants on a real touch-width surface. Cover entering/leaving clear view,
+existing ticker speed/timing, reduced motion, long cards that may never reach
+85% visibility, and desktop keyboard/hover behavior. A constrained card inside a
+wide desktop viewport is not itself proof of touch behavior. The separately
+requested 4px ticker-only horizontal inset is implemented; the removed outer
+padding around every region remains absent.
+
+The inset regression first measured 0px on both sides at 390px. After the
+correction, all eight `discover-cards-lab-regressions.spec.ts` cases passed,
+including 4px rendered ticker edges in compact/full, light/dark, long-content
+and loading states. Existing 24px content insets and loading-height parity
+remain checked; the 390px full-chart capture was visually reviewed.
 
 The [surface-trial record](design-system-table-family-evidence/mobile-card-surfaces-2026-09-11/record.json)
 predates the inset correction and retains six selected captures from eight
@@ -89,7 +121,56 @@ match. All six captures and the live 390px compact preview were inspected.
 App/E2E types, scoped lint/format, wiki lint and whitespace checks pass. This
 bounded correction does not rerun or claim production verification.
 
+### September 13 — inline Market Cap typography correction
+
+The lab had paired a 14px/20px supporting label with DiscoverMoney's default
+16px/24px value. The production MarketCapRow already uses matching 14px text.
+Both card layouts now use the existing supporting role on both sides, with a
+20px loading placeholder. DiscoverMoney has a local opt-in text role; ordinary
+price/table cells and shared MetricValue defaults remain unchanged. Formatting,
+values, chart/ticker behavior, card insets and production callers are unchanged.
+
+The computed-style regression failed before the fix with a literal 16px/24px
+value versus the required 14px/20px pair. All eight card browser cases then
+passed with zero skips/flakes, covering both layouts, 320/390/768px, dark mode,
+zero/unavailable and loading-height parity. Full-chart 390px light/dark captures
+were visually inspected. This is a low-radius local correction, self-reviewed
+for intent and typography/geometry, not a new shared typography contract. The
+one-worker browser run used the existing 3005 preview without restarting it;
+its local temporary receipt is `register-discover-inline-report.json`.
+App/E2E typecheck, five Discover unit tests, scoped lint/format, wiki-lint and
+diff checks passed. Scope's medium hint covers the accumulated working tree,
+not this local correction; no broader repository gate or production proof is
+claimed. Existing wallet-library initialization logs remain in unit output.
+
 ## Evidence and human gates
+
+### September 13 — full-chart data density remains pending
+
+The user requires the large chart to show genuine detail appropriate to its
+size; enlarging a sparse sparkline is not sufficient. Source inspection and
+counts of the retained JSON confirm that all six Discover fixture rows have
+31 roughly daily samples over 30 days. Both layouts currently pass that same
+series to the production PerformanceChart, which does not impose this limit.
+Earlier renderer reuse improved presentation, not sampling resolution.
+
+The retained featured-card response has 233–235 daily samples across a longer
+period, not finer sampling over the same month; it was captured from staging.
+Do not substitute that history while retaining a one-month performance label.
+The production-source CMC20 historical-price capture contains 169 roughly
+hourly samples over seven days, and the existing SDK-backed overview history
+hook supports explicit intervals. This establishes a granular data path, not
+verified month-long coverage for every Discover card or an approved list-level
+fetch strategy. No live endpoint or rendered production verification was run
+for this inspection.
+
+Before accepting the full-chart variant, obtain a real, period-matched dense
+fixture and verify its performance basis and endpoints against the displayed
+change. Review it at full size, retaining the compact option for sparse data.
+Do not invent intermediate prices or silently change the period to make the
+line look busier. Shared rendering can remain; data resolution, loading cost
+and unavailable-history behavior need explicit adoption treatment. This pass
+records the requirement only; chart data and runtime behavior are unchanged.
 
 Visible pressure cases: 320/390 widths, light/dark, long names/tags, zero versus
 unavailable, loading → content, inactive, short/empty basket, compact versus

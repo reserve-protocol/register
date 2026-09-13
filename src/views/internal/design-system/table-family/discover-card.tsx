@@ -105,7 +105,7 @@ export const DiscoverCard = memo(function DiscoverCard({
       <div
         data-slot="card-asset-ticker"
         aria-hidden="true"
-        className="motion-reduce:[&_*]:!animate-none group-focus-visible:[&_*]:[animation-play-state:paused]"
+        className="mx-1 motion-reduce:[&_*]:!animate-none group-focus-visible:[&_*]:[animation-play-state:paused]"
       >
         {loading ? (
           <DiscoverCardTickerSkeleton />
@@ -140,14 +140,19 @@ export const DiscoverCard = memo(function DiscoverCard({
       )}
       <div
         className={cn(
-          type.body,
+          type.supporting,
           'flex items-center justify-between gap-4 px-6 pb-6 pt-2'
         )}
       >
         <span className={cn(type.supporting, 'text-supporting-foreground')}>
           Market Cap:
         </span>
-        <DiscoverMoney value={row.marketCap} compact loading={loading} />
+        <DiscoverMoney
+          value={row.marketCap}
+          compact
+          loading={loading}
+          textRole="supporting"
+        />
       </div>
     </>
   )

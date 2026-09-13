@@ -43,60 +43,60 @@ export interface CurrentReviewItem {
 export const CURRENT_REVIEW: CurrentReviewItem[] = [
   {
     target: { kind: 'component', id: 'table' },
-    title: 'Discover browsing rows',
+    title: 'Current rebalance workspace',
     reason:
-      'Review classified identity, the basket hover strip and compact performance trends on wide rows, then compare compact/full-chart mobile cards using the existing Home/Discover chart and ticker. Portfolio and Holdings remain checkpoints. This is not a complete Discover page or approved production replacement. Transactions remain paused.',
+      'Review the full-width current rebalance above the retained history table: preparation, hybrid weights, simulated launch and indexing wait, live bids, repeat rounds and outcomes. Compare wallet roles, data recovery and constrained widths. Lab simulation only; production transactions, copy approval and engineering adoption remain gated. Transactions remain paused as a separate component-family review.',
     destination:
-      '/internal/design-system/components/table#discover-family-review',
+      '/internal/design-system/components/table#auctions-browse-review',
     type: 'visual decision',
     foundationConformance: [
       {
         area: 'spacing',
         status: 'declared-provisional',
         detail:
-          'Wide rows retain 24px insets and a 12px identity gap. Narrow card header and Market Cap content use 24px total edge insets without added shell padding; chart/ticker edges remain region-owned. The 2px secondary surround and seams are contrast-only lab framing, not a saved container preference. TokenStackTrigger retains 24px artwork in a 44px target aligned with the Basket header.',
+          'The current square card owns a 24px axis. At 832px container width, trade planning and operation regions share a 3:2 grid; below it they form one mounted column. Inset separators distinguish general context, the working auction and cumulative results. History retains full-width columns, its 896px projection boundary and whole-cell centering. No reserved detail pane or gray row dividers.',
         verification:
-          'Inspect discover-columns.tsx, narrow/wide captures and the 1151/1152px container boundary; Holdings remains independently scoped.',
+          'Inspect auctions-current/workspace.tsx and the current-rebalance browser suites alongside retained history regressions.',
       },
       {
         area: 'typography',
         status: 'conforms',
         detail:
-          'Table identity names use 16px/500; card names use the 20px/500 panel-title role. Ordinary numeric peers remain 16px/300, supporting text 14px/300. Financial values stay tabular, not monospace; no dense variant. Holdings narrow allocation retains its local neutral 16px/500 emphasis.',
+          'The workspace title is 20px/500 above 16px task headings and 14px metadata. Inline facts reuse the transaction-detail 14px/20px recipe on both sides. Stacked facts use 14px labels and 16px values; fields use 16px entered values. History typography remains unchanged.',
         verification:
-          'Compare Discover cell owners and light/dark long-name and zero/unavailable captures.',
+          'Inspect source-bound long-title phone and desktop captures plus mounted typography checks.',
       },
       {
         area: 'color',
-        status: 'declared-provisional',
+        status: 'conforms',
         detail:
-          'Names, ticker, classifications and contextual basket actions are neutral. Period-qualified return and its companion trend use performance roles; zero is neutral and unavailable supporting. Narrow cards preview a steady card-colored surface without the highlighted-card attention gradient. The secondary surround only provides lab contrast; product container design is undecided.',
+          'Current and history use card-colored structural surfaces; the operation region remains transparent within the same current card. Lifecycle and persistent risk retain canonical roles. Unknown metrics remain unavailable rather than zero. History rows stay static.',
         verification:
-          'Compare zero/unavailable, positive/negative return and basket open/focus states.',
+          'Run both-theme history/link checks and positive-cost, negative-cost, missing and zero display tests.',
       },
       {
         area: 'radius',
         status: 'declared-provisional',
         detail:
-          'Discover list cards trial square outer and media regions at the user’s direction; the accepted Home media-card 8px radius is unchanged. Canonical logos, status pills and buttons retain their owning radii.',
+          'Structural records stay square. Canonical Select, Switch and LifecycleStatusPill keep their own geometry; the current 28px lifecycle-pill sizing trial remains unaccepted.',
         verification:
-          'Inspect the full-width table composition, not its lab controls.',
+          'Compare both themes and narrow captures without overriding shared component defaults.',
       },
       {
         area: 'motion',
-        status: 'declared-provisional',
+        status: 'conforms',
         detail:
-          'The desktop basket strip preserves its 72px/second cruise and 1.2-second ramp. Cards reuse the production ticker’s 18-second cycle and visibility behavior, pausing on keyboard focus. Card charts and tickers honor reduced motion; loading reserves content geometry, and unavailable series are not invented.',
+          'The lab clock is opt-in; operation transitions simulate wallet, receipt and indexing independently. Canonical disclosures and skeletons retain reduced-motion behavior. Width changes preserve the same task, draft and bid selection.',
         verification:
-          'Run discover-motion-lab-regressions for strip movement/manual access and discover-cards-lab-regressions for ticker loading recovery, focus pause and reduced motion; inspect both themes.',
+          'Inspect canonical Skeleton reuse and check responsive focus transfer in the history browser suite.',
       },
       {
         area: 'component-dependencies',
         status: 'declared-provisional',
         detail:
-          'DataTable owns sorting across its opt-in alternative renderer; only one presentation mounts. Cards reuse the production chart and ticker in a lab-local wrapper. TokenStackTrigger and the positioned horizontal strip remain separate wide-row candidates. Search, production pagination/adoption, bridge-dialog design and rich records remain outside this slice; shared defaults are unchanged.',
+          'Reuses Button, Field/TextInput, Collapsible, InlineMessage, LifecycleStatusPill, Link and the transaction inline-fact recipe. React Hook Form and Zod validate the local weight draft. The guard uses Dialog; the workspace does not. Chart, state simulation and fixture arithmetic are local, not new shared defaults.',
         verification:
-          'Run Discover plus Holdings/Portfolio regression seams and types. Consult the Discover transfer brief and retained source/candidate evidence before reuse.',
+          'See design-system-current-rebalance-workspace.md and its source-bound evidence. No wallet request, real transaction or production adoption is claimed.',
       },
     ],
   },

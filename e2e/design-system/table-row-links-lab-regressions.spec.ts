@@ -127,6 +127,9 @@ for (const theme of ['light', 'dark'])
           .first()
         await expect(bridge).toHaveCSS('text-decoration-line', 'underline')
 
+        await page.goto(
+          '/internal/design-system/components/table#auctions-records-review'
+        )
         for (const [kind, row] of [
           ['governance', page.getByTestId('rich-record').first()],
           ['rebalance', page.getByTestId('rebalance-list-record').nth(1)],
@@ -143,16 +146,19 @@ for (const theme of ['light', 'dark'])
           await capture(`${kind}-hover`)
           await page.mouse.move(0, 0)
           await page.keyboard.press('Tab')
-          await row.focus()
+          const rowLink =
+            kind === 'rebalance'
+              ? row.getByTestId('rebalance-record-link')
+              : row
+          await rowLink.focus()
           expect(
             await row.evaluate((el) => getComputedStyle(el).boxShadow)
           ).toContain('2px')
-          await expect(row).toHaveAttribute('href', /.+/)
+          await expect(rowLink).toHaveAttribute('href', /.+/)
         }
-        const selected = page.locator(
-          '[data-testid="rebalance-list-record"][data-selected="true"]'
-        )
-        await expect(selected).toHaveAttribute('aria-current', 'true')
+        await expect(
+          page.getByTestId('rebalance-browse-list').locator('[aria-current]')
+        ).toHaveCount(0)
         expect(txLog).toHaveLength(0)
       } finally {
         guard.close()

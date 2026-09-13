@@ -1,0 +1,13 @@
+[sentry-vite-plugin] Info: Sending telemetry data on issues and performance to Sentry. To disable telemetry, set `options.telemetry` to `false`.
+
+ RUN  v3.2.4 /Users/lill-kire/Code/register
+
+ ✓ src/views/internal/design-system/auctions-browse/tests/record.test.tsx (5 tests) 120ms
+ ✓ src/views/internal/design-system/tests/component-catalog.test.ts (33 tests) 46ms
+ ✓ src/views/internal/design-system/auctions-browse/tests/model.test.ts (14 tests) 17ms
+
+ Test Files  3 passed (3)
+      Tests  52 passed (52)
+   Start at  23:19:40
+   Duration  2.46s (transform 193ms, setup 189ms, collect 719ms, tests 184ms, environment 821ms, prepare 102ms)
+

@@ -1,0 +1,257 @@
+{
+  "fixedPoint": "404bcbc414cf54eed988a9e6c95b74fa0c6e7251",
+  "port": 3043,
+  "stats": {
+    "startTime": "2026-09-12T14:25:07.349Z",
+    "duration": 86168.02100000001,
+    "expected": 12,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "errors": [],
+  "records": [
+    {
+      "title": "renders the source-grounded rich record review",
+      "file": "lab.spec.ts",
+      "project": "design-system-desktop",
+      "attempts": 1,
+      "status": "passed",
+      "sourceDigest": null
+    },
+    {
+      "title": "renders the source-grounded rich record review",
+      "file": "lab.spec.ts",
+      "project": "design-system-mobile",
+      "attempts": 1,
+      "status": "passed",
+      "sourceDigest": null
+    },
+    {
+      "title": "auction browse states and links light 390",
+      "file": "auctions-browse-lab-regressions.spec.ts",
+      "project": "design-system-review",
+      "attempts": 1,
+      "status": "passed",
+      "sourceDigest": "872ac7d9db9463eda250ce03b3702baf1759f52de8be3fe70426c57f442a7262"
+    },
+    {
+      "title": "auction browse states and links light 1400",
+      "file": "auctions-browse-lab-regressions.spec.ts",
+      "project": "design-system-review",
+      "attempts": 1,
+      "status": "passed",
+      "sourceDigest": "872ac7d9db9463eda250ce03b3702baf1759f52de8be3fe70426c57f442a7262"
+    },
+    {
+      "title": "auction browse states and links dark 390",
+      "file": "auctions-browse-lab-regressions.spec.ts",
+      "project": "design-system-review",
+      "attempts": 1,
+      "status": "passed",
+      "sourceDigest": "872ac7d9db9463eda250ce03b3702baf1759f52de8be3fe70426c57f442a7262"
+    },
+    {
+      "title": "auction browse states and links dark 1400",
+      "file": "auctions-browse-lab-regressions.spec.ts",
+      "project": "design-system-review",
+      "attempts": 1,
+      "status": "passed",
+      "sourceDigest": "872ac7d9db9463eda250ce03b3702baf1759f52de8be3fe70426c57f442a7262"
+    },
+    {
+      "title": "auction browse container boundaries and reduced motion",
+      "file": "auctions-browse-lab-regressions.spec.ts",
+      "project": "design-system-review",
+      "attempts": 1,
+      "status": "passed",
+      "sourceDigest": "872ac7d9db9463eda250ce03b3702baf1759f52de8be3fe70426c57f442a7262"
+    },
+    {
+      "title": "auction browse whole-record hit regions keep provenance independent",
+      "file": "auctions-record-links-lab-regressions.spec.ts",
+      "project": "design-system-review",
+      "attempts": 1,
+      "status": "passed",
+      "sourceDigest": "872ac7d9db9463eda250ce03b3702baf1759f52de8be3fe70426c57f442a7262"
+    },
+    {
+      "title": "table row links light 390",
+      "file": "table-row-links-lab-regressions.spec.ts",
+      "project": "design-system-review",
+      "attempts": 1,
+      "status": "passed",
+      "sourceDigest": "872ac7d9db9463eda250ce03b3702baf1759f52de8be3fe70426c57f442a7262"
+    },
+    {
+      "title": "table row links light 1400",
+      "file": "table-row-links-lab-regressions.spec.ts",
+      "project": "design-system-review",
+      "attempts": 1,
+      "status": "passed",
+      "sourceDigest": "872ac7d9db9463eda250ce03b3702baf1759f52de8be3fe70426c57f442a7262"
+    },
+    {
+      "title": "table row links dark 390",
+      "file": "table-row-links-lab-regressions.spec.ts",
+      "project": "design-system-review",
+      "attempts": 1,
+      "status": "passed",
+      "sourceDigest": "872ac7d9db9463eda250ce03b3702baf1759f52de8be3fe70426c57f442a7262"
+    },
+    {
+      "title": "table row links dark 1400",
+      "file": "table-row-links-lab-regressions.spec.ts",
+      "project": "design-system-review",
+      "attempts": 1,
+      "status": "passed",
+      "sourceDigest": "872ac7d9db9463eda250ce03b3702baf1759f52de8be3fe70426c57f442a7262"
+    }
+  ],
+  "captures": [
+    {
+      "title": "auction browse states and links light 390",
+      "state": "default",
+      "file": "auction-browse-states-and-links-light-390-default.png",
+      "sha256": "550fedcb26bf906d2ed648422ec29556477c6227014017d29bd2545075063aa5"
+    },
+    {
+      "title": "auction browse states and links light 390",
+      "state": "list-loading",
+      "file": "auction-browse-states-and-links-light-390-list-loading.png",
+      "sha256": "7b8cbcc21508db0d49dcd7ba5e317c5e4dee439beecc39973748b67ca0d208f4"
+    },
+    {
+      "title": "auction browse states and links light 390",
+      "state": "unavailable",
+      "file": "auction-browse-states-and-links-light-390-unavailable.png",
+      "sha256": "80985edaf569a29080d16ae4bf345f5ccaa67c171bd35144c2920aa9c8990bd5"
+    },
+    {
+      "title": "auction browse states and links light 390",
+      "state": "ongoing",
+      "file": "auction-browse-states-and-links-light-390-ongoing.png",
+      "sha256": "a3e9d681cb6e73f06813d1f54dc660d9f8150f66f35cb668dd0c3c87f3ea7c55"
+    },
+    {
+      "title": "auction browse states and links light 390",
+      "state": "zero",
+      "file": "auction-browse-states-and-links-light-390-zero.png",
+      "sha256": "ae601908c01cf64229dce8ed9f73c9efba2710eaf50fa7f01da2e606eb5039e7"
+    },
+    {
+      "title": "auction browse states and links light 390",
+      "state": "phone-long-unavailable",
+      "file": "auction-browse-states-and-links-light-390-phone-long-unavailable.png",
+      "sha256": "f06dbcfebab15c075d06cd9325f920e1ab75a9c8bbcd5fb2a4eb01c9fadb0698"
+    },
+    {
+      "title": "auction browse states and links light 1400",
+      "state": "default",
+      "file": "auction-browse-states-and-links-light-1400-default.png",
+      "sha256": "2dd7942a2701251f6ecf730b76c309149de0abad2383dd882df9474b2924d89b"
+    },
+    {
+      "title": "auction browse states and links light 1400",
+      "state": "list-loading",
+      "file": "auction-browse-states-and-links-light-1400-list-loading.png",
+      "sha256": "39e375a59b8d8ff74035a60d62254b7e9e082356c724737778a88effab6e154f"
+    },
+    {
+      "title": "auction browse states and links light 1400",
+      "state": "unavailable",
+      "file": "auction-browse-states-and-links-light-1400-unavailable.png",
+      "sha256": "2a79c5b721d6e31596b4ab0190976216f97f1fad0f3e4a4145d45690f8295887"
+    },
+    {
+      "title": "auction browse states and links light 1400",
+      "state": "ongoing",
+      "file": "auction-browse-states-and-links-light-1400-ongoing.png",
+      "sha256": "bef11febc879504c332053ecc3ed4fe3a7c4354fa9389312bb758ae454a4826a"
+    },
+    {
+      "title": "auction browse states and links light 1400",
+      "state": "zero",
+      "file": "auction-browse-states-and-links-light-1400-zero.png",
+      "sha256": "13c2b6d109f531ffbe65b6f8c9116891e23e5c7309ca1dd943c15fc22e7e9872"
+    },
+    {
+      "title": "auction browse states and links light 1400",
+      "state": "phone-long-unavailable",
+      "file": "auction-browse-states-and-links-light-1400-phone-long-unavailable.png",
+      "sha256": "d41135491a6384c6eae50b1feb731046c0c891f62f87ab79e8f5fe197484b953"
+    },
+    {
+      "title": "auction browse states and links dark 390",
+      "state": "default",
+      "file": "auction-browse-states-and-links-dark-390-default.png",
+      "sha256": "23be54fbd3e565043cbc4afdef9a6ed9bb9c5c1d26b7410537916108ae3b7207"
+    },
+    {
+      "title": "auction browse states and links dark 390",
+      "state": "list-loading",
+      "file": "auction-browse-states-and-links-dark-390-list-loading.png",
+      "sha256": "10886aa3ead61ffddd833c89045781450b776b3afea5faa2b9282862870ec567"
+    },
+    {
+      "title": "auction browse states and links dark 390",
+      "state": "unavailable",
+      "file": "auction-browse-states-and-links-dark-390-unavailable.png",
+      "sha256": "e459b5a3cdd24a50ffc07fa5f4baf42f03ef5c918d8f99fdbbda6f9a9cd22b0a"
+    },
+    {
+      "title": "auction browse states and links dark 390",
+      "state": "ongoing",
+      "file": "auction-browse-states-and-links-dark-390-ongoing.png",
+      "sha256": "334af000a2001a3e81bec7afa6461f8d9b91fbb44c98060aa1d739084c953595"
+    },
+    {
+      "title": "auction browse states and links dark 390",
+      "state": "zero",
+      "file": "auction-browse-states-and-links-dark-390-zero.png",
+      "sha256": "fe2117edf8d7af171809841e0ce3d115b678adf92e222c3a203ea1cef92a7883"
+    },
+    {
+      "title": "auction browse states and links dark 390",
+      "state": "phone-long-unavailable",
+      "file": "auction-browse-states-and-links-dark-390-phone-long-unavailable.png",
+      "sha256": "4f83f11a6d1ecccdfea28b83f3efdc19924f5a75b6aadedb926c9427728c26e4"
+    },
+    {
+      "title": "auction browse states and links dark 1400",
+      "state": "default",
+      "file": "auction-browse-states-and-links-dark-1400-default.png",
+      "sha256": "ac93570478237c88b9de9ed2af92cf2a773fa05b4bff535a5468a8847d539fd5"
+    },
+    {
+      "title": "auction browse states and links dark 1400",
+      "state": "list-loading",
+      "file": "auction-browse-states-and-links-dark-1400-list-loading.png",
+      "sha256": "d1ac6df693777e1ac532c65d928c8b8ce09101c373dee537147645cd972d87c1"
+    },
+    {
+      "title": "auction browse states and links dark 1400",
+      "state": "unavailable",
+      "file": "auction-browse-states-and-links-dark-1400-unavailable.png",
+      "sha256": "2989ebf16ba5a384cbaf653a58de009ecd2b3c144215ee0eb868484a103ac2ef"
+    },
+    {
+      "title": "auction browse states and links dark 1400",
+      "state": "ongoing",
+      "file": "auction-browse-states-and-links-dark-1400-ongoing.png",
+      "sha256": "e10c0f8b9943decdb1b4a60b04d112d877cc995e394db56d763a7ebaed912dd9"
+    },
+    {
+      "title": "auction browse states and links dark 1400",
+      "state": "zero",
+      "file": "auction-browse-states-and-links-dark-1400-zero.png",
+      "sha256": "72f10daa42d939fa3bb8be1b2afbecac0f9829fd618f86f1ce6dc406185602fa"
+    },
+    {
+      "title": "auction browse states and links dark 1400",
+      "state": "phone-long-unavailable",
+      "file": "auction-browse-states-and-links-dark-1400-phone-long-unavailable.png",
+      "sha256": "fa619ccef657f444eedf5e8b4e88f002fcdc01e49944ae2b4a83b60cedb952a5"
+    }
+  ]
+}
