@@ -1,0 +1,555 @@
+{
+  "config": {
+    "configFile": "/Users/lill-kire/Code/register/playwright.design-system.config.ts",
+    "rootDir": "/Users/lill-kire/Code/register/e2e/design-system",
+    "forbidOnly": true,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/Users/lill-kire/Code/register/test-results/design-system/artifacts",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "design-system-desktop",
+        "name": "design-system-desktop",
+        "testDir": "/Users/lill-kire/Code/register/e2e/design-system",
+        "testIgnore": [
+          "/(?:source-capture|lab-regressions)\\.spec\\.ts/"
+        ],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 90000
+      },
+      {
+        "outputDir": "/Users/lill-kire/Code/register/test-results/design-system/artifacts",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "design-system-mobile",
+        "name": "design-system-mobile",
+        "testDir": "/Users/lill-kire/Code/register/e2e/design-system",
+        "testIgnore": [
+          "/(?:source-capture|lab-regressions)\\.spec\\.ts/"
+        ],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 90000
+      },
+      {
+        "outputDir": "/Users/lill-kire/Code/register/test-results/design-system/artifacts",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "design-system-phone",
+        "name": "design-system-phone",
+        "testDir": "/Users/lill-kire/Code/register/e2e/design-system",
+        "testIgnore": [
+          "/(?:source-capture|lab-regressions)\\.spec\\.ts/"
+        ],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 90000
+      },
+      {
+        "outputDir": "/Users/lill-kire/Code/register/test-results/design-system/artifacts",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "design-system-review",
+        "name": "design-system-review",
+        "testDir": "/Users/lill-kire/Code/register/e2e/design-system",
+        "testIgnore": [],
+        "testMatch": [
+          "/(?:source-capture|lab-regressions)\\.spec\\.ts/"
+        ],
+        "timeout": 90000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "list",
+        null
+      ],
+      [
+        "json",
+        {
+          "outputFile": "test-results/design-system/report.json"
+        }
+      ],
+      [
+        "html",
+        {
+          "outputFolder": "playwright-report/design-system",
+          "open": "never"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "none",
+    "updateSourceMethod": "patch",
+    "version": "1.59.1",
+    "workers": 1,
+    "webServer": {
+      "command": "pnpm exec vite --host 127.0.0.1 --port 3022 --strictPort",
+      "url": "http://127.0.0.1:3022",
+      "reuseExistingServer": false,
+      "timeout": 120000,
+      "env": {
+        "VITE_E2E": "true",
+        "VITE_WALLETCONNECT_ID": "test-project",
+        "VITE_STAGING_API": "",
+        "VITE_USE_STAGING": "",
+        "VITE_MAINNET_URL": "",
+        "VITE_INFURA": "",
+        "VITE_ALCHEMY": "",
+        "VITE_ANKR": ""
+      }
+    }
+  },
+  "suites": [
+    {
+      "title": "current-rebalance-assets-lab-regressions.spec.ts",
+      "file": "current-rebalance-assets-lab-regressions.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "auction asset stacks retain every asset light 1400",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "design-system-review",
+              "projectName": "design-system-review",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 14055,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T18:00:26.605Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "assets-light-1400-repeat",
+                      "contentType": "image/png",
+                      "path": "attachments/2f1eceb1dc4915f5b63979b7ca4240642a2a743cc5c3b220b4957af658b46707.png"
+                    },
+                    {
+                      "name": "assets-light-1400-remove",
+                      "contentType": "image/png",
+                      "path": "attachments/e0110b6b58373981f4fbafd5c5bb934edf7e1195f29addbd417c799ecd2b28c1.png"
+                    },
+                    {
+                      "name": "current-source",
+                      "contentType": "application/json",
+                      "path": "attachments/1ccb30a1b6e48d524b70f6b0ca8c31f899efe64979165cb06c9eb26a01b855a4.json"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "16f33b496cfeeafbbf63-a1ba3124e0b83f463bb2",
+          "file": "current-rebalance-assets-lab-regressions.spec.ts",
+          "line": 10,
+          "column": 5
+        },
+        {
+          "title": "auction asset stacks retain every asset light 900",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "design-system-review",
+              "projectName": "design-system-review",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3741,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T18:00:40.795Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "assets-light-900-repeat",
+                      "contentType": "image/png",
+                      "path": "attachments/c691b8fc23c05c29ebfb0cf1e9581e1a80067965b695c672dbc5da4330f3b22a.png"
+                    },
+                    {
+                      "name": "assets-light-900-remove",
+                      "contentType": "image/png",
+                      "path": "attachments/a1d57f810c990982eda9e96222f597f62eb1bdecdc01974a175fa4336c980de1.png"
+                    },
+                    {
+                      "name": "current-source",
+                      "contentType": "application/json",
+                      "path": "attachments/1ccb30a1b6e48d524b70f6b0ca8c31f899efe64979165cb06c9eb26a01b855a4.json"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "16f33b496cfeeafbbf63-f88a244fe8d9f8b381de",
+          "file": "current-rebalance-assets-lab-regressions.spec.ts",
+          "line": 10,
+          "column": 5
+        },
+        {
+          "title": "auction asset stacks retain every asset light 390",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "design-system-review",
+              "projectName": "design-system-review",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3796,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T18:00:44.542Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "assets-light-390-repeat",
+                      "contentType": "image/png",
+                      "path": "attachments/e9eed55260aa37e5c6b16d1f221b9798d2296aea1582e613d648d578a9508a4b.png"
+                    },
+                    {
+                      "name": "assets-light-390-remove",
+                      "contentType": "image/png",
+                      "path": "attachments/e27ec3574f30708301af53849365ea9dce984596b1988a0f62eeb2b3117e6436.png"
+                    },
+                    {
+                      "name": "current-source",
+                      "contentType": "application/json",
+                      "path": "attachments/1ccb30a1b6e48d524b70f6b0ca8c31f899efe64979165cb06c9eb26a01b855a4.json"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "16f33b496cfeeafbbf63-bae7789fb43daf7e1787",
+          "file": "current-rebalance-assets-lab-regressions.spec.ts",
+          "line": 10,
+          "column": 5
+        },
+        {
+          "title": "auction asset stacks retain every asset light 320",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "design-system-review",
+              "projectName": "design-system-review",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3701,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T18:00:48.344Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "assets-light-320-repeat",
+                      "contentType": "image/png",
+                      "path": "attachments/f153134b801039e1d32a033f52e4b78dc281b08d01901d3c170be571cb601f67.png"
+                    },
+                    {
+                      "name": "assets-light-320-remove",
+                      "contentType": "image/png",
+                      "path": "attachments/3c4a17a474c490c8576e096b97348cb40e8dd2a9bfb6b726a0d65d09c9e9f7f2.png"
+                    },
+                    {
+                      "name": "current-source",
+                      "contentType": "application/json",
+                      "path": "attachments/1ccb30a1b6e48d524b70f6b0ca8c31f899efe64979165cb06c9eb26a01b855a4.json"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "16f33b496cfeeafbbf63-6a9985c434d645dfe2b5",
+          "file": "current-rebalance-assets-lab-regressions.spec.ts",
+          "line": 10,
+          "column": 5
+        },
+        {
+          "title": "auction asset stacks retain every asset dark 1400",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "design-system-review",
+              "projectName": "design-system-review",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3681,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T18:00:52.050Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "assets-dark-1400-repeat",
+                      "contentType": "image/png",
+                      "path": "attachments/190b744a6698083f8becea3b487800b71eb78505167bc9875b3461e451c67c53.png"
+                    },
+                    {
+                      "name": "assets-dark-1400-remove",
+                      "contentType": "image/png",
+                      "path": "attachments/fa6ef27e11094418a0790c8b34019fb109593a5ce402edddaaf325326222c84d.png"
+                    },
+                    {
+                      "name": "current-source",
+                      "contentType": "application/json",
+                      "path": "attachments/1ccb30a1b6e48d524b70f6b0ca8c31f899efe64979165cb06c9eb26a01b855a4.json"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "16f33b496cfeeafbbf63-b2d4bc5e0caa96b6af78",
+          "file": "current-rebalance-assets-lab-regressions.spec.ts",
+          "line": 10,
+          "column": 5
+        },
+        {
+          "title": "auction asset stacks retain every asset dark 900",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "design-system-review",
+              "projectName": "design-system-review",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3758,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T18:00:55.737Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "assets-dark-900-repeat",
+                      "contentType": "image/png",
+                      "path": "attachments/98850dfcd95fbb826b6ef456345de871baa7f2e8635d6b1241716c5132a3737d.png"
+                    },
+                    {
+                      "name": "assets-dark-900-remove",
+                      "contentType": "image/png",
+                      "path": "attachments/1d4947c3d48939b8d616921069ce863d8d90bc349433bf9aef074cef86f3e8a3.png"
+                    },
+                    {
+                      "name": "current-source",
+                      "contentType": "application/json",
+                      "path": "attachments/1ccb30a1b6e48d524b70f6b0ca8c31f899efe64979165cb06c9eb26a01b855a4.json"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "16f33b496cfeeafbbf63-faaa64a2c2c2a70207b3",
+          "file": "current-rebalance-assets-lab-regressions.spec.ts",
+          "line": 10,
+          "column": 5
+        },
+        {
+          "title": "auction asset stacks retain every asset dark 390",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "design-system-review",
+              "projectName": "design-system-review",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3744,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T18:00:59.501Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "assets-dark-390-repeat",
+                      "contentType": "image/png",
+                      "path": "attachments/c0b2a08377ca22b5477ed2bcfa887b004046161622a2a00eb46b0b6d67c6b788.png"
+                    },
+                    {
+                      "name": "assets-dark-390-remove",
+                      "contentType": "image/png",
+                      "path": "attachments/eb0992f8fcb376e0bfa1166ae67d0f01dd34536093dc6c338525175ac239c130.png"
+                    },
+                    {
+                      "name": "current-source",
+                      "contentType": "application/json",
+                      "path": "attachments/1ccb30a1b6e48d524b70f6b0ca8c31f899efe64979165cb06c9eb26a01b855a4.json"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "16f33b496cfeeafbbf63-bdc04fbdc8c6fa4274f0",
+          "file": "current-rebalance-assets-lab-regressions.spec.ts",
+          "line": 10,
+          "column": 5
+        },
+        {
+          "title": "auction asset stacks retain every asset dark 320",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "design-system-review",
+              "projectName": "design-system-review",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3736,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T18:01:03.250Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "assets-dark-320-repeat",
+                      "contentType": "image/png",
+                      "path": "attachments/a82a0a47b86617ff5c1983076428f432d344906486e1346e944b5a089d451e99.png"
+                    },
+                    {
+                      "name": "assets-dark-320-remove",
+                      "contentType": "image/png",
+                      "path": "attachments/4faa2c1abf593715edd0d915642287ce45fb5c5ca9379cf37263a449bbb554b7.png"
+                    },
+                    {
+                      "name": "current-source",
+                      "contentType": "application/json",
+                      "path": "attachments/1ccb30a1b6e48d524b70f6b0ca8c31f899efe64979165cb06c9eb26a01b855a4.json"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "16f33b496cfeeafbbf63-6809687c114a7a0e2c06",
+          "file": "current-rebalance-assets-lab-regressions.spec.ts",
+          "line": 10,
+          "column": 5
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-09-13T18:00:24.844Z",
+    "duration": 42211.911,
+    "expected": 8,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}

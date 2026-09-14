@@ -1,6 +1,6 @@
 import type { Dispatch } from 'react'
 import { ChevronDown } from 'lucide-react'
-import { Button, InlineAction } from '@/components/button'
+import { Button } from '@/components/button'
 import { Link } from '@/components/design-system-v1/link'
 import {
   Popover,
@@ -17,25 +17,34 @@ import { cn } from '@/lib/utils'
 import { Fact } from './facts'
 import type { SourceRecord } from './fixtures'
 import type { WorkspaceState, WorkspaceEvent } from './model'
+import { timeRemaining } from './model'
 
-export function RebalanceInspection({ record }: { record: SourceRecord }) {
+export function RebalanceInspection({
+  record,
+  state,
+}: {
+  record: SourceRecord
+  state: WorkspaceState
+}) {
   const explorer =
     record.chainId === 56 ? 'https://bscscan.com' : 'https://basescan.org'
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <InlineAction
-          treatment="contextual"
+        <Button
+          tone="secondary"
           data-testid="current-inspect"
           aria-label="Rebalance information"
-          className={cn(type.supporting, 'group min-h-11 before:inset-0')}
+          className="group"
+          trailingIcon={
+            <ChevronDown
+              aria-hidden
+              className="size-4 shrink-0 transition-transform duration-120 group-data-[state=open]:rotate-180 motion-reduce:transition-none"
+            />
+          }
         >
           Details
-          <ChevronDown
-            aria-hidden
-            className="size-4 shrink-0 transition-transform duration-120 group-data-[state=open]:rotate-180 motion-reduce:transition-none"
-          />
-        </InlineAction>
+        </Button>
       </PopoverTrigger>
       <PopoverContent
         data-testid="current-rebalance-information"
@@ -58,6 +67,13 @@ export function RebalanceInspection({ record }: { record: SourceRecord }) {
               )}
             </time>
           </Fact>
+          {state.now < record.identity.restrictedUntil &&
+            record.identity.restrictedUntil <
+              record.identity.availableUntil && (
+              <Fact label="Permissionless in">
+                {timeRemaining(record.identity.restrictedUntil - state.now)}
+              </Fact>
+            )}
           <Fact label="DTF">
             <Link
               href={`${explorer}/address/${record.address}`}

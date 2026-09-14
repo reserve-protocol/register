@@ -47,79 +47,116 @@ export function CurrentProgress({
   state: WorkspaceState
   data: DataState
 }) {
-  const known = data === 'ready'
-  const started =
-    state.runs > 0 || state.stage === 'live' || state.stage === 'finished'
+  const initial =
+    state.runs === 0 && state.stage === 'preparing' && !state.traded
   return (
     <section
       data-testid="current-progress"
-      className="min-w-0 space-y-4"
+      data-initial={initial || undefined}
+      className={cn(
+        'min-w-0',
+        initial ? 'flex flex-wrap items-center gap-x-8 gap-y-4' : 'space-y-4'
+      )}
       aria-label="Rebalance so far"
     >
-      <h4 className={type.itemTitle}>Rebalance so far</h4>
-      <dl className="grid grid-cols-1 gap-x-8 gap-y-3 [@container(min-width:32rem)]:grid-cols-2 [@container(min-width:64rem)]:grid-cols-4">
-        <Fact label="Execution progress">
-          <CurrentValue data={data}>{state.progress}%</CurrentValue>
-        </Fact>
-        <Fact label="Auctions completed">
-          <span data-testid="current-completed-auctions">{state.runs}</span>
-        </Fact>
-        <Fact label="Total traded so far">
-          <CurrentValue data={data}>
-            {state.traded ? usdFromCents(state.traded) : '$0'}
-          </CurrentValue>
-        </Fact>
-        <Fact label="Current basket deviation">
-          <CurrentValue data={data}>
-            {state.progress === 100
-              ? '0%'
-              : state.progress
-                ? '−3.6%'
-                : '−10.39%'}
-          </CurrentValue>
-        </Fact>
-      </dl>
-      {started &&
-        (data === 'pending' ? (
-          <Skeleton className="h-1 w-full" />
+      <h4 className={cn(type.label, 'text-muted-foreground')}>
+        Rebalance so far
+      </h4>
+      <dl
+        className={
+          initial
+            ? 'flex min-w-0 flex-wrap gap-x-8 gap-y-3'
+            : 'grid grid-cols-1 gap-x-8 gap-y-4 [@container(min-width:32rem)]:grid-cols-2 [@container(min-width:64rem)]:grid-cols-4'
+        }
+      >
+        {initial ? (
+          <>
+            <Fact label="Auctions completed" inline>
+              <span data-testid="current-completed-auctions">0</span>
+            </Fact>
+            <Fact label="Current basket deviation" inline>
+              <CurrentValue data={data}>−10.39%</CurrentValue>
+            </Fact>
+          </>
         ) : (
-          <svg
-            data-testid="current-progress-rail"
-            role="img"
-            aria-label={
-              known
-                ? `Execution progress ${state.progress}%`
-                : 'Execution progress unavailable'
-            }
-            viewBox="0 0 100 4"
-            preserveAspectRatio="none"
-            className="h-1 w-full"
-          >
-            <rect width="100" height="4" className="fill-secondary" />
-            {known && (
-              <rect
-                width={state.progress}
-                height="4"
-                className="fill-primary"
-              />
-            )}
-          </svg>
-        ))}
+          <CumulativeFacts state={state} data={data} />
+        )}
+      </dl>
     </section>
+  )
+}
+
+export function CumulativeFacts({
+  state,
+  data,
+  stacked = false,
+}: {
+  state: WorkspaceState
+  data: DataState
+  stacked?: boolean
+}) {
+  return (
+    <>
+      <div data-testid="current-execution-fact" className="min-w-0">
+        <SummaryFact label="Execution progress" stacked={stacked}>
+          <CurrentValue data={data}>{state.progress}%</CurrentValue>
+        </SummaryFact>
+      </div>
+      <SummaryFact label="Current basket deviation" stacked={stacked}>
+        <CurrentValue data={data}>
+          {state.progress === 100 ? '0%' : state.progress ? '−3.6%' : '−10.39%'}
+        </CurrentValue>
+      </SummaryFact>
+      <SummaryFact label="Auctions completed" stacked={stacked}>
+        <span data-testid="current-completed-auctions">{state.runs}</span>
+      </SummaryFact>
+      <SummaryFact label="Total traded so far" stacked={stacked}>
+        <CurrentValue data={data}>
+          {state.traded ? usdFromCents(state.traded) : '$0'}
+        </CurrentValue>
+      </SummaryFact>
+    </>
+  )
+}
+
+function SummaryFact({
+  label,
+  children,
+  stacked,
+}: {
+  label: ReactNode
+  children: ReactNode
+  stacked: boolean
+}) {
+  if (stacked) return <StackedFact label={label}>{children}</StackedFact>
+  return (
+    <div className="flex min-w-0 flex-wrap items-center justify-between gap-x-4 gap-y-1 self-start [@container(min-width:64rem)]:flex-col [@container(min-width:64rem)]:items-start [@container(min-width:64rem)]:justify-start">
+      <dt className={cn(type.supporting, 'text-muted-foreground')}>{label}</dt>
+      <dd
+        className={cn(
+          type.label,
+          'ml-auto text-right [@container(min-width:64rem)]:ml-0 [@container(min-width:64rem)]:text-left [@container(min-width:64rem)]:text-base [@container(min-width:64rem)]:font-light [@container(min-width:64rem)]:leading-6'
+        )}
+      >
+        {children}
+      </dd>
+    </div>
   )
 }
 
 export function StackedFact({
   label,
   children,
+  prominent = false,
 }: {
   label: ReactNode
   children: ReactNode
+  prominent?: boolean
 }) {
   return (
     <div className="flex min-w-0 flex-col gap-1">
       <dt className={cn(type.supporting, 'text-muted-foreground')}>{label}</dt>
-      <dd className={type.body}>{children}</dd>
+      <dd className={prominent ? type.sectionTitle : type.body}>{children}</dd>
     </div>
   )
 }

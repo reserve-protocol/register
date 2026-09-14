@@ -1,0 +1,101 @@
+{
+  "date": "2026-09-14",
+  "scope": "Low/domain: opt-in static Overview launch annotation; production defaults, Home interaction and financial data unchanged",
+  "sourceDigest": "d75fe0f9391c7be265cc5ee89b07c029fe7df6b35aaee33b9004450880c63dc0",
+  "sourceRechecked": true,
+  "sourceAttachments": 7,
+  "stats": {
+    "startTime": "2026-09-14T16:02:53.420Z",
+    "duration": 53054.991,
+    "expected": 7,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "tests": [
+    {
+      "title": "launch marker is a compact noninteractive annotation",
+      "status": "expected"
+    },
+    {
+      "title": "source frames follow V1 surfaces and Home card spacing",
+      "status": "expected"
+    },
+    {
+      "title": "source chart review preserves real geometry and axis context",
+      "status": "expected"
+    },
+    {
+      "title": "source inspection changes only the readout, not the chart geometry",
+      "status": "expected"
+    },
+    {
+      "title": "chart first review light",
+      "status": "expected"
+    },
+    {
+      "title": "chart first review dark",
+      "status": "expected"
+    },
+    {
+      "title": "source Overview holds the actual selected sample on first touch",
+      "status": "expected"
+    }
+  ],
+  "productionCompatibility": {
+    "startTime": "2026-09-14T16:03:09.043Z",
+    "duration": 33577.938,
+    "expected": 6,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "checks": {
+    "red": "Mounted callout was a 10px pill; V1 annotation regression expected 12px",
+    "units": "43/43",
+    "typecheck": "pass",
+    "scopedLint": "pass",
+    "review": "Self-review; light desktop, phone and dark constrained renders inspected",
+    "remaining": "Production adoption requires engineer review of translations and edge-of-domain launch positions; not certified by this fixture"
+  },
+  "files": [
+    {
+      "path": "src/views/index-dtf/overview/components/charts/price-chart-launch-marker.tsx",
+      "sha256": "a0f4396ac6809816ed1085d9d36494961ba142e34440d94da2b88ba15f8cd278"
+    },
+    {
+      "path": "src/views/index-dtf/overview/components/charts/price-chart-body.tsx",
+      "sha256": "1219807d66b69383dcfdae5abfd5eb3290f8817c6f397a7b40ecc6f4b73f7eee"
+    },
+    {
+      "path": "src/views/internal/design-system/charts/source-overview.tsx",
+      "sha256": "a0f0d200434166b6e52dd01416f6768a9b3edd6de27ec2ab476d7b4d82ef1e29"
+    },
+    {
+      "path": "src/views/internal/design-system/charts/review.tsx",
+      "sha256": "3fe78a6c0ec1bd0dd83da7d09da675e7f828943f99641e717edea110f1d08809"
+    },
+    {
+      "path": "e2e/design-system/chart-review-lab-regressions.spec.ts",
+      "sha256": "2798a04cf28d09d5f5e522d5042910baab99ed7c2950cb4e67462a9a60227742"
+    },
+    {
+      "path": "src/views/index-dtf/overview/CLAUDE.md",
+      "sha256": "93c36f0585337a26bc794a3abe8456af71c2f461a0839e19ad45918770b5f2da"
+    }
+  ],
+  "evidence": [
+    {
+      "path": "charts-light-1400.png",
+      "sha256": "8f2e15b09726f2ce578948142095f6402a7207fc4e8708291b1dc166c8d4060d"
+    },
+    {
+      "path": "charts-light-320.png",
+      "sha256": "5aea5c4403fc4bc6ce2123e58b9db4368e4c4f24e93db27d2eec62835d36a82e"
+    },
+    {
+      "path": "charts-constrained-dark.png",
+      "sha256": "b26ac37c927d1bb48d4987b2313ca80a16302b974c012352881ca015730071bf"
+    }
+  ]
+}

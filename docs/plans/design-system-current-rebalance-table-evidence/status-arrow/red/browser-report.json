@@ -1,0 +1,399 @@
+{
+  "config": {
+    "configFile": "/Users/lill-kire/Code/register/playwright.design-system.config.ts",
+    "rootDir": "/Users/lill-kire/Code/register/e2e/design-system",
+    "forbidOnly": true,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/Users/lill-kire/Code/register/test-results/design-system/artifacts",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "design-system-desktop",
+        "name": "design-system-desktop",
+        "testDir": "/Users/lill-kire/Code/register/e2e/design-system",
+        "testIgnore": [
+          "/(?:source-capture|lab-regressions)\\.spec\\.ts/"
+        ],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 90000
+      },
+      {
+        "outputDir": "/Users/lill-kire/Code/register/test-results/design-system/artifacts",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "design-system-mobile",
+        "name": "design-system-mobile",
+        "testDir": "/Users/lill-kire/Code/register/e2e/design-system",
+        "testIgnore": [
+          "/(?:source-capture|lab-regressions)\\.spec\\.ts/"
+        ],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 90000
+      },
+      {
+        "outputDir": "/Users/lill-kire/Code/register/test-results/design-system/artifacts",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "design-system-phone",
+        "name": "design-system-phone",
+        "testDir": "/Users/lill-kire/Code/register/e2e/design-system",
+        "testIgnore": [
+          "/(?:source-capture|lab-regressions)\\.spec\\.ts/"
+        ],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 90000
+      },
+      {
+        "outputDir": "/Users/lill-kire/Code/register/test-results/design-system/artifacts",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "design-system-review",
+        "name": "design-system-review",
+        "testDir": "/Users/lill-kire/Code/register/e2e/design-system",
+        "testIgnore": [],
+        "testMatch": [
+          "/(?:source-capture|lab-regressions)\\.spec\\.ts/"
+        ],
+        "timeout": 90000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "list",
+        null
+      ],
+      [
+        "json",
+        {
+          "outputFile": "test-results/design-system/report.json"
+        }
+      ],
+      [
+        "html",
+        {
+          "outputFolder": "playwright-report/design-system",
+          "open": "never"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "none",
+    "updateSourceMethod": "patch",
+    "version": "1.59.1",
+    "workers": 1,
+    "webServer": {
+      "command": "pnpm exec vite --host 127.0.0.1 --port 3022 --strictPort",
+      "url": "http://127.0.0.1:3022",
+      "reuseExistingServer": false,
+      "timeout": 120000,
+      "env": {
+        "VITE_E2E": "true",
+        "VITE_WALLETCONNECT_ID": "test-project",
+        "VITE_STAGING_API": "",
+        "VITE_USE_STAGING": "",
+        "VITE_MAINNET_URL": "",
+        "VITE_INFURA": "",
+        "VITE_ALCHEMY": "",
+        "VITE_ANKR": ""
+      }
+    }
+  },
+  "suites": [
+    {
+      "title": "auctions-table-constrained-lab-regressions.spec.ts",
+      "file": "auctions-table-constrained-lab-regressions.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "auction tables constrained composition light",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "design-system-review",
+              "projectName": "design-system-review",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 15132,
+                  "error": {
+                    "message": "Error: arrow pairs with status, with an auction-row fallback below 352px\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeLessThanOrEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: <= \u001b[32m1\u001b[39m\nReceived:    \u001b[31m54\u001b[39m",
+                    "stack": "Error: arrow pairs with status, with an auction-row fallback below 352px\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeLessThanOrEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: <= \u001b[32m1\u001b[39m\nReceived:    \u001b[31m54\u001b[39m\n    at /Users/lill-kire/Code/register/e2e/design-system/auctions-table-constrained-lab-regressions.spec.ts:50:12",
+                    "location": {
+                      "file": "/Users/lill-kire/Code/register/e2e/design-system/auctions-table-constrained-lab-regressions.spec.ts",
+                      "column": 12,
+                      "line": 50
+                    },
+                    "snippet": "  48 |             'arrow pairs with status, with an auction-row fallback below 352px'\n  49 |           )\n> 50 |           .toBeLessThanOrEqual(1)\n     |            ^\n  51 |         const expiry = current.getByTestId('current-table-expiry')\n  52 |         await expect(expiry).toHaveText(/Rebalance expires in/)\n  53 |         const valueBox = (await expiry"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/Users/lill-kire/Code/register/e2e/design-system/auctions-table-constrained-lab-regressions.spec.ts",
+                        "column": 12,
+                        "line": 50
+                      },
+                      "message": "Error: arrow pairs with status, with an auction-row fallback below 352px\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeLessThanOrEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: <= \u001b[32m1\u001b[39m\nReceived:    \u001b[31m54\u001b[39m\n\n  48 |             'arrow pairs with status, with an auction-row fallback below 352px'\n  49 |           )\n> 50 |           .toBeLessThanOrEqual(1)\n     |            ^\n  51 |         const expiry = current.getByTestId('current-table-expiry')\n  52 |         await expect(expiry).toHaveText(/Rebalance expires in/)\n  53 |         const valueBox = (await expiry\n    at /Users/lill-kire/Code/register/e2e/design-system/auctions-table-constrained-lab-regressions.spec.ts:50:12"
+                    },
+                    {
+                      "location": {
+                        "file": "/Users/lill-kire/Code/register/e2e/design-system/auctions-table-constrained-lab-regressions.spec.ts",
+                        "column": 10,
+                        "line": 71
+                      },
+                      "message": "Error: status and auction must not collide at 390\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m\n\n  69 |           `status and auction must not collide at ${width}`\n  70 |         )\n> 71 |         .toBe(true)\n     |          ^\n  72 |       const textLines = await status\n  73 |         .getByTestId('lifecycle-status-pill')\n  74 |         .evaluate((el) => {\n    at /Users/lill-kire/Code/register/e2e/design-system/auctions-table-constrained-lab-regressions.spec.ts:71:10"
+                    },
+                    {
+                      "location": {
+                        "file": "/Users/lill-kire/Code/register/e2e/design-system/auctions-table-constrained-lab-regressions.spec.ts",
+                        "column": 10,
+                        "line": 71
+                      },
+                      "message": "Error: status and auction must not collide at 320\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m\n\n  69 |           `status and auction must not collide at ${width}`\n  70 |         )\n> 71 |         .toBe(true)\n     |          ^\n  72 |       const textLines = await status\n  73 |         .getByTestId('lifecycle-status-pill')\n  74 |         .evaluate((el) => {\n    at /Users/lill-kire/Code/register/e2e/design-system/auctions-table-constrained-lab-regressions.spec.ts:71:10"
+                    },
+                    {
+                      "location": {
+                        "file": "/Users/lill-kire/Code/register/e2e/design-system/auctions-table-constrained-lab-regressions.spec.ts",
+                        "column": 10,
+                        "line": 71
+                      },
+                      "message": "Error: status and auction must not collide at 383\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m\n\n  69 |           `status and auction must not collide at ${width}`\n  70 |         )\n> 71 |         .toBe(true)\n     |          ^\n  72 |       const textLines = await status\n  73 |         .getByTestId('lifecycle-status-pill')\n  74 |         .evaluate((el) => {\n    at /Users/lill-kire/Code/register/e2e/design-system/auctions-table-constrained-lab-regressions.spec.ts:71:10"
+                    },
+                    {
+                      "location": {
+                        "file": "/Users/lill-kire/Code/register/e2e/design-system/auctions-table-constrained-lab-regressions.spec.ts",
+                        "column": 12,
+                        "line": 50
+                      },
+                      "message": "Error: arrow pairs with status, with an auction-row fallback below 352px\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeLessThanOrEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: <= \u001b[32m1\u001b[39m\nReceived:    \u001b[31m54\u001b[39m\n\n  48 |             'arrow pairs with status, with an auction-row fallback below 352px'\n  49 |           )\n> 50 |           .toBeLessThanOrEqual(1)\n     |            ^\n  51 |         const expiry = current.getByTestId('current-table-expiry')\n  52 |         await expect(expiry).toHaveText(/Rebalance expires in/)\n  53 |         const valueBox = (await expiry\n    at /Users/lill-kire/Code/register/e2e/design-system/auctions-table-constrained-lab-regressions.spec.ts:50:12"
+                    },
+                    {
+                      "location": {
+                        "file": "/Users/lill-kire/Code/register/e2e/design-system/auctions-table-constrained-lab-regressions.spec.ts",
+                        "column": 10,
+                        "line": 71
+                      },
+                      "message": "Error: status and auction must not collide at 384\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m\n\n  69 |           `status and auction must not collide at ${width}`\n  70 |         )\n> 71 |         .toBe(true)\n     |          ^\n  72 |       const textLines = await status\n  73 |         .getByTestId('lifecycle-status-pill')\n  74 |         .evaluate((el) => {\n    at /Users/lill-kire/Code/register/e2e/design-system/auctions-table-constrained-lab-regressions.spec.ts:71:10"
+                    },
+                    {
+                      "location": {
+                        "file": "/Users/lill-kire/Code/register/e2e/design-system/auctions-table-constrained-lab-regressions.spec.ts",
+                        "column": 12,
+                        "line": 50
+                      },
+                      "message": "Error: arrow pairs with status, with an auction-row fallback below 352px\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeLessThanOrEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: <= \u001b[32m1\u001b[39m\nReceived:    \u001b[31m54\u001b[39m\n\n  48 |             'arrow pairs with status, with an auction-row fallback below 352px'\n  49 |           )\n> 50 |           .toBeLessThanOrEqual(1)\n     |            ^\n  51 |         const expiry = current.getByTestId('current-table-expiry')\n  52 |         await expect(expiry).toHaveText(/Rebalance expires in/)\n  53 |         const valueBox = (await expiry\n    at /Users/lill-kire/Code/register/e2e/design-system/auctions-table-constrained-lab-regressions.spec.ts:50:12"
+                    },
+                    {
+                      "location": {
+                        "file": "/Users/lill-kire/Code/register/e2e/design-system/auctions-table-constrained-lab-regressions.spec.ts",
+                        "column": 10,
+                        "line": 71
+                      },
+                      "message": "Error: status and auction must not collide at 430\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m\n\n  69 |           `status and auction must not collide at ${width}`\n  70 |         )\n> 71 |         .toBe(true)\n     |          ^\n  72 |       const textLines = await status\n  73 |         .getByTestId('lifecycle-status-pill')\n  74 |         .evaluate((el) => {\n    at /Users/lill-kire/Code/register/e2e/design-system/auctions-table-constrained-lab-regressions.spec.ts:71:10"
+                    },
+                    {
+                      "location": {
+                        "file": "/Users/lill-kire/Code/register/e2e/design-system/auctions-table-constrained-lab-regressions.spec.ts",
+                        "column": 12,
+                        "line": 50
+                      },
+                      "message": "Error: arrow pairs with status, with an auction-row fallback below 352px\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeLessThanOrEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: <= \u001b[32m1\u001b[39m\nReceived:    \u001b[31m10\u001b[39m\n\n  48 |             'arrow pairs with status, with an auction-row fallback below 352px'\n  49 |           )\n> 50 |           .toBeLessThanOrEqual(1)\n     |            ^\n  51 |         const expiry = current.getByTestId('current-table-expiry')\n  52 |         await expect(expiry).toHaveText(/Rebalance expires in/)\n  53 |         const valueBox = (await expiry\n    at /Users/lill-kire/Code/register/e2e/design-system/auctions-table-constrained-lab-regressions.spec.ts:50:12"
+                    },
+                    {
+                      "location": {
+                        "file": "/Users/lill-kire/Code/register/e2e/design-system/auctions-table-constrained-lab-regressions.spec.ts",
+                        "column": 12,
+                        "line": 50
+                      },
+                      "message": "Error: arrow pairs with status, with an auction-row fallback below 352px\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeLessThanOrEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: <= \u001b[32m1\u001b[39m\nReceived:    \u001b[31m10\u001b[39m\n\n  48 |             'arrow pairs with status, with an auction-row fallback below 352px'\n  49 |           )\n> 50 |           .toBeLessThanOrEqual(1)\n     |            ^\n  51 |         const expiry = current.getByTestId('current-table-expiry')\n  52 |         await expect(expiry).toHaveText(/Rebalance expires in/)\n  53 |         const valueBox = (await expiry\n    at /Users/lill-kire/Code/register/e2e/design-system/auctions-table-constrained-lab-regressions.spec.ts:50:12"
+                    },
+                    {
+                      "location": {
+                        "file": "/Users/lill-kire/Code/register/e2e/design-system/auctions-table-constrained-lab-regressions.spec.ts",
+                        "column": 8,
+                        "line": 126
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeGreaterThan\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: > \u001b[32m221\u001b[39m\nReceived:   \u001b[31m177\u001b[39m\n\n  124 |     expect\n  125 |       .soft((await status.boundingBox())!.y)\n> 126 |       .toBeGreaterThan((await round.boundingBox())!.y)\n      |        ^\n  127 |     await page.getByTestId('history-preview-state').click()\n  128 |     await page.getByTestId('history-state-unavailable').click()\n  129 |     await currentCapture(\n    at /Users/lill-kire/Code/register/e2e/design-system/auctions-table-constrained-lab-regressions.spec.ts:126:8"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-14T01:50:34.892Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "current-light-390",
+                      "contentType": "image/png",
+                      "path": "../../../design-system-review-checkpoint-evidence-2026-09-13/attachments/d5df761d4a76548845a2e0c459422040f028e41dda395d4c26f37cc6b7dc5a4b.png"
+                    },
+                    {
+                      "name": "history-light-390",
+                      "contentType": "image/png",
+                      "path": "../../../design-system-review-checkpoint-evidence-2026-09-13/attachments/edb4f65fa67dfd9f2615d35c5d0a5c4f40993ce21974b6081a287201bc46dea0.png"
+                    },
+                    {
+                      "name": "current-light-320",
+                      "contentType": "image/png",
+                      "path": "../../../design-system-review-checkpoint-evidence-2026-09-13/attachments/346ac1141e8694abad911bd5fc66954e84b7040b38a8e910d025cf993a25c51a.png"
+                    },
+                    {
+                      "name": "history-light-320",
+                      "contentType": "image/png",
+                      "path": "../../../design-system-review-checkpoint-evidence-2026-09-13/attachments/c9c1433247fafff5e019dcc797855eecddaf69c81c0ac90f813d1855fee878eb.png"
+                    },
+                    {
+                      "name": "current-light-383",
+                      "contentType": "image/png",
+                      "path": "../../../design-system-review-checkpoint-evidence-2026-09-13/attachments/8f67a7f653c8a9ebebe3c9c24d0467d86b8de6bbf9600cac471b18ad403f924c.png"
+                    },
+                    {
+                      "name": "history-light-383",
+                      "contentType": "image/png",
+                      "path": "../../../design-system-review-checkpoint-evidence-2026-09-13/attachments/df63f3dcefdc2066f2dbf68526c73918cc7b68da415814980a226628d31717c0.png"
+                    },
+                    {
+                      "name": "current-light-384",
+                      "contentType": "image/png",
+                      "path": "../../../design-system-review-checkpoint-evidence-2026-09-13/attachments/435ce5564d7b4c1b81108a318f682333480793f15530feb7e235742deb08765e.png"
+                    },
+                    {
+                      "name": "history-light-384",
+                      "contentType": "image/png",
+                      "path": "../../../design-system-review-checkpoint-evidence-2026-09-13/attachments/4b635ad6724ad5af2de4ebca9ca193da7ac9b4141cbad86c3be10d0617607fbf.png"
+                    },
+                    {
+                      "name": "current-light-430",
+                      "contentType": "image/png",
+                      "path": "../../../design-system-review-checkpoint-evidence-2026-09-13/attachments/5f65ddf14589e85910b8f1e7cb873bb0be78b6b871365a0734e7694846d4bcc0.png"
+                    },
+                    {
+                      "name": "history-light-430",
+                      "contentType": "image/png",
+                      "path": "../../../design-system-review-checkpoint-evidence-2026-09-13/attachments/dd91c101774f84ca6d8409a555a1cbb886ce8c94250daadfe15368b11007f711.png"
+                    },
+                    {
+                      "name": "current-light-608",
+                      "contentType": "image/png",
+                      "path": "../../../design-system-review-checkpoint-evidence-2026-09-13/attachments/0bc4d20809408cb65f54cc221f2ff63124aa4560fc922453b9911eeb25d44382.png"
+                    },
+                    {
+                      "name": "history-light-608",
+                      "contentType": "image/png",
+                      "path": "../../../design-system-review-checkpoint-evidence-2026-09-13/attachments/820bc21a1b3ccda77c31060c7f38e3a426d7c75c00c43c1ef69f47d10ac3e817.png"
+                    },
+                    {
+                      "name": "current-light-768",
+                      "contentType": "image/png",
+                      "path": "../../../design-system-review-checkpoint-evidence-2026-09-13/attachments/09b8d21dc00337b056e1a1198a1a904aebfa4c42fd1980366b41200bf1a3adb3.png"
+                    },
+                    {
+                      "name": "history-light-768",
+                      "contentType": "image/png",
+                      "path": "../../../design-system-review-checkpoint-evidence-2026-09-13/attachments/771337a899a6a4577386db8e744be9a5d5fd516016756b7c1aece5c19b45f470.png"
+                    },
+                    {
+                      "name": "current-light-1072",
+                      "contentType": "image/png",
+                      "path": "../../../design-system-review-checkpoint-evidence-2026-09-13/attachments/9749edc68ba9e85969bd2d9027b63aadbf4542659356d919e71fd88964df098c.png"
+                    },
+                    {
+                      "name": "history-light-1072",
+                      "contentType": "image/png",
+                      "path": "../../../design-system-review-checkpoint-evidence-2026-09-13/attachments/27a73b44ad160b0ac6a8711901de6ce6e41d4ed92b295f7d1ce3598adb9e152b.png"
+                    },
+                    {
+                      "name": "current-light-column-390",
+                      "contentType": "image/png",
+                      "path": "../../../design-system-review-checkpoint-evidence-2026-09-13/attachments/11a840636a5372e939995cec8cb2128d10c4531083a06efee45a089dccb197e7.png"
+                    },
+                    {
+                      "name": "history-light-long-title-column-390",
+                      "contentType": "image/png",
+                      "path": "../../../design-system-review-checkpoint-evidence-2026-09-13/attachments/58ecdf5fb235a818647be1cb8beece5c19d38c21e9ff67b8a4ef282c89d7aba8.png"
+                    },
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "/Users/lill-kire/Code/register/test-results/design-system/artifacts/auctions-table-constrained-1e123-nstrained-composition-light-design-system-review/test-failed-1.png"
+                    },
+                    {
+                      "name": "current-source",
+                      "contentType": "application/json",
+                      "path": "../../../design-system-review-checkpoint-evidence-2026-09-13/attachments/3cdfe298e75591c875a18e9b402f3519200fefd7422ae2a73ef3f7233cd0dcba.json"
+                    },
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/Users/lill-kire/Code/register/test-results/design-system/artifacts/auctions-table-constrained-1e123-nstrained-composition-light-design-system-review/error-context.md"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "/Users/lill-kire/Code/register/e2e/design-system/auctions-table-constrained-lab-regressions.spec.ts",
+                    "column": 12,
+                    "line": 50
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "1ae2d4c1a6f3866812db-7fb0e45bab45d0e01fa0",
+          "file": "auctions-table-constrained-lab-regressions.spec.ts",
+          "line": 7,
+          "column": 3
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-09-14T01:50:32.107Z",
+    "duration": 18238.904,
+    "expected": 0,
+    "skipped": 0,
+    "unexpected": 1,
+    "flaky": 0
+  }
+}

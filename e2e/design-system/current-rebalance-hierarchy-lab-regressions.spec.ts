@@ -17,7 +17,7 @@ for (const width of [1400, 900, 390, 320]) {
     const current = page.getByTestId('current-rebalance-workspace')
     const auction = current.getByTestId('current-auction')
     await expect(auction.getByTestId('current-auction-heading')).toHaveText(
-      'Auction 2'
+      'Auction 2 · Precision rebalancing'
     )
     await expect(auction.getByTestId('current-assets')).toBeVisible()
     await expect(auction.getByTestId('current-launch')).toHaveText(
@@ -29,21 +29,24 @@ for (const width of [1400, 900, 390, 320]) {
       'Auctions completed'
     )
     await expect(current.getByTestId('current-progress')).not.toContainText(
-      'Next auction target'
+      'Execution target'
     )
     const geometry = await current.evaluate((el) => {
       const bounds = (id: string) =>
         el.querySelector(`[data-testid="${id}"]`)!.getBoundingClientRect()
       const auction = bounds('current-auction')
       const assets = bounds('current-assets')
+      const plan = bounds('current-auction-plan')
       const operation = bounds('current-operation')
       const progress = bounds('current-progress')
       return {
         auctionBottom: auction.bottom,
         progressTop: progress.top,
-        assetsTop: assets.top,
+        planTop: plan.top,
         assetsBottom: assets.bottom,
         operationTop: operation.top,
+        operationBottom: operation.bottom,
+        workingBottom: bounds('current-working-grid').bottom,
         assetsWidth: assets.width,
         operationWidth: operation.width,
         operationFill: getComputedStyle(
@@ -57,8 +60,9 @@ for (const width of [1400, 900, 390, 320]) {
     expect(geometry.overflow).toBeLessThanOrEqual(1)
     if (width >= 880) {
       expect(
-        Math.abs(geometry.assetsTop - geometry.operationTop)
+        Math.abs(geometry.workingBottom - geometry.operationBottom)
       ).toBeLessThanOrEqual(1)
+      expect(geometry.operationTop).toBeGreaterThanOrEqual(geometry.planTop)
       expect(
         geometry.assetsWidth / geometry.operationWidth
       ).toBeLessThanOrEqual(1.7)
@@ -73,11 +77,35 @@ for (const width of [1400, 900, 390, 320]) {
     await expect(references).not.toContainText('Duration')
     await expect(references).not.toContainText('Expected Price Volatility')
     await page.keyboard.press('Escape')
+    await currentSelect(page, 'viewer', 'member')
+    if (width >= 880) {
+      const bottomGap = await current.evaluate((el) => {
+        const bottom = (id: string) =>
+          el.querySelector(`[data-testid="${id}"]`)!.getBoundingClientRect()
+            .bottom
+        return bottom('current-working-grid') - bottom('current-operation')
+      })
+      expect(Math.abs(bottomGap)).toBeLessThanOrEqual(1)
+    }
+    await currentCapture(
+      page,
+      current,
+      info,
+      `hierarchy-${width}-member-bottom`
+    )
     await currentSelect(page, 'scene', 'live')
     await expect(auction.getByTestId('current-activity')).toBeVisible()
     await expect(auction.getByTestId('current-bid-1')).toBeVisible()
     await expect(auction.getByTestId('current-end-time')).toBeVisible()
     await expect(auction.getByTestId('current-launch')).toHaveCount(0)
+    if (width >= 880) {
+      const topGap = await current.evaluate((el) => {
+        const top = (id: string) =>
+          el.querySelector(`[data-testid="${id}"]`)!.getBoundingClientRect().top
+        return top('current-operation') - top('current-auction-plan')
+      })
+      expect(Math.abs(topGap)).toBeLessThanOrEqual(1)
+    }
     expect(txLog).toHaveLength(0)
   })
 
@@ -95,6 +123,16 @@ for (const width of [1400, 900, 390, 320]) {
     await expect(tables).toHaveCount(2)
     await expect(tables.first().locator('thead th')).toHaveCount(4)
     await expect(tables.first().locator('tbody tr')).toHaveCount(9)
+    expect(
+      await tables.locator('tr').evaluateAll((rows) => [
+        ...new Set(
+          rows.flatMap((row) => {
+            const style = getComputedStyle(row)
+            return [style.borderTopWidth, style.borderBottomWidth]
+          })
+        ),
+      ])
+    ).toEqual(['0px'])
     const logo = tables
       .first()
       .locator('tbody tr')
@@ -160,14 +198,27 @@ test('completion keeps one auction count and natural metric spacing', async ({
   await expect
     .soft(result.getByTestId('current-result-auctions'))
     .toHaveCount(0)
-  const gap = await result.evaluate((el) => {
-    const metric = el.querySelector(':scope > dl > div')!
-    const label = metric.querySelector('dt > span')!.getBoundingClientRect()
-    return (
-      metric.querySelector('dd')!.getBoundingClientRect().top - label.bottom
+  const gaps = await result.evaluate((el) =>
+    Array.from(
+      el.querySelectorAll(
+        '[data-testid^="current-outcome-"] > div:first-child > dt'
+      )
+    ).map(
+      (label) =>
+        label.nextElementSibling!.getBoundingClientRect().top -
+        label.getBoundingClientRect().bottom
     )
-  })
-  expect(gap).toBeLessThanOrEqual(8)
+  )
+  expect(gaps).toHaveLength(2)
+  expect(Math.min(...gaps)).toBeGreaterThanOrEqual(0)
+  expect(Math.max(...gaps)).toBeLessThanOrEqual(8)
+  await expect(result.locator('dt')).toHaveCount(7)
+  const inline = result.getByTestId('current-inline-fact')
+  await expect(inline).toHaveCount(5)
+  for (const pair of await inline.all()) {
+    await expect(pair.locator('dt')).toHaveCSS('font-size', '14px')
+    await expect(pair.locator('dd')).toHaveCSS('font-size', '14px')
+  }
   await currentCapture(page, result, info, 'hierarchy-complete')
 })
 

@@ -1,5 +1,7 @@
-import type { Dispatch, ReactNode } from 'react'
+import { useId, type Dispatch, type ReactNode } from 'react'
+import { Trans } from '@lingui/react/macro'
 import { Button } from '@/components/button'
+import { HelpTooltip } from '@/components/design-system-v1/help-tooltip'
 import {
   InlineMessage,
   InlineMessageTitle,
@@ -7,13 +9,9 @@ import {
 import { v1Typography as type } from '@/components/design-system-v1/typography'
 import { cn } from '@/lib/utils'
 import { Fact, CurrentValue } from './facts'
-import {
-  mayLaunch,
-  timeRemaining,
-  type WorkspaceEvent,
-  type WorkspaceState,
-} from './model'
+import { mayLaunch, type WorkspaceEvent, type WorkspaceState } from './model'
 import type { DataState, SourceRecord, Viewer, Outcome } from './fixtures'
+import { AuctionSizeWarning } from './messages'
 
 export function CurrentOperation({
   state,
@@ -27,6 +25,7 @@ export function CurrentOperation({
   onNetwork,
   children,
   outcome,
+  descriptionId,
 }: {
   state: WorkspaceState
   dispatch: Dispatch<WorkspaceEvent>
@@ -39,7 +38,9 @@ export function CurrentOperation({
   onNetwork: () => void
   children?: ReactNode
   outcome: Outcome
+  descriptionId?: string
 }) {
+  const weightsNoteId = useId()
   const busy = ['wallet', 'pending', 'indexing'].includes(state.operation)
   const restricted = state.now < record.identity.restrictedUntil
   const noCommunity =
@@ -55,44 +56,67 @@ export function CurrentOperation({
       {state.stage === 'finished' && busy && (
         <h4 className={type.itemTitle}>Auction {state.runs + 1}</h4>
       )}
-      <dl className="space-y-3 empty:hidden">
-        {state.stage === 'live' ? null : requiresWeights ? (
-          <Fact label="Duration">{record.duration / 60} minutes</Fact>
-        ) : (
-          <>
+      {state.stage !== 'live' && (
+        <div className="space-y-2">
+          <dl
+            className="space-y-3"
+            aria-describedby={requiresWeights ? weightsNoteId : undefined}
+          >
             <Fact label="Estimated trade value">
-              <CurrentValue data={data}>
-                {warnings ? '$72,419.16' : '$626,416.81'}
-              </CurrentValue>
+              {requiresWeights ? (
+                <span className="text-muted-foreground">—</span>
+              ) : (
+                <CurrentValue data={data}>
+                  {warnings ? '$72,419.16' : '$626,416.81'}
+                </CurrentValue>
+              )}
             </Fact>
-            <Fact label="Duration">{record.duration / 60} minutes</Fact>
             {!warnings && (
-              <Fact label="Next auction target">
-                <CurrentValue data={data}>100%</CurrentValue>
+              <Fact
+                label={
+                  <span
+                    data-testid="current-target-label"
+                    className="inline-flex items-center gap-2"
+                  >
+                    Execution target
+                    <HelpTooltip
+                      accessibleLabel="About target execution progress"
+                      content="Estimated total rebalance progress this auction is configured to reach, including progress from earlier auctions. This is not a guaranteed result; more auctions may be needed."
+                    />
+                  </span>
+                }
+              >
+                {requiresWeights ? (
+                  <span className="text-muted-foreground">—</span>
+                ) : (
+                  <CurrentValue data={data}>100%</CurrentValue>
+                )}
               </Fact>
             )}
             {warnings && (
               <Fact label="Rebalance Percent">
-                <span data-testid="current-effective-size">
+                <span
+                  data-testid="current-effective-size"
+                  className="text-feedback-warning-foreground"
+                >
                   2% · Ondo limits
                 </span>
               </Fact>
             )}
-          </>
-        )}
-        {restricted && !noCommunity && (
-          <Fact label="Permissionless in">
-            <span data-testid="current-permissionless-time">
-              {timeRemaining(record.identity.restrictedUntil - state.now)}
-            </span>
-          </Fact>
-        )}
-        {record.symbol === 'LCAP' && (
-          <Fact label="Weights saved">
-            {state.weights || state.runs ? 'Yes' : 'No'}
-          </Fact>
-        )}
-      </dl>
+            <Fact label="Duration">{record.duration / 60} minutes</Fact>
+          </dl>
+          {requiresWeights && (
+            <p
+              id={weightsNoteId}
+              data-testid="current-weight-estimates-note"
+              className={cn(type.supporting, 'text-muted-foreground')}
+            >
+              <Trans>Available after confirming target weights</Trans>
+            </p>
+          )}
+        </div>
+      )}
+      {warnings && state.stage !== 'live' && <AuctionSizeWarning />}
       {state.stage !== 'live' && (
         <div className="space-y-3">
           {!busy && restricted && viewer !== 'launcher' && (
@@ -111,13 +135,10 @@ export function CurrentOperation({
           )}
           {busy ? (
             <>
-              <Button loading data-testid="current-launch" className="w-full">
-                Launching...
-              </Button>
               <p
                 role="status"
                 data-testid="current-operation-status"
-                className={cn(type.supporting, 'text-muted-foreground')}
+                className={type.label}
               >
                 {state.operation === 'indexing'
                   ? 'Lab: launch confirmed; waiting for auction data. Launch remains disabled.'
@@ -126,10 +147,13 @@ export function CurrentOperation({
                       ? 'wallet confirmation'
                       : 'transaction receipt pending')}
               </p>
+              <Button loading data-testid="current-launch" className="w-full">
+                Launching...
+              </Button>
               {state.operation === 'indexing' && (
                 <Button
                   tone="secondary"
-                  className="w-full"
+                  className="self-start"
                   data-testid="current-index-refresh"
                   onClick={() =>
                     dispatch({ type: 'indexed', duration: record.duration })
@@ -155,18 +179,10 @@ export function CurrentOperation({
             >
               Switch to {record.chainId === 56 ? 'BNB Smart Chain' : 'Base'}
             </Button>
-          ) : requiresWeights && viewer === 'launcher' ? (
-            <Button
-              disabled={data !== 'ready'}
-              data-testid="current-edit"
-              className="w-full"
-              onClick={() => dispatch({ type: 'edit' })}
-            >
-              Manage Weights
-            </Button>
           ) : (
             <Button
               data-testid="current-launch"
+              aria-describedby={requiresWeights ? descriptionId : undefined}
               disabled={!mayLaunch(state, record, viewer, network, data)}
               className="w-full"
               onClick={() =>
@@ -183,20 +199,6 @@ export function CurrentOperation({
               Start auction {state.runs + 1}
             </Button>
           )}
-          {!busy &&
-            state.weights &&
-            state.runs === 0 &&
-            viewer === 'launcher' && (
-              <Button
-                tone="quiet"
-                data-testid="current-edit"
-                className="w-full"
-                disabled={data !== 'ready'}
-                onClick={() => dispatch({ type: 'edit' })}
-              >
-                Manage Weights
-              </Button>
-            )}
         </div>
       )}
       {children}

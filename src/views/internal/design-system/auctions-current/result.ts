@@ -28,7 +28,9 @@ export function resultRow(
       tone: state.traded ? 'negative' : undefined,
     },
     auctions: known ? state.runs : null,
-    traded: known ? (state.traded ? usdFromCents(state.traded) : '$0') : null,
+    traded: known
+      ? `$${((state.traded + 50n) / 100n).toLocaleString('en-US')}`
+      : null,
     metricsLoading: data === 'pending',
   }
 }

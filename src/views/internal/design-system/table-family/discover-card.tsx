@@ -46,7 +46,7 @@ export const DiscoverCard = memo(function DiscoverCard({
     }))
   const content = (
     <>
-      <div className="flex flex-col overflow-hidden bg-card">
+      <div className="flex flex-col overflow-hidden bg-inherit">
         <div className="flex min-w-0 flex-col gap-4 p-6">
           <div className="flex items-start justify-between gap-4">
             {loading ? (
@@ -105,7 +105,11 @@ export const DiscoverCard = memo(function DiscoverCard({
       <div
         data-slot="card-asset-ticker"
         aria-hidden="true"
-        className="mx-1 motion-reduce:[&_*]:!animate-none group-focus-visible:[&_*]:[animation-play-state:paused]"
+        className={cn(
+          'mx-1 motion-reduce:[&_*]:!animate-none group-focus-visible:[&_*]:[animation-play-state:paused]',
+          !loading &&
+            'group-hover:[&>div]:bg-interactive-content-hover group-hover:[&>div]:border-interactive-content-hover group-hover:[&_.from-card]:from-interactive-content-hover group-hover:[&_.via-card]:via-interactive-content-hover'
+        )}
       >
         {loading ? (
           <DiscoverCardTickerSkeleton />
@@ -178,7 +182,11 @@ export const DiscoverCard = memo(function DiscoverCard({
       data-testid="discover-card"
       data-table-focus={`name-${row.address}`}
       data-symbol={row.symbol}
-      className={cn(className, 'outline-none hover:no-underline')}
+      className={cn(
+        className,
+        'outline-none hover:no-underline',
+        roles.interaction.contentHover
+      )}
     >
       {content}
     </Link>

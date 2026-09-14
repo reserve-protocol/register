@@ -31,13 +31,15 @@ export const ownedColumns = (
           </div>
           <OwnedModify row={row} loading={loading} onModify={onModify} />
         </div>
-        <div className="grid grid-cols-2 items-start gap-x-4 gap-y-4">
+        <div className="flex flex-wrap items-start gap-4 [&>div]:flex-1 [&>div]:basis-[max-content]">
           <OwnedFact label="Balance">
             <OwnedBalance row={row} loading={loading} />
           </OwnedFact>
           <OwnedFact label="Value" end>
             <OwnedNumber row={row} field="value" loading={loading} />
           </OwnedFact>
+        </div>
+        <div className="grid grid-cols-2 items-start gap-4">
           <OwnedFact label="Governs">
             <OwnedGoverns row={row} loading={loading} />
           </OwnedFact>

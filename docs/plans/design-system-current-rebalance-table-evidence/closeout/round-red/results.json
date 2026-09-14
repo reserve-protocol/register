@@ -1,0 +1,65 @@
+{
+  "rawReportSha256": "89d28d447ecb40984c5ce14d37c8f544b11c5fecf8485e62e34e5fc4dd94f899",
+  "stats": {
+    "startTime": "2026-09-14T12:31:41.176Z",
+    "duration": 22740.868000000002,
+    "expected": 0,
+    "skipped": 0,
+    "unexpected": 1,
+    "flaky": 0
+  },
+  "errors": [],
+  "records": [
+    {
+      "file": "auctions-closeout-lab-regressions.spec.ts",
+      "line": 8,
+      "title": "auctions-closeout-lab-regressions.spec.ts / completed reference and unknown round light",
+      "status": "unexpected",
+      "expectedStatus": "passed",
+      "results": [
+        {
+          "status": "failed",
+          "duration": 20855,
+          "retry": 0,
+          "errors": [
+            {
+              "location": {
+                "file": "/Users/lill-kire/Code/register/e2e/design-system/auctions-closeout-lab-regressions.spec.ts",
+                "column": 65,
+                "line": 39
+              },
+              "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveCount\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator:  getByTestId('current-retained-detail').getByTestId('current-table-round')\nExpected: \u001b[32m0\u001b[39m\nReceived: \u001b[31m1\u001b[39m\nTimeout:  7500ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveCount\" with timeout 7500ms\u001b[22m\n\u001b[2m  - waiting for getByTestId('current-retained-detail').getByTestId('current-table-round')\u001b[22m\n\u001b[2m    11 × locator resolved to 1 element\u001b[22m\n\u001b[2m       - unexpected value \"1\"\u001b[22m\n\n\n  37 |         const detail = page.getByTestId('current-retained-detail')\n  38 |         await expect(detail).toBeVisible()\n> 39 |         await expect(detail.getByTestId('current-table-round')).toHaveCount(0)\n     |                                                                 ^\n  40 |         if (query === 'current=complete') {\n  41 |           await expect(detail.locator('h3')).toHaveText('August 2026 Rebalance')\n  42 |           await expect(\n    at /Users/lill-kire/Code/register/e2e/design-system/auctions-closeout-lab-regressions.spec.ts:39:65"
+            }
+          ],
+          "attachments": [
+            {
+              "name": "closeout-light-1400-complete",
+              "contentType": "image/png",
+              "bytes": 119826,
+              "sha256": "493b8b40eaafa9360700749e54c19b15cd07f5da458c724c072cf311bc6f263e"
+            },
+            {
+              "name": "screenshot",
+              "contentType": "image/png",
+              "bytes": 70208,
+              "sha256": "4db49ea922a6ba8b31bf4b9bde5edd315241833ce8112908923a3e22c29ae19e",
+              "file": "completed-reference-and-unknown-round-light-screenshot-4db49ea9.png"
+            },
+            {
+              "name": "current-source",
+              "contentType": "application/json",
+              "bytes": 344141,
+              "sha256": "547682ab60476109e3d3ac7aa66fb72dee9598186934e0a148c0de71ea5e2f88"
+            },
+            {
+              "name": "error-context",
+              "contentType": "text/markdown",
+              "bytes": 102562,
+              "sha256": "f4b81e4d29d92d8d003a10ae8e7cd02b3cd8b3ab4c2089d95db9f16d78bedc72"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

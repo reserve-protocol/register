@@ -1,0 +1,244 @@
+{
+  "config": {
+    "configFile": "/Users/lill-kire/Code/register/playwright.design-system.config.ts",
+    "rootDir": "/Users/lill-kire/Code/register/e2e/design-system",
+    "forbidOnly": true,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/Users/lill-kire/Code/register/test-results/design-system/artifacts",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "design-system-desktop",
+        "name": "design-system-desktop",
+        "testDir": "/Users/lill-kire/Code/register/e2e/design-system",
+        "testIgnore": [
+          "/(?:source-capture|lab-regressions)\\.spec\\.ts/"
+        ],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 90000
+      },
+      {
+        "outputDir": "/Users/lill-kire/Code/register/test-results/design-system/artifacts",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "design-system-mobile",
+        "name": "design-system-mobile",
+        "testDir": "/Users/lill-kire/Code/register/e2e/design-system",
+        "testIgnore": [
+          "/(?:source-capture|lab-regressions)\\.spec\\.ts/"
+        ],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 90000
+      },
+      {
+        "outputDir": "/Users/lill-kire/Code/register/test-results/design-system/artifacts",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "design-system-phone",
+        "name": "design-system-phone",
+        "testDir": "/Users/lill-kire/Code/register/e2e/design-system",
+        "testIgnore": [
+          "/(?:source-capture|lab-regressions)\\.spec\\.ts/"
+        ],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 90000
+      },
+      {
+        "outputDir": "/Users/lill-kire/Code/register/test-results/design-system/artifacts",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "design-system-review",
+        "name": "design-system-review",
+        "testDir": "/Users/lill-kire/Code/register/e2e/design-system",
+        "testIgnore": [],
+        "testMatch": [
+          "/(?:source-capture|lab-regressions)\\.spec\\.ts/"
+        ],
+        "timeout": 90000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "list",
+        null
+      ],
+      [
+        "json",
+        {
+          "outputFile": "test-results/design-system/report.json"
+        }
+      ],
+      [
+        "html",
+        {
+          "outputFolder": "playwright-report/design-system",
+          "open": "never"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "none",
+    "updateSourceMethod": "patch",
+    "version": "1.59.1",
+    "workers": 1,
+    "webServer": {
+      "command": "pnpm exec vite --host 127.0.0.1 --port 3022 --strictPort",
+      "url": "http://127.0.0.1:3022",
+      "reuseExistingServer": false,
+      "timeout": 120000,
+      "env": {
+        "VITE_E2E": "true",
+        "VITE_WALLETCONNECT_ID": "test-project",
+        "VITE_STAGING_API": "",
+        "VITE_USE_STAGING": "",
+        "VITE_MAINNET_URL": "",
+        "VITE_INFURA": "",
+        "VITE_ALCHEMY": "",
+        "VITE_ANKR": ""
+      }
+    }
+  },
+  "suites": [
+    {
+      "title": "current-rebalance-state-composition-lab-regressions.spec.ts",
+      "file": "current-rebalance-state-composition-lab-regressions.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "saved weights expose the configuration at 1400",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "design-system-review",
+              "projectName": "design-system-review",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 21246,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator:  getByTestId('current-rebalance-workspace').getByTestId('current-saved-weight-1').getByRole('cell').nth(2)\nExpected: \u001b[32m\"—\"\u001b[39m\nReceived: \u001b[31m\"3.92%\"\u001b[39m\nTimeout:  7500ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveText\" with timeout 7500ms\u001b[22m\n\u001b[2m  - waiting for getByTestId('current-rebalance-workspace').getByTestId('current-saved-weight-1').getByRole('cell').nth(2)\u001b[22m\n\u001b[2m    11 × locator resolved to <td data-locatorjs-id=\"/Users/lill-kire/Code/register/src/components/ui/table.tsx::6\" class=\"p-4 align-middle [&:has([role=checkbox])]:pr-0 text-base font-light leading-6 py-2 pl-2 pr-0 text-right tabular-nums\">3.92%</td>\u001b[22m\n\u001b[2m       - unexpected value \"3.92%\"\u001b[22m\n",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator:  getByTestId('current-rebalance-workspace').getByTestId('current-saved-weight-1').getByRole('cell').nth(2)\nExpected: \u001b[32m\"—\"\u001b[39m\nReceived: \u001b[31m\"3.92%\"\u001b[39m\nTimeout:  7500ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveText\" with timeout 7500ms\u001b[22m\n\u001b[2m  - waiting for getByTestId('current-rebalance-workspace').getByTestId('current-saved-weight-1').getByRole('cell').nth(2)\u001b[22m\n\u001b[2m    11 × locator resolved to <td data-locatorjs-id=\"/Users/lill-kire/Code/register/src/components/ui/table.tsx::6\" class=\"p-4 align-middle [&:has([role=checkbox])]:pr-0 text-base font-light leading-6 py-2 pl-2 pr-0 text-right tabular-nums\">3.92%</td>\u001b[22m\n\u001b[2m       - unexpected value \"3.92%\"\u001b[22m\n\n    at /Users/lill-kire/Code/register/e2e/design-system/current-rebalance-state-composition-lab-regressions.spec.ts:64:50",
+                    "location": {
+                      "file": "/Users/lill-kire/Code/register/e2e/design-system/current-rebalance-state-composition-lab-regressions.spec.ts",
+                      "column": 50,
+                      "line": 64
+                    },
+                    "snippet": "  62 |     await currentSelect(page, 'data', 'price-error')\n  63 |     await expect(saved.getByRole('cell').nth(1)).toHaveText('0.0375')\n> 64 |     await expect(saved.getByRole('cell').nth(2)).toHaveText('—')\n     |                                                  ^\n  65 |     await expect(current.getByTestId('current-edit')).toBeDisabled()\n  66 |     await expect(current.getByTestId('current-launch')).toBeDisabled()\n  67 |     await currentCapture(page, current, info, `states-${width}-saved-price-error`)"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/Users/lill-kire/Code/register/e2e/design-system/current-rebalance-state-composition-lab-regressions.spec.ts",
+                        "column": 50,
+                        "line": 64
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator:  getByTestId('current-rebalance-workspace').getByTestId('current-saved-weight-1').getByRole('cell').nth(2)\nExpected: \u001b[32m\"—\"\u001b[39m\nReceived: \u001b[31m\"3.92%\"\u001b[39m\nTimeout:  7500ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveText\" with timeout 7500ms\u001b[22m\n\u001b[2m  - waiting for getByTestId('current-rebalance-workspace').getByTestId('current-saved-weight-1').getByRole('cell').nth(2)\u001b[22m\n\u001b[2m    11 × locator resolved to <td data-locatorjs-id=\"/Users/lill-kire/Code/register/src/components/ui/table.tsx::6\" class=\"p-4 align-middle [&:has([role=checkbox])]:pr-0 text-base font-light leading-6 py-2 pl-2 pr-0 text-right tabular-nums\">3.92%</td>\u001b[22m\n\u001b[2m       - unexpected value \"3.92%\"\u001b[22m\n\n\n  62 |     await currentSelect(page, 'data', 'price-error')\n  63 |     await expect(saved.getByRole('cell').nth(1)).toHaveText('0.0375')\n> 64 |     await expect(saved.getByRole('cell').nth(2)).toHaveText('—')\n     |                                                  ^\n  65 |     await expect(current.getByTestId('current-edit')).toBeDisabled()\n  66 |     await expect(current.getByTestId('current-launch')).toBeDisabled()\n  67 |     await currentCapture(page, current, info, `states-${width}-saved-price-error`)\n    at /Users/lill-kire/Code/register/e2e/design-system/current-rebalance-state-composition-lab-regressions.spec.ts:64:50"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T21:00:15.717Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "states-1400-weights-required",
+                      "contentType": "image/png",
+                      "path": "attachments/f7dfcfbc6b9aa151fc8a53928d22651a8bc97499456b3ea7b262885286f28e3a.png"
+                    },
+                    {
+                      "name": "states-1400-weights-editor",
+                      "contentType": "image/png",
+                      "path": "attachments/cf3d73773b59bb4876605130fa195b0389fcac6eca6902fed8ca2d94eeb43858.png"
+                    },
+                    {
+                      "name": "states-1400-weights-saved",
+                      "contentType": "image/png",
+                      "path": "attachments/2251d7e363daf30ad376154012f57074dbdb7e03dbd9cbe937b96f6d7a548015.png"
+                    },
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "/Users/lill-kire/Code/register/test-results/design-system/artifacts/current-rebalance-state-co-47e66-e-the-configuration-at-1400-design-system-review/test-failed-1.png"
+                    },
+                    {
+                      "name": "current-source",
+                      "contentType": "application/json",
+                      "path": "attachments/68b005c62fb85b73d766be52b87c070570117de48283f7e33da7dfdf40c7cbf5.json"
+                    },
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/Users/lill-kire/Code/register/test-results/design-system/artifacts/current-rebalance-state-co-47e66-e-the-configuration-at-1400-design-system-review/error-context.md"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "/Users/lill-kire/Code/register/e2e/design-system/current-rebalance-state-composition-lab-regressions.spec.ts",
+                    "column": 50,
+                    "line": 64
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "96808e51799ec6023912-41bfb700bfb039db96ae",
+          "file": "current-rebalance-state-composition-lab-regressions.spec.ts",
+          "line": 11,
+          "column": 3
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-09-13T21:00:14.061Z",
+    "duration": 23063.336000000003,
+    "expected": 0,
+    "skipped": 0,
+    "unexpected": 1,
+    "flaky": 0
+  }
+}

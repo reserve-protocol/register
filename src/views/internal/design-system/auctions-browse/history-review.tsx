@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react'
+import { useRef, useState, type ReactNode } from 'react'
 import { Link as RouterLink } from 'react-router-dom'
 import { Link } from '@/components/design-system-v1/link'
 import {
@@ -21,7 +21,13 @@ import {
 import { HistoricalRebalancesTable } from './history-table'
 import { CurrentRebalanceReview } from '../auctions-current/review'
 
-export function AuctionsHistoryReview() {
+export function AuctionsHistoryReview({
+  current,
+  excludeIds = [],
+}: {
+  current?: ReactNode
+  excludeIds?: string[]
+}) {
   const [preview, setPreview] = useState<{
     state: HistoryState
     content: HistoryState
@@ -33,12 +39,14 @@ export function AuctionsHistoryReview() {
   const rows = [
     ...results,
     ...historicalRebalances(loading ? preview.content : preview.state).filter(
-      (row) => !results.some((result) => result.identity.id === row.identity.id)
+      (row) =>
+        !excludeIds.includes(row.identity.id) &&
+        !results.some((result) => result.identity.id === row.identity.id)
     ),
   ]
   return (
     <section
-      id="auctions-browse-review"
+      id={current ? 'auctions-current-table-review' : 'auctions-browse-review'}
       data-testid="auctions-history-review"
       aria-labelledby="auctions-history-title"
       className="scroll-mt-36 space-y-4"
@@ -53,8 +61,8 @@ export function AuctionsHistoryReview() {
             'mt-1 max-w-3xl text-muted-foreground'
           )}
         >
-          Current rebalance workspace and historical table review. Lab-only
-          composition; no production changes.
+          {current ? 'Current Rebalances' : 'Current rebalance workspace'} and
+          historical table review. Lab-only composition; no production changes.
         </p>
       </div>
       <div className="flex flex-wrap items-end gap-x-6 gap-y-4">
@@ -111,18 +119,24 @@ export function AuctionsHistoryReview() {
           Constrained column · 390px
         </label>
       </div>
-      <CurrentRebalanceReview
-        constrained={constrained}
-        onArchive={(row) => {
-          setResults((previous) => [
-            row,
-            ...previous.filter(
-              (result) => result.identity.id !== row.identity.id
-            ),
-          ])
-          requestAnimationFrame(() => historyHeading.current?.focus())
-        }}
-      />
+      {current ? (
+        <div className={cn('min-w-0', constrained && 'max-w-[390px]')}>
+          {current}
+        </div>
+      ) : (
+        <CurrentRebalanceReview
+          constrained={constrained}
+          onArchive={(row) => {
+            setResults((previous) => [
+              row,
+              ...previous.filter(
+                (result) => result.identity.id !== row.identity.id
+              ),
+            ])
+            requestAnimationFrame(() => historyHeading.current?.focus())
+          }}
+        />
+      )}
       <h3
         ref={historyHeading}
         tabIndex={-1}

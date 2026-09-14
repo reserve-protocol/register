@@ -1,0 +1,366 @@
+{
+  "rawReportSha256": "5bb31adaea24bb781e300b2d46fb7c03156b465d1971cf3d87387b69ad08a76b",
+  "stats": {
+    "startTime": "2026-09-14T12:33:04.142Z",
+    "duration": 79832.092,
+    "expected": 8,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "errors": [],
+  "records": [
+    {
+      "file": "auctions-closeout-lab-regressions.spec.ts",
+      "line": 8,
+      "title": "auctions-closeout-lab-regressions.spec.ts / completed reference and unknown round light",
+      "status": "expected",
+      "expectedStatus": "passed",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 27265,
+          "retry": 0,
+          "errors": [],
+          "attachments": [
+            {
+              "name": "closeout-light-1400-complete",
+              "contentType": "image/png",
+              "bytes": 112959,
+              "sha256": "698178ac11c992686d4331a6645d2ee39e82115f1d7e18b301a8e00451cb5bfb"
+            },
+            {
+              "name": "closeout-reference-light-1400",
+              "contentType": "image/png",
+              "bytes": 59526,
+              "sha256": "42f5af4c7feade19995648c30a90cabaae4acf7b22f25fc786a0c37b8de13f9b"
+            },
+            {
+              "name": "closeout-light-1400-unknown",
+              "contentType": "image/png",
+              "bytes": 115172,
+              "sha256": "7bcc6aa42363641d07a4f33b1116ea792ce25116eb5e67a9a4ce966469b3bc25"
+            },
+            {
+              "name": "closeout-light-390-complete",
+              "contentType": "image/png",
+              "bytes": 66528,
+              "sha256": "b29f55527b30083a7445707a33f8d473b8e8f6d0711beebc5f36fa4aa58500b9"
+            },
+            {
+              "name": "closeout-reference-light-390",
+              "contentType": "image/png",
+              "bytes": 63155,
+              "sha256": "4f172c632bc774378400bfd69837fae5daec9df4d5a13a27d707319318c994c2"
+            },
+            {
+              "name": "closeout-light-390-unknown",
+              "contentType": "image/png",
+              "bytes": 68113,
+              "sha256": "e67804437b11b0d91caebe24363dcf604c4c18952fc0c52421684dbb52a4adbf"
+            },
+            {
+              "name": "closeout-light-320-complete",
+              "contentType": "image/png",
+              "bytes": 60824,
+              "sha256": "c69330426dc2a5b75b9e20e06c3c3c5640546467470c7790b3a3a3e9e5e9af36"
+            },
+            {
+              "name": "closeout-reference-light-320",
+              "contentType": "image/png",
+              "bytes": 58088,
+              "sha256": "475febee455844e2bbe6db313b929492ad14dd3dd582fde668ed211eb5908ce2"
+            },
+            {
+              "name": "closeout-light-320-unknown",
+              "contentType": "image/png",
+              "bytes": 62398,
+              "sha256": "4f66f564c6f76b39ea9446b91cedf6592c616676334b4e8c084facc50c5f90d4"
+            },
+            {
+              "name": "current-source",
+              "contentType": "application/json",
+              "bytes": 344141,
+              "sha256": "9862d9fc37c42ba8310b8400985ba56faf25eb1426588d45c7c9ec9685cb6f80"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "file": "auctions-closeout-lab-regressions.spec.ts",
+      "line": 61,
+      "title": "auctions-closeout-lab-regressions.spec.ts / desktop expiry is rebalance scoped light",
+      "status": "expected",
+      "expectedStatus": "passed",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 2774,
+          "retry": 0,
+          "errors": [],
+          "attachments": [
+            {
+              "name": "closeout-expiry-light-1072",
+              "contentType": "image/png",
+              "bytes": 111918,
+              "sha256": "53fa771c38cc8491dde1fe98f77553cfe04d39c2a475f8b12517045f7ee2e2e5"
+            },
+            {
+              "name": "closeout-expiry-light-1400",
+              "contentType": "image/png",
+              "bytes": 116900,
+              "sha256": "5c30e52e0fca7ce8fd8242fdff1723bfd92dafecc88db658a2edddcc7218d0bb"
+            },
+            {
+              "name": "current-source",
+              "contentType": "application/json",
+              "bytes": 344141,
+              "sha256": "9862d9fc37c42ba8310b8400985ba56faf25eb1426588d45c7c9ec9685cb6f80"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "file": "auctions-closeout-lab-regressions.spec.ts",
+      "line": 8,
+      "title": "auctions-closeout-lab-regressions.spec.ts / completed reference and unknown round dark",
+      "status": "expected",
+      "expectedStatus": "passed",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 15050,
+          "retry": 0,
+          "errors": [],
+          "attachments": [
+            {
+              "name": "closeout-dark-1400-complete",
+              "contentType": "image/png",
+              "bytes": 113352,
+              "sha256": "0ee1c7eef2e2d73749d57a8e2b4b18aa05b24dcac7d56865d40b2373add511d7"
+            },
+            {
+              "name": "closeout-reference-dark-1400",
+              "contentType": "image/png",
+              "bytes": 59534,
+              "sha256": "d34f4d31d660605c767f49928298d9f61a459f838c817612df197050bae517d3"
+            },
+            {
+              "name": "closeout-dark-1400-unknown",
+              "contentType": "image/png",
+              "bytes": 115705,
+              "sha256": "c1ea97c29ed7ef124201add72d28272fd9d16e6734d5354f0720c9875db1f6ae"
+            },
+            {
+              "name": "closeout-dark-390-complete",
+              "contentType": "image/png",
+              "bytes": 67702,
+              "sha256": "2f6f1ce37c90f56787bbcbd5d1aeb05ae0757a5653f1bef470565f9dfc765fa4"
+            },
+            {
+              "name": "closeout-reference-dark-390",
+              "contentType": "image/png",
+              "bytes": 63481,
+              "sha256": "388d1e375db1e0e4d204914e9a1877a2ef8b354da8b8ac3bcfb02ea065c04ab9"
+            },
+            {
+              "name": "closeout-dark-390-unknown",
+              "contentType": "image/png",
+              "bytes": 69107,
+              "sha256": "2ce38c9bd3f470bcd975a711730479c214374f05c980f475a946cdb344e0327d"
+            },
+            {
+              "name": "closeout-dark-320-complete",
+              "contentType": "image/png",
+              "bytes": 61750,
+              "sha256": "241a8fec7097f771386252ad2dd468cfa8e46c80491908646f5359ec251935d4"
+            },
+            {
+              "name": "closeout-reference-dark-320",
+              "contentType": "image/png",
+              "bytes": 58238,
+              "sha256": "f818ada2b45059dc2b53bd80ba24de1bbffcfc4bf5f62fba3677fc60a475a268"
+            },
+            {
+              "name": "closeout-dark-320-unknown",
+              "contentType": "image/png",
+              "bytes": 63173,
+              "sha256": "4fbc86985082dd050d552a2900548fed50930ad3e5529eed97a79412a22a3fc6"
+            },
+            {
+              "name": "current-source",
+              "contentType": "application/json",
+              "bytes": 344141,
+              "sha256": "9862d9fc37c42ba8310b8400985ba56faf25eb1426588d45c7c9ec9685cb6f80"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "file": "auctions-closeout-lab-regressions.spec.ts",
+      "line": 61,
+      "title": "auctions-closeout-lab-regressions.spec.ts / desktop expiry is rebalance scoped dark",
+      "status": "expected",
+      "expectedStatus": "passed",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 2577,
+          "retry": 0,
+          "errors": [],
+          "attachments": [
+            {
+              "name": "closeout-expiry-dark-1072",
+              "contentType": "image/png",
+              "bytes": 113057,
+              "sha256": "0fd1ccdab2c5cf7c7bd09c8897074a2b330c5a6a136eb0b4df7b86540d219f3a"
+            },
+            {
+              "name": "closeout-expiry-dark-1400",
+              "contentType": "image/png",
+              "bytes": 117400,
+              "sha256": "9ce1b3462213caf76f12c5611739fca44d61691632335e61055f92b173a58039"
+            },
+            {
+              "name": "current-source",
+              "contentType": "application/json",
+              "bytes": 344141,
+              "sha256": "9862d9fc37c42ba8310b8400985ba56faf25eb1426588d45c7c9ec9685cb6f80"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "file": "auctions-closeout-lab-regressions.spec.ts",
+      "line": 94,
+      "title": "auctions-closeout-lab-regressions.spec.ts / touch dismissal light / dismissal does not navigate and explicit links still work",
+      "status": "expected",
+      "expectedStatus": "passed",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 8578,
+          "retry": 0,
+          "errors": [],
+          "attachments": [
+            {
+              "name": "closeout-dismiss-before-light",
+              "contentType": "image/png",
+              "bytes": 65558,
+              "sha256": "a47103c040d21790e36437a1c2528f568c97c9db20a96de067a8998529119c06"
+            },
+            {
+              "name": "closeout-dismiss-after-light",
+              "contentType": "image/png",
+              "bytes": 65558,
+              "sha256": "a47103c040d21790e36437a1c2528f568c97c9db20a96de067a8998529119c06"
+            },
+            {
+              "name": "current-source",
+              "contentType": "application/json",
+              "bytes": 344141,
+              "sha256": "9862d9fc37c42ba8310b8400985ba56faf25eb1426588d45c7c9ec9685cb6f80"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "file": "auctions-closeout-lab-regressions.spec.ts",
+      "line": 94,
+      "title": "auctions-closeout-lab-regressions.spec.ts / touch dismissal dark / dismissal does not navigate and explicit links still work",
+      "status": "expected",
+      "expectedStatus": "passed",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 8489,
+          "retry": 0,
+          "errors": [],
+          "attachments": [
+            {
+              "name": "closeout-dismiss-before-dark",
+              "contentType": "image/png",
+              "bytes": 66600,
+              "sha256": "3346fef395eae621bfe636c058e246841991f262c34b99975b9e6bc43fc22aef"
+            },
+            {
+              "name": "closeout-dismiss-after-dark",
+              "contentType": "image/png",
+              "bytes": 66600,
+              "sha256": "3346fef395eae621bfe636c058e246841991f262c34b99975b9e6bc43fc22aef"
+            },
+            {
+              "name": "current-source",
+              "contentType": "application/json",
+              "bytes": 344141,
+              "sha256": "9862d9fc37c42ba8310b8400985ba56faf25eb1426588d45c7c9ec9685cb6f80"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "file": "auctions-table-constrained-lab-regressions.spec.ts",
+      "line": 160,
+      "title": "auctions-table-constrained-lab-regressions.spec.ts / historical metric help on a touch device / accuracy opens on the first tap and can be dismissed",
+      "status": "expected",
+      "expectedStatus": "passed",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 6607,
+          "retry": 0,
+          "errors": [],
+          "attachments": [
+            {
+              "name": "history-touch-accuracy",
+              "contentType": "image/png",
+              "bytes": 63067,
+              "sha256": "c9c1433247fafff5e019dcc797855eecddaf69c81c0ac90f813d1855fee878eb"
+            },
+            {
+              "name": "current-source",
+              "contentType": "application/json",
+              "bytes": 344141,
+              "sha256": "9862d9fc37c42ba8310b8400985ba56faf25eb1426588d45c7c9ec9685cb6f80"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "file": "auctions-table-constrained-lab-regressions.spec.ts",
+      "line": 160,
+      "title": "auctions-table-constrained-lab-regressions.spec.ts / historical metric help on a touch device / navChange opens on the first tap and can be dismissed",
+      "status": "expected",
+      "expectedStatus": "passed",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 6493,
+          "retry": 0,
+          "errors": [],
+          "attachments": [
+            {
+              "name": "history-touch-navChange",
+              "contentType": "image/png",
+              "bytes": 63067,
+              "sha256": "c9c1433247fafff5e019dcc797855eecddaf69c81c0ac90f813d1855fee878eb"
+            },
+            {
+              "name": "current-source",
+              "contentType": "application/json",
+              "bytes": 344141,
+              "sha256": "9862d9fc37c42ba8310b8400985ba56faf25eb1426588d45c7c9ec9685cb6f80"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

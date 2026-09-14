@@ -1,4 +1,6 @@
 import type { ProposalStage } from '@/components/proposal-status-bar'
+import { msg } from '@lingui/core/macro'
+import type { MessageDescriptor } from '@lingui/core'
 import type {
   LifecycleStatusIndicator,
   LifecycleStatusRole,
@@ -11,17 +13,19 @@ export type ProposalStateKey =
   | 'contested-active'
   | 'standard-succeeded'
   | 'queued'
+  | 'queued-ready'
   | 'optimistic-succeeded'
   | 'executed'
   | 'defeated'
   | 'quorum-not-reached'
   | 'canceled'
+  | 'expired'
 
 export type ProposalQualifier = 'fast' | 'contested'
 export type ProposalProgressEmphasis = 'strong' | 'standard' | 'quiet'
 
 interface ProposalStatus {
-  label: string
+  label: string | MessageDescriptor
   role: LifecycleStatusRole
   indicator?: LifecycleStatusIndicator
 }
@@ -55,7 +59,9 @@ export interface GovernanceProposalFixture {
   kind: 'standard' | 'optimistic'
   qualifier?: ProposalQualifier
   statuses: ProposalStatus[]
-  countdown?: string
+  countdown?: { label: MessageDescriptor; value: string; deadline?: boolean }
+  outcome?: 'passed'
+  waitingPeriod?: boolean
   stages: ProposalStage[]
   progressEmphasis: ProposalProgressEmphasis
   evidence: ProposalDecisionEvidence
@@ -79,7 +85,7 @@ export const CURRENT_PROPOSAL_FIXTURES: GovernanceProposalFixture[] = [
     title: 'Extend the voting period for Basket Governance',
     kind: 'standard',
     statuses: [{ label: 'Voting pending', role: 'waiting' }],
-    countdown: 'Starts in 18h',
+    countdown: { label: msg`Voting starts in`, value: '18h' },
     stages: [
       {
         key: 'proposal',
@@ -98,7 +104,7 @@ export const CURRENT_PROPOSAL_FIXTURES: GovernanceProposalFixture[] = [
     title: 'Update Wrapped TONCOIN Basket Component',
     kind: 'standard',
     statuses: [{ label: 'Voting active', role: 'active', indicator: 'voting' }],
-    countdown: 'Ends in 6h',
+    countdown: { label: msg`Voting ends in`, value: '6h', deadline: true },
     stages: STANDARD_ACTIVE_STAGES,
     progressEmphasis: 'strong',
     evidence: {
@@ -115,7 +121,7 @@ export const CURRENT_PROPOSAL_FIXTURES: GovernanceProposalFixture[] = [
     statuses: [
       { label: 'Challenge active', role: 'active', indicator: 'challenge' },
     ],
-    countdown: 'Ends in 11h',
+    countdown: { label: msg`Challenge ends in`, value: '11h', deadline: true },
     stages: [
       { key: 'voting', duration: 5, status: 'in-progress', progress: 0.48 },
     ],
@@ -133,7 +139,7 @@ export const CURRENT_PROPOSAL_FIXTURES: GovernanceProposalFixture[] = [
     kind: 'standard',
     qualifier: 'contested',
     statuses: [{ label: 'Voting active', role: 'active', indicator: 'voting' }],
-    countdown: 'Ends in 2d',
+    countdown: { label: msg`Voting ends in`, value: '2d', deadline: true },
     stages: STANDARD_ACTIVE_STAGES,
     progressEmphasis: 'strong',
     evidence: {
@@ -146,10 +152,8 @@ export const CURRENT_PROPOSAL_FIXTURES: GovernanceProposalFixture[] = [
     state: 'standard-succeeded',
     title: 'July 2026 Governance Parameter Update',
     kind: 'standard',
-    statuses: [
-      { label: 'Passed', role: 'success' },
-      { label: 'Ready to queue', role: 'actionable' },
-    ],
+    statuses: [{ label: 'Ready to queue', role: 'actionable' }],
+    outcome: 'passed',
     stages: STANDARD_DECIDED_STAGES,
     progressEmphasis: 'standard',
     evidence: {
@@ -162,11 +166,10 @@ export const CURRENT_PROPOSAL_FIXTURES: GovernanceProposalFixture[] = [
     state: 'queued',
     title: 'September 2026 Rebalance',
     kind: 'standard',
-    statuses: [
-      { label: 'Passed', role: 'success' },
-      { label: 'Pending execution', role: 'waiting' },
-    ],
-    countdown: 'Ready in 8h',
+    statuses: [{ label: msg`Waiting period`, role: 'waiting' }],
+    outcome: 'passed',
+    waitingPeriod: true,
+    countdown: { label: msg`Execution available in`, value: '8h' },
     stages: [
       { key: 'proposal', duration: 2, status: 'completed' },
       { key: 'voting', duration: 5, status: 'completed' },
@@ -185,14 +188,30 @@ export const CURRENT_PROPOSAL_FIXTURES: GovernanceProposalFixture[] = [
     },
   },
   {
+    state: 'queued-ready',
+    title: 'September 2026 Rebalance',
+    kind: 'standard',
+    statuses: [{ label: msg`Ready to execute`, role: 'actionable' }],
+    outcome: 'passed',
+    stages: [
+      { key: 'proposal', duration: 2, status: 'completed' },
+      { key: 'voting', duration: 5, status: 'completed' },
+      { key: 'execution', duration: 3, status: 'completed' },
+    ],
+    progressEmphasis: 'standard',
+    evidence: {
+      kind: 'standard',
+      thresholdValue: 'Reached',
+      votes: { for: '91%', against: '7%', abstain: '2%', leading: 'for' },
+    },
+  },
+  {
     state: 'optimistic-succeeded',
     title: 'Fast-track the emergency basket update',
     kind: 'optimistic',
     qualifier: 'fast',
-    statuses: [
-      { label: 'Passed', role: 'success' },
-      { label: 'Ready to execute', role: 'actionable' },
-    ],
+    statuses: [{ label: msg`Ready to execute`, role: 'actionable' }],
+    outcome: 'passed',
     stages: [{ key: 'voting', duration: 5, status: 'completed' }],
     progressEmphasis: 'standard',
     evidence: {
@@ -204,6 +223,19 @@ export const CURRENT_PROPOSAL_FIXTURES: GovernanceProposalFixture[] = [
 ]
 
 export const HISTORICAL_PROPOSAL_FIXTURES: GovernanceProposalFixture[] = [
+  {
+    state: 'expired',
+    title: 'July 2026 Governance Parameter Update',
+    kind: 'standard',
+    statuses: [{ label: msg`Proposal expired`, role: 'closed' }],
+    stages: STANDARD_DECIDED_STAGES,
+    progressEmphasis: 'quiet',
+    evidence: {
+      kind: 'standard',
+      thresholdValue: 'Reached',
+      votes: { for: '82%', against: '14%', abstain: '4%', leading: 'for' },
+    },
+  },
   {
     state: 'executed',
     title: 'August 2026 Rebalance',

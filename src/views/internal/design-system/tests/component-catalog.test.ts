@@ -325,6 +325,7 @@ describe('component contract registry', () => {
       'entity-identity',
       'metric',
       'card',
+      'table',
       'copy-value',
       'accordion',
       'collapsible',
@@ -741,19 +742,39 @@ describe('current review', () => {
       review: { status: 'ready' },
     })
     expect(CURRENT_REVIEW[0]).toMatchObject({
-      target: { kind: 'component', id: 'table' },
+      target: { kind: 'component', id: 'chart' },
       destination:
-        '/internal/design-system/components/table#auctions-browse-review',
+        '/internal/design-system/components/chart#chart-first-review',
       type: 'visual decision',
     })
     expect(CURRENT_REVIEW[0].reason).toContain('Transactions remain paused')
+    expect(CURRENT_REVIEW[0].reason).toContain('table work is approved for now')
+    expect(CURRENT_REVIEW[0].reason).toContain('unfinished and deferred')
     expect(getComponentItem('table').item).toMatchObject({
-      designAuthority: 'exploratory',
+      designAuthority: 'current-baseline',
       adoptionStatus: 'none',
     })
+    expect(getComponentItem('chart').item).toMatchObject({
+      outputStatus: 'rendered',
+      designAuthority: 'exploratory',
+      adoptionStatus: 'none',
+      review: { status: 'ready' },
+    })
+    expect(getComponentItem('table').item?.contextSources).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          role: 'implementation',
+          path: 'src/views/internal/design-system/auctions-current-table/review.tsx',
+        }),
+        expect.objectContaining({
+          role: 'product-evidence',
+          path: 'docs/plans/design-system-current-rebalance-table.md#near-term-and-deferred-scope',
+        }),
+      ])
+    )
     expect(
       CURRENT_REVIEW[0].foundationConformance.find(
-        (claim) => claim.area === 'radius'
+        (claim) => claim.area === 'color'
       )?.status
     ).toBe('declared-provisional')
   })

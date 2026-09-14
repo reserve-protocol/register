@@ -2740,6 +2740,7 @@ msgid "Community Discord"
 msgstr "커뮤니티 Discord"
 
 #: src/views/index-dtf/auctions/views/rebalance/components/community-launch-auctions-button.tsx:115
+#: src/views/internal/design-system/auctions-current-table/cells.tsx:81
 msgid "Community launch is not available for this rebalance"
 msgstr "이 리밸런싱에는 커뮤니티 실행을 이용할 수 없습니다"
 
@@ -7119,6 +7120,7 @@ msgid "Only Brand Manager"
 msgstr "Brand Manager 전용"
 
 #: src/views/index-dtf/auctions/views/rebalance/components/community-launch-auctions-button.tsx:117
+#: src/views/internal/design-system/auctions-current-table/cells.tsx:85
 msgid "Only the auction launcher can start auctions"
 msgstr "경매 실행자만 경매를 시작할 수 있습니다"
 
@@ -8236,6 +8238,20 @@ msgstr "수익 분배에 대해 자세히 알아보기"
 #: src/views/portfolio-page/components/pending-withdrawals.tsx:222
 msgid "Ready"
 msgstr "준비됨"
+
+#: src/views/internal/design-system/auctions-current-table/cells.tsx:51
+msgid "Anyone can start"
+msgstr "누구나 시작 가능"
+
+#: src/views/internal/design-system/auctions-current-table/cells.tsx:49
+#: src/views/internal/design-system/auctions-current-table/cells.tsx:76
+#: src/views/internal/design-system/auctions-current-table/cells.tsx:119
+msgid "Only launcher can start"
+msgstr "실행자만 시작 가능"
+
+#: src/views/internal/design-system/auctions-current-table/cells.tsx:61
+msgid "The auction launcher is the account authorized to start auctions during the restricted period."
+msgstr "경매 실행자는 제한 기간 동안 경매를 시작할 권한이 있는 계정입니다."
 
 #: src/views/index-dtf/governance/components/proposal-list-item.tsx:96
 #: src/views/index-dtf/governance/views/proposal/components/proposal-deadline-alert.tsx:117
@@ -13027,3 +13043,218 @@ msgstr "Zapper 오류"
 #: src/views/index-dtf/overview/components/zap-mint/zap-healthcheck.tsx:24
 msgid "Zaps are currently experiencing issues"
 msgstr "현재 Zap에 문제가 발생하고 있습니다"
+
+#: src/views/internal/design-system/auctions-current/status.tsx
+#: src/views/internal/design-system/auctions-current-table/cells.tsx:54
+msgid "Confirm target weights"
+msgstr "목표 비중 확인"
+
+#: src/views/internal/design-system/auctions-current/auction-panel.tsx
+msgid "Confirm the target basket before the first auction. You can keep the defaults unchanged."
+msgstr "첫 경매 전에 목표 바스켓을 확인하세요. 기본값을 그대로 유지해도 됩니다."
+
+#: src/views/internal/design-system/auctions-current/weight-unit-rows.tsx
+msgid "Current → target allocation"
+msgstr "현재 → 목표 비중"
+
+#: src/views/internal/design-system/auctions-current/weights-editor.tsx
+msgid "Current units show the holdings per DTF token, not the original proposal. New units start from the rebalance’s on-chain target."
+msgstr "현재 단위는 원래 제안이 아닌 DTF 토큰당 보유량을 표시합니다. 신규 단위는 리밸런싱의 온체인 목표를 기준으로 시작합니다."
+
+#: src/views/internal/design-system/auctions-current/basket-weights.tsx
+msgid "Saved in this tab for launch. Reloading discards these edits."
+msgstr "경매 시작을 위해 이 탭에 저장되었습니다. 새로고침하면 수정 내용이 사라집니다."
+
+#: src/views/internal/design-system/auctions-current/weights-editor.tsx
+msgid "Saving prepares the target for launch. It does not change holdings or submit a transaction."
+msgstr "저장하면 경매 시작에 사용할 목표가 준비됩니다. 보유량을 변경하거나 트랜잭션을 제출하지는 않습니다."
+
+#: src/views/internal/design-system/auctions-current/weight-unit-rows.tsx
+msgid "Starting target"
+msgstr "초기 목표"
+
+#: src/views/internal/design-system/auctions-current/weight-unit-rows.tsx
+msgid "Target basket"
+msgstr "목표 바스켓"
+
+#: src/views/internal/design-system/auctions-current/operation.tsx
+msgid "Available after confirming target weights"
+msgstr "목표 비중 확인 후 표시됩니다"
+
+#: src/views/internal/design-system/auctions-current-table/table.tsx
+msgid "Rebalance expires in"
+msgstr "리밸런싱 만료까지"
+
+#: src/views/internal/design-system/governance-proposal-state-review.tsx
+msgid "Constrained proposal column"
+msgstr "제한된 너비의 제안 열"
+
+#: src/views/internal/design-system/governance-proposal-state-fixtures.ts:124
+msgid "Challenge ends in"
+msgstr "이의 제기 종료까지"
+
+#: src/views/internal/design-system/governance-proposal-record.tsx:169
+msgid "Challenge period"
+msgstr "이의 제기 기간"
+
+#: src/views/internal/design-system/governance-proposal-state-review.tsx:67
+msgid "Default"
+msgstr "기본"
+
+#: src/views/internal/design-system/governance-proposal-state-review.tsx:76
+msgid "Empty"
+msgstr "비어 있음"
+
+#: src/views/internal/design-system/governance-proposal-state-fixtures.ts:176
+msgid "Execution available in"
+msgstr "실행 가능까지"
+
+#: src/views/internal/design-system/governance-proposal-state-review.tsx:73
+msgid "Loading"
+msgstr "로딩 중"
+
+#: src/views/internal/design-system/governance-proposal-state-review.tsx:57
+msgid "Preview state"
+msgstr "미리보기 상태"
+
+#: src/views/internal/design-system/governance-proposal-record.tsx:149
+msgid "Proposal timeline"
+msgstr "제안 일정"
+
+#: src/views/internal/design-system/governance-proposal-record.tsx:155
+msgid "The proposal passed and is in its required execution delay (timelock). Execution becomes available when this period ends; it does not happen automatically."
+msgstr "제안이 통과되어 필수 실행 대기 기간(타임락)에 있습니다. 이 기간이 끝나면 실행할 수 있으며, 자동으로 실행되지는 않습니다."
+
+#: src/views/internal/design-system/governance-proposal-record.tsx:163
+msgid "The strip represents lifecycle timing, not voting support."
+msgstr "이 막대는 투표 지지율이 아닌 진행 단계의 시간을 나타냅니다."
+
+#: src/views/internal/design-system/governance-proposal-record.tsx:171
+msgid "Voting delay → Voting → Execution delay"
+msgstr "투표 대기 → 투표 → 실행 대기"
+
+#: src/views/internal/design-system/governance-proposal-state-fixtures.ts:107
+#: src/views/internal/design-system/governance-proposal-state-fixtures.ts:142
+msgid "Voting ends in"
+msgstr "투표 종료까지"
+
+#: src/views/internal/design-system/governance-proposal-state-fixtures.ts:88
+msgid "Voting starts in"
+msgstr "투표 시작까지"
+
+#: src/views/internal/design-system/governance-proposal-record.tsx:149
+#: src/views/internal/design-system/governance-proposal-state-fixtures.ts:172
+msgid "Waiting period"
+msgstr "대기 기간"
+
+#: src/views/internal/design-system/charts/review.tsx:23
+msgid "Captured history"
+msgstr "캡처한 기록"
+
+#: src/views/internal/design-system/charts/review.tsx:118
+msgid "Card"
+msgstr "카드"
+
+#: src/views/internal/design-system/charts/review.tsx:68
+msgid "Chart review scenario"
+msgstr "차트 검토 시나리오"
+
+#: src/views/internal/design-system/charts/review.tsx:112
+msgid "Compact trend"
+msgstr "간략 추세"
+
+#: src/views/internal/design-system/charts/review.tsx:56
+msgid "Compare the same supplied history in three sizes. No return calculation or data-policy changes."
+msgstr "동일한 제공 기록을 세 가지 크기로 비교합니다. 수익률 계산이나 데이터 정책은 변경하지 않습니다."
+
+#: src/views/internal/design-system/charts/review.tsx:92
+msgid "Constrained review"
+msgstr "제한된 너비 검토"
+
+#: src/views/internal/design-system/charts/review.tsx:158
+msgid "Daily · 31 samples"
+msgstr "일별 · 31개 표본"
+
+#: src/views/internal/design-system/charts/review.tsx:30
+msgid "Delayed · simulated"
+msgstr "지연 · 시뮬레이션"
+
+#: src/views/internal/design-system/charts/review.tsx:145
+msgid "Density comparison · same captured month"
+msgstr "밀도 비교 · 동일한 캡처 월"
+
+#: src/views/internal/design-system/charts/review.tsx:28
+msgid "Empty · simulated"
+msgstr "비어 있음 · 시뮬레이션"
+
+#: src/views/internal/design-system/charts/review.tsx:26
+msgid "Estimated segment · simulated"
+msgstr "추정 구간 · 시뮬레이션"
+
+#: src/views/internal/design-system/charts/review.tsx:150
+msgid "Every supplied point is retained. This is not a sampling recommendation."
+msgstr "제공된 모든 데이터 포인트를 유지합니다. 표본 추출 방식을 권장하는 것은 아닙니다."
+
+#: src/views/internal/design-system/charts/review.tsx:24
+msgid "Flat · simulated"
+msgstr "보합 · 시뮬레이션"
+
+#: src/views/internal/design-system/charts/review.tsx:125
+msgid "Full chart"
+msgstr "전체 차트"
+
+#: src/views/internal/design-system/charts/review.tsx:31
+msgid "Gap · simulated"
+msgstr "데이터 공백 · 시뮬레이션"
+
+#: src/views/internal/design-system/charts/review.tsx:164
+msgid "Hourly · 721 samples"
+msgstr "시간별 · 721개 표본"
+
+#: src/views/internal/design-system/charts/review.tsx:100
+msgid "Lab-simulated state, not an actual LCAP event."
+msgstr "실제 LCAP 이벤트가 아닌 실험실 시뮬레이션 상태입니다."
+
+#: src/views/internal/design-system/charts/review.tsx:101
+msgid "LCAP · captured September 13, 2026. Review values, not live prices."
+msgstr "LCAP · 2026년 9월 13일 캡처. 실시간 가격이 아닌 검토용 값입니다."
+
+#: src/views/internal/design-system/charts/review.tsx:27
+msgid "Loading · simulated"
+msgstr "불러오는 중 · 시뮬레이션"
+
+#: src/views/internal/design-system/charts/review.tsx:34
+msgid "Long value · simulated"
+msgstr "긴 값 · 시뮬레이션"
+
+#: src/views/internal/design-system/charts/review.tsx:32
+msgid "One point · simulated"
+msgstr "한 개 포인트 · 시뮬레이션"
+
+#: src/views/internal/design-system/charts/review.tsx:177
+msgid "Review boundary and what comes next"
+msgstr "검토 범위 및 다음 단계"
+
+#: src/views/internal/design-system/charts/review.tsx:180
+msgid "Review the line, fill, labels, inspection and narrow layout. Candles, monthly bars and composition remain separate patterns. No production chart type is being removed."
+msgstr "선, 채우기, 레이블, 데이터 확인 및 좁은 레이아웃을 검토하세요. 캔들, 월별 막대 및 구성 차트는 별도 패턴으로 유지합니다. 운영 환경의 차트 유형을 제거하지 않습니다."
+
+#: src/views/internal/design-system/charts/review.tsx:187
+msgid "Source, return basis and freshness rules remain engineer-owned. No shared palette or financial calculation has changed."
+msgstr "데이터 출처, 수익률 기준 및 최신성 규칙은 엔지니어가 담당합니다. 공용 팔레트나 금융 계산은 변경하지 않았습니다."
+
+#: src/views/internal/design-system/charts/review.tsx:53
+msgid "Time-series charts"
+msgstr "시계열 차트"
+
+#: src/views/internal/design-system/charts/review.tsx:33
+msgid "Two points · simulated"
+msgstr "두 개 포인트 · 시뮬레이션"
+
+#: src/views/internal/design-system/charts/review.tsx:29
+msgid "Unavailable · simulated"
+msgstr "사용 불가 · 시뮬레이션"
+
+#: src/views/internal/design-system/charts/review.tsx:25
+msgid "Zero · simulated"
+msgstr "0 · 시뮬레이션"

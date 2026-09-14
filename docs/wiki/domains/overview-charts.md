@@ -1,6 +1,6 @@
 ---
 title: Overview Charts
-updated: 2026-07-22
+updated: 2026-09-14
 type: domain
 sources:
   - src/views/index-dtf/overview/components/charts/**
@@ -109,3 +109,23 @@ must keep the line chart's perceived range when toggling chart types:
 E2E: charts are covered by [[e2e]] overview specs (`overview-price-chart`, `overview-range-<value>` testids; range buttons render duplicated xl/non-xl — scope locators `:visible`). The api mock serves the candles endpoint line-shaped, so tests exercise the line-chart fallback, not candles.
 
 See [[sdk]] for why other Index DTF data must go through the react-sdk.
+
+## Lab-only header inspection opt-in
+
+`PriceChartBody.onInspect` optionally forwards the selected event's finite
+timestamp/value through `chart-inspection.ts`, hides only the floating Tooltip content,
+and enables Recharts keyboard inspection. All production callers omit it and keep
+the existing tooltip/default behavior. The design-system replay is the sole caller;
+it owns focus, accessible readout, native-pointer exit/blur reset, touch compatibility
+handling and estimate disclosure. Before production
+adoption, engineer review must verify real modes/units, payload lifecycle and host
+integration. No query, SDK, sampling, return or chart-type-default change is implied.
+The generic pressure fixtures do not certify this renderer's reduced motion or
+production edge states. See [[design-system-reference]] for the review boundary.
+
+The lab also opts into `PriceChartBody.launchMarkerVariant="annotation"`: plain
+12px V1 launch text and a separate supporting estimate caption beneath the same
+dashed timestamp line. No launch date, range or series segmentation change.
+Omitted variants retain the original pill for production line/candle callers;
+Home's interactive token marker is unchanged. Check long translations and
+edge-of-domain placement before production adoption.

@@ -1,6 +1,18 @@
 # Earn table-family preparation
 
 Status: implemented and verified as a lab candidate; human review required.
+
+September 14 follow-up: [overnight inspection](design-system-overnight-2026-09-14/tables.md)
+found the 320px vault label overlapping rate text. The local wrapping fix is now
+[integrated and rechecked](design-system-table-governance-followup-2026-09-14/README.md)
+after Claude's review. Existing desktop, rate meanings, wallet rules and shared
+defaults remain unchanged; human visual acceptance is separate.
+
+The subsequent [compact rate-help refinement](design-system-table-governance-followup-2026-09-14/earn-rate-help/README.md)
+moves the existing help action beside the period label, keeping the percentage
+line free of the larger control footprint. Desktop treatment and help content
+remain unchanged; this is not a new rate definition or shared-component default.
+
 The [source receipt](design-system-table-family-evidence/earn-source-2026-09-11/verified/record.json)
 retains 24 captures. The [final verification receipt](design-system-table-family-evidence/earn-lab-2026-09-11/verification.json)
 records 15 final Earn browser checks, 52 captures, 70 focused unit/catalog tests,

@@ -1,4 +1,5 @@
 import { HelpTooltip } from '@/components/design-system-v1/help-tooltip'
+import type { SyntheticEvent } from 'react'
 
 const METRIC_HELP = {
   accuracy: {
@@ -29,10 +30,18 @@ export function HistoryMetricLabel({
           data-testid={`history-help-${field}`}
           data-table-focus={`history-help-${field}`}
           className="inline-flex items-center align-middle"
+          onPointerDownCapture={preserveHelpToggle}
+          onClickCapture={preserveHelpToggle}
+          onClick={(event) => event.stopPropagation()}
         >
           <HelpTooltip accessibleLabel={label} content={content} />
         </span>
       </span>
     </span>
   )
+}
+
+function preserveHelpToggle(event: SyntheticEvent) {
+  // Radix's trigger defaults otherwise close the explicit tap toggle immediately.
+  if ((event.target as Element).closest('button')) event.preventDefault()
 }

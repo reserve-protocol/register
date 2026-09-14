@@ -1,0 +1,1105 @@
+{
+  "rawReportSha256": "11576d0394cc4e5b096b5267b928145ad7a14718de0e718d3644e6af364faae4",
+  "stats": {
+    "startTime": "2026-09-14T13:15:09.413Z",
+    "duration": 90333.425,
+    "expected": 17,
+    "skipped": 0,
+    "unexpected": 2,
+    "flaky": 0
+  },
+  "errors": [],
+  "records": [
+    {
+      "file": "earn-family-lab-regressions.spec.ts",
+      "line": 26,
+      "title": "earn-family-lab-regressions.spec.ts / Earn candidate exposes source-backed opportunities",
+      "status": "expected",
+      "expectedStatus": "passed",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 13157,
+          "retry": 0,
+          "errors": [],
+          "attachments": [
+            {
+              "name": "public-source-digest",
+              "contentType": "text/plain",
+              "bytes": 64,
+              "sha256": "0875d7b01029ff49d4dafdf16e1971aa8b42cd39c9c9fcb9c64f4e0d27e40235",
+              "text": "5382c9bb34fca0904facc93550202eb20a6592dfd666a556dba50516235cf7e2"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "file": "earn-family-lab-regressions.spec.ts",
+      "line": 35,
+      "title": "earn-family-lab-regressions.spec.ts / Earn candidate states light 320",
+      "status": "expected",
+      "expectedStatus": "passed",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 5036,
+          "retry": 0,
+          "errors": [],
+          "attachments": [
+            {
+              "name": "index-default",
+              "contentType": "image/png",
+              "bytes": 61987,
+              "sha256": "01c523fc19f8686fca4cafb86c478781f8b10fcc64bc948ddd34e54de4eb7ede"
+            },
+            {
+              "name": "index-wallet",
+              "contentType": "image/png",
+              "bytes": 66145,
+              "sha256": "f394844880dea36607cce241e27155e86e1549b03cabfdfb1067b866b05bd8b2"
+            },
+            {
+              "name": "index-sparse",
+              "contentType": "image/png",
+              "bytes": 65472,
+              "sha256": "774ac19f4801d9e3ece849721ea1ae69d75a41a67799b2eeb307474c7936a260"
+            },
+            {
+              "name": "index-long",
+              "contentType": "image/png",
+              "bytes": 66010,
+              "sha256": "f6157434c33c1cc885de391994446d522a3f453a79fa003d4c5da4146c56c744"
+            },
+            {
+              "name": "wallet-loading",
+              "contentType": "image/png",
+              "bytes": 57977,
+              "sha256": "d254e791fc0a09ada93f969b55c0eb3fa0253f6eed3ea0a00cd8621db2363ab1"
+            },
+            {
+              "name": "zero-unavailable",
+              "contentType": "image/png",
+              "bytes": 54523,
+              "sha256": "251c553bce3566d9be2e7d709916fa967784c6862c3206e28f18d8ade5e559e5"
+            },
+            {
+              "name": "loading",
+              "contentType": "image/png",
+              "bytes": 30522,
+              "sha256": "907d0be4486a0df03bec806cb6afa8d5cc75eb24710e5b129468bbb65bd462f1"
+            },
+            {
+              "name": "yield-wallet",
+              "contentType": "image/png",
+              "bytes": 68080,
+              "sha256": "8f99be0155d0ca731f785a7ba866fe91ed60dddbb4dbb0f5a822c8b06df16154"
+            },
+            {
+              "name": "yield-sparse",
+              "contentType": "image/png",
+              "bytes": 67826,
+              "sha256": "7c2406619828e60169db024ab408530ed48ddddddf2afc9f65ad3467eccb82e4"
+            },
+            {
+              "name": "yield-long",
+              "contentType": "image/png",
+              "bytes": 63673,
+              "sha256": "3214667ac90366001f58bc326e2995331d3b625fe5fa1b6ee008643134aa0d08"
+            },
+            {
+              "name": "yield-default",
+              "contentType": "image/png",
+              "bytes": 68221,
+              "sha256": "917ff4ff97e94778b36315d443c7eefd42549def85b420c8cf8b3b9fcf7ed99c"
+            },
+            {
+              "name": "public-source-digest",
+              "contentType": "text/plain",
+              "bytes": 64,
+              "sha256": "0875d7b01029ff49d4dafdf16e1971aa8b42cd39c9c9fcb9c64f4e0d27e40235",
+              "text": "5382c9bb34fca0904facc93550202eb20a6592dfd666a556dba50516235cf7e2"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "file": "earn-family-lab-regressions.spec.ts",
+      "line": 35,
+      "title": "earn-family-lab-regressions.spec.ts / Earn candidate states light 390",
+      "status": "expected",
+      "expectedStatus": "passed",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 5009,
+          "retry": 0,
+          "errors": [],
+          "attachments": [
+            {
+              "name": "index-default",
+              "contentType": "image/png",
+              "bytes": 66673,
+              "sha256": "3fd8ac7df783e3d1739d5ec5b8a48a8454786d214dcf0153e5db534b1de847d9"
+            },
+            {
+              "name": "index-wallet",
+              "contentType": "image/png",
+              "bytes": 67305,
+              "sha256": "215b705a06d68f9719dceeec90c06698a543276d81afe64aa8f28b03bc20c154"
+            },
+            {
+              "name": "index-sparse",
+              "contentType": "image/png",
+              "bytes": 67293,
+              "sha256": "7a209404e663ff6c415d67d5fb82c04899b309619c47bb1709d3547babe515fa"
+            },
+            {
+              "name": "index-long",
+              "contentType": "image/png",
+              "bytes": 77114,
+              "sha256": "4c6a7f2326f49f4fb65ee6583abf9cac755897c28377b06918e0eaecdadede20"
+            },
+            {
+              "name": "wallet-loading",
+              "contentType": "image/png",
+              "bytes": 59030,
+              "sha256": "6691dbaf9a5639fa296bb9740460d3353f349948378e327363015959e8c137f5"
+            },
+            {
+              "name": "zero-unavailable",
+              "contentType": "image/png",
+              "bytes": 57760,
+              "sha256": "15afb751f0f489be26b56234d292cf8bebb0330e22cc959145d50103642ef237"
+            },
+            {
+              "name": "loading",
+              "contentType": "image/png",
+              "bytes": 31273,
+              "sha256": "98e0c014992d924b675ca0336a6aa30b10fcc41b4101026104616290739ee5e9"
+            },
+            {
+              "name": "yield-wallet",
+              "contentType": "image/png",
+              "bytes": 76195,
+              "sha256": "d5c976f7eaec4cf38b8f080cb811cae2c08d3ee83566685d1ef1ba8258f71bb7"
+            },
+            {
+              "name": "yield-sparse",
+              "contentType": "image/png",
+              "bytes": 75957,
+              "sha256": "bb9d5f0591fe16a7fa72895ac839099a75c56d63c3ec0beae9d08c7027f06a35"
+            },
+            {
+              "name": "yield-long",
+              "contentType": "image/png",
+              "bytes": 81549,
+              "sha256": "e9f33bb21179d6da50df18206c4ea5a700c057034486c626211ce0fd0468c6a2"
+            },
+            {
+              "name": "yield-default",
+              "contentType": "image/png",
+              "bytes": 74117,
+              "sha256": "31bbe5f113ed61568724723b9efe7806306e4240443ff2bc959d8fa47d7264c5"
+            },
+            {
+              "name": "public-source-digest",
+              "contentType": "text/plain",
+              "bytes": 64,
+              "sha256": "0875d7b01029ff49d4dafdf16e1971aa8b42cd39c9c9fcb9c64f4e0d27e40235",
+              "text": "5382c9bb34fca0904facc93550202eb20a6592dfd666a556dba50516235cf7e2"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "file": "earn-family-lab-regressions.spec.ts",
+      "line": 35,
+      "title": "earn-family-lab-regressions.spec.ts / Earn candidate states light 1400",
+      "status": "expected",
+      "expectedStatus": "passed",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 4777,
+          "retry": 0,
+          "errors": [],
+          "attachments": [
+            {
+              "name": "index-default",
+              "contentType": "image/png",
+              "bytes": 107820,
+              "sha256": "b5d0097eb0d07417eed69db3a138d10219d4109584ed7e4c4a01488f33d0556f"
+            },
+            {
+              "name": "index-wallet",
+              "contentType": "image/png",
+              "bytes": 120000,
+              "sha256": "efa0684a868b934cc669018e3c17ebd2d3ef353abdcf1504d92f1494e7a83746"
+            },
+            {
+              "name": "index-sparse",
+              "contentType": "image/png",
+              "bytes": 120043,
+              "sha256": "ae0e9c7d8cafec7c7079d73018040eb7b6c7b90eb697eb609870df4d67d3a3cf"
+            },
+            {
+              "name": "index-long",
+              "contentType": "image/png",
+              "bytes": 131832,
+              "sha256": "950ab5f3c2b8287075f1de0ede864c5a1880c9142715de457f80489103338bf1"
+            },
+            {
+              "name": "index-long-1024",
+              "contentType": "image/png",
+              "bytes": 130892,
+              "sha256": "e3e5fb72a9694e4e362b909cc4b67e1cc86bede9790fbf6666b064aa5b3e9832"
+            },
+            {
+              "name": "wallet-loading",
+              "contentType": "image/png",
+              "bytes": 112409,
+              "sha256": "879d254f5bf48dfb4fdf6e115ea72b3e68dea566d0962565444539bb1abd88cb"
+            },
+            {
+              "name": "zero-unavailable",
+              "contentType": "image/png",
+              "bytes": 105312,
+              "sha256": "12a29c65038727d280f8e5208df39baf82841e933ddaf60129c1e1bf2369cab6"
+            },
+            {
+              "name": "loading",
+              "contentType": "image/png",
+              "bytes": 72972,
+              "sha256": "9b220eff332afde347820ddf62587fbae018fe4d6a7f58f4d1b0ac822f4df22e"
+            },
+            {
+              "name": "yield-wallet",
+              "contentType": "image/png",
+              "bytes": 145450,
+              "sha256": "4674dc4262c341bc23dc5ffa20a3961c0768140884eca9c17600e3c5f075341d"
+            },
+            {
+              "name": "yield-sparse",
+              "contentType": "image/png",
+              "bytes": 147484,
+              "sha256": "51eeb5c891b66f111ea9a59b900270bccc20266f6841b2fe2ae50398038c2dba"
+            },
+            {
+              "name": "yield-long",
+              "contentType": "image/png",
+              "bytes": 151609,
+              "sha256": "3d5dfbbe5ddf5fc57a76b77768984eb555324f115c82866ca41eb2920791d847"
+            },
+            {
+              "name": "yield-default",
+              "contentType": "image/png",
+              "bytes": 139816,
+              "sha256": "c13c31ecf51345498deefa30b9ccf5a167552fe7f3d75adcd469820e6fe2beb9"
+            },
+            {
+              "name": "public-source-digest",
+              "contentType": "text/plain",
+              "bytes": 64,
+              "sha256": "0875d7b01029ff49d4dafdf16e1971aa8b42cd39c9c9fcb9c64f4e0d27e40235",
+              "text": "5382c9bb34fca0904facc93550202eb20a6592dfd666a556dba50516235cf7e2"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "file": "earn-family-lab-regressions.spec.ts",
+      "line": 35,
+      "title": "earn-family-lab-regressions.spec.ts / Earn candidate states dark 320",
+      "status": "expected",
+      "expectedStatus": "passed",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 4828,
+          "retry": 0,
+          "errors": [],
+          "attachments": [
+            {
+              "name": "index-default",
+              "contentType": "image/png",
+              "bytes": 63098,
+              "sha256": "c3989afc5733b4e1bf6921017dbe2513ce48ce93659717dc78aee528ff958977"
+            },
+            {
+              "name": "index-wallet",
+              "contentType": "image/png",
+              "bytes": 67047,
+              "sha256": "0778b68288f2eb4ae13c9392094b8d6dacdc539e9330998443cb4d53313c9788"
+            },
+            {
+              "name": "index-sparse",
+              "contentType": "image/png",
+              "bytes": 66133,
+              "sha256": "f29dffaaa575902835a22d3ee779e303dd4837908467d68f109d66c6345abce5"
+            },
+            {
+              "name": "index-long",
+              "contentType": "image/png",
+              "bytes": 66391,
+              "sha256": "e77db36c47b7cc30f4f646290f466c83b46bb9fb55269a2b92367b7087946c23"
+            },
+            {
+              "name": "wallet-loading",
+              "contentType": "image/png",
+              "bytes": 58400,
+              "sha256": "7f95e4b0b7d8d5f1f0497d1a289d8b4aab69797004ad2328d5e8727664c0be2d"
+            },
+            {
+              "name": "zero-unavailable",
+              "contentType": "image/png",
+              "bytes": 54967,
+              "sha256": "c1b60c74c3d1f6fec933c10a3a56b724ca90dbee906629ed7b592a7e9d80d5e7"
+            },
+            {
+              "name": "loading",
+              "contentType": "image/png",
+              "bytes": 30717,
+              "sha256": "bb46e6c09c55704b347d6f4c04a19b17720e26503a1b8f908350899a204ab4ba"
+            },
+            {
+              "name": "yield-wallet",
+              "contentType": "image/png",
+              "bytes": 68889,
+              "sha256": "6393cfb1cd6387b7dc2da1a0f60c585ea13d869949e597a3931497017db7e00d"
+            },
+            {
+              "name": "yield-sparse",
+              "contentType": "image/png",
+              "bytes": 68908,
+              "sha256": "3ab9ae7698cc686fb260fbd9b5f51c76d7bdd1a8a74b7cc7223eef342900597f"
+            },
+            {
+              "name": "yield-long",
+              "contentType": "image/png",
+              "bytes": 64638,
+              "sha256": "a66df0a83e2d6933c13dbd9539f015341127be465b3235a589455161bd9c6a42"
+            },
+            {
+              "name": "yield-default",
+              "contentType": "image/png",
+              "bytes": 68977,
+              "sha256": "51ed6478a1f3a1dbe2a6e9931438f8c2d4597b9e29e99f37fce7b846435a289d"
+            },
+            {
+              "name": "public-source-digest",
+              "contentType": "text/plain",
+              "bytes": 64,
+              "sha256": "0875d7b01029ff49d4dafdf16e1971aa8b42cd39c9c9fcb9c64f4e0d27e40235",
+              "text": "5382c9bb34fca0904facc93550202eb20a6592dfd666a556dba50516235cf7e2"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "file": "earn-family-lab-regressions.spec.ts",
+      "line": 35,
+      "title": "earn-family-lab-regressions.spec.ts / Earn candidate states dark 390",
+      "status": "expected",
+      "expectedStatus": "passed",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 4962,
+          "retry": 0,
+          "errors": [],
+          "attachments": [
+            {
+              "name": "index-default",
+              "contentType": "image/png",
+              "bytes": 67665,
+              "sha256": "a90bd8aed8ccf938a6cb004c479bc73576ff25871db698717aa0f2f4057b0c12"
+            },
+            {
+              "name": "index-wallet",
+              "contentType": "image/png",
+              "bytes": 68193,
+              "sha256": "7581fed2b27c2126dca2c2505e01d5c7d2b020019493baa74df6213472198ec2"
+            },
+            {
+              "name": "index-sparse",
+              "contentType": "image/png",
+              "bytes": 67873,
+              "sha256": "fedb845f6f9ed63b6a70d75addd4703e9bf984227d19b2586f292570077df653"
+            },
+            {
+              "name": "index-long",
+              "contentType": "image/png",
+              "bytes": 77931,
+              "sha256": "4c03ac2d8d7956b98ea340c7cabad48516b687e01d702d613041bb4b710f9f03"
+            },
+            {
+              "name": "wallet-loading",
+              "contentType": "image/png",
+              "bytes": 59350,
+              "sha256": "8d09f6d15ee4827964cdc3cd871adc27e42fc6d0adec3687af4e32c7297e4231"
+            },
+            {
+              "name": "zero-unavailable",
+              "contentType": "image/png",
+              "bytes": 58219,
+              "sha256": "f795542d5397f64c064428f11eb606c00b26adf93d4fc55ea427a5a1fbb63d53"
+            },
+            {
+              "name": "loading",
+              "contentType": "image/png",
+              "bytes": 31427,
+              "sha256": "eae041ef493be2d36356fcce93e50d13df1701e4f425c4395567b2e31cb6100e"
+            },
+            {
+              "name": "yield-wallet",
+              "contentType": "image/png",
+              "bytes": 76940,
+              "sha256": "f0479beb40d261d348d1f726b03102837cda4b525f7ce943886e03a2a335780a"
+            },
+            {
+              "name": "yield-sparse",
+              "contentType": "image/png",
+              "bytes": 76947,
+              "sha256": "8ab120d3146d8df85753930ad33728fcbb6606ffb4499845c41f16372ab39ab6"
+            },
+            {
+              "name": "yield-long",
+              "contentType": "image/png",
+              "bytes": 82263,
+              "sha256": "5b0b32b7391097531c2c156849caf4a6904ae91574c41b8f2734f7809d700bc6"
+            },
+            {
+              "name": "yield-default",
+              "contentType": "image/png",
+              "bytes": 74693,
+              "sha256": "fe68ba200888eb64ef35c319e3ec97367756f6d46d8e3c2ff0e1965b4858264d"
+            },
+            {
+              "name": "public-source-digest",
+              "contentType": "text/plain",
+              "bytes": 64,
+              "sha256": "0875d7b01029ff49d4dafdf16e1971aa8b42cd39c9c9fcb9c64f4e0d27e40235",
+              "text": "5382c9bb34fca0904facc93550202eb20a6592dfd666a556dba50516235cf7e2"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "file": "earn-family-lab-regressions.spec.ts",
+      "line": 35,
+      "title": "earn-family-lab-regressions.spec.ts / Earn candidate states dark 1400",
+      "status": "expected",
+      "expectedStatus": "passed",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 4828,
+          "retry": 0,
+          "errors": [],
+          "attachments": [
+            {
+              "name": "index-default",
+              "contentType": "image/png",
+              "bytes": 108721,
+              "sha256": "361b84b85f3a042e2c9298ef995aca5ad5f133030c0e585e271ffa656a2c8100",
+              "file": "earn-candidate-states-dark-1400-index-default-361b84b8.png"
+            },
+            {
+              "name": "index-wallet",
+              "contentType": "image/png",
+              "bytes": 121076,
+              "sha256": "17d5c9c1ce41d220f5de0aeac9ee5928dd2dc1a0d010f5edb724b04e26b81044",
+              "file": "earn-candidate-states-dark-1400-index-wallet-17d5c9c1.png"
+            },
+            {
+              "name": "index-sparse",
+              "contentType": "image/png",
+              "bytes": 120833,
+              "sha256": "e6b74cf1197ddd465f5fcd9e48b5c4f8e49e50f26ac6ef23017aa761cd3119b8",
+              "file": "earn-candidate-states-dark-1400-index-sparse-e6b74cf1.png"
+            },
+            {
+              "name": "index-long",
+              "contentType": "image/png",
+              "bytes": 132585,
+              "sha256": "d332059015b7ced3f42ecfbab2c114a66467d9c7ccc2a35b35ec2e6580b68310",
+              "file": "earn-candidate-states-dark-1400-index-long-d3320590.png"
+            },
+            {
+              "name": "index-long-1024",
+              "contentType": "image/png",
+              "bytes": 131616,
+              "sha256": "b81095156d85a7fbc6c5cde4d168ff421fdeb7ceda8922e3d8d2211b06ece7ea",
+              "file": "earn-candidate-states-dark-1400-index-long-1024-b8109515.png"
+            },
+            {
+              "name": "wallet-loading",
+              "contentType": "image/png",
+              "bytes": 113190,
+              "sha256": "4b8fd1ed7efd28fd47bb36c45b982b926db17516da67e9fafad1adcd9dbe94d7"
+            },
+            {
+              "name": "zero-unavailable",
+              "contentType": "image/png",
+              "bytes": 105953,
+              "sha256": "e12232be729fe9c27a4301347ed6393d5e4dfed08d25cf0616da8e4a4b30b436"
+            },
+            {
+              "name": "loading",
+              "contentType": "image/png",
+              "bytes": 73456,
+              "sha256": "a96ebc94f3a6441c938473b3f37f513844c09f2dad56e692d0b3c9cafbd519ee"
+            },
+            {
+              "name": "yield-wallet",
+              "contentType": "image/png",
+              "bytes": 146605,
+              "sha256": "a471d548b553b5e43b30c659a088bc7a0aa16ac06520e74ddb8a42fe360f10cb"
+            },
+            {
+              "name": "yield-sparse",
+              "contentType": "image/png",
+              "bytes": 148354,
+              "sha256": "d69651d4a704052092b3fc3b696459919be320c7a73efcf71ed7d8ae2021e9c1"
+            },
+            {
+              "name": "yield-long",
+              "contentType": "image/png",
+              "bytes": 152477,
+              "sha256": "56829716042480b18ed093a1e214cdacf6d1717d18b3d7a2e967bb382ce539e2"
+            },
+            {
+              "name": "yield-default",
+              "contentType": "image/png",
+              "bytes": 140773,
+              "sha256": "be25b5b2672f2edbc2395679d11d18364909edb7e5cf0930df670acf51bf0efd"
+            },
+            {
+              "name": "public-source-digest",
+              "contentType": "text/plain",
+              "bytes": 64,
+              "sha256": "0875d7b01029ff49d4dafdf16e1971aa8b42cd39c9c9fcb9c64f4e0d27e40235",
+              "text": "5382c9bb34fca0904facc93550202eb20a6592dfd666a556dba50516235cf7e2"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "file": "earn-family-lab-regressions.spec.ts",
+      "line": 277,
+      "title": "earn-family-lab-regressions.spec.ts / Earn candidate interactions light 390",
+      "status": "expected",
+      "expectedStatus": "passed",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 4419,
+          "retry": 0,
+          "errors": [],
+          "attachments": [
+            {
+              "name": "governed-open",
+              "contentType": "image/png",
+              "bytes": 68900,
+              "sha256": "10289405eb2c76117a6d7dcc1aa01b9a7c94a658ff81117e5a4301a6e90141cd"
+            },
+            {
+              "name": "public-source-digest",
+              "contentType": "text/plain",
+              "bytes": 64,
+              "sha256": "0875d7b01029ff49d4dafdf16e1971aa8b42cd39c9c9fcb9c64f4e0d27e40235",
+              "text": "5382c9bb34fca0904facc93550202eb20a6592dfd666a556dba50516235cf7e2"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "file": "earn-family-lab-regressions.spec.ts",
+      "line": 277,
+      "title": "earn-family-lab-regressions.spec.ts / Earn candidate interactions light 1400",
+      "status": "expected",
+      "expectedStatus": "passed",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 4463,
+          "retry": 0,
+          "errors": [],
+          "attachments": [
+            {
+              "name": "governed-open",
+              "contentType": "image/png",
+              "bytes": 142409,
+              "sha256": "9ea24c58141ad76e22b6eedfea9d69a373c9cc330dead0867a8976d180c90d3e"
+            },
+            {
+              "name": "public-source-digest",
+              "contentType": "text/plain",
+              "bytes": 64,
+              "sha256": "0875d7b01029ff49d4dafdf16e1971aa8b42cd39c9c9fcb9c64f4e0d27e40235",
+              "text": "5382c9bb34fca0904facc93550202eb20a6592dfd666a556dba50516235cf7e2"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "file": "earn-family-lab-regressions.spec.ts",
+      "line": 277,
+      "title": "earn-family-lab-regressions.spec.ts / Earn candidate interactions dark 390",
+      "status": "expected",
+      "expectedStatus": "passed",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 3900,
+          "retry": 0,
+          "errors": [],
+          "attachments": [
+            {
+              "name": "governed-open",
+              "contentType": "image/png",
+              "bytes": 70392,
+              "sha256": "f336dc2d6ded2ffd96a2e0113f14dedb942078ac3609b9f0e5e1b1ff81522f65"
+            },
+            {
+              "name": "public-source-digest",
+              "contentType": "text/plain",
+              "bytes": 64,
+              "sha256": "0875d7b01029ff49d4dafdf16e1971aa8b42cd39c9c9fcb9c64f4e0d27e40235",
+              "text": "5382c9bb34fca0904facc93550202eb20a6592dfd666a556dba50516235cf7e2"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "file": "earn-family-lab-regressions.spec.ts",
+      "line": 277,
+      "title": "earn-family-lab-regressions.spec.ts / Earn candidate interactions dark 1400",
+      "status": "expected",
+      "expectedStatus": "passed",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 4557,
+          "retry": 0,
+          "errors": [],
+          "attachments": [
+            {
+              "name": "governed-open",
+              "contentType": "image/png",
+              "bytes": 145123,
+              "sha256": "9e8e8fab338e3a13585d6e7f76aec82709385fa72a8114347b1dc7932678e568"
+            },
+            {
+              "name": "public-source-digest",
+              "contentType": "text/plain",
+              "bytes": 64,
+              "sha256": "0875d7b01029ff49d4dafdf16e1971aa8b42cd39c9c9fcb9c64f4e0d27e40235",
+              "text": "5382c9bb34fca0904facc93550202eb20a6592dfd666a556dba50516235cf7e2"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "file": "earn-family-lab-regressions.spec.ts",
+      "line": 339,
+      "title": "earn-family-lab-regressions.spec.ts / Earn candidate projection and sorting light",
+      "status": "expected",
+      "expectedStatus": "passed",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 4061,
+          "retry": 0,
+          "errors": [],
+          "attachments": [
+            {
+              "name": "constrained-column",
+              "contentType": "image/png",
+              "bytes": 89060,
+              "sha256": "0200fccdbd77b5cfad03d7a994f092c474914e62ea5ee5341f0489ad4a552398"
+            },
+            {
+              "name": "public-source-digest",
+              "contentType": "text/plain",
+              "bytes": 64,
+              "sha256": "0875d7b01029ff49d4dafdf16e1971aa8b42cd39c9c9fcb9c64f4e0d27e40235",
+              "text": "5382c9bb34fca0904facc93550202eb20a6592dfd666a556dba50516235cf7e2"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "file": "earn-family-lab-regressions.spec.ts",
+      "line": 339,
+      "title": "earn-family-lab-regressions.spec.ts / Earn candidate projection and sorting dark",
+      "status": "expected",
+      "expectedStatus": "passed",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 4077,
+          "retry": 0,
+          "errors": [],
+          "attachments": [
+            {
+              "name": "constrained-column",
+              "contentType": "image/png",
+              "bytes": 90652,
+              "sha256": "acefac24c5b790640e806d465f6a73326ab5b51f85bbc454c526504821a6c797"
+            },
+            {
+              "name": "public-source-digest",
+              "contentType": "text/plain",
+              "bytes": 64,
+              "sha256": "0875d7b01029ff49d4dafdf16e1971aa8b42cd39c9c9fcb9c64f4e0d27e40235",
+              "text": "5382c9bb34fca0904facc93550202eb20a6592dfd666a556dba50516235cf7e2"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "file": "earn-rate-layout-lab-regressions.spec.ts",
+      "line": 6,
+      "title": "earn-rate-layout-lab-regressions.spec.ts / Earn compact rate rhythm and help light",
+      "status": "unexpected",
+      "expectedStatus": "passed",
+      "results": [
+        {
+          "status": "failed",
+          "duration": 3461,
+          "retry": 0,
+          "errors": [
+            {
+              "location": {
+                "file": "/Users/lill-kire/Code/register/e2e/design-system/earn-rate-layout-lab-regressions.spec.ts",
+                "column": 40,
+                "line": 61
+              },
+              "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeLessThanOrEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: <= \u001b[32m1\u001b[39m\nReceived:    \u001b[31m12\u001b[39m\n\n  59 |           .soft(geometry.valueRight, 'APR/APY ends on the content edge')\n  60 |           .toBeCloseTo(0, 0)\n> 61 |         expect.soft(geometry.overflow).toBeLessThanOrEqual(1)\n     |                                        ^\n  62 |         await expect(record.locator('[data-slot=\"earn-rate\"]')).toHaveText(\n  63 |           '2.29%APR'\n  64 |         )\n    at /Users/lill-kire/Code/register/e2e/design-system/earn-rate-layout-lab-regressions.spec.ts:61:40"
+            },
+            {
+              "location": {
+                "file": "/Users/lill-kire/Code/register/e2e/design-system/earn-rate-layout-lab-regressions.spec.ts",
+                "column": 40,
+                "line": 61
+              },
+              "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeLessThanOrEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: <= \u001b[32m1\u001b[39m\nReceived:    \u001b[31m12\u001b[39m\n\n  59 |           .soft(geometry.valueRight, 'APR/APY ends on the content edge')\n  60 |           .toBeCloseTo(0, 0)\n> 61 |         expect.soft(geometry.overflow).toBeLessThanOrEqual(1)\n     |                                        ^\n  62 |         await expect(record.locator('[data-slot=\"earn-rate\"]')).toHaveText(\n  63 |           '2.29%APR'\n  64 |         )\n    at /Users/lill-kire/Code/register/e2e/design-system/earn-rate-layout-lab-regressions.spec.ts:61:40"
+            },
+            {
+              "location": {
+                "file": "/Users/lill-kire/Code/register/e2e/design-system/earn-rate-layout-lab-regressions.spec.ts",
+                "column": 40,
+                "line": 61
+              },
+              "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeLessThanOrEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: <= \u001b[32m1\u001b[39m\nReceived:    \u001b[31m12\u001b[39m\n\n  59 |           .soft(geometry.valueRight, 'APR/APY ends on the content edge')\n  60 |           .toBeCloseTo(0, 0)\n> 61 |         expect.soft(geometry.overflow).toBeLessThanOrEqual(1)\n     |                                        ^\n  62 |         await expect(record.locator('[data-slot=\"earn-rate\"]')).toHaveText(\n  63 |           '2.29%APR'\n  64 |         )\n    at /Users/lill-kire/Code/register/e2e/design-system/earn-rate-layout-lab-regressions.spec.ts:61:40"
+            },
+            {
+              "location": {
+                "file": "/Users/lill-kire/Code/register/e2e/design-system/earn-rate-layout-lab-regressions.spec.ts",
+                "column": 40,
+                "line": 61
+              },
+              "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeLessThanOrEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: <= \u001b[32m1\u001b[39m\nReceived:    \u001b[31m12\u001b[39m\n\n  59 |           .soft(geometry.valueRight, 'APR/APY ends on the content edge')\n  60 |           .toBeCloseTo(0, 0)\n> 61 |         expect.soft(geometry.overflow).toBeLessThanOrEqual(1)\n     |                                        ^\n  62 |         await expect(record.locator('[data-slot=\"earn-rate\"]')).toHaveText(\n  63 |           '2.29%APR'\n  64 |         )\n    at /Users/lill-kire/Code/register/e2e/design-system/earn-rate-layout-lab-regressions.spec.ts:61:40"
+            }
+          ],
+          "attachments": [
+            {
+              "name": "earn-rate-light-320-Default",
+              "contentType": "image/png",
+              "bytes": 73315,
+              "sha256": "d81e856a1f771815936da8ba75c92343348f26153d176db7f33655caf54cb888"
+            },
+            {
+              "name": "earn-rate-light-320-Long content",
+              "contentType": "image/png",
+              "bytes": 72996,
+              "sha256": "ce2abd69f6fb8dbe45767a8b6375b765c81b67d9e50a4dc2bf6e8ec1213e281c"
+            },
+            {
+              "name": "earn-rate-light-390-Default",
+              "contentType": "image/png",
+              "bytes": 79281,
+              "sha256": "6f08fa5c7da169ceecacbbfeb30fe02c390ab0b4c07dde2ad248ffb389d08b0b"
+            },
+            {
+              "name": "earn-rate-light-390-Long content",
+              "contentType": "image/png",
+              "bytes": 81997,
+              "sha256": "4dbc8ff3e1d97df417fc270b11d94b83f973b8067ed2cc2f677072bcb40e5d85",
+              "file": "earn-compact-rate-rhythm-and-help-light-earn-rate-light-390-long-content-4dbc8ff3.png"
+            },
+            {
+              "name": "earn-rate-light-before-touch",
+              "contentType": "image/png",
+              "bytes": 82043,
+              "sha256": "25035e07719b9278524c1cd9d99d544cfba2dcafd0be47ebb1d1d2b6e0dcf16a"
+            },
+            {
+              "name": "screenshot",
+              "contentType": "image/png",
+              "bytes": 85339,
+              "sha256": "8263995ef1f5bb451b92ddb8aae492538c663dc56573570380fa6584662ab48a"
+            },
+            {
+              "name": "current-source",
+              "contentType": "application/json",
+              "bytes": 344580,
+              "sha256": "01392c1b5051db345e4d7bd138ff59869dee2d99c9d81749d33a4014a2afbb4c"
+            },
+            {
+              "name": "error-context",
+              "contentType": "text/markdown",
+              "bytes": 129837,
+              "sha256": "33eaeb41e68ab9ed608ef7523c3343756511a1c94dd35a3e98fd426496e999a8"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "file": "earn-rate-layout-lab-regressions.spec.ts",
+      "line": 6,
+      "title": "earn-rate-layout-lab-regressions.spec.ts / Earn compact rate rhythm and help dark",
+      "status": "unexpected",
+      "expectedStatus": "passed",
+      "results": [
+        {
+          "status": "failed",
+          "duration": 3539,
+          "retry": 0,
+          "errors": [
+            {
+              "location": {
+                "file": "/Users/lill-kire/Code/register/e2e/design-system/earn-rate-layout-lab-regressions.spec.ts",
+                "column": 40,
+                "line": 61
+              },
+              "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeLessThanOrEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: <= \u001b[32m1\u001b[39m\nReceived:    \u001b[31m12\u001b[39m\n\n  59 |           .soft(geometry.valueRight, 'APR/APY ends on the content edge')\n  60 |           .toBeCloseTo(0, 0)\n> 61 |         expect.soft(geometry.overflow).toBeLessThanOrEqual(1)\n     |                                        ^\n  62 |         await expect(record.locator('[data-slot=\"earn-rate\"]')).toHaveText(\n  63 |           '2.29%APR'\n  64 |         )\n    at /Users/lill-kire/Code/register/e2e/design-system/earn-rate-layout-lab-regressions.spec.ts:61:40"
+            },
+            {
+              "location": {
+                "file": "/Users/lill-kire/Code/register/e2e/design-system/earn-rate-layout-lab-regressions.spec.ts",
+                "column": 40,
+                "line": 61
+              },
+              "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeLessThanOrEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: <= \u001b[32m1\u001b[39m\nReceived:    \u001b[31m12\u001b[39m\n\n  59 |           .soft(geometry.valueRight, 'APR/APY ends on the content edge')\n  60 |           .toBeCloseTo(0, 0)\n> 61 |         expect.soft(geometry.overflow).toBeLessThanOrEqual(1)\n     |                                        ^\n  62 |         await expect(record.locator('[data-slot=\"earn-rate\"]')).toHaveText(\n  63 |           '2.29%APR'\n  64 |         )\n    at /Users/lill-kire/Code/register/e2e/design-system/earn-rate-layout-lab-regressions.spec.ts:61:40"
+            },
+            {
+              "location": {
+                "file": "/Users/lill-kire/Code/register/e2e/design-system/earn-rate-layout-lab-regressions.spec.ts",
+                "column": 40,
+                "line": 61
+              },
+              "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeLessThanOrEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: <= \u001b[32m1\u001b[39m\nReceived:    \u001b[31m12\u001b[39m\n\n  59 |           .soft(geometry.valueRight, 'APR/APY ends on the content edge')\n  60 |           .toBeCloseTo(0, 0)\n> 61 |         expect.soft(geometry.overflow).toBeLessThanOrEqual(1)\n     |                                        ^\n  62 |         await expect(record.locator('[data-slot=\"earn-rate\"]')).toHaveText(\n  63 |           '2.29%APR'\n  64 |         )\n    at /Users/lill-kire/Code/register/e2e/design-system/earn-rate-layout-lab-regressions.spec.ts:61:40"
+            },
+            {
+              "location": {
+                "file": "/Users/lill-kire/Code/register/e2e/design-system/earn-rate-layout-lab-regressions.spec.ts",
+                "column": 40,
+                "line": 61
+              },
+              "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeLessThanOrEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: <= \u001b[32m1\u001b[39m\nReceived:    \u001b[31m12\u001b[39m\n\n  59 |           .soft(geometry.valueRight, 'APR/APY ends on the content edge')\n  60 |           .toBeCloseTo(0, 0)\n> 61 |         expect.soft(geometry.overflow).toBeLessThanOrEqual(1)\n     |                                        ^\n  62 |         await expect(record.locator('[data-slot=\"earn-rate\"]')).toHaveText(\n  63 |           '2.29%APR'\n  64 |         )\n    at /Users/lill-kire/Code/register/e2e/design-system/earn-rate-layout-lab-regressions.spec.ts:61:40"
+            }
+          ],
+          "attachments": [
+            {
+              "name": "earn-rate-dark-320-Default",
+              "contentType": "image/png",
+              "bytes": 74514,
+              "sha256": "e958ddc93d51958ded27518ad6327f1aae27a0b32dbf4536a2aa02e11c1fd983"
+            },
+            {
+              "name": "earn-rate-dark-320-Long content",
+              "contentType": "image/png",
+              "bytes": 74152,
+              "sha256": "e309b5599e12be2b4f8b287b816dbade7b7c9ef9fc5ce9e83f6648ab3225c06c"
+            },
+            {
+              "name": "earn-rate-dark-390-Default",
+              "contentType": "image/png",
+              "bytes": 79697,
+              "sha256": "a57aea4895bc60b5d01590a88980e2f39dc49f47c03d77eae2b46b64dcbf6edd"
+            },
+            {
+              "name": "earn-rate-dark-390-Long content",
+              "contentType": "image/png",
+              "bytes": 82536,
+              "sha256": "927031f40e91392ae6abc71e9885149df1f0883821a0b69b78afeb807077c20d",
+              "file": "earn-compact-rate-rhythm-and-help-dark-earn-rate-dark-390-long-content-927031f4.png"
+            },
+            {
+              "name": "earn-rate-dark-before-touch",
+              "contentType": "image/png",
+              "bytes": 82573,
+              "sha256": "e05d50c2a52b3064e29e54052fecc434ae1af515b83726a6c6edbf3a633a04cb"
+            },
+            {
+              "name": "screenshot",
+              "contentType": "image/png",
+              "bytes": 88314,
+              "sha256": "c7df52e23330804a6bfb616e27c2197687d05ac61bef4f29c529b25ff142f074"
+            },
+            {
+              "name": "current-source",
+              "contentType": "application/json",
+              "bytes": 344580,
+              "sha256": "01392c1b5051db345e4d7bd138ff59869dee2d99c9d81749d33a4014a2afbb4c"
+            },
+            {
+              "name": "error-context",
+              "contentType": "text/markdown",
+              "bytes": 129820,
+              "sha256": "c7702a0959e031395fc871cde8f19fb87c0db5caf3d068daf1439897adae0923"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "file": "earn-recovery-lab-regressions.spec.ts",
+      "line": 9,
+      "title": "earn-recovery-lab-regressions.spec.ts / Earn loading geometry and disclosure recovery 390",
+      "status": "expected",
+      "expectedStatus": "passed",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 3457,
+          "retry": 0,
+          "errors": [],
+          "attachments": [
+            {
+              "name": "loading-aligned",
+              "contentType": "image/png",
+              "bytes": 35668,
+              "sha256": "76afecf3312a979b09a4450df97e089f98178198a989a2825e9b23141689b73d"
+            },
+            {
+              "name": "recovered",
+              "contentType": "image/png",
+              "bytes": 73037,
+              "sha256": "0e9cb95b21d9b55fc4ae85d330061391ad5c02b76302528fb3cc716835a3f2f8"
+            },
+            {
+              "name": "public-source-digest",
+              "contentType": "text/plain",
+              "bytes": 64,
+              "sha256": "0875d7b01029ff49d4dafdf16e1971aa8b42cd39c9c9fcb9c64f4e0d27e40235",
+              "text": "5382c9bb34fca0904facc93550202eb20a6592dfd666a556dba50516235cf7e2"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "file": "earn-recovery-lab-regressions.spec.ts",
+      "line": 9,
+      "title": "earn-recovery-lab-regressions.spec.ts / Earn loading geometry and disclosure recovery 1400",
+      "status": "expected",
+      "expectedStatus": "passed",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 3451,
+          "retry": 0,
+          "errors": [],
+          "attachments": [
+            {
+              "name": "loading-aligned",
+              "contentType": "image/png",
+              "bytes": 95342,
+              "sha256": "62d68c96e0bec461ba63ace3f2af7e5fca75f85c5d5a6f1253d6444a55d80381"
+            },
+            {
+              "name": "recovered",
+              "contentType": "image/png",
+              "bytes": 140700,
+              "sha256": "e181f69cc2db65d3780a85be76c60563d97c58e548e5bcbc537712189152ebe5"
+            },
+            {
+              "name": "public-source-digest",
+              "contentType": "text/plain",
+              "bytes": 64,
+              "sha256": "0875d7b01029ff49d4dafdf16e1971aa8b42cd39c9c9fcb9c64f4e0d27e40235",
+              "text": "5382c9bb34fca0904facc93550202eb20a6592dfd666a556dba50516235cf7e2"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "file": "overnight-lab-regressions.spec.ts",
+      "line": 27,
+      "title": "overnight-lab-regressions.spec.ts / Earn identity stays out of rate light",
+      "status": "expected",
+      "expectedStatus": "passed",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 2592,
+          "retry": 0,
+          "errors": [],
+          "attachments": [
+            {
+              "name": "identity-rate",
+              "contentType": "image/png",
+              "bytes": 61987,
+              "sha256": "01c523fc19f8686fca4cafb86c478781f8b10fcc64bc948ddd34e54de4eb7ede"
+            },
+            {
+              "name": "public-source-digest",
+              "contentType": "text/plain",
+              "bytes": 64,
+              "sha256": "0875d7b01029ff49d4dafdf16e1971aa8b42cd39c9c9fcb9c64f4e0d27e40235",
+              "text": "5382c9bb34fca0904facc93550202eb20a6592dfd666a556dba50516235cf7e2"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "file": "overnight-lab-regressions.spec.ts",
+      "line": 27,
+      "title": "overnight-lab-regressions.spec.ts / Earn identity stays out of rate dark",
+      "status": "expected",
+      "expectedStatus": "passed",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 2577,
+          "retry": 0,
+          "errors": [],
+          "attachments": [
+            {
+              "name": "identity-rate",
+              "contentType": "image/png",
+              "bytes": 63098,
+              "sha256": "c3989afc5733b4e1bf6921017dbe2513ce48ce93659717dc78aee528ff958977"
+            },
+            {
+              "name": "public-source-digest",
+              "contentType": "text/plain",
+              "bytes": 64,
+              "sha256": "0875d7b01029ff49d4dafdf16e1971aa8b42cd39c9c9fcb9c64f4e0d27e40235",
+              "text": "5382c9bb34fca0904facc93550202eb20a6592dfd666a556dba50516235cf7e2"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

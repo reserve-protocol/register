@@ -24,6 +24,7 @@ import { DiscoverReview } from './table-family/discover-review'
 import { EarnReview } from './table-family/earn-review'
 import { OwnedPositionsReview } from './table-family/owned-review'
 import { EligibilityDialogInteractionReview } from './dialog-state-sheet'
+import { v1SemanticRoles as roles } from '@/components/design-system-v1/semantic-roles'
 
 export const ComponentsOverview = () => (
   <div data-testid="components-overview" className="space-y-10">
@@ -102,7 +103,7 @@ export const ComponentDetail = () => {
                   <Link
                     key={relationship.id}
                     to={`/internal/design-system/components/${relationship.id}`}
-                    className="border border-border bg-card p-4 hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                    className={`border border-border bg-card p-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring ${roles.interaction.contentHover}`}
                   >
                     <span className="flex items-center justify-between gap-3 text-sm font-medium">
                       {related?.name ?? relationship.id}

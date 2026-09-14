@@ -30,7 +30,7 @@ import {
   type Viewer,
 } from './fixtures'
 import { CurrentWorkspace } from './workspace'
-import { Skeleton } from '@/components/design-system-v1/loading'
+import { CurrentSceneFeedback } from './scene-feedback'
 import { useCurrentScene } from './use-scene'
 import type { HistoricalRebalance } from '../auctions-browse/history-model'
 
@@ -53,7 +53,12 @@ export function CurrentRebalanceReview({
   const [data, setData] = useState<DataState>('ready')
   const [outcome, setOutcome] = useState<Outcome>('success')
   const [network, setNetwork] = useState(true)
-  const [playing, setPlaying] = useState(false)
+  const [playing, setPlaying] = useState(true)
+  const [archived, setArchived] = useState({
+    scene: scenario,
+    ids: [] as string[],
+  })
+  if (archived.scene !== scenario) setArchived({ scene: scenario, ids: [] })
   const records = ['empty', 'loading', 'not-found'].includes(scenario)
     ? []
     : scenario === 'multiple'
@@ -63,6 +68,10 @@ export function CurrentRebalanceReview({
             ? LIQUIDITY_RECORD
             : SOURCE_RECORDS[scenario === 'hybrid' ? 'lcap' : 'cmc20'],
         ]
+  const visibleRecords = records.filter(
+    (record) =>
+      archived.scene !== scenario || !archived.ids.includes(record.identity.id)
+  )
   return (
     <div
       ref={root}
@@ -136,7 +145,7 @@ export function CurrentRebalanceReview({
         <h3 className={cn(type.supporting, 'text-muted-foreground')}>
           Current Rebalances
         </h3>
-        {records.map((record) => (
+        {visibleRecords.map((record) => (
           <CurrentWorkspace
             key={`${record.address}-${scenario}`}
             record={record}
@@ -148,25 +157,22 @@ export function CurrentRebalanceReview({
             playing={playing}
             onConnect={() => setViewer('launcher')}
             onNetwork={() => setNetwork(true)}
-            onArchive={onArchive}
+            onArchive={(row) => {
+              setArchived((previous) => ({
+                scene: scenario,
+                ids: [
+                  ...(previous.scene === scenario ? previous.ids : []),
+                  record.identity.id,
+                ],
+              }))
+              onArchive(row)
+            }}
           />
         ))}
-        {scenario === 'loading' && (
-          <Skeleton
-            data-testid="current-list-loading"
-            className="h-52 w-full"
-          />
-        )}
-        {scenario === 'not-found' && (
-          <p className={type.supporting}>
-            Lab: no proposal matches this route. No launch state is inferred.
-          </p>
-        )}
-        {!records.length && scenario !== 'loading' && (
-          <p className={cn(type.body, 'bg-card p-6 text-muted-foreground')}>
-            No rebalances found
-          </p>
-        )}
+        <CurrentSceneFeedback
+          scenario={scenario}
+          empty={!visibleRecords.length}
+        />
       </div>
       <Dialog
         open={pendingScene !== null}

@@ -1,0 +1,740 @@
+{
+  "config": {
+    "configFile": "/Users/lill-kire/Code/register/playwright.design-system.config.ts",
+    "rootDir": "/Users/lill-kire/Code/register/e2e/design-system",
+    "forbidOnly": true,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/Users/lill-kire/Code/register/test-results/design-system/artifacts",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "design-system-desktop",
+        "name": "design-system-desktop",
+        "testDir": "/Users/lill-kire/Code/register/e2e/design-system",
+        "testIgnore": [
+          "/(?:source-capture|lab-regressions)\\.spec\\.ts/"
+        ],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 90000
+      },
+      {
+        "outputDir": "/Users/lill-kire/Code/register/test-results/design-system/artifacts",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "design-system-mobile",
+        "name": "design-system-mobile",
+        "testDir": "/Users/lill-kire/Code/register/e2e/design-system",
+        "testIgnore": [
+          "/(?:source-capture|lab-regressions)\\.spec\\.ts/"
+        ],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 90000
+      },
+      {
+        "outputDir": "/Users/lill-kire/Code/register/test-results/design-system/artifacts",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "design-system-phone",
+        "name": "design-system-phone",
+        "testDir": "/Users/lill-kire/Code/register/e2e/design-system",
+        "testIgnore": [
+          "/(?:source-capture|lab-regressions)\\.spec\\.ts/"
+        ],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 90000
+      },
+      {
+        "outputDir": "/Users/lill-kire/Code/register/test-results/design-system/artifacts",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "design-system-review",
+        "name": "design-system-review",
+        "testDir": "/Users/lill-kire/Code/register/e2e/design-system",
+        "testIgnore": [],
+        "testMatch": [
+          "/(?:source-capture|lab-regressions)\\.spec\\.ts/"
+        ],
+        "timeout": 90000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "list",
+        null
+      ],
+      [
+        "json",
+        {
+          "outputFile": "test-results/design-system/report.json"
+        }
+      ],
+      [
+        "html",
+        {
+          "outputFolder": "playwright-report/design-system",
+          "open": "never"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "none",
+    "updateSourceMethod": "patch",
+    "version": "1.59.1",
+    "workers": 1,
+    "webServer": {
+      "command": "pnpm exec vite --host 127.0.0.1 --port 3022 --strictPort",
+      "url": "http://127.0.0.1:3022",
+      "reuseExistingServer": false,
+      "timeout": 120000,
+      "env": {
+        "VITE_E2E": "true",
+        "VITE_WALLETCONNECT_ID": "test-project",
+        "VITE_STAGING_API": "",
+        "VITE_USE_STAGING": "",
+        "VITE_MAINNET_URL": "",
+        "VITE_INFURA": "",
+        "VITE_ALCHEMY": "",
+        "VITE_ANKR": ""
+      }
+    }
+  },
+  "suites": [
+    {
+      "title": "current-rebalance-table-lab-regressions.spec.ts",
+      "file": "current-rebalance-table-lab-regressions.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "current table ready navigation preserves context",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "design-system-review",
+              "projectName": "design-system-review",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 13739,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T22:39:54.430Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "table-ready-desktop",
+                      "contentType": "image/png",
+                      "path": "../design-system-review-checkpoint-evidence-2026-09-13/attachments/4f13af8fe8e7a09a1e95931dea38a48c37f5ac85e3d7611821b27c0d04caf8fb.png"
+                    },
+                    {
+                      "name": "current-source",
+                      "contentType": "application/json",
+                      "path": "../design-system-review-checkpoint-evidence-2026-09-13/attachments/97e29d27d16cf66839c2742820f13e366573bd66b10bcadb35be80ee9a3bad35.json"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "994c4b3e3adac4d3e646-385666ca1004c8fd1583",
+          "file": "current-rebalance-table-lab-regressions.spec.ts",
+          "line": 11,
+          "column": 1
+        },
+        {
+          "title": "current table composition light 1400",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "design-system-review",
+              "projectName": "design-system-review",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 7921,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T22:40:08.413Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "table-repeat-light-1400",
+                      "contentType": "image/png",
+                      "path": "../design-system-review-checkpoint-evidence-2026-09-13/attachments/4f13af8fe8e7a09a1e95931dea38a48c37f5ac85e3d7611821b27c0d04caf8fb.png"
+                    },
+                    {
+                      "name": "table-live-light-1400",
+                      "contentType": "image/png",
+                      "path": "../design-system-review-checkpoint-evidence-2026-09-13/attachments/47eb0853ebb11c8eae9b01e467c37c16af70a482b24c65e1a8a042a8faa03852.png"
+                    },
+                    {
+                      "name": "table-hybrid-light-1400",
+                      "contentType": "image/png",
+                      "path": "../design-system-review-checkpoint-evidence-2026-09-13/attachments/7b5bcc7662deff01a15e9d93f4b36cfaee1a39a41334abb9a07465e51de05ae1.png"
+                    },
+                    {
+                      "name": "current-source",
+                      "contentType": "application/json",
+                      "path": "../design-system-review-checkpoint-evidence-2026-09-13/attachments/97e29d27d16cf66839c2742820f13e366573bd66b10bcadb35be80ee9a3bad35.json"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "994c4b3e3adac4d3e646-84994af3f495d35360f3",
+          "file": "current-rebalance-table-lab-regressions.spec.ts",
+          "line": 43,
+          "column": 5
+        },
+        {
+          "title": "current table composition light 900",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "design-system-review",
+              "projectName": "design-system-review",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 6553,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T22:40:16.340Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "table-repeat-light-900",
+                      "contentType": "image/png",
+                      "path": "../design-system-review-checkpoint-evidence-2026-09-13/attachments/93553b8f6e7e398c51ea733af5f1d0a3c22d960f36cb7522e90ce37293e16a89.png"
+                    },
+                    {
+                      "name": "table-live-light-900",
+                      "contentType": "image/png",
+                      "path": "../design-system-review-checkpoint-evidence-2026-09-13/attachments/92536c967b48ca5ea4349cbb0704f782b904292cd8293757e5a70e16e1d88290.png"
+                    },
+                    {
+                      "name": "table-hybrid-light-900",
+                      "contentType": "image/png",
+                      "path": "../design-system-review-checkpoint-evidence-2026-09-13/attachments/00c09cbcd3858b54bf654ce07a029933abe6cf7bc6ebe12ac68c8e2095558ca1.png"
+                    },
+                    {
+                      "name": "current-source",
+                      "contentType": "application/json",
+                      "path": "../design-system-review-checkpoint-evidence-2026-09-13/attachments/97e29d27d16cf66839c2742820f13e366573bd66b10bcadb35be80ee9a3bad35.json"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "994c4b3e3adac4d3e646-88aee10f6799696480a5",
+          "file": "current-rebalance-table-lab-regressions.spec.ts",
+          "line": 43,
+          "column": 5
+        },
+        {
+          "title": "current table composition light 390",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "design-system-review",
+              "projectName": "design-system-review",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 7231,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T22:40:22.900Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "table-repeat-light-390",
+                      "contentType": "image/png",
+                      "path": "../design-system-review-checkpoint-evidence-2026-09-13/attachments/094543f9182731dfc10986c752c55a89a29848f38a5fa023d1b83e29a7304411.png"
+                    },
+                    {
+                      "name": "table-live-light-390",
+                      "contentType": "image/png",
+                      "path": "../design-system-review-checkpoint-evidence-2026-09-13/attachments/2febd1dcfb348c149c562f5284531270cd01be18359d1e7d05de26f53093942b.png"
+                    },
+                    {
+                      "name": "table-hybrid-light-390",
+                      "contentType": "image/png",
+                      "path": "../design-system-review-checkpoint-evidence-2026-09-13/attachments/69da09820c6d3a45fa0b74fee01cea44ffcb070a31216b3a2e60087a9fe53443.png"
+                    },
+                    {
+                      "name": "current-source",
+                      "contentType": "application/json",
+                      "path": "../design-system-review-checkpoint-evidence-2026-09-13/attachments/97e29d27d16cf66839c2742820f13e366573bd66b10bcadb35be80ee9a3bad35.json"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "994c4b3e3adac4d3e646-e80498fc679874bae25d",
+          "file": "current-rebalance-table-lab-regressions.spec.ts",
+          "line": 43,
+          "column": 5
+        },
+        {
+          "title": "current table composition light 320",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "design-system-review",
+              "projectName": "design-system-review",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 5853,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T22:40:30.137Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "table-repeat-light-320",
+                      "contentType": "image/png",
+                      "path": "../design-system-review-checkpoint-evidence-2026-09-13/attachments/55718307212eccb401a18576d7b10b10d2ba0616f701730dbd4e18a0a3671eb1.png"
+                    },
+                    {
+                      "name": "table-live-light-320",
+                      "contentType": "image/png",
+                      "path": "../design-system-review-checkpoint-evidence-2026-09-13/attachments/d3cf0214357a646e55c3eb87d9c3a942b60466091c2cb67c1046b82aad7cb051.png"
+                    },
+                    {
+                      "name": "table-hybrid-light-320",
+                      "contentType": "image/png",
+                      "path": "../design-system-review-checkpoint-evidence-2026-09-13/attachments/066f69fe743bd424b315ab4883c644618acd9cdb7fdb01183e78fab699214995.png"
+                    },
+                    {
+                      "name": "current-source",
+                      "contentType": "application/json",
+                      "path": "../design-system-review-checkpoint-evidence-2026-09-13/attachments/97e29d27d16cf66839c2742820f13e366573bd66b10bcadb35be80ee9a3bad35.json"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "994c4b3e3adac4d3e646-1fb70128be645bffa843",
+          "file": "current-rebalance-table-lab-regressions.spec.ts",
+          "line": 43,
+          "column": 5
+        },
+        {
+          "title": "current table composition dark 1400",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "design-system-review",
+              "projectName": "design-system-review",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 5778,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T22:40:35.995Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "table-repeat-dark-1400",
+                      "contentType": "image/png",
+                      "path": "../design-system-review-checkpoint-evidence-2026-09-13/attachments/9c0a4454a1b51710dde311eabb7e01eb5c0603cebd041c8b125effe8d3ace1f4.png"
+                    },
+                    {
+                      "name": "table-live-dark-1400",
+                      "contentType": "image/png",
+                      "path": "../design-system-review-checkpoint-evidence-2026-09-13/attachments/b510d3bbd8f49e054e73638e12a1d1f41d9182948d6cd62b5ce70d2987d9a831.png"
+                    },
+                    {
+                      "name": "table-hybrid-dark-1400",
+                      "contentType": "image/png",
+                      "path": "../design-system-review-checkpoint-evidence-2026-09-13/attachments/352a9f7edde57e629de1b867d5faf624991f65c3301a794e9c1c4334ea9fd8c4.png"
+                    },
+                    {
+                      "name": "current-source",
+                      "contentType": "application/json",
+                      "path": "../design-system-review-checkpoint-evidence-2026-09-13/attachments/97e29d27d16cf66839c2742820f13e366573bd66b10bcadb35be80ee9a3bad35.json"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "994c4b3e3adac4d3e646-e502b0338d277a9b2fca",
+          "file": "current-rebalance-table-lab-regressions.spec.ts",
+          "line": 43,
+          "column": 5
+        },
+        {
+          "title": "current table composition dark 900",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "design-system-review",
+              "projectName": "design-system-review",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 7025,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T22:40:41.779Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "table-repeat-dark-900",
+                      "contentType": "image/png",
+                      "path": "../design-system-review-checkpoint-evidence-2026-09-13/attachments/244ed065a48877ea44e680775d410b52fb3388db48541b3fc3c58ce0e2d618a5.png"
+                    },
+                    {
+                      "name": "table-live-dark-900",
+                      "contentType": "image/png",
+                      "path": "../design-system-review-checkpoint-evidence-2026-09-13/attachments/43a608052c8b2979328c62c0ee6283521f2f96b4abf847dbf4e495a8c8068a70.png"
+                    },
+                    {
+                      "name": "table-hybrid-dark-900",
+                      "contentType": "image/png",
+                      "path": "../design-system-review-checkpoint-evidence-2026-09-13/attachments/b89d7f7be0d6b0ff73cdcbcbb72957295e582916083dfa046b636eb67cd49abf.png"
+                    },
+                    {
+                      "name": "current-source",
+                      "contentType": "application/json",
+                      "path": "../design-system-review-checkpoint-evidence-2026-09-13/attachments/97e29d27d16cf66839c2742820f13e366573bd66b10bcadb35be80ee9a3bad35.json"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "994c4b3e3adac4d3e646-3aac29c2b561980543f3",
+          "file": "current-rebalance-table-lab-regressions.spec.ts",
+          "line": 43,
+          "column": 5
+        },
+        {
+          "title": "current table composition dark 390",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "design-system-review",
+              "projectName": "design-system-review",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 7452,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T22:40:48.810Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "table-repeat-dark-390",
+                      "contentType": "image/png",
+                      "path": "../design-system-review-checkpoint-evidence-2026-09-13/attachments/4b2e0d6deecea29d965402134304d42448f59b76ef3ce120d7ed8cb8dd301c0e.png"
+                    },
+                    {
+                      "name": "table-live-dark-390",
+                      "contentType": "image/png",
+                      "path": "../design-system-review-checkpoint-evidence-2026-09-13/attachments/a4eae763e711eed8a585975f051c9b13089d1ee0bf40eddc41f53685c62c34dd.png"
+                    },
+                    {
+                      "name": "table-hybrid-dark-390",
+                      "contentType": "image/png",
+                      "path": "../design-system-review-checkpoint-evidence-2026-09-13/attachments/f4e95f009afffc55efecd51a34badf50c5a066d4f02d569f796f2bcd1f909cbe.png"
+                    },
+                    {
+                      "name": "current-source",
+                      "contentType": "application/json",
+                      "path": "../design-system-review-checkpoint-evidence-2026-09-13/attachments/97e29d27d16cf66839c2742820f13e366573bd66b10bcadb35be80ee9a3bad35.json"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "994c4b3e3adac4d3e646-bd999a2af16f76a1ed1c",
+          "file": "current-rebalance-table-lab-regressions.spec.ts",
+          "line": 43,
+          "column": 5
+        },
+        {
+          "title": "current table composition dark 320",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "design-system-review",
+              "projectName": "design-system-review",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 7182,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T22:40:56.268Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "table-repeat-dark-320",
+                      "contentType": "image/png",
+                      "path": "../design-system-review-checkpoint-evidence-2026-09-13/attachments/a269f5f234dd8a7f062cf407ad38d5dcff98832d46d14cbfb9076fb4ff3a79b8.png"
+                    },
+                    {
+                      "name": "table-live-dark-320",
+                      "contentType": "image/png",
+                      "path": "../design-system-review-checkpoint-evidence-2026-09-13/attachments/421c4abdf232a048a2d7a8326171ce0874af793ea35edd2c414cb80cecab93ac.png"
+                    },
+                    {
+                      "name": "table-hybrid-dark-320",
+                      "contentType": "image/png",
+                      "path": "../design-system-review-checkpoint-evidence-2026-09-13/attachments/c086ac360132cdce0356413978f31fb178c5831efc02b878ecf8f33680dc7fab.png"
+                    },
+                    {
+                      "name": "current-source",
+                      "contentType": "application/json",
+                      "path": "../design-system-review-checkpoint-evidence-2026-09-13/attachments/97e29d27d16cf66839c2742820f13e366573bd66b10bcadb35be80ee9a3bad35.json"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "994c4b3e3adac4d3e646-a4b14d9e78267a999cac",
+          "file": "current-rebalance-table-lab-regressions.spec.ts",
+          "line": 43,
+          "column": 5
+        },
+        {
+          "title": "current table distinguishes availability from viewer eligibility and missing data",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "design-system-review",
+              "projectName": "design-system-review",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 29105,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T22:41:03.455Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "table-edge-current-ready-viewer-member",
+                      "contentType": "image/png",
+                      "path": "../design-system-review-checkpoint-evidence-2026-09-13/attachments/3a5c7e48aeacbf5f08baec4ee09b52a23534ca1abaf7f3061501b6dd85332e13.png"
+                    },
+                    {
+                      "name": "table-edge-current-indexing",
+                      "contentType": "image/png",
+                      "path": "../design-system-review-checkpoint-evidence-2026-09-13/attachments/d1b2cdba72085aeb62b6201938f29d7835f2bd2f8f94420a16777f97ae705f3b.png"
+                    },
+                    {
+                      "name": "table-edge-current-complete",
+                      "contentType": "image/png",
+                      "path": "../design-system-review-checkpoint-evidence-2026-09-13/attachments/016ddc3da2a4fd94b7d96d36a598dd923f2f43042fa698334fde1609042fee7c.png"
+                    },
+                    {
+                      "name": "current-source",
+                      "contentType": "application/json",
+                      "path": "../design-system-review-checkpoint-evidence-2026-09-13/attachments/97e29d27d16cf66839c2742820f13e366573bd66b10bcadb35be80ee9a3bad35.json"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "994c4b3e3adac4d3e646-1ff84784e10767288bf4",
+          "file": "current-rebalance-table-lab-regressions.spec.ts",
+          "line": 85,
+          "column": 1
+        },
+        {
+          "title": "current table empty loading multiple rows and independent destinations",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "design-system-review",
+              "projectName": "design-system-review",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 9968,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T22:41:32.567Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "table-multiple-desktop",
+                      "contentType": "image/png",
+                      "path": "../design-system-review-checkpoint-evidence-2026-09-13/attachments/16b60fe4003dd4d37570d4905261afd8929ad8e8fb6f2424f8474e24dd8e471a.png"
+                    },
+                    {
+                      "name": "current-source",
+                      "contentType": "application/json",
+                      "path": "../design-system-review-checkpoint-evidence-2026-09-13/attachments/97e29d27d16cf66839c2742820f13e366573bd66b10bcadb35be80ee9a3bad35.json"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "994c4b3e3adac4d3e646-8d0624fab4e339d28b66",
+          "file": "current-rebalance-table-lab-regressions.spec.ts",
+          "line": 153,
+          "column": 1
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-09-13T22:39:51.696Z",
+    "duration": 110977.247,
+    "expected": 11,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}

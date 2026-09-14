@@ -18,7 +18,7 @@ import {
   PERFORMANCE_COLORS,
 } from '@/utils/chart-performance-colors'
 import { useAtomValue } from 'jotai'
-import { useId } from 'react'
+import { useId, type ComponentProps } from 'react'
 import {
   AreaChart,
   Customized,
@@ -34,10 +34,23 @@ import { PriceChartLaunchMarker } from './price-chart-launch-marker'
 import { renderPriceChartSeries } from './price-chart-series'
 import { PriceTooltip, YieldTooltip } from './price-chart-tooltips'
 import { useXAxisTicks } from './use-price-chart-data'
+import { inspectionFromPayload, type ChartInspection } from './chart-inspection'
 
 type ChartPoint = {
   timestamp: number
   [key: string]: number | undefined
+}
+
+type PriceChartBodyProps = {
+  chartData: ChartPoint[]
+  range: TimeRange
+  dtfStart?: number
+  launchTimestamp?: number
+  useLaunchLabel?: boolean
+  launchMarkerVariant?: 'annotation'
+  xDomain?: readonly [number, number]
+  className?: string
+  onInspect?: (point: ChartInspection) => void
 }
 
 const buildYAxisFormatter =
@@ -63,17 +76,11 @@ const PriceChartBody = ({
   dtfStart,
   launchTimestamp,
   useLaunchLabel = false,
+  launchMarkerVariant,
   xDomain,
   className,
-}: {
-  chartData: ChartPoint[]
-  range: TimeRange
-  dtfStart?: number
-  launchTimestamp?: number
-  useLaunchLabel?: boolean
-  xDomain?: readonly [number, number]
-  className?: string
-}) => {
+  onInspect,
+}: PriceChartBodyProps) => {
   const dataType = useAtomValue(dataTypeAtom)
   const avgApy = useAtomValue(avgApyAtom)
   const isMobile = useIsMobile()
@@ -136,11 +143,21 @@ const PriceChartBody = ({
       ? `url(#${fillGradientId})`
       : fill
   const preLaunchFill = fill
+  const inspectSample: ComponentProps<typeof AreaChart>['onMouseMove'] =
+    onInspect
+      ? (state) => {
+          const point = inspectionFromPayload(state?.activePayload, chartKey)
+          if (point) onInspect(point)
+        }
+      : undefined
 
   return (
     <ChartContainer config={chartConfig} className={cn('w-full', className)}>
       <AreaChart
         data={segmentedChartData}
+        accessibilityLayer={onInspect ? true : undefined}
+        onMouseDown={inspectSample}
+        onMouseMove={inspectSample}
         margin={{ left: 0, right: 0, top: 5, bottom: 5 }}
         {...{ overflow: 'visible' }}
       >
@@ -198,7 +215,9 @@ const PriceChartBody = ({
         />
         <Tooltip
           content={
-            isYieldMode ? (
+            onInspect ? (
+              () => null
+            ) : isYieldMode ? (
               <YieldTooltip />
             ) : (
               <PriceTooltip dataType={dataType} />
@@ -243,6 +262,7 @@ const PriceChartBody = ({
               {...props}
               launchTimestamp={launchTimestamp}
               useLaunchLabel={useLaunchLabel}
+              variant={launchMarkerVariant}
               visible={showLaunchLine}
             />
           )}

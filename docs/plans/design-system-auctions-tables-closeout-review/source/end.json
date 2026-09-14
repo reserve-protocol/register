@@ -1,0 +1,476 @@
+{
+  "label": "end",
+  "capturedAt": "2026-09-14T02:48:21.952Z",
+  "digest": "ef4794d91f10cd4b804475c2c0ef078d2be0bd192a6537af925729143abc80a5",
+  "fileCount": 2437,
+  "reviewedFiles": [
+    {
+      "path": "src/components/design-system-v1/accordion.tsx",
+      "sha256": "e29e1a21d3d7b1d7df7cc08d5d87ec231b43f3e02b01be543dedb7a00a715690"
+    },
+    {
+      "path": "src/components/design-system-v1/action-group.tsx",
+      "sha256": "2e1c2f204fa25061bfd9fbb9ce9c88e0814f66269288b7259768c84b889e97ca"
+    },
+    {
+      "path": "src/components/design-system-v1/collapsible.tsx",
+      "sha256": "ee014b945855c4d9fe82aed931ba4ea2f5937309faa2298207e2aca51268f059"
+    },
+    {
+      "path": "src/components/design-system-v1/contained-selection.ts",
+      "sha256": "191a0453cecfe75714d90c40ddea5943d53d194220623c9685f8f02621e56017"
+    },
+    {
+      "path": "src/components/design-system-v1/copyable-value.tsx",
+      "sha256": "9de4fcf693a0c0eae6aa0ab67b2d52efa12d4de0cf29bc705ea7609e29b7952e"
+    },
+    {
+      "path": "src/components/design-system-v1/disclosure-presentation.ts",
+      "sha256": "55bff8df50974553b2995bd3aa241d272376846e39f74746e72ea1030238d257"
+    },
+    {
+      "path": "src/components/design-system-v1/drawer.tsx",
+      "sha256": "307966b6bd3ebdfe1b0286ef990fbaa58f6df8f7ef168f9186c5f04069530d9a"
+    },
+    {
+      "path": "src/components/design-system-v1/field.tsx",
+      "sha256": "035837bd71171c67da8aafd469461306c3f3d87f2b376d821abba6ed8911175f"
+    },
+    {
+      "path": "src/components/design-system-v1/help-tooltip.tsx",
+      "sha256": "de55a45580fb3830bb0ee063bbf96c50e62bf61c645b9a9d3e2ea228e1866a85"
+    },
+    {
+      "path": "src/components/design-system-v1/inline-message.tsx",
+      "sha256": "cbeccb5946ccabbedbb4f0cdc0ae13725d41ca97016ee5ff8f630c3c72c13be4"
+    },
+    {
+      "path": "src/components/design-system-v1/link.tsx",
+      "sha256": "30297046944708397b87eaf906837d381c129e4120f87441e8a80ca47dabc5d9"
+    },
+    {
+      "path": "src/components/design-system-v1/loading.tsx",
+      "sha256": "2cf0f4301d31cc4ce66cab4928e5bc203cddcc45f50d8aed44c8c191727efc04"
+    },
+    {
+      "path": "src/components/design-system-v1/menu.tsx",
+      "sha256": "c756a91611be70c879f9570d66f509804b4fba332f891b88db59ab12456147a3"
+    },
+    {
+      "path": "src/components/design-system-v1/mobile-global-header.tsx",
+      "sha256": "8c516a6f85ada9ce9e7b31820ddc5ecd7b8f407614902c16086962578f5228b6"
+    },
+    {
+      "path": "src/components/design-system-v1/multi-select-filter.tsx",
+      "sha256": "f40ead06ae51370772956e8ea5ca8f1a06740ec7f8cf30c8d1ba73af13e48689"
+    },
+    {
+      "path": "src/components/design-system-v1/navigation-indicator.tsx",
+      "sha256": "6ee4bdf6ae4d793493415160a66bab82b36bca55919505a21ea805061e6a5da7"
+    },
+    {
+      "path": "src/components/design-system-v1/navigation.tsx",
+      "sha256": "0280855d15e5e1474dee9f66d0574dfaa63da2af53332a2d01fc19b0394e23f9"
+    },
+    {
+      "path": "src/components/design-system-v1/organic-brand-surface.tsx",
+      "sha256": "8632f722a0e1cab9093d11659ebf2cbdc7bde4c0ae1038aaa57a1674b20cb571"
+    },
+    {
+      "path": "src/components/design-system-v1/pagination.tsx",
+      "sha256": "acdd32df7bf92fa56d29774af274b4ed0c31ac72504b1a3cc8b5ec1322d336cf"
+    },
+    {
+      "path": "src/components/design-system-v1/performance-value.tsx",
+      "sha256": "b26fc19852ac8c3a90fbd1de80f6ca33322591b53122afbebe8b970148dc7381"
+    },
+    {
+      "path": "src/components/design-system-v1/popover.tsx",
+      "sha256": "c4298950b26cfc1335271dd0a2970d822fc6b1cedd31f9c1925e1e721346c311"
+    },
+    {
+      "path": "src/components/design-system-v1/popup-chevron.tsx",
+      "sha256": "c023c1eb521c1fe4e5c29038a4eb81d62336ff608c9f03d375654d61cdddf148"
+    },
+    {
+      "path": "src/components/design-system-v1/popup-item-geometry.ts",
+      "sha256": "6bf3faf53ebfae2e04ee740b0242dbc01e662856fac590fc1cc305f50c76805a"
+    },
+    {
+      "path": "src/components/design-system-v1/preset-or-custom-field.tsx",
+      "sha256": "634dc3f0a8da2b10b2128767c5f1a86183dc9c1cc42679e9952cbacafba27b55"
+    },
+    {
+      "path": "src/components/design-system-v1/search-field.tsx",
+      "sha256": "fdebc493adebce4241239fcad08b93da493514fb1b560589af18dcedc9fbb4d5"
+    },
+    {
+      "path": "src/components/design-system-v1/segmented-control-presentation.ts",
+      "sha256": "60b4375cb0f0d2b67a59a87762e325bbbb9ee30f7b1beab0188fe935fbcc9921"
+    },
+    {
+      "path": "src/components/design-system-v1/segmented-control.tsx",
+      "sha256": "23b5899bb81d4773881d1a488bb0577dd33fe492d88f426e0f7260481e4b3afa"
+    },
+    {
+      "path": "src/components/design-system-v1/select.tsx",
+      "sha256": "44a80fda633d497f69bf98a209cb493efac47ebd6fba1a2cb647015069858a9c"
+    },
+    {
+      "path": "src/components/design-system-v1/semantic-roles.ts",
+      "sha256": "47f4fc9ad84f674e19609e3a92aa0a409126e07dfd81cf667151d9b30aa2a31d"
+    },
+    {
+      "path": "src/components/design-system-v1/single-choice-group.tsx",
+      "sha256": "ac16e758168e6aa64140b782eef4a76f3c507a158f5404524e67c314d475963c"
+    },
+    {
+      "path": "src/components/design-system-v1/switch.tsx",
+      "sha256": "193ba2b3a3b13d04bf05f7bd8ad2f40ac8497b18474ca9c022f796a399d3587d"
+    },
+    {
+      "path": "src/components/design-system-v1/tab-presentation.ts",
+      "sha256": "f6bee4ebef94d9143ee4dcf354a98fd4959cf79980dca662214a201384fbaeb2"
+    },
+    {
+      "path": "src/components/design-system-v1/tabs.tsx",
+      "sha256": "4bfb1e45d4415595fe3d2fe0a65740fd0ab9803e9f9a70bc7225e1858e3013bb"
+    },
+    {
+      "path": "src/components/design-system-v1/tests/candidate-behavior.test.tsx",
+      "sha256": "6bfe935dd2e5c4f9dc366e817f5b7b755bb027258f73d1d3b5446a7c78ff08dd"
+    },
+    {
+      "path": "src/components/design-system-v1/tests/mobile-global-header.test.tsx",
+      "sha256": "01b0ce752b62e031f5428f9d141d7ef2f5d8df5085ff4aa5daa22ac798c03aa0"
+    },
+    {
+      "path": "src/components/design-system-v1/tests/navigation.test.tsx",
+      "sha256": "6bee508407834ae36e277fe2e749f4d8c532197b1b9e1d3b96bc6e8a1676a4f2"
+    },
+    {
+      "path": "src/components/design-system-v1/tests/semantic-roles.test.ts",
+      "sha256": "1f4773e01cc0e63cb8779152168e250c5f11cc19bd0b485a917078006624469f"
+    },
+    {
+      "path": "src/components/design-system-v1/tests/source-hygiene.test.ts",
+      "sha256": "8fe42c538606dd86f2548c2dc51053e391c4beaf8da7a079fdd37838f6261093"
+    },
+    {
+      "path": "src/components/design-system-v1/tests/source-hygiene.ts",
+      "sha256": "10fca08ec913be5960e4f189c159a3abeb0f55c9bc0bc40945868d06d4d91969"
+    },
+    {
+      "path": "src/components/design-system-v1/tests/typography.test.ts",
+      "sha256": "aa11fc78ff693e176ac6d0f2f97faf5376c453b73276d922e13d3d47390a0839"
+    },
+    {
+      "path": "src/components/design-system-v1/tooltip-surface.ts",
+      "sha256": "5de85e082e1df675c85c9e18f1fb140787bfc382c4ede4161fb00d0583c61068"
+    },
+    {
+      "path": "src/components/design-system-v1/transaction-amount-object.tsx",
+      "sha256": "9a9b6f45aff6280a0619965aca746786f71bc23dd485c1c77c9683ea1aeadfff"
+    },
+    {
+      "path": "src/components/design-system-v1/transaction-asset-picker.tsx",
+      "sha256": "766b2dcd2d436cc567cd08c0c00906190dc6548a7c4398170671f644d96c1cca"
+    },
+    {
+      "path": "src/components/design-system-v1/transaction-identity.tsx",
+      "sha256": "e40ab80e45db61deb0718508993818b1ca007913cae08f02ca7c123f7f06d9f8"
+    },
+    {
+      "path": "src/components/design-system-v1/transaction-requirement-row.tsx",
+      "sha256": "6bcd230b2e9017fdddd1238faf26147241efeebaf3aa096fbfbe110c5b8d2698"
+    },
+    {
+      "path": "src/components/design-system-v1/transaction-task-geometry.ts",
+      "sha256": "4d50b2a0c632279176df911d1d26c8dc4ca9bd365f2e02321598e6dccef647df"
+    },
+    {
+      "path": "src/components/design-system-v1/typography.ts",
+      "sha256": "ae361f145f5c3ad13e107c212ddcde1961e8cf37541e3c4acadddbcd4e17ff45"
+    },
+    {
+      "path": "src/components/lifecycle-status/index.tsx",
+      "sha256": "96070f7bdd89de81bb3abdf0fe1821a5a04a2ae251d9ea2343cc9968b2fdec5f"
+    },
+    {
+      "path": "src/locales/en.js",
+      "sha256": "0a48474afde95e4e2fc842fcd5de892ab1acef2c8d921f117e39806d0004a503"
+    },
+    {
+      "path": "src/locales/en.po",
+      "sha256": "66d56d49077d09dc0d6991b9ab7d63f5db89ac363f5d65ed93f2d2f507d01f0d"
+    },
+    {
+      "path": "src/locales/es.js",
+      "sha256": "2d7e159ff44747dca131fb267924f6b50e0b4ea82e70837d82bbfe3d63d15657"
+    },
+    {
+      "path": "src/locales/es.po",
+      "sha256": "9307777dbcd1c0a049b0fdc3f6f6ce99d04640594dd0942ec6aeead5ea8b281f"
+    },
+    {
+      "path": "src/locales/ko.js",
+      "sha256": "0f29ad3738a1cd2bcb2361ce92e66b3c730bd9254ac6db4363112674d38af98e"
+    },
+    {
+      "path": "src/locales/ko.po",
+      "sha256": "4860748e1f2010fd61fd1b5c25d810b72f9dd63dccc552d680aa204c739d33ab"
+    },
+    {
+      "path": "src/locales/pseudo.js",
+      "sha256": "996b1564256503a3975ed891e937ea153782fc3b261f25a10ab4f3ae5be4521f"
+    },
+    {
+      "path": "src/locales/pseudo.po",
+      "sha256": "872310818359458f99d57edf1e44ce881212e8094423c68228a3dc8887122a31"
+    },
+    {
+      "path": "src/locales/zh.js",
+      "sha256": "abbe62f822a2462254271d782e75a0658c937025f9e8bd26bd9d95ff85c320bd"
+    },
+    {
+      "path": "src/locales/zh.po",
+      "sha256": "b0713bebbc14ae30b7610b642aa80e9cf25ae2cd970c24709fc6b1bd8d4b14e4"
+    },
+    {
+      "path": "src/views/internal/design-system/auctions-browse/fixtures.ts",
+      "sha256": "5517d6cf61311c198cc5b67724e3c1af19468b860465cb94ea033a9e0e82dd1a"
+    },
+    {
+      "path": "src/views/internal/design-system/auctions-browse/history-cells.tsx",
+      "sha256": "8514558d3aa540c8224adbd80d372391050d92f94991da77014d4724e3a15ff1"
+    },
+    {
+      "path": "src/views/internal/design-system/auctions-browse/history-metric-label.tsx",
+      "sha256": "c7887f0a0493b1cadcf2a29f99f3a057df30c07c74a7aa749c155587529abddd"
+    },
+    {
+      "path": "src/views/internal/design-system/auctions-browse/history-model.ts",
+      "sha256": "2b32d8c295cb944eda20a51ac124a27ab99f1a590c7ac335d56df4f7617fe57d"
+    },
+    {
+      "path": "src/views/internal/design-system/auctions-browse/history-review.tsx",
+      "sha256": "e274e15969deabc672fc9e91e966f2382d2478403254d66dc015f78681c8e31b"
+    },
+    {
+      "path": "src/views/internal/design-system/auctions-browse/history-table.tsx",
+      "sha256": "f575b4429e820f4e6b0fc2c3a72843b1c3e9ded270fb8cf34d9698b7a7d9eafa"
+    },
+    {
+      "path": "src/views/internal/design-system/auctions-browse/model.ts",
+      "sha256": "0654932be7d5bcae57126a9b63fd4f54c84f368f2067e0007de4c2f3c62ef854"
+    },
+    {
+      "path": "src/views/internal/design-system/auctions-browse/preview-controls.tsx",
+      "sha256": "de68f1efd8cf6257852ca93418d54d72ac34962e4dab561606ff21ef25741d29"
+    },
+    {
+      "path": "src/views/internal/design-system/auctions-browse/record-metrics.tsx",
+      "sha256": "43274613b02f191d887617d0ed1f0b66aa5ed3a88ca4df5690f1bd40fa4fe0db"
+    },
+    {
+      "path": "src/views/internal/design-system/auctions-browse/record-placeholder.tsx",
+      "sha256": "19bf875d7ee3778824b1229406c590823f650fa46e89de246eb82674118c1902"
+    },
+    {
+      "path": "src/views/internal/design-system/auctions-browse/record-provenance.tsx",
+      "sha256": "912c1ec5d1744ea9b32b08b17ba159613fc506b21765dfc7c0398c6917005ddf"
+    },
+    {
+      "path": "src/views/internal/design-system/auctions-browse/record-review.tsx",
+      "sha256": "259cefbdb48d8226c4b087c1909bdc09df1a994e313aa11da8d2a8724ff36922"
+    },
+    {
+      "path": "src/views/internal/design-system/auctions-browse/record.tsx",
+      "sha256": "1c24af085a4784680a8635d2d1c4310fbf272eedb1871c80d55f6e1cb8a5a8e6"
+    },
+    {
+      "path": "src/views/internal/design-system/auctions-browse/review.tsx",
+      "sha256": "cef9993f53251c36b88ebc0ba635065aa4ad51cef035e828ede45dfe7cfd97be"
+    },
+    {
+      "path": "src/views/internal/design-system/auctions-browse/tests/current-clock.test.tsx",
+      "sha256": "7f83d6e05635199b7feb763470139528ab42918237b963ca2dacb0f3e7882c9b"
+    },
+    {
+      "path": "src/views/internal/design-system/auctions-browse/tests/current-model.test.ts",
+      "sha256": "2257675be0b98fe35b03bbdc37cb53a03ae49c290685135c5987076516be79d6"
+    },
+    {
+      "path": "src/views/internal/design-system/auctions-browse/tests/current-result.test.ts",
+      "sha256": "9757c12aa5a5e215aecdf628d087647ae5839ed0743146f1b3d6f1d35658f260"
+    },
+    {
+      "path": "src/views/internal/design-system/auctions-browse/tests/current-scene.test.tsx",
+      "sha256": "7fe133f38a5e46ec4e570150adc80c418fcd73a759edd0d43abe7769076cc91d"
+    },
+    {
+      "path": "src/views/internal/design-system/auctions-browse/tests/current-source.test.ts",
+      "sha256": "098d080f7f335752ab486326d69d03aaa9bc8e4c021a5e61790192d203c19ef9"
+    },
+    {
+      "path": "src/views/internal/design-system/auctions-browse/tests/current-workspace.test.tsx",
+      "sha256": "87c25fdbbff66d083fe52b0d7bdffe14750bb58f859b9fbdcf4350e49ad107c1"
+    },
+    {
+      "path": "src/views/internal/design-system/auctions-browse/tests/history.test.tsx",
+      "sha256": "26519d5ce8b79374f41ee59f4dd96b00497725654a2a4f605916f78f90c6e47f"
+    },
+    {
+      "path": "src/views/internal/design-system/auctions-browse/tests/model.test.ts",
+      "sha256": "7d2c4cea1ccc2e66c9c769ce267763e32a9e24e0b97abd4c083ca3a523dc3550"
+    },
+    {
+      "path": "src/views/internal/design-system/auctions-browse/tests/record.test.tsx",
+      "sha256": "d9d5ec1659c1868a214271e915b939dfeb8935da7c14502aee2831218396f39c"
+    },
+    {
+      "path": "src/views/internal/design-system/auctions-current-table/cells.tsx",
+      "sha256": "d4b7c3d1bc1d6f9b02e7fd4afa9cb9c339890b0c48f8512137f3c26f087099f9"
+    },
+    {
+      "path": "src/views/internal/design-system/auctions-current-table/controls.tsx",
+      "sha256": "90a3741128bbb9e50909ca246ba2a82d19231d2317acf5e92f9a42a7f8af93d1"
+    },
+    {
+      "path": "src/views/internal/design-system/auctions-current-table/detail.tsx",
+      "sha256": "d291383834a9fd17f43dccbe13462ca0c1e13a1593ed4dcf70a84c60a6010a26"
+    },
+    {
+      "path": "src/views/internal/design-system/auctions-current-table/model.ts",
+      "sha256": "5c1773ecdc64d42224220baec28c7e40d4aa9d05642d4ade5e16aa564c6a1297"
+    },
+    {
+      "path": "src/views/internal/design-system/auctions-current-table/review.tsx",
+      "sha256": "49c18282c6e414d362debca94d8092c7db2277c6621856313601517d2456b6fc"
+    },
+    {
+      "path": "src/views/internal/design-system/auctions-current-table/table.tsx",
+      "sha256": "2b4d09c698cbbbf8ac761f58c9c2a530d4a5aafb9874ea5192d7cec63b1953f4"
+    },
+    {
+      "path": "src/views/internal/design-system/auctions-current/assets.tsx",
+      "sha256": "6b08084a508d0bfb16c2d0a0e4b659753fafa0f7bc68531473882179fbfb3260"
+    },
+    {
+      "path": "src/views/internal/design-system/auctions-current/auction-chart.tsx",
+      "sha256": "dd99951d15343802da8d74803da5febf8c8bd5871d6218a203a2eb658d70417c"
+    },
+    {
+      "path": "src/views/internal/design-system/auctions-current/auction-panel.tsx",
+      "sha256": "c1662ac03353ac63ee625421c99e5560f9d065a34ad5289e338a443d33d02f0f"
+    },
+    {
+      "path": "src/views/internal/design-system/auctions-current/basket-weights.tsx",
+      "sha256": "0bb67b8224321c3a0fde88ec4d0ff6cd5927f718534f3c0288b3528398f18667"
+    },
+    {
+      "path": "src/views/internal/design-system/auctions-current/bids.tsx",
+      "sha256": "73a5d7d1c951a8809d23ae3d78ab6da08655ac2c72b3627496638dbafc820213"
+    },
+    {
+      "path": "src/views/internal/design-system/auctions-current/facts.tsx",
+      "sha256": "795fd8870cc42f56068d4dbac9468bea7d2506b402fac55480867e970d72e24e"
+    },
+    {
+      "path": "src/views/internal/design-system/auctions-current/fixtures.ts",
+      "sha256": "a444f65cb1f629308e7baa439c894a1589d527eb22d0b521abf89e8f851c0d8a"
+    },
+    {
+      "path": "src/views/internal/design-system/auctions-current/header.tsx",
+      "sha256": "c40842035416bc2f280d06b41c0a501aaae985e30a0078c5cc0d16a61d2a30a7"
+    },
+    {
+      "path": "src/views/internal/design-system/auctions-current/inspection.tsx",
+      "sha256": "84dc0128bd78798c31eca973f5ae7d5469c9843c15f63cf86b2e32c2c672abf7"
+    },
+    {
+      "path": "src/views/internal/design-system/auctions-current/liquidity-detail.tsx",
+      "sha256": "958ab4b60dc25758fd3fc6f3dbe2bf8da89f4f8762463bf57b52aa8f338ee439"
+    },
+    {
+      "path": "src/views/internal/design-system/auctions-current/liquidity-table.tsx",
+      "sha256": "c93435b75d3f962aac8568d3cf8e257707dd380622b367fddd7da4e30a66dbaa"
+    },
+    {
+      "path": "src/views/internal/design-system/auctions-current/messages.tsx",
+      "sha256": "78f929448dedf63b1f27a0a0bdca87088d452d94c176cb9712dec6f01f5aba53"
+    },
+    {
+      "path": "src/views/internal/design-system/auctions-current/model.ts",
+      "sha256": "21db802949a70235e868e4af378f53f23a0b2cdfcb126cfa6ef8ea870361f75d"
+    },
+    {
+      "path": "src/views/internal/design-system/auctions-current/operation.tsx",
+      "sha256": "1ab98522b6128e2bedf7f3322d95818c4ff0c9a6bdb2eb620bbe12899e679d44"
+    },
+    {
+      "path": "src/views/internal/design-system/auctions-current/result-panel.tsx",
+      "sha256": "8d1cb636bbee10edaa4c47748a49b193997a4babdffc280478eaef3a88c55198"
+    },
+    {
+      "path": "src/views/internal/design-system/auctions-current/result.ts",
+      "sha256": "0c0671d171a5c29f9d14bbe8d4fb910aa6f5fc3efd3d06e388426d9196a8b5d4"
+    },
+    {
+      "path": "src/views/internal/design-system/auctions-current/review.tsx",
+      "sha256": "49b50d7fd89288f4064b9f6165e6a72a43ddd6cbcdab7bc620e981ce61f14d78"
+    },
+    {
+      "path": "src/views/internal/design-system/auctions-current/scene-feedback.tsx",
+      "sha256": "9c2a495d530f2992e4a7e55b8050a009ea4b45d52499cf3dda0059a2ff264825"
+    },
+    {
+      "path": "src/views/internal/design-system/auctions-current/simulation.tsx",
+      "sha256": "2b868792ce9ece8434048f881f86ce4b81c67813d28c0ef0fdd3dfa57651aada"
+    },
+    {
+      "path": "src/views/internal/design-system/auctions-current/snapshot.json",
+      "sha256": "ad18f6aa296a20ae19e1608c3f0cc9c31cb13ed85ad6b4a5bb4c615cad6f2a14"
+    },
+    {
+      "path": "src/views/internal/design-system/auctions-current/status.tsx",
+      "sha256": "adf8fb59b01feb8b0fa25fbcd8577aecc1c2965b7bc52a68719f8ac3fbc61a28"
+    },
+    {
+      "path": "src/views/internal/design-system/auctions-current/use-scene.ts",
+      "sha256": "f8d54ed37e285c7adf5af21f7516e6aad8605f28b13e74567c5caa61de9b554c"
+    },
+    {
+      "path": "src/views/internal/design-system/auctions-current/use-workspace.ts",
+      "sha256": "65643d600b7dfd0e90ae6b03823d97bf4300559d7a3e3067233ec61ce70dc5c8"
+    },
+    {
+      "path": "src/views/internal/design-system/auctions-current/weight-unit-rows.tsx",
+      "sha256": "017b096771dc2535a21f406912cfac7e50347f139d87c052acecc2f02b93b440"
+    },
+    {
+      "path": "src/views/internal/design-system/auctions-current/weights-csv.tsx",
+      "sha256": "f64e08780d0378be84684a7fce768a2af8ce4a2876ab9d505a7fb9618200670a"
+    },
+    {
+      "path": "src/views/internal/design-system/auctions-current/weights-editor.tsx",
+      "sha256": "7528b2084cfa4a563debd9a1d846769aa94372f36cfac6bbe891a20dfc97d83b"
+    },
+    {
+      "path": "src/views/internal/design-system/auctions-current/weights-messages.tsx",
+      "sha256": "f497eb857ad61dfd0b421510fbc72f69939c746b1666b118da45a715d6fbe9f1"
+    },
+    {
+      "path": "src/views/internal/design-system/auctions-current/weights-model.ts",
+      "sha256": "7f024422182858f6be9d67dfc18184872cc77e84ff7f4db15dd3185041bcb266"
+    },
+    {
+      "path": "src/views/internal/design-system/auctions-current/workspace.tsx",
+      "sha256": "72ad7f1249914457b0ff5571a716caf15d2572ebc8f61e62bec49ac3d3bd4d18"
+    },
+    {
+      "path": "src/views/internal/design-system/CLAUDE.md",
+      "sha256": "3fa858011401419904167bffeb30a81593e18581969807994c499e7b7b161e04"
+    }
+  ]
+}

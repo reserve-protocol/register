@@ -7,6 +7,7 @@ import { cn } from '@/lib/utils'
 import { v1Typography as type } from '@/components/design-system-v1/typography'
 import { SortMenu } from './sort-menu'
 import { useProjectionFocus } from './use-projection-focus'
+import { v1SemanticRoles as roles } from '@/components/design-system-v1/semantic-roles'
 
 export const desktopCell =
   'hidden px-3 py-4 text-right [@container(min-width:64rem)]:table-cell'
@@ -88,7 +89,10 @@ export function FamilyTable<T>({
         }
         className="[&_thead]:hidden [@container(min-width:64rem)]:[&_thead]:table-header-group [&_thead_tr]:h-auto [&_thead_tr]:border-b-0 [&_th]:h-auto [&_th]:pb-4 [&_th]:pt-0"
         getRowClassName={() =>
-          'border-b-0 [&:not(:first-child)]:!border-t-0 hover:bg-transparent [@container(min-width:64rem)]:hover:bg-muted/50'
+          cn(
+            'border-b-0 [&:not(:first-child)]:!border-t-0',
+            onRowClick ? roles.interaction.contentHover : 'hover:bg-transparent'
+          )
         }
         onRowClick={
           onRowClick

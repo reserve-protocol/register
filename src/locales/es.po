@@ -2740,6 +2740,7 @@ msgid "Community Discord"
 msgstr "Discord de la comunidad"
 
 #: src/views/index-dtf/auctions/views/rebalance/components/community-launch-auctions-button.tsx:115
+#: src/views/internal/design-system/auctions-current-table/cells.tsx:81
 msgid "Community launch is not available for this rebalance"
 msgstr "El lanzamiento comunitario no está disponible para este reequilibrio"
 
@@ -7119,6 +7120,7 @@ msgid "Only Brand Manager"
 msgstr "Solo Brand Manager"
 
 #: src/views/index-dtf/auctions/views/rebalance/components/community-launch-auctions-button.tsx:117
+#: src/views/internal/design-system/auctions-current-table/cells.tsx:85
 msgid "Only the auction launcher can start auctions"
 msgstr "Solo el lanzador de subastas puede iniciar subastas"
 
@@ -8236,6 +8238,20 @@ msgstr "Leer más sobre la distribución de ingresos"
 #: src/views/portfolio-page/components/pending-withdrawals.tsx:222
 msgid "Ready"
 msgstr "Listo"
+
+#: src/views/internal/design-system/auctions-current-table/cells.tsx:51
+msgid "Anyone can start"
+msgstr "Cualquiera puede iniciar"
+
+#: src/views/internal/design-system/auctions-current-table/cells.tsx:49
+#: src/views/internal/design-system/auctions-current-table/cells.tsx:76
+#: src/views/internal/design-system/auctions-current-table/cells.tsx:119
+msgid "Only launcher can start"
+msgstr "Solo el lanzador puede iniciar"
+
+#: src/views/internal/design-system/auctions-current-table/cells.tsx:61
+msgid "The auction launcher is the account authorized to start auctions during the restricted period."
+msgstr "El lanzador de subastas es la cuenta autorizada para iniciar subastas durante el período restringido."
 
 #: src/views/index-dtf/governance/components/proposal-list-item.tsx:96
 #: src/views/index-dtf/governance/views/proposal/components/proposal-deadline-alert.tsx:117
@@ -13027,3 +13043,218 @@ msgstr "Error de Zapper"
 #: src/views/index-dtf/overview/components/zap-mint/zap-healthcheck.tsx:24
 msgid "Zaps are currently experiencing issues"
 msgstr "Los Zaps están presentando problemas actualmente"
+
+#: src/views/internal/design-system/auctions-current/status.tsx
+#: src/views/internal/design-system/auctions-current-table/cells.tsx:54
+msgid "Confirm target weights"
+msgstr "Confirma los pesos objetivo"
+
+#: src/views/internal/design-system/auctions-current/auction-panel.tsx
+msgid "Confirm the target basket before the first auction. You can keep the defaults unchanged."
+msgstr "Confirma la cesta objetivo antes de la primera subasta. Puedes mantener los valores predeterminados."
+
+#: src/views/internal/design-system/auctions-current/weight-unit-rows.tsx
+msgid "Current → target allocation"
+msgstr "Asignación actual → objetivo"
+
+#: src/views/internal/design-system/auctions-current/weights-editor.tsx
+msgid "Current units show the holdings per DTF token, not the original proposal. New units start from the rebalance’s on-chain target."
+msgstr "Las unidades actuales muestran las tenencias por token DTF, no la propuesta original. Las unidades nuevas parten del objetivo de reequilibrio registrado en la cadena."
+
+#: src/views/internal/design-system/auctions-current/basket-weights.tsx
+msgid "Saved in this tab for launch. Reloading discards these edits."
+msgstr "Guardado en esta pestaña para iniciar la subasta. Al recargar, se pierden estos cambios."
+
+#: src/views/internal/design-system/auctions-current/weights-editor.tsx
+msgid "Saving prepares the target for launch. It does not change holdings or submit a transaction."
+msgstr "Guardar prepara el objetivo para iniciar la subasta. No cambia las tenencias ni envía una transacción."
+
+#: src/views/internal/design-system/auctions-current/weight-unit-rows.tsx
+msgid "Starting target"
+msgstr "Objetivo inicial"
+
+#: src/views/internal/design-system/auctions-current/weight-unit-rows.tsx
+msgid "Target basket"
+msgstr "Cesta objetivo"
+
+#: src/views/internal/design-system/auctions-current/operation.tsx
+msgid "Available after confirming target weights"
+msgstr "Disponible tras confirmar los pesos objetivo"
+
+#: src/views/internal/design-system/auctions-current-table/table.tsx
+msgid "Rebalance expires in"
+msgstr "El reequilibrio vence en"
+
+#: src/views/internal/design-system/governance-proposal-state-review.tsx
+msgid "Constrained proposal column"
+msgstr "Columna de propuestas de ancho reducido"
+
+#: src/views/internal/design-system/governance-proposal-state-fixtures.ts:124
+msgid "Challenge ends in"
+msgstr "El período de impugnación termina en"
+
+#: src/views/internal/design-system/governance-proposal-record.tsx:169
+msgid "Challenge period"
+msgstr "Período de impugnación"
+
+#: src/views/internal/design-system/governance-proposal-state-review.tsx:67
+msgid "Default"
+msgstr "Predeterminado"
+
+#: src/views/internal/design-system/governance-proposal-state-review.tsx:76
+msgid "Empty"
+msgstr "Vacío"
+
+#: src/views/internal/design-system/governance-proposal-state-fixtures.ts:176
+msgid "Execution available in"
+msgstr "Ejecución disponible en"
+
+#: src/views/internal/design-system/governance-proposal-state-review.tsx:73
+msgid "Loading"
+msgstr "Cargando"
+
+#: src/views/internal/design-system/governance-proposal-state-review.tsx:57
+msgid "Preview state"
+msgstr "Estado de vista previa"
+
+#: src/views/internal/design-system/governance-proposal-record.tsx:149
+msgid "Proposal timeline"
+msgstr "Cronología de la propuesta"
+
+#: src/views/internal/design-system/governance-proposal-record.tsx:155
+msgid "The proposal passed and is in its required execution delay (timelock). Execution becomes available when this period ends; it does not happen automatically."
+msgstr "La propuesta se aprobó y está en el período de espera obligatorio antes de su ejecución (timelock). Podrá ejecutarse cuando termine este período; no se ejecuta automáticamente."
+
+#: src/views/internal/design-system/governance-proposal-record.tsx:163
+msgid "The strip represents lifecycle timing, not voting support."
+msgstr "La barra representa los tiempos del ciclo de vida, no el apoyo en la votación."
+
+#: src/views/internal/design-system/governance-proposal-record.tsx:171
+msgid "Voting delay → Voting → Execution delay"
+msgstr "Espera para votar → Votación → Espera para ejecutar"
+
+#: src/views/internal/design-system/governance-proposal-state-fixtures.ts:107
+#: src/views/internal/design-system/governance-proposal-state-fixtures.ts:142
+msgid "Voting ends in"
+msgstr "La votación termina en"
+
+#: src/views/internal/design-system/governance-proposal-state-fixtures.ts:88
+msgid "Voting starts in"
+msgstr "La votación comienza en"
+
+#: src/views/internal/design-system/governance-proposal-record.tsx:149
+#: src/views/internal/design-system/governance-proposal-state-fixtures.ts:172
+msgid "Waiting period"
+msgstr "Período de espera"
+
+#: src/views/internal/design-system/charts/review.tsx:23
+msgid "Captured history"
+msgstr "Historial capturado"
+
+#: src/views/internal/design-system/charts/review.tsx:118
+msgid "Card"
+msgstr "Tarjeta"
+
+#: src/views/internal/design-system/charts/review.tsx:68
+msgid "Chart review scenario"
+msgstr "Escenario de revisión del gráfico"
+
+#: src/views/internal/design-system/charts/review.tsx:112
+msgid "Compact trend"
+msgstr "Tendencia compacta"
+
+#: src/views/internal/design-system/charts/review.tsx:56
+msgid "Compare the same supplied history in three sizes. No return calculation or data-policy changes."
+msgstr "Compara el mismo historial proporcionado en tres tamaños. Sin cambios en el cálculo de rentabilidad ni en la política de datos."
+
+#: src/views/internal/design-system/charts/review.tsx:92
+msgid "Constrained review"
+msgstr "Revisión con ancho limitado"
+
+#: src/views/internal/design-system/charts/review.tsx:158
+msgid "Daily · 31 samples"
+msgstr "Diario · 31 muestras"
+
+#: src/views/internal/design-system/charts/review.tsx:30
+msgid "Delayed · simulated"
+msgstr "Retrasado · simulado"
+
+#: src/views/internal/design-system/charts/review.tsx:145
+msgid "Density comparison · same captured month"
+msgstr "Comparación de densidad · mismo mes capturado"
+
+#: src/views/internal/design-system/charts/review.tsx:28
+msgid "Empty · simulated"
+msgstr "Vacío · simulado"
+
+#: src/views/internal/design-system/charts/review.tsx:26
+msgid "Estimated segment · simulated"
+msgstr "Tramo estimado · simulado"
+
+#: src/views/internal/design-system/charts/review.tsx:150
+msgid "Every supplied point is retained. This is not a sampling recommendation."
+msgstr "Se conserva cada punto proporcionado. No es una recomendación de muestreo."
+
+#: src/views/internal/design-system/charts/review.tsx:24
+msgid "Flat · simulated"
+msgstr "Plano · simulado"
+
+#: src/views/internal/design-system/charts/review.tsx:125
+msgid "Full chart"
+msgstr "Gráfico completo"
+
+#: src/views/internal/design-system/charts/review.tsx:31
+msgid "Gap · simulated"
+msgstr "Intervalo sin datos · simulado"
+
+#: src/views/internal/design-system/charts/review.tsx:164
+msgid "Hourly · 721 samples"
+msgstr "Por hora · 721 muestras"
+
+#: src/views/internal/design-system/charts/review.tsx:100
+msgid "Lab-simulated state, not an actual LCAP event."
+msgstr "Estado simulado en el laboratorio, no un evento real de LCAP."
+
+#: src/views/internal/design-system/charts/review.tsx:101
+msgid "LCAP · captured September 13, 2026. Review values, not live prices."
+msgstr "LCAP · capturado el 13 de septiembre de 2026. Valores de revisión, no precios en tiempo real."
+
+#: src/views/internal/design-system/charts/review.tsx:27
+msgid "Loading · simulated"
+msgstr "Cargando · simulado"
+
+#: src/views/internal/design-system/charts/review.tsx:34
+msgid "Long value · simulated"
+msgstr "Valor largo · simulado"
+
+#: src/views/internal/design-system/charts/review.tsx:32
+msgid "One point · simulated"
+msgstr "Un punto · simulado"
+
+#: src/views/internal/design-system/charts/review.tsx:177
+msgid "Review boundary and what comes next"
+msgstr "Alcance de la revisión y próximos pasos"
+
+#: src/views/internal/design-system/charts/review.tsx:180
+msgid "Review the line, fill, labels, inspection and narrow layout. Candles, monthly bars and composition remain separate patterns. No production chart type is being removed."
+msgstr "Revisa la línea, el relleno, las etiquetas, la exploración y el diseño estrecho. Las velas, las barras mensuales y la composición siguen siendo patrones distintos. No se elimina ningún tipo de gráfico de producción."
+
+#: src/views/internal/design-system/charts/review.tsx:187
+msgid "Source, return basis and freshness rules remain engineer-owned. No shared palette or financial calculation has changed."
+msgstr "La fuente, la base de rentabilidad y las reglas de actualización siguen a cargo de ingeniería. No se ha cambiado ninguna paleta compartida ni cálculo financiero."
+
+#: src/views/internal/design-system/charts/review.tsx:53
+msgid "Time-series charts"
+msgstr "Gráficos de series temporales"
+
+#: src/views/internal/design-system/charts/review.tsx:33
+msgid "Two points · simulated"
+msgstr "Dos puntos · simulado"
+
+#: src/views/internal/design-system/charts/review.tsx:29
+msgid "Unavailable · simulated"
+msgstr "No disponible · simulado"
+
+#: src/views/internal/design-system/charts/review.tsx:25
+msgid "Zero · simulated"
+msgstr "Cero · simulado"

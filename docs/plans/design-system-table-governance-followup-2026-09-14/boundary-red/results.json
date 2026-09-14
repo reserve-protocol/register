@@ -1,0 +1,157 @@
+{
+  "rawReportSha256": "733ca8cc7e61ef6e609712767b8b2945e17f40adb52cb8218cf5f38ba7afbabc",
+  "stats": {
+    "startTime": "2026-09-14T12:58:57.572Z",
+    "duration": 17578.214,
+    "expected": 0,
+    "skipped": 0,
+    "unexpected": 1,
+    "flaky": 0
+  },
+  "errors": [],
+  "records": [
+    {
+      "file": "governance-record-layout-lab-regressions.spec.ts",
+      "line": 4,
+      "title": "governance-record-layout-lab-regressions.spec.ts / governance narrow grouping light",
+      "status": "unexpected",
+      "expectedStatus": "passed",
+      "results": [
+        {
+          "status": "failed",
+          "duration": 14691,
+          "retry": 0,
+          "errors": [
+            {
+              "location": {
+                "file": "/Users/lill-kire/Code/register/e2e/design-system/governance-record-layout-lab-regressions.spec.ts",
+                "column": 14,
+                "line": 73
+              },
+              "message": "Error: narrow evidence follows status\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m\n\n  71 |               'narrow evidence follows status'\n  72 |             )\n> 73 |             .toBe(true)\n     |              ^\n  74 |           expect\n  75 |             .soft(\n  76 |               geometry.qualifierBelow,\n    at /Users/lill-kire/Code/register/e2e/design-system/governance-record-layout-lab-regressions.spec.ts:73:14"
+            },
+            {
+              "location": {
+                "file": "/Users/lill-kire/Code/register/e2e/design-system/governance-record-layout-lab-regressions.spec.ts",
+                "column": 14,
+                "line": 73
+              },
+              "message": "Error: narrow evidence follows status\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m\n\n  71 |               'narrow evidence follows status'\n  72 |             )\n> 73 |             .toBe(true)\n     |              ^\n  74 |           expect\n  75 |             .soft(\n  76 |               geometry.qualifierBelow,\n    at /Users/lill-kire/Code/register/e2e/design-system/governance-record-layout-lab-regressions.spec.ts:73:14"
+            },
+            {
+              "location": {
+                "file": "/Users/lill-kire/Code/register/e2e/design-system/governance-record-layout-lab-regressions.spec.ts",
+                "column": 14,
+                "line": 73
+              },
+              "message": "Error: narrow evidence follows status\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m\n\n  71 |               'narrow evidence follows status'\n  72 |             )\n> 73 |             .toBe(true)\n     |              ^\n  74 |           expect\n  75 |             .soft(\n  76 |               geometry.qualifierBelow,\n    at /Users/lill-kire/Code/register/e2e/design-system/governance-record-layout-lab-regressions.spec.ts:73:14"
+            },
+            {
+              "location": {
+                "file": "/Users/lill-kire/Code/register/e2e/design-system/governance-record-layout-lab-regressions.spec.ts",
+                "column": 14,
+                "line": 73
+              },
+              "message": "Error: narrow evidence follows status\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m\n\n  71 |               'narrow evidence follows status'\n  72 |             )\n> 73 |             .toBe(true)\n     |              ^\n  74 |           expect\n  75 |             .soft(\n  76 |               geometry.qualifierBelow,\n    at /Users/lill-kire/Code/register/e2e/design-system/governance-record-layout-lab-regressions.spec.ts:73:14"
+            },
+            {
+              "location": {
+                "file": "/Users/lill-kire/Code/register/e2e/design-system/governance-record-layout-lab-regressions.spec.ts",
+                "column": 14,
+                "line": 73
+              },
+              "message": "Error: narrow evidence follows status\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m\n\n  71 |               'narrow evidence follows status'\n  72 |             )\n> 73 |             .toBe(true)\n     |              ^\n  74 |           expect\n  75 |             .soft(\n  76 |               geometry.qualifierBelow,\n    at /Users/lill-kire/Code/register/e2e/design-system/governance-record-layout-lab-regressions.spec.ts:73:14"
+            },
+            {
+              "location": {
+                "file": "/Users/lill-kire/Code/register/e2e/design-system/governance-record-layout-lab-regressions.spec.ts",
+                "column": 14,
+                "line": 73
+              },
+              "message": "Error: narrow evidence follows status\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m\n\n  71 |               'narrow evidence follows status'\n  72 |             )\n> 73 |             .toBe(true)\n     |              ^\n  74 |           expect\n  75 |             .soft(\n  76 |               geometry.qualifierBelow,\n    at /Users/lill-kire/Code/register/e2e/design-system/governance-record-layout-lab-regressions.spec.ts:73:14"
+            },
+            {
+              "location": {
+                "file": "/Users/lill-kire/Code/register/e2e/design-system/governance-record-layout-lab-regressions.spec.ts",
+                "column": 14,
+                "line": 73
+              },
+              "message": "Error: narrow evidence follows status\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m\n\n  71 |               'narrow evidence follows status'\n  72 |             )\n> 73 |             .toBe(true)\n     |              ^\n  74 |           expect\n  75 |             .soft(\n  76 |               geometry.qualifierBelow,\n    at /Users/lill-kire/Code/register/e2e/design-system/governance-record-layout-lab-regressions.spec.ts:73:14"
+            },
+            {
+              "location": {
+                "file": "/Users/lill-kire/Code/register/e2e/design-system/governance-record-layout-lab-regressions.spec.ts",
+                "column": 14,
+                "line": 73
+              },
+              "message": "Error: narrow evidence follows status\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m\n\n  71 |               'narrow evidence follows status'\n  72 |             )\n> 73 |             .toBe(true)\n     |              ^\n  74 |           expect\n  75 |             .soft(\n  76 |               geometry.qualifierBelow,\n    at /Users/lill-kire/Code/register/e2e/design-system/governance-record-layout-lab-regressions.spec.ts:73:14"
+            }
+          ],
+          "attachments": [
+            {
+              "name": "governance-layout-light-320",
+              "contentType": "image/png",
+              "bytes": 58268,
+              "sha256": "caf5d0535937791ead088d81a6562bd31b9a34daed6b295c7e545d831aac5016"
+            },
+            {
+              "name": "governance-layout-light-390",
+              "contentType": "image/png",
+              "bytes": 58496,
+              "sha256": "9b9ba1d55102b3d64196166f7ea0a94583a35a94a7f3ee49adb5db7bf09c2500"
+            },
+            {
+              "name": "governance-layout-light-527",
+              "contentType": "image/png",
+              "bytes": 73633,
+              "sha256": "0b696609125421f0b7ac73f2a39e4a5b697adcef065c2f7681eedac413e5e7a3",
+              "file": "governance-narrow-grouping-light-governance-layout-light-527-0b696609.png"
+            },
+            {
+              "name": "governance-layout-light-528",
+              "contentType": "image/png",
+              "bytes": 77989,
+              "sha256": "5c839522f40057b7e6f1b1ded8f88e73eb0b0378c518ae1fff345f3cb49ac9dd"
+            },
+            {
+              "name": "governance-layout-light-767",
+              "contentType": "image/png",
+              "bytes": 92909,
+              "sha256": "0e773592a08b44b2741b99b73a97a69d89d4a4b6c143da3e7e9f2ff060c4b875"
+            },
+            {
+              "name": "governance-layout-light-768",
+              "contentType": "image/png",
+              "bytes": 93016,
+              "sha256": "80c4822bd6ff033dd0a1a7dd91db39d56c18e5b4641cf02bdb70101cec48f67b"
+            },
+            {
+              "name": "governance-layout-light-1400",
+              "contentType": "image/png",
+              "bytes": 98628,
+              "sha256": "a873c6ded145f72d8baa8cade4e40b2747cbd23b1ae47e3108cfae18e60b6718"
+            },
+            {
+              "name": "screenshot",
+              "contentType": "image/png",
+              "bytes": 97123,
+              "sha256": "d15282d7e4a04b54847cf99b900cd92de4c59f504480bc00b40d3b1578798ce2"
+            },
+            {
+              "name": "current-source",
+              "contentType": "application/json",
+              "bytes": 344434,
+              "sha256": "408146c08499457e3c5a6fb9cc6d31b76191cb3a77ca18324a961b676aba3d9b"
+            },
+            {
+              "name": "error-context",
+              "contentType": "text/markdown",
+              "bytes": 117789,
+              "sha256": "6227f2e19fed52ed070bed873cf7f38a3748fac3ba52760b0301ed2840912505"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

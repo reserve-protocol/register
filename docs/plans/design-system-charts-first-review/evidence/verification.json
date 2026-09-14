@@ -1,0 +1,307 @@
+{
+  "scope": "Lab-only time-series visual preparation, not production migration",
+  "stats": {
+    "startTime": "2026-09-14T14:42:43.010Z",
+    "duration": 53853.382,
+    "expected": 17,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "sourceDigest": "3978686d144cd55ce0b687b82eb6c0b56ad35138f63e97f75a0529068504242e",
+  "sourceAttachments": 8,
+  "sourceIdentical": true,
+  "files": [
+    {
+      "path": "e2e/design-system/chart-review-lab-regressions.spec.ts",
+      "sha256": "d82f49efdbdc34266143410fcebc2ecfcd3ceacfaa9863670286296779dab9cd"
+    },
+    {
+      "path": "src/components/charts/area/AreaChart.tsx",
+      "sha256": "d5f6d977434786f416b7a5414fe546ea88c1890deaf3e7e7fdd0e49b0f115c08"
+    },
+    {
+      "path": "src/views/index-dtf/overview/components/charts/candlestick-chart-body.tsx",
+      "sha256": "04d34e005ac751a8ea9958ce45dba6fadfa276588b34c9d3c20f600743627887"
+    },
+    {
+      "path": "src/views/index-dtf/overview/components/charts/candlestick-chart.tsx",
+      "sha256": "e5ed9d437ef2ccea42b82c5014de6466e3f31b4fc3211735a99adc208cf3eb20"
+    },
+    {
+      "path": "src/views/index-dtf/overview/components/charts/candlestick-launch-marker.tsx",
+      "sha256": "56dbec27b421dea105056efc744c81c066681c7f02c7217fb4e2255568de0391"
+    },
+    {
+      "path": "src/views/index-dtf/overview/components/charts/candlestick-tooltip.tsx",
+      "sha256": "885a152a0a6160616757b3ad09b568f5e98ca447eb6639a846994411563f5284"
+    },
+    {
+      "path": "src/views/index-dtf/overview/components/charts/chart-overlay.tsx",
+      "sha256": "b797326b0ed937479bb7f763fe00d2c5e92262cfad042f89100cdcb4759a50f4"
+    },
+    {
+      "path": "src/views/index-dtf/overview/components/charts/chart-tab-styles.ts",
+      "sha256": "a44684b22c1ea3727a6002b1ff5ebf1a794b1399b470e503465997870df894de"
+    },
+    {
+      "path": "src/views/index-dtf/overview/components/charts/chart-type-selector.tsx",
+      "sha256": "8c497b193f14ddc53b4870ab25ffd8de2766ba059ea9cdd1bc4dbc77631c9ee4"
+    },
+    {
+      "path": "src/views/index-dtf/overview/components/charts/data-type-selector.tsx",
+      "sha256": "1cfbc729908d567f7a54a8ee2b2539d81f4c2e3fd97d073353ebde44747f2cd4"
+    },
+    {
+      "path": "src/views/index-dtf/overview/components/charts/market-cap.tsx",
+      "sha256": "22d073e9e8e769796e819e4f1aa6d5114687a28382a3e5c145cce977b6d292a7"
+    },
+    {
+      "path": "src/views/index-dtf/overview/components/charts/percentage-change.tsx",
+      "sha256": "7e9a174f514efcca12d2591ac883074140e348e1abdc392a4131647d10cb30ab"
+    },
+    {
+      "path": "src/views/index-dtf/overview/components/charts/price-chart-atoms.ts",
+      "sha256": "8cb2aa0b1994e02916f591430db3fdd68c0a3812c4d6cca4e4b4d8babf73f723"
+    },
+    {
+      "path": "src/views/index-dtf/overview/components/charts/price-chart-body.tsx",
+      "sha256": "ca68d0466dd4dc97e7a56a2375ae42771aad6ff5c24a0ebfcfc5f0d68834546e"
+    },
+    {
+      "path": "src/views/index-dtf/overview/components/charts/price-chart-constants.ts",
+      "sha256": "30c5e5f4889bab8da237e1d3e1597404635b32746ba90f2ac64ea20dc4b59cf2"
+    },
+    {
+      "path": "src/views/index-dtf/overview/components/charts/price-chart-defs.tsx",
+      "sha256": "b6987016318d82daf1b0077e9cf0215a0fdaea7427857b8ed51fdab492807f8e"
+    },
+    {
+      "path": "src/views/index-dtf/overview/components/charts/price-chart-footer.tsx",
+      "sha256": "ab369e1685586a1f01cdbfd64f7d4cad8feff411f6472e255f70d246d6f8b747"
+    },
+    {
+      "path": "src/views/index-dtf/overview/components/charts/price-chart-launch-marker.tsx",
+      "sha256": "17c1b398055163c627167db246cf9f44eb721352b414e34bcc15b062a99143ba"
+    },
+    {
+      "path": "src/views/index-dtf/overview/components/charts/price-chart-series.tsx",
+      "sha256": "dd36cc1aa79558ce722a779c68f7dead58b1b1f9fffb54b842215f53cc6a1e02"
+    },
+    {
+      "path": "src/views/index-dtf/overview/components/charts/price-chart-tooltips.tsx",
+      "sha256": "5753ee8f2c54690ab1a5c51e6beec2760889889e9f1a961dbcde837ea718c443"
+    },
+    {
+      "path": "src/views/index-dtf/overview/components/charts/price-chart-utils.ts",
+      "sha256": "c423222235e96f28787a55a87156b72fb7ecacd01ca16c236100134319095a22"
+    },
+    {
+      "path": "src/views/index-dtf/overview/components/charts/price-chart.tsx",
+      "sha256": "5c5741b7cfd6e6ec3785e2290d62cd0f7affe22c07d34479b1fd6b6f967f2eae"
+    },
+    {
+      "path": "src/views/index-dtf/overview/components/charts/tests/candlestick-data.test.ts",
+      "sha256": "b2b968bd0276349c30f7faba9d835b0f21109e700e5006a3efa81c3f6216e2ed"
+    },
+    {
+      "path": "src/views/index-dtf/overview/components/charts/tests/price-chart-atoms.test.ts",
+      "sha256": "a3250224213c0d4e8a75ba35871757f1876dbcbf3adce8b78e3a917f1d653e3b"
+    },
+    {
+      "path": "src/views/index-dtf/overview/components/charts/tests/price-chart-constants.test.ts",
+      "sha256": "203a7c914e5456788d885279684dcd19c8ce93c044262f03725c7e90da2e766f"
+    },
+    {
+      "path": "src/views/index-dtf/overview/components/charts/tests/price-chart-utils.test.ts",
+      "sha256": "fe8e1f73f25b4d2f8fa33ca64a017bbc8397545aecfb05f6c61c52b476da5468"
+    },
+    {
+      "path": "src/views/index-dtf/overview/components/charts/tests/use-available-time-ranges.test.ts",
+      "sha256": "72f1e8db6472eaa6af31845d1261726afc2cd3e7c828571b2b83dae868c027fd"
+    },
+    {
+      "path": "src/views/index-dtf/overview/components/charts/time-range-menu.tsx",
+      "sha256": "5ab7afc6b3fc58e3e94245cde520280bbc02fee9dde4035103176630716ad6d7"
+    },
+    {
+      "path": "src/views/index-dtf/overview/components/charts/time-range-selector.tsx",
+      "sha256": "4eea7b0d230bb6f71efc08b0090cab0656a0e6a21c78a9eba6c7129bd0f03204"
+    },
+    {
+      "path": "src/views/index-dtf/overview/components/charts/use-available-time-ranges.ts",
+      "sha256": "591cfca8b8298ca1d2c738fc594721d1d999800c247f5f172ae6dcbc276a90c0"
+    },
+    {
+      "path": "src/views/index-dtf/overview/components/charts/use-candlestick-data.ts",
+      "sha256": "b2c07a4b76cbf25a46e2969fc842534249abb3377602dccf3fd3faf5adeab070"
+    },
+    {
+      "path": "src/views/index-dtf/overview/components/charts/use-price-chart-data.ts",
+      "sha256": "3b3b12e49854099603df9f907bfe15c24428d4d0a4ce303e7ff60dddd89ffce3"
+    },
+    {
+      "path": "src/views/internal/design-system/charts/fixtures.ts",
+      "sha256": "ef4d40428abe92343ee7847bebb531c33d92ba44adfd1c90033cad53f504e971"
+    },
+    {
+      "path": "src/views/internal/design-system/charts/fixtures/monthly-daily.json",
+      "sha256": "55ed694b63f5f30be1a507c94856cf6d92cf88f7d476960360adfa4599805b4f"
+    },
+    {
+      "path": "src/views/internal/design-system/charts/fixtures/monthly-hourly.json",
+      "sha256": "1fdef319da0035e87f5d35f302615f4bfb08cc3a54e48338e0a5569b0e33cdbc"
+    },
+    {
+      "path": "src/views/internal/design-system/charts/fixtures/weekly-hourly.json",
+      "sha256": "724e3fce14d278b65d6760497355759364aeb9b998cc8d7008dea8b6649bad58"
+    },
+    {
+      "path": "src/views/internal/design-system/charts/panels.tsx",
+      "sha256": "8214ff80d5d43d78808a43517ebae11cb005b652a3be611a17524ec03c3f2388"
+    },
+    {
+      "path": "src/views/internal/design-system/charts/plot.tsx",
+      "sha256": "6ae6f2eb65a5c58f50a4842e65b37bb54b0229208a2064339ce1b75374d1d197"
+    },
+    {
+      "path": "src/views/internal/design-system/charts/review.tsx",
+      "sha256": "39f4b6d9e1f68b55f92b1c5c2b4a6a9f503c10cd0165b8dc4c08e89038e6b756"
+    },
+    {
+      "path": "src/views/internal/design-system/component-catalog-support.ts",
+      "sha256": "c8a9139f65edf96d03bad6e42c695b023b06b030c5c23ea248d58443f0b54fd0"
+    },
+    {
+      "path": "src/views/internal/design-system/component-visual-output.tsx",
+      "sha256": "cc550ddb995a2476d799de1492bbd905721ae56feaecb139f5a6fda79e5e1ae7"
+    },
+    {
+      "path": "src/views/internal/design-system/current-review.ts",
+      "sha256": "3db0eba1b654a131f94a02e5508ddbfc26b8b669ff227bcad3d26b288998925b"
+    },
+    {
+      "path": "src/views/internal/design-system/tests/chart-fixtures.test.ts",
+      "sha256": "884a55621299bb28714e38f970555f4e49c10703674bd49c1b3404518293e3a2"
+    },
+    {
+      "path": "src/views/internal/design-system/tests/component-catalog.test.ts",
+      "sha256": "8490d3a5df38435ec3e020f8f845af6ccfbdf4c37731f2982c16cafa7745d02d"
+    },
+    {
+      "path": "src/views/yield-dtf/overview/components/charts/apy-chart.tsx",
+      "sha256": "2afada7817db84a1eebc53c065506c7fb8693077235fed264554a95a87c37cd6"
+    },
+    {
+      "path": "src/views/yield-dtf/overview/components/charts/ExportCSVButton.tsx",
+      "sha256": "4210136235e6be1b4ff3a08b6a4e1a996b8204ae8d17f80dcbc399f9e77fb71b"
+    },
+    {
+      "path": "src/views/yield-dtf/overview/components/charts/index.tsx",
+      "sha256": "387fab71684c193223c940cefeb88121ade52429da3f8dea21994db677b38d00"
+    },
+    {
+      "path": "src/views/yield-dtf/overview/components/charts/price-chart.tsx",
+      "sha256": "440297ca8afd922c99c318a638f5f07182cdf16a2a8da514a99a9045f424787f"
+    },
+    {
+      "path": "src/views/yield-dtf/overview/components/charts/staking-chart.tsx",
+      "sha256": "f1c4eef94af1a9e2edaf648b3de7c7a736384773f96734b5bd2028ef1a87f213"
+    },
+    {
+      "path": "src/views/yield-dtf/overview/components/charts/supply-chart.tsx",
+      "sha256": "9b3614218806bf87272c24c56e42afbb9c56f9b577a1bd0884c9db55897fc99e"
+    },
+    {
+      "path": "src/views/yield-dtf/overview/components/charts/useExportCSV.ts",
+      "sha256": "37bab3a62aa489de6c5cffa5b844212030a62347f751226f726b227c088374f9"
+    }
+  ],
+  "tests": [
+    {
+      "file": "chart-review-lab-regressions.spec.ts",
+      "title": "chart first review light",
+      "ok": true
+    },
+    {
+      "file": "chart-review-lab-regressions.spec.ts",
+      "title": "chart inspection and pressure states light",
+      "ok": true
+    },
+    {
+      "file": "chart-review-lab-regressions.spec.ts",
+      "title": "chart first review dark",
+      "ok": true
+    },
+    {
+      "file": "chart-review-lab-regressions.spec.ts",
+      "title": "chart inspection and pressure states dark",
+      "ok": true
+    },
+    {
+      "file": "chart-review-lab-regressions.spec.ts",
+      "title": "chart retains range focus",
+      "ok": true
+    },
+    {
+      "file": "chart-review-lab-regressions.spec.ts",
+      "title": "chart inspection targets are 44px",
+      "ok": true
+    },
+    {
+      "file": "chart-review-lab-regressions.spec.ts",
+      "title": "chart inspection identifies estimated samples",
+      "ok": true
+    },
+    {
+      "file": "chart-review-lab-regressions.spec.ts",
+      "title": "inspection and translated pressure",
+      "ok": true
+    },
+    {
+      "file": "lab-regressions.spec.ts",
+      "title": "overview preserves its starting scroll position at 320px",
+      "ok": true
+    },
+    {
+      "file": "lab-regressions.spec.ts",
+      "title": "overview preserves its starting scroll position at 375px",
+      "ok": true
+    },
+    {
+      "file": "lab-regressions.spec.ts",
+      "title": "overview preserves its starting scroll position at 1400px",
+      "ok": true
+    },
+    {
+      "file": "lab-regressions.spec.ts",
+      "title": "narrow table keeps its last column reachable without page overflow",
+      "ok": true
+    },
+    {
+      "file": "lab-regressions.spec.ts",
+      "title": "Stake label fits its intended boundary at 320px",
+      "ok": true
+    },
+    {
+      "file": "lab-regressions.spec.ts",
+      "title": "Stake label fits its intended boundary at 359px",
+      "ok": true
+    },
+    {
+      "file": "lab-regressions.spec.ts",
+      "title": "Stake label fits its intended boundary at 360px",
+      "ok": true
+    },
+    {
+      "file": "lab-regressions.spec.ts",
+      "title": "Stake label fits its intended boundary at 375px",
+      "ok": true
+    },
+    {
+      "file": "lab-regressions.spec.ts",
+      "title": "an opened contained dialog retains focus trapping and returns focus when closed",
+      "ok": true
+    }
+  ]
+}

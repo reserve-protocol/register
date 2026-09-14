@@ -1,0 +1,128 @@
+{
+  "rawReportSha256": "9346673ce2dd39937351f3dc0b70faafe90427a9a9838b01d85aad7726bc7cdc",
+  "stats": {
+    "startTime": "2026-09-14T13:17:31.530Z",
+    "duration": 21648.908,
+    "expected": 2,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "errors": [],
+  "records": [
+    {
+      "file": "earn-rate-layout-lab-regressions.spec.ts",
+      "line": 6,
+      "title": "earn-rate-layout-lab-regressions.spec.ts / Earn compact rate rhythm and help light",
+      "status": "expected",
+      "expectedStatus": "passed",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 14980,
+          "retry": 0,
+          "errors": [],
+          "attachments": [
+            {
+              "name": "earn-rate-light-320-Default",
+              "contentType": "image/png",
+              "bytes": 73315,
+              "sha256": "d81e856a1f771815936da8ba75c92343348f26153d176db7f33655caf54cb888",
+              "file": "earn-compact-rate-rhythm-and-help-light-earn-rate-light-320-default-d81e856a.png"
+            },
+            {
+              "name": "earn-rate-light-320-Long content",
+              "contentType": "image/png",
+              "bytes": 72996,
+              "sha256": "ce2abd69f6fb8dbe45767a8b6375b765c81b67d9e50a4dc2bf6e8ec1213e281c",
+              "file": "earn-compact-rate-rhythm-and-help-light-earn-rate-light-320-long-content-ce2abd69.png"
+            },
+            {
+              "name": "earn-rate-light-390-Default",
+              "contentType": "image/png",
+              "bytes": 79281,
+              "sha256": "6f08fa5c7da169ceecacbbfeb30fe02c390ab0b4c07dde2ad248ffb389d08b0b",
+              "file": "earn-compact-rate-rhythm-and-help-light-earn-rate-light-390-default-6f08fa5c.png"
+            },
+            {
+              "name": "earn-rate-light-390-Long content",
+              "contentType": "image/png",
+              "bytes": 81997,
+              "sha256": "4dbc8ff3e1d97df417fc270b11d94b83f973b8067ed2cc2f677072bcb40e5d85",
+              "file": "earn-compact-rate-rhythm-and-help-light-earn-rate-light-390-long-content-4dbc8ff3.png"
+            },
+            {
+              "name": "earn-rate-light-before-touch",
+              "contentType": "image/png",
+              "bytes": 82043,
+              "sha256": "25035e07719b9278524c1cd9d99d544cfba2dcafd0be47ebb1d1d2b6e0dcf16a"
+            },
+            {
+              "name": "current-source",
+              "contentType": "application/json",
+              "bytes": 344580,
+              "sha256": "f5cd7be790541e177d080a17ec00061e41929354d481d4f99a7fef75829c9dd6"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "file": "earn-rate-layout-lab-regressions.spec.ts",
+      "line": 6,
+      "title": "earn-rate-layout-lab-regressions.spec.ts / Earn compact rate rhythm and help dark",
+      "status": "expected",
+      "expectedStatus": "passed",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 3741,
+          "retry": 0,
+          "errors": [],
+          "attachments": [
+            {
+              "name": "earn-rate-dark-320-Default",
+              "contentType": "image/png",
+              "bytes": 74514,
+              "sha256": "e958ddc93d51958ded27518ad6327f1aae27a0b32dbf4536a2aa02e11c1fd983",
+              "file": "earn-compact-rate-rhythm-and-help-dark-earn-rate-dark-320-default-e958ddc9.png"
+            },
+            {
+              "name": "earn-rate-dark-320-Long content",
+              "contentType": "image/png",
+              "bytes": 74152,
+              "sha256": "e309b5599e12be2b4f8b287b816dbade7b7c9ef9fc5ce9e83f6648ab3225c06c",
+              "file": "earn-compact-rate-rhythm-and-help-dark-earn-rate-dark-320-long-content-e309b559.png"
+            },
+            {
+              "name": "earn-rate-dark-390-Default",
+              "contentType": "image/png",
+              "bytes": 79697,
+              "sha256": "a57aea4895bc60b5d01590a88980e2f39dc49f47c03d77eae2b46b64dcbf6edd",
+              "file": "earn-compact-rate-rhythm-and-help-dark-earn-rate-dark-390-default-a57aea48.png"
+            },
+            {
+              "name": "earn-rate-dark-390-Long content",
+              "contentType": "image/png",
+              "bytes": 82536,
+              "sha256": "927031f40e91392ae6abc71e9885149df1f0883821a0b69b78afeb807077c20d",
+              "file": "earn-compact-rate-rhythm-and-help-dark-earn-rate-dark-390-long-content-927031f4.png"
+            },
+            {
+              "name": "earn-rate-dark-before-touch",
+              "contentType": "image/png",
+              "bytes": 82573,
+              "sha256": "e05d50c2a52b3064e29e54052fecc434ae1af515b83726a6c6edbf3a633a04cb"
+            },
+            {
+              "name": "current-source",
+              "contentType": "application/json",
+              "bytes": 344580,
+              "sha256": "f5cd7be790541e177d080a17ec00061e41929354d481d4f99a7fef75829c9dd6"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

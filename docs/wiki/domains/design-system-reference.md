@@ -85,6 +85,20 @@ uses an 88% / 80% / 72% default-hover-pressed ramp mixed with black. Generic
 categorical colors remain deferred because the current `chart-1`…`chart-5`
 variables have no product consumer.
 
+Clickable neutral content rows/cards use the accepted opaque
+`interactive-content-hover`: light mixes 65% card with 35% secondary for pale
+ivory against beige seams; dark mixes 95% card with 5% foreground for subtle
+lightening. Consumers opt into `interaction.contentHover`, with
+`contentGroupHover` only for a child following that same content link. Existing
+chart/ticker fade masks must end in the hovered card color without recoloring
+the chart or loading skeleton. This is a solid fill, not a directional gradient
+or reuse of structural `substrate-subtle`. Apply only when the whole record is
+actionable; static rows, loading states, embedded controls, selections, navigation
+chrome and intent-filled cards retain their own roles. The
+[rollout inventory](../../plans/design-system-content-hover-trial.md) covers V1
+lab consumers. Shared legacy table defaults and production screens are unchanged;
+engineer review remains required before production adoption.
+
 Transaction metrics resolve phase, meaning, and severity before choosing one
 of those roles; numeric sign alone never selects a color. Settings, limits, and
 routine estimates stay neutral, warning and danger belong to preflight risk,

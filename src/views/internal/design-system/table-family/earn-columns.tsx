@@ -2,6 +2,7 @@ import type { ColumnDef } from '@tanstack/react-table'
 import type { ReactNode } from 'react'
 import { CircleHelp } from 'lucide-react'
 import { IconButton } from '@/components/icon-button'
+import { InlineAction } from '@/components/button'
 import { v1Typography as type } from '@/components/design-system-v1/typography'
 import { cn } from '@/lib/utils'
 import {
@@ -158,13 +159,37 @@ export function earnColumns({
         <>
           <div className="space-y-4" data-testid={`earn-record-${row.id}`}>
             <div className="flex items-start justify-between gap-3">
-              <div className="min-w-0 flex-1">{identity(row)}</div>
+              <div className="min-w-0 flex-1 [&>button]:w-full [&_[data-slot=entity-identity-supporting]]:whitespace-normal [&_[data-slot=entity-identity-supporting]]:[overflow-wrap:anywhere]">
+                {identity(row)}
+              </div>
               <div
                 className="flex shrink-0 flex-col gap-1 text-right"
                 data-slot="earn-rate-fact"
               >
-                {label('Avg. 30d%')}
-                {rate(row)}
+                <div className="flex h-5 items-center justify-end gap-1">
+                  {label('Avg. 30d%')}
+                  {row.family === 'index' && !loading ? (
+                    <InlineAction
+                      treatment="contextual"
+                      aria-label="How is this rate calculated?"
+                      data-table-focus={`rate-help-${row.id}`}
+                      className="size-5 text-supporting-foreground before:-inset-3 hover:text-foreground hover:no-underline"
+                      onClick={(event) => {
+                        event.stopPropagation()
+                        onHelp()
+                      }}
+                    >
+                      <CircleHelp
+                        aria-hidden
+                        className="size-4"
+                        strokeWidth={1.5}
+                      />
+                    </InlineAction>
+                  ) : row.family === 'index' ? (
+                    <span aria-hidden className="size-5 shrink-0" />
+                  ) : null}
+                </div>
+                <EarnRate row={row} loading={loading} />
               </div>
             </div>
             <div

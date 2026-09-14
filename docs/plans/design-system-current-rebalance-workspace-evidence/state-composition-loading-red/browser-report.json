@@ -1,0 +1,249 @@
+{
+  "config": {
+    "configFile": "/Users/lill-kire/Code/register/playwright.design-system.config.ts",
+    "rootDir": "/Users/lill-kire/Code/register/e2e/design-system",
+    "forbidOnly": true,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/Users/lill-kire/Code/register/test-results/design-system/artifacts",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "design-system-desktop",
+        "name": "design-system-desktop",
+        "testDir": "/Users/lill-kire/Code/register/e2e/design-system",
+        "testIgnore": [
+          "/(?:source-capture|lab-regressions)\\.spec\\.ts/"
+        ],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 90000
+      },
+      {
+        "outputDir": "/Users/lill-kire/Code/register/test-results/design-system/artifacts",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "design-system-mobile",
+        "name": "design-system-mobile",
+        "testDir": "/Users/lill-kire/Code/register/e2e/design-system",
+        "testIgnore": [
+          "/(?:source-capture|lab-regressions)\\.spec\\.ts/"
+        ],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 90000
+      },
+      {
+        "outputDir": "/Users/lill-kire/Code/register/test-results/design-system/artifacts",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "design-system-phone",
+        "name": "design-system-phone",
+        "testDir": "/Users/lill-kire/Code/register/e2e/design-system",
+        "testIgnore": [
+          "/(?:source-capture|lab-regressions)\\.spec\\.ts/"
+        ],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 90000
+      },
+      {
+        "outputDir": "/Users/lill-kire/Code/register/test-results/design-system/artifacts",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "design-system-review",
+        "name": "design-system-review",
+        "testDir": "/Users/lill-kire/Code/register/e2e/design-system",
+        "testIgnore": [],
+        "testMatch": [
+          "/(?:source-capture|lab-regressions)\\.spec\\.ts/"
+        ],
+        "timeout": 90000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "list",
+        null
+      ],
+      [
+        "json",
+        {
+          "outputFile": "test-results/design-system/report.json"
+        }
+      ],
+      [
+        "html",
+        {
+          "outputFolder": "playwright-report/design-system",
+          "open": "never"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "none",
+    "updateSourceMethod": "patch",
+    "version": "1.59.1",
+    "workers": 1,
+    "webServer": {
+      "command": "pnpm exec vite --host 127.0.0.1 --port 3022 --strictPort",
+      "url": "http://127.0.0.1:3022",
+      "reuseExistingServer": false,
+      "timeout": 120000,
+      "env": {
+        "VITE_E2E": "true",
+        "VITE_WALLETCONNECT_ID": "test-project",
+        "VITE_STAGING_API": "",
+        "VITE_USE_STAGING": "",
+        "VITE_MAINNET_URL": "",
+        "VITE_INFURA": "",
+        "VITE_ALCHEMY": "",
+        "VITE_ANKR": ""
+      }
+    }
+  },
+  "suites": [
+    {
+      "title": "current-rebalance-state-composition-lab-regressions.spec.ts",
+      "file": "current-rebalance-state-composition-lab-regressions.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "saved weights expose the configuration at 320",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "design-system-review",
+              "projectName": "design-system-review",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 13896,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeLessThanOrEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: <= \u001b[32m280\u001b[39m\nReceived:    \u001b[31m289.59375\u001b[39m",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeLessThanOrEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: <= \u001b[32m280\u001b[39m\nReceived:    \u001b[31m289.59375\u001b[39m\n    at /Users/lill-kire/Code/register/e2e/design-system/current-rebalance-state-composition-lab-regressions.spec.ts:83:47",
+                    "location": {
+                      "file": "/Users/lill-kire/Code/register/e2e/design-system/current-rebalance-state-composition-lab-regressions.spec.ts",
+                      "column": 47,
+                      "line": 83
+                    },
+                    "snippet": "  81 |     const placeholder = (await loading.boundingBox())!\n  82 |     const cell = (await allocation.boundingBox())!\n> 83 |     expect(placeholder.x + placeholder.width).toBeLessThanOrEqual(cell.x + cell.width)\n     |                                               ^\n  84 |     await currentCapture(\n  85 |       page,\n  86 |       current,"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/Users/lill-kire/Code/register/e2e/design-system/current-rebalance-state-composition-lab-regressions.spec.ts",
+                        "column": 47,
+                        "line": 83
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeLessThanOrEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: <= \u001b[32m280\u001b[39m\nReceived:    \u001b[31m289.59375\u001b[39m\n\n  81 |     const placeholder = (await loading.boundingBox())!\n  82 |     const cell = (await allocation.boundingBox())!\n> 83 |     expect(placeholder.x + placeholder.width).toBeLessThanOrEqual(cell.x + cell.width)\n     |                                               ^\n  84 |     await currentCapture(\n  85 |       page,\n  86 |       current,\n    at /Users/lill-kire/Code/register/e2e/design-system/current-rebalance-state-composition-lab-regressions.spec.ts:83:47"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T21:04:05.949Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "states-320-weights-required",
+                      "contentType": "image/png",
+                      "path": "attachments/e1e191e254c12f08a496d448f799dfd98d048bd280d0729f656106f5e39d79a4.png"
+                    },
+                    {
+                      "name": "states-320-weights-editor",
+                      "contentType": "image/png",
+                      "path": "attachments/1cece705674982a759ffcc313f164c5f147c027bd5110ff939b5b4234e885706.png"
+                    },
+                    {
+                      "name": "states-320-weights-saved",
+                      "contentType": "image/png",
+                      "path": "attachments/142ceddb75559f67efb620ef6e3843666433c4055c296f4a907415bc9da8a01b.png"
+                    },
+                    {
+                      "name": "states-320-saved-price-error",
+                      "contentType": "image/png",
+                      "path": "attachments/9c4b076b06b388b45d8370348d34e4c56ece6d73ad428d42f49195b04e64410e.png"
+                    },
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "/Users/lill-kire/Code/register/test-results/design-system/artifacts/current-rebalance-state-co-7238f-se-the-configuration-at-320-design-system-review/test-failed-1.png"
+                    },
+                    {
+                      "name": "current-source",
+                      "contentType": "application/json",
+                      "path": "attachments/c03dc841b0eb82c377e895887e327e540cc5504a810915977f6233863e1bc111.json"
+                    },
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/Users/lill-kire/Code/register/test-results/design-system/artifacts/current-rebalance-state-co-7238f-se-the-configuration-at-320-design-system-review/error-context.md"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "/Users/lill-kire/Code/register/e2e/design-system/current-rebalance-state-composition-lab-regressions.spec.ts",
+                    "column": 47,
+                    "line": 83
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "96808e51799ec6023912-3c898454e5d8067aba27",
+          "file": "current-rebalance-state-composition-lab-regressions.spec.ts",
+          "line": 11,
+          "column": 3
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-09-13T21:04:04.171Z",
+    "duration": 15856.438,
+    "expected": 0,
+    "skipped": 0,
+    "unexpected": 1,
+    "flaky": 0
+  }
+}

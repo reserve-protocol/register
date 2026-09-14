@@ -12,12 +12,14 @@ export function RecordProvenance({
   className,
   compactDate = false,
   chainId = 56,
+  focusKey = identity.id,
 }: {
   identity: RebalanceIdentity
   loading: boolean
   className?: string
   compactDate?: boolean
   chainId?: number
+  focusKey?: string
 }) {
   return (
     <div
@@ -48,7 +50,7 @@ export function RecordProvenance({
         ) : (
           <a
             data-testid="rebalance-proposer-link"
-            data-table-focus={`proposer-${identity.id}`}
+            data-table-focus={`proposer-${focusKey}`}
             href={`${chainId === 8453 ? 'https://basescan.org' : 'https://bscscan.com'}/address/${identity.proposer}`}
             target="_blank"
             rel="noreferrer"

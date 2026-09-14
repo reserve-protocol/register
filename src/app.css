@@ -262,6 +262,11 @@ body {
     --foreground: 222.2 84% 4.9%;
     --card: 0 0% 100%;
     --card-foreground: 222.2 84% 4.9%;
+    --interactive-content-hover: color-mix(
+      in srgb,
+      hsl(var(--card)) 65%,
+      hsl(var(--secondary))
+    );
     --container: 24 71% 99%;
     --popover: 0 0% 100%;
     --popover-foreground: 222.2 84% 4.9%;
@@ -416,6 +421,11 @@ body {
 
     /* Foreground & Layering */
     --foreground: 216 67% 94%;
+    --interactive-content-hover: color-mix(
+      in srgb,
+      hsl(var(--card)) 95%,
+      hsl(var(--foreground))
+    );
     --card-foreground: 216 67% 94%;
     --container: 218 25% 8%;
     --popover: 218 33% 10%;

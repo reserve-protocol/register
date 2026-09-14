@@ -1,21 +1,19 @@
-import { useEffect, useId, useState, type Dispatch } from 'react'
-import { v1Typography as type } from '@/components/design-system-v1/typography'
+import { useEffect, useId, useRef, useState, type Dispatch } from 'react'
+import { useLingui } from '@lingui/react/macro'
+import { Collapsible } from '@/components/design-system-v1/collapsible'
+import { Separator } from '@/components/ui/separator'
 import { cn } from '@/lib/utils'
-import { AuctionAssets, AssetName } from './assets'
-import { AuctionLiquidity } from './liquidity-table'
+import { AuctionAssets } from './assets'
+import { BasketWeights } from './basket-weights'
+import { AuctionLiquidity, AuctionLiquidityTrigger } from './liquidity-table'
 import { AuctionChart } from './auction-chart'
 import { AuctionBids } from './bids'
-import { AuctionStatus } from './header'
+import { AuctionHeading } from './status'
 import { CurrentOperation } from './operation'
 import { CurrentMessages } from './messages'
 import { WeightsEditor } from './weights-editor'
 import { FillerControl } from './inspection'
-import { Fact } from './facts'
-import {
-  timeRemaining,
-  type WorkspaceState,
-  type WorkspaceEvent,
-} from './model'
+import { type WorkspaceState, type WorkspaceEvent } from './model'
 import type { WorkspaceProps } from './workspace'
 
 export function CurrentAuction({
@@ -31,123 +29,160 @@ export function CurrentAuction({
   onDone: () => void
 }) {
   const { record, scenario, data } = props
+  const { t } = useLingui()
   const id = useId()
+  const descriptionId = `${id}-description`
   const [selectedBid, setSelectedBid] = useState<number | null>(null)
+  const [inspecting, setInspecting] = useState(false)
+  const liquidityTrigger = useRef<HTMLButtonElement>(null)
   useEffect(() => setSelectedBid(null), [state.auctionStart])
   const live = state.stage === 'live'
   const warnings = scenario.startsWith('liquidity')
   const needsWeights =
     record.symbol === 'LCAP' && state.runs === 0 && !state.weights
+  const preparingBasket = record.symbol === 'LCAP' && state.runs === 0 && !live
+  const busy = ['wallet', 'pending', 'indexing'].includes(state.operation)
+  const purpose =
+    live || data !== 'ready'
+      ? undefined
+      : needsWeights
+        ? 'Basket setup'
+        : scenario === 'remove'
+          ? 'Token removal'
+          : scenario === 'progressing'
+            ? 'Progressive rebalancing'
+            : 'Precision rebalancing'
   const description = live
-    ? 'Bidding is ongoing...'
+    ? null
     : needsWeights
-      ? 'Set exact basket weights before launching the rebalance auctions'
+      ? t`Confirm the target basket before the first auction. You can keep the defaults unchanged.`
       : data !== 'ready'
-        ? '—'
+        ? null
         : scenario === 'remove'
           ? 'Remove ETH from the basket'
-          : 'Buy/sell tokens to move closer to proposed weights.'
+          : 'Trade toward the proposed basket weights.'
   return (
-    <section
-      aria-labelledby={id}
-      data-testid="current-auction"
-      className="min-w-0 space-y-6"
-    >
-      <div className="space-y-2">
-        <div className="flex flex-wrap items-center justify-between gap-x-6 gap-y-2">
-          <div className="flex flex-wrap items-center gap-3">
-            <h4
-              id={id}
-              tabIndex={-1}
-              data-testid="current-auction-heading"
-              className={cn(type.itemTitle, 'outline-none')}
-            >
-              Auction {state.runs + 1}
-            </h4>
-            <AuctionStatus state={state} data={data} record={record} />
-          </div>
-          {live && (
-            <dl>
-              <Fact label="Ends in" inline>
-                <span data-testid="current-end-time">
-                  {timeRemaining(state.auctionEnd - state.now)}
-                </span>
-              </Fact>
-            </dl>
-          )}
-        </div>
-        <p className={cn(type.supporting, 'text-muted-foreground')}>
-          {description}
-        </p>
-      </div>
-      <CurrentMessages data={data} warnings={warnings} onRetry={onRetry} />
-      {state.editing ? (
-        <WeightsEditor
-          record={record}
+    <Collapsible asChild open={inspecting} onOpenChange={setInspecting}>
+      <section
+        aria-labelledby={id}
+        data-testid="current-auction"
+        className="min-w-0 space-y-6"
+      >
+        <AuctionHeading
           state={state}
-          dispatch={dispatch}
-          enabled={
-            props.viewer === 'launcher' && props.network && data === 'ready'
-          }
-          onDone={onDone}
+          data={data}
+          record={record}
+          id={id}
+          purpose={purpose}
+          description={description}
+          descriptionId={descriptionId}
         />
-      ) : (
-        <div
-          data-testid="current-working-grid"
-          className="grid min-w-0 grid-cols-1 items-start gap-6 [@container(min-width:52rem)]:grid-cols-[minmax(0,3fr)_minmax(0,2fr)] [@container(min-width:52rem)]:gap-x-10"
-        >
-          {live ? (
-            <AuctionChart state={state} selected={selectedBid} />
-          ) : needsWeights ? (
-            <div className="min-w-0 space-y-4">
-              <h5 className={type.itemTitle}>Basket</h5>
-              <div className="grid grid-cols-2 gap-4">
-                {record.tokens.map((token) => (
-                  <AssetName
-                    key={token.address}
-                    token={token}
-                    chainId={record.chainId}
-                  />
-                ))}
-              </div>
-            </div>
-          ) : (
-            <AuctionAssets
-              record={record}
-              data={data}
-              removal={scenario === 'remove'}
-            />
-          )}
-          <CurrentOperation
-            {...props}
+        <CurrentMessages data={data} warnings={warnings} onRetry={onRetry} />
+        {state.editing ? (
+          <WeightsEditor
+            record={record}
             state={state}
             dispatch={dispatch}
-            warnings={warnings}
+            enabled={
+              props.viewer === 'launcher' && props.network && data === 'ready'
+            }
+            onDone={onDone}
+          />
+        ) : (
+          <div
+            data-testid="current-working-grid"
+            className={cn(
+              'grid min-w-0 grid-cols-1 gap-6 [@container(min-width:52rem)]:grid-rows-[auto_1fr] [@container(min-width:52rem)]:gap-y-4',
+              live
+                ? '[@container(min-width:52rem)]:grid-cols-[minmax(0,2fr)_minmax(18rem,1fr)]'
+                : '[@container(min-width:52rem)]:grid-cols-[minmax(0,3fr)_minmax(0,2fr)]'
+            )}
           >
-            {live && (
-              <AuctionBids
+            <div
+              data-testid="current-auction-plan"
+              className="min-w-0 space-y-4"
+            >
+              {live ? (
+                <AuctionChart
+                  state={state}
+                  selected={selectedBid}
+                  knownLive={data !== 'auction-error'}
+                />
+              ) : preparingBasket ? (
+                <BasketWeights
+                  record={record}
+                  data={data}
+                  state={state}
+                  dispatch={dispatch}
+                  editable={props.viewer === 'launcher'}
+                  disabled={busy || !props.network || data !== 'ready'}
+                />
+              ) : (
+                <AuctionAssets
+                  record={record}
+                  data={data}
+                  removal={scenario === 'remove'}
+                />
+              )}
+            </div>
+            <div
+              className={cn(
+                'relative min-w-0 [@container(min-width:52rem)]:pl-6',
+                !live &&
+                  '[@container(min-width:52rem)]:flex [@container(min-width:52rem)]:flex-col [@container(min-width:52rem)]:justify-end',
+                !needsWeights &&
+                  '[@container(min-width:52rem)]:col-start-2 [@container(min-width:52rem)]:row-start-1 [@container(min-width:52rem)]:row-span-2'
+              )}
+            >
+              <Separator
+                orientation="vertical"
+                data-testid="current-operation-divider"
+                className="absolute left-0 top-0 hidden [@container(min-width:52rem)]:block"
+              />
+              <CurrentOperation
+                {...props}
+                state={state}
+                dispatch={dispatch}
+                warnings={warnings}
+                descriptionId={descriptionId}
+              >
+                {live && (
+                  <AuctionBids
+                    record={record}
+                    hasBids={state.hasBids}
+                    selected={selectedBid}
+                    onSelect={setSelectedBid}
+                  />
+                )}
+                {scenario === 'filler' && live && (
+                  <FillerControl state={state} dispatch={dispatch} />
+                )}
+              </CurrentOperation>
+            </div>
+            {!needsWeights && (
+              <AuctionLiquidityTrigger
                 record={record}
-                hasBids={state.hasBids}
-                selected={selectedBid}
-                onSelect={setSelectedBid}
+                triggerRef={liquidityTrigger}
               />
             )}
-            {scenario === 'filler' && live && (
-              <FillerControl state={state} dispatch={dispatch} />
-            )}
-          </CurrentOperation>
-        </div>
-      )}
-      {!state.editing && !needsWeights && (
-        <AuctionLiquidity
-          record={record}
-          data={data}
-          warnings={warnings}
-          marketClosed={scenario === 'liquidity-closed'}
-          removal={scenario === 'remove'}
-          live={live}
-        />
-      )}
-    </section>
+          </div>
+        )}
+        {!state.editing && !needsWeights && (
+          <AuctionLiquidity
+            record={record}
+            data={data}
+            warnings={warnings}
+            marketClosed={scenario === 'liquidity-closed'}
+            removal={scenario === 'remove'}
+            live={live}
+            onClose={() => {
+              setInspecting(false)
+              liquidityTrigger.current?.focus()
+              liquidityTrigger.current?.scrollIntoView({ block: 'center' })
+            }}
+          />
+        )}
+      </section>
+    </Collapsible>
   )
 }

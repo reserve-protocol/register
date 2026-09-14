@@ -2,7 +2,7 @@ import type { Dispatch } from 'react'
 import { Button } from '@/components/button'
 import { v1Typography as type } from '@/components/design-system-v1/typography'
 import { cn } from '@/lib/utils'
-import type { SourceRecord } from './fixtures'
+import type { DataState, SourceRecord } from './fixtures'
 import type { WorkspaceEvent, WorkspaceState } from './model'
 
 export function SimulationSteps({
@@ -10,18 +10,35 @@ export function SimulationSteps({
   dispatch,
   record,
   filler,
+  data,
+  onArchive,
 }: {
   state: WorkspaceState
   dispatch: Dispatch<WorkspaceEvent>
   record: SourceRecord
   filler: boolean
+  data: DataState
+  onArchive: () => void
 }) {
   return (
-    <details className="mt-6 text-muted-foreground">
+    <details className="mt-2 px-6 text-muted-foreground">
       <summary className={cn(type.supporting, 'min-h-11 cursor-pointer py-3')}>
         Lab simulation controls
       </summary>
       <div className="flex flex-wrap gap-2 pt-2">
+        {state.stage === 'finished' && (
+          <Button
+            tone="secondary"
+            data-testid="current-history-handoff"
+            disabled={
+              data !== 'ready' ||
+              ['wallet', 'pending', 'indexing'].includes(state.operation)
+            }
+            onClick={onArchive}
+          >
+            Historical Rebalances
+          </Button>
+        )}
         <Button
           tone="secondary"
           disabled={state.stage !== 'live' || !state.hasBids}

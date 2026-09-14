@@ -1,3 +1,4 @@
+import { lazy, Suspense } from 'react'
 import ActionGroupStateSheet from './action-group-state-sheet'
 import AccordionStateSheet from './accordion-state-sheet'
 import CollapsibleStateSheet from './collapsible-state-sheet'
@@ -32,6 +33,8 @@ import TabsStateSheet from './tabs-state-sheet'
 import TextAreaStateSheet from './textarea-state-sheet'
 import TransactionTruthSpectrum from './transaction-truth-spectrum'
 
+const ChartReview = lazy(() => import('./charts/review'))
+
 const ComponentVisualOutput = ({
   itemId,
   autoFocus = false,
@@ -40,6 +43,12 @@ const ComponentVisualOutput = ({
   autoFocus?: boolean
 }) => {
   if (itemId === 'button') return <ButtonStateSheet />
+  if (itemId === 'chart')
+    return (
+      <Suspense fallback={null}>
+        <ChartReview />
+      </Suspense>
+    )
   if (itemId === 'transaction-action') return <TransactionTruthSpectrum />
   if (itemId === 'accordion') return <AccordionStateSheet />
   if (itemId === 'collapsible') return <CollapsibleStateSheet />

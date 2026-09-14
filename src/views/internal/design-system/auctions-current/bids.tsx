@@ -1,4 +1,8 @@
-import { Button } from '@/components/button'
+import {
+  Collapsible,
+  CollapsibleTrigger,
+  CollapsibleContent,
+} from '@/components/design-system-v1/collapsible'
 import { Link } from '@/components/design-system-v1/link'
 import { v1Typography as type } from '@/components/design-system-v1/typography'
 import { cn } from '@/lib/utils'
@@ -42,89 +46,127 @@ export function AuctionBids({
       buy: tokens[3],
     },
   ]
-  const chosen = selected === null ? null : bids[selected - 1]
   return (
     <div className="min-w-0 space-y-3">
-      <h5 className={type.label}>Bids</h5>
+      <h5 data-testid="current-bids-heading" className={type.label}>
+        Bids{' '}
+        <span className={cn(type.supporting, 'text-muted-foreground')}>
+          · {hasBids ? bids.length : 0}
+        </span>
+      </h5>
       {hasBids ? (
-        <div className="space-y-1">
+        <div className="-ml-4">
           {bids.map((bid) => (
-            <Button
+            <Collapsible
               key={bid.number}
-              tone="quiet"
-              data-testid={`current-bid-${bid.number}`}
-              aria-expanded={selected === bid.number}
-              aria-controls={`${record.symbol}-bid-detail`}
-              onClick={() =>
-                onSelect(selected === bid.number ? null : bid.number)
-              }
-              className="w-full justify-between gap-2 px-2 text-left"
+              open={selected === bid.number}
+              onOpenChange={(open) => onSelect(open ? bid.number : null)}
             >
-              <span>Bid #{bid.number}</span>
-              <span className="min-w-0 whitespace-normal text-right font-light">
-                {bid.sold}
-              </span>
-            </Button>
+              <CollapsibleTrigger
+                data-testid={`current-bid-${bid.number}`}
+                className={cn(selected === bid.number && 'text-primary')}
+              >
+                <span className="flex min-w-0 flex-col gap-1">
+                  <span
+                    className={cn(
+                      type.body,
+                      'flex flex-wrap items-center gap-x-2'
+                    )}
+                  >
+                    <span>{bid.sold}</span>
+                    <span aria-hidden="true" className="text-muted-foreground">
+                      →
+                    </span>
+                    <span className="sr-only">Buying </span>
+                    <span>{bid.bought}</span>
+                  </span>
+                  <span
+                    className={cn(
+                      type.supporting,
+                      selected !== bid.number && 'text-muted-foreground'
+                    )}
+                  >
+                    Bid #{bid.number}
+                  </span>
+                </span>
+              </CollapsibleTrigger>
+              <CollapsibleContent>
+                {selected === bid.number && (
+                  <div
+                    data-testid="current-bid-detail"
+                    className="min-w-0 space-y-4 pt-1 text-foreground"
+                  >
+                    <div className="grid grid-cols-2 gap-4">
+                      {(['Selling', 'Buying'] as const).map((side, i) => {
+                        const symbol = i ? bid.buy : bid.sell
+                        const token = record.tokens.find(
+                          (token) => token.symbol === symbol
+                        )!
+                        return (
+                          <div className="min-w-0 space-y-1" key={side}>
+                            <p
+                              className={cn(
+                                type.supporting,
+                                'text-muted-foreground'
+                              )}
+                            >
+                              {side}
+                            </p>
+                            <Link
+                              href={`${explorer}/token/${token.address}`}
+                              treatment="contextual"
+                              external
+                              externalAnnouncement="Opens in a new tab"
+                            >
+                              {i ? bid.bought : bid.sold}
+                            </Link>
+                            <p
+                              className={cn(
+                                type.supporting,
+                                'break-words text-muted-foreground'
+                              )}
+                            >
+                              {i ? bid.boughtUsd : bid.usd}
+                            </p>
+                          </div>
+                        )
+                      })}
+                    </div>
+                    <dl className="space-y-2">
+                      <Fact label="Bidder">
+                        <Link
+                          href={`${explorer}/address/0x${'b'.repeat(39)}${bid.number}`}
+                          external
+                          externalAnnouncement="Opens in a new tab"
+                          treatment="standalone"
+                        >
+                          0xbbbb…bbb{bid.number}
+                        </Link>
+                      </Fact>
+                      <Fact label="Transaction">
+                        <Link
+                          href={`${explorer}/tx/0x${'c'.repeat(63)}${bid.number}`}
+                          external
+                          externalAnnouncement="Opens in a new tab"
+                          treatment="standalone"
+                        >
+                          0xcccc…ccc{bid.number}
+                        </Link>
+                      </Fact>
+                    </dl>
+                  </div>
+                )}
+              </CollapsibleContent>
+            </Collapsible>
           ))}
         </div>
       ) : (
-        <p className={cn(type.supporting, 'text-muted-foreground')}>0</p>
-      )}
-      {hasBids && chosen && (
-        <div
-          id={`${record.symbol}-bid-detail`}
-          data-testid="current-bid-detail"
-          className="min-w-0 space-y-4 pt-1"
+        <p
+          data-testid="current-empty-bids"
+          className={cn(type.supporting, 'text-muted-foreground')}
         >
-          <div className="space-y-3">
-            {(['Selling', 'Buying'] as const).map((side, i) => {
-              const symbol = i ? chosen.buy : chosen.sell
-              const token = record.tokens.find(
-                (token) => token.symbol === symbol
-              )!
-              return (
-                <div className="space-y-1" key={side}>
-                  <p className={cn(type.supporting, 'text-muted-foreground')}>
-                    {side}
-                  </p>
-                  <Link
-                    href={`${explorer}/token/${token.address}`}
-                    treatment="contextual"
-                    external
-                    externalAnnouncement="Opens in a new tab"
-                  >
-                    {i ? chosen.bought : chosen.sold}
-                  </Link>
-                  <p className={cn(type.supporting, 'text-muted-foreground')}>
-                    {i ? chosen.boughtUsd : chosen.usd}
-                  </p>
-                </div>
-              )
-            })}
-          </div>
-          <dl className="space-y-2">
-            <Fact label="Bidder">
-              <Link
-                href={`${explorer}/address/0x${'b'.repeat(39)}${selected}`}
-                external
-                externalAnnouncement="Opens in a new tab"
-                treatment="standalone"
-              >
-                0xbbbb…bbb{selected}
-              </Link>
-            </Fact>
-            <Fact label="Transaction">
-              <Link
-                href={`${explorer}/tx/0x${'c'.repeat(63)}${selected}`}
-                external
-                externalAnnouncement="Opens in a new tab"
-                treatment="standalone"
-              >
-                0xcccc…ccc{selected}
-              </Link>
-            </Fact>
-          </dl>
-        </div>
+          Bidding is ongoing...
+        </p>
       )}
     </div>
   )

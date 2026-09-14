@@ -19,6 +19,12 @@ for (const width of [320, 1400])
     txLog,
   }, info) => {
     await page.setViewportSize({ width, height: 900 })
+    await page.addInitScript(
+      (theme) => {
+        localStorage.setItem('theme-ui-color-mode', theme)
+      },
+      width === 320 ? 'dark' : 'light'
+    )
     await page.goto(
       '/internal/design-system/components/table?current=hybrid#auctions-browse-review'
     )
@@ -39,10 +45,25 @@ for (const width of [320, 1400])
       info,
       `weights-${width}-top`
     )
-    await current
-      .getByText('Max Auction Size per Token', { exact: true })
-      .click()
+    const limitsToggle = current.getByTestId('current-limits-toggle')
+    await expect(limitsToggle).toHaveAttribute('aria-expanded', 'false')
+    await realTarget(limitsToggle)
+    await currentCapture(
+      page,
+      current.getByTestId('current-limits-disclosure'),
+      info,
+      `weights-${width}-limits-closed`
+    )
+    await limitsToggle.focus()
+    await limitsToggle.press('Enter')
+    await expect(limitsToggle).toHaveAttribute('aria-expanded', 'true')
     await current.getByTestId('current-limit-1').fill('725000.25')
+    await currentCapture(
+      page,
+      current.getByTestId('current-limits-disclosure'),
+      info,
+      `weights-${width}-limits-open`
+    )
     await currentCapture(
       page,
       current.getByTestId('current-limit-6'),
@@ -65,9 +86,7 @@ for (const width of [320, 1400])
     await expect(current.getByTestId('current-launch')).toBeEnabled()
     await current.getByTestId('current-edit').click()
     await expect(input).toHaveValue('0.0375')
-    await current
-      .getByText('Max Auction Size per Token', { exact: true })
-      .click()
+    await current.getByTestId('current-limits-toggle').click()
     await expect(current.getByTestId('current-limit-1')).toHaveValue(
       '725000.25'
     )
@@ -149,7 +168,7 @@ test('two current records have independent drafts and operations, and route sele
   await page.reload()
   await expect(page.getByTestId('current-rebalance-workspace')).toHaveCount(2)
   await expect(lcap.getByTestId('current-edit')).toBeEnabled()
-  await expect(lcap.getByTestId('current-launch')).toHaveCount(0)
+  await expect(lcap.getByTestId('current-launch')).toBeDisabled()
   await currentSelect(page, 'scene', 'ready')
   await page.goBack()
   await expect(page.getByTestId('current-rebalance-workspace')).toHaveCount(2)

@@ -1,0 +1,1092 @@
+{
+  "rawReportSha256": "ffeeb8272f41d7359468f9acd9fd914714060d6a351259e6a015abe8c2c59cf1",
+  "stats": {
+    "startTime": "2026-09-14T02:40:25.371Z",
+    "duration": 108572.762,
+    "expected": 16,
+    "skipped": 0,
+    "unexpected": 4,
+    "flaky": 0
+  },
+  "errors": [],
+  "records": [
+    {
+      "file": "discover-cards-lab-regressions.spec.ts",
+      "line": 29,
+      "title": "discover-cards-lab-regressions.spec.ts / Discover cards retain sorting across the available-width boundary",
+      "status": "expected",
+      "expectedStatus": "passed",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 13688,
+          "retry": 0,
+          "errors": [],
+          "attachments": [
+            {
+              "name": "public-source-digest",
+              "contentType": "text/plain",
+              "bytes": 64,
+              "sha256": "4af9c8e48e6b3bc748502153f9ef12245cfdc2702eccccbfd321229101c32487",
+              "text": "76b4bb727266d585f54590e7ccfeae65ff29184f26f0bfed483521b6e02bed89"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "file": "discover-cards-lab-regressions.spec.ts",
+      "line": 79,
+      "title": "discover-cards-lab-regressions.spec.ts / Discover resize does not reclaim focus after an outside interaction",
+      "status": "expected",
+      "expectedStatus": "passed",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 3156,
+          "retry": 0,
+          "errors": [],
+          "attachments": [
+            {
+              "name": "public-source-digest",
+              "contentType": "text/plain",
+              "bytes": 64,
+              "sha256": "4af9c8e48e6b3bc748502153f9ef12245cfdc2702eccccbfd321229101c32487",
+              "text": "76b4bb727266d585f54590e7ccfeae65ff29184f26f0bfed483521b6e02bed89"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "file": "discover-cards-lab-regressions.spec.ts",
+      "line": 127,
+      "title": "discover-cards-lab-regressions.spec.ts / Discover card states light 320",
+      "status": "expected",
+      "expectedStatus": "passed",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 4713,
+          "retry": 0,
+          "errors": [],
+          "attachments": [
+            {
+              "name": "compact-default",
+              "contentType": "image/png",
+              "bytes": 57249,
+              "sha256": "b1246bb5df54246ca34ea6c71cf19d87c94266e85ff8f7ed029c69760aa26e2b"
+            },
+            {
+              "name": "full-default",
+              "contentType": "image/png",
+              "bytes": 48431,
+              "sha256": "2f96317cafd3bb4f5671ad98893ea6aa5c9378f0224c1a2a1898df3fa692a0a4"
+            },
+            {
+              "name": "full-long",
+              "contentType": "image/png",
+              "bytes": 52388,
+              "sha256": "2289572cb8ccbd39195883a7216d4412b11abe97069f9e9dbb43b42642c3b48d"
+            },
+            {
+              "name": "compact-long",
+              "contentType": "image/png",
+              "bytes": 58364,
+              "sha256": "00e7d276a132fa3ed50a3ccd3d45b85deb8f0db37ccfc4d3bf98a4f94b1fa7fc"
+            },
+            {
+              "name": "zero-unavailable",
+              "contentType": "image/png",
+              "bytes": 53111,
+              "sha256": "ceee5d6f413b410e6ab4e8a142604e7b092745cec3b7300e56fe4c78274a78da"
+            },
+            {
+              "name": "loading",
+              "contentType": "image/png",
+              "bytes": 22661,
+              "sha256": "2413e7eb5882c9df39e1156f078150ca14294cb648c030019e8fb3a59bed1997"
+            },
+            {
+              "name": "public-source-digest",
+              "contentType": "text/plain",
+              "bytes": 64,
+              "sha256": "4af9c8e48e6b3bc748502153f9ef12245cfdc2702eccccbfd321229101c32487",
+              "text": "76b4bb727266d585f54590e7ccfeae65ff29184f26f0bfed483521b6e02bed89"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "file": "discover-cards-lab-regressions.spec.ts",
+      "line": 127,
+      "title": "discover-cards-lab-regressions.spec.ts / Discover card states light 390",
+      "status": "expected",
+      "expectedStatus": "passed",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 4670,
+          "retry": 0,
+          "errors": [],
+          "attachments": [
+            {
+              "name": "compact-default",
+              "contentType": "image/png",
+              "bytes": 64408,
+              "sha256": "3c0c154459b6f6c7738f9bfef23d1c220afd9d57acf6354b86e3c09d529db773"
+            },
+            {
+              "name": "full-default",
+              "contentType": "image/png",
+              "bytes": 60569,
+              "sha256": "15f13075c2b2be200182355bd2d97738e3198eb99836479c65b7c3ce4c468be7"
+            },
+            {
+              "name": "full-long",
+              "contentType": "image/png",
+              "bytes": 57418,
+              "sha256": "5a676d6d9bb226cc50fb59e700af49e060656d92773653b7835aa3efd95176b2"
+            },
+            {
+              "name": "compact-long",
+              "contentType": "image/png",
+              "bytes": 66608,
+              "sha256": "c0dba77051b5f4c6f1036e5b081b6775bece80c7a9a92987280dbd3fb6a2ec75"
+            },
+            {
+              "name": "zero-unavailable",
+              "contentType": "image/png",
+              "bytes": 62016,
+              "sha256": "0e2628a2eaa3fd7da191ef35bda864ebbee92998c756e1f84cc6832963f5805b"
+            },
+            {
+              "name": "loading",
+              "contentType": "image/png",
+              "bytes": 27037,
+              "sha256": "728ef71f36772d06a2f1fb2e0cf67342fa84eb68879e063c99fe1a65619e16d7"
+            },
+            {
+              "name": "public-source-digest",
+              "contentType": "text/plain",
+              "bytes": 64,
+              "sha256": "4af9c8e48e6b3bc748502153f9ef12245cfdc2702eccccbfd321229101c32487",
+              "text": "76b4bb727266d585f54590e7ccfeae65ff29184f26f0bfed483521b6e02bed89"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "file": "discover-cards-lab-regressions.spec.ts",
+      "line": 127,
+      "title": "discover-cards-lab-regressions.spec.ts / Discover card states dark 390",
+      "status": "expected",
+      "expectedStatus": "passed",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 6550,
+          "retry": 0,
+          "errors": [],
+          "attachments": [
+            {
+              "name": "compact-default",
+              "contentType": "image/png",
+              "bytes": 68216,
+              "sha256": "e748e38b0a535f7f936dc2d5a89207d5b2e4b6520df2ab14b37deaa653fa029a"
+            },
+            {
+              "name": "full-default",
+              "contentType": "image/png",
+              "bytes": 63832,
+              "sha256": "f80c3b7a10591a0d0e0b742bf8687885abe916d780066bb073db11cc7e261b55"
+            },
+            {
+              "name": "full-long",
+              "contentType": "image/png",
+              "bytes": 60919,
+              "sha256": "917e1e44adae9271d7976ed6f73cc631586e6d881654d5b8b86834b98bf3ff82"
+            },
+            {
+              "name": "compact-long",
+              "contentType": "image/png",
+              "bytes": 70723,
+              "sha256": "cc0647bbac702ee5e68a9cbcb87453c3be4ba93f82536a8742d9f52cef631347"
+            },
+            {
+              "name": "zero-unavailable",
+              "contentType": "image/png",
+              "bytes": 65690,
+              "sha256": "42b94d19db4af05a4b9dc6b2f66c5840a36313b9134e5fdc4f11c94f857373d3"
+            },
+            {
+              "name": "loading",
+              "contentType": "image/png",
+              "bytes": 29372,
+              "sha256": "5bedd242da0a4d305a4f7550019986c5451fa61f6220aa46df31d71d89de20dc"
+            },
+            {
+              "name": "public-source-digest",
+              "contentType": "text/plain",
+              "bytes": 64,
+              "sha256": "4af9c8e48e6b3bc748502153f9ef12245cfdc2702eccccbfd321229101c32487",
+              "text": "76b4bb727266d585f54590e7ccfeae65ff29184f26f0bfed483521b6e02bed89"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "file": "discover-cards-lab-regressions.spec.ts",
+      "line": 127,
+      "title": "discover-cards-lab-regressions.spec.ts / Discover card states light 768",
+      "status": "expected",
+      "expectedStatus": "passed",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 5206,
+          "retry": 0,
+          "errors": [],
+          "attachments": [
+            {
+              "name": "compact-default",
+              "contentType": "image/png",
+              "bytes": 99113,
+              "sha256": "1cc3a3bb360556a77df2a7442e8f46ab6ae7660cec3f326b11e3cdd7f739412f"
+            },
+            {
+              "name": "full-default",
+              "contentType": "image/png",
+              "bytes": 87299,
+              "sha256": "a9eb36d5cd94dde5e3ccec651ef0287efc87e65491aa16a8c4c84398e1aeba87"
+            },
+            {
+              "name": "full-long",
+              "contentType": "image/png",
+              "bytes": 97265,
+              "sha256": "9952e0fba22f9cdf47db1ee9f01f2fb29464d78a673fc6c525e03b9bd11a3ac9"
+            },
+            {
+              "name": "compact-long",
+              "contentType": "image/png",
+              "bytes": 110808,
+              "sha256": "d807cf41084af63a6a1cbc111faf2b5d7295a39b151f6c28b8708d346cf09598"
+            },
+            {
+              "name": "zero-unavailable",
+              "contentType": "image/png",
+              "bytes": 100854,
+              "sha256": "b9ea44fd957c906456d397b2ef7072cde1dd2143e8fc4979be847127a8af5320"
+            },
+            {
+              "name": "loading",
+              "contentType": "image/png",
+              "bytes": 39252,
+              "sha256": "ed1dc0afc55acf65fde71717048a6c75ab59ef17cba2343213f57a8d1373e7a2"
+            },
+            {
+              "name": "public-source-digest",
+              "contentType": "text/plain",
+              "bytes": 64,
+              "sha256": "4af9c8e48e6b3bc748502153f9ef12245cfdc2702eccccbfd321229101c32487",
+              "text": "76b4bb727266d585f54590e7ccfeae65ff29184f26f0bfed483521b6e02bed89"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "file": "discover-cards-lab-regressions.spec.ts",
+      "line": 274,
+      "title": "discover-cards-lab-regressions.spec.ts / Discover card ticker recovery motion",
+      "status": "expected",
+      "expectedStatus": "passed",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 3140,
+          "retry": 0,
+          "errors": [],
+          "attachments": [
+            {
+              "name": "public-source-digest",
+              "contentType": "text/plain",
+              "bytes": 64,
+              "sha256": "4af9c8e48e6b3bc748502153f9ef12245cfdc2702eccccbfd321229101c32487",
+              "text": "76b4bb727266d585f54590e7ccfeae65ff29184f26f0bfed483521b6e02bed89"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "file": "discover-cards-lab-regressions.spec.ts",
+      "line": 274,
+      "title": "discover-cards-lab-regressions.spec.ts / Discover card ticker recovery reduced",
+      "status": "expected",
+      "expectedStatus": "passed",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 3034,
+          "retry": 0,
+          "errors": [],
+          "attachments": [
+            {
+              "name": "public-source-digest",
+              "contentType": "text/plain",
+              "bytes": 64,
+              "sha256": "4af9c8e48e6b3bc748502153f9ef12245cfdc2702eccccbfd321229101c32487",
+              "text": "76b4bb727266d585f54590e7ccfeae65ff29184f26f0bfed483521b6e02bed89"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "file": "overnight-lab-regressions.spec.ts",
+      "line": 18,
+      "title": "overnight-lab-regressions.spec.ts / Earn identity stays out of rate light",
+      "status": "unexpected",
+      "expectedStatus": "passed",
+      "results": [
+        {
+          "status": "failed",
+          "duration": 3032,
+          "retry": 0,
+          "errors": [
+            {
+              "location": {
+                "file": "/private/tmp/register-design-overnight-JEwxJR/repo/e2e/design-system/overnight-lab-regressions.spec.ts",
+                "column": 24,
+                "line": 36
+              },
+              "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  -  1\u001b[39m\n\u001b[31m+ Received  + 14\u001b[39m\n\n\u001b[32m- Array []\u001b[39m\n\u001b[31m+ Array [\u001b[39m\n\u001b[31m+   Object {\u001b[39m\n\u001b[31m+     \"scroll\": 101,\u001b[39m\n\u001b[31m+     \"text\": \"vlSQUILL-OPEN\",\u001b[39m\n\u001b[31m+     \"whiteSpace\": \"nowrap\",\u001b[39m\n\u001b[31m+     \"width\": 101,\u001b[39m\n\u001b[31m+   },\u001b[39m\n\u001b[31m+   Object {\u001b[39m\n\u001b[31m+     \"scroll\": 111,\u001b[39m\n\u001b[31m+     \"text\": \"vlRSR-CMCindex\",\u001b[39m\n\u001b[31m+     \"whiteSpace\": \"nowrap\",\u001b[39m\n\u001b[31m+     \"width\": 111,\u001b[39m\n\u001b[31m+   },\u001b[39m\n\u001b[31m+ ]\u001b[39m\n\n  34 |     }))\n  35 |     await info.attach('identity-rate', { body: await page.screenshot({ animations: 'disabled' }), contentType: 'image/png' })\n> 36 |     expect(collisions).toEqual([])\n     |                        ^\n  37 |   })\n  38 |\n  39 |   test(`Owned amount remains one readable number ${theme}`, async ({ page }, info) => {\n    at /private/tmp/register-design-overnight-JEwxJR/repo/e2e/design-system/overnight-lab-regressions.spec.ts:36:24"
+            }
+          ],
+          "attachments": [
+            {
+              "name": "identity-rate",
+              "contentType": "image/png",
+              "bytes": 61989,
+              "sha256": "16882cdeaa7e3625585ba9814c3e018ac490d6d2d1989cccf5c88afe6ff4c998",
+              "file": "earn-identity-stays-out-of-rate-light-identity-rate-16882cde.png"
+            },
+            {
+              "name": "screenshot",
+              "contentType": "image/png",
+              "bytes": 62021,
+              "sha256": "7fc82275bfe7d57f68b4fe47b99914015856c4523f739c4e85bf49383c7a878d"
+            },
+            {
+              "name": "public-source-digest",
+              "contentType": "text/plain",
+              "bytes": 64,
+              "sha256": "4af9c8e48e6b3bc748502153f9ef12245cfdc2702eccccbfd321229101c32487",
+              "text": "76b4bb727266d585f54590e7ccfeae65ff29184f26f0bfed483521b6e02bed89"
+            },
+            {
+              "name": "error-context",
+              "contentType": "text/markdown",
+              "bytes": 130171,
+              "sha256": "4430b51756b2684b9fd9ef2d91fabf3b5df3fc6f59c71e20199844079c0d1ac1"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "file": "overnight-lab-regressions.spec.ts",
+      "line": 39,
+      "title": "overnight-lab-regressions.spec.ts / Owned amount remains one readable number light",
+      "status": "unexpected",
+      "expectedStatus": "passed",
+      "results": [
+        {
+          "status": "failed",
+          "duration": 11322,
+          "retry": 0,
+          "errors": [
+            {
+              "location": {
+                "file": "/private/tmp/register-design-overnight-JEwxJR/repo/e2e/design-system/overnight-lab-regressions.spec.ts",
+                "column": 25,
+                "line": 53
+              },
+              "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByTestId('owned-positions-review').getByTestId('owned-table').getByText('$123,456,678.90', { exact: true }).filter({ visible: true })\nExpected: visible\nTimeout: 7500ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 7500ms\u001b[22m\n\u001b[2m  - waiting for getByTestId('owned-positions-review').getByTestId('owned-table').getByText('$123,456,678.90', { exact: true }).filter({ visible: true })\u001b[22m\n\n\n  51 |     const value = table.getByText('$123,456,678.90', { exact: true }).filter({ visible: true })\n  52 |     const balance = table.getByText('123,456,789.123456', { exact: true }).filter({ visible: true })\n> 53 |     await expect(value).toBeVisible()\n     |                         ^\n  54 |     await expect(balance).toBeVisible()\n  55 |     await info.attach('long-amount', { body: await page.screenshot({ animations: 'disabled' }), contentType: 'image/png' })\n  56 |     for (const number of [value, balance]) {\n    at /private/tmp/register-design-overnight-JEwxJR/repo/e2e/design-system/overnight-lab-regressions.spec.ts:53:25"
+            }
+          ],
+          "attachments": [
+            {
+              "name": "screenshot",
+              "contentType": "image/png",
+              "bytes": 56677,
+              "sha256": "07f1f8202365da4ad2400325f37e7da17970f75a6c466b8c72e879ec2fbf2e87"
+            },
+            {
+              "name": "public-source-digest",
+              "contentType": "text/plain",
+              "bytes": 64,
+              "sha256": "4af9c8e48e6b3bc748502153f9ef12245cfdc2702eccccbfd321229101c32487",
+              "text": "76b4bb727266d585f54590e7ccfeae65ff29184f26f0bfed483521b6e02bed89"
+            },
+            {
+              "name": "error-context",
+              "contentType": "text/markdown",
+              "bytes": 124945,
+              "sha256": "3f829a1a9340ea11192fc778fd3ee39c2a63ac21392216130357bcdee0cc0585"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "file": "overnight-lab-regressions.spec.ts",
+      "line": 70,
+      "title": "overnight-lab-regressions.spec.ts / Governance visual inventory light 320",
+      "status": "expected",
+      "expectedStatus": "passed",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 3540,
+          "retry": 0,
+          "errors": [],
+          "attachments": [
+            {
+              "name": "geometry",
+              "contentType": "text/plain",
+              "bytes": 881,
+              "sha256": "d3ef8c5ee10173c43145a4dd24c290ea268f45a462aeb637d7dc1faae9179364",
+              "text": "[{\"state\":\"pending\",\"width\":288,\"height\":196,\"scrollWidth\":288,\"right\":304},{\"state\":\"active\",\"width\":288,\"height\":232,\"scrollWidth\":288,\"right\":304},{\"state\":\"optimistic-active\",\"width\":288,\"height\":292,\"scrollWidth\":288,\"right\":304},{\"state\":\"contested-active\",\"width\":288,\"height\":328,\"scrollWidth\":288,\"right\":304},{\"state\":\"standard-succeeded\",\"width\":288,\"height\":232,\"scrollWidth\":288,\"right\":304},{\"state\":\"queued\",\"width\":288,\"height\":244,\"scrollWidth\":288,\"right\":304},{\"state\":\"optimistic-succeeded\",\"width\":288,\"height\":256,\"scrollWidth\":288,\"right\":304},{\"state\":\"executed\",\"width\":288,\"height\":208,\"scrollWidth\":288,\"right\":304},{\"state\":\"defeated\",\"width\":288,\"height\":232,\"scrollWidth\":288,\"right\":304},{\"state\":\"quorum-not-reached\",\"width\":288,\"height\":232,\"scrollWidth\":288,\"right\":304},{\"state\":\"canceled\",\"width\":288,\"height\":160,\"scrollWidth\":288,\"right\":304}]"
+            },
+            {
+              "name": "pending",
+              "contentType": "image/png",
+              "bytes": 59187,
+              "sha256": "da7a407480ccd1fdaa278624aeb06e11098cb53f87a15ea61dc83dbe20604801",
+              "file": "governance-visual-inventory-light-320-pending-da7a4074.png"
+            },
+            {
+              "name": "active",
+              "contentType": "image/png",
+              "bytes": 55744,
+              "sha256": "5ad790dbf438daea1ad1dfad004236cae7a8f688ff91120de69ce339ec45ab73",
+              "file": "governance-visual-inventory-light-320-active-5ad790db.png"
+            },
+            {
+              "name": "contested-active",
+              "contentType": "image/png",
+              "bytes": 56808,
+              "sha256": "c68e01b9a1b98bf19dc4b7697fb412faa03f9e61e00bc8a4a47d8c02bf26bfbd",
+              "file": "governance-visual-inventory-light-320-contested-active-c68e01b9.png"
+            },
+            {
+              "name": "queued",
+              "contentType": "image/png",
+              "bytes": 52644,
+              "sha256": "289d3164da48b1cb1ffeeaed6bd2a0f19211ab98bae9abad90ac01f20a5a79d3",
+              "file": "governance-visual-inventory-light-320-queued-289d3164.png"
+            },
+            {
+              "name": "optimistic-succeeded",
+              "contentType": "image/png",
+              "bytes": 50349,
+              "sha256": "c6856e0154cbae5e5a1c6db05636da5b451ab890e0d1ed7e8f53d2ef0686f6a3",
+              "file": "governance-visual-inventory-light-320-optimistic-succeeded-c6856e01.png"
+            },
+            {
+              "name": "quorum-not-reached",
+              "contentType": "image/png",
+              "bytes": 58187,
+              "sha256": "193a25b0f1a7c11c147fc61322af3c4e90fe6c016c056cd157baafb564ca478b",
+              "file": "governance-visual-inventory-light-320-quorum-not-reached-193a25b0.png"
+            },
+            {
+              "name": "public-source-digest",
+              "contentType": "text/plain",
+              "bytes": 64,
+              "sha256": "4af9c8e48e6b3bc748502153f9ef12245cfdc2702eccccbfd321229101c32487",
+              "text": "76b4bb727266d585f54590e7ccfeae65ff29184f26f0bfed483521b6e02bed89"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "file": "overnight-lab-regressions.spec.ts",
+      "line": 70,
+      "title": "overnight-lab-regressions.spec.ts / Governance visual inventory light 390",
+      "status": "expected",
+      "expectedStatus": "passed",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 3425,
+          "retry": 0,
+          "errors": [],
+          "attachments": [
+            {
+              "name": "geometry",
+              "contentType": "text/plain",
+              "bytes": 881,
+              "sha256": "dc61a41572712980527df6d909ec7c01de04badab8e646d2b4c876d98e94e844",
+              "text": "[{\"state\":\"pending\",\"width\":358,\"height\":196,\"scrollWidth\":358,\"right\":374},{\"state\":\"active\",\"width\":358,\"height\":232,\"scrollWidth\":358,\"right\":374},{\"state\":\"optimistic-active\",\"width\":358,\"height\":232,\"scrollWidth\":358,\"right\":374},{\"state\":\"contested-active\",\"width\":358,\"height\":244,\"scrollWidth\":358,\"right\":374},{\"state\":\"standard-succeeded\",\"width\":358,\"height\":172,\"scrollWidth\":358,\"right\":374},{\"state\":\"queued\",\"width\":358,\"height\":208,\"scrollWidth\":358,\"right\":374},{\"state\":\"optimistic-succeeded\",\"width\":358,\"height\":232,\"scrollWidth\":358,\"right\":374},{\"state\":\"executed\",\"width\":358,\"height\":172,\"scrollWidth\":358,\"right\":374},{\"state\":\"defeated\",\"width\":358,\"height\":172,\"scrollWidth\":358,\"right\":374},{\"state\":\"quorum-not-reached\",\"width\":358,\"height\":232,\"scrollWidth\":358,\"right\":374},{\"state\":\"canceled\",\"width\":358,\"height\":160,\"scrollWidth\":358,\"right\":374}]"
+            },
+            {
+              "name": "pending",
+              "contentType": "image/png",
+              "bytes": 66864,
+              "sha256": "099a14fbe3be1dc574c55c0a1f95992e05b89acb17afef92fac61723ff193065"
+            },
+            {
+              "name": "active",
+              "contentType": "image/png",
+              "bytes": 65467,
+              "sha256": "4e985c041e021a6acf4ba39bea8e2a8954d50e5ea8d3fb09405004e18f7f453f"
+            },
+            {
+              "name": "contested-active",
+              "contentType": "image/png",
+              "bytes": 67452,
+              "sha256": "076a96a78c7886c4b4affa913c6037cb3df93e4742bbb733e0b0fb4ae80f8827"
+            },
+            {
+              "name": "queued",
+              "contentType": "image/png",
+              "bytes": 61332,
+              "sha256": "5f53f998ad2ec27bf869790615fcd23abf342f321d8d3f81100311f7c3b01d05"
+            },
+            {
+              "name": "optimistic-succeeded",
+              "contentType": "image/png",
+              "bytes": 56957,
+              "sha256": "0866f57597a473f93a14a104332ff7f35b72d3cedcf6be7129aabfc22ad1e147"
+            },
+            {
+              "name": "quorum-not-reached",
+              "contentType": "image/png",
+              "bytes": 64902,
+              "sha256": "4b6a0600866adf21ddeaa5d3bdad7b4ac1711e40a69fbe7d35f340e6a15839f4"
+            },
+            {
+              "name": "public-source-digest",
+              "contentType": "text/plain",
+              "bytes": 64,
+              "sha256": "4af9c8e48e6b3bc748502153f9ef12245cfdc2702eccccbfd321229101c32487",
+              "text": "76b4bb727266d585f54590e7ccfeae65ff29184f26f0bfed483521b6e02bed89"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "file": "overnight-lab-regressions.spec.ts",
+      "line": 70,
+      "title": "overnight-lab-regressions.spec.ts / Governance visual inventory light 768",
+      "status": "expected",
+      "expectedStatus": "passed",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 3398,
+          "retry": 0,
+          "errors": [],
+          "attachments": [
+            {
+              "name": "geometry",
+              "contentType": "text/plain",
+              "bytes": 881,
+              "sha256": "cff5e07b950ec1853805e5702d0e9078c1f04e2b3dc1eb6e85d0273c10a1c5d9",
+              "text": "[{\"state\":\"pending\",\"width\":720,\"height\":136,\"scrollWidth\":720,\"right\":744},{\"state\":\"active\",\"width\":720,\"height\":136,\"scrollWidth\":720,\"right\":744},{\"state\":\"optimistic-active\",\"width\":720,\"height\":136,\"scrollWidth\":720,\"right\":744},{\"state\":\"contested-active\",\"width\":720,\"height\":160,\"scrollWidth\":720,\"right\":744},{\"state\":\"standard-succeeded\",\"width\":720,\"height\":136,\"scrollWidth\":720,\"right\":744},{\"state\":\"queued\",\"width\":720,\"height\":136,\"scrollWidth\":720,\"right\":744},{\"state\":\"optimistic-succeeded\",\"width\":720,\"height\":136,\"scrollWidth\":720,\"right\":744},{\"state\":\"executed\",\"width\":720,\"height\":136,\"scrollWidth\":720,\"right\":744},{\"state\":\"defeated\",\"width\":720,\"height\":136,\"scrollWidth\":720,\"right\":744},{\"state\":\"quorum-not-reached\",\"width\":720,\"height\":136,\"scrollWidth\":720,\"right\":744},{\"state\":\"canceled\",\"width\":720,\"height\":136,\"scrollWidth\":720,\"right\":744}]"
+            },
+            {
+              "name": "pending",
+              "contentType": "image/png",
+              "bytes": 103640,
+              "sha256": "3a8c3c1327cc1426df02366597f3ddacb2c0f31dcc0a85a2856a931267ffbda9"
+            },
+            {
+              "name": "active",
+              "contentType": "image/png",
+              "bytes": 104436,
+              "sha256": "77da18ab94803cc056eff438a8849cbd85794dd76457f307e6c52f5d6c24e2a1"
+            },
+            {
+              "name": "contested-active",
+              "contentType": "image/png",
+              "bytes": 95884,
+              "sha256": "50352581f5796adae9b2b7efa934b1d86b35fad5c093ef3fa8365a7cf0ddf5c2"
+            },
+            {
+              "name": "queued",
+              "contentType": "image/png",
+              "bytes": 89493,
+              "sha256": "a0c42c3faf50f81b010d2247b2dbbc9cd9f57d9af880547a5923ef2af254236e"
+            },
+            {
+              "name": "optimistic-succeeded",
+              "contentType": "image/png",
+              "bytes": 83663,
+              "sha256": "e6b85b7342c1768fddbc509c4cc5d5e8f90cea6203ce4311a0a43e1757c95551"
+            },
+            {
+              "name": "quorum-not-reached",
+              "contentType": "image/png",
+              "bytes": 90437,
+              "sha256": "47f1a110ef798ff7abfe5ae269e57d611eb55735f287d2aa296f5500442878d5"
+            },
+            {
+              "name": "public-source-digest",
+              "contentType": "text/plain",
+              "bytes": 64,
+              "sha256": "4af9c8e48e6b3bc748502153f9ef12245cfdc2702eccccbfd321229101c32487",
+              "text": "76b4bb727266d585f54590e7ccfeae65ff29184f26f0bfed483521b6e02bed89"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "file": "overnight-lab-regressions.spec.ts",
+      "line": 70,
+      "title": "overnight-lab-regressions.spec.ts / Governance visual inventory light 1400",
+      "status": "expected",
+      "expectedStatus": "passed",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 3106,
+          "retry": 0,
+          "errors": [],
+          "attachments": [
+            {
+              "name": "geometry",
+              "contentType": "text/plain",
+              "bytes": 881,
+              "sha256": "5c7b569fe6bc606405771d5580b17c058d1ec427b049ae48139cf794e5b3fa74",
+              "text": "[{\"state\":\"pending\",\"width\":768,\"height\":136,\"scrollWidth\":768,\"right\":792},{\"state\":\"active\",\"width\":768,\"height\":136,\"scrollWidth\":768,\"right\":792},{\"state\":\"optimistic-active\",\"width\":768,\"height\":136,\"scrollWidth\":768,\"right\":792},{\"state\":\"contested-active\",\"width\":768,\"height\":160,\"scrollWidth\":768,\"right\":792},{\"state\":\"standard-succeeded\",\"width\":768,\"height\":136,\"scrollWidth\":768,\"right\":792},{\"state\":\"queued\",\"width\":768,\"height\":136,\"scrollWidth\":768,\"right\":792},{\"state\":\"optimistic-succeeded\",\"width\":768,\"height\":136,\"scrollWidth\":768,\"right\":792},{\"state\":\"executed\",\"width\":768,\"height\":136,\"scrollWidth\":768,\"right\":792},{\"state\":\"defeated\",\"width\":768,\"height\":136,\"scrollWidth\":768,\"right\":792},{\"state\":\"quorum-not-reached\",\"width\":768,\"height\":136,\"scrollWidth\":768,\"right\":792},{\"state\":\"canceled\",\"width\":768,\"height\":136,\"scrollWidth\":768,\"right\":792}]"
+            },
+            {
+              "name": "pending",
+              "contentType": "image/png",
+              "bytes": 146140,
+              "sha256": "bd66ee0577dac85231fbd2d5168c9dc6737c08df37ff96c69f485dded0bd2008"
+            },
+            {
+              "name": "active",
+              "contentType": "image/png",
+              "bytes": 137678,
+              "sha256": "67ecbe3ed0bc9fa906e79103890ad829c85fc0b5dd447a4f8d53768d0dab4390"
+            },
+            {
+              "name": "contested-active",
+              "contentType": "image/png",
+              "bytes": 102349,
+              "sha256": "b7d3fe4b1f98ed5ecf8a5988c16734c6a502313ebfd67b8960267402247b0260"
+            },
+            {
+              "name": "queued",
+              "contentType": "image/png",
+              "bytes": 95899,
+              "sha256": "ffd3f0933fabc4673aca18a2f629315275cae1b7a99fd1280488eeaf7a1f0a01"
+            },
+            {
+              "name": "optimistic-succeeded",
+              "contentType": "image/png",
+              "bytes": 89633,
+              "sha256": "6f5ddcfa8bc8cf8a0501a0c14ad4bac96130c277ec292bb852461b3a696d1e9d"
+            },
+            {
+              "name": "quorum-not-reached",
+              "contentType": "image/png",
+              "bytes": 85915,
+              "sha256": "5761c8d5975da2db2c7ab270c1c67d9af66c6cca68fd12c4cc02fd36c4bb234c"
+            },
+            {
+              "name": "public-source-digest",
+              "contentType": "text/plain",
+              "bytes": 64,
+              "sha256": "4af9c8e48e6b3bc748502153f9ef12245cfdc2702eccccbfd321229101c32487",
+              "text": "76b4bb727266d585f54590e7ccfeae65ff29184f26f0bfed483521b6e02bed89"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "file": "overnight-lab-regressions.spec.ts",
+      "line": 18,
+      "title": "overnight-lab-regressions.spec.ts / Earn identity stays out of rate dark",
+      "status": "unexpected",
+      "expectedStatus": "passed",
+      "results": [
+        {
+          "status": "failed",
+          "duration": 3535,
+          "retry": 0,
+          "errors": [
+            {
+              "location": {
+                "file": "/private/tmp/register-design-overnight-JEwxJR/repo/e2e/design-system/overnight-lab-regressions.spec.ts",
+                "column": 24,
+                "line": 36
+              },
+              "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  -  1\u001b[39m\n\u001b[31m+ Received  + 14\u001b[39m\n\n\u001b[32m- Array []\u001b[39m\n\u001b[31m+ Array [\u001b[39m\n\u001b[31m+   Object {\u001b[39m\n\u001b[31m+     \"scroll\": 101,\u001b[39m\n\u001b[31m+     \"text\": \"vlSQUILL-OPEN\",\u001b[39m\n\u001b[31m+     \"whiteSpace\": \"nowrap\",\u001b[39m\n\u001b[31m+     \"width\": 101,\u001b[39m\n\u001b[31m+   },\u001b[39m\n\u001b[31m+   Object {\u001b[39m\n\u001b[31m+     \"scroll\": 111,\u001b[39m\n\u001b[31m+     \"text\": \"vlRSR-CMCindex\",\u001b[39m\n\u001b[31m+     \"whiteSpace\": \"nowrap\",\u001b[39m\n\u001b[31m+     \"width\": 111,\u001b[39m\n\u001b[31m+   },\u001b[39m\n\u001b[31m+ ]\u001b[39m\n\n  34 |     }))\n  35 |     await info.attach('identity-rate', { body: await page.screenshot({ animations: 'disabled' }), contentType: 'image/png' })\n> 36 |     expect(collisions).toEqual([])\n     |                        ^\n  37 |   })\n  38 |\n  39 |   test(`Owned amount remains one readable number ${theme}`, async ({ page }, info) => {\n    at /private/tmp/register-design-overnight-JEwxJR/repo/e2e/design-system/overnight-lab-regressions.spec.ts:36:24"
+            }
+          ],
+          "attachments": [
+            {
+              "name": "identity-rate",
+              "contentType": "image/png",
+              "bytes": 63166,
+              "sha256": "836f33f32d63116be87d43ef6324e6069c156b042d66bb9b54b059de8348138c",
+              "file": "earn-identity-stays-out-of-rate-dark-identity-rate-836f33f3.png"
+            },
+            {
+              "name": "screenshot",
+              "contentType": "image/png",
+              "bytes": 63430,
+              "sha256": "3758d583e03e20d7bc5c3159fce9122971512ae7cfc74e0a1c090e9a30acf7ea"
+            },
+            {
+              "name": "public-source-digest",
+              "contentType": "text/plain",
+              "bytes": 64,
+              "sha256": "4af9c8e48e6b3bc748502153f9ef12245cfdc2702eccccbfd321229101c32487",
+              "text": "76b4bb727266d585f54590e7ccfeae65ff29184f26f0bfed483521b6e02bed89"
+            },
+            {
+              "name": "error-context",
+              "contentType": "text/markdown",
+              "bytes": 130154,
+              "sha256": "e879e0525fffc47306e62cbb744b8c0f9658e84811a459711ef311e453cdb6f3"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "file": "overnight-lab-regressions.spec.ts",
+      "line": 39,
+      "title": "overnight-lab-regressions.spec.ts / Owned amount remains one readable number dark",
+      "status": "unexpected",
+      "expectedStatus": "passed",
+      "results": [
+        {
+          "status": "failed",
+          "duration": 11031,
+          "retry": 0,
+          "errors": [
+            {
+              "location": {
+                "file": "/private/tmp/register-design-overnight-JEwxJR/repo/e2e/design-system/overnight-lab-regressions.spec.ts",
+                "column": 25,
+                "line": 53
+              },
+              "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByTestId('owned-positions-review').getByTestId('owned-table').getByText('$123,456,678.90', { exact: true }).filter({ visible: true })\nExpected: visible\nTimeout: 7500ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 7500ms\u001b[22m\n\u001b[2m  - waiting for getByTestId('owned-positions-review').getByTestId('owned-table').getByText('$123,456,678.90', { exact: true }).filter({ visible: true })\u001b[22m\n\n\n  51 |     const value = table.getByText('$123,456,678.90', { exact: true }).filter({ visible: true })\n  52 |     const balance = table.getByText('123,456,789.123456', { exact: true }).filter({ visible: true })\n> 53 |     await expect(value).toBeVisible()\n     |                         ^\n  54 |     await expect(balance).toBeVisible()\n  55 |     await info.attach('long-amount', { body: await page.screenshot({ animations: 'disabled' }), contentType: 'image/png' })\n  56 |     for (const number of [value, balance]) {\n    at /private/tmp/register-design-overnight-JEwxJR/repo/e2e/design-system/overnight-lab-regressions.spec.ts:53:25"
+            }
+          ],
+          "attachments": [
+            {
+              "name": "screenshot",
+              "contentType": "image/png",
+              "bytes": 57046,
+              "sha256": "7c8b05d038e73ebfcf83984efe303ab65184ccd3994d8e6bdcfb3f2476e7211e"
+            },
+            {
+              "name": "public-source-digest",
+              "contentType": "text/plain",
+              "bytes": 64,
+              "sha256": "4af9c8e48e6b3bc748502153f9ef12245cfdc2702eccccbfd321229101c32487",
+              "text": "76b4bb727266d585f54590e7ccfeae65ff29184f26f0bfed483521b6e02bed89"
+            },
+            {
+              "name": "error-context",
+              "contentType": "text/markdown",
+              "bytes": 124928,
+              "sha256": "71661b3bf2598f9fa797f0e4812f95eef294ae5d985931ae72ef4caf36455b54"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "file": "overnight-lab-regressions.spec.ts",
+      "line": 70,
+      "title": "overnight-lab-regressions.spec.ts / Governance visual inventory dark 320",
+      "status": "expected",
+      "expectedStatus": "passed",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 3051,
+          "retry": 0,
+          "errors": [],
+          "attachments": [
+            {
+              "name": "geometry",
+              "contentType": "text/plain",
+              "bytes": 881,
+              "sha256": "d3ef8c5ee10173c43145a4dd24c290ea268f45a462aeb637d7dc1faae9179364",
+              "text": "[{\"state\":\"pending\",\"width\":288,\"height\":196,\"scrollWidth\":288,\"right\":304},{\"state\":\"active\",\"width\":288,\"height\":232,\"scrollWidth\":288,\"right\":304},{\"state\":\"optimistic-active\",\"width\":288,\"height\":292,\"scrollWidth\":288,\"right\":304},{\"state\":\"contested-active\",\"width\":288,\"height\":328,\"scrollWidth\":288,\"right\":304},{\"state\":\"standard-succeeded\",\"width\":288,\"height\":232,\"scrollWidth\":288,\"right\":304},{\"state\":\"queued\",\"width\":288,\"height\":244,\"scrollWidth\":288,\"right\":304},{\"state\":\"optimistic-succeeded\",\"width\":288,\"height\":256,\"scrollWidth\":288,\"right\":304},{\"state\":\"executed\",\"width\":288,\"height\":208,\"scrollWidth\":288,\"right\":304},{\"state\":\"defeated\",\"width\":288,\"height\":232,\"scrollWidth\":288,\"right\":304},{\"state\":\"quorum-not-reached\",\"width\":288,\"height\":232,\"scrollWidth\":288,\"right\":304},{\"state\":\"canceled\",\"width\":288,\"height\":160,\"scrollWidth\":288,\"right\":304}]"
+            },
+            {
+              "name": "pending",
+              "contentType": "image/png",
+              "bytes": 59214,
+              "sha256": "cbe0066bbd2eab3f0ede421fb22e0d5a0bf1f1f59054acd7f730e008a9bcc24b"
+            },
+            {
+              "name": "active",
+              "contentType": "image/png",
+              "bytes": 55548,
+              "sha256": "d2158e64b95ce0bc75854f5df5cc7e6622b1dd78ac9979bcc0337ee0eef8cd34"
+            },
+            {
+              "name": "contested-active",
+              "contentType": "image/png",
+              "bytes": 57192,
+              "sha256": "f466aace0a6f6baad2c6d4c74b3223bf976cec1d52922fefe32c433668bf9610"
+            },
+            {
+              "name": "queued",
+              "contentType": "image/png",
+              "bytes": 52795,
+              "sha256": "f874dcb0eabfeb17db05d262b98b1af22a52cd5bcfa7dd7211430bdf993df857"
+            },
+            {
+              "name": "optimistic-succeeded",
+              "contentType": "image/png",
+              "bytes": 50675,
+              "sha256": "4ae7254dbd9ea6660932436636f4ff77602f0f6429afcb540d39a091c4631bfe"
+            },
+            {
+              "name": "quorum-not-reached",
+              "contentType": "image/png",
+              "bytes": 58956,
+              "sha256": "99b6341e36a9ea078283616dc2ad395bb2dde85eefebf98842cda4f7cdadbcb7"
+            },
+            {
+              "name": "public-source-digest",
+              "contentType": "text/plain",
+              "bytes": 64,
+              "sha256": "4af9c8e48e6b3bc748502153f9ef12245cfdc2702eccccbfd321229101c32487",
+              "text": "76b4bb727266d585f54590e7ccfeae65ff29184f26f0bfed483521b6e02bed89"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "file": "overnight-lab-regressions.spec.ts",
+      "line": 70,
+      "title": "overnight-lab-regressions.spec.ts / Governance visual inventory dark 390",
+      "status": "expected",
+      "expectedStatus": "passed",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 2799,
+          "retry": 0,
+          "errors": [],
+          "attachments": [
+            {
+              "name": "geometry",
+              "contentType": "text/plain",
+              "bytes": 881,
+              "sha256": "dc61a41572712980527df6d909ec7c01de04badab8e646d2b4c876d98e94e844",
+              "text": "[{\"state\":\"pending\",\"width\":358,\"height\":196,\"scrollWidth\":358,\"right\":374},{\"state\":\"active\",\"width\":358,\"height\":232,\"scrollWidth\":358,\"right\":374},{\"state\":\"optimistic-active\",\"width\":358,\"height\":232,\"scrollWidth\":358,\"right\":374},{\"state\":\"contested-active\",\"width\":358,\"height\":244,\"scrollWidth\":358,\"right\":374},{\"state\":\"standard-succeeded\",\"width\":358,\"height\":172,\"scrollWidth\":358,\"right\":374},{\"state\":\"queued\",\"width\":358,\"height\":208,\"scrollWidth\":358,\"right\":374},{\"state\":\"optimistic-succeeded\",\"width\":358,\"height\":232,\"scrollWidth\":358,\"right\":374},{\"state\":\"executed\",\"width\":358,\"height\":172,\"scrollWidth\":358,\"right\":374},{\"state\":\"defeated\",\"width\":358,\"height\":172,\"scrollWidth\":358,\"right\":374},{\"state\":\"quorum-not-reached\",\"width\":358,\"height\":232,\"scrollWidth\":358,\"right\":374},{\"state\":\"canceled\",\"width\":358,\"height\":160,\"scrollWidth\":358,\"right\":374}]"
+            },
+            {
+              "name": "pending",
+              "contentType": "image/png",
+              "bytes": 66669,
+              "sha256": "5e8e2abe092551466539302f48d1596f388787aab859639410e915088f780d07"
+            },
+            {
+              "name": "active",
+              "contentType": "image/png",
+              "bytes": 65258,
+              "sha256": "7acdaf34faf381ed1267562945673b614ee5f1f45d39e78c765aa8ace5511e23"
+            },
+            {
+              "name": "contested-active",
+              "contentType": "image/png",
+              "bytes": 67720,
+              "sha256": "1895cc96f3e137d81f4e4013681ce3578c80cfa0d825306287ad11d053f88d88"
+            },
+            {
+              "name": "queued",
+              "contentType": "image/png",
+              "bytes": 61191,
+              "sha256": "f526965fffb8951c6de321bee2077046607e969ef676d233253d42d99bb9fead"
+            },
+            {
+              "name": "optimistic-succeeded",
+              "contentType": "image/png",
+              "bytes": 56988,
+              "sha256": "730bfce22ad7dad5cf865b22a9fb4df68a8fbfb09933a6a0b6c0d8c1c86d7707"
+            },
+            {
+              "name": "quorum-not-reached",
+              "contentType": "image/png",
+              "bytes": 66155,
+              "sha256": "920ba481020e73ae0384f792cf5f775621f9a8e32947f03356d75106c95fab59"
+            },
+            {
+              "name": "public-source-digest",
+              "contentType": "text/plain",
+              "bytes": 64,
+              "sha256": "4af9c8e48e6b3bc748502153f9ef12245cfdc2702eccccbfd321229101c32487",
+              "text": "76b4bb727266d585f54590e7ccfeae65ff29184f26f0bfed483521b6e02bed89"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "file": "overnight-lab-regressions.spec.ts",
+      "line": 70,
+      "title": "overnight-lab-regressions.spec.ts / Governance visual inventory dark 768",
+      "status": "expected",
+      "expectedStatus": "passed",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 3584,
+          "retry": 0,
+          "errors": [],
+          "attachments": [
+            {
+              "name": "geometry",
+              "contentType": "text/plain",
+              "bytes": 881,
+              "sha256": "cff5e07b950ec1853805e5702d0e9078c1f04e2b3dc1eb6e85d0273c10a1c5d9",
+              "text": "[{\"state\":\"pending\",\"width\":720,\"height\":136,\"scrollWidth\":720,\"right\":744},{\"state\":\"active\",\"width\":720,\"height\":136,\"scrollWidth\":720,\"right\":744},{\"state\":\"optimistic-active\",\"width\":720,\"height\":136,\"scrollWidth\":720,\"right\":744},{\"state\":\"contested-active\",\"width\":720,\"height\":160,\"scrollWidth\":720,\"right\":744},{\"state\":\"standard-succeeded\",\"width\":720,\"height\":136,\"scrollWidth\":720,\"right\":744},{\"state\":\"queued\",\"width\":720,\"height\":136,\"scrollWidth\":720,\"right\":744},{\"state\":\"optimistic-succeeded\",\"width\":720,\"height\":136,\"scrollWidth\":720,\"right\":744},{\"state\":\"executed\",\"width\":720,\"height\":136,\"scrollWidth\":720,\"right\":744},{\"state\":\"defeated\",\"width\":720,\"height\":136,\"scrollWidth\":720,\"right\":744},{\"state\":\"quorum-not-reached\",\"width\":720,\"height\":136,\"scrollWidth\":720,\"right\":744},{\"state\":\"canceled\",\"width\":720,\"height\":136,\"scrollWidth\":720,\"right\":744}]"
+            },
+            {
+              "name": "pending",
+              "contentType": "image/png",
+              "bytes": 103309,
+              "sha256": "3cb8f45fe03574c358674fab5709c9a39bc40d3eadc39a77f993270bebc45265"
+            },
+            {
+              "name": "active",
+              "contentType": "image/png",
+              "bytes": 103518,
+              "sha256": "aab75952ff36f19f9078e713cb10e7321ea47ed8c68367a2afde4f264b572b4c"
+            },
+            {
+              "name": "contested-active",
+              "contentType": "image/png",
+              "bytes": 96084,
+              "sha256": "2d09963e3c74ee6d38cc7409e93dcd71c015216c568f036d33a9b99ec1ec2c36"
+            },
+            {
+              "name": "queued",
+              "contentType": "image/png",
+              "bytes": 89750,
+              "sha256": "73296f0422fb510e0e8370517f6206a0bc60be87c3f7822e66982c1afab4f716"
+            },
+            {
+              "name": "optimistic-succeeded",
+              "contentType": "image/png",
+              "bytes": 83982,
+              "sha256": "fcbadbb602c15e41fb32d8aa5e25d3e3b6173c9f7b419edb8651657e18250ee3"
+            },
+            {
+              "name": "quorum-not-reached",
+              "contentType": "image/png",
+              "bytes": 91198,
+              "sha256": "cfbc9441c3f216d867f12006e373db28556ab86e4b705e2e96ba233489c02098"
+            },
+            {
+              "name": "public-source-digest",
+              "contentType": "text/plain",
+              "bytes": 64,
+              "sha256": "4af9c8e48e6b3bc748502153f9ef12245cfdc2702eccccbfd321229101c32487",
+              "text": "76b4bb727266d585f54590e7ccfeae65ff29184f26f0bfed483521b6e02bed89"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "file": "overnight-lab-regressions.spec.ts",
+      "line": 70,
+      "title": "overnight-lab-regressions.spec.ts / Governance visual inventory dark 1400",
+      "status": "expected",
+      "expectedStatus": "passed",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 5784,
+          "retry": 0,
+          "errors": [],
+          "attachments": [
+            {
+              "name": "geometry",
+              "contentType": "text/plain",
+              "bytes": 881,
+              "sha256": "5c7b569fe6bc606405771d5580b17c058d1ec427b049ae48139cf794e5b3fa74",
+              "text": "[{\"state\":\"pending\",\"width\":768,\"height\":136,\"scrollWidth\":768,\"right\":792},{\"state\":\"active\",\"width\":768,\"height\":136,\"scrollWidth\":768,\"right\":792},{\"state\":\"optimistic-active\",\"width\":768,\"height\":136,\"scrollWidth\":768,\"right\":792},{\"state\":\"contested-active\",\"width\":768,\"height\":160,\"scrollWidth\":768,\"right\":792},{\"state\":\"standard-succeeded\",\"width\":768,\"height\":136,\"scrollWidth\":768,\"right\":792},{\"state\":\"queued\",\"width\":768,\"height\":136,\"scrollWidth\":768,\"right\":792},{\"state\":\"optimistic-succeeded\",\"width\":768,\"height\":136,\"scrollWidth\":768,\"right\":792},{\"state\":\"executed\",\"width\":768,\"height\":136,\"scrollWidth\":768,\"right\":792},{\"state\":\"defeated\",\"width\":768,\"height\":136,\"scrollWidth\":768,\"right\":792},{\"state\":\"quorum-not-reached\",\"width\":768,\"height\":136,\"scrollWidth\":768,\"right\":792},{\"state\":\"canceled\",\"width\":768,\"height\":136,\"scrollWidth\":768,\"right\":792}]"
+            },
+            {
+              "name": "pending",
+              "contentType": "image/png",
+              "bytes": 145737,
+              "sha256": "d92f3082a298132ad75fe1e3752bb42e9010d6ea82924a4d265d8340c8dc27ba",
+              "file": "governance-visual-inventory-dark-1400-pending-d92f3082.png"
+            },
+            {
+              "name": "active",
+              "contentType": "image/png",
+              "bytes": 136951,
+              "sha256": "f8d530628c1cd83aee84d20a55ad6806d84c666cf49294892a6e936735071e83",
+              "file": "governance-visual-inventory-dark-1400-active-f8d53062.png"
+            },
+            {
+              "name": "contested-active",
+              "contentType": "image/png",
+              "bytes": 102270,
+              "sha256": "2130fe3264a686b9297022bb28e730125ea8b842067a9e592fc957a4db6393bf",
+              "file": "governance-visual-inventory-dark-1400-contested-active-2130fe32.png"
+            },
+            {
+              "name": "queued",
+              "contentType": "image/png",
+              "bytes": 95836,
+              "sha256": "1af756b86d16e9459936f8797ef2cbff9b0166ca23e6fa3772404bebef4eabd0",
+              "file": "governance-visual-inventory-dark-1400-queued-1af756b8.png"
+            },
+            {
+              "name": "optimistic-succeeded",
+              "contentType": "image/png",
+              "bytes": 89588,
+              "sha256": "6455fc0aed29631923d04e2cbf550469b510205c776a20a22a50413928e99280",
+              "file": "governance-visual-inventory-dark-1400-optimistic-succeeded-6455fc0a.png"
+            },
+            {
+              "name": "quorum-not-reached",
+              "contentType": "image/png",
+              "bytes": 85963,
+              "sha256": "1b2ca0d6c68dbed4148bfe5487c6c1f7d09ae5f744233a7af558d9f6585ae705",
+              "file": "governance-visual-inventory-dark-1400-quorum-not-reached-1b2ca0d6.png"
+            },
+            {
+              "name": "public-source-digest",
+              "contentType": "text/plain",
+              "bytes": 64,
+              "sha256": "4af9c8e48e6b3bc748502153f9ef12245cfdc2702eccccbfd321229101c32487",
+              "text": "76b4bb727266d585f54590e7ccfeae65ff29184f26f0bfed483521b6e02bed89"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

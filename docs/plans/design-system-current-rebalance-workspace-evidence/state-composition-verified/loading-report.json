@@ -1,0 +1,415 @@
+{
+  "config": {
+    "configFile": "/Users/lill-kire/Code/register/playwright.design-system.config.ts",
+    "rootDir": "/Users/lill-kire/Code/register/e2e/design-system",
+    "forbidOnly": true,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/Users/lill-kire/Code/register/test-results/design-system/artifacts",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "design-system-desktop",
+        "name": "design-system-desktop",
+        "testDir": "/Users/lill-kire/Code/register/e2e/design-system",
+        "testIgnore": [
+          "/(?:source-capture|lab-regressions)\\.spec\\.ts/"
+        ],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 90000
+      },
+      {
+        "outputDir": "/Users/lill-kire/Code/register/test-results/design-system/artifacts",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "design-system-mobile",
+        "name": "design-system-mobile",
+        "testDir": "/Users/lill-kire/Code/register/e2e/design-system",
+        "testIgnore": [
+          "/(?:source-capture|lab-regressions)\\.spec\\.ts/"
+        ],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 90000
+      },
+      {
+        "outputDir": "/Users/lill-kire/Code/register/test-results/design-system/artifacts",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "design-system-phone",
+        "name": "design-system-phone",
+        "testDir": "/Users/lill-kire/Code/register/e2e/design-system",
+        "testIgnore": [
+          "/(?:source-capture|lab-regressions)\\.spec\\.ts/"
+        ],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 90000
+      },
+      {
+        "outputDir": "/Users/lill-kire/Code/register/test-results/design-system/artifacts",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "design-system-review",
+        "name": "design-system-review",
+        "testDir": "/Users/lill-kire/Code/register/e2e/design-system",
+        "testIgnore": [],
+        "testMatch": [
+          "/(?:source-capture|lab-regressions)\\.spec\\.ts/"
+        ],
+        "timeout": 90000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "list",
+        null
+      ],
+      [
+        "json",
+        {
+          "outputFile": "test-results/design-system/report.json"
+        }
+      ],
+      [
+        "html",
+        {
+          "outputFolder": "playwright-report/design-system",
+          "open": "never"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "none",
+    "updateSourceMethod": "patch",
+    "version": "1.59.1",
+    "workers": 1,
+    "webServer": {
+      "command": "pnpm exec vite --host 127.0.0.1 --port 3022 --strictPort",
+      "url": "http://127.0.0.1:3022",
+      "reuseExistingServer": false,
+      "timeout": 120000,
+      "env": {
+        "VITE_E2E": "true",
+        "VITE_WALLETCONNECT_ID": "test-project",
+        "VITE_STAGING_API": "",
+        "VITE_USE_STAGING": "",
+        "VITE_MAINNET_URL": "",
+        "VITE_INFURA": "",
+        "VITE_ALCHEMY": "",
+        "VITE_ANKR": ""
+      }
+    }
+  },
+  "suites": [
+    {
+      "title": "current-rebalance-state-composition-lab-regressions.spec.ts",
+      "file": "current-rebalance-state-composition-lab-regressions.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "saved weights expose the configuration at 1400",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "design-system-review",
+              "projectName": "design-system-review",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 14443,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T21:04:42.976Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "states-1400-weights-required",
+                      "contentType": "image/png",
+                      "path": "attachments/f7dfcfbc6b9aa151fc8a53928d22651a8bc97499456b3ea7b262885286f28e3a.png"
+                    },
+                    {
+                      "name": "states-1400-weights-editor",
+                      "contentType": "image/png",
+                      "path": "attachments/cf3d73773b59bb4876605130fa195b0389fcac6eca6902fed8ca2d94eeb43858.png"
+                    },
+                    {
+                      "name": "states-1400-weights-saved",
+                      "contentType": "image/png",
+                      "path": "attachments/2251d7e363daf30ad376154012f57074dbdb7e03dbd9cbe937b96f6d7a548015.png"
+                    },
+                    {
+                      "name": "states-1400-saved-price-error",
+                      "contentType": "image/png",
+                      "path": "attachments/9acf36e79c199db74826a837ac455f9cc12d70b5121ae90ccbf374a5a1794af1.png"
+                    },
+                    {
+                      "name": "states-1400-saved-prices-pending",
+                      "contentType": "image/png",
+                      "path": "attachments/612708132b6a878909ef663c308e24b2598038e818d1fba369dbc12e368323f4.png"
+                    },
+                    {
+                      "name": "current-source",
+                      "contentType": "application/json",
+                      "path": "attachments/34eca5befed868917d339cf1713cd53d994d2ad34569bb349f425d2cd50eca85.json"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "96808e51799ec6023912-41bfb700bfb039db96ae",
+          "file": "current-rebalance-state-composition-lab-regressions.spec.ts",
+          "line": 11,
+          "column": 3
+        },
+        {
+          "title": "saved weights expose the configuration at 900",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "design-system-review",
+              "projectName": "design-system-review",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3370,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T21:04:57.569Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "states-900-weights-required",
+                      "contentType": "image/png",
+                      "path": "attachments/6b7dd231f5bb3c5940ef579c1cffda4a1bc53896382e9e1307938a3e1cd03350.png"
+                    },
+                    {
+                      "name": "states-900-weights-editor",
+                      "contentType": "image/png",
+                      "path": "attachments/d47034be1ea6fa149e5a17cb80231d957883b239408083d92f5c96b4b20f8434.png"
+                    },
+                    {
+                      "name": "states-900-weights-saved",
+                      "contentType": "image/png",
+                      "path": "attachments/a4b143e0a03a513a9406fe3ceff452024db34c8f784fe8a17da07f20d08efbaf.png"
+                    },
+                    {
+                      "name": "states-900-saved-price-error",
+                      "contentType": "image/png",
+                      "path": "attachments/daa3c89c08f332715ef3a85eb4f7bdbfab25c91552b0cd81b7bdfad14c87d955.png"
+                    },
+                    {
+                      "name": "states-900-saved-prices-pending",
+                      "contentType": "image/png",
+                      "path": "attachments/d0b728d2b49b843c087f22f594f884b478f9e129fc059f974a286c01e9e5ddad.png"
+                    },
+                    {
+                      "name": "current-source",
+                      "contentType": "application/json",
+                      "path": "attachments/34eca5befed868917d339cf1713cd53d994d2ad34569bb349f425d2cd50eca85.json"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "96808e51799ec6023912-40e8d80b310145d3eb16",
+          "file": "current-rebalance-state-composition-lab-regressions.spec.ts",
+          "line": 11,
+          "column": 3
+        },
+        {
+          "title": "saved weights expose the configuration at 390",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "design-system-review",
+              "projectName": "design-system-review",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3319,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T21:05:00.945Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "states-390-weights-required",
+                      "contentType": "image/png",
+                      "path": "attachments/a258720ca3b550d0f932ddf7a360fc0b141fb8b88f009855daf5c4dd15b2ccd1.png"
+                    },
+                    {
+                      "name": "states-390-weights-editor",
+                      "contentType": "image/png",
+                      "path": "attachments/432675739614410473df3c09b32ebc866aa53f9777a016ed4e3d5c71ce89b265.png"
+                    },
+                    {
+                      "name": "states-390-weights-saved",
+                      "contentType": "image/png",
+                      "path": "attachments/7d04f531286b470aef839735e0b2de4a999e7518849ab30ba1cec3c8c0388762.png"
+                    },
+                    {
+                      "name": "states-390-saved-price-error",
+                      "contentType": "image/png",
+                      "path": "attachments/4dc982b926baf20ab01242c31f770471613d5b7889ce5142641711d99c3bbe01.png"
+                    },
+                    {
+                      "name": "states-390-saved-prices-pending",
+                      "contentType": "image/png",
+                      "path": "attachments/bca2515682fd0151bac76eb8fb71d86cabd940e151659b9a965bdbe4ecaa2ea2.png"
+                    },
+                    {
+                      "name": "current-source",
+                      "contentType": "application/json",
+                      "path": "attachments/34eca5befed868917d339cf1713cd53d994d2ad34569bb349f425d2cd50eca85.json"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "96808e51799ec6023912-578cd27d0e3d2d4f6738",
+          "file": "current-rebalance-state-composition-lab-regressions.spec.ts",
+          "line": 11,
+          "column": 3
+        },
+        {
+          "title": "saved weights expose the configuration at 320",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "design-system-review",
+              "projectName": "design-system-review",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3326,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T21:05:04.270Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "states-320-weights-required",
+                      "contentType": "image/png",
+                      "path": "attachments/e1e191e254c12f08a496d448f799dfd98d048bd280d0729f656106f5e39d79a4.png"
+                    },
+                    {
+                      "name": "states-320-weights-editor",
+                      "contentType": "image/png",
+                      "path": "attachments/1cece705674982a759ffcc313f164c5f147c027bd5110ff939b5b4234e885706.png"
+                    },
+                    {
+                      "name": "states-320-weights-saved",
+                      "contentType": "image/png",
+                      "path": "attachments/142ceddb75559f67efb620ef6e3843666433c4055c296f4a907415bc9da8a01b.png"
+                    },
+                    {
+                      "name": "states-320-saved-price-error",
+                      "contentType": "image/png",
+                      "path": "attachments/9c4b076b06b388b45d8370348d34e4c56ece6d73ad428d42f49195b04e64410e.png"
+                    },
+                    {
+                      "name": "states-320-saved-prices-pending",
+                      "contentType": "image/png",
+                      "path": "attachments/a82a2c5873d786b1299d89f703becf8743454e3ddfaebf1f994809344f96e528.png"
+                    },
+                    {
+                      "name": "current-source",
+                      "contentType": "application/json",
+                      "path": "attachments/34eca5befed868917d339cf1713cd53d994d2ad34569bb349f425d2cd50eca85.json"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "96808e51799ec6023912-3c898454e5d8067aba27",
+          "file": "current-rebalance-state-composition-lab-regressions.spec.ts",
+          "line": 11,
+          "column": 3
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-09-13T21:04:41.010Z",
+    "duration": 26663.532000000003,
+    "expected": 4,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}

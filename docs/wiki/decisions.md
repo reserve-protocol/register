@@ -621,3 +621,23 @@ The summary presentation may opt into a contained leading icon when a semantic
 symbol balances a trailing compact action. The contained treatment uses a 32px
 tone-colored circle, a 16px glyph, and 8px outer inset. Plain remains the
 default, and full messages retain their existing icon anatomy.
+
+## 2026-09-14 — Current table work approved for now
+
+The user approved the current table lab to move on to charts. Accept the retained
+Portfolio/withdrawal, Holdings, Discover, Earn/DeFi/owned-position and governance
+record presentations, plus the near-term current/history auction tables, in their
+current reviewed scope. This includes the accepted warm content hover and recent
+governance status/timing refinement. It is a revisitable visual baseline, not a
+claim that every production state or surrounding screen was reviewed.
+
+Do not promote the unfinished current-auction workspace or older auction record
+alternatives. Initial auction-table migration still retains the existing detail
+and transaction flow; source identity, permission, timing, math and action gates
+remain engineer-owned. Dated lab detail references are not a working adapter.
+Do not infer a universal Table/Row API, new shared defaults, global pill geometry
+approval, chart acceptance or production adoption. Missing/failed data integration,
+real pagination/recovery and the central engineering register remain separate.
+
+Current Review moves to the prepared first chart slice; tables remain available
+for later corrections without reopening their entire visual review.

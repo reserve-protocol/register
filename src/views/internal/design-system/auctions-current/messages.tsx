@@ -44,22 +44,25 @@ export function CurrentMessages({
         </InlineMessage>
       )}
       {warnings && (
-        <>
-          <InlineMessage tone="warning" density="compact">
-            <InlineMessageTitle>Ondo limits</InlineMessageTitle>
-            <InlineMessageDescription>
-              NVDAon: outside trading hours or larger than the max single Ondo
-              trade. Oversized legs fill as multiple sequential trades.
-            </InlineMessageDescription>
-          </InlineMessage>
-          <InlineMessage tone="danger" density="compact">
-            <InlineMessageTitle>High price impact</InlineMessageTitle>
-            <InlineMessageDescription>
-              XRP: &gt;5% simulated price impact. Estimated loss: ~$6,083.21
-            </InlineMessageDescription>
-          </InlineMessage>
-        </>
+        <InlineMessage tone="danger" density="compact">
+          <InlineMessageTitle>High price impact</InlineMessageTitle>
+          <InlineMessageDescription>
+            XRP: &gt;5% simulated price impact. Estimated loss: ~$6,083.21
+          </InlineMessageDescription>
+        </InlineMessage>
       )}
     </div>
+  )
+}
+
+export function AuctionSizeWarning() {
+  return (
+    <InlineMessage tone="warning" density="compact">
+      <InlineMessageTitle>Ondo limits</InlineMessageTitle>
+      <InlineMessageDescription>
+        NVDAon: outside trading hours or larger than the max single Ondo trade.
+        Oversized legs fill as multiple sequential trades.
+      </InlineMessageDescription>
+    </InlineMessage>
   )
 }

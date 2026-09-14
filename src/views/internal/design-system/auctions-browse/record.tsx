@@ -32,7 +32,7 @@ export function RebalanceListRecord({
         'relative min-w-0',
         v1LayoutRecipes.inset.ordinaryContent,
         record.active ? roles.surface.content : roles.surface.recessedContent,
-        !loading && roles.interaction.subtleHover,
+        !loading && roles.interaction.contentHover,
         !loading &&
           'has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-inset has-[:focus-visible]:ring-ring'
       )}

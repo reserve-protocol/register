@@ -77,6 +77,17 @@ export const OUTCOMES: Record<Outcome, string> = {
   indexing: 'Confirmed → indexing delayed',
 }
 
+// Holdings and starting targets deliberately differ in this illustrative editor fixture.
+export const CURRENT_BASKET_UNITS = [
+  '0.52',
+  '0.012',
+  '0.41',
+  '0.12',
+  '0.0048',
+  '0.018',
+  '0.63',
+  '0.00016',
+]
 export const INITIAL_UNITS = [
   '0.52',
   '0.018',

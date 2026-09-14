@@ -33,6 +33,7 @@ state into the subgraph mock to "fix" a test.
 | SDK data path / mappers / atoms | `e2e/tests/smoke/dtf-data.spec.ts` (the canary) |
 | Holdings table, Exposure/Collateral tabs, mcap cell | `e2e/tests/flows/overview.spec.ts` (holdings test) |
 | Price chart, time-range selector, ranges | `e2e/tests/flows/overview.spec.ts` (chart test) |
+| Optional header inspection payload (lab-only caller) | `components/charts/tests/chart-inspection.test.ts`; `e2e/design-system/chart-review-lab-regressions.spec.ts` source inspection/touch, plus the existing chart flow above for omitted-callback compatibility |
 | Degenerate chart/holdings data (empty/single-point history, 0-supply, zeroed mcap) | `e2e/tests/flows/overview-edge.spec.ts`, `e2e/tests/index-dtf/overview/edge-cases.spec.ts` |
 | Deprecated/inactive-state rendering | `e2e/tests/index-dtf/overview/state-space.spec.ts`, `e2e/tests/flows/overview.spec.ts` (deprecated test) |
 | Unbranded DTF / cover slot | `e2e/tests/index-dtf/overview/edge-cases.spec.ts` |
@@ -40,6 +41,22 @@ state into the subgraph mock to "fix" a test.
 
 Quick loop: `pnpm e2e:smoke` (overview + dtf-data smokes, seconds); full flow
 `pnpm exec playwright test e2e/tests/flows/overview.spec.ts`.
+
+`PriceChartBody.onInspect` is opt-in and currently used only by the chart lab.
+Recharts forwards touch-start through its `onMouseDown` payload; hover and keyboard
+selection use its mouse-move payload. The Tooltip stays mounted with null content
+for opt-in inspection; its active state is not a second readout authority.
+Existing callers omit the callback and retain their tooltip. Caller owns accessible
+readout, focus, pointer-exit/blur reset, touch compatibility and estimate meaning.
+Engineer review is required before production adoption; no financial/data or
+chart-type-default change is authorized by the lab's visual approval.
+
+`PriceChartBody.launchMarkerVariant="annotation"` is another lab-only opt-in:
+12px V1 auxiliary text replaces the static launch pill, with a separate supporting
+estimate caption and space below the same timestamp line. Omission preserves the
+original marker, including candle callers. No launch/segment data logic changes.
+The chart lab's annotation geometry check covers 320/390/1400; production adoption
+still needs long-translation and edge-of-domain placement review.
 
 ## The multichain matrix (only one in the suite)
 

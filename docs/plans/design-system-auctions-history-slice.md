@@ -1,11 +1,19 @@
 # Historical rebalance table review
 
-September 13 continuation: the [current workspace candidate](design-system-current-rebalance-workspace.md)
-now sits above this retained table. The history-only scope below records the
-earlier accepted sequencing decision, not a remaining current-layout exclusion.
-History geometry and static row behavior remain unchanged.
+September 14: the separate [current-rebalance table](design-system-current-rebalance-table.md#near-term-and-deferred-scope)
+and this self-contained history table are the near-term migration target, now
+visually approved for the current lab scope, not production adoption. Their retained composition
+is `#auctions-current-table-review`. The unfinished redesigned workspace remains
+deferred at `#auctions-browse-review`, where this history table is also retained.
+History geometry and static row behavior are unchanged by this disposition.
 
-## Scope and transfer
+The [independent closeout review](design-system-auctions-tables-closeout-review/report.md)
+found that the earlier first-tap test could accept a tooltip flash. Its
+[reconciliation](design-system-current-rebalance-table-evidence/closeout/README.md)
+owns the local tap fix and sustained-open regression. Shared tooltip defaults,
+metric meanings and production migration remain outside that change.
+
+## Original scope and transfer
 
 Authorized September 13: first compose historical rebalances as an ordinary,
 full-container-width table. Current rebalances and their future working area
@@ -29,7 +37,8 @@ response never establishes a lifecycle outcome. No live adapters or transactions
   value. Preserve the count of auctions run as secondary context for traded value.
 - Rebalance identity/provenance, Status, Rebalance accuracy, NAV Change, Total price impact,
   Traded: aligned columns in a shared DataTable. No new sorting contract.
-- Constrained projection: wrapping title/status header, paired outcomes and a
+- Constrained projection: identity/provenance followed by status below a 512px
+  container; status sits alongside identity above that width. Paired outcomes and a
   traded/count region. Price impact carries its dollar magnitude as supporting
   text. Rows are static, without row hover/focus or a stretched link; the proposer
   retains independent navigation and visible keyboard focus.
@@ -61,11 +70,11 @@ response never establishes a lifecycle outcome. No live adapters or transactions
 
 ## Review boundary
 
-The existing `#auctions-browse-review` opens this table. The previous active/history
-record exploration is retained separately at `#auctions-records-review`, not an
-accepted prerequisite for the future current-rebalance workspace. Governance,
-other table families, shared defaults, current-rebalance
-composition and production adoption are outside this pass.
+The active current/history composition is `#auctions-current-table-review`;
+`#auctions-browse-review` retains the deferred workspace above the same history.
+The earlier record exploration remains at `#auctions-records-review`, not an
+accepted prerequisite. Current-table changes, Governance, other table families,
+shared defaults and production adoption are outside this history slice.
 
 September 13 follow-up: card color and removal of gray dividers supersede the
 initial recessed treatment. The subsequent user approval removes whole-row navigation.
@@ -77,6 +86,13 @@ overlays, not calculations or live data. Missing NAV/dollar metrics remain unkno
 the existing known-zero fixture includes zero NAV change and dollar impact.
 
 ## Verification
+
+September 14 mobile follow-up: the historical title and provenance now have the
+full phone width instead of competing with Status. The default 320px title
+regression failed before the change and passed afterward. Desktop columns,
+whole-cell centering, loading geometry and all metric meanings are preserved.
+The [combined mobile receipt](design-system-current-rebalance-table-evidence/mobile-cleanup/README.md)
+owns the latest current/history checks; earlier receipts below remain historical.
 
 The history-only rendered test failed before implementation. Visual inspection
 then found that an absolutely positioned pseudo-element directly on `tr` created

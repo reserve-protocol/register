@@ -2,6 +2,7 @@ import { ExternalLink } from 'lucide-react'
 import { Link } from 'react-router-dom'
 
 import { cn } from '@/lib/utils'
+import { v1SemanticRoles as roles } from '@/components/design-system-v1/semantic-roles'
 import {
   ComponentAuditBadge,
   ComponentDeliveryBadge,
@@ -183,7 +184,10 @@ const UnrenderedComponentRow = ({
   <Link
     data-testid={`component-unrendered-${item.id}`}
     to={`/internal/design-system/components/${item.id}`}
-    className="group grid gap-3 p-4 hover:bg-muted/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring md:grid-cols-[minmax(12rem,0.7fr)_minmax(16rem,1fr)_auto] md:items-center"
+    className={cn(
+      'group grid gap-3 p-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring md:grid-cols-[minmax(12rem,0.7fr)_minmax(16rem,1fr)_auto] md:items-center',
+      roles.interaction.contentHover
+    )}
   >
     <div>
       <p className="mb-1 text-[10px] font-medium uppercase tracking-wide text-muted-foreground">

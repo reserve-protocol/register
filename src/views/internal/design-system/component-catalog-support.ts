@@ -864,7 +864,7 @@ export const SUPPORT_COMPONENT_GROUPS: ComponentGroup[] = [
             evidence: [
               '27 imports use Table, 18 DataTable, and 13 legacy Table; at least three table systems coexist.',
               'Overview holdings supplies the identity/allocation-first narrow precedent; the local candidate retains ordinary 16px peers without defining a dense variant.',
-              'Governance proposals retain a rich-record composition. Historical rebalances use ordinary table columns; the separate current-rebalance workspace now trials the full operating lifecycle above history.',
+              'Governance proposals retain a rich-record composition. Current rebalances use navigation-only rows above a separate static historical table. The redesigned current-rebalance workspace is an unfinished, deferred candidate, not a prerequisite for table migration.',
               'Auction browse fixtures retain snapshot-derived CMC20 identities, dates and windows; metrics and current-auction activity are explicitly illustrative. Governance fixtures remain a separate, partially synthetic study. Fixture copy is not a migration source.',
             ],
             decisionPrompts: [
@@ -878,15 +878,20 @@ export const SUPPORT_COMPONENT_GROUPS: ComponentGroup[] = [
               },
             ],
             nextAction:
-              'Review the current-rebalance workspace above the retained historical table. The lab includes roles, weights, simulated launch/receipt/indexing, live bids, repeat rounds and outcomes. Missing data fails closed. Other table families remain provisional; no real transactions, production adoption or universal row API.',
+              'Retain the current table presentations approved for now on September 14. Move visual review to charts. Initial auction-table migration keeps the existing production detail/flow; the redesigned workspace remains unfinished and deferred. Production adapters and universal row APIs are not approved.',
           }
         ),
         outputStatus: 'rendered',
-        designAuthority: 'exploratory',
+        designAuthority: 'current-baseline',
         implementationStatus: 'specimen',
         implementationSource:
           'src/views/internal/design-system/table-family/review.tsx',
         contextSources: [
+          {
+            role: 'accepted-decision',
+            label: 'Current table work approved for now',
+            path: 'docs/wiki/decisions.md#2026-09-14--current-table-work-approved-for-now',
+          },
           {
             role: 'implementation',
             label: 'Bounded table-family candidate',
@@ -954,12 +959,23 @@ export const SUPPORT_COMPONENT_GROUPS: ComponentGroup[] = [
           },
           {
             role: 'implementation',
-            label: 'Current workspace and historical table candidate',
+            label: 'Navigation-only current-rebalance table candidate',
+            path: 'src/views/internal/design-system/auctions-current-table/review.tsx',
+          },
+          {
+            role: 'product-evidence',
+            label: 'Auctions near-term scope and deferred workspace boundary',
+            path: 'docs/plans/design-system-current-rebalance-table.md#near-term-and-deferred-scope',
+          },
+          {
+            role: 'implementation',
+            label: 'Historical table and retained workspace host',
             path: 'src/views/internal/design-system/auctions-browse/history-review.tsx',
           },
           {
             role: 'product-evidence',
-            label: 'Current workspace audit transfer and review boundary',
+            label:
+              'Deferred workspace, audit transfer and unresolved adoption gates',
             path: 'docs/plans/design-system-current-rebalance-workspace.md',
           },
           {
@@ -975,9 +991,9 @@ export const SUPPORT_COMPONENT_GROUPS: ComponentGroup[] = [
         ],
         adoptionStatus: 'none',
         review: {
-          status: 'provisional',
+          status: 'ready',
           scope:
-            'Bounded Portfolio, Holdings, Discover and Earn candidates share cell vocabulary and sorting ownership. Discover adds basket inspection and chart previews. Earn adds governed assets, rate kinds and wallet-dependent pairs; DeFi Yield adds pools, rate breakdowns and separate external destinations. Historical rebalances add outcome comparison and independent provenance links. Current-rebalance workspaces, Governance records, transactions and page-level controls remain separate. No universal Table/Row API or production adoption.',
+            'Current table work is approved for now: Portfolio/withdrawals, Holdings, Discover, Earn/DeFi/owned positions, governance records and the near-term current/history auction tables. Approval is scoped to these lab presentations, not every production state, chart design, global pill geometry or a universal Table/Row API. Initial Auctions migration retains the existing detail/flow. The redesigned workspace is unfinished and deferred; production adoption remains separate.',
           dependencies: [
             { name: 'Entity identity', status: 'canonical' },
             { name: 'Metric value', status: 'canonical' },
@@ -985,9 +1001,14 @@ export const SUPPORT_COMPONENT_GROUPS: ComponentGroup[] = [
               name: 'Lifecycle status pill',
               status: 'canonical',
               detail:
-                'The lifecycle meaning and presentation contract is canonical; its current 28px geometry trial remains under human review, while rich-record and Table/Row anatomy remain provisional.',
+                'The lifecycle meaning is canonical. Current table usage is approved within these compositions; global pill-geometry approval remains separate.',
             },
-            { name: 'Table / row anatomy', status: 'provisional' },
+            {
+              name: 'Table / row anatomy',
+              status: 'retained',
+              detail:
+                'Approved bounded presentations, not a universal row API.',
+            },
           ],
         },
       },
@@ -1036,24 +1057,68 @@ export const SUPPORT_COMPONENT_GROUPS: ComponentGroup[] = [
           ],
         },
       },
-      component(
-        'chart',
-        'Chart',
-        'Visualizes change, comparison, or composition in data.',
-        'Charts need truthful scales, accessible summaries, and consistent interaction.',
-        {
-          priority: 'product-extension',
-          ...mapped,
-          evidence: [
-            'Eight product imports use shared chart helpers; recent Home and Overview performance charts establish a reviewed color direction.',
+      {
+        ...component(
+          'chart',
+          'Chart',
+          'Visualizes change, comparison, or composition in data.',
+          'Charts need truthful scales, accessible summaries, and consistent interaction.',
+          {
+            priority: 'product-extension',
+            ...mapped,
+            evidence: [
+              'Eight product imports use shared chart helpers; recent Home and Overview performance charts establish a reviewed color direction.',
+            ],
+            decisionPrompts: [
+              'Define container anatomy, axis/type, tooltip, legend, time range, loading/empty/error, accessible summary, and performance/categorical color use.',
+            ],
+            nextAction:
+              'Treat performance, allocation, and comparison charts as separate chart patterns sharing foundations.',
+          }
+        ),
+        outputStatus: 'rendered',
+        designAuthority: 'exploratory',
+        implementationStatus: 'specimen',
+        implementationSource:
+          'src/views/internal/design-system/charts/review.tsx',
+        adoptionStatus: 'none',
+        contextSources: [
+          {
+            role: 'implementation',
+            label: 'First time-series visual review',
+            path: 'src/views/internal/design-system/charts/review.tsx',
+          },
+          {
+            role: 'product-evidence',
+            label: 'Chart audit reconciliation and review contract',
+            path: 'docs/plans/design-system-charts-source-reset.md',
+          },
+          {
+            role: 'product-evidence',
+            label: 'Separate engineer-owned chart questions',
+            path: 'docs/plans/design-system-overnight-2026-09-14/chart-engineering.md',
+          },
+        ],
+        review: {
+          status: 'ready',
+          scope:
+            'Source-based chart review: existing Overview and Home renderers, realistic Discover sparkline, and opt-in header inspection compared with the original tooltip. Host framing, typography and identity follow accepted V1 roles; plot geometry and financial inputs are retained. Host insets are not universal chart padding. Generic pressure fixtures are separate. No data, return, sampling or chart-type default changes; engineer review before adopting the optional readout callback.',
+          dependencies: [
+            {
+              name: 'Select, Switch, SegmentedControl, Skeleton',
+              status: 'canonical',
+            },
+            {
+              name: 'Existing Overview / Home renderers and performance palette',
+              status: 'retained',
+            },
+            {
+              name: 'Opt-in header inspection; separately scoped stress fixtures',
+              status: 'provisional',
+            },
           ],
-          decisionPrompts: [
-            'Define container anatomy, axis/type, tooltip, legend, time range, loading/empty/error, accessible summary, and performance/categorical color use.',
-          ],
-          nextAction:
-            'Treat performance, allocation, and comparison charts as separate chart patterns sharing foundations.',
-        }
-      ),
+        },
+      },
       {
         ...component(
           'copy-value',

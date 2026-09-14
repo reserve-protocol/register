@@ -1,0 +1,453 @@
+{
+  "config": {
+    "configFile": "/Users/lill-kire/Code/register/playwright.design-system.config.ts",
+    "rootDir": "/Users/lill-kire/Code/register/e2e/design-system",
+    "forbidOnly": true,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/Users/lill-kire/Code/register/test-results/design-system/artifacts",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "design-system-desktop",
+        "name": "design-system-desktop",
+        "testDir": "/Users/lill-kire/Code/register/e2e/design-system",
+        "testIgnore": [
+          "/(?:source-capture|lab-regressions)\\.spec\\.ts/"
+        ],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 90000
+      },
+      {
+        "outputDir": "/Users/lill-kire/Code/register/test-results/design-system/artifacts",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "design-system-mobile",
+        "name": "design-system-mobile",
+        "testDir": "/Users/lill-kire/Code/register/e2e/design-system",
+        "testIgnore": [
+          "/(?:source-capture|lab-regressions)\\.spec\\.ts/"
+        ],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 90000
+      },
+      {
+        "outputDir": "/Users/lill-kire/Code/register/test-results/design-system/artifacts",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "design-system-phone",
+        "name": "design-system-phone",
+        "testDir": "/Users/lill-kire/Code/register/e2e/design-system",
+        "testIgnore": [
+          "/(?:source-capture|lab-regressions)\\.spec\\.ts/"
+        ],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 90000
+      },
+      {
+        "outputDir": "/Users/lill-kire/Code/register/test-results/design-system/artifacts",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "design-system-review",
+        "name": "design-system-review",
+        "testDir": "/Users/lill-kire/Code/register/e2e/design-system",
+        "testIgnore": [],
+        "testMatch": [
+          "/(?:source-capture|lab-regressions)\\.spec\\.ts/"
+        ],
+        "timeout": 90000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "list",
+        null
+      ],
+      [
+        "json",
+        {
+          "outputFile": "test-results/design-system/report.json"
+        }
+      ],
+      [
+        "html",
+        {
+          "outputFolder": "playwright-report/design-system",
+          "open": "never"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "none",
+    "updateSourceMethod": "patch",
+    "version": "1.59.1",
+    "workers": 1,
+    "webServer": {
+      "command": "pnpm exec vite --host 127.0.0.1 --port 3022 --strictPort",
+      "url": "http://127.0.0.1:3022",
+      "reuseExistingServer": false,
+      "timeout": 120000,
+      "env": {
+        "VITE_E2E": "true",
+        "VITE_WALLETCONNECT_ID": "test-project",
+        "VITE_STAGING_API": "",
+        "VITE_USE_STAGING": "",
+        "VITE_MAINNET_URL": "",
+        "VITE_INFURA": "",
+        "VITE_ALCHEMY": "",
+        "VITE_ANKR": ""
+      }
+    }
+  },
+  "suites": [
+    {
+      "title": "current-rebalance-feedback-lab-regressions.spec.ts",
+      "file": "current-rebalance-feedback-lab-regressions.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "feedback: live chart and bids share alignment at 1400",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "design-system-review",
+              "projectName": "design-system-review",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 14162,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T18:46:12.991Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "feedback-1400-live",
+                      "contentType": "image/png",
+                      "path": "attachments/6d8b70dce442993fed8e85f3b13647294607caae56a2615c5685d47da7966e7d.png"
+                    },
+                    {
+                      "name": "current-source",
+                      "contentType": "application/json",
+                      "path": "attachments/3113b530de5d8b47c2f783bf73aca9a97a0da0f37bf05e646ad507e927cffd78.json"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "cd0076738f02e899977b-49eedcd67ab86586a898",
+          "file": "current-rebalance-feedback-lab-regressions.spec.ts",
+          "line": 75,
+          "column": 3
+        },
+        {
+          "title": "feedback: live chart and bids share alignment at 320",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "design-system-review",
+              "projectName": "design-system-review",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2734,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T18:46:27.266Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "feedback-320-live",
+                      "contentType": "image/png",
+                      "path": "attachments/1c6c65f200cdd6215c16400ff84110fd6aeb52a69cea92bd55d46e6a5f4b0da1.png"
+                    },
+                    {
+                      "name": "current-source",
+                      "contentType": "application/json",
+                      "path": "attachments/3113b530de5d8b47c2f783bf73aca9a97a0da0f37bf05e646ad507e927cffd78.json"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "cd0076738f02e899977b-b6bb13445638b8cd989d",
+          "file": "current-rebalance-feedback-lab-regressions.spec.ts",
+          "line": 75,
+          "column": 3
+        },
+        {
+          "title": "feedback: live preview advances and can pause with no-preference",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "design-system-review",
+              "projectName": "design-system-review",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2425,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T18:46:30.006Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "current-source",
+                      "contentType": "application/json",
+                      "path": "attachments/3113b530de5d8b47c2f783bf73aca9a97a0da0f37bf05e646ad507e927cffd78.json"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "cd0076738f02e899977b-81f65982d918aba9c7da",
+          "file": "current-rebalance-feedback-lab-regressions.spec.ts",
+          "line": 151,
+          "column": 3
+        },
+        {
+          "title": "feedback: live preview advances and can pause with reduce",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "design-system-review",
+              "projectName": "design-system-review",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2370,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T18:46:32.438Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "current-source",
+                      "contentType": "application/json",
+                      "path": "attachments/3113b530de5d8b47c2f783bf73aca9a97a0da0f37bf05e646ad507e927cffd78.json"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "cd0076738f02e899977b-07cf43fc4f3e685ff322",
+          "file": "current-rebalance-feedback-lab-regressions.spec.ts",
+          "line": 151,
+          "column": 3
+        }
+      ]
+    },
+    {
+      "title": "current-rebalance-sections-lab-regressions.spec.ts",
+      "file": "current-rebalance-sections-lab-regressions.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "current rebalance section boundaries dark 1400",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "design-system-review",
+              "projectName": "design-system-review",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3674,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T18:46:34.822Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "sections-dark-1400",
+                      "contentType": "image/png",
+                      "path": "attachments/96ef82e371c067dc53adb07e152273bb45c796720eea2ce2a7aa8b0c4e01af04.png"
+                    },
+                    {
+                      "name": "sections-dark-1400-expanded",
+                      "contentType": "image/png",
+                      "path": "attachments/57295f877beb9bcd194f41a38c0c107a80c6bbcaa38a10c21423e984cc8b73ce.png"
+                    },
+                    {
+                      "name": "sections-dark-1400-progress",
+                      "contentType": "image/png",
+                      "path": "attachments/a331f99e49b4abe7e35a9512314ce8b4cc0ecf67d57764b00c1f3a83b7b61dae.png"
+                    },
+                    {
+                      "name": "sections-dark-1400-live",
+                      "contentType": "image/png",
+                      "path": "attachments/a7d69ffeb39c9c8e04eac2d89cc6d74e82f93f1b78ebb7197a8ce04c72d42aee.png"
+                    },
+                    {
+                      "name": "current-source",
+                      "contentType": "application/json",
+                      "path": "attachments/3113b530de5d8b47c2f783bf73aca9a97a0da0f37bf05e646ad507e927cffd78.json"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "f485faa93d1876771e75-74878331320630aebe39",
+          "file": "current-rebalance-sections-lab-regressions.spec.ts",
+          "line": 11,
+          "column": 5
+        },
+        {
+          "title": "current rebalance section boundaries dark 320",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "design-system-review",
+              "projectName": "design-system-review",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3639,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T18:46:38.502Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "sections-dark-320",
+                      "contentType": "image/png",
+                      "path": "attachments/b16440b23cb73da6e04e4d01a0c4647cbcfdfd1093cbaeab56ef3b034dcc0a5b.png"
+                    },
+                    {
+                      "name": "sections-dark-320-expanded",
+                      "contentType": "image/png",
+                      "path": "attachments/12179c3a2845056b5e342b1ce73675fe8cd2d4419189cf8c3161bb0b618837bb.png"
+                    },
+                    {
+                      "name": "sections-dark-320-progress",
+                      "contentType": "image/png",
+                      "path": "attachments/460abc36ff99425f67b3aa6c4b178f9601ed44dfdaabefae969f095b38b16d50.png"
+                    },
+                    {
+                      "name": "sections-dark-320-live",
+                      "contentType": "image/png",
+                      "path": "attachments/ffcc0766972ab3a2db10c5a5a33678573633b9c98eb25ff121c32bdd776c079f.png"
+                    },
+                    {
+                      "name": "current-source",
+                      "contentType": "application/json",
+                      "path": "attachments/3113b530de5d8b47c2f783bf73aca9a97a0da0f37bf05e646ad507e927cffd78.json"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "f485faa93d1876771e75-31550b694e1325d180f8",
+          "file": "current-rebalance-sections-lab-regressions.spec.ts",
+          "line": 11,
+          "column": 5
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-09-13T18:46:10.248Z",
+    "duration": 32004.809,
+    "expected": 6,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}

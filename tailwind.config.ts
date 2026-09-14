@@ -69,6 +69,7 @@ const config = {
         substrate: {
           subtle: 'var(--substrate-subtle)',
         },
+        'interactive-content-hover': 'var(--interactive-content-hover)',
         surface: {
           'recessed-content': 'var(--surface-recessed-content)',
         },

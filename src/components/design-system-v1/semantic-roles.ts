@@ -30,6 +30,8 @@ export const v1SemanticRoles = {
       'group-focus-visible:ring-2 group-focus-visible:ring-ring group-focus-visible:ring-offset-2 group-focus-visible:ring-offset-card',
   },
   interaction: {
+    contentHover: 'hover:bg-interactive-content-hover',
+    contentGroupHover: 'group-hover:bg-interactive-content-hover',
     subtleHover: 'hover:bg-foreground/5',
     subtleFocus: 'focus:bg-foreground/5',
     subtleHighlight: 'data-[highlighted]:bg-foreground/5',

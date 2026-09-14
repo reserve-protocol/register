@@ -2740,6 +2740,7 @@ msgid "Community Discord"
 msgstr "社区 Discord"
 
 #: src/views/index-dtf/auctions/views/rebalance/components/community-launch-auctions-button.tsx:115
+#: src/views/internal/design-system/auctions-current-table/cells.tsx:81
 msgid "Community launch is not available for this rebalance"
 msgstr "此次再平衡不支持社区发起"
 
@@ -7119,6 +7120,7 @@ msgid "Only Brand Manager"
 msgstr "仅限 Brand Manager"
 
 #: src/views/index-dtf/auctions/views/rebalance/components/community-launch-auctions-button.tsx:117
+#: src/views/internal/design-system/auctions-current-table/cells.tsx:85
 msgid "Only the auction launcher can start auctions"
 msgstr "只有拍卖发起者才能启动拍卖"
 
@@ -8236,6 +8238,20 @@ msgstr "了解更多关于收入分配的信息"
 #: src/views/portfolio-page/components/pending-withdrawals.tsx:222
 msgid "Ready"
 msgstr "就绪"
+
+#: src/views/internal/design-system/auctions-current-table/cells.tsx:51
+msgid "Anyone can start"
+msgstr "任何人都可启动"
+
+#: src/views/internal/design-system/auctions-current-table/cells.tsx:49
+#: src/views/internal/design-system/auctions-current-table/cells.tsx:76
+#: src/views/internal/design-system/auctions-current-table/cells.tsx:119
+msgid "Only launcher can start"
+msgstr "仅发起者可启动"
+
+#: src/views/internal/design-system/auctions-current-table/cells.tsx:61
+msgid "The auction launcher is the account authorized to start auctions during the restricted period."
+msgstr "拍卖发起者是在受限期间获准启动拍卖的账户。"
 
 #: src/views/index-dtf/governance/components/proposal-list-item.tsx:96
 #: src/views/index-dtf/governance/views/proposal/components/proposal-deadline-alert.tsx:117
@@ -13027,3 +13043,218 @@ msgstr "Zapper 错误"
 #: src/views/index-dtf/overview/components/zap-mint/zap-healthcheck.tsx:24
 msgid "Zaps are currently experiencing issues"
 msgstr "Zap 当前出现问题"
+
+#: src/views/internal/design-system/auctions-current/status.tsx
+#: src/views/internal/design-system/auctions-current-table/cells.tsx:54
+msgid "Confirm target weights"
+msgstr "确认目标权重"
+
+#: src/views/internal/design-system/auctions-current/auction-panel.tsx
+msgid "Confirm the target basket before the first auction. You can keep the defaults unchanged."
+msgstr "请在首次拍卖前确认目标篮子。你可以保留默认值。"
+
+#: src/views/internal/design-system/auctions-current/weight-unit-rows.tsx
+msgid "Current → target allocation"
+msgstr "当前 → 目标配置"
+
+#: src/views/internal/design-system/auctions-current/weights-editor.tsx
+msgid "Current units show the holdings per DTF token, not the original proposal. New units start from the rebalance’s on-chain target."
+msgstr "当前单位显示每个 DTF token 对应的持仓，而非原始提案。新单位以再平衡的链上目标为初始值。"
+
+#: src/views/internal/design-system/auctions-current/basket-weights.tsx
+msgid "Saved in this tab for launch. Reloading discards these edits."
+msgstr "已在此标签页保存，供启动拍卖使用。刷新会丢弃这些修改。"
+
+#: src/views/internal/design-system/auctions-current/weights-editor.tsx
+msgid "Saving prepares the target for launch. It does not change holdings or submit a transaction."
+msgstr "保存仅为启动拍卖准备目标，不会更改持仓或提交交易。"
+
+#: src/views/internal/design-system/auctions-current/weight-unit-rows.tsx
+msgid "Starting target"
+msgstr "初始目标"
+
+#: src/views/internal/design-system/auctions-current/weight-unit-rows.tsx
+msgid "Target basket"
+msgstr "目标篮子"
+
+#: src/views/internal/design-system/auctions-current/operation.tsx
+msgid "Available after confirming target weights"
+msgstr "确认目标权重后显示"
+
+#: src/views/internal/design-system/auctions-current-table/table.tsx
+msgid "Rebalance expires in"
+msgstr "再平衡到期剩余"
+
+#: src/views/internal/design-system/governance-proposal-state-review.tsx
+msgid "Constrained proposal column"
+msgstr "窄版提案列"
+
+#: src/views/internal/design-system/governance-proposal-state-fixtures.ts:124
+msgid "Challenge ends in"
+msgstr "质疑期结束倒计时"
+
+#: src/views/internal/design-system/governance-proposal-record.tsx:169
+msgid "Challenge period"
+msgstr "质疑期"
+
+#: src/views/internal/design-system/governance-proposal-state-review.tsx:67
+msgid "Default"
+msgstr "默认"
+
+#: src/views/internal/design-system/governance-proposal-state-review.tsx:76
+msgid "Empty"
+msgstr "空"
+
+#: src/views/internal/design-system/governance-proposal-state-fixtures.ts:176
+msgid "Execution available in"
+msgstr "可执行倒计时"
+
+#: src/views/internal/design-system/governance-proposal-state-review.tsx:73
+msgid "Loading"
+msgstr "加载中"
+
+#: src/views/internal/design-system/governance-proposal-state-review.tsx:57
+msgid "Preview state"
+msgstr "预览状态"
+
+#: src/views/internal/design-system/governance-proposal-record.tsx:149
+msgid "Proposal timeline"
+msgstr "提案时间线"
+
+#: src/views/internal/design-system/governance-proposal-record.tsx:155
+msgid "The proposal passed and is in its required execution delay (timelock). Execution becomes available when this period ends; it does not happen automatically."
+msgstr "提案已通过，目前处于规定的执行等待期（时间锁）。此期限结束后即可执行，但不会自动执行。"
+
+#: src/views/internal/design-system/governance-proposal-record.tsx:163
+msgid "The strip represents lifecycle timing, not voting support."
+msgstr "此进度条表示生命周期的时间进度，而非投票支持率。"
+
+#: src/views/internal/design-system/governance-proposal-record.tsx:171
+msgid "Voting delay → Voting → Execution delay"
+msgstr "投票等待期 → 投票 → 执行等待期"
+
+#: src/views/internal/design-system/governance-proposal-state-fixtures.ts:107
+#: src/views/internal/design-system/governance-proposal-state-fixtures.ts:142
+msgid "Voting ends in"
+msgstr "投票结束倒计时"
+
+#: src/views/internal/design-system/governance-proposal-state-fixtures.ts:88
+msgid "Voting starts in"
+msgstr "投票开始倒计时"
+
+#: src/views/internal/design-system/governance-proposal-record.tsx:149
+#: src/views/internal/design-system/governance-proposal-state-fixtures.ts:172
+msgid "Waiting period"
+msgstr "等待期"
+
+#: src/views/internal/design-system/charts/review.tsx:23
+msgid "Captured history"
+msgstr "已捕获历史"
+
+#: src/views/internal/design-system/charts/review.tsx:118
+msgid "Card"
+msgstr "卡片"
+
+#: src/views/internal/design-system/charts/review.tsx:68
+msgid "Chart review scenario"
+msgstr "图表审查场景"
+
+#: src/views/internal/design-system/charts/review.tsx:112
+msgid "Compact trend"
+msgstr "紧凑趋势"
+
+#: src/views/internal/design-system/charts/review.tsx:56
+msgid "Compare the same supplied history in three sizes. No return calculation or data-policy changes."
+msgstr "以三种尺寸比较同一份历史数据。不更改收益计算或数据策略。"
+
+#: src/views/internal/design-system/charts/review.tsx:92
+msgid "Constrained review"
+msgstr "受限宽度审查"
+
+#: src/views/internal/design-system/charts/review.tsx:158
+msgid "Daily · 31 samples"
+msgstr "每日 · 31个样本"
+
+#: src/views/internal/design-system/charts/review.tsx:30
+msgid "Delayed · simulated"
+msgstr "延迟 · 模拟"
+
+#: src/views/internal/design-system/charts/review.tsx:145
+msgid "Density comparison · same captured month"
+msgstr "密度比较 · 同一捕获月份"
+
+#: src/views/internal/design-system/charts/review.tsx:28
+msgid "Empty · simulated"
+msgstr "空数据 · 模拟"
+
+#: src/views/internal/design-system/charts/review.tsx:26
+msgid "Estimated segment · simulated"
+msgstr "估算区段 · 模拟"
+
+#: src/views/internal/design-system/charts/review.tsx:150
+msgid "Every supplied point is retained. This is not a sampling recommendation."
+msgstr "保留每个提供的数据点。这不是采样建议。"
+
+#: src/views/internal/design-system/charts/review.tsx:24
+msgid "Flat · simulated"
+msgstr "持平 · 模拟"
+
+#: src/views/internal/design-system/charts/review.tsx:125
+msgid "Full chart"
+msgstr "完整图表"
+
+#: src/views/internal/design-system/charts/review.tsx:31
+msgid "Gap · simulated"
+msgstr "数据缺口 · 模拟"
+
+#: src/views/internal/design-system/charts/review.tsx:164
+msgid "Hourly · 721 samples"
+msgstr "每小时 · 721个样本"
+
+#: src/views/internal/design-system/charts/review.tsx:100
+msgid "Lab-simulated state, not an actual LCAP event."
+msgstr "实验室模拟状态，并非真实的LCAP事件。"
+
+#: src/views/internal/design-system/charts/review.tsx:101
+msgid "LCAP · captured September 13, 2026. Review values, not live prices."
+msgstr "LCAP · 捕获于2026年9月13日。仅供审查，并非实时价格。"
+
+#: src/views/internal/design-system/charts/review.tsx:27
+msgid "Loading · simulated"
+msgstr "加载中 · 模拟"
+
+#: src/views/internal/design-system/charts/review.tsx:34
+msgid "Long value · simulated"
+msgstr "长数值 · 模拟"
+
+#: src/views/internal/design-system/charts/review.tsx:32
+msgid "One point · simulated"
+msgstr "单个数据点 · 模拟"
+
+#: src/views/internal/design-system/charts/review.tsx:177
+msgid "Review boundary and what comes next"
+msgstr "审查范围与后续步骤"
+
+#: src/views/internal/design-system/charts/review.tsx:180
+msgid "Review the line, fill, labels, inspection and narrow layout. Candles, monthly bars and composition remain separate patterns. No production chart type is being removed."
+msgstr "审查线条、填充、标签、数据查看和窄屏布局。蜡烛图、月度柱状图和构成图仍为独立模式。不移除任何生产环境图表类型。"
+
+#: src/views/internal/design-system/charts/review.tsx:187
+msgid "Source, return basis and freshness rules remain engineer-owned. No shared palette or financial calculation has changed."
+msgstr "数据来源、收益基准和时效规则仍由工程师负责。未更改共享调色板或财务计算。"
+
+#: src/views/internal/design-system/charts/review.tsx:53
+msgid "Time-series charts"
+msgstr "时间序列图表"
+
+#: src/views/internal/design-system/charts/review.tsx:33
+msgid "Two points · simulated"
+msgstr "两个数据点 · 模拟"
+
+#: src/views/internal/design-system/charts/review.tsx:29
+msgid "Unavailable · simulated"
+msgstr "不可用 · 模拟"
+
+#: src/views/internal/design-system/charts/review.tsx:25
+msgid "Zero · simulated"
+msgstr "零值 · 模拟"

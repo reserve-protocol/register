@@ -1,0 +1,778 @@
+{
+  "config": {
+    "configFile": "/Users/lill-kire/Code/register/playwright.design-system.config.ts",
+    "rootDir": "/Users/lill-kire/Code/register/e2e/design-system",
+    "forbidOnly": true,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/Users/lill-kire/Code/register/test-results/design-system/artifacts",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "design-system-desktop",
+        "name": "design-system-desktop",
+        "testDir": "/Users/lill-kire/Code/register/e2e/design-system",
+        "testIgnore": [
+          "/(?:source-capture|lab-regressions)\\.spec\\.ts/"
+        ],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 90000
+      },
+      {
+        "outputDir": "/Users/lill-kire/Code/register/test-results/design-system/artifacts",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "design-system-mobile",
+        "name": "design-system-mobile",
+        "testDir": "/Users/lill-kire/Code/register/e2e/design-system",
+        "testIgnore": [
+          "/(?:source-capture|lab-regressions)\\.spec\\.ts/"
+        ],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 90000
+      },
+      {
+        "outputDir": "/Users/lill-kire/Code/register/test-results/design-system/artifacts",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "design-system-phone",
+        "name": "design-system-phone",
+        "testDir": "/Users/lill-kire/Code/register/e2e/design-system",
+        "testIgnore": [
+          "/(?:source-capture|lab-regressions)\\.spec\\.ts/"
+        ],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 90000
+      },
+      {
+        "outputDir": "/Users/lill-kire/Code/register/test-results/design-system/artifacts",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "design-system-review",
+        "name": "design-system-review",
+        "testDir": "/Users/lill-kire/Code/register/e2e/design-system",
+        "testIgnore": [],
+        "testMatch": [
+          "/(?:source-capture|lab-regressions)\\.spec\\.ts/"
+        ],
+        "timeout": 90000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "list",
+        null
+      ],
+      [
+        "json",
+        {
+          "outputFile": "test-results/design-system/report.json"
+        }
+      ],
+      [
+        "html",
+        {
+          "outputFolder": "playwright-report/design-system",
+          "open": "never"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "none",
+    "updateSourceMethod": "patch",
+    "version": "1.59.1",
+    "workers": 1,
+    "webServer": {
+      "command": "pnpm exec vite --host 127.0.0.1 --port 3022 --strictPort",
+      "url": "http://127.0.0.1:3022",
+      "reuseExistingServer": false,
+      "timeout": 120000,
+      "env": {
+        "VITE_E2E": "true",
+        "VITE_WALLETCONNECT_ID": "test-project",
+        "VITE_STAGING_API": "",
+        "VITE_USE_STAGING": "",
+        "VITE_MAINNET_URL": "",
+        "VITE_INFURA": "",
+        "VITE_ALCHEMY": "",
+        "VITE_ANKR": ""
+      }
+    }
+  },
+  "suites": [
+    {
+      "title": "current-rebalance-editor-lab-regressions.spec.ts",
+      "file": "current-rebalance-editor-lab-regressions.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "eight-token hybrid editor preserves a real draft at 320",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "design-system-review",
+              "projectName": "design-system-review",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 17767,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T21:50:44.417Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "weights-320-top",
+                      "contentType": "image/png",
+                      "path": "../../design-system-review-checkpoint-evidence-2026-09-13/attachments/92eda131cfb73b7fee3612012d03b27a7c15aa91525f8c6a20d930ad140c08b3.png"
+                    },
+                    {
+                      "name": "weights-320-limits-closed",
+                      "contentType": "image/png",
+                      "path": "../../design-system-review-checkpoint-evidence-2026-09-13/attachments/5f903f6cc765186142019446708cf6af4b13e3d8da96ad2efa9667d3c0dcf6cf.png"
+                    },
+                    {
+                      "name": "weights-320-limits-open",
+                      "contentType": "image/png",
+                      "path": "../../design-system-review-checkpoint-evidence-2026-09-13/attachments/beb1c868bff8df6971e04c26c8a9e6521fc7a7e95285df9d4b28457877916ae9.png"
+                    },
+                    {
+                      "name": "weights-320-limits",
+                      "contentType": "image/png",
+                      "path": "../../design-system-review-checkpoint-evidence-2026-09-13/attachments/e1496351a8621f3f748ae51f82836ee2d97a1f6e9a4c6e10ddee51bbc74e6b0f.png"
+                    },
+                    {
+                      "name": "current-source",
+                      "contentType": "application/json",
+                      "path": "../../design-system-review-checkpoint-evidence-2026-09-13/attachments/5c3a651341a4d5e2ac7cef50c2e42609a8063dfbd49b8ace37b52ced02c322f6.json"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "e857ad0778dddd310b90-2be82c4c35a4603445e9",
+          "file": "current-rebalance-editor-lab-regressions.spec.ts",
+          "line": 17,
+          "column": 3
+        },
+        {
+          "title": "eight-token hybrid editor preserves a real draft at 1400",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "design-system-review",
+              "projectName": "design-system-review",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 6755,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T21:51:02.289Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "weights-1400-top",
+                      "contentType": "image/png",
+                      "path": "../../design-system-review-checkpoint-evidence-2026-09-13/attachments/a3d991b2e4d106f09acab11727d78382f64c3998549fc3fdecfbd73290533a25.png"
+                    },
+                    {
+                      "name": "weights-1400-limits-closed",
+                      "contentType": "image/png",
+                      "path": "../../design-system-review-checkpoint-evidence-2026-09-13/attachments/07ffe34dea0eb7c48b58385c8fc14957529c6372385e855292f5f6a5b8e51d1d.png"
+                    },
+                    {
+                      "name": "weights-1400-limits-open",
+                      "contentType": "image/png",
+                      "path": "../../design-system-review-checkpoint-evidence-2026-09-13/attachments/0b4b1bba369ea29fb5b89f665d4432960ed5aa504dda350f23f8dfdcb142936e.png"
+                    },
+                    {
+                      "name": "weights-1400-limits",
+                      "contentType": "image/png",
+                      "path": "../../design-system-review-checkpoint-evidence-2026-09-13/attachments/5129cfd7cfff414ebcebfc8aa3ea254dc1cc2623514ffb5a9fcb8895ca15e233.png"
+                    },
+                    {
+                      "name": "current-source",
+                      "contentType": "application/json",
+                      "path": "../../design-system-review-checkpoint-evidence-2026-09-13/attachments/5c3a651341a4d5e2ac7cef50c2e42609a8063dfbd49b8ace37b52ced02c322f6.json"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "e857ad0778dddd310b90-e7de720031f1d34e92b5",
+          "file": "current-rebalance-editor-lab-regressions.spec.ts",
+          "line": 17,
+          "column": 3
+        },
+        {
+          "title": "CSV validation is atomic and the template preserves all eight identities",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "design-system-review",
+              "projectName": "design-system-review",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2980,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T21:51:09.050Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "current-source",
+                      "contentType": "application/json",
+                      "path": "../../design-system-review-checkpoint-evidence-2026-09-13/attachments/5c3a651341a4d5e2ac7cef50c2e42609a8063dfbd49b8ace37b52ced02c322f6.json"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "e857ad0778dddd310b90-57ff8d2301d6d6e07e5f",
+          "file": "current-rebalance-editor-lab-regressions.spec.ts",
+          "line": 107,
+          "column": 1
+        },
+        {
+          "title": "two current records have independent drafts and operations, and route selection survives reload",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "design-system-review",
+              "projectName": "design-system-review",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 8500,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T21:51:12.037Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "current-source",
+                      "contentType": "application/json",
+                      "path": "../../design-system-review-checkpoint-evidence-2026-09-13/attachments/5c3a651341a4d5e2ac7cef50c2e42609a8063dfbd49b8ace37b52ced02c322f6.json"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "e857ad0778dddd310b90-e74549eb709aecb22cb5",
+          "file": "current-rebalance-editor-lab-regressions.spec.ts",
+          "line": 146,
+          "column": 1
+        },
+        {
+          "title": "confirming a guarded browser Back resets the draft and the mounted workspace",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "design-system-review",
+              "projectName": "design-system-review",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3343,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T21:51:20.543Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "current-source",
+                      "contentType": "application/json",
+                      "path": "../../design-system-review-checkpoint-evidence-2026-09-13/attachments/5c3a651341a4d5e2ac7cef50c2e42609a8063dfbd49b8ace37b52ced02c322f6.json"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "e857ad0778dddd310b90-af7ebf4ad5a740567e54",
+          "file": "current-rebalance-editor-lab-regressions.spec.ts",
+          "line": 177,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "current-rebalance-weights-clarity-lab-regressions.spec.ts",
+      "file": "current-rebalance-weights-clarity-lab-regressions.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "current holdings and target remain distinct at 1400 light",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "design-system-review",
+              "projectName": "design-system-review",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 5140,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T21:51:23.900Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "clarity-1400-required",
+                      "contentType": "image/png",
+                      "path": "../../design-system-review-checkpoint-evidence-2026-09-13/attachments/a6c456486ff1619f0ce398c6061c144e5e42b8437e3c7f788c3ab2faf187bbb5.png"
+                    },
+                    {
+                      "name": "clarity-1400-editor",
+                      "contentType": "image/png",
+                      "path": "../../design-system-review-checkpoint-evidence-2026-09-13/attachments/a3d991b2e4d106f09acab11727d78382f64c3998549fc3fdecfbd73290533a25.png"
+                    },
+                    {
+                      "name": "clarity-1400-save-boundary",
+                      "contentType": "image/png",
+                      "path": "../../design-system-review-checkpoint-evidence-2026-09-13/attachments/4d3f95aacc8516fb3cee2b3f7a7c9ca1f547358637622c336558b64b13845d5c.png"
+                    },
+                    {
+                      "name": "clarity-1400-saved",
+                      "contentType": "image/png",
+                      "path": "../../design-system-review-checkpoint-evidence-2026-09-13/attachments/9f6c536df597d2224d58a33a2bf4cf7c3ba97010232b09d65de1c6ae8cd03fff.png"
+                    },
+                    {
+                      "name": "current-source",
+                      "contentType": "application/json",
+                      "path": "../../design-system-review-checkpoint-evidence-2026-09-13/attachments/5c3a651341a4d5e2ac7cef50c2e42609a8063dfbd49b8ace37b52ced02c322f6.json"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "83c27859edeaf4c1b7f7-2074fb4bb5c6dce3a1e6",
+          "file": "current-rebalance-weights-clarity-lab-regressions.spec.ts",
+          "line": 14,
+          "column": 3
+        },
+        {
+          "title": "current holdings and target remain distinct at 900 light",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "design-system-review",
+              "projectName": "design-system-review",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 5199,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T21:51:29.048Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "clarity-900-required",
+                      "contentType": "image/png",
+                      "path": "../../design-system-review-checkpoint-evidence-2026-09-13/attachments/36c46d0df008b48ccccff30811f3288d2081065ec3aa97e458e88d1ba2d95b7b.png"
+                    },
+                    {
+                      "name": "clarity-900-editor",
+                      "contentType": "image/png",
+                      "path": "../../design-system-review-checkpoint-evidence-2026-09-13/attachments/51b48922f41744f03ef569a26cf7388b60de1485a277295d60cfd0707be3a8af.png"
+                    },
+                    {
+                      "name": "clarity-900-save-boundary",
+                      "contentType": "image/png",
+                      "path": "../../design-system-review-checkpoint-evidence-2026-09-13/attachments/9b9626cc9690def0e85eebaeefadb36989430b2fd0cbc57c5c80976b60bc66f3.png"
+                    },
+                    {
+                      "name": "clarity-900-saved",
+                      "contentType": "image/png",
+                      "path": "../../design-system-review-checkpoint-evidence-2026-09-13/attachments/a25b13f65671728666a5fc2505cdc728fbf0cc05b228605dd056c804ed726782.png"
+                    },
+                    {
+                      "name": "current-source",
+                      "contentType": "application/json",
+                      "path": "../../design-system-review-checkpoint-evidence-2026-09-13/attachments/5c3a651341a4d5e2ac7cef50c2e42609a8063dfbd49b8ace37b52ced02c322f6.json"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "83c27859edeaf4c1b7f7-6da6e83280be200d0242",
+          "file": "current-rebalance-weights-clarity-lab-regressions.spec.ts",
+          "line": 14,
+          "column": 3
+        },
+        {
+          "title": "current holdings and target remain distinct at 390 dark",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "design-system-review",
+              "projectName": "design-system-review",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 5028,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T21:51:34.253Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "clarity-390-required",
+                      "contentType": "image/png",
+                      "path": "../../design-system-review-checkpoint-evidence-2026-09-13/attachments/d3cf46c611ac1f140905bf2501eb656fb31d99b43bd35e6ef181c17329e83a8c.png"
+                    },
+                    {
+                      "name": "clarity-390-editor",
+                      "contentType": "image/png",
+                      "path": "../../design-system-review-checkpoint-evidence-2026-09-13/attachments/2b9641403fde9ee1ece33c68feecd5682ef922a22d5f6e516c412e32192afbc1.png"
+                    },
+                    {
+                      "name": "clarity-390-save-boundary",
+                      "contentType": "image/png",
+                      "path": "../../design-system-review-checkpoint-evidence-2026-09-13/attachments/5dd59d5a537c4eabb2e7b7f9a7dad5d8f3244f4885977478d046b598fb8f4af8.png"
+                    },
+                    {
+                      "name": "clarity-390-saved",
+                      "contentType": "image/png",
+                      "path": "../../design-system-review-checkpoint-evidence-2026-09-13/attachments/ca2c598efadc2952f3328a9efe3f71e581b9fbaa253a05c360f74bf973ac842a.png"
+                    },
+                    {
+                      "name": "current-source",
+                      "contentType": "application/json",
+                      "path": "../../design-system-review-checkpoint-evidence-2026-09-13/attachments/5c3a651341a4d5e2ac7cef50c2e42609a8063dfbd49b8ace37b52ced02c322f6.json"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "83c27859edeaf4c1b7f7-043830074a07e41e99e7",
+          "file": "current-rebalance-weights-clarity-lab-regressions.spec.ts",
+          "line": 14,
+          "column": 3
+        },
+        {
+          "title": "current holdings and target remain distinct at 320 light",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "design-system-review",
+              "projectName": "design-system-review",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 5196,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T21:51:39.286Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "clarity-320-required",
+                      "contentType": "image/png",
+                      "path": "../../design-system-review-checkpoint-evidence-2026-09-13/attachments/63623c853e1597a0596baf82099d1d6efe3f1c8e8dc22db242928dded9f5d06b.png"
+                    },
+                    {
+                      "name": "clarity-320-editor",
+                      "contentType": "image/png",
+                      "path": "../../design-system-review-checkpoint-evidence-2026-09-13/attachments/e9db8727a0fbb7268809ae504a2cb2daa72abfd6217aa30a8c8a95b359f80d20.png"
+                    },
+                    {
+                      "name": "clarity-320-save-boundary",
+                      "contentType": "image/png",
+                      "path": "../../design-system-review-checkpoint-evidence-2026-09-13/attachments/6c4ef5e10c2d4c9fed113852a8ecd386a194bc94be5ab6a97340f54017803ce6.png"
+                    },
+                    {
+                      "name": "clarity-320-saved",
+                      "contentType": "image/png",
+                      "path": "../../design-system-review-checkpoint-evidence-2026-09-13/attachments/415379043812a22dc91d1bf8c26d7cdba18fa14e28c922af69bbd9055b25d735.png"
+                    },
+                    {
+                      "name": "current-source",
+                      "contentType": "application/json",
+                      "path": "../../design-system-review-checkpoint-evidence-2026-09-13/attachments/5c3a651341a4d5e2ac7cef50c2e42609a8063dfbd49b8ace37b52ced02c322f6.json"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "83c27859edeaf4c1b7f7-9da8e4277ec7ca3fdf4d",
+          "file": "current-rebalance-weights-clarity-lab-regressions.spec.ts",
+          "line": 14,
+          "column": 3
+        },
+        {
+          "title": "weight comparison copy fits at 320 in es",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "design-system-review",
+              "projectName": "design-system-review",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2501,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T21:51:44.489Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "clarity-320-es",
+                      "contentType": "image/png",
+                      "path": "../../design-system-review-checkpoint-evidence-2026-09-13/attachments/81e31f35b88a220b43076029d33cb20c4a3618a565fab66faeda51f95f276052.png"
+                    },
+                    {
+                      "name": "current-source",
+                      "contentType": "application/json",
+                      "path": "../../design-system-review-checkpoint-evidence-2026-09-13/attachments/5c3a651341a4d5e2ac7cef50c2e42609a8063dfbd49b8ace37b52ced02c322f6.json"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "83c27859edeaf4c1b7f7-9ebf91803fab501ef72a",
+          "file": "current-rebalance-weights-clarity-lab-regressions.spec.ts",
+          "line": 86,
+          "column": 3
+        },
+        {
+          "title": "weight comparison copy fits at 320 in ko",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "design-system-review",
+              "projectName": "design-system-review",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2537,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T21:51:46.995Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "clarity-320-ko",
+                      "contentType": "image/png",
+                      "path": "../../design-system-review-checkpoint-evidence-2026-09-13/attachments/caafb17a4bd793730d141e55d8e7c89626fe289ac130b576581ff261c47ececb.png"
+                    },
+                    {
+                      "name": "current-source",
+                      "contentType": "application/json",
+                      "path": "../../design-system-review-checkpoint-evidence-2026-09-13/attachments/5c3a651341a4d5e2ac7cef50c2e42609a8063dfbd49b8ace37b52ced02c322f6.json"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "83c27859edeaf4c1b7f7-95a7f40aa269cba7c197",
+          "file": "current-rebalance-weights-clarity-lab-regressions.spec.ts",
+          "line": 86,
+          "column": 3
+        },
+        {
+          "title": "weight comparison copy fits at 320 in zh",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "design-system-review",
+              "projectName": "design-system-review",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2511,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T21:51:49.538Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "clarity-320-zh",
+                      "contentType": "image/png",
+                      "path": "../../design-system-review-checkpoint-evidence-2026-09-13/attachments/0302780937f0f67a6a2d85d4a485df63b805f733a2fecbf80009ff5a09846431.png"
+                    },
+                    {
+                      "name": "current-source",
+                      "contentType": "application/json",
+                      "path": "../../design-system-review-checkpoint-evidence-2026-09-13/attachments/5c3a651341a4d5e2ac7cef50c2e42609a8063dfbd49b8ace37b52ced02c322f6.json"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "83c27859edeaf4c1b7f7-e013dbd93e0e901a8604",
+          "file": "current-rebalance-weights-clarity-lab-regressions.spec.ts",
+          "line": 86,
+          "column": 3
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-09-13T21:50:42.430Z",
+    "duration": 69713.588,
+    "expected": 12,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}

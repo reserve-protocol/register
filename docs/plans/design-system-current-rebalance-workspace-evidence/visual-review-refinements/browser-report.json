@@ -1,0 +1,4375 @@
+{
+  "config": {
+    "configFile": "/Users/lill-kire/Code/register/playwright.design-system.config.ts",
+    "rootDir": "/Users/lill-kire/Code/register/e2e/design-system",
+    "forbidOnly": true,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/Users/lill-kire/Code/register/test-results/design-system/artifacts",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "design-system-desktop",
+        "name": "design-system-desktop",
+        "testDir": "/Users/lill-kire/Code/register/e2e/design-system",
+        "testIgnore": [
+          "/(?:source-capture|lab-regressions)\\.spec\\.ts/"
+        ],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 90000
+      },
+      {
+        "outputDir": "/Users/lill-kire/Code/register/test-results/design-system/artifacts",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "design-system-mobile",
+        "name": "design-system-mobile",
+        "testDir": "/Users/lill-kire/Code/register/e2e/design-system",
+        "testIgnore": [
+          "/(?:source-capture|lab-regressions)\\.spec\\.ts/"
+        ],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 90000
+      },
+      {
+        "outputDir": "/Users/lill-kire/Code/register/test-results/design-system/artifacts",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "design-system-phone",
+        "name": "design-system-phone",
+        "testDir": "/Users/lill-kire/Code/register/e2e/design-system",
+        "testIgnore": [
+          "/(?:source-capture|lab-regressions)\\.spec\\.ts/"
+        ],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 90000
+      },
+      {
+        "outputDir": "/Users/lill-kire/Code/register/test-results/design-system/artifacts",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "design-system-review",
+        "name": "design-system-review",
+        "testDir": "/Users/lill-kire/Code/register/e2e/design-system",
+        "testIgnore": [],
+        "testMatch": [
+          "/(?:source-capture|lab-regressions)\\.spec\\.ts/"
+        ],
+        "timeout": 90000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "list",
+        null
+      ],
+      [
+        "json",
+        {
+          "outputFile": "test-results/design-system/report.json"
+        }
+      ],
+      [
+        "html",
+        {
+          "outputFolder": "playwright-report/design-system",
+          "open": "never"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "none",
+    "updateSourceMethod": "patch",
+    "version": "1.59.1",
+    "workers": 1,
+    "webServer": {
+      "command": "pnpm exec vite --host 127.0.0.1 --port 3022 --strictPort",
+      "url": "http://127.0.0.1:3022",
+      "reuseExistingServer": false,
+      "timeout": 120000,
+      "env": {
+        "VITE_E2E": "true",
+        "VITE_WALLETCONNECT_ID": "test-project",
+        "VITE_STAGING_API": "",
+        "VITE_USE_STAGING": "",
+        "VITE_MAINNET_URL": "",
+        "VITE_INFURA": "",
+        "VITE_ALCHEMY": "",
+        "VITE_ANKR": ""
+      }
+    }
+  },
+  "suites": [
+    {
+      "title": "auctions-history-lab-regressions.spec.ts",
+      "file": "auctions-history-lab-regressions.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "auction history table light 390",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "design-system-review",
+              "projectName": "design-system-review",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 16811,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T17:16:23.756Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "history-light-390-default",
+                      "contentType": "image/png",
+                      "path": "attachments/8c084c702b1f36cb9f97f8059ffc954af12a026a48a3e32d6bfd68b10ac8548f.png"
+                    },
+                    {
+                      "name": "history-light-390-help-accuracy",
+                      "contentType": "image/png",
+                      "path": "attachments/d28166441db1aa4f819509e395174e60b64a74565d7f917871691d77f77d7570.png"
+                    },
+                    {
+                      "name": "history-light-390-help-navChange",
+                      "contentType": "image/png",
+                      "path": "attachments/aceb7dd40b67ccdecdb8f62bacd9c7d030f5d7da4ac92490f442532f7a77eacb.png"
+                    },
+                    {
+                      "name": "history-light-390-loading",
+                      "contentType": "image/png",
+                      "path": "attachments/17d84e98235a3eaaac51ec34631112b8b2912d9956a8ba480d2e6e483620a3ab.png"
+                    },
+                    {
+                      "name": "history-light-390-metrics-loading",
+                      "contentType": "image/png",
+                      "path": "attachments/bc53fa9fe60fec17d28ae988dfc90299e5e4816552593d40a8dc38a969aaf7bc.png"
+                    },
+                    {
+                      "name": "history-light-390-expired",
+                      "contentType": "image/png",
+                      "path": "attachments/8c084c702b1f36cb9f97f8059ffc954af12a026a48a3e32d6bfd68b10ac8548f.png"
+                    },
+                    {
+                      "name": "history-light-390-unavailable-long-title",
+                      "contentType": "image/png",
+                      "path": "attachments/e2407be53dfb6acfb10adedf684922343389e9114bf9c3ed2a1bcdb8cffcc042.png"
+                    },
+                    {
+                      "name": "public-source-digest",
+                      "contentType": "text/plain",
+                      "path": "attachments/85f85d3d4569c18f52922d7ddfd11742b38a38d302b1dbebe82e2e45c5f234bc.txt"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "f80d9708086e6957e706-d9eacd7d5ca3539fc8b3",
+          "file": "auctions-history-lab-regressions.spec.ts",
+          "line": 10,
+          "column": 5
+        },
+        {
+          "title": "auction history table light 1400",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "design-system-review",
+              "projectName": "design-system-review",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 5523,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T17:16:40.681Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "history-light-1400-default",
+                      "contentType": "image/png",
+                      "path": "attachments/9ed49528004574a77cf1c5e68fda525d1b54ab48404eb2a06c8f295286d5fa79.png"
+                    },
+                    {
+                      "name": "history-light-1400-help-accuracy",
+                      "contentType": "image/png",
+                      "path": "attachments/d8bc9278d357824762cb4f52c2f16e98a65e6b266178f0ef165135e516644c05.png"
+                    },
+                    {
+                      "name": "history-light-1400-help-navChange",
+                      "contentType": "image/png",
+                      "path": "attachments/f2752f57784aed5147b6ed1950f292c8bb535e051540f85bdf931742f941195a.png"
+                    },
+                    {
+                      "name": "history-light-1400-loading",
+                      "contentType": "image/png",
+                      "path": "attachments/345f020e9a17620f41367d9517c61f20662f0664663f2020243a4c10fff99a36.png"
+                    },
+                    {
+                      "name": "history-light-1400-metrics-loading",
+                      "contentType": "image/png",
+                      "path": "attachments/60be7d16842dfbb11a6b9e9442b93a767ef687df39c7499a6ecfce266a18bd06.png"
+                    },
+                    {
+                      "name": "history-light-1400-expired",
+                      "contentType": "image/png",
+                      "path": "attachments/727f42df771b62fb006db8b01222493683d0644ca5e60dd8cd1d91e8e0414ffb.png"
+                    },
+                    {
+                      "name": "history-light-1400-unavailable-long-title",
+                      "contentType": "image/png",
+                      "path": "attachments/49d6812602db30a9f055c9d8ee6fe4027c98b4b8922442ada47430fb8dcdf3de.png"
+                    },
+                    {
+                      "name": "public-source-digest",
+                      "contentType": "text/plain",
+                      "path": "attachments/85f85d3d4569c18f52922d7ddfd11742b38a38d302b1dbebe82e2e45c5f234bc.txt"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "f80d9708086e6957e706-9121f3be1d48852060c5",
+          "file": "auctions-history-lab-regressions.spec.ts",
+          "line": 10,
+          "column": 5
+        },
+        {
+          "title": "auction history table dark 390",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "design-system-review",
+              "projectName": "design-system-review",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 5364,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T17:16:46.210Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "history-dark-390-default",
+                      "contentType": "image/png",
+                      "path": "attachments/87f711957c3945f2c184bb648cb3b0be008e921ef1a265883fb7c425cd685b15.png"
+                    },
+                    {
+                      "name": "history-dark-390-help-accuracy",
+                      "contentType": "image/png",
+                      "path": "attachments/f298a954faf02c183e4582bba0592cc9efbb3401169df5d9f3a58d96b7feac1c.png"
+                    },
+                    {
+                      "name": "history-dark-390-help-navChange",
+                      "contentType": "image/png",
+                      "path": "attachments/827a8a1bb8e895d36fd1bac0173c6d43b656aad521468e7eaa1b87e0382f59ab.png"
+                    },
+                    {
+                      "name": "history-dark-390-loading",
+                      "contentType": "image/png",
+                      "path": "attachments/6a2bf23d9138985a8a44a0b21102613ff5aeed136636215f810eb317d82d4917.png"
+                    },
+                    {
+                      "name": "history-dark-390-metrics-loading",
+                      "contentType": "image/png",
+                      "path": "attachments/6594c744f32c9b236813f5637d0b89cd7cb826e084487b3c235333b3116d6071.png"
+                    },
+                    {
+                      "name": "history-dark-390-expired",
+                      "contentType": "image/png",
+                      "path": "attachments/87f711957c3945f2c184bb648cb3b0be008e921ef1a265883fb7c425cd685b15.png"
+                    },
+                    {
+                      "name": "history-dark-390-unavailable-long-title",
+                      "contentType": "image/png",
+                      "path": "attachments/db8579853c871943d5ac74b0519f5e481b1637480e707fd16d73e14da367e2cb.png"
+                    },
+                    {
+                      "name": "public-source-digest",
+                      "contentType": "text/plain",
+                      "path": "attachments/85f85d3d4569c18f52922d7ddfd11742b38a38d302b1dbebe82e2e45c5f234bc.txt"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "f80d9708086e6957e706-bf082403af48262e0a52",
+          "file": "auctions-history-lab-regressions.spec.ts",
+          "line": 10,
+          "column": 5
+        },
+        {
+          "title": "auction history table dark 1400",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "design-system-review",
+              "projectName": "design-system-review",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 5033,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T17:16:51.579Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "history-dark-1400-default",
+                      "contentType": "image/png",
+                      "path": "attachments/aa139281377b91d82e73b5c628c4118a6cea9f360226ad472926e2358bc254ec.png"
+                    },
+                    {
+                      "name": "history-dark-1400-help-accuracy",
+                      "contentType": "image/png",
+                      "path": "attachments/7657799342086742de4c9bfca1b5b9ee26d25a6765d2c7464b68206dab836649.png"
+                    },
+                    {
+                      "name": "history-dark-1400-help-navChange",
+                      "contentType": "image/png",
+                      "path": "attachments/25520d9e4bd60eca3338c49cec0e8be97703a64296cbe0fdd6fe273ca225cf6e.png"
+                    },
+                    {
+                      "name": "history-dark-1400-loading",
+                      "contentType": "image/png",
+                      "path": "attachments/115ad63885840cf4e7ed672dc3122f8c5f1c6728dbcc78c57559f288e1815664.png"
+                    },
+                    {
+                      "name": "history-dark-1400-metrics-loading",
+                      "contentType": "image/png",
+                      "path": "attachments/971dd8b19b20448d68f259632fa95892f59075bdb299aa8baf5245d42e12681c.png"
+                    },
+                    {
+                      "name": "history-dark-1400-expired",
+                      "contentType": "image/png",
+                      "path": "attachments/be69c16c46177970780a91f7d0202afc46f44785b04b15409f08ef57a2a6604c.png"
+                    },
+                    {
+                      "name": "history-dark-1400-unavailable-long-title",
+                      "contentType": "image/png",
+                      "path": "attachments/5e94adb332ffc98073234a29100306af207b7a2a071eb648f4058e3068c73497.png"
+                    },
+                    {
+                      "name": "public-source-digest",
+                      "contentType": "text/plain",
+                      "path": "attachments/85f85d3d4569c18f52922d7ddfd11742b38a38d302b1dbebe82e2e45c5f234bc.txt"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "f80d9708086e6957e706-5f5fda2121216a147d5b",
+          "file": "auctions-history-lab-regressions.spec.ts",
+          "line": 10,
+          "column": 5
+        },
+        {
+          "title": "auction history static rows, provenance links and projection boundary",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "design-system-review",
+              "projectName": "design-system-review",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 4244,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T17:16:56.617Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "history-boundary-895",
+                      "contentType": "image/png",
+                      "path": "attachments/8adf2a21e1dcf5c959c2b7590c17e5dcb7f0114fac39d6d3897e8180794a71df.png"
+                    },
+                    {
+                      "name": "history-boundary-896",
+                      "contentType": "image/png",
+                      "path": "attachments/d64c6283a3b68cf806e2863a1ec65f5699152245aff8343051606d99b9d0d877.png"
+                    },
+                    {
+                      "name": "history-boundary-897",
+                      "contentType": "image/png",
+                      "path": "attachments/03a32609134556860f0330d32318b891a05631acd330cf33d7298371f23692be.png"
+                    },
+                    {
+                      "name": "history-phone-320",
+                      "contentType": "image/png",
+                      "path": "attachments/cfecdf7a0535cd9e559115ee9776430d74c6b723708a47346110621353a5b419.png"
+                    },
+                    {
+                      "name": "public-source-digest",
+                      "contentType": "text/plain",
+                      "path": "attachments/85f85d3d4569c18f52922d7ddfd11742b38a38d302b1dbebe82e2e45c5f234bc.txt"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "f80d9708086e6957e706-5d335bffa9721dcba95a",
+          "file": "auctions-history-lab-regressions.spec.ts",
+          "line": 275,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "current-rebalance-actions-lab-regressions.spec.ts",
+      "file": "current-rebalance-actions-lab-regressions.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "launch confirmation waits for auction data, then ends into the next auction",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "design-system-review",
+              "projectName": "design-system-review",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 5388,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T17:17:00.878Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "current-source",
+                      "contentType": "application/json",
+                      "path": "attachments/d66d2fff6b1a36a28d4f68ddb9d101dc06e8a09e2c417f375f49b065f3fcb18f.json"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "2cfd381496a600526684-b88333c39eeb29439e46",
+          "file": "current-rebalance-actions-lab-regressions.spec.ts",
+          "line": 8,
+          "column": 1
+        },
+        {
+          "title": "visitor, launcher, non-launcher, wrong-network and phase crossing have independent gates",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "design-system-review",
+              "projectName": "design-system-review",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2517,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T17:17:06.271Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "current-source",
+                      "contentType": "application/json",
+                      "path": "attachments/d66d2fff6b1a36a28d4f68ddb9d101dc06e8a09e2c417f375f49b065f3fcb18f.json"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "2cfd381496a600526684-b425aaeadeb06551ed5e",
+          "file": "current-rebalance-actions-lab-regressions.spec.ts",
+          "line": 36,
+          "column": 1
+        },
+        {
+          "title": "retry after reject retains auction identity",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "design-system-review",
+              "projectName": "design-system-review",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 8111,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T17:17:08.794Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "current-source",
+                      "contentType": "application/json",
+                      "path": "attachments/d66d2fff6b1a36a28d4f68ddb9d101dc06e8a09e2c417f375f49b065f3fcb18f.json"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "2cfd381496a600526684-424214cf7831d2b38dba",
+          "file": "current-rebalance-actions-lab-regressions.spec.ts",
+          "line": 71,
+          "column": 3
+        },
+        {
+          "title": "retry after revert retains auction identity",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "design-system-review",
+              "projectName": "design-system-review",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 9151,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T17:17:16.911Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "current-source",
+                      "contentType": "application/json",
+                      "path": "attachments/d66d2fff6b1a36a28d4f68ddb9d101dc06e8a09e2c417f375f49b065f3fcb18f.json"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "2cfd381496a600526684-949f0f2472e66840095d",
+          "file": "current-rebalance-actions-lab-regressions.spec.ts",
+          "line": 71,
+          "column": 3
+        },
+        {
+          "title": "all missing-data branches fail closed, and retry recovers without replacing identity",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "design-system-review",
+              "projectName": "design-system-review",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2862,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T17:17:26.067Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "current-source",
+                      "contentType": "application/json",
+                      "path": "attachments/d66d2fff6b1a36a28d4f68ddb9d101dc06e8a09e2c417f375f49b065f3fcb18f.json"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "2cfd381496a600526684-5cda08ca4a5e46cc5fda",
+          "file": "current-rebalance-actions-lab-regressions.spec.ts",
+          "line": 93,
+          "column": 1
+        },
+        {
+          "title": "keyboard bids, completion and single history handoff preserve context",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "design-system-review",
+              "projectName": "design-system-review",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2273,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T17:17:28.935Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "current-source",
+                      "contentType": "application/json",
+                      "path": "attachments/d66d2fff6b1a36a28d4f68ddb9d101dc06e8a09e2c417f375f49b065f3fcb18f.json"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "2cfd381496a600526684-8e23cb086a1b626f3253",
+          "file": "current-rebalance-actions-lab-regressions.spec.ts",
+          "line": 121,
+          "column": 1
+        },
+        {
+          "title": "liquidity leg retry and browser filler reset guard work without sending",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "design-system-review",
+              "projectName": "design-system-review",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 4259,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T17:17:31.214Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "current-source",
+                      "contentType": "application/json",
+                      "path": "attachments/d66d2fff6b1a36a28d4f68ddb9d101dc06e8a09e2c417f375f49b065f3fcb18f.json"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "2cfd381496a600526684-03db5f9daa19a3135e62",
+          "file": "current-rebalance-actions-lab-regressions.spec.ts",
+          "line": 157,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "current-rebalance-composition-lab-regressions.spec.ts",
+      "file": "current-rebalance-composition-lab-regressions.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "auction preparation shares one compact workspace at 1400",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "design-system-review",
+              "projectName": "design-system-review",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3566,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T17:17:35.486Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "composition-1400-repeat",
+                      "contentType": "image/png",
+                      "path": "attachments/768395a39ccec64a13b963a6b28f9ba43da707ffd22efd74f3f6a8c972effc1c.png"
+                    },
+                    {
+                      "name": "composition-1400-live",
+                      "contentType": "image/png",
+                      "path": "attachments/9c768c485259907bba3d731daed5af11a2f4fea1571ed6033a7265d5d3107a92.png"
+                    },
+                    {
+                      "name": "current-source",
+                      "contentType": "application/json",
+                      "path": "attachments/d66d2fff6b1a36a28d4f68ddb9d101dc06e8a09e2c417f375f49b065f3fcb18f.json"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "aa81a303bf93d86343c5-35e95d1a8a19e7207cfe",
+          "file": "current-rebalance-composition-lab-regressions.spec.ts",
+          "line": 9,
+          "column": 3
+        },
+        {
+          "title": "auction preparation shares one compact workspace at 900",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "design-system-review",
+              "projectName": "design-system-review",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3108,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T17:17:39.058Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "composition-900-repeat",
+                      "contentType": "image/png",
+                      "path": "attachments/d2186019331a3357cb37074b6a94600fc31b28b08d0315dda326a20f209b9f40.png"
+                    },
+                    {
+                      "name": "composition-900-live",
+                      "contentType": "image/png",
+                      "path": "attachments/19339a03760f31ab7a4f3681e14fb9f9936c02ee56bb4013c43f7d316c7f1b5a.png"
+                    },
+                    {
+                      "name": "current-source",
+                      "contentType": "application/json",
+                      "path": "attachments/d66d2fff6b1a36a28d4f68ddb9d101dc06e8a09e2c417f375f49b065f3fcb18f.json"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "aa81a303bf93d86343c5-fde3093d27f03d3e5347",
+          "file": "current-rebalance-composition-lab-regressions.spec.ts",
+          "line": 9,
+          "column": 3
+        },
+        {
+          "title": "auction preparation shares one compact workspace at 390",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "design-system-review",
+              "projectName": "design-system-review",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3193,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T17:17:42.171Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "composition-390-repeat",
+                      "contentType": "image/png",
+                      "path": "attachments/4676aa31475675f4d084ccd99bd3665e26bbaf31dd506c670a263c02c05f8510.png"
+                    },
+                    {
+                      "name": "composition-390-live",
+                      "contentType": "image/png",
+                      "path": "attachments/2630742ca7cfcebfdbfaf9e0cca462161fd023035f48fab4cc285530ddd43651.png"
+                    },
+                    {
+                      "name": "current-source",
+                      "contentType": "application/json",
+                      "path": "attachments/d66d2fff6b1a36a28d4f68ddb9d101dc06e8a09e2c417f375f49b065f3fcb18f.json"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "aa81a303bf93d86343c5-2dc74a4215a0e809766e",
+          "file": "current-rebalance-composition-lab-regressions.spec.ts",
+          "line": 9,
+          "column": 3
+        },
+        {
+          "title": "auction preparation shares one compact workspace at 320",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "design-system-review",
+              "projectName": "design-system-review",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3194,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T17:17:45.370Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "composition-320-repeat",
+                      "contentType": "image/png",
+                      "path": "attachments/9d5e9ef35a55a7eb0a8970e8df375f5193703f26850064d6a93aeb273fccf8df.png"
+                    },
+                    {
+                      "name": "composition-320-live",
+                      "contentType": "image/png",
+                      "path": "attachments/1ecef7aa0b3f418d675fae3fc4fdd025e1f05f67978a47192bb71cb67243f643.png"
+                    },
+                    {
+                      "name": "current-source",
+                      "contentType": "application/json",
+                      "path": "attachments/d66d2fff6b1a36a28d4f68ddb9d101dc06e8a09e2c417f375f49b065f3fcb18f.json"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "aa81a303bf93d86343c5-03829943a26d15fe16a4",
+          "file": "current-rebalance-composition-lab-regressions.spec.ts",
+          "line": 9,
+          "column": 3
+        }
+      ]
+    },
+    {
+      "title": "current-rebalance-details-lab-regressions.spec.ts",
+      "file": "current-rebalance-details-lab-regressions.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "liquidity levels, error reasons and Ondo session facts are reachable by keyboard and touch",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "design-system-review",
+              "projectName": "design-system-review",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3964,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T17:17:48.576Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "liquidity-390-ondo-detail",
+                      "contentType": "image/png",
+                      "path": "attachments/d2dbcfeab2e0e75b3854482d93da9b1cc635ed0d9be9fe1fb61788a8442b1442.png"
+                    },
+                    {
+                      "name": "liquidity-390-ondo-closed",
+                      "contentType": "image/png",
+                      "path": "attachments/710b8f2e33c0e9d255950db7f4ddbde48e59d53dc0fb38b5aa56192490d2b78b.png"
+                    },
+                    {
+                      "name": "current-source",
+                      "contentType": "application/json",
+                      "path": "attachments/d66d2fff6b1a36a28d4f68ddb9d101dc06e8a09e2c417f375f49b065f3fcb18f.json"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "52000bc43e32ffead65e-9532cacb1c42af965abb",
+          "file": "current-rebalance-details-lab-regressions.spec.ts",
+          "line": 9,
+          "column": 1
+        },
+        {
+          "title": "expiry retains one ended auction, dollar impact, explanations and the same history result",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "design-system-review",
+              "projectName": "design-system-review",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3471,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T17:17:52.545Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "expired-390-result-details",
+                      "contentType": "image/png",
+                      "path": "attachments/91da35c39397f0f79c05561b43424e8d11468f987afac54c5b139dda1dbd1071.png"
+                    },
+                    {
+                      "name": "current-source",
+                      "contentType": "application/json",
+                      "path": "attachments/d66d2fff6b1a36a28d4f68ddb9d101dc06e8a09e2c417f375f49b065f3fcb18f.json"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "52000bc43e32ffead65e-b8a6de9dfcdfb29dc336",
+          "file": "current-rebalance-details-lab-regressions.spec.ts",
+          "line": 58,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "current-rebalance-editor-lab-regressions.spec.ts",
+      "file": "current-rebalance-editor-lab-regressions.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "eight-token hybrid editor preserves a real draft at 320",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "design-system-review",
+              "projectName": "design-system-review",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 6485,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T17:17:56.028Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "weights-320-top",
+                      "contentType": "image/png",
+                      "path": "attachments/f33d065c8c0ba39519f427890d420845336e823e4ea45125aaa707253b0de105.png"
+                    },
+                    {
+                      "name": "weights-320-limits",
+                      "contentType": "image/png",
+                      "path": "attachments/18311e3a5bbc96ca780f6e98a97a762a96e141f2efb157b466a3c0fb5924e353.png"
+                    },
+                    {
+                      "name": "current-source",
+                      "contentType": "application/json",
+                      "path": "attachments/d66d2fff6b1a36a28d4f68ddb9d101dc06e8a09e2c417f375f49b065f3fcb18f.json"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "e857ad0778dddd310b90-2be82c4c35a4603445e9",
+          "file": "current-rebalance-editor-lab-regressions.spec.ts",
+          "line": 17,
+          "column": 3
+        },
+        {
+          "title": "eight-token hybrid editor preserves a real draft at 1400",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "design-system-review",
+              "projectName": "design-system-review",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 6470,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T17:18:02.519Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "weights-1400-top",
+                      "contentType": "image/png",
+                      "path": "attachments/c5477564b1cf8fafc3f939d0c1aab07d6f92299720128be9029f4183307da483.png"
+                    },
+                    {
+                      "name": "weights-1400-limits",
+                      "contentType": "image/png",
+                      "path": "attachments/eb883ea2bc5d28d67a78d7c77cd8d930e64f916d261166224b295bb0a96d87de.png"
+                    },
+                    {
+                      "name": "current-source",
+                      "contentType": "application/json",
+                      "path": "attachments/d66d2fff6b1a36a28d4f68ddb9d101dc06e8a09e2c417f375f49b065f3fcb18f.json"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "e857ad0778dddd310b90-e7de720031f1d34e92b5",
+          "file": "current-rebalance-editor-lab-regressions.spec.ts",
+          "line": 17,
+          "column": 3
+        },
+        {
+          "title": "CSV validation is atomic and the template preserves all eight identities",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "design-system-review",
+              "projectName": "design-system-review",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2887,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T17:18:08.995Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "current-source",
+                      "contentType": "application/json",
+                      "path": "attachments/d66d2fff6b1a36a28d4f68ddb9d101dc06e8a09e2c417f375f49b065f3fcb18f.json"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "e857ad0778dddd310b90-57ff8d2301d6d6e07e5f",
+          "file": "current-rebalance-editor-lab-regressions.spec.ts",
+          "line": 88,
+          "column": 1
+        },
+        {
+          "title": "two current records have independent drafts and operations, and route selection survives reload",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "design-system-review",
+              "projectName": "design-system-review",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 9099,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T17:18:11.888Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "current-source",
+                      "contentType": "application/json",
+                      "path": "attachments/d66d2fff6b1a36a28d4f68ddb9d101dc06e8a09e2c417f375f49b065f3fcb18f.json"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "e857ad0778dddd310b90-e74549eb709aecb22cb5",
+          "file": "current-rebalance-editor-lab-regressions.spec.ts",
+          "line": 127,
+          "column": 1
+        },
+        {
+          "title": "confirming a guarded browser Back resets the draft and the mounted workspace",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "design-system-review",
+              "projectName": "design-system-review",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3311,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T17:18:20.992Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "current-source",
+                      "contentType": "application/json",
+                      "path": "attachments/d66d2fff6b1a36a28d4f68ddb9d101dc06e8a09e2c417f375f49b065f3fcb18f.json"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "e857ad0778dddd310b90-af7ebf4ad5a740567e54",
+          "file": "current-rebalance-editor-lab-regressions.spec.ts",
+          "line": 158,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "current-rebalance-header-lab-regressions.spec.ts",
+      "file": "current-rebalance-header-lab-regressions.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "rebalance header compact provenance light 1400",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "design-system-review",
+              "projectName": "design-system-review",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 4627,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T17:18:24.316Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "header-light-1400",
+                      "contentType": "image/png",
+                      "path": "attachments/768395a39ccec64a13b963a6b28f9ba43da707ffd22efd74f3f6a8c972effc1c.png"
+                    },
+                    {
+                      "name": "header-light-1400-open",
+                      "contentType": "image/png",
+                      "path": "attachments/3ae133d3c722692029a6f0c98461fb281c1cba65d0886de4f9f269724b9c6aa9.png"
+                    },
+                    {
+                      "name": "current-source",
+                      "contentType": "application/json",
+                      "path": "attachments/d66d2fff6b1a36a28d4f68ddb9d101dc06e8a09e2c417f375f49b065f3fcb18f.json"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "06ed429248f111014934-47bcf0dacf4abeb60544",
+          "file": "current-rebalance-header-lab-regressions.spec.ts",
+          "line": 11,
+          "column": 5
+        },
+        {
+          "title": "rebalance header compact provenance light 900",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "design-system-review",
+              "projectName": "design-system-review",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 4597,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T17:18:28.950Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "header-light-900",
+                      "contentType": "image/png",
+                      "path": "attachments/d2186019331a3357cb37074b6a94600fc31b28b08d0315dda326a20f209b9f40.png"
+                    },
+                    {
+                      "name": "header-light-900-open",
+                      "contentType": "image/png",
+                      "path": "attachments/8ba6925435e996d2cef1524b777ac3aa1651a59db4ae9daadacf9d0c86a6aacf.png"
+                    },
+                    {
+                      "name": "current-source",
+                      "contentType": "application/json",
+                      "path": "attachments/d66d2fff6b1a36a28d4f68ddb9d101dc06e8a09e2c417f375f49b065f3fcb18f.json"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "06ed429248f111014934-488bb5b56b39207204d9",
+          "file": "current-rebalance-header-lab-regressions.spec.ts",
+          "line": 11,
+          "column": 5
+        },
+        {
+          "title": "rebalance header compact provenance light 390",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "design-system-review",
+              "projectName": "design-system-review",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 4604,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T17:18:33.553Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "header-light-390",
+                      "contentType": "image/png",
+                      "path": "attachments/4676aa31475675f4d084ccd99bd3665e26bbaf31dd506c670a263c02c05f8510.png"
+                    },
+                    {
+                      "name": "header-light-390-open",
+                      "contentType": "image/png",
+                      "path": "attachments/8623c1637b75583bbb3136cb11b4d6d9a517fc1d6d1f150a4bc5f2c837d96789.png"
+                    },
+                    {
+                      "name": "current-source",
+                      "contentType": "application/json",
+                      "path": "attachments/d66d2fff6b1a36a28d4f68ddb9d101dc06e8a09e2c417f375f49b065f3fcb18f.json"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "06ed429248f111014934-d3e472be027793be29bc",
+          "file": "current-rebalance-header-lab-regressions.spec.ts",
+          "line": 11,
+          "column": 5
+        },
+        {
+          "title": "rebalance header compact provenance light 320",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "design-system-review",
+              "projectName": "design-system-review",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 4559,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T17:18:38.162Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "header-light-320",
+                      "contentType": "image/png",
+                      "path": "attachments/9d5e9ef35a55a7eb0a8970e8df375f5193703f26850064d6a93aeb273fccf8df.png"
+                    },
+                    {
+                      "name": "header-light-320-open",
+                      "contentType": "image/png",
+                      "path": "attachments/755e3e30452472e78b1701ed16a1b8d406580d2ec07529495904e3314f0dc858.png"
+                    },
+                    {
+                      "name": "current-source",
+                      "contentType": "application/json",
+                      "path": "attachments/d66d2fff6b1a36a28d4f68ddb9d101dc06e8a09e2c417f375f49b065f3fcb18f.json"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "06ed429248f111014934-94c51deb132debbfe730",
+          "file": "current-rebalance-header-lab-regressions.spec.ts",
+          "line": 11,
+          "column": 5
+        },
+        {
+          "title": "rebalance header compact provenance dark 1400",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "design-system-review",
+              "projectName": "design-system-review",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 4542,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T17:18:42.727Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "header-dark-1400",
+                      "contentType": "image/png",
+                      "path": "attachments/b92e890184467cb1f2a6f464d15dc950703a8d723bb14b4c395b1b71560c413a.png"
+                    },
+                    {
+                      "name": "header-dark-1400-open",
+                      "contentType": "image/png",
+                      "path": "attachments/67ad88c6912877aec2763bec5ede4cd4833ba377b1c40e40f802188e4f555024.png"
+                    },
+                    {
+                      "name": "current-source",
+                      "contentType": "application/json",
+                      "path": "attachments/d66d2fff6b1a36a28d4f68ddb9d101dc06e8a09e2c417f375f49b065f3fcb18f.json"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "06ed429248f111014934-6552e32b38e9c486fe3a",
+          "file": "current-rebalance-header-lab-regressions.spec.ts",
+          "line": 11,
+          "column": 5
+        },
+        {
+          "title": "rebalance header compact provenance dark 900",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "design-system-review",
+              "projectName": "design-system-review",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 4547,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T17:18:47.275Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "header-dark-900",
+                      "contentType": "image/png",
+                      "path": "attachments/73c3e83aa89599bb033d7fb2a898c94131cdf79b4d6ef32aa287cdb4ac381119.png"
+                    },
+                    {
+                      "name": "header-dark-900-open",
+                      "contentType": "image/png",
+                      "path": "attachments/005bb2b350735795988bedbd5eb862b14519292075f9bc62963cb20f7da0c516.png"
+                    },
+                    {
+                      "name": "current-source",
+                      "contentType": "application/json",
+                      "path": "attachments/d66d2fff6b1a36a28d4f68ddb9d101dc06e8a09e2c417f375f49b065f3fcb18f.json"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "06ed429248f111014934-712ccc1b1c9dc5d10154",
+          "file": "current-rebalance-header-lab-regressions.spec.ts",
+          "line": 11,
+          "column": 5
+        },
+        {
+          "title": "rebalance header compact provenance dark 390",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "design-system-review",
+              "projectName": "design-system-review",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 4270,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T17:18:51.827Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "header-dark-390",
+                      "contentType": "image/png",
+                      "path": "attachments/7c7dc5820b58cc5b3669b9ed9df9630688931cc690b8ea78414df3dc68413742.png"
+                    },
+                    {
+                      "name": "header-dark-390-open",
+                      "contentType": "image/png",
+                      "path": "attachments/48634407eb126787043b957b2f6f100a3429894ec932a0e99fb0ac068349b713.png"
+                    },
+                    {
+                      "name": "current-source",
+                      "contentType": "application/json",
+                      "path": "attachments/d66d2fff6b1a36a28d4f68ddb9d101dc06e8a09e2c417f375f49b065f3fcb18f.json"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "06ed429248f111014934-9094e532cb9186c5b51d",
+          "file": "current-rebalance-header-lab-regressions.spec.ts",
+          "line": 11,
+          "column": 5
+        },
+        {
+          "title": "rebalance header compact provenance dark 320",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "design-system-review",
+              "projectName": "design-system-review",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 4576,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T17:18:56.103Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "header-dark-320",
+                      "contentType": "image/png",
+                      "path": "attachments/0f10df9cee0c901960a64b618df020707d3d7ec87853a3d5f68e9ef5ea553f2a.png"
+                    },
+                    {
+                      "name": "header-dark-320-open",
+                      "contentType": "image/png",
+                      "path": "attachments/3b58aa58d973d06c94eaa781f0f30e218e896b86adfbb2999052017dfe595aeb.png"
+                    },
+                    {
+                      "name": "current-source",
+                      "contentType": "application/json",
+                      "path": "attachments/d66d2fff6b1a36a28d4f68ddb9d101dc06e8a09e2c417f375f49b065f3fcb18f.json"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "06ed429248f111014934-af5b2a00731e908efee9",
+          "file": "current-rebalance-header-lab-regressions.spec.ts",
+          "line": 11,
+          "column": 5
+        }
+      ]
+    },
+    {
+      "title": "current-rebalance-hierarchy-lab-regressions.spec.ts",
+      "file": "current-rebalance-hierarchy-lab-regressions.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "auction owns its plan and action at 1400",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "design-system-review",
+              "projectName": "design-system-review",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2851,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T17:19:00.693Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "hierarchy-1400-repeat",
+                      "contentType": "image/png",
+                      "path": "attachments/768395a39ccec64a13b963a6b28f9ba43da707ffd22efd74f3f6a8c972effc1c.png"
+                    },
+                    {
+                      "name": "current-source",
+                      "contentType": "application/json",
+                      "path": "attachments/d66d2fff6b1a36a28d4f68ddb9d101dc06e8a09e2c417f375f49b065f3fcb18f.json"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c0798232dd74c5c8306f-b2f5b15382eade3c0d2b",
+          "file": "current-rebalance-hierarchy-lab-regressions.spec.ts",
+          "line": 9,
+          "column": 3
+        },
+        {
+          "title": "liquidity is a full-width asset table at 1400",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "design-system-review",
+              "projectName": "design-system-review",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2836,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T17:19:03.550Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "hierarchy-1400-liquidity",
+                      "contentType": "image/png",
+                      "path": "attachments/09e4b82fa3c9f224251f15b723f75d4527253744ccd463c9f3dafb4050f1d80b.png"
+                    },
+                    {
+                      "name": "current-source",
+                      "contentType": "application/json",
+                      "path": "attachments/d66d2fff6b1a36a28d4f68ddb9d101dc06e8a09e2c417f375f49b065f3fcb18f.json"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c0798232dd74c5c8306f-800c4230df8239b2cf3d",
+          "file": "current-rebalance-hierarchy-lab-regressions.spec.ts",
+          "line": 85,
+          "column": 3
+        },
+        {
+          "title": "auction owns its plan and action at 900",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "design-system-review",
+              "projectName": "design-system-review",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2787,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T17:19:06.392Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "hierarchy-900-repeat",
+                      "contentType": "image/png",
+                      "path": "attachments/d2186019331a3357cb37074b6a94600fc31b28b08d0315dda326a20f209b9f40.png"
+                    },
+                    {
+                      "name": "current-source",
+                      "contentType": "application/json",
+                      "path": "attachments/d66d2fff6b1a36a28d4f68ddb9d101dc06e8a09e2c417f375f49b065f3fcb18f.json"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c0798232dd74c5c8306f-d291f5d7a11a7fc7bfb6",
+          "file": "current-rebalance-hierarchy-lab-regressions.spec.ts",
+          "line": 9,
+          "column": 3
+        },
+        {
+          "title": "liquidity is a full-width asset table at 900",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "design-system-review",
+              "projectName": "design-system-review",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2653,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T17:19:09.185Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "hierarchy-900-liquidity",
+                      "contentType": "image/png",
+                      "path": "attachments/f9202ae5c3c10bbdf76b9c079a74506ddb23cc5598c00dcc2d6aad6eff0e9ee0.png"
+                    },
+                    {
+                      "name": "current-source",
+                      "contentType": "application/json",
+                      "path": "attachments/d66d2fff6b1a36a28d4f68ddb9d101dc06e8a09e2c417f375f49b065f3fcb18f.json"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c0798232dd74c5c8306f-7e81d1d2b33d7525a45a",
+          "file": "current-rebalance-hierarchy-lab-regressions.spec.ts",
+          "line": 85,
+          "column": 3
+        },
+        {
+          "title": "auction owns its plan and action at 390",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "design-system-review",
+              "projectName": "design-system-review",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2771,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T17:19:11.843Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "hierarchy-390-repeat",
+                      "contentType": "image/png",
+                      "path": "attachments/4676aa31475675f4d084ccd99bd3665e26bbaf31dd506c670a263c02c05f8510.png"
+                    },
+                    {
+                      "name": "current-source",
+                      "contentType": "application/json",
+                      "path": "attachments/d66d2fff6b1a36a28d4f68ddb9d101dc06e8a09e2c417f375f49b065f3fcb18f.json"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c0798232dd74c5c8306f-9881fb0b88c1d4345d90",
+          "file": "current-rebalance-hierarchy-lab-regressions.spec.ts",
+          "line": 9,
+          "column": 3
+        },
+        {
+          "title": "liquidity is a full-width asset table at 390",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "design-system-review",
+              "projectName": "design-system-review",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2530,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T17:19:14.619Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "hierarchy-390-liquidity",
+                      "contentType": "image/png",
+                      "path": "attachments/4ccd74c1fd77b52b52281a3ab2d3bcc68e47d6eb843b79f0766c65c81d3d2ab9.png"
+                    },
+                    {
+                      "name": "current-source",
+                      "contentType": "application/json",
+                      "path": "attachments/d66d2fff6b1a36a28d4f68ddb9d101dc06e8a09e2c417f375f49b065f3fcb18f.json"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c0798232dd74c5c8306f-aae503ba18823e9f0b12",
+          "file": "current-rebalance-hierarchy-lab-regressions.spec.ts",
+          "line": 85,
+          "column": 3
+        },
+        {
+          "title": "auction owns its plan and action at 320",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "design-system-review",
+              "projectName": "design-system-review",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2758,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T17:19:17.154Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "hierarchy-320-repeat",
+                      "contentType": "image/png",
+                      "path": "attachments/9d5e9ef35a55a7eb0a8970e8df375f5193703f26850064d6a93aeb273fccf8df.png"
+                    },
+                    {
+                      "name": "current-source",
+                      "contentType": "application/json",
+                      "path": "attachments/d66d2fff6b1a36a28d4f68ddb9d101dc06e8a09e2c417f375f49b065f3fcb18f.json"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c0798232dd74c5c8306f-8d23aba833c656f6b0fb",
+          "file": "current-rebalance-hierarchy-lab-regressions.spec.ts",
+          "line": 9,
+          "column": 3
+        },
+        {
+          "title": "liquidity is a full-width asset table at 320",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "design-system-review",
+              "projectName": "design-system-review",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3052,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T17:19:19.918Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "hierarchy-320-liquidity",
+                      "contentType": "image/png",
+                      "path": "attachments/75beda3f987d0dbb5c2c20ad7cc23f91a5c2869d3e63139bf2f4625403447dd4.png"
+                    },
+                    {
+                      "name": "current-source",
+                      "contentType": "application/json",
+                      "path": "attachments/d66d2fff6b1a36a28d4f68ddb9d101dc06e8a09e2c417f375f49b065f3fcb18f.json"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c0798232dd74c5c8306f-5a872c7c1fc31199ff06",
+          "file": "current-rebalance-hierarchy-lab-regressions.spec.ts",
+          "line": 85,
+          "column": 3
+        },
+        {
+          "title": "completion keeps one auction count and natural metric spacing",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "design-system-review",
+              "projectName": "design-system-review",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2484,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T17:19:22.976Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "hierarchy-complete",
+                      "contentType": "image/png",
+                      "path": "attachments/84c46cfa7a24ef095f455fccfee0165e11a6bc137a381f947f6f75174e28de32.png"
+                    },
+                    {
+                      "name": "current-source",
+                      "contentType": "application/json",
+                      "path": "attachments/d66d2fff6b1a36a28d4f68ddb9d101dc06e8a09e2c417f375f49b065f3fcb18f.json"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c0798232dd74c5c8306f-fde7a6b485d31b82c222",
+          "file": "current-rebalance-hierarchy-lab-regressions.spec.ts",
+          "line": 152,
+          "column": 1
+        },
+        {
+          "title": "expiry during indexing retains auction identity and a single recovery owner",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "design-system-review",
+              "projectName": "design-system-review",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 5370,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T17:19:25.465Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "current-source",
+                      "contentType": "application/json",
+                      "path": "attachments/d66d2fff6b1a36a28d4f68ddb9d101dc06e8a09e2c417f375f49b065f3fcb18f.json"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c0798232dd74c5c8306f-8ee672c26c9fd004c975",
+          "file": "current-rebalance-hierarchy-lab-regressions.spec.ts",
+          "line": 177,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "current-rebalance-lab-regressions.spec.ts",
+      "file": "current-rebalance-lab-regressions.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "current rebalance composition 1400",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "design-system-review",
+              "projectName": "design-system-review",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2753,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T17:19:30.847Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "current-ready-1400",
+                      "contentType": "image/png",
+                      "path": "attachments/4dbeb0c0a4e04ad79979734b2ef4d433058dc908aca22abe51cca9540cc1ef14.png"
+                    },
+                    {
+                      "name": "current-live-1400",
+                      "contentType": "image/png",
+                      "path": "attachments/eed73aa6037337411f600eb96f3add936974364f4e2f0824e506e281fc90af9a.png"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "2aa8f6c124d240473a0c-8a2ce712a183eb163089",
+          "file": "current-rebalance-lab-regressions.spec.ts",
+          "line": 9,
+          "column": 3
+        },
+        {
+          "title": "current rebalance composition 390",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "design-system-review",
+              "projectName": "design-system-review",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2749,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T17:19:33.605Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "current-ready-390",
+                      "contentType": "image/png",
+                      "path": "attachments/0b3ecf4263b406fb755c33e32346c7751aec53dad22bca0817e847a7c6b3d453.png"
+                    },
+                    {
+                      "name": "current-live-390",
+                      "contentType": "image/png",
+                      "path": "attachments/14dc26bee6fc0a208b2d42b02e33a550fe1fb3244d28994c0c65729219ba67b8.png"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "2aa8f6c124d240473a0c-bbad875613f7cbbedc03",
+          "file": "current-rebalance-lab-regressions.spec.ts",
+          "line": 9,
+          "column": 3
+        }
+      ]
+    },
+    {
+      "title": "current-rebalance-matrix-lab-regressions.spec.ts",
+      "file": "current-rebalance-matrix-lab-regressions.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "current lifecycle review matrix light 390",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "design-system-review",
+              "projectName": "design-system-review",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 4966,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T17:19:36.366Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "light-390-ready-top",
+                      "contentType": "image/png",
+                      "path": "attachments/92ac248c1db6e3a7dfcd6892d9a6dbdd6881bc9a85681fde930328fdbbed9237.png"
+                    },
+                    {
+                      "name": "light-390-ready-operation",
+                      "contentType": "image/png",
+                      "path": "attachments/6e0905a8d7425b324fe9047e928031d0ab434a6ab550fb2a7839232a366d3ff6.png"
+                    },
+                    {
+                      "name": "light-390-visitor",
+                      "contentType": "image/png",
+                      "path": "attachments/7b718e3fddc39802d4dcd95753be6e86ac91b98ae7ea97e59fe062c9be30e308.png"
+                    },
+                    {
+                      "name": "light-390-permissionless-top",
+                      "contentType": "image/png",
+                      "path": "attachments/0ef696433e885c96b954f1a62f3c423367e389fe8e72cd85cf83a2f977dce516.png"
+                    },
+                    {
+                      "name": "light-390-permissionless-operation",
+                      "contentType": "image/png",
+                      "path": "attachments/6e0905a8d7425b324fe9047e928031d0ab434a6ab550fb2a7839232a366d3ff6.png"
+                    },
+                    {
+                      "name": "light-390-hybrid-top",
+                      "contentType": "image/png",
+                      "path": "attachments/252bd042fc02203dc20c2b950b6e19812193c0b530a1e75c65ef37f8000765ba.png"
+                    },
+                    {
+                      "name": "light-390-hybrid-operation",
+                      "contentType": "image/png",
+                      "path": "attachments/c2ec912e0a3d34647397904e1be0222cccf7e84c611119f208927b5a0bc254a7.png"
+                    },
+                    {
+                      "name": "light-390-live-top",
+                      "contentType": "image/png",
+                      "path": "attachments/0599c7c37c9fbbe4d2bb2642746fe7eb7b3bee15a67a358339e191dd2f4b4182.png"
+                    },
+                    {
+                      "name": "light-390-live-operation",
+                      "contentType": "image/png",
+                      "path": "attachments/043e2ae346b15e7365310ddba2707117a07a0ef95f6bacd915940a59ede09361.png"
+                    },
+                    {
+                      "name": "light-390-bid-detail",
+                      "contentType": "image/png",
+                      "path": "attachments/f443ab1b6eb9bb7580dc5ba458dacb0f0f966b070036d2db09d9374683f06d14.png"
+                    },
+                    {
+                      "name": "light-390-repeat-top",
+                      "contentType": "image/png",
+                      "path": "attachments/4676aa31475675f4d084ccd99bd3665e26bbaf31dd506c670a263c02c05f8510.png"
+                    },
+                    {
+                      "name": "light-390-repeat-operation",
+                      "contentType": "image/png",
+                      "path": "attachments/978271a8b1a63d325932887c7830425082227595303fcb25d115ac53b5ceac2f.png"
+                    },
+                    {
+                      "name": "light-390-liquidity-top",
+                      "contentType": "image/png",
+                      "path": "attachments/da9dae5e6f4e8c4eb2f2dc76ea9c607afa9c8b5a16ca36c277b4bd3519c0d0d2.png"
+                    },
+                    {
+                      "name": "light-390-liquidity-operation",
+                      "contentType": "image/png",
+                      "path": "attachments/81c546679cefb35b81cfbb6383fbe244caa7f0ca2a0693fc0365a2545d9da967.png"
+                    },
+                    {
+                      "name": "light-390-liquidity-closed-top",
+                      "contentType": "image/png",
+                      "path": "attachments/da9dae5e6f4e8c4eb2f2dc76ea9c607afa9c8b5a16ca36c277b4bd3519c0d0d2.png"
+                    },
+                    {
+                      "name": "light-390-liquidity-closed-operation",
+                      "contentType": "image/png",
+                      "path": "attachments/81c546679cefb35b81cfbb6383fbe244caa7f0ca2a0693fc0365a2545d9da967.png"
+                    },
+                    {
+                      "name": "light-390-complete-top",
+                      "contentType": "image/png",
+                      "path": "attachments/54948795573bb43bd8ddd5ceb4fb9bbb73fe0bc7d207792605b4e42d3be81dc2.png"
+                    },
+                    {
+                      "name": "light-390-expired-top",
+                      "contentType": "image/png",
+                      "path": "attachments/ad69b7f735142dbab61a685704c8550b2dcd97b5f4ec4fe25da8e5ec876350f0.png"
+                    },
+                    {
+                      "name": "light-390-expired-complete-top",
+                      "contentType": "image/png",
+                      "path": "attachments/1137a89c7f5af44b01d4f6ed6550388ae11623da38538133550dc06d0c0de008.png"
+                    },
+                    {
+                      "name": "light-390-history-context",
+                      "contentType": "image/png",
+                      "path": "attachments/b5c3668625ca666b321ae4b75b6913e4858d727b2b6966835570c69090349b5d.png"
+                    },
+                    {
+                      "name": "current-source",
+                      "contentType": "application/json",
+                      "path": "attachments/d66d2fff6b1a36a28d4f68ddb9d101dc06e8a09e2c417f375f49b065f3fcb18f.json"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "04fd20cc7fb685ad8724-00a14114d6d043488cfd",
+          "file": "current-rebalance-matrix-lab-regressions.spec.ts",
+          "line": 11,
+          "column": 5
+        },
+        {
+          "title": "current lifecycle review matrix light 1400",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "design-system-review",
+              "projectName": "design-system-review",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 5351,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T17:19:41.336Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "light-1400-ready-top",
+                      "contentType": "image/png",
+                      "path": "attachments/58f89c8c63edd30a5ac122cc1ae380b037ad0a933069143a18c9ede52a04af63.png"
+                    },
+                    {
+                      "name": "light-1400-ready-operation",
+                      "contentType": "image/png",
+                      "path": "attachments/d04a13b53a2bc57d134a847ca8914850af48cf0d9ad92d92c8aa7e42584f7456.png"
+                    },
+                    {
+                      "name": "light-1400-visitor",
+                      "contentType": "image/png",
+                      "path": "attachments/8cae39ed9216ac927450df39b433388a52c3b42bdbe700660effac456d1ec793.png"
+                    },
+                    {
+                      "name": "light-1400-permissionless-top",
+                      "contentType": "image/png",
+                      "path": "attachments/7d0346f0da19cce4733a74950221c4764b88226d90376d356985237419ef2538.png"
+                    },
+                    {
+                      "name": "light-1400-permissionless-operation",
+                      "contentType": "image/png",
+                      "path": "attachments/5def987ddd88a01b383fec37a6bb803bb80b171967d7927255a2b9f1c0a1c07e.png"
+                    },
+                    {
+                      "name": "light-1400-hybrid-top",
+                      "contentType": "image/png",
+                      "path": "attachments/9bee1864f942508c675c80988fce1f43f63b5afd4607d2d9d099d82a5de494a2.png"
+                    },
+                    {
+                      "name": "light-1400-hybrid-operation",
+                      "contentType": "image/png",
+                      "path": "attachments/e211bc71a358e68ad8cf40ab29e461449c3e3d06088100b5b53e7ebfb9a2065f.png"
+                    },
+                    {
+                      "name": "light-1400-live-top",
+                      "contentType": "image/png",
+                      "path": "attachments/54b0154952c53374a7261710e8b1a4b16c1a33a47ded59d6064d00c38c7acc07.png"
+                    },
+                    {
+                      "name": "light-1400-live-operation",
+                      "contentType": "image/png",
+                      "path": "attachments/756d0171883b761b258b14fed2f6e08052647b86444a9e7b054cde90b437a08c.png"
+                    },
+                    {
+                      "name": "light-1400-bid-detail",
+                      "contentType": "image/png",
+                      "path": "attachments/c42e60183f7df785834dffb292885317425fa7694ca61e1f985b4bbd63b2d254.png"
+                    },
+                    {
+                      "name": "light-1400-repeat-top",
+                      "contentType": "image/png",
+                      "path": "attachments/768395a39ccec64a13b963a6b28f9ba43da707ffd22efd74f3f6a8c972effc1c.png"
+                    },
+                    {
+                      "name": "light-1400-repeat-operation",
+                      "contentType": "image/png",
+                      "path": "attachments/29e3109efada73c0cb9515e2115b77b91d1027732f6fbc30ea00b468bd0578e7.png"
+                    },
+                    {
+                      "name": "light-1400-liquidity-top",
+                      "contentType": "image/png",
+                      "path": "attachments/6b6e7129f6c561a2903d75cfd0745bb708056e447fffb834792025ce47cc4b11.png"
+                    },
+                    {
+                      "name": "light-1400-liquidity-operation",
+                      "contentType": "image/png",
+                      "path": "attachments/c594dc6e5415f7d5c1587f0e45305fa47a4356903a66f6165def7748a1798154.png"
+                    },
+                    {
+                      "name": "light-1400-liquidity-closed-top",
+                      "contentType": "image/png",
+                      "path": "attachments/6b6e7129f6c561a2903d75cfd0745bb708056e447fffb834792025ce47cc4b11.png"
+                    },
+                    {
+                      "name": "light-1400-liquidity-closed-operation",
+                      "contentType": "image/png",
+                      "path": "attachments/c594dc6e5415f7d5c1587f0e45305fa47a4356903a66f6165def7748a1798154.png"
+                    },
+                    {
+                      "name": "light-1400-complete-top",
+                      "contentType": "image/png",
+                      "path": "attachments/1a9944b151145c9dcc42f2e4f37bd761d7b05660dc6e7a70d13146ec92fed550.png"
+                    },
+                    {
+                      "name": "light-1400-expired-top",
+                      "contentType": "image/png",
+                      "path": "attachments/6b19c32180aaa86b308acb2242a5bbe51c733c040283a389412b3cb027f0f20b.png"
+                    },
+                    {
+                      "name": "light-1400-expired-complete-top",
+                      "contentType": "image/png",
+                      "path": "attachments/fa460b822573924f7dc244e5b1831c8ec459f27baa914a751e16b9d7f2a49fe5.png"
+                    },
+                    {
+                      "name": "light-1400-history-context",
+                      "contentType": "image/png",
+                      "path": "attachments/434d56ffdcaaea215c252be799efbb4887701d5945ba5ab9bf9ebb16775a5e29.png"
+                    },
+                    {
+                      "name": "current-source",
+                      "contentType": "application/json",
+                      "path": "attachments/d66d2fff6b1a36a28d4f68ddb9d101dc06e8a09e2c417f375f49b065f3fcb18f.json"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "04fd20cc7fb685ad8724-68f7b9277e92cc581d71",
+          "file": "current-rebalance-matrix-lab-regressions.spec.ts",
+          "line": 11,
+          "column": 5
+        },
+        {
+          "title": "current lifecycle review matrix dark 390",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "design-system-review",
+              "projectName": "design-system-review",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 5055,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T17:19:46.692Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "dark-390-ready-top",
+                      "contentType": "image/png",
+                      "path": "attachments/fffa23af07ed8d6974bf09b58edd28261ca47989f6387d03c9c605ffb5cc5dee.png"
+                    },
+                    {
+                      "name": "dark-390-ready-operation",
+                      "contentType": "image/png",
+                      "path": "attachments/98dc8740c819be3fd054351e6328700dd8c36baabb4168e960bb17416c87eeeb.png"
+                    },
+                    {
+                      "name": "dark-390-visitor",
+                      "contentType": "image/png",
+                      "path": "attachments/6f0e2ac143f8c49235868a33929e90e9bc7d700a12de06c9f2f15ed0828fc39b.png"
+                    },
+                    {
+                      "name": "dark-390-permissionless-top",
+                      "contentType": "image/png",
+                      "path": "attachments/4ef9462fd41c1497b2c4428cf7fbdd987d3699b5068832a55fc6d3462e167276.png"
+                    },
+                    {
+                      "name": "dark-390-permissionless-operation",
+                      "contentType": "image/png",
+                      "path": "attachments/98dc8740c819be3fd054351e6328700dd8c36baabb4168e960bb17416c87eeeb.png"
+                    },
+                    {
+                      "name": "dark-390-hybrid-top",
+                      "contentType": "image/png",
+                      "path": "attachments/11a0c7552e1a0b3f65d1cf0e8b5c2282f713d0d1157e74ec1f14f9567fa9ebd5.png"
+                    },
+                    {
+                      "name": "dark-390-hybrid-operation",
+                      "contentType": "image/png",
+                      "path": "attachments/c0be77733d4a51a10d4d1b7174e239b3761f290b8badf132196deb5a266ec6b7.png"
+                    },
+                    {
+                      "name": "dark-390-live-top",
+                      "contentType": "image/png",
+                      "path": "attachments/b9501bba232296833d8fa1fa493bfb9b6842f8d7d50b7ff0959504d9cfe2d6af.png"
+                    },
+                    {
+                      "name": "dark-390-live-operation",
+                      "contentType": "image/png",
+                      "path": "attachments/8c2bc31e0d637ff8eaafb1b46ffad2b3666da7230c9496e74e1e25f4cb26da7c.png"
+                    },
+                    {
+                      "name": "dark-390-bid-detail",
+                      "contentType": "image/png",
+                      "path": "attachments/8c91f6d119c4ee036919184c1f359ddaedfef4bc3053fa8d1f8b6e17f3d19e1e.png"
+                    },
+                    {
+                      "name": "dark-390-repeat-top",
+                      "contentType": "image/png",
+                      "path": "attachments/7c7dc5820b58cc5b3669b9ed9df9630688931cc690b8ea78414df3dc68413742.png"
+                    },
+                    {
+                      "name": "dark-390-repeat-operation",
+                      "contentType": "image/png",
+                      "path": "attachments/582f1fca9210ac05e40d9fae5b18b633a167a65720af26c3f0a8cfaa8df5da6a.png"
+                    },
+                    {
+                      "name": "dark-390-liquidity-top",
+                      "contentType": "image/png",
+                      "path": "attachments/e1a826ebc22c64c2befe578226f872f7c8048139df5920bf19205f3ac8a01f21.png"
+                    },
+                    {
+                      "name": "dark-390-liquidity-operation",
+                      "contentType": "image/png",
+                      "path": "attachments/fca29dff4a86c16a229db754588e8943b50a8f657de0aae72d12bc8eb1e8fcf2.png"
+                    },
+                    {
+                      "name": "dark-390-liquidity-closed-top",
+                      "contentType": "image/png",
+                      "path": "attachments/e1a826ebc22c64c2befe578226f872f7c8048139df5920bf19205f3ac8a01f21.png"
+                    },
+                    {
+                      "name": "dark-390-liquidity-closed-operation",
+                      "contentType": "image/png",
+                      "path": "attachments/fca29dff4a86c16a229db754588e8943b50a8f657de0aae72d12bc8eb1e8fcf2.png"
+                    },
+                    {
+                      "name": "dark-390-complete-top",
+                      "contentType": "image/png",
+                      "path": "attachments/84e1d799def563ad41736a260dc25031b516d53ab3bdd44d3bf1e44882577a6b.png"
+                    },
+                    {
+                      "name": "dark-390-expired-top",
+                      "contentType": "image/png",
+                      "path": "attachments/b6869d09dda1008365a9e91c949ff55c1244863e8a62a4f2fab3b6222180f91c.png"
+                    },
+                    {
+                      "name": "dark-390-expired-complete-top",
+                      "contentType": "image/png",
+                      "path": "attachments/805c523cb8dd5e14fdecf8981d2cd99ff7169e95bb72a58c1cee9dc08ddbab66.png"
+                    },
+                    {
+                      "name": "dark-390-history-context",
+                      "contentType": "image/png",
+                      "path": "attachments/22c21672bad73a56ce534c9492bc22314aabed9abce38f2c531b3c964ad8d7c8.png"
+                    },
+                    {
+                      "name": "current-source",
+                      "contentType": "application/json",
+                      "path": "attachments/d66d2fff6b1a36a28d4f68ddb9d101dc06e8a09e2c417f375f49b065f3fcb18f.json"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "04fd20cc7fb685ad8724-e7853ab37700396af295",
+          "file": "current-rebalance-matrix-lab-regressions.spec.ts",
+          "line": 11,
+          "column": 5
+        },
+        {
+          "title": "current lifecycle review matrix dark 1400",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "design-system-review",
+              "projectName": "design-system-review",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 5417,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T17:19:51.753Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "dark-1400-ready-top",
+                      "contentType": "image/png",
+                      "path": "attachments/4b2390e5ceeef5942ca644374007bc5bcd028251c9d94e040699e5d9e4e0c92b.png"
+                    },
+                    {
+                      "name": "dark-1400-ready-operation",
+                      "contentType": "image/png",
+                      "path": "attachments/e9f17ede7b03004ed186cd7cb6be10f1566fb4c4fe3f1e99bb6daa3975b0392b.png"
+                    },
+                    {
+                      "name": "dark-1400-visitor",
+                      "contentType": "image/png",
+                      "path": "attachments/ecc832a3aa090ed5c33f624511cbf5aab3d4a42ab546d36eb9c8dcf4e350288b.png"
+                    },
+                    {
+                      "name": "dark-1400-permissionless-top",
+                      "contentType": "image/png",
+                      "path": "attachments/3edf19c5453338e1c2216f4e4f754305240328f31cfd061d1d5e72876c3998df.png"
+                    },
+                    {
+                      "name": "dark-1400-permissionless-operation",
+                      "contentType": "image/png",
+                      "path": "attachments/a7a7c22613adf0d8a53439c0b3737292e2293061f6609a176c7eef1343834d52.png"
+                    },
+                    {
+                      "name": "dark-1400-hybrid-top",
+                      "contentType": "image/png",
+                      "path": "attachments/96a1a84fc2df2f566a3014481bf5a6d754a754088fd0ac934a99a9dae0a56275.png"
+                    },
+                    {
+                      "name": "dark-1400-hybrid-operation",
+                      "contentType": "image/png",
+                      "path": "attachments/35c2a9ad29379828d69dcf176a660e163b9271c3d9f58962088bbbf27292156d.png"
+                    },
+                    {
+                      "name": "dark-1400-live-top",
+                      "contentType": "image/png",
+                      "path": "attachments/30d1c661124adbe5870bcd4601ff329f3332e92be655e64002898738c6e56d1c.png"
+                    },
+                    {
+                      "name": "dark-1400-live-operation",
+                      "contentType": "image/png",
+                      "path": "attachments/3e8f65ee6551edf65dfc5a79efb34d5d076ad5bf5d829b2ec91dffd080c7ba52.png"
+                    },
+                    {
+                      "name": "dark-1400-bid-detail",
+                      "contentType": "image/png",
+                      "path": "attachments/76053d210f8ab762df7961760e917f9e2bf7c482912e5c0b7e1672df18465fc7.png"
+                    },
+                    {
+                      "name": "dark-1400-repeat-top",
+                      "contentType": "image/png",
+                      "path": "attachments/b92e890184467cb1f2a6f464d15dc950703a8d723bb14b4c395b1b71560c413a.png"
+                    },
+                    {
+                      "name": "dark-1400-repeat-operation",
+                      "contentType": "image/png",
+                      "path": "attachments/e0fb6135e959db0682f88fc208eea81053d1be6c3776f203882f68b7bb301f24.png"
+                    },
+                    {
+                      "name": "dark-1400-liquidity-top",
+                      "contentType": "image/png",
+                      "path": "attachments/b6105be6372e86b6e2da6c490b07d013cbed0e73763564953ea17c57056ab708.png"
+                    },
+                    {
+                      "name": "dark-1400-liquidity-operation",
+                      "contentType": "image/png",
+                      "path": "attachments/3b9215a6f7e69b51677ad03dded6d77eb37e1a20453ec48dafc6783951cec82c.png"
+                    },
+                    {
+                      "name": "dark-1400-liquidity-closed-top",
+                      "contentType": "image/png",
+                      "path": "attachments/b6105be6372e86b6e2da6c490b07d013cbed0e73763564953ea17c57056ab708.png"
+                    },
+                    {
+                      "name": "dark-1400-liquidity-closed-operation",
+                      "contentType": "image/png",
+                      "path": "attachments/3b9215a6f7e69b51677ad03dded6d77eb37e1a20453ec48dafc6783951cec82c.png"
+                    },
+                    {
+                      "name": "dark-1400-complete-top",
+                      "contentType": "image/png",
+                      "path": "attachments/4c78bcbac6a4551296d8db9ef4ca48ef0d0d4dd2ec3d85d80ae978c0b87418f6.png"
+                    },
+                    {
+                      "name": "dark-1400-expired-top",
+                      "contentType": "image/png",
+                      "path": "attachments/c292a6b305cce8d90a724e4ad7b5ddad81a9bb693f2d315701961f01577ac46f.png"
+                    },
+                    {
+                      "name": "dark-1400-expired-complete-top",
+                      "contentType": "image/png",
+                      "path": "attachments/2c38947a26582ff5e5ba14b7d2a30ac719e8fd787407a1714005991ec42bd35f.png"
+                    },
+                    {
+                      "name": "dark-1400-history-context",
+                      "contentType": "image/png",
+                      "path": "attachments/d108a57b5f3e303dc54596a199adb7e4c4295fef356f300659b32998584818c2.png"
+                    },
+                    {
+                      "name": "current-source",
+                      "contentType": "application/json",
+                      "path": "attachments/d66d2fff6b1a36a28d4f68ddb9d101dc06e8a09e2c417f375f49b065f3fcb18f.json"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "04fd20cc7fb685ad8724-3d6bb7889518838a7c65",
+          "file": "current-rebalance-matrix-lab-regressions.spec.ts",
+          "line": 11,
+          "column": 5
+        },
+        {
+          "title": "actual workspace breakpoint changes layout, not operation identity",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "design-system-review",
+              "projectName": "design-system-review",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2862,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T17:19:57.176Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "current-source",
+                      "contentType": "application/json",
+                      "path": "attachments/d66d2fff6b1a36a28d4f68ddb9d101dc06e8a09e2c417f375f49b065f3fcb18f.json"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "04fd20cc7fb685ad8724-1e817767eaf8843f3435",
+          "file": "current-rebalance-matrix-lab-regressions.spec.ts",
+          "line": 91,
+          "column": 1
+        },
+        {
+          "title": "unmatched and loading records never create a launchable placeholder",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "design-system-review",
+              "projectName": "design-system-review",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2920,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T17:20:00.044Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "current-source",
+                      "contentType": "application/json",
+                      "path": "attachments/d66d2fff6b1a36a28d4f68ddb9d101dc06e8a09e2c417f375f49b065f3fcb18f.json"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "04fd20cc7fb685ad8724-29d5e5c195a92d7d4dc1",
+          "file": "current-rebalance-matrix-lab-regressions.spec.ts",
+          "line": 117,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "current-rebalance-sections-lab-regressions.spec.ts",
+      "file": "current-rebalance-sections-lab-regressions.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "current rebalance section boundaries light 1400",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "design-system-review",
+              "projectName": "design-system-review",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3616,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T17:20:02.976Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "sections-light-1400",
+                      "contentType": "image/png",
+                      "path": "attachments/768395a39ccec64a13b963a6b28f9ba43da707ffd22efd74f3f6a8c972effc1c.png"
+                    },
+                    {
+                      "name": "sections-light-1400-expanded",
+                      "contentType": "image/png",
+                      "path": "attachments/7be1fec8d2e33326d21f0aba815930186de56ecfb115ca830ba2140ff2a06675.png"
+                    },
+                    {
+                      "name": "sections-light-1400-progress",
+                      "contentType": "image/png",
+                      "path": "attachments/e7e34c5b21c214a6b6482a5dbe33e9eaa6e23711726850d25de9c6e59f87b63f.png"
+                    },
+                    {
+                      "name": "sections-light-1400-live",
+                      "contentType": "image/png",
+                      "path": "attachments/54b0154952c53374a7261710e8b1a4b16c1a33a47ded59d6064d00c38c7acc07.png"
+                    },
+                    {
+                      "name": "current-source",
+                      "contentType": "application/json",
+                      "path": "attachments/d66d2fff6b1a36a28d4f68ddb9d101dc06e8a09e2c417f375f49b065f3fcb18f.json"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "f485faa93d1876771e75-0098c009db753c62c84a",
+          "file": "current-rebalance-sections-lab-regressions.spec.ts",
+          "line": 11,
+          "column": 5
+        },
+        {
+          "title": "current rebalance section boundaries light 900",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "design-system-review",
+              "projectName": "design-system-review",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3630,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T17:20:06.598Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "sections-light-900",
+                      "contentType": "image/png",
+                      "path": "attachments/d2186019331a3357cb37074b6a94600fc31b28b08d0315dda326a20f209b9f40.png"
+                    },
+                    {
+                      "name": "sections-light-900-expanded",
+                      "contentType": "image/png",
+                      "path": "attachments/6684fd11c99547d4e81a956e3761618372acf86538c99f57ea3d1fda51c5cd4b.png"
+                    },
+                    {
+                      "name": "sections-light-900-progress",
+                      "contentType": "image/png",
+                      "path": "attachments/fc97050f6d03af26c4e3de9c62fc2f6f6404f28019fd5b0da81cfbf5f69dcbcd.png"
+                    },
+                    {
+                      "name": "sections-light-900-live",
+                      "contentType": "image/png",
+                      "path": "attachments/fc0c9cc507cccc16b80ad726d611990c9a3d2fefc027f772a593bcd1715444c7.png"
+                    },
+                    {
+                      "name": "current-source",
+                      "contentType": "application/json",
+                      "path": "attachments/d66d2fff6b1a36a28d4f68ddb9d101dc06e8a09e2c417f375f49b065f3fcb18f.json"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "f485faa93d1876771e75-8125b0e23b29f3d930c1",
+          "file": "current-rebalance-sections-lab-regressions.spec.ts",
+          "line": 11,
+          "column": 5
+        },
+        {
+          "title": "current rebalance section boundaries light 390",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "design-system-review",
+              "projectName": "design-system-review",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3602,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T17:20:10.234Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "sections-light-390",
+                      "contentType": "image/png",
+                      "path": "attachments/4676aa31475675f4d084ccd99bd3665e26bbaf31dd506c670a263c02c05f8510.png"
+                    },
+                    {
+                      "name": "sections-light-390-expanded",
+                      "contentType": "image/png",
+                      "path": "attachments/0f377689cf6e3f5b230da2da8d6d7ae4bcc0cce7e016e6ec8813c39d09902312.png"
+                    },
+                    {
+                      "name": "sections-light-390-progress",
+                      "contentType": "image/png",
+                      "path": "attachments/64b646607f32c5278a0631213e18c2c848129872c980f173ef58f121175dbbfd.png"
+                    },
+                    {
+                      "name": "sections-light-390-live",
+                      "contentType": "image/png",
+                      "path": "attachments/0599c7c37c9fbbe4d2bb2642746fe7eb7b3bee15a67a358339e191dd2f4b4182.png"
+                    },
+                    {
+                      "name": "current-source",
+                      "contentType": "application/json",
+                      "path": "attachments/d66d2fff6b1a36a28d4f68ddb9d101dc06e8a09e2c417f375f49b065f3fcb18f.json"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "f485faa93d1876771e75-fe8e386e9f27e5beeb45",
+          "file": "current-rebalance-sections-lab-regressions.spec.ts",
+          "line": 11,
+          "column": 5
+        },
+        {
+          "title": "current rebalance section boundaries light 320",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "design-system-review",
+              "projectName": "design-system-review",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3519,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T17:20:13.841Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "sections-light-320",
+                      "contentType": "image/png",
+                      "path": "attachments/9d5e9ef35a55a7eb0a8970e8df375f5193703f26850064d6a93aeb273fccf8df.png"
+                    },
+                    {
+                      "name": "sections-light-320-expanded",
+                      "contentType": "image/png",
+                      "path": "attachments/2a1efa1ca823b226357dcd25547aefc1acf930a5268896679af1000568d58296.png"
+                    },
+                    {
+                      "name": "sections-light-320-progress",
+                      "contentType": "image/png",
+                      "path": "attachments/f47233694012f0cc7cd4268d4e6779dedb86c4295207f6507f56950ce5c9d4ba.png"
+                    },
+                    {
+                      "name": "sections-light-320-live",
+                      "contentType": "image/png",
+                      "path": "attachments/3c7ead551f62d1395676dc3dc5ddb7a0d9d1b1a5fd225f1bc222cfb1483640c2.png"
+                    },
+                    {
+                      "name": "current-source",
+                      "contentType": "application/json",
+                      "path": "attachments/d66d2fff6b1a36a28d4f68ddb9d101dc06e8a09e2c417f375f49b065f3fcb18f.json"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "f485faa93d1876771e75-bccc2d9079dc724323e0",
+          "file": "current-rebalance-sections-lab-regressions.spec.ts",
+          "line": 11,
+          "column": 5
+        },
+        {
+          "title": "current rebalance section boundaries dark 1400",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "design-system-review",
+              "projectName": "design-system-review",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3605,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T17:20:17.367Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "sections-dark-1400",
+                      "contentType": "image/png",
+                      "path": "attachments/b92e890184467cb1f2a6f464d15dc950703a8d723bb14b4c395b1b71560c413a.png"
+                    },
+                    {
+                      "name": "sections-dark-1400-expanded",
+                      "contentType": "image/png",
+                      "path": "attachments/f586b7a3b435f3cd1ae592e1965f6ba5533578aeadd349fcce9eb1b2ac9154f7.png"
+                    },
+                    {
+                      "name": "sections-dark-1400-progress",
+                      "contentType": "image/png",
+                      "path": "attachments/93055fbcee12be95500eea6824fc8fab99281f6b657c37658717d1336eec3e03.png"
+                    },
+                    {
+                      "name": "sections-dark-1400-live",
+                      "contentType": "image/png",
+                      "path": "attachments/30d1c661124adbe5870bcd4601ff329f3332e92be655e64002898738c6e56d1c.png"
+                    },
+                    {
+                      "name": "current-source",
+                      "contentType": "application/json",
+                      "path": "attachments/d66d2fff6b1a36a28d4f68ddb9d101dc06e8a09e2c417f375f49b065f3fcb18f.json"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "f485faa93d1876771e75-74878331320630aebe39",
+          "file": "current-rebalance-sections-lab-regressions.spec.ts",
+          "line": 11,
+          "column": 5
+        },
+        {
+          "title": "current rebalance section boundaries dark 900",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "design-system-review",
+              "projectName": "design-system-review",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3571,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T17:20:20.977Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "sections-dark-900",
+                      "contentType": "image/png",
+                      "path": "attachments/73c3e83aa89599bb033d7fb2a898c94131cdf79b4d6ef32aa287cdb4ac381119.png"
+                    },
+                    {
+                      "name": "sections-dark-900-expanded",
+                      "contentType": "image/png",
+                      "path": "attachments/b8cdb12a95138de55a021fd23c0be5083cdf1508b55092a0be1c91ad3fdc73ea.png"
+                    },
+                    {
+                      "name": "sections-dark-900-progress",
+                      "contentType": "image/png",
+                      "path": "attachments/46733af24d80f74f0064edc0ac3444e61db78f779b87f2a3139dcad2ca2c0fd9.png"
+                    },
+                    {
+                      "name": "sections-dark-900-live",
+                      "contentType": "image/png",
+                      "path": "attachments/bfd6ff08fbc2bc7cf1f3c7aef7a26e77a62b4a4b18f44ad1fb9788f5461173ce.png"
+                    },
+                    {
+                      "name": "current-source",
+                      "contentType": "application/json",
+                      "path": "attachments/d66d2fff6b1a36a28d4f68ddb9d101dc06e8a09e2c417f375f49b065f3fcb18f.json"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "f485faa93d1876771e75-d9f7bb3093b903860c80",
+          "file": "current-rebalance-sections-lab-regressions.spec.ts",
+          "line": 11,
+          "column": 5
+        },
+        {
+          "title": "current rebalance section boundaries dark 390",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "design-system-review",
+              "projectName": "design-system-review",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3541,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T17:20:24.553Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "sections-dark-390",
+                      "contentType": "image/png",
+                      "path": "attachments/7c7dc5820b58cc5b3669b9ed9df9630688931cc690b8ea78414df3dc68413742.png"
+                    },
+                    {
+                      "name": "sections-dark-390-expanded",
+                      "contentType": "image/png",
+                      "path": "attachments/ce96646676eeb528109257fd43404b551f1aeb2270906103488c76c0aec927ca.png"
+                    },
+                    {
+                      "name": "sections-dark-390-progress",
+                      "contentType": "image/png",
+                      "path": "attachments/25cd100da2498a80b77b263682e5c6357e4ec87583fa6a8136d5f87a9e8fa104.png"
+                    },
+                    {
+                      "name": "sections-dark-390-live",
+                      "contentType": "image/png",
+                      "path": "attachments/b9501bba232296833d8fa1fa493bfb9b6842f8d7d50b7ff0959504d9cfe2d6af.png"
+                    },
+                    {
+                      "name": "current-source",
+                      "contentType": "application/json",
+                      "path": "attachments/d66d2fff6b1a36a28d4f68ddb9d101dc06e8a09e2c417f375f49b065f3fcb18f.json"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "f485faa93d1876771e75-9bb11aeae85c783b0454",
+          "file": "current-rebalance-sections-lab-regressions.spec.ts",
+          "line": 11,
+          "column": 5
+        },
+        {
+          "title": "current rebalance section boundaries dark 320",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "design-system-review",
+              "projectName": "design-system-review",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3548,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T17:20:28.100Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "sections-dark-320",
+                      "contentType": "image/png",
+                      "path": "attachments/0f10df9cee0c901960a64b618df020707d3d7ec87853a3d5f68e9ef5ea553f2a.png"
+                    },
+                    {
+                      "name": "sections-dark-320-expanded",
+                      "contentType": "image/png",
+                      "path": "attachments/c2fbccd7366afdb82c04f5a357e4c129af03eb82400067c494eacaa2e4ad5d45.png"
+                    },
+                    {
+                      "name": "sections-dark-320-progress",
+                      "contentType": "image/png",
+                      "path": "attachments/460abc36ff99425f67b3aa6c4b178f9601ed44dfdaabefae969f095b38b16d50.png"
+                    },
+                    {
+                      "name": "sections-dark-320-live",
+                      "contentType": "image/png",
+                      "path": "attachments/6f1da26dd4603b7b4a6757a104187f0ab2651020b5c6e87def63d2d443a77f35.png"
+                    },
+                    {
+                      "name": "current-source",
+                      "contentType": "application/json",
+                      "path": "attachments/d66d2fff6b1a36a28d4f68ddb9d101dc06e8a09e2c417f375f49b065f3fcb18f.json"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "f485faa93d1876771e75-31550b694e1325d180f8",
+          "file": "current-rebalance-sections-lab-regressions.spec.ts",
+          "line": 11,
+          "column": 5
+        }
+      ]
+    },
+    {
+      "title": "current-rebalance-visual-review-lab-regressions.spec.ts",
+      "file": "current-rebalance-visual-review-lab-regressions.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "review: event timing belongs to the auction heading",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "design-system-review",
+              "projectName": "design-system-review",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2533,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T17:20:31.663Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "current-source",
+                      "contentType": "application/json",
+                      "path": "attachments/d66d2fff6b1a36a28d4f68ddb9d101dc06e8a09e2c417f375f49b065f3fcb18f.json"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "ea1432510216538209fd-d6d2a324dee6254a774a",
+          "file": "current-rebalance-visual-review-lab-regressions.spec.ts",
+          "line": 8,
+          "column": 1
+        },
+        {
+          "title": "review: bid details belong to the selected row",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "design-system-review",
+              "projectName": "design-system-review",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2738,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T17:20:34.202Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "current-source",
+                      "contentType": "application/json",
+                      "path": "attachments/d66d2fff6b1a36a28d4f68ddb9d101dc06e8a09e2c417f375f49b065f3fcb18f.json"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "ea1432510216538209fd-6252d51de553635fe6d6",
+          "file": "current-rebalance-visual-review-lab-regressions.spec.ts",
+          "line": 43,
+          "column": 1
+        },
+        {
+          "title": "review: long liquidity inspection closes at its end with focus return",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "design-system-review",
+              "projectName": "design-system-review",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3027,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T17:20:36.946Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "review-light-390-assets-close",
+                      "contentType": "image/png",
+                      "path": "attachments/ad3b9e42cead59c72a98190ed5b1eb24f8293e06935ca46b5f0f7a51cf758b2d.png"
+                    },
+                    {
+                      "name": "review-light-390-assets-return",
+                      "contentType": "image/png",
+                      "path": "attachments/8cddfe743cce90898d1545d3aa0ad283134fbb745ccceb276ac534f51f94ddb7.png"
+                    },
+                    {
+                      "name": "current-source",
+                      "contentType": "application/json",
+                      "path": "attachments/d66d2fff6b1a36a28d4f68ddb9d101dc06e8a09e2c417f375f49b065f3fcb18f.json"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "ea1432510216538209fd-cd5778941e5cf56d1ad0",
+          "file": "current-rebalance-visual-review-lab-regressions.spec.ts",
+          "line": 67,
+          "column": 1
+        },
+        {
+          "title": "review: invalid weight fields explain their error without erasing inputs",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "design-system-review",
+              "projectName": "design-system-review",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2187,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T17:20:39.978Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "current-source",
+                      "contentType": "application/json",
+                      "path": "attachments/d66d2fff6b1a36a28d4f68ddb9d101dc06e8a09e2c417f375f49b065f3fcb18f.json"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "ea1432510216538209fd-be95a704b5432810f31f",
+          "file": "current-rebalance-visual-review-lab-regressions.spec.ts",
+          "line": 87,
+          "column": 1
+        },
+        {
+          "title": "review: outcome is one summary and handoff leaves a current empty state",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "design-system-review",
+              "projectName": "design-system-review",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2810,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T17:20:42.170Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "current-source",
+                      "contentType": "application/json",
+                      "path": "attachments/d66d2fff6b1a36a28d4f68ddb9d101dc06e8a09e2c417f375f49b065f3fcb18f.json"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "ea1432510216538209fd-87be7d590320c53ee93a",
+          "file": "current-rebalance-visual-review-lab-regressions.spec.ts",
+          "line": 108,
+          "column": 1
+        },
+        {
+          "title": "review: grouped results and status light 1400",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "design-system-review",
+              "projectName": "design-system-review",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3052,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T17:20:44.986Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "review-light-1400-repeat",
+                      "contentType": "image/png",
+                      "path": "attachments/f55fbd5286ee4656e5876cf8da3552b067b5e123757564b815c9e3ab7372c53b.png"
+                    },
+                    {
+                      "name": "review-light-1400-live",
+                      "contentType": "image/png",
+                      "path": "attachments/f98ad92f8c42b112f5f367c48c308710734c3d3cd62c0a6598ff25abf9ebeca6.png"
+                    },
+                    {
+                      "name": "review-light-1400-expired",
+                      "contentType": "image/png",
+                      "path": "attachments/93f39bcd8072d8dde5b1954baef96bc8924f79a06639b11a8bae7f71cc7d8a28.png"
+                    },
+                    {
+                      "name": "current-source",
+                      "contentType": "application/json",
+                      "path": "attachments/d66d2fff6b1a36a28d4f68ddb9d101dc06e8a09e2c417f375f49b065f3fcb18f.json"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "ea1432510216538209fd-dbaa04ef5aee90e98a46",
+          "file": "current-rebalance-visual-review-lab-regressions.spec.ts",
+          "line": 134,
+          "column": 5
+        },
+        {
+          "title": "review: grouped results and status light 900",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "design-system-review",
+              "projectName": "design-system-review",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2958,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T17:20:48.043Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "review-light-900-repeat",
+                      "contentType": "image/png",
+                      "path": "attachments/7f66864b2fa9daeb30da2b86b0c3e5efa41c53baff1f5523466b7b268e93bef5.png"
+                    },
+                    {
+                      "name": "review-light-900-live",
+                      "contentType": "image/png",
+                      "path": "attachments/8191d7012b022fedfd8720601408856bb6b264411d2bcb749624ab8a75ba1d57.png"
+                    },
+                    {
+                      "name": "review-light-900-expired",
+                      "contentType": "image/png",
+                      "path": "attachments/79c51bd519f8586e3b1da6cb21a53d027fb428c86b931e85bd112f7089011f09.png"
+                    },
+                    {
+                      "name": "current-source",
+                      "contentType": "application/json",
+                      "path": "attachments/d66d2fff6b1a36a28d4f68ddb9d101dc06e8a09e2c417f375f49b065f3fcb18f.json"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "ea1432510216538209fd-e8b4b717f8d130471cd0",
+          "file": "current-rebalance-visual-review-lab-regressions.spec.ts",
+          "line": 134,
+          "column": 5
+        },
+        {
+          "title": "review: grouped results and status light 390",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "design-system-review",
+              "projectName": "design-system-review",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2950,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T17:20:51.006Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "review-light-390-repeat",
+                      "contentType": "image/png",
+                      "path": "attachments/f3ddeccae7695ba80cc5cbf410786007a40da0be311bceed56eeff2050d8daff.png"
+                    },
+                    {
+                      "name": "review-light-390-live",
+                      "contentType": "image/png",
+                      "path": "attachments/7bea7e9cf19c6cc7a9a9071fee80248d6a22bc463a10775aa1d02619c3d82191.png"
+                    },
+                    {
+                      "name": "review-light-390-bid-expanded",
+                      "contentType": "image/png",
+                      "path": "attachments/036b581c81420fcf985d081d745c4fb21e005071f4e5b439559bcc0ccf74fb1d.png"
+                    },
+                    {
+                      "name": "review-light-390-expired",
+                      "contentType": "image/png",
+                      "path": "attachments/a8028b5e8e44bb18f8fca6513ba187d7d66b8171a971ef999c739f042e575395.png"
+                    },
+                    {
+                      "name": "current-source",
+                      "contentType": "application/json",
+                      "path": "attachments/d66d2fff6b1a36a28d4f68ddb9d101dc06e8a09e2c417f375f49b065f3fcb18f.json"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "ea1432510216538209fd-bc6a665c3b9186c7fbeb",
+          "file": "current-rebalance-visual-review-lab-regressions.spec.ts",
+          "line": 134,
+          "column": 5
+        },
+        {
+          "title": "review: grouped results and status light 320",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "design-system-review",
+              "projectName": "design-system-review",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2950,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T17:20:53.961Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "review-light-320-repeat",
+                      "contentType": "image/png",
+                      "path": "attachments/62c134357e36923a22cf9afc0dd3c1bde135e2e2a81fda37dc27dcb664829955.png"
+                    },
+                    {
+                      "name": "review-light-320-live",
+                      "contentType": "image/png",
+                      "path": "attachments/d7abafb3521d8f2c2d649749b95aa53cee4d6373b21568cd4df28e28472b2229.png"
+                    },
+                    {
+                      "name": "review-light-320-bid-expanded",
+                      "contentType": "image/png",
+                      "path": "attachments/27531a7963e7748ded4bcbf21d94eebfe2c18be821e794acce3e35c98ea9b3a9.png"
+                    },
+                    {
+                      "name": "review-light-320-expired",
+                      "contentType": "image/png",
+                      "path": "attachments/229986184dd438d7a717fbabd640426d4c9f525ca4cb05d694261f2489f5d12b.png"
+                    },
+                    {
+                      "name": "current-source",
+                      "contentType": "application/json",
+                      "path": "attachments/d66d2fff6b1a36a28d4f68ddb9d101dc06e8a09e2c417f375f49b065f3fcb18f.json"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "ea1432510216538209fd-b3a4f8e725e86d6b5f9c",
+          "file": "current-rebalance-visual-review-lab-regressions.spec.ts",
+          "line": 134,
+          "column": 5
+        },
+        {
+          "title": "review: grouped results and status dark 1400",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "design-system-review",
+              "projectName": "design-system-review",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3024,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T17:20:56.917Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "review-dark-1400-repeat",
+                      "contentType": "image/png",
+                      "path": "attachments/0e56afd550996b22475a5852522f0507e72ddbc44ab3c64d7c72c881d09d36c1.png"
+                    },
+                    {
+                      "name": "review-dark-1400-live",
+                      "contentType": "image/png",
+                      "path": "attachments/719184c1c307a2d728516c9af32fbeb12f7c3db040995460585f8c98cb805813.png"
+                    },
+                    {
+                      "name": "review-dark-1400-expired",
+                      "contentType": "image/png",
+                      "path": "attachments/3e3391a35c2a1e8e7a57c503105f5188af4d033957046363c838af522403c6b0.png"
+                    },
+                    {
+                      "name": "current-source",
+                      "contentType": "application/json",
+                      "path": "attachments/d66d2fff6b1a36a28d4f68ddb9d101dc06e8a09e2c417f375f49b065f3fcb18f.json"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "ea1432510216538209fd-38872366a059558b533f",
+          "file": "current-rebalance-visual-review-lab-regressions.spec.ts",
+          "line": 134,
+          "column": 5
+        },
+        {
+          "title": "review: grouped results and status dark 900",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "design-system-review",
+              "projectName": "design-system-review",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2967,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T17:20:59.947Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "review-dark-900-repeat",
+                      "contentType": "image/png",
+                      "path": "attachments/720d7b216400a7d61b3f4d0ad06ed48541e6dd0e6d5aaee180edecbbd8ce7ec0.png"
+                    },
+                    {
+                      "name": "review-dark-900-live",
+                      "contentType": "image/png",
+                      "path": "attachments/df2d89a30024859acebada04b9bb9c6f53492c94b3052e39bc4726dd3ca83379.png"
+                    },
+                    {
+                      "name": "review-dark-900-expired",
+                      "contentType": "image/png",
+                      "path": "attachments/23a2ee1964dc17d2c4713cd40dd3dd78d378ca1f61684ac46865be23fd7e7e32.png"
+                    },
+                    {
+                      "name": "current-source",
+                      "contentType": "application/json",
+                      "path": "attachments/d66d2fff6b1a36a28d4f68ddb9d101dc06e8a09e2c417f375f49b065f3fcb18f.json"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "ea1432510216538209fd-7afeb2497b0e5f5d83bb",
+          "file": "current-rebalance-visual-review-lab-regressions.spec.ts",
+          "line": 134,
+          "column": 5
+        },
+        {
+          "title": "review: grouped results and status dark 390",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "design-system-review",
+              "projectName": "design-system-review",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2951,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T17:21:02.919Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "review-dark-390-repeat",
+                      "contentType": "image/png",
+                      "path": "attachments/d3b0b304fdd2d64eb61fa4b72d0bcbd9748b4723a1c73d503e5efa198b094eff.png"
+                    },
+                    {
+                      "name": "review-dark-390-live",
+                      "contentType": "image/png",
+                      "path": "attachments/4abd8765850ab4d13a6355692680c2218fad82758923e19915f2fc511f0c334b.png"
+                    },
+                    {
+                      "name": "review-dark-390-bid-expanded",
+                      "contentType": "image/png",
+                      "path": "attachments/e6b582e8bc67e0b3f5c166887594d0157b222566fc13cee177e752ea728bcfb8.png"
+                    },
+                    {
+                      "name": "review-dark-390-expired",
+                      "contentType": "image/png",
+                      "path": "attachments/8e719885edc2d4976803bb0308ecb6add0556fb989e153f63f82e8e28047dd58.png"
+                    },
+                    {
+                      "name": "current-source",
+                      "contentType": "application/json",
+                      "path": "attachments/d66d2fff6b1a36a28d4f68ddb9d101dc06e8a09e2c417f375f49b065f3fcb18f.json"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "ea1432510216538209fd-00bd766844d4d4234ecc",
+          "file": "current-rebalance-visual-review-lab-regressions.spec.ts",
+          "line": 134,
+          "column": 5
+        },
+        {
+          "title": "review: grouped results and status dark 320",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "design-system-review",
+              "projectName": "design-system-review",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2980,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T17:21:05.875Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "review-dark-320-repeat",
+                      "contentType": "image/png",
+                      "path": "attachments/02e8fdd25cab503d2d62e4d47c864dabbcdaf05fb4fb9f464b1e6c6321c2deb4.png"
+                    },
+                    {
+                      "name": "review-dark-320-live",
+                      "contentType": "image/png",
+                      "path": "attachments/8e8c82a393898ba26f95f6f949c94fa6c8784fc96a19b98224c7cceb6fc1f80f.png"
+                    },
+                    {
+                      "name": "review-dark-320-bid-expanded",
+                      "contentType": "image/png",
+                      "path": "attachments/69b683e1c4e3e251f3a78a5578bc8a4fa9733ede2b22dc12948118e91bb505f7.png"
+                    },
+                    {
+                      "name": "review-dark-320-expired",
+                      "contentType": "image/png",
+                      "path": "attachments/e274c31ab115c4afeaab6c98e1f6afe88439f35f2cdfb740e04827d1ec11f603.png"
+                    },
+                    {
+                      "name": "current-source",
+                      "contentType": "application/json",
+                      "path": "attachments/d66d2fff6b1a36a28d4f68ddb9d101dc06e8a09e2c417f375f49b065f3fcb18f.json"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "ea1432510216538209fd-386f2ac66a8f0b071c43",
+          "file": "current-rebalance-visual-review-lab-regressions.spec.ts",
+          "line": 134,
+          "column": 5
+        },
+        {
+          "title": "review: pressured inspection and expiry light 900",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "design-system-review",
+              "projectName": "design-system-review",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 6196,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T17:21:08.861Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "pressure-light-900-validation",
+                      "contentType": "image/png",
+                      "path": "attachments/8628d41f1ef043181089b508c71da899f4f1a3b0074d3cf974eddab4b0d2f487.png"
+                    },
+                    {
+                      "name": "pressure-light-900-warning",
+                      "contentType": "image/png",
+                      "path": "attachments/05da9b0330563555e19da5897110cdc565a3a5a6bc16a273728cdcf32fb59c6b.png"
+                    },
+                    {
+                      "name": "pressure-light-900-assets",
+                      "contentType": "image/png",
+                      "path": "attachments/0479deebc04ab5bea464c1eff39826bba5a00ec89ac5928c8cc0e05a1c119ab8.png"
+                    },
+                    {
+                      "name": "pressure-light-900-assets-close",
+                      "contentType": "image/png",
+                      "path": "attachments/b2eab9bc63f2d348058e9b82bc53744cef9aab06f815b078882091d9f08daa1c.png"
+                    },
+                    {
+                      "name": "pressure-light-900-expired-indexing",
+                      "contentType": "image/png",
+                      "path": "attachments/7438520a3caefd5fdaf03a124bb38a3e318d8c633770012e60e15224c00b98d2.png"
+                    },
+                    {
+                      "name": "current-source",
+                      "contentType": "application/json",
+                      "path": "attachments/d66d2fff6b1a36a28d4f68ddb9d101dc06e8a09e2c417f375f49b065f3fcb18f.json"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "ea1432510216538209fd-d9c3d3180199f6cc415b",
+          "file": "current-rebalance-visual-review-lab-regressions.spec.ts",
+          "line": 188,
+          "column": 5
+        },
+        {
+          "title": "review: pressured inspection and expiry light 320",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "design-system-review",
+              "projectName": "design-system-review",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 6393,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T17:21:15.063Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "pressure-light-320-validation",
+                      "contentType": "image/png",
+                      "path": "attachments/ae4c093b84df43df95921853190875420a7be34a379301a2aecddc419f2e8810.png"
+                    },
+                    {
+                      "name": "pressure-light-320-warning",
+                      "contentType": "image/png",
+                      "path": "attachments/ec574624a5d9ccdf55a99cd40475390b067576dd8750212ba1c8b50e8eceb345.png"
+                    },
+                    {
+                      "name": "pressure-light-320-assets",
+                      "contentType": "image/png",
+                      "path": "attachments/ae8170a6f59d07b29233634f95f18d75742d3be4e87589816a83984eefe83454.png"
+                    },
+                    {
+                      "name": "pressure-light-320-assets-close",
+                      "contentType": "image/png",
+                      "path": "attachments/264eddaae5b1bfc2c1789669926824e26e74c6135370082691e7b9eee20b9ef2.png"
+                    },
+                    {
+                      "name": "pressure-light-320-expired-indexing",
+                      "contentType": "image/png",
+                      "path": "attachments/615acb9accf13bf2dcaee9871ea6a9f713444a0000074c842756635600250929.png"
+                    },
+                    {
+                      "name": "current-source",
+                      "contentType": "application/json",
+                      "path": "attachments/d66d2fff6b1a36a28d4f68ddb9d101dc06e8a09e2c417f375f49b065f3fcb18f.json"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "ea1432510216538209fd-9380d88177e869fd9b5f",
+          "file": "current-rebalance-visual-review-lab-regressions.spec.ts",
+          "line": 188,
+          "column": 5
+        },
+        {
+          "title": "review: pressured inspection and expiry dark 900",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "design-system-review",
+              "projectName": "design-system-review",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 6153,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T17:21:21.461Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "pressure-dark-900-validation",
+                      "contentType": "image/png",
+                      "path": "attachments/3e72402062ded267a8e3cabc5f2a0b94143fc4bf32a210c9f0b745ec07b6fb71.png"
+                    },
+                    {
+                      "name": "pressure-dark-900-warning",
+                      "contentType": "image/png",
+                      "path": "attachments/d7e0bb808c9b799e7086ede6cd44bc87e6ace53ee10de4145eac461b397010fe.png"
+                    },
+                    {
+                      "name": "pressure-dark-900-assets",
+                      "contentType": "image/png",
+                      "path": "attachments/a72127b3fb6ece0fef191c5fb2896c42d671fa37000b5a197536656dce2b158c.png"
+                    },
+                    {
+                      "name": "pressure-dark-900-assets-close",
+                      "contentType": "image/png",
+                      "path": "attachments/0c3acb9a762db30e2c3914d6f397e63ababf0a6b31c5e108b45946a2ec42cd42.png"
+                    },
+                    {
+                      "name": "pressure-dark-900-expired-indexing",
+                      "contentType": "image/png",
+                      "path": "attachments/41d3a2b87884ecf6002ab030f68c02641a3185f852827a5cc230a60e818c8951.png"
+                    },
+                    {
+                      "name": "current-source",
+                      "contentType": "application/json",
+                      "path": "attachments/d66d2fff6b1a36a28d4f68ddb9d101dc06e8a09e2c417f375f49b065f3fcb18f.json"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "ea1432510216538209fd-31f5cd83597dbd495ede",
+          "file": "current-rebalance-visual-review-lab-regressions.spec.ts",
+          "line": 188,
+          "column": 5
+        },
+        {
+          "title": "review: pressured inspection and expiry dark 320",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "design-system-review",
+              "projectName": "design-system-review",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 6583,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T17:21:27.620Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "pressure-dark-320-validation",
+                      "contentType": "image/png",
+                      "path": "attachments/9cf5edc46ee58811f5092938253c98054f9531ab208aef2a1e22dff4c994f14c.png"
+                    },
+                    {
+                      "name": "pressure-dark-320-warning",
+                      "contentType": "image/png",
+                      "path": "attachments/b4c629425a415f2e73a1454711b79bc010f5650cca17c40439ce77b0354265b9.png"
+                    },
+                    {
+                      "name": "pressure-dark-320-assets",
+                      "contentType": "image/png",
+                      "path": "attachments/1a10906cd23fa2ab4af8391e80f241b115600a32f1fd7bd25a7d39e70b4330a6.png"
+                    },
+                    {
+                      "name": "pressure-dark-320-assets-close",
+                      "contentType": "image/png",
+                      "path": "attachments/4d67ac7dcecc0a5c26542c4728f2ee6c271a6235412a179af04504a8d106142e.png"
+                    },
+                    {
+                      "name": "pressure-dark-320-expired-indexing",
+                      "contentType": "image/png",
+                      "path": "attachments/6ebc81083fbde988b0caa7becbf7b1e9eaec98672ce2ed3cad9dc02319623c82.png"
+                    },
+                    {
+                      "name": "current-source",
+                      "contentType": "application/json",
+                      "path": "attachments/d66d2fff6b1a36a28d4f68ddb9d101dc06e8a09e2c417f375f49b065f3fcb18f.json"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "ea1432510216538209fd-257f0bef94a69d497055",
+          "file": "current-rebalance-visual-review-lab-regressions.spec.ts",
+          "line": 188,
+          "column": 5
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-09-13T17:16:21.055Z",
+    "duration": 313220.376,
+    "expected": 74,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}

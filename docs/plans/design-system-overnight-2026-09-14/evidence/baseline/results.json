@@ -1,0 +1,4084 @@
+{
+  "rawReportSha256": "575a7551d017aba9ba0eeb22c0c5104d2d0b5a4d9a0eb99cda27a88d07a035ae",
+  "stats": {
+    "startTime": "2026-09-14T02:28:23.669Z",
+    "duration": 301568.887,
+    "expected": 53,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "errors": [],
+  "records": [
+    {
+      "file": "defi-family-lab-regressions.spec.ts",
+      "line": 28,
+      "title": "defi-family-lab-regressions.spec.ts / DeFi rows light 320",
+      "status": "expected",
+      "expectedStatus": "passed",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 18401,
+          "retry": 0,
+          "errors": [],
+          "attachments": [
+            {
+              "name": "default",
+              "contentType": "image/png",
+              "bytes": 59662,
+              "sha256": "d90742b43a4235b7090f87f902b3bba1da0c5853d7eb84e230cab391b5ca07e1",
+              "file": "defi-rows-light-320-default-d90742b4.png"
+            },
+            {
+              "name": "reward-sort",
+              "contentType": "image/png",
+              "bytes": 62127,
+              "sha256": "589da874471b4a27708bf54f44de010128f8d5702938974b3700b9da362bebb5"
+            },
+            {
+              "name": "Long content",
+              "contentType": "image/png",
+              "bytes": 58999,
+              "sha256": "999bd6f79fd6975f33d76ec5c8e2991e65f041748625a828acb2b59e5d78aab5",
+              "file": "defi-rows-light-320-long-content-999bd6f7.png"
+            },
+            {
+              "name": "Zero / unavailable",
+              "contentType": "image/png",
+              "bytes": 60306,
+              "sha256": "8d0210ea5ab48c85ba701c875bf4d70d4190018e58ddccef21228fbfedb4f4c2"
+            },
+            {
+              "name": "Loading opportunities",
+              "contentType": "image/png",
+              "bytes": 26465,
+              "sha256": "1959f47319c27831de003927ea7b22f14307db7788d6b107f1a85be09e585dfc"
+            },
+            {
+              "name": "Empty",
+              "contentType": "image/png",
+              "bytes": 66966,
+              "sha256": "42229e4a4fb85d8cf36acc96227e186a4b0734acc6a453933570cf35514cf804"
+            },
+            {
+              "name": "public-source-digest",
+              "contentType": "text/plain",
+              "bytes": 64,
+              "sha256": "6cf710bdf9739eb02aef909130693d44c68b9478f0d1b5c2da39319325a4855c",
+              "text": "ef4794d91f10cd4b804475c2c0ef078d2be0bd192a6537af925729143abc80a5"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "file": "defi-family-lab-regressions.spec.ts",
+      "line": 28,
+      "title": "defi-family-lab-regressions.spec.ts / DeFi rows light 390",
+      "status": "expected",
+      "expectedStatus": "passed",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 6410,
+          "retry": 0,
+          "errors": [],
+          "attachments": [
+            {
+              "name": "default",
+              "contentType": "image/png",
+              "bytes": 63720,
+              "sha256": "4d73e5af8df1ee0dc3393a955309d11df0895d0f168fbbac6c2e934a481db461"
+            },
+            {
+              "name": "reward-sort",
+              "contentType": "image/png",
+              "bytes": 66354,
+              "sha256": "e39291b0e53f11f7b94f59b2ffc68497fa417323ed3220827d676dfe1343f445"
+            },
+            {
+              "name": "Long content",
+              "contentType": "image/png",
+              "bytes": 67615,
+              "sha256": "526a1aa79cde574cd53e4594b29118469ed9342f970b25d24ec2aa999952bd5d"
+            },
+            {
+              "name": "Zero / unavailable",
+              "contentType": "image/png",
+              "bytes": 63769,
+              "sha256": "d6e693d1129939be4fd6339bcd4ca10c7c831990762bc7f5c538e9701d829787"
+            },
+            {
+              "name": "Loading opportunities",
+              "contentType": "image/png",
+              "bytes": 28044,
+              "sha256": "939ea8188f4da3f6eb1294664308bdf68026bfa9a9475f90f307dcc3d262b459"
+            },
+            {
+              "name": "Empty",
+              "contentType": "image/png",
+              "bytes": 71955,
+              "sha256": "1ea5ba09c6a9617b7ae58982541e8f5e90f32a1da51e37b26c0e3bdae9e4075d"
+            },
+            {
+              "name": "public-source-digest",
+              "contentType": "text/plain",
+              "bytes": 64,
+              "sha256": "6cf710bdf9739eb02aef909130693d44c68b9478f0d1b5c2da39319325a4855c",
+              "text": "ef4794d91f10cd4b804475c2c0ef078d2be0bd192a6537af925729143abc80a5"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "file": "defi-family-lab-regressions.spec.ts",
+      "line": 28,
+      "title": "defi-family-lab-regressions.spec.ts / DeFi rows light 1400",
+      "status": "expected",
+      "expectedStatus": "passed",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 5444,
+          "retry": 0,
+          "errors": [],
+          "attachments": [
+            {
+              "name": "default",
+              "contentType": "image/png",
+              "bytes": 142689,
+              "sha256": "6e865206594b066188e892b12e71541e4e698ccc7b611306c991d45ce6e7cb8e"
+            },
+            {
+              "name": "reward-sort",
+              "contentType": "image/png",
+              "bytes": 145080,
+              "sha256": "b98b36481cc326620d9c17d7030cc0ab15d348f7fb546192de9596a787b8c15e"
+            },
+            {
+              "name": "Long content",
+              "contentType": "image/png",
+              "bytes": 149750,
+              "sha256": "80649d075acd9e58db07d23e5d96c2ff50d1b39212c5a8dad5abaaf9bddba793"
+            },
+            {
+              "name": "Zero / unavailable",
+              "contentType": "image/png",
+              "bytes": 136559,
+              "sha256": "ea1765ac74eedd5e76f04f3952bea3705107590b53e48961e7c9b1d3aac08980"
+            },
+            {
+              "name": "Loading opportunities",
+              "contentType": "image/png",
+              "bytes": 84465,
+              "sha256": "2e8b67826065e870e17d9e0abbc5581160b3e862166c4076dd86a2033eec691f"
+            },
+            {
+              "name": "Empty",
+              "contentType": "image/png",
+              "bytes": 134763,
+              "sha256": "d1e05f3ba08423612a8731758b4e94198e877f34e637abbe7387dc22f9274159"
+            },
+            {
+              "name": "public-source-digest",
+              "contentType": "text/plain",
+              "bytes": 64,
+              "sha256": "6cf710bdf9739eb02aef909130693d44c68b9478f0d1b5c2da39319325a4855c",
+              "text": "ef4794d91f10cd4b804475c2c0ef078d2be0bd192a6537af925729143abc80a5"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "file": "defi-family-lab-regressions.spec.ts",
+      "line": 28,
+      "title": "defi-family-lab-regressions.spec.ts / DeFi rows dark 320",
+      "status": "expected",
+      "expectedStatus": "passed",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 6334,
+          "retry": 0,
+          "errors": [],
+          "attachments": [
+            {
+              "name": "default",
+              "contentType": "image/png",
+              "bytes": 63374,
+              "sha256": "c17fa9e8aedb36667d18e697b1a59637ce0648dd70c2dbb5fd2444efdde1a91d"
+            },
+            {
+              "name": "reward-sort",
+              "contentType": "image/png",
+              "bytes": 65656,
+              "sha256": "025f4a3bb5572aa265b34e34d9ef207717a29cd8938a9313f771b861b6bab84d"
+            },
+            {
+              "name": "Long content",
+              "contentType": "image/png",
+              "bytes": 60783,
+              "sha256": "6f7d0b5cd441a7d0ab9d847975ad7231805dcd296f81cb1c77672c105e0521cd"
+            },
+            {
+              "name": "Zero / unavailable",
+              "contentType": "image/png",
+              "bytes": 63196,
+              "sha256": "d146124a914a57aad51f8f9eddb712fd60dda4c03bd678cd00b382abd818d38d"
+            },
+            {
+              "name": "Loading opportunities",
+              "contentType": "image/png",
+              "bytes": 26803,
+              "sha256": "3e53830ef31698fc5ac603a0dac028e0bb7d6dea49ac73adaa603965a74cb3e4"
+            },
+            {
+              "name": "Empty",
+              "contentType": "image/png",
+              "bytes": 67050,
+              "sha256": "a20d18107c16f9a25a1805bcd039da53f9fd1936ec763977c6bb9b0fac3534df"
+            },
+            {
+              "name": "public-source-digest",
+              "contentType": "text/plain",
+              "bytes": 64,
+              "sha256": "6cf710bdf9739eb02aef909130693d44c68b9478f0d1b5c2da39319325a4855c",
+              "text": "ef4794d91f10cd4b804475c2c0ef078d2be0bd192a6537af925729143abc80a5"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "file": "defi-family-lab-regressions.spec.ts",
+      "line": 28,
+      "title": "defi-family-lab-regressions.spec.ts / DeFi rows dark 390",
+      "status": "expected",
+      "expectedStatus": "passed",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 6261,
+          "retry": 0,
+          "errors": [],
+          "attachments": [
+            {
+              "name": "default",
+              "contentType": "image/png",
+              "bytes": 67254,
+              "sha256": "b7bd13dea56d5ccd4821bcd0d55336e69a2bf8b42d3dd25e5a436dbccc86c32c"
+            },
+            {
+              "name": "reward-sort",
+              "contentType": "image/png",
+              "bytes": 69748,
+              "sha256": "68e521a2f10ec1e9b37c3f8544b3134f0b71ae000399b63b0acc97ebf70d60d2"
+            },
+            {
+              "name": "Long content",
+              "contentType": "image/png",
+              "bytes": 70156,
+              "sha256": "19c8395faa33aa0c36cba41f6146be818665b7e3cf3243b5526b1742ea70b14c"
+            },
+            {
+              "name": "Zero / unavailable",
+              "contentType": "image/png",
+              "bytes": 66483,
+              "sha256": "2d6d038f28a7becadfef3a4d2492ad06792e096a6eb6331ea950a62162305dab"
+            },
+            {
+              "name": "Loading opportunities",
+              "contentType": "image/png",
+              "bytes": 28042,
+              "sha256": "710d3f1e858213320385247683823d5d2ae01c7e751200716e775ccf061eb8ea"
+            },
+            {
+              "name": "Empty",
+              "contentType": "image/png",
+              "bytes": 71539,
+              "sha256": "1cec7618af79e70538e455321bf511e5b1606559af71627e178354d07cfe750d"
+            },
+            {
+              "name": "public-source-digest",
+              "contentType": "text/plain",
+              "bytes": 64,
+              "sha256": "6cf710bdf9739eb02aef909130693d44c68b9478f0d1b5c2da39319325a4855c",
+              "text": "ef4794d91f10cd4b804475c2c0ef078d2be0bd192a6537af925729143abc80a5"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "file": "defi-family-lab-regressions.spec.ts",
+      "line": 28,
+      "title": "defi-family-lab-regressions.spec.ts / DeFi rows dark 1400",
+      "status": "expected",
+      "expectedStatus": "passed",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 5312,
+          "retry": 0,
+          "errors": [],
+          "attachments": [
+            {
+              "name": "default",
+              "contentType": "image/png",
+              "bytes": 145981,
+              "sha256": "617203dbbf4ff6dbe39473f782c91061178e6839cd33fa02665270cd1edce469",
+              "file": "defi-rows-dark-1400-default-617203db.png"
+            },
+            {
+              "name": "reward-sort",
+              "contentType": "image/png",
+              "bytes": 149076,
+              "sha256": "2d865e1393db4956c14bc116afac134e307a14a9366452273f295d8a4f83b19d"
+            },
+            {
+              "name": "Long content",
+              "contentType": "image/png",
+              "bytes": 154010,
+              "sha256": "a7b39c6e7626862e32440e46966660a65a1230abc0fa6e951f71ff5fae3a6447",
+              "file": "defi-rows-dark-1400-long-content-a7b39c6e.png"
+            },
+            {
+              "name": "Zero / unavailable",
+              "contentType": "image/png",
+              "bytes": 140408,
+              "sha256": "428fde3ae0b51213665bf83e8a6d2de52f45dfe4db122a09d05b858e140891b9"
+            },
+            {
+              "name": "Loading opportunities",
+              "contentType": "image/png",
+              "bytes": 85101,
+              "sha256": "22fe687006c1b401a0e805692c5c618b12f88e9b3d29e1d97afdd3e62efdd167"
+            },
+            {
+              "name": "Empty",
+              "contentType": "image/png",
+              "bytes": 134868,
+              "sha256": "4509d3c9a3cc17357bbc314c4e13a3d2c3c1cbf47bbb25126010a2244af1d73d"
+            },
+            {
+              "name": "public-source-digest",
+              "contentType": "text/plain",
+              "bytes": 64,
+              "sha256": "6cf710bdf9739eb02aef909130693d44c68b9478f0d1b5c2da39319325a4855c",
+              "text": "ef4794d91f10cd4b804475c2c0ef078d2be0bd192a6537af925729143abc80a5"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "file": "defi-family-lab-regressions.spec.ts",
+      "line": 554,
+      "title": "defi-family-lab-regressions.spec.ts / DeFi reflows and transfers link focus at its container boundary",
+      "status": "expected",
+      "expectedStatus": "passed",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 3354,
+          "retry": 0,
+          "errors": [],
+          "attachments": [
+            {
+              "name": "boundary-1023",
+              "contentType": "image/png",
+              "bytes": 74819,
+              "sha256": "41550db8988cd99ea5d341b0976bed8a3210c8349206fc762415810274a12dc3"
+            },
+            {
+              "name": "boundary-1024",
+              "contentType": "image/png",
+              "bytes": 81681,
+              "sha256": "f8342fb58e7adffcef2bff8ca69158b16142e5666a191578a70ec468cbb683c2"
+            },
+            {
+              "name": "boundary-1279",
+              "contentType": "image/png",
+              "bytes": 85725,
+              "sha256": "9e289ccd37a347647cd7181acd1845603404de3037b6969ad54fb7827b844e9b"
+            },
+            {
+              "name": "boundary-1280",
+              "contentType": "image/png",
+              "bytes": 85325,
+              "sha256": "7153446196ceeb0efdb13b04fd79d67bfe04115fd8e84276704993af95b36cdd"
+            },
+            {
+              "name": "public-source-digest",
+              "contentType": "text/plain",
+              "bytes": 64,
+              "sha256": "6cf710bdf9739eb02aef909130693d44c68b9478f0d1b5c2da39319325a4855c",
+              "text": "ef4794d91f10cd4b804475c2c0ef078d2be0bd192a6537af925729143abc80a5"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "file": "discover-family-lab-regressions.spec.ts",
+      "line": 28,
+      "title": "discover-family-lab-regressions.spec.ts / discover family initial behavior",
+      "status": "expected",
+      "expectedStatus": "passed",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 4787,
+          "retry": 0,
+          "errors": [],
+          "attachments": [
+            {
+              "name": "public-source-digest",
+              "contentType": "text/plain",
+              "bytes": 64,
+              "sha256": "6cf710bdf9739eb02aef909130693d44c68b9478f0d1b5c2da39319325a4855c",
+              "text": "ef4794d91f10cd4b804475c2c0ef078d2be0bd192a6537af925729143abc80a5"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "file": "discover-family-lab-regressions.spec.ts",
+      "line": 87,
+      "title": "discover-family-lab-regressions.spec.ts / discover family light 1400",
+      "status": "expected",
+      "expectedStatus": "passed",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 4414,
+          "retry": 0,
+          "errors": [],
+          "attachments": [
+            {
+              "name": "default",
+              "contentType": "image/png",
+              "bytes": 143766,
+              "sha256": "0444f65d73b803a523ab58ec7f23049a2ccf841cd950e8d0efdcd169fecc44f2",
+              "file": "discover-family-light-1400-default-0444f65d.png"
+            },
+            {
+              "name": "basket-open",
+              "contentType": "image/png",
+              "bytes": 161349,
+              "sha256": "32b1f4ce292df0e94465fcc07c4ef1a800c142d4a854c13b277480bcd3d63d18"
+            },
+            {
+              "name": "zero-unavailable",
+              "contentType": "image/png",
+              "bytes": 140264,
+              "sha256": "d8db46328cd325bc3cf6a185dd20a232df07df110ea4953463026051cf02d21d"
+            },
+            {
+              "name": "loading",
+              "contentType": "image/png",
+              "bytes": 70379,
+              "sha256": "98ec61cebe4388ef02bfab78cb1b179b0acd1ebbfd48f9c8d36a57e941acd2a3"
+            },
+            {
+              "name": "long-content",
+              "contentType": "image/png",
+              "bytes": 154804,
+              "sha256": "04f6d9dc23bf9d6ff765f1002e405e47f73fb7ba40241dc5b308dc45a01332b1"
+            },
+            {
+              "name": "boundary-1151",
+              "contentType": "image/png",
+              "bytes": 134424,
+              "sha256": "6da0fbdf745240ce6c5ffcd4663123b6230eada913993201a8c16041646ca710"
+            },
+            {
+              "name": "boundary-1152",
+              "contentType": "image/png",
+              "bytes": 155992,
+              "sha256": "188f2dbc18f344d316f13b7071e148e337f4a05af4875b5ad8c9ac2c4d16e8fc"
+            },
+            {
+              "name": "constrained",
+              "contentType": "image/png",
+              "bytes": 91834,
+              "sha256": "a14f6797d17e80d2c547d98c49cc79e1accd3a023bef88e6acac975c4e113705",
+              "file": "discover-family-light-1400-constrained-a14f6797.png"
+            },
+            {
+              "name": "public-source-digest",
+              "contentType": "text/plain",
+              "bytes": 64,
+              "sha256": "6cf710bdf9739eb02aef909130693d44c68b9478f0d1b5c2da39319325a4855c",
+              "text": "ef4794d91f10cd4b804475c2c0ef078d2be0bd192a6537af925729143abc80a5"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "file": "discover-family-lab-regressions.spec.ts",
+      "line": 87,
+      "title": "discover-family-lab-regressions.spec.ts / discover family dark 1400",
+      "status": "expected",
+      "expectedStatus": "passed",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 4465,
+          "retry": 0,
+          "errors": [],
+          "attachments": [
+            {
+              "name": "default",
+              "contentType": "image/png",
+              "bytes": 157418,
+              "sha256": "1a3aaf686d46bd208d177b939388f1e40f222fedb9441ff621b97eb6757a1d60",
+              "file": "discover-family-dark-1400-default-1a3aaf68.png"
+            },
+            {
+              "name": "basket-open",
+              "contentType": "image/png",
+              "bytes": 165454,
+              "sha256": "6b7813aae54b543b7627b45aa994005f0c7935ca46ed49fc348795875a74e521"
+            },
+            {
+              "name": "zero-unavailable",
+              "contentType": "image/png",
+              "bytes": 143642,
+              "sha256": "2dc57ec7f9752e104d10a3f54151828a6da8adc64768c6cf7da93e59454bd196"
+            },
+            {
+              "name": "loading",
+              "contentType": "image/png",
+              "bytes": 71783,
+              "sha256": "7588111ea1677bfb3a518121d4312a578e750105454fa17374985e66910f63e7"
+            },
+            {
+              "name": "long-content",
+              "contentType": "image/png",
+              "bytes": 158978,
+              "sha256": "d42dfd48cd4f0dddd95ff522dd8d073596444b8abb4e3f1d2dacf3e495b63fda"
+            },
+            {
+              "name": "boundary-1151",
+              "contentType": "image/png",
+              "bytes": 143762,
+              "sha256": "f6a9514da4f0dc329d45369da919f52a4b2efefa2b938106c1bbbf74bc8ff9e6"
+            },
+            {
+              "name": "boundary-1152",
+              "contentType": "image/png",
+              "bytes": 160054,
+              "sha256": "a2375974d7a115fef1110ce90fe46f22699518de69f90e9f0f9098c48bed801a"
+            },
+            {
+              "name": "constrained",
+              "contentType": "image/png",
+              "bytes": 96360,
+              "sha256": "b29efa7a310ada04db4a684f50a2da66c91193ae5eea0edb7b25e2bbccb02315",
+              "file": "discover-family-dark-1400-constrained-b29efa7a.png"
+            },
+            {
+              "name": "public-source-digest",
+              "contentType": "text/plain",
+              "bytes": 64,
+              "sha256": "6cf710bdf9739eb02aef909130693d44c68b9478f0d1b5c2da39319325a4855c",
+              "text": "ef4794d91f10cd4b804475c2c0ef078d2be0bd192a6537af925729143abc80a5"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "file": "earn-family-lab-regressions.spec.ts",
+      "line": 26,
+      "title": "earn-family-lab-regressions.spec.ts / Earn candidate exposes source-backed opportunities",
+      "status": "expected",
+      "expectedStatus": "passed",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 2377,
+          "retry": 0,
+          "errors": [],
+          "attachments": [
+            {
+              "name": "public-source-digest",
+              "contentType": "text/plain",
+              "bytes": 64,
+              "sha256": "6cf710bdf9739eb02aef909130693d44c68b9478f0d1b5c2da39319325a4855c",
+              "text": "ef4794d91f10cd4b804475c2c0ef078d2be0bd192a6537af925729143abc80a5"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "file": "earn-family-lab-regressions.spec.ts",
+      "line": 35,
+      "title": "earn-family-lab-regressions.spec.ts / Earn candidate states light 320",
+      "status": "expected",
+      "expectedStatus": "passed",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 4717,
+          "retry": 0,
+          "errors": [],
+          "attachments": [
+            {
+              "name": "index-default",
+              "contentType": "image/png",
+              "bytes": 61989,
+              "sha256": "16882cdeaa7e3625585ba9814c3e018ac490d6d2d1989cccf5c88afe6ff4c998",
+              "file": "earn-candidate-states-light-320-index-default-16882cde.png"
+            },
+            {
+              "name": "index-wallet",
+              "contentType": "image/png",
+              "bytes": 66277,
+              "sha256": "02d9201ec1657e68b1fa7fe8197d44c3586e2182695788f389c599775c577ccf"
+            },
+            {
+              "name": "index-sparse",
+              "contentType": "image/png",
+              "bytes": 65887,
+              "sha256": "05622b311c6b0f3dca39d5f94b516757289ffe9ac2cfd1e582f94423b8307c0d"
+            },
+            {
+              "name": "index-long",
+              "contentType": "image/png",
+              "bytes": 67519,
+              "sha256": "44ac0fad73cd8bbd43d72d1fbed0f261c3a0f5c1cc4985607692f506614ef4eb"
+            },
+            {
+              "name": "wallet-loading",
+              "contentType": "image/png",
+              "bytes": 58147,
+              "sha256": "fda1fd9312d16e7f8703f6478a0a522e7b408340b0bee56fa4e6e79936488de9"
+            },
+            {
+              "name": "zero-unavailable",
+              "contentType": "image/png",
+              "bytes": 53447,
+              "sha256": "d6fad5a0d5eb6bd23be4408c4b0ca3bac3cc5eeea84aa8a79bdbb43eb86dcc6a"
+            },
+            {
+              "name": "loading",
+              "contentType": "image/png",
+              "bytes": 30396,
+              "sha256": "af70ef6859d1f1f06ec1a48cbe1d99436a97e73adc49c54899aa57e57d9a64d7"
+            },
+            {
+              "name": "yield-wallet",
+              "contentType": "image/png",
+              "bytes": 68080,
+              "sha256": "8f99be0155d0ca731f785a7ba866fe91ed60dddbb4dbb0f5a822c8b06df16154"
+            },
+            {
+              "name": "yield-sparse",
+              "contentType": "image/png",
+              "bytes": 67826,
+              "sha256": "7c2406619828e60169db024ab408530ed48ddddddf2afc9f65ad3467eccb82e4"
+            },
+            {
+              "name": "yield-long",
+              "contentType": "image/png",
+              "bytes": 63673,
+              "sha256": "3214667ac90366001f58bc326e2995331d3b625fe5fa1b6ee008643134aa0d08",
+              "file": "earn-candidate-states-light-320-yield-long-3214667a.png"
+            },
+            {
+              "name": "yield-default",
+              "contentType": "image/png",
+              "bytes": 68221,
+              "sha256": "917ff4ff97e94778b36315d443c7eefd42549def85b420c8cf8b3b9fcf7ed99c"
+            },
+            {
+              "name": "public-source-digest",
+              "contentType": "text/plain",
+              "bytes": 64,
+              "sha256": "6cf710bdf9739eb02aef909130693d44c68b9478f0d1b5c2da39319325a4855c",
+              "text": "ef4794d91f10cd4b804475c2c0ef078d2be0bd192a6537af925729143abc80a5"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "file": "earn-family-lab-regressions.spec.ts",
+      "line": 35,
+      "title": "earn-family-lab-regressions.spec.ts / Earn candidate states light 390",
+      "status": "expected",
+      "expectedStatus": "passed",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 4654,
+          "retry": 0,
+          "errors": [],
+          "attachments": [
+            {
+              "name": "index-default",
+              "contentType": "image/png",
+              "bytes": 63427,
+              "sha256": "f9e8a3914d2640fdbb669aa4b0bf2f7764ea028fefc81f423d58c86c13e2e6e1"
+            },
+            {
+              "name": "index-wallet",
+              "contentType": "image/png",
+              "bytes": 67539,
+              "sha256": "0d8d27cf212612b00729d81aaca2a1fdc9a141a8ee15cacb4daea1cf584aa8e4"
+            },
+            {
+              "name": "index-sparse",
+              "contentType": "image/png",
+              "bytes": 67338,
+              "sha256": "bbfbb506a0caf5a811324d47801962844bc617af643e9ea2f0d85a5719d604bb"
+            },
+            {
+              "name": "index-long",
+              "contentType": "image/png",
+              "bytes": 77363,
+              "sha256": "984e6318333fb237b56e87ede767fd7eca1cae06e9c396fc447877cbde8fb692"
+            },
+            {
+              "name": "wallet-loading",
+              "contentType": "image/png",
+              "bytes": 59238,
+              "sha256": "4ddbe9b0a27421c5da788004d637e4718c315fb5d8400add3694084c0b5e7ec7"
+            },
+            {
+              "name": "zero-unavailable",
+              "contentType": "image/png",
+              "bytes": 54522,
+              "sha256": "964817ccfd424c91eca226fdc60fbf311feedfd6d4c05fdc75b9061678ce2049"
+            },
+            {
+              "name": "loading",
+              "contentType": "image/png",
+              "bytes": 31169,
+              "sha256": "b241231a694c38a3092aa18cb073eafd251d3719a64b2d4529d19f32456aad5d"
+            },
+            {
+              "name": "yield-wallet",
+              "contentType": "image/png",
+              "bytes": 76195,
+              "sha256": "d5c976f7eaec4cf38b8f080cb811cae2c08d3ee83566685d1ef1ba8258f71bb7"
+            },
+            {
+              "name": "yield-sparse",
+              "contentType": "image/png",
+              "bytes": 75957,
+              "sha256": "bb9d5f0591fe16a7fa72895ac839099a75c56d63c3ec0beae9d08c7027f06a35"
+            },
+            {
+              "name": "yield-long",
+              "contentType": "image/png",
+              "bytes": 81549,
+              "sha256": "e9f33bb21179d6da50df18206c4ea5a700c057034486c626211ce0fd0468c6a2"
+            },
+            {
+              "name": "yield-default",
+              "contentType": "image/png",
+              "bytes": 74117,
+              "sha256": "31bbe5f113ed61568724723b9efe7806306e4240443ff2bc959d8fa47d7264c5"
+            },
+            {
+              "name": "public-source-digest",
+              "contentType": "text/plain",
+              "bytes": 64,
+              "sha256": "6cf710bdf9739eb02aef909130693d44c68b9478f0d1b5c2da39319325a4855c",
+              "text": "ef4794d91f10cd4b804475c2c0ef078d2be0bd192a6537af925729143abc80a5"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "file": "earn-family-lab-regressions.spec.ts",
+      "line": 35,
+      "title": "earn-family-lab-regressions.spec.ts / Earn candidate states light 1400",
+      "status": "expected",
+      "expectedStatus": "passed",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 4500,
+          "retry": 0,
+          "errors": [],
+          "attachments": [
+            {
+              "name": "index-default",
+              "contentType": "image/png",
+              "bytes": 107820,
+              "sha256": "b5d0097eb0d07417eed69db3a138d10219d4109584ed7e4c4a01488f33d0556f"
+            },
+            {
+              "name": "index-wallet",
+              "contentType": "image/png",
+              "bytes": 120000,
+              "sha256": "efa0684a868b934cc669018e3c17ebd2d3ef353abdcf1504d92f1494e7a83746"
+            },
+            {
+              "name": "index-sparse",
+              "contentType": "image/png",
+              "bytes": 120043,
+              "sha256": "ae0e9c7d8cafec7c7079d73018040eb7b6c7b90eb697eb609870df4d67d3a3cf"
+            },
+            {
+              "name": "index-long",
+              "contentType": "image/png",
+              "bytes": 131814,
+              "sha256": "623589ed150d4c5d30528a82fa11ce98935f198942d9eada497b22e5145f3e47"
+            },
+            {
+              "name": "index-long-1024",
+              "contentType": "image/png",
+              "bytes": 130892,
+              "sha256": "e3e5fb72a9694e4e362b909cc4b67e1cc86bede9790fbf6666b064aa5b3e9832"
+            },
+            {
+              "name": "wallet-loading",
+              "contentType": "image/png",
+              "bytes": 112367,
+              "sha256": "d00a3e6f6ed20b9fce9ae399e2e729fbf17b0f813bca3fb3d63198c442205ab0"
+            },
+            {
+              "name": "zero-unavailable",
+              "contentType": "image/png",
+              "bytes": 105312,
+              "sha256": "12a29c65038727d280f8e5208df39baf82841e933ddaf60129c1e1bf2369cab6"
+            },
+            {
+              "name": "loading",
+              "contentType": "image/png",
+              "bytes": 72988,
+              "sha256": "303fc06cd1688954e89386a51c39880b049b3fdb7d0fc5faa18319f34c0be9d6"
+            },
+            {
+              "name": "yield-wallet",
+              "contentType": "image/png",
+              "bytes": 145450,
+              "sha256": "4674dc4262c341bc23dc5ffa20a3961c0768140884eca9c17600e3c5f075341d"
+            },
+            {
+              "name": "yield-sparse",
+              "contentType": "image/png",
+              "bytes": 147484,
+              "sha256": "51eeb5c891b66f111ea9a59b900270bccc20266f6841b2fe2ae50398038c2dba"
+            },
+            {
+              "name": "yield-long",
+              "contentType": "image/png",
+              "bytes": 151624,
+              "sha256": "2b1c08b60ef08275e260271f4eaa093bb9cf0409200d694dbe0d4bc9307bb320"
+            },
+            {
+              "name": "yield-default",
+              "contentType": "image/png",
+              "bytes": 139808,
+              "sha256": "1dfde8086a2e69a9059727ff4decce3c320353e0b64a4b356f2e7397fec04070"
+            },
+            {
+              "name": "public-source-digest",
+              "contentType": "text/plain",
+              "bytes": 64,
+              "sha256": "6cf710bdf9739eb02aef909130693d44c68b9478f0d1b5c2da39319325a4855c",
+              "text": "ef4794d91f10cd4b804475c2c0ef078d2be0bd192a6537af925729143abc80a5"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "file": "earn-family-lab-regressions.spec.ts",
+      "line": 35,
+      "title": "earn-family-lab-regressions.spec.ts / Earn candidate states dark 320",
+      "status": "expected",
+      "expectedStatus": "passed",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 4736,
+          "retry": 0,
+          "errors": [],
+          "attachments": [
+            {
+              "name": "index-default",
+              "contentType": "image/png",
+              "bytes": 63166,
+              "sha256": "836f33f32d63116be87d43ef6324e6069c156b042d66bb9b54b059de8348138c"
+            },
+            {
+              "name": "index-wallet",
+              "contentType": "image/png",
+              "bytes": 67251,
+              "sha256": "fa33fcac8045a3e3bf0c101f84cecbf8a7ce9e4fae218a7e97b40cc7c5854982"
+            },
+            {
+              "name": "index-sparse",
+              "contentType": "image/png",
+              "bytes": 66592,
+              "sha256": "0f57cd85f19ac22ce6c29ea714b8b99fe7a3678889d64ccde0e2fb330b304036"
+            },
+            {
+              "name": "index-long",
+              "contentType": "image/png",
+              "bytes": 68151,
+              "sha256": "a7826bceddf44da0b189ee7212c90a0e1c8b48ce79183d41cbbba48fd6277a0e"
+            },
+            {
+              "name": "wallet-loading",
+              "contentType": "image/png",
+              "bytes": 58615,
+              "sha256": "bba2c45ccb962a3d7def7f83b128dbc66fe735397ea7d7cb3d1a19bced1bf237"
+            },
+            {
+              "name": "zero-unavailable",
+              "contentType": "image/png",
+              "bytes": 54006,
+              "sha256": "2b4c4c5ce6ac855a71ca3c2c25857f9cd7605251df6185880704e3676f5bace6"
+            },
+            {
+              "name": "loading",
+              "contentType": "image/png",
+              "bytes": 30598,
+              "sha256": "b3b669a5e12cd54248965e22eedb09ff65522cb81e38e6d38821542b8d8f0883"
+            },
+            {
+              "name": "yield-wallet",
+              "contentType": "image/png",
+              "bytes": 68889,
+              "sha256": "6393cfb1cd6387b7dc2da1a0f60c585ea13d869949e597a3931497017db7e00d"
+            },
+            {
+              "name": "yield-sparse",
+              "contentType": "image/png",
+              "bytes": 68908,
+              "sha256": "3ab9ae7698cc686fb260fbd9b5f51c76d7bdd1a8a74b7cc7223eef342900597f"
+            },
+            {
+              "name": "yield-long",
+              "contentType": "image/png",
+              "bytes": 64638,
+              "sha256": "a66df0a83e2d6933c13dbd9539f015341127be465b3235a589455161bd9c6a42"
+            },
+            {
+              "name": "yield-default",
+              "contentType": "image/png",
+              "bytes": 68977,
+              "sha256": "51ed6478a1f3a1dbe2a6e9931438f8c2d4597b9e29e99f37fce7b846435a289d"
+            },
+            {
+              "name": "public-source-digest",
+              "contentType": "text/plain",
+              "bytes": 64,
+              "sha256": "6cf710bdf9739eb02aef909130693d44c68b9478f0d1b5c2da39319325a4855c",
+              "text": "ef4794d91f10cd4b804475c2c0ef078d2be0bd192a6537af925729143abc80a5"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "file": "earn-family-lab-regressions.spec.ts",
+      "line": 35,
+      "title": "earn-family-lab-regressions.spec.ts / Earn candidate states dark 390",
+      "status": "expected",
+      "expectedStatus": "passed",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 4662,
+          "retry": 0,
+          "errors": [],
+          "attachments": [
+            {
+              "name": "index-default",
+              "contentType": "image/png",
+              "bytes": 64571,
+              "sha256": "1b9b7769173feb87c3b96cbe4609f798014db521e1b5f79d4583e21decec3616"
+            },
+            {
+              "name": "index-wallet",
+              "contentType": "image/png",
+              "bytes": 68535,
+              "sha256": "6104ac022dbabc37f5d7e3641b3f944111ad2005dba4bc06fbf986c61f1d9f19"
+            },
+            {
+              "name": "index-sparse",
+              "contentType": "image/png",
+              "bytes": 68088,
+              "sha256": "bfddfc8aa96b3e37346f90c1ef1e79e8b97a5891f9e1b4ae3fc942ed14f3549b"
+            },
+            {
+              "name": "index-long",
+              "contentType": "image/png",
+              "bytes": 78215,
+              "sha256": "e60c1cf1300f55cc6fa676eda07351decb00625749f38fe5d8b886136765856b"
+            },
+            {
+              "name": "wallet-loading",
+              "contentType": "image/png",
+              "bytes": 59717,
+              "sha256": "a56bd6edf23fab65feab843e1df71b6cffc3e672dab242157d1dd840f77fb0c1"
+            },
+            {
+              "name": "zero-unavailable",
+              "contentType": "image/png",
+              "bytes": 55021,
+              "sha256": "1cc73b2d76a6198149f8ee9541e80058f67a00f11594558787588a980a824b11"
+            },
+            {
+              "name": "loading",
+              "contentType": "image/png",
+              "bytes": 31328,
+              "sha256": "7d76d9ad53e49902f92893ad2c3cea448e1f84b135d9d78ed96c435a9ea3e896"
+            },
+            {
+              "name": "yield-wallet",
+              "contentType": "image/png",
+              "bytes": 76940,
+              "sha256": "f0479beb40d261d348d1f726b03102837cda4b525f7ce943886e03a2a335780a"
+            },
+            {
+              "name": "yield-sparse",
+              "contentType": "image/png",
+              "bytes": 76947,
+              "sha256": "8ab120d3146d8df85753930ad33728fcbb6606ffb4499845c41f16372ab39ab6"
+            },
+            {
+              "name": "yield-long",
+              "contentType": "image/png",
+              "bytes": 82263,
+              "sha256": "5b0b32b7391097531c2c156849caf4a6904ae91574c41b8f2734f7809d700bc6"
+            },
+            {
+              "name": "yield-default",
+              "contentType": "image/png",
+              "bytes": 74693,
+              "sha256": "fe68ba200888eb64ef35c319e3ec97367756f6d46d8e3c2ff0e1965b4858264d"
+            },
+            {
+              "name": "public-source-digest",
+              "contentType": "text/plain",
+              "bytes": 64,
+              "sha256": "6cf710bdf9739eb02aef909130693d44c68b9478f0d1b5c2da39319325a4855c",
+              "text": "ef4794d91f10cd4b804475c2c0ef078d2be0bd192a6537af925729143abc80a5"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "file": "earn-family-lab-regressions.spec.ts",
+      "line": 35,
+      "title": "earn-family-lab-regressions.spec.ts / Earn candidate states dark 1400",
+      "status": "expected",
+      "expectedStatus": "passed",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 4535,
+          "retry": 0,
+          "errors": [],
+          "attachments": [
+            {
+              "name": "index-default",
+              "contentType": "image/png",
+              "bytes": 108721,
+              "sha256": "361b84b85f3a042e2c9298ef995aca5ad5f133030c0e585e271ffa656a2c8100",
+              "file": "earn-candidate-states-dark-1400-index-default-361b84b8.png"
+            },
+            {
+              "name": "index-wallet",
+              "contentType": "image/png",
+              "bytes": 121011,
+              "sha256": "ae478f231ee7d483556b428ca1a4795ce00c44772812064aef6b09b2fbed47d5"
+            },
+            {
+              "name": "index-sparse",
+              "contentType": "image/png",
+              "bytes": 120833,
+              "sha256": "e6b74cf1197ddd465f5fcd9e48b5c4f8e49e50f26ac6ef23017aa761cd3119b8"
+            },
+            {
+              "name": "index-long",
+              "contentType": "image/png",
+              "bytes": 132578,
+              "sha256": "913867c654042749283a52a9748e51cd1c3a8ae0473844f59d9828d87b58d6b0"
+            },
+            {
+              "name": "index-long-1024",
+              "contentType": "image/png",
+              "bytes": 131616,
+              "sha256": "b81095156d85a7fbc6c5cde4d168ff421fdeb7ceda8922e3d8d2211b06ece7ea"
+            },
+            {
+              "name": "wallet-loading",
+              "contentType": "image/png",
+              "bytes": 113248,
+              "sha256": "591492af7e9f7b5b3f3e80e194eb6f86091d88025fd537617565b754d406eb89"
+            },
+            {
+              "name": "zero-unavailable",
+              "contentType": "image/png",
+              "bytes": 105953,
+              "sha256": "e12232be729fe9c27a4301347ed6393d5e4dfed08d25cf0616da8e4a4b30b436"
+            },
+            {
+              "name": "loading",
+              "contentType": "image/png",
+              "bytes": 73450,
+              "sha256": "97635bdbc200d1e1b82c2be3d37402a1f3b946841f943aa85f2dfb6bf1c699cc"
+            },
+            {
+              "name": "yield-wallet",
+              "contentType": "image/png",
+              "bytes": 146605,
+              "sha256": "a471d548b553b5e43b30c659a088bc7a0aa16ac06520e74ddb8a42fe360f10cb"
+            },
+            {
+              "name": "yield-sparse",
+              "contentType": "image/png",
+              "bytes": 148354,
+              "sha256": "d69651d4a704052092b3fc3b696459919be320c7a73efcf71ed7d8ae2021e9c1"
+            },
+            {
+              "name": "yield-long",
+              "contentType": "image/png",
+              "bytes": 152525,
+              "sha256": "ea31069b64f9e37f76d8d062137ecfe709c2a30676bbd23177718d6d0027b140",
+              "file": "earn-candidate-states-dark-1400-yield-long-ea31069b.png"
+            },
+            {
+              "name": "yield-default",
+              "contentType": "image/png",
+              "bytes": 140822,
+              "sha256": "3c540703c566b45ce85d5ede7da7de384fd203887ed57301aeb92fc8199806af"
+            },
+            {
+              "name": "public-source-digest",
+              "contentType": "text/plain",
+              "bytes": 64,
+              "sha256": "6cf710bdf9739eb02aef909130693d44c68b9478f0d1b5c2da39319325a4855c",
+              "text": "ef4794d91f10cd4b804475c2c0ef078d2be0bd192a6537af925729143abc80a5"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "file": "earn-family-lab-regressions.spec.ts",
+      "line": 277,
+      "title": "earn-family-lab-regressions.spec.ts / Earn candidate interactions light 390",
+      "status": "expected",
+      "expectedStatus": "passed",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 4372,
+          "retry": 0,
+          "errors": [],
+          "attachments": [
+            {
+              "name": "governed-open",
+              "contentType": "image/png",
+              "bytes": 68945,
+              "sha256": "f44caf27e135790614a51a3347248118a9f5c38805005e958e559ae817a9f1d3"
+            },
+            {
+              "name": "public-source-digest",
+              "contentType": "text/plain",
+              "bytes": 64,
+              "sha256": "6cf710bdf9739eb02aef909130693d44c68b9478f0d1b5c2da39319325a4855c",
+              "text": "ef4794d91f10cd4b804475c2c0ef078d2be0bd192a6537af925729143abc80a5"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "file": "earn-family-lab-regressions.spec.ts",
+      "line": 277,
+      "title": "earn-family-lab-regressions.spec.ts / Earn candidate interactions light 1400",
+      "status": "expected",
+      "expectedStatus": "passed",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 3920,
+          "retry": 0,
+          "errors": [],
+          "attachments": [
+            {
+              "name": "governed-open",
+              "contentType": "image/png",
+              "bytes": 142409,
+              "sha256": "9ea24c58141ad76e22b6eedfea9d69a373c9cc330dead0867a8976d180c90d3e"
+            },
+            {
+              "name": "public-source-digest",
+              "contentType": "text/plain",
+              "bytes": 64,
+              "sha256": "6cf710bdf9739eb02aef909130693d44c68b9478f0d1b5c2da39319325a4855c",
+              "text": "ef4794d91f10cd4b804475c2c0ef078d2be0bd192a6537af925729143abc80a5"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "file": "earn-family-lab-regressions.spec.ts",
+      "line": 277,
+      "title": "earn-family-lab-regressions.spec.ts / Earn candidate interactions dark 390",
+      "status": "expected",
+      "expectedStatus": "passed",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 3859,
+          "retry": 0,
+          "errors": [],
+          "attachments": [
+            {
+              "name": "governed-open",
+              "contentType": "image/png",
+              "bytes": 70542,
+              "sha256": "30846a9d8a400ca8fb1b920e1a5dbf9ee668ee9aad53b80538239d9f727cae3c"
+            },
+            {
+              "name": "public-source-digest",
+              "contentType": "text/plain",
+              "bytes": 64,
+              "sha256": "6cf710bdf9739eb02aef909130693d44c68b9478f0d1b5c2da39319325a4855c",
+              "text": "ef4794d91f10cd4b804475c2c0ef078d2be0bd192a6537af925729143abc80a5"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "file": "earn-family-lab-regressions.spec.ts",
+      "line": 277,
+      "title": "earn-family-lab-regressions.spec.ts / Earn candidate interactions dark 1400",
+      "status": "expected",
+      "expectedStatus": "passed",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 3971,
+          "retry": 0,
+          "errors": [],
+          "attachments": [
+            {
+              "name": "governed-open",
+              "contentType": "image/png",
+              "bytes": 145123,
+              "sha256": "9e8e8fab338e3a13585d6e7f76aec82709385fa72a8114347b1dc7932678e568"
+            },
+            {
+              "name": "public-source-digest",
+              "contentType": "text/plain",
+              "bytes": 64,
+              "sha256": "6cf710bdf9739eb02aef909130693d44c68b9478f0d1b5c2da39319325a4855c",
+              "text": "ef4794d91f10cd4b804475c2c0ef078d2be0bd192a6537af925729143abc80a5"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "file": "earn-family-lab-regressions.spec.ts",
+      "line": 339,
+      "title": "earn-family-lab-regressions.spec.ts / Earn candidate projection and sorting light",
+      "status": "expected",
+      "expectedStatus": "passed",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 3927,
+          "retry": 0,
+          "errors": [],
+          "attachments": [
+            {
+              "name": "constrained-column",
+              "contentType": "image/png",
+              "bytes": 85824,
+              "sha256": "24c4b7586cdc86f7b0c7fa371fb502bd241cb12bd0c97156795182a3e37475d4"
+            },
+            {
+              "name": "public-source-digest",
+              "contentType": "text/plain",
+              "bytes": 64,
+              "sha256": "6cf710bdf9739eb02aef909130693d44c68b9478f0d1b5c2da39319325a4855c",
+              "text": "ef4794d91f10cd4b804475c2c0ef078d2be0bd192a6537af925729143abc80a5"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "file": "earn-family-lab-regressions.spec.ts",
+      "line": 339,
+      "title": "earn-family-lab-regressions.spec.ts / Earn candidate projection and sorting dark",
+      "status": "expected",
+      "expectedStatus": "passed",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 3910,
+          "retry": 0,
+          "errors": [],
+          "attachments": [
+            {
+              "name": "constrained-column",
+              "contentType": "image/png",
+              "bytes": 87224,
+              "sha256": "95e4873890ecfbd8c786d199fa771835aeed4f9cbd6ec1cf9a78b3dfb0bc9483"
+            },
+            {
+              "name": "public-source-digest",
+              "contentType": "text/plain",
+              "bytes": 64,
+              "sha256": "6cf710bdf9739eb02aef909130693d44c68b9478f0d1b5c2da39319325a4855c",
+              "text": "ef4794d91f10cd4b804475c2c0ef078d2be0bd192a6537af925729143abc80a5"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "file": "holdings-family-lab-regressions.spec.ts",
+      "line": 34,
+      "title": "holdings-family-lab-regressions.spec.ts / holdings family light 320",
+      "status": "expected",
+      "expectedStatus": "passed",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 5817,
+          "retry": 0,
+          "errors": [],
+          "attachments": [
+            {
+              "name": "exposure",
+              "contentType": "image/png",
+              "bytes": 56627,
+              "sha256": "fb07ba45ea0e60544522ee1998afb1c758df8bace35a3fdef411763570ba1a06"
+            },
+            {
+              "name": "sort-open",
+              "contentType": "image/png",
+              "bytes": 59615,
+              "sha256": "fa042f184b2890e25ba5498125d6f1fc1ed2dbd775bc70e17234bb7dbb0d0240"
+            },
+            {
+              "name": "collateral",
+              "contentType": "image/png",
+              "bytes": 62459,
+              "sha256": "6af2758435299bcbb5864e6c10bc0c46303d3967c522a377735071e6917f12b4"
+            },
+            {
+              "name": "link-focus",
+              "contentType": "image/png",
+              "bytes": 62497,
+              "sha256": "e23d3484f4c3d73da982f3dd9dcc0500647cd9e4574579a7f3a0da48d98afb33"
+            },
+            {
+              "name": "new-asset",
+              "contentType": "image/png",
+              "bytes": 64021,
+              "sha256": "510caaab7f3436578127148c64cffb3879ec6b419508caf54fe7ed2f7299c665"
+            },
+            {
+              "name": "performance-loading",
+              "contentType": "image/png",
+              "bytes": 56273,
+              "sha256": "81bd4ba59a2b84663e562af61c3bf9e83073635733bb94fe8ff5c4a5d67207ae"
+            },
+            {
+              "name": "basket-loading",
+              "contentType": "image/png",
+              "bytes": 32167,
+              "sha256": "cb858525bc8bf081378800710326e0f698007317796a25ca2af9ec1bfaad281b"
+            },
+            {
+              "name": "long-content",
+              "contentType": "image/png",
+              "bytes": 61055,
+              "sha256": "116a7689d1ed0c3d3f04de0adf59742594047689a7cfb32ca5200f19519dfd40",
+              "file": "holdings-family-light-320-long-content-116a7689.png"
+            },
+            {
+              "name": "stock-exposure",
+              "contentType": "image/png",
+              "bytes": 60617,
+              "sha256": "783aaf8dd99c4aa97b22efc322dd4d91ae0b356429dd6e55c44a73904ed92771"
+            },
+            {
+              "name": "stock-collateral",
+              "contentType": "image/png",
+              "bytes": 66086,
+              "sha256": "8c326f03c30e1d6a837dd0fd1a33ca07931803100cf03f4bb9fffeb10f988f18",
+              "file": "holdings-family-light-320-stock-collateral-8c326f03.png"
+            },
+            {
+              "name": "public-source-digest",
+              "contentType": "text/plain",
+              "bytes": 64,
+              "sha256": "6cf710bdf9739eb02aef909130693d44c68b9478f0d1b5c2da39319325a4855c",
+              "text": "ef4794d91f10cd4b804475c2c0ef078d2be0bd192a6537af925729143abc80a5"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "file": "holdings-family-lab-regressions.spec.ts",
+      "line": 34,
+      "title": "holdings-family-lab-regressions.spec.ts / holdings family light 375",
+      "status": "expected",
+      "expectedStatus": "passed",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 5861,
+          "retry": 0,
+          "errors": [],
+          "attachments": [
+            {
+              "name": "exposure",
+              "contentType": "image/png",
+              "bytes": 58421,
+              "sha256": "8803da50457bf60ed4ff74de44b31ddd33dfea2da9ebcfb7ee7110e34c224a7f"
+            },
+            {
+              "name": "sort-open",
+              "contentType": "image/png",
+              "bytes": 62521,
+              "sha256": "86578eeb75ebef74a2c9bf288f2c775b64db6348ae0d6eadd2f92609bf4c5b9c"
+            },
+            {
+              "name": "collateral",
+              "contentType": "image/png",
+              "bytes": 64807,
+              "sha256": "36199a0b60d28f2829d01877bc6aa224651f61bef02a37ccab1e186a40c4f8fb"
+            },
+            {
+              "name": "link-focus",
+              "contentType": "image/png",
+              "bytes": 64850,
+              "sha256": "33339761d6cda3dfab19321c367b5aaa73e559228e4c13ea850e497c63832f39"
+            },
+            {
+              "name": "new-asset",
+              "contentType": "image/png",
+              "bytes": 66375,
+              "sha256": "d6380e46eb7592fda5e19567847d73c272fc6ddf1db50760673cc49931ad1bf4"
+            },
+            {
+              "name": "performance-loading",
+              "contentType": "image/png",
+              "bytes": 58601,
+              "sha256": "2c6c6090928230ca80f59052a4d49f5711ed60f5bbf213418ee3162cbe6a61c9"
+            },
+            {
+              "name": "basket-loading",
+              "contentType": "image/png",
+              "bytes": 34338,
+              "sha256": "c27e36d03adef683b17060a144549436514cfa98afb1c1300ae75f46bf4c1b37"
+            },
+            {
+              "name": "long-content",
+              "contentType": "image/png",
+              "bytes": 66475,
+              "sha256": "3b57a055eb0302b76e0c294e8a1c480c5de4ea266e4d8b90a9c9302da3c9c771"
+            },
+            {
+              "name": "stock-exposure",
+              "contentType": "image/png",
+              "bytes": 62456,
+              "sha256": "35a982950549e9dfc014338b4048da085cebc6a461a394c18f5c50584c27174f"
+            },
+            {
+              "name": "stock-collateral",
+              "contentType": "image/png",
+              "bytes": 72315,
+              "sha256": "49c8b01001f3951fcc3323d8ce5890b7f5c44cf6bb0b4e88bc583e9ca5197173"
+            },
+            {
+              "name": "public-source-digest",
+              "contentType": "text/plain",
+              "bytes": 64,
+              "sha256": "6cf710bdf9739eb02aef909130693d44c68b9478f0d1b5c2da39319325a4855c",
+              "text": "ef4794d91f10cd4b804475c2c0ef078d2be0bd192a6537af925729143abc80a5"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "file": "holdings-family-lab-regressions.spec.ts",
+      "line": 34,
+      "title": "holdings-family-lab-regressions.spec.ts / holdings family light 1400",
+      "status": "expected",
+      "expectedStatus": "passed",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 9862,
+          "retry": 0,
+          "errors": [],
+          "attachments": [
+            {
+              "name": "header-geometry",
+              "contentType": "application/json",
+              "bytes": 38,
+              "sha256": "e548a0d6b12f0933baf79fbf40c39897bf79b6cf27ca3a1c000266c9aabea1f1"
+            },
+            {
+              "name": "exposure",
+              "contentType": "image/png",
+              "bytes": 106571,
+              "sha256": "06314d3fab1b09b4b810399651027851c6078a0ed157f7258c7c7210fc72c8d2"
+            },
+            {
+              "name": "price-change-descending",
+              "contentType": "image/png",
+              "bytes": 108459,
+              "sha256": "531bed1a1845bf013502bad2320541cf68b8092ae225955eeb29bd682afad01f"
+            },
+            {
+              "name": "collateral",
+              "contentType": "image/png",
+              "bytes": 122445,
+              "sha256": "c3c6f9441a75fca162572c304d54450672d656e7550464d74587a8b525f909ec"
+            },
+            {
+              "name": "link-focus",
+              "contentType": "image/png",
+              "bytes": 122562,
+              "sha256": "b69216fc53205494e03bac02d39b9fdfacf521b9b721fa8538028c6596415fe5"
+            },
+            {
+              "name": "new-asset",
+              "contentType": "image/png",
+              "bytes": 124442,
+              "sha256": "06ce57aca62259089d700f8a33a6cb3df166033279183ca980e4586111879633"
+            },
+            {
+              "name": "performance-loading",
+              "contentType": "image/png",
+              "bytes": 109712,
+              "sha256": "91dd656855a8bb729cfa7a71d9939c4e76ca41b95ffe8037bb69baa614cfe184"
+            },
+            {
+              "name": "basket-loading",
+              "contentType": "image/png",
+              "bytes": 44271,
+              "sha256": "1ea0b9c608765ac7e938d744d901708d6463df671503639aceaa05100dd7637b"
+            },
+            {
+              "name": "long-content",
+              "contentType": "image/png",
+              "bytes": 131366,
+              "sha256": "413dc1a9af7895e0565cc03b9310f4b7ea6d47ce542f78ee9b9a78568922dd34"
+            },
+            {
+              "name": "stock-exposure",
+              "contentType": "image/png",
+              "bytes": 125637,
+              "sha256": "8bc17cb1bae9a7d91c53f5f5ac404829f7d301a273f673c30704cebab3cba3e5"
+            },
+            {
+              "name": "stock-exposure-bottom",
+              "contentType": "image/png",
+              "bytes": 138013,
+              "sha256": "7dcd207bd489a7da87668915f39fdf857a8fbfdc5575e9cfe4ba2f1607dfae9f"
+            },
+            {
+              "name": "stock-collateral",
+              "contentType": "image/png",
+              "bytes": 149601,
+              "sha256": "00c582fb8f1fd4a200808af00a8cd300be28e7b0e4c21251185342f6f86f2117"
+            },
+            {
+              "name": "stock-collateral-bottom",
+              "contentType": "image/png",
+              "bytes": 162081,
+              "sha256": "4f42cbcdbc8dced64411bdc433c9faae894d09e2e5cc7d19c57ccf777000ba1c"
+            },
+            {
+              "name": "boundary-511",
+              "contentType": "image/png",
+              "bytes": 93235,
+              "sha256": "bf8434e31fb9210d7badebfe180cefaf6b1c875e1020c6f3cc4294ccf885bb9d"
+            },
+            {
+              "name": "boundary-512",
+              "contentType": "image/png",
+              "bytes": 107856,
+              "sha256": "f1047636d67d359fd29c0da1b9856d43d457df94de68c06f412ef71810a55d06"
+            },
+            {
+              "name": "boundary-767",
+              "contentType": "image/png",
+              "bytes": 107965,
+              "sha256": "91566f1370195d8db0007267e8274c7288bdd44ffa6f12a30f5a14c227357b67"
+            },
+            {
+              "name": "boundary-768",
+              "contentType": "image/png",
+              "bytes": 149279,
+              "sha256": "a60ca4fb8ea0ace66dd0b28f6bd7618596d6ab654fd12a17433ea7d2c74f6f1e"
+            },
+            {
+              "name": "boundary-768-loading",
+              "contentType": "image/png",
+              "bytes": 43345,
+              "sha256": "230f7093438de11013601c1a39f6950fad639c102bd82518d86e0846f1d5a00a"
+            },
+            {
+              "name": "constrained",
+              "contentType": "image/png",
+              "bytes": 91241,
+              "sha256": "a8d4aa8989dfa31915b520a4d035a8b6b393b51ba2975358793e9cd5f117f43e"
+            },
+            {
+              "name": "constrained-macom",
+              "contentType": "image/png",
+              "bytes": 88784,
+              "sha256": "6e795a449b58765e7742374d6ac5e8bad9332cb00e40515faa7f26c0c620515e"
+            },
+            {
+              "name": "constrained-long-content",
+              "contentType": "image/png",
+              "bytes": 91516,
+              "sha256": "fecc54e8b9ae2ccbbdaad2d961b3b6bd3a7da02686c110f5dba50defd66cde1a"
+            },
+            {
+              "name": "overview-collateral-long",
+              "contentType": "image/png",
+              "bytes": 154321,
+              "sha256": "57dd4428ba66bef05ebc90ceefbe1453a5bdf74efd408e1ade55770b6c561e6b"
+            },
+            {
+              "name": "overview-column-budget",
+              "contentType": "application/json",
+              "bytes": 166,
+              "sha256": "6657152db8c14c61957c15ecb06f47c26d96889203809a5509e77865d0695f00"
+            },
+            {
+              "name": "overview-collateral",
+              "contentType": "image/png",
+              "bytes": 150720,
+              "sha256": "d2d3dc69aa0ce54bfca84ebcdb2156d95cd3182b4d771f4b924b6dbee8b077c0"
+            },
+            {
+              "name": "overview-collateral-bottom",
+              "contentType": "image/png",
+              "bytes": 159632,
+              "sha256": "fde35d0a8e2dd78d90c465286ab303d37b9fa34e1bba2cdff0a3bae749bf8de1"
+            },
+            {
+              "name": "overview-exposure",
+              "contentType": "image/png",
+              "bytes": 125695,
+              "sha256": "351ddf33df0af4c1d36e55fa02604dcf498a061ed476bfd7077cb020f41bb5c2"
+            },
+            {
+              "name": "overview-exposure-bottom",
+              "contentType": "image/png",
+              "bytes": 138277,
+              "sha256": "2e4c671ad97e846005d7b526b74384586bc89af47fcbe8a60de62d6f4a966576"
+            },
+            {
+              "name": "overview-exposure-long",
+              "contentType": "image/png",
+              "bytes": 131882,
+              "sha256": "671bab19dcec50e4e08275d426b0456bda83c7af1784f71218a4c4dff33578b6"
+            },
+            {
+              "name": "overview-loading",
+              "contentType": "image/png",
+              "bytes": 43948,
+              "sha256": "c37bcd3923827bfac70bbada2cb6f7229cb44b679bc11c727ed11dc5eb88cc9f"
+            },
+            {
+              "name": "overview-loading-bottom",
+              "contentType": "image/png",
+              "bytes": 55873,
+              "sha256": "a7d2d0a1f589c1f679f498c247fea7cdf44b02bec2cb5564f589b3294d00f870"
+            },
+            {
+              "name": "overview-on-phone",
+              "contentType": "image/png",
+              "bytes": 62256,
+              "sha256": "22e208db180750d580b708281dd04451577097f0c6a8acfd5b81e059b78b1bb5"
+            },
+            {
+              "name": "public-source-digest",
+              "contentType": "text/plain",
+              "bytes": 64,
+              "sha256": "6cf710bdf9739eb02aef909130693d44c68b9478f0d1b5c2da39319325a4855c",
+              "text": "ef4794d91f10cd4b804475c2c0ef078d2be0bd192a6537af925729143abc80a5"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "file": "holdings-family-lab-regressions.spec.ts",
+      "line": 34,
+      "title": "holdings-family-lab-regressions.spec.ts / holdings family dark 320",
+      "status": "expected",
+      "expectedStatus": "passed",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 5968,
+          "retry": 0,
+          "errors": [],
+          "attachments": [
+            {
+              "name": "exposure",
+              "contentType": "image/png",
+              "bytes": 57428,
+              "sha256": "a6d13dfb2cbbe278578f1eded1538de8b3026ae95c51ba98c1b05e8b63a04e5d"
+            },
+            {
+              "name": "sort-open",
+              "contentType": "image/png",
+              "bytes": 60464,
+              "sha256": "b553c55f37fc4d1b35352edfc9246e21c4cc199c61f74d170f368b21852e26e8"
+            },
+            {
+              "name": "collateral",
+              "contentType": "image/png",
+              "bytes": 63518,
+              "sha256": "e89eddc5356805a964357c3331f20e4cc2df554f4d704a069b22091d09f96320"
+            },
+            {
+              "name": "link-focus",
+              "contentType": "image/png",
+              "bytes": 63558,
+              "sha256": "0dc366b7ca747560e11bf2e574c60643a4cb623de993d6ab8538aa1123678b54"
+            },
+            {
+              "name": "new-asset",
+              "contentType": "image/png",
+              "bytes": 65080,
+              "sha256": "9a036165bb6ea0d0cea969657f89ec90200ec0ed7b5603904a0421f763c438e2"
+            },
+            {
+              "name": "performance-loading",
+              "contentType": "image/png",
+              "bytes": 57085,
+              "sha256": "a626188a9d5e21fcfd4e9002f7f99dbe252975ffc5e744f71c4891d62d81ee45"
+            },
+            {
+              "name": "basket-loading",
+              "contentType": "image/png",
+              "bytes": 32513,
+              "sha256": "b573c325d4452673a8cf94604cb888fe6ee3d923eef1a4a26744525b8a675933"
+            },
+            {
+              "name": "long-content",
+              "contentType": "image/png",
+              "bytes": 62151,
+              "sha256": "0dfad524b844ca3a683c52e81d6529fc8d97481f0b8830710f0f74fed5439145"
+            },
+            {
+              "name": "stock-exposure",
+              "contentType": "image/png",
+              "bytes": 61800,
+              "sha256": "d91377201dd32ce23337bb6a1257c4becdc38ed3f19f08181e1f2beb7944afa4"
+            },
+            {
+              "name": "stock-collateral",
+              "contentType": "image/png",
+              "bytes": 67458,
+              "sha256": "8a2abe85aab1e30138a72402d203c2fc65b722b4024e1b5daec4655b225d043f"
+            },
+            {
+              "name": "public-source-digest",
+              "contentType": "text/plain",
+              "bytes": 64,
+              "sha256": "6cf710bdf9739eb02aef909130693d44c68b9478f0d1b5c2da39319325a4855c",
+              "text": "ef4794d91f10cd4b804475c2c0ef078d2be0bd192a6537af925729143abc80a5"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "file": "holdings-family-lab-regressions.spec.ts",
+      "line": 34,
+      "title": "holdings-family-lab-regressions.spec.ts / holdings family dark 375",
+      "status": "expected",
+      "expectedStatus": "passed",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 5910,
+          "retry": 0,
+          "errors": [],
+          "attachments": [
+            {
+              "name": "exposure",
+              "contentType": "image/png",
+              "bytes": 59223,
+              "sha256": "5fc88e8f29970fb88330c81695487e9b954d33359012a878f227a0c5e24b7036"
+            },
+            {
+              "name": "sort-open",
+              "contentType": "image/png",
+              "bytes": 63461,
+              "sha256": "9bc75c8e3cb7c14e3f7af3e73a687bcb7b286131498746e8f69008b3df15cb41"
+            },
+            {
+              "name": "collateral",
+              "contentType": "image/png",
+              "bytes": 65740,
+              "sha256": "64045fbfb88e83dc1bdca7da87cd5705e9fd393074965e6663d1dc038000a392"
+            },
+            {
+              "name": "link-focus",
+              "contentType": "image/png",
+              "bytes": 65779,
+              "sha256": "5196a51d11473fdc951905fd5b2f79979e70e863f38f4fc01d28ee0476b6f90a"
+            },
+            {
+              "name": "new-asset",
+              "contentType": "image/png",
+              "bytes": 67337,
+              "sha256": "1976a7ac65d644014cbcb714849c329c815f7da88bd80ff7542a0060c903ca4d"
+            },
+            {
+              "name": "performance-loading",
+              "contentType": "image/png",
+              "bytes": 59235,
+              "sha256": "75d81025b2416fd6f1c893ce60792f2d55c74934b0bf0a5f9698b1e5775d62d2"
+            },
+            {
+              "name": "basket-loading",
+              "contentType": "image/png",
+              "bytes": 34542,
+              "sha256": "9812b3b8644ed19a9d62e62a140d6c9fb690343969c54b3dc53d52a75462de06"
+            },
+            {
+              "name": "long-content",
+              "contentType": "image/png",
+              "bytes": 67518,
+              "sha256": "86241ce8da71e464479873af2c053c01e3e141728ea363fadee15cbfbaf1402f"
+            },
+            {
+              "name": "stock-exposure",
+              "contentType": "image/png",
+              "bytes": 63563,
+              "sha256": "1e146153cbefbcf9217e162c4e057d2d1d7f619a1b1d08d6d72d5012c44523ca"
+            },
+            {
+              "name": "stock-collateral",
+              "contentType": "image/png",
+              "bytes": 73847,
+              "sha256": "ac8a480a2eb27a16853bc13b26189416aee076a93a308e4bde026b92f686c182"
+            },
+            {
+              "name": "public-source-digest",
+              "contentType": "text/plain",
+              "bytes": 64,
+              "sha256": "6cf710bdf9739eb02aef909130693d44c68b9478f0d1b5c2da39319325a4855c",
+              "text": "ef4794d91f10cd4b804475c2c0ef078d2be0bd192a6537af925729143abc80a5"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "file": "holdings-family-lab-regressions.spec.ts",
+      "line": 34,
+      "title": "holdings-family-lab-regressions.spec.ts / holdings family dark 1400",
+      "status": "expected",
+      "expectedStatus": "passed",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 9711,
+          "retry": 0,
+          "errors": [],
+          "attachments": [
+            {
+              "name": "header-geometry",
+              "contentType": "application/json",
+              "bytes": 38,
+              "sha256": "e548a0d6b12f0933baf79fbf40c39897bf79b6cf27ca3a1c000266c9aabea1f1"
+            },
+            {
+              "name": "exposure",
+              "contentType": "image/png",
+              "bytes": 107917,
+              "sha256": "38862c81241a37edbaec20d7e72b2403b5feff9dafe56f6614a0d08291ca6b1a"
+            },
+            {
+              "name": "price-change-descending",
+              "contentType": "image/png",
+              "bytes": 109800,
+              "sha256": "a7229dd3bb240e8a1643c0169896a66276ec8009cc6013e94c46eb823bd5f702"
+            },
+            {
+              "name": "collateral",
+              "contentType": "image/png",
+              "bytes": 124247,
+              "sha256": "6ff11c1eb17d8d3d1930b51af1f719833198b7f51e721acecf25ab6c537ddff1"
+            },
+            {
+              "name": "link-focus",
+              "contentType": "image/png",
+              "bytes": 124422,
+              "sha256": "db3789f92d0f00b2ec4b1ba6d3edae79d2f3898490f53a70dc2d9c51cfbc09c3"
+            },
+            {
+              "name": "new-asset",
+              "contentType": "image/png",
+              "bytes": 126325,
+              "sha256": "30148f67dedd45a57cde6eb83c6fbc75a10189ccd51cd1bdb386b95ad92d1516"
+            },
+            {
+              "name": "performance-loading",
+              "contentType": "image/png",
+              "bytes": 111188,
+              "sha256": "49a811cd038516dd9cd17b26493fa56fcacb732358ffa69f36b2e33ad10a110f"
+            },
+            {
+              "name": "basket-loading",
+              "contentType": "image/png",
+              "bytes": 45337,
+              "sha256": "d97ccafb61f7fae9074af05326dee4d3d00989173e915809d3c90c8c6ad7ad30"
+            },
+            {
+              "name": "long-content",
+              "contentType": "image/png",
+              "bytes": 133198,
+              "sha256": "73ad7925f5c269f1b100e1cfabcbd350a79aef7c328db4c5fb68a4bdb27dbee9",
+              "file": "holdings-family-dark-1400-long-content-73ad7925.png"
+            },
+            {
+              "name": "stock-exposure",
+              "contentType": "image/png",
+              "bytes": 127276,
+              "sha256": "c3fd4eeef0e785655dc2c2a30d2e07e971d2f864fce03310df885aa2b97ffa99"
+            },
+            {
+              "name": "stock-exposure-bottom",
+              "contentType": "image/png",
+              "bytes": 140281,
+              "sha256": "68d4234f45dcb6375742585b47755a0cc8e0c0612344d988d9a68aa1bad19fb3"
+            },
+            {
+              "name": "stock-collateral",
+              "contentType": "image/png",
+              "bytes": 153112,
+              "sha256": "2508552bf2e93ebcb975e4a75f982225e8ad92a120490bd1578fc781c27eab11",
+              "file": "holdings-family-dark-1400-stock-collateral-2508552b.png"
+            },
+            {
+              "name": "stock-collateral-bottom",
+              "contentType": "image/png",
+              "bytes": 166177,
+              "sha256": "ea7d34c5efb807d710f94647b34b768fbdd5a9582a2b3e6aaabcbf13c68da04a"
+            },
+            {
+              "name": "boundary-511",
+              "contentType": "image/png",
+              "bytes": 95468,
+              "sha256": "58a99697406a2082bba534c2d8f6b27a7d489b44a60fdb0584f365dbbfd8fb8d"
+            },
+            {
+              "name": "boundary-512",
+              "contentType": "image/png",
+              "bytes": 110284,
+              "sha256": "44d4080b63f336f45e6a29ece9a95137c64bea6abe947604600047ced6f554d6"
+            },
+            {
+              "name": "boundary-767",
+              "contentType": "image/png",
+              "bytes": 110332,
+              "sha256": "03b93d9811813d6c5bef620c7a06fac958e58017ff13dc8946eeee922e709142"
+            },
+            {
+              "name": "boundary-768",
+              "contentType": "image/png",
+              "bytes": 152860,
+              "sha256": "6828e3cb7a60b6829d6d3eac785600922b9ac76c3ba2bf74df4b7e0712676b79"
+            },
+            {
+              "name": "boundary-768-loading",
+              "contentType": "image/png",
+              "bytes": 44893,
+              "sha256": "d8fe2eb385ed25599e76ea74c08b1f565cd1de7f77aa683ec1120635ab949b1e"
+            },
+            {
+              "name": "constrained",
+              "contentType": "image/png",
+              "bytes": 93457,
+              "sha256": "548507a9099afe3a77d09e7f4a243d52946437bae6b688eb566e13606ab872e0"
+            },
+            {
+              "name": "constrained-macom",
+              "contentType": "image/png",
+              "bytes": 90459,
+              "sha256": "76a6a4966074c1b7cd7bfc13c97ecb8232dde9039fa20623a0942f78412ab4f3"
+            },
+            {
+              "name": "constrained-long-content",
+              "contentType": "image/png",
+              "bytes": 93733,
+              "sha256": "9419c47e1befebd67ab96d40a0bb0bce531f70655dc20fa8b58fbf47d564e404"
+            },
+            {
+              "name": "overview-collateral-long",
+              "contentType": "image/png",
+              "bytes": 157098,
+              "sha256": "2470b2ca1fc8ec74152de819e4fff3384f50a668b994f109eaba9008c1264afc",
+              "file": "holdings-family-dark-1400-overview-collateral-long-2470b2ca.png"
+            },
+            {
+              "name": "overview-column-budget",
+              "contentType": "application/json",
+              "bytes": 166,
+              "sha256": "6657152db8c14c61957c15ecb06f47c26d96889203809a5509e77865d0695f00"
+            },
+            {
+              "name": "overview-collateral",
+              "contentType": "image/png",
+              "bytes": 153560,
+              "sha256": "07c005bd1d3242feb0d5b02c7a6542c8b2e3a4977492b0c19f18be6b0a32d164"
+            },
+            {
+              "name": "overview-collateral-bottom",
+              "contentType": "image/png",
+              "bytes": 163403,
+              "sha256": "9bc881e37656ed227b1814693276cb3a0004e437dcf0d48688b4dacbdb8efe08"
+            },
+            {
+              "name": "overview-exposure",
+              "contentType": "image/png",
+              "bytes": 127137,
+              "sha256": "d38b6d97d8fb148a97453b4b2912aeac03e1acc5eccc8644d2f78c95c48e61ab"
+            },
+            {
+              "name": "overview-exposure-bottom",
+              "contentType": "image/png",
+              "bytes": 140214,
+              "sha256": "8cf11121b3ca1d3f6b18951743c18d3b24388295c13a90e84c617b9dad7685df"
+            },
+            {
+              "name": "overview-exposure-long",
+              "contentType": "image/png",
+              "bytes": 133371,
+              "sha256": "bf4b6e1e4e3b09a087db0b2e1eec2c1f96441cd76f389454f497d73403fbb052"
+            },
+            {
+              "name": "overview-loading",
+              "contentType": "image/png",
+              "bytes": 44855,
+              "sha256": "05048de1c33b261f420f8e5d77213affac724c57bbd2f39cb2f5ed3300703f7b"
+            },
+            {
+              "name": "overview-loading-bottom",
+              "contentType": "image/png",
+              "bytes": 57133,
+              "sha256": "74c3ac6f3d961d185f434f9f641ee7af72f18043e857c20bd0b6478f3870935e"
+            },
+            {
+              "name": "overview-on-phone",
+              "contentType": "image/png",
+              "bytes": 63620,
+              "sha256": "6b1d22577071341a9753e63ed1c77fd187e5b0ca9ce416153dceccec2d73b365"
+            },
+            {
+              "name": "public-source-digest",
+              "contentType": "text/plain",
+              "bytes": 64,
+              "sha256": "6cf710bdf9739eb02aef909130693d44c68b9478f0d1b5c2da39319325a4855c",
+              "text": "ef4794d91f10cd4b804475c2c0ef078d2be0bd192a6537af925729143abc80a5"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "file": "holdings-family-lab-regressions.spec.ts",
+      "line": 536,
+      "title": "holdings-family-lab-regressions.spec.ts / touch pointer / holdings touch pointer 1400",
+      "status": "expected",
+      "expectedStatus": "passed",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 2775,
+          "retry": 0,
+          "errors": [],
+          "attachments": [
+            {
+              "name": "touch-arrow",
+              "contentType": "image/png",
+              "bytes": 128354,
+              "sha256": "0a96f8e037b6515e74abf4d5b8dbc0003ebbdc6210b38ef6090e94138e3af3eb"
+            },
+            {
+              "name": "public-source-digest",
+              "contentType": "text/plain",
+              "bytes": 64,
+              "sha256": "6cf710bdf9739eb02aef909130693d44c68b9478f0d1b5c2da39319325a4855c",
+              "text": "ef4794d91f10cd4b804475c2c0ef078d2be0bd192a6537af925729143abc80a5"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "file": "owned-positions-lab-regressions.spec.ts",
+      "line": 4,
+      "title": "owned-positions-lab-regressions.spec.ts / owned positions are composed in the Table lab",
+      "status": "expected",
+      "expectedStatus": "passed",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 2203,
+          "retry": 0,
+          "errors": [],
+          "attachments": []
+        }
+      ]
+    },
+    {
+      "file": "owned-positions-lab-regressions.spec.ts",
+      "line": 22,
+      "title": "owned-positions-lab-regressions.spec.ts / owned positions light 320",
+      "status": "expected",
+      "expectedStatus": "passed",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 4348,
+          "retry": 0,
+          "errors": [],
+          "attachments": [
+            {
+              "name": "Vote-locked positions-Default",
+              "contentType": "image/png",
+              "bytes": 60422,
+              "sha256": "236803a83eaf2b43e968bc52fcd2470341a632858529d98503621c2c1d5ede17",
+              "file": "owned-positions-light-320-vote-locked-positions-default-236803a8.png"
+            },
+            {
+              "name": "Vote-locked positions-Long content",
+              "contentType": "image/png",
+              "bytes": 63092,
+              "sha256": "5cf66ef6688d29f6683c9c740b6c65f230fe5268bd917d92ed9b9082a0122e5d"
+            },
+            {
+              "name": "Staked RSR Positions-Default",
+              "contentType": "image/png",
+              "bytes": 59659,
+              "sha256": "3c4f690e2d4906cf8770bfab56e2708fbdc3236dab222ce14f85e8aa3dd67def"
+            },
+            {
+              "name": "Staked RSR Positions-Long content",
+              "contentType": "image/png",
+              "bytes": 61956,
+              "sha256": "cf7c00b52669040d58030e739ff1cb31122f151bb136eb8eedfea9fa7d8e1af1",
+              "file": "owned-positions-light-320-staked-rsr-positions-long-content-cf7c00b5.png"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "file": "owned-positions-lab-regressions.spec.ts",
+      "line": 22,
+      "title": "owned-positions-lab-regressions.spec.ts / owned positions light 390",
+      "status": "expected",
+      "expectedStatus": "passed",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 4254,
+          "retry": 0,
+          "errors": [],
+          "attachments": [
+            {
+              "name": "Vote-locked positions-Default",
+              "contentType": "image/png",
+              "bytes": 61903,
+              "sha256": "53adec2186fe2ae8d4c9916f15168799e571dd9c413d194aa7a8cc9d18d2dfda"
+            },
+            {
+              "name": "Vote-locked positions-Long content",
+              "contentType": "image/png",
+              "bytes": 64232,
+              "sha256": "40f404023d45183a126b89173e7dec8e6305e20a26a145f5d2dcd542a2d0056e"
+            },
+            {
+              "name": "Staked RSR Positions-Default",
+              "contentType": "image/png",
+              "bytes": 63388,
+              "sha256": "6bfc1223951fda9ac93f4dfc735eb7f104c554d67c38427f3fdb45427a5f0bdd"
+            },
+            {
+              "name": "Staked RSR Positions-Long content",
+              "contentType": "image/png",
+              "bytes": 65219,
+              "sha256": "16f34a4c38e4265b19253bb2dbbeb6814269b362756f8ddba635b215b20e025a"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "file": "owned-positions-lab-regressions.spec.ts",
+      "line": 22,
+      "title": "owned-positions-lab-regressions.spec.ts / owned positions light 1400",
+      "status": "expected",
+      "expectedStatus": "passed",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 4391,
+          "retry": 0,
+          "errors": [],
+          "attachments": [
+            {
+              "name": "Vote-locked positions-Default",
+              "contentType": "image/png",
+              "bytes": 145291,
+              "sha256": "a3d82713febf1a4ca15682531f09b7dd8ff782e3c0edfe5889d20e733a61f5f2"
+            },
+            {
+              "name": "Vote-locked positions-Long content",
+              "contentType": "image/png",
+              "bytes": 149671,
+              "sha256": "0ad5dc6bc42f142c0c54e1963ea5a83ff3d2816bc8f36e60c866f1d9a295ea73"
+            },
+            {
+              "name": "Staked RSR Positions-Default",
+              "contentType": "image/png",
+              "bytes": 118304,
+              "sha256": "037675b94c6bdfdafcf60560c61642b758d719a8876218d5342ad722ee2a3037"
+            },
+            {
+              "name": "Staked RSR Positions-Long content",
+              "contentType": "image/png",
+              "bytes": 123846,
+              "sha256": "9acc82560508fb1655b3d991e64693710ccdaeacaf33fd035d3903e3165357f2"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "file": "owned-positions-lab-regressions.spec.ts",
+      "line": 22,
+      "title": "owned-positions-lab-regressions.spec.ts / owned positions dark 320",
+      "status": "expected",
+      "expectedStatus": "passed",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 4288,
+          "retry": 0,
+          "errors": [],
+          "attachments": [
+            {
+              "name": "Vote-locked positions-Default",
+              "contentType": "image/png",
+              "bytes": 62059,
+              "sha256": "b1987fdcec6bf86c0716842411078dafa2e0d80326890c10ce3d91b0a114c8c6"
+            },
+            {
+              "name": "Vote-locked positions-Long content",
+              "contentType": "image/png",
+              "bytes": 64790,
+              "sha256": "794d177466f51992602984783fbe2a7f9de976361725f1aa956425521bd36636"
+            },
+            {
+              "name": "Staked RSR Positions-Default",
+              "contentType": "image/png",
+              "bytes": 60900,
+              "sha256": "967693c7106a8b8448a2bbc888f1f0c486a63db7a7ec4f4355f348f8c85c2aa6"
+            },
+            {
+              "name": "Staked RSR Positions-Long content",
+              "contentType": "image/png",
+              "bytes": 62792,
+              "sha256": "388f63b4e466cbd69e4c6ee0532e820617d694a5a4e0d12fb98ffa1b1b57d001"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "file": "owned-positions-lab-regressions.spec.ts",
+      "line": 22,
+      "title": "owned-positions-lab-regressions.spec.ts / owned positions dark 390",
+      "status": "expected",
+      "expectedStatus": "passed",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 4154,
+          "retry": 0,
+          "errors": [],
+          "attachments": [
+            {
+              "name": "Vote-locked positions-Default",
+              "contentType": "image/png",
+              "bytes": 63539,
+              "sha256": "a34bdd8128206d7b8529a1bc6ac9787679d91b3e6cd32a5bc0fdce403a16831f"
+            },
+            {
+              "name": "Vote-locked positions-Long content",
+              "contentType": "image/png",
+              "bytes": 65897,
+              "sha256": "7aabe9e53126f6e970f1f124dd661aeb2f4490b11a8fe308ebab1e9820acc7b8"
+            },
+            {
+              "name": "Staked RSR Positions-Default",
+              "contentType": "image/png",
+              "bytes": 64402,
+              "sha256": "87959980909fbd2fcc1d495280d8b3dbc7d1739e0d3c44e3c1d6049a2177c5d5"
+            },
+            {
+              "name": "Staked RSR Positions-Long content",
+              "contentType": "image/png",
+              "bytes": 66169,
+              "sha256": "27e9f06c027df7632c0017bd6ee9b4a8ecbbb6090ab9b7785c545a4e46e8bd76"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "file": "owned-positions-lab-regressions.spec.ts",
+      "line": 22,
+      "title": "owned-positions-lab-regressions.spec.ts / owned positions dark 1400",
+      "status": "expected",
+      "expectedStatus": "passed",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 4266,
+          "retry": 0,
+          "errors": [],
+          "attachments": [
+            {
+              "name": "Vote-locked positions-Default",
+              "contentType": "image/png",
+              "bytes": 147992,
+              "sha256": "d6fc3e61dec2d25448c3eb074f3a3ed6b2d033544adf4bfb7b595bf3fc09365e",
+              "file": "owned-positions-dark-1400-vote-locked-positions-default-d6fc3e61.png"
+            },
+            {
+              "name": "Vote-locked positions-Long content",
+              "contentType": "image/png",
+              "bytes": 152264,
+              "sha256": "0428e678cd0e52043f0b84bb9eac8f488312ecad462198193e7a0ee52da21310"
+            },
+            {
+              "name": "Staked RSR Positions-Default",
+              "contentType": "image/png",
+              "bytes": 119534,
+              "sha256": "73fc39d42773fd830087a4813c6570f01d815c12a734065f88eac4681445b43f"
+            },
+            {
+              "name": "Staked RSR Positions-Long content",
+              "contentType": "image/png",
+              "bytes": 125297,
+              "sha256": "e29c2c4342f2e1710d9680ee7119212b84a1436380d412012e84afb7c725d614",
+              "file": "owned-positions-dark-1400-staked-rsr-positions-long-content-e29c2c43.png"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "file": "owned-positions-lab-regressions.spec.ts",
+      "line": 120,
+      "title": "owned-positions-lab-regressions.spec.ts / vote-lock actions and disclosure retain focus across the responsive boundary",
+      "status": "expected",
+      "expectedStatus": "passed",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 3440,
+          "retry": 0,
+          "errors": [],
+          "attachments": []
+        }
+      ]
+    },
+    {
+      "file": "owned-positions-lab-regressions.spec.ts",
+      "line": 167,
+      "title": "owned-positions-lab-regressions.spec.ts / owned governed list opens without growing its row at 390 light",
+      "status": "expected",
+      "expectedStatus": "passed",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 4288,
+          "retry": 0,
+          "errors": [],
+          "attachments": [
+            {
+              "name": "governed-list-390-light",
+              "contentType": "image/png",
+              "bytes": 75581,
+              "sha256": "14c453828aba9bf05c303033b57a8114b4574a91da6193601f95537cacade935"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "file": "owned-positions-lab-regressions.spec.ts",
+      "line": 167,
+      "title": "owned-positions-lab-regressions.spec.ts / owned governed list opens without growing its row at 1400 light",
+      "status": "expected",
+      "expectedStatus": "passed",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 4188,
+          "retry": 0,
+          "errors": [],
+          "attachments": [
+            {
+              "name": "governed-list-1400-light",
+              "contentType": "image/png",
+              "bytes": 148416,
+              "sha256": "6fa865b5a93d557aec36429c4ccbce501880b83c9d2211198256723b6f0e2294"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "file": "owned-positions-lab-regressions.spec.ts",
+      "line": 167,
+      "title": "owned-positions-lab-regressions.spec.ts / owned governed list opens without growing its row at 390 dark",
+      "status": "expected",
+      "expectedStatus": "passed",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 4695,
+          "retry": 0,
+          "errors": [],
+          "attachments": [
+            {
+              "name": "governed-list-390-dark",
+              "contentType": "image/png",
+              "bytes": 77337,
+              "sha256": "6f5e3c7139c867837251b1f595f7f256c0146e3115af00bff05328e3864177a3"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "file": "owned-positions-lab-regressions.spec.ts",
+      "line": 167,
+      "title": "owned-positions-lab-regressions.spec.ts / owned governed list opens without growing its row at 1400 dark",
+      "status": "expected",
+      "expectedStatus": "passed",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 4152,
+          "retry": 0,
+          "errors": [],
+          "attachments": [
+            {
+              "name": "governed-list-1400-dark",
+              "contentType": "image/png",
+              "bytes": 151493,
+              "sha256": "1056b0a4ae8abdb9c4e3d0e78495dbe0bdb8012e0bd33c192c8f9a8106e3d3f6"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "file": "owned-positions-lab-regressions.spec.ts",
+      "line": 261,
+      "title": "owned-positions-lab-regressions.spec.ts / owned container threshold and realistic constrained preview",
+      "status": "expected",
+      "expectedStatus": "passed",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 2725,
+          "retry": 0,
+          "errors": [],
+          "attachments": [
+            {
+              "name": "390-container",
+              "contentType": "image/png",
+              "bytes": 85571,
+              "sha256": "1d111d605d4c5ef36e13e795169a678a77d1f81aa6edd14999cb53e2b849b821"
+            },
+            {
+              "name": "threshold-1023",
+              "contentType": "image/png",
+              "bytes": 85375,
+              "sha256": "623a0751b0ff4effc24b68e81bd20a6517775a2d4f06a67a1caeb649c8d8cc4f"
+            },
+            {
+              "name": "threshold-1024",
+              "contentType": "image/png",
+              "bytes": 128960,
+              "sha256": "b1605be2d4a645297a1c7fe769b1c91a266b50822d3417ef506aad3d22c6a847"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "file": "owned-positions-lab-regressions.spec.ts",
+      "line": 305,
+      "title": "owned-positions-lab-regressions.spec.ts / owned stake sorting retains the Portfolio direction convention across projections",
+      "status": "expected",
+      "expectedStatus": "passed",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 2840,
+          "retry": 0,
+          "errors": [],
+          "attachments": []
+        }
+      ]
+    },
+    {
+      "file": "owned-positions-lab-regressions.spec.ts",
+      "line": 237,
+      "title": "owned-positions-lab-regressions.spec.ts / owned governed list with touch input / tap opens the full list and outside tap dismisses it",
+      "status": "expected",
+      "expectedStatus": "passed",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 2882,
+          "retry": 0,
+          "errors": [],
+          "attachments": []
+        }
+      ]
+    },
+    {
+      "file": "table-family-lab-regressions.spec.ts",
+      "line": 28,
+      "title": "table-family-lab-regressions.spec.ts / table family light 320",
+      "status": "expected",
+      "expectedStatus": "passed",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 7259,
+          "retry": 0,
+          "errors": [],
+          "attachments": [
+            {
+              "name": "positions-record-hierarchy",
+              "contentType": "application/json",
+              "bytes": 2815,
+              "sha256": "14559485b4f58ec3df498712c162e3256a3e4f562017446b886e7b10902c8972"
+            },
+            {
+              "name": "positions",
+              "contentType": "image/png",
+              "bytes": 62553,
+              "sha256": "b6ff692dae1451ebac51690577af84bc390ff4d7dcec1e395cf702ac1ba71fbd",
+              "file": "table-family-light-320-positions-b6ff692d.png"
+            },
+            {
+              "name": "positions-geometry",
+              "contentType": "application/json",
+              "bytes": 947,
+              "sha256": "32cc82e9530a145320ef9dd76adc72db0485d8ca6076d877ecc2eac068ae7751"
+            },
+            {
+              "name": "withdrawals-record-hierarchy",
+              "contentType": "application/json",
+              "bytes": 3470,
+              "sha256": "10b54f9f91568438ec556722710641ec8442cab010f769c6c5d952cde25a5bc8"
+            },
+            {
+              "name": "withdrawals",
+              "contentType": "image/png",
+              "bytes": 47665,
+              "sha256": "c2f7c83d4347c68b6f5fc037e9e79c66646a817cce086d40bb657b56eb4ab358",
+              "file": "table-family-light-320-withdrawals-c2f7c83d.png"
+            },
+            {
+              "name": "withdrawals-geometry",
+              "contentType": "application/json",
+              "bytes": 570,
+              "sha256": "55b7cbf07d037aa42b74b045395be8c670a84a08a5474285574a509cd4ca56a9"
+            },
+            {
+              "name": "withdrawals-processing-record-hierarchy",
+              "contentType": "application/json",
+              "bytes": 3371,
+              "sha256": "fc17080f16c0f2b2c31d0a442d3cddee46b6ebef705932816fa2829457f4c37b"
+            },
+            {
+              "name": "withdrawals-processing",
+              "contentType": "image/png",
+              "bytes": 48100,
+              "sha256": "66da13f951291ddc91785b4364fa21972df457eb606440fda9f433dfa85eb41e"
+            },
+            {
+              "name": "withdrawals-processing-geometry",
+              "contentType": "application/json",
+              "bytes": 576,
+              "sha256": "4fa487db441764527e72fbf93f8834f4a8c186def15386f2d420b25bfc60dc21"
+            },
+            {
+              "name": "withdrawals-complete-record-hierarchy",
+              "contentType": "application/json",
+              "bytes": 3470,
+              "sha256": "a911826e421f9d9740e12c0e1bd91fb5c467347fc35acdfe8444b5b630327880"
+            },
+            {
+              "name": "withdrawals-complete",
+              "contentType": "image/png",
+              "bytes": 47836,
+              "sha256": "5a3bc5043ca6889767e8c595db58c433ab9dba60e9e549df04c5ccb09cc63442"
+            },
+            {
+              "name": "withdrawals-complete-geometry",
+              "contentType": "application/json",
+              "bytes": 571,
+              "sha256": "dff914767875052f61d25ced39c65ef71db31b8aa6c8acd86f454fb10904904c"
+            },
+            {
+              "name": "long-content-record-hierarchy",
+              "contentType": "application/json",
+              "bytes": 2809,
+              "sha256": "b182e17d6d7522e4cad542c6ed161914c86b129fa9c9da9a84efc2c714800039"
+            },
+            {
+              "name": "long-content",
+              "contentType": "image/png",
+              "bytes": 66131,
+              "sha256": "f1b76778bd5ac8f7a4e3c29026cd0a1e605612fe5069aad80cc2241f87d8ca38"
+            },
+            {
+              "name": "long-content-geometry",
+              "contentType": "application/json",
+              "bytes": 1000,
+              "sha256": "28815d9353af62ca5a01735f75fe1165c04995926d26b4ddf010747ec65eb288"
+            },
+            {
+              "name": "loading",
+              "contentType": "image/png",
+              "bytes": 37952,
+              "sha256": "7c84855a7c3ac7880d9356aa80e9b5518391878777a03b454f55b47bbfda5e52"
+            },
+            {
+              "name": "loading-geometry",
+              "contentType": "application/json",
+              "bytes": 533,
+              "sha256": "9420d7034a0a383e344b458479ae017d6334fcbf7a33bab8f0f18464b6a93540"
+            },
+            {
+              "name": "yield-record-hierarchy",
+              "contentType": "application/json",
+              "bytes": 569,
+              "sha256": "47cdabba8d4fa15555514859d761d33899476b1c048900d61f0080e1debb2f48"
+            },
+            {
+              "name": "yield",
+              "contentType": "image/png",
+              "bytes": 58504,
+              "sha256": "c02f1a99f02e8147db562f13084387343a801829cc4843160253a61a633340ec"
+            },
+            {
+              "name": "yield-geometry",
+              "contentType": "application/json",
+              "bytes": 218,
+              "sha256": "d2b3c6b89dcb10c776f2b7a3ec344abc0f1ed67506349cbfdb1f062381216088"
+            },
+            {
+              "name": "yield-long-content-record-hierarchy",
+              "contentType": "application/json",
+              "bytes": 569,
+              "sha256": "301c9047c7d4b1d26ea78d33deefd468cc154c30bb82227113413c9d7500df03"
+            },
+            {
+              "name": "yield-long-content",
+              "contentType": "image/png",
+              "bytes": 60269,
+              "sha256": "0f53411780812b657a1458e928e088f2c87ae044511db01822215aceeda05a6f",
+              "file": "table-family-light-320-yield-long-content-0f534117.png"
+            },
+            {
+              "name": "yield-long-content-geometry",
+              "contentType": "application/json",
+              "bytes": 268,
+              "sha256": "f98b5fd1842ae03a2ceecc9e18272a2848d32580e61beed01b8cb667afbaff47"
+            },
+            {
+              "name": "public-source-digest",
+              "contentType": "text/plain",
+              "bytes": 64,
+              "sha256": "6cf710bdf9739eb02aef909130693d44c68b9478f0d1b5c2da39319325a4855c",
+              "text": "ef4794d91f10cd4b804475c2c0ef078d2be0bd192a6537af925729143abc80a5"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "file": "table-family-lab-regressions.spec.ts",
+      "line": 28,
+      "title": "table-family-lab-regressions.spec.ts / table family light 375",
+      "status": "expected",
+      "expectedStatus": "passed",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 7138,
+          "retry": 0,
+          "errors": [],
+          "attachments": [
+            {
+              "name": "positions-record-hierarchy",
+              "contentType": "application/json",
+              "bytes": 2808,
+              "sha256": "d3b03325b8a18de090688ea18761f89f8d29113366e49533a9e14008a87cfd6c"
+            },
+            {
+              "name": "positions",
+              "contentType": "image/png",
+              "bytes": 69700,
+              "sha256": "63d54adf4eaaf84a257d779d3144b20af841304786bdd502a2ec8ae57d47d280"
+            },
+            {
+              "name": "positions-geometry",
+              "contentType": "application/json",
+              "bytes": 947,
+              "sha256": "5317e093d30a43c338d4f7962feb56513bbf9a4871190853d20ef6e991183145"
+            },
+            {
+              "name": "withdrawals-record-hierarchy",
+              "contentType": "application/json",
+              "bytes": 3496,
+              "sha256": "5a7b323cc037bffd8c73609decd4a1f796c1669f2a5efcefb32b6f32fb52ba65"
+            },
+            {
+              "name": "withdrawals",
+              "contentType": "image/png",
+              "bytes": 55212,
+              "sha256": "1bb022f58c8c38e04057d4102bf150d8f29fcdfd86e62a8109d058f17402ebea"
+            },
+            {
+              "name": "withdrawals-geometry",
+              "contentType": "application/json",
+              "bytes": 570,
+              "sha256": "dc65f95fbc97d177c19bce00487672c823d83dd1300eee5e91d766ac29da242d"
+            },
+            {
+              "name": "withdrawals-processing-record-hierarchy",
+              "contentType": "application/json",
+              "bytes": 3388,
+              "sha256": "2e3ba0515183239b5198d424dca98250d1a2f536b0bbc95bc293721f315b59e7"
+            },
+            {
+              "name": "withdrawals-processing",
+              "contentType": "image/png",
+              "bytes": 55758,
+              "sha256": "a8c4378007ca5e6735c7c69926a5c82d36f65ce4f28e1ef9ae5652c3af17ac42"
+            },
+            {
+              "name": "withdrawals-processing-geometry",
+              "contentType": "application/json",
+              "bytes": 576,
+              "sha256": "c33f7d3462cbde1387db6bfda6b0fe4732486e8c604d55141379d0407ce1f45f"
+            },
+            {
+              "name": "withdrawals-complete-record-hierarchy",
+              "contentType": "application/json",
+              "bytes": 3496,
+              "sha256": "47be4f13c93f84e5f6687a5466ce913488b822bb0192c0b2565fe40f14eb8d55"
+            },
+            {
+              "name": "withdrawals-complete",
+              "contentType": "image/png",
+              "bytes": 55352,
+              "sha256": "91ac03462d78243b101d12c92fd40b7beaf9ce35fe1f70b8405dbd36fcefc8d7"
+            },
+            {
+              "name": "withdrawals-complete-geometry",
+              "contentType": "application/json",
+              "bytes": 571,
+              "sha256": "458f318431b79f1c1be5bede85a62b13cd694dc8f36fdb7ff616f263d4d80442"
+            },
+            {
+              "name": "long-content-record-hierarchy",
+              "contentType": "application/json",
+              "bytes": 2803,
+              "sha256": "a677ea44e331f6212d59bae87fee87084527d24197d0dade945e075d4068aa29"
+            },
+            {
+              "name": "long-content",
+              "contentType": "image/png",
+              "bytes": 70009,
+              "sha256": "e8da123b8ff27b220de1f562b647148ebb141501d5056b48a6a1030f2bd9b976"
+            },
+            {
+              "name": "long-content-geometry",
+              "contentType": "application/json",
+              "bytes": 1000,
+              "sha256": "d5d6e3919a11bb0ef2848eafe91d279e4682601fad09c90396bceba5542de972"
+            },
+            {
+              "name": "loading",
+              "contentType": "image/png",
+              "bytes": 40405,
+              "sha256": "cd05573a6c6772017bb98f3bc771cf06788ec995224158ab0d6f48d42196b77e"
+            },
+            {
+              "name": "loading-geometry",
+              "contentType": "application/json",
+              "bytes": 533,
+              "sha256": "4dff1730a90d9b7da4c49e3afa20a2013dcfd1cb1e87ec9275bdc1f965259ee3"
+            },
+            {
+              "name": "yield-record-hierarchy",
+              "contentType": "application/json",
+              "bytes": 556,
+              "sha256": "3261862db9aa2e218cbe3ba9eb48b6f2d6b974cf5d5de17a1960876265abc7b7"
+            },
+            {
+              "name": "yield",
+              "contentType": "image/png",
+              "bytes": 67301,
+              "sha256": "a2be16c3bbe534a37c92f38de940668d8cdfaf17e4573167aa8bbf3c49fbfbb0"
+            },
+            {
+              "name": "yield-geometry",
+              "contentType": "application/json",
+              "bytes": 218,
+              "sha256": "e48bf6516bd4267e449d5d81c701d98e1f9597e92558b844a8da7d3bded3eb46"
+            },
+            {
+              "name": "yield-long-content-record-hierarchy",
+              "contentType": "application/json",
+              "bytes": 563,
+              "sha256": "c45f07576563b08869dd24e9c9e12cc5e8f87a582407e185667a05853e85c544"
+            },
+            {
+              "name": "yield-long-content",
+              "contentType": "image/png",
+              "bytes": 67411,
+              "sha256": "22cd47fb12628601225be906f2900732604489d60a05dff064a2d74498cff2ae"
+            },
+            {
+              "name": "yield-long-content-geometry",
+              "contentType": "application/json",
+              "bytes": 268,
+              "sha256": "7de3f7aa4e1b15e267163fd0a1384c64ad2aedfbfd5aae4255960eda39c29103"
+            },
+            {
+              "name": "public-source-digest",
+              "contentType": "text/plain",
+              "bytes": 64,
+              "sha256": "6cf710bdf9739eb02aef909130693d44c68b9478f0d1b5c2da39319325a4855c",
+              "text": "ef4794d91f10cd4b804475c2c0ef078d2be0bd192a6537af925729143abc80a5"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "file": "table-family-lab-regressions.spec.ts",
+      "line": 28,
+      "title": "table-family-lab-regressions.spec.ts / table family light 1400",
+      "status": "expected",
+      "expectedStatus": "passed",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 20892,
+          "retry": 0,
+          "errors": [],
+          "attachments": [
+            {
+              "name": "positions-record-hierarchy",
+              "contentType": "application/json",
+              "bytes": 2,
+              "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+            },
+            {
+              "name": "positions",
+              "contentType": "image/png",
+              "bytes": 128467,
+              "sha256": "eaddc0644811c500ec810873aca2055b11b4ecf7beeb52ec9b8dc49e9632df1a"
+            },
+            {
+              "name": "positions-geometry",
+              "contentType": "application/json",
+              "bytes": 1732,
+              "sha256": "f30f924b866f82dcc3b8693f01b38d3d384c31a1da4f82a4cda1d96a4c1adae3"
+            },
+            {
+              "name": "withdrawals-record-hierarchy",
+              "contentType": "application/json",
+              "bytes": 2,
+              "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+            },
+            {
+              "name": "withdrawals",
+              "contentType": "image/png",
+              "bytes": 93560,
+              "sha256": "e0972754057d0ab6a83d3b25541102a28e990bb07d8d0badbcd3a423c302d803"
+            },
+            {
+              "name": "withdrawals-geometry",
+              "contentType": "application/json",
+              "bytes": 1233,
+              "sha256": "a631d729a8fc42424a330b0b4e28181d7cf16c6f0a4e74473f58860ae7d1e4f2"
+            },
+            {
+              "name": "withdrawals-processing-record-hierarchy",
+              "contentType": "application/json",
+              "bytes": 2,
+              "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+            },
+            {
+              "name": "withdrawals-processing",
+              "contentType": "image/png",
+              "bytes": 94299,
+              "sha256": "49307c356973ee3421a132611eeb49a5574fc5345c74c81d1c4994adbb45aefb"
+            },
+            {
+              "name": "withdrawals-processing-geometry",
+              "contentType": "application/json",
+              "bytes": 1239,
+              "sha256": "7915c76350308f460c3e87e110ba62d59e369d8a65cb0096c23e0b011b3341d3"
+            },
+            {
+              "name": "withdrawals-complete-record-hierarchy",
+              "contentType": "application/json",
+              "bytes": 2,
+              "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+            },
+            {
+              "name": "withdrawals-complete",
+              "contentType": "image/png",
+              "bytes": 94007,
+              "sha256": "6b23c9dacba07da0ac76f580a7d7013cb6319a49e9ccb3cdf9c2fc708d6380ed"
+            },
+            {
+              "name": "withdrawals-complete-geometry",
+              "contentType": "application/json",
+              "bytes": 1234,
+              "sha256": "7be93823d08b7b9370b10349908b1839acf1ddcc6aeed2ef4ff733be466de6c8"
+            },
+            {
+              "name": "long-content-record-hierarchy",
+              "contentType": "application/json",
+              "bytes": 2,
+              "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+            },
+            {
+              "name": "long-content",
+              "contentType": "image/png",
+              "bytes": 132385,
+              "sha256": "b163589a668a5accca23d6ac0aed7a375ff2965b5879c1ac0351a38bebe636e9"
+            },
+            {
+              "name": "long-content-geometry",
+              "contentType": "application/json",
+              "bytes": 1785,
+              "sha256": "f3250199a69e49e7db277c5b2e884460ab0172e127c5d023fde6edc498de78ad"
+            },
+            {
+              "name": "loading",
+              "contentType": "image/png",
+              "bytes": 70205,
+              "sha256": "f0385f9698aad8b16c62742f51d7df24e7ca871c388c28dc24013c10c2efa264"
+            },
+            {
+              "name": "loading-geometry",
+              "contentType": "application/json",
+              "bytes": 1346,
+              "sha256": "579fa164d840ad4c5d9128e39cf26070fd41f8cf70370fdb8959c5d5be9af24d"
+            },
+            {
+              "name": "yield-record-hierarchy",
+              "contentType": "application/json",
+              "bytes": 2,
+              "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+            },
+            {
+              "name": "yield",
+              "contentType": "image/png",
+              "bytes": 116821,
+              "sha256": "40c5259ca5dda7bbc64b83dde20659c24d0eddbe7863c5894f7f81917a2791e4"
+            },
+            {
+              "name": "yield-geometry",
+              "contentType": "application/json",
+              "bytes": 378,
+              "sha256": "5b201b91593a69f637ef976b168f25e1c80a2cd386104ba516ef2e02f5cec437"
+            },
+            {
+              "name": "yield-long-content-record-hierarchy",
+              "contentType": "application/json",
+              "bytes": 2,
+              "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+            },
+            {
+              "name": "yield-long-content",
+              "contentType": "image/png",
+              "bytes": 123598,
+              "sha256": "397b3f12d6146a9828b986b058b580bf9c4410e1cf98a83b71d0f1e85a88699c"
+            },
+            {
+              "name": "yield-long-content-geometry",
+              "contentType": "application/json",
+              "bytes": 428,
+              "sha256": "6ef59f0a677d50492c380ebf0b639e777318860b54f432285c5363c4c67eda3a"
+            },
+            {
+              "name": "boundary-639-record-hierarchy",
+              "contentType": "application/json",
+              "bytes": 2763,
+              "sha256": "a16448c4a54077e0281151cfbe292a81b9821dbf50b2fb1472f519b56bd48f49"
+            },
+            {
+              "name": "boundary-639",
+              "contentType": "image/png",
+              "bytes": 92523,
+              "sha256": "e6dfadf90c3be7dace6d411358ccaf83b809c2bab91795270ec234785bf76bdb"
+            },
+            {
+              "name": "boundary-639-geometry",
+              "contentType": "application/json",
+              "bytes": 947,
+              "sha256": "cd6b74dfbebb04895ad95daa8fcf666833b6ee4764108a1243c068bbef414428"
+            },
+            {
+              "name": "withdrawals-boundary-639-record-hierarchy",
+              "contentType": "application/json",
+              "bytes": 3496,
+              "sha256": "485d53bb9c28c187bebb68a1561cc4b6cf544ca833eddf98ccb25594de1dc0a4"
+            },
+            {
+              "name": "withdrawals-boundary-639",
+              "contentType": "image/png",
+              "bytes": 63914,
+              "sha256": "6541375f74f8409cc6cd1ef45593a40528ae3bbc98b40ea4ba9e61fefb23fc44"
+            },
+            {
+              "name": "withdrawals-boundary-639-geometry",
+              "contentType": "application/json",
+              "bytes": 570,
+              "sha256": "f00e920f03268bcbf6a19468f34f820f21dbb50cc0e7b2b3adbf7322dcaa6fbb"
+            },
+            {
+              "name": "boundary-640-record-hierarchy",
+              "contentType": "application/json",
+              "bytes": 2783,
+              "sha256": "c6f2a3ad75021bc3011c32c7cc612c3b4d3b892167dffe86ae642735e1f41dd4"
+            },
+            {
+              "name": "boundary-640",
+              "contentType": "image/png",
+              "bytes": 95738,
+              "sha256": "40b2fe0c8b6fe611983d274403eb1b599351bc43560c2902c57ea4fb57e10fef"
+            },
+            {
+              "name": "boundary-640-geometry",
+              "contentType": "application/json",
+              "bytes": 947,
+              "sha256": "6e49832e36a5d60fa347d983abccf0eda456cab8a284cee48647137e8a05412e"
+            },
+            {
+              "name": "withdrawals-boundary-640-record-hierarchy",
+              "contentType": "application/json",
+              "bytes": 3496,
+              "sha256": "fff8541ab4b75088853cd34c864a5e36848dbcc04d50bac054a792fd6cd0f5ab"
+            },
+            {
+              "name": "withdrawals-boundary-640",
+              "contentType": "image/png",
+              "bytes": 64115,
+              "sha256": "05029be4fe109804fcf2f79be7a9f61074b5c2215e28cd57750d5a5bb97606d9"
+            },
+            {
+              "name": "withdrawals-boundary-640-geometry",
+              "contentType": "application/json",
+              "bytes": 570,
+              "sha256": "aa7435779566975e9f3810e812764c81b39d06b8709b45b4f2d41d83c6978461"
+            },
+            {
+              "name": "boundary-1023-record-hierarchy",
+              "contentType": "application/json",
+              "bytes": 2815,
+              "sha256": "2263c1ee067cbf097fdbfe7620a2a01542a190ccaf2ddd546e80e200861cb6d4"
+            },
+            {
+              "name": "boundary-1023",
+              "contentType": "image/png",
+              "bytes": 97870,
+              "sha256": "c109d0f7ccb72764a8657513f9ad5e6ef2820c7ceec01f364339c7410c55d6d3"
+            },
+            {
+              "name": "boundary-1023-geometry",
+              "contentType": "application/json",
+              "bytes": 960,
+              "sha256": "dc80f82d50c9396a517e2efe828770b6175e6bc5fdb11c666ac873eb36879321"
+            },
+            {
+              "name": "withdrawals-boundary-1023-record-hierarchy",
+              "contentType": "application/json",
+              "bytes": 3511,
+              "sha256": "f9bdf8e5508dd7b7150e0aacf57c4a486cfc6625956c668eb63baa6c722119b1"
+            },
+            {
+              "name": "withdrawals-boundary-1023",
+              "contentType": "image/png",
+              "bytes": 64066,
+              "sha256": "8b07567ac56c3252e34eb336a2202fef0bf1072a4e504fb068b6f564161f628e"
+            },
+            {
+              "name": "withdrawals-boundary-1023-geometry",
+              "contentType": "application/json",
+              "bytes": 583,
+              "sha256": "e547df121d1c641b91d7b933b92a4f1af6b4eb8d8bd30a45a65b1e9e28b6fb1a"
+            },
+            {
+              "name": "boundary-1024-record-hierarchy",
+              "contentType": "application/json",
+              "bytes": 2,
+              "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+            },
+            {
+              "name": "boundary-1024",
+              "contentType": "image/png",
+              "bytes": 121813,
+              "sha256": "842787cf2ea624a643dbc5332e1825e63eb4f5965795b81f3aeebaf1c51476ae"
+            },
+            {
+              "name": "boundary-1024-geometry",
+              "contentType": "application/json",
+              "bytes": 1722,
+              "sha256": "833dfef0453a798cb713c9e075e2382a282f9e1111a97ddc632a8735b639942a"
+            },
+            {
+              "name": "withdrawals-boundary-1024-record-hierarchy",
+              "contentType": "application/json",
+              "bytes": 2,
+              "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+            },
+            {
+              "name": "withdrawals-boundary-1024",
+              "contentType": "image/png",
+              "bytes": 92858,
+              "sha256": "ab79ace4d9dd1c9e4151164236fb2a872de58835c82947835b9a6a4dc0b46e2a"
+            },
+            {
+              "name": "withdrawals-boundary-1024-geometry",
+              "contentType": "application/json",
+              "bytes": 1233,
+              "sha256": "97b5f73d9ab3f60ad9241812d8004a7212c0663065c2c93fdcb5553aecbd5eb5"
+            },
+            {
+              "name": "constrained-record-hierarchy",
+              "contentType": "application/json",
+              "bytes": 2797,
+              "sha256": "a1a276ebd7cf8f489d3144f2fb285f922609cfc280c07ae00064ea8774c8b380"
+            },
+            {
+              "name": "constrained",
+              "contentType": "image/png",
+              "bytes": 93066,
+              "sha256": "4c225a83e1864e897ab4b3db65e9bc17bd390d4dfdf9fcfa90865528f89b0390"
+            },
+            {
+              "name": "constrained-geometry",
+              "contentType": "application/json",
+              "bytes": 947,
+              "sha256": "b51be0bc6371341021fab5dfde6eeba2b97e4b2ddf5f479b9e85768ba535df6e"
+            },
+            {
+              "name": "withdrawals-constrained-record-hierarchy",
+              "contentType": "application/json",
+              "bytes": 3496,
+              "sha256": "5f317d41a5ebff828938993dfe95915b6ab3fef7162234b4ce1b686787e86052"
+            },
+            {
+              "name": "withdrawals-constrained",
+              "contentType": "image/png",
+              "bytes": 63863,
+              "sha256": "c4527304e995e63fc2b8365d03474234128aeb7b90b0c497e1561a0cea50e000"
+            },
+            {
+              "name": "withdrawals-constrained-geometry",
+              "contentType": "application/json",
+              "bytes": 570,
+              "sha256": "bf77c0949f03e8a0520ab2d8de45f8865968b0ddacd48d8567468ac73ec2be3b"
+            },
+            {
+              "name": "constrained-long-content-record-hierarchy",
+              "contentType": "application/json",
+              "bytes": 2787,
+              "sha256": "47166b60f565931ab9ae790132091c526c6f88d1a204fde191797609cee16e92"
+            },
+            {
+              "name": "constrained-long-content",
+              "contentType": "image/png",
+              "bytes": 99503,
+              "sha256": "bda5aa50202c15232147b6a48c0a6ba5c0aa2a048e5f32a0b3aea34321f125ec"
+            },
+            {
+              "name": "constrained-long-content-geometry",
+              "contentType": "application/json",
+              "bytes": 1000,
+              "sha256": "a4209a995f7bc02eecd60a8c09325fc6d3d3ac95e3a6f6db8f2493c30c5a14d4"
+            },
+            {
+              "name": "yield-constrained-long-content-record-hierarchy",
+              "contentType": "application/json",
+              "bytes": 556,
+              "sha256": "b6bd3295675caf88e2131d7e9e5a0ead355da1a4a80e701812f4cc5a61d50eeb"
+            },
+            {
+              "name": "yield-constrained-long-content",
+              "contentType": "image/png",
+              "bytes": 97103,
+              "sha256": "cfe34a7a1d422b710028d58c877f91db5033e5fdf5d0a9fd9336c99141c17ded"
+            },
+            {
+              "name": "yield-constrained-long-content-geometry",
+              "contentType": "application/json",
+              "bytes": 268,
+              "sha256": "b135079f94086858fba91d6e6af67cf46b63ff7c5c3a01403ae1ea2ee7c33bd0"
+            },
+            {
+              "name": "yield-constrained-record-hierarchy",
+              "contentType": "application/json",
+              "bytes": 556,
+              "sha256": "7517b566c61051d0c41b1cba092f100c19b2c727055c5a225c10772bf280064d"
+            },
+            {
+              "name": "yield-constrained",
+              "contentType": "image/png",
+              "bytes": 90627,
+              "sha256": "ae07f84569b7d72b8412a37d865bf3eaeb39b996bd9d82cfd8fe89aa3711e6b5"
+            },
+            {
+              "name": "yield-constrained-geometry",
+              "contentType": "application/json",
+              "bytes": 218,
+              "sha256": "8b8d1cdba9487f699701c2b7a4a6d2b7b5f3cd6b56f60ad12fa2071717d86d53"
+            },
+            {
+              "name": "public-source-digest",
+              "contentType": "text/plain",
+              "bytes": 64,
+              "sha256": "6cf710bdf9739eb02aef909130693d44c68b9478f0d1b5c2da39319325a4855c",
+              "text": "ef4794d91f10cd4b804475c2c0ef078d2be0bd192a6537af925729143abc80a5"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "file": "table-family-lab-regressions.spec.ts",
+      "line": 28,
+      "title": "table-family-lab-regressions.spec.ts / table family dark 320",
+      "status": "expected",
+      "expectedStatus": "passed",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 6993,
+          "retry": 0,
+          "errors": [],
+          "attachments": [
+            {
+              "name": "positions-record-hierarchy",
+              "contentType": "application/json",
+              "bytes": 2815,
+              "sha256": "14559485b4f58ec3df498712c162e3256a3e4f562017446b886e7b10902c8972"
+            },
+            {
+              "name": "positions",
+              "contentType": "image/png",
+              "bytes": 63447,
+              "sha256": "a5234cb7f98391ecf7ac95150bab336623fc1458a5fba941a31ec2c20de6e123"
+            },
+            {
+              "name": "positions-geometry",
+              "contentType": "application/json",
+              "bytes": 947,
+              "sha256": "32cc82e9530a145320ef9dd76adc72db0485d8ca6076d877ecc2eac068ae7751"
+            },
+            {
+              "name": "withdrawals-record-hierarchy",
+              "contentType": "application/json",
+              "bytes": 3470,
+              "sha256": "10b54f9f91568438ec556722710641ec8442cab010f769c6c5d952cde25a5bc8"
+            },
+            {
+              "name": "withdrawals",
+              "contentType": "image/png",
+              "bytes": 49164,
+              "sha256": "9e09f6989ebdcaaf0e3c50a1fad7e5d9a0fbd94bbd4cfd6fa8d329ec38eea347"
+            },
+            {
+              "name": "withdrawals-geometry",
+              "contentType": "application/json",
+              "bytes": 570,
+              "sha256": "55b7cbf07d037aa42b74b045395be8c670a84a08a5474285574a509cd4ca56a9"
+            },
+            {
+              "name": "withdrawals-processing-record-hierarchy",
+              "contentType": "application/json",
+              "bytes": 3371,
+              "sha256": "fc17080f16c0f2b2c31d0a442d3cddee46b6ebef705932816fa2829457f4c37b"
+            },
+            {
+              "name": "withdrawals-processing",
+              "contentType": "image/png",
+              "bytes": 49538,
+              "sha256": "e1f2b5b34843eff90194a5f94bec500cce147171497175735781aef10ecce10e"
+            },
+            {
+              "name": "withdrawals-processing-geometry",
+              "contentType": "application/json",
+              "bytes": 576,
+              "sha256": "4fa487db441764527e72fbf93f8834f4a8c186def15386f2d420b25bfc60dc21"
+            },
+            {
+              "name": "withdrawals-complete-record-hierarchy",
+              "contentType": "application/json",
+              "bytes": 3470,
+              "sha256": "a911826e421f9d9740e12c0e1bd91fb5c467347fc35acdfe8444b5b630327880"
+            },
+            {
+              "name": "withdrawals-complete",
+              "contentType": "image/png",
+              "bytes": 49103,
+              "sha256": "0ae0a18a1e2956ce3f449b7e1cc3fa1653c094287787f063b9d0ec2bdc25c455"
+            },
+            {
+              "name": "withdrawals-complete-geometry",
+              "contentType": "application/json",
+              "bytes": 571,
+              "sha256": "dff914767875052f61d25ced39c65ef71db31b8aa6c8acd86f454fb10904904c"
+            },
+            {
+              "name": "long-content-record-hierarchy",
+              "contentType": "application/json",
+              "bytes": 2809,
+              "sha256": "b182e17d6d7522e4cad542c6ed161914c86b129fa9c9da9a84efc2c714800039"
+            },
+            {
+              "name": "long-content",
+              "contentType": "image/png",
+              "bytes": 66977,
+              "sha256": "a1295cc103750bb12d59fcf12bda444c8e6eaf42c8f1a20301dee3f44c731d2a"
+            },
+            {
+              "name": "long-content-geometry",
+              "contentType": "application/json",
+              "bytes": 1000,
+              "sha256": "28815d9353af62ca5a01735f75fe1165c04995926d26b4ddf010747ec65eb288"
+            },
+            {
+              "name": "loading",
+              "contentType": "image/png",
+              "bytes": 38081,
+              "sha256": "4f4eb733ddcc769aef7db53ebba0baab31e8c87f34f010527f93d9fece5cf025"
+            },
+            {
+              "name": "loading-geometry",
+              "contentType": "application/json",
+              "bytes": 533,
+              "sha256": "9420d7034a0a383e344b458479ae017d6334fcbf7a33bab8f0f18464b6a93540"
+            },
+            {
+              "name": "yield-record-hierarchy",
+              "contentType": "application/json",
+              "bytes": 569,
+              "sha256": "47cdabba8d4fa15555514859d761d33899476b1c048900d61f0080e1debb2f48"
+            },
+            {
+              "name": "yield",
+              "contentType": "image/png",
+              "bytes": 59498,
+              "sha256": "095b9cf661d98a659d2f2f8f222abc42975d5887bc65a995fd591c7a15af7048"
+            },
+            {
+              "name": "yield-geometry",
+              "contentType": "application/json",
+              "bytes": 218,
+              "sha256": "d2b3c6b89dcb10c776f2b7a3ec344abc0f1ed67506349cbfdb1f062381216088"
+            },
+            {
+              "name": "yield-long-content-record-hierarchy",
+              "contentType": "application/json",
+              "bytes": 569,
+              "sha256": "301c9047c7d4b1d26ea78d33deefd468cc154c30bb82227113413c9d7500df03"
+            },
+            {
+              "name": "yield-long-content",
+              "contentType": "image/png",
+              "bytes": 61489,
+              "sha256": "2761863c71144357651db0ee37a96581a1fa0b4da372fc91db064926e1c75ca7"
+            },
+            {
+              "name": "yield-long-content-geometry",
+              "contentType": "application/json",
+              "bytes": 268,
+              "sha256": "f98b5fd1842ae03a2ceecc9e18272a2848d32580e61beed01b8cb667afbaff47"
+            },
+            {
+              "name": "public-source-digest",
+              "contentType": "text/plain",
+              "bytes": 64,
+              "sha256": "6cf710bdf9739eb02aef909130693d44c68b9478f0d1b5c2da39319325a4855c",
+              "text": "ef4794d91f10cd4b804475c2c0ef078d2be0bd192a6537af925729143abc80a5"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "file": "table-family-lab-regressions.spec.ts",
+      "line": 28,
+      "title": "table-family-lab-regressions.spec.ts / table family dark 375",
+      "status": "expected",
+      "expectedStatus": "passed",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 6944,
+          "retry": 0,
+          "errors": [],
+          "attachments": [
+            {
+              "name": "positions-record-hierarchy",
+              "contentType": "application/json",
+              "bytes": 2808,
+              "sha256": "d3b03325b8a18de090688ea18761f89f8d29113366e49533a9e14008a87cfd6c"
+            },
+            {
+              "name": "positions",
+              "contentType": "image/png",
+              "bytes": 70615,
+              "sha256": "4faf145351925ee7d209e43e15a765d107a636b79bfb7856f1afc8fa0fca166e"
+            },
+            {
+              "name": "positions-geometry",
+              "contentType": "application/json",
+              "bytes": 947,
+              "sha256": "5317e093d30a43c338d4f7962feb56513bbf9a4871190853d20ef6e991183145"
+            },
+            {
+              "name": "withdrawals-record-hierarchy",
+              "contentType": "application/json",
+              "bytes": 3496,
+              "sha256": "5a7b323cc037bffd8c73609decd4a1f796c1669f2a5efcefb32b6f32fb52ba65"
+            },
+            {
+              "name": "withdrawals",
+              "contentType": "image/png",
+              "bytes": 56627,
+              "sha256": "42ed6ce446303d86ea329ff7a21b1b562adc2711654869d73fa95da2ff6e4cb7"
+            },
+            {
+              "name": "withdrawals-geometry",
+              "contentType": "application/json",
+              "bytes": 570,
+              "sha256": "dc65f95fbc97d177c19bce00487672c823d83dd1300eee5e91d766ac29da242d"
+            },
+            {
+              "name": "withdrawals-processing-record-hierarchy",
+              "contentType": "application/json",
+              "bytes": 3388,
+              "sha256": "2e3ba0515183239b5198d424dca98250d1a2f536b0bbc95bc293721f315b59e7"
+            },
+            {
+              "name": "withdrawals-processing",
+              "contentType": "image/png",
+              "bytes": 57102,
+              "sha256": "58fc6e0abdd57e6a861da59dc76885fc0b6e77bc4c0864be225d8326ebb08fa1"
+            },
+            {
+              "name": "withdrawals-processing-geometry",
+              "contentType": "application/json",
+              "bytes": 576,
+              "sha256": "c33f7d3462cbde1387db6bfda6b0fe4732486e8c604d55141379d0407ce1f45f"
+            },
+            {
+              "name": "withdrawals-complete-record-hierarchy",
+              "contentType": "application/json",
+              "bytes": 3496,
+              "sha256": "47be4f13c93f84e5f6687a5466ce913488b822bb0192c0b2565fe40f14eb8d55"
+            },
+            {
+              "name": "withdrawals-complete",
+              "contentType": "image/png",
+              "bytes": 56655,
+              "sha256": "761b91fbb28198ec4a17808ecefbf1241ddb28e168cd0a7d55149e51fc4c0ef4"
+            },
+            {
+              "name": "withdrawals-complete-geometry",
+              "contentType": "application/json",
+              "bytes": 571,
+              "sha256": "458f318431b79f1c1be5bede85a62b13cd694dc8f36fdb7ff616f263d4d80442"
+            },
+            {
+              "name": "long-content-record-hierarchy",
+              "contentType": "application/json",
+              "bytes": 2803,
+              "sha256": "a677ea44e331f6212d59bae87fee87084527d24197d0dade945e075d4068aa29"
+            },
+            {
+              "name": "long-content",
+              "contentType": "image/png",
+              "bytes": 70972,
+              "sha256": "c6f0e3141da7e819b50b9bc1a7a160c5be1e4a8928bf7866c3e934467b0e9abf"
+            },
+            {
+              "name": "long-content-geometry",
+              "contentType": "application/json",
+              "bytes": 1000,
+              "sha256": "d5d6e3919a11bb0ef2848eafe91d279e4682601fad09c90396bceba5542de972"
+            },
+            {
+              "name": "loading",
+              "contentType": "image/png",
+              "bytes": 40691,
+              "sha256": "3a2da4587d0c584968181916a55b04c636b1126cbaa75d9c2827be8c41be453f"
+            },
+            {
+              "name": "loading-geometry",
+              "contentType": "application/json",
+              "bytes": 533,
+              "sha256": "4dff1730a90d9b7da4c49e3afa20a2013dcfd1cb1e87ec9275bdc1f965259ee3"
+            },
+            {
+              "name": "yield-record-hierarchy",
+              "contentType": "application/json",
+              "bytes": 556,
+              "sha256": "3261862db9aa2e218cbe3ba9eb48b6f2d6b974cf5d5de17a1960876265abc7b7"
+            },
+            {
+              "name": "yield",
+              "contentType": "image/png",
+              "bytes": 68475,
+              "sha256": "d12adc4c02b4b7e601224db22c11eb382218f03127de80ab320c2e5604c73bbb"
+            },
+            {
+              "name": "yield-geometry",
+              "contentType": "application/json",
+              "bytes": 218,
+              "sha256": "e48bf6516bd4267e449d5d81c701d98e1f9597e92558b844a8da7d3bded3eb46"
+            },
+            {
+              "name": "yield-long-content-record-hierarchy",
+              "contentType": "application/json",
+              "bytes": 563,
+              "sha256": "c45f07576563b08869dd24e9c9e12cc5e8f87a582407e185667a05853e85c544"
+            },
+            {
+              "name": "yield-long-content",
+              "contentType": "image/png",
+              "bytes": 68622,
+              "sha256": "fceee6b9403fcd06f8f99b58edc51a36cf2371a3ebf84b9a6055ed401ca279dc"
+            },
+            {
+              "name": "yield-long-content-geometry",
+              "contentType": "application/json",
+              "bytes": 268,
+              "sha256": "7de3f7aa4e1b15e267163fd0a1384c64ad2aedfbfd5aae4255960eda39c29103"
+            },
+            {
+              "name": "public-source-digest",
+              "contentType": "text/plain",
+              "bytes": 64,
+              "sha256": "6cf710bdf9739eb02aef909130693d44c68b9478f0d1b5c2da39319325a4855c",
+              "text": "ef4794d91f10cd4b804475c2c0ef078d2be0bd192a6537af925729143abc80a5"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "file": "table-family-lab-regressions.spec.ts",
+      "line": 28,
+      "title": "table-family-lab-regressions.spec.ts / table family dark 1400",
+      "status": "expected",
+      "expectedStatus": "passed",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 20808,
+          "retry": 0,
+          "errors": [],
+          "attachments": [
+            {
+              "name": "positions-record-hierarchy",
+              "contentType": "application/json",
+              "bytes": 2,
+              "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+            },
+            {
+              "name": "positions",
+              "contentType": "image/png",
+              "bytes": 129520,
+              "sha256": "0c8992a7ac99b93613f30654ce29c85a70a9fc8efe4f5639157a671b2bcab360",
+              "file": "table-family-dark-1400-positions-0c8992a7.png"
+            },
+            {
+              "name": "positions-geometry",
+              "contentType": "application/json",
+              "bytes": 1732,
+              "sha256": "f30f924b866f82dcc3b8693f01b38d3d384c31a1da4f82a4cda1d96a4c1adae3"
+            },
+            {
+              "name": "withdrawals-record-hierarchy",
+              "contentType": "application/json",
+              "bytes": 2,
+              "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+            },
+            {
+              "name": "withdrawals",
+              "contentType": "image/png",
+              "bytes": 97252,
+              "sha256": "fa12f909c839bc553917662ff82c2504f57b9c595711024fee66d2f9698cbdf0",
+              "file": "table-family-dark-1400-withdrawals-fa12f909.png"
+            },
+            {
+              "name": "withdrawals-geometry",
+              "contentType": "application/json",
+              "bytes": 1233,
+              "sha256": "a631d729a8fc42424a330b0b4e28181d7cf16c6f0a4e74473f58860ae7d1e4f2"
+            },
+            {
+              "name": "withdrawals-processing-record-hierarchy",
+              "contentType": "application/json",
+              "bytes": 2,
+              "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+            },
+            {
+              "name": "withdrawals-processing",
+              "contentType": "image/png",
+              "bytes": 97725,
+              "sha256": "a3a90eaab6b843a7dc28e94cf7415116961436a3d2836c19e8afbad47cf4f933"
+            },
+            {
+              "name": "withdrawals-processing-geometry",
+              "contentType": "application/json",
+              "bytes": 1239,
+              "sha256": "7915c76350308f460c3e87e110ba62d59e369d8a65cb0096c23e0b011b3341d3"
+            },
+            {
+              "name": "withdrawals-complete-record-hierarchy",
+              "contentType": "application/json",
+              "bytes": 2,
+              "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+            },
+            {
+              "name": "withdrawals-complete",
+              "contentType": "image/png",
+              "bytes": 97197,
+              "sha256": "39101fc449850a7ebe7077c13b7b01402d04c2e206ea0b20900452db6f1b8d65"
+            },
+            {
+              "name": "withdrawals-complete-geometry",
+              "contentType": "application/json",
+              "bytes": 1234,
+              "sha256": "7be93823d08b7b9370b10349908b1839acf1ddcc6aeed2ef4ff733be466de6c8"
+            },
+            {
+              "name": "long-content-record-hierarchy",
+              "contentType": "application/json",
+              "bytes": 2,
+              "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+            },
+            {
+              "name": "long-content",
+              "contentType": "image/png",
+              "bytes": 133621,
+              "sha256": "341b0d2a623ac0a55113f528c7b1858dae5da33bdb7175793244e44642e85d77"
+            },
+            {
+              "name": "long-content-geometry",
+              "contentType": "application/json",
+              "bytes": 1785,
+              "sha256": "f3250199a69e49e7db277c5b2e884460ab0172e127c5d023fde6edc498de78ad"
+            },
+            {
+              "name": "loading",
+              "contentType": "image/png",
+              "bytes": 71610,
+              "sha256": "45302eb89b39b7150beaccb7d4a85382236b0df0ba6b94c07f35118263e83a78"
+            },
+            {
+              "name": "loading-geometry",
+              "contentType": "application/json",
+              "bytes": 1346,
+              "sha256": "579fa164d840ad4c5d9128e39cf26070fd41f8cf70370fdb8959c5d5be9af24d"
+            },
+            {
+              "name": "yield-record-hierarchy",
+              "contentType": "application/json",
+              "bytes": 2,
+              "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+            },
+            {
+              "name": "yield",
+              "contentType": "image/png",
+              "bytes": 119438,
+              "sha256": "19da75e20d8dbb60a32cbb2d71ab44af870be9089204248a1060603e57ec4444"
+            },
+            {
+              "name": "yield-geometry",
+              "contentType": "application/json",
+              "bytes": 378,
+              "sha256": "5b201b91593a69f637ef976b168f25e1c80a2cd386104ba516ef2e02f5cec437"
+            },
+            {
+              "name": "yield-long-content-record-hierarchy",
+              "contentType": "application/json",
+              "bytes": 2,
+              "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+            },
+            {
+              "name": "yield-long-content",
+              "contentType": "image/png",
+              "bytes": 126804,
+              "sha256": "b89ef0cf62c43c8f7113919071be9cc2610acfa6ef435c83e960aad65babbb9c",
+              "file": "table-family-dark-1400-yield-long-content-b89ef0cf.png"
+            },
+            {
+              "name": "yield-long-content-geometry",
+              "contentType": "application/json",
+              "bytes": 428,
+              "sha256": "6ef59f0a677d50492c380ebf0b639e777318860b54f432285c5363c4c67eda3a"
+            },
+            {
+              "name": "boundary-639-record-hierarchy",
+              "contentType": "application/json",
+              "bytes": 2763,
+              "sha256": "a16448c4a54077e0281151cfbe292a81b9821dbf50b2fb1472f519b56bd48f49"
+            },
+            {
+              "name": "boundary-639",
+              "contentType": "image/png",
+              "bytes": 93448,
+              "sha256": "974c8b6fff5edb2f411c366dcf91f1cd2596c900def49b3f2ea0581c32d672eb"
+            },
+            {
+              "name": "boundary-639-geometry",
+              "contentType": "application/json",
+              "bytes": 947,
+              "sha256": "cd6b74dfbebb04895ad95daa8fcf666833b6ee4764108a1243c068bbef414428"
+            },
+            {
+              "name": "withdrawals-boundary-639-record-hierarchy",
+              "contentType": "application/json",
+              "bytes": 3496,
+              "sha256": "485d53bb9c28c187bebb68a1561cc4b6cf544ca833eddf98ccb25594de1dc0a4"
+            },
+            {
+              "name": "withdrawals-boundary-639",
+              "contentType": "image/png",
+              "bytes": 65125,
+              "sha256": "2e3bd1d7894390f8024a4942fb00f8639b92eef519ca09224c117bd637338ab1"
+            },
+            {
+              "name": "withdrawals-boundary-639-geometry",
+              "contentType": "application/json",
+              "bytes": 570,
+              "sha256": "f00e920f03268bcbf6a19468f34f820f21dbb50cc0e7b2b3adbf7322dcaa6fbb"
+            },
+            {
+              "name": "boundary-640-record-hierarchy",
+              "contentType": "application/json",
+              "bytes": 2783,
+              "sha256": "c6f2a3ad75021bc3011c32c7cc612c3b4d3b892167dffe86ae642735e1f41dd4"
+            },
+            {
+              "name": "boundary-640",
+              "contentType": "image/png",
+              "bytes": 96714,
+              "sha256": "ce217a2328aec364c234a70a00a792358585252939cf800bdf9219bbadcae3a2"
+            },
+            {
+              "name": "boundary-640-geometry",
+              "contentType": "application/json",
+              "bytes": 947,
+              "sha256": "6e49832e36a5d60fa347d983abccf0eda456cab8a284cee48647137e8a05412e"
+            },
+            {
+              "name": "withdrawals-boundary-640-record-hierarchy",
+              "contentType": "application/json",
+              "bytes": 3496,
+              "sha256": "fff8541ab4b75088853cd34c864a5e36848dbcc04d50bac054a792fd6cd0f5ab"
+            },
+            {
+              "name": "withdrawals-boundary-640",
+              "contentType": "image/png",
+              "bytes": 65377,
+              "sha256": "6f2ef69f2559e85af324d85cf097c6f2eea8a45c02c3832844cf36d837fe83c6"
+            },
+            {
+              "name": "withdrawals-boundary-640-geometry",
+              "contentType": "application/json",
+              "bytes": 570,
+              "sha256": "aa7435779566975e9f3810e812764c81b39d06b8709b45b4f2d41d83c6978461"
+            },
+            {
+              "name": "boundary-1023-record-hierarchy",
+              "contentType": "application/json",
+              "bytes": 2815,
+              "sha256": "2263c1ee067cbf097fdbfe7620a2a01542a190ccaf2ddd546e80e200861cb6d4"
+            },
+            {
+              "name": "boundary-1023",
+              "contentType": "image/png",
+              "bytes": 98831,
+              "sha256": "89a85f3d9af5cc87d88e8bedecf327bf5fb2da3fc80f3bea5a2a925c8aa90ad8"
+            },
+            {
+              "name": "boundary-1023-geometry",
+              "contentType": "application/json",
+              "bytes": 960,
+              "sha256": "dc80f82d50c9396a517e2efe828770b6175e6bc5fdb11c666ac873eb36879321"
+            },
+            {
+              "name": "withdrawals-boundary-1023-record-hierarchy",
+              "contentType": "application/json",
+              "bytes": 3511,
+              "sha256": "f9bdf8e5508dd7b7150e0aacf57c4a486cfc6625956c668eb63baa6c722119b1"
+            },
+            {
+              "name": "withdrawals-boundary-1023",
+              "contentType": "image/png",
+              "bytes": 65351,
+              "sha256": "41ab6cc3397e1aefd7f21e5f2c80c680d3bae4a13438fef35b4ad659b7dea30b"
+            },
+            {
+              "name": "withdrawals-boundary-1023-geometry",
+              "contentType": "application/json",
+              "bytes": 583,
+              "sha256": "e547df121d1c641b91d7b933b92a4f1af6b4eb8d8bd30a45a65b1e9e28b6fb1a"
+            },
+            {
+              "name": "boundary-1024-record-hierarchy",
+              "contentType": "application/json",
+              "bytes": 2,
+              "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+            },
+            {
+              "name": "boundary-1024",
+              "contentType": "image/png",
+              "bytes": 122539,
+              "sha256": "4dd8ae024923017557fb10aed610e224bdf3b4b85297206e0de999249dfdde38"
+            },
+            {
+              "name": "boundary-1024-geometry",
+              "contentType": "application/json",
+              "bytes": 1722,
+              "sha256": "833dfef0453a798cb713c9e075e2382a282f9e1111a97ddc632a8735b639942a"
+            },
+            {
+              "name": "withdrawals-boundary-1024-record-hierarchy",
+              "contentType": "application/json",
+              "bytes": 2,
+              "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+            },
+            {
+              "name": "withdrawals-boundary-1024",
+              "contentType": "image/png",
+              "bytes": 97390,
+              "sha256": "5029638b82e4fea84885b9ba2034d7e0ca37d9382bb222a0d60bc75ee0c44b71"
+            },
+            {
+              "name": "withdrawals-boundary-1024-geometry",
+              "contentType": "application/json",
+              "bytes": 1233,
+              "sha256": "97b5f73d9ab3f60ad9241812d8004a7212c0663065c2c93fdcb5553aecbd5eb5"
+            },
+            {
+              "name": "constrained-record-hierarchy",
+              "contentType": "application/json",
+              "bytes": 2797,
+              "sha256": "a1a276ebd7cf8f489d3144f2fb285f922609cfc280c07ae00064ea8774c8b380"
+            },
+            {
+              "name": "constrained",
+              "contentType": "image/png",
+              "bytes": 93997,
+              "sha256": "d5aac63ac24a1ccd2f1e8880f00ca6de6234fb40af5686a7d582a0211136c2eb"
+            },
+            {
+              "name": "constrained-geometry",
+              "contentType": "application/json",
+              "bytes": 947,
+              "sha256": "b51be0bc6371341021fab5dfde6eeba2b97e4b2ddf5f479b9e85768ba535df6e"
+            },
+            {
+              "name": "withdrawals-constrained-record-hierarchy",
+              "contentType": "application/json",
+              "bytes": 3496,
+              "sha256": "5f317d41a5ebff828938993dfe95915b6ab3fef7162234b4ce1b686787e86052"
+            },
+            {
+              "name": "withdrawals-constrained",
+              "contentType": "image/png",
+              "bytes": 65030,
+              "sha256": "01fc07afe447045bb6405bddb921de6c1229f2367f7038ab34a445f7ca768ddb"
+            },
+            {
+              "name": "withdrawals-constrained-geometry",
+              "contentType": "application/json",
+              "bytes": 570,
+              "sha256": "bf77c0949f03e8a0520ab2d8de45f8865968b0ddacd48d8567468ac73ec2be3b"
+            },
+            {
+              "name": "constrained-long-content-record-hierarchy",
+              "contentType": "application/json",
+              "bytes": 2787,
+              "sha256": "47166b60f565931ab9ae790132091c526c6f88d1a204fde191797609cee16e92"
+            },
+            {
+              "name": "constrained-long-content",
+              "contentType": "image/png",
+              "bytes": 100594,
+              "sha256": "d2b59e610f21dc4fdd8dacfbdeead492046b90d5718971811b0b39569653742c"
+            },
+            {
+              "name": "constrained-long-content-geometry",
+              "contentType": "application/json",
+              "bytes": 1000,
+              "sha256": "a4209a995f7bc02eecd60a8c09325fc6d3d3ac95e3a6f6db8f2493c30c5a14d4"
+            },
+            {
+              "name": "yield-constrained-long-content-record-hierarchy",
+              "contentType": "application/json",
+              "bytes": 556,
+              "sha256": "b6bd3295675caf88e2131d7e9e5a0ead355da1a4a80e701812f4cc5a61d50eeb"
+            },
+            {
+              "name": "yield-constrained-long-content",
+              "contentType": "image/png",
+              "bytes": 98457,
+              "sha256": "245208a8a6091301b0f3d93e5bf53ec66ed4f8e90abf060ad14d667c8e3f72bc"
+            },
+            {
+              "name": "yield-constrained-long-content-geometry",
+              "contentType": "application/json",
+              "bytes": 268,
+              "sha256": "b135079f94086858fba91d6e6af67cf46b63ff7c5c3a01403ae1ea2ee7c33bd0"
+            },
+            {
+              "name": "yield-constrained-record-hierarchy",
+              "contentType": "application/json",
+              "bytes": 556,
+              "sha256": "7517b566c61051d0c41b1cba092f100c19b2c727055c5a225c10772bf280064d"
+            },
+            {
+              "name": "yield-constrained",
+              "contentType": "image/png",
+              "bytes": 91694,
+              "sha256": "d109c4991535f9c8283d79f74676318cc77965df1b5bbb642bcf7d5ff2d5f013"
+            },
+            {
+              "name": "yield-constrained-geometry",
+              "contentType": "application/json",
+              "bytes": 218,
+              "sha256": "8b8d1cdba9487f699701c2b7a4a6d2b7b5f3cd6b56f60ad12fa2071717d86d53"
+            },
+            {
+              "name": "public-source-digest",
+              "contentType": "text/plain",
+              "bytes": 64,
+              "sha256": "6cf710bdf9739eb02aef909130693d44c68b9478f0d1b5c2da39319325a4855c",
+              "text": "ef4794d91f10cd4b804475c2c0ef078d2be0bd192a6537af925729143abc80a5"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "file": "table-family-lab-regressions.spec.ts",
+      "line": 708,
+      "title": "table-family-lab-regressions.spec.ts / Retina chain badges / chain badge borders light",
+      "status": "expected",
+      "expectedStatus": "passed",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 2184,
+          "retry": 0,
+          "errors": [],
+          "attachments": [
+            {
+              "name": "public-source-digest",
+              "contentType": "text/plain",
+              "bytes": 64,
+              "sha256": "6cf710bdf9739eb02aef909130693d44c68b9478f0d1b5c2da39319325a4855c",
+              "text": "ef4794d91f10cd4b804475c2c0ef078d2be0bd192a6537af925729143abc80a5"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "file": "table-family-lab-regressions.spec.ts",
+      "line": 708,
+      "title": "table-family-lab-regressions.spec.ts / Retina chain badges / chain badge borders dark",
+      "status": "expected",
+      "expectedStatus": "passed",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 2075,
+          "retry": 0,
+          "errors": [],
+          "attachments": [
+            {
+              "name": "public-source-digest",
+              "contentType": "text/plain",
+              "bytes": 64,
+              "sha256": "6cf710bdf9739eb02aef909130693d44c68b9478f0d1b5c2da39319325a4855c",
+              "text": "ef4794d91f10cd4b804475c2c0ef078d2be0bd192a6537af925729143abc80a5"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

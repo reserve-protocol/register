@@ -8,6 +8,7 @@ import {
 } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { cn } from '@/lib/utils'
+import { v1SemanticRoles as roles } from '@/components/design-system-v1/semantic-roles'
 import { FOUNDATION_ITEMS } from './foundation-catalog'
 import { OutputBadge, StatusBadge } from './catalog-ui'
 import { FLOATING_SHADOW, MODAL_SHADOW } from './elevation-study'
@@ -21,9 +22,17 @@ const FoundationOverview = () => (
       <Link
         key={item.id}
         to={`/internal/design-system/foundations/${item.id}`}
-        className="group flex min-h-64 flex-col border border-border bg-card focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+        className={cn(
+          'group flex min-h-64 flex-col border border-border bg-card focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring',
+          roles.interaction.contentHover
+        )}
       >
-        <div className="flex min-h-40 flex-1 items-center justify-center overflow-hidden border-b border-border bg-background p-5 transition-colors group-hover:bg-muted/30">
+        <div
+          className={cn(
+            'flex min-h-40 flex-1 items-center justify-center overflow-hidden border-b border-border bg-background p-5 transition-colors',
+            roles.interaction.contentGroupHover
+          )}
+        >
           <FoundationSpecimen foundationId={item.id} />
         </div>
         <div className="p-4">

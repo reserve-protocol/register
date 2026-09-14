@@ -5,6 +5,7 @@ import type { EarnFamily, EarnRow, EarnState } from './earn-fixtures'
 import { v1Typography as type } from '@/components/design-system-v1/typography'
 import { SortMenu } from './sort-menu'
 import { useProjectionFocus } from './use-projection-focus'
+import { v1SemanticRoles as roles } from '@/components/design-system-v1/semantic-roles'
 
 export function EarnTable({
   rows,
@@ -64,7 +65,7 @@ export function EarnTable({
         }
         className="[&_table]:table-fixed [&_thead]:hidden [@container(min-width:64rem)]:[&_thead]:table-header-group [&_thead_tr]:h-auto [&_thead_tr]:border-b-0 [&_th]:h-auto [&_th]:pb-4 [&_th]:pt-0 [&_tr:last-child_[data-slot=row-seam]]:hidden"
         getRowClassName={() =>
-          `group/earn border-b-0 [&:not(:first-child)]:!border-t-0 [@container(min-width:64rem)]:[&:not(:first-child)]:!border-t [@container(min-width:64rem)]:[&:not(:first-child)]:!border-secondary ${state === 'loading' ? 'hover:bg-transparent' : 'cursor-pointer hover:bg-muted/50'}`
+          `group/earn border-b-0 [&:not(:first-child)]:!border-t-0 [@container(min-width:64rem)]:[&:not(:first-child)]:!border-t [@container(min-width:64rem)]:[&:not(:first-child)]:!border-secondary ${state === 'loading' ? 'hover:bg-transparent' : `cursor-pointer ${roles.interaction.contentHover}`}`
         }
         onRowClick={
           state === 'loading'

@@ -40,7 +40,7 @@ export function DiscoverCardChart({
           fadeClassName={
             compact
               ? ''
-              : 'pointer-events-none absolute inset-x-0 bottom-0 h-12 bg-gradient-to-b from-card/0 to-card'
+              : 'pointer-events-none absolute inset-x-0 bottom-0 h-12 bg-gradient-to-b from-card/0 to-card group-hover:to-interactive-content-hover'
           }
           launchMarkerToken={{
             address: row.address,

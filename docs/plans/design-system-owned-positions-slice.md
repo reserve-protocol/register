@@ -4,6 +4,12 @@ Status: human-review-required; implementation verified 2026-09-12. Fixed point
 `404bcbc414cf54eed988a9e6c95b74fa0c6e7251`; preserve the inspected dirty Auctions
 and Portfolio-audit inputs. Medium, one bounded lab stage. No commit authorized.
 
+September 14 follow-up: [overnight inspection](design-system-overnight-2026-09-14/tables.md)
+found compact long amounts splitting mid-number. Whole-fact wrapping is now
+[integrated and rechecked](design-system-table-governance-followup-2026-09-14/README.md)
+after Claude's review. Human visual acceptance remains separate. Amount strings,
+units and actions are unchanged.
+
 ## Scope and usage
 
 Add the two missing current-position compositions identified by the

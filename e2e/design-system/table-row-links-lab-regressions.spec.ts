@@ -149,7 +149,7 @@ for (const theme of ['light', 'dark'])
           const rowLink =
             kind === 'rebalance'
               ? row.getByTestId('rebalance-record-link')
-              : row
+              : row.getByTestId('proposal-record-link')
           await rowLink.focus()
           expect(
             await row.evaluate((el) => getComputedStyle(el).boxShadow)

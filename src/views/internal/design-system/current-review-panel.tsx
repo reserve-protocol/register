@@ -1,6 +1,7 @@
 import { ArrowRight } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { CURRENT_REVIEW } from './current-review'
+import { v1SemanticRoles as roles } from '@/components/design-system-v1/semantic-roles'
 
 export const CurrentReviewSpotlight = () => {
   const item = CURRENT_REVIEW[0]
@@ -56,7 +57,7 @@ export const CurrentReviewList = () => (
           <Link
             key={item.title}
             to={item.destination}
-            className="group grid gap-3 p-4 hover:bg-muted/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring sm:grid-cols-[minmax(0,1fr)_auto]"
+            className={`group grid gap-3 p-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring sm:grid-cols-[minmax(0,1fr)_auto] ${roles.interaction.contentHover}`}
           >
             <span>
               <span className="block text-sm font-medium">{item.title}</span>

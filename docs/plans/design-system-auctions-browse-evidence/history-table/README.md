@@ -4,6 +4,11 @@ September 13, 2026. Base `404bcbc414cf54eed988a9e6c95b74fa0c6e7251`;
 working-tree lab candidate, not a committed or accepted design.
 The [slice contract](../../design-system-auctions-history-slice.md) owns scope.
 
+September 14: [combined current/history mobile cleanup](../../design-system-current-rebalance-table-evidence/mobile-cleanup/README.md)
+is the latest narrow-layout verification. It gives historical identity and
+provenance full phone width while retaining static rows and existing metrics.
+The September 13 captures and receipts below retain their original scope.
+
 ## Card-surface follow-up — September 13
 
 The user requested card color and no gray row dividers. Only the history surface

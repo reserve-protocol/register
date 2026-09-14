@@ -24,8 +24,13 @@ const RichRecordReview = () => (
           <aside className="border border-border bg-card p-4 text-sm font-light leading-5 text-muted-foreground">
             <p className="font-medium text-foreground">Review now</p>
             <ul className="mt-2 space-y-2">
-              <li>Active versus quiet lifecycle progress emphasis.</li>
-              <li>Separate lifecycle, outcome, and supporting-time pills.</li>
+              <li>
+                Lifecycle timing on active proposals; no strip on closed
+                proposals.
+              </li>
+              <li>
+                One status pill, visible deadlines, and a quieter outcome.
+              </li>
               <li>
                 Quorum and vote evidence for standard proposals versus challenge
                 evidence for optimistic proposals.
@@ -37,8 +42,8 @@ const RichRecordReview = () => (
             <div className="mt-4">
               <p className="font-medium text-foreground">Leave for later</p>
               <p className="mt-2">
-                Final production adoption, colored vote-role aliases, hover
-                refinement, and final route-level responsive transformation.
+                Final production adoption, colored vote-role aliases, and final
+                route-level responsive transformation.
               </p>
             </div>
           </aside>

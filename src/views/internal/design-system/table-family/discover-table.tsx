@@ -9,6 +9,8 @@ import { useDiscoverPresentation } from './use-discover-presentation'
 import { DiscoverCard } from './discover-card'
 import type { DiscoverCardLayout } from './discover-card-chart'
 import { CollateralAssetAnimationStyles } from '@/views/home/components/highlighted-dtfs/collateral-asset-animation-styles'
+import { v1SemanticRoles as roles } from '@/components/design-system-v1/semantic-roles'
+import { cn } from '@/lib/utils'
 
 export function DiscoverTable({
   rows,
@@ -77,7 +79,10 @@ export function DiscoverTable({
           }
           className="[&_table]:table-fixed [&_thead]:bg-card [&_thead_tr]:h-auto [&_thead_tr]:border-b-0 [&_th]:h-auto [&_th]:pb-4 [&_th]:pt-6"
           getRowClassName={() =>
-            'group/discover-row border-b-0 [&:not(:first-child)]:!border-t-0 hover:bg-transparent [@container(min-width:72rem)]:[&:not(:first-child)]:!border-t [@container(min-width:72rem)]:[&:not(:first-child)]:!border-secondary [@container(min-width:72rem)]:hover:bg-muted/50'
+            cn(
+              'group/discover-row border-b-0 [&:not(:first-child)]:!border-t-0 [@container(min-width:72rem)]:[&:not(:first-child)]:!border-t [@container(min-width:72rem)]:[&:not(:first-child)]:!border-secondary',
+              loading ? 'hover:bg-transparent' : roles.interaction.contentHover
+            )
           }
           onRowClick={
             loading

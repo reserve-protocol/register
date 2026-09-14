@@ -81,72 +81,73 @@ export function CurrentWorkspace(props: WorkspaceProps) {
   }, [guarded])
   if (state.archived) return null
   return (
-    <article
+    <div
       data-testid="current-rebalance-workspace"
       data-record={record.symbol}
       data-stage={state.stage}
       data-operation={state.operation}
       data-guarded={guarded || undefined}
-      className="min-w-0 bg-card [container-type:inline-size]"
+      className="min-w-0"
     >
-      <CurrentHeader
-        record={record}
-        state={state}
-        data={data}
-        heading={heading}
-      />
-      <div className="space-y-6 p-6">
-        <Separator data-testid="current-context-divider" />
-        {closed ? (
-          <CurrentResult
-            state={state}
-            data={data}
-            result={resultRow(record, state, data)}
-            busy={busy}
-            onRetry={() => setRecovered(true)}
-            onArchive={() => {
-              dispatch({ type: 'archive' })
-              props.onArchive(resultRow(record, state, data))
-            }}
-          >
-            {busy && (
-              <CurrentOperation
+      <article
+        data-testid="current-rebalance-card"
+        className="min-w-0 bg-card [container-type:inline-size]"
+      >
+        <CurrentHeader record={record} state={state} heading={heading} />
+        <div className="space-y-6 p-6">
+          <Separator data-testid="current-context-divider" />
+          {closed ? (
+            <CurrentResult
+              record={record}
+              state={state}
+              data={data}
+              result={resultRow(record, state, data)}
+              onRetry={() => setRecovered(true)}
+            >
+              {busy && (
+                <CurrentOperation
+                  {...props}
+                  data={data}
+                  state={state}
+                  dispatch={dispatch}
+                  warnings={false}
+                />
+              )}
+            </CurrentResult>
+          ) : (
+            <>
+              <CurrentAuction
                 {...props}
                 data={data}
                 state={state}
                 dispatch={dispatch}
-                warnings={false}
+                onRetry={() => setRecovered(true)}
+                onDone={() =>
+                  heading.current
+                    ?.closest('article')
+                    ?.querySelector<HTMLElement>(
+                      '[data-testid="current-auction-heading"]'
+                    )
+                    ?.focus()
+                }
               />
-            )}
-          </CurrentResult>
-        ) : (
-          <>
-            <CurrentAuction
-              {...props}
-              data={data}
-              state={state}
-              dispatch={dispatch}
-              onRetry={() => setRecovered(true)}
-              onDone={() =>
-                heading.current
-                  ?.closest('article')
-                  ?.querySelector<HTMLElement>(
-                    '[data-testid="current-auction-heading"]'
-                  )
-                  ?.focus()
-              }
-            />
-            <Separator data-testid="current-progress-divider" />
-            <CurrentProgress state={state} data={data} />
-          </>
-        )}
-        <SimulationSteps
-          state={state}
-          dispatch={dispatch}
-          record={record}
-          filler={scenario === 'filler'}
-        />
-      </div>
-    </article>
+              <Separator data-testid="current-progress-divider" />
+              <CurrentProgress state={state} data={data} />
+            </>
+          )}
+        </div>
+      </article>
+      <SimulationSteps
+        state={state}
+        dispatch={dispatch}
+        record={record}
+        filler={scenario === 'filler'}
+        data={data}
+        onArchive={() => {
+          dispatch({ type: 'archive' })
+          props.onArchive(resultRow(record, state, data))
+        }}
+      />
+    </div>
   )
 }

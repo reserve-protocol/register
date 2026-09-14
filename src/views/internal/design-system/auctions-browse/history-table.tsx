@@ -6,7 +6,6 @@ import { v1SemanticRoles as roles } from '@/components/design-system-v1/semantic
 import { cn } from '@/lib/utils'
 import { useProjectionFocus } from '../table-family/use-projection-focus'
 import type { HistoricalRebalance } from './history-model'
-import { RecordProvenance } from './record-provenance'
 import { HistoryMetricLabel } from './history-metric-label'
 import {
   HistoryAuctions,
@@ -61,24 +60,9 @@ function historyColumns(loading: boolean): ColumnDef<HistoricalRebalance>[] {
       meta: { className: 'px-6 py-6 [@container(min-width:56rem)]:hidden' },
       cell: ({ row: { original: row } }) => (
         <div className="space-y-4">
-          <div>
-            <div className="flex flex-wrap items-start justify-between gap-x-4 gap-y-2">
-              <div className="min-w-0 flex-1">
-                <HistoryIdentity
-                  row={row}
-                  loading={loading}
-                  provenance={false}
-                />
-              </div>
-              <HistoryStatus row={row} loading={loading} />
-            </div>
-            <RecordProvenance
-              identity={row.identity}
-              chainId={row.chainId}
-              loading={loading}
-              compactDate
-              className="pointer-events-auto mt-1 block"
-            />
+          <div className="grid grid-cols-1 items-start gap-3 [@container(min-width:32rem)]:grid-cols-[minmax(0,1fr)_auto]">
+            <HistoryIdentity row={row} loading={loading} />
+            <HistoryStatus row={row} loading={loading} />
           </div>
           <div className="grid grid-cols-2 gap-4">
             <HistoryFact label={<HistoryMetricLabel field="accuracy" />}>

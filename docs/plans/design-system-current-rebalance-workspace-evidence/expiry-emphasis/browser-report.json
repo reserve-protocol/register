@@ -1,0 +1,555 @@
+{
+  "config": {
+    "configFile": "/Users/lill-kire/Code/register/playwright.design-system.config.ts",
+    "rootDir": "/Users/lill-kire/Code/register/e2e/design-system",
+    "forbidOnly": true,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/Users/lill-kire/Code/register/test-results/design-system/artifacts",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "design-system-desktop",
+        "name": "design-system-desktop",
+        "testDir": "/Users/lill-kire/Code/register/e2e/design-system",
+        "testIgnore": [
+          "/(?:source-capture|lab-regressions)\\.spec\\.ts/"
+        ],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 90000
+      },
+      {
+        "outputDir": "/Users/lill-kire/Code/register/test-results/design-system/artifacts",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "design-system-mobile",
+        "name": "design-system-mobile",
+        "testDir": "/Users/lill-kire/Code/register/e2e/design-system",
+        "testIgnore": [
+          "/(?:source-capture|lab-regressions)\\.spec\\.ts/"
+        ],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 90000
+      },
+      {
+        "outputDir": "/Users/lill-kire/Code/register/test-results/design-system/artifacts",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "design-system-phone",
+        "name": "design-system-phone",
+        "testDir": "/Users/lill-kire/Code/register/e2e/design-system",
+        "testIgnore": [
+          "/(?:source-capture|lab-regressions)\\.spec\\.ts/"
+        ],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 90000
+      },
+      {
+        "outputDir": "/Users/lill-kire/Code/register/test-results/design-system/artifacts",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "design-system-review",
+        "name": "design-system-review",
+        "testDir": "/Users/lill-kire/Code/register/e2e/design-system",
+        "testIgnore": [],
+        "testMatch": [
+          "/(?:source-capture|lab-regressions)\\.spec\\.ts/"
+        ],
+        "timeout": 90000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "list",
+        null
+      ],
+      [
+        "json",
+        {
+          "outputFile": "test-results/design-system/report.json"
+        }
+      ],
+      [
+        "html",
+        {
+          "outputFolder": "playwright-report/design-system",
+          "open": "never"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "none",
+    "updateSourceMethod": "patch",
+    "version": "1.59.1",
+    "workers": 1,
+    "webServer": {
+      "command": "pnpm exec vite --host 127.0.0.1 --port 3022 --strictPort",
+      "url": "http://127.0.0.1:3022",
+      "reuseExistingServer": false,
+      "timeout": 120000,
+      "env": {
+        "VITE_E2E": "true",
+        "VITE_WALLETCONNECT_ID": "test-project",
+        "VITE_STAGING_API": "",
+        "VITE_USE_STAGING": "",
+        "VITE_MAINNET_URL": "",
+        "VITE_INFURA": "",
+        "VITE_ALCHEMY": "",
+        "VITE_ANKR": ""
+      }
+    }
+  },
+  "suites": [
+    {
+      "title": "current-rebalance-header-lab-regressions.spec.ts",
+      "file": "current-rebalance-header-lab-regressions.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "rebalance header compact provenance light 1400",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "design-system-review",
+              "projectName": "design-system-review",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 15862,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T20:27:53.427Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "header-light-1400",
+                      "contentType": "image/png",
+                      "path": "attachments/ca524e609ee99ee9e0b9845c6f9c5432459806298eae4c83a06b58c2de538a99.png"
+                    },
+                    {
+                      "name": "header-light-1400-open",
+                      "contentType": "image/png",
+                      "path": "attachments/37d81766a2e456ec0277cab6ebb055d5d734a9a4a4085fdb08d21fbbbf767119.png"
+                    },
+                    {
+                      "name": "current-source",
+                      "contentType": "application/json",
+                      "path": "attachments/3bea26debbc8d66c5c3e71f6c2095b1cf357000e1af3ca4c5ec97edd2f880092.json"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "06ed429248f111014934-47bcf0dacf4abeb60544",
+          "file": "current-rebalance-header-lab-regressions.spec.ts",
+          "line": 11,
+          "column": 5
+        },
+        {
+          "title": "rebalance header compact provenance light 900",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "design-system-review",
+              "projectName": "design-system-review",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 4694,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T20:28:09.529Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "header-light-900",
+                      "contentType": "image/png",
+                      "path": "attachments/35752ac831ebfeff9de2f841fb9bef89b2b2315c9cf8bf15f9d11f7df17562ac.png"
+                    },
+                    {
+                      "name": "header-light-900-open",
+                      "contentType": "image/png",
+                      "path": "attachments/3b17cfefa6f5b6c2d469288b13e8abe308f0e12fc5a5453a102a4075d5240a3c.png"
+                    },
+                    {
+                      "name": "current-source",
+                      "contentType": "application/json",
+                      "path": "attachments/3bea26debbc8d66c5c3e71f6c2095b1cf357000e1af3ca4c5ec97edd2f880092.json"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "06ed429248f111014934-488bb5b56b39207204d9",
+          "file": "current-rebalance-header-lab-regressions.spec.ts",
+          "line": 11,
+          "column": 5
+        },
+        {
+          "title": "rebalance header compact provenance light 390",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "design-system-review",
+              "projectName": "design-system-review",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 4727,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T20:28:14.229Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "header-light-390",
+                      "contentType": "image/png",
+                      "path": "attachments/e8f15b1c71845488bf375c14dfd587e4d816d0732e5d28d6ac92a0f300822c77.png"
+                    },
+                    {
+                      "name": "header-light-390-open",
+                      "contentType": "image/png",
+                      "path": "attachments/126b75057a0072191ea0c58534e5f2edc76d2c7db35cb83d61a929f1611d6e49.png"
+                    },
+                    {
+                      "name": "current-source",
+                      "contentType": "application/json",
+                      "path": "attachments/3bea26debbc8d66c5c3e71f6c2095b1cf357000e1af3ca4c5ec97edd2f880092.json"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "06ed429248f111014934-d3e472be027793be29bc",
+          "file": "current-rebalance-header-lab-regressions.spec.ts",
+          "line": 11,
+          "column": 5
+        },
+        {
+          "title": "rebalance header compact provenance light 320",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "design-system-review",
+              "projectName": "design-system-review",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 4642,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T20:28:18.963Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "header-light-320",
+                      "contentType": "image/png",
+                      "path": "attachments/52208e62cea65c3064157f7bd12cde041d966ef7ac881f1e932c3df2919da54f.png"
+                    },
+                    {
+                      "name": "header-light-320-open",
+                      "contentType": "image/png",
+                      "path": "attachments/9e6e657dd4a9a11a228cfac5e462e529b412c66b65e65865e26f766b1692c45c.png"
+                    },
+                    {
+                      "name": "current-source",
+                      "contentType": "application/json",
+                      "path": "attachments/3bea26debbc8d66c5c3e71f6c2095b1cf357000e1af3ca4c5ec97edd2f880092.json"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "06ed429248f111014934-94c51deb132debbfe730",
+          "file": "current-rebalance-header-lab-regressions.spec.ts",
+          "line": 11,
+          "column": 5
+        },
+        {
+          "title": "rebalance header compact provenance dark 1400",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "design-system-review",
+              "projectName": "design-system-review",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 4577,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T20:28:23.610Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "header-dark-1400",
+                      "contentType": "image/png",
+                      "path": "attachments/59770cbbca94a14a75ff73fb79204ac9332da06e037805af0a08ea7a6313764a.png"
+                    },
+                    {
+                      "name": "header-dark-1400-open",
+                      "contentType": "image/png",
+                      "path": "attachments/d16d0e6755a1c18a9da49d1d1e1e45eed72572b0aaef3b6fbac86c3d17b4bc5c.png"
+                    },
+                    {
+                      "name": "current-source",
+                      "contentType": "application/json",
+                      "path": "attachments/3bea26debbc8d66c5c3e71f6c2095b1cf357000e1af3ca4c5ec97edd2f880092.json"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "06ed429248f111014934-6552e32b38e9c486fe3a",
+          "file": "current-rebalance-header-lab-regressions.spec.ts",
+          "line": 11,
+          "column": 5
+        },
+        {
+          "title": "rebalance header compact provenance dark 900",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "design-system-review",
+              "projectName": "design-system-review",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 4668,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T20:28:28.194Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "header-dark-900",
+                      "contentType": "image/png",
+                      "path": "attachments/b9ffa700568b662f42f834d479c07e94ef07e4da66bc9bb23d494f5520df56ce.png"
+                    },
+                    {
+                      "name": "header-dark-900-open",
+                      "contentType": "image/png",
+                      "path": "attachments/afd170029c457fe23b48ef43e7e88d31061aa2dc09cf607786e5ed4255395130.png"
+                    },
+                    {
+                      "name": "current-source",
+                      "contentType": "application/json",
+                      "path": "attachments/3bea26debbc8d66c5c3e71f6c2095b1cf357000e1af3ca4c5ec97edd2f880092.json"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "06ed429248f111014934-712ccc1b1c9dc5d10154",
+          "file": "current-rebalance-header-lab-regressions.spec.ts",
+          "line": 11,
+          "column": 5
+        },
+        {
+          "title": "rebalance header compact provenance dark 390",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "design-system-review",
+              "projectName": "design-system-review",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 4484,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T20:28:32.868Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "header-dark-390",
+                      "contentType": "image/png",
+                      "path": "attachments/ac8a3ae1cccb27f2bb5689f2efb0a443cc5a0a4d77cb13ececefe971aca71acf.png"
+                    },
+                    {
+                      "name": "header-dark-390-open",
+                      "contentType": "image/png",
+                      "path": "attachments/f9a868eadfc55de1e84a67eb2f0e404d93458159bcf6debb6c2f4451e2a2b960.png"
+                    },
+                    {
+                      "name": "current-source",
+                      "contentType": "application/json",
+                      "path": "attachments/3bea26debbc8d66c5c3e71f6c2095b1cf357000e1af3ca4c5ec97edd2f880092.json"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "06ed429248f111014934-9094e532cb9186c5b51d",
+          "file": "current-rebalance-header-lab-regressions.spec.ts",
+          "line": 11,
+          "column": 5
+        },
+        {
+          "title": "rebalance header compact provenance dark 320",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "design-system-review",
+              "projectName": "design-system-review",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 4628,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T20:28:37.359Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "header-dark-320",
+                      "contentType": "image/png",
+                      "path": "attachments/d31e18c6fb11366041b972ef349546b62407b528f835671514bf2b695265b5f7.png"
+                    },
+                    {
+                      "name": "header-dark-320-open",
+                      "contentType": "image/png",
+                      "path": "attachments/162e17ea4eb657a6598d17431d4f19d79a185a265445ef81921975ae6004ca1c.png"
+                    },
+                    {
+                      "name": "current-source",
+                      "contentType": "application/json",
+                      "path": "attachments/3bea26debbc8d66c5c3e71f6c2095b1cf357000e1af3ca4c5ec97edd2f880092.json"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "06ed429248f111014934-af5b2a00731e908efee9",
+          "file": "current-rebalance-header-lab-regressions.spec.ts",
+          "line": 11,
+          "column": 5
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-09-13T20:27:50.589Z",
+    "duration": 51465.623,
+    "expected": 8,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}

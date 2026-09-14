@@ -1375,7 +1375,7 @@ test.describe('design system lab', () => {
       review.locator(
         '[data-testid="rich-record"][data-record-kind="governance"]'
       )
-    ).toHaveCount(11)
+    ).toHaveCount(13)
     await expect(
       review.getByText('Update Wrapped TONCOIN Basket Component', {
         exact: true,
@@ -1383,7 +1383,7 @@ test.describe('design system lab', () => {
     ).toBeVisible()
     await expect(
       review.getByText('Voting ends in 6h', { exact: true })
-    ).toHaveCount(0)
+    ).toHaveCount(1)
     await expect(
       review
         .getByTestId('lifecycle-status-pill')
@@ -1412,14 +1412,14 @@ test.describe('design system lab', () => {
     ).toHaveCount(1)
     await expect(
       review
-        .getByTestId('lifecycle-status-pill')
-        .filter({ hasText: 'Ends in 6h' })
+        .locator('[data-proposal-state="active"]')
+        .getByTestId('proposal-countdown')
     ).toBeVisible()
     await expect(
       review
         .getByTestId('lifecycle-status-pill')
         .filter({ hasText: 'Ends in 6h' })
-    ).toHaveAttribute('data-status-role', 'waiting')
+    ).toHaveCount(0)
     await expect(
       review.getByText(
         '[Reproposal] Extension of onchain voting and execution process of Basket Governance',
@@ -1456,20 +1456,20 @@ test.describe('design system lab', () => {
     ).toContainText('Voted down')
     await expect(
       review.locator('[data-proposal-state="standard-succeeded"]')
-    ).toContainText('PassedReady to queue')
+    ).toContainText('Ready to queuePassed')
     await expect(
       review.locator('[data-proposal-state="queued"]')
-    ).toContainText('PassedPending executionReady in 8h')
+    ).toContainText('Waiting periodExecution available in 8hPassed')
     await expect(
       review.locator('[data-proposal-state="optimistic-succeeded"]')
-    ).toContainText('PassedReady to execute')
+    ).toContainText('Ready to executePassed')
     await expect(
       review.locator('[data-progress-emphasis="quiet"]')
-    ).toHaveCount(4)
+    ).toHaveCount(5)
     await expect(
       review.locator('[data-proposal-progress-tone="historical"]')
-    ).toHaveCount(4)
-    await expect(review.getByTestId('proposal-evidence-divider')).toHaveCount(7)
+    ).toHaveCount(0)
+    await expect(review.getByTestId('proposal-evidence-divider')).toHaveCount(9)
     await expect(
       review.locator('[data-decision-evidence="standard"]').first()
     ).toHaveCSS('column-gap', '16px')
@@ -1539,8 +1539,7 @@ test.describe('design system lab', () => {
       review
         .locator('[data-testid="rich-record"][data-record-kind="governance"]')
         .first()
-        .locator('svg')
-        .first()
+        .locator('[data-proposal-progress-tone] > svg')
     ).toHaveCSS('height', '4px')
     const firstGovernanceRecord = review
       .locator('[data-testid="rich-record"][data-record-kind="governance"]')

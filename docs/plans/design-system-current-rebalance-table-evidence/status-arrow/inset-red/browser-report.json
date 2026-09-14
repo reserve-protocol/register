@@ -1,0 +1,367 @@
+{
+  "config": {
+    "configFile": "/Users/lill-kire/Code/register/playwright.design-system.config.ts",
+    "rootDir": "/Users/lill-kire/Code/register/e2e/design-system",
+    "forbidOnly": true,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/Users/lill-kire/Code/register/test-results/design-system/artifacts",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "design-system-desktop",
+        "name": "design-system-desktop",
+        "testDir": "/Users/lill-kire/Code/register/e2e/design-system",
+        "testIgnore": [
+          "/(?:source-capture|lab-regressions)\\.spec\\.ts/"
+        ],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 90000
+      },
+      {
+        "outputDir": "/Users/lill-kire/Code/register/test-results/design-system/artifacts",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "design-system-mobile",
+        "name": "design-system-mobile",
+        "testDir": "/Users/lill-kire/Code/register/e2e/design-system",
+        "testIgnore": [
+          "/(?:source-capture|lab-regressions)\\.spec\\.ts/"
+        ],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 90000
+      },
+      {
+        "outputDir": "/Users/lill-kire/Code/register/test-results/design-system/artifacts",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "design-system-phone",
+        "name": "design-system-phone",
+        "testDir": "/Users/lill-kire/Code/register/e2e/design-system",
+        "testIgnore": [
+          "/(?:source-capture|lab-regressions)\\.spec\\.ts/"
+        ],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 90000
+      },
+      {
+        "outputDir": "/Users/lill-kire/Code/register/test-results/design-system/artifacts",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "design-system-review",
+        "name": "design-system-review",
+        "testDir": "/Users/lill-kire/Code/register/e2e/design-system",
+        "testIgnore": [],
+        "testMatch": [
+          "/(?:source-capture|lab-regressions)\\.spec\\.ts/"
+        ],
+        "timeout": 90000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "list",
+        null
+      ],
+      [
+        "json",
+        {
+          "outputFile": "test-results/design-system/report.json"
+        }
+      ],
+      [
+        "html",
+        {
+          "outputFolder": "playwright-report/design-system",
+          "open": "never"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "none",
+    "updateSourceMethod": "patch",
+    "version": "1.59.1",
+    "workers": 1,
+    "webServer": {
+      "command": "pnpm exec vite --host 127.0.0.1 --port 3022 --strictPort",
+      "url": "http://127.0.0.1:3022",
+      "reuseExistingServer": false,
+      "timeout": 120000,
+      "env": {
+        "VITE_E2E": "true",
+        "VITE_WALLETCONNECT_ID": "test-project",
+        "VITE_STAGING_API": "",
+        "VITE_USE_STAGING": "",
+        "VITE_MAINNET_URL": "",
+        "VITE_INFURA": "",
+        "VITE_ALCHEMY": "",
+        "VITE_ANKR": ""
+      }
+    }
+  },
+  "suites": [
+    {
+      "title": "auctions-table-constrained-lab-regressions.spec.ts",
+      "file": "auctions-table-constrained-lab-regressions.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "auction tables constrained composition light",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "design-system-review",
+              "projectName": "design-system-review",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 15244,
+                  "error": {
+                    "message": "Error: visible circle aligns with expiry\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeCloseTo\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m, \u001b[22mprecision\u001b[2m)\u001b[22m\n\nExpected: \u001b[32m350\u001b[39m\nReceived: \u001b[31m344\u001b[39m\n\nExpected precision:    0\nExpected difference: < \u001b[32m0.5\u001b[39m\nReceived difference:   \u001b[31m6\u001b[39m",
+                    "stack": "Error: visible circle aligns with expiry\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeCloseTo\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m, \u001b[22mprecision\u001b[2m)\u001b[22m\n\nExpected: \u001b[32m350\u001b[39m\nReceived: \u001b[31m344\u001b[39m\n\nExpected precision:    0\nExpected difference: < \u001b[32m0.5\u001b[39m\nReceived difference:   \u001b[31m6\u001b[39m\n    at /Users/lill-kire/Code/register/e2e/design-system/auctions-table-constrained-lab-regressions.spec.ts:58:12",
+                    "location": {
+                      "file": "/Users/lill-kire/Code/register/e2e/design-system/auctions-table-constrained-lab-regressions.spec.ts",
+                      "column": 12,
+                      "line": 58
+                    },
+                    "snippet": "  56 |         expect\n  57 |           .soft(arrowBox.x + arrowBox.width, 'visible circle aligns with expiry')\n> 58 |           .toBeCloseTo(valueBox.x + valueBox.width, 0)\n     |            ^\n  59 |         expect(valueBox.x + valueBox.width).toBeCloseTo(\n  60 |           tableBox.x + tableBox.width - 24,\n  61 |           0"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/Users/lill-kire/Code/register/e2e/design-system/auctions-table-constrained-lab-regressions.spec.ts",
+                        "column": 12,
+                        "line": 58
+                      },
+                      "message": "Error: visible circle aligns with expiry\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeCloseTo\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m, \u001b[22mprecision\u001b[2m)\u001b[22m\n\nExpected: \u001b[32m350\u001b[39m\nReceived: \u001b[31m344\u001b[39m\n\nExpected precision:    0\nExpected difference: < \u001b[32m0.5\u001b[39m\nReceived difference:   \u001b[31m6\u001b[39m\n\n  56 |         expect\n  57 |           .soft(arrowBox.x + arrowBox.width, 'visible circle aligns with expiry')\n> 58 |           .toBeCloseTo(valueBox.x + valueBox.width, 0)\n     |            ^\n  59 |         expect(valueBox.x + valueBox.width).toBeCloseTo(\n  60 |           tableBox.x + tableBox.width - 24,\n  61 |           0\n    at /Users/lill-kire/Code/register/e2e/design-system/auctions-table-constrained-lab-regressions.spec.ts:58:12"
+                    },
+                    {
+                      "location": {
+                        "file": "/Users/lill-kire/Code/register/e2e/design-system/auctions-table-constrained-lab-regressions.spec.ts",
+                        "column": 12,
+                        "line": 58
+                      },
+                      "message": "Error: visible circle aligns with expiry\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeCloseTo\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m, \u001b[22mprecision\u001b[2m)\u001b[22m\n\nExpected: \u001b[32m280\u001b[39m\nReceived: \u001b[31m274\u001b[39m\n\nExpected precision:    0\nExpected difference: < \u001b[32m0.5\u001b[39m\nReceived difference:   \u001b[31m6\u001b[39m\n\n  56 |         expect\n  57 |           .soft(arrowBox.x + arrowBox.width, 'visible circle aligns with expiry')\n> 58 |           .toBeCloseTo(valueBox.x + valueBox.width, 0)\n     |            ^\n  59 |         expect(valueBox.x + valueBox.width).toBeCloseTo(\n  60 |           tableBox.x + tableBox.width - 24,\n  61 |           0\n    at /Users/lill-kire/Code/register/e2e/design-system/auctions-table-constrained-lab-regressions.spec.ts:58:12"
+                    },
+                    {
+                      "location": {
+                        "file": "/Users/lill-kire/Code/register/e2e/design-system/auctions-table-constrained-lab-regressions.spec.ts",
+                        "column": 12,
+                        "line": 58
+                      },
+                      "message": "Error: visible circle aligns with expiry\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeCloseTo\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m, \u001b[22mprecision\u001b[2m)\u001b[22m\n\nExpected: \u001b[32m343\u001b[39m\nReceived: \u001b[31m337\u001b[39m\n\nExpected precision:    0\nExpected difference: < \u001b[32m0.5\u001b[39m\nReceived difference:   \u001b[31m6\u001b[39m\n\n  56 |         expect\n  57 |           .soft(arrowBox.x + arrowBox.width, 'visible circle aligns with expiry')\n> 58 |           .toBeCloseTo(valueBox.x + valueBox.width, 0)\n     |            ^\n  59 |         expect(valueBox.x + valueBox.width).toBeCloseTo(\n  60 |           tableBox.x + tableBox.width - 24,\n  61 |           0\n    at /Users/lill-kire/Code/register/e2e/design-system/auctions-table-constrained-lab-regressions.spec.ts:58:12"
+                    },
+                    {
+                      "location": {
+                        "file": "/Users/lill-kire/Code/register/e2e/design-system/auctions-table-constrained-lab-regressions.spec.ts",
+                        "column": 12,
+                        "line": 58
+                      },
+                      "message": "Error: visible circle aligns with expiry\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeCloseTo\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m, \u001b[22mprecision\u001b[2m)\u001b[22m\n\nExpected: \u001b[32m344\u001b[39m\nReceived: \u001b[31m338\u001b[39m\n\nExpected precision:    0\nExpected difference: < \u001b[32m0.5\u001b[39m\nReceived difference:   \u001b[31m6\u001b[39m\n\n  56 |         expect\n  57 |           .soft(arrowBox.x + arrowBox.width, 'visible circle aligns with expiry')\n> 58 |           .toBeCloseTo(valueBox.x + valueBox.width, 0)\n     |            ^\n  59 |         expect(valueBox.x + valueBox.width).toBeCloseTo(\n  60 |           tableBox.x + tableBox.width - 24,\n  61 |           0\n    at /Users/lill-kire/Code/register/e2e/design-system/auctions-table-constrained-lab-regressions.spec.ts:58:12"
+                    },
+                    {
+                      "location": {
+                        "file": "/Users/lill-kire/Code/register/e2e/design-system/auctions-table-constrained-lab-regressions.spec.ts",
+                        "column": 12,
+                        "line": 58
+                      },
+                      "message": "Error: visible circle aligns with expiry\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeCloseTo\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m, \u001b[22mprecision\u001b[2m)\u001b[22m\n\nExpected: \u001b[32m390\u001b[39m\nReceived: \u001b[31m384\u001b[39m\n\nExpected precision:    0\nExpected difference: < \u001b[32m0.5\u001b[39m\nReceived difference:   \u001b[31m6\u001b[39m\n\n  56 |         expect\n  57 |           .soft(arrowBox.x + arrowBox.width, 'visible circle aligns with expiry')\n> 58 |           .toBeCloseTo(valueBox.x + valueBox.width, 0)\n     |            ^\n  59 |         expect(valueBox.x + valueBox.width).toBeCloseTo(\n  60 |           tableBox.x + tableBox.width - 24,\n  61 |           0\n    at /Users/lill-kire/Code/register/e2e/design-system/auctions-table-constrained-lab-regressions.spec.ts:58:12"
+                    },
+                    {
+                      "location": {
+                        "file": "/Users/lill-kire/Code/register/e2e/design-system/auctions-table-constrained-lab-regressions.spec.ts",
+                        "column": 12,
+                        "line": 58
+                      },
+                      "message": "Error: visible circle aligns with expiry\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeCloseTo\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m, \u001b[22mprecision\u001b[2m)\u001b[22m\n\nExpected: \u001b[32m568\u001b[39m\nReceived: \u001b[31m562\u001b[39m\n\nExpected precision:    0\nExpected difference: < \u001b[32m0.5\u001b[39m\nReceived difference:   \u001b[31m6\u001b[39m\n\n  56 |         expect\n  57 |           .soft(arrowBox.x + arrowBox.width, 'visible circle aligns with expiry')\n> 58 |           .toBeCloseTo(valueBox.x + valueBox.width, 0)\n     |            ^\n  59 |         expect(valueBox.x + valueBox.width).toBeCloseTo(\n  60 |           tableBox.x + tableBox.width - 24,\n  61 |           0\n    at /Users/lill-kire/Code/register/e2e/design-system/auctions-table-constrained-lab-regressions.spec.ts:58:12"
+                    },
+                    {
+                      "location": {
+                        "file": "/Users/lill-kire/Code/register/e2e/design-system/auctions-table-constrained-lab-regressions.spec.ts",
+                        "column": 12,
+                        "line": 58
+                      },
+                      "message": "Error: visible circle aligns with expiry\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeCloseTo\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m, \u001b[22mprecision\u001b[2m)\u001b[22m\n\nExpected: \u001b[32m720\u001b[39m\nReceived: \u001b[31m714\u001b[39m\n\nExpected precision:    0\nExpected difference: < \u001b[32m0.5\u001b[39m\nReceived difference:   \u001b[31m6\u001b[39m\n\n  56 |         expect\n  57 |           .soft(arrowBox.x + arrowBox.width, 'visible circle aligns with expiry')\n> 58 |           .toBeCloseTo(valueBox.x + valueBox.width, 0)\n     |            ^\n  59 |         expect(valueBox.x + valueBox.width).toBeCloseTo(\n  60 |           tableBox.x + tableBox.width - 24,\n  61 |           0\n    at /Users/lill-kire/Code/register/e2e/design-system/auctions-table-constrained-lab-regressions.spec.ts:58:12"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-14T02:01:25.409Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "current-light-390",
+                      "contentType": "image/png",
+                      "path": "../../../design-system-review-checkpoint-evidence-2026-09-13/attachments/c9492064ddb14f929a4953b4da30f50c04f1162aa7ba7acf00fd4b393b2f7101.png"
+                    },
+                    {
+                      "name": "history-light-390",
+                      "contentType": "image/png",
+                      "path": "../../../design-system-review-checkpoint-evidence-2026-09-13/attachments/8f8983456bea7f8b9473560a7745d3a73ff53105872310dd40b95d6da4a51dbc.png"
+                    },
+                    {
+                      "name": "current-light-320",
+                      "contentType": "image/png",
+                      "path": "../../../design-system-review-checkpoint-evidence-2026-09-13/attachments/2444fdd7e2c8d73660f3b285bac32dfc93a66a6e48d17800ef1de4382933900c.png"
+                    },
+                    {
+                      "name": "history-light-320",
+                      "contentType": "image/png",
+                      "path": "../../../design-system-review-checkpoint-evidence-2026-09-13/attachments/c9c1433247fafff5e019dcc797855eecddaf69c81c0ac90f813d1855fee878eb.png"
+                    },
+                    {
+                      "name": "current-light-383",
+                      "contentType": "image/png",
+                      "path": "../../../design-system-review-checkpoint-evidence-2026-09-13/attachments/7e4a5121dd67e1638ab88086a7fe95320470a61fd39430b836916a69fc7b3bc8.png"
+                    },
+                    {
+                      "name": "history-light-383",
+                      "contentType": "image/png",
+                      "path": "../../../design-system-review-checkpoint-evidence-2026-09-13/attachments/df63f3dcefdc2066f2dbf68526c73918cc7b68da415814980a226628d31717c0.png"
+                    },
+                    {
+                      "name": "current-light-384",
+                      "contentType": "image/png",
+                      "path": "../../../design-system-review-checkpoint-evidence-2026-09-13/attachments/4006098912913d6a399091dc2852a5589c8611e80af3c0da4da34df15461af57.png"
+                    },
+                    {
+                      "name": "history-light-384",
+                      "contentType": "image/png",
+                      "path": "../../../design-system-review-checkpoint-evidence-2026-09-13/attachments/5e9a5f3aa42d6c15f934177a0e547e8e798fd3f4a8afa5303d1959035c1aa744.png"
+                    },
+                    {
+                      "name": "current-light-430",
+                      "contentType": "image/png",
+                      "path": "../../../design-system-review-checkpoint-evidence-2026-09-13/attachments/a56ec9df5c8fb2ae6e21d0bf9f316b039bbdc33c96f56f91f58254d756619265.png"
+                    },
+                    {
+                      "name": "history-light-430",
+                      "contentType": "image/png",
+                      "path": "../../../design-system-review-checkpoint-evidence-2026-09-13/attachments/6cbd4b27a9545724b20041c2a4680993cb016f38cb1a677d66e3c686cc132478.png"
+                    },
+                    {
+                      "name": "current-light-608",
+                      "contentType": "image/png",
+                      "path": "../../../design-system-review-checkpoint-evidence-2026-09-13/attachments/b15f137d75225db1dd5137b18375ee05b4e654a42e0e42212cd241f5db45c75a.png"
+                    },
+                    {
+                      "name": "history-light-608",
+                      "contentType": "image/png",
+                      "path": "../../../design-system-review-checkpoint-evidence-2026-09-13/attachments/1ee22296bdb57d9b747a9e3c645c4f794d870f16c527203e8bed4eff82c58700.png"
+                    },
+                    {
+                      "name": "current-light-768",
+                      "contentType": "image/png",
+                      "path": "../../../design-system-review-checkpoint-evidence-2026-09-13/attachments/40314047bbc2def4906fc69d0d36f498b5eaede92184c837ab1e29e039915f70.png"
+                    },
+                    {
+                      "name": "history-light-768",
+                      "contentType": "image/png",
+                      "path": "../../../design-system-review-checkpoint-evidence-2026-09-13/attachments/771337a899a6a4577386db8e744be9a5d5fd516016756b7c1aece5c19b45f470.png"
+                    },
+                    {
+                      "name": "current-light-1072",
+                      "contentType": "image/png",
+                      "path": "../../../design-system-review-checkpoint-evidence-2026-09-13/attachments/9749edc68ba9e85969bd2d9027b63aadbf4542659356d919e71fd88964df098c.png"
+                    },
+                    {
+                      "name": "history-light-1072",
+                      "contentType": "image/png",
+                      "path": "../../../design-system-review-checkpoint-evidence-2026-09-13/attachments/27a73b44ad160b0ac6a8711901de6ce6e41d4ed92b295f7d1ce3598adb9e152b.png"
+                    },
+                    {
+                      "name": "current-light-column-390",
+                      "contentType": "image/png",
+                      "path": "../../../design-system-review-checkpoint-evidence-2026-09-13/attachments/cd3df0dae7b80458e3f4ea1a0417b57e84fabb8cac7098e3869643fc13ffb0ab.png"
+                    },
+                    {
+                      "name": "history-light-long-title-column-390",
+                      "contentType": "image/png",
+                      "path": "../../../design-system-review-checkpoint-evidence-2026-09-13/attachments/58ecdf5fb235a818647be1cb8beece5c19d38c21e9ff67b8a4ef282c89d7aba8.png"
+                    },
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "/Users/lill-kire/Code/register/test-results/design-system/artifacts/auctions-table-constrained-1e123-nstrained-composition-light-design-system-review/test-failed-1.png"
+                    },
+                    {
+                      "name": "current-source",
+                      "contentType": "application/json",
+                      "path": "../../../design-system-review-checkpoint-evidence-2026-09-13/attachments/b935c1ecefe7c54732a2b3e43fdb9eba4274ca49249fd37121a6688b4b1acb9d.json"
+                    },
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/Users/lill-kire/Code/register/test-results/design-system/artifacts/auctions-table-constrained-1e123-nstrained-composition-light-design-system-review/error-context.md"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "/Users/lill-kire/Code/register/e2e/design-system/auctions-table-constrained-lab-regressions.spec.ts",
+                    "column": 12,
+                    "line": 58
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "1ae2d4c1a6f3866812db-7fb0e45bab45d0e01fa0",
+          "file": "auctions-table-constrained-lab-regressions.spec.ts",
+          "line": 7,
+          "column": 3
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-09-14T02:01:22.614Z",
+    "duration": 18216.707,
+    "expected": 0,
+    "skipped": 0,
+    "unexpected": 1,
+    "flaky": 0
+  }
+}

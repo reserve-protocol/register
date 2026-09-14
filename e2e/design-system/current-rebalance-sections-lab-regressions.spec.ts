@@ -33,7 +33,7 @@ for (const theme of ['light', 'dark'])
         .toHaveCount(1)
       expect.soft((await toggle.boundingBox())!.width).toBeLessThanOrEqual(300)
       await expect(toggle).toHaveCSS('font-size', '14px')
-      await expect(progress.locator('h4')).toHaveCSS('font-size', '16px')
+      await expect(progress.locator('h4')).toHaveCSS('font-size', '14px')
       await expect(auction.getByTestId('current-liquidity-count')).toBeVisible()
       await expect(current.getByTestId('current-assets')).not.toContainText(
         'liquidity'

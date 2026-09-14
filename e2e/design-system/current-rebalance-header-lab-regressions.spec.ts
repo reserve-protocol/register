@@ -33,7 +33,22 @@ for (const theme of ['light', 'dark'])
           '[data-testid="current-header-metadata"]'
         )
         const heading = el.querySelector('h3')!.getBoundingClientRect()
+        const action = el
+          .querySelector('[data-testid="current-inspect"]')!
+          .getBoundingClientRect()
+        const card = el.getBoundingClientRect()
+        const divider = el
+          .querySelector('[data-testid="current-context-divider"]')!
+          .getBoundingClientRect()
         return {
+          titleInset: heading.top - card.top,
+          actionTopInset: action.top - card.top,
+          actionRightInset: card.right - action.right,
+          actionCenterOffset:
+            (action.top + action.bottom) / 2 -
+            (heading.top + metadata!.getBoundingClientRect().bottom) / 2,
+          metadataGap: metadata!.getBoundingClientRect().top - heading.bottom,
+          dividerGap: divider.top - metadata!.getBoundingClientRect().bottom,
           belongsToMetadata: !!metadata?.querySelector(
             '[data-testid="current-expiry"]'
           ),
@@ -51,12 +66,39 @@ for (const theme of ['light', 'dark'])
       expect(geometry.clockCount).toBe(0)
       if (width <= 390) expect(geometry.expiryLeft).toBe(geometry.metadataLeft)
       expect(geometry.overflow).toBeLessThanOrEqual(1)
+      expect(geometry).toMatchObject({
+        titleInset: 24,
+        actionRightInset: 24,
+        metadataGap: 8,
+        dividerGap: 24,
+      })
+      if (width >= 900) {
+        expect(Math.abs(geometry.actionCenterOffset)).toBeLessThanOrEqual(1)
+      } else {
+        expect(geometry.actionTopInset).toBe(24)
+      }
       await expect(trigger).toHaveCSS('font-size', '14px')
+      await expect(trigger).toHaveAttribute('data-tone', 'secondary')
+      await expect(trigger).toHaveCSS('border-top-width', '1px')
       await expect(expiry.locator('..')).toHaveCSS('font-size', '14px')
-      await expect(expiry).toHaveCSS('font-weight', '300')
+      await expect(expiry.locator('..')).toHaveCSS('font-weight', '300')
+      await expect(expiry).toHaveCSS('font-size', '14px')
+      await expect(expiry).toHaveCSS('line-height', '20px')
+      await expect(expiry).toHaveCSS('font-weight', '500')
+      const expiryColors = await expiry.evaluate((el) => ({
+        value: getComputedStyle(el).color,
+        label: getComputedStyle(el.parentElement!).color,
+        title: getComputedStyle(el.closest('header')!.querySelector('h3')!)
+          .color,
+      }))
+      expect(expiryColors.value).toBe(expiryColors.title)
+      expect(expiryColors.value).not.toBe(expiryColors.label)
       await realTarget(trigger)
       await trigger.hover()
-      await expect(trigger).toHaveCSS('background-color', 'rgba(0, 0, 0, 0)')
+      await expect(trigger).not.toHaveCSS(
+        'background-color',
+        'rgba(0, 0, 0, 0)'
+      )
       await currentCapture(page, current, info, `header-${theme}-${width}`)
       await trigger.click()
       const panel = page.getByTestId('current-rebalance-information')
