@@ -12,7 +12,7 @@ import {
   getTokenRoute,
   parseDurationShort,
 } from '@/utils'
-import { useConnectModal } from '@rainbow-me/rainbowkit'
+import { useWalletModal } from '@/hooks/use-wallet-modal'
 import { ColumnDef } from '@tanstack/react-table'
 import { Trans, useLingui } from '@lingui/react/macro'
 import { useAtomValue, useSetAtom } from 'jotai'
@@ -50,7 +50,7 @@ const WithdrawButton = ({
   const { t } = useLingui()
   const wallet = useAtomValue(walletAtom)
   const walletChain = useAtomValue(walletChainAtom)
-  const { openConnectModal } = useConnectModal()
+  const { openConnectModal } = useWalletModal()
   const { switchChainAsync } = useSwitchChain()
   const { writeContract, data: hash, isPending } = useWriteContract()
   const { data: receipt } = useWaitForTransactionReceipt({ hash, chainId })
@@ -69,7 +69,7 @@ const WithdrawButton = ({
     async (e: React.MouseEvent) => {
       e.stopPropagation()
       if (!wallet) {
-        openConnectModal?.()
+        openConnectModal()
         return
       }
       if (walletChain !== chainId) {

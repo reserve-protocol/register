@@ -2,7 +2,7 @@ import { chainIdAtom, walletAtom, walletChainAtom } from '@/state/atoms'
 import { cn } from '@/lib/utils'
 import { CHAIN_TAGS } from '@/utils/constants'
 import { useLingui } from '@lingui/react/macro'
-import { useConnectModal } from '@rainbow-me/rainbowkit'
+import { useWalletModal, useWalletModalOpen } from '@/hooks/use-wallet-modal'
 import { useAtomValue } from 'jotai'
 import { LoaderCircle } from 'lucide-react'
 import { ReactNode, useCallback, useEffect, useRef, useState } from 'react'
@@ -29,7 +29,8 @@ export const SeamlessTransactionContainer = ({
   const targetChain = chain || chainId
 
   const { switchChainAsync } = useSwitchChain()
-  const { openConnectModal, connectModalOpen } = useConnectModal()
+  const { openConnectModal } = useWalletModal()
+  const connectModalOpen = useWalletModalOpen()
 
   const [status, setStatus] = useState<Status>('idle')
   const containerRef = useRef<HTMLDivElement>(null)
@@ -118,7 +119,7 @@ export const SeamlessTransactionContainer = ({
       e.stopPropagation()
       e.preventDefault()
       setStatus('connecting')
-      openConnectModal?.()
+      openConnectModal()
     } else if (needsChainSwitch) {
       e.stopPropagation()
       e.preventDefault()

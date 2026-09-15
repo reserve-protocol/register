@@ -28,7 +28,7 @@ Register — the web interface for Reserve Protocol: **Index DTFs** (current foc
 
 ## Stack Specifics
 
-- React 18 + Vite · TypeScript strict · Jotai · wagmi/viem/RainbowKit · TailwindCSS + shadcn/ui · React Query · React Router v6 · Lingui i18n. Package manager is **pnpm, not npm**.
+- React 18 + Vite · TypeScript strict · Jotai · wagmi/viem/Reown AppKit · TailwindCSS + shadcn/ui · React Query · React Router v6 · Lingui i18n. Package manager is **pnpm, not npm**.
 - Commands: `pnpm start` (dev :3000) · `pnpm typecheck` · `pnpm lint` (oxlint) · `pnpm test:run` (vitest) · `pnpm build`. Env: `VITE_WALLETCONNECT_ID` required; `VITE_ALCHEMY_KEY`/`VITE_INFURA_KEY` recommended.
 - CI: typecheck is **blocking**; oxlint strict correctness subset on changed files; pre-commit runs oxlint on staged files. Baseline ~600 warnings grandfathered — new code shouldn't add warnings.
 - `chainIdAtom` is the chain source of truth — pass it to every wagmi hook; omitting `chainId` falls back to wallet/mainnet.

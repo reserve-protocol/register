@@ -45,7 +45,7 @@ function nextTxHash(): string {
 // Two parts:
 // 1. exposeFunction — bridges browser RPC calls into Node (this process).
 // 2. addInitScript — injects the provider and announces it via EIP-6963, which
-//    RainbowKit's injectedWallet listens for, so "Test Wallet" appears in the
+//    AppKit's wallet discovery listens for, so "Test Wallet" appears in the
 //    connect modal and window.ethereum is set as a fallback.
 //
 // READ PATH: the HTTP host interception (mockRpcRoutes) is the PRIMARY read
@@ -93,6 +93,9 @@ export async function installTestWallet(page: Page, config: TestWalletConfig) {
         case 'wallet_requestPermissions':
         case 'wallet_getPermissions':
           return [{ parentCapability: 'eth_accounts' }]
+
+        case 'wallet_revokePermissions':
+          return null
 
         case 'eth_sendTransaction': {
           const tx = (request.params?.[0] ?? {}) as {

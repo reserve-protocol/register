@@ -48,6 +48,13 @@ vi.mock('@lingui/core/macro', () => ({
   defineMessage: (msg: any) => msg,
 }))
 
+// createAppKit runs at module load in state/chain; jsdom cannot boot it.
+vi.mock('@reown/appkit/react', () => ({
+  createAppKit: () => ({}),
+  useAppKit: () => ({ open: async () => {}, close: async () => {} }),
+  useAppKitState: () => ({ open: false }),
+}))
+
 // Mock window.matchMedia for components that use media queries
 Object.defineProperty(window, 'matchMedia', {
   writable: true,

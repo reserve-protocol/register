@@ -86,7 +86,7 @@ same shape — copy it:
    so a frozen window keeps state stable no matter how the snapshot ages.
 2. **`connectWallet(page)`** for write flows — imports from `fixtures/wallet`.
    The injected provider is `window.ethereum`, so wagmi auto-connects on mount;
-   the helper tolerates both auto-connect and the explicit RainbowKit modal.
+   the helper tolerates both auto-connect and the explicit AppKit modal.
 3. **Drive the UI with `data-testid` locators**, never translated copy.
 4. **Pump the clock at every wait point with `advanceTime`** (see below).
 5. **Assert user-visible state** — a success `data-testid`, an updated tally,

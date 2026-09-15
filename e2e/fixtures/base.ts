@@ -180,6 +180,8 @@ export const test = base.extend<BaseFixtures>({
       // Analytics — abort is safe, they are fire-and-forget beacons.
       await page.route('**sentry.io**', (r) => r.abort())
       await page.route('**mixpanel.com**', (r) => r.abort())
+      // Coinbase Wallet SDK telemetry, initialised eagerly by AppKit's connector.
+      await page.route('**cca-lite.coinbase.com**', (r) => r.abort())
       await page.route('**segment.io**', (r) => r.abort())
       await page.route('**googletagmanager.com**', (r) => r.abort())
       await page.route('**connect.facebook.net**', (r) => r.abort())

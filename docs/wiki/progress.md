@@ -1,6 +1,6 @@
 ---
 title: Progress
-updated: 2026-09-11
+updated: 2026-09-15
 type: ledger
 ---
 
@@ -10,6 +10,7 @@ Stage ledger. One row per stage; keep entries short. Verifier = exact fresh comm
 
 | Stage | Status | Verifier | Review | Next |
 |---|---|---|---|---|
+| Migrate wallet UI from RainbowKit to Reown AppKit | human-review-required (base 715fa1906) | lint · tsc + unit green except pre-existing untracked `use-index-dtf-transactions.test.ts` (6 fails) · e2e smoke 59/1 skip, settings + compliance-surfaces, new `flows/wallet-connect` desktop + mobile · bundle gz JS 3466→3963 kB | Dark/Light/codex all flagged Safe-over-WC post-connect switchChain; traced to universal-provider: inert for approved chains ([[wallet-connect]]); adopted Binance dup guard, customRpcUrls, split open hook, reconnect gating, no network switch | legal sign-off on AppKit footer wording; Reown dashboard toggles off for prod project; one Safe-over-WC pass on staging |
 | Make Ask Reserve AI launcher draggable | implementation-verified (base b70fd6516) | RED: desktop launcher stayed fixed. GREEN: final gate typecheck + lint + 900 unit tests; Playwright desktop mouse + mobile touch 2/2 (drag, clamp, touch cancel, click, arrows, Enter); final full smoke 59 pass/1 skip; rendered 1280×720 + 390×844. wiki-lint blocked by 3 pre-existing ledger/domain-drift findings. | Initial HOLD: pointer-only move lacked alternative; fixed with arrow keys + `aria-keyshortcuts`, targeted re-review PASS. Minor mobile-test gap fixed with real CDP touch + cancellation coverage. | review and merge after CI |
 | overview-layout-for-all-dtfs | implementation-verified (PR #1105, base fdd5c96c7) | scope.mjs --base fdd5c96c7 green (lint, typecheck, test:run, e2e tsc, helpers, smoke + flake reruns); flows overview/edge/compliance/zap/nav 25 pass; CodeRabbit round: shared `isIndexDtfOverviewPathname` util + unit test, launcher hiding as Tailwind variants, DTF key remount dropped; react-zapper 2.10.6 (selection derived per chain) bumped and the strict SPA-nav spec passes without any price override; visual xl/1280/1100/1024/390 | CodeRabbit major resolved at the root (react-zapper 2.10.6) | merge PR #1105 |
 | Browser locale default and translation audit | human-review-required (base a6f20e340) | RED: browser es→expected es, got en; Traditional Chinese cases initially mapped to zh · GREEN i18n 15/15 · lint · typecheck · unit 895/895 · build:no-seo · live browser: es-ES→Español, persisted ko survives reload · active catalogs es/ko/Simplified Chinese 2543, 0 missing | independent review found Traditional→Simplified matching risks (including Hant+region); both fixed with negative and positive BCP-47 coverage; shared locale provider/persistence default requires Engineer review | PR review/merge only after Engineer review; wiki-lint blocked by pre-existing stale design-system page |

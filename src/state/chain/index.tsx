@@ -1,87 +1,58 @@
-import binanceWallet from '@binance/w3w-rainbow-connector-v2'
+import { getWagmiConnectorV2 } from '@binance/w3w-wagmi-connector-v2'
+import { WagmiAdapter } from '@reown/appkit-adapter-wagmi'
 import {
-  DisclaimerComponent,
-  RainbowKitProvider,
-  connectorsForWallets,
-  darkTheme,
-} from '@rainbow-me/rainbowkit'
-import '@rainbow-me/rainbowkit/styles.css'
-import {
-  bitgetWallet,
-  coinbaseWallet,
-  injectedWallet,
-  ledgerWallet,
-  rabbyWallet,
-  safeWallet,
-  walletConnectWallet,
-} from '@rainbow-me/rainbowkit/wallets'
+  arbitrum,
+  base,
+  bsc,
+  mainnet,
+  type AppKitNetwork,
+} from '@reown/appkit/networks'
+import { createAppKit } from '@reown/appkit/react'
 import { DtfSdkProvider } from '@reserve-protocol/react-sdk'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import type { ReactNode } from 'react'
-import {
-  WagmiProvider,
-  createConfig,
-  fallback,
-  http,
-  type CreateConnectorFn,
-} from 'wagmi'
-import { arbitrum, base, bsc, mainnet } from 'wagmi/chains'
+import { WagmiProvider, fallback, http } from 'wagmi'
+import { safe } from 'wagmi/connectors'
 import { hashFn, structuralSharing } from 'wagmi/query'
 import { dtfSdkChains, registerRpcUrls } from '@/utils/rpc-urls'
 import AtomUpdater from './updaters/AtomUpdater'
 
-const rainbowConnectors = connectorsForWallets(
-  [
-    {
-      groupName: 'Recommended',
-      wallets: [
-        injectedWallet,
-        walletConnectWallet,
-        coinbaseWallet,
-        bitgetWallet,
-        binanceWallet,
-        rabbyWallet,
-        safeWallet,
-        ledgerWallet,
-      ],
-    },
-  ],
-  {
-    appName: 'Reserve Register',
-    projectId: import.meta.env.VITE_WALLETCONNECT_ID || 'test-project',
-  }
-)
+const projectId = import.meta.env.VITE_WALLETCONNECT_ID || 'test-project'
+const networks: [AppKitNetwork, ...AppKitNetwork[]] = [
+  mainnet,
+  base,
+  arbitrum,
+  bsc,
+]
 
-// The WalletConnect connector follows session approval with a
-// `wallet_switchEthereumChain` to the requested chain (RainbowKit always
-// requests one — it falls back to the first configured chain) whenever the
-// session lands on a different chain. Chain-bound wallets like Safe can't
-// switch chains, so that request fails/hangs and the whole connect() dies
-// before wagmi ever reports connected (the WC session itself persists, which
-// is why a refresh "fixes" it). Strip the requested chain for WalletConnect
-// connects: connect to whatever chain the wallet is on and let the app's
-// existing wrong-network UX handle mismatches after the fact.
-const connectors: CreateConnectorFn[] = rainbowConnectors.map(
-  (createConnectorFn) => {
-    const wrapped: CreateConnectorFn = (config) => {
-      const connector = createConnectorFn(config)
-      if (connector.type !== 'walletConnect') return connector
-      return {
-        ...connector,
-        connect: ((parameters = {}) =>
-          connector.connect({
-            ...parameters,
-            chainId: undefined,
-          })) as typeof connector.connect,
-      }
-    }
-    return wrapped
-  }
-)
+const binanceConnector = getWagmiConnectorV2()
+// WHY: inside the Binance app the helper returns wagmi's bare injected(), which AppKit already adds.
+const inBinanceApp =
+  'type' in binanceConnector && binanceConnector.type === 'injected'
+const extraConnectors = inBinanceApp ? [safe()] : [safe(), binanceConnector()]
 
-export const wagmiConfig = createConfig({
-  chains: [mainnet, base, arbitrum, bsc],
-  connectors,
+const toCustomRpcUrls = (chainId: number) =>
+  registerRpcUrls[chainId as keyof typeof registerRpcUrls].map((url) => ({ url }))
+
+// WalletConnect explorer ids, pinned to the top of the modal in this order.
+const FEATURED_WALLET_IDS = [
+  '18388be9ac2d02726dbac9777c96efaac06d744b2f6d580fccdd4127a6d01fd1', // Rabby
+  '38f5d18bd8522c244bdd70cb4a68e0e718865155811c043f052fb9f1c51de662', // Bitget
+  '8a0ee50d1f22f6651afcae7eb4253e52a3310b90af5daef78a8c4929a9bb99d4', // Binance
+  '19177a98252e07ddfc9af2083ba8e07ef627cb6103467ffebb3f8f4205fd7927', // Ledger
+]
+
+const wagmiAdapter = new WagmiAdapter({
+  networks,
+  projectId,
+  connectors: extraConnectors,
+  // WHY: without these AppKit rewrites chain.rpcUrls.default to Reown's proxy.
+  customRpcUrls: {
+    [`eip155:${mainnet.id}`]: toCustomRpcUrls(mainnet.id),
+    [`eip155:${base.id}`]: toCustomRpcUrls(base.id),
+    [`eip155:${arbitrum.id}`]: toCustomRpcUrls(arbitrum.id),
+    [`eip155:${bsc.id}`]: toCustomRpcUrls(bsc.id),
+  },
   // WHY: viem defaults pollingInterval to clamp(chain.blockTime / 2, 500ms, 4s),
   // so BSC (750ms blocks) polls every ~500ms and Base every ~1s. Set explicit
   // intervals to stop hammering RPC on fast chains. Mainnet stays at its 4s
@@ -103,6 +74,39 @@ export const wagmiConfig = createConfig({
   },
 })
 
+export const wagmiConfig = wagmiAdapter.wagmiConfig
+
+createAppKit({
+  adapters: [wagmiAdapter],
+  networks,
+  projectId,
+  metadata: {
+    name: 'Reserve Register',
+    description: 'Create, manage & trade tokenized indexes on Reserve.',
+    url: window.location.origin,
+    icons: [`${window.location.origin}/logo192.png`],
+  },
+  themeMode: 'dark',
+  themeVariables: {
+    '--apkt-font-family': "'TWK Lausanne', system-ui, sans-serif",
+  },
+  termsConditionsUrl: 'https://reserve.org/terms_and_conditions/',
+  privacyPolicyUrl: 'https://reserve.org/terms-and-conditions#privacy',
+  featuredWalletIds: FEATURED_WALLET_IDS,
+  // WHY: chain selection stays in the app UI (chainIdAtom); the modal picker would expose Arbitrum.
+  enableNetworkSwitch: false,
+  // WHY: fallbacks only — a fetched Reown dashboard config overrides these keys.
+  features: {
+    email: false,
+    socials: false,
+    onramp: false,
+    swaps: false,
+    send: false,
+    history: false,
+    analytics: false,
+  },
+})
+
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
@@ -112,33 +116,18 @@ const queryClient = new QueryClient({
     },
   },
 })
-const Disclaimer: DisclaimerComponent = () => (
-  <div className='text-primary-foreground'>
-    By connecting a wallet, you agree to ABC Labs{' '}
-    <a className='text-primary underline' target='blank' href="https://reserve.org/terms_and_conditions/">
-      Terms of Service
-    </a> and consent to its <a className='text-primary underline' target='blank' href="https://reserve.org/terms-and-conditions#privacy">Privacy Policy</a>
-  </div>
-)
 
 const ChainProvider = ({ children }: { children: ReactNode }) => {
   return (
     <WagmiProvider config={wagmiConfig}>
       <QueryClientProvider client={queryClient}>
-        <RainbowKitProvider
-          theme={darkTheme({
-            borderRadius: 'medium',
-          })}
-          appInfo={{ appName: 'Reserve Register', disclaimer: Disclaimer }}
+        <AtomUpdater />
+        <DtfSdkProvider
+          chains={dtfSdkChains}
+          etherscanApiKey={import.meta.env.VITE_ETHERSCAN_API_KEY}
         >
-          <AtomUpdater />
-          <DtfSdkProvider
-            chains={dtfSdkChains}
-            etherscanApiKey={import.meta.env.VITE_ETHERSCAN_API_KEY}
-          >
-            {children}
-          </DtfSdkProvider>
-        </RainbowKitProvider>
+          {children}
+        </DtfSdkProvider>
       </QueryClientProvider>
     </WagmiProvider>
   )
