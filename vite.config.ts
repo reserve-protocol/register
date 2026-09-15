@@ -57,7 +57,6 @@ export default defineConfig({
             id.includes('/wagmi/') ||
             id.includes('/@wagmi/') ||
             id.includes('/viem/') ||
-            id.includes('/@rainbow-me/rainbowkit') ||
             id.includes('/@walletconnect/') ||
             id.includes('/@coinbase/wallet-sdk') ||
             id.includes('/@reown/')

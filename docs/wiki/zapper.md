@@ -10,7 +10,7 @@ Three distinct mechanisms; don't mix them up. The CoW-suggestion card next to th
 
 ## 1. `@reserve-protocol/react-zapper` ([react-zapper](https://github.com/reserve-protocol/react-zapper)) — Index DTF instant zap
 
-Register pins the exact version (no caret) and wraps it in `src/views/index-dtf/components/zapper/zapper-wrapper.tsx` (injects RainbowKit `connectWallet` and `locale`).
+Register pins the exact version (no caret) and wraps it in `src/views/index-dtf/components/zapper/zapper-wrapper.tsx` (injects the AppKit `connectWallet` opener from `useWalletModal` and `locale`).
 
 - **Locked settings for featured DTFs**: the wrapper passes `disabledSettings={{ deepLiquidity: true, forceMint: true }}` (prop added in 2.4.0) for the DTFs hardcoded in `locked-zap-settings.ts` (5 featured BSC DTFs from `/v1/discover/featured`: PHOTON, BUILDOUT, ROBOTS, POWER, NEOCLOUD). A disabled option renders its checkbox frozen unchecked (same treatment as the always-on dust checkbox) and the widget's updater force-resets the backing atom to `false` — including on SPA navigation from a DTF where the user had it checked.
 

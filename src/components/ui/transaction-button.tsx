@@ -3,7 +3,7 @@
  * Uses shadcn Button with transaction-specific functionality
  */
 import { Trans, useLingui } from '@lingui/react/macro'
-import { useConnectModal } from '@rainbow-me/rainbowkit'
+import { useWalletModal } from '@/hooks/use-wallet-modal'
 import TransactionError from 'components/transaction-error/TransactionError'
 import useContractWrite from 'hooks/useContractWrite'
 import { useGasAmount } from 'hooks/useGasEstimate'
@@ -44,7 +44,7 @@ export const GasEstimateLabel = ({ gas }: { gas: bigint }) => {
 }
 
 export const ConnectWalletButton = ({ className, ...props }: ButtonProps) => {
-  const { openConnectModal } = useConnectModal()
+  const { openConnectModal } = useWalletModal()
 
   return (
     <Button

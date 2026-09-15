@@ -12,8 +12,8 @@ vi.mock('@lingui/macro', () => ({
 const mockOpenConnectModal = vi.fn()
 const mockSwitchChain = vi.fn()
 
-vi.mock('@rainbow-me/rainbowkit', () => ({
-  useConnectModal: () => ({ openConnectModal: mockOpenConnectModal }),
+vi.mock('@/hooks/use-wallet-modal', () => ({
+  useWalletModal: () => ({ openConnectModal: mockOpenConnectModal }),
 }))
 
 vi.mock('wagmi', () => ({

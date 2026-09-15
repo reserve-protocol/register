@@ -1,4 +1,5 @@
 allowBuilds:
+  '@reown/appkit': false
   '@sentry/cli': true
   bufferutil: true
   esbuild: true

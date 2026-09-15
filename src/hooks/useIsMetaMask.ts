@@ -9,7 +9,7 @@ type InjectedProvider = {
 
 // Detects whether the *connected* wallet is MetaMask. We read the active
 // connector's EIP-1193 provider rather than the global `window.ethereum` so the
-// result reflects the wallet actually in use (RainbowKit exposes MetaMask through
+// result reflects the wallet actually in use (`window.ethereum` fallbacks reach
 // the generic `injected` connector, so the connector id alone is not enough).
 // Look-alikes that also set `isMetaMask` (Rabby, Brave) are excluded.
 export const useIsMetaMask = (): boolean => {
