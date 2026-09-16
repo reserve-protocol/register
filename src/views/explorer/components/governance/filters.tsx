@@ -20,6 +20,7 @@ export const proposalStatus: Record<string, MessageDescriptor> = {
   [PROPOSAL_STATES.QUORUM_NOT_REACHED]: msg`Quorum not reached`,
   [PROPOSAL_STATES.CANCELED]: msg`Canceled`,
   [PROPOSAL_STATES.SUCCEEDED]: msg`Succeeded`,
+  [PROPOSAL_STATES.QUEUED]: msg`Queued`,
   [PROPOSAL_STATES.EXPIRED]: msg`Expired`,
 }
 

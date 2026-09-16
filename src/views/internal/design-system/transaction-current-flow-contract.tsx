@@ -31,7 +31,7 @@ const flows = [
     name: 'Index DTF Zapper',
     sources: [
       'src/views/index-dtf/components/zapper/zapper-wrapper.tsx',
-      '@reserve-protocol/react-zapper@2.10.5 README, installed type contract, and current E2E behavior',
+      '@reserve-protocol/react-zapper@2.11.0 README, installed type contract, and current E2E behavior',
     ],
     statements: [
       'Preserve|One mounted inline package widget across wallet state, paired input/output with a default direction-flip control, parallel route comparison, route-specific approval/signature/waiting, and a portalled package result.',

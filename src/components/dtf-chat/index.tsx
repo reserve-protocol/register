@@ -1,7 +1,8 @@
 import { useIsDesktop, useIsLargeDesktop } from '@/hooks/use-media-query'
+import { cn } from '@/lib/utils'
 import { trackClick } from '@/hooks/useTrackPage'
-import { isStocksOverviewPathname } from '@/views/index-dtf/overview/dtf-categories'
 import { chainIdAtom } from '@/state/atoms'
+import { isIndexDtfOverviewPathname } from '@/views/index-dtf/utils/index-dtf-pathname'
 import {
   iTokenAddressAtom,
   indexDTFAtom,
@@ -17,8 +18,9 @@ import {
 } from '@reserve-protocol/dtf-chat'
 import '@reserve-protocol/dtf-chat/styles.css'
 import './overrides.css'
+import { useDraggableLauncher } from './use-draggable-launcher'
 import { useAtomValue } from 'jotai'
-import { forwardRef } from 'react'
+import { forwardRef, useRef } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 
 // Public Turnstile site key for the chat.reserve.org deployment (paired with
@@ -105,6 +107,13 @@ const DtfChat = forwardRef<ReserveChatHandle, DtfChatProps>(function DtfChat(
   const bottomOffset = gap
   const rightOffset = gap
   const isInternalDesignSystem = pathname.startsWith('/internal/design-system')
+  const launcherContainerRef = useRef<HTMLDivElement>(null)
+  useDraggableLauncher(
+    launcherContainerRef,
+    !embedded &&
+      !isInternalDesignSystem &&
+      !(isIndexDtfOverviewPathname(pathname) && isLargeDesktop)
+  )
 
   const dtfContext: DtfContext | undefined = onDtf
     ? {
@@ -136,13 +145,23 @@ const DtfChat = forwardRef<ReserveChatHandle, DtfChatProps>(function DtfChat(
     )
   }
 
-  // The stocks overview embeds its own chat in the xl rail — one entry point.
-  if (isStocksOverviewPathname(pathname) && isLargeDesktop) {
+  // The DTF overview embeds its own chat in the xl rail — one entry point.
+  if (isIndexDtfOverviewPathname(pathname) && isLargeDesktop) {
     return null
   }
 
   return (
-    <div className={hideLauncher ? 'dtf-chat-hide-mobile-launcher' : undefined}>
+    <div
+      ref={launcherContainerRef}
+      className={cn(
+        // The overview's floating action bar carries its own chat button up to
+        // xl, where the rail embeds the chat — no launcher on that route. Other
+        // DTF pages get the launcher from lg, where their own action bar ends.
+        isIndexDtfOverviewPathname(pathname)
+          ? '[&_.rc-launcher]:max-xl:hidden'
+          : hideLauncher && '[&_.rc-launcher]:max-lg:hidden'
+      )}
+    >
       <ReserveChat
         apiBase={apiBase}
         // Turnstile only against the live server; a local dev server runs without it.

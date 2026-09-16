@@ -10,7 +10,12 @@ import useRTokenLogo from 'hooks/useRTokenLogo'
 import { useAtomValue } from 'jotai'
 import { useMemo } from 'react'
 import { walletAtom } from 'state/atoms'
-import { getFolioRoute, getProposalTitle, getTokenRoute } from 'utils'
+import {
+  getFolioRoute,
+  getProposalTitle,
+  getTokenRoute,
+  parseDuration,
+} from 'utils'
 import { PROPOSAL_STATES, ROUTES, formatConstant } from 'utils/constants'
 import useProposalsData, { type ProposalRecord } from './use-proposals-data'
 import Filters from './filters'
@@ -51,6 +56,9 @@ const formatVoteChoice = (choice: string | null) => {
   if (!choice) return null
   return choice.toLowerCase().replace(/^\w/, (char) => char.toUpperCase())
 }
+
+const formatVotingDuration = (seconds: number) =>
+  parseDuration(seconds, { units: ['d', 'h'], round: true })
 
 const ExploreGovernance = () => {
   const { t } = useLingui()
@@ -94,6 +102,25 @@ const ExploreGovernance = () => {
         cell: (data) => (
           <span>{dayjs.unix(+data.getValue()).format('YYYY-M-D')}</span>
         ),
+      }),
+      columnHelper.display({
+        id: 'votingEnds',
+        header: t`Voting Ends`,
+        cell: ({ row }) => {
+          const { status, votingEndsIn } = row.original
+
+          if (votingEndsIn === null || !Number.isFinite(votingEndsIn)) {
+            return <span>—</span>
+          }
+          if (votingEndsIn <= 0) return <span>{t`Ended`}</span>
+          if (
+            status !== PROPOSAL_STATES.PENDING &&
+            status !== PROPOSAL_STATES.ACTIVE
+          ) {
+            return <span>—</span>
+          }
+          return <span>{formatVotingDuration(votingEndsIn)}</span>
+        },
       }),
       columnHelper.accessor('status', {
         header: t`Status`,

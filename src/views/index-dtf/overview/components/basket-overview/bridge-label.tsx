@@ -39,6 +39,7 @@ const BridgeLabel = ({
           bridge: token.bridge,
           mapping: {
             symbol: token.symbol,
+            ticker: token.ticker,
             wrappedVersion: token.bridge.wrappedVersion,
           },
         }

@@ -12242,6 +12242,10 @@ msgstr "Retraso de votación"
 msgid "Voting delay begins"
 msgstr "Comienza el retraso de votación"
 
+#: src/views/explorer/components/governance/index.tsx:120
+msgid "Voting Ends"
+msgstr "Fin de la votación"
+
 #: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/form-fields.ts:9
 msgid "Voting delay is required"
 msgstr "El retraso de votación es obligatorio"

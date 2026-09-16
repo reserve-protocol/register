@@ -11,6 +11,7 @@ import { useMultichainQuery } from 'hooks/use-query'
 import { useAtomValue } from 'jotai'
 import { useMemo } from 'react'
 import { walletAtom } from 'state/atoms'
+import { getCurrentTime } from 'utils'
 import { ChainId } from 'utils/chains'
 import {
   INDEX_DTF_CHAINS,
@@ -253,6 +254,7 @@ const useProposalsData = () => {
 
   return useMemo(() => {
     const proposals: ProposalRecord[] = []
+    const timestamp = getCurrentTime()
 
     // --- Yield DTF proposals ---
     if (yieldData && filters.type !== 'index') {
@@ -273,7 +275,6 @@ const useProposalsData = () => {
             blocks?.[chain] || 0,
             chain
           )
-
           proposals.push({
             id: entry.id,
             description: entry.description,
@@ -284,6 +285,7 @@ const useProposalsData = () => {
             againstWeightedVotes: entry.againstWeightedVotes,
             quorumVotes: entry.quorumVotes,
             status: state.state,
+            votingEndsIn: +entry.endBlock - timestamp,
             votingState: state,
             chain,
             tokenAddress: getAddress(rToken.id),
@@ -336,6 +338,7 @@ const useProposalsData = () => {
             againstWeightedVotes: entry.againstWeightedVotes,
             quorumVotes: entry.quorumVotes,
             status: state.state,
+            votingEndsIn: +entry.voteEnd - timestamp,
             votingState: state,
             chain: result.chainId,
             tokenAddress: dtfInfo.address,

@@ -1,6 +1,6 @@
 ---
 title: Home
-updated: 2026-07-23
+updated: 2026-09-16
 type: domain
 sources:
   - src/views/home/**
