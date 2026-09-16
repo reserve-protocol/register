@@ -1,6 +1,6 @@
 ---
 title: Project
-updated: 2026-07-28
+updated: 2026-09-16
 type: context
 ---
 
@@ -51,6 +51,7 @@ Register — the web interface for Reserve Protocol: **Index DTFs** (current foc
 - **Live state → RPC, not subgraph.** Basket balances, live proposal state, live rebalance/auction state come from RPC. Subgraph = metadata/history only.
 - **Money is `Amount`/`bigint`.** Never `Number` for on-chain math; convert only at display leaves. Keep SDK `Amount` objects intact through atoms and logic.
 - **Feature isolation.** One feature = one folder under `views/<domain>/<feature>/` owning its `components/`, `hooks/`, `atoms.ts`, `utils.ts`. Shared code never imports from a feature; features never reach into each other's internals. Fix local bugs locally — never via shared containers, providers, routing shells, or component defaults.
+- Do not patch third-party dependencies; keep compatibility changes in application code.
 - **Automatic DTF chain switching is focus-owned.** Only the focused, visible document may synchronize the wallet to its route chain; background tabs stay passive. The route/provider identity is the target — never a lagging global chain atom.
 - **Shared components keep their defaults** (`DataTable`, legacy `Table`, …) — behavior via opt-in props only.
 - **Design tokens only** — no hardcoded hex/hsl anywhere; see [[design-system]].
@@ -67,7 +68,7 @@ Register — the web interface for Reserve Protocol: **Index DTFs** (current foc
 ## Active Risks
 
 - `release/ai-dtf` window: cleanups must preserve JSX structure, classes, copy, and flow unless the task explicitly changes UI. Prefer pure helper/hook extraction + tests; no visual decomposition without screenshot/e2e coverage or explicit approval.
-- `src/app.css` overrides `@reserve-protocol/dtf-chat` internal `.rc-*` classes (launcher theming). Contained deliberately; real fix (theming props/CSS vars) is backlogged upstream in reserve-ai.
+- `src/components/dtf-chat/overrides.css` overrides `@reserve-protocol/dtf-chat` internal `.rc-*` classes (launcher theming). Contained deliberately; real fix (theming props/CSS vars) is backlogged upstream in reserve-ai.
 - Large SPA bundle (~10MB); Tailwind v4 upgrade planned.
 
 ## Overrides (vs kit skills)

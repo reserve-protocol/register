@@ -41,6 +41,10 @@ test('wallet modal: connect, legal footer, account view, disconnect sticks @mobi
   await expect(page.getByText('Terms of Service')).toBeVisible()
   await expect(page.getByText('Privacy Policy')).toBeVisible()
   await expect(page.getByTestId('wallet-selector-safe')).toHaveCount(0)
+  await expect(page.getByRole('textbox', { name: 'Email', exact: true })).toBeVisible()
+  await expect(
+    page.getByRole('button', { name: 'Continue with Google' })
+  ).toBeVisible()
   await page.screenshot({ path: testInfo.outputPath('wallet-connect.png') })
   await page.getByRole('button', { name: 'Test Wallet' }).click()
   await expect(wallet).toBeVisible()
@@ -48,6 +52,12 @@ test('wallet modal: connect, legal footer, account view, disconnect sticks @mobi
 
   await wallet.click()
   await expect(disconnect).toBeVisible()
+  for (const name of ['Fund wallet', 'Swap', 'Send', 'Activity']) {
+    await expect(
+      page.getByRole('alertdialog').getByRole('button', { name, exact: true })
+    ).toBeVisible()
+  }
+  await page.screenshot({ path: testInfo.outputPath('wallet-account.png') })
   await disconnect.click()
   await expect(disconnect).not.toBeVisible()
   await expect(connectBtn).toBeVisible()

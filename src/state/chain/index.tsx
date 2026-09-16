@@ -1,5 +1,3 @@
-import { getWagmiConnectorV2 } from '@binance/w3w-wagmi-connector-v2'
-import { WagmiAdapter } from '@reown/appkit-adapter-wagmi'
 import {
   arbitrum,
   base,
@@ -14,6 +12,7 @@ import type { ReactNode } from 'react'
 import { WagmiProvider, fallback, http } from 'wagmi'
 import { hashFn, structuralSharing } from 'wagmi/query'
 import { dtfSdkChains, registerRpcUrls } from '@/utils/rpc-urls'
+import { SafeWagmiAdapter } from './safe-wagmi-adapter'
 import AtomUpdater from './updaters/AtomUpdater'
 
 const projectId = import.meta.env.VITE_WALLETCONNECT_ID || 'test-project'
@@ -23,12 +22,6 @@ const networks: [AppKitNetwork, ...AppKitNetwork[]] = [
   arbitrum,
   bsc,
 ]
-
-const binanceConnector = getWagmiConnectorV2()
-// WHY: inside the Binance app the helper returns wagmi's bare injected(), which AppKit already adds.
-const inBinanceApp =
-  'type' in binanceConnector && binanceConnector.type === 'injected'
-const extraConnectors = inBinanceApp ? [] : [binanceConnector()]
 
 const toCustomRpcUrls = (chainId: number) =>
   registerRpcUrls[chainId as keyof typeof registerRpcUrls].map((url) => ({ url }))
@@ -41,10 +34,9 @@ const FEATURED_WALLET_IDS = [
   '19177a98252e07ddfc9af2083ba8e07ef627cb6103467ffebb3f8f4205fd7927', // Ledger
 ]
 
-const wagmiAdapter = new WagmiAdapter({
+const wagmiAdapter = new SafeWagmiAdapter({
   networks,
   projectId,
-  connectors: extraConnectors,
   // WHY: without these AppKit rewrites chain.rpcUrls.default to Reown's proxy.
   customRpcUrls: {
     [`eip155:${mainnet.id}`]: toCustomRpcUrls(mainnet.id),
@@ -52,11 +44,7 @@ const wagmiAdapter = new WagmiAdapter({
     [`eip155:${arbitrum.id}`]: toCustomRpcUrls(arbitrum.id),
     [`eip155:${bsc.id}`]: toCustomRpcUrls(bsc.id),
   },
-  // WHY: viem defaults pollingInterval to clamp(chain.blockTime / 2, 500ms, 4s),
-  // so BSC (750ms blocks) polls every ~500ms and Base every ~1s. Set explicit
-  // intervals to stop hammering RPC on fast chains. Mainnet stays at its 4s
-  // default — slowing it further would also lag tx-receipt confirmations, which
-  // share this interval.
+  // Limit polling on fast chains without slowing mainnet transaction confirmations.
   pollingInterval: {
     [mainnet.id]: 4_000,
     [base.id]: 3_000,
@@ -94,16 +82,6 @@ createAppKit({
   featuredWalletIds: FEATURED_WALLET_IDS,
   // WHY: chain selection stays in the app UI (chainIdAtom); the modal picker would expose Arbitrum.
   enableNetworkSwitch: false,
-  // WHY: fallbacks only — a fetched Reown dashboard config overrides these keys.
-  features: {
-    email: false,
-    socials: false,
-    onramp: false,
-    swaps: false,
-    send: false,
-    history: false,
-    analytics: false,
-  },
 })
 
 const queryClient = new QueryClient({
