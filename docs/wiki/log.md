@@ -1,6 +1,6 @@
 ---
 title: Log
-updated: 2026-09-11
+updated: 2026-09-16
 type: log
 ---
 
@@ -143,3 +143,8 @@ Play-by-play lives in git (PRs #1053/#1054/#1055/#1063, SDK PR #27). Durable out
 ## 2026-09-11
 
 - The floating Ask Reserve AI launcher now supports pointer dragging inside the viewport without opening the panel; ordinary activation still opens chat, and arrow keys provide a non-drag repositioning path. The behavior stays local to Register's existing `dtf-chat` compatibility wrapper because package 0.0.7 exposes no launcher-drag API. Desktop mouse and mobile touch/CDP Playwright coverage pins movement, edge clamping, touch cancellation, keyboard movement, and click/Enter activation.
+
+## 2026-09-16
+
+- Wallet migration review fixes: AppKit lists explicitly registered external connectors even without a provider, so Safe registration now uses its built-in iframe detection. The header restores ENS shortening and bounds text width locally; the shared ENS hook keeps full names. Restoring the old character limit alone still clipped mobile navigation, so regression coverage checks both controls at 360/412px as well as the desktop header.
+- `flows/wallet-connect` failed on both bugs before the fixes, then passed all six desktop/mobile cases. ENS fixtures override the exact reverse-resolution RPC call. Full-gate failures remain isolated to the pre-existing untracked transaction test and existing wiki debt; real Safe iframe/relay validation remains manual. No workflow changes were needed.

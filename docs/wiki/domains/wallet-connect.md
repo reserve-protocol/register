@@ -1,12 +1,13 @@
 ---
 title: Wallet Connection (Reown AppKit)
-updated: 2026-09-15
+updated: 2026-09-16
 type: domain
 sources:
   - src/state/chain/index.tsx
   - src/hooks/use-wallet-modal.ts
   - src/components/account/index.tsx
   - e2e/fixtures/wallet.ts
+  - e2e/tests/flows/wallet-connect.spec.ts
 ---
 
 Wallet UI is **Reown AppKit** (`@reown/appkit` + `@reown/appkit-adapter-wagmi`)
@@ -16,11 +17,15 @@ mobile deep links and the relay are theirs end to end.
 
 Shape:
 - `src/state/chain/index.tsx` builds one `WagmiAdapter` (networks, transports,
-  polling intervals, explicit `safe()` and Binance connectors) and calls
+  polling intervals, explicit Binance connector) and calls
   `createAppKit` once at module load. `wagmiConfig` is still exported from the
   same module, so the RToken atoms and `state/wallet/atoms.ts` are untouched.
 - AppKit adds the injected (EIP-6963), WalletConnect and Coinbase connectors
-  itself. Rabby, Bitget, Binance and Ledger are pinned to the top through
+  itself, and adds `safe()` when `location.ancestorOrigins` identifies an
+  `app.safe.global` iframe. Do not register `safe()` unconditionally: AppKit
+  lists that unusable connector outside Safe. Alternate Safe hosts and older
+  browsers without that API need separate compatibility validation.
+  Rabby, Bitget, Binance and Ledger are pinned to the top through
   `featuredWalletIds` (WalletConnect explorer ids); everything else is
   reachable through the searchable "all wallets" list.
 - `useWalletModal()` (`src/hooks/use-wallet-modal.ts`) is the only app-side
@@ -29,7 +34,11 @@ Shape:
   `seamless-transaction.tsx` needs it and AppKit state re-renders often. Components never import AppKit directly, so the
   vendor can be swapped again in one file.
 - The header chip and the portfolio connect button render from wagmi
-  `useAccount()` plus `useEnsName`; AppKit only owns the modal.
+  `useAccount()` plus `useEnsName`; AppKit only owns the modal. The header
+  shows addresses as 4+4 (`0xf3…2266`, RainbowKit parity — the 360px header
+  has no room for more), cuts ENS labels over 24 characters and width-caps
+  only ENS names (a plain address must never clip); the shared ENS hook still
+  returns the full name.
 
 Disclaimer: the old custom RainbowKit disclaimer is now AppKit's built-in
 legal footer, fed by `termsConditionsUrl` / `privacyPolicyUrl`. AppKit renders
@@ -112,3 +121,15 @@ wallet is always authorized, so AppKit usually auto-connects it on mount;
 `connectWallet(page)` tolerates both paths. Unit tests mock
 `@reown/appkit/react` in `src/setup-tests.ts` because AppKit boots
 WalletConnect at import time and jsdom has no provider for it.
+
+`flows/wallet-connect` checks that the iframe-only Safe option is absent from
+the normal modal. Exact ENS reverse-resolution RPC overrides exercise a plain
+address plus short and long names; header and mobile navigation bounds are
+checked at 360/412px, and the desktop header at 1280px. Screenshots go to
+Playwright's test results.
+
+Build: the production bundle needs ~6 GB of JS heap while Rollup renders the
+sourcemapped chunks (AppKit pushed it over Node's ~4 GB default; master fit).
+The `build` script sets `NODE_OPTIONS=--max-old-space-size=6144`, which is
+what Cloudflare Pages runs. If Pages still fails on memory, the next lever is
+dropping sourcemaps for the vendor `wallet` chunk.

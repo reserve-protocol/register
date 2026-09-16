@@ -12,7 +12,6 @@ import { DtfSdkProvider } from '@reserve-protocol/react-sdk'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import type { ReactNode } from 'react'
 import { WagmiProvider, fallback, http } from 'wagmi'
-import { safe } from 'wagmi/connectors'
 import { hashFn, structuralSharing } from 'wagmi/query'
 import { dtfSdkChains, registerRpcUrls } from '@/utils/rpc-urls'
 import AtomUpdater from './updaters/AtomUpdater'
@@ -29,7 +28,7 @@ const binanceConnector = getWagmiConnectorV2()
 // WHY: inside the Binance app the helper returns wagmi's bare injected(), which AppKit already adds.
 const inBinanceApp =
   'type' in binanceConnector && binanceConnector.type === 'injected'
-const extraConnectors = inBinanceApp ? [safe()] : [safe(), binanceConnector()]
+const extraConnectors = inBinanceApp ? [] : [binanceConnector()]
 
 const toCustomRpcUrls = (chainId: number) =>
   registerRpcUrls[chainId as keyof typeof registerRpcUrls].map((url) => ({ url }))

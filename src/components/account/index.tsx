@@ -20,6 +20,7 @@ import { AlertCircle } from 'lucide-react'
 import { ReactNode } from 'react'
 import { chainIdAtom, selectedRTokenAtom } from 'state/atoms'
 import { cn } from '@/lib/utils'
+import { shortenAddress } from '@/utils'
 import { useAccount } from 'wagmi'
 
 const ErrorWrapper = ({
@@ -64,11 +65,6 @@ const ErrorWrapper = ({
     </Tooltip>
   )
 
-/**
- * Account
- *
- * Handles wallet interaction
- */
 const Account = ({
   mobileSurface = 'default',
 }: {
@@ -78,14 +74,24 @@ const Account = ({
   const isTokenSelected = !!useAtomValue(selectedRTokenAtom)
   const handleConnect = useConnectWithReset()
   const { address, chainId: walletChainId, isReconnecting } = useAccount()
-  const displayName = useEnsName(address)
+  const name = useEnsName(address)
+  const isEnsName = !!address && name !== shortenAddress(address)
+  const ensLabel = name.split('.').slice(0, -1).join('.')
+  // WHY: RainbowKit parity — 4+4 address, ENS labels over 24 chars cut; the
+  // 360px header only has room for the 9-char address, so ENS gets a width cap.
+  const displayName = isEnsName
+    ? ensLabel.length > 24
+      ? `${ensLabel.slice(0, 24)}...`
+      : name
+    : address
+      ? `${address.slice(0, 4)}…${address.slice(-4)}`
+      : ''
   const { openConnectModal, openAccountModal } = useWalletModal()
 
   const connected = !!address && !!walletChainId
   const invalidChain = isTokenSelected && connected && walletChainId !== chainId
 
-  // WHY: hide the first paint while wagmi restores a persisted session, so a
-  // reload does not flash "Connect" before the wallet chip.
+  // WHY: hide the first paint while wagmi restores a session, so a reload does not flash "Connect".
   const hiddenWhileReconnecting = cn(
     isReconnecting && 'opacity-0 pointer-events-none select-none'
   )
@@ -131,7 +137,15 @@ const Account = ({
               ) : (
                 <AlertCircle className="h-3.5 w-3.5 fill-destructive text-white" />
               )}
-              <span className="text-sm font-normal">{displayName}</span>
+              <span
+                className={cn(
+                  'text-sm font-normal',
+                  isEnsName && 'max-w-16 truncate sm:max-w-32'
+                )}
+                title={name}
+              >
+                {displayName}
+              </span>
             </div>
           </div>
           <div className="hidden h-9 items-center gap-1.5 rounded-full border border-border px-4 whitespace-nowrap lg:flex">
@@ -140,7 +154,15 @@ const Account = ({
             ) : (
               <AlertCircle className="w-4 h-4 fill-destructive text-white" />
             )}
-            <span className="text-sm font-normal">{displayName}</span>
+            <span
+              className={cn(
+                'text-sm font-normal',
+                isEnsName && 'max-w-48 truncate'
+              )}
+              title={name}
+            >
+              {displayName}
+            </span>
           </div>
         </div>
       </ErrorWrapper>

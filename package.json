@@ -100,7 +100,7 @@
   },
   "scripts": {
     "start": "vite",
-    "build": "pnpm run refresh-token-logos && tsc && vite build && pnpm run generate-seo-pages",
+    "build": "pnpm run refresh-token-logos && tsc && NODE_OPTIONS=--max-old-space-size=6144 vite build && pnpm run generate-seo-pages",
     "build:no-seo": "tsc && vite build",
     "refresh-token-logos": "pnpm exec tsx scripts/refresh-token-logos.ts",
     "serve": "vite preview",
