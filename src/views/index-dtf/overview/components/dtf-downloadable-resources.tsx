@@ -31,12 +31,24 @@ const DTF_RESOURCE_TOKEN_BY_ADDRESS: Record<string, string> = {
   // NEOCLOUD
   '0x9429a7332b5a3bcde2781b65ac1a9ebd9f466e12': 'NEOCLOUD',
   '0xf571fe3f0d74521bc7310b111faea931c748f27b': 'NEOCLOUD',
+  // MAG7
+  '0xcef8db49e456f872e288e1c042f916e9ced7c781': 'MAG7',
 }
+
+// Tokens with a tear sheet on storage.reserve.org. MAG7 ships a reference doc
+// without one, so its tearsheet slot stays empty rather than linking a 404.
+const TEARSHEET_TOKENS = new Set([
+  'PHOTON',
+  'BUILDOUT',
+  'ROBOTS',
+  'POWER',
+  'NEOCLOUD',
+])
 
 const getDtfResourceUrls = (
   dtfAddress: string,
   locale: SupportedLocale
-): { tearsheetUrl: string; referenceUrl: string } | null => {
+): { tearsheetUrl: string | null; referenceUrl: string } | null => {
   const tokenName = DTF_RESOURCE_TOKEN_BY_ADDRESS[dtfAddress.toLowerCase()]
   if (!tokenName) return null
 
@@ -46,7 +58,9 @@ const getDtfResourceUrls = (
     : DEFAULT_LOCALE
 
   return {
-    tearsheetUrl: `https://storage.reserve.org/${tokenName}_DTF_Tearsheet_${tearsheetLocale}.pdf`,
+    tearsheetUrl: TEARSHEET_TOKENS.has(tokenName)
+      ? `https://storage.reserve.org/${tokenName}_DTF_Tearsheet_${tearsheetLocale}.pdf`
+      : null,
     referenceUrl: `/dtf-llm/${tokenName.toLowerCase()}-dtf.md`,
   }
 }
@@ -61,9 +75,11 @@ const useDownloadableResources = () => {
 
   const hardcodedUrls = data?.id ? getDtfResourceUrls(data.id, locale) : null
   const resources = [
+    ...(hardcodedUrls?.tearsheetUrl
+      ? [{ url: hardcodedUrls.tearsheetUrl, name: t`Tear Sheet` }]
+      : []),
     ...(hardcodedUrls
       ? [
-          { url: hardcodedUrls.tearsheetUrl, name: t`Tear Sheet` },
           {
             url: hardcodedUrls.referenceUrl,
             name: t`Markdown file for your LLM`,
