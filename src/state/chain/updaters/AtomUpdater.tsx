@@ -1,4 +1,3 @@
-import '@rainbow-me/rainbowkit/styles.css'
 import mixpanel from 'mixpanel-browser/src/loaders/loader-module-core'
 import { useEffect } from 'react'
 

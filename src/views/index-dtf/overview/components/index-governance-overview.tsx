@@ -7,7 +7,7 @@ import { chainIdAtom, walletAtom } from '@/state/atoms'
 import { indexDTFAtom } from '@/state/dtf/atoms'
 import { getFolioRoute } from '@/utils'
 import { ROUTES } from '@/utils/constants'
-import { useConnectModal } from '@rainbow-me/rainbowkit'
+import { useWalletModal } from '@/hooks/use-wallet-modal'
 import { useAtomValue } from 'jotai'
 import { ArrowRight, Minus, Plus } from 'lucide-react'
 import { forwardRef, useState } from 'react'
@@ -129,7 +129,7 @@ const ViewNonBasketGovernanceButton = () => {
 
 const IndexGovernanceOverview = () => {
   const account = useAtomValue(walletAtom)
-  const { openConnectModal } = useConnectModal()
+  const { openConnectModal } = useWalletModal()
   const dtf = useAtomValue(indexDTFAtom)
   const chainId = useAtomValue(chainIdAtom)
   const [settingsExpanded, setSettingsExpanded] = useState(false)

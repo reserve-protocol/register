@@ -1,6 +1,6 @@
 ---
 title: E2E Suite
-updated: 2026-08-10
+updated: 2026-09-16
 type: domain
 sources:
   - e2e/**
@@ -12,7 +12,8 @@ sources:
 
 Offline Index-DTF acceptance coverage for home/discover, overview, issuance,
 zaps, compliance, auctions, governance, and settings, plus Yield (RToken)
-render smokes. The suite characterizes Register behavior at the installed
+render and staking-write coverage. The suite characterizes Register behavior
+at the installed
 `@reserve-protocol/react-sdk` version; SDK mapper/math/calldata correctness
 remains the SDK repositories' responsibility.
 
@@ -84,20 +85,20 @@ age, and DTF/chain identity.
 ## Commands and CI
 
 - `pnpm e2e:smoke`: the `@smoke` project.
-- `pnpm e2e:full`: all non-smoke behavior specs.
-- `pnpm e2e`: both projects.
+- `pnpm e2e:full`: desktop non-smoke behavior specs.
+- `pnpm e2e:mobile`: specs tagged `@mobile` at a phone viewport.
+- `pnpm e2e`: all three projects (smoke, full, mobile).
 - `pnpm e2e:check`: manifest, identity, and freshness.
 - `pnpm e2e:capture:yield`: re-capture the yield RToken eth_call + subgraph maps.
 - `pnpm exec vitest run e2e/helpers/tests`: mock-contract unit tests.
 
 CI uses pnpm, Node 24, current actions, and Chromium only. PR/push runs
 typecheck, the mock-contract unit tests, snapshot check, and smoke; nightly/
-manual adds the full project. Workflow scope routes Index+Yield DTF, home,
-state, and hook changes through that gate.
+manual adds full and mobile sequentially because they share the server port.
+The workflow has no path filter.
 
 Speed: local workers are capped at 5 (one Vite server doesn't scale past it).
-Quick-loop tiers — unit tests <1s → one scoped spec ~3–5s → smoke ~16s → full
-~78s; snapshots are parse-cached per worker. Prefer the narrowest tier for a
+Snapshots are parse-cached per worker. Prefer the narrowest tier for a
 change (the domain guides' diff→test tables name the spec). An unmocked-call
 failure names the function + the helper to model it in (`e2e/CLAUDE.md` has the
 boundary map + new-test recipe).
@@ -164,8 +165,17 @@ Trust rules (a yield test can't go green while wrong):
 - `e2e:check` validates yield snapshot identity, pinned block, nonempty map,
   and within-chain key collisions.
 
-Covered: overview / issuance / staking render smokes. Remaining yield phases
-(auctions/governance/settings smokes, then mint → stake → vote flows) and
-deferred writes are tracked in `e2e/TEST_MAP.md` § gaps.
+Covered: overview / issuance / staking render smokes, issuance active/paused
+states, partial staking history, and stake/unstake writes. Remaining yield
+phases and deferred writes are tracked in `e2e/TEST_MAP.md` § gaps.
+
+## Wallet modal
+
+`flows/wallet-connect` covers AppKit connect/disconnect, the legal footer,
+default email/social and fund/swap/send/activity controls, Safe iframe-only visibility,
+and plain-address/short-ENS/long-ENS header bounds
+on desktop and mobile. Reown services are stubbed and Coinbase telemetry is
+aborted; this proves injected-wallet behavior, not live WalletConnect relay,
+email/social authentication, or fiat-provider flows. See [[wallet-connect]].
 
 Related: [[project]], [[sdk]], [[yield-protocol]], [[subgraphs]].

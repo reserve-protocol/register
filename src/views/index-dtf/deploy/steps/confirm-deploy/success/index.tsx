@@ -7,6 +7,7 @@ import { Asterisk, Bookmark, Check } from 'lucide-react'
 import { ReactNode } from 'react'
 import { Trans, useLingui } from '@lingui/react/macro'
 import { useNavigate } from 'react-router-dom'
+import { useWatchAsset } from 'wagmi'
 import {
   daoCreatedAtom,
   daoTokenAddressAtom,
@@ -34,6 +35,7 @@ const Item = ({ title, children }: { title: string; children: ReactNode }) => {
 
 const SuccessView = () => {
   const { t } = useLingui()
+  const { watchAsset } = useWatchAsset()
   const chainId = useAtomValue(chainIdAtom)
   const deployedDTF = useAtomValue(deployedDTFAtom)
   const navigate = useNavigate()
@@ -49,17 +51,14 @@ const SuccessView = () => {
   }
 
   const addTokenToWallet = () => {
-    if (!deployedDTF) return
+    if (!deployedDTF || !form) return
 
-    window.ethereum.request({
-      method: 'wallet_watchAsset',
-      params: {
-        type: 'ERC20',
-        options: {
-          address: deployedDTF,
-          symbol: form!.symbol,
-          decimals: 18,
-        },
+    watchAsset({
+      type: 'ERC20',
+      options: {
+        address: deployedDTF,
+        symbol: form.symbol,
+        decimals: 18,
       },
     })
   }
