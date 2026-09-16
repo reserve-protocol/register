@@ -13,7 +13,14 @@ PRs #1053/#1054/#1055/#1063, SDK PR #27). Delete items as they land.
 
 ## Next slices (in rough order)
 
-
+- **Index DTF v6 / auctions SDK integration**: active planning contract in
+  [index-dtf-v6-integration.md](index-dtf-v6-integration.md). Rebalance regression
+  comes first: top 10 listed DTFs by market cap plus Ethereum supplements,
+  three-chain fork execution, then SDK migration, upgrades and native v6.
+  Hybrid remains a curated allowlist; implementation has not started.
+  Settled 2026-09-16: SDK is v5/v6 only, v4 stays Register-local, the full
+  146-case suite is the release gate, and the per-chain fork stack lives in
+  `e2e/fork/docker/` (skill: `.claude/skills/fork-e2e/SKILL.md`).
 - **Portfolio SDK adoption (chk-4)**: extend SDK `AccountPortfolio` to the full
   6-field shape + validated partial-body mappers (SDK-side fixtures), migrate
   register's raw `use-portfolio`/`use-historical-portfolio`/
@@ -40,11 +47,6 @@ PRs #1053/#1054/#1055/#1063, SDK PR #27). Delete items as they land.
   `JSON.stringify` deps.
 
 ## Deferred to protocol-vNext
-
-- **Auctions SDK migration**: the remaining raw `/rebalance` fetches in the
-  auctions views move to SDK reads alongside the version's heavy rebalance
-  testing. Reminder: hybrid stays a curated allowlist (see log 2026-07-21) —
-  do not re-derive from weightControl.
 
 - **Zap max provider-seam regression**: the unavailable-max path is covered at
   the compute (`computeMaxTokenIn` → null) and button seams; a ZapProvider-

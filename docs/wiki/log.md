@@ -1,6 +1,7 @@
 ---
 title: Log
 updated: 2026-09-16
+updated: 2026-09-15
 type: log
 ---
 
@@ -184,3 +185,11 @@ PR #1094 merged on 2026-08-28. The following records the original stage evidence
 - Upstream-update check: registry metadata reported AppKit adapter 1.8.24, wagmi 3.7.7 and core 3.6.5. The installed wagmi/core 2.19.5/2.22.1 are the latest v2 versions. Published AppKit 1.8.24 has the identical WalletConnect connector and post-connect switching logic; core 3.6.5 has identical connect/switchChain actions. No version upgrade was applied. The failure is a review edge reproduced with a fixture, not a confirmed live Safe incident; Safe web's published approval includes chains. Check released fixes and real wallet evidence before choosing future compatibility work.
 - Validation: 6 focused regressions, 8 desktop/mobile wallet flows, 59 smoke checks (1 skip), app/strict lint, wiki lint, e2e types and 1,606 source/test files excluding the pre-existing transaction draft passed. Full unit results are 908 pass/6 existing draft failures; the full gate stops on that draft's three missing exports. Dark/Light review reconciled without outstanding scoped findings. CodeRabbit CLI was unavailable; its documentation was consulted.
 - Engineer review required before merging: the guard preserves upstream fallback1 and does not repair actual-chain reporting. Live Safe iframe/relay validation remains unperformed. No commit or push.
+## 2026-09-15
+
+- Index DTF v6 integration specification: [plan](../plans/index-dtf-v6-integration.md) and [cohort](../plans/index-dtf-v6-cohort.json). User selected the current top 10 listed Index DTFs by market cap; all are Base/BSC, so OPEN and DGI supplement Ethereum. Regression suite precedes SDK/Register migration. No implementation or package release performed.
+- Read-only SDK/Register/protocol/subgraph audit found substantial SDK rebalance work but incomplete deployment/upgrade/settings support. Independent plan review added all four create modes, exact auction-end/atomic/stale-nonce cases, and privileged replacement semantics. Existing unit passes are not fork certification. Planning artifacts and links validated; source branch work preserved.
+- Corrected SDK wiki claims after checking installed 0.5.3 declarations: RPC/subgraph constants are exported; local react-sdk linking resolves core through its workspace. Deferred auctions work now points to the v6 plan.
+
+- Expanded the same specification into a [67-task implementation handoff](../plans/index-dtf-v6-handoff.md) and [146-case regression catalog](../plans/index-dtf-v6-test-catalog.md): owners, concrete source/API seams, exact assertions/oracles, all-chain runner/manifests, package flow, recovery and stage gates. Create DAO, simple-zap backend contracts, historical-price provenance and Cowbot isolation are explicit.
+- Expanded-document reviews passed after separating v4 uncapped arithmetic from v5/v6 caps, defining an independent traded-usage ledger, isolating unrestricted auction collision timing, and adding upgrade-time settlement of inactive unclosed fills. Current validation covers document structure/links, 97 source-path references, task/case identity, frozen cohort/hash and numeric vectors, formatting and scoped wiki-lint. The earlier code-test results remain dated audit evidence; no implementation/fork certification occurred. The pre-existing missing vlRSR plan link in the historical progress row is unchanged.

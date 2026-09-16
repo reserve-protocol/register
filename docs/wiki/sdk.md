@@ -1,6 +1,6 @@
 ---
 title: SDK
-updated: 2026-07-23
+updated: 2026-09-15
 type: context
 ---
 
@@ -46,10 +46,14 @@ needs an invalidate/prefetch-style react-sdk primitive).
 - pnpm+turbo monorepo: `packages/sdk` (`@reserve-protocol/sdk`) + `packages/react-sdk` (which `export *`s the core — import only from react-sdk) are **version-linked** via changesets and bump together; `packages/dtf-catalog` versions independently. ESM-only.
 - **Register pins react-sdk exactly** (`"0.5.0"`, no caret) — SDK bumps are deliberate, reviewed upgrades, never silent installs.
 - **Yield namespace is implemented** (`sdk.yield.*`, ~40 `useYieldDtf*` hooks + query options). Long-term migration target for register's hand-rolled yield reads.
-- **Catalog**: `@reserve-protocol/dtf-catalog` (register pins `0.1.3`) is a static JSON registry — synchronous lookups, no fetch; `dtfCatalog`/`indexDtfCatalog`/`yieldDtfCatalog` also re-exported from the SDK barrel (successor to `@reserve-protocol/rtokens`); on address collisions index wins. **Index DTF `status` (active/deprecated) comes from here**, not the API.
-- **Config constants are exported** — `INDEX_DTF_SUBGRAPH_URL`, `YIELD_DTF_SUBGRAPH_URL`, `DEFAULT_API_BASE_URL`, `DEFAULT_RPC_URLS`, `SUPPORTED_CHAINS`, `supportedChainIds`, type `SupportedChainId`. Consolidating register's duplicates onto them is open debt ([[improvements]] #16).
-- **Write ABIs are version-gated, not auto-detected**: `getIndexDtfWriteAbi("5.0.0" | "6.0.0")`; v6-only ops throw for v5. Register must read `folio.version()` and thread it through (see [[index-protocol]] for the version landscape).
-- Local linking: link **both** sdk and react-sdk (react-sdk re-exports the core; mismatched instances duplicate viem/react-query peers) — `docs/local-sdk-development.md`.
+- **Catalog**: `@reserve-protocol/dtf-catalog` (register pins `0.1.5`) is a static JSON registry — synchronous lookups, no fetch; `dtfCatalog`/`indexDtfCatalog`/`yieldDtfCatalog` also re-exported from the SDK barrel (successor to `@reserve-protocol/rtokens`); on address collisions index wins. **Index DTF `status` (active/deprecated) comes from here**, not the API.
+- **Installed 0.5.3 exports** `INDEX_DTF_SUBGRAPH_URL`, `DEFAULT_RPC_URLS`, and `supportedChainIds` through the core barrel and react-sdk re-export (declarations checked 2026-09-15). Register still owns its configured RPC lists; any consolidation must preserve its chain/provider behavior. `SUPPORTED_CHAINS` is not the verified export name.
+- **Write ABIs are version-gated, not auto-detected** (`getIndexDtfWriteAbi` in the SDK source; not exported to register in 0.5.3, and register has no v6 path yet). Register must read `folio.version()` and thread it through (see [[index-protocol]] for the version landscape).
+- Local linking: link react-sdk to the sibling workspace; it resolves core there. Build both packages and verify one set of React/Query/viem peers — `docs/local-sdk-development.md`.
+
+The [v6 integration plan](../plans/index-dtf-v6-integration.md) owns the pending
+rebalance migration, three-chain fork regression, upgrade and native-deployment
+work. Existing exports and passing unit tests do not certify v6 readiness.
 
 ## What it gives you
 

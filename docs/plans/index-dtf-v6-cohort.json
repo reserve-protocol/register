@@ -1,0 +1,959 @@
+{
+  "schemaVersion": 1,
+  "artifactKind": "planning-cohort-snapshot",
+  "forkExecutionStatus": "not-run",
+  "source": {
+    "url": "https://api.reserve.org/v1/discover/dtfs?performance=true&brand=true",
+    "fetchedAt": "2026-09-15T23:41:55.438829+00:00",
+    "sha256": "c61b3fb97e99c0f638cca331e6a2b3f4ea31ef57f495a4b3509fe67bf822277f",
+    "rows": 40,
+    "indexRows": 28
+  },
+  "selectionRule": "Active listed Index DTFs on Ethereum/Base/BSC sorted by marketCap descending, then chainId/address; top 10 globally plus highest 2 Ethereum entries because top 10 omit Ethereum.",
+  "activeIndexRows": 18,
+  "catalogSource": "sdk/packages/dtf-catalog/index-dtf/{mainnet,base,bnb}.json at audit; selected statuses agree",
+  "rankingInputs": [
+    {
+      "chainId": 56,
+      "address": "0x2f8A339B5889FfaC4c5A956787cdA593b3c36867",
+      "symbol": "CMC20",
+      "status": "active",
+      "marketCapUsd": 5506604.057350757
+    },
+    {
+      "chainId": 8453,
+      "address": "0x4dA9A0f397dB1397902070f93a4D6ddBC0E0E6e8",
+      "symbol": "LCAP",
+      "status": "active",
+      "marketCapUsd": 4724885.203651009
+    },
+    {
+      "chainId": 56,
+      "address": "0xa0Fe4e0aEca5479705ce996615B2EACB6b6a10Fb",
+      "symbol": "PHOTON",
+      "status": "active",
+      "marketCapUsd": 2268587.3580425014
+    },
+    {
+      "chainId": 56,
+      "address": "0xf571Fe3F0d74521Bc7310B111Faea931C748f27B",
+      "symbol": "NEOCLOUD",
+      "status": "active",
+      "marketCapUsd": 2213645.2527149385
+    },
+    {
+      "chainId": 56,
+      "address": "0x290bCc0Fd5096cC3261AE2021841c7BC67Cb0f51",
+      "symbol": "POWER",
+      "status": "active",
+      "marketCapUsd": 1704718.188835817
+    },
+    {
+      "chainId": 56,
+      "address": "0xD7cE7a841310982AcD976D1a6fe7BB6063c5689D",
+      "symbol": "BUILDOUT",
+      "status": "active",
+      "marketCapUsd": 1597450.463701109
+    },
+    {
+      "chainId": 56,
+      "address": "0x75617e7653f86f074Cc30b9Fd4eBf52bA9b62247",
+      "symbol": "ROBOTS",
+      "status": "active",
+      "marketCapUsd": 1443086.6827770653
+    },
+    {
+      "chainId": 8453,
+      "address": "0xCEF8Db49E456f872E288E1C042F916E9ceD7c781",
+      "symbol": "MAG7",
+      "status": "active",
+      "marketCapUsd": 390166.4417277937
+    },
+    {
+      "chainId": 8453,
+      "address": "0x23418De10d422AD71C9D5713a2B8991a9c586443",
+      "symbol": "BGCI",
+      "status": "active",
+      "marketCapUsd": 214672.3599761653
+    },
+    {
+      "chainId": 8453,
+      "address": "0xe00CFa595841fb331105b93C19827797C925E3E4",
+      "symbol": "VLONE",
+      "status": "active",
+      "marketCapUsd": 211896.197100769
+    },
+    {
+      "chainId": 1,
+      "address": "0x323c03c48660fE31186fa82c289b0766d331Ce21",
+      "symbol": "OPEN",
+      "status": "active",
+      "marketCapUsd": 183117.37226168366
+    },
+    {
+      "chainId": 8453,
+      "address": "0xeBcda5b80f62DD4DD2A96357b42BB6Facbf30267",
+      "symbol": "ABX",
+      "status": "active",
+      "marketCapUsd": 172772.99701647882
+    },
+    {
+      "chainId": 1,
+      "address": "0x9a1741E151233a82Cf69209A2F1bC7442B1fB29C",
+      "symbol": "DGI",
+      "status": "active",
+      "marketCapUsd": 68707.08841522431
+    },
+    {
+      "chainId": 1,
+      "address": "0x4E3B170DcBe704b248df5f56D488114acE01B1C5",
+      "symbol": "BED",
+      "status": "deprecated",
+      "marketCapUsd": 63221.1436190091
+    },
+    {
+      "chainId": 8453,
+      "address": "0xe8b46b116D3BdFA787CE9CF3f5aCC78dc7cA380E",
+      "symbol": "MVTT10F",
+      "status": "active",
+      "marketCapUsd": 53026.57762846864
+    },
+    {
+      "chainId": 1,
+      "address": "0xF91384484F4717314798E8975BCd904A35fc2BF1",
+      "symbol": "SMEL",
+      "status": "deprecated",
+      "marketCapUsd": 49983.49801692881
+    },
+    {
+      "chainId": 8453,
+      "address": "0x44551CA46Fa5592bb572E20043f7C3D54c85cAD7",
+      "symbol": "CLX",
+      "status": "active",
+      "marketCapUsd": 48883.2031293047
+    },
+    {
+      "chainId": 1,
+      "address": "0x188D12Eb13a5Eadd0867074ce8354B1AD6f4790b",
+      "symbol": "DFX",
+      "status": "active",
+      "marketCapUsd": 48140.74120171367
+    },
+    {
+      "chainId": 1,
+      "address": "0xe4a10951f962e6cB93Cb843a4ef05d2F99DB1F94",
+      "symbol": "ixEdel",
+      "status": "active",
+      "marketCapUsd": 14807.700320237793
+    },
+    {
+      "chainId": 8453,
+      "address": "0x47686106181b3CEfe4eAf94C4c10b48Ac750370b",
+      "symbol": "VTF",
+      "status": "deprecated",
+      "marketCapUsd": 11278.064234362668
+    },
+    {
+      "chainId": 8453,
+      "address": "0xfe45EDa533e97198d9f3dEEDA9aE6c147141f6F9",
+      "symbol": "AI",
+      "status": "deprecated",
+      "marketCapUsd": 10969.598271700537
+    },
+    {
+      "chainId": 1,
+      "address": "0xA5cdea03B11042fc10B52aF9eCa48bb17A2107d2",
+      "symbol": "mvRWA",
+      "status": "deprecated",
+      "marketCapUsd": 7414.782961732954
+    },
+    {
+      "chainId": 8453,
+      "address": "0xb8753941196692E322846cfEE9C14C97AC81928A",
+      "symbol": "BDTF",
+      "status": "active",
+      "marketCapUsd": 4754.9572400128545
+    },
+    {
+      "chainId": 8453,
+      "address": "0xF8EF6e785473E82527908B06023Ac3e401cCFDcd",
+      "symbol": "CLUB",
+      "status": "deprecated",
+      "marketCapUsd": 4668.06235872104
+    },
+    {
+      "chainId": 1,
+      "address": "0x20d81101D254729a6E689418526bE31e2c544290",
+      "symbol": "mvDEFI",
+      "status": "deprecated",
+      "marketCapUsd": 4016.851009077047
+    },
+    {
+      "chainId": 8453,
+      "address": "0xD600e748C17Ca237Fcb5967Fa13d688AFf17Be78",
+      "symbol": "MVDA25",
+      "status": "deprecated",
+      "marketCapUsd": 1359.0476788079345
+    },
+    {
+      "chainId": 8453,
+      "address": "0x89Ff8f639d402839205a6BF03Cc01BdFfa4768b7",
+      "symbol": "SBR",
+      "status": "deprecated",
+      "marketCapUsd": 1033.3902821954848
+    },
+    {
+      "chainId": 8453,
+      "address": "0x160c18476F6f5099f374033fbc695c9234Cda495",
+      "symbol": "ZINDEX",
+      "status": "deprecated",
+      "marketCapUsd": 479.86304139838154
+    }
+  ],
+  "cohort": [
+    {
+      "selection": "primary-top-10",
+      "activeGlobalRank": 1,
+      "chainId": 56,
+      "address": "0x2f8A339B5889FfaC4c5A956787cdA593b3c36867",
+      "symbol": "CMC20",
+      "name": "CoinMarketCap 20 Index DTF",
+      "marketCapUsd": 5506604.057350757,
+      "listingStatus": "active",
+      "catalogStatus": "active",
+      "basketAssetCount": 18,
+      "basketAssets": [
+        {
+          "address": "0x7130d2A12B9BCbFAe4f2634d864A1Ee1Ce3Ead9c",
+          "symbol": "BTCB"
+        },
+        {
+          "address": "0x2170Ed0880ac9A755fd29B2688956BD959F933F8",
+          "symbol": "ETH"
+        },
+        {
+          "address": "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c",
+          "symbol": "WBNB"
+        },
+        {
+          "address": "0x1D2F0da169ceB9fC7B3144628dB156f3F6c60dBE",
+          "symbol": "XRP"
+        },
+        {
+          "address": "0x570A5D26f7765Ecb712C0924E4De545B89fD43dF",
+          "symbol": "SOL"
+        },
+        {
+          "address": "0xCE7de646e7208a4Ef112cb6ed5038FA6cC6b12e3",
+          "symbol": "TRX"
+        },
+        {
+          "address": "0xbA2aE424d960c26247Dd6c32edC70B295c744C43",
+          "symbol": "DOGE"
+        },
+        {
+          "address": "0x3EE2200Efb3400fAbB9AacF31297cBdD1d435D47",
+          "symbol": "ADA"
+        },
+        {
+          "address": "0xAeD86A53A8f3DbBa4FB6aE7A5f65f337c606bf28",
+          "symbol": "HYPE"
+        },
+        {
+          "address": "0xF8A0BF9cF54Bb92F17374d9e9A321E6a111a51bD",
+          "symbol": "LINK"
+        },
+        {
+          "address": "0x43C934A845205F0b514417d757d7235B8f53f1B9",
+          "symbol": "XLM"
+        },
+        {
+          "address": "0x8fF795a6F4D97E7887C79beA79aba5cc76444aDf",
+          "symbol": "BCH"
+        },
+        {
+          "address": "0xBf5140A22578168FD562DCcF235E5D43A02ce9B1",
+          "symbol": "UNI"
+        },
+        {
+          "address": "0x1CE0c2827e2eF14D5C4f29a091d735A204794041",
+          "symbol": "AVAX"
+        },
+        {
+          "address": "0x0422f966Bf8E978075a97D47eF4c7EFd3563Fa51",
+          "symbol": "HBAR"
+        },
+        {
+          "address": "0x4338665CBB7B2485A8855A139b75D5e34AB0DB94",
+          "symbol": "LTC"
+        },
+        {
+          "address": "0x1Ba42e5193dfA8B03D15dd1B86a3113bbBEF8Eeb",
+          "symbol": "ZEC"
+        },
+        {
+          "address": "0x2859e4544C4bB03966803b044A93563Bd2D0DD4D",
+          "symbol": "SHIB"
+        }
+      ],
+      "onchainInventoryStatus": "pending-pinned-RPC-verification"
+    },
+    {
+      "selection": "primary-top-10",
+      "activeGlobalRank": 2,
+      "chainId": 8453,
+      "address": "0x4dA9A0f397dB1397902070f93a4D6ddBC0E0E6e8",
+      "symbol": "LCAP",
+      "name": "CF Large Cap Index",
+      "marketCapUsd": 4724885.203651009,
+      "listingStatus": "active",
+      "catalogStatus": "active",
+      "basketAssetCount": 8,
+      "basketAssets": [
+        {
+          "address": "0xcbB7C0000aB88B473b1f5aFd9ef808440eed33Bf",
+          "symbol": "cbBTC"
+        },
+        {
+          "address": "0x4200000000000000000000000000000000000006",
+          "symbol": "WETH"
+        },
+        {
+          "address": "0x2615a94df961278DcbC41Fb0a54fEc5f10a693aE",
+          "symbol": "uXRP"
+        },
+        {
+          "address": "0x9B8Df6E244526ab5F6e6400d331DB28C8fdDdb55",
+          "symbol": "uSOL"
+        },
+        {
+          "address": "0x12E96C2BFEA6E835CF8Dd38a5834fa61Cf723736",
+          "symbol": "uDOGE"
+        },
+        {
+          "address": "0xa3A34A0D9A08CCDDB6Ed422Ac0A28a06731335aA",
+          "symbol": "uADA"
+        },
+        {
+          "address": "0x378c326A472915d38b2D8D41e1345987835FaB64",
+          "symbol": "uXLM"
+        },
+        {
+          "address": "0x15D0e0c55a3E7eE67152aD7E89acf164253Ff68d",
+          "symbol": "HYPE"
+        }
+      ],
+      "onchainInventoryStatus": "pending-pinned-RPC-verification"
+    },
+    {
+      "selection": "primary-top-10",
+      "activeGlobalRank": 3,
+      "chainId": 56,
+      "address": "0xa0Fe4e0aEca5479705ce996615B2EACB6b6a10Fb",
+      "symbol": "PHOTON",
+      "name": "Reserve AI Photonics DTF",
+      "marketCapUsd": 2268587.3580425014,
+      "listingStatus": "active",
+      "catalogStatus": "active",
+      "basketAssetCount": 9,
+      "basketAssets": [
+        {
+          "address": "0x0C50323AF81D5C33822c6Add256Fb9093D42BC74",
+          "symbol": "AXTIon"
+        },
+        {
+          "address": "0x25a4DbAE9a0Cd8C75656D6b50FFDf4900CC20d8f",
+          "symbol": "GLWon"
+        },
+        {
+          "address": "0x89a9F7114bE6b220fAe645ba0cbB720889867415",
+          "symbol": "CIENon"
+        },
+        {
+          "address": "0x0fAcaFB97ffDbA3cAe88512070AF49bd30674cD9",
+          "symbol": "LITEon"
+        },
+        {
+          "address": "0x0585756aAFB241b0f8A9Df62Db26c566091Bde0b",
+          "symbol": "COHRon"
+        },
+        {
+          "address": "0x1dCd320C5d7b84CD407437c58d56CbbDd0D9d8f3",
+          "symbol": "MTSIon"
+        },
+        {
+          "address": "0xA1DaaB37dA2a29A1eC721922b55962eB8B481001",
+          "symbol": "FNon"
+        },
+        {
+          "address": "0x343324170C91c4D8Cf4D439B3E5a619F50621aE7",
+          "symbol": "TSEMon"
+        },
+        {
+          "address": "0x149Bda9e7251DC36f536d1fE7F92A5ea203F4F3D",
+          "symbol": "AAOIon"
+        }
+      ],
+      "onchainInventoryStatus": "pending-pinned-RPC-verification"
+    },
+    {
+      "selection": "primary-top-10",
+      "activeGlobalRank": 4,
+      "chainId": 56,
+      "address": "0xf571Fe3F0d74521Bc7310B111Faea931C748f27B",
+      "symbol": "NEOCLOUD",
+      "name": "Reserve AI Capacity & Neocloud DTF",
+      "marketCapUsd": 2213645.2527149385,
+      "listingStatus": "active",
+      "catalogStatus": "active",
+      "basketAssetCount": 8,
+      "basketAssets": [
+        {
+          "address": "0x25eD86472cf3012607DC6576c58e6432968255C2",
+          "symbol": "CORZon"
+        },
+        {
+          "address": "0x76E39171Cb665a35981e744e2CEB7012F76caEAc",
+          "symbol": "CRWVon"
+        },
+        {
+          "address": "0xee268780473E7a0e47baC41547C6E01512555A16",
+          "symbol": "NBISon"
+        },
+        {
+          "address": "0x8FD70eE385f470c8D6FDA2D93a4E49C849BAC6a6",
+          "symbol": "IRENon"
+        },
+        {
+          "address": "0x3A82f1C847cc55e52e597fD81c63a812C6722541",
+          "symbol": "HUTon"
+        },
+        {
+          "address": "0x18De24acb876C0B8392d9C55583Bb21c0355980b",
+          "symbol": "APLDon"
+        },
+        {
+          "address": "0xaD56701D9e57957e28e546Db7db508A16d4f86CC",
+          "symbol": "WULFon"
+        },
+        {
+          "address": "0xDad07D0Ca26ed4109Bc00893dBee3Ed4cE8ce2a4",
+          "symbol": "CIFRon"
+        }
+      ],
+      "onchainInventoryStatus": "pending-pinned-RPC-verification"
+    },
+    {
+      "selection": "primary-top-10",
+      "activeGlobalRank": 5,
+      "chainId": 56,
+      "address": "0x290bCc0Fd5096cC3261AE2021841c7BC67Cb0f51",
+      "symbol": "POWER",
+      "name": "Reserve AI Power DTF",
+      "marketCapUsd": 1704718.188835817,
+      "listingStatus": "active",
+      "catalogStatus": "active",
+      "basketAssetCount": 13,
+      "basketAssets": [
+        {
+          "address": "0xD381aec27DAAcCC87F102FF4Ad6652F8b5F20bA0",
+          "symbol": "POWLon"
+        },
+        {
+          "address": "0x2Aea1D415D45CCF3EaBE565d45DcaF4ea2035b9c",
+          "symbol": "GEVon"
+        },
+        {
+          "address": "0x4697b2A050f7B5A8e1ebc27c325f9D78D094f041",
+          "symbol": "ETNon"
+        },
+        {
+          "address": "0x9Cea8A7Be1Ab0320b709d368Ad60d8500f55995f",
+          "symbol": "VRTon"
+        },
+        {
+          "address": "0x2418c2e1aE3B8D767594b3974D32610743f88155",
+          "symbol": "PWRon"
+        },
+        {
+          "address": "0x65D84F0990B7394209d591380C2952c83D778aA3",
+          "symbol": "CEGon"
+        },
+        {
+          "address": "0xbbE4Dfe7a349Fb72aEc6f52d5CD9bDD78AE8f313",
+          "symbol": "TLNon"
+        },
+        {
+          "address": "0x17D03aE104a9D12E9E5794Efb109B817Dd7f3404",
+          "symbol": "BEon"
+        },
+        {
+          "address": "0xf2C24c47805f4f72d3919C8674bFDd401505794B",
+          "symbol": "VSTon"
+        },
+        {
+          "address": "0xB35a9EAB5D25282f4e668798B629a9294e9A47aa",
+          "symbol": "ONon"
+        },
+        {
+          "address": "0x484Ce83BB55b50D70236C7D1E29E0Ba7524f905B",
+          "symbol": "NVTon"
+        },
+        {
+          "address": "0xa59469D91563CaeedDd2ffC731f41215E7b691ef",
+          "symbol": "VICRon"
+        },
+        {
+          "address": "0x1C42C07257F936a7c4f84B8D756c95817E23631A",
+          "symbol": "HUBBon"
+        }
+      ],
+      "onchainInventoryStatus": "pending-pinned-RPC-verification"
+    },
+    {
+      "selection": "primary-top-10",
+      "activeGlobalRank": 6,
+      "chainId": 56,
+      "address": "0xD7cE7a841310982AcD976D1a6fe7BB6063c5689D",
+      "symbol": "BUILDOUT",
+      "name": "Reserve AI Infrastructure DTF",
+      "marketCapUsd": 1597450.463701109,
+      "listingStatus": "active",
+      "catalogStatus": "active",
+      "basketAssetCount": 25,
+      "basketAssets": [
+        {
+          "address": "0x0fAcaFB97ffDbA3cAe88512070AF49bd30674cD9",
+          "symbol": "LITEon"
+        },
+        {
+          "address": "0xA9eE28C80f960B889dFbd1902055218cBa016F75",
+          "symbol": "NVDAon"
+        },
+        {
+          "address": "0xC37042A7a4fa510D8884a433762aB87257B91965",
+          "symbol": "TSMon"
+        },
+        {
+          "address": "0x0ED2E3180EDf393e6bf8Db124bD15DDD54dE150A",
+          "symbol": "AVGOon"
+        },
+        {
+          "address": "0x8b6ACf6041A81567f012Ff6A4C6D96d5818d74bF",
+          "symbol": "MUon"
+        },
+        {
+          "address": "0x9f16E46c73b43BDB70861247d537bEE4eA18F639",
+          "symbol": "AMDon"
+        },
+        {
+          "address": "0xb034f6Cb52b7f2Fd5a7EeeffCa6b9aDCD6b9A6F6",
+          "symbol": "ASMLon"
+        },
+        {
+          "address": "0xA528CaaA2f96090e379d43F90834C75dF54D6E74",
+          "symbol": "INTCon"
+        },
+        {
+          "address": "0x35895a1fa1AFf7FB3204fB01257409Fd75acB24C",
+          "symbol": "LRCXon"
+        },
+        {
+          "address": "0x5ecC352C4640f1d26BD231dbBd171f40f7d0Eec6",
+          "symbol": "AMATon"
+        },
+        {
+          "address": "0x527C6436E1eAa4f2065CDE4090F798Cb5D031dD6",
+          "symbol": "ARMon"
+        },
+        {
+          "address": "0xFc263946439b0d802bF4C5a6fCd34E2885259f91",
+          "symbol": "KLACon"
+        },
+        {
+          "address": "0x4Fd67CB8CFEdc718BAc984b5936abE3330d0a2A4",
+          "symbol": "SNDKon"
+        },
+        {
+          "address": "0xf26518958935654878De15BE7bC79A26971583Ba",
+          "symbol": "DELLon"
+        },
+        {
+          "address": "0x1501EC83FFEf405B4331CC4f73277a40fb0C627d",
+          "symbol": "MRVLon"
+        },
+        {
+          "address": "0x2Aea1D415D45CCF3EaBE565d45DcaF4ea2035b9c",
+          "symbol": "GEVon"
+        },
+        {
+          "address": "0xE8ff70859Ce4cbd72E4352b4fb45F5BF39d07464",
+          "symbol": "IBMon"
+        },
+        {
+          "address": "0x538e2838f9ebC9B891399DF4a8dcc42890D9dc20",
+          "symbol": "ANETon"
+        },
+        {
+          "address": "0x25a4DbAE9a0Cd8C75656D6b50FFDf4900CC20d8f",
+          "symbol": "GLWon"
+        },
+        {
+          "address": "0x4697b2A050f7B5A8e1ebc27c325f9D78D094f041",
+          "symbol": "ETNon"
+        },
+        {
+          "address": "0x9Cea8A7Be1Ab0320b709d368Ad60d8500f55995f",
+          "symbol": "VRTon"
+        },
+        {
+          "address": "0x2418c2e1aE3B8D767594b3974D32610743f88155",
+          "symbol": "PWRon"
+        },
+        {
+          "address": "0x65D84F0990B7394209d591380C2952c83D778aA3",
+          "symbol": "CEGon"
+        },
+        {
+          "address": "0x0585756aAFB241b0f8A9Df62Db26c566091Bde0b",
+          "symbol": "COHRon"
+        },
+        {
+          "address": "0x17D03aE104a9D12E9E5794Efb109B817Dd7f3404",
+          "symbol": "BEon"
+        }
+      ],
+      "onchainInventoryStatus": "pending-pinned-RPC-verification"
+    },
+    {
+      "selection": "primary-top-10",
+      "activeGlobalRank": 7,
+      "chainId": 56,
+      "address": "0x75617e7653f86f074Cc30b9Fd4eBf52bA9b62247",
+      "symbol": "ROBOTS",
+      "name": "Reserve Robotics DTF",
+      "marketCapUsd": 1443086.6827770653,
+      "listingStatus": "active",
+      "catalogStatus": "active",
+      "basketAssetCount": 9,
+      "basketAssets": [
+        {
+          "address": "0x30033A17ea24E90631532582a1917c64AFBF87Af",
+          "symbol": "OUSTon"
+        },
+        {
+          "address": "0x784584933C2192Caa062E90d8140D94768CE62d8",
+          "symbol": "ISRGon"
+        },
+        {
+          "address": "0x95F7423c51Eab71cBD00ca855B0B2B2153F14184",
+          "symbol": "ROKon"
+        },
+        {
+          "address": "0xc79Fc7aF952c8B41c6b7b7657dd24F44f7C10F2A",
+          "symbol": "SYMon"
+        },
+        {
+          "address": "0x80F03ABCb2BD85237740dD69f87d2F5De3909012",
+          "symbol": "LSCCon"
+        },
+        {
+          "address": "0x66a1409FE303d00209202933e3d31eE43AaAB39d",
+          "symbol": "AURon"
+        },
+        {
+          "address": "0x847ef23A3F99aF79A185ce033e1664165b846eEa",
+          "symbol": "HSAIon"
+        },
+        {
+          "address": "0xCC977B493f52B4b6B6a0c3594530f2BaEe565E96",
+          "symbol": "MBLYon"
+        },
+        {
+          "address": "0x6cF3b84f0Ba4d86d9f6987812A11Db2c447D9483",
+          "symbol": "HIMXon"
+        }
+      ],
+      "onchainInventoryStatus": "pending-pinned-RPC-verification"
+    },
+    {
+      "selection": "primary-top-10",
+      "activeGlobalRank": 8,
+      "chainId": 8453,
+      "address": "0xCEF8Db49E456f872E288E1C042F916E9ceD7c781",
+      "symbol": "MAG7",
+      "name": "Reserve Magnificent 7 DTF",
+      "marketCapUsd": 390166.4417277937,
+      "listingStatus": "active",
+      "catalogStatus": "active",
+      "basketAssetCount": 7,
+      "basketAssets": [
+        {
+          "address": "0xb2000000000000000000001e800a7f5189430cD0",
+          "symbol": "TSLAc"
+        },
+        {
+          "address": "0xb200000000000000000000C2e324d24d7eEcd1fb",
+          "symbol": "AAPLc"
+        },
+        {
+          "address": "0xb2000000000000000000002D0BA3164cc74f58B7",
+          "symbol": "GOOGLc"
+        },
+        {
+          "address": "0xb2000000000000000000008bC8786B856E61707C",
+          "symbol": "METAc"
+        },
+        {
+          "address": "0xb20000000000000000000078ee7ce2fE4908108C",
+          "symbol": "NVDAc"
+        },
+        {
+          "address": "0xb200000000000000000000d9192b6B456483C2E8",
+          "symbol": "AMZNc"
+        },
+        {
+          "address": "0xB200000000000000000000Ab99cFa739E253872B",
+          "symbol": "MSFTc"
+        }
+      ],
+      "onchainInventoryStatus": "pending-pinned-RPC-verification"
+    },
+    {
+      "selection": "primary-top-10",
+      "activeGlobalRank": 9,
+      "chainId": 8453,
+      "address": "0x23418De10d422AD71C9D5713a2B8991a9c586443",
+      "symbol": "BGCI",
+      "name": "Bloomberg Galaxy Crypto Index",
+      "marketCapUsd": 214672.3599761653,
+      "listingStatus": "active",
+      "catalogStatus": "active",
+      "basketAssetCount": 7,
+      "basketAssets": [
+        {
+          "address": "0xcbB7C0000aB88B473b1f5aFd9ef808440eed33Bf",
+          "symbol": "cbBTC"
+        },
+        {
+          "address": "0xCb327b99fF831bF8223cCEd12B1338FF3aA322Ff",
+          "symbol": "bsdETH"
+        },
+        {
+          "address": "0x9B8Df6E244526ab5F6e6400d331DB28C8fdDdb55",
+          "symbol": "uSOL"
+        },
+        {
+          "address": "0xd403D1624DAEF243FbcBd4A80d8A6F36afFe32b2",
+          "symbol": "uLINK"
+        },
+        {
+          "address": "0xa3A34A0D9A08CCDDB6Ed422Ac0A28a06731335aA",
+          "symbol": "uADA"
+        },
+        {
+          "address": "0x378c326A472915d38b2D8D41e1345987835FaB64",
+          "symbol": "uXLM"
+        },
+        {
+          "address": "0x2615a94df961278DcbC41Fb0a54fEc5f10a693aE",
+          "symbol": "uXRP"
+        }
+      ],
+      "onchainInventoryStatus": "pending-pinned-RPC-verification"
+    },
+    {
+      "selection": "primary-top-10",
+      "activeGlobalRank": 10,
+      "chainId": 8453,
+      "address": "0xe00CFa595841fb331105b93C19827797C925E3E4",
+      "symbol": "VLONE",
+      "name": "Reserve Venionaire L1 Select DTF",
+      "marketCapUsd": 211896.197100769,
+      "listingStatus": "active",
+      "catalogStatus": "active",
+      "basketAssetCount": 20,
+      "basketAssets": [
+        {
+          "address": "0x51436F6bD047797DE7D11E9d32685f029aed1069",
+          "symbol": "TONCOIN"
+        },
+        {
+          "address": "0x9c0e042d65a2e1fF31aC83f404E5Cb79F452c337",
+          "symbol": "uAPT"
+        },
+        {
+          "address": "0x806041B6473DA60abbe1b256d9A2749A151be6C6",
+          "symbol": "stTAO"
+        },
+        {
+          "address": "0x71a67215a2025F501f386A49858A9ceD2FC0249d",
+          "symbol": "uSEI"
+        },
+        {
+          "address": "0xb0505e5a99abd03d94a1169e638B78EDfEd26ea4",
+          "symbol": "uSUI"
+        },
+        {
+          "address": "0xcbB7C0000aB88B473b1f5aFd9ef808440eed33Bf",
+          "symbol": "cbBTC"
+        },
+        {
+          "address": "0x9B8Df6E244526ab5F6e6400d331DB28C8fdDdb55",
+          "symbol": "uSOL"
+        },
+        {
+          "address": "0x4200000000000000000000000000000000000006",
+          "symbol": "WETH"
+        },
+        {
+          "address": "0x2615a94df961278DcbC41Fb0a54fEc5f10a693aE",
+          "symbol": "uXRP"
+        },
+        {
+          "address": "0xfA1df3F6108dB461Fd89437F320fE50C125aF5F0",
+          "symbol": "TRX"
+        },
+        {
+          "address": "0x3a51f2a377EA8B55FAf3c671138A00503B031Af3",
+          "symbol": "uALGO"
+        },
+        {
+          "address": "0x6e934283DaE5D5D1831cbE8d557c44c9B83F30Ee",
+          "symbol": "uATOM"
+        },
+        {
+          "address": "0xd6a34b430C05ac78c24985f8abEE2616BC1788Cb",
+          "symbol": "uAVAX"
+        },
+        {
+          "address": "0x7bE0Cc2cADCD4A8f9901B4a66244DcDd9Bd02e0F",
+          "symbol": "uBCH"
+        },
+        {
+          "address": "0x0F813f4785b2360009F9aC9BF6121a85f109efc6",
+          "symbol": "uDOT"
+        },
+        {
+          "address": "0xc79e06860Aa9564f95E08fb7E5b61458d0C63898",
+          "symbol": "uHBAR"
+        },
+        {
+          "address": "0xDB18Fb11Db1b972A54bD89cE04bAd61855c07788",
+          "symbol": "uINJ"
+        },
+        {
+          "address": "0x3EB097375fc2FC361e4a472f5E7067238c547c52",
+          "symbol": "uLTC"
+        },
+        {
+          "address": "0x5ed25E305E08F58AFD7995EaC72563E6BE65A617",
+          "symbol": "uNEAR"
+        },
+        {
+          "address": "0x378c326A472915d38b2D8D41e1345987835FaB64",
+          "symbol": "uXLM"
+        }
+      ],
+      "onchainInventoryStatus": "pending-pinned-RPC-verification"
+    },
+    {
+      "selection": "ethereum-coverage",
+      "activeGlobalRank": 11,
+      "chainId": 1,
+      "address": "0x323c03c48660fE31186fa82c289b0766d331Ce21",
+      "symbol": "OPEN",
+      "name": "Open Stablecoin Index",
+      "marketCapUsd": 183117.37226168366,
+      "listingStatus": "active",
+      "catalogStatus": "active",
+      "basketAssetCount": 10,
+      "basketAssets": [
+        {
+          "address": "0x7Fc66500c84A76Ad7e9c93437bFc5Ac33E2DDaE9",
+          "symbol": "AAVE"
+        },
+        {
+          "address": "0xD533a949740bb3306d119CC777fa900bA034cd52",
+          "symbol": "CRV"
+        },
+        {
+          "address": "0x8207c1FfC5B6804F6024322CcF34F29c3541Ae26",
+          "symbol": "OGN"
+        },
+        {
+          "address": "0x3432B6A60D23Ca0dFCa7761B7ab56459D9C964D0",
+          "symbol": "FXS"
+        },
+        {
+          "address": "0x41D5D79431A913C4aE7d69a668ecdfE5fF9DFB68",
+          "symbol": "INV"
+        },
+        {
+          "address": "0x6DEA81C8171D0bA574754EF6F8b412F2Ed88c54D",
+          "symbol": "LQTY"
+        },
+        {
+          "address": "0x320623b8E4fF03373931769A31Fc52A4E78B5d70",
+          "symbol": "RSR"
+        },
+        {
+          "address": "0x419905009e4656fdC02418C7Df35B1E61Ed5F726",
+          "symbol": "RSUP"
+        },
+        {
+          "address": "0x365AccFCa291e7D3914637ABf1F7635dB165Bb09",
+          "symbol": "FXN"
+        },
+        {
+          "address": "0xdBdb4d16EdA451D0503b854CF79D55697F90c8DF",
+          "symbol": "ALCX"
+        }
+      ],
+      "onchainInventoryStatus": "pending-pinned-RPC-verification"
+    },
+    {
+      "selection": "ethereum-coverage",
+      "activeGlobalRank": 13,
+      "chainId": 1,
+      "address": "0x9a1741E151233a82Cf69209A2F1bC7442B1fB29C",
+      "symbol": "DGI",
+      "name": "DeFi Growth Index",
+      "marketCapUsd": 68707.08841522431,
+      "listingStatus": "active",
+      "catalogStatus": "active",
+      "basketAssetCount": 7,
+      "basketAssets": [
+        {
+          "address": "0xDEf1CA1fb7FBcDC777520aa7f396b4E015F497aB",
+          "symbol": "COW"
+        },
+        {
+          "address": "0x01791F726B4103694969820be083196cC7c045fF",
+          "symbol": "YB"
+        },
+        {
+          "address": "0x58D97B57BB95320F9a05dC918Aef65434969c2B2",
+          "symbol": "MORPHO"
+        },
+        {
+          "address": "0x259338656198eC7A76c729514D3CB45Dfbf768A1",
+          "symbol": "RESOLV"
+        },
+        {
+          "address": "0x6f40d4A6237C257fff2dB00FA0510DeEECd303eb",
+          "symbol": "FLUID"
+        },
+        {
+          "address": "0x643C4E15d7d62Ad0aBeC4a9BD4b001aA3Ef52d66",
+          "symbol": "SYRUP"
+        },
+        {
+          "address": "0x365AccFCa291e7D3914637ABf1F7635dB165Bb09",
+          "symbol": "FXN"
+        }
+      ],
+      "onchainInventoryStatus": "pending-pinned-RPC-verification"
+    }
+  ]
+}
