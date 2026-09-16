@@ -1,3 +1,4 @@
+import { WagmiAdapter } from '@reown/appkit-adapter-wagmi'
 import {
   arbitrum,
   base,
@@ -12,7 +13,7 @@ import type { ReactNode } from 'react'
 import { WagmiProvider, fallback, http } from 'wagmi'
 import { hashFn, structuralSharing } from 'wagmi/query'
 import { dtfSdkChains, registerRpcUrls } from '@/utils/rpc-urls'
-import { SafeWagmiAdapter } from './safe-wagmi-adapter'
+
 import AtomUpdater from './updaters/AtomUpdater'
 
 const projectId = import.meta.env.VITE_WALLETCONNECT_ID || 'test-project'
@@ -34,7 +35,7 @@ const FEATURED_WALLET_IDS = [
   '19177a98252e07ddfc9af2083ba8e07ef627cb6103467ffebb3f8f4205fd7927', // Ledger
 ]
 
-const wagmiAdapter = new SafeWagmiAdapter({
+const wagmiAdapter = new WagmiAdapter({
   networks,
   projectId,
   // WHY: without these AppKit rewrites chain.rpcUrls.default to Reown's proxy.

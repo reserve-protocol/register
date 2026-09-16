@@ -44,7 +44,6 @@
     "@radix-ui/react-tooltip": "^1.2.8",
     "@reown/appkit": "1.8.23",
     "@reown/appkit-adapter-wagmi": "1.8.23",
-    "@reown/appkit-common": "1.8.23",
     "@reserve-protocol/async-zap-sdk": "^0.8.0",
     "@reserve-protocol/dtf-catalog": "0.1.5",
     "@reserve-protocol/dtf-chat": "^0.0.7",

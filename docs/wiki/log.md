@@ -167,6 +167,16 @@ PR #1094 merged on 2026-08-28. The following records the original stage evidence
 - Reconciled Dark's documentation audit and Light's wallet/configuration review, including the dependency fallout recheck. Corrected SDK exposure sourcing, Holdings expansion/tickers, design-token and chat-style locations, e2e project/coverage descriptions and zapper prompt notes before refreshing dates. Preserved the unimplemented metrics proposal under `docs/plans/overview-metrics-draft.md` and moved the oversized FAQ ledger narrative into this log. Wiki lint now passes all 20 pages.
 - Engineer review required for the wallet/provider and watch-asset changes. Offline evidence does not validate the production dashboard, actual email/social authentication, Binance app handoff, Safe relay/iframe sessions or payment execution. No commit/push or workflow-skill changes; no new workflow rule was needed.
 
+### Build: source maps gated on the Sentry token
+
+- `pnpm build` profiled locally at ~46s total (logos 7s, tsc 13s, vite 25s, SEO 0.5s); the reported 5-minute builds are not reproducible on the dev machine and point at the Cloudflare Pages runner (cold `pnpm install`, fewer cores, the same tsc + sourcemapped vite build). Levers that remain Luis's call: drop `tsc &&` from `build` (the lint workflow already typechecks PRs) and enable the Pages build cache.
+- Applied: `vite.config.ts` writes source maps and loads the Sentry plugin only when `SENTRY_AUTH_TOKEN` or `.env.sentry-build-plugin` exists; maps are `hidden` and deleted after upload. Without the token the build previously published 46 MB of public `.map` files that no one uploaded. `reportCompressedSize` is off (the gzip pass was the slowest tail of the vite step). Vite step 25s → 17s locally.
+
+### Safe override dropped (review outcome)
+
+- Luis reviewed the `SafeWagmiAdapter` override and dropped it: the missing-chains case was only reproduced with a provider fixture (the fixture mocks the whole universal provider, so the "reaches the wallet" step is a code reading), Safe web's session includes the chains field, the override was a verbatim copy of upstream `connectWalletConnect` needing a re-diff on every AppKit bump, and when it fired it left wagmi on fallback chain 1 while the Safe sat elsewhere. Override, its test and the `@reown/appkit-common` dependency are removed; the risk stays documented in [[wallet-connect]] with a pointer to commit 789016fdc for the code if a live Safe ever hits it.
+- Binance connector removal confirmed as requested by Luis.
+
 ### Safe missing-chains review finding
 
 - The installed AppKit adapter/connector can reject connection when a Safe session omits `namespaces.eip155.chains`: the connector returns fallback chain 1, then the adapter requests a switch to it. Universal-provider's approved chains come from accounts and need not include Ethereum. A provider-boundary fixture reproduced this with the real adapter, connector and wagmi actions: two Safe cases failed while four controls passed.

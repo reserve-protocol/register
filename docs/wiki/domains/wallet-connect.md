@@ -4,8 +4,6 @@ updated: 2026-09-16
 type: domain
 sources:
   - src/state/chain/index.tsx
-  - src/state/chain/safe-wagmi-adapter.ts
-  - src/state/chain/tests/safe-walletconnect.test.ts
   - src/hooks/use-wallet-modal.ts
   - src/components/account/index.tsx
   - src/views/index-dtf/deploy/steps/confirm-deploy/success/index.tsx
@@ -19,7 +17,7 @@ stopped shipping and its mobile handoff was poor; Reown owns WalletConnect, so
 mobile deep links and the relay are theirs end to end.
 
 Shape:
-- `src/state/chain/index.tsx` builds one `SafeWagmiAdapter` (an app-owned `WagmiAdapter` subclass; networks, transports,
+- `src/state/chain/index.tsx` builds one `WagmiAdapter` (networks, transports,
   polling intervals; no custom connectors) and calls
   `createAppKit` once at module load. `wagmiConfig` is still exported from the
   same module, so the RToken atoms and `state/wallet/atoms.ts` are untouched.
@@ -66,39 +64,43 @@ Theming: `themeMode: 'dark'` (parity with the old always-dark RainbowKit
 theme) and `--apkt-font-family` set to the app font. The modal is shadow DOM:
 Tailwind and design tokens do not reach it; only `themeVariables` do.
 
-Safe over WalletConnect: `safe-wagmi-adapter.ts` overrides only connection
-completion because AppKit 1.8.23 has no post-connect switch hook. It keeps
-upstream authentication, wagmi connection results, client ID and rejection
-normalization, but skips the post-connect switch when the settled peer URL is
-`https://safe.global` or `https://app.safe.global` (optional trailing slash)
-and `namespaces.eip155.chains` is absent. Approved-chain sessions, empty chains
-arrays, other wallet origins and later explicit switches retain upstream behavior.
-Third-party packages remain unmodified; `@reown/appkit-common` is declared
-explicitly to reuse AppKit's error normalization.
+Safe over WalletConnect (investigated 2026-09-15/16, not a blocker, no code):
+AppKit's WC connector proposes the session with `optionalNamespaces` only, then
+picks the connected chain from the session's approved chains (adapter
+`connectors/WalletConnectConnector.js` ~L60-69), so a chain-bound Safe never
+receives a switch to a chain it did not approve. The adapter's post-connect
+`switchChain(res.chainId)` (`client.js` ~L413) targets that same approved
+chain, and `@walletconnect/universal-provider` handles
+`wallet_switchEthereumChain` for an approved chain locally
+(`handleSwitchChain` → `isChainApproved` → `setDefaultChain`, no relay
+request). Residual behaviour, same as before the migration: the app's own
+`switchChainAsync` to the page chain does reach the wallet, and a Safe rejects
+it — that is the existing wrong-network toast. A Safe on a chain outside
+`networks` (e.g. Polygon) fails the connect with `ChainNotConfiguredError`
+instead of connecting on a wrong chain. `useConnectWithReset`
+(disconnect-before-open) stays.
 
-The failure mechanism is conditional: AppKit's connector falls back to chain 1
-when the chains field is missing. Universal-provider derives approvals from
-CAIP-10 accounts instead; a Base/BSC-only account does not approve chain 1, so
-the adapter's switch can reach the wallet and be rejected. With the chains
-field present, the connector selects an approved chain and universal-provider
-switches locally. Safe web's published implementation includes the chains
-field; the missing-field case has been reproduced with a provider fixture,
-not a live Safe session.
+Documented residual risk, deliberately not guarded in code (decision
+2026-09-16): if a wallet's settled session omits `namespaces.eip155.chains`,
+the connector falls back to chain 1 (`WalletConnectConnector.js` ~L63) and the
+adapter's post-connect switch to chain 1 can reach the wallet and be rejected,
+failing the connect. Universal-provider derives approvals from the CAIP-10
+accounts, so a Base/BSC-only account does not approve chain 1. Safe web's
+published session includes the chains field; the missing-field case was only
+reproduced with a provider fixture, never with a live Safe, and Safe Mobile
+was not verified. An app-owned `SafeWagmiAdapter` override (a verbatim copy of
+upstream `connectWalletConnect` that skipped that one switch) was written,
+reviewed and dropped: it guarded an unobserved case, needed a re-diff on every
+AppKit bump, and left wagmi reporting chain 1 while the Safe sat on another
+chain. If a real Safe session ever hits this, the fix is that override
+(history: commit 789016fdc) or an upstream AppKit fix — check released AppKit
+versions first. On 2026-09-16 AppKit 1.8.24 still had identical connector and
+post-connect switching logic.
 
-The override preserves AppKit's reported chain, including its fallback 1. It
-prevents the extra request; it does not repair that separate reporting issue.
-The app's existing route-chain synchronization and wrong-network UI still run.
-The Safe iframe reload path can also report the requested chain to AppKit while
-wagmi reports the Safe's chain; real iframe/relay validation remains necessary.
-
-Before removing the override after a dependency update, rerun
-`src/state/chain/tests/safe-walletconnect.test.ts`. The test uses the installed
-adapter, connector and wagmi actions with a provider-boundary fixture; it checks
-missing/present chains, non-Safe origins, preserved results and later switches.
-On 2026-09-16, published AppKit 1.8.24 retained the identical connector and
-post-connect switching logic. Wagmi/core 2.19.5/2.22.1 were the latest v2
-releases; core 3.6.5 retained identical connect/switchChain actions, so those
-updates do not address this condition.
+Second residual risk: Safe App iframe reload — the adapter's `syncConnection`
+(`client.js` ~L376-390) reports the *requested* chain to AppKit instead of the
+Safe's chain, so AppKit's modal state and wagmi can disagree after a refresh.
+The app reads wagmi, so the header/wrong-network UX stays correct.
 
 Manual matrix (Safe web WC and Safe Mobile; fresh connect, then hard
 refresh): Safe on Ethereum → Base DTF; Safe on Base → Ethereum DTF; Safe on
@@ -142,8 +144,13 @@ Playwright's test results. The stubbed Reown response exercises local defaults;
 it does not prove production dashboard settings or live authentication/payment
 flows. The deploy success action has no end-to-end coverage yet.
 
-Build: the production bundle needs ~6 GB of JS heap while Rollup renders the
-sourcemapped chunks (AppKit pushed it over Node's ~4 GB default; master fit).
-The `build` script sets `NODE_OPTIONS=--max-old-space-size=6144`, which is
-what Cloudflare Pages runs. If Pages still fails on memory, the next lever is
-dropping sourcemaps for the vendor `wallet` chunk.
+Build: the production bundle needs ~6 GB of JS heap while Rollup renders
+sourcemapped chunks (AppKit pushed it over Node's ~4 GB default), so the
+`build` script sets `NODE_OPTIONS=--max-old-space-size=6144`. Since 2026-09-16
+source maps and the Sentry plugin only run when `SENTRY_AUTH_TOKEN` (or
+`.env.sentry-build-plugin`) is present: maps are then `hidden` and deleted
+after upload, so they are never served publicly; without the token no maps are
+written. Local profile on 2026-09-16 (M-series, 14 cores): logos 7s (network,
+only when the mapping file is older than a week), tsc 13s, vite 25s with maps
+/ 17s without, SEO 0.5s. Cloudflare Pages must set the token for Sentry
+symbolication to keep working.
