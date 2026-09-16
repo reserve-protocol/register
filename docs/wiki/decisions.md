@@ -1,6 +1,6 @@
 ---
 title: Decisions
-updated: 2026-09-08
+updated: 2026-09-16
 type: decision
 ---
 
@@ -130,7 +130,7 @@ already foundation decisions. They do not require a universal Card component.
 Repeated interactive objects remain a component-level job. The Home feature
 card is authoritative existing design rather than an unresolved alternative.
 Its V1 review is delta-based: judge only the accepted square outer structure,
-8px shell inset/contained-media radius, 24px primary and supporting-row content
+4px shell inset with square inner media (September 14 refinement below), 24px primary and supporting-row content
 axes, 16px internal-region gap, and 8px directly related content gap. The title
 flows without a hidden fixed-height reservation: both Home and Discover measure
 16px from the complete top row to the name and 8px from the name to its market
@@ -143,6 +143,18 @@ because a static lab moment does not expose them. The compact Discover treatment
 is supporting adaptation evidence. The legacy shared Card default remains
 evidence only: it is not a migration target, and this review does not change
 production adoption or define non-media card families.
+
+## 2026-09-14 — Highlighted-card framing stays separate from chart geometry
+
+The user accepted, for now, a square outer shell and square inner media with a
+4px card-colored surround, replacing the earlier 8px inset/rounded-media delta.
+The beige-to-card gradient begins immediately inside that surround. Identity
+content stays 24px from the outer edge; the plot spans the gradient width.
+The gradient and thin frame distinguish highlighted cards without a rounded
+cutout whose contrast disappears into the fade. These are highlighted-card
+context rules, not chart-owned padding or a universal Card API. The chart lab
+shows the revised excerpt; the earlier full-card study is historical framing
+evidence until explicitly refreshed. Production adoption remains separate.
 
 ## 2026-08-19 — V1 work is canonical-first and feedback updates its owner
 
@@ -641,3 +653,23 @@ real pagination/recovery and the central engineering register remain separate.
 
 Current Review moves to the prepared first chart slice; tables remain available
 for later corrections without reopening their entire visual review.
+
+## 2026-09-16 — Current chart work approved for now
+
+The user approved the current chart lab as the revisitable visual baseline. The
+accepted scope is the source-based Overview line and candlestick presentations,
+Home and Discover chart contexts, the Yield metric family, Portfolio total and
+composition, and the final responsive, spacing, timestamp and CSV treatments.
+Freeze the current evidence as the record of that baseline; later corrections
+may reopen a bounded part without reopening the whole chart review.
+
+This is lab-only design authority, not production adoption. It does not approve
+financial calculations, data semantics, source selection, freshness claims,
+sampling policy, shared component defaults, or a global chart/categorical
+palette. Provisional source, palette, stress-fixture and opt-in dependencies
+remain adoption constraints. Engineer review stays deferred to project closeout
+or a separately authorized production-adoption slice.
+
+Current Review is empty after this decision. No next component, composition,
+route, candidate, evidence package or plan is selected or prepared; further
+design-system work begins only after an explicit human choice.

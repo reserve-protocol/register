@@ -51,5 +51,12 @@ column that desktop shows via hover.
 - `feature-card.tsx` / `feature-card-header.tsx` are `React.memo` with stable
   props so the charts don't re-render on scroll.
 
+The chart lab alone opts into `PerformanceChart.latestPointMarker`. Its local
+presentation helper aligns fill/stroke/launch geometry with endpoint clearance;
+the ring follows the host gradient via a supplied ref. Omitted props retain
+timestamp-only launch placement and existing gradient coordinates. This seam
+needs engineer review before production adoption; it does not change supplied
+history, return figures or live-price semantics.
+
 See [[overview-charts]] for the overview granularity policy and why
 `historical/dtf` can't serve intermediate intervals.

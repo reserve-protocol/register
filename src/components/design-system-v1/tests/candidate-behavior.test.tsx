@@ -1,10 +1,10 @@
-import { fireEvent, render, screen } from '@testing-library/react'
+import { fireEvent, render, screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { act, useState } from 'react'
 import { MemoryRouter, Link as RouterLink, useLocation } from 'react-router-dom'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 
-import { Button } from '@/components/button'
+import { Button, InlineAction } from '@/components/button'
 import { EmptyState } from '@/components/empty-state'
 import { LifecycleStatusPill } from '@/components/lifecycle-status'
 import {
@@ -214,6 +214,87 @@ describe('provisional design-system candidates', () => {
     expect(screen.getByRole('radio', { name: 'Table' })).toHaveAttribute(
       'data-state',
       'on'
+    )
+  })
+
+  it('keeps compact text-only target geometry opt-in and preserves contained defaults', () => {
+    render(
+      <>
+        <SegmentedControl
+          aria-label="Compact range"
+          presentation="text-only"
+          textOnlyDensity="compact"
+          value="7d"
+          onValueChange={() => undefined}
+        >
+          <SegmentedControlItem value="7d">7D</SegmentedControlItem>
+          <SegmentedControlItem value="30d">30D</SegmentedControlItem>
+        </SegmentedControl>
+        <SegmentedControl
+          aria-label="Current text range"
+          presentation="text-only"
+          value="7d"
+          onValueChange={() => undefined}
+        >
+          <SegmentedControlItem value="7d">7D</SegmentedControlItem>
+        </SegmentedControl>
+        <SegmentedControl
+          aria-label="Contained range"
+          presentation="contained"
+          value="chart"
+          onValueChange={() => undefined}
+        >
+          <SegmentedControlItem value="chart">Chart</SegmentedControlItem>
+        </SegmentedControl>
+      </>
+    )
+
+    const compactText = screen.getByRole('group', { name: 'Compact range' })
+    expect(compactText).toHaveAttribute('data-text-only-density', 'compact')
+    expect(compactText).toHaveClass('h-6')
+    expect(within(compactText).getByRole('radio', { name: '7D' })).toHaveClass(
+      'h-6',
+      'before:-inset-y-2.5'
+    )
+
+    const currentText = screen.getByRole('group', {
+      name: 'Current text range',
+    })
+    expect(currentText).not.toHaveAttribute('data-text-only-density')
+    expect(currentText).toHaveClass('h-11')
+
+    const contained = screen.getByRole('group', { name: 'Contained range' })
+    expect(contained).not.toHaveAttribute('data-text-only-density')
+    expect(contained).toHaveClass('h-11', 'rounded-full')
+  })
+
+  it('adds a bounded utility treatment without changing InlineAction defaults', () => {
+    render(
+      <>
+        <InlineAction>Max</InlineAction>
+        <InlineAction treatment="utility">
+          <span aria-hidden="true">↓</span>
+          Download CSV
+        </InlineAction>
+      </>
+    )
+
+    const defaultAction = screen.getByRole('button', { name: 'Max' })
+    expect(defaultAction).toHaveAttribute('data-action-treatment', 'standalone')
+    expect(defaultAction).toHaveClass(
+      'text-primary',
+      'before:-inset-y-1',
+      'hover:underline'
+    )
+
+    const utilityAction = screen.getByRole('button', { name: 'Download CSV' })
+    expect(utilityAction).toHaveAttribute('data-action-treatment', 'utility')
+    expect(utilityAction).toHaveClass(
+      'h-5',
+      'gap-2',
+      'text-foreground',
+      'before:-inset-y-3',
+      'hover:no-underline'
     )
   })
 

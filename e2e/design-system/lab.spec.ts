@@ -665,7 +665,7 @@ test.describe('design system lab', () => {
     await expect(page).toHaveURL(/\/internal\/design-system\/foundations$/)
     await expect(page.getByTestId('design-system-nav-screens')).toBeInViewport()
     await expect(page.getByTestId('design-system-nav-status')).toBeInViewport()
-    await expect(page.getByTestId('current-review-spotlight')).toHaveCount(1)
+    await expect(page.getByTestId('current-review-spotlight')).toHaveCount(0)
     await expect(
       page.getByTestId('foundation-visual-overview').locator('a')
     ).toHaveCount(9)

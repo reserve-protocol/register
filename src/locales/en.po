@@ -13247,3 +13247,27 @@ msgstr "Unavailable · simulated"
 #: src/views/internal/design-system/charts/review.tsx:25
 msgid "Zero · simulated"
 msgstr "Zero · simulated"
+
+#: src/views/internal/design-system/charts/review.tsx
+msgid "Chart preview viewport"
+msgstr "Chart preview viewport"
+
+#: src/views/internal/design-system/charts/review.tsx
+msgid "Mobile chart preview"
+msgstr "Mobile chart preview"
+
+#: src/views/internal/design-system/charts/review.tsx
+msgid "Mobile preview"
+msgstr "Mobile preview"
+
+#: src/views/internal/design-system/charts/review.tsx
+msgid "Mobile preview width"
+msgstr "Mobile preview width"
+
+#: src/views/internal/design-system/charts/review.tsx
+msgid "Narrow desktop container"
+msgstr "Narrow desktop container"
+
+#: src/views/internal/design-system/charts/review.tsx
+msgid "Overview chart type"
+msgstr "Overview chart type"

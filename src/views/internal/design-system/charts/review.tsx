@@ -1,18 +1,29 @@
 import { useState } from 'react'
-import { Switch } from '@/components/design-system-v1/switch'
+import { useAtomValue } from 'jotai'
+import { Trans, useLingui } from '@lingui/react/macro'
+import { themeModeAtom } from '@/components/dark-mode-toggle/atoms'
 import {
   SegmentedControl,
   SegmentedControlItem,
 } from '@/components/design-system-v1/segmented-control'
-import { cn } from '@/lib/utils'
 import ChartPressureReview from './pressure-review'
-import { SourceCompactChart, SourceHomeChart } from './source-small'
-import { SourceOverviewChart } from './source-overview'
+import { ChartSourceSet } from './source-set'
+import { NextChartFamiliesResponsiveReview } from './next-families/responsive-review'
 
 export default function ChartReview() {
   const [mode, setMode] = useState('header')
-  const [constrained, setConstrained] = useState(false)
+  const [chartType, setChartType] = useState<'candles' | 'line'>('line')
+  const [viewport, setViewport] = useState<'normal' | 'narrow' | 'mobile'>(
+    'normal'
+  )
+  const [mobileWidth, setMobileWidth] = useState<320 | 390>(390)
   const [pressureOpen, setPressureOpen] = useState(false)
+  const theme = useAtomValue(themeModeAtom)
+  const { t } = useLingui()
+  const isLocalPreview = ['127.0.0.1', '[::1]', 'localhost'].includes(
+    window.location.hostname
+  )
+  const previewUrl = `/src/views/internal/design-system/charts/mobile-preview.html#theme=${theme}&inspection=${mode}&chart=${chartType}`
   return (
     <section
       id="chart-first-review"
@@ -32,85 +43,113 @@ export default function ChartReview() {
       <div className="flex flex-wrap items-center gap-4">
         <SegmentedControl
           presentation="text-only"
-          value={mode}
-          onValueChange={setMode}
-          aria-label="Overview inspection comparison"
+          value={chartType}
+          onValueChange={(value) => setChartType(value as 'candles' | 'line')}
+          aria-label={t`Overview chart type`}
         >
-          <SegmentedControlItem value="header" data-testid="chart-mode-header">
-            Header inspection
+          <SegmentedControlItem value="line" data-testid="chart-type-line">
+            <Trans>Line</Trans>
           </SegmentedControlItem>
           <SegmentedControlItem
-            value="current"
-            data-testid="chart-mode-current"
+            value="candles"
+            data-testid="chart-type-candles"
           >
-            Existing tooltip
+            <Trans>Candles</Trans>
           </SegmentedControlItem>
         </SegmentedControl>
-        <label className="flex min-h-11 cursor-pointer items-center gap-2 text-sm">
-          <Switch
-            checked={constrained}
-            onCheckedChange={setConstrained}
-            data-testid="chart-source-constrained"
+        {chartType === 'line' && (
+          <div className="min-w-0 max-w-full overflow-x-auto">
+            <SegmentedControl
+              presentation="text-only"
+              value={mode}
+              onValueChange={setMode}
+              aria-label="Line inspection comparison"
+            >
+              <SegmentedControlItem
+                value="header"
+                data-testid="chart-mode-header"
+              >
+                Header inspection
+              </SegmentedControlItem>
+              <SegmentedControlItem
+                value="current"
+                data-testid="chart-mode-current"
+              >
+                Floating tooltip · provisional
+              </SegmentedControlItem>
+            </SegmentedControl>
+          </div>
+        )}
+        <div className="min-w-0 max-w-full overflow-x-auto">
+          <SegmentedControl
+            presentation="text-only"
+            value={viewport}
+            onValueChange={(value) =>
+              setViewport(value as 'normal' | 'narrow' | 'mobile')
+            }
+            aria-label={t`Chart preview viewport`}
+          >
+            <SegmentedControlItem
+              value="normal"
+              data-testid="chart-viewport-normal"
+            >
+              <Trans>Normal</Trans>
+            </SegmentedControlItem>
+            <SegmentedControlItem
+              value="narrow"
+              data-testid="chart-viewport-narrow"
+            >
+              <Trans>Narrow desktop container</Trans>
+            </SegmentedControlItem>
+            {isLocalPreview && (
+              <SegmentedControlItem
+                value="mobile"
+                data-testid="chart-viewport-mobile"
+              >
+                <Trans>Mobile preview</Trans>
+              </SegmentedControlItem>
+            )}
+          </SegmentedControl>
+        </div>
+      </div>
+      {viewport === 'mobile' ? (
+        <div className="space-y-4">
+          <SegmentedControl
+            presentation="text-only"
+            value={String(mobileWidth)}
+            onValueChange={(value) =>
+              setMobileWidth(Number(value) as 320 | 390)
+            }
+            aria-label={t`Mobile preview width`}
+          >
+            <SegmentedControlItem
+              value="320"
+              data-testid="chart-mobile-width-320"
+            >
+              320px
+            </SegmentedControlItem>
+            <SegmentedControlItem
+              value="390"
+              data-testid="chart-mobile-width-390"
+            >
+              390px
+            </SegmentedControlItem>
+          </SegmentedControl>
+          <iframe
+            data-testid="chart-mobile-preview"
+            title={t`Mobile chart preview`}
+            src={previewUrl}
+            width={mobileWidth}
+            className="h-[960px] max-w-full border-0 bg-background"
           />
-          Constrained review
-        </label>
-      </div>
-      <div
-        className={cn(
-          'min-w-0 space-y-3',
-          constrained ? 'max-w-[390px]' : 'max-w-[824px]'
-        )}
-      >
-        <h3 className="text-base font-medium">
-          Index DTF Overview · YTD line chart
-        </h3>
-        <SourceOverviewChart inspectHeader={mode === 'header'} />
-        <p className="text-sm leading-5 text-muted-foreground">
-          Actual Overview plot renderer: existing line, fill and desktop axes;
-          the launch label uses a compact V1 text annotation. Hover, touch or
-          focus the plot and use ← / → to inspect a price in the header.
-          “Existing tooltip” uses the same inputs and geometry with the original
-          inspection behavior.
-        </p>
-        <p className="text-sm leading-5 text-muted-foreground">
-          Frozen YTD line replay; footer labels show existing placement and are
-          not controls here. The plot keeps Overview’s height; the flat square
-          surface uses V1’s 24px content inset, not a universal chart inset.
-          Address control and outer background treatment are intentionally
-          omitted.
-        </p>
-      </div>
-      <div
-        className={cn(
-          'grid min-w-0 items-start gap-8',
-          constrained ? 'max-w-[390px]' : 'max-w-[824px] md:grid-cols-2'
-        )}
-      >
-        <div className="min-w-0 space-y-3">
-          <h3 className="text-base font-medium">
-            Discover · table-cell sparkline
-          </h3>
-          <SourceCompactChart />
-          <p className="max-w-sm text-sm leading-5 text-muted-foreground">
-            90 × 40px, line only, as in the performance column. No invented
-            identity or price. The white cell frame is context only; its padding
-            is not chart policy. Dated LCAP 30-day sample.
-          </p>
         </div>
-        <div className="min-w-0 space-y-3">
-          <h3 className="text-base font-medium">
-            Home · highlighted-card excerpt
-          </h3>
-          <SourceHomeChart />
-          <p className="max-w-sm text-sm leading-5 text-muted-foreground">
-            Existing chart renderer, 208px high and edge-to-edge within the
-            media. Home’s identity and supplied return use the accepted V1 card
-            treatment: square shell, 8px inset/media corners and 24px content
-            axis. This is the media/header excerpt, not a replacement for the
-            full card, its ticker or its actions.
-          </p>
-        </div>
-      </div>
+      ) : (
+        <ChartSourceSet
+          chartType={chartType}
+          inspectHeader={mode === 'header'}
+          narrow={viewport === 'narrow'}
+        />
+      )}
       <details className="max-w-3xl text-sm leading-5 text-muted-foreground">
         <summary className="min-h-11 cursor-pointer py-3 font-medium text-foreground">
           Source context and approval boundary
@@ -124,10 +163,16 @@ export default function ChartReview() {
         <p className="mt-3">
           Approval covers these named visual changes only. It does not replace
           card defaults, return calculations, history sampling, data sources,
-          candle charts, metric tabs or other chart families. Those need their
-          own source-context review. Existing production callers retain their
-          tooltip and launch pill; the header readout and unboxed launch label
-          are opt-in for this lab.
+          metric tabs or other chart families. Those need their own
+          source-context review. Existing production callers retain their
+          tooltip and launch pill; the header readout, provisional V1 line
+          tooltip alternative, compact V1 candle tooltip and unboxed launch
+          label are opt-in for this lab. The floating line treatment is
+          selectable review evidence, not an accepted replacement. The candle
+          replay is a staging API capture from September 14 with its original
+          seven-day OHLC buckets; its final bucket was partial when captured.
+          Its date and values remain separate from the older headline and
+          line-history snapshots above.
         </p>
       </details>
       <details
@@ -140,6 +185,12 @@ export default function ChartReview() {
         </summary>
         {pressureOpen && <ChartPressureReview />}
       </details>
+      <div className="pt-8">
+        <NextChartFamiliesResponsiveReview
+          isLocalPreview={isLocalPreview}
+          theme={theme}
+        />
+      </div>
     </section>
   )
 }

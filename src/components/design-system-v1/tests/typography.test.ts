@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest'
-import { v1Typography } from '../typography'
+import { v1Typography, v1TypographyVariants } from '../typography'
 
 test('exports the complete reviewed scale without changing existing role keys', () => {
   expect(v1Typography).toEqual({
@@ -15,4 +15,16 @@ test('exports the complete reviewed scale without changing existing role keys', 
     supporting: 'text-sm font-light leading-5',
     auxiliary: 'text-xs font-light leading-4',
   })
+})
+
+test('offers an opt-in responsive page title without another scale step', () => {
+  expect(v1TypographyVariants.responsivePageTitle).toBe(
+    'text-2xl font-light leading-[30px] tracking-normal sm:text-[32px] sm:leading-[38px] sm:tracking-[-0.01em]'
+  )
+})
+
+test('offers an opt-in lighter panel title without changing its geometry', () => {
+  expect(v1TypographyVariants.lightPanelTitle).toBe(
+    'text-xl font-light leading-[26px]'
+  )
 })

@@ -1,0 +1,452 @@
+{
+  "restGeometry": {
+    "candidate": {
+      "left": 12,
+      "right": 556,
+      "top": 368,
+      "bottom": 684,
+      "width": 544,
+      "height": 316
+    },
+    "plot": {
+      "left": 12,
+      "right": 556,
+      "top": 436,
+      "bottom": 644,
+      "width": 544,
+      "height": 208
+    },
+    "footer": {
+      "left": 12,
+      "right": 556,
+      "top": 644,
+      "bottom": 684,
+      "width": 544,
+      "height": 40
+    },
+    "plotLeft": 16,
+    "plotRight": 475,
+    "marker": {
+      "x": 475,
+      "y": 570.577944616135,
+      "radius": 3,
+      "strokeWidth": 2
+    },
+    "svg": {
+      "left": 12,
+      "right": 556,
+      "top": 436,
+      "bottom": 644,
+      "width": 544,
+      "height": 208
+    },
+    "row": {
+      "value": {
+        "left": 36,
+        "right": 89.625,
+        "top": 392,
+        "bottom": 416,
+        "width": 53.625,
+        "height": 24
+      },
+      "dot": {
+        "left": 97.625,
+        "right": 101.59375,
+        "top": 392,
+        "bottom": 416,
+        "width": 3.96875,
+        "height": 24
+      },
+      "ticker": {
+        "left": 109.59375,
+        "right": 158.390625,
+        "top": 392,
+        "bottom": 416,
+        "width": 48.796875,
+        "height": 24
+      }
+    },
+    "ticks": [
+      {
+        "text": "27 Jul",
+        "axis": "x",
+        "fontSize": "12px",
+        "left": 16,
+        "right": 47.296875,
+        "top": 623,
+        "bottom": 636,
+        "width": 31.296875,
+        "height": 13
+      },
+      {
+        "text": "10 Aug",
+        "axis": "x",
+        "fontSize": "12px",
+        "left": 226.9296875,
+        "right": 264.0703125,
+        "top": 623,
+        "bottom": 636.3759765625,
+        "width": 37.140625,
+        "height": 13.3759765625
+      },
+      {
+        "text": "24 Aug",
+        "axis": "x",
+        "fontSize": "12px",
+        "left": 437.5625,
+        "right": 475,
+        "top": 623,
+        "bottom": 636.3759765625,
+        "width": 37.4375,
+        "height": 13.3759765625
+      },
+      {
+        "text": "$1.137",
+        "axis": "y",
+        "fontSize": "12px",
+        "left": 499.109375,
+        "right": 532,
+        "top": 599,
+        "bottom": 612,
+        "width": 32.890625,
+        "height": 13
+      },
+      {
+        "text": "$1.1375",
+        "axis": "y",
+        "fontSize": "12px",
+        "left": 492.421875,
+        "right": 532,
+        "top": 546.3333129882812,
+        "bottom": 559.3333129882812,
+        "width": 39.578125,
+        "height": 13
+      },
+      {
+        "text": "$1.138",
+        "axis": "y",
+        "fontSize": "12px",
+        "left": 498.171875,
+        "right": 532,
+        "top": 493.6666564941406,
+        "bottom": 506.6666564941406,
+        "width": 33.828125,
+        "height": 13
+      },
+      {
+        "text": "$1.1385",
+        "axis": "y",
+        "fontSize": "12px",
+        "left": 491.140625,
+        "right": 532,
+        "top": 441,
+        "bottom": 454,
+        "width": 40.859375,
+        "height": 13
+      }
+    ],
+    "readout": [
+      {
+        "text": "Price",
+        "left": 36,
+        "right": 67.546875,
+        "top": 370,
+        "bottom": 386,
+        "fontSize": "14px"
+      },
+      {
+        "text": "$1.137",
+        "left": 36,
+        "right": 89.625,
+        "top": 395,
+        "bottom": 413,
+        "fontSize": "16px"
+      },
+      {
+        "text": "·",
+        "left": 97.625,
+        "right": 101.59375,
+        "top": 395,
+        "bottom": 413,
+        "fontSize": "16px"
+      },
+      {
+        "text": "hyUSD",
+        "left": 109.59375,
+        "right": 158.390625,
+        "top": 395,
+        "bottom": 413,
+        "fontSize": "16px"
+      },
+      {
+        "text": "24H",
+        "left": 36,
+        "right": 63.796875,
+        "top": 663,
+        "bottom": 681,
+        "fontSize": "16px"
+      },
+      {
+        "text": "7D",
+        "left": 83.796875,
+        "right": 103.09375,
+        "top": 663,
+        "bottom": 681,
+        "fontSize": "16px"
+      },
+      {
+        "text": "30D",
+        "left": 123.09375,
+        "right": 152.9375,
+        "top": 663,
+        "bottom": 681,
+        "fontSize": "16px"
+      },
+      {
+        "text": "1Y",
+        "left": 172.9375,
+        "right": 189.8125,
+        "top": 663,
+        "bottom": 681,
+        "fontSize": "16px"
+      },
+      {
+        "text": "Download CSV",
+        "left": 410.953125,
+        "right": 532,
+        "top": 664,
+        "bottom": 680,
+        "fontSize": "14px"
+      }
+    ]
+  },
+  "hoverGeometry": {
+    "candidate": {
+      "left": 12,
+      "right": 556,
+      "top": 368,
+      "bottom": 684,
+      "width": 544,
+      "height": 316
+    },
+    "plot": {
+      "left": 12,
+      "right": 556,
+      "top": 436,
+      "bottom": 644,
+      "width": 544,
+      "height": 208
+    },
+    "footer": {
+      "left": 12,
+      "right": 556,
+      "top": 644,
+      "bottom": 684,
+      "width": 544,
+      "height": 40
+    },
+    "plotLeft": 16,
+    "plotRight": 475,
+    "marker": {
+      "x": 460.63947845270314,
+      "y": 556.340504659594,
+      "radius": 3,
+      "strokeWidth": 2
+    },
+    "svg": {
+      "left": 12,
+      "right": 556,
+      "top": 436,
+      "bottom": 644,
+      "width": 544,
+      "height": 208
+    },
+    "row": {
+      "value": {
+        "left": 36,
+        "right": 99.640625,
+        "top": 392,
+        "bottom": 416,
+        "width": 63.640625,
+        "height": 24
+      },
+      "dot": {
+        "left": 107.640625,
+        "right": 111.609375,
+        "top": 392,
+        "bottom": 416,
+        "width": 3.96875,
+        "height": 24
+      },
+      "ticker": {
+        "left": 119.609375,
+        "right": 168.40625,
+        "top": 392,
+        "bottom": 416,
+        "width": 48.796875,
+        "height": 24
+      }
+    },
+    "ticks": [
+      {
+        "text": "27 Jul",
+        "axis": "x",
+        "fontSize": "12px",
+        "left": 16,
+        "right": 47.296875,
+        "top": 623,
+        "bottom": 636,
+        "width": 31.296875,
+        "height": 13
+      },
+      {
+        "text": "10 Aug",
+        "axis": "x",
+        "fontSize": "12px",
+        "left": 226.9296875,
+        "right": 264.0703125,
+        "top": 623,
+        "bottom": 636.3759765625,
+        "width": 37.140625,
+        "height": 13.3759765625
+      },
+      {
+        "text": "24 Aug",
+        "axis": "x",
+        "fontSize": "12px",
+        "left": 437.5625,
+        "right": 475,
+        "top": 623,
+        "bottom": 636.3759765625,
+        "width": 37.4375,
+        "height": 13.3759765625
+      },
+      {
+        "text": "$1.137",
+        "axis": "y",
+        "fontSize": "12px",
+        "left": 499.109375,
+        "right": 532,
+        "top": 599,
+        "bottom": 612,
+        "width": 32.890625,
+        "height": 13
+      },
+      {
+        "text": "$1.1375",
+        "axis": "y",
+        "fontSize": "12px",
+        "left": 492.421875,
+        "right": 532,
+        "top": 546.3333129882812,
+        "bottom": 559.3333129882812,
+        "width": 39.578125,
+        "height": 13
+      },
+      {
+        "text": "$1.138",
+        "axis": "y",
+        "fontSize": "12px",
+        "left": 498.171875,
+        "right": 532,
+        "top": 493.6666564941406,
+        "bottom": 506.6666564941406,
+        "width": 33.828125,
+        "height": 13
+      },
+      {
+        "text": "$1.1385",
+        "axis": "y",
+        "fontSize": "12px",
+        "left": 491.140625,
+        "right": 532,
+        "top": 441,
+        "bottom": 454,
+        "width": 40.859375,
+        "height": 13
+      }
+    ],
+    "readout": [
+      {
+        "text": "Price",
+        "left": 36,
+        "right": 67.546875,
+        "top": 370,
+        "bottom": 386,
+        "fontSize": "14px"
+      },
+      {
+        "text": "$1.1375",
+        "left": 36,
+        "right": 99.640625,
+        "top": 395,
+        "bottom": 413,
+        "fontSize": "16px"
+      },
+      {
+        "text": "·",
+        "left": 107.640625,
+        "right": 111.609375,
+        "top": 395,
+        "bottom": 413,
+        "fontSize": "16px"
+      },
+      {
+        "text": "hyUSD",
+        "left": 119.609375,
+        "right": 168.40625,
+        "top": 395,
+        "bottom": 413,
+        "fontSize": "16px"
+      },
+      {
+        "text": "23 Aug 2026 · 23:45",
+        "left": 36,
+        "right": 168.703125,
+        "top": 418,
+        "bottom": 434,
+        "fontSize": "14px"
+      },
+      {
+        "text": "24H",
+        "left": 36,
+        "right": 63.796875,
+        "top": 663,
+        "bottom": 681,
+        "fontSize": "16px"
+      },
+      {
+        "text": "7D",
+        "left": 83.796875,
+        "right": 103.09375,
+        "top": 663,
+        "bottom": 681,
+        "fontSize": "16px"
+      },
+      {
+        "text": "30D",
+        "left": 123.09375,
+        "right": 152.9375,
+        "top": 663,
+        "bottom": 681,
+        "fontSize": "16px"
+      },
+      {
+        "text": "1Y",
+        "left": 172.9375,
+        "right": 189.8125,
+        "top": 663,
+        "bottom": 681,
+        "fontSize": "16px"
+      },
+      {
+        "text": "Download CSV",
+        "left": 410.953125,
+        "right": 532,
+        "top": 664,
+        "bottom": 680,
+        "fontSize": "14px"
+      }
+    ]
+  }
+}

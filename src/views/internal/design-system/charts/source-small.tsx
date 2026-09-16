@@ -1,11 +1,15 @@
 import { ChainBadgedLogo } from '@/components/entity-identity'
-import { v1Typography as type } from '@/components/design-system-v1/typography'
+import {
+  v1Typography as type,
+  v1TypographyVariants,
+} from '@/components/design-system-v1/typography'
 import { v1SemanticRoles as roles } from '@/components/design-system-v1/semantic-roles'
 import { cn } from '@/lib/utils'
 import { formatCurrency } from '@/utils'
 import { PERFORMANCE_TEXT_CLASSES } from '@/utils/chart-performance-colors'
 import { PerformanceChart } from '@/views/home/components/highlighted-dtfs/performance-chart'
-import { Line, LineChart, YAxis } from 'recharts'
+import { useRef } from 'react'
+import { Line, LineChart, XAxis, YAxis } from 'recharts'
 import { chartSample } from './fixtures'
 import { trendDomain } from '../table-family/discover-fixtures'
 import { homePoints, launchTimestamp, photon } from './source-data'
@@ -28,16 +32,22 @@ export function SourceCompactChart() {
           width={90}
           height={40}
           data={compactPoints}
-          margin={{ top: 3, right: 2, bottom: 3, left: 2 }}
+          margin={{ top: 3, right: 3, bottom: 3, left: 3 }}
           accessibilityLayer={false}
         >
+          <XAxis dataKey="timestamp" hide padding={{ left: 3, right: 3 }} />
           <YAxis hide domain={trendDomain} />
           <Line
             type="linear"
             dataKey="value"
             stroke="currentColor"
             strokeWidth={1.5}
-            dot={false}
+            dot={(props) => (
+              <CompactLatestPoint
+                {...props}
+                isLatest={props.index === compactPoints.length - 1}
+              />
+            )}
             isAnimationActive={false}
           />
         </LineChart>
@@ -46,17 +56,24 @@ export function SourceCompactChart() {
   )
 }
 
-export function SourceHomeChart() {
+export function SourceHomeChart({
+  launchMarkerPresentation = 'annotation',
+}: {
+  launchMarkerPresentation?: 'annotation' | 'default'
+} = {}) {
+  const mediaRef = useRef<HTMLDivElement>(null)
+
   return (
     <div
       data-testid="chart-card"
-      className={cn('w-full max-w-[340px] p-2', roles.surface.content)}
+      className={cn('w-full max-w-[340px] p-1', roles.surface.content)}
     >
       <div
+        ref={mediaRef}
         data-testid="chart-home-media"
-        className="flex flex-col overflow-hidden rounded-lg bg-gradient-to-b from-secondary to-card"
+        className="flex flex-col overflow-hidden bg-gradient-to-b from-secondary to-card"
       >
-        <div className="flex min-w-0 flex-col gap-4 p-4">
+        <div className="flex min-w-0 flex-col gap-4 p-5">
           <ChainBadgedLogo
             address={photon.address}
             chain={photon.chainId}
@@ -69,7 +86,7 @@ export function SourceHomeChart() {
             <h3
               className={cn(
                 'min-w-0 break-words',
-                type.panelTitle,
+                v1TypographyVariants.lightPanelTitle,
                 roles.text.primary
               )}
             >
@@ -113,11 +130,44 @@ export function SourceHomeChart() {
               symbol: photon.symbol,
             }}
             useLaunchLabel
+            launchMarkerPresentation={launchMarkerPresentation}
+            latestPointMarker={{
+              hostRef: mediaRef,
+              ringGradient: {
+                from: 'hsl(var(--secondary))',
+                to: 'hsl(var(--card))',
+              },
+            }}
             animate={false}
             fadeClassName="pointer-events-none absolute inset-x-0 bottom-0 h-12 bg-gradient-to-b from-card/0 to-card"
           />
         </div>
       </div>
     </div>
+  )
+}
+
+function CompactLatestPoint({
+  cx,
+  cy,
+  isLatest,
+}: {
+  cx?: number
+  cy?: number
+  isLatest: boolean
+}) {
+  if (!isLatest || cx === undefined || cy === undefined) return <></>
+
+  return (
+    <circle
+      aria-hidden="true"
+      cx={cx}
+      cy={cy}
+      r="2"
+      fill="currentColor"
+      stroke="hsl(var(--card))"
+      strokeWidth="1.5"
+      data-testid="chart-latest-point-marker"
+    />
   )
 }

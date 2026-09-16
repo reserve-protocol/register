@@ -7,6 +7,13 @@ brief is refined by the [source-faithful review](../design-system-charts-source-
 its original audit findings are not automatically accepted.
 [Sensitive questions are separate](chart-engineering.md).
 
+Current sequencing: after the source-faithful line/Home/Discover review, the
+user authorized [Overview candlesticks](../design-system-candlesticks.md).
+Factsheet bars are no longer scheduled: the `/performance` route is retained
+but no current navigation link was found. Preserve it as inventory evidence,
+not an active-product assumption or deletion instruction. Yield historical
+charts and the two composition families remain future review candidates.
+
 ## Outcome
 
 Build a small visual vocabulary that makes the existing chart jobs feel like
@@ -103,7 +110,8 @@ First confirm that the primary examples preserve the liked product character,
 then review header inspection and bounded improvements in those real contexts.
 Generic state treatments remain a separate question, not a replacement layout.
 Do not ask the user to settle API transport or every legacy chart migration to
-begin. Follow with candles and signed bars; composition comes after a category
+begin. Follow with candles; Factsheet signed bars are excluded as noted above.
+Composition comes after a category
 palette/legend decision. No chart type is retired by this sequencing.
 
 First-slice proof is owned by the source-reset receipt. Keep the reused renderer's

@@ -549,11 +549,23 @@ The accepted Typography baseline defines nine core
 semantic jobs across six core sizes, the restricted 12px auxiliary exception,
 the 300/500 weight split, 16px/24px ordinary reading, 14px/20px supporting text,
 Lausanne tabular financial values, monospace identifiers, natural wrapping, and
-a 48px-to-40px display-only phone exception. The sustained 14px comparison is a
-stress test rather than authorization for long-form supporting copy. All other
-application roles remain stable across breakpoints. Real usage may justify
+a 48px-to-40px responsive display. The sustained 14px comparison is a
+stress test rather than authorization for long-form supporting copy. Application
+role defaults remain stable; the later user-approved
+`v1TypographyVariants.responsivePageTitle` opts into 24px/30px below `sm`
+(640px), 32px/38px from 640px, at weight 300. Use it for page identity or a
+top-level focused title, not hero/display, subordinate sections, cards, or
+transaction amounts. It preserves the fixed `v1Typography.pageTitle` default
+and adds no size to the scale. The earlier study's stable-role examples remain
+default-role evidence, not a ban on this opt-in. Real usage may justify
 evidence-based refinement, but approval authorizes no production migration.
 Current Review is routed separately; this historical sequence is not its queue.
+The September 15 chart completion provisionally reuses the 24/32px scale for
+a dated Portfolio financial total (a paragraph, not a heading) and adds the
+20px/26px weight-300 `lightPanelTitle` only for Home's chart-context name.
+These are unaccepted chart candidates, not general financial or card-title
+policy; shared role defaults remain unchanged. See the
+[completion boundary](../../plans/design-system-next-charts/completion/README.md).
 Human review accepted Global and Product navigation as
 separate current baselines after judging them together in a realistic shell.
 Human review accepted the Radius role taxonomy so it
@@ -618,14 +630,17 @@ an ordinary 24px content axis, layout-owned substrate corners, and no nested-car
 default. The Home Index feature card is the authoritative source for a later
 media-rich interactive-card shell; its hierarchy and detailed behavior are not
 being redesigned. The accepted preservation-first review applies a square
-shell, an 8px shell inset and contained-media radius, 24px primary and
+shell, a 4px shell inset with square inner media, 24px primary and
 supporting-row axes, 16px between internal regions, and 8px between directly
 related title/market content. Title spacing is measured from the complete top
 row rather than the logo alone, so Discover naturally accounts for its taller
 chart without a new spacing value. Full chart/launch, ticker, transcript/video,
 chain, and interaction behavior remain protected; Discover is supporting
 compact adaptation evidence. Reusable extraction remains queued and production
-is not adopted.
+is not adopted. The September 14 highlighted-card refinement supersedes the
+earlier 8px/rounded-media delta; the chart excerpt reflects it, while the earlier
+full-card study retains historical framing. Gradient and surround belong to
+highlighted-card context, not to the reusable chart.
 
 Persistent product navigation is a Register extension, not a Button variant.
 The Index DTF rail and its constrained-screen menu consume one route/current/

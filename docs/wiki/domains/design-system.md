@@ -1,6 +1,6 @@
 ---
 title: Design System
-updated: 2026-09-09
+updated: 2026-09-16
 type: domain
 sources:
   - docs/plans/design-system-v1.md
@@ -30,7 +30,54 @@ implementation details owned elsewhere.
    search the quoted ID or display name in `component-catalog*.ts`, not just
    `id:` declarations.
 5. Read [Current Review](../../../src/views/internal/design-system/current-review.ts)
-   only when preparing or responding to the active human-review target.
+   only when preparing or responding to an active human-review target. The queue
+   is currently empty.
+
+Lab work also reads the [common lab guide](../../../src/views/internal/design-system/CLAUDE.md)
+and its matching family guide. Unrelated family notes are not common prerequisites.
+
+## Implementation handoffs
+
+For a coherent, non-trivial approved implementation, the coordinating task
+proactively proposes a fresh implementation task before editing; the user should
+not need to remind it. Obtain explicit launch approval. Planning, design decisions,
+acceptance and integration stay with the coordinator and user. Complete the
+required [bounded handoff](../../../templates/design/implementation-handoff.md)
+before dispatch. Only a tiny local correction or documentation-only change may
+stay with the coordinator without that packet; state the exception.
+Keep delegated repairs with their implementation owner.
+
+The handoff records approved human decisions separately from coordinator
+interpretation and unresolved choices. It names one primary rendered precedent,
+its applicable and excluded qualities, and decisions with no precedent. Starting
+and returned identity cover only owned paths and relevant evidence, including
+authorized dirty input; ordinary component work does not create a repository-wide
+manifest. Map every criterion to focused proof and finish with a post-edit run of
+the affected surface plus a durable evidence pointer. Normal repository routing
+and flow-transfer preflight still apply. One implementation owner per slice;
+concurrent work needs isolated files/worktree and its own preview. Fresh context
+alone does not isolate files; a history fork is not a cold-context test.
+
+Select models per the approved task and capability evidence, not a blanket
+cheaper-model default. No new task, model change, production adoption or sensitive
+behavior is authorized by this rule. The coordinator verifies returned artifacts
+before integration; only the user accepts visual design. No commit/push is implied.
+
+### Dispatch and return checks
+
+Record the task's actual execution location, result path and usable task ID once
+available; a pending creation ID does not prove the task is running or complete.
+Use the supported completion-wait mechanism when that ID is available. If task
+discovery fails, make one bounded recheck, then use the agreed result artifact or
+ask for the task link. Report the limitation; do not create duplicates, mine private
+app state, or promise unattended notifications without a working authorized monitor.
+
+Preserve replayable verification instructions and necessary evidence, not just a
+pass count. The final affected-surface run must follow the final edit and resolve
+to retained evidence. Label worker-reported results separately from coordinator
+checks. A no-change investigation is not an implementation benchmark. Task
+usage/cost is unknown unless measured for that task; account-wide allowance is
+not task cost.
 
 ## Current authority path
 
@@ -197,11 +244,12 @@ blanket acceptance. The [checkpoint disposition](../../plans/transaction-consoli
 separates current flow-local designs from unreviewed entry cards, the standalone
 selector, future Portfolio row/table work and engineering-owned adoption.
 
-Current Review contains one nearly complete candidate at the boundary of human
-judgment. It is not a backlog, a promotion queue, or an authority source. Its
-typed conformance record must name accepted or explicitly provisional
-dependencies. The current target is derived from `current-review.ts`; do not
-copy its transient status into this router.
+Current Review is empty after the approved-for-now chart decision. It is not a
+backlog, a promotion queue, or an authority source. No successor component,
+composition or adoption slice is selected or prepared; add a future target only
+after explicit human direction and a source-grounded candidate. When populated,
+its typed conformance record must name accepted or explicitly provisional
+dependencies.
 
 ## Evidence and studies
 

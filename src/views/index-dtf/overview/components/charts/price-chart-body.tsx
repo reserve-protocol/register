@@ -18,7 +18,7 @@ import {
   PERFORMANCE_COLORS,
 } from '@/utils/chart-performance-colors'
 import { useAtomValue } from 'jotai'
-import { useId, type ComponentProps } from 'react'
+import { useEffect, useId, useRef, useState, type ComponentProps } from 'react'
 import {
   AreaChart,
   Customized,
@@ -35,6 +35,12 @@ import { renderPriceChartSeries } from './price-chart-series'
 import { PriceTooltip, YieldTooltip } from './price-chart-tooltips'
 import { useXAxisTicks } from './use-price-chart-data'
 import { inspectionFromPayload, type ChartInspection } from './chart-inspection'
+import {
+  ChartLatestPointMarker,
+  getYAxisPresentation,
+  type ChartCustomizedProps,
+  useDisplayedYAxisLabelWidth,
+} from './chart-presentation'
 
 type ChartPoint = {
   timestamp: number
@@ -51,6 +57,9 @@ type PriceChartBodyProps = {
   xDomain?: readonly [number, number]
   className?: string
   onInspect?: (point: ChartInspection) => void
+  latestPointMarker?: { ringColor: string }
+  tooltipContent?: React.ReactElement
+  yAxisPresentation?: 'compact'
 }
 
 const buildYAxisFormatter =
@@ -80,6 +89,9 @@ const PriceChartBody = ({
   xDomain,
   className,
   onInspect,
+  latestPointMarker,
+  tooltipContent,
+  yAxisPresentation,
 }: PriceChartBodyProps) => {
   const dataType = useAtomValue(dataTypeAtom)
   const avgApy = useAtomValue(avgApyAtom)
@@ -89,6 +101,10 @@ const PriceChartBody = ({
   const xAxisTicks = useXAxisTicks(chartData, isMobile, xDomain)
   const chartKey: DataType | 'totalAPY' = isYieldMode ? 'totalAPY' : dataType
   const chartId = useId().replace(/:/g, '')
+  const chartRef = useRef<HTMLDivElement>(null)
+  const [chartHeight, setChartHeight] = useState(0)
+  const [inspectedMarkerPoint, setInspectedMarkerPoint] =
+    useState<ChartInspection>()
 
   const formatYAxisTick = buildYAxisFormatter(dataType, isBTCMode, isYieldMode)
   const visibleRangeSeconds = xDomain
@@ -143,16 +159,70 @@ const PriceChartBody = ({
       ? `url(#${fillGradientId})`
       : fill
   const preLaunchFill = fill
+  const latestPoint = latestPointMarker
+    ? [...chartData].reverse().find((point) => {
+        const value = point[chartKey]
+        return Number.isFinite(point.timestamp) && Number.isFinite(value)
+      })
+    : undefined
+  const latestMarkerPoint =
+    latestPoint && latestPoint[chartKey] !== undefined
+      ? { timestamp: latestPoint.timestamp, value: latestPoint[chartKey] }
+      : undefined
+  const finiteYAxisValues = chartData.flatMap((point) => {
+    const value = point[chartKey]
+    return Number.isFinite(value) ? [value as number] : []
+  })
+  const yAxisMeasurementKey = `${range}:${chartHeight}:${chartKey}:${finiteYAxisValues.length}:${Math.min(...finiteYAxisValues)}:${Math.max(...finiteYAxisValues)}`
+  const yAxisLabelWidth = useDisplayedYAxisLabelWidth({
+    enabled: yAxisPresentation === 'compact' && !isMobile,
+    measurementKey: yAxisMeasurementKey,
+    rootRef: chartRef,
+  })
+  const yAxis = getYAxisPresentation({
+    isCompact: yAxisPresentation === 'compact',
+    isMobile,
+    labelWidth: yAxisLabelWidth,
+    plotEdgeInset: latestPointMarker ? 3 : 0,
+  })
   const inspectSample: ComponentProps<typeof AreaChart>['onMouseMove'] =
-    onInspect
+    onInspect || latestPointMarker
       ? (state) => {
           const point = inspectionFromPayload(state?.activePayload, chartKey)
-          if (point) onInspect(point)
+          if (point) {
+            onInspect?.(point)
+            if (latestPointMarker) setInspectedMarkerPoint(point)
+          }
         }
       : undefined
+  const resetMarker = latestPointMarker
+    ? () => setInspectedMarkerPoint(undefined)
+    : undefined
+
+  useEffect(() => {
+    if (!latestPointMarker || !chartRef.current) return
+    const element = chartRef.current
+    const updateHeight = () => setChartHeight(element.clientHeight)
+    updateHeight()
+    const observer = new ResizeObserver(updateHeight)
+    observer.observe(element)
+    return () => observer.disconnect()
+  }, [latestPointMarker])
 
   return (
-    <ChartContainer config={chartConfig} className={cn('w-full', className)}>
+    <ChartContainer
+      ref={chartRef}
+      config={chartConfig}
+      className={cn('w-full', className)}
+      onBlur={resetMarker}
+      onPointerLeave={
+        resetMarker
+          ? (event) => {
+              if (event.pointerType === 'mouse') resetMarker()
+            }
+          : undefined
+      }
+    >
       <AreaChart
         data={segmentedChartData}
         accessibilityLayer={onInspect ? true : undefined}
@@ -173,6 +243,13 @@ const PriceChartBody = ({
           priceColors: overviewPriceColors,
           priceLineShadowFilterId,
           priceStrokeGradientId,
+          strokeGradientCoordinates:
+            latestPointMarker && chartHeight > 0
+              ? {
+                  top: 10,
+                  bottom: chartHeight - (isMobile ? 10 : 40),
+                }
+              : undefined,
           usePerformanceColors,
         })}
         <XAxis
@@ -188,15 +265,12 @@ const PriceChartBody = ({
           interval="preserveStart"
           ticks={xAxisTicks}
           tickMargin={10}
+          padding={latestPointMarker ? { left: 4, right: 4 } : undefined}
         />
         <YAxis
           dataKey={chartKey}
           orientation="right"
-          tick={
-            isMobile
-              ? false
-              : { fontSize: 13, opacity: 0.7, textAnchor: 'end', dx: 44 }
-          }
+          tick={yAxis.tick}
           tickFormatter={formatYAxisTick}
           className="[&_.recharts-cartesian-axis-tick_text]:!fill-muted-foreground"
           axisLine={false}
@@ -209,9 +283,11 @@ const PriceChartBody = ({
                 ]
               : ['auto', 'auto']
           }
-          width={isMobile ? 0 : 55}
+          width={yAxis.width}
           tickCount={5}
-          tickMargin={5}
+          tickMargin={yAxis.tickMargin}
+          tickSize={yAxis.tickSize}
+          padding={latestPointMarker ? { top: 4, bottom: 4 } : undefined}
         />
         <Tooltip
           content={
@@ -220,7 +296,7 @@ const PriceChartBody = ({
             ) : isYieldMode ? (
               <YieldTooltip />
             ) : (
-              <PriceTooltip dataType={dataType} />
+              (tooltipContent ?? <PriceTooltip dataType={dataType} />)
             )
           }
         />
@@ -248,7 +324,21 @@ const PriceChartBody = ({
           priceLineShadowFilterId,
           shouldSplit,
           strokeColor,
+          activeDot: latestPointMarker ? false : undefined,
         })}
+        {latestPointMarker && chartHeight > 0 && (
+          <Customized
+            component={(props: ChartCustomizedProps) => (
+              <ChartLatestPointMarker
+                {...props}
+                fill={strokeColor}
+                isInspecting={Boolean(inspectedMarkerPoint)}
+                point={inspectedMarkerPoint ?? latestMarkerPoint}
+                ringColor={latestPointMarker.ringColor}
+              />
+            )}
+          />
+        )}
         <Customized
           component={(props: {
             offset?: { top: number; height: number; width?: number }

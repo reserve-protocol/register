@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react'
-import { ArrowRight, Plus, Trash2 } from 'lucide-react'
+import { ArrowRight, FileDown, Plus, Trash2 } from 'lucide-react'
 
 import { Button, InlineAction } from '@/components/button'
 
@@ -48,6 +48,16 @@ const ButtonStateSheet = () => (
       <StateRow label="Dense field action">
         <InlineAction>Max</InlineAction>
         <InlineAction disabled>Unavailable</InlineAction>
+      </StateRow>
+      <StateRow label="Compact utility candidate">
+        <InlineAction treatment="utility">
+          <FileDown aria-hidden="true" className="size-4" />
+          Download CSV
+        </InlineAction>
+        <InlineAction treatment="utility" disabled>
+          <FileDown aria-hidden="true" className="size-4" />
+          Download CSV
+        </InlineAction>
       </StateRow>
       <StateRow label="Unavailable">
         <Button disabled>Disabled</Button>

@@ -8,6 +8,7 @@ import {
 const SegmentedControlStateSheet = () => {
   const [timeRange, setTimeRange] = useState('1m')
   const [dataType, setDataType] = useState('price')
+  const [compactDataType, setCompactDataType] = useState('price')
   const [chartMode, setChartMode] = useState('chart')
   const [overviewMode, setOverviewMode] = useState('overview')
 
@@ -28,6 +29,23 @@ const SegmentedControlStateSheet = () => {
       </div>
 
       <div className="grid gap-6 border border-border bg-card p-5 xl:grid-cols-2">
+        <Specimen label="Text only · compact layout candidate">
+          <SegmentedControl
+            aria-label="Compact chart data type"
+            presentation="text-only"
+            textOnlyDensity="compact"
+            value={compactDataType}
+            onValueChange={setCompactDataType}
+          >
+            <SegmentedControlItem value="price">Price</SegmentedControlItem>
+            <SegmentedControlItem value="market-cap">
+              Market cap
+            </SegmentedControlItem>
+            <SegmentedControlItem value="supply" disabled>
+              Supply
+            </SegmentedControlItem>
+          </SegmentedControl>
+        </Specimen>
         <Specimen label="Text only · compact · full width mobile chart">
           <div className="max-w-sm">
             <SegmentedControl

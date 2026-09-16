@@ -13258,3 +13258,27 @@ msgstr "No disponible · simulado"
 #: src/views/internal/design-system/charts/review.tsx:25
 msgid "Zero · simulated"
 msgstr "Cero · simulado"
+
+#: src/views/internal/design-system/charts/review.tsx
+msgid "Chart preview viewport"
+msgstr "Vista previa del gráfico"
+
+#: src/views/internal/design-system/charts/review.tsx
+msgid "Mobile chart preview"
+msgstr "Vista previa móvil del gráfico"
+
+#: src/views/internal/design-system/charts/review.tsx
+msgid "Mobile preview"
+msgstr "Vista previa móvil"
+
+#: src/views/internal/design-system/charts/review.tsx
+msgid "Mobile preview width"
+msgstr "Ancho de vista previa móvil"
+
+#: src/views/internal/design-system/charts/review.tsx
+msgid "Narrow desktop container"
+msgstr "Contenedor de escritorio estrecho"
+
+#: src/views/internal/design-system/charts/review.tsx
+msgid "Overview chart type"
+msgstr "Tipo de gráfico de resumen"

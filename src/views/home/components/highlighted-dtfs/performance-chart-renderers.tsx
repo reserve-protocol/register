@@ -150,10 +150,12 @@ export const renderPerformancePatternSeries = ({
 export const renderPerformanceStrokeDefs = ({
   direction,
   lineShadowFilterId,
+  strokeGradientCoordinates,
   strokeGradientId,
 }: {
   direction: PerformanceDirection
   lineShadowFilterId: string
+  strokeGradientCoordinates?: { top: number; bottom: number }
   strokeGradientId: string
 }) => (
   <defs>
@@ -173,7 +175,14 @@ export const renderPerformanceStrokeDefs = ({
       />
     </filter>
     {direction !== 'neutral' && (
-      <linearGradient id={strokeGradientId} x1="0" y1="1" x2="0" y2="0">
+      <linearGradient
+        id={strokeGradientId}
+        x1="0"
+        y1={strokeGradientCoordinates?.bottom ?? '1'}
+        x2="0"
+        y2={strokeGradientCoordinates?.top ?? '0'}
+        gradientUnits={strokeGradientCoordinates ? 'userSpaceOnUse' : undefined}
+      >
         <stop offset="0%" stopColor={PERFORMANCE_COLORS[direction].end} />
         <stop offset="100%" stopColor={PERFORMANCE_COLORS[direction].start} />
       </linearGradient>

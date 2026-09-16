@@ -52,7 +52,7 @@ const TypographyStudy = () => (
             'The role names, exact size and line-height pairs, and 300/500 weight split.',
             'Hierarchy across pages, panels, repeated records, forms, and reading content.',
             'Default multiline behavior, numeric treatment, and the restricted 12px exception.',
-            'Stable application type sizes across breakpoints, plus the proposed 48px to 40px display-only phone exception.',
+            'Stable application role defaults, the 48px to 40px responsive display, and the opt-in 32px to 24px responsive page title.',
           ]}
         />
         <BoundaryColumn

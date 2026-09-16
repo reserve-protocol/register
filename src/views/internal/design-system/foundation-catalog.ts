@@ -49,7 +49,7 @@ export const FOUNDATION_ITEMS: FoundationItem[] = [
     outputStatus: 'rendered',
     designAuthority: 'current-baseline',
     statusDetail:
-      'The reviewed role scale, 300/500 weight strategy, multiline rhythm, display-only phone exception, numeric treatment, and wrapping rules are the current baseline. Real product usage may still expose evidence-based refinements.',
+      'The reviewed role scale, 300/500 weight strategy, multiline rhythm, responsive display and opt-in page title, numeric treatment, and wrapping rules are the current baseline. Real product usage may still expose evidence-based refinements.',
     expectedDecisions: [
       {
         name: 'Font roles and available weights',
@@ -73,7 +73,7 @@ export const FOUNDATION_ITEMS: FoundationItem[] = [
         name: 'Responsive and long-content behavior',
         status: 'defined',
         detail:
-          'Keep application roles stable across breakpoints except the reviewed display-only phone step; use natural wrapping, readable measures, and narrow truncation boundaries.',
+          'Keep application role defaults stable; responsive display and the opt-in responsivePageTitle use reviewed breakpoint steps. Preserve natural wrapping, readable measures, and narrow truncation boundaries.',
       },
     ],
   },

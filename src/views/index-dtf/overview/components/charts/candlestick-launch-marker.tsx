@@ -21,6 +21,7 @@ export const CandlestickLaunchMarker = ({
   intervalSeconds,
   launchTimestamp,
   useLaunchLabel = false,
+  variant,
   offset,
   width,
   xAxisMap,
@@ -29,6 +30,7 @@ export const CandlestickLaunchMarker = ({
   intervalSeconds: number
   launchTimestamp?: number
   useLaunchLabel?: boolean
+  variant?: 'annotation'
 }) => {
   const scale = xAxisMap?.[0]?.scale
   if (launchTimestamp === undefined || !scale) return null
@@ -45,6 +47,7 @@ export const CandlestickLaunchMarker = ({
       launchTimestamp={launchTimestamp}
       offset={offset}
       useLaunchLabel={useLaunchLabel}
+      variant={variant}
       visible
       width={width}
       xAxisMap={{ 0: { scale: () => markerX } }}

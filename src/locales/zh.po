@@ -13258,3 +13258,27 @@ msgstr "不可用 · 模拟"
 #: src/views/internal/design-system/charts/review.tsx:25
 msgid "Zero · simulated"
 msgstr "零值 · 模拟"
+
+#: src/views/internal/design-system/charts/review.tsx
+msgid "Chart preview viewport"
+msgstr "图表预览视口"
+
+#: src/views/internal/design-system/charts/review.tsx
+msgid "Mobile chart preview"
+msgstr "移动端图表预览"
+
+#: src/views/internal/design-system/charts/review.tsx
+msgid "Mobile preview"
+msgstr "移动端预览"
+
+#: src/views/internal/design-system/charts/review.tsx
+msgid "Mobile preview width"
+msgstr "移动端预览宽度"
+
+#: src/views/internal/design-system/charts/review.tsx
+msgid "Narrow desktop container"
+msgstr "窄桌面容器"
+
+#: src/views/internal/design-system/charts/review.tsx
+msgid "Overview chart type"
+msgstr "概览图表类型"

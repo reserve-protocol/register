@@ -820,7 +820,7 @@ export const SUPPORT_COMPONENT_GROUPS: ComponentGroup[] = [
               'Reviewed Governance proposals and Auction selectors establish a separate square repeated-record grammar and must not become generic Card variants.',
             ],
             decisionPrompts: [
-              'Preserve the accepted square shell, 8/24/16px structural spacing, 8px related-content spacing, and 24px supporting-row axis.',
+              'Preserve square outer/inner corners, the 4px surround, 24px content axis, 16px internal-region spacing, and 8px related-content spacing.',
               'Keep all unspecified Home behavior plus structural content-region and selective substrate-corner rules outside the repeated-card API.',
             ],
             nextAction:
@@ -843,7 +843,7 @@ export const SUPPORT_COMPONENT_GROUPS: ComponentGroup[] = [
         review: {
           status: 'provisional',
           scope:
-            'The accepted review preserves the Home source while applying a square outer shell, 8px shell inset and contained-media radius, 24px primary and supporting-row axes, 16px internal-region spacing, and 8px directly related spacing. Final API, non-media families, responsive edge cases, and production adoption remain later.',
+            'The accepted review preserves the Home source with square outer/inner corners, a 4px surround, 24px primary and supporting-row axes, 16px internal-region spacing, and 8px directly related spacing. The chart excerpt reflects the September 14 framing refinement; the full-card study retains historical framing. Final API, non-media families, responsive edge cases, and production adoption remain later.',
           dependencies: [
             { name: 'Index feature card', status: 'retained' },
             { name: 'Metric', status: 'canonical' },
@@ -1073,11 +1073,11 @@ export const SUPPORT_COMPONENT_GROUPS: ComponentGroup[] = [
               'Define container anatomy, axis/type, tooltip, legend, time range, loading/empty/error, accessible summary, and performance/categorical color use.',
             ],
             nextAction:
-              'Treat performance, allocation, and comparison charts as separate chart patterns sharing foundations.',
+              'Keep the approved-for-now lab baseline frozen. Revisit it only through an explicit visual correction or a separately authorized, engineer-reviewed production adoption.',
           }
         ),
         outputStatus: 'rendered',
-        designAuthority: 'exploratory',
+        designAuthority: 'current-baseline',
         implementationStatus: 'specimen',
         implementationSource:
           'src/views/internal/design-system/charts/review.tsx',
@@ -1089,9 +1089,29 @@ export const SUPPORT_COMPONENT_GROUPS: ComponentGroup[] = [
             path: 'src/views/internal/design-system/charts/review.tsx',
           },
           {
+            role: 'accepted-decision',
+            label: 'Current chart work approved for now',
+            path: 'docs/wiki/decisions.md#2026-09-16--current-chart-work-approved-for-now',
+          },
+          {
             role: 'product-evidence',
             label: 'Chart audit reconciliation and review contract',
             path: 'docs/plans/design-system-charts-source-reset.md',
+          },
+          {
+            role: 'product-evidence',
+            label: 'Overview candlestick review scope and evidence',
+            path: 'docs/plans/design-system-candlesticks.md',
+          },
+          {
+            role: 'product-evidence',
+            label: 'Yield, Portfolio and chart refinement completion',
+            path: 'docs/plans/design-system-next-charts/completion/README.md',
+          },
+          {
+            role: 'product-evidence',
+            label: 'Yield and Portfolio history-boundary closeout',
+            path: 'docs/plans/design-system-next-charts/partial-history/README.md',
           },
           {
             role: 'product-evidence',
@@ -1102,7 +1122,7 @@ export const SUPPORT_COMPONENT_GROUPS: ComponentGroup[] = [
         review: {
           status: 'ready',
           scope:
-            'Source-based chart review: existing Overview and Home renderers, realistic Discover sparkline, and opt-in header inspection compared with the original tooltip. Host framing, typography and identity follow accepted V1 roles; plot geometry and financial inputs are retained. Host insets are not universal chart padding. Generic pressure fixtures are separate. No data, return, sampling or chart-type default changes; engineer review before adopting the optional readout callback.',
+            'Approved-for-now, revisitable lab baseline covering source-based Overview line/candles, Home and Discover, revised Yield metrics, and Portfolio total/composition. The frozen presentation includes the compact V1 OHLC tooltip, lighter Home name, deliberate metric/total hierarchy, measured axes, 24px visual text-only ranges with expanded usable targets, and the responsive quiet CSV utility. Yield/Price and Portfolio next-family plots use a local 4px left drawing clearance while retaining the 24px content and right axes; this does not change Overview or shared chart defaults. Normal Yield and Portfolio ranges use available plotted bounds. The simulated Portfolio fixture explicitly models selectable known-zero history before its first positive holding; short ranges remain post-holdings. Its total and visible date use an 8px gap. Explicit UTC day precision keeps the weekly fixture and live output synchronized without exposing the 23:59:59 geometry sentinel; future intraday Portfolio callers can opt into UTC minute precision. Yield inspection uses the same family-local UTC minute formatter. The removed Price missing-history specimen is not part of the baseline. The technical pressure fixture separately owns interrupted data, and 24H is disabled according to each capture cadence. Production does not synthesize or prepend Portfolio zeros, and unknown history must never become zero. Yield owns a 24px surface-bottom inset. Portfolio ranges are top-right on desktop and directly above the plot on narrow layouts, with the key below. Portfolio category associations, opt-in seams, and stress fixtures remain adoption constraints rather than shared or production authority. Neutral review backgrounds and host insets are not universal chart policy. Financial inputs, data sources, freshness, production defaults, shared defaults, global palette, and calculations are unchanged; engineer-reviewed adoption remains separate.',
           dependencies: [
             {
               name: 'Select, Switch, SegmentedControl, Skeleton',

@@ -5,6 +5,16 @@ worktree. This supersedes the generic compact/card/full compositions as proposed
 product replacements; earlier receipts remain historical. The V1 conformance
 correction below supersedes the initial reset's literal legacy host framing.
 
+The [completed mobile-preview and Home annotation follow-up](design-system-chart-preview-closeout.md)
+adds a loopback-only real mobile document and Home's opt-in unboxed launch label.
+Earlier verification below covers its named historical snapshot; the linked
+follow-up owns current verification of those refinements.
+
+The [candlestick addition](design-system-candlesticks.md) extends this review
+with the real Overview candle renderer and separately captured OHLC data. Its
+receipt owns candle-specific verification; earlier line evidence does not prove
+candle behavior or production readiness.
+
 ## Contract
 
 The user wants to preserve the successful Overview line chart and Home highlight
@@ -52,7 +62,8 @@ candidate: a generic replacement has already been rejected by the user.
 ## Ownership and geometry
 
 - Plot line/fill, axes and inspection are in scope. Shared palette unchanged.
-- Overview uses the canonical 32px page-title and 16px body roles on a flat square
+- Overview uses the [responsive page-title opt-in](design-system-responsive-page-title/README.md)
+  (24px/30px phone, 32px/38px from 640px) and 16px body role on a flat square
   surface, with a 24px header/footer content inset. Source height 288/332px and
   desktop axes remain; the edge-to-edge plot does not inherit content padding.
 - Narrow lab financial groups wrap instead of overlapping; the frozen footer
@@ -60,14 +71,21 @@ candidate: a generic replacement has already been rejected by the user.
   are explicit candidate improvements, not shared/product default changes.
 - Phone inspection reserves the two-line financial slot, keeping the plot's
   position fixed while the value/date replaces the resting summary.
-- Home uses the accepted square outer shell, 8px shell inset/contained-media
-  corners, 24px content axis, 16px logo-to-name and 8px name-to-market gaps.
+- [Integrated hover-header refinement](design-system-chart-hover-header/README.md)
+  keeps the ticker visible with selected price/time while withholding the
+  unrelated headline return until exit/blur. No additional width reservation,
+  return calculation, source policy or production caller change.
+- Home uses square outer/inner corners, a 4px shell surround with the gradient
+  immediately inside it, 24px content axis, 16px logo-to-name and 8px name-to-market gaps.
   Its 20px panel-title/16px body roles and canonical ChainBadgedLogo replace
   legacy type and badge styling. No hidden title-height reservation. The 208px
   plot remains edge-to-edge within the media; this is not chart-owned padding.
 - Discover uses its 90×40 plot. The prior 112×48 sample was the small card size,
   not the Discover table size. These must not be conflated.
 - The lab preview frame and notes remain outside each product surface.
+  [Highlighted-card framing evidence](design-system-charts-source-reset/highlight-frame/README.md)
+  records the September 14 square-inner/4px-surround refinement. The older full-card
+  study is explicitly historical until separately refreshed.
 - Source replay controls/values are context, never claims about current live
   availability. Unimplemented product flows are named rather than fake-wired.
 
@@ -122,7 +140,10 @@ unchanged. Visual approval is separate from source correctness.
 
 The user still needs to review this source-based visual direction. Frozen period
 and chart-type labels are context only, not interactive migration implementations.
-Other Overview modes, candles, signed bars and composition need their own review.
+Candlesticks are being brought into the separately scoped review linked above.
+Other Overview modes and composition still need their own review. Factsheet
+signed bars are excluded from the current queue pending confirmation of use;
+the retained route alone is not evidence that the page is actively used.
 Overview's existing draw animation/reduced-motion behavior is retained, not hardened.
 The source-backed raw capture preserves duplicate timestamps and independent
 headline capture dates; production's existing dedupe/live-point policy is not copied
@@ -174,8 +195,9 @@ supplies the chart strengths and mechanics, not permission to override V1.
 Low, isolated lab presentation pass; self-review, no new shared/default or
 production-renderer change. Applied the ownership rules above, neutral semantic
 identity/price text, and canonical badge/type owners. The Home gradient remains
-retained contained-media treatment; its 8px media radius is deliberate, not a
-rounded outer card. Plot lines, fills, axis policy, inputs and inspection code
+retained contained-media treatment. This historical correction used an 8px media
+radius, superseded by the September 14 square-inner/4px-surround refinement.
+Plot lines, fills, axis policy, inputs and inspection code
 are unchanged. Frozen footer labels still demonstrate placement rather than
 being certified interactive V1 controls; broader plot-style decisions remain
 the chart review's purpose.

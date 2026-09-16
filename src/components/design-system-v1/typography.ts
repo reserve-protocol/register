@@ -14,6 +14,9 @@ export const v1Typography = {
 
 export const v1TypographyVariants = {
   compactItemTitle: 'text-base font-medium leading-5',
+  lightPanelTitle: 'text-xl font-light leading-[26px]',
+  responsivePageTitle:
+    'text-2xl font-light leading-[30px] tracking-normal sm:text-[32px] sm:leading-[38px] sm:tracking-[-0.01em]',
 } as const
 
 export const v1TypographyUsage = {

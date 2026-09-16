@@ -1,6 +1,6 @@
 ---
 protocol: resume-work/v1
-checkpoint_status: resume-ready
+checkpoint_status: resumed
 created_at: 2026-09-14T16:59:45Z
 project_identity: register/design-system-v1
 task_id: design-system-workflow-boundary
@@ -102,5 +102,7 @@ Recovery is supported by the retained Git tree; no destructive restore is tested
 This note is project-owned and contains no raw private conversation or credentials.
 It supplements, rather than replaces, earlier checkpoint evidence. No existing
 design decision or verification receipt is superseded. There is no transcript
-dependency. Resume reconciliation has not yet occurred; update this note's status
-when its proposed workflow step is actually resumed.
+dependency. Resumed on September 14: live HEAD was `49f9f22ae` with a clean tree,
+matching this checkpoint. The user authorized the next preparation step;
+[instruction-path audit](design-system-workflow-read-paths.md) owns that work.
+The original snapshot remains the commit introducing this note, not its later edits.

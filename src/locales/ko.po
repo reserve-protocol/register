@@ -13258,3 +13258,27 @@ msgstr "사용 불가 · 시뮬레이션"
 #: src/views/internal/design-system/charts/review.tsx:25
 msgid "Zero · simulated"
 msgstr "0 · 시뮬레이션"
+
+#: src/views/internal/design-system/charts/review.tsx
+msgid "Chart preview viewport"
+msgstr "차트 미리보기 뷰포트"
+
+#: src/views/internal/design-system/charts/review.tsx
+msgid "Mobile chart preview"
+msgstr "모바일 차트 미리보기"
+
+#: src/views/internal/design-system/charts/review.tsx
+msgid "Mobile preview"
+msgstr "모바일 미리보기"
+
+#: src/views/internal/design-system/charts/review.tsx
+msgid "Mobile preview width"
+msgstr "모바일 미리보기 너비"
+
+#: src/views/internal/design-system/charts/review.tsx
+msgid "Narrow desktop container"
+msgstr "좁은 데스크톱 컨테이너"
+
+#: src/views/internal/design-system/charts/review.tsx
+msgid "Overview chart type"
+msgstr "개요 차트 유형"

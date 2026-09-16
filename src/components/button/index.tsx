@@ -24,7 +24,7 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 export type InlineActionProps = ButtonHTMLAttributes<HTMLButtonElement> & {
-  treatment?: 'standalone' | 'contextual'
+  treatment?: 'standalone' | 'contextual' | 'utility'
 }
 
 const sizeClasses: Record<ButtonSize, string> = {
@@ -151,6 +151,8 @@ export const InlineAction = forwardRef<HTMLButtonElement, InlineActionProps>(
         roles.focus.visibleInset,
         treatment === 'contextual' &&
           `${v1Typography.body} h-auto gap-1 text-foreground`,
+        treatment === 'utility' &&
+          'gap-2 text-foreground before:-inset-y-3 hover:text-primary hover:no-underline',
         className
       )}
       {...props}

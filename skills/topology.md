@@ -10,6 +10,10 @@ A user-requested count authorizes Burst topology, but not shared writes, skipped
 
 Before spawning, record topology/reason, posture, briefs, isolated outputs, write boundaries, done predicate, convergence owner, dropout rule, and verification reserve. One coordinator owns the final tree.
 
+For non-trivial design-system implementation delegation, complete the required
+[bounded handoff](../templates/design/implementation-handoff.md) before spawning;
+the design-system router owns the tiny-fix and documentation-only exceptions.
+
 ## One agent
 
 Use for sequential work, shared-state coupling, unstable seams, or inadequate convergence budget. Do not manufacture packets.

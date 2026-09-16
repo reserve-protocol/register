@@ -326,6 +326,7 @@ describe('component contract registry', () => {
       'metric',
       'card',
       'table',
+      'chart',
       'copy-value',
       'accordion',
       'collapsible',
@@ -687,7 +688,7 @@ describe('component contract registry', () => {
 
 describe('current review', () => {
   it('contains only a small typed queue of human judgments', () => {
-    expect(CURRENT_REVIEW).toHaveLength(1)
+    expect(CURRENT_REVIEW).toHaveLength(0)
     expect(getFoundationItem('color')).toMatchObject({
       status: 'defined',
       designAuthority: 'current-baseline',
@@ -733,7 +734,7 @@ describe('current review', () => {
     }
   })
 
-  it('keeps the transaction truth spectrum exploratory and unadopted', () => {
+  it('keeps approved chart work unadopted without selecting a successor', () => {
     expect(getComponentItem('transaction-action').item).toMatchObject({
       outputStatus: 'rendered',
       designAuthority: 'exploratory',
@@ -741,24 +742,22 @@ describe('current review', () => {
       adoptionStatus: 'none',
       review: { status: 'ready' },
     })
-    expect(CURRENT_REVIEW[0]).toMatchObject({
-      target: { kind: 'component', id: 'chart' },
-      destination:
-        '/internal/design-system/components/chart#chart-first-review',
-      type: 'visual decision',
-    })
-    expect(CURRENT_REVIEW[0].reason).toContain('Transactions remain paused')
-    expect(CURRENT_REVIEW[0].reason).toContain('table work is approved for now')
-    expect(CURRENT_REVIEW[0].reason).toContain('unfinished and deferred')
+    expect(CURRENT_REVIEW).toEqual([])
     expect(getComponentItem('table').item).toMatchObject({
       designAuthority: 'current-baseline',
       adoptionStatus: 'none',
     })
     expect(getComponentItem('chart').item).toMatchObject({
       outputStatus: 'rendered',
-      designAuthority: 'exploratory',
+      designAuthority: 'current-baseline',
+      implementationStatus: 'specimen',
       adoptionStatus: 'none',
       review: { status: 'ready' },
+    })
+    expect(getComponentItem('chart').item?.contextSources).toContainEqual({
+      role: 'accepted-decision',
+      label: 'Current chart work approved for now',
+      path: 'docs/wiki/decisions.md#2026-09-16--current-chart-work-approved-for-now',
     })
     expect(getComponentItem('table').item?.contextSources).toEqual(
       expect.arrayContaining([
@@ -772,11 +771,14 @@ describe('current review', () => {
         }),
       ])
     )
-    expect(
-      CURRENT_REVIEW[0].foundationConformance.find(
-        (claim) => claim.area === 'color'
-      )?.status
-    ).toBe('declared-provisional')
+    expect(getComponentItem('chart').item?.review.dependencies).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          name: 'Opt-in header inspection; separately scoped stress fixtures',
+          status: 'provisional',
+        }),
+      ])
+    )
   })
 
   it('keeps accepted layout relationships behind semantic recipes', () => {

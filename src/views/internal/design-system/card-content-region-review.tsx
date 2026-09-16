@@ -149,11 +149,11 @@ const CardContentRegionReview = () => (
         <aside className="border border-border bg-card p-4 text-sm font-light leading-5 text-muted-foreground">
           <p className="font-medium text-foreground">Review only this delta</p>
           <p className="mt-2">
-            Does the existing Home card still feel right after changing only its
-            outer shell to square, its shell inset and contained-media radius to
-            8px, its primary content inset to 24px, and its internal region gap
-            to 16px—while keeping the directly related name and market row 8px
-            apart?
+            Historical framing: this full-card study still shows the earlier
+            8px inset and rounded inner media. The September 14 highlighted-card
+            refinement uses square outer and inner corners with a 4px surround;
+            the chart lab excerpt shows that direction. The 24px content axis,
+            16px internal region gap and 8px name-to-market gap remain.
           </p>
           <p className="mt-5 font-medium text-foreground">
             Preservation contract

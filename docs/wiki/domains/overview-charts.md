@@ -1,6 +1,6 @@
 ---
 title: Overview Charts
-updated: 2026-09-14
+updated: 2026-09-15
 type: domain
 sources:
   - src/views/index-dtf/overview/components/charts/**
@@ -8,7 +8,6 @@ sources:
   - src/views/index-dtf/overview/hooks/use-btc-price-history.ts
   - src/utils/chart-downsample.ts
 ---
-
 
 # Overview Charts (Index DTF price/candles)
 
@@ -129,3 +128,23 @@ dashed timestamp line. No launch date, range or series segmentation change.
 Omitted variants retain the original pill for production line/candle callers;
 Home's interactive token marker is unchanged. Check long translations and
 edge-of-domain placement before production adoption.
+
+`CandlestickChartBody.tooltipContent` is an optional Recharts content element.
+Only the lab passes its compact V1 OHLC surface; omitted values retain the
+original `CandlestickTooltip` and production interaction defaults unchanged.
+For this opt-in, the body also enables Recharts keyboard inspection and records
+the actual pressed candle's `activeTooltipIndex` as the Tooltip `defaultIndex`.
+That keeps all four OHLC fields on keyboard navigation and prevents focus from
+resetting a stable touch selection to the first candle. September 15 evidence
+passed focused keyboard/touch 2/2, protected geometry/hover 5/5, the full
+candlestick specification 12/12 and the integrated chart matrix 86/86. Validate
+payload injection, containment, localization and host behavior before production
+adoption; current evidence is linked from [[design-system-reference]].
+
+The lab-only `latestPointMarker` and `yAxisPresentation="compact"` opt-ins
+fit the line/candle label gutter and use actual renderer coordinates for one
+line endpoint or selected-point marker. Optional user-space gradient inputs
+keep its fill aligned with the line. Mouse exit resets selection; touch release
+retains it. Omitted props preserve existing axes, gradients and active dots.
+These are presentation seams requiring engineer review before adoption, not
+live-price guarantees or fixes to candle inspection.
