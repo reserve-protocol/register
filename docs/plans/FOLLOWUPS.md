@@ -13,6 +13,11 @@ PRs #1053/#1054/#1055/#1063, SDK PR #27). Delete items as they land.
 
 ## Next slices (in rough order)
 
+- **Rebalance Lab**: spec in [rebalance-lab.md](rebalance-lab.md) — extract the
+  fork lane into a standalone, agent-driven scenario runner that also simulates
+  rebalance proposals (propose → govern → launch → bid → metrics). Decisions for
+  Luis listed in the spec; slice 1 is the extraction.
+
 - **Index DTF v6 / auctions SDK integration**: contract in
   [index-dtf-v6-integration.md](index-dtf-v6-integration.md); the Register
   rebalance vertical ([index-dtf-v6-register-rebalance.md](index-dtf-v6-register-rebalance.md))
