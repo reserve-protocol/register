@@ -1,3 +1,4 @@
+import type { FolioVersionState } from '@/state/dtf/atoms'
 import { FolioVersion, PriceControl } from '@reserve-protocol/dtf-rebalance-lib'
 import { Rebalance as RebalanceV4 } from '@reserve-protocol/dtf-rebalance-lib/dist/4.0.0/types'
 import { Rebalance as RebalanceV5 } from '@reserve-protocol/dtf-rebalance-lib/dist/types'
@@ -11,12 +12,14 @@ export const FOLIO_VERSION_V5 = 5 as FolioVersion
 // Version Detection
 // -------------------------------------------------------------------
 
-/**
- * Convert version string to FolioVersion enum
- * v5.x.x → V5, everything else → V4
- */
-export function getFolioVersion(versionString: string): FolioVersion {
-  return versionString.startsWith('5') ? FOLIO_VERSION_V5 : FOLIO_VERSION_V4
+// Only the majors this local path encodes; pending/unsupported/v6 return undefined so no ABI is guessed.
+export function getFolioVersion(
+  state: FolioVersionState
+): FolioVersion | undefined {
+  if (state.status !== 'ready') return undefined
+  if (state.major === 4) return FOLIO_VERSION_V4
+  if (state.major === 5) return FOLIO_VERSION_V5
+  return undefined
 }
 
 // -------------------------------------------------------------------

@@ -1,6 +1,6 @@
 import dtfIndexAbiV4 from '@/abis/dtf-index-abi-v4'
 import dtfIndexAbiV5 from '@/abis/dtf-index-abi'
-import { indexDTFAtom, indexDTFVersionAtom } from '@/state/dtf/atoms'
+import { folioVersionAtom, indexDTFAtom } from '@/state/dtf/atoms'
 import { FolioVersion } from '@reserve-protocol/dtf-rebalance-lib'
 import { Rebalance as RebalanceV4 } from '@reserve-protocol/dtf-rebalance-lib/dist/4.0.0/types'
 import { Rebalance as RebalanceV5 } from '@reserve-protocol/dtf-rebalance-lib/dist/types'
@@ -27,12 +27,12 @@ export type RebalanceCurrentData = {
 
 const useRebalanceCurrentData = () => {
   const dtf = useAtomValue(indexDTFAtom)
-  const versionString = useAtomValue(indexDTFVersionAtom)
+  const versionState = useAtomValue(folioVersionAtom)
   const isAuctionOngoing = useAtomValue(isAuctionOngoingAtom)
 
   const folioVersion = useMemo(
-    () => getFolioVersion(versionString),
-    [versionString]
+    () => getFolioVersion(versionState),
+    [versionState]
   )
   const isV5 = folioVersion === FOLIO_VERSION_V5
   const abi = isV5 ? dtfIndexAbiV5 : dtfIndexAbiV4
@@ -61,7 +61,7 @@ const useRebalanceCurrentData = () => {
     ],
     allowFailure: false,
     query: {
-      enabled: !!dtf?.id,
+      enabled: !!dtf?.id && folioVersion !== undefined,
       select: (data): RebalanceCurrentData => {
         const [supply, rebalanceRaw, assetsData] = data as unknown as [
           bigint,
@@ -85,7 +85,7 @@ const useRebalanceCurrentData = () => {
           supply,
           rebalance,
           currentAssets: mapToAssets(assets, balances),
-          folioVersion,
+          folioVersion: folioVersion as FolioVersion,
           bidsEnabled,
         }
       },

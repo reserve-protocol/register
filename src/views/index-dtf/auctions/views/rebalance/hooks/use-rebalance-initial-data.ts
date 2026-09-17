@@ -1,6 +1,6 @@
 import dtfIndexAbiV4 from '@/abis/dtf-index-abi-v4'
 import dtfIndexAbiV5 from '@/abis/dtf-index-abi'
-import { indexDTFAtom, indexDTFVersionAtom } from '@/state/dtf/atoms'
+import { folioVersionAtom, indexDTFAtom } from '@/state/dtf/atoms'
 import { useAtomValue } from 'jotai'
 import { useMemo } from 'react'
 import { useReadContracts } from 'wagmi'
@@ -11,11 +11,11 @@ import { FOLIO_VERSION_V5, getFolioVersion } from '../utils/transforms'
 const useRebalanceInitialData = () => {
   const dtf = useAtomValue(indexDTFAtom)
   const rebalance = useAtomValue(currentRebalanceAtom)
-  const versionString = useAtomValue(indexDTFVersionAtom)
+  const versionState = useAtomValue(folioVersionAtom)
 
   const folioVersion = useMemo(
-    () => getFolioVersion(versionString),
-    [versionString]
+    () => getFolioVersion(versionState),
+    [versionState]
   )
   const abi = folioVersion === FOLIO_VERSION_V5 ? dtfIndexAbiV5 : dtfIndexAbiV4
 
@@ -40,7 +40,10 @@ const useRebalanceInitialData = () => {
     blockNumber: BigInt(rebalance?.proposal.creationBlock ?? '0'),
     allowFailure: false,
     query: {
-      enabled: !!rebalance?.proposal.creationBlock && !!dtf?.id,
+      enabled:
+        !!rebalance?.proposal.creationBlock &&
+        !!dtf?.id &&
+        folioVersion !== undefined,
       select: (data) => {
         const [supply, assetsData] = data as [
           bigint,

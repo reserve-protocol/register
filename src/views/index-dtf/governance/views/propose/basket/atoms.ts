@@ -12,6 +12,7 @@ import {
   indexDTFBrandAtom,
   indexDTFPriceAtom,
   indexDTFRebalanceControlAtom,
+  folioVersionAtom,
   indexDTFVersionAtom,
   isHybridDTFAtom,
   isSingletonRebalanceAtom,
@@ -506,13 +507,18 @@ export const basketProposalCalldatasAtom = atom<Hex[] | undefined>((get) => {
   const proposedShares = get(proposedSharesAtom)
   const priceMap = get(priceMapAtom)
   const tokenPriceVolatility = get(tokenPriceVolatilityAtom)
-  const version = get(indexDTFVersionAtom)
+  const versionState = get(folioVersionAtom)
   const maxAuctionSizesMap = get(maxAuctionSizesAtom)
 
-  // Determine folio version (4 and 5 are the enum values)
-  const folioVersion = version.startsWith('5') ? 5 : 4
+  // Local encoder covers v4/v5 only; anything else must not produce calldata.
+  const folioVersion =
+    versionState.status === 'ready' &&
+    (versionState.major === 4 || versionState.major === 5)
+      ? versionState.major
+      : undefined
 
   if (
+    folioVersion === undefined ||
     !isConfirmed ||
     !proposedBasket ||
     !rebalanceControl ||

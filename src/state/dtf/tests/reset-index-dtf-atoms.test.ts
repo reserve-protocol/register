@@ -21,7 +21,6 @@ const tx: Transaction = {
 
 // Z21: DTF→DTF SPA navigation must not leak the previous DTF's data into the
 // next one's load window. Transactions + market cap were the leaked mirrors.
-// (indexDTFVersionAtom is deliberately not reset — see the reset module.)
 describe('resetIndexDTFAtomsAtom', () => {
   it('clears the previously leaked mirrors (transactions, market cap)', () => {
     const store = createStore()

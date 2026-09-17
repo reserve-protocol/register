@@ -50,8 +50,10 @@ Ports and resource limits are all env-overridable (`chains/<chainId>.env`, `ANVI
   Node's head. If you need a revert, run it on a chain no indexer is watching, or reset both.
 - **Reset is archive, not delete.** `reset` moves the state dir to `.state/archive/` before
   `down -v`. Keep failed-run state until the failure is understood.
-- **Secrets never land in artifacts.** `fork.sh` prints the archive host only; keep it that way
-  in anything you add.
+- **Secrets never land in artifacts.** Anvil's banner and `docker compose config` echo the
+  archive URL, so `fork.sh` masks URL paths in `up`, `logs` and `config`, and `ps` omits the
+  command column. Never call `docker compose` directly against this project, and never attach
+  raw container logs to a run artifact.
 
 ## Pointing the other repos at it
 

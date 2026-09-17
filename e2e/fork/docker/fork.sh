@@ -23,8 +23,16 @@ set -a; source "$ENV_FILE"; set +a
 export FORK_STATE_DIR="${FORK_STATE_DIR:-$DIR/../.state/$CHAIN}"
 PROJECT="reserve-fork-$CHAIN"
 
+# Only `up` needs the archive endpoint; the compose file still interpolates it for ps/logs/down.
+if [[ "$CMD" != "up" ]]; then
+  export FORK_RPC_URL="${FORK_RPC_URL:-unset://not-needed-for-$CMD}"
+  export FORK_BLOCK="${FORK_BLOCK:-0}"
+fi
 COMPOSE=(docker compose -p "$PROJECT" --env-file "$ENV_FILE" -f "$DIR/docker-compose.yml")
 [[ -n "${CI:-}" ]] && COMPOSE+=(-f "$DIR/docker-compose.ci.yml")
+
+# Anvil's banner and the resolved compose both echo the archive URL; strip the path (the key) from anything printed.
+mask_urls() { sed -E 's#(https?://[^/[:space:]"]+/)[^[:space:]"]*#\1…#g'; }
 
 rpc() {
   curl -sf -X POST "http://127.0.0.1:$FORK_ANVIL_PORT" \
@@ -47,7 +55,7 @@ up() {
   [[ "${FORK_BLOCK:-}" =~ ^[0-9]+$ ]] || fail "FORK_BLOCK must be a positive integer (pinned per chain; never reuse across chains)"
   mkdir -p "$FORK_STATE_DIR"/{anvil,postgres,ipfs}
   print_resolved
-  "${COMPOSE[@]}" up -d --wait
+  "${COMPOSE[@]}" up -d --wait 2>&1 | mask_urls
   doctor
 }
 
@@ -65,9 +73,12 @@ doctor() {
   local client
   client="$(rpc web3_clientVersion | json_result)"
   [[ "$client" == anvil* ]] || fail "rpc is not anvil: $client"
-  curl -sf "http://127.0.0.1:$FORK_GRAPH_STATUS_PORT/graphql" -H 'content-type: application/json' \
-    -d '{"query":"{ indexingStatuses { subgraph health synced chains { chainHeadBlock { number } latestBlock { number } } } }"}' \
-    >/dev/null || fail "graph-node status endpoint not reachable on $FORK_GRAPH_STATUS_PORT"
+  local tries=0
+  until curl -sf "http://127.0.0.1:$FORK_GRAPH_STATUS_PORT/graphql" -H 'content-type: application/json' \
+    -d '{"query":"{ indexingStatuses { subgraph health } }"}' >/dev/null; do
+    (( tries++ < 30 )) || fail "graph-node status endpoint not reachable on $FORK_GRAPH_STATUS_PORT after 60s"
+    sleep 2
+  done
   local unhealthy
   unhealthy="$("${COMPOSE[@]}" ps --format '{{.Service}} {{.State}} {{.Health}}' | awk '$2!="running" || ($3!="" && $3!="healthy")')"
   [[ -z "$unhealthy" ]] || fail "unhealthy services:"$'\n'"$unhealthy"
@@ -88,10 +99,10 @@ reset() {
 case "$CMD" in
   up) up ;;
   doctor) doctor ;;
-  ps) "${COMPOSE[@]}" ps ;;
-  logs) "${COMPOSE[@]}" logs --tail=200 -f "$@" ;;
+  ps) "${COMPOSE[@]}" ps --format 'table {{.Service}}\t{{.State}}\t{{.Health}}\t{{.Ports}}' ;;
+  logs) "${COMPOSE[@]}" logs --tail=200 -f "$@" 2>&1 | mask_urls ;;
   down) "${COMPOSE[@]}" down --remove-orphans ;;
   reset) reset ;;
-  config) "${COMPOSE[@]}" config ;;
+  config) "${COMPOSE[@]}" config 2>&1 | mask_urls ;;
   *) fail "unknown command: $CMD" ;;
 esac

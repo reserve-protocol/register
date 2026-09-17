@@ -4,10 +4,10 @@ import useAssetPricesWithSnapshot, {
   TokenPriceWithSnapshot,
 } from '@/hooks/use-asset-prices-with-snapshot'
 import {
+  folioVersionAtom,
   indexDTFAtom,
   indexDTFBasketAtom,
   indexDTFRebalanceControlAtom,
-  indexDTFVersionAtom,
   isHybridDTFAtom,
 } from '@/state/dtf/atoms'
 import { Token, Volatility } from '@/types'
@@ -80,11 +80,11 @@ const useRebalanceParams = () => {
   const auctions = useAtomValue(rebalanceAuctionsAtom)
   const originalWeights = useAtomValue(originalRebalanceWeightsAtom)
   const tokenPriceVolatility = useRebalancePriceVolatility()
-  const versionString = useAtomValue(indexDTFVersionAtom)
+  const versionState = useAtomValue(folioVersionAtom)
 
   const folioVersion = useMemo(
-    () => getFolioVersion(versionString),
-    [versionString]
+    () => getFolioVersion(versionState),
+    [versionState]
   )
   const abi = folioVersion === FOLIO_VERSION_V5 ? dtfIndexAbiV5 : dtfIndexAbiV4
 
@@ -99,7 +99,10 @@ const useRebalanceParams = () => {
     args: [],
     blockNumber: BigInt(rebalance?.rebalance.blockNumber ?? '0'),
     query: {
-      enabled: !!rebalance?.rebalance.blockNumber && !!dtf?.id,
+      enabled:
+        !!rebalance?.rebalance.blockNumber &&
+        !!dtf?.id &&
+        folioVersion !== undefined,
     },
   })
 
@@ -111,7 +114,8 @@ const useRebalanceParams = () => {
       !rebalanceControl ||
       !rebalance ||
       !initialRebalanceRaw ||
-      !tokenPriceVolatility
+      !tokenPriceVolatility ||
+      folioVersion === undefined
     )
       return undefined
 
