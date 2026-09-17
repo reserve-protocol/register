@@ -8,6 +8,13 @@ type: log
 
 Append-only chronological record: lessons, corrections, friction. Newest section last. Tag kit-caused friction with `kit-friction`.
 
+## 2026-09-16 — v6 register rebalance vertical, slices 1–2
+
+- Slice 1: `indexDTFVersionAtom` is undefined until resolved and resets on navigation; `folioVersionAtom` derives pending/ready/unsupported from exact deployed versions (inventory: live DTFs on 1.0.0, 2.0.0, 4.0.0, 5.0.0). Container keys the version write on identity — the correctness lens found that a cached same-version A→B→A hop through the command menu stranded the version after the reset (`version-identity-nav.spec.ts` is the regression).
+- Slice 2: SDK `6059ca4` — required, runtime-validated version in every rebalance builder; one-block active-auction reads with inclusive end and nonce match; price validation ahead of the library; v6 auction length carried once. Register linked to the candidate (react-query 5.102.8, rebalance-lib 3.3.2).
+- Candidate bump lessons: the SDK now issues `GetIndexDtfProposalGovernanceAddresses` before listing proposals and formats weights with `governance.token.token.decimals`; both had to be modelled in `e2e/helpers/subgraph.ts` or every proposal-dependent surface rendered empty. Standard voting power is read at `voteStart` now.
+- Fork stack: BSC fork up at 122310900 via Ankr; Alchemy has no BNB on this app. Anvil's banner leaks the archive URL — `fork.sh` masks URL paths in `up`/`logs`/`config`.
+
 ## 2026-07-02
 
 - Wiki initialized by llm-workflow install.

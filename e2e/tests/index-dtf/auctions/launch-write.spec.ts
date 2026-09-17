@@ -139,13 +139,13 @@ test('auctions: a non-launcher in the permissionless window submits openAuctionU
   await harness.chain.freezeAt(Number(raw.restrictedUntil) + 60)
 
   // The community button reads the window from currentRebalanceAtom (subgraph
-  // getRebalances), NOT the RPC tuple — widen it there too, or isNotCommunityLaunch
+  // GetIndexDtfRebalances), NOT the RPC tuple — widen it there too, or isNotCommunityLaunch
   // (availableUntil === restrictedUntil) stays true and no button renders.
   const rebSnap = loadSnapshot<{ rebalances: Array<Record<string, unknown>> }>(
     `${dtf.snapshotDir}/rebalances.json`
   )
   overrides.subgraph(
-    { operationName: 'getRebalances' },
+    { operationName: 'GetIndexDtfRebalances' },
     {
       rebalances: rebSnap.rebalances.map((r) =>
         r.blockNumber === raw.blockNumber
