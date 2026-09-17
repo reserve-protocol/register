@@ -116,6 +116,90 @@ The `proposal` block is what makes this more than a test harness: it is the same
 5. Read outcomes at one block: final basket, per-asset error vs target, value traded, realized vs start prices, rounds, gas, plus the catalog invariants named in `expect`.
 6. Write the manifest and report. A run is comparable to another run of the same scenario with a different `proposal` or `bidders`, which is how "what if we had tighter caps" or "what if nobody bids for an hour" get answered.
 
+## Bid and case simulation
+
+The runner above executes one plan against one price vector. The simulation layer runs many: it varies **when bids arrive**, **how prices move before and during the rebalance**, **what liquidity the swap really has**, and **what fails**, then reports the distribution of outcomes for a proposal. Every simulated run is still a real fork execution with real calldata; only the counterparties and the price inputs are modelled.
+
+### Time model
+
+The protocol prices a pair inside an auction by exponential decay from the start price (`sell.high / buy.low`) to the end price (`sell.low / buy.high`) over `[startTime, endTime]`, with `k = ln(P0 / Pt) / length` (`RebalancingLib.sol` `_price`, lines 446–495; atomic auctions use the start price). The lab implements the same curve in test-owned math so a bidder can compute, for its own fair value `F`, the earliest timestamp at which the auction price crosses `F`. Bid timing policies are expressed against that curve:
+
+| Policy              | Bids when                                                                                                   | What it exercises                                                         |
+| ------------------- | ----------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------- |
+| `at-fair-value`     | first timestamp where auction price ≤ bidder's fair value                                                   | the expected fill; baseline for price impact                              |
+| `early-overpay`     | at `startTime + δ` regardless of fair value                                                                 | value captured by the DTF; `Folio__SlippageExceeded` if `maxBuy` is tight |
+| `late`              | at `endTime − δ`                                                                                            | worst realized price for the DTF; end-inclusive bidding (`RB-07.09`)      |
+| `staggered`         | several bidders with fair values spread ±x% around mark, each at its crossing                               | competition, partial fills, cap exhaustion (`RB-08.02`)                   |
+| `partial-then-walk` | one partial fill, then nothing until the next round                                                         | multi-round behaviour, remaining caps, restart (`RB-08.08`, `RB-10.06`)   |
+| `solver`            | when the auction price beats the bidder's own DEX execution on the fork by its margin (see liquidity model) | what a real solver would do with this asset's real depth                  |
+| `no-bidder`         | never                                                                                                       | expiry, zero progress, end/close semantics (`RB-10.07`)                   |
+| `replay`            | at the timestamps and sizes of the real bids indexed for that auction                                       | reproducing history on source DTFs                                        |
+
+Timing is executed with `evm_setNextBlockTimestamp` before each bid so the fork's clock, not the wall clock, decides the price; the report records the requested and the mined timestamp for every bid.
+
+### Price model
+
+Prices enter in two places, and the simulation controls both:
+
+- **Before the rebalance**: the snapshot prices the proposal was built with versus the prices at launch. Scenarios declare a drift between proposal and launch (`priceDrift: { token, pct }` or a recorded series between two blocks) so the target-basket mode (snapshot versus current) and `priceError` bands are exercised as the protocol will see them (`RB-02.01`, `RB-04.03`).
+- **During auctions**: a path per token, sampled per bid decision. Modes: `recorded` (API series keyed by block, the honest default for source DTFs), `scripted` (explicit steps: `+3% at t+600`, `−15% at t+900`), and `random-walk` (seeded, per-token volatility, optional correlation). Bidders' fair values follow the path; the DTF's on-chain price ranges do not, which is exactly the exposure being measured.
+
+Seeds are pinned in the scenario; a seed that produced a failure becomes a named regression case, as the catalog requires.
+
+### Liquidity and expected price impact
+
+A bidder that fills a Folio auction sources the buy token somewhere and disposes of the sell token somewhere; on a fork that "somewhere" is real. The lab therefore predicts price impact from **on-chain funds for the specific asset and the intended swap**, and then measures it:
+
+1. **Liquidity inventory** at the fork block, per asset in the rebalance: the venues that hold it on that chain (Uniswap v2/v3/v4 and PancakeSwap pools, Curve pools, 1inch/CoW routes when quotable on-chain), their reserves or in-range liquidity, and the reference token on each route. Recorded in the manifest as the asset's depth at that block; Register's existing `/rebalance/liquidity` response is captured alongside for comparison but is not the source of truth.
+2. **Pre-trade impact curve**: for each leg of the intended swap (sell token → buy token, sized from the proposal's target deltas and per-token caps), the execution price as a function of size, obtained by quoting the routes on the fork (`eth_call` against the real quoter or pool contracts at the pinned block) rather than by re-implementing AMM math; constant-product and concentrated-liquidity formulas are used only as an independent cross-check for the simple pools. The curve gives the expected impact in basis points for the lot the auction will offer, the size at which impact exceeds the proposal's `priceError` band, and therefore the largest lot a rational solver will take per round.
+3. **Expected outcome before running**: from the curve and the auction's price band the lab predicts, per round, the crossing time for a solver with a given margin, the expected fill size, the expected realized price, and whether the round can complete at all; across rounds it predicts rounds-to-completion and the total impact cost. This is the number a proposer wants before submitting, and it is produced without executing anything.
+4. **Measured outcome**: the `solver` bidder policy executes the real swap on the fork (route the sell token into the buy token on the recorded venues, then bid) so the realized impact includes the DEX legs; the report shows predicted versus realized impact per fill and flags legs where the fork's liquidity diverged from the recorded inventory.
+5. **Sizing feedback**: the comparison report recommends `maxAuctionSizeUsd` and round counts that keep expected impact inside the band, as candidates for the proposal, never as an automatic change.
+
+Assets whose depth is not on-chain (tokenized equities, restricted assets) are inventoried as such; their bidders can only be `replay` or scripted, and the report says so instead of inventing a curve.
+
+### Case library
+
+Each case is a scenario template with actors, price model, bid policy and expectations. Cases map to catalog IDs so the release gate and the simulation share vocabulary.
+
+| Case                           | Setup                                                                                                         | Expected outcome                                                                                                                | Catalog                      |
+| ------------------------------ | ------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------- | ---------------------------- |
+| **Happy path**                 | recorded prices, no drift, `at-fair-value` bidders funded for the full lot, launcher opens each round on time | target reached within tolerance in the planned rounds; realized price within the auction band; no dust above declared allowance | RB-01.01, RB-10.01           |
+| **Decent**                     | 2% drift before launch, `staggered` bidders at ±1.5%, one round late by 10 minutes                            | target reached with residual under 50 bps; slippage cost reported; one extra round                                              | RB-02.01, RB-08.01, RB-12.01 |
+| **Real depth**                 | `solver` bidders with a 30 bps margin over their fork DEX execution                                           | predicted impact matches realized within the declared tolerance; rounds and lots as predicted                                   | RB-08.01, RB-12.01           |
+| **Thin market**                | `partial-then-walk` with 40% of lot size, `late` for the rest                                                 | partial completion per round, caps and remaining capacity asserted, extra rounds until TTL                                      | RB-08.02, RB-08.08           |
+| **Price shock during auction** | `random-walk` with a −15% step on the largest sell token at `t+900`                                           | bidders stop crossing; round expires; next round re-prices from current; DTF value leakage bounded by the price band            | RB-04.01, RB-07.04, RB-10.07 |
+| **Stale snapshot**             | snapshot prices 10% off launch prices, native price mode                                                      | launch blocked by Register's price pre-check or the lib's bounds; nothing sent                                                  | RB-04.03, RB-04.01           |
+| **No bidders**                 | `no-bidder`                                                                                                   | auction expires, `endRebalance` behaviour, restart with a new nonce invalidates old bids                                        | RB-10.02, RB-10.06           |
+| **Launcher misses the window** | no launch until `restrictedUntil`, then community launch                                                      | permissionless open with spot values; restricted-window errors before it                                                        | RB-06.04, RB-06.05           |
+| **Stale nonce and collisions** | new rebalance started while an auction is time-valid; community launch inside the buffer                      | `Folio__AuctionNotOngoing`, `Folio__NotRebalancing`; RPC-first gate in Register reflects it                                     | RB-06.06, RB-07.10           |
+| **Overbid and cap exhaustion** | `early-overpay` with `maxBuy` below the ceil payment; bids past the per-token cap                             | `Folio__SlippageExceeded`, `Folio__InsufficientSellAvailable`; unchanged state after each revert                                | RB-08.02, RB-08.03           |
+| **Infrastructure**             | archive endpoint failure mid-run, indexer lag beyond the receipt                                              | run marked blocked, not passed; UI gate stays on RPC                                                                            | INF-02, RB-13.06             |
+
+Failure cases assert the exact custom error and the absence of state change, never "any revert"; positive cases assert nonzero execution and the final state, never "auction opened".
+
+### Outcome metrics and distributions
+
+For every run the report computes, from protocol reads at one block and the test-owned math:
+
+- **Price impact**: predicted (from the liquidity curve) and realized (per fill versus the mark price at the same timestamp), per token and for the whole rebalance, in basis points and USD.
+- **Basket error**: per-asset distance from the target in share and units; dust versus the declared allowance.
+- **Value traded, value leaked**: gross traded USD; the difference between what the DTF received and what it would have received at mark.
+- **Completion**: rounds used, time from start to the last fill, whether TTL expired, remaining caps.
+- **Gas** per actor.
+
+A **distribution run** repeats a scenario over `N` seeds (price paths and bid timings), executing each on a fresh snapshot of the same fork state (`evm_snapshot` / `evm_revert`, isolated lane: no indexer attached). The report presents worst, median and best runs by the scenario's primary metric (default: basket error, then price impact), with the full per-seed table and the seeds that produced the extremes, so the worst case can be replayed as a named scenario.
+
+### Reports
+
+Every run writes `manifest.json` (schema v2), `receipts/`, optional screenshots, and a report the agent builds from that data:
+
+- **Single run**: the evidence-page shape already in use, with sections per step (proposal decode, governance lifecycle, each auction round with its bids on the price curve, final state), the metrics above, predicted versus realized impact, the catalog cases exercised and their verdicts, and the labelled impersonations.
+- **Case report**: one page per case template, aggregating its runs across seeds: distribution table, worst/median/best with links to the single-run pages, price-path and fill charts drawn from the run data.
+- **Comparison**: two or more runs of the same scenario with different proposals or bidder policies side by side (the "what if" answer), including the sizing candidates from the liquidity model.
+
+The generator is one script (`lab report <run|case|compare>`) that reads only manifests; the agent calls it and may add a short narrative on top, but every number on the page traces to a manifest field. Reports live in the run directory, never the repo.
+
 ## Agent interface
 
 Agents (Claude Code, codex, the strategy bot) drive the lab through the same runner people use:
@@ -128,20 +212,27 @@ Guardrails for agent runs: every write requires an `Actor` from the scenario; th
 
 ## Acceptance evidence
 
-| Criterion           | Evidence                                                                                                                                                                                                                                                                                                              |
-| ------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Standalone          | `packages/rebalance-lab` builds and runs `lab run` with no import from Register; Register's fork spec imports the lab's client and passes unchanged.                                                                                                                                                                  |
-| Proposal simulation | A scenario on CMC20 (v5) proposes a basket change, executes it through the real Governor on the fork, launches, fills with a scripted bidder, ends, and the report shows final basket error within the declared tolerance; a second run with a different `maxAuctionSizeUsd` produces a different, explained outcome. |
-| Independent oracles | Bid amounts and targets asserted with the catalog's integer math; a mutation that flips ceil→floor in the SDK fails the run.                                                                                                                                                                                          |
-| Agent-driven        | An agent session creates a scenario from a natural-language intent, runs it through MCP, and reports the metrics; the transcript shows only lab tools, no raw RPC.                                                                                                                                                    |
-| Governance realism  | Standard and optimistic lifecycles on real source DTFs with real delegates impersonated at the snapshot; direct-manager runs labelled as such.                                                                                                                                                                        |
-| Reuse               | The strategy bot rehearses one CCA transition against a lab run before the real proposal.                                                                                                                                                                                                                             |
-| Safety              | Non-loopback write attempt refused with evidence; archive key never appears in a report.                                                                                                                                                                                                                              |
+| Criterion            | Evidence                                                                                                                                                                                                                                                                                                              |
+| -------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Standalone           | `packages/rebalance-lab` builds and runs `lab run` with no import from Register; Register's fork spec imports the lab's client and passes unchanged.                                                                                                                                                                  |
+| Proposal simulation  | A scenario on CMC20 (v5) proposes a basket change, executes it through the real Governor on the fork, launches, fills with a scripted bidder, ends, and the report shows final basket error within the declared tolerance; a second run with a different `maxAuctionSizeUsd` produces a different, explained outcome. |
+| Independent oracles  | Bid amounts and targets asserted with the catalog's integer math; a mutation that flips ceil→floor in the SDK fails the run.                                                                                                                                                                                          |
+| Agent-driven         | An agent session creates a scenario from a natural-language intent, runs it through MCP, and reports the metrics; the transcript shows only lab tools, no raw RPC.                                                                                                                                                    |
+| Governance realism   | Standard and optimistic lifecycles on real source DTFs with real delegates impersonated at the snapshot; direct-manager runs labelled as such.                                                                                                                                                                        |
+| Bid timing           | On one auction, `at-fair-value`, `early-overpay` and `late` bidders fill at timestamps the lab predicted from its own price curve within one block; the realized prices match the test-owned decay math, not the SDK.                                                                                                 |
+| Price paths          | A −15% scripted shock during an auction stops fills and the next round re-prices; a 10% stale-snapshot drift blocks the launch before any send.                                                                                                                                                                       |
+| Liquidity and impact | For a CMC20 leg, the fork-quoted impact curve predicts the solver bidder's fill size, crossing time and realized price within the declared tolerance; a leg whose depth is off-chain is reported as such, not curved.                                                                                                 |
+| Case library         | Happy, decent, real-depth, thin-market, no-bidder, stale-nonce and overbid cases run on CMC20 with the expected outcomes and exact custom errors; each names its catalog cases.                                                                                                                                       |
+| Distributions        | A 25-seed run of the decent case reports worst/median/best basket error and price impact; the worst seed replays as a named scenario with the same result.                                                                                                                                                            |
+| Reports              | `lab report` builds single-run, case and comparison HTML from manifests only; the agent's narrative adds no number that is not in a manifest.                                                                                                                                                                         |
+| Reuse                | The strategy bot rehearses one CCA transition against a lab run before the real proposal.                                                                                                                                                                                                                             |
+| Safety               | Non-loopback write attempt refused with evidence; archive key never appears in a report.                                                                                                                                                                                                                              |
 
 ## Test seams
 
 - Runner and steps: vitest against a fork (same env gating as the SDK fork smoke: `RUN_REBALANCE_LAB=1`).
 - Oracles: pure vitest with the catalog vectors (§3.1 hand-calculated v4 and v5/v6 results).
+- Simulation: seeded runs on the isolated lane (`evm_snapshot`/`evm_revert`, no indexer); a named seed reproduces its extreme. Liquidity curves are checked against a direct fork quote at three sizes per leg.
 - Scenario schema: zod, rejects unknown versions.
 - Register UI: existing fork spec through the lab client.
 - MCP: a tool-level test that runs a minimal scenario end to end.
@@ -151,9 +242,12 @@ Guardrails for agent runs: every write requires an `Actor` from the scenario; th
 - Slice 1 — Extract: create `packages/rebalance-lab` in the interface hub (or its own repo, see decisions), move `e2e/fork/docker`, the wallet, proxy and prepare script into `env/`; Register's spec consumes the lab client; scenario schema v2 and manifest writer; `lab up/doctor/inventory/reset`. Blocked by: none.
 - Slice 2 — Launch and bid on a real source DTF: steps for launch (launcher and community), `bid` with the `fill-at-fair-value` policy funded from a recorded whale, close/end; catalog bid oracle; report with metrics. Scenario: CMC20 nonce 12 window. Blocked by: 1.
 - Slice 3 — Proposal simulation on v5: `propose` step through the SDK builder, standard governance lifecycle with impersonated delegates, `lab compare`. Scenario: a CMC20 what-if with two cap settings. Blocked by: 2.
-- Slice 4 — Agent surface: CLI polish, MCP server, skill; the strategy bot's `--lab` mode. Blocked by: 3.
-- Slice 5 — Three chains and cohort: chain profiles for 1 and 8453, the twelve cohort DTFs as source scenarios, CI lanes (this is where the release-gate suite from the integration plan starts running for real). Blocked by: 2.
-- Slice 6 — v6 and upgrades: native v6 controls from the protocol sandbox bootstrap, upgrade scenarios, v6-only cases from the catalog. Blocked by: 3, 5.
+- Slice 4 — Bid and price simulation: the auction price curve in test-owned math, bid timing policies, price models (recorded, scripted, seeded random walk), pre-launch drift, single-run metrics and the single-run report. Scenario: the happy and decent cases on CMC20. Blocked by: 2.
+- Slice 5 — Liquidity and impact: per-asset on-chain depth inventory at the fork block, fork-quoted impact curves for the intended swap, predicted rounds and sizing, the `solver` bidder executing real DEX legs on the fork, predicted-versus-realized in the report. Blocked by: 4.
+- Slice 6 — Case library and distributions: the case templates with catalog mappings, snapshot/revert distribution runs over seeds, worst/median/best selection, case and comparison reports. Blocked by: 3, 5.
+- Slice 7 — Agent surface: CLI polish, MCP server (including `lab simulate`, `lab impact` and `lab report`), skill; the strategy bot's `--lab` mode. Blocked by: 6.
+- Slice 8 — Three chains and cohort: chain profiles for 1 and 8453, the twelve cohort DTFs as source scenarios, CI lanes (this is where the release-gate suite from the integration plan starts running for real). Blocked by: 2.
+- Slice 9 — v6 and upgrades: native v6 controls from the protocol sandbox bootstrap, upgrade scenarios, v6-only cases from the catalog. Blocked by: 3, 8.
 
 ## Decisions for Luis
 
