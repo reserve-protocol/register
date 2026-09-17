@@ -17,7 +17,7 @@ import {
   type NavigationIndicatorDescriptor,
 } from './navigation-indicator'
 import { v1Typography } from './typography'
-import { EntityIdentity } from '@/components/entity-identity'
+import { EntityIdentity } from '@/components/entity-identity/entity-identity'
 import { Link } from './link'
 import { Menu, MenuContent, MenuItemSlot, MenuTrigger } from './menu'
 import { cn } from '@/lib/utils'

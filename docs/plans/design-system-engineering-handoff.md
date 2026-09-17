@@ -10,6 +10,34 @@ and freezes its evidence. Every chart entry below remains an adoption constraint
 the visual decision does not clear engineering, data, shared-default, or
 production review.
 
+## Component-level follow-ups from documentation review
+
+The September 17 documentation critique also surfaced four questions that
+belong to design-system owners rather than the documentation presentation. None
+is approved for implementation by the documentation cleanup:
+
+- Small `text-primary` links measured 3.20:1 on the audited dark documentation
+  canvas. Decide whether the system needs a distinct dark link/primary-text role;
+  do not change the global primary token as a documentation repair.
+- Quiet Button can lose its resting affordance outside a containing context.
+  Documentation may show its intended context and states, but any resting-style
+  change belongs to the Button contract.
+- `GlobalNavigation` overflow can escape a bounded specimen. Confirm whether an
+  opt-in portal container or inline-menu seam belongs in the component API before
+  changing shared behavior.
+- Multi-select applied and empty triggers appeared indistinguishable in the
+  audited specimen. Reproduce this against the canonical owner before deciding
+  whether count, badge, or another applied-state distinction is required.
+
+A separate read-only fidelity audit should inspect Transaction, Navigation,
+Table, and Chart specimens against their accepted owners for spacing,
+containment, responsive behavior, state composition, and interaction. Every
+finding must name the exact route, state, viewport, and theme, and distinguish a
+documentation-host defect from a canonical component defect or product-flow
+behavior. That audit may report implementation mistakes; it does not authorize
+redesign, transaction-mechanic changes, shared-default changes, or production
+adoption.
+
 ## Responsive page-title opt-in
 
 `src/components/design-system-v1/typography.ts` adds
@@ -164,6 +192,7 @@ already supplied total; no new balance or return calculation is introduced.
 
 | Review surface                                                                                                                          | Why engineering review is required at project closeout                                                                                                                                                                                                                                                                              | Current boundary                                                                                                                                                                                                                                                                                                                                          |
 | --------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Standalone documentation build and routing boundary                                                                                     | Adds a second Vite/React entry, standalone-only component-detail alias, SPA fallback and dedicated artifact contract while preserving the ordinary eager in-app route; hosted routing, access and response headers still need deployment-owner review                                                                               | [S2a-entry receipt](design-system-standalone-entry/README.md): provider/external startup is zero in fresh Start/Components/Button/Chart contexts; wallet/product startup identifiers are absent; product compatibility passes. Non-Button details remain placeholders. No publication, provider refactor or content migration.                            |
 | Governance record production adapter                                                                                                    | Governance owner must preserve individual proposal/governor identity, lifecycle/tally/deadline derivation, standard versus optimistic evidence and vote/queue/execute authority; loading/empty/expired/Show all and deadline crossings need real source coverage                                                                    | [Presentation closeout](design-system-governance-presentation-closeout.md): 13 frozen examples, explicit waiting versus ready, independent help, active-only timeline and local loading/empty. Overview reference links remain; no adapter, state derivation, shared timeline default or transaction change.                                              |
 | Opt-in interactive content hover                                                                                                        | CSS/Tailwind/semantic role needs theme, contrast, focus/selection and real consumer-scope review before production use                                                                                                                                                                                                              | [Accepted lab rollout](design-system-content-hover-trial.md): solid pale ivory in light, subtle lightening in dark. Eligible content rows/cards opt in; static/loading/control states excluded. No production migration or shared-default change. Engineer review required for adoption.                                                                  |
 | Same-view current rebalance lifecycle                                                                                                   | Auction live-state truth, indexer lag/double-send prevention, both launch paths, receipt reverts, permissions/network checks, weight units/persistence, cap policy and filler navigation need real integration evidence                                                                                                             | [Lab candidate](design-system-current-rebalance-workspace.md) only; local simulation and explicit unknown states, no SDK/wallet/RPC change. Engineer review required before adoption; v4/v2 and router-level blocking remain separate                                                                                                                     |

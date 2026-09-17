@@ -659,18 +659,35 @@ test.describe('design system lab', () => {
       localStorage.setItem('theme-ui-color-mode', 'light')
     })
     await page.emulateMedia({ reducedMotion: 'reduce' })
+    const navigateFromDocumentation = async (testId: string) => {
+      if ((page.viewportSize()?.width ?? 0) < 768) {
+        await page.getByTestId('documentation-mobile-navigation').click()
+      }
+      await page.getByTestId(testId).click()
+    }
     await page.goto('/internal/design-system', {
       waitUntil: 'domcontentloaded',
     })
-    await expect(page).toHaveURL(/\/internal\/design-system\/foundations$/)
-    await expect(page.getByTestId('design-system-nav-screens')).toBeInViewport()
-    await expect(page.getByTestId('design-system-nav-status')).toBeInViewport()
+    await expect(page).toHaveURL(/\/internal\/design-system$/)
+    if ((page.viewportSize()?.width ?? 0) < 768) {
+      await expect(
+        page.getByTestId('documentation-mobile-navigation')
+      ).toBeVisible()
+    } else {
+      await expect(
+        page.getByTestId('design-system-nav-screens')
+      ).toBeInViewport()
+      await expect(
+        page.getByTestId('design-system-nav-status')
+      ).toBeInViewport()
+    }
     await expect(page.getByTestId('current-review-spotlight')).toHaveCount(0)
-    await expect(
-      page.getByTestId('foundation-visual-overview').locator('a')
-    ).toHaveCount(9)
+    await navigateFromDocumentation('design-system-nav-foundations')
+    await expect(page.getByTestId('foundation-reference-section')).toHaveCount(
+      9
+    )
 
-    await page.getByTestId('design-system-nav-screens').click()
+    await navigateFromDocumentation('design-system-nav-screens')
     await expect(
       page.getByTestId('screens-overview').locator('a[href="/internal/deploy"]')
     ).toBeVisible()
@@ -725,30 +742,50 @@ test.describe('design system lab', () => {
       await expect(statusHeader).toBeVisible()
     }
 
-    await page.getByTestId('design-system-nav-components').click()
+    await navigateFromDocumentation('design-system-nav-components')
     const componentCatalog = page.getByTestId('components-overview')
     await expect(componentCatalog).toBeVisible()
     const canonicalOverview = page.getByTestId('canonical-component-overview')
-    const renderedCount = COMPONENT_ITEMS.filter(
-      (item) => item.outputStatus === 'rendered'
-    ).length
     await expect(
-      canonicalOverview.locator('article[data-testid^="component-overview-"]')
-    ).toHaveCount(renderedCount)
-    const overviewOutputs = canonicalOverview.getByTestId(
-      'component-overview-output'
-    )
-    await expect(overviewOutputs).toHaveCount(renderedCount)
-    await expect
-      .poll(() =>
-        overviewOutputs.evaluateAll((outputs) =>
-          outputs.every((output) => output.childElementCount > 0)
-        )
+      canonicalOverview.locator('a[data-testid^="component-overview-"]')
+    ).toHaveCount(COMPONENT_ITEMS.length)
+    await expect(
+      canonicalOverview.getByTestId('component-overview-output')
+    ).toHaveCount(29)
+    await expect(
+      canonicalOverview.getByTestId('component-isolation-slot')
+    ).toHaveCount(0)
+    await expect(
+      canonicalOverview.getByTestId('component-pattern-slot')
+    ).toHaveCount(4)
+    await expect(
+      canonicalOverview.locator(
+        '#copy-value [data-copyable-value-treatment="default"]'
       )
-      .toBe(true)
+    ).toHaveCount(1)
+    for (const id of [
+      'table',
+      'chart',
+      'global-navigation',
+      'product-navigation',
+    ]) {
+      await expect(
+        canonicalOverview
+          .locator(`#${id}`)
+          .getByTestId('component-pattern-slot')
+      ).toHaveCount(1)
+    }
     await expect(
-      canonicalOverview.getByTestId('component-overview-authority')
-    ).toHaveCount(renderedCount)
+      canonicalOverview
+        .locator('#transaction-action')
+        .getByTestId('component-exploring-treatment')
+    ).toHaveCount(1)
+    await expect(canonicalOverview.locator('#combobox')).toContainText(
+      'No generic component is planned for the current system'
+    )
+    await expect(
+      canonicalOverview.locator('[data-documentation-status]')
+    ).toHaveCount(COMPONENT_ITEMS.length)
     await expect
       .poll(() =>
         page.evaluate(
@@ -759,63 +796,23 @@ test.describe('design system lab', () => {
       )
       .toBe(true)
     await expect(
-      canonicalOverview.getByTestId('canonical-button').first()
+      canonicalOverview.getByTestId('component-overview-button')
     ).toBeVisible()
     await expect(
-      canonicalOverview.getByTestId('canonical-checkbox').first()
-    ).toBeVisible()
-    const dialogSurfaces = canonicalOverview
-      .getByTestId('dialog-state-sheet')
-      .getByTestId('canonical-dialog-surface')
-    await expect(dialogSurfaces).toHaveCount(3)
-    await expect(dialogSurfaces.first()).toHaveAttribute(
-      'data-width',
-      'compact'
-    )
-    await expect(dialogSurfaces.nth(1)).toHaveAttribute(
-      'data-width',
-      'standard'
-    )
-    await expect(
-      canonicalOverview.getByTestId('canonical-entity-identity').first()
+      canonicalOverview.getByTestId('component-overview-checkbox')
     ).toBeVisible()
     await expect(
-      canonicalOverview.getByTestId('canonical-metric').first()
-    ).toBeVisible()
-    const emptyStates = canonicalOverview
-      .getByTestId('empty-state-state-sheet')
-      .getByTestId('canonical-empty-state')
-    await expect(emptyStates).toHaveCount(3)
-    await expect(emptyStates.first()).toBeVisible()
-    await expect(
-      canonicalOverview.getByTestId('action-group-state-sheet')
+      canonicalOverview.getByTestId('component-overview-dialog')
     ).toBeVisible()
     await expect(
-      canonicalOverview
-        .getByTestId('action-group-state-sheet')
-        .getByTestId('canonical-action-group')
-    ).toHaveCount(3)
-    await expect(
-      componentCatalog.getByTestId('information-row-state-sheet')
+      componentCatalog.getByTestId('documentation-table-of-contents')
     ).toBeVisible()
     await expect(
-      componentCatalog.getByTestId('component-group-navigation')
+      componentCatalog.getByTestId('component-overview-table')
     ).toBeVisible()
     await expect(
-      componentCatalog.getByTestId('component-overview-tabs')
-    ).toBeVisible()
-    await expect(
-      componentCatalog.getByTestId('navigation-systems-state-sheet')
-    ).toHaveCount(2)
-    await expect(
-      componentCatalog.locator('[data-testid^="component-unrendered-"]')
-    ).toHaveCount(COMPONENT_ITEMS.length - renderedCount)
-    await expect(
-      canonicalOverview.getByTestId('link-state-sheet')
-    ).toBeVisible()
-    await expect(
-      canonicalOverview.getByTestId('accordion-state-sheet')
-    ).toBeVisible()
+      componentCatalog.getByTestId('dialog-state-sheet')
+    ).toHaveCount(0)
     await expect(
       componentCatalog.getByText(
         'This rendered catalog item is missing its overview specimen.',
@@ -976,11 +973,11 @@ test.describe('design system lab', () => {
       .click()
     await expect(page.getByTestId('component-detail-chart')).toBeVisible()
 
-    await page.getByTestId('design-system-nav-components').click()
+    await navigateFromDocumentation('design-system-nav-components')
     await componentCatalog
       .locator('a[href="/internal/design-system/components/chart"]')
       .scrollIntoViewIfNeeded()
-    await componentCatalog.getByRole('link', { name: 'Inspect Tabs' }).click()
+    await componentCatalog.getByTestId('component-overview-tabs').click()
 
     await expect(page.getByTestId('component-detail-tabs')).toBeVisible()
     await expect(page.getByTestId('tabs-state-sheet')).toBeVisible()
@@ -1018,7 +1015,7 @@ test.describe('design system lab', () => {
     await focusButton.focus()
     await expect(focusButton).toBeFocused()
 
-    await page.getByTestId('design-system-nav-status').click()
+    await navigateFromDocumentation('design-system-nav-status')
     await expect(page.getByTestId('project-status-page')).toBeVisible()
     await expect(
       page.getByTestId('project-status-page').getByText('Current review')

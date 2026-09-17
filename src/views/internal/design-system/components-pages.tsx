@@ -15,8 +15,6 @@ import ModalActionDecision from './modal-action-decision'
 import RichRecordReview from './rich-record-review'
 import { getComponentItem } from './component-catalog'
 import { getFoundationItem } from './foundation-catalog'
-import CanonicalComponentsOverview from './canonical-components-overview'
-import { CurrentReviewSpotlight } from './current-review-panel'
 import ComponentVisualOutput from './component-visual-output'
 import { TableFamilyReview } from './table-family/review'
 import { HoldingsReview } from './table-family/holdings-review'
@@ -25,18 +23,6 @@ import { EarnReview } from './table-family/earn-review'
 import { OwnedPositionsReview } from './table-family/owned-review'
 import { EligibilityDialogInteractionReview } from './dialog-state-sheet'
 import { v1SemanticRoles as roles } from '@/components/design-system-v1/semantic-roles'
-
-export const ComponentsOverview = () => (
-  <div data-testid="components-overview" className="space-y-10">
-    <PageHeader
-      eyebrow="Reusable design system"
-      title="Components"
-      description="Scroll through complete rendered state sheets by family, followed by one compact unresolved inventory. Open a detail page only for evidence, dependencies, extended compositions, or remaining decisions."
-    />
-    <CurrentReviewSpotlight />
-    <CanonicalComponentsOverview />
-  </div>
-)
 
 export const ComponentDetail = () => {
   const { componentId } = useParams()

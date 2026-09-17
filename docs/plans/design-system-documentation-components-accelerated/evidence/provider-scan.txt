@@ -1,0 +1,4 @@
+Artifact scan command: rg -i -l "reown|rainbowkit|walletconnect|wagmi|connectkit|coinbasewallet" build/design-system --glob '!*.map'
+Artifact scan result: no matches.
+Runtime check: playwright.design-system-standalone.config.ts
+Runtime result: 12/12 passed across desktop and mobile. Components overview and representative Button/Chart detail routes made no provider calls, external requests, or WebSocket connections.

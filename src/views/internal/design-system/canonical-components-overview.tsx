@@ -1,223 +1,308 @@
-import { ExternalLink } from 'lucide-react'
+import { Plural, Trans, useLingui } from '@lingui/react/macro'
+import { ArrowRight } from 'lucide-react'
 import { Link } from 'react-router-dom'
 
-import { cn } from '@/lib/utils'
-import { v1SemanticRoles as roles } from '@/components/design-system-v1/semantic-roles'
-import {
-  ComponentAuditBadge,
-  ComponentDeliveryBadge,
-  ComponentPriorityBadge,
-  ComponentReviewBadge,
-  DesignAuthorityBadge,
-  OutputBadge,
-  StatusBadge,
-} from './catalog-ui'
+import type { ComponentGroup, ComponentItem } from './catalog-types'
 import { COMPONENT_GROUPS, COMPONENT_ITEMS } from './component-catalog'
-import type { ComponentItem } from './catalog-types'
-import ComponentVisualOutput from './component-visual-output'
+import {
+  getComponentGroupMessage,
+  getComponentNameMessage,
+} from './documentation-catalog-messages'
+import { COMPLEX_COMPONENT_DESTINATIONS } from './documentation-component-destinations'
+import {
+  canMountDocumentationComponentSpecimen,
+  DocumentationComponentSpecimen,
+} from './documentation-component-specimens'
+import { DocumentationStatus } from './documentation-status'
+import {
+  CODE_STATUS_MESSAGES,
+  DESIGN_STATUS_MESSAGES,
+  PRODUCTION_STATUS_MESSAGES,
+  getComponentPresentation,
+} from './documentation-presentation'
 
-const visibleItems = COMPONENT_GROUPS.flatMap((group) => group.items).filter(
-  (item) => item.outputStatus === 'rendered'
-)
 const baselineCount = COMPONENT_ITEMS.filter(
   (item) => item.designAuthority === 'current-baseline'
 ).length
-const adoptedCount = COMPONENT_ITEMS.filter(
-  (item) => item.adoptionStatus === 'in-use'
-).length
-const unresolvedItems = COMPONENT_GROUPS.flatMap((group) =>
-  group.items
-    .filter((item) => item.outputStatus !== 'rendered')
-    .map((item) => ({ groupName: group.name, item }))
-)
 
-const CanonicalComponentsOverview = () => (
-  <section className="space-y-4" aria-labelledby="canonical-components-heading">
-    <div className="flex flex-col justify-between gap-3 sm:flex-row sm:items-end">
-      <div>
-        <p className="text-sm font-medium text-primary">
-          Visual component catalog
-        </p>
-        <h2
-          id="canonical-components-heading"
-          className="mt-1 text-2xl font-light"
-        >
-          Components at a glance
-        </h2>
-        <p className="mt-1 max-w-3xl text-sm font-light text-muted-foreground">
-          Complete shared state sheets appear directly in family order. Detail
-          pages retain evidence, rationale, history, and extended compositions;
-          composition-only evidence and unprepared or deferred capabilities
-          appear once below without invented UI.
-        </p>
-      </div>
-      <span className="text-xs font-light text-muted-foreground">
-        {visibleItems.length} standalone outputs · {baselineCount} current
-        baselines across the inventory · {adoptedCount} adopted ·{' '}
-        {COMPONENT_GROUPS.length} families
-      </span>
-    </div>
-    <div data-testid="canonical-component-overview" className="space-y-10">
-      {COMPONENT_GROUPS.map((group) => {
-        const renderedItems = group.items.filter(
-          (item) => item.outputStatus === 'rendered'
-        )
+const PATTERN_COMPONENTS = new Set([
+  'table',
+  'chart',
+  'global-navigation',
+  'product-navigation',
+])
 
-        if (renderedItems.length === 0) return null
+const CanonicalComponentsOverview = () => {
+  const { t } = useLingui()
 
-        return (
-          <section
-            key={group.id}
-            data-testid={`component-group-${group.id}`}
-            aria-labelledby={`component-group-${group.id}-title`}
-            className="space-y-6"
-          >
-            <div className="border-b border-border pb-3">
-              <div className="flex flex-wrap items-baseline justify-between gap-3">
-                <h3
-                  id={`component-group-${group.id}-title`}
-                  className="text-xl font-medium"
-                >
-                  {group.name}
-                </h3>
-                <span className="text-xs font-light text-muted-foreground">
-                  {renderedItems.length} complete state{' '}
-                  {renderedItems.length === 1 ? 'sheet' : 'sheets'}
-                </span>
-              </div>
-              <p className="mt-1 text-sm font-light text-muted-foreground">
-                {group.description}
-              </p>
-            </div>
-
-            <div className="space-y-8">
-              {renderedItems.map((item) => (
-                <CompleteStateSheet key={item.id} item={item} />
-              ))}
-            </div>
-          </section>
-        )
-      })}
-
-      <section
-        data-testid="component-unresolved-inventory"
-        aria-labelledby="component-unresolved-inventory-title"
-        className="space-y-4"
-      >
-        <div className="border-b border-border pb-3">
-          <div className="flex flex-wrap items-baseline justify-between gap-3">
-            <h3
-              id="component-unresolved-inventory-title"
-              className="text-xl font-medium"
-            >
-              Additional inventory
-            </h3>
-            <span className="text-xs font-light text-muted-foreground">
-              {unresolvedItems.length} capabilities · no invented output
-            </span>
-          </div>
-          <p className="mt-1 text-sm font-light text-muted-foreground">
-            Composition-only evidence, work not prepared for review, and
-            deliberately deferred or unnecessary capabilities. This is not a
-            work queue; each entry records its own authority and next action.
-          </p>
-        </div>
-        <div className="divide-y divide-border border border-border bg-card">
-          {unresolvedItems.map(({ groupName, item }) => (
-            <UnrenderedComponentRow
-              key={item.id}
-              groupName={groupName}
-              item={item}
-            />
-          ))}
-        </div>
-      </section>
-    </div>
-  </section>
-)
-
-const CompleteStateSheet = ({ item }: { item: ComponentItem }) => (
-  <article
-    data-testid={`component-overview-${item.id}`}
-    className="min-w-0 space-y-5"
-  >
-    <div className="border-b border-border pb-3">
-      <div className="flex items-start justify-between gap-3">
-        <div>
-          <h4 className="font-medium">{item.name}</h4>
-          <p className="mt-1 text-xs font-light leading-5 text-muted-foreground">
-            {item.review.scope}
-          </p>
-        </div>
-        <Link
-          aria-label={`Inspect ${item.name}`}
-          to={`/internal/design-system/components/${item.id}`}
-          className="flex size-11 shrink-0 items-center justify-center rounded-full hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-        >
-          <ExternalLink className="size-4" />
-        </Link>
-      </div>
-      <div className="mt-3 flex flex-wrap gap-2">
-        <ComponentReviewBadge review={item.review} />
-        <span data-testid="component-overview-authority">
-          <DesignAuthorityBadge item={item} />
-        </span>
-        <ComponentDeliveryBadge item={item} />
-      </div>
-    </div>
-    <div
-      data-testid="component-overview-output"
-      className={cn('min-w-0', item.id === 'table' && 'overflow-x-auto')}
+  return (
+    <section
+      className="space-y-10"
+      aria-labelledby="canonical-components-heading"
     >
-      <ComponentVisualOutput itemId={item.id} />
-    </div>
-  </article>
-)
+      <div className="border-b border-border pb-6">
+        <p className="text-sm font-medium text-primary">
+          <Trans>Component reference</Trans>
+        </p>
+        <div className="mt-1 flex flex-col justify-between gap-3 lg:flex-row lg:items-end">
+          <div>
+            <h2
+              id="canonical-components-heading"
+              className="text-2xl font-light"
+            >
+              <Trans>The reusable system</Trans>
+            </h2>
+            <p className="mt-2 max-w-3xl text-sm leading-6 text-muted-foreground">
+              <Trans>
+                Scroll through every family with the current result in view.
+                Open a detail page only when you need complete states,
+                implementation guidance, or review history.
+              </Trans>
+            </p>
+          </div>
+          <span className="text-xs text-muted-foreground">
+            {t`${baselineCount} accepted · ${COMPONENT_ITEMS.length} total`}
+          </span>
+        </div>
+        <nav
+          aria-label={t`Component families`}
+          className="mt-5 flex flex-wrap gap-x-4 gap-y-2"
+        >
+          {COMPONENT_GROUPS.map((group) => (
+            <a
+              key={group.id}
+              href={`#${group.id}`}
+              className="text-sm font-medium text-muted-foreground underline-offset-4 hover:text-foreground hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            >
+              {t(getComponentGroupMessage(group.id))}
+            </a>
+          ))}
+        </nav>
+      </div>
 
-const UnrenderedComponentRow = ({
-  groupName,
+      <div data-testid="canonical-component-overview" className="space-y-16">
+        {COMPONENT_GROUPS.map((group) => (
+          <ComponentFamily key={group.id} group={group} />
+        ))}
+      </div>
+    </section>
+  )
+}
+
+const ComponentFamily = ({ group }: { group: ComponentGroup }) => {
+  const { t } = useLingui()
+  const headingId = `component-group-${group.id}-title`
+
+  return (
+    <section
+      id={group.id}
+      data-testid="component-group-section"
+      data-component-group={group.id}
+      aria-labelledby={headingId}
+      className="scroll-mt-20 md:scroll-mt-6"
+    >
+      <div className="flex flex-wrap items-baseline justify-between gap-3 border-b border-border pb-4">
+        <h3 id={headingId} className="text-xl font-medium">
+          {t(getComponentGroupMessage(group.id))}
+        </h3>
+        <span className="text-xs text-muted-foreground">
+          <Plural value={group.items.length} one="# item" other="# items" />
+        </span>
+      </div>
+      <div className="divide-y divide-border">
+        {group.items.map((item) => (
+          <ComponentReference key={item.id} groupId={group.id} item={item} />
+        ))}
+      </div>
+    </section>
+  )
+}
+
+const ComponentReference = ({
+  groupId,
   item,
 }: {
-  groupName: string
+  groupId: string
   item: ComponentItem
-}) => (
-  <Link
-    data-testid={`component-unrendered-${item.id}`}
-    to={`/internal/design-system/components/${item.id}`}
-    className={cn(
-      'group grid gap-3 p-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring md:grid-cols-[minmax(12rem,0.7fr)_minmax(16rem,1fr)_auto] md:items-center',
-      roles.interaction.contentHover
-    )}
+}) => {
+  const { t } = useLingui()
+  const presentation = getComponentPresentation(item)
+  const name = t(getComponentNameMessage(item.id))
+  const hasSpecimen = canMountDocumentationComponentSpecimen(
+    item.id,
+    presentation.design
+  )
+  const detailDestination =
+    COMPLEX_COMPONENT_DESTINATIONS[item.id] ??
+    `/internal/design-system/components/${item.id}`
+
+  return (
+    <article
+      id={item.id}
+      data-testid="component-reference-section"
+      data-component-id={item.id}
+      className="scroll-mt-20 py-7 md:scroll-mt-6"
+    >
+      <div className="grid min-w-0 gap-5 lg:grid-cols-[minmax(10rem,13rem)_minmax(0,1fr)] lg:gap-8">
+        <div className="min-w-0 lg:col-start-1 lg:row-start-1">
+          <h4 className="text-base font-medium">{name}</h4>
+          <p className="mt-1 text-sm leading-5 text-muted-foreground">
+            {item.description}
+          </p>
+          <div className="mt-2">
+            <DocumentationStatus status={presentation.design}>
+              {t(DESIGN_STATUS_MESSAGES[presentation.design])}
+            </DocumentationStatus>
+          </div>
+        </div>
+
+        {hasSpecimen ? (
+          <div
+            data-testid="component-overview-output"
+            className="flex min-h-32 min-w-0 items-center overflow-x-auto border-y border-border bg-muted/30 px-4 py-6 sm:px-6 lg:col-start-2 lg:row-span-2 lg:row-start-1"
+          >
+            <div data-testid="component-specimen-set" className="w-full">
+              <DocumentationComponentSpecimen
+                groupId={groupId}
+                itemId={item.id}
+              />
+            </div>
+          </div>
+        ) : PATTERN_COMPONENTS.has(item.id) ? (
+          <PatternSlot name={name} />
+        ) : item.id === 'card' ? (
+          <CardReference />
+        ) : presentation.design === 'accepted' ? (
+          <IsolationSlot />
+        ) : presentation.design === 'exploring' ? (
+          <TruthfulTreatment kind="exploring" />
+        ) : (
+          <TruthfulTreatment kind={presentation.design} />
+        )}
+
+        <div
+          data-testid="component-overview-metadata"
+          className="min-w-0 lg:col-start-1 lg:row-start-2"
+        >
+          <div className="mt-3 space-y-1 text-[11px] text-muted-foreground">
+            <StatusFact
+              label={t`Code`}
+              value={t(CODE_STATUS_MESSAGES[presentation.code])}
+            />
+            <StatusFact
+              label={t`Production`}
+              value={t(PRODUCTION_STATUS_MESSAGES[presentation.production])}
+            />
+          </div>
+          <Link
+            data-testid={`component-overview-${item.id}`}
+            to={detailDestination}
+            className="mt-4 inline-flex min-h-11 items-center gap-1 text-sm font-medium text-primary underline-offset-4 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+          >
+            <Trans>Open details</Trans>
+            <ArrowRight aria-hidden="true" className="size-3.5" />
+          </Link>
+        </div>
+      </div>
+    </article>
+  )
+}
+
+const IsolationSlot = () => (
+  <div
+    data-testid="component-isolation-slot"
+    className="flex min-h-32 min-w-0 items-center border-y border-border bg-muted/30 px-4 py-6 sm:px-6 lg:col-start-2 lg:row-span-2 lg:row-start-1"
   >
     <div>
-      <p className="mb-1 text-[10px] font-medium uppercase tracking-wide text-muted-foreground">
-        {groupName}
-      </p>
-      <div className="flex items-center gap-2">
-        <h4 className="text-sm font-medium">{item.name}</h4>
-        <ExternalLink className="size-3.5 text-muted-foreground" />
-      </div>
-      <div className="mt-2 flex flex-wrap gap-2">
-        <OutputBadge item={item} />
-        {item.status === 'not-needed' && <StatusBadge item={item} />}
-        <ComponentReviewBadge review={item.review} />
-      </div>
-      <p className="mt-1 text-xs font-light leading-5 text-muted-foreground">
-        {item.description}
+      <p className="text-sm font-medium">
+        <Trans>Accepted owner kept outside this lightweight overview</Trans>
       </p>
     </div>
-    <p className="text-xs font-light leading-5 text-muted-foreground">
-      {item.statusDetail}
-    </p>
-    <div className="flex flex-wrap items-center gap-2 md:justify-end">
-      <ComponentPriorityBadge item={item} />
-      <DesignAuthorityBadge item={item} />
-      {item.implementationStatus !== 'none' && (
-        <ComponentDeliveryBadge item={item} />
+  </div>
+)
+
+const CardReference = () => (
+  <div
+    data-testid="component-card-reference"
+    className="flex min-h-32 min-w-0 items-center border-y border-border bg-muted/30 px-4 py-6 sm:px-6 lg:col-start-2 lg:row-span-2 lg:row-start-1"
+  >
+    <div>
+      <p className="text-sm font-medium">
+        <Trans>Accepted source-bound feature-card treatment</Trans>
+      </p>
+      <p className="mt-1 max-w-xl text-sm leading-6 text-muted-foreground">
+        <Trans>
+          The current result preserves the real Home feature card and its
+          structural-region rules. It does not define a generic Card component
+          or authorize unrelated card families.
+        </Trans>
+      </p>
+    </div>
+  </div>
+)
+
+const PatternSlot = ({ name }: { name: string }) => (
+  <div
+    data-testid="component-pattern-slot"
+    className="flex min-h-32 min-w-0 items-center border-y border-border bg-muted/30 px-4 py-6 sm:px-6 lg:col-start-2 lg:row-span-2 lg:row-start-1"
+  >
+    <div>
+      <p className="text-sm font-medium">
+        <Trans>{name} is documented as a pattern</Trans>
+      </p>
+      <p className="mt-1 max-w-xl text-sm leading-6 text-muted-foreground">
+        <Trans>
+          Its dedicated page preserves the canonical result without loading the
+          full review workspace into this overview.
+        </Trans>
+      </p>
+    </div>
+  </div>
+)
+
+const TruthfulTreatment = ({
+  kind,
+}: {
+  kind: 'exploring' | 'not-started' | 'not-planned' | 'superseded'
+}) => (
+  <div
+    data-testid={
+      kind === 'exploring'
+        ? 'component-exploring-treatment'
+        : 'component-undefined-treatment'
+    }
+    className="flex min-h-28 min-w-0 items-center border-y border-dashed border-border px-4 py-6 sm:px-6 lg:col-start-2 lg:row-span-2 lg:row-start-1"
+  >
+    <p className="max-w-xl text-sm leading-6 text-muted-foreground">
+      {kind === 'exploring' ? (
+        <Trans>
+          This direction is still being explored. Its detail page preserves the
+          current evidence without presenting it as the system.
+        </Trans>
+      ) : kind === 'not-planned' ? (
+        <Trans>
+          No generic component is planned for the current system. Reopen this
+          record only when a real product job requires it.
+        </Trans>
+      ) : kind === 'superseded' ? (
+        <Trans>
+          This result has been superseded. Its record remains available for
+          history without presenting it as the system.
+        </Trans>
+      ) : (
+        <Trans>
+          A canonical result has not been prepared yet. Existing evidence
+          remains available on the detail page.
+        </Trans>
       )}
-      <ComponentAuditBadge item={item} />
-    </div>
-  </Link>
+    </p>
+  </div>
+)
+
+const StatusFact = ({ label, value }: { label: string; value: string }) => (
+  <p>
+    <span className="font-medium text-foreground">{label}</span> · {value}
+  </p>
 )
 
 export default CanonicalComponentsOverview

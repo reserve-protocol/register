@@ -1,4 +1,5 @@
 import { ArrowRight } from 'lucide-react'
+import { Trans } from '@lingui/react/macro'
 import { Link } from 'react-router-dom'
 import { PageHeader } from './catalog-ui'
 import { GOLDEN_SCREEN_CANDIDATES } from './golden-screen-candidates'
@@ -32,16 +33,25 @@ const ScreensPage = () => (
             )}
           </div>
           <div className="mt-5 flex flex-wrap gap-2">
-            {item.routes.map((route) => (
-              <Link
-                key={route.path}
-                to={route.path}
-                className="inline-flex min-h-11 items-center gap-2 rounded-full border border-border px-3 text-xs font-medium hover:border-primary/50 hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-              >
-                {route.label}
-                <ArrowRight className="h-3.5 w-3.5" />
-              </Link>
-            ))}
+            {import.meta.env.VITE_DESIGN_SYSTEM_STANDALONE === 'true' ? (
+              <p className="text-xs leading-5 text-muted-foreground">
+                <Trans>
+                  Product-context routes are available only in the integrated
+                  lab. This standalone page preserves their catalog summary.
+                </Trans>
+              </p>
+            ) : (
+              item.routes.map((route) => (
+                <Link
+                  key={route.path}
+                  to={route.path}
+                  className="inline-flex min-h-11 items-center gap-2 rounded-full border border-border px-3 text-xs font-medium hover:border-primary/50 hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                >
+                  {route.label}
+                  <ArrowRight className="h-3.5 w-3.5" />
+                </Link>
+              ))
+            )}
           </div>
         </section>
       ))}

@@ -1,0 +1,26 @@
+Standalone documentation production artifact, final affected-surface build
+Date: 2026-09-17
+
+Build result
+- Vite transformed 1,967 modules.
+- Output: 20 files, 7,900 KiB including source maps and five locale chunks.
+- Main JavaScript: 785,850 bytes decoded; 229,285 bytes gzip.
+- CSS: 219,336 bytes decoded; 36,157 bytes gzip.
+- HTML: 1,025 bytes.
+- Manifest: 1,210 bytes.
+- Static public surface: one SPA fallback, favicon, and three Lausanne fonts.
+
+Boundary scan
+- Zero matches across emitted JavaScript, source maps, and manifest for the
+  product App/index entry, chain/updater entry paths, Mixpanel, Sentry React,
+  RainbowKit, WalletConnect/Reown, Coinbase wallet SDK, or Binance connector.
+- No wallet connector or product-detail chunk was emitted.
+
+Artifact SHA-256
+- index.html: 5d95d6ad1a858eea439ddd2e6acc2c24cdb1599b2b504d4aeb72b851ada27f42
+- manifest.json: 05bd31d37898b2a362b7f7ad79b3c449d6add20032394ff6004b1b35b48bfd60
+- main JavaScript: f44b68ded289a6cd241c386abb6d0ae6b01eb12b9044896a68774706b8e0ce5f
+- CSS: 423d5861d298aeda90656f1548fecfde41c78baa932ffb3a7d30328be72ed3bd
+
+The temporary build directory is intentionally not retained. The source,
+manifest facts, hashes, runtime trace, and render evidence are durable here.

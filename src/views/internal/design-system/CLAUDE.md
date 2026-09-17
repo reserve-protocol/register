@@ -5,6 +5,8 @@ uses its own area guide. Start with the [V1 plan](../../../../docs/plans/design-
 then the target's `getComponentContextRoute` in `component-catalog.ts`. Follow
 its scoped authority, implementation, and evidence links. A rendered specimen,
 reviewable state, or passing test is not design acceptance or production adoption.
+`documentation-presentation.ts` owns the human presentation index; catalogs and
+`CURRENT_REVIEW` remain the authority for component state and active review.
 
 ## Apply and review
 

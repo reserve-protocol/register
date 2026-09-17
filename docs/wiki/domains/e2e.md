@@ -1,11 +1,11 @@
 ---
 title: E2E Suite
-updated: 2026-09-09
+updated: 2026-09-17
 type: domain
 sources:
   - e2e/**
   - playwright.config.ts
-  - playwright.design-system.config.ts
+  - playwright.design-system*.config.ts
   - .github/workflows/playwright.yml
   - .github/workflows/design-system.yml
 ---
@@ -13,10 +13,10 @@ sources:
 # E2E Suite (Playwright)
 
 Offline Index-DTF acceptance coverage for home/discover, overview, issuance,
-zaps, compliance, auctions, governance, and settings, plus Yield (RToken)
-render smokes. The suite characterizes Register behavior at the installed
-`@reserve-protocol/react-sdk` version; SDK mapper/math/calldata correctness
-remains the SDK repositories' responsibility.
+zaps, compliance, auctions, governance, settings, and shell interactions, plus
+Yield (RToken) render smokes. The suite characterizes Register behavior at the
+installed `@reserve-protocol/react-sdk` version; SDK mapper/math/calldata
+correctness remains the SDK repositories' responsibility.
 
 ## How the suite is organized (foundational)
 
@@ -104,23 +104,28 @@ change (the domain guides' diff→test tables name the spec). An unmocked-call
 failure names the function + the helper to model it in (`e2e/CLAUDE.md` has the
 boundary map + new-test recipe).
 
-The internal design-system lab has a focused contract suite in
-`e2e/design-system/lab.spec.ts`. It verifies route availability, registry and
-review semantics, and only the rendered geometry needed to keep a current human
-judgment foundation-conformant; it is not a substitute for product-route
-acceptance or a broad visual-regression suite.
+The internal design-system lab is a separate evidence surface under
+`e2e/design-system/`, not product-route acceptance. `lab.spec.ts` retains the
+route, catalog, foundation, and component contracts; dedicated
+`*-lab-regressions` and `*-source-capture` suites own the growing chart, table,
+Earn, Portfolio, governance, auction, and current-rebalance evidence. A green
+isolated candidate does not certify production adoption; exact coverage and
+non-claims live in `e2e/TEST_MAP.md`.
 
-The separate design-system configuration also has an owned-port review-capture
-project with read-only snapshot defaults and source/runtime attachments. Its
-bounded coverage and limitations are in `e2e/TEST_MAP.md`.
-`pnpm design-system:review` is workflow-routed for canonical components, lab,
-styles, fixtures, configuration and dependencies, and runs in a path-filtered
-PR/manual CI job alongside typecheck and the full unit suite, with 30-day
-artifacts. It defaults to the separate owned port
-3022 and never reuses the user's preview. Linux CI captures viewport evidence
-and tests behavior; existing macOS pixel baselines are not compared there.
-This does not replace product-route acceptance. The main production test
-configuration still owns port 3005.
+The provider-free documentation entry adds isolated Components, Patterns,
+Foundations, standalone-runtime, and collaboration-readiness configurations.
+Its focused browser seams pin direct/reloaded anchors, canonical destination
+links, provider isolation, responsive presentation, and shareability behavior;
+the in-app documentation-shell spec remains a compatibility check. None is a
+substitute for design acceptance or production-route adoption evidence.
+
+`pnpm design-system:review` selects only those regression/capture suites through
+the separate `design-system-review` project. It runs on an owned port (3022 by
+default), never reuses the user's preview, keeps snapshots read-only, and is
+workflow-routed through the path-filtered PR/manual design-system job alongside
+typecheck and the full unit suite, with 30-day artifacts. Linux CI captures
+viewport evidence and behavior but does not compare the existing macOS pixel
+baselines. The main production test configuration still owns port 3005.
 
 ## Maintenance rules
 

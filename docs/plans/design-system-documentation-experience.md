@@ -158,14 +158,14 @@ Its durable disposition is:
   derivation mechanism and any typed activity field require the architecture or
   foundation approval named below. This disposition changes no design authority.
 
-### Effect on upstream sequencing
+### Effect on upstream sequencing (resolved by S0)
 
-Claude's report adds no Git evidence that changes the synchronization strategy.
+Claude's report added no Git evidence that changed the synchronization strategy.
 Before the upstream merge, only this reconciliation, its approval decisions,
-and the existing recoverable-checkpoint preparation occur. The checkpoint,
+and the recoverable-checkpoint preparation occurred. The checkpoint,
 safety ref, isolated integration worktree, freshly pinned upstream SHA,
 merge-not-rebase choice, no-stash rule, and focused impact verification remain
-intact. After the merge, a new explicit rebaseline stage checks every IA/content
+intact in the S0 receipt. After the merge, S1 checked every IA/content
 claim against the integrated tree and current render before shell or cleanup
 work. Stale-copy fixes, Table-default changes, deletion candidates, and all
 component migrations therefore move after that revalidation.
@@ -183,6 +183,95 @@ history are secondary and collapsed by default. This direction does not apply
 to the Components overview, where mounting every full state sheet is a verified
 problem.
 
+### S1 post-merge rebaseline — 2026-09-16
+
+S0 is complete at merge `02434707c`; its recoverable checkpoint, safety ref,
+verification, and preserved detached packages are recorded in the upstream
+integration receipt. S1 rechecked the integrated tree and representative current
+renders, then produced the [migration ledger](design-system-documentation-rebaseline/migration-ledger.md),
+[post-merge audit](design-system-documentation-rebaseline/post-merge-audit.md),
+[provider/runtime baseline](design-system-documentation-rebaseline/provider-baseline.md),
+and [independent re-review](design-system-documentation-rebaseline/independent-review.md).
+
+The rebaseline corrects Typography's Recommended refinements to accepted current
+guidance; records the missing Chart and Table test boundaries; confirms the
+source and representative rendered cleanup classifications; and leaves cleanup
+with its later owning slices. The provider evidence supports a human-gated
+same-build S2a-1 recommendation, not acceptance of the inherited provider
+boundary: the docs work with external traffic denied and showed no account
+request, signing, chain-switch, transaction-send, or other write behavior, but
+still inherit a large wallet chunk, storage initialization, analytics, and
+79–86 external attempts per cold route.
+U13 recommended the minimal typed presentation index. S1 evidence was accepted
+for S2a-1 after U1–U4, U10, and U13 were resolved. The
+[S1 receipt](design-system-documentation-rebaseline/README.md) contains the exact
+decision list and verification.
+
+### S2a-1 authorization — 2026-09-16
+
+The user approved the recommended disposition of U1–U4, U10, and U13. S2a-1
+was authorized to implement only the same-build neutral shell, navigation and search,
+sourced human-status projection, stable and temporary Legacy lab aliases, and a
+lightweight Components overview. Paused/Deferred remain presentation-only
+Workbench activity owned by the minimal typed presentation index; Patterns are
+navigation aliases over existing catalog identities; and the migration order is
+Typography → Button → newcomer gate → Charts → Select. This authorization does
+not start those migrations, production adoption, a provider split, hosted
+preview work, or changes to shared component defaults.
+
+The exact provider/runtime baseline must be repeated after S2a-1. If inherited
+provider requests or payload cost remain materially unchanged, further
+migration and preview work stops for the already-defined human choice between a
+provider split and a standalone documentation entry. U11/U12 remain unresolved
+hosted-preview decisions and do not block the local shell slice.
+
+### Content-architecture audit reconciliation — 2026-09-17
+
+Claude's independent route-by-route content audit was read in full after S2a-1.
+It confirms that the authority system remains intact, while the legacy content
+projection routinely places thumbnails, readiness machinery, comparisons,
+candidate material, and invented product-like examples before the actual
+foundation or component contract. It also identifies stale local status copy,
+missing primary definitions, misleading hand-built examples, unreachable
+presentation branches, and several already-known Studies/Table contradictions.
+Those findings are presentation evidence, not authority edits.
+
+This revision adopts the audit's P/S/X/W/R/D disposition model as a migration
+aid and its recommendation to keep one concise sourced scope line beside the
+primary result. It also adopts its warning that exploratory, paused, deferred,
+or not-planned entries must lead with the truthful current result and authority
+state rather than a fabricated specimen. The following corrections keep the
+audit subordinate to the user-approved direction and current sources:
+
+- Every Canonical section begins with **the system itself**: the current tokens,
+  rules, component output, or approved composition. Identity/status and one
+  necessary scope boundary may accompany it; review machinery, provenance,
+  comparisons, and implementation history may not precede it.
+- Canonical usage examples use already-approved design-system components. If an
+  approved owner does not exist, omit the example or keep it in Workbench; an
+  invented product-like composition never teaches only the property it was
+  created to demonstrate.
+- The audit's row-only Components recommendation is rejected. The user requires
+  one continuous anchored document with a lightweight real result for Button,
+  Icon button, Action group, and each following component. Full state sheets,
+  heavy families, and Workbench controls remain excluded from the overview.
+- The absence of a dated foundation decision does not invalidate a typed
+  `current-baseline` catalog record. Its defined slots are current wording under
+  the existing authority precedence; a page may render them without inventing
+  new guidance. Provisional implementation values remain explicitly provisional.
+- The post-S2a-1 provider evidence supersedes the earlier deferral of a
+  standalone entry. A provider-free documentation entry preceded the completed
+  local content candidates. It shares repository sources and authority; it is not a
+  second design system or a broad product-provider refactor.
+- Color replaces Typography as the first foundation content pilot because it is
+  the clearest test of result-first reference design and of the approved-owner-
+  only example rule. Typography follows once that grammar is accepted.
+
+The user's instruction to begin the recommended next work authorizes this
+reconciliation and the smallest local standalone-entry slice. It does not
+authorize publication, preview access changes, production adoption, catalog
+authority cleanup, deletion, commit, or push.
+
 ## Goal
 
 Turn `/internal/design-system` into a neutral, searchable documentation
@@ -197,36 +286,59 @@ current owners rather than copying or replacing them.
 
 ## Current state
 
-- The design-system route is lazy, but it still renders inside the application's
-  global `Layout`, including the product header, app scroll container, providers,
-  updater, and chat boundary. The chat happens to suppress itself on this route;
-  the product header does not.
-- `lab-shell.tsx` supplies a centered container, title/status pills, theme
-  control, and horizontal sticky navigation. There is no persistent sidebar,
-  global design-system search, or cross-category index.
-- Foundations, Components, Studies, Screens, and Status are the only top-level
-  destinations. Component and foundation pages combine guidance, specimens,
-  readiness metadata, evidence, history, and temporary review content.
-- Current Review can appear inside otherwise canonical overview pages. The
-  Components overview renders many complete state sheets in one long document.
-  Screens is primarily a launcher into the product. Status combines the active
-  review queue and a detailed project tracker.
-- Specimens normally inherit the docs container and padding. Only a few chart
-  previews have an isolated host, so it is often unclear which geometry belongs
-  to documentation chrome, a product-like context, or the component itself.
+- S2a-1 provides the neutral shell, persistent desktop/mobile navigation,
+  grouped search, Canonical/Workbench/Internal Records destinations, simplified
+  human status, and stable compatibility links. It is implementation-verified
+  but remains human/engineer-review-required.
+- S2a-entry provides the verified standalone runtime without the product App,
+  wallet/chain providers, updater, analytics/telemetry startup, product chrome,
+  chat, or Toaster. The in-app route and direct compatibility routes remain.
+- Foundations is now one continuous result-first reference for all nine typed
+  records. Components is one continuous anchored reference for all 45 catalog
+  entries. Patterns presents substantive Charts, Tables, Navigation, and Forms
+  references while keeping paused Transactions separate in Workbench and keeping
+  provider-coupled product graphs out of the standalone artifact.
+- Supporting foundation/component detail routes remain reachable for retained
+  guidance, evidence, history, and review content. They are secondary to the
+  canonical overview results and explicitly return to them.
+- Current Review is empty and shown truthfully in Workbench. Legacy Studies,
+  Screens, Status, heavy component pages, hashes, and preview documents remain
+  compatibility/supporting surfaces. Collaboration-readiness polish now states
+  their standalone limits and mixed-status boundaries explicitly.
+- The standalone entry, all nine Foundations, all 45 Components, all five
+  Patterns, and collaboration-readiness polish are implementation-verified local
+  candidates. All still require human visual review; none is publication,
+  design acceptance, or production adoption.
 - Existing deep links are already test and review contracts. Important examples
   include foundation/component IDs, chart and transaction hashes, table query
   state, and standalone chart-preview documents.
-- The current branch is `design-system-v1` at `49f9f22ae`, with no configured
-  upstream. After the authorized read-only fetch, the verified remote default is
-  `origin/master` at `715fa1906`. The merge base and fork point are both
-  `2312d5434`; the branch is 22 commits ahead and 17 behind.
-- The checkout is intentionally dirty: 49 tracked files are modified, none are
-  staged, and 623 paths are untracked after adding this plan. Toast and Progress
-  drafts remain parked in the detached small-components worktree based at
-  `49f9f22ae`; its
-  `docs/plans/design-system-small-components-overnight/` package and matching
-  source/tests must not be folded into this documentation stage.
+- S0 integrated the verified upstream `origin/master` commit `e0f3213897` and
+  promoted the verified merge `02434707c` to the local `design-system-v1`
+  branch. The pre-merge checkpoint `783030433e` remains recoverable through
+  `codex/safety-design-system-v1-pre-upstream-20260916`; the exact verification
+  receipt is in `design-system-upstream-integration/README.md`.
+- The primary checkout contains the verified but uncommitted documentation
+  candidates and substantial unrelated preserved work. Toast and Progress
+  drafts remain parked on `codex/preserve-small-components-20260916`; the other
+  detached Claude packages and nine pre-existing stashes remain preserved.
+
+### Complete-pass revision — 2026-09-17
+
+The user authorized one accelerated pass rather than waiting for S5 before every
+remaining documentation migration. The
+[complete-pass receipt](design-system-documentation-complete-pass/README.md)
+therefore supersedes the earlier assumption that S4 would stay teaser-light and
+that all complex-family documentation would wait for S7. It does not reorder
+production adoption or hosted-preview gates.
+
+The accelerated result deepens accepted ordinary component references; adds one
+scroll-synchronized navigation model and specimen grammar; presents rich Charts,
+Tables, and Navigation documentation; and replaces the Transaction radio wall
+with a paused five-family Workbench explorer. Final automated and independent
+review is complete. Human visual review and U11/U12 remain the next gate. Later
+stages now contain only genuinely missing component authority/implementation,
+remaining Studies/Auctions/Internal Records cleanup, hosted validation, and
+post-migration housekeeping—not a replay of this completed presentation work.
 
 ## Non-goals
 
@@ -240,8 +352,9 @@ current owners rather than copying or replacing them.
   that the proposed in-app shell cannot meet the real requirements.
 - Do not delete the current lab renderers, hashes, query contracts, previews, or
   evidence until their destinations have parity and replacement verification.
-- Do not pull, merge, rebase, stash, reset, commit, push, create a checkpoint
-  ref, or create an integration worktree without explicit human approval.
+- Do not repeat or alter the completed integration, change its safety or
+  preservation refs, touch the existing stashes, commit, push, or publish
+  without explicit human approval.
 
 ## Audiences and use cases
 
@@ -312,7 +425,8 @@ unresolved or unverified row before deleting any old structure.
 
 The post-merge cleanup queue begins with the two proved stale Studies claims;
 the ambiguous Meaning-colors label; accepted-foundation candidate scaffolding;
-Typography's stale relative copy and unverified Recommended refinements;
+Typography's stale relative copy and accepted Recommended refinements that must
+remain current guidance rather than being reopened as candidate work;
 Spacing/Elevation/Accessibility placeholders; the hashless Table default; the
 unimported control-geometry matrix; the test-only product-facing audit; repeated
 disclaimers; and duplicate chart control conventions. A queue entry authorizes
@@ -321,16 +435,23 @@ scan, replacement ownership for unique content, and its affected test update.
 
 ## Proposed information architecture
 
-The recommended first architecture stays in the existing React/Vite build but
-uses a route-aware documentation layout that bypasses the product Header and
-chat chrome. Before S2a-1, measure the unchanged lab route as the provider/network
-baseline: requests, side effects, wallet/write behavior, and initial
-bundle/runtime cost. S2a-1 retains the current App-root providers for
-compatibility; after the shell lands, repeat the same denied-network and runtime
-checks as acceptance evidence. Neither measurement silently widens into an
-App-level provider split. A separate entry or explicit route/provider boundary
-is a later option only if the baseline, post-shell delta, or hosting requirements
-demonstrate a need.
+The information architecture remains the S2a-1 shell, but its long-term runtime
+owner is now a dedicated documentation entry in this repository. The entry
+mounts the documentation router, localization, theme, tooltip support, and
+documentation shell without importing the product `App`, `Layout`, wallet/chain
+providers, updater tree, referral handling, product analytics/telemetry startup,
+or chat. It consumes the same typed catalogs, decisions, implementations,
+fixtures, tests, and presentation index; no content or status is copied into a
+second authority.
+
+The first entry slice preserves `/internal/design-system/*` paths, hashes, query
+state, and the existing in-app route as a compatibility surface. Detailed and
+Workbench renderers stay lazy. A specimen that genuinely needs a provider must
+use an explicit fixture harness or remain on the compatibility route; it cannot
+pull the product provider tree back into the global documentation root. The
+standalone artifact and local server were verified before the local content
+candidates. Hosted deployment remains gated by U11–U12. Removing the
+compatibility route is a later parity and housekeeping decision.
 
 ```text
 Register Design System
@@ -385,15 +506,20 @@ is collapsed by default. Stable foundation detail routes remain available for
 deep links and genuinely substantial detail, but opening them is not required to
 understand or browse the system.
 
-Components uses a lightweight grouped index because mounting its 35 state sheets
-would recreate today's performance and comprehension problem. Accepted sheets
-belong on their detail pages and provisional or pressure-test output belongs in
-Workbench. Component navigation is grouped by job (Actions, Fields, Selection,
-Navigation, Overlays, Feedback, Data display, and Disclosure). Patterns exposes
-the existing chart, table/records, form, navigation-system, and transaction
-compositions as aliases, with child anchors where the current routes already
-contain distinct families. The migration ledger owns the complete grouping and
-route mapping so this plan does not become another catalog.
+Components is one continuous anchored reference grouped by job (Actions,
+Fields, Selection, Navigation, Overlays, Feedback, Data display, and
+Disclosure). Each component section shows its name, one-line job, compact
+authority/adoption facts, supported-scope summary, and a lightweight real result
+inline. Button flows directly into Icon button, Action group, Transaction
+system, Text input, and the remaining catalog without requiring navigation into
+and back out of detail pages. It does not mount the existing complete state
+sheets or heavy workbenches: ordinary components use a purpose-built canonical
+summary specimen; heavy, exploratory, paused, deferred, or not-planned entries
+show the truthful current result and links rather than fabricating output.
+Detail pages remain optional depth. Patterns exposes the existing chart,
+table/records, form, navigation-system, and transaction compositions as aliases,
+with child anchors where current routes already contain distinct families. The
+migration ledger owns the complete grouping and route mapping.
 
 ### Primary-overview browsing contract
 
@@ -405,27 +531,29 @@ review tooling, implementation APIs, engineering constraints, and history—not
 for basic orientation. Overviews use document sections, compact rows, and real
 results rather than decorative header cards.
 
-| Destination      | Visible in the overview                                                                                                     | Kept out of the overview                                                                                         |
-| ---------------- | --------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------- |
-| Foundations      | All foundation results, core values/rules, compact authority, essential usage, and primary specimens in one anchored flow.  | Complete detail trees, rich studies, evidence, provenance, and engineering history.                              |
-| Components       | Grouped component names, one-line jobs, design status, Code/Production facts, supported-scope summary, and direct anchors.  | The 35 state sheets, exhaustive variants/states, interactive demos, APIs, evidence, and review machinery.        |
-| Patterns         | Pattern families, approved composition rules, scope, and at most one lightweight canonical representative for each pattern. | Pressure fixtures, responsive/source comparison controls, large scenario matrices, and adoption/engineer detail. |
-| Workbench        | Current queue, study/review question, actual authority/activity state, owner, and concise scenario summary.                 | Mounted interactive workbenches, full fixture sets, and historical evidence bodies.                              |
-| Internal Records | Derived current adoption/coverage/engineering signals and dated indexes into decisions, handoffs, and retained evidence.    | Full plans, evidence bodies, or an undifferentiated chronological archive.                                       |
+| Destination      | Visible in the overview                                                                                                                                         | Kept out of the overview                                                                                         |
+| ---------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------- |
+| Foundations      | All foundation results, core values/rules, compact authority, essential usage, and primary specimens in one anchored flow.                                      | Complete detail trees, rich studies, evidence, provenance, and engineering history.                              |
+| Components       | Every component as an anchored section: name, job, compact status/scope, and a lightweight real canonical result or honest unavailable/current-state treatment. | Full state sheets, exhaustive variants, heavy family boards, Workbench controls, APIs, evidence, and history.    |
+| Patterns         | Pattern families, approved composition rules, scope, and at most one lightweight canonical representative for each pattern.                                     | Pressure fixtures, responsive/source comparison controls, large scenario matrices, and adoption/engineer detail. |
+| Workbench        | Current queue, study/review question, actual authority/activity state, owner, and concise scenario summary.                                                     | Mounted interactive workbenches, full fixture sets, and historical evidence bodies.                              |
+| Internal Records | Derived current adoption/coverage/engineering signals and dated indexes into decisions, handoffs, and retained evidence.                                        | Full plans, evidence bodies, or an undifferentiated chronological archive.                                       |
 
-The Components overview never imports or mounts `ComponentVisualOutput`, state
-sheets, canvases, component implementations, or Workbench renderers. Patterns
-may use only dedicated lightweight canonical representatives—not hidden live
-workbenches, iframes, product screens, or provider-dependent previews. Workbench
-queue state derives from `CURRENT_REVIEW` and shows its empty state directly.
-Internal Records derives current signals from existing owners and cannot become
-a second hand-maintained tracker or leak record bodies into a build where those
-records should be absent.
+The Components overview never mounts `ComponentVisualOutput`, complete state
+sheets, heavy family canvases, or Workbench renderers. It may import canonical
+component implementations through small documentation-owned summary specimens;
+those specimens expose only supported variants and do not create a parallel API.
+Patterns may use only dedicated lightweight canonical representatives—not
+hidden live workbenches, iframes, invented product screens, or provider-dependent
+previews. Workbench queue state derives from `CURRENT_REVIEW` and shows its empty
+state directly. Internal Records derives current signals from existing owners
+and cannot become a second hand-maintained tracker or leak record bodies into a
+build where those records should be absent.
 
-Charts uses **zero live representatives** in the Patterns overview during S4.
-Its compact source-backed result and scope link to the canonical page and
-Workbench; no Chart renderer, Recharts tree, iframe, product screen, fixture, or
-provider-dependent preview is imported or mounted there.
+Charts uses one lightweight source-faithful canonical representative in the
+Patterns overview during S4. It does not mount the full Chart family, review
+controls, iframes, product screens, pressure fixtures, or provider-dependent
+previews; those remain lazy Canonical detail or Workbench content.
 
 Start explains this model and links directly to the most useful anchored result
 in each destination. Narrow navigation exposes the same anchor hierarchy; it
@@ -473,10 +601,11 @@ catalog-derived name/description under an explicit Legacy lab label.
 
 - Restyling the current pages in place is rejected because it leaves temporary
   review content and project machinery inside canonical reading paths.
-- A standalone documentation application is deferred because it would create a
-  second build/deployment/provider boundary before the content split is proven.
-  Reconsider it only if the route-aware shell cannot avoid production-only
-  initialization or cannot meet preview access/security needs.
+- An independent framework or duplicated documentation application remains
+  rejected. A dedicated entry in this repository is now required because the
+  measured route-aware shell could not avoid production-only initialization.
+  It creates a runtime/build boundary while preserving one source and authority
+  system.
 - Charts is the pressure case. The architecture is not accepted if a newcomer
   cannot distinguish its approved pattern, interactive review specimens, host
   context, and engineering/adoption record on desktop and phone.
@@ -535,13 +664,33 @@ retains its machine gates; the ordinary human summary does not surface them all.
 
 ## Standard page templates
 
-Every Canonical foundation, component, and pattern page uses one five-tier
+### Universal result-first contract
+
+Every Canonical foundation, component, and pattern section begins with the
+answer to **“This is the system.”** A casual reader must encounter the current
+tokens/rules, real component result, or approved composition before review
+machinery, provenance, comparisons, implementation detail, or history. The
+opening may include identity, derived authority/adoption facts, and one concise
+sourced scope boundary when needed to prevent over-reading.
+
+If no accepted result exists, the section begins with the truthful current
+state—Exploring, Paused, Deferred, Not started, or Not planned—plus what exists
+and where. It never fabricates a specimen to make the page appear complete.
+
+Canonical usage examples are optional. When an example is necessary, every
+visible UI element uses an already-approved design-system component or an
+explicitly accepted product composition. If an owner is missing, define and
+approve it first, omit the example, or keep it in Workbench. A hand-built
+product-like composition cannot be Canonical guidance for only one of its
+visible properties.
+
+Every Canonical foundation, component, and pattern page then uses one five-tier
 reading order. The specialized templates below refine it rather than inventing
 different page grammars.
 
-1. **Identity and primary specimen** — name, one-line job, one status pill,
-   Code/Production facts where applicable, source-backed decision link, and the
-   main `SpecimenCanvas`.
+1. **Primary system result** — name, one-line job, one status pill,
+   Code/Production facts where applicable, one necessary scope line, and the
+   actual rules/tokens/specimen or honest current-state treatment.
 2. **Rules and guidance** — anatomy, variants, supported states, use/not-use,
    accepted scope, exclusions, accessibility, and accepted decision studies.
 3. **Related** — visible sibling, dependency, and pattern links rather than a
@@ -591,13 +740,15 @@ summaries and primary specimens; it does not mount nine complete
 
 ### Component page
 
-1. Purpose and when to use/not use.
-2. Anatomy and supported variants.
-3. States, behavior, content, and accessibility.
-4. Default specimen plus one meaningful edge state.
-5. Implementation/API and adoption guidance.
-6. Related components and explicit exclusions.
-7. Collapsed provenance and engineering detail.
+1. Real canonical component result, one-line job, derived status, and one
+   necessary accepted-scope boundary.
+2. Supported variants, sizes, states, and behavior directly sourced from the
+   implementation/catalog/accepted decision.
+3. Content and accessibility guidance.
+4. Optional approved-component usage example only when it materially adds
+   information the component result cannot show.
+5. Visible Related components and explicit exclusions.
+6. Collapsed implementation/API, adoption, provenance, and engineering detail.
 
 ### Pattern page
 
@@ -715,7 +866,10 @@ register.
 
 ## Upstream synchronization stage
 
-This stage blocks meaningful shell implementation.
+S0 completed this stage on 2026-09-16. The inputs and recoverable sequence below
+remain as the audit trail for that integration; the current result is the merge
+and receipt named in Current state. They are not instructions to repeat the Git
+operations during S1.
 
 ### Verified read-only state
 
@@ -819,18 +973,16 @@ coverage, not competing edits to the shell.
 
 ## Slices
 
-- **R0 — IA audit reconciliation (this revision; documentation only).** Preserve
+- **R0 — IA audit reconciliation (complete; documentation only).** Preserved
   the independent plan, incorporate Claude's later evidence, correct stale or
   unsupported claims, and obtain the decisions below. R0 performs no shell,
   migration, checkpoint, merge, commit, or push.
-- **S0 — Recoverable upstream integration and impact pass**; blocked by: human
-  decisions U5–U9 below. Produce a clean checkpoint, merge the pinned
-  `origin/master`, reconcile conflicts/additive groups, verify the product and
-  current lab, and record any changed design-system assumptions. No docs-shell
-  implementation begins before S0 is accepted. S1 deliberately remains a
-  separate post-merge content and compatibility rebaseline; do not fold it into
-  this operational Git/integration acceptance stage.
-- **S1 — Post-merge rebaseline and migration ledger**; blocked by: S0. Recheck
+- **S0 — Recoverable upstream integration and impact pass (complete).** The
+  pinned upstream merge, verification, promotion, safety ref, and preserved
+  detached packages are recorded in the S0 receipt. S1 deliberately remains a
+  separate post-merge content and compatibility rebaseline; do not repeat the
+  Git operations as part of documentation work.
+- **S1 — Post-merge rebaseline and migration ledger**; complete after S0. Rechecked
   every audit finding against the integrated tree and a current render; derive
   the catalog/status counts; inventory protected routes, hashes, query states,
   preview documents, test IDs, and active owners; classify each destination and
@@ -840,12 +992,13 @@ coverage, not competing edits to the shell.
   owning slices after this revalidation, not opportunistically in S1. As S1's
   final pre-implementation gate, measure the unchanged lab route's
   provider/network baseline: denied-network usability, wallet/write behavior,
-  analytics/updater requests, and initial bundle/runtime cost. If that baseline
-  already violates the agreed privacy/performance budget, stop for U10 rather
-  than building the shell around an unaccepted boundary.
-- **S2a-1 — Neutral shell, navigation, status, and Components index**; blocked
-  by: S1, an accepted pre-shell provider baseline, and decisions U1–U3, U10, and
-  U13. Bypass product header/chat; add Start, desktop and narrow sidebar
+  analytics/updater requests, and initial bundle/runtime cost. Return its facts
+  and recommendation for U10; no privacy/performance budget exists yet, so the
+  baseline cannot autonomously accept the inherited provider boundary.
+- **S2a-1 — Neutral shell, navigation, status, and Components index**;
+  implementation-verified and human/engineer-review-required after S1 and the
+  2026-09-16 approval of U1–U4, U10, and U13. The shell bypasses product
+  header/chat; adds Start, desktop and narrow sidebar
   navigation, grouped search, right-rail TOC, sourced status projection, stable
   aliases, temporary Legacy lab aliases if approved, and the concise lab-guide
   ownership pointer. Replace the old navigation's visible role while retaining
@@ -857,45 +1010,66 @@ coverage, not competing edits to the shell.
   routing behavior, its handoff is **Engineer review required**. Preserve an
   `#app-container`-compatible scroll owner or deliberately update and verify the
   `ScrollToTop` contract so route changes do not silently lose scroll reset.
-  After the shell lands, rerun the exact provider/network baseline: no wallet
-  prompt or mutating call may occur; Start, search, navigation, and canonical
-  content remain usable when external data networks fail; and the receipt records
-  request and bundle/runtime deltas. Stop for an explicitly authorized provider
-  split or separate entry if the post-shell budget fails.
-- **S2a-2 — Foundations reference and specimen primitives**; blocked by: S2a-1
-  acceptance. Replace the Foundations card gateway with its continuous anchored
-  reference using lightweight catalog-derived summaries and existing primary
-  specimens, without mounting complete detail, study, Workbench, or evidence
-  trees. Add the specimen canvas, its three testable boundaries, the single
-  provenance line, stable foundation anchors, scroll restoration, narrow/wide
-  behavior, and the required test/screenshot-baseline migration. This remains a
-  bounded foundation overview and presentation-primitive slice, not a broad
-  content port.
-- **S2b — Typography foundation migration**; blocked by: S2a-2 and decision U4.
-  Prove Typography's compact result-first section inside the continuous
-  Foundations page and its optional deep-dive treatment. Render its four defined
-  slots as Rules; keep candidate direction and weight samples in History; fix
-  the stale relative copy; verify whether Recommended refinements are accepted
-  before promotion; and retain existing test IDs until their tests migrate.
-- **S3 — Button ordinary-component migration**; blocked by: S2b. Migrate
-  Button as the ordinary component, separate provisional InlineAction/CSV
-  material from accepted Button guidance, promote accepted loading/hierarchy
-  decisions out of History, and prove the ordinary component template,
-  documentation/host/specimen geometry, default plus meaningful edge state,
-  progressive engineering detail, and one-pill/Code/Production projection.
-  Prove its dense Components-overview entry without importing or initializing
-  the Button state sheet.
-- **S3a — Early local newcomer gate**; blocked by: S3. Before Charts adds the
-  pressure case, run tasks 1, 2, 6, 7, and 10 below with people who did not build
-  the shell. Record the first answer, timing, repairs, and rerun; repair shell,
-  status, Button, Typography, Foundations, and empty-queue failures in their
-  owning slices. This local gate does not replace S5's complete hosted run.
-- **S4 — Charts wrapper migration**; blocked by: S3a. Project the
-  approved-for-now guidance into the Patterns navigation alias, separate
+  The final rerun observed no wallet prompt or mutating call, but the inherited
+  provider/request/payload cost remained material. That planned stop fired and
+  was resolved by the verified standalone-entry choice; it no longer blocks the
+  completed local content candidates. The
+  [S2a-1 receipt](design-system-documentation-shell/README.md) recommends the
+  standalone entry.
+- **S2a-entry — Standalone documentation runtime**; implementation-verified and
+  **Engineer review required** after S2a-1 and R1. The
+  [receipt](design-system-standalone-entry/README.md) records the dedicated
+  artifact, zero provider/external startup trace, direct-route matrix, product
+  compatibility, scoped identity, and review repairs. Build the smallest
+  separate documentation entry in this repository and mount
+  the existing shell/router without the product `App`, wallet/chain providers,
+  updater tree, referral capture, analytics/telemetry startup, product chrome,
+  or chat. Preserve current paths and the in-app compatibility route. Do not
+  migrate or redesign any foundation, component, pattern, Toast, or Progress in
+  this slice. Verify denied-network usability, zero wallet/provider startup,
+  direct deep-link reloads, product-route non-regression, and absence of wallet
+  code from the documentation artifact. This shared routing/build boundary is
+  **Engineer review required**.
+- **S2a-2 — Color and foundation-section pilot**; implementation-verified local
+  candidate; human visual review required. Replaced
+  the Foundations card gateway with the continuous anchored document grammar,
+  and fully migrated Color as the first result-first section: semantic aliases,
+  light/dark values, purpose and boundaries first; audit counts, comparisons,
+  alternatives, token-usage evidence, and candidate history later or linked to
+  Records/Workbench. Added the specimen canvas, its three testable boundaries,
+  stable anchors, scroll restoration, narrow/wide behavior, and baseline
+  migration. Canonical Color examples use approved owners or are omitted.
+- **S2b — Remaining foundation summaries, beginning with Typography**;
+  implementation-verified across all nine Foundations; human visual review
+  required. Applied the Color grammar to Typography, then the remaining
+  foundations in bounded batches. Render typed current-baseline rules first;
+  show Layout's exploratory state honestly; keep provisional recipes visibly
+  provisional; move candidate direction, stress studies, comparisons, and
+  hand-built examples to Workbench/Records. Typography preserves the accepted
+  refinements, fixes stale relative copy, and uses approved owners for any
+  retained context example.
+- **S3 — Continuous Components reference**; implementation-verified across all
+  45 catalog entries; human visual review required. Converted the row-only
+  overview into anchored inline-result sections beginning with Button, Icon
+  button, and Action group. Each section shows the real canonical result,
+  one-line job, supported scope, and compact status/adoption facts without
+  mounting the existing full state sheet. Button separates provisional
+  InlineAction/CSV material, promotes accepted loading/hierarchy guidance, and
+  proves the ordinary component/detail template and specimen boundaries.
+- **S3a — Early local newcomer/readiness gate**; complete for the local
+  candidate. Independent cold-newcomer/readiness audits drove the bounded polish
+  receipt and rerun. This local gate did not include the complete hosted human
+  evaluation and does not replace S5's full run.
+- **S4 — Patterns documentation**; implementation-verified across five
+  Patterns and deepened by the complete pass; human visual review required. Projected the
+  approved-for-now guidance into the Patterns navigation alias, separated
   interactive review controls/source comparisons/responsive and pressure
-  content into Workbench, and expose adoption/engineering history through
+  content into Workbench, and exposed adoption/engineering history through
   Records while preserving all existing internals, hashes, query state, preview
-  documents, tests, and evidence. The first slice is wrapper-only: do not edit
+  documents, tests, and evidence. Canonical Patterns must still show a
+  source-faithful Chart results; “zero live representatives” means
+  zero review environments or heavy interactive families, not a text-only
+  gateway. The first slice is wrapper-only: do not edit
   `charts/` family internals or the frozen source renders. Replacing the two
   viewport-control conventions is a separately bounded follow-up, not silent
   wrapper cleanup. Preserve the loopback iframe/source-URL tools for local
@@ -903,35 +1077,39 @@ coverage, not competing edits to the shell.
   the existing inline/direct fallback, that built output contains every required
   target, and that CSP allows the supported direct navigation without weakening
   `frame-ancestors`. Use Charts to prove that the Patterns overview can expose
-  the canonical high-level result with zero live Chart representatives,
-  Workbench can summarize the review tooling, and Records can expose adoption
-  constraints without any overview mounting Chart renderers or Workbench
-  machinery.
-- **S5 — Shareable preview and full newcomer validation**; blocked by: S4 and
-  decisions U11–U12. Publish a non-production preview only after its
+  one lightweight canonical result while Workbench summarizes review tooling
+  and Records exposes adoption constraints without mounting the full Chart
+  family or Workbench machinery.
+- **S4a — Documentation share-readiness repair**; implementation-verified and
+  human-review-required. The [bounded handoff and receipt](design-system-documentation-share-readiness-handoff.md)
+  repair late-layout anchors, keep primary destinations fixed beside a
+  scroll-tracked current-page tree, route complex component entries to their
+  real Pattern/Workbench surfaces, and add the mobile/search/skip-link states
+  required for sharing. Component-level findings remain in the engineering
+  handoff and are not silently treated as documentation fixes.
+- **S5 — Shareable preview and full newcomer validation**; next gated stage,
+  blocked by decisions U11–U12 and human review of the local candidate. Publish
+  a non-production preview only after its
   no-index/access configuration, branch-preview behavior, and Records exposure
   boundary pass the pre-publication gate; then verify direct deep-link reloads,
   built assets, security headers, and all newcomer tasks below. Repair failures
   in their owning slice and retain the evaluation record.
-- **S6 — Leaf-first catalog migration**; blocked by: S5. Use Select first as the
-  clean repeatability check, preserving its accepted 44/32px geometry and open
-  popup-density decision, then move remaining ordinary foundations/components in
-  small family batches. Remaining foundations adopt the same anchored,
-  result-first summary and optional deep-dive grammar established by Typography.
-  Each batch preserves aliases and evidence coverage.
+- **S6 — Remaining catalog gaps and adoption preparation**; blocked by: S5.
+  The complete pass already supplies the continuous ordinary-component reference
+  and completed the Select specimen pilot. After hosted/newcomer review, address
+  only catalog entries whose accepted result or implementation is genuinely
+  missing, plus separately authorized production-adoption work. Preserve the
+  established anchored summary and optional deep-dive grammar.
   Toast and Progress may enter only through a separately authorized integration
   slice using their preserved Claude drafts; those drafts do not prove clean
   first-pass composition.
-- **S7 — Heavy patterns, Workbench, and record migration**; blocked by: S6.
-  Handle Tables, auctions, transactions, Studies, and product contexts in
-  owner-bounded slices. Make hashless `/components/table` lead to the approved
-  current table while preserving the deferred workspace route; reconcile every
-  affected test/reference. Revalidate and correct the Modal and Auctions-study
-  contradictions; reconcile the ambiguous Meaning-colors copy against its two
-  authorities. Preserve paused/deferred systems and their
-  unique engineering context rather than flattening them into ordinary pages.
-  Complete the scrollable Workbench and Internal Records summaries without
-  mounting their interactive tools or full evidence bodies in the overviews.
+- **S7 — Remaining Workbench and record cleanup**; partially completed ahead of
+  S5 by the complete pass. Charts, Tables, Navigation, and the paused Transaction
+  explorer now have their target documentation structure. Remaining owner-bounded
+  work is limited to Auctions/Studies contradictions, product-context and
+  Internal Records cleanup, and any issue found by human/hosted newcomer review.
+  Preserve paused/deferred systems and their unique engineering context rather
+  than flattening them into ordinary pages.
 - **S8 — Contract old lab structures and housekeeping**; blocked by: every
   intended ledger row reaching route/evidence parity. Remove superseded
   overview/dispatcher/navigation structures, candidate-era scaffolding,
@@ -1045,20 +1223,23 @@ remains unknown until that receipt is captured.
 
 ## Acceptance evidence
 
-| Criterion                                                                                        | Slice/evidence                                                                                                                                       |
-| ------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Neutral shell has no product header/chat and remains accessible at narrow and wide widths        | S2a-1 mounted desktop/phone captures, DOM/keyboard pass, engineer handoff, and verified `#app-container`/`ScrollToTop` compatibility.                |
-| Retained App-root providers are safe for the docs route or trigger an explicit architecture stop | S1 pre-shell and S2a-1 post-shell denied-network, wallet/write, request, and bundle/runtime measurements with an explicit delta and disposition.     |
-| Persistent navigation/search reaches stable canonical routes                                     | S2a-1 search-unit, keyboard, Canonical/Legacy alias, and direct-reload tests.                                                                        |
-| Every primary destination provides a useful lightweight overview with selective deep dives       | Migrated-overview captures, stable anchors/back restoration, derived-status checks, empty Current Review, and absence of heavy child renderers.      |
-| Foundations keeps actual results foregrounded in one continuous, casually scannable reference    | S2a-2/S2b all-section and anchor assertions, closed technical disclosures, narrow/wide captures, scroll restoration, and render/DOM-cost comparison. |
-| Canonical, Workbench, and Records are unmistakable                                               | S2b Typography, S3 Button, S4 Charts captures plus newcomer classification task.                                                                     |
-| Human status is simple but truthful                                                              | Projection unit table and exact source-link inspection in S2a-1/S3; Paused owner fixed before rendering; no duplicated writable status.              |
-| Page and canvas templates preserve boundary ownership                                            | S3 geometry assertions and default/edge-state captures; S4 Charts pressure test.                                                                     |
-| Agent authority and discoverability are unchanged                                                | Catalog/inventory/context-routing tests, router/source hash or no-diff evidence, and bounded-handoff verification after each slice.                  |
-| Existing deep links remain recoverable                                                           | S1 ledger plus S2a-1–S4 alias/hash/query/preview route matrix with fresh-tab reload checks.                                                          |
-| Preview is shareable under an explicit policy                                                    | Pre-push Pages/Access/noindex gate plus S5 deployed URL receipt, revision marker, direct-route smoke, response-header inspection, and access proof.  |
-| Old lab structure is removed safely                                                              | S8 reference scan, migrated route/test map, no broken links, and docs housekeeping receipt.                                                          |
+| Criterion                                                                                        | Slice/evidence                                                                                                                                                    |
+| ------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Neutral shell has no product header/chat and remains accessible at narrow and wide widths        | S2a-1 mounted desktop/phone captures, DOM/keyboard pass, engineer handoff, and verified `#app-container`/`ScrollToTop` compatibility.                             |
+| Retained App-root providers are safe for the docs route or trigger an explicit architecture stop | S1 pre-shell and S2a-1 post-shell denied-network, wallet/write, request, and bundle/runtime measurements with an explicit delta and disposition.                  |
+| Standalone documentation does not initialize product runtime boundaries                          | S2a-entry separate-artifact inspection, denied-network run, zero wallet/provider/RPC/analytics startup trace, direct-route matrix, and product-route regression.  |
+| Persistent navigation/search reaches stable canonical routes                                     | S2a-1 search-unit, keyboard, Canonical/Legacy alias, and direct-reload tests.                                                                                     |
+| Every primary destination begins with the actual system and supports selective deep dives        | Migrated-overview captures, stable anchors/back restoration, derived-status checks, empty Current Review, and absence of heavy child renderers.                   |
+| Foundations keeps actual results foregrounded in one continuous, casually scannable reference    | S2a-2 Color pilot plus S2b all-section/anchor assertions, closed technical disclosures, narrow/wide captures, scroll restoration, and render/DOM-cost comparison. |
+| Components supports continuous casual browsing with real lightweight results inline              | S3 Button/Icon button/Action group sections, same-page anchor navigation, no full-sheet/Workbench imports, and overview cost comparison.                          |
+| Canonical examples never teach unapproved surrounding UI                                         | Source-owner assertions plus visual review of every retained example; invented or ownerless compositions are absent from Canonical output.                        |
+| Canonical, Workbench, and Records are unmistakable                                               | S2b Typography, S3 Button, S4 Charts captures plus newcomer classification task.                                                                                  |
+| Human status is simple but truthful                                                              | Projection unit table and exact source-link inspection in S2a-1/S3; Paused owner fixed before rendering; no duplicated writable status.                           |
+| Page and canvas templates preserve boundary ownership                                            | S3 geometry assertions and default/edge-state captures; S4 Charts pressure test.                                                                                  |
+| Agent authority and discoverability are unchanged                                                | Catalog/inventory/context-routing tests, router/source hash or no-diff evidence, and bounded-handoff verification after each slice.                               |
+| Existing deep links remain recoverable                                                           | S1 ledger plus S2a-1–S4 alias/hash/query/preview route matrix with fresh-tab reload checks.                                                                       |
+| Preview is shareable under an explicit policy                                                    | Pre-push Pages/Access/noindex gate plus S5 deployed URL receipt, revision marker, direct-route smoke, response-header inspection, and access proof.               |
+| Old lab structure is removed safely                                                              | S8 reference scan, migrated route/test map, no broken links, and docs housekeeping receipt.                                                                       |
 
 Every implementation slice ends with a final post-edit affected-surface run and
 a durable evidence pointer under `docs/plans/`. Static checks do not substitute
@@ -1069,6 +1250,10 @@ shared shell/provider changes, preview/release boundaries, and final contraction
 
 - Pure status-projection and navigation/search-index functions derived from the
   catalogs.
+- Standalone-entry tests proving documentation startup does not import or
+  initialize the product `App`, wallet/chain providers, updater, analytics,
+  referral, chat, or product layout; inspect the emitted artifact as well as
+  runtime requests and provider calls.
 - Pure overview projections sourced from catalogs, `CURRENT_REVIEW`, progress,
   and record indexes, plus import/DOM assertions that heavy detail renderers are
   absent rather than merely hidden.
@@ -1077,6 +1262,11 @@ shared shell/provider changes, preview/release boundaries, and final contraction
 - Foundation-summary tests proving all current foundation headings and primary
   results are present on the continuous route, sidebar/search anchors restore
   correctly, and full detail/Workbench/evidence trees are not mounted there.
+- Color tests proving semantic aliases, light/dark values, purpose and usage
+  boundaries precede comparisons, audits, candidates, and engineering detail.
+- Components-overview tests proving each catalog entry has a stable anchored
+  section and that migrated ordinary entries render their lightweight canonical
+  result without importing the full state-sheet dispatcher or heavy families.
 - Component tests for sidebar keyboard behavior, search results, narrow drawer
   focus restoration, progressive disclosure, and specimen boundary labels.
 - Migrate the existing browser contracts that currently require horizontal
@@ -1121,11 +1311,11 @@ from evidence. The first three content migrations therefore derive identity/stat
 from existing catalogs, keep authority links explicit, and use Charts plus
 newcomer tasks as the go/no-go test before broad migration.
 
-## Unresolved decisions
+## Decisions and remaining gates
 
-### Reconciliation decisions
+### Approved reconciliation decisions — 2026-09-16
 
-- **U1 — IA hierarchy:** approve Start, Foundations, Components, Patterns,
+- **U1 — IA hierarchy:** approved: Start, Foundations, Components, Patterns,
   Workbench, and Internal Records, with Adoption and engineering plus Reference
   and history nested under Internal Records rather than promoted to competing
   top-level domains. Foundations is a continuous anchored canonical reference;
@@ -1136,7 +1326,7 @@ newcomer tasks as the go/no-go test before broad migration.
   Approve or reject the temporary explicitly labeled Legacy lab sidebar aliases
   for Tables/records, Forms, Navigation systems, and Transactions while their
   full destination migrations remain later.
-- **U2 — human status:** approve one primary pill (Accepted / Exploring / Not
+- **U2 — human status:** approved: one primary pill (Accepted / Exploring / Not
   started / Not planned / Superseded) plus labeled Code and Production facts;
   “Awaiting human review” derives only from `CURRENT_REVIEW`. Paused/Deferred stay
   explicit Workbench activity labels. `review.status: deferred` remains review
@@ -1144,16 +1334,56 @@ newcomer tasks as the go/no-go test before broad migration.
   presentation-only ownership for Paused; no prose inference is permitted. Also
   approve the compact sourced scope line for Accepted items with provisional or
   partial boundaries. A typed activity field still requires foundation review.
-- **U3 — Patterns:** approve presentation/navigation aliases over current
+- **U3 — Patterns:** approved: presentation/navigation aliases over current
   catalog IDs and routes now, including or excluding the temporary Legacy lab
   sidebar aliases named in U1. Do not add a typed pattern kind without later
   foundation-review evidence.
-- **U4 — migration order:** approve Typography → Button → Charts as the first
+- **U4 — migration order:** approved: Typography → Button → Charts as the first
   migrations, followed by Select as the clean ordinary-page repeatability check;
   run the local newcomer tasks 1, 2, 6, 7, and 10 after Button and before Charts,
   then retain the complete hosted rerun in S5.
 
+### Superseding presentation direction — 2026-09-17
+
+Later explicit user feedback supersedes only the affected presentation and
+sequence clauses above:
+
+- **U14 — Canonical opening:** every Canonical section begins with the actual
+  current system result and concise supported scope. Optional examples use
+  approved owners; implementation detail, evidence, comparisons, and history are
+  secondary.
+- **U15 — Components overview:** the specimen-free row catalog is a verified
+  intermediate shell result, not the destination. Components becomes a
+  continuous anchored reference with lightweight real component results inline.
+- **U16 — Runtime boundary:** resolved. The S2a-1 provider stop fired and the
+  verified local resolution is a standalone documentation entry in this
+  repository, not an App-root provider split or second authority system.
+- **U17 — Content sequence:** completed through the accelerated local candidate:
+  Color established the foundation grammar, all nine Foundations and all 45
+  Components followed, readiness review repaired the broad result, and five
+  lightweight Patterns closed the breadth-first pass. Further component depth
+  and Select/repeatability work remains bounded follow-up after human review.
+
+### Accelerated local-candidate authorization — 2026-09-17
+
+The user prioritized a broadly useful documentation experience for collaborator
+review on 2026-09-18 over serial human acceptance between every content slice.
+That authorized train is now implementation-verified: all nine Foundations,
+the continuous 45-entry Components experience, five lightweight Patterns, and
+collaboration-readiness polish. Each local candidate remains explicitly
+human-review-required and may be repaired after review; none promotes
+exploratory work, changes tokens or shared defaults, migrates production,
+deletes history, publishes, commits, pushes, stashes, or resets. The next gated
+stage is human review followed by U11/U12 before any hosted preview. Detailed
+Workbench, Records, legacy-study, and component refinement remains bounded
+follow-up rather than unfinished breadth-first migration.
+
 ### Existing synchronization, architecture, and preview gates
+
+U5–U9 were resolved by the completed S0 receipt and are retained here as the
+approved integration record, not as open gates. U10 and U13 are resolved by the
+shell/standalone and derivation decisions. U11–U12 remain the hosted-preview
+gates.
 
 - **U5 — synchronization target:** confirm `origin/master` is the intended
   upstream and that the execution should pin the freshly fetched SHA at S0.
@@ -1175,8 +1405,16 @@ newcomer tasks as the go/no-go test before broad migration.
   separately approved fast-forward promotion.
 - **U9 — other worktrees:** decide whether any other detached outputs must be
   checkpointed independently before S0. They should not be silently imported.
-- **U10 — shell architecture:** approve the same-build route-aware shell as the
-  first implementation, with a standalone entry deferred to measured need.
+- **U10 — shell architecture:** approved for S2a-1: the same-build route-aware shell as the
+  smallest reversible S2a-1 implementation while treating inherited providers
+  as temporary. The S1 baseline found usable denied-network docs and no
+  account-request/sign/switch/send/write behavior, but also 79–86 blocked
+  external attempts and a 5.322 MB decoded wallet chunk per cold route. Rerun
+  the exact baseline after S2a-1; if those costs remain materially unchanged,
+  require an explicit provider-split versus standalone-entry decision before
+  hosted preview or further migration expansion. No acceptable budget is
+  inferred by this recommendation. The chosen local resolution is the verified
+  standalone entry; hosted preview still waits for U11–U12.
 - **U11 — preview policy:** choose who may access the hosted preview and whether
   it is public-unlisted, access-controlled, or internal-only; choose the preview
   hostname/project if it is not the existing Cloudflare Pages preview. No push
@@ -1186,11 +1424,30 @@ newcomer tasks as the go/no-go test before broad migration.
 - **U12 — record exposure:** approve the recommended whole-preview Cloudflare
   Access boundary, or require a public-unlisted build that compiles Internal
   Records out and proves their absence. Do not publish before this is set.
-- **U13 — markdown/inline derivation:** approve either tested build-time
-  heading/source extraction or the minimal typed presentation index described
-  above for Workbench and Internal Records. The index is limited to source key,
-  route, question, owner, and activity; neither option may copy normative prose
-  or become a second decision/engineering register. If U2 selects a
-  presentation-only Paused annotation, the mechanism approved here is its sole
-  activity owner; do not create another writable annotation store. This gate
-  blocks S2a-1.
+- **U13 — markdown/inline derivation:** approved: the recommended minimal typed
+  presentation index for Workbench and Internal Records. It extends the planned
+  presentation owner already needed for navigation and aliases, handles both
+  markdown headings and inline study objects, and avoids introducing a build-time
+  markdown parser before the first shell slice. The index is limited to source
+  key, route, question, owner, and activity; tests must fail on missing or renamed
+  sources. It may not copy normative prose or become a second decision/engineering
+  register. Tested build-time extraction remains the alternative if later scale
+  makes the small index costly. If U2 selects a presentation-only Paused
+  annotation, this index is its sole activity owner; do not create another
+  writable annotation store. This approved mechanism was consumed by S2a-1 and
+  no longer blocks the completed local candidates.
+
+## Unresolved decisions
+
+- **Hosted access and records exposure (U11/U12):** before any push or
+  publication, choose the preview host, Access policy, indexing policy, and
+  whether Internal Records is included or compiled out. This does not block the
+  local standalone-entry slice.
+- **Typed authority hygiene:** the component-group Definition slots are
+  group-wide open questions; accepted item-level decisions do not prove those
+  broader contracts are complete. Keep them collapsed in Records and do not
+  rewrite them during presentation migration. Any later correction is a
+  separately reviewed group-level authority change before S8 cleanup.
+- **Final documentation URL:** preserve `/internal/design-system/*` throughout
+  local standalone work and compatibility verification. A friendlier hosted
+  root or redirect is decided with U11/U12, not during the entry slice.

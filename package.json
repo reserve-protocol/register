@@ -117,6 +117,8 @@
     "e2e:mobile": "playwright test --project=mobile",
     "e2e:ui": "playwright test --ui",
     "design-system:capture": "playwright test --config=playwright.design-system.config.ts --update-snapshots",
+    "design-system:docs": "vite --config vite.design-system.config.ts",
+    "design-system:docs:build": "vite build --config vite.design-system.config.ts",
     "design-system:verify": "playwright test --config=playwright.design-system.config.ts",
     "design-system:review": "playwright test --config=playwright.design-system.config.ts --project=design-system-review",
     "e2e:capture": "tsx e2e/scripts/capture.ts",

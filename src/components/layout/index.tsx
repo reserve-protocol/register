@@ -15,6 +15,9 @@ const DtfChat = lazy(() => import('@/components/dtf-chat'))
  */
 const Layout = ({ children }: { children: ReactNode }) => {
   const { pathname } = useLocation()
+  const isDesignSystem =
+    pathname === '/internal/design-system' ||
+    pathname.startsWith('/internal/design-system/')
   const isIndexDtfOverview =
     pathname.includes('/index-dtf/') && pathname.endsWith('/overview')
 
@@ -25,13 +28,15 @@ const Layout = ({ children }: { children: ReactNode }) => {
         isIndexDtfOverview && 'bg-secondary sm:bg-transparent'
       )}
     >
-      <Header />
+      {!isDesignSystem && <Header />}
       <div id="app-container" className="overflow-auto  flex-grow">
         {children}
       </div>
-      <Suspense fallback={null}>
-        <DtfChat />
-      </Suspense>
+      {!isDesignSystem && (
+        <Suspense fallback={null}>
+          <DtfChat />
+        </Suspense>
+      )}
     </div>
   )
 }

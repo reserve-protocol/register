@@ -57,6 +57,16 @@ Tab/Shift+Tab confinement and Escape return at a short 375×600 viewport.
 Helper tests exercise actual missing-baseline failure, required attachments,
 source drift/private-data exclusion, and positive/negative workflow routing.
 
+The shareable documentation entry has separate provider-free browser seams.
+`components-documentation.spec.ts` and `patterns-documentation.spec.ts` run with
+their isolated standalone configs and pin continuous results, direct/reloaded
+hashes, and complex-family destinations. `standalone-entry.spec.ts` owns the
+provider/external-request boundary. `documentation-shell.spec.ts` remains the
+in-app compatibility check for fixed primary destinations, scroll-tracked
+current-page navigation, 320/390 mobile section controls, empty search, and
+skip-link focus. These suites verify presentation and routing; they do not
+promote catalog authority or certify production adoption.
+
 [Source-based chart review](design-system/chart-review-lab-regressions.spec.ts)
 covers actual Overview/Home renderers, Home square inner/outer framing with a
 4px surround and preserved 24px content axis at 320/390/1400 in both themes,

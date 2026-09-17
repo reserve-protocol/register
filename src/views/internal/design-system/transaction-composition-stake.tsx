@@ -99,7 +99,7 @@ export const StakeTransactionComposition = () => (
   </TransactionCompositionFrame>
 )
 
-const StakeProductContext = ({
+export const StakeProductContext = ({
   setState,
   state,
 }: {

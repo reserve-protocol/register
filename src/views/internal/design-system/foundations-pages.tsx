@@ -1,4 +1,5 @@
 import { ArrowLeft, CircleDashed } from 'lucide-react'
+import { Trans } from '@lingui/react/macro'
 import { Link, Navigate, useParams } from 'react-router-dom'
 import {
   CatalogBadges,
@@ -11,8 +12,8 @@ import FoundationCandidateDirection from './foundation-candidate-direction'
 import ColorFoundationDefinition from './color-foundation-definition'
 import ColorContrastReview from './color-contrast-review'
 import { FOUNDATION_ITEMS, getFoundationItem } from './foundation-catalog'
-import FoundationOverview, { FoundationSpecimen } from './foundation-overview'
-import { CurrentReviewSpotlight } from './current-review-panel'
+import { FoundationSpecimen } from './foundation-overview'
+import FoundationDocumentationOverview from './foundation-documentation-overview'
 import TypographyStudy from './typography-study'
 import SpacingRhythmStudy from './spacing-rhythm-study'
 import ShapeStudy from './shape-study'
@@ -21,17 +22,7 @@ import IconographyStudy from './iconography-study'
 import MotionStudy from './motion-study'
 import AccessibilityStudy from './accessibility-study'
 
-export const FoundationsOverview = () => (
-  <div data-testid="foundations-overview" className="space-y-8">
-    <PageHeader
-      eyebrow="Current visual system"
-      title="Foundations"
-      description="Scan the system itself. Each specimen opens the full definition, local readiness, and deeper evidence."
-    />
-    <CurrentReviewSpotlight />
-    <FoundationOverview />
-  </div>
-)
+export const FoundationsOverview = FoundationDocumentationOverview
 
 export const FoundationDetail = () => {
   const { foundationId } = useParams()
@@ -50,11 +41,28 @@ export const FoundationDetail = () => {
       />
       <div className="min-w-0 space-y-10">
         <Link
-          to="/internal/design-system/foundations"
+          to={`/internal/design-system/foundations#${item.id}`}
           className="inline-flex min-h-11 items-center gap-2 text-sm text-muted-foreground hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
         >
           <ArrowLeft className="h-4 w-4" /> All foundations
         </Link>
+        <aside
+          data-testid="foundation-supporting-detail-warning"
+          className="border-y border-border py-4 text-sm leading-6 text-muted-foreground"
+        >
+          <Trans>
+            Supporting detail can include retained comparisons, studies, and
+            historical evidence. Use the continuous Foundations overview for
+            current canonical guidance.
+          </Trans>{' '}
+          <Link
+            data-testid="foundation-canonical-return"
+            to={`/internal/design-system/foundations#${item.id}`}
+            className="font-medium text-primary underline-offset-4 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+          >
+            <Trans>Open the current overview guidance</Trans>
+          </Link>
+        </aside>
         <PageHeader
           eyebrow="Foundation"
           title={item.name}

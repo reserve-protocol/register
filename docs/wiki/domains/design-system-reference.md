@@ -1,6 +1,6 @@
 ---
 title: Design System Reference
-updated: 2026-09-09
+updated: 2026-09-17
 type: domain
 sources:
   - tailwind.config.ts
@@ -9,6 +9,8 @@ sources:
   - src/views/internal/design-system/**
   - e2e/design-system/**
   - playwright.design-system.config.ts
+  - playwright.design-system-*.config.ts
+  - vite.design-system.config.ts
 ---
 
 # Design System detailed reference
@@ -33,12 +35,18 @@ while JavaScript theme branching is not a styling owner.
 ## Active v1 project
 
 The active contract is [design-system-v1](../../plans/design-system-v1.md).
-The contained `/internal/design-system` route is a visual-review workspace;
-Components and detail routes share their state sheets. Project Status renders
-the typed inventory and Current Review queue. Screens links unchanged product
-routes, which cannot prove adoption of a lab baseline. Detail pages lead with
-visual output; evidence, dependencies and history are progressively disclosed.
-Expected missing slots remain navigable without implying a commitment to build.
+The local standalone `/internal/design-system` experience is the human-facing
+documentation candidate. Its primary destinations are Canonical Foundations,
+Components, and Patterns, plus a clearly separate Workbench and Internal Records
+area. Canonical pages are continuous, result-first references: readers can scroll
+the system, use synchronized sidebar/page/mobile navigation, and open stable deep
+links without visiting detail pages for the basic result. Detail pages preserve
+optional specification depth. Studies, Product Contexts, compatibility routes,
+and the typed Current Review queue remain reachable without being presented as
+canonical results; Current Review is empty after the September 16 chart decision.
+The standalone entry is a curated provider-safe projection over the existing
+catalogs, accepted decisions, owners, and tests—not replacement authority and
+not proof of production adoption.
 
 V1 work is canonical-first. Reuse the audits, synthesize the strongest complete
 candidate from accepted owners and strong product evidence, self-review it, and
@@ -51,7 +59,13 @@ baselines may wait for the next synchronization pass. The full nine-principle
 operating model and source precedence live at the top of the active plan;
 chronological plan sections are evidence, not competing workflow authority.
 
-Real local golden screens are the canonical composition-testing surface; deterministic fixtures supplement live data for repeatable edge states. Foundation evidence still documents the existing system, while the Button state sheet now renders the actual reusable V1 candidate. The component catalog is product-shaped: established interaction-system references such as shadcn and Radix inform its vocabulary, but Register's audited needs decide what v1 defines, combines, or marks not needed.
+Real local golden screens are the canonical composition-testing surface;
+deterministic fixtures supplement live data for repeatable edge states. The
+typed catalogs separately record current design authority, rendered output,
+reusable implementation, review readiness, and production adoption. The
+component catalog is product-shaped: established interaction-system references
+such as shadcn and Radix inform its vocabulary, but Register's audited needs
+decide what v1 defines, combines, or marks not needed.
 
 Foundation detail pages separate current evidence, an exploratory direction,
 and the current authoritative baseline. Current evidence must name its audit
@@ -254,11 +268,15 @@ eligibility in the data model. The [table brief](../../plans/design-system-table
 owns this trial; it is not a universal Table contract.
 
 The [position/withdrawal checkpoint](../../plans/design-system-table-family-evidence/checkpoint.md)
-owns the current table trial and its retained evidence. Its optional DataTable
+remains evidence for the Portfolio/withdrawal slice. Its optional DataTable
 toolbar uses the same sorting instance as desktop headers; a render limit is
 applied after sorting, not to source data. Narrow projections retain the active
-sort metric and keyboard focus. Do not infer production adoption, dense-table
-typography, rich-record approval or accepted header spacing from this checkpoint.
+sort metric and keyboard focus. The September 14 decision accepts the reviewed
+Portfolio/withdrawal, Holdings, Discover, Earn/DeFi/owned-position, governance,
+and near-term current/history auction presentations as a revisitable lab
+baseline. It does not approve every production state, the unfinished auction
+workspace, a universal Table/Row API, global pill geometry, shared defaults, or
+production adoption. DataTable remains exploratory outside that named scope.
 
 `ActionGroup` is an [accepted reusable composition baseline](../decisions.md#2026-08-19--actiongroup-composition-baseline-accepted):
 horizontal peers use the accepted 8px gap without wrapping; a deliberately
@@ -560,11 +578,11 @@ and adds no size to the scale. The earlier study's stable-role examples remain
 default-role evidence, not a ban on this opt-in. Real usage may justify
 evidence-based refinement, but approval authorizes no production migration.
 Current Review is routed separately; this historical sequence is not its queue.
-The September 15 chart completion provisionally reuses the 24/32px scale for
-a dated Portfolio financial total (a paragraph, not a heading) and adds the
-20px/26px weight-300 `lightPanelTitle` only for Home's chart-context name.
-These are unaccepted chart candidates, not general financial or card-title
-policy; shared role defaults remain unchanged. See the
+The September 16 chart decision accepts the dated Portfolio financial total's
+24/32px scale and Home's 20px/26px weight-300 `lightPanelTitle` within the named,
+revisitable chart presentations. The Portfolio total remains a paragraph rather
+than a heading. Neither treatment becomes general financial or card-title
+policy, and shared role defaults remain unchanged. See the
 [completion boundary](../../plans/design-system-next-charts/completion/README.md).
 Human review accepted Global and Product navigation as
 separate current baselines after judging them together in a realistic shell.
