@@ -48,8 +48,8 @@ import {
   parseEther,
   parseUnits,
   stringToHex,
-  zeroAddress,
 } from 'viem'
+import { getRewardAssetsToRegister } from 'utils/plugins'
 import { getSharesFromSplit } from '@/views/yield-dtf/deploy/utils'
 import {
   backupChangesAtom,
@@ -199,6 +199,8 @@ const useProposalTx = () => {
     const tokenConfig = getValues()
 
     const newAssets = new Set<Address>()
+    const newErc20s = new Set<Address>()
+    const rewardSources: { rewardTokens?: string[] }[] = []
 
     /* ########################## 
       ## Contract upgrades ## 
@@ -220,6 +222,7 @@ const useProposalTx = () => {
 
     const addToRegistry = (address: Address, underlyingAddress?: Address) => {
       if (newAssets.has(address) || assets.has(address)) return
+      if (underlyingAddress) newErc20s.add(underlyingAddress)
       addresses.push(contracts.assetRegistry.address)
 
       // Underlying asset (from another plugin instance)
@@ -411,15 +414,7 @@ const useProposalTx = () => {
                 changes.collateral.address as Address,
                 changes.collateral.erc20 as Address
               )
-
-              if (
-                !!changes.collateral.rewardTokens?.length &&
-                changes.collateral.rewardTokens[0] != zeroAddress
-              ) {
-                changes.collateral.rewardTokens.forEach((reward) =>
-                  addToRegistry(reward as Address)
-                )
-              }
+              rewardSources.push(changes.collateral)
             }
           }
         }
@@ -499,14 +494,7 @@ const useProposalTx = () => {
             for (const collateral of collaterals) {
               if (autoRegisterBackupAssets) {
                 addToRegistry(collateral.address, collateral.erc20)
-                if (
-                  !!collateral.rewardTokens?.length &&
-                  collateral.rewardTokens[0] != zeroAddress
-                ) {
-                  collateral.rewardTokens.forEach((reward) =>
-                    addToRegistry(reward as Address)
-                  )
-                }
+                rewardSources.push(collateral)
               }
 
               backupCollaterals.push(collateral.erc20)
@@ -526,6 +514,14 @@ const useProposalTx = () => {
             )
           }
         }
+      }
+
+      for (const reward of getRewardAssetsToRegister(
+        rToken?.chainId ?? 0,
+        rewardSources,
+        [...assets, ...newAssets, ...newErc20s]
+      )) {
+        addToRegistry(reward)
       }
 
       /* ##########################

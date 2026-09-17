@@ -843,7 +843,9 @@
   },
   {
     "address": "0x798D102Cb206b81b0C789C35Ff3744c8400a4c80",
-    "rewardTokens": [],
+    "rewardTokens": [
+      "0x9A65173df5D5B86E26300Cc9cA5Ff378be6DAeA5"
+    ],
     "protocol": "MORPHOV2",
     "erc20": "0xb576765fB15505433aF24FEe2c0325895C559FB2",
     "chainlinkFeed": "0x8f1dF6D7F2db73eECE86a18b4381F4707b918FB1",
@@ -939,7 +941,9 @@
   },
   {
     "address": "0xEcD85BdF2c9c769A9cB4F8026Ee05056d83Fb347",
-    "rewardTokens": [],
+    "rewardTokens": [
+      "0xd717d722074C8dBfd0a29F73E4638cCc49C7D53D"
+    ],
     "protocol": "MORPHOV2",
     "erc20": "0x23f5E9c35820f4baB695Ac1F19c203cC3f8e1e11",
     "chainlinkFeed": "0x3E7d1eAB13ad0104d2750B8863b489D65364e32D",

@@ -174,6 +174,12 @@ const symbolOverrides = {
   steakUSDCPrime: 'steakUSDCPrime', // Morpho Vault V2 shares also report `steakUSDC`, the listed V1 symbol
 }
 
+// Per-vault reward campaigns (Morpho Merkl, 2026-09); keys resolve against `assets`, then `collateral` plugins
+const collateralRewardTokens = {
+  sentoraPYUSD: ['pyUSD'],
+  skyUSDTSavings: ['USDT'],
+}
+
 // Default: run all collateral chains - you can comment which chain you want to run
 const chainsMap = [
   {
@@ -324,6 +330,17 @@ const chainsMap = [
           if (data.collaterals.assets[key]) {
             plugin.rewardTokens.push(data.collaterals.assets[key])
           }
+        }
+      }
+
+      for (const key of collateralRewardTokens[collateral] ?? []) {
+        const rewardAsset =
+          data.collaterals.assets[key] ?? data.collaterals.collateral[key]
+        if (!rewardAsset) {
+          throw new Error(`Reward "${key}" for ${collateral} is not listed`)
+        }
+        if (!plugin.rewardTokens.includes(rewardAsset)) {
+          plugin.rewardTokens.push(rewardAsset)
         }
       }
 

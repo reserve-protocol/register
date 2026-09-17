@@ -55,6 +55,7 @@ Synthesized from a 7-dimension architecture audit (2026-07-03: structure, state,
 21. **Basket atom collision**: two `export const basketAtom` (rtoken-setup vs index deploy) — rename to `setupBasketAtom`/`deployBasketAtom`. Quick win. Funnel 15-writer atoms through action atoms.
 22. **chainId gaps**: `top100-basket-hover-card.tsx:42`, `yield-dtf … CollateralItem.tsx:104` missing `chainId`. Quick win.
 23. **Misc quick wins**: remove unused `next-themes` dep; drop the Arbitrum link entry in `deploy/steps/governance/form-existing-erc20.tsx`; mark `utils/rsv.ts` with a "legacy-live, don't delete" comment (RSV + zapV2 are reachable — NOT dead code); fonts OTF→WOFF2; make `refresh-token-logos`/SEO build steps non-fatal on network failure; 1s `setInterval` on rebalance page → single ticker.
+24. **Stale hook deps in yield wrap/yields**: `CollateralYieldUpdater` effect reads and writes `collateralYieldAtom` (adding it as a dep loops — use a functional update); `CollateralItem` approve/execute memos omit `wallet`, `chainId`, `collateral.*`, `data.decimals`, and the reset effect omits `amount`. Pre-existing `exhaustive-deps` warnings; fix with a behavior check of the wrap flow, not a blind dep add.
 
 ## Do-NOT list (audited, leave alone)
 

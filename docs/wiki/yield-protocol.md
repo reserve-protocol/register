@@ -1,6 +1,6 @@
 ---
 title: Yield Protocol
-updated: 2026-09-10
+updated: 2026-09-17
 type: context
 ---
 
@@ -37,3 +37,4 @@ The protocol deploys the plugin; register only lists it. Register keys display n
 5. CMS is in-repo: `src/lib/meta/collateral-assets.json` (`id` = symbol, `protocol` / `underlyings` must exist in `protocols.json` / `component-tokens.json`; `getCollaterals()` throws otherwise). Morpho entries use the vault erc20 as `addresses.1`.
 6. Logo: `public/svgs/<symbol>.svg` or `public/imgs/<symbol>.png`, registered in the `SVGS`/`PNGS` sets of BOTH `src/components/icons/TokenLogo.tsx` (deploy modal, explorer) and `src/components/token-logo/index.tsx`, plus the skip list in `scripts/refresh-token-logos.ts`. Morpho serves curator logos at `cdn.morpho.org/v2/assets/images/<curator>.svg` — some are SVG wrappers around a base64 PNG; extract and downscale those instead of shipping 200 KB.
 7. A new wrap protocol also touches `ProtocolKey` (`src/types`), `protocolLabels` in the wrapping atoms and the `case` in `CollateralItem`; the ERC-4626 ABI already lives in `CollateralWrap.ts`.
+8. Reward tokens: a plugin's `rewardTokens` holds asset **plugin addresses** (COMP asset for cTokens, the PYUSD/USDT collateral plugins for Morpho Vault V2 campaigns). Wrapped protocols get them from `protocols.<X>.rewardTokens`; per-vault campaigns go in `collateralRewardTokens` (resolves `assets`, then `collateral` keys; throws if unlisted). Deploy (`getDeployParameters`) and basket/backup proposals (`useProposalTx`) register them automatically through `getRewardAssetsToRegister`, which skips any reward whose erc20 is already registered or registered as collateral in the same tx — `AssetRegistry` reverts on a second plugin for an erc20 ("duplicate ERC20 detected") and `FacadeWrite` registers `assets` before the prime basket and requires each basket collateral to be new ("duplicate collateral"). Proposals register rewards after basket and backup for the same reason. Morpho rewards are Merkl claims made off-chain on behalf of the BackingManager; registering the asset is what lets auctions sell them. Campaigns expire: re-check `vaultV2ByAddress.rewards` on the Morpho API when relisting.

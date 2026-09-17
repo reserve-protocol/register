@@ -6,7 +6,7 @@ import basePlugins from './data/base.json'
 import arbitrumPlugins from './data/arbitrum.json'
 // @ts-ignore
 import mainnetPlugins from './data/mainnet.json'
-import { Address } from 'viem'
+import { Address, zeroAddress } from 'viem'
 import {
   AERO_ADDRESS,
   ARB_ADDRESS,
@@ -98,5 +98,49 @@ export const getPluginByErc20 = (
   erc20: string
 ): CollateralPlugin | undefined =>
   pluginsByErc20[chainId]?.[erc20.toLowerCase()]
+
+const pluginsByAddress: {
+  [chainId: number]: Record<string, CollateralPlugin>
+} = Object.fromEntries(
+  Object.entries(collateralPlugins).map(([chainId, plugins]) => [
+    chainId,
+    Object.fromEntries(plugins.map((p) => [p.address.toLowerCase(), p])),
+  ])
+)
+
+export const getPluginByAddress = (
+  chainId: number,
+  address: string
+): CollateralPlugin | undefined =>
+  pluginsByAddress[chainId]?.[address.toLowerCase()]
+
+type RewardSource = { rewardTokens?: string[] }
+
+// A reward whose erc20 is already registered is skipped: re-registering it reverts (duplicate ERC20 / duplicate collateral)
+export const getRewardAssetsToRegister = (
+  chainId: number,
+  sources: RewardSource[],
+  registered: Iterable<string>
+): Address[] => {
+  const taken = new Set(Array.from(registered, (a) => a.toLowerCase()))
+  const rewards: Address[] = []
+
+  for (const { rewardTokens = [] } of sources) {
+    for (const reward of rewardTokens) {
+      if (!reward || reward === zeroAddress) continue
+
+      const erc20 = getPluginByAddress(chainId, reward)?.erc20.toLowerCase()
+      if (taken.has(reward.toLowerCase()) || (erc20 && taken.has(erc20))) {
+        continue
+      }
+
+      rewards.push(reward as Address)
+      taken.add(reward.toLowerCase())
+      if (erc20) taken.add(erc20)
+    }
+  }
+
+  return rewards
+}
 
 export default collateralPlugins
