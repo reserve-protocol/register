@@ -43,7 +43,7 @@ const CommunityLaunchAuctionsButton = () => {
     major === 4 || (isSdkVersion && latestAuction !== undefined)
   const [isLaunching, setIsLaunching] = useState(false)
   const { writeContract, isPending, data } = useWriteContract()
-  const { isSuccess } = useWaitForTransactionReceipt({
+  const { isSuccess, data: receipt } = useWaitForTransactionReceipt({
     hash: data,
     chainId: dtf?.chainId,
   })
@@ -84,7 +84,7 @@ const CommunityLaunchAuctionsButton = () => {
     }
   }, [isRestrictedPeriod, restrictedUntil])
 
-  useLaunchReceipt(isSuccess, () => setIsLaunching(false))
+  useLaunchReceipt(receipt?.blockNumber, () => setIsLaunching(false))
 
   useEffect(() => {
     if (isSuccess) setError(null)

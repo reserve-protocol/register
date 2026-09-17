@@ -25,6 +25,7 @@ import {
   priceVolatilityAtom,
   rebalanceAuctionsAtom,
   latestAuctionAtom,
+  latestAuctionErrorAtom,
   rebalancePercentAtom,
   savedWeightsAtom,
 } from '../atoms'
@@ -55,6 +56,7 @@ const LaunchAuctionsButton = () => {
   const identity = useIndexDtfIdentity()
   const versionState = useAtomValue(folioVersionAtom)
   const latestAuction = useAtomValue(latestAuctionAtom)
+  const latestAuctionError = useAtomValue(latestAuctionErrorAtom)
   const major = versionState.status === 'ready' ? versionState.major : undefined
   // Folio 6.0 requires the per-auction length; maxAuctionLength satisfies every price-control mode.
   const { data: maxAuctionLength } = useIndexDtfMaxAuctionLength(
@@ -62,7 +64,7 @@ const LaunchAuctionsButton = () => {
   )
   const [isLaunching, setIsLaunching] = useState(false)
   const { writeContract, isError, isPending, data } = useWriteContract()
-  const { isSuccess } = useWaitForTransactionReceipt({
+  const { isSuccess, data: receipt } = useWaitForTransactionReceipt({
     hash: data,
     chainId: dtf?.chainId,
   })
@@ -119,7 +121,7 @@ const LaunchAuctionsButton = () => {
     !priceUnavailable &&
     isVersionReady
 
-  useLaunchReceipt(isSuccess, () => setIsLaunching(false))
+  useLaunchReceipt(receipt?.blockNumber, () => setIsLaunching(false))
 
   useEffect(() => {
     if (isSuccess) toast.success(t`Auction launched successfully`)
@@ -202,6 +204,14 @@ const LaunchAuctionsButton = () => {
       connectButtonClassName="w-full"
       switchChainButtonClassName="w-full"
     >
+      {latestAuctionError && (
+        <p
+          data-testid="auctions-live-state-unavailable"
+          className="text-center text-sm text-destructive px-2 pb-2"
+        >
+          <Trans>Live auction state unavailable — retrying before launch</Trans>
+        </p>
+      )}
       {priceUnavailable && (
         <p
           data-testid="auctions-price-unavailable"

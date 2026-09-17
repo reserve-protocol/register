@@ -73,6 +73,8 @@ export const refreshNonceAtom = atom(0)
 export const latestAuctionAtom = atom<IndexDtfLatestAuction | null | undefined>(
   undefined
 )
+// True while the SDK latest-auction read is failing; the launch gate stays closed and says so.
+export const latestAuctionErrorAtom = atom(false)
 
 // Live gating is RPC-first: the indexer lags receipts, so indexed auctions only
 // decide while the RPC read is unresolved (or on v4, which has no SDK read).

@@ -93,26 +93,26 @@ Local SDK checkout linking: `docs/local-sdk-development.md`.
 
 ## Read before building a flow (`dtf-interface/docs`)
 
-| Building… | Read |
-| --- | --- |
+| Building…                   | Read                                                                                    |
+| --------------------------- | --------------------------------------------------------------------------------------- |
 | Index DTF reads / discovery | `protocol/data-sources.md` → `index-dtf/overview.md` → `index-dtf/discovery-holders.md` |
-| Mint / Redeem / Zap | `index-dtf/issuance-redemption.md` → `integrations/zapper.md` |
-| Governance / proposals | `protocol/governance.md` → `index-dtf/governance.md` → `register/governance-flows.md` |
-| Rebalance / auctions | `index-dtf/rebalance-auctions.md` → `index-dtf/contracts-and-versions.md` |
-| Revenue / fees / vote-lock | `index-dtf/revenue-fees.md` → `index-dtf/vote-lock.md` |
-| Matching Register behavior | `register/interface.md` |
+| Mint / Redeem / Zap         | `index-dtf/issuance-redemption.md` → `integrations/zapper.md`                           |
+| Governance / proposals      | `protocol/governance.md` → `index-dtf/governance.md` → `register/governance-flows.md`   |
+| Rebalance / auctions        | `index-dtf/rebalance-auctions.md` → `index-dtf/contracts-and-versions.md`               |
+| Revenue / fees / vote-lock  | `index-dtf/revenue-fees.md` → `index-dtf/vote-lock.md`                                  |
+| Matching Register behavior  | `register/interface.md`                                                                 |
 
 ## Data-source routing (full table: `docs/data-sources.md`)
 
-| Data | Source |
-| --- | --- |
-| Basket/balances, live supply (incl. pending fee shares) | RPC (`totalAssets()`, `totalSupply()`) |
-| Current price / discovery / vote-lock APR | Reserve API |
-| Index DTF status (active/deprecated) | `@reserve-protocol/dtf-catalog` (static, synchronous) |
-| Metadata, governance history, roles, holders | Index subgraph |
-| **Live** proposal state | RPC (`governor.state()`) — NOT subgraph |
-| **Live** rebalance/auction state | RPC (`getRebalance()`) — NOT subgraph |
-| Historical charts | Reserve API |
+| Data                                                    | Source                                                |
+| ------------------------------------------------------- | ----------------------------------------------------- |
+| Basket/balances, live supply (incl. pending fee shares) | RPC (`totalAssets()`, `totalSupply()`)                |
+| Current price / discovery / vote-lock APR               | Reserve API                                           |
+| Index DTF status (active/deprecated)                    | `@reserve-protocol/dtf-catalog` (static, synchronous) |
+| Metadata, governance history, roles, holders            | Index subgraph                                        |
+| **Live** proposal state                                 | RPC (`governor.state()`) — NOT subgraph               |
+| **Live** rebalance/auction state                        | RPC (`getRebalance()`) — NOT subgraph                 |
+| Historical charts                                       | Reserve API                                           |
 
 ## Top gotchas (full list: `dtf-interface/docs/known-gotchas.md`)
 
