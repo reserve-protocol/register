@@ -16,6 +16,8 @@ interface Manifest {
   dtf: `0x${string}`
   launcher: `0x${string}`
   rebalanceNonce: string
+  forkBlock: string
+  forkBlockHash: `0x${string}`
   forkTimestamp: string
   nextAuctionIdBefore: string
 }
@@ -30,6 +32,9 @@ test('cmc20 launcher opens an auction on the BSC fork from the UI', async ({ pag
   const manifest = JSON.parse(readFileSync(manifestPath, 'utf8')) as Manifest
   const client = createPublicClient({ transport: http(rpcUrl, { timeout: 120_000 }) })
   mkdirSync(evidenceDir, { recursive: true })
+  // Same fork identity the manifest was prepared on, not just any later head.
+  const pinned = await client.getBlock({ blockNumber: BigInt(manifest.forkBlock) })
+  expect(pinned.hash).toBe(manifest.forkBlockHash)
 
   // Diagnostics for a failed run: console errors and fork RPC errors.
   const consoleErrors: string[] = []

@@ -25,6 +25,14 @@ PRs #1053/#1054/#1055/#1063, SDK PR #27). Delete items as they land.
   Register pin replaces the `link:`. Settled: SDK is v5/v6 only, v4 stays
   Register-local, the full 146-case suite is the release gate (S1+ in the
   handoff), fork stack in `e2e/fork/docker/`.
+  Product question raised by the cross-model review: Folio lets the privileged
+  launcher replace a running auction (`Folio.sol` openAuction closes the prior
+  one), but Register has always disabled the launch CTA while an auction of the
+  current nonce is running; the RPC-first gate keeps that rule. Decide whether
+  the launcher UI should offer replacement (separate gate from the community
+  button). Fork-lane limits: the subgraph proxy truncates only entities that
+  carry `blockNumber`, and the SDK client appends its default RPCs after the
+  per-chain override.
 - **Portfolio SDK adoption (chk-4)**: extend SDK `AccountPortfolio` to the full
   6-field shape + validated partial-body mappers (SDK-side fixtures), migrate
   register's raw `use-portfolio`/`use-historical-portfolio`/

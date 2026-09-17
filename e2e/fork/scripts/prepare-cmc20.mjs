@@ -60,6 +60,7 @@ const manifest = {
   dtf: CMC20,
   version,
   forkBlock: block.number.toString(),
+  forkBlockHash: block.hash,
   forkTimestamp: block.timestamp.toString(),
   rebalanceNonce: rebalance[0].toString(),
   restrictedUntil: timestamps.restrictedUntil.toString(),

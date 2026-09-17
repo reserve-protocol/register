@@ -42,7 +42,7 @@ const CommunityLaunchAuctionsButton = () => {
   const isVersionReady =
     major === 4 || (isSdkVersion && latestAuction !== undefined)
   const [isLaunching, setIsLaunching] = useState(false)
-  const { writeContract, isPending, data } = useWriteContract()
+  const { writeContract, isError, isPending, data } = useWriteContract()
   const { isSuccess, data: receipt } = useWaitForTransactionReceipt({
     hash: data,
     chainId: dtf?.chainId,
@@ -89,6 +89,13 @@ const CommunityLaunchAuctionsButton = () => {
   useEffect(() => {
     if (isSuccess) setError(null)
   }, [isSuccess])
+
+  useEffect(() => {
+    if (isError) {
+      setIsLaunching(false)
+      setError(t`Transaction rejected or failed`)
+    }
+  }, [isError])
 
   const handleStartAuctions = () => {
     if (!isValid || !rebalanceParams) return
