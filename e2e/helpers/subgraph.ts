@@ -87,19 +87,23 @@ interface GovEntry {
 }
 
 // The capture query under-selects proposal.governance to `{ id }`, but the SDK
-// mappers read governance.token.id and governance.timelock.id. Backfill both
+// mappers read governance.token.id, governance.token.token.decimals (react-sdk
+// >= 0.6.0 formats vote weights) and governance.timelock.id. Backfill all three
 // from the DTF snapshot, which carries full governance context. Every DTF
 // governor votes with the vote-lock stToken, so that's the vote token. Idempotent
-// — a snapshot already carrying token+timelock (re-captured) is returned as-is.
+// — a snapshot already carrying the full shape (re-captured) is returned as-is.
 function enrichProposalGovernance(
   proposal: Record<string, unknown>,
   dtfObj: Record<string, unknown> | undefined
 ): Record<string, unknown> {
   const gov = (proposal.governance ?? {}) as Record<string, unknown>
-  if (gov.token && gov.timelock) return proposal
+  const govToken = gov.token as { id?: string; token?: { decimals?: number } } | undefined
+  if (govToken?.token?.decimals !== undefined && gov.timelock) return proposal
 
   const govId = String(gov.id ?? '').toLowerCase()
-  const stToken = dtfObj?.stToken as { id?: string; governance?: GovEntry } | undefined
+  const stToken = dtfObj?.stToken as
+    | { id?: string; token?: { decimals?: number }; governance?: GovEntry }
+    | undefined
   const candidates = [
     dtfObj?.ownerGovernance,
     dtfObj?.tradingGovernance,
@@ -112,7 +116,10 @@ function enrichProposalGovernance(
     ...proposal,
     governance: {
       ...gov,
-      token: gov.token ?? { id: stToken?.id },
+      token: {
+        id: govToken?.id ?? stToken?.id,
+        token: govToken?.token ?? { decimals: stToken?.token?.decimals },
+      },
       timelock: gov.timelock ?? (timelock ? { id: timelock.id } : undefined),
     },
   }
@@ -283,6 +290,32 @@ export function resolveIndexQuery(
   // bid-list specs overlay this op.
   if (body.includes('auctions(')) {
     return { data: { auctions: [] } }
+  }
+
+  // react-sdk >= 0.6.0 resolves a DTF's proposal governors first (owner, trading,
+  // vote-lock governance, legacy admins) and then lists proposals by those ids.
+  // Served from the DTF snapshot object, which carries the same governance
+  // context the capture query selected.
+  if (op === 'GetIndexDtfProposalGovernanceAddresses') {
+    const dtfId = String(vars.dtfId ?? '')
+    const dtfObj = dtfObjectFor(dtfId)
+    if (!dtfObj) {
+      log('unmocked operation', { op, dtfId })
+      return graphError(`[E2E] unmocked operation: ${op} (no snapshot for ${dtfId})`)
+    }
+    const { ownerGovernance, tradingGovernance, legacyAdmins, legacyAuctionApprovers, stToken } =
+      dtfObj
+    return {
+      data: {
+        dtf: {
+          ownerGovernance: ownerGovernance ?? null,
+          tradingGovernance: tradingGovernance ?? null,
+          legacyAdmins: legacyAdmins ?? [],
+          legacyAuctionApprovers: legacyAuctionApprovers ?? [],
+          stToken: stToken ?? null,
+        },
+      },
+    }
   }
 
   if (op === 'getGovernanceStats' || body.includes('governances(')) {
