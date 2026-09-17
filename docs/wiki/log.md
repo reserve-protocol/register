@@ -8,6 +8,13 @@ type: log
 
 Append-only chronological record: lessons, corrections, friction. Newest section last. Tag kit-caused friction with `kit-friction`.
 
+## 2026-09-17 — v6 register rebalance vertical, slices 3–5
+
+- Slice 3: reads through SDK hooks for v5/v6 (v4 local), RPC-first ongoing gate. Inline `select` callbacks on the SDK hooks looped the atom-sync effects until the page froze (16-minute "hangs" that first looked like memory pressure) — selectors are module-level now. `timeout` is not installed on macOS; a `timeout …` command exits 127 silently.
+- Slice 4: v5 open-auction math and start-rebalance args through the SDK behind Register's price pre-check; parity oracle = frozen copy of the old calculation on captured CMC20 inputs, byte-equal in native/tracking/hybrid modes; seam spy fails if the SDK is bypassed.
+- Slice 5: SDK-prepared launch calls, receipt → invalidate RPC keys first, v6 `maxAuctionLength` from a new SDK hook. Real launch on the BSC fork: three things had to be true — the fork pinned inside a real launcher window (a rebalance started by impersonation has no proposal in the subgraph and never renders), the production subgraph truncated at the fork block (`e2e/fork/scripts/subgraph-proxy.mjs`, otherwise a later real auction switches the UI to the running/finished views), and the ongoing gate meaning "current nonce, not ended" rather than the SDK's biddable `isActive` (the 30 s warm-up left the button enabled after the receipt).
+- Register on the linked candidate: the SDK now issues `GetIndexDtfProposalGovernanceAddresses` first and formats vote weights with `governance.token.token.decimals`; both modelled in the offline mocks.
+
 ## 2026-09-16 — v6 register rebalance vertical, slices 1–2
 
 - Slice 1: `indexDTFVersionAtom` is undefined until resolved and resets on navigation; `folioVersionAtom` derives pending/ready/unsupported from exact deployed versions (inventory: live DTFs on 1.0.0, 2.0.0, 4.0.0, 5.0.0). Container keys the version write on identity — the correctness lens found that a cached same-version A→B→A hop through the command menu stranded the version after the reset (`version-identity-nav.spec.ts` is the regression).

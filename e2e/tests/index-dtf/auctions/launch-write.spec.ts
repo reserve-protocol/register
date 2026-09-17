@@ -122,6 +122,32 @@ test('auctions: an auction launcher submits openAuction() to the folio @smoke', 
   // Nonce matches the active rebalance the tuple encoded — proves the write was
   // wired to the live rebalance, not a stale/zero nonce.
   expect(decoded.args[0]).toBe(BigInt(latest.nonce))
+
+  // Post-receipt the gate re-reads RPC (nextAuctionId/auctions), not the
+  // indexer: once the chain reports an open auction for this nonce the button
+  // stays disabled well past the old 15 s launching timer.
+  const now = rebalanceTime(latest, 'restricted')
+  overrides.ethCall(
+    dtf.address,
+    '0xfc528482',
+    encodeAbiParameters([{ type: 'uint256' }], [1n])
+  )
+  overrides.ethCall(
+    dtf.address,
+    encodeFunctionData({
+      abi: parseAbi(['function auctions(uint256) view returns (uint256,uint256,uint256)']),
+      functionName: 'auctions',
+      args: [0n],
+    }),
+    encodeAbiParameters(
+      [{ type: 'uint256' }, { type: 'uint256' }, { type: 'uint256' }],
+      [BigInt(latest.nonce), BigInt(now - 10), BigInt(now + 1800)]
+    )
+  )
+  await harness.chain.advance(30_000)
+  await expect(launch).toBeDisabled()
+  await harness.chain.advance(30_000)
+  await expect(launch).toBeDisabled()
 })
 
 test('auctions: a non-launcher in the permissionless window submits openAuctionUnrestricted() @smoke', async ({

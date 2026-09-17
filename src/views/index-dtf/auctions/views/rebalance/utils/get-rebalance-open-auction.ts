@@ -10,7 +10,7 @@ import { Rebalance as RebalanceV4 } from '@reserve-protocol/dtf-rebalance-lib/di
 import { Rebalance as RebalanceV5 } from '@reserve-protocol/dtf-rebalance-lib/dist/types'
 import { prepareIndexDtfOpenAuctionArgs } from '@reserve-protocol/react-sdk'
 import { AUCTION_PRICE_VOLATILITY } from '../atoms'
-import { FOLIO_VERSION_V5, getRebalanceTokens } from './transforms'
+import { getRebalanceTokens, toIndexDtfWriteVersion } from './transforms'
 
 export type OpenAuctionArrays = {
   decimals: bigint[]
@@ -157,7 +157,9 @@ function getRebalanceOpenAuction(
   isTrackingDTF: boolean,
   tokenPriceVolatility: Record<string, Volatility>,
   rebalancePercent = 90,
-  isHybridDTF = false
+  isHybridDTF = false,
+  // Folio 6.0 only: the per-auction length the calldata will carry (RPC maxAuctionLength).
+  auctionLength?: bigint
 ) {
   const built = buildRebalanceOpenAuctionArrays(
     version,
@@ -187,12 +189,14 @@ function getRebalanceOpenAuction(
     weights,
   } = built.arrays
 
-  // v5 math and args are SDK-owned; Register keeps the price pre-check and the
+  // v5/v6 math and args are SDK-owned; Register keeps the price pre-check and the
   // volatility preset mapping above. v4 stays on the local library by decision.
-  if (version === FOLIO_VERSION_V5) {
+  const writeVersion = toIndexDtfWriteVersion(version)
+  if (writeVersion) {
     const rebalanceTokens = getRebalanceTokens(rebalance, version)
     const { args, metrics } = prepareIndexDtfOpenAuctionArgs({
-      version: '5.0.0',
+      version: writeVersion,
+      auctionLength,
       rebalance: rebalance as RebalanceV5,
       tokens,
       supply,

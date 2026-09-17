@@ -1,9 +1,18 @@
 import dtfIndexAbi from '@/abis/dtf-index-abi'
 import { Button } from '@/components/ui/button'
-import { indexDTFAtom, isHybridDTFAtom } from '@/state/dtf/atoms'
+import {
+  folioVersionAtom,
+  indexDTFAtom,
+  isHybridDTFAtom,
+} from '@/state/dtf/atoms'
+import {
+  prepareIndexDtfOpenAuction,
+  useIndexDtfIdentity,
+  useIndexDtfMaxAuctionLength,
+} from '@reserve-protocol/react-sdk'
 import { parseDuration } from '@/utils'
 import { Trans, useLingui } from '@lingui/react/macro'
-import { atom, useAtom, useAtomValue } from 'jotai'
+import { atom, useAtomValue } from 'jotai'
 import { LoaderCircle } from 'lucide-react'
 import { useEffect, useMemo, useState } from 'react'
 import { toast } from 'sonner'
@@ -15,8 +24,8 @@ import {
   isAuctionOngoingAtom,
   priceVolatilityAtom,
   rebalanceAuctionsAtom,
+  latestAuctionAtom,
   rebalancePercentAtom,
-  refreshNonceAtom,
   savedWeightsAtom,
 } from '../atoms'
 import useRebalanceParams, {
@@ -25,6 +34,8 @@ import useRebalanceParams, {
 import getRebalanceOpenAuction, {
   buildRebalanceOpenAuctionArrays,
 } from '../utils/get-rebalance-open-auction'
+import { toIndexDtfWriteVersion } from '../utils/transforms'
+import useLaunchReceipt from '../hooks/use-launch-receipt'
 import { TransactionButtonContainer } from '@/components/ui/transaction'
 
 const auctionNumberAtom = atom((get) => {
@@ -40,8 +51,15 @@ const LaunchAuctionsButton = () => {
   const priceVolatility = useAtomValue(priceVolatilityAtom)
   const rebalanceParams = useRebalanceParams()
   const { isError: isPriceError } = useRebalancePrices()
-  const [refreshNonce, setRefreshNonce] = useAtom(refreshNonceAtom)
   const auctionNumber = useAtomValue(auctionNumberAtom)
+  const identity = useIndexDtfIdentity()
+  const versionState = useAtomValue(folioVersionAtom)
+  const latestAuction = useAtomValue(latestAuctionAtom)
+  const major = versionState.status === 'ready' ? versionState.major : undefined
+  // Folio 6.0 requires the per-auction length; maxAuctionLength satisfies every price-control mode.
+  const { data: maxAuctionLength } = useIndexDtfMaxAuctionLength(
+    major === 6 && identity.address ? identity : undefined
+  )
   const [isLaunching, setIsLaunching] = useState(false)
   const { writeContract, isError, isPending, data } = useWriteContract()
   const { isSuccess } = useWaitForTransactionReceipt({
@@ -86,30 +104,25 @@ const LaunchAuctionsButton = () => {
         )?.symbol
       : undefined
 
+  // v5/v6 wait for the RPC latest-auction read so the ongoing gate is chain truth before a send.
+  const isVersionReady =
+    major === 4 ||
+    ((major === 5 || major === 6) &&
+      latestAuction !== undefined &&
+      (major !== 6 || maxAuctionLength !== undefined))
+
   const isValid =
     !!rebalanceParams &&
     rebalancePercent > 0 &&
     rebalance &&
     dtf &&
-    !priceUnavailable
+    !priceUnavailable &&
+    isVersionReady
+
+  useLaunchReceipt(isSuccess, () => setIsLaunching(false))
 
   useEffect(() => {
-    if (isSuccess) {
-      toast.success(t`Auction launched successfully`)
-      // Refresh nonce after 10s
-      let timeout = setTimeout(() => {
-        setRefreshNonce(refreshNonce + 1)
-      }, 1000 * 10)
-      // Remove loading after 15s
-      let launchTimeout = setTimeout(() => {
-        setIsLaunching(false)
-      }, 1000 * 15)
-
-      return () => {
-        clearTimeout(timeout)
-        clearTimeout(launchTimeout)
-      }
-    }
+    if (isSuccess) toast.success(t`Auction launched successfully`)
   }, [isSuccess])
 
   useEffect(() => {
@@ -139,9 +152,29 @@ const LaunchAuctionsButton = () => {
         rebalanceParams.isTrackingDTF,
         rebalanceParams.tokenPriceVolatility,
         rebalancePercent,
-        isHybridDTF
+        isHybridDTF,
+        maxAuctionLength
       )
 
+      const writeVersion = toIndexDtfWriteVersion(rebalanceParams.folioVersion)
+      if (writeVersion) {
+        const call = prepareIndexDtfOpenAuction({
+          address: dtf.id,
+          chainId: identity.chainId,
+          version: writeVersion,
+          args: openAuctionArgs,
+        })
+        writeContract({
+          address: call.contract.address,
+          abi: call.contract.abi,
+          functionName: call.contract.functionName,
+          args: call.contract.args as any,
+          chainId: call.chainId,
+        })
+        return
+      }
+
+      // v4 stays Register-local by decision.
       writeContract({
         address: dtf?.id,
         abi: dtfIndexAbi,

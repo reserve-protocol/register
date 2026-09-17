@@ -12,7 +12,11 @@ import { useAtomValue } from 'jotai'
 import { useReadContracts } from 'wagmi'
 import { mapToAssets } from '../utils'
 import { isAuctionOngoingAtom } from '../atoms'
-import { FOLIO_VERSION_V4, FOLIO_VERSION_V5 } from '../utils/transforms'
+import {
+  FOLIO_VERSION_V4,
+  FOLIO_VERSION_V5,
+  FOLIO_VERSION_V6,
+} from '../utils/transforms'
 import { transformV4Rebalance } from '../utils/transforms'
 
 export type RebalanceCurrentData = {
@@ -25,16 +29,21 @@ export type RebalanceCurrentData = {
 
 export const AUCTION_POLL_MS = 10_000
 
-// Stable identity so React Query memoizes the selection.
-const selectCurrentData = (
-  state: IndexDtfCurrentRebalanceState
-): RebalanceCurrentData => ({
-  supply: state.totalSupply,
-  rebalance: state.rebalance,
-  currentAssets: mapToAssets(state.totalAssets.tokens, state.totalAssets.balances),
-  folioVersion: FOLIO_VERSION_V5,
-  bidsEnabled: state.rebalance.bidsEnabled,
-})
+// Stable identities so React Query memoizes the selection.
+const selectCurrentData =
+  (folioVersion: FolioVersion) =>
+  (state: IndexDtfCurrentRebalanceState): RebalanceCurrentData => ({
+    supply: state.totalSupply,
+    rebalance: state.rebalance,
+    currentAssets: mapToAssets(
+      state.totalAssets.tokens,
+      state.totalAssets.balances
+    ),
+    folioVersion,
+    bidsEnabled: state.rebalance.bidsEnabled,
+  })
+const selectCurrentDataV5 = selectCurrentData(FOLIO_VERSION_V5)
+const selectCurrentDataV6 = selectCurrentData(FOLIO_VERSION_V6)
 
 // v5 and v6 share the getRebalance shape and come through the SDK; v4 stays on
 // the Register-local read by decision. Nothing reads until the version resolves.
@@ -51,7 +60,7 @@ const useRebalanceCurrentData = () => {
     isSdkVersion && identity.address ? identity : undefined,
     {
       refetchInterval,
-      select: selectCurrentData,
+      select: major === 6 ? selectCurrentDataV6 : selectCurrentDataV5,
     }
   )
 

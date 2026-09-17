@@ -76,9 +76,18 @@ export const latestAuctionAtom = atom<IndexDtfLatestAuction | null | undefined>(
 
 // Live gating is RPC-first: the indexer lags receipts, so indexed auctions only
 // decide while the RPC read is unresolved (or on v4, which has no SDK read).
+// "Ongoing" is wider than the SDK's biddable `isActive`: an auction of the
+// current nonce that has not ended (warm-up included) blocks a new launch.
 export const isAuctionOngoingAtom = atom((get) => {
   const latest = get(latestAuctionAtom)
-  if (latest !== undefined) return latest?.isActive ?? false
+  if (latest !== undefined) {
+    if (!latest) return false
+    const now = BigInt(Math.floor(Date.now() / 1000))
+    return (
+      latest.rebalanceNonce === latest.currentRebalanceNonce &&
+      now <= latest.endTime
+    )
+  }
 
   const auctions = get(rebalanceAuctionsAtom)
 

@@ -66,6 +66,35 @@ Ports and resource limits are all env-overridable (`chains/<chainId>.env`, `ANVI
   and a `playwright.fork.config.ts` that pins all three plus the Graph endpoints are proposed work
   (handoff §3.6); until they exist, Register browser cases can only target the chain-1 fork.
 
+## The Register real-launch lane (BSC, CMC20)
+
+`playwright.fork.config.ts` boots Vite on :3006 with `VITE_RPC_URL_56` pointed at the fork
+and `VITE_DISABLE_COWBOT=true`; nothing is intercepted (API and subgraph are production). The
+subgraph is the catch: the rebalance list joins rebalances to proposals through it, so a
+rebalance started on the fork by impersonation never renders. Pin the fork **inside a real
+launcher window** instead (a block just after that DTF's `startRebalance`, before its first
+auction), freeze the browser clock to the fork timestamp, and let the real launcher open the
+auction from the UI.
+
+```bash
+# 1. fork inside the launcher window BEFORE the real launcher's first auction (CMC20 nonce 12
+#    started at ts 1788546765; block 119967348 is 60 s in). Re-derive by timestamp search.
+export FORK_RPC_URL=https://<bsc archive> FORK_BLOCK=119967348
+FORK_RESET_CONFIRM=1 e2e/fork/docker/fork.sh 56 reset && e2e/fork/docker/fork.sh 56 up
+# 2. serve the production subgraph truncated at the fork block (the UI must not know the
+#    future: a later auction switches it to the running/finished views); keep it running
+FORK_BLOCK=119967348 UPSTREAM=https://api.goldsky.com/api/public/project_cmgzim3e100095np2gjnbh6ry/subgraphs/dtf-index-bsc/prod/gn \
+  node e2e/fork/scripts/subgraph-proxy.mjs &
+# 3. impersonate + fund the real AUCTION_LAUNCHER, warm the reads, write the manifest
+FORK_RPC_URL_56=http://127.0.0.1:8547 node e2e/fork/scripts/prepare-cmc20.mjs
+# 4. the launch from the UI, verified on the fork with viem (receipt + AuctionOpened)
+FORK_RPC_URL_56=http://127.0.0.1:8547 E2E_EVIDENCE_DIR=$PWD/temp/evidence/fork-56 \
+  pnpm exec playwright test -c playwright.fork.config.ts
+```
+
+Impersonating the launcher is labelled as such in the manifest and the evidence; it proves
+Register's write path and the RPC-first refresh, not governance coverage.
+
 ## Adding a new fork-backed suite
 
 1. Decide the lane: SDK runner (no browser) or Register browser. Browser cases use the future

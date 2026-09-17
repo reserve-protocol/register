@@ -122,9 +122,17 @@ Quick loop: `pnpm exec playwright test e2e/tests/smoke/auctions.spec.ts`
   `governances` branch; the SDK's latest-auction read starts at
   `nextAuctionId()`, answered `0` by the `*:` wildcard in `e2e/helpers/rpc.ts`.
 - `isAuctionOngoingAtom` is RPC-first: once `latestAuctionAtom` resolves (SDK
-  read, inclusive window + nonce match) it decides; indexed auctions only decide
-  while it is unresolved or on v4. Don't gate a write on indexed rows — the
-  indexer lags receipts and re-enables the launch button.
+  read at one block) it decides; indexed auctions only decide while it is
+  unresolved or on v4. "Ongoing" is wider than the SDK's biddable `isActive`:
+  an auction of the current nonce that has not ended blocks a launch, warm-up
+  included (the first fork launch stayed enabled for 30 s on `isActive`). Don't
+  gate a write on indexed rows — the indexer lags receipts and re-enables the
+  launch button.
+- Real launches run on the fork lane (`playwright.fork.config.ts`,
+  `.claude/skills/fork-e2e/SKILL.md`): Register reads the production subgraph
+  through `e2e/fork/scripts/subgraph-proxy.mjs`, truncated at the fork block,
+  because an auction the subgraph already knows about switches this view to the
+  running/finished cards and unmounts the launch buttons.
 - Don't "fix" a live-state test by moving `getRebalance` data into the subgraph
   mock (or history into RPC) — the layers are distinct on purpose.
 

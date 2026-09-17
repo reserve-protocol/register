@@ -100,7 +100,7 @@ case "$CMD" in
   up) up ;;
   doctor) doctor ;;
   ps) "${COMPOSE[@]}" ps --format 'table {{.Service}}\t{{.State}}\t{{.Health}}\t{{.Ports}}' ;;
-  logs) "${COMPOSE[@]}" logs --tail=200 -f "$@" 2>&1 | mask_urls ;;
+  logs) "${COMPOSE[@]}" logs --tail=200 "$@" 2>&1 | mask_urls ;;
   down) "${COMPOSE[@]}" down --remove-orphans ;;
   reset) reset ;;
   config) "${COMPOSE[@]}" config 2>&1 | mask_urls ;;

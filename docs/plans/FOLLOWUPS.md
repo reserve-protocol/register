@@ -13,14 +13,18 @@ PRs #1053/#1054/#1055/#1063, SDK PR #27). Delete items as they land.
 
 ## Next slices (in rough order)
 
-- **Index DTF v6 / auctions SDK integration**: active planning contract in
-  [index-dtf-v6-integration.md](index-dtf-v6-integration.md). Rebalance regression
-  comes first: top 10 listed DTFs by market cap plus Ethereum supplements,
-  three-chain fork execution, then SDK migration, upgrades and native v6.
-  Hybrid remains a curated allowlist; implementation has not started.
-  Settled 2026-09-16: SDK is v5/v6 only, v4 stays Register-local, the full
-  146-case suite is the release gate, and the per-chain fork stack lives in
-  `e2e/fork/docker/` (skill: `.claude/skills/fork-e2e/SKILL.md`).
+- **Index DTF v6 / auctions SDK integration**: contract in
+  [index-dtf-v6-integration.md](index-dtf-v6-integration.md); the Register
+  rebalance vertical ([index-dtf-v6-register-rebalance.md](index-dtf-v6-register-rebalance.md))
+  landed 2026-09-17 (version identity, SDK reads/calculations/writes for v5/v6,
+  RPC-first gating, one real launch on the BSC fork). Still open from that
+  vertical: v6 basket proposals in the atom builder (need nonce + deadline via
+  the client-bound SDK builder), the SDK client still appends default RPCs after
+  an override (read isolation on the fork lane), settings/propose `isV5` sites
+  treat v6 as non-v5, and the SDK pair must be published (prerelease) before the
+  Register pin replaces the `link:`. Settled: SDK is v5/v6 only, v4 stays
+  Register-local, the full 146-case suite is the release gate (S1+ in the
+  handoff), fork stack in `e2e/fork/docker/`.
 - **Portfolio SDK adoption (chk-4)**: extend SDK `AccountPortfolio` to the full
   6-field shape + validated partial-body mappers (SDK-side fixtures), migrate
   register's raw `use-portfolio`/`use-historical-portfolio`/

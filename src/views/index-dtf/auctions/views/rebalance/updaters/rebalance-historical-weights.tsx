@@ -7,7 +7,7 @@ import { useEffect, useMemo } from 'react'
 import { useReadContract } from 'wagmi'
 import { originalRebalanceWeightsAtom, rebalanceAuctionsAtom } from '../atoms'
 import {
-  FOLIO_VERSION_V5,
+  FOLIO_VERSION_V4,
   getFolioVersion,
   getRebalanceTokens,
   getRebalanceWeights,
@@ -26,7 +26,7 @@ const RebalanceHistoricalWeightsUpdater = () => {
     () => getFolioVersion(versionState),
     [versionState]
   )
-  const abi = folioVersion === FOLIO_VERSION_V5 ? dtfIndexAbiV5 : dtfIndexAbiV4
+  const abi = folioVersion === FOLIO_VERSION_V4 ? dtfIndexAbiV4 : dtfIndexAbiV5
 
   // Query for historical weights at first auction block for hybrid DTFs
   const result = useReadContract({
@@ -52,7 +52,7 @@ const RebalanceHistoricalWeightsUpdater = () => {
   useEffect(() => {
     if (result.data && isHybridDTF && folioVersion !== undefined) {
       const historicalRebalance =
-        folioVersion === FOLIO_VERSION_V5
+        folioVersion !== FOLIO_VERSION_V4
           ? transformV5Rebalance(result.data as readonly unknown[])
           : transformV4Rebalance(result.data as readonly unknown[])
 

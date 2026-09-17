@@ -1,6 +1,6 @@
 ---
 title: E2E Suite
-updated: 2026-09-16
+updated: 2026-09-17
 type: domain
 sources:
   - e2e/**
@@ -116,7 +116,19 @@ hand-copied `GetIndexDTF` query in `e2e/scripts/capture.ts` from the new SDK
 dist (it is not exported) and re-run `pnpm e2e:capture` — the `dtf-data` canary
 smoke fails on drift but only a fresh capture fixes it.
 
-Non-goals: forked-chain execution, visual/pixel regression, v6 contracts.
+## Fork lane (real transactions)
+
+`playwright.fork.config.ts` runs `e2e/fork/tests` against the per-chain Anvil
+fork in `e2e/fork/docker` (skill: `.claude/skills/fork-e2e/SKILL.md`): Vite on
+:3006, `VITE_RPC_URL_<chainId>` and `VITE_INDEX_SUBGRAPH_URL_<chainId>` overrides,
+`VITE_DISABLE_COWBOT=true`, nothing intercepted. The subgraph override points at
+`e2e/fork/scripts/subgraph-proxy.mjs`, the production subgraph truncated at the
+fork block, so the UI cannot know auctions that happened after the fork. The
+wallet (`e2e/fork/helpers/fork-wallet.ts`) forwards sends to Anvil for an
+impersonated account; the spec verifies state with viem, never from the page.
+First case: `launch-cmc20.fork.spec.ts` (auction 29, nonce 12, 2026-09-17).
+
+Non-goals of the offline suite: forked-chain execution (fork lane), visual/pixel regression.
 Coverage state and open gaps live in `e2e/TEST_MAP.md`; harness-level debt in
 [[progress]] § Backlog. Governance, issuance, compliance, and
 transaction-contract edits require engineer review.

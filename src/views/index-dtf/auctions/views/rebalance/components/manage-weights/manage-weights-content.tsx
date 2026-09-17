@@ -41,7 +41,7 @@ import {
 import { calculateTargetShares, prepareRebalanceData } from './utils/weight-calculation-utils'
 import ManageWeightsHeader from './manage-weights-header'
 import ManageWeightsHero from './manage-weights-hero'
-import { FOLIO_VERSION_V5, getRebalanceTokens, getRebalanceWeights } from '../../utils/transforms'
+import { FOLIO_VERSION_V4, getRebalanceTokens, getRebalanceWeights } from '../../utils/transforms'
 
 const ManageWeightsContent = () => {
   const rebalanceParams = useRebalanceParams()
@@ -141,7 +141,7 @@ const ManageWeightsContent = () => {
 
       // Get weights - for v5 we need to extract from tokens, for v4 use weights directly
       let weights: WeightRange[]
-      if (rebalanceParams.folioVersion === FOLIO_VERSION_V5) {
+      if (rebalanceParams.folioVersion !== FOLIO_VERSION_V4) {
         // For v5, getRebalanceWeights helper extracts from rebalance, but here we need from startRebalanceArgs
         // The v5 returns tokens: TokenRebalanceParams[], so we extract weights from there
         const argsV5 = startRebalanceArgs as { tokens: Array<{ weight: WeightRange }> }

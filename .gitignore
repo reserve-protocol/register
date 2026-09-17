@@ -57,3 +57,7 @@ CODEX_REVIEW
 
 # fork e2e stack state (anvil/postgres/ipfs data, archives) — never commit
 /e2e/fork/.state/
+
+# fork e2e lane outputs
+/test-results-fork/
+/playwright-report-fork/

@@ -237,30 +237,50 @@ describe('isAuctionOngoingAtom', () => {
 // Live gating is RPC-first: once the SDK's latest-auction read resolves it
 // decides, whatever the (lagging) indexed auctions say.
 describe('isAuctionOngoingAtom with the RPC latest auction', () => {
-  const rpcAuction = (isActive: boolean) => ({
+  const nowSeconds = () => BigInt(Math.floor(Date.now() / 1000))
+  const rpcAuction = (overrides: Partial<{
+    rebalanceNonce: bigint
+    currentRebalanceNonce: bigint
+    startTime: bigint
+    endTime: bigint
+    isActive: boolean
+  }> = {}) => ({
     auctionId: 1n,
     rebalanceNonce: 3n,
     currentRebalanceNonce: 3n,
-    startTime: 1n,
-    endTime: 2n,
+    startTime: nowSeconds() - 60n,
+    endTime: nowSeconds() + 1800n,
     blockNumber: 10n,
-    isActive,
+    isActive: true,
+    ...overrides,
   })
 
   it('reports ongoing from RPC before the indexer has any auction rows', () => {
     const store = createStore()
     store.set(rebalanceAuctionsAtom, [])
-    store.set(latestAuctionAtom, rpcAuction(true))
+    store.set(latestAuctionAtom, rpcAuction())
     expect(store.get(isAuctionOngoingAtom)).toBe(true)
   })
 
-  it('reports not ongoing from RPC even while an indexed row still looks open', () => {
+  it('treats the 30 s warm-up as ongoing even though bids are not accepted yet', () => {
+    const store = createStore()
+    store.set(rebalanceAuctionsAtom, [])
+    store.set(
+      latestAuctionAtom,
+      rpcAuction({ startTime: nowSeconds() + 25n, endTime: nowSeconds() + 1825n, isActive: false })
+    )
+    expect(store.get(isAuctionOngoingAtom)).toBe(true)
+  })
+
+  it('reports not ongoing from RPC once the auction ended or belongs to an old nonce', () => {
     const store = createStore()
     const future = String(Math.floor(Date.now() / 1000) + 3600)
     store.set(rebalanceAuctionsAtom, [
       { id: '1', endTime: future, startTime: '0', tokens: [], bids: [] } as unknown as Auction,
     ])
-    store.set(latestAuctionAtom, rpcAuction(false))
+    store.set(latestAuctionAtom, rpcAuction({ endTime: nowSeconds() - 1n, isActive: false }))
+    expect(store.get(isAuctionOngoingAtom)).toBe(false)
+    store.set(latestAuctionAtom, rpcAuction({ currentRebalanceNonce: 4n, isActive: false }))
     expect(store.get(isAuctionOngoingAtom)).toBe(false)
     store.set(latestAuctionAtom, null)
     expect(store.get(isAuctionOngoingAtom)).toBe(false)
