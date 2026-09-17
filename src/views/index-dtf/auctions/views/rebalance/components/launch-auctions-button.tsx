@@ -216,6 +216,7 @@ const LaunchAuctionsButton = () => {
       )}
       <Button
         data-testid="auctions-launch-btn"
+        data-ongoing={isAuctionOngoing}
         className="rounded-xl py-6 w-full gap-2"
         disabled={!isValid || isPending || isAuctionOngoing || isLaunching}
         onClick={handleStartAuctions}

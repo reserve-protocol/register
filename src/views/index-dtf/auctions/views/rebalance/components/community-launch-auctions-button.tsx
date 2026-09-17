@@ -42,7 +42,7 @@ const CommunityLaunchAuctionsButton = () => {
   const isVersionReady =
     major === 4 || (isSdkVersion && latestAuction !== undefined)
   const [isLaunching, setIsLaunching] = useState(false)
-  const { writeContract, isError, isPending, data } = useWriteContract()
+  const { writeContract, isPending, data } = useWriteContract()
   const { isSuccess } = useWaitForTransactionReceipt({
     hash: data,
     chainId: dtf?.chainId,
@@ -163,6 +163,7 @@ const CommunityLaunchAuctionsButton = () => {
     <div className="flex flex-col gap-2 p-2">
       <Button
         data-testid="auctions-community-launch-btn"
+        data-ongoing={isAuctionOngoing}
         className="rounded-xl w-full py-6 gap-2"
         disabled={
           !isValid ||

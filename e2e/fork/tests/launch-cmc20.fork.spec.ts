@@ -151,7 +151,8 @@ test('cmc20 launcher opens an auction on the BSC fork from the UI', async ({ pag
   expect(receipt.from.toLowerCase()).toBe(manifest.launcher.toLowerCase())
 
   // RPC-first refresh: the gate flips to ongoing from chain state.
-  await expect(launch).toBeDisabled({ timeout: 60_000 })
+  await expect(launch).toHaveAttribute('data-ongoing', 'true', { timeout: 60_000 })
+  await expect(launch).toBeDisabled()
   await page.screenshot({ path: `${evidenceDir}/02-after-launch.png`, fullPage: true })
 
   writeFileSync(

@@ -48,7 +48,7 @@ needs an invalidate/prefetch-style react-sdk primitive).
 - **Yield namespace is implemented** (`sdk.yield.*`, ~40 `useYieldDtf*` hooks + query options). Long-term migration target for register's hand-rolled yield reads.
 - **Catalog**: `@reserve-protocol/dtf-catalog` (register pins `0.1.5`) is a static JSON registry — synchronous lookups, no fetch; `dtfCatalog`/`indexDtfCatalog`/`yieldDtfCatalog` also re-exported from the SDK barrel (successor to `@reserve-protocol/rtokens`); on address collisions index wins. **Index DTF `status` (active/deprecated) comes from here**, not the API.
 - **Installed 0.5.3 exports** `INDEX_DTF_SUBGRAPH_URL`, `DEFAULT_RPC_URLS`, and `supportedChainIds` through the core barrel and react-sdk re-export (declarations checked 2026-09-15). Register still owns its configured RPC lists; any consolidation must preserve its chain/provider behavior. `SUPPORTED_CHAINS` is not the verified export name.
-- **Write ABIs are version-gated, not auto-detected** (`getIndexDtfWriteAbi` in the SDK source; not exported to register in 0.5.3, and register has no v6 path yet). Register must read `folio.version()` and thread it through (see [[index-protocol]] for the version landscape).
+- **Write ABIs are version-gated, not auto-detected** (`getIndexDtfWriteAbi` in the SDK source; the candidate's builders take `version` and reject anything but `5.0.0`/`6.0.0`). Register must read `folio.version()` and thread it through (see [[index-protocol]] for the version landscape).
 - Local linking: link react-sdk to the sibling workspace; it resolves core there. Build both packages and verify one set of React/Query/viem peers — `docs/local-sdk-development.md`.
 
 The [v6 integration plan](../plans/index-dtf-v6-integration.md) owns the
@@ -122,4 +122,4 @@ Local SDK checkout linking: `docs/local-sdk-development.md`.
 - Contract versions differ (v5/v6): `startRebalance`/`openAuction`/`bid` signatures vary — don't hardcode an old ABI.
 - `totalSupply()` includes pending fee shares — ignoring them breaks price/share math.
 
-Key feature locations: rebalance v4 `src/views/index-dtf/auctions/views/rebalance/` · governance `src/views/index-dtf/governance/` · issuance `src/views/index-dtf/issuance/` (zapper/manual/direct).
+Key feature locations: rebalance (v4 local, v5/v6 via SDK) `src/views/index-dtf/auctions/views/rebalance/` · governance `src/views/index-dtf/governance/` · issuance `src/views/index-dtf/issuance/` (zapper/manual/direct).

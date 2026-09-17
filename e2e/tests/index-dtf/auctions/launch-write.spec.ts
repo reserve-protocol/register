@@ -38,6 +38,10 @@ test.use({ walletChain: 56 })
 const OPEN_AUCTION_ABI = parseAbi([
   'function openAuction(uint256 rebalanceNonce, address[] tokens, (uint256 low, uint256 spot, uint256 high)[] newWeights, (uint256 low, uint256 high)[] newPrices, (uint256 low, uint256 spot, uint256 high) newLimits)',
 ])
+// Folio 6.0 appends the per-auction length; the launcher passes maxAuctionLength().
+const OPEN_AUCTION_V6_ABI = parseAbi([
+  'function openAuction(uint256 rebalanceNonce, address[] tokens, (uint256 low, uint256 spot, uint256 high)[] newWeights, (uint256 low, uint256 high)[] newPrices, (uint256 low, uint256 spot, uint256 high) newLimits, uint256 auctionLength)',
+])
 const OPEN_AUCTION_UNRESTRICTED_ABI = parseAbi([
   'function openAuctionUnrestricted(uint256 rebalanceNonce)',
 ])
@@ -145,9 +149,10 @@ test('auctions: an auction launcher submits openAuction() to the folio @smoke', 
     )
   )
   await harness.chain.advance(30_000)
-  await expect(launch).toBeDisabled()
+  await expect(launch).toHaveAttribute('data-ongoing', 'true')
   await harness.chain.advance(30_000)
   await expect(launch).toBeDisabled()
+  await expect(launch).toHaveAttribute('data-ongoing', 'true')
 })
 
 test('auctions: a non-launcher in the permissionless window submits openAuctionUnrestricted() @smoke', async ({
@@ -212,4 +217,66 @@ test('auctions: a non-launcher in the permissionless window submits openAuctionU
   })
   expect(decoded.functionName).toBe('openAuctionUnrestricted')
   expect(decoded.args[0]).toBe(BigInt(raw.nonce))
+})
+
+test('auctions: on a Folio 6.0 proxy the launcher submits the six-argument openAuction() with maxAuctionLength @smoke', async ({
+  harness,
+  overrides,
+}) => {
+  const page = harness.page
+  const latest = loadRebalances(dtf)[0]
+  const { dtf: dtfObj } = loadSnapshot<{
+    dtf: { auctionLaunchers: string[] }
+  }>(`${dtf.snapshotDir}/dtf.json`)
+
+  await harness.chain.freezeAt(rebalanceTime(latest, 'restricted'))
+  overrides.subgraph(
+    { operationName: 'GetIndexDTF' },
+    {
+      dtf: {
+        ...dtfObj,
+        auctionLaunchers: [...dtfObj.auctionLaunchers, TEST_ADDRESS.toLowerCase()],
+      },
+    }
+  )
+  seedAuctionDetail(overrides)
+  overrides.ethCall(dtf.address, '0xaa3b5568', encodeActiveRebalance(dtf, latest))
+  // Same proxy, reported as 6.0.0, with the v6 length ceiling the SDK must carry.
+  overrides.ethCall(
+    dtf.address,
+    '0x54fd4d50',
+    encodeAbiParameters([{ type: 'string' }], ['6.0.0'])
+  )
+  overrides.ethCall(
+    dtf.address,
+    '0x0e519ef9',
+    encodeAbiParameters([{ type: 'uint256' }], [1_800n])
+  )
+
+  await harness.goto(dtf, `auctions/rebalance/${proposalIdFor(dtf, latest)}`)
+  await harness.wallet.connect()
+  await expect(page.getByTestId('dtf-auctions')).toBeVisible({ timeout: 20_000 })
+
+  const launch = page.getByTestId('auctions-launch-btn')
+  await expect(async () => {
+    await harness.chain.advance(5_000)
+    await expect(launch).toBeVisible()
+    await expect(launch).toBeEnabled()
+  }).toPass({ timeout: 30_000 })
+
+  harness.tx.confirm()
+  await launch.click()
+  await harness.chain.advance(10_000)
+
+  await expect.poll(() => harness.tx.log.length, { timeout: 15_000 }).toBeGreaterThan(0)
+  const sent = harness.tx.last()!
+  expect(sent.to.toLowerCase()).toBe(dtf.address.toLowerCase())
+  expect(sent.data.slice(0, 10)).toBe('0x9bd97b3e')
+  const decoded = decodeFunctionData({
+    abi: OPEN_AUCTION_V6_ABI,
+    data: sent.data as `0x${string}`,
+  })
+  expect(decoded.functionName).toBe('openAuction')
+  expect(decoded.args[0]).toBe(BigInt(latest.nonce))
+  expect(decoded.args[5]).toBe(1_800n)
 })
