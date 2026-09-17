@@ -3,7 +3,7 @@ import { cn } from '@/lib/utils'
 import { getAddress } from 'viem'
 import { UNIVERSAL_ASSETS } from '@/utils/constants'
 import { indexDTFIconsAtom } from '@/state/atoms'
-import { useAtom, useAtomValue } from 'jotai'
+import { useAtomValue, useSetAtom, useStore } from 'jotai'
 import * as React from 'react'
 import { routeCacheAtom } from './atoms'
 import { TOKEN_LOGO_MAPPINGS } from './token-logo-mappings'
@@ -27,10 +27,9 @@ interface Props extends React.ImgHTMLAttributes<HTMLImageElement> {
 
 const TokenLogo = React.forwardRef<HTMLImageElement, Props>((props, ref) => {
   const indexDTFIcons = useAtomValue(indexDTFIconsAtom)
-  const [routeCache, setRouteCache] = useAtom(routeCacheAtom)
-  // Read through a ref: depending on the shared cache would re-run every logo on each cache write
-  const routeCacheRef = React.useRef(routeCache)
-  routeCacheRef.current = routeCache
+  // Read the shared cache on demand: subscribing would re-render and reload every logo on each cache write
+  const store = useStore()
+  const setRouteCache = useSetAtom(routeCacheAtom)
   const {
     symbol,
     size = 'md',
@@ -97,7 +96,7 @@ const TokenLogo = React.forwardRef<HTMLImageElement, Props>((props, ref) => {
       // check cache first
       if (address && chain) {
         const cacheKey = `${address.toLowerCase()}-${chain}`
-        const cached = routeCacheRef.current[cacheKey]
+        const cached = store.get(routeCacheAtom)[cacheKey]
         if (cached) {
           setCurrentSrc(cached)
           return
@@ -201,7 +200,7 @@ const TokenLogo = React.forwardRef<HTMLImageElement, Props>((props, ref) => {
       console.debug('Failed to load token logo:', error)
       setCurrentSrc('/svgs/defaultLogo.svg')
     }
-  }, [propsSrc, symbol, address, chain, h, w, cacheUrl, indexDTFIcons])
+  }, [propsSrc, symbol, address, chain, h, w, cacheUrl, indexDTFIcons, store])
 
   React.useEffect(() => {
     setCurrentSrc('')

@@ -4,9 +4,15 @@ import { describe, expect, it, vi } from 'vitest'
 import TokenLogo from '..'
 import { getVoteLockTokenLogo } from '../vote-lock-token-logo'
 
+const routeCache: Record<string, string> = {
+  '0xabc-56': '/wrong-cached-logo.svg',
+  '0xdef-1': '/svgs/cached-logo.svg',
+}
+
 vi.mock('jotai', () => ({
   useAtomValue: () => ({}),
-  useAtom: () => [{ '0xabc-56': '/wrong-cached-logo.svg' }, vi.fn()],
+  useSetAtom: () => vi.fn(),
+  useStore: () => ({ get: () => routeCache }),
 }))
 
 vi.mock('@/state/atoms', () => ({
@@ -43,6 +49,25 @@ describe('getVoteLockTokenLogo', () => {
     await waitFor(() => {
       expect(getByAltText('vlRSR-LCAP').getAttribute('src')).toBe(
         '/svgs/vlrsr.svg'
+      )
+    })
+  })
+})
+
+describe('TokenLogo route cache', () => {
+  it('uses the cached logo for a known address and chain', async () => {
+    const { getByAltText } = render(
+      createElement(TokenLogo, {
+        symbol: 'UNKNOWN',
+        address: '0xDEF',
+        chain: 1,
+        alt: 'cached',
+      })
+    )
+
+    await waitFor(() => {
+      expect(getByAltText('cached').getAttribute('src')).toBe(
+        '/svgs/cached-logo.svg'
       )
     })
   })
