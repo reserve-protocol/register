@@ -1306,3 +1306,80 @@ Play-by-play lives in git (PRs #1053/#1054/#1055/#1063, SDK PR #27). Durable out
 
 - The audit's high-confidence presentation blockers are repaired: direct hashes survive late layout until real user scroll intent; all primary destinations stay fixed while the current page owns a separate scroll-tracked tree; Chart, Table, both Navigation entries, and Transaction system reach their real Pattern/Workbench surfaces; mobile section navigation uses grouped options with a visible affordance; empty search and keyboard skip-link states are explicit.
 - [Final evidence](../plans/design-system-documentation-share-readiness/evidence/README.md) passes focused units35/35, Components2/2, Patterns1/1, shell3/3, application/E2E TypeScript, the 4,035-module documentation build, and independent Intent/Risk review. Final 1400/390/320 light/dark captures were inspected. Dark small-link contrast, Quiet Button affordance, Navigation overflow containment, and multi-select applied state remain design-system-owner questions; a separate read-only complex-flow fidelity audit remains recommended. No authority, adoption, product behavior, commit, or remote changed.
+
+## 2026-09-17 — Complex-family documentation fidelity
+
+- Navigation, Tables, Charts, and the paused Transaction Workbench now preserve their accepted or retained owners instead of teaching clipped, scaled, dead-end, or stale-default states. The [receipt](../plans/design-system-documentation-complex-family-fidelity/evidence/README.md) retains the 60-state render matrix and final affected-surface proof.
+- Independent review found and verified two additional edge defects before handoff: contained Product Drawer dismissal lacked a stable live focus target, and family Reset ignored dirty local values. Both were repaired with RED→GREEN unit and browser coverage. Final evidence passes units131/131, broad1498/1499 plus the sole sandbox-watcher case7/7 on its native backend, fidelity4/4, standalone9/9, shell13/13, Components5+1 skip, Patterns3/3, types, build4036, style, wiki, and diff checks.
+- Global Navigation More-menu containment, inherited owner questions, human visual approval, and hosted-preview U11/U12 remain explicit follow-ups. No token, shared default, authority, production mechanic, adoption status, commit, push, or port 3055 state changed.
+
+## 2026-09-17 — Documentation visual reconciliation
+
+- The documentation now uses one always-expanded, independently scrolling left
+  hierarchy on desktop and the same hierarchy in a mobile drawer. The right
+  table of contents, duplicate family navigation, and separate mobile section
+  control are gone; exact visible children and their ancestors track scroll and
+  remain in view.
+- Components now presents labeled system structure instead of header teasers.
+  Charts preserve family-specific widths; Tables use the capped documentation
+  width; governance records stack; Navigation uses truthful neutral hosts; and
+  one shared canvas/control grammar owns specimen width, surface, padding,
+  alignment, stable geometry, and human-facing dimensions.
+- Transactions is a Paused Pattern with five visible family sections and no
+  duplicate Workbench explorer. Operation, Phase, State, and adjacent sequence
+  controls make the current state primary; modal hosts, full workspaces, and
+  documentation-only launch controls follow the approved reversible rules.
+- The [implementation receipt](../plans/design-system-documentation-visual-reconciliation.md#implementation-receipt--2026-09-17)
+  records focused units101/101, integrated shell26/26, standalone16+2,
+  Components/Patterns16 with two intentional capture skips, app/E2E types, the
+  4,034-module standalone build, and ordinary-height desktop/mobile inspection.
+  The final inherited-tree gate passed 1,506/1,507; its sole failure was the
+  unchanged native filesystem-watcher test emitting `watcher-error` on three
+  consecutive attempts in this environment.
+  No design authority, production adoption, shared default, token, transaction
+  mechanic, commit, push, or port 3055 state changed.
+
+## 2026-09-18 — Documentation reconciliation overnight convergence
+
+- The final objective pass repaired narrow transaction reachability, humanized
+  transaction state labels without changing routing keys, corrected Color and
+  Table phone/tablet containment, preserved the Overview chart's natural source
+  width, and removed the duplicate Foundations strip. Select and Metric now own
+  one explicit documentation canvas rather than rendering inside a second
+  frame; Select exposes Size as its visible dimension.
+- Focused component work was proven RED and then passes 23/23, with a 1/1
+  isolated browser run and refreshed Select/Metric desktop-light and phone-dark
+  evidence. The post-convergence broad run passes lint and both TypeScript
+  projects and reaches 1,514/1,515 tests; only the unchanged native watcher
+  reports the already-recorded `watcher-error`. Human visual acceptance and
+  owner-level design choices remain explicitly deferred.
+- A final read-only audit found four objective inconsistencies: phone modal
+  padding was erased, Workbench omitted three visible sections from scroll
+  tracking, Transactions retained Workbench-first labeling, and Popover invented
+  composition-owned content. All four were repaired, together with stale Pattern
+  search copy and Select's accessible label. Six RED assertions now pass 59/59,
+  and the 320/390 transaction containment browser journey remains green.
+- Overnight convergence keeps all 169 newly introduced internal-documentation
+  messages intentionally untranslated in the existing Spanish, Korean, and
+  Chinese public-UI catalogs; locale extraction and compilation still pass. A
+  final independent read-only pass found and repaired the last legacy Forms
+  canvas and duplicate nested Transaction identity/status; their RED checks now
+  pass 22/22. Global Navigation's state-dependent constrained height remains a
+  morning visual decision.
+
+## 2026-09-18 — Documentation human-review remediation ready
+
+- The complete scroll-first reference now uses one compact synchronized sidebar,
+  direct ordinary-system coverage for all 45 catalog entries, truthful
+  Eligibility and complex-family framing, realistic Navigation/Table/Chart
+  geometry, and a stable Paused Transaction pattern. Internal documentation is
+  English-only; public product translations remain intact.
+- The final legacy Table alias defect was reproduced before repair: explicitly
+  choosing the canonical default from an old `current=permissionless` link still
+  rendered permissionless. Explicit selection and Reset now retire the alias
+  while old links remain readable and other URL state is preserved.
+- Fresh closeout passes the 149-test affected suite, the 14-test Table regression
+  suite, isolated browser Table check, TypeScript, lint, standalone build, wiki
+  lint, and whitespace validation. Independent Intent and Engineering Risk
+  reviews pass. Human visual judgment remains required; no production component,
+  shared default, token, transaction mechanic, authority, or adoption changed.

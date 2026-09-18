@@ -1,5 +1,14 @@
 # Design-system documentation experience
 
+> **Presentation contract superseded 2026-09-17; remediation active
+> 2026-09-18.** The implemented scroll-first contract and receipt live in
+> [design-system-documentation-visual-reconciliation.md](design-system-documentation-visual-reconciliation.md).
+> The first human review is now governed by
+> [design-system-documentation-human-review-remediation.md](design-system-documentation-human-review-remediation.md).
+> This document remains the historical authority and rollout record; its
+> right-rail, teaser-summary, and Workbench-first presentation clauses no longer
+> describe the current direction.
+
 Planned 2026-09-16. This is the durable contract for replacing the current
 hard-to-navigate lab presentation with a shareable documentation experience.
 It authorizes planning and read-only discovery only. Shell implementation,

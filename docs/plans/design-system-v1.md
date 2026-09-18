@@ -182,14 +182,15 @@ approved-for-now baseline, while production adoption remains separate. The autho
 and [no-change mobile-axis pilot](design-system-mobile-axis-pilot/README.md) are
 complete.
 
-The active planning frontier is now the
-[human documentation experience](design-system-documentation-experience.md): a
-neutral, searchable projection over the existing authority with separate
-Canonical, Workbench, and Internal Records destinations. Toast and Progress
-integration is paused and their detached Claude package remains preserved. No
-shell or component implementation begins until the plan's upstream checkpoint,
-Git, architecture, status-label, and preview decisions are approved. Future
-delegated implementation still follows the
+The active planning frontier is the
+[human-review documentation remediation](design-system-documentation-human-review-remediation.md).
+It preserves the implemented scroll-first shell while repairing systemic
+component-depth, surface-context, Product-navigation, and complex-family
+presentation defects found during the first human visual review. The earlier
+[documentation experience](design-system-documentation-experience.md) and
+[visual reconciliation](design-system-documentation-visual-reconciliation.md)
+remain historical contract and implementation evidence. Toast and Progress
+integration remains paused. Future delegated implementation still follows the
 [standing handoff rule](../wiki/domains/design-system.md#implementation-handoffs).
 
 ### Transaction checkpoint: paused, not a migration approval
