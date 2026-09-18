@@ -264,5 +264,6 @@ Guardrails for agent runs: every write requires an `Actor` from the scenario; th
 
 - Cold fork reads on public archive endpoints are slow; the lab warms the source DTF's reads and records durations so slow runs are visible, not mysterious.
 - Real delegate impersonation depends on vote-lock snapshots existing at the fork block; scenarios must inventory delegates before promising a standard lifecycle.
+- Reserve API dependency: the auction analytics and rebalance history Register renders come from the API's own RPC/event decoding, which today routes anything not `5.x` through the v4 layout and omits `auctionLength`, so it cannot describe a v6 rebalance ([API addendum](index-dtf-v6-api.md)). The lab reads price series from the API but computes every auction metric itself from protocol reads; until the API supports v6, its analytics for a lab run are compared, never trusted, and the report flags the mismatch.
 - Price realism: recorded API prices at the fork block are the honest default; anything scripted is a declared assumption in the report.
 - Scope creep into a backtester: the lab answers "what does this proposal do on this state", not "which strategy is best over a year". The bot and any backtester sit on top.
