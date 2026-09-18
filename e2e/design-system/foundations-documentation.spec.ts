@@ -23,7 +23,7 @@ const VIEWPORTS = [
 
 const evidencePhase = process.env.FOUNDATION_EVIDENCE_PHASE || 'working'
 const evidenceDirectory = resolve(
-  'docs/plans/design-system-documentation-foundations-accelerated/evidence',
+  'test-results/design-system/foundations-documentation',
   evidencePhase
 )
 

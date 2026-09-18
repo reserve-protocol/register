@@ -19,7 +19,7 @@ const VIEWPORTS = [
 
 const evidencePhase = process.env.PATTERN_EVIDENCE_PHASE || 'working'
 const evidenceDirectory = resolve(
-  'docs/plans/design-system-documentation-patterns-accelerated/evidence',
+  'test-results/design-system/patterns-documentation',
   evidencePhase
 )
 

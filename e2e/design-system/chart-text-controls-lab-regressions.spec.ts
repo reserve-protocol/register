@@ -1,11 +1,14 @@
 import { expect, test, type Locator } from '@playwright/test'
+import { mkdir } from 'node:fs/promises'
 import path from 'node:path'
 
 const chartPreview =
   '/src/views/internal/design-system/charts/next-families/preview.html'
-const evidence = path.resolve(
-  'docs/plans/design-system-next-charts/optical-refinement/controls-evidence'
-)
+const evidence = path.resolve('test-results/design-system/charts/text-controls')
+
+test.beforeAll(async () => {
+  await mkdir(evidence, { recursive: true })
+})
 
 test('canonical text controls keep compact geometry opt-in', async ({
   page,

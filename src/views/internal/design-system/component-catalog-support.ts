@@ -731,13 +731,6 @@ export const SUPPORT_COMPONENT_GROUPS: ComponentGroup[] = [
             detail:
               'Opt-in 44px logo-led trigger under Discover review; not part of accepted ordinary Button geometry or production adoption.',
           },
-          {
-            role: 'visual-evidence',
-            label: 'Compact wrapping table-title trial',
-            path: 'docs/plans/design-system-table-family-holdings-slice.md#compact-wrapping-identity-titles--september-12-trial',
-            detail:
-              'Opt-in 16px/20px name leading with a 24px single-line floor. Existing identity defaults and reviewed type roles remain unchanged; the table trial is not design acceptance.',
-          },
         ],
         adoptionStatus: 'none',
         review: {
@@ -903,29 +896,9 @@ export const SUPPORT_COMPONENT_GROUPS: ComponentGroup[] = [
             path: 'src/views/internal/design-system/table-family/owned-review.tsx',
           },
           {
-            role: 'product-evidence',
-            label: 'Owned-position transfer and verification',
-            path: 'docs/plans/design-system-owned-positions-slice.md',
-          },
-          {
-            role: 'product-evidence',
-            label: 'Production transfer and review boundary',
-            path: 'docs/plans/design-system-table-family-first-slice.md',
-          },
-          {
-            role: 'visual-evidence',
-            label: 'Holdings mobile predecessor',
-            path: 'docs/plans/design-system-table-family-evidence/index.md',
-          },
-          {
             role: 'implementation',
             label: 'Exposure and Collateral candidate',
             path: 'src/views/internal/design-system/table-family/holdings-review.tsx',
-          },
-          {
-            role: 'product-evidence',
-            label: 'Holdings source transfer and verification boundary',
-            path: 'docs/plans/design-system-table-family-holdings-slice.md',
           },
           {
             role: 'implementation',
@@ -933,29 +906,9 @@ export const SUPPORT_COMPONENT_GROUPS: ComponentGroup[] = [
             path: 'src/views/internal/design-system/table-family/discover-review.tsx',
           },
           {
-            role: 'product-evidence',
-            label: 'Discover source transfer and scoped proof',
-            path: 'docs/plans/design-system-table-family-discover-slice.md',
-          },
-          {
-            role: 'product-evidence',
-            label: 'Discover mobile card transfer and review boundary',
-            path: 'docs/plans/design-system-discover-mobile-cards.md',
-          },
-          {
             role: 'implementation',
             label: 'Earn opportunity candidate',
             path: 'src/views/internal/design-system/table-family/earn-review.tsx',
-          },
-          {
-            role: 'product-evidence',
-            label: 'Earn source transfer and bounded verification',
-            path: 'docs/plans/design-system-table-family-earn-preparation.md',
-          },
-          {
-            role: 'product-evidence',
-            label: 'DeFi Yield source transfer and review boundary',
-            path: 'docs/plans/design-system-table-family-defi-slice.md',
           },
           {
             role: 'implementation',
@@ -963,30 +916,14 @@ export const SUPPORT_COMPONENT_GROUPS: ComponentGroup[] = [
             path: 'src/views/internal/design-system/auctions-current-table/review.tsx',
           },
           {
-            role: 'product-evidence',
-            label: 'Auctions near-term scope and deferred workspace boundary',
-            path: 'docs/plans/design-system-current-rebalance-table.md#near-term-and-deferred-scope',
-          },
-          {
             role: 'implementation',
             label: 'Historical table and retained workspace host',
             path: 'src/views/internal/design-system/auctions-browse/history-review.tsx',
           },
           {
-            role: 'product-evidence',
-            label:
-              'Deferred workspace, audit transfer and unresolved adoption gates',
-            path: 'docs/plans/design-system-current-rebalance-workspace.md',
-          },
-          {
             role: 'implementation',
             label: 'Retained earlier Auction record exploration',
             path: 'src/views/internal/design-system/auctions-browse/record-review.tsx',
-          },
-          {
-            role: 'product-evidence',
-            label: 'Auction record source transfer and review boundary',
-            path: 'docs/plans/design-system-auctions-browse-slice.md',
           },
         ],
         adoptionStatus: 'none',
@@ -1092,31 +1029,6 @@ export const SUPPORT_COMPONENT_GROUPS: ComponentGroup[] = [
             role: 'accepted-decision',
             label: 'Current chart work approved for now',
             path: 'docs/wiki/decisions.md#2026-09-16--current-chart-work-approved-for-now',
-          },
-          {
-            role: 'product-evidence',
-            label: 'Chart audit reconciliation and review contract',
-            path: 'docs/plans/design-system-charts-source-reset.md',
-          },
-          {
-            role: 'product-evidence',
-            label: 'Overview candlestick review scope and evidence',
-            path: 'docs/plans/design-system-candlesticks.md',
-          },
-          {
-            role: 'product-evidence',
-            label: 'Yield, Portfolio and chart refinement completion',
-            path: 'docs/plans/design-system-next-charts/completion/README.md',
-          },
-          {
-            role: 'product-evidence',
-            label: 'Yield and Portfolio history-boundary closeout',
-            path: 'docs/plans/design-system-next-charts/partial-history/README.md',
-          },
-          {
-            role: 'product-evidence',
-            label: 'Separate engineer-owned chart questions',
-            path: 'docs/plans/design-system-overnight-2026-09-14/chart-engineering.md',
           },
         ],
         review: {

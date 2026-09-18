@@ -305,13 +305,6 @@ export const PRIMARY_COMPONENT_GROUPS: ComponentGroup[] = [
             path: 'src/views/internal/design-system/transaction-truth-spectrum.tsx',
           },
           {
-            role: 'visual-evidence',
-            label: 'Transaction checkpoint scope and regression evidence',
-            path: 'docs/plans/transaction-consolidated-regression.md',
-            detail:
-              'Verified lab checkpoint, not blanket design acceptance or production adoption; names retained local decisions and unreviewed surrounding surfaces.',
-          },
-          {
             role: 'implementation',
             label: 'Provisional transaction-task geometry recipe',
             path: 'src/components/design-system-v1/transaction-task-geometry.ts',
@@ -359,11 +352,6 @@ export const PRIMARY_COMPONENT_GROUPS: ComponentGroup[] = [
             role: 'product-evidence',
             label: 'Current delayed Vote Lock withdrawal',
             path: 'src/views/portfolio-page/components/pending-withdrawals.tsx',
-          },
-          {
-            role: 'product-evidence',
-            label: 'Cross-flow transaction requirements audit',
-            path: 'docs/plans/transaction-system-audit.md',
           },
           {
             role: 'legacy-evidence',

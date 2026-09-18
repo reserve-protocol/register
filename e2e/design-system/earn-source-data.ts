@@ -4,13 +4,7 @@ import type { VoteLockPosition } from '../../src/views/earn/views/index-dtf/hook
 import type { MockOverrides } from '../helpers/overrides'
 
 const daos: VoteLockPosition[] = JSON.parse(
-  readFileSync(
-    new URL(
-      '../../docs/plans/design-system-table-family-evidence/earn-source-2026-09-11/daos.json',
-      import.meta.url
-    ),
-    'utf8'
-  )
+  readFileSync(new URL('./fixtures/earn-daos.json', import.meta.url), 'utf8')
 )
 
 export const sourceDaos = daos.filter(

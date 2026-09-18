@@ -3,7 +3,7 @@ import { resolve } from 'node:path'
 import { expect, test, type Page } from '@playwright/test'
 
 const evidenceDirectory = resolve(
-  'docs/plans/design-system-documentation-collaboration-readiness/evidence/final'
+  'test-results/design-system/collaboration-readiness'
 )
 
 test.beforeAll(async () => {

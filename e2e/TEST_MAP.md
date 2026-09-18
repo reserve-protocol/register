@@ -85,26 +85,20 @@ The collapsed generic fixtures separately cover density, range focus/loading,
 zero/missing/gaps, estimates, sparse/long values, reduced motion and Spanish.
 Those do not certify production-renderer edge states or reduced motion. Fixture
 units preserve supplied pairs without deduping/reconciling captures. This is not
-financial adapter or production-page integration proof;
-[review and engineer boundary](../docs/plans/design-system-charts-source-reset.md).
+financial adapter or production-page integration proof.
 
 [Chart mobile preview](design-system/chart-mobile-preview-lab-regressions.spec.ts)
 owns the lab's actual child-document viewport, separate narrow-desktop mode,
 single source-set mounting and parent/child review state. The
 [Home launch annotation](design-system/chart-home-launch-marker-lab-regressions.spec.ts)
 pins the lab-only unboxed label and default mobile visibility; the Home marker
-unit test pins the retained production pill. See the
-[follow-up receipt](../docs/plans/design-system-chart-preview-closeout.md)
-for final executed coverage and the local-only/deployment boundary. Neither
+unit test pins the retained production pill. Neither
 suite certifies a production migration or hovered-return calculation.
 
 [Candlestick lab checks](design-system/chart-candlestick-lab-regressions.spec.ts)
 exercise real captured OHLC, renderer selection, axes, selected footer labels,
-viewport/type round trips and inspection. The original second-candle touch hold
-exposed a reset with the first keyboard opt-in, and three bounded repairs failed;
-that history is retained in the
-[candlestick receipt](../docs/plans/design-system-candlesticks.md). The separately
-authorized September 15 repair synchronizes the actual pressed candle index with
+viewport/type round trips and inspection. The current implementation synchronizes
+the actual pressed candle index with
 Recharts keyboard focus. The unchanged keyboard and stable-touch assertions now
 pass: focused 2/2, protected geometry/hover 5/5, full candlestick 12/12 and the
 integrated chart matrix 86/86.
@@ -116,8 +110,7 @@ Empty/Default and light/dark mobile presentation. The
 [integration check](design-system/chart-next-families-integration-lab-regressions.spec.ts)
 keeps the existing chart review accessible beside the new section. These are
 lab-only studies; simulated APY/Portfolio and unsupported touch inspection do not
-certify production parity. See the
-[feedback pass](../docs/plans/design-system-next-charts/feedback-pass/plan.md).
+certify production parity.
 Its focused additions measure visible canvas insets, fitted Y-label gaps, exact
 SVG endpoint/inspection coordinates, the Portfolio guide/contour, above-plot
 ranges at 620/688px and full Empty canvases at 320/390/1400 in both themes.
@@ -160,7 +153,7 @@ checks downloads plus visual and expanded-target separation from the range track
 [Main-route context](design-system/chart-yield-price-pilot-integration-lab-regressions.spec.ts)
 checks light/dark mounting within the revised four-metric family. User-authorized
 rollout remains a lab candidate, not human visual acceptance or production
-adoption; see the [completion receipt](../docs/plans/design-system-next-charts/completion/README.md).
+adoption.
 
 [Holdings source observations](design-system/holdings-source-lab-regressions.spec.ts)
 exercise fixture-driven production Exposure/Collateral sorting, tab reset, mobile
@@ -198,8 +191,7 @@ full independent links, stable row height and responsive focus return.
 uses strict offline holdings and RPC overlays for API fallback, redeemable
 underlying/rate, successful zero, empty-result decode failure and a zero-active
 stake with a separate pending withdrawal. These do not prove transport failures,
-production writes or account authority. See the
-[receipt](../docs/plans/design-system-owned-positions-evidence/index.md).
+production writes or account authority.
 
 [Discover source captures](design-system/discover-family-source-capture.spec.ts)
 inspect the existing desktop table/basket hover and mobile card with the frozen
@@ -388,8 +380,7 @@ progress and matched neighboring-label alignment at 900px, plus invalid inputs,
 warnings and expiry during indexing with unavailable metrics. Long-list closing
 captures await disclosure motion and verify that the control is in view. All
 captures use actual viewport widths and the source guard.
-The [workspace contract](../docs/plans/design-system-current-rebalance-workspace.md)
-owns unresolved adoption/copy gates and the retained evidence index.
+The catalog and current source own unresolved adoption and copy boundaries.
 
 [Clarity checks](design-system/current-rebalance-clarity-lab-regressions.spec.ts)
 cover scenario-specific auction purpose, unknown-data suppression, permission-clock
@@ -419,9 +410,6 @@ empty recovery, static rows without hover/navigation, signed NAV change, dollar
 impact, independent proposer destinations and projection focus transfer.
 It also pins the wider identity column, whole-cell vertical centering, natural
 provenance wrapping and accuracy/NAV help (focus, click, Escape and hit area).
-The [history brief](../docs/plans/design-system-auctions-history-slice.md)
-records source fidelity and the history-only sequencing that preceded the current
-workspace candidate.
 
 The following retained record suites use `#auctions-records-review`.
 [Auction browse-record checks](design-system/auctions-browse-lab-regressions.spec.ts)
@@ -431,8 +419,7 @@ list loading, empty and zero-auction outcomes in light/dark at 390/1400px.
 The 512px container transformation and 1280px context-frame boundary are checked
 separately, alongside reduced-motion skeletons. These are frozen lab fixtures:
 live state adapters, routing selection, detail/actions and production metrics
-recovery are not implemented or proven. The [record transfer brief](../docs/plans/design-system-auctions-browse-slice.md)
-owns fixture provenance and retained source-bound evidence.
+recovery are not implemented or proven.
 The [record hit-target regression](design-system/auctions-record-links-lab-regressions.spec.ts)
 physically clicks date, metric and padding regions, and independently checks the
 proposer destination. Its date target failed before the metadata hit-layer fix.
@@ -450,9 +437,8 @@ cover the 640px reading-width trial, active/history section surfaces, subordinat
 headings, access independent of readiness, a wrapping title/status header and separate round context,
 equal 14px/20px inline labels/values, blocked → ongoing recovery, history-only group omission, loading-height continuity
 and complete inline-fact reflow. Source-bound light/dark captures include repeat, launcher, price failure,
-ongoing, permissionless and unavailable history. The [earlier refinement](../docs/plans/design-system-auctions-composition-refinement.md)
-supersedes the older preparation's viewer-dependent readiness and inline-only
-history composition; actual permissionless preflight remains engineer-owned.
+ongoing, permissionless and unavailable history. Actual permissionless preflight
+remains engineer-owned.
 
 The Holdings width selector additionally exercises Full width, the 836px
 overview estimate and 390px Mobile without resetting tab/condition/sorting.
@@ -584,10 +570,7 @@ transactions. They prove selected populated lists, Index loading/filtered-empty
 recovery, governed disclosure/FAQ, a synthetic converted wallet amount and
 drawer entry/dismissal—not live rates, full filtering, errors or transaction
 execution. Yield's empty yield feed makes its 0% captures fixture artifacts.
-See the [source-transfer brief](../docs/plans/design-system-table-family-earn-preparation.md).
-
-The [independent table reconciliation](../docs/plans/design-system-table-family-reconciliation.md)
-pins Holdings' newly selected descending header direction with concrete CMC20
+The design-system checks pin Holdings' selected descending header direction with concrete CMC20
 leader/laggard order in the lab and source checks. Separate mobile direction
 selection remains independent of field selection. [Holdings sort continuity](design-system/holdings-sort-continuity-lab-regressions.spec.ts)
 pins explicit ascending → field change → 767/768px crossing → new descending
@@ -696,15 +679,15 @@ ready and in-progress states.
 half of the direction control remains above the output during Review and Quote
 search at 320/390/1280px in both themes, including its disabled search state.
 
-| Area                        | Spec file(s)                                                                                                                                                                                                                               | States covered                                                                                                                             | Lifecycle     | Mobile                                    | Gaps                                                                                                                                                                                        |
-| --------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------ | ------------- | ----------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Bridge                      | [general/bridge/render](tests/general/bridge/render.spec.ts)                                                                                                                                                                               | static page render                                                                                                                         | none (static) | yes                                       | —                                                                                                                                                                                           |
-| Discover                    | [general/discover/lifecycle](tests/general/discover/lifecycle.spec.ts), [flows/home-discover](tests/flows/home-discover.spec.ts)                                                                                                           | skeleton→rows; search narrow/restore; tab switch; row→overview nav; home hero+featured render                                              | partial       | no                                        | —                                                                                                                                                                                           |
-| Earn                        | [general/earn/render](tests/general/earn/render.spec.ts), [general/earn/tabs](tests/general/earn/tabs.spec.ts)                                                                                                                             | DeFi tab empty-state render; index-dtf vote-lock tab render; yield-dtf staking tab render (disconnected empty-state)                       | none          | yes                                       | sort, non-empty list, error state                                                                                                                                                           |
-| Explorer                    | [general/explorer/render](tests/general/explorer/render.spec.ts)                                                                                                                                                                           | transactions tab (default) render; governance tab proposals render; one chain returning malformed transactions body doesn't blank the page | none          | no                                        | filters, pagination, tokens/collaterals/revenue tabs                                                                                                                                        |
-| Portfolio                   | [general/portfolio/state-space](tests/general/portfolio/state-space.spec.ts), [general/portfolio/partial-response](tests/general/portfolio/partial-response.spec.ts), [owned source](design-system/owned-positions-source-capture.spec.ts) | disconnected prompt; malformed proposal isolation; synthetic owned stake/vote-lock values; held/zero/decode-failed underlying read         | none          | partial, including held phone source read | account switching and Modify execution; rewards/voting-power/activity interactions; empty-vs-past-activity-only. [Coverage audit](../docs/plans/design-system-portfolio-coverage-review.md) |
-| Tokens                      | [general/tokens/unlisted-partial](tests/general/tokens/unlisted-partial.spec.ts)                                                                                                                                                           | one chain returning an rtokens-less bucket doesn't crash the table                                                                         | none          | no                                        | plain listed-table render, sort                                                                                                                                                             |
-| Create (Index/Yield deploy) | —                                                                                                                                                                                                                                          | —                                                                                                                                          | —             | —                                         | entirely uncovered                                                                                                                                                                          |
+| Area                        | Spec file(s)                                                                                                                                                                                                                               | States covered                                                                                                                             | Lifecycle     | Mobile                                    | Gaps                                                                                                            |
+| --------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------ | ------------- | ----------------------------------------- | --------------------------------------------------------------------------------------------------------------- |
+| Bridge                      | [general/bridge/render](tests/general/bridge/render.spec.ts)                                                                                                                                                                               | static page render                                                                                                                         | none (static) | yes                                       | —                                                                                                               |
+| Discover                    | [general/discover/lifecycle](tests/general/discover/lifecycle.spec.ts), [flows/home-discover](tests/flows/home-discover.spec.ts)                                                                                                           | skeleton→rows; search narrow/restore; tab switch; row→overview nav; home hero+featured render                                              | partial       | no                                        | —                                                                                                               |
+| Earn                        | [general/earn/render](tests/general/earn/render.spec.ts), [general/earn/tabs](tests/general/earn/tabs.spec.ts)                                                                                                                             | DeFi tab empty-state render; index-dtf vote-lock tab render; yield-dtf staking tab render (disconnected empty-state)                       | none          | yes                                       | sort, non-empty list, error state                                                                               |
+| Explorer                    | [general/explorer/render](tests/general/explorer/render.spec.ts)                                                                                                                                                                           | transactions tab (default) render; governance tab proposals render; one chain returning malformed transactions body doesn't blank the page | none          | no                                        | filters, pagination, tokens/collaterals/revenue tabs                                                            |
+| Portfolio                   | [general/portfolio/state-space](tests/general/portfolio/state-space.spec.ts), [general/portfolio/partial-response](tests/general/portfolio/partial-response.spec.ts), [owned source](design-system/owned-positions-source-capture.spec.ts) | disconnected prompt; malformed proposal isolation; synthetic owned stake/vote-lock values; held/zero/decode-failed underlying read         | none          | partial, including held phone source read | account switching and Modify execution; rewards/voting-power/activity interactions; empty-vs-past-activity-only |
+| Tokens                      | [general/tokens/unlisted-partial](tests/general/tokens/unlisted-partial.spec.ts)                                                                                                                                                           | one chain returning an rtokens-less bucket doesn't crash the table                                                                         | none          | no                                        | plain listed-table render, sort                                                                                 |
+| Create (Index/Yield deploy) | —                                                                                                                                                                                                                                          | —                                                                                                                                          | —             | —                                         | entirely uncovered                                                                                              |
 
 ## Index DTF (`/:chain/index-dtf/:tokenId/*`)
 

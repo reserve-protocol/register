@@ -1,9 +1,0 @@
-Command: pnpm design-system:docs:build
-Result: PASS
-Modules transformed: 2,008
-Files emitted: 15
-Standalone directory size: 8.3 MiB
-Main JavaScript: assets/index-BO956Ig7.js, 867.44 kB (250.85 kB gzip)
-Main CSS: assets/index-BsljvHSg.css, 221.00 kB (36.42 kB gzip)
-Comparison before isolation repair: 8,203 modules and 1.88 MB main JavaScript.
-Build warnings: existing Tailwind arbitrary-duration ambiguity, unresolved-at-build font URLs, and the standard Vite chunk-size advisory.

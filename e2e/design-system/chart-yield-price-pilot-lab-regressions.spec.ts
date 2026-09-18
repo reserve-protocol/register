@@ -1,13 +1,15 @@
 import { expect, test, type Locator } from '@playwright/test'
-import { readFile, writeFile } from 'node:fs/promises'
+import { mkdir, readFile, writeFile } from 'node:fs/promises'
 import { readFileSync } from 'node:fs'
 import path from 'node:path'
 
 const preview =
   '/src/views/internal/design-system/charts/next-families/preview.html'
-const evidence = path.resolve(
-  'docs/plans/design-system-next-charts/optical-refinement/evidence'
-)
+const evidence = path.resolve('test-results/design-system/charts/next-families')
+
+test.beforeAll(async () => {
+  await mkdir(evidence, { recursive: true })
+})
 const captured: {
   price: {
     data: { token: { snapshots: { timestamp: string; priceUSD: string }[] } }

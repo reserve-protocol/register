@@ -16,12 +16,12 @@ const VIEWPORTS = [
 
 const evidencePhase = process.env.COMPONENT_EVIDENCE_PHASE || 'working'
 const evidenceDirectory = resolve(
-  'docs/plans/design-system-documentation-components-accelerated/evidence',
+  'test-results/design-system/components-documentation',
   evidencePhase
 )
 const pilotPhase = process.env.SPECIMEN_PILOT_PHASE
 const pilotEvidenceDirectory = resolve(
-  'docs/plans/design-system-documentation-complete-pass/evidence/pilot'
+  'test-results/design-system/components-documentation/pilot'
 )
 
 const settleDocumentationLayout = async (page: Page) => {

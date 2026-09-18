@@ -1,13 +1,15 @@
 import { expect, test, type Locator, type Page } from '@playwright/test'
-import { readFile } from 'node:fs/promises'
+import { mkdir, readFile } from 'node:fs/promises'
 import path from 'node:path'
 import { portfolioPressurePoints } from '../../src/views/internal/design-system/charts/next-families/fixtures/portfolio-pressure'
 
 const preview =
   '/src/views/internal/design-system/charts/next-families/preview.html'
-const evidence = path.resolve(
-  'docs/plans/design-system-next-charts/optical-refinement/evidence'
-)
+const evidence = path.resolve('test-results/design-system/charts/next-families')
+
+test.beforeAll(async () => {
+  await mkdir(evidence, { recursive: true })
+})
 const metricIds = ['price', 'apy', 'supply', 'staked-rsr'] as const
 const metricUnits = {
   price: 'USD per hyUSD',

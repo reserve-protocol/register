@@ -766,8 +766,8 @@ describe('current review', () => {
           path: 'src/views/internal/design-system/auctions-current-table/review.tsx',
         }),
         expect.objectContaining({
-          role: 'product-evidence',
-          path: 'docs/plans/design-system-current-rebalance-table.md#near-term-and-deferred-scope',
+          role: 'accepted-decision',
+          path: 'docs/wiki/decisions.md#2026-09-14--current-table-work-approved-for-now',
         }),
       ])
     )

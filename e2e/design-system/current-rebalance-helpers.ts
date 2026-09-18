@@ -72,7 +72,7 @@ export async function currentCapture(
   await page.mouse.move(0, 0)
   const directory = resolve(
     process.env.CURRENT_REBALANCE_CAPTURE_DIR ||
-      'docs/plans/design-system-current-rebalance-workspace-evidence/final'
+      'test-results/design-system/current-rebalance'
   )
   mkdirSync(directory, { recursive: true })
   await info.attach(name, {

@@ -26,7 +26,7 @@ Loader, not playbook. Reusable workflow rules live in `skills/` (kit-owned, upda
 - Before closing a stage, read `skills/review-panel.md` and `skills/wiki.md`.
 - Before user-facing UI work, read `skills/ui-ux.md`; slop-risk work (generated copy, templated layouts, filler states) adds `skills/taste.md`.
 - When changing the visual token system, read `skills/design.md` and `docs/wiki/domains/design-system.md`.
-- For design-system v1 planning, lab, audit, or migration work, read `docs/plans/design-system-v1.md` before acting.
+- For design-system use, lab, audit, or migration work, read `docs/wiki/domains/design-system.md` before acting.
 - Before adding tooling or starting a project surface, read `skills/stack.md`.
 - Domain guides live next to the code: `e2e/CLAUDE.md` (mock cookbook, diff→test decisions) and `src/views/index-dtf/<area>/CLAUDE.md` (which specs cover the area, how to mock its states, edge cases). Read the area guide before changing a view or writing its tests.
 - For project context (product, stack specifics, safety rules, UI register, kit overrides), read `docs/wiki/project.md`.

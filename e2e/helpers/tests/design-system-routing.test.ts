@@ -37,7 +37,7 @@ test('workflow and CI select canonical, fixture, style and dependency changes bu
   }
   for (const file of [
     'docs/wiki/domains/design-system.md',
-    'docs/plans/design-system-v1.md',
+    'docs/wiki/domains/design-system-reference.md',
   ]) {
     expect(matchesAny(file, rule.globs), file).toBe(false)
     expect(matchesAny(file, ciGlobs), file).toBe(false)

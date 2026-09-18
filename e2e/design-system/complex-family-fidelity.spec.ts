@@ -3,7 +3,7 @@ import { resolve } from 'node:path'
 import { expect, test, type Locator, type Page } from '@playwright/test'
 
 const evidenceDirectory = resolve(
-  'docs/plans/design-system-documentation-complex-family-fidelity/evidence/rendered'
+  'test-results/design-system/complex-family-fidelity'
 )
 
 const setTheme = async (page: Page, theme: 'light' | 'dark') => {

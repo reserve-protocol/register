@@ -1,9 +1,12 @@
 import path from 'node:path'
 import { expect, test } from './current-rebalance-helpers'
+import { mkdir } from 'node:fs/promises'
 
-const evidence = path.resolve(
-  'docs/plans/design-system-next-charts/optical-refinement/evidence'
-)
+const evidence = path.resolve('test-results/design-system/charts/next-families')
+
+test.beforeAll(async () => {
+  await mkdir(evidence, { recursive: true })
+})
 
 for (const theme of ['light', 'dark']) {
   test(`Price pilot main route context ${theme}`, async ({ page }) => {
