@@ -8,9 +8,12 @@ prevent generated captures from being committed again.
 
 ## Current state
 
-The branch contains 6,623 captured PNG/JPG files (about 685 MB) in design-system
-evidence, Playwright baselines, and documentation-owned static captures. Product
-artwork and token/icon assets are separate and remain required by the app.
+Complete. The 28 commits unique to `design-system-v1` were rewritten and the
+remote branch was updated with an explicit lease. All 6,623 captured PNG/JPG
+files (about 685 MB) were removed from design-system evidence, Playwright
+baselines, and documentation-owned static captures. Product artwork, token/icon
+assets, logos, and external image fixtures remain required by the app and were
+preserved.
 
 ## Non-goals
 
@@ -41,11 +44,27 @@ artwork and token/icon assets are separate and remain required by the app.
 ## Slices
 
 - Replace runtime screenshot dependencies and remove pixel-baseline assertions;
-  blocked by: none.
+  complete.
 - Remove tracked captures, add narrow ignore rules, and reconcile evidence docs;
-  blocked by: runtime replacement.
+  complete.
 - Rewrite and force-push branch history with lease, then restore unrelated local
-  changes; blocked by: verified final tree.
+  changes; complete. The rewritten local and remote tips matched at
+  `3df625b177c255f27435ba7a538f73d70b2cd865`, and all 28 remote-reachable branch
+  commits passed the purged-path audit before the closeout note was added.
+
+## Closeout evidence
+
+- The pre-rewrite and rewritten tips have identical source trees.
+- The rewrite preserved the `origin/master` merge base and the expected 28
+  branch-only commits before this closeout commit.
+- Typecheck, eight focused documentation tests, the 4,020-module standalone
+  documentation build, whitespace validation, and the full pre-rewrite
+  verification suite pass.
+- The only interim wiki-lint warning came from the intentionally stashed,
+  unrelated basket documentation update; the update is restored after branch
+  publication and verified separately.
+- A complete recovery bundle was verified outside the repository before the
+  rewrite backup ref was removed.
 
 ## Unresolved decisions
 

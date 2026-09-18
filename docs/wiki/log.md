@@ -1394,3 +1394,6 @@ Play-by-play lives in git (PRs #1053/#1054/#1055/#1063, SDK PR #27). Durable out
   Git retains replay instructions, structured measurements, and behavioral
   assertions; narrow ignore rules prevent the removed capture families from
   being recommitted.
+- The 28 branch-only commits were rewritten and published with an explicit
+  remote lease. A full remote-history path audit found none of the 6,623 removed
+  captures, while product artwork and image fixtures remain available.
