@@ -106,6 +106,11 @@ composition-only output link to their actual lab host without claiming a
 standalone baseline. Verification lives in scoped reports and evidence sources,
 not a blanket progress checkbox.
 
+Generated screenshots and pixel baselines are local or CI artifacts, never
+repository sources. Preserve replay instructions, structured measurements, and
+behavior assertions in Git; regenerate visual evidence when a review needs it.
+Product artwork, token icons, and logos remain ordinary application assets.
+
 ## Route by task
 
 ### Refine an existing component

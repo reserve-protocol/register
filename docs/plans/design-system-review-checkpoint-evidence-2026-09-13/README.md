@@ -85,17 +85,17 @@ pnpm exec playwright test --config=playwright.design-system.config.ts \
 ```
 
 The owner inspected ordinary-viewport captures of
-[desktop repeat](captures/hierarchy-1400-repeat.png),
-[dark 320px header](captures/header-dark-320.png),
-[320px weights](captures/weights-320-top.png),
-[expanded dark liquidity](captures/sections-dark-1400-expanded.png),
-[phone cumulative/history context](captures/sections-light-390-progress.png),
-[live desktop](captures/light-1400-live-operation.png),
-[historical table](attachments/43b8e33cd947243f3574488bc8c2be0df5b26ab92e11f696814b3fff90515057.png),
-[full Discover card](attachments/f57320a36f7cac18252098aa504e25296634e5b62ec573b6f74745a56ef278ca.png),
-[dark compact long card](attachments/2f11e608c382a25889deab9f341efeb0251c2f67176813b4699104f2295ddf65.png),
-[phone governed list](attachments/14c453828aba9bf05c303033b57a8114b4574a91da6193601f95537cacade935.png)
-and [owned desktop rows](attachments/6d21ab274415ec71b1c65abb654b2c6b473782183fb6f5eaef5f640a41292323.png).
+desktop repeat *(capture generated locally; not tracked)*,
+dark 320px header *(capture generated locally; not tracked)*,
+320px weights *(capture generated locally; not tracked)*,
+expanded dark liquidity *(capture generated locally; not tracked)*,
+phone cumulative/history context *(capture generated locally; not tracked)*,
+live desktop *(capture generated locally; not tracked)*,
+historical table *(capture generated locally; not tracked)*,
+full Discover card *(capture generated locally; not tracked)*,
+dark compact long card *(capture generated locally; not tracked)*,
+phone governed list *(capture generated locally; not tracked)*
+and owned desktop rows *(capture generated locally; not tracked)*.
 Some remote logos use their offline fallback. These prove mounted lab geometry,
 not live logo availability, dense production chart history or design acceptance.
 All 144 named current-workspace screenshots are separate from earlier receipts.

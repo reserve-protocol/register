@@ -70,12 +70,12 @@ SHA-256 binds these files to the original pilot output, not to a new browser run
 
 | Capture                                                       | SHA-256                                                            |
 | ------------------------------------------------------------- | ------------------------------------------------------------------ |
-| [Phone, light](evidence/overview-phone-light.png)             | `ee33b608d8da75a548b02fe19a6e68fba7b50d4351718dd5760c17341a736e66` |
-| [Phone, dark](evidence/overview-phone-dark.png)               | `4f2286a07758de587b9d18ba683e5414bb21bdd06fa2b7334abd2bc9b6310b53` |
-| [Desktop, light](evidence/overview-desktop-light.png)         | `0900a9c9e274d3a23b3eb84c4c541f63eb2fd907fbbd95409a5aaf60e478f019` |
-| [Desktop, dark](evidence/overview-desktop-dark.png)           | `876ca496f6e2906bdbb38e0f695c7d3045237d024b5840a88ad1607e8eae6560` |
-| [Constrained, light](evidence/overview-constrained-light.png) | `056e07770823c15361d282b3178121b0ce17c227422eb60df41caac6b6232a1e` |
-| [Constrained, dark](evidence/overview-constrained-dark.png)   | `2172eec72c82fcac28b6d9bfb2a0f856155cfc5e1abc77859ef37a728f652b98` |
+| Phone, light *(capture generated locally; not tracked)*             | `ee33b608d8da75a548b02fe19a6e68fba7b50d4351718dd5760c17341a736e66` |
+| Phone, dark *(capture generated locally; not tracked)*               | `4f2286a07758de587b9d18ba683e5414bb21bdd06fa2b7334abd2bc9b6310b53` |
+| Desktop, light *(capture generated locally; not tracked)*         | `0900a9c9e274d3a23b3eb84c4c541f63eb2fd907fbbd95409a5aaf60e478f019` |
+| Desktop, dark *(capture generated locally; not tracked)*           | `876ca496f6e2906bdbb38e0f695c7d3045237d024b5840a88ad1607e8eae6560` |
+| Constrained, light *(capture generated locally; not tracked)* | `056e07770823c15361d282b3178121b0ce17c227422eb60df41caac6b6232a1e` |
+| Constrained, dark *(capture generated locally; not tracked)*   | `2172eec72c82fcac28b6d9bfb2a0f856155cfc5e1abc77859ef37a728f652b98` |
 
 From repository root, the document verifier checks archive hashes and preserved
 guidance. The following separate check confirms the unchanged source boundary:

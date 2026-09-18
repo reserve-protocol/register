@@ -14,10 +14,10 @@ overnight pass; the follow-up receipt owns current verification.
 | Earn vault identity overlaps rate at 320px | The compact identity button could size to its supporting text beyond its allocated flex cell. `vlSQUILL-OPEN` and `vlRSR-CMCindex` intersected the rate region even though the table itself did not overflow. Local compact-cell styles now bound the button and allow supporting identity text to wrap. Desktop and canonical EntityIdentity/InlineAction defaults are unchanged. | Both themes failed the new text-to-rate intersection check before the fix and passed afterward. Full identity remains visible, without ellipsis, hidden rate kind or smaller typography.                                               |
 | Owned-position numbers split mid-number    | The fixed two-column compact Balance/Value grid gave a long amount half a row; the existing emergency word-wrap split `$12,345,678.90` into two lines. The local Balance/Value pair now wraps whole fact groups when their intrinsic widths do not fit. Governs/APY retain their paired row.                                                                                       | Literal fixture amount and balance are unchanged and each fits on one line in the 320px pressure case. Ordinary short values still sit side by side. No precision reduction, number formatting, balance filtering or valuation change. |
 
-Compare [Earn before](evidence/inspection/earn-identity-stays-out-of-rate-light-identity-rate-16882cde.png)
-with [Earn after](evidence/fixes-green/earn-identity-stays-out-of-rate-light-identity-rate-76de2254.png).
-Compare [owned pressure before](evidence/baseline/owned-positions-light-320-staked-rsr-positions-long-content-cf7c00b5.png)
-with [owned pressure after](evidence/fixes-green/owned-amount-remains-one-readable-number-light-long-amount-06ee94e7.png).
+Compare Earn before *(capture generated locally; not tracked)*
+with Earn after *(capture generated locally; not tracked)*.
+Compare owned pressure before *(capture generated locally; not tracked)*
+with owned pressure after *(capture generated locally; not tracked)*.
 The trade-off is additional height only where identity/amount content needs it;
 readable information is preferable to overlapping text or a severed decimal.
 

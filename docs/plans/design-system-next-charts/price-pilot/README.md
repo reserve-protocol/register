@@ -154,12 +154,12 @@ viewport height is 844px; main-route context is 1400×900. Both themes cover
 320, 390, 824 and 1400 viewport widths, at rest and keyboard inspection. The
 actual candidate widths are 296, 366, 672 and 672 respectively.
 
-- [320 light resting](evidence/price-light-320-rest.png)
-- [390 dark inspected](evidence/price-dark-390-inspection.png)
-- [Desktop light resting](evidence/price-light-1400-rest.png)
-- [1Y selected with explicit capture context](evidence/price-light-1y-context.png)
-- [Main-route light context](evidence/main-route-light-context.png)
-- [Main-route dark context](evidence/main-route-dark-context.png)
+- 320 light resting *(capture generated locally; not tracked)*
+- 390 dark inspected *(capture generated locally; not tracked)*
+- Desktop light resting *(capture generated locally; not tracked)*
+- 1Y selected with explicit capture context *(capture generated locally; not tracked)*
+- Main-route light context *(capture generated locally; not tracked)*
+- Main-route dark context *(capture generated locally; not tracked)*
 - [Measured 320 light text/plot bounds](evidence/geometry-light-320.json)
 
 The evidence directory also contains the complete width/theme/state matrix and

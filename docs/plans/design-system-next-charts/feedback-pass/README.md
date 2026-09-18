@@ -75,11 +75,11 @@ Coordinator inspected light/dark source rest/inspection/restoration, dark
 Home/Discover, mobile source/candle captures, Portfolio interior composition and
 range-cutover captures, Yield insets and full Empty canvases. Key entry points:
 
-- [Yield and Portfolio overview](evidence/next-families/metrics-portfolio-light-1400-rest.png)
-- [Portfolio interior inspection](evidence/next-families/portfolio-light-1400-composition-inspection.png)
-- [Overview inspection](source-family-evidence/captures/light-1400-inspection.png)
-- [Overview restored, dark](source-family-evidence/captures/dark-1400-restored.png)
-- [Empty phone canvases](evidence/next-families/empty-review-light-320.png)
+- Yield and Portfolio overview *(capture generated locally; not tracked)*
+- Portfolio interior inspection *(capture generated locally; not tracked)*
+- Overview inspection *(capture generated locally; not tracked)*
+- Overview restored, dark *(capture generated locally; not tracked)*
+- Empty phone canvases *(capture generated locally; not tracked)*
 
 Final browser selection uses the eight specifications in the two packet receipts,
 the existing `http://127.0.0.1:3005` preview, `playwright.design-system.config.ts`,

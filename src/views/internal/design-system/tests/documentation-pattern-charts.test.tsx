@@ -106,7 +106,7 @@ describe('Chart pattern documentation', () => {
     ).toBeTruthy()
   })
 
-  it('preserves exact accepted source captures and live family data', () => {
+  it('preserves source-faithful renderers and live family data', () => {
     renderCharts()
 
     expect(screen.getByTestId('chart-overview-source-capture')).toBeVisible()
@@ -122,11 +122,11 @@ describe('Chart pattern documentation', () => {
     )
     expect(screen.getByText(/Lab-simulated APY levels/)).toBeVisible()
     expect(
-      screen.getByText(/Exact source-bound capture of the accepted PHOTON/)
+      screen.getByText(/Source-faithful PHOTON Overview rendering/)
     ).toBeVisible()
   })
 
-  it('keeps responsive controls on live families but not the static Overview capture', () => {
+  it('keeps responsive controls on live families but not the frozen Overview fixture', () => {
     renderCharts()
 
     expect(CHART_DOCUMENTATION_VIEWPORT_VALUES).toEqual([
@@ -207,12 +207,12 @@ describe('Chart pattern documentation', () => {
     )
   })
 
-  it('identifies the Overview footer controls as part of the static capture', () => {
+  it('identifies the Overview footer controls as frozen context', () => {
     renderCharts()
 
     expect(
       within(screen.getByTestId('chart-overview-documentation')).getByText(
-        /Footer ranges and Line\/Candles labels are part of the static capture/
+        /Footer ranges and Line\/Candles labels are frozen context/
       )
     ).toBeVisible()
   })

@@ -69,10 +69,10 @@ state-composition spec. Named saved-weight captures reflect that final run.
 
 Owner inspected required/saved/editor, live/selected bid, no-bids, risk, launch
 wait, initial/terminal and removal captures, including dark desktop and dark
-320px outcomes. Start with [setup](states-1400-weights-required.png),
-[saved phone](states-320-weights-saved.png), [pending phone](states-320-saved-prices-pending.png),
-[live](states-1400-live.png), [risk](states-1400-risk.png), or
-[outcome](states-complete.png). These are review candidates, not approved designs.
+320px outcomes. Start with setup *(capture generated locally; not tracked)*,
+saved phone *(capture generated locally; not tracked)*, pending phone *(capture generated locally; not tracked)*,
+live *(capture generated locally; not tracked)*, risk *(capture generated locally; not tracked)*, or
+outcome *(capture generated locally; not tracked)*. These are review candidates, not approved designs.
 
 ## Review reconciliation and remaining judgment
 

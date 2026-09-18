@@ -189,11 +189,11 @@ const OverviewDocumentation = () => {
         fallbacks={specimen.fallbacks}
         provenance={
           <Trans>
-            Exact source-bound PHOTON Overview capture from the accepted owner;
+            Source-faithful PHOTON Overview rendering from the accepted owner;
             production data, defaults, and callers are unchanged. Footer ranges
-            and Line/Candles labels are part of the static capture, not live
-            controls. Constrained documentation widths scroll the natural-size
-            capture horizontally.
+            and Line/Candles labels are frozen context, not live controls.
+            Constrained documentation widths scroll the natural-size rendering
+            horizontally.
           </Trans>
         }
       >
@@ -229,10 +229,10 @@ const HomeDocumentation = () => {
       align="center"
       provenance={
         <Trans>
-          Exact source-bound capture of the accepted PHOTON highlighted-card
-          owner. It preserves the accepted visual result without mounting the
-          provider-coupled live owner; surrounding ticker and actions are
-          intentionally outside this excerpt.
+          Source-faithful rendering of the accepted PHOTON highlighted-card
+          owner. It uses frozen fixture data without mounting the
+          provider-coupled production surface; surrounding ticker and actions
+          are intentionally outside this excerpt.
         </Trans>
       }
     >
@@ -257,8 +257,8 @@ const DiscoverDocumentation = () => {
       align="center"
       provenance={
         <Trans>
-          Exact source-bound LCAP 30-day capture from the accepted 90 × 40px
-          plot owner; the surrounding cell is context, not chart anatomy.
+          Source-faithful LCAP 30-day rendering from the accepted 90 × 40px plot
+          owner; the surrounding cell is context, not chart anatomy.
         </Trans>
       }
     >

@@ -8,10 +8,10 @@ use the source chart/ticker, not the desktop basket popup. Earlier phone-row
 captures below are historical; they are not the current narrow candidate.
 Its [final record](mobile-cards-2026-09-11/record.json) retains 21 passing lab
 cases, 7 existing Home/Discover regression receipts and 24 card screenshots.
-Compare [compact phone](mobile-cards-2026-09-11/discover-card-states-light-390-compact-default.png),
-[full chart](mobile-cards-2026-09-11/discover-card-states-dark-390-full-default.png),
-[long content](mobile-cards-2026-09-11/discover-card-states-light-320-compact-long.png)
-and [canonical loading](mobile-cards-2026-09-11/discover-card-states-light-768-loading.png).
+Compare compact phone *(capture generated locally; not tracked)*,
+full chart *(capture generated locally; not tracked)*,
+long content *(capture generated locally; not tracked)*
+and canonical loading *(capture generated locally; not tracked)*.
 The [whole-row link refinement](row-links-2026-09-11/record.json) verifies neutral
 same-destination identity/title hover across Discover, Index/Yield positions and
 rich governance/rebalance records. It retains keyboard focus, independent action
@@ -33,8 +33,8 @@ The [2026-09-11 closed-trigger refinement](discover-trigger-2026-09-11/record.js
 supersedes its initial closed-control geometry: 9 passing cases cover the
 balanced trigger and the 1151/1152px transition, with 37 captures. Expanded-panel
 captures retain the superseded temporary list, not an accepted design.
-See [row hover](discover-trigger-2026-09-11/discover-trigger-light-1400-row-hover.png)
-and [keyboard-only focus](discover-trigger-2026-09-11/discover-trigger-dark-1400-trigger-focus.png).
+See row hover *(capture generated locally; not tracked)*
+and keyboard-only focus *(capture generated locally; not tracked)*.
 
 The initial expansion evidence remains below as historical proof.
 Its [source record](discover-source-2026-09-10/record.json),
@@ -44,11 +44,11 @@ keep new design evidence separate from regression proof. The source record has
 2 cases; the final candidate/regression run has 21 passing cases. No record
 grants design acceptance or production adoption.
 
-Selected initial-expansion images: [desktop](discover-candidate-2026-09-10/discover-family-light-1400-default.png),
-[dark phone](discover-candidate-2026-09-10/discover-family-dark-390-default.png),
-[basket inspection](discover-candidate-2026-09-10/discover-family-light-320-basket-open.png),
-[constrained long content](discover-candidate-2026-09-10/discover-family-light-1400-constrained.png),
-and [retained Holdings rhythm](discover-predecessor-check-2026-09-10/holdings-family-light-375-collateral.png).
+Selected initial-expansion images: desktop *(capture generated locally; not tracked)*,
+dark phone *(capture generated locally; not tracked)*,
+basket inspection *(capture generated locally; not tracked)*,
+constrained long content *(capture generated locally; not tracked)*,
+and retained Holdings rhythm *(capture generated locally; not tracked)*.
 Asset-loading/fallback and ordinary-viewport limits are recorded in the brief.
 
 The earlier [Portfolio hardening checkpoint](checkpoint.md),
@@ -91,13 +91,13 @@ montages or isolated component renders.
 
 | Evidence                                                      | What it shows                                                                                                                               |
 | ------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
-| [Exposure, light, 375px](holdings-light-375-exposure.png)     | Asset/weight first; three supporting facts below; inset row separators.                                                                     |
-| [Collateral, light, 375px](holdings-light-375-collateral.png) | Wrapper identity, explorer affordance and bridge information. Some image assets have not settled; do not use this capture as logo approval. |
-| [Exposure, dark, 375px](holdings-dark-375-exposure.png)       | Same hierarchy in the other theme.                                                                                                          |
-| [Collateral, dark, 375px](holdings-dark-375-collateral.png)   | Wrapped token names and supporting metadata without changing the overall row structure.                                                     |
-| [Collateral, light, 639px](holdings-light-639-collateral.png) | Last mobile width tested.                                                                                                                   |
-| [Collateral, light, 640px](holdings-light-640-collateral.png) | First desktop width tested; table columns rather than stacked records.                                                                      |
-| [Exposure, light, 1400px](holdings-light-1400-exposure.png)   | Dense table within its actual page column, not full viewport width.                                                                         |
+| Exposure, light, 375px *(capture generated locally; not tracked)*     | Asset/weight first; three supporting facts below; inset row separators.                                                                     |
+| Collateral, light, 375px *(capture generated locally; not tracked)* | Wrapper identity, explorer affordance and bridge information. Some image assets have not settled; do not use this capture as logo approval. |
+| Exposure, dark, 375px *(capture generated locally; not tracked)*       | Same hierarchy in the other theme.                                                                                                          |
+| Collateral, dark, 375px *(capture generated locally; not tracked)*   | Wrapped token names and supporting metadata without changing the overall row structure.                                                     |
+| Collateral, light, 639px *(capture generated locally; not tracked)* | Last mobile width tested.                                                                                                                   |
+| Collateral, light, 640px *(capture generated locally; not tracked)* | First desktop width tested; table columns rather than stacked records.                                                                      |
+| Exposure, light, 1400px *(capture generated locally; not tracked)*   | Dense table within its actual page column, not full viewport width.                                                                         |
 
 The fixed page actions remain visible in phone captures. Their overlap near the
 viewport edge is not part of row acceptance. Image loading/fallbacks, the page

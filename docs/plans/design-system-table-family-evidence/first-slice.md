@@ -19,10 +19,10 @@ Production's narrow withdrawal action extended beyond the visible table area;
 the lab candidate uses a stacked record. Production takes five rows before
 sorting; the lab now deliberately sorts before its preview limit.
 
-- [Production positions, phone](table-production-375-positions.png)
-- [Production withdrawals, phone](table-production-375-withdrawals.png)
-- [Production positions, desktop](table-production-1400-positions.png)
-- [Production withdrawals, desktop](table-production-1400-withdrawals.png)
+- Production positions, phone *(capture generated locally; not tracked)*
+- Production withdrawals, phone *(capture generated locally; not tracked)*
+- Production positions, desktop *(capture generated locally; not tracked)*
+- Production withdrawals, desktop *(capture generated locally; not tracked)*
 
 These observations are not live financial correctness, wallet/chain gating,
 receipt truth, production adoption, or visual acceptance. Their source binding

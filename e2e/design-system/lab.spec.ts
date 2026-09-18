@@ -2,47 +2,6 @@ import { expect, test } from '../fixtures/base'
 import { COMPONENT_ITEMS } from '../../src/views/internal/design-system/component-catalog'
 import { CURRENT_REVIEW } from '../../src/views/internal/design-system/current-review'
 import { loadSnapshot } from '../helpers/snapshots'
-import { advanceTime, freezeTime } from '../helpers/clock'
-
-const THEMES = ['light', 'dark'] as const
-const SURFACES = [
-  {
-    id: 'foundations-overview',
-    path: '/internal/design-system/foundations',
-  },
-  {
-    id: 'foundation-detail-color',
-    path: '/internal/design-system/foundations/color',
-  },
-  {
-    id: 'foundation-detail-typography',
-    path: '/internal/design-system/foundations/typography',
-  },
-  {
-    id: 'foundation-detail-radius',
-    path: '/internal/design-system/foundations/radius',
-  },
-  {
-    id: 'components-overview',
-    path: '/internal/design-system/components',
-  },
-  {
-    id: 'component-detail-tabs',
-    path: '/internal/design-system/components/tabs',
-  },
-  {
-    id: 'component-detail-button',
-    path: '/internal/design-system/components/button',
-  },
-  {
-    id: 'screens-overview',
-    path: '/internal/design-system/screens',
-  },
-  {
-    id: 'project-status-page',
-    path: '/internal/design-system/status',
-  },
-] as const
 
 test.describe('design system lab', () => {
   test('prepares the comprehensive typography foundation review', async ({
@@ -1138,25 +1097,6 @@ test.describe('design system lab', () => {
           document.body.scrollWidth <= document.body.clientWidth
       )
     ).toBe(true)
-
-    if (test.info().project.name === 'design-system-phone') {
-      await expect(layoutStudy).toHaveScreenshot(
-        'layout-foundation-study-phone.png',
-        {
-          animations: 'disabled',
-          caret: 'hide',
-          stylePath: 'e2e/design-system/capture.css',
-        }
-      )
-      await expect(modalStudy).toHaveScreenshot(
-        'modal-geometry-study-phone.png',
-        {
-          animations: 'disabled',
-          caret: 'hide',
-          stylePath: 'e2e/design-system/capture.css',
-        }
-      )
-    }
   })
 
   test('distinguishes specimens, canonical candidates, and adoption', async ({
@@ -2885,53 +2825,4 @@ test.describe('design system lab', () => {
       ).toBe(true)
     }
   })
-
-  for (const theme of THEMES) {
-    for (const surface of SURFACES)
-      test(`captures the ${theme} routed capability map: ${surface.id}`, async ({
-        page,
-      }) => {
-        test.skip(
-          process.platform !== 'darwin',
-          'Legacy full-content pixel baselines are macOS-only; use design-system:review on other platforms.'
-        )
-        await page.addInitScript((mode) => {
-          localStorage.setItem('theme-ui-color-mode', mode)
-        }, theme)
-        await page.emulateMedia({ reducedMotion: 'reduce' })
-
-        await freezeTime(page, 1788900000)
-        await page.goto(surface.path, { waitUntil: 'domcontentloaded' })
-        const region = page.getByTestId(surface.id)
-        await expect(region).toBeVisible()
-
-        if (surface.id === 'components-overview') {
-          // Full-sheet geometry must settle before observer-driven controls and charts are captured.
-          await page.addStyleTag({ path: 'e2e/design-system/capture.css' })
-          await page.evaluate(() => document.fonts.ready)
-          await advanceTime(page, 1000)
-        }
-
-        if (theme === 'dark') {
-          await expect(page.locator('html')).toHaveClass(/dark/)
-        } else {
-          await expect(page.locator('html')).not.toHaveClass(/dark/)
-        }
-
-        const platform =
-          surface.id === 'foundation-detail-radius'
-            ? `-${process.platform}`
-            : ''
-        await expect(region).toHaveScreenshot(
-          `${surface.id}-${theme}${platform}.png`,
-          {
-            animations: 'disabled',
-            caret: 'hide',
-            maxDiffPixels: 20,
-            timeout: surface.id === 'components-overview' ? 30000 : 7500,
-            stylePath: 'e2e/design-system/capture.css',
-          }
-        )
-      })
-  }
 })

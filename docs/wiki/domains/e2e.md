@@ -121,11 +121,12 @@ substitute for design acceptance or production-route adoption evidence.
 
 `pnpm design-system:review` selects only those regression/capture suites through
 the separate `design-system-review` project. It runs on an owned port (3022 by
-default), never reuses the user's preview, keeps snapshots read-only, and is
+default), never reuses the user's preview, and is
 workflow-routed through the path-filtered PR/manual design-system job alongside
 typecheck and the full unit suite, with 30-day artifacts. Linux CI captures
-viewport evidence and behavior but does not compare the existing macOS pixel
-baselines. The main production test configuration still owns port 3005.
+viewport evidence and behavior as ephemeral artifacts; generated captures and
+pixel baselines are not stored in Git. The main production test configuration
+still owns port 3005.
 
 ## Maintenance rules
 

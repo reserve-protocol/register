@@ -83,14 +83,14 @@ Yield review canvases at 320, 390, 824 and 1400px; Portfolio total and compositi
 rest/inspection at desktop and 390px; 320px pressure; and the two range-cutover
 checks. Useful entry points are:
 
-- [`metrics-portfolio-light-1400-rest.png`](evidence/next-families/metrics-portfolio-light-1400-rest.png)
-  and [`metrics-portfolio-dark-1400-rest.png`](evidence/next-families/metrics-portfolio-dark-1400-rest.png)
-- [`portfolio-light-1400-composition-inspection.png`](evidence/next-families/portfolio-light-1400-composition-inspection.png)
-  and [`portfolio-dark-1400-composition-inspection.png`](evidence/next-families/portfolio-dark-1400-composition-inspection.png)
-- [`portfolio-light-390-rest.png`](evidence/next-families/portfolio-light-390-rest.png)
-  and [`portfolio-dark-390-composition-inspection.png`](evidence/next-families/portfolio-dark-390-composition-inspection.png)
-- [`portfolio-light-620-narrow-ranges.png`](evidence/next-families/portfolio-light-620-narrow-ranges.png)
-  and [`portfolio-light-688-desktop-ranges.png`](evidence/next-families/portfolio-light-688-desktop-ranges.png)
+- `metrics-portfolio-light-1400-rest.png` *(capture generated locally; not tracked)*
+  and `metrics-portfolio-dark-1400-rest.png` *(capture generated locally; not tracked)*
+- `portfolio-light-1400-composition-inspection.png` *(capture generated locally; not tracked)*
+  and `portfolio-dark-1400-composition-inspection.png` *(capture generated locally; not tracked)*
+- `portfolio-light-390-rest.png` *(capture generated locally; not tracked)*
+  and `portfolio-dark-390-composition-inspection.png` *(capture generated locally; not tracked)*
+- `portfolio-light-620-narrow-ranges.png` *(capture generated locally; not tracked)*
+  and `portfolio-light-688-desktop-ranges.png` *(capture generated locally; not tracked)*
 
 The inspected compositions retain the established readout hierarchy and plot sizes,
 bring short and long Y labels visibly close to their lines, make the Yield canvas

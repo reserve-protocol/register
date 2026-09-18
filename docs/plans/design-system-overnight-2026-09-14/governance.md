@@ -24,8 +24,8 @@ turn it into another auction workspace or a redesign of voting/execution.
 | Timeline is difficult to interpret unaided            | The 4px multi-stage strip is visually prominent across each record, but the record has no visible stage names. Closed rows retain a quiet strip. | Determine what information the strip must add beyond the explicit status and clock before changing it. Do not invent equal-duration phases, remove stages or recompute progress. Current shared ProposalStatusBar remains untouched.            |
 | Lab framing looks like an empty second product column | At desktop, the Review now/Leave for later aside stretches beside the entire list; most of it is blank.                                          | A lab-chrome-only follow-up can keep the aside content-height and clearly separate review notes from the proposed product layout. This is not evidence the production record needs a wider table.                                               |
 
-Original ordinary-viewport examples: [320px contested/title and evidence](evidence/inspection/governance-visual-inventory-light-320-contested-active-c68e01b9.png),
-[320px queued](evidence/inspection/governance-visual-inventory-light-320-queued-289d3164.png).
+Original ordinary-viewport examples: 320px contested/title and evidence *(capture generated locally; not tracked)*,
+320px queued *(capture generated locally; not tracked)*.
 Exact retained filenames and hashes are in [inspection results](evidence/inspection/results.json).
 
 ## State and integration coverage

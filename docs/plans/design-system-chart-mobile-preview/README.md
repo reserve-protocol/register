@@ -64,12 +64,12 @@ Results: marker tests 2/2; app and E2E typechecks, scoped lint, formatting, and 
 
 ## Curated evidence
 
-- [Light 320 mobile preview](evidence/chart-mobile-preview-light-320.png)
-- [Light 390 mobile preview](evidence/chart-mobile-preview-light-390.png)
-- [Dark 390 mobile preview](evidence/chart-mobile-preview-dark-390.png)
-- [Home launch annotation](evidence/chart-home-launch-annotation-light.png)
-- [Home mobile default-visible marker](evidence/chart-home-launch-annotation-mobile.png)
-- [Spanish label fit](evidence/chart-home-launch-annotation-es.png)
+- Light 320 mobile preview *(capture generated locally; not tracked)*
+- Light 390 mobile preview *(capture generated locally; not tracked)*
+- Dark 390 mobile preview *(capture generated locally; not tracked)*
+- Home launch annotation *(capture generated locally; not tracked)*
+- Home mobile default-visible marker *(capture generated locally; not tracked)*
+- Spanish label fit *(capture generated locally; not tracked)*
 - [Built-output browser report](report-built.json)
 
 The deterministic E2E boundary does not provide the PHOTON token image, so Home evidence shows the TokenLogo fallback. The user's live local preview displayed the real logo; these captures do not certify remote image availability.

@@ -174,10 +174,10 @@ source reset, not proof that the copied card framing conformed to V1.
   in both themes; selected phone readout inspected separately. Light/Intent and
   Dark/Risk findings and the final event ownership were reconciled above.
 - [Compact receipt and hashes](design-system-charts-source-reset/receipt.json).
-  [Desktop Overview](design-system-charts-source-reset/evidence/charts-light-1400.png),
-  [constrained dark](design-system-charts-source-reset/evidence/charts-constrained-dark.png),
-  [Home/Discover context](design-system-charts-source-reset/evidence/charts-home-light-1400.png),
-  [selected phone](design-system-charts-source-reset/evidence/charts-source-touch.png).
+  Desktop Overview *(capture generated locally; not tracked)*,
+  constrained dark *(capture generated locally; not tracked)*,
+  Home/Discover context *(capture generated locally; not tracked)*,
+  selected phone *(capture generated locally; not tracked)*.
   Nine curated images; broad report remains in ignored `test-results`.
 
 The owned 3047/3048 test servers stopped. The user's 3005 server was not restarted;
@@ -212,9 +212,9 @@ lint/format/diff pass. Desktop/Home light, phone, dark constrained and the refre
 3005 surface were inspected. The source chart renderer/helper hashes match the
 initial reset; no behavior change was folded into this correction.
 [Host conformance receipt (before launch-label refinement)](design-system-charts-source-reset/conformance/receipt.json),
-[Overview](design-system-charts-source-reset/conformance/charts-light-1400.png),
-[Home](design-system-charts-source-reset/conformance/charts-home-light-1400.png),
-[phone](design-system-charts-source-reset/conformance/charts-light-320.png).
+Overview *(capture generated locally; not tracked)*,
+Home *(capture generated locally; not tracked)*,
+phone *(capture generated locally; not tracked)*.
 The isolated 3047 runner stopped; 3005 stays running. No checkpoint or commit.
 
 ## Launch annotation refinement — September 14
@@ -244,9 +244,9 @@ Final browser checks **7/7**, retained Overview compatibility **6/6**, units
 attachments match the final rehashed tree. Desktop/phone light and constrained
 dark inspected; 3005 refreshed, isolated 3047/3048 servers stopped.
 [Annotation receipt](design-system-charts-source-reset/annotation/receipt.json),
-[desktop](design-system-charts-source-reset/annotation/charts-light-1400.png),
-[phone](design-system-charts-source-reset/annotation/charts-light-320.png),
-[dark constrained](design-system-charts-source-reset/annotation/charts-constrained-dark.png).
+desktop *(capture generated locally; not tracked)*,
+phone *(capture generated locally; not tracked)*,
+dark constrained *(capture generated locally; not tracked)*.
 The fixed-point scope scan includes 3,566 inherited files and recommends a high
 profile for that whole tree; this bounded follow-up changes only the documented
 domain presentation seam and its lab/tests. No whole-tree acceptance is claimed.

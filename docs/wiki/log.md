@@ -1383,3 +1383,14 @@ Play-by-play lives in git (PRs #1053/#1054/#1055/#1063, SDK PR #27). Durable out
   lint, and whitespace validation. Independent Intent and Engineering Risk
   reviews pass. Human visual judgment remains required; no production component,
   shared default, token, transaction mechanic, authority, or adoption changed.
+
+## 2026-09-18 — Design-system screenshot history purge
+
+- Captured design-system review images and Playwright pixel baselines are no
+  longer repository sources. Runtime documentation previews now use frozen,
+  provider-free renderers or structured reference content, while product
+  artwork, token icons, logos, and external image fixtures remain intact.
+- Future visual evidence is generated locally or in CI as an ephemeral artifact.
+  Git retains replay instructions, structured measurements, and behavioral
+  assertions; narrow ignore rules prevent the removed capture families from
+  being recommitted.

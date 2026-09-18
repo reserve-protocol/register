@@ -65,13 +65,13 @@ keyboard; its prior immediate second click raced menu dismissal.
 
 Inspected these fresh captures for the actual relationships, not just overflow:
 
-- [Desktop positions](checkpoint-2026-09-09/table-family-light-1400-positions.png)
-- [Constrained withdrawals](checkpoint-2026-09-09/table-family-light-1400-withdrawals-constrained.png)
-- [Constrained Yield](checkpoint-2026-09-09/table-family-light-1400-yield-constrained.png)
-- [Phone withdrawals, dark](checkpoint-2026-09-09/table-family-dark-375-withdrawals.png)
-- [Loading, phone](checkpoint-2026-09-09/table-family-light-375-loading.png)
-- [Long content, 320px](checkpoint-2026-09-09/table-family-dark-320-long-content.png)
-- [Otherwise hidden sort metric, dark phone](checkpoint-2026-09-09/table-hardening-dark-narrow-sorted-metric.png)
+- Desktop positions *(capture generated locally; not tracked)*
+- Constrained withdrawals *(capture generated locally; not tracked)*
+- Constrained Yield *(capture generated locally; not tracked)*
+- Phone withdrawals, dark *(capture generated locally; not tracked)*
+- Loading, phone *(capture generated locally; not tracked)*
+- Long content, 320px *(capture generated locally; not tracked)*
+- Otherwise hidden sort metric, dark phone *(capture generated locally; not tracked)*
 
 Some remote marks resolve to canonical fallbacks. Brand-image correctness is
 not approved by these captures. The narrow lab navigation chrome still crowds

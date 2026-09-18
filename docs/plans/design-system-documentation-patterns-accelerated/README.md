@@ -70,9 +70,9 @@ ambiguity, runtime-resolved font notices, and the normal large-chunk advisory.
 
 Evidence:
 
-- [First render](evidence/first/patterns-light-desktop-1400.png)
-- [Final render](evidence/final/patterns-light-desktop-1400.png)
-- [Final narrow render](evidence/final/patterns-dark-phone-390.png)
+- First render *(capture generated locally; not tracked)*
+- Final render *(capture generated locally; not tracked)*
+- Final narrow render *(capture generated locally; not tracked)*
 - [Artifact and runtime evidence](evidence/artifact-runtime.md)
 - [Repair log and pilot evaluation](evidence/repair-log.md)
 - [Scoped identities](evidence/scoped-identities.md)

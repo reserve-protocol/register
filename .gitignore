@@ -35,6 +35,16 @@ yarn-error.log*
 /test-results/
 /playwright-report/
 /playwright/.cache/
+
+/docs/plans/design-system-*/**/*.png
+/docs/plans/design-system-*/**/*.jpg
+/docs/plans/design-system-*/**/*.jpeg
+/e2e/design-system/**/*.png
+/e2e/design-system/**/*.jpg
+/e2e/design-system/**/*.jpeg
+/src/views/internal/design-system/assets/patterns/*.png
+/src/views/internal/design-system/assets/patterns/*.jpg
+/src/views/internal/design-system/assets/patterns/*.jpeg
 tests/RTokens.json
 /test-results/
 /playwright-report/

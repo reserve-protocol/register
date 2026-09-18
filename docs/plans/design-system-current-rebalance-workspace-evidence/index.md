@@ -66,7 +66,7 @@ Buying header divider without changing shared defaults or main section separator
 The computed-border regression failed at **1px** before the fix and now checks
 every header/body row in both tables. [Focused report](liquidity-borderless/browser-report.json):
 **4/4 passed** at 1400/900/390/320px. Owner inspected the
-[desktop capture](liquidity-borderless/hierarchy-1400-liquidity.png); E2E types,
+desktop capture *(capture generated locally; not tracked)*; E2E types,
 scoped lint/format and docs checks pass. Touch-up/self-review only.
 
 **Auction clarity follow-up:** scenario-backed preparation purpose, plainer
@@ -81,9 +81,9 @@ The [scoped report](clarity-refinement/browser-report.json) passed **47/47**;
 after tightening only the phone clock/pill gap, the
 [final responsive report](clarity-refinement/final-report.json) passed **12/12**.
 Each report preserves its own source-bound attachments. Named captures reflect
-the latest run for their suite. Owner inspected [desktop](clarity-refinement/composition-1400-repeat.png),
-[390px](clarity-refinement/clarity-light-390-repeat.png),
-[320px](clarity-refinement/clarity-light-320-repeat.png), dark desktop and hybrid
+the latest run for their suite. Owner inspected desktop *(capture generated locally; not tracked)*,
+390px *(capture generated locally; not tracked)*,
+320px *(capture generated locally; not tracked)*, dark desktop and hybrid
 phone states. Target label/value fit and 390px clock/pill alignment are asserted.
 App/E2E types, scoped lint/format and documentation checks pass. Low-profile
 local self-review; the accumulated-tree medium size signal does not widen this
@@ -93,8 +93,8 @@ lab-only presentation/controls scope. No fresh full repository, unit or CI claim
 from ongoing and outcome summaries, retaining numeric, pending and unavailable
 values. [Focused report](percentage-summary/browser-report.json): **8/8 passed**
 at 1400/900/390/320px in both themes. E2E typecheck and scoped lint pass.
-Owner inspected the [desktop summary](percentage-summary/review-light-1400-repeat.png)
-and [phone summary](percentage-summary/review-light-390-repeat.png). Existing
+Owner inspected the desktop summary *(capture generated locally; not tracked)*
+and phone summary *(capture generated locally; not tracked)*. Existing
 stacked desktop and matched 14px inline phone facts remain; history is unchanged.
 This is a touch-up with self-review, not a fresh whole-flow or production claim.
 
@@ -109,10 +109,10 @@ source attachments match public digest
 `0256cfb2f44019328cbf5ec7c0d1d071b1707edcc94592e1f771726f5a99c712`;
 all 16 attachments round-trip to report digest
 `dfc4d33eb6e145ef812d2246e873a64e1fa13ab152cca7fe3b22266a433cbaa1`.
-Owner inspected [light desktop](chart-alignment/feedback-1400-live.png),
-[light 320px](chart-alignment/feedback-320-live.png),
-[dark desktop](chart-alignment/sections-dark-1400-live.png) and
-[dark 320px](chart-alignment/sections-dark-320-live.png). App/E2E types,
+Owner inspected light desktop *(capture generated locally; not tracked)*,
+light 320px *(capture generated locally; not tracked)*,
+dark desktop *(capture generated locally; not tracked)* and
+dark 320px *(capture generated locally; not tracked)*. App/E2E types,
 scoped lint/format and docs checks pass. Low-profile local correction and
 self-review; accumulated evidence causes scope's medium size hint, not a widened
 boundary. No fresh whole-flow/unit/CI claim. The separate hybrid-layout proposal
@@ -153,14 +153,14 @@ correcting that measurement produced the final passing alignment checks.
 
 The bounded read-only Dark/Light pair found no additional correctness or intent
 blockers. The primary owner completed their requested final rendering proof:
-[desktop live](recent-feedback/composition-1400-live.png),
-[dark desktop](recent-feedback/sections-dark-1400-live.png),
-[dark 320px chart](recent-feedback/sections-dark-320-live.png), and separately
-the full expanded bid at [320px light](recent-feedback/review-light-320-bid-expanded.png)
-and [390px dark](recent-feedback/review-dark-390-bid-expanded.png).
-Final [description](recent-feedback/feedback-1400-description.png),
-[phone weights](recent-feedback/feedback-320-weights-required.png) and
-[completed outcome](recent-feedback/feedback-complete.png) were inspected too.
+desktop live *(capture generated locally; not tracked)*,
+dark desktop *(capture generated locally; not tracked)*,
+dark 320px chart *(capture generated locally; not tracked)*, and separately
+the full expanded bid at 320px light *(capture generated locally; not tracked)*
+and 390px dark *(capture generated locally; not tracked)*.
+Final description *(capture generated locally; not tracked)*,
+phone weights *(capture generated locally; not tracked)* and
+completed outcome *(capture generated locally; not tracked)* were inspected too.
 Unknown-state guards and timer cleanup were traced; no automatic archive or
 launch re-arming was introduced. Existing workflow rules cover the measurement
 and premature-negative-assertion lessons; no workflow-kit change is warranted.
@@ -186,10 +186,10 @@ After formatter-only cleanup, the [final desktop recheck](asset-plan-width/final
 passes **2/2**, starting **19:18:13 UTC**, duration 21.3s, with final source digest
 `057e768f204564cb2516aafa1fe28d3078a72d19a52ec14bb12906e99a2838c8`.
 Both reports retain losslessly externalized attachments. Owner inspected
-[desktop](asset-plan-width/assets-light-1400-repeat.png),
-[900px](asset-plan-width/assets-light-900-repeat.png),
-[320px removal](asset-plan-width/assets-light-320-remove.png) and
-[dark phone](asset-plan-width/assets-dark-390-repeat.png). E2E types, scoped
+desktop *(capture generated locally; not tracked)*,
+900px *(capture generated locally; not tracked)*,
+320px removal *(capture generated locally; not tracked)* and
+dark phone *(capture generated locally; not tracked)*. E2E types, scoped
 lint/format and docs checks pass. Touch-up/self-review; scope's medium size hint
 is accumulated work, not an expanded shared boundary. No significant downside
 found in these states; no fresh whole-flow/CI claim. No progress-bar change,
@@ -204,9 +204,9 @@ source attachments match final public digest
 `56856ad6df2ec6474ce4995ed04d35b7a5ec6362e97557063d5850e9c5e96d1a`;
 24 attachments round-trip to report digest
 `8c8605558b13fe3f23bffe03a48d3e98543d58966568f4b58c8c0cd1f8d70962`.
-Owner inspected [desktop](muted-asset-lists/assets-light-1400-repeat.png),
-[320px removal](muted-asset-lists/assets-light-320-remove.png) and
-[dark phone](muted-asset-lists/assets-dark-390-repeat.png). E2E types,
+Owner inspected desktop *(capture generated locally; not tracked)*,
+320px removal *(capture generated locally; not tracked)* and
+dark phone *(capture generated locally; not tracked)*. E2E types,
 scoped lint/format and docs checks pass. Touch-up/self-review only: scope's medium
 size hint includes accumulated work, not a shared/default change. No fresh broad
 flow/unit/CI claim; user preview preserved, no commit or production change.
@@ -239,9 +239,9 @@ This low-profile local follow-up uses scoped verification and owner self-review,
 not a full lifecycle/CI run or checkpoint. The test preview exited normally;
 3005 stayed running and no commit or push was made.
 
-Owner inspected [desktop](full-asset-stacks/assets-light-1400-repeat.png),
-[320px removal](full-asset-stacks/assets-light-320-remove.png), and
-[dark phone](full-asset-stacks/assets-dark-390-repeat.png). Offline captures retain
+Owner inspected desktop *(capture generated locally; not tracked)*,
+320px removal *(capture generated locally; not tracked)*, and
+dark phone *(capture generated locally; not tracked)*. Offline captures retain
 the existing fallback logos where token artwork is unavailable. No chart,
 weights-editor, subtitle or transaction changes are included in this follow-up.
 
@@ -264,10 +264,10 @@ All 36 attachment bytes were retained with lossless report round-trip digest
 App/E2E typecheck, focused oxlint/Prettier, wiki and diff checks pass. No fresh
 full-lifecycle/unit/CI claim for this isolated presentation follow-up.
 
-Owner inspected [wide](asset-summaries/assets-light-1400-repeat.png),
-[middle](asset-summaries/assets-light-900-repeat.png),
-[320px](asset-summaries/assets-light-320-repeat.png), and
-[dark asymmetric removal](asset-summaries/assets-dark-390-remove.png).
+Owner inspected wide *(capture generated locally; not tracked)*,
+middle *(capture generated locally; not tracked)*,
+320px *(capture generated locally; not tracked)*, and
+dark asymmetric removal *(capture generated locally; not tracked)*.
 Checks cover both themes at all four widths, overflow counts, unavailable/pending
 metadata context, resizing, retained disclosure and live bid selection.
 Low profile: one local presentation owner and one focused spec; scope's medium
@@ -289,9 +289,9 @@ The 59 attachments round-trip to report digest
 `630d974c9614eccb8fbf303144b974dca58c84c37ab806e09fa6c4fb33ea3009`.
 App/E2E types, scoped oxlint/Prettier, wiki and diff checks pass.
 
-Owner inspected [desktop](bottom-aligned-operation/assets-light-1400-repeat.png),
-[non-launcher at 900px](bottom-aligned-operation/hierarchy-900-member-bottom.png)
-and [dark phone](bottom-aligned-operation/assets-dark-390-remove.png). Geometry
+Owner inspected desktop *(capture generated locally; not tracked)*,
+non-launcher at 900px *(capture generated locally; not tracked)*
+and dark phone *(capture generated locally; not tracked)*. Geometry
 checks pin both preparation bottom alignment and unchanged live top alignment.
 Low-profile local composition adjustment; scope's medium size hint reflects the
 accumulated tree, not a widened shared boundary. Existing work and previews are
@@ -362,12 +362,12 @@ inspection and final type/browser proof; final owner verification owns that chec
 Shared surface and product-copy questions remain explicitly deferred. No new
 design-system component or shared default was needed.
 
-Owner visual inspection includes [desktop live](visual-review-refinements/composition-1400-live.png),
-[middle-width preparation](visual-review-refinements/composition-900-repeat.png),
-[phone bid ownership](visual-review-refinements/review-light-320-bid-expanded.png),
-[dark phone bids](visual-review-refinements/review-dark-320-bid-expanded.png),
-[bottom liquidity closing control](visual-review-refinements/review-light-390-assets-close.png),
-[phone focus return](visual-review-refinements/review-light-390-assets-return.png),
+Owner visual inspection includes desktop live *(capture generated locally; not tracked)*,
+middle-width preparation *(capture generated locally; not tracked)*,
+phone bid ownership *(capture generated locally; not tracked)*,
+dark phone bids *(capture generated locally; not tracked)*,
+bottom liquidity closing control *(capture generated locally; not tracked)*,
+phone focus return *(capture generated locally; not tracked)*,
 dark preparation/outcomes, weight-validation states and expanded liquidity.
 The actual 3005 preview was inspected in a separate temporary tab, including a
 390px constrained expired/indexing/unavailable simulation and its disabled launch
@@ -396,9 +396,9 @@ center-offset assertion first failed on the old 5px offset. Fresh
 skips or flaky cases; light/dark at 1400/900/390/320px, including keyboard and
 expired inspection. All source guards match current digest
 `337638fe5ef486ae82caeb900a9ad64e202b6aefae304dd2bb1559fd2691a9ef`.
-Owner inspected [desktop](centered-header/header-light-1400.png),
-[phone](centered-header/header-light-390.png), and
-[dark open panel](centered-header/header-dark-900-open.png).
+Owner inspected desktop *(capture generated locally; not tracked)*,
+phone *(capture generated locally; not tracked)*, and
+dark open panel *(capture generated locally; not tracked)*.
 App/E2E types, scoped lint/format and docs checks pass. Local touch-up/self-review;
 no shared default, production change, checkpoint, commit or preview restart.
 
@@ -422,9 +422,9 @@ All 64 report attachments resolve and lossless externalization round-trips.
 App/E2E typecheck, scoped lint/format, diff check and wiki lint pass. No fresh
 unit/full-lifecycle/CI claim for this isolated presentation follow-up.
 
-Owner inspected [desktop](outline-header/header-light-1400.png),
-[390px](outline-header/header-light-390.png), and
-[320px dark](outline-header/header-dark-320.png), including open-panel captures.
+Owner inspected desktop *(capture generated locally; not tracked)*,
+390px *(capture generated locally; not tracked)*, and
+320px dark *(capture generated locally; not tracked)*, including open-panel captures.
 Direct measurements on the user's 3005 preview confirmed 24px title/top/right
 insets, 8px title/metadata spacing and an actual 44px button. Low profile;
 intent/correctness/product self-review. The 3022 test preview stopped normally;
@@ -460,14 +460,14 @@ new evidence directory; existing captures and earlier checkpoint files are uncha
 All 243 attachments resolve, and reconstructing embedded bodies preserved the
 original canonical report digest. Raw report size reduced from 43MB to 127KB.
 
-Owner visually inspected [desktop](composition/composition-1400-repeat.png),
-[900px](composition/composition-900-repeat.png),
-[phone](composition/composition-390-repeat.png),
-[320px live](composition/composition-320-live.png),
-[dark preparation](composition/dark-1400-ready-top.png),
-[dark phone live](composition/dark-390-live-top.png),
-[hybrid prerequisite](composition/light-390-hybrid-top.png), and
-[expanded liquidity](composition/sections-light-1400-expanded.png).
+Owner visually inspected desktop *(capture generated locally; not tracked)*,
+900px *(capture generated locally; not tracked)*,
+phone *(capture generated locally; not tracked)*,
+320px live *(capture generated locally; not tracked)*,
+dark preparation *(capture generated locally; not tracked)*,
+dark phone live *(capture generated locally; not tracked)*,
+hybrid prerequisite *(capture generated locally; not tracked)*, and
+expanded liquidity *(capture generated locally; not tracked)*.
 The ordinary user preview on 3005 also showed the revised preparation directly.
 Tests preserve expanded-list/bid selection through resizing, keyboard focus,
 44px targets, matched inline type, failure recovery and section spacing.
@@ -501,10 +501,10 @@ at public digest `50d7102bb01de1cf71ce2623738bb63e2ef5e414f5dca23159bd233b02dac3
 It does not invalidate
 the unchanged liquidity/operation results or imply a full lifecycle rerun.
 
-Owner inspected final [desktop header](final/header-light-1400.png),
-[390px header](final/header-light-390.png), [320px dark](final/header-dark-320.png),
-[expanded desktop](final/sections-light-1400-expanded.png) and
-[expanded phone](final/sections-light-390-expanded.png). The latter pair belongs
+Owner inspected final desktop header *(capture generated locally; not tracked)*,
+390px header *(capture generated locally; not tracked)*, 320px dark *(capture generated locally; not tracked)*,
+expanded desktop *(capture generated locally; not tracked)* and
+expanded phone *(capture generated locally; not tracked)*. The latter pair belongs
 to the 28-case spacing checkpoint; only header metadata changed afterward.
 Self-review covered intent, correctness, default preservation and responsive UX.
 
@@ -547,12 +547,12 @@ compact control and visible count, 44px-or-larger hits, keyboard open/close,
 full-width expanded rows, live/expired continuity, role/data/transaction recovery,
 liquidity retry and history handoff. No wallet sends occurred.
 
-Owner inspected [desktop](final/sections-light-1400.png),
-[phone](final/hierarchy-390-repeat.png),
-[320px expansion](final/sections-light-320-expanded.png),
-[dark desktop](final/sections-dark-1400.png),
-[dark live middle width](final/sections-dark-900-live.png) and
-[cumulative/history context](final/sections-light-390-progress.png).
+Owner inspected desktop *(capture generated locally; not tracked)*,
+phone *(capture generated locally; not tracked)*,
+320px expansion *(capture generated locally; not tracked)*,
+dark desktop *(capture generated locally; not tracked)*,
+dark live middle width *(capture generated locally; not tracked)* and
+cumulative/history context *(capture generated locally; not tracked)*.
 These captures supersede prior section geometry, not human design acceptance.
 Direct inspection on 3005 also checked the expanded table's final rows and totals
 above the separator, cumulative results below it, and history following the card.
@@ -583,11 +583,11 @@ panel fit, click/Space/Escape/focus return and expired inspection. The ten exist
 hierarchy cases also pass. App/E2E typecheck and focused lint/format pass.
 
 The regression failed before the fix on a **32px vertical center mismatch**.
-Owner inspected [desktop](final/header-light-1400.png),
-[middle width](final/header-light-900.png), [phone](final/header-light-390.png),
-[320px open panel](final/header-light-320-open.png),
-[dark open panel](final/header-dark-1400-open.png) and
-[dark narrow header](final/header-dark-320.png).
+Owner inspected desktop *(capture generated locally; not tracked)*,
+middle width *(capture generated locally; not tracked)*, phone *(capture generated locally; not tracked)*,
+320px open panel *(capture generated locally; not tracked)*,
+dark open panel *(capture generated locally; not tracked)* and
+dark narrow header *(capture generated locally; not tracked)*.
 This scoped pass supersedes header geometry in the baseline below; it does not
 claim a fresh full lifecycle/unit run. The browser suite used its own 3022 preview.
 
@@ -646,13 +646,13 @@ the general-information popover at 320px, and native table/row/cell accessibilit
 structure before/after reflow. Browser tests retain focused disclosure through resize.
 Temporary review tab and viewport override were cleaned up; light theme restored.
 
-Start with [repeated auction](final/hierarchy-1400-repeat.png),
-[900px layout](final/hierarchy-900-repeat.png),
-[phone](final/hierarchy-390-repeat.png),
-[live monitoring](final/light-1400-live-top.png),
-[320px warning row](final/hierarchy-320-liquidity.png),
-[completion](final/hierarchy-complete.png), or
-[320px weight editor](final/weights-320-top.png).
+Start with repeated auction *(capture generated locally; not tracked)*,
+900px layout *(capture generated locally; not tracked)*,
+phone *(capture generated locally; not tracked)*,
+live monitoring *(capture generated locally; not tracked)*,
+320px warning row *(capture generated locally; not tracked)*,
+completion *(capture generated locally; not tracked)*, or
+320px weight editor *(capture generated locally; not tracked)*.
 
 RED proof preceded the ownership change (missing shared Auction N section).
 Further rendered REDs exposed 20px logos despite utility sizing, a 46px clipped

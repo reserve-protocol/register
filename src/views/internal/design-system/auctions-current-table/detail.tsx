@@ -6,32 +6,22 @@ import { v1Typography as type } from '@/components/design-system-v1/typography'
 import { cn } from '@/lib/utils'
 import type { TableRow } from './model'
 import { CurrentStatus, CurrentRound } from './cells'
-import ready from '../../../../../docs/plans/design-system-current-rebalance-flow-audit/evidence/monitoring-data/prices-resolved-1400.png'
-import live from '../../../../../docs/plans/design-system-current-rebalance-flow-audit/evidence/monitoring-data/live-auction-bid-selected-1400.png'
-import phone from '../../../../../docs/plans/design-system-current-rebalance-flow-audit/evidence/phone-keyboard/detail-390-restricted-top.png'
-import weights from '../../../../../docs/plans/design-system-current-rebalance-flow-audit/evidence/phone-keyboard/manage-weights-card-390.png'
-import completed from '../../../../../docs/plans/design-system-current-rebalance-flow-audit/evidence/phone-keyboard/completed-390.png'
-import repeat from '../../../../../docs/plans/design-system-current-rebalance-flow-audit/evidence/launch-lifecycle/auction-ended-next-launch-1400.png'
 
 const REFERENCES = {
   ready: {
-    src: ready,
     identity: 'August 2026 Rebalance',
     status: 'Start auction 1',
   },
-  live: { src: live, identity: 'August 2026 Rebalance', status: 'Bids · 2' },
+  live: { identity: 'August 2026 Rebalance', status: 'Bids · 2' },
   weights: {
-    src: weights,
     identity: 'June 2026 Rebalance',
     status: 'Specify Exact Basket Weights',
   },
   completed: {
-    src: completed,
     identity: 'June 2026 Rebalance',
     status: 'Completed',
   },
   repeat: {
-    src: repeat,
     identity: 'August 2026 Rebalance',
     status: 'Start auction 2',
   },
@@ -48,7 +38,6 @@ export function RetainedDetailPreview({
   useEffect(() => {
     heading.current?.focus()
   }, [])
-  const narrow = row?.scenario === 'hybrid' || row?.scenario === 'complete'
   const reference =
     row?.scenario === 'hybrid'
       ? REFERENCES.weights
@@ -101,18 +90,18 @@ export function RetainedDetailPreview({
                 Frozen preview, not live data.
               </p>
             </figcaption>
-            <picture>
-              {!narrow &&
-                row.status !== 'Ongoing' &&
-                row.scenario !== 'repeat' && (
-                  <source media="(max-width: 600px)" srcSet={phone} />
-                )}
-              <img
-                src={reference.src}
-                alt={reference.identity}
-                className={cn('block h-auto w-full', narrow && 'max-w-[390px]')}
-              />
-            </picture>
+            <div className="border border-border bg-muted/30 p-6">
+              <p className={cn(type.body, 'text-foreground')}>
+                {reference.identity}
+              </p>
+              <p className={cn(type.supporting, 'mt-1 text-muted-foreground')}>
+                {reference.status}
+              </p>
+              <p className={cn(type.supporting, 'mt-4 text-muted-foreground')}>
+                Visual captures are generated locally for review and are not
+                stored in Git.
+              </p>
+            </div>
           </figure>
         </>
       ) : (

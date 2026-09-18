@@ -74,11 +74,11 @@ production identity behavior changed in this slice.
 
 Evidence:
 
-- [`candlestick-tooltip-light.png`](refinements-evidence/candlestick-tooltip-light.png)
-- [`candlestick-tooltip-dark.png`](refinements-evidence/candlestick-tooltip-dark.png)
-- [`home-frame-light-320.png`](refinements-evidence/home-frame-light-320.png)
-- [`home-frame-light-390.png`](refinements-evidence/home-frame-light-390.png)
-- [`home-frame-light-1400.png`](refinements-evidence/home-frame-light-1400.png)
-- [`home-frame-dark-320.png`](refinements-evidence/home-frame-dark-320.png)
-- [`home-frame-dark-390.png`](refinements-evidence/home-frame-dark-390.png)
-- [`home-frame-dark-1400.png`](refinements-evidence/home-frame-dark-1400.png)
+- `candlestick-tooltip-light.png` *(capture generated locally; not tracked)*
+- `candlestick-tooltip-dark.png` *(capture generated locally; not tracked)*
+- `home-frame-light-320.png` *(capture generated locally; not tracked)*
+- `home-frame-light-390.png` *(capture generated locally; not tracked)*
+- `home-frame-light-1400.png` *(capture generated locally; not tracked)*
+- `home-frame-dark-320.png` *(capture generated locally; not tracked)*
+- `home-frame-dark-390.png` *(capture generated locally; not tracked)*
+- `home-frame-dark-1400.png` *(capture generated locally; not tracked)*

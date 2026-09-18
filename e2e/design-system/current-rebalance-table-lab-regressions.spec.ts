@@ -144,15 +144,9 @@ for (const width of [1400, 390])
         'dateTime',
         '2026-09-13'
       )
-      await expect
-        .poll(() =>
-          reference
-            .getByRole('img')
-            .evaluate(
-              (el: HTMLImageElement) => el.complete && el.naturalWidth > 0
-            )
-        )
-        .toBe(true)
+      await expect(
+        reference.getByText(/Visual captures are generated locally/)
+      ).toBeVisible()
       if (scene === 'no-bids')
         await expect(
           detail
@@ -362,13 +356,9 @@ test('current table empty loading multiple rows and independent destinations', a
   await expect(reference.getByTestId('current-reference-identity')).toHaveText(
     'August 2026 Rebalance · Start auction 1'
   )
-  await expect
-    .poll(() =>
-      reference
-        .getByRole('img')
-        .evaluate((el: HTMLImageElement) => el.complete && el.naturalWidth > 0)
-    )
-    .toBe(true)
+  await expect(
+    reference.getByText(/Visual captures are generated locally/)
+  ).toBeVisible()
   await currentCapture(
     page,
     page.getByTestId('current-retained-detail'),
