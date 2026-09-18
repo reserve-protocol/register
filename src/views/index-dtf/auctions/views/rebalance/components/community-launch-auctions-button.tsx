@@ -19,6 +19,7 @@ import {
   rebalancePercentAtom,
 } from '../atoms'
 import useRebalanceParams from '../hooks/use-rebalance-params'
+import { toIndexDtfWriteVersion } from '../utils/transforms'
 import useLaunchReceipt from '../hooks/use-launch-receipt'
 import Help from '@/components/ui/help'
 
@@ -104,10 +105,12 @@ const CommunityLaunchAuctionsButton = () => {
       setIsLaunching(true)
       setError(null)
 
-      if (isSdkVersion) {
+      const writeVersion = toIndexDtfWriteVersion(rebalanceParams.folioVersion)
+      if (isSdkVersion && writeVersion) {
         const call = prepareIndexDtfOpenAuctionUnrestricted({
           address: dtf.id,
           chainId: identity.chainId,
+          version: writeVersion,
           rebalanceNonce: BigInt(rebalance.rebalance.nonce),
         })
         writeContract({
