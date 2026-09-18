@@ -59,7 +59,7 @@ landed the rebalance migration (2026-09-17):
 - **Version identity**: `indexDTFVersionAtom` is undefined until `useIndexDtfVersion` resolves and resets on navigation; `folioVersionAtom` derives pending / ready (majors 1, 2, 4, 5, 6) / unsupported from exact deployed versions. Nothing selects an ABI or builds calldata while pending.
 - **Rebalance reads** (list, auction history, current/historical state, initial snapshot) come from react-sdk hooks for v5/v6; v4 keeps Register-local reads. Live launch gating is RPC-first (`useIndexDtfLatestAuction`): current nonce and not ended, warm-up included.
 - **Calculations**: v5/v6 open-auction math and start-rebalance args are SDK-owned (`prepareIndexDtfOpenAuctionArgs`, `buildIndexDtfStartRebalanceArgs`) behind Register's price pre-check and volatility presets; v4 stays on the local library. v6 basket proposals (nonce + deadline) are still pending: the atom builder blocks them.
-- **Writes**: launch buttons submit `prepareIndexDtfOpenAuction` / `prepareIndexDtfOpenAuctionUnrestricted` calls (v6 with `useIndexDtfMaxAuctionLength`) and invalidate the RPC-backed keys on receipt. The candidate SDK (0.6.0) requires `version` on every builder and rejects anything but `5.0.0`/`6.0.0`.
+- **Writes**: launch buttons submit `prepareIndexDtfOpenAuction` / `prepareIndexDtfOpenAuctionUnrestricted` calls (v6 with `useIndexDtfMaxAuctionLength`) and invalidate the RPC-backed keys on receipt. The candidate SDK (branch `feat/index-dtf-v6-support`, releases as 0.7.0; 0.6.0 is already published) requires `version` on every builder and rejects anything but `5.0.0`/`6.0.0`.
 
 ## What it gives you
 

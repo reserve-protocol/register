@@ -6,7 +6,7 @@ Fixed point: Register `feat/index-dtf-v6` at `dba79019b` (cut from master `d0db7
 
 ## Goal
 
-Register's rebalance flow (list, detail, launch, community launch, basket proposal calldata) runs on the candidate `@reserve-protocol/react-sdk` 0.6.0 for Folio v5 and v6, keeps v4 on its Register-local path behind an explicit version switch, and is proven by unit differentials, the offline Playwright suite, and one real launch on the BSC fork. Each slice ends with a screenshot of the working surface.
+Register's rebalance flow (list, detail, launch, community launch, basket proposal calldata) runs on the candidate `@reserve-protocol/react-sdk` 0.7.0 (branch `feat/index-dtf-v6-support`; 0.6.0 is already the published line) for Folio v5 and v6, keeps v4 on its Register-local path behind an explicit version switch, and is proven by unit differentials, the offline Playwright suite, and one real launch on the BSC fork. Each slice ends with a screenshot of the working surface.
 
 ## Current state
 
