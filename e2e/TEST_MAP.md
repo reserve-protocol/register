@@ -80,6 +80,9 @@ additional state coverage: [boot](tests/smoke/boot.spec.ts) (home shell),
 
 ## Known gaps
 
+- Legacy unlimited-buy proposal preview: captured BDTF component regression
+  covers full/partial sells and repeated approvals; live desktop/mobile checked.
+  The strict offline registry has no legacy BDTF proposal fixture yet.
 - Optimistic governance: no dedicated flow test. Existing specs pin
   `isOptimistic: false`; `governance/photon-featured.spec.ts` documents that
   none of its 8 captured proposals are optimistic, so the badge/tally path is

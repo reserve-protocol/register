@@ -22,6 +22,7 @@ One line per page. Agents: start here, follow links, keep this list current on i
 
 ## Domains
 
+- [[governance-preview]] — legacy auction proposal allocations: unlimited buy ceilings, funded allocation estimates, captured BDTF regression
 - [[design-system]] — tokens, type, motion, ui primitives; never hardcode colors or change shared defaults
 - [[zapper-prompt]] — CoW Swap suggestion card beside the instant zapper: variant priority, latch reducer invariants, Ondo capacity gating
 - [[referral]] — influencer campaign attribution: ?referral= capture, last-touch Mixpanel super property, wallet↔code POST to reserve-api; conversions settled on-chain, out of scope
