@@ -43,7 +43,6 @@ const OVERVIEW_SCHEMA = {
     defaultValue: 'line',
     values: ['line', 'candles'],
   },
-  viewport: VIEWPORT_DIMENSION,
 } as const
 
 const YIELD_SCHEMA = {
@@ -60,41 +59,15 @@ const PORTFOLIO_SCHEMA = {
 
 export const CHART_DOCUMENTATION_METRICS = historicalMetrics
 
-const CHART_SECTIONS = [
-  { id: 'chart-overview', label: 'Overview' },
-  { id: 'chart-home', label: 'Home' },
-  { id: 'chart-discover', label: 'Discover' },
-  { id: 'chart-yield', label: 'Yield historical metrics' },
-  { id: 'chart-portfolio', label: 'Portfolio history' },
-] as const
-
 const viewportWidth = (
-  family: 'overview' | 'yield' | 'portfolio',
+  family: 'yield' | 'portfolio',
   viewport: ChartDocumentationViewport
 ) => {
   if (viewport === 'phone') return 'w-[390px] max-w-none'
   if (viewport === 'narrow') {
-    return family === 'overview'
-      ? 'w-[520px] max-w-full'
-      : family === 'yield'
-        ? 'w-[640px] max-w-full'
-        : 'w-[600px] max-w-full'
+    return family === 'yield' ? 'w-[640px] max-w-full' : 'w-[600px] max-w-full'
   }
   return family === 'yield' ? 'w-full max-w-[1120px]' : 'w-full max-w-[824px]'
-}
-
-const sectionHref = (href: string, sectionId: string) => {
-  const [pathAndSearch] = href.split('#')
-  const [pathname, search = ''] = pathAndSearch.split('?')
-  const params = new URLSearchParams(search)
-  const prefix = `${sectionId}.`
-
-  for (const key of Array.from(params.keys())) {
-    if (!key.startsWith(prefix)) params.delete(key)
-  }
-
-  const sectionSearch = params.toString()
-  return `${pathname}${sectionSearch ? `?${sectionSearch}` : ''}#${sectionId}`
 }
 
 const ChartFamilySection = ({
@@ -160,14 +133,6 @@ const ViewportControl = ({
   )
 }
 
-const StateLink = ({ href }: { href: string }) => (
-  <Button asChild size="compact" tone="quiet">
-    <a href={href}>
-      <Trans>State URL</Trans>
-    </a>
-  </Button>
-)
-
 const ResetPreview = ({ onReset }: { onReset: () => void }) => (
   <Button size="compact" tone="quiet" onClick={onReset}>
     <Trans>Reset preview</Trans>
@@ -186,9 +151,13 @@ const OverviewDocumentation = () => {
       <DocumentationSpecimenCanvas
         host={{
           name: t`Index DTF Overview`,
-          backgroundOwner: t`Overview content surface`,
+          backdropOwner: t`Documentation contrast canvas`,
           insetOwner: t`Overview chart family`,
         }}
+        mode="intrinsic"
+        backdrop="neutral"
+        padding="contained"
+        align="center"
         controls={{
           family: (
             <SegmentedControl
@@ -211,33 +180,33 @@ const OverviewDocumentation = () => {
               </SegmentedControlItem>
             </SegmentedControl>
           ),
-          viewport: (
-            <ViewportControl
-              value={specimen.state.viewport}
-              onChange={(value) => specimen.setValue('viewport', value)}
-            />
-          ),
         }}
         reset={
           specimen.isDefault ? undefined : (
             <ResetPreview onReset={specimen.reset} />
           )
         }
-        link={<StateLink href={sectionHref(specimen.href, 'chart-overview')} />}
         fallbacks={specimen.fallbacks}
         provenance={
           <Trans>
             Exact source-bound PHOTON Overview capture from the accepted owner;
-            production data, defaults, and callers are unchanged.
+            production data, defaults, and callers are unchanged. Footer ranges
+            and Line/Candles labels are part of the static capture, not live
+            controls. Constrained documentation widths scroll the natural-size
+            capture horizontally.
           </Trans>
         }
       >
         <div
-          data-testid="chart-overview-stage"
-          data-documentation-viewport={specimen.state.viewport}
-          className={viewportWidth('overview', specimen.state.viewport)}
+          className="w-full max-w-full overflow-x-auto overscroll-x-contain pb-1"
+          data-testid="chart-overview-scroll"
         >
-          <DocumentationOverviewChartCapture family={specimen.state.family} />
+          <div
+            data-testid="chart-overview-stage"
+            className="mx-auto w-[824px] max-w-none"
+          >
+            <DocumentationOverviewChartCapture family={specimen.state.family} />
+          </div>
         </div>
       </DocumentationSpecimenCanvas>
     </div>
@@ -251,9 +220,13 @@ const HomeDocumentation = () => {
     <DocumentationSpecimenCanvas
       host={{
         name: t`Home highlighted DTF`,
-        backgroundOwner: t`Highlighted DTF card`,
+        backdropOwner: t`Documentation contrast canvas`,
         insetOwner: t`Home card media`,
       }}
+      mode="intrinsic"
+      backdrop="neutral"
+      padding="contained"
+      align="center"
       provenance={
         <Trans>
           Exact source-bound capture of the accepted PHOTON highlighted-card
@@ -275,9 +248,13 @@ const DiscoverDocumentation = () => {
     <DocumentationSpecimenCanvas
       host={{
         name: t`Discover performance cell`,
-        backgroundOwner: t`Discover table cell`,
+        backdropOwner: t`Documentation contrast canvas`,
         insetOwner: t`Table cell`,
       }}
+      mode="intrinsic"
+      backdrop="neutral"
+      padding="contained"
+      align="center"
       provenance={
         <Trans>
           Exact source-bound LCAP 30-day capture from the accepted 90 × 40px
@@ -299,9 +276,13 @@ const YieldDocumentation = () => {
       <DocumentationSpecimenCanvas
         host={{
           name: t`Yield historical metrics`,
-          backgroundOwner: t`Yield metric region`,
+          backdropOwner: t`Documentation contrast canvas`,
           insetOwner: t`Individual metric surface`,
         }}
+        mode="host-constrained"
+        backdrop="neutral"
+        padding="contained"
+        align="center"
         controls={{
           viewport: (
             <ViewportControl
@@ -315,7 +296,6 @@ const YieldDocumentation = () => {
             <ResetPreview onReset={specimen.reset} />
           )
         }
-        link={<StateLink href={sectionHref(specimen.href, 'chart-yield')} />}
         fallbacks={specimen.fallbacks}
         provenance={
           <Trans>
@@ -368,9 +348,13 @@ const PortfolioDocumentation = () => {
       <DocumentationSpecimenCanvas
         host={{
           name: t`Portfolio history`,
-          backgroundOwner: t`Portfolio history region`,
+          backdropOwner: t`Documentation contrast canvas`,
           insetOwner: t`Portfolio chart family`,
         }}
+        mode="host-constrained"
+        backdrop="neutral"
+        padding="contained"
+        align="center"
         controls={{
           family: (
             <SegmentedControl
@@ -405,9 +389,6 @@ const PortfolioDocumentation = () => {
             <ResetPreview onReset={specimen.reset} />
           )
         }
-        link={
-          <StateLink href={sectionHref(specimen.href, 'chart-portfolio')} />
-        }
         fallbacks={specimen.fallbacks}
         provenance={
           <Trans>
@@ -437,28 +418,11 @@ const PortfolioDocumentation = () => {
 }
 
 export const DocumentationPatternCharts = () => {
-  const { t } = useLingui()
-
   return (
     <div
       data-testid="documentation-pattern-charts"
       className="min-w-0 space-y-10 py-5"
     >
-      <nav
-        aria-label={t`Chart families`}
-        className="flex flex-wrap gap-x-4 gap-y-2 border-b border-border pb-4"
-      >
-        {CHART_SECTIONS.map(({ id, label }) => (
-          <a
-            key={id}
-            href={`#${id}`}
-            className="inline-flex min-h-11 items-center text-sm font-medium text-primary underline-offset-4 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-          >
-            {label}
-          </a>
-        ))}
-      </nav>
-
       <ChartFamilySection
         id="chart-overview"
         title={<Trans>Overview</Trans>}

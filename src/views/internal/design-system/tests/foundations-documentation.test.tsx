@@ -28,15 +28,15 @@ describe('foundation documentation overview', () => {
 
     for (const item of FOUNDATION_ITEMS) {
       expect(
-        screen.getByRole('link', { name: item.name, exact: true })
-      ).toHaveAttribute('href', `#${item.id}`)
-      expect(
         within(document.getElementById(item.id)!).getByRole('heading', {
           name: item.name,
         })
       ).toBeVisible()
     }
 
+    expect(
+      screen.queryByRole('navigation', { name: 'Foundation sections' })
+    ).toBeNull()
     expect(screen.queryByTestId('foundation-visual-overview')).toBeNull()
   })
 
@@ -70,6 +70,30 @@ describe('foundation documentation overview', () => {
     ).toBeVisible()
     expect(color.getByText('Feedback semantic families')).toBeVisible()
     expect(color.getByText('Performance data')).toBeVisible()
+  })
+
+  it('keeps the complete Color definition readable before the wide table fits', () => {
+    renderOverview()
+
+    const color = within(document.getElementById('color')!)
+    const header = color.getAllByText('Semantic role')[0].parentElement
+    const firstRole = color.getByText('--background').closest('article')
+    const performanceRole = color
+      .getByText('performance.positive')
+      .closest('article')
+
+    expect(header).toHaveClass('xl:grid')
+    expect(header).not.toHaveClass('lg:grid')
+    expect(firstRole).toHaveClass(
+      'xl:grid-cols-[minmax(10rem,1fr)_8rem_9rem_9rem_minmax(14rem,1.5fr)]'
+    )
+    expect(firstRole).not.toHaveClass(
+      'lg:grid-cols-[minmax(10rem,1fr)_8rem_9rem_9rem_minmax(14rem,1.5fr)]'
+    )
+    expect(within(firstRole!).getByText('Light')).toHaveClass('xl:hidden')
+    expect(performanceRole).toHaveClass(
+      'xl:grid-cols-[minmax(9rem,1fr)_9rem_10rem_10rem_minmax(12rem,1.5fr)]'
+    )
   })
 
   it('includes every owned foreground alias in the primary Color reference', () => {

@@ -126,7 +126,7 @@ describe('Chart pattern documentation', () => {
     ).toBeVisible()
   })
 
-  it('uses one viewport vocabulary while letting each family own its width', () => {
+  it('keeps responsive controls on live families but not the static Overview capture', () => {
     renderCharts()
 
     expect(CHART_DOCUMENTATION_VIEWPORT_VALUES).toEqual([
@@ -137,7 +137,7 @@ describe('Chart pattern documentation', () => {
     const viewportControls = screen.getAllByTestId(
       'chart-documentation-viewport-control'
     )
-    expect(viewportControls).toHaveLength(3)
+    expect(viewportControls).toHaveLength(2)
 
     for (const control of viewportControls) {
       expect(
@@ -147,9 +147,23 @@ describe('Chart pattern documentation', () => {
       ).toEqual(['Wide', 'Narrow', 'Phone 390'])
     }
 
-    expect(screen.getByTestId('chart-overview-stage')).toHaveAttribute(
-      'data-documentation-viewport',
-      'wide'
+    expect(
+      within(screen.getByTestId('chart-overview-documentation')).queryByTestId(
+        'chart-documentation-viewport-control'
+      )
+    ).toBeNull()
+    expect(screen.getByTestId('chart-overview-stage')).toHaveClass(
+      'w-[824px]',
+      'max-w-none'
+    )
+    expect(screen.getByTestId('chart-overview-scroll')).toHaveClass(
+      'w-full',
+      'max-w-full',
+      'overflow-x-auto',
+      'overscroll-x-contain'
+    )
+    expect(screen.getByTestId('chart-overview-scroll')).toContainElement(
+      screen.getByTestId('chart-overview-stage')
     )
     expect(screen.getByTestId('chart-yield-stage')).toHaveAttribute(
       'data-documentation-viewport',
@@ -161,34 +175,29 @@ describe('Chart pattern documentation', () => {
     )
   })
 
-  it('restores, repairs, links, and resets namespaced section state', () => {
+  it('restores, repairs, and resets namespaced section state', () => {
     renderCharts(
-      '/internal/design-system/patterns?chart-overview.viewport=television#chart-overview'
+      '/internal/design-system/patterns?chart-overview.family=area#chart-overview'
     )
     const overview = screen.getByTestId('chart-overview-documentation')
 
     expect(
       within(overview).getByText(
-        'Unavailable viewport value “television”; showing “wide”.'
+        'Unavailable family value “area”; showing “line”.'
       )
-    ).toHaveTextContent(
-      'Unavailable viewport value “television”; showing “wide”.'
-    )
+    ).toHaveTextContent('Unavailable family value “area”; showing “line”.')
     expect(
-      within(overview).getByRole('radio', { name: 'Wide' })
+      within(overview).getByRole('radio', { name: 'Line' })
     ).toHaveAttribute('data-state', 'on')
 
-    fireEvent.click(within(overview).getByRole('radio', { name: 'Phone 390' }))
+    fireEvent.click(within(overview).getByRole('radio', { name: 'Candles' }))
 
     expect(screen.getByTestId('location-probe')).toHaveTextContent(
-      '/internal/design-system/patterns?chart-overview.viewport=phone#chart-overview'
+      '/internal/design-system/patterns?chart-overview.family=candles#chart-overview'
     )
     expect(
-      within(overview).getByRole('link', { name: 'State URL' })
-    ).toHaveAttribute(
-      'href',
-      '/internal/design-system/patterns?chart-overview.viewport=phone#chart-overview'
-    )
+      within(overview).queryByRole('link', { name: 'State URL' })
+    ).toBeNull()
 
     fireEvent.click(
       within(overview).getByRole('button', { name: 'Reset preview' })
@@ -196,6 +205,16 @@ describe('Chart pattern documentation', () => {
     expect(screen.getByTestId('location-probe')).toHaveTextContent(
       '/internal/design-system/patterns#chart-overview'
     )
+  })
+
+  it('identifies the Overview footer controls as part of the static capture', () => {
+    renderCharts()
+
+    expect(
+      within(screen.getByTestId('chart-overview-documentation')).getByText(
+        /Footer ranges and Line\/Candles labels are part of the static capture/
+      )
+    ).toBeVisible()
   })
 
   it('does not mount pressure or missing-data boards in Canonical', () => {

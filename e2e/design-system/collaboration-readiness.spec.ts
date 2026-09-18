@@ -122,12 +122,8 @@ test('keeps anchored context visible and puts component results first on phones'
   await page.goto('/internal/design-system/components#button')
   const button = page.locator('#button')
   const specimen = button.getByTestId('component-overview-output')
-  const metadata = button.getByTestId('component-overview-metadata')
   const details = button.getByTestId('component-overview-button')
   await expect(specimen).toBeVisible()
-  expect((await specimen.boundingBox())!.y).toBeLessThan(
-    (await metadata.boundingBox())!.y
-  )
   expect((await specimen.boundingBox())!.y).toBeLessThan(
     (await details.boundingBox())!.y
   )

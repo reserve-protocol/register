@@ -12,7 +12,6 @@ import {
   useLocation,
 } from 'react-router-dom'
 import { TooltipProvider } from '@/components/ui/tooltip'
-import LanguageProvider from '@/i18n'
 import DesignSystemLab from '..'
 
 const ScrollToTop = () => {
@@ -29,27 +28,25 @@ const StandaloneDocumentation = () => (
   <Provider>
     <BrowserRouter>
       <ScrollToTop />
-      <LanguageProvider>
-        <TooltipProvider>
-          <div
-            data-runtime="standalone"
-            className="h-full overflow-hidden bg-background text-foreground"
-          >
-            <div id="app-container" className="h-full overflow-auto">
-              <Routes>
-                <Route
-                  path="/internal/design-system/*"
-                  element={<DesignSystemLab />}
-                />
-                <Route
-                  path="*"
-                  element={<Navigate replace to="/internal/design-system" />}
-                />
-              </Routes>
-            </div>
+      <TooltipProvider>
+        <div
+          data-runtime="standalone"
+          className="h-full overflow-hidden bg-background text-foreground"
+        >
+          <div id="app-container" className="h-full overflow-auto">
+            <Routes>
+              <Route
+                path="/internal/design-system/*"
+                element={<DesignSystemLab />}
+              />
+              <Route
+                path="*"
+                element={<Navigate replace to="/internal/design-system" />}
+              />
+            </Routes>
           </div>
-        </TooltipProvider>
-      </LanguageProvider>
+        </div>
+      </TooltipProvider>
     </BrowserRouter>
   </Provider>
 )

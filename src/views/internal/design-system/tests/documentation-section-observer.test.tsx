@@ -92,6 +92,14 @@ describe('DocumentationSectionProvider', () => {
     })
   }
 
+  it('tracks every scrollable Workbench section exposed by the page', () => {
+    expect(
+      getDocumentationSections('/internal/design-system/workbench').map(
+        ({ id }) => id
+      )
+    ).toEqual(['current-review', 'activity', 'tools', 'pattern-workbenches'])
+  })
+
   it('keeps a requested anchor through late layout until the user scrolls', () => {
     const { scroller, sections, setScrollTop } = renderSections('tabs')
     flushAnimationFrames()

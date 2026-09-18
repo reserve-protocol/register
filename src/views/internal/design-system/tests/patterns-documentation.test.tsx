@@ -33,27 +33,34 @@ describe('patterns documentation overview', () => {
       'transactions',
     ])
 
-    for (const id of [
-      'charts',
-      'tables',
-      'forms',
-      'navigation',
-      'transactions',
-    ]) {
-      expect(
-        screen
-          .getAllByRole('link', { name: new RegExp(id, 'i') })
-          .some((link) => link.getAttribute('href') === `#${id}`)
-      ).toBe(true)
-    }
+    expect(
+      screen.queryByRole('navigation', { name: /pattern families/i })
+    ).toBeNull()
   })
 
   it('shows the accepted family results directly instead of teaser captures', () => {
     renderOverview()
 
     expect(screen.getByTestId('preset-or-custom-field')).toBeVisible()
-    expect(screen.getAllByTestId('pattern-rich-reference')).toHaveLength(3)
+    expect(screen.getAllByTestId('pattern-rich-reference')).toHaveLength(4)
     expect(screen.getAllByTestId('pattern-specimen-canvas')).toHaveLength(1)
+    expect(
+      screen
+        .getByTestId('pattern-specimen-canvas')
+        .querySelector(
+          '[data-host-context="Neutral host · responsive preset-or-custom field"]'
+        )
+    ).toBeVisible()
+    expect(
+      screen
+        .getByTestId('pattern-specimen-canvas')
+        .querySelector('[data-specimen-mode="fluid"]')
+    ).toHaveAttribute('data-specimen-padding', 'contained')
+    expect(
+      screen
+        .getByTestId('pattern-specimen-canvas')
+        .querySelector('[data-specimen-mode="fluid"]')
+    ).toHaveAttribute('data-specimen-align', 'center')
     expect(screen.queryByTestId('pattern-captured-result')).toBeNull()
 
     expect(screen.getByTestId('documentation-pattern-charts')).toBeVisible()
@@ -62,6 +69,9 @@ describe('patterns documentation overview', () => {
     expect(screen.getByTestId('chart-overview-documentation')).toBeVisible()
     expect(screen.getAllByTestId('current-rebalances-table')).toHaveLength(1)
     expect(screen.getByTestId('navigation-global-desktop')).toBeVisible()
+    expect(
+      screen.getAllByTestId('transaction-documentation-family')
+    ).toHaveLength(5)
 
     expect(screen.queryByTestId('chart-next-families-review')).toBeNull()
     expect(screen.queryByTestId('table-family-review')).toBeNull()
@@ -75,8 +85,8 @@ describe('patterns documentation overview', () => {
     const transactions = within(document.getElementById('transactions')!)
     expect(transactions.getByText('Exploring')).toBeVisible()
     expect(transactions.getByText('Paused')).toBeVisible()
-    expect(transactions.getByTestId('pattern-no-specimen')).toBeVisible()
-    expect(transactions.queryByTestId('pattern-specimen-canvas')).toBeNull()
+    expect(document.getElementById('transaction-workbench')).toBeVisible()
+    expect(transactions.queryByTestId('pattern-no-specimen')).toBeNull()
 
     for (const id of [
       'charts',

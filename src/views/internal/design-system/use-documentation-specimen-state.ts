@@ -82,19 +82,35 @@ export const updateDocumentationSpecimenSearch = <
   dimension: Dimension,
   value: Schema[Dimension]['values'][number]
 ) => {
-  const definition = schema[dimension]
+  return updateDocumentationSpecimenSearchValues(sectionId, schema, search, {
+    [dimension]: value,
+  } as Partial<DocumentationSpecimenState<Schema>>)
+}
 
-  if (!definition.values.includes(value)) {
-    throw new RangeError(`Unknown ${dimension} value: ${value}`)
-  }
-
+export const updateDocumentationSpecimenSearchValues = <
+  Schema extends DocumentationSpecimenSchema,
+>(
+  sectionId: string,
+  schema: Schema,
+  search: string,
+  values: Partial<DocumentationSpecimenState<Schema>>
+) => {
   const params = new URLSearchParams(search)
-  const key = namespacedKey(sectionId, dimension)
 
-  if (value === definition.defaultValue) {
-    params.delete(key)
-  } else {
-    params.set(key, value)
+  for (const [dimension, value] of Object.entries(values)) {
+    if (value === undefined) continue
+
+    const definition = schema[dimension]
+    if (!definition?.values.includes(value)) {
+      throw new RangeError(`Unknown ${dimension} value: ${value}`)
+    }
+
+    const key = namespacedKey(sectionId, dimension)
+    if (value === definition.defaultValue) {
+      params.delete(key)
+    } else {
+      params.set(key, value)
+    }
   }
 
   return toSearch(params)
@@ -167,6 +183,19 @@ export const useDocumentationSpecimenState = <
     [location.search, navigateToSearch, schema, sectionId]
   )
 
+  const setValues = useCallback(
+    (values: Partial<DocumentationSpecimenState<Schema>>) =>
+      navigateToSearch(
+        updateDocumentationSpecimenSearchValues(
+          sectionId,
+          schema,
+          location.search,
+          values
+        )
+      ),
+    [location.search, navigateToSearch, schema, sectionId]
+  )
+
   const reset = useCallback(
     () =>
       navigateToSearch(
@@ -185,6 +214,7 @@ export const useDocumentationSpecimenState = <
   return {
     ...parsed,
     setValue,
+    setValues,
     reset,
     isDefault,
     href: createDocumentationSpecimenHref(location),

@@ -1,11 +1,11 @@
 import { useCallback, useId, useState, type ReactNode } from 'react'
-import { useLocation } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import type { MessageDescriptor } from '@lingui/core'
 import { msg } from '@lingui/core/macro'
 import { Trans, useLingui } from '@lingui/react/macro'
 
 import { Button } from '@/components/button'
-import { Link } from '@/components/design-system-v1/link'
+import { Skeleton } from '@/components/design-system-v1/loading'
 import {
   Select,
   SelectContent,
@@ -13,6 +13,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/design-system-v1/select'
+import {
+  SegmentedControl,
+  SegmentedControlItem,
+} from '@/components/design-system-v1/segmented-control'
 import { Tabs, TabsContent } from '@/components/design-system-v1/tabs'
 import { v1Typography as type } from '@/components/design-system-v1/typography'
 import { cn } from '@/lib/utils'
@@ -54,10 +58,39 @@ import { Positions } from './table-family/positions'
 import { Withdrawals, type WithdrawalPreview } from './table-family/withdrawals'
 import { useDocumentationSpecimenState } from './use-documentation-specimen-state'
 
+const TABLE_VIEWPORT_VALUES = ['desktop', 'full', 'phone'] as const
+
+type TableViewport = (typeof TABLE_VIEWPORT_VALUES)[number]
+type TableViewportOwner =
+  | 'current'
+  | 'history'
+  | 'portfolio'
+  | 'holdings'
+  | 'discover'
+  | 'earn'
+
 const VIEWPORT = {
   defaultValue: 'full',
-  values: ['full', 'phone'],
+  values: TABLE_VIEWPORT_VALUES,
 } as const
+
+const OWNER_DESKTOP_VIEWPORTS: Record<
+  TableViewportOwner,
+  { label: MessageDescriptor; className: string }
+> = {
+  current: { label: msg`Desktop · 1024px`, className: 'w-[64rem] max-w-none' },
+  history: { label: msg`Desktop · 896px`, className: 'w-[56rem] max-w-none' },
+  portfolio: {
+    label: msg`Desktop · 1024px`,
+    className: 'w-[64rem] max-w-none',
+  },
+  holdings: { label: msg`Desktop · 768px`, className: 'w-[48rem] max-w-none' },
+  discover: {
+    label: msg`Desktop · 1152px`,
+    className: 'w-[72rem] max-w-none',
+  },
+  earn: { label: msg`Desktop · 1024px`, className: 'w-[64rem] max-w-none' },
+}
 
 const CURRENT_SCHEMA = {
   state: {
@@ -147,7 +180,7 @@ export const TABLE_DOCUMENTATION_SECTION_IDS = [
 
 type Choice = { value: string; label: string }
 
-const ChoiceSelect = ({
+const ChoiceControl = ({
   label,
   value,
   choices,
@@ -157,39 +190,65 @@ const ChoiceSelect = ({
   value: string
   choices: readonly Choice[]
   onChange: (value: string) => void
-}) => (
-  <Select value={value} onValueChange={onChange}>
-    <SelectTrigger size="compact" className="w-56" aria-label={label}>
-      <SelectValue />
-    </SelectTrigger>
-    <SelectContent>
+}) =>
+  choices.length <= 3 ? (
+    <SegmentedControl
+      aria-label={label}
+      presentation="text-only"
+      textOnlyDensity="compact"
+      value={value}
+      onValueChange={onChange}
+    >
       {choices.map((choice) => (
-        <SelectItem key={choice.value} value={choice.value}>
+        <SegmentedControlItem key={choice.value} value={choice.value}>
           {choice.label}
-        </SelectItem>
+        </SegmentedControlItem>
       ))}
-    </SelectContent>
-  </Select>
-)
+    </SegmentedControl>
+  ) : (
+    <Select value={value} onValueChange={onChange}>
+      <SelectTrigger size="compact" className="w-56" aria-label={label}>
+        <SelectValue />
+      </SelectTrigger>
+      <SelectContent>
+        {choices.map((choice) => (
+          <SelectItem key={choice.value} value={choice.value}>
+            {choice.label}
+          </SelectItem>
+        ))}
+      </SelectContent>
+    </Select>
+  )
 
 const ViewportControl = ({
+  owner,
   value,
   onChange,
 }: {
-  value: string
-  onChange: (value: string) => void
+  owner: TableViewportOwner
+  value: TableViewport
+  onChange: (value: TableViewport) => void
 }) => {
   const { t } = useLingui()
   return (
-    <ChoiceSelect
-      label={t`Table viewport`}
-      value={value}
-      choices={[
-        { value: 'full', label: t`Full width` },
-        { value: 'phone', label: t`Phone width · 390px` },
-      ]}
-      onChange={onChange}
-    />
+    <div
+      className="flex min-w-0 w-full max-w-full items-center overflow-x-auto overscroll-x-contain pb-1"
+      data-testid="table-viewport-control-scroll"
+    >
+      <ChoiceControl
+        label={t`Table viewport`}
+        value={value}
+        choices={[
+          {
+            value: 'desktop',
+            label: t(OWNER_DESKTOP_VIEWPORTS[owner].label),
+          },
+          { value: 'full', label: t`Full width` },
+          { value: 'phone', label: t`Phone width · 390px` },
+        ]}
+        onChange={(nextValue) => onChange(nextValue as TableViewport)}
+      />
+    </div>
   )
 }
 
@@ -223,26 +282,26 @@ const useCanvasHost = () => {
   const { t } = useLingui()
   return {
     name: t`Product records`,
-    backgroundOwner: t`Product page`,
+    backdropOwner: t`Documentation contrast canvas`,
     insetOwner: t`Record surface`,
   }
 }
 
-const specimenWidth = (viewport: string) =>
+const specimenWidth = (viewport: TableViewport, owner: TableViewportOwner) =>
   cn(
     'min-w-0 [container-type:inline-size]',
-    viewport === 'phone' && 'max-w-[390px]'
+    viewport === 'desktop' && OWNER_DESKTOP_VIEWPORTS[owner].className,
+    viewport === 'full' && 'w-full',
+    viewport === 'phone' && 'w-[390px] min-w-[390px] max-w-none'
   )
 
 const useCanvasActions = ({
   isDefault,
   reset,
-  href,
   label,
 }: {
   isDefault: boolean
   reset: () => void
-  href: string
   label: string
 }) => {
   const { t } = useLingui()
@@ -252,11 +311,6 @@ const useCanvasActions = ({
         {t`Reset ${label}`}
       </Button>
     ),
-    link: (
-      <Link href={href} treatment="standalone">
-        {t`Open this state`}
-      </Link>
-    ),
   }
 }
 
@@ -264,6 +318,7 @@ const CurrentRebalancesDocumentation = () => {
   const { t } = useLingui()
   const canvasHost = useCanvasHost()
   const location = useLocation()
+  const navigate = useNavigate()
   const specimen = useDocumentationSpecimenState(
     'tables-current',
     CURRENT_SCHEMA
@@ -276,15 +331,53 @@ const CurrentRebalancesDocumentation = () => {
       ? (legacyState as TableScenario)
       : specimen.state.state
   const rows = currentTableRows(resolvedState, 'launcher', 'ready', true)
+  const setState = useCallback(
+    (value: TableScenario) => {
+      const params = new URLSearchParams(location.search)
+      params.delete('current')
+      if (value === CURRENT_SCHEMA.state.defaultValue) {
+        params.delete('tables-current.state')
+      } else {
+        params.set('tables-current.state', value)
+      }
+      navigate(
+        {
+          pathname: location.pathname,
+          search: params.toString() ? `?${params.toString()}` : '',
+          hash: location.hash,
+        },
+        { replace: true, preventScrollReset: true }
+      )
+    },
+    [location.hash, location.pathname, location.search, navigate]
+  )
+  const reset = useCallback(() => {
+    const params = new URLSearchParams(location.search)
+    params.delete('current')
+    for (const key of Array.from(params.keys())) {
+      if (key.startsWith('tables-current.')) params.delete(key)
+    }
+    navigate(
+      {
+        pathname: location.pathname,
+        search: params.toString() ? `?${params.toString()}` : '',
+        hash: location.hash,
+      },
+      { replace: true, preventScrollReset: true }
+    )
+  }, [location.hash, location.pathname, location.search, navigate])
   const hrefFor = useCallback(
-    (row: TableRow) =>
-      `/internal/design-system/components/table?current=${resolvedState}&rebalance-preview=${row.previewId}#auctions-current-table-review`,
-    [resolvedState]
+    (row: TableRow) => {
+      if (import.meta.env.VITE_DESIGN_SYSTEM_STANDALONE === 'true') {
+        return `${specimen.href.split('#')[0]}#tables-current-rebalances`
+      }
+      return `/internal/design-system/components/table?current=${resolvedState}&rebalance-preview=${row.previewId}#auctions-current-table-review`
+    },
+    [resolvedState, specimen.href]
   )
   const actions = useCanvasActions({
     isDefault: specimen.isDefault && resolvedState === 'ready',
-    reset: specimen.reset,
-    href: `${specimen.href.split('#')[0]}#tables-current-rebalances`,
+    reset,
     label: t`current table`,
   })
 
@@ -296,9 +389,13 @@ const CurrentRebalancesDocumentation = () => {
     >
       <DocumentationSpecimenCanvas
         host={canvasHost}
+        mode="fluid"
+        backdrop="neutral"
+        padding="contained"
+        align="start"
         controls={{
           state: (
-            <ChoiceSelect
+            <ChoiceControl
               label={t`Current rebalance state`}
               value={resolvedState}
               choices={Object.keys(TABLE_SCENARIOS).map((value) => {
@@ -308,13 +405,12 @@ const CurrentRebalancesDocumentation = () => {
                   label: t(CURRENT_STATE_LABELS[scenario]),
                 }
               })}
-              onChange={(value) =>
-                specimen.setValue('state', value as TableScenario)
-              }
+              onChange={(value) => setState(value as TableScenario)}
             />
           ),
           viewport: (
             <ViewportControl
+              owner="current"
               value={specimen.state.viewport}
               onChange={(value) =>
                 specimen.setValue(
@@ -327,32 +423,44 @@ const CurrentRebalancesDocumentation = () => {
         }}
         {...actions}
         fallbacks={specimen.fallbacks}
-        provenance={t`Accepted current rebalance table owner with frozen source-backed identities and illustrative state data.`}
+        provenance={t`Accepted current rebalance table owner with frozen source-backed identities and illustrative state data. Row details remain integrated-lab context and are not reproduced in standalone documentation.`}
       >
         <div
           data-testid="table-current-rebalances-canvas"
           data-resolved-state={resolvedState}
-          className={specimenWidth(specimen.state.viewport)}
+          className={specimenWidth(specimen.state.viewport, 'current')}
         >
           {rows.length ? (
             resolvedState === 'all' ? (
               <div className="space-y-6">
                 {rows.map((row) => (
-                  <CurrentRebalancesTable
+                  <section
                     key={row.previewId}
-                    rows={[row]}
-                    hrefFor={hrefFor}
-                  />
+                    aria-labelledby={`${row.previewId}-heading`}
+                    data-testid="current-table-example"
+                    className="space-y-3"
+                  >
+                    <h4
+                      id={`${row.previewId}-heading`}
+                      className={cn(type.supporting, 'text-muted-foreground')}
+                    >
+                      {row.previewLabel}
+                    </h4>
+                    <CurrentRebalancesTable rows={[row]} hrefFor={hrefFor} />
+                  </section>
                 ))}
               </div>
             ) : (
               <CurrentRebalancesTable rows={rows} hrefFor={hrefFor} />
             )
+          ) : resolvedState === 'loading' ? (
+            <div role="status" className="bg-card p-6">
+              <span className="sr-only">{t`Loading`}</span>
+              <Skeleton className="h-20 w-full" />
+            </div>
           ) : (
-            <p className="bg-card p-6 text-sm text-muted-foreground">
-              {resolvedState === 'loading'
-                ? t`Current rebalances are loading.`
-                : t`No current rebalances found.`}
+            <p className={cn(type.body, 'bg-card p-6 text-muted-foreground')}>
+              {t`No rebalances found`}
             </p>
           )}
         </div>
@@ -373,7 +481,6 @@ const HistoricalRebalancesDocumentation = () => {
   const actions = useCanvasActions({
     isDefault: specimen.isDefault,
     reset: specimen.reset,
-    href: `${specimen.href.split('#')[0]}#tables-historical-rebalances`,
     label: t`history table`,
   })
 
@@ -385,9 +492,13 @@ const HistoricalRebalancesDocumentation = () => {
     >
       <DocumentationSpecimenCanvas
         host={canvasHost}
+        mode="fluid"
+        backdrop="neutral"
+        padding="contained"
+        align="start"
         controls={{
           state: (
-            <ChoiceSelect
+            <ChoiceControl
               label={t`Historical rebalance state`}
               value={state}
               choices={HISTORY_SCHEMA.state.values.map((value) => ({
@@ -404,6 +515,7 @@ const HistoricalRebalancesDocumentation = () => {
           ),
           viewport: (
             <ViewportControl
+              owner="history"
               value={specimen.state.viewport}
               onChange={(value) =>
                 specimen.setValue(
@@ -418,7 +530,7 @@ const HistoricalRebalancesDocumentation = () => {
         fallbacks={specimen.fallbacks}
         provenance={t`Accepted historical rebalance owner. Metrics are illustrative frozen fixtures; provenance links remain record-owned.`}
       >
-        <div className={specimenWidth(specimen.state.viewport)}>
+        <div className={specimenWidth(specimen.state.viewport, 'history')}>
           <HistoricalRebalancesTable
             rows={rows}
             loading={state === 'loading'}
@@ -444,7 +556,6 @@ const PortfolioDocumentation = () => {
   const actions = useCanvasActions({
     isDefault: specimen.isDefault,
     reset: specimen.reset,
-    href: `${specimen.href.split('#')[0]}#tables-portfolio`,
     label: t`portfolio tables`,
   })
 
@@ -456,9 +567,13 @@ const PortfolioDocumentation = () => {
     >
       <DocumentationSpecimenCanvas
         host={canvasHost}
+        mode="fluid"
+        backdrop="neutral"
+        padding="contained"
+        align="start"
         controls={{
           family: (
-            <ChoiceSelect
+            <ChoiceControl
               label={t`Portfolio family`}
               value={family}
               choices={[
@@ -475,6 +590,7 @@ const PortfolioDocumentation = () => {
           ),
           viewport: (
             <ViewportControl
+              owner="portfolio"
               value={specimen.state.viewport}
               onChange={(value) =>
                 specimen.setValue(
@@ -491,7 +607,7 @@ const PortfolioDocumentation = () => {
       >
         <div
           className={cn(
-            specimenWidth(specimen.state.viewport),
+            specimenWidth(specimen.state.viewport, 'portfolio'),
             'grid gap-0.5 bg-secondary'
           )}
         >
@@ -537,7 +653,6 @@ const HoldingsDocumentation = () => {
   const actions = useCanvasActions({
     isDefault: specimen.isDefault,
     reset: specimen.reset,
-    href: `${specimen.href.split('#')[0]}#tables-holdings`,
     label: t`holdings table`,
   })
 
@@ -549,25 +664,14 @@ const HoldingsDocumentation = () => {
     >
       <DocumentationSpecimenCanvas
         host={canvasHost}
+        mode="fluid"
+        backdrop="neutral"
+        padding="contained"
+        align="start"
         controls={{
-          family: (
-            <ChoiceSelect
-              label={t`Holdings family`}
-              value={family}
-              choices={[
-                { value: 'exposure', label: t`Exposure` },
-                { value: 'collateral', label: t`Collateral` },
-              ]}
-              onChange={(value) =>
-                specimen.setValue(
-                  'family',
-                  value as (typeof HOLDINGS_SCHEMA.family.values)[number]
-                )
-              }
-            />
-          ),
           viewport: (
             <ViewportControl
+              owner="holdings"
               value={specimen.state.viewport}
               onChange={(value) =>
                 specimen.setValue(
@@ -582,7 +686,12 @@ const HoldingsDocumentation = () => {
         fallbacks={specimen.fallbacks}
         provenance={t`Accepted holdings table owner using the CMC20 snapshot. Bridge details stay product-owned and are not recreated here.`}
       >
-        <div className={cn(specimenWidth(specimen.state.viewport), 'bg-card')}>
+        <div
+          className={cn(
+            specimenWidth(specimen.state.viewport, 'holdings'),
+            'bg-card'
+          )}
+        >
           <Tabs
             value={family}
             onValueChange={(value) =>
@@ -618,7 +727,6 @@ const DiscoverDocumentation = () => {
   const actions = useCanvasActions({
     isDefault: specimen.isDefault,
     reset: specimen.reset,
-    href: `${specimen.href.split('#')[0]}#tables-discover`,
     label: t`Discover table`,
   })
 
@@ -630,9 +738,14 @@ const DiscoverDocumentation = () => {
     >
       <DocumentationSpecimenCanvas
         host={canvasHost}
+        mode="fluid"
+        backdrop="neutral"
+        padding="contained"
+        align="start"
         controls={{
           viewport: (
             <ViewportControl
+              owner="discover"
               value={specimen.state.viewport}
               onChange={(value) =>
                 specimen.setValue(
@@ -647,7 +760,7 @@ const DiscoverDocumentation = () => {
         fallbacks={specimen.fallbacks}
         provenance={t`Accepted Discover table owner with five active DTFs from a recorded snapshot.`}
       >
-        <div className={specimenWidth(specimen.state.viewport)}>
+        <div className={specimenWidth(specimen.state.viewport, 'discover')}>
           <DiscoverTable rows={previewDiscover('default')} loading={false} />
         </div>
       </DocumentationSpecimenCanvas>
@@ -664,7 +777,6 @@ const EarnDocumentation = () => {
   const actions = useCanvasActions({
     isDefault: specimen.isDefault,
     reset: specimen.reset,
-    href: `${specimen.href.split('#')[0]}#tables-earn`,
     label: t`earn table`,
   })
 
@@ -676,9 +788,13 @@ const EarnDocumentation = () => {
     >
       <DocumentationSpecimenCanvas
         host={canvasHost}
+        mode="fluid"
+        backdrop="neutral"
+        padding="contained"
+        align="start"
         controls={{
           family: (
-            <ChoiceSelect
+            <ChoiceControl
               label={t`Earn record family`}
               value={family}
               choices={[
@@ -699,6 +815,7 @@ const EarnDocumentation = () => {
           ),
           viewport: (
             <ViewportControl
+              owner="earn"
               value={specimen.state.viewport}
               onChange={(value) =>
                 specimen.setValue(
@@ -713,7 +830,12 @@ const EarnDocumentation = () => {
         fallbacks={specimen.fallbacks}
         provenance={t`Accepted Earn, DeFi Yield, and owned-position owners. Rates and wallet values are illustrative; no transactions are submitted.`}
       >
-        <div className={cn(specimenWidth(specimen.state.viewport), 'bg-card')}>
+        <div
+          className={cn(
+            specimenWidth(specimen.state.viewport, 'earn'),
+            'bg-card'
+          )}
+        >
           {family === 'defi' ? (
             <DefiTable state="default" />
           ) : family === 'owned-lock' || family === 'owned-stake' ? (
@@ -768,9 +890,16 @@ const GovernanceDocumentation = () => {
     >
       <DocumentationSpecimenCanvas
         host={canvasHost}
+        mode="fluid"
+        backdrop="neutral"
+        padding="contained"
+        align="start"
         provenance={t`Accepted governance proposal record owner with standard, optimistic, contested, actionable, and closed fixtures.`}
       >
-        <div className="grid min-w-[18rem] gap-8 p-0.5 xl:grid-cols-2">
+        <div
+          className="grid min-w-[18rem] gap-10 p-0.5"
+          data-testid="governance-record-groups"
+        >
           {groups.map(([title, records]) => (
             <section key={title} className="min-w-0 space-y-2">
               <h4 className="px-4 pt-4 text-sm font-medium">{title}</h4>

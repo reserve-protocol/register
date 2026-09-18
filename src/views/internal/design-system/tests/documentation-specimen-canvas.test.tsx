@@ -169,12 +169,60 @@ describe('documentation specimen query state', () => {
 const button = (label: string): ReactNode => <button>{label}</button>
 
 describe('DocumentationSpecimenCanvas', () => {
+  it('declares sizing, surface, padding, and alignment semantics', () => {
+    const { container } = render(
+      <DocumentationSpecimenCanvas
+        host={{
+          name: 'Transaction page',
+          backdropOwner: 'Documentation beige canvas',
+          insetOwner: 'Documentation canvas',
+        }}
+        mode="intrinsic"
+        backdrop="beige"
+        padding="contained"
+        align="center"
+      >
+        <div>Modal specimen</div>
+      </DocumentationSpecimenCanvas>
+    )
+
+    const host = container.querySelector('[data-host-context]')
+    const specimen = container.querySelector('[data-specimen-boundary]')
+    expect(host).toHaveAttribute('data-specimen-backdrop', 'beige')
+    expect(specimen).toHaveAttribute('data-specimen-mode', 'intrinsic')
+    expect(specimen).toHaveAttribute('data-specimen-padding', 'contained')
+    expect(specimen).toHaveAttribute('data-specimen-align', 'center')
+  })
+
+  it('exposes the backdrop as documentation framing rather than component ownership', () => {
+    const { container } = render(
+      <DocumentationSpecimenCanvas
+        host={{
+          name: 'Centered task preview',
+          backdropOwner: 'Documentation contrast canvas',
+          insetOwner: 'Documentation canvas',
+        }}
+        backdrop="beige"
+      >
+        <div>White task</div>
+      </DocumentationSpecimenCanvas>
+    )
+
+    const host = container.querySelector('[data-host-context]')
+    expect(host).toHaveAttribute('data-specimen-backdrop', 'beige')
+    expect(host).toHaveAttribute(
+      'data-backdrop-owner',
+      'Documentation contrast canvas'
+    )
+    expect(host).not.toHaveAttribute('data-background-owner')
+  })
+
   it('keeps documentation controls outside the named host and specimen', () => {
     const { container } = render(
       <DocumentationSpecimenCanvas
         host={{
           name: 'Portfolio overview',
-          backgroundOwner: 'Application shell',
+          backdropOwner: 'Documentation contrast canvas',
           insetOwner: 'Portfolio page',
         }}
         controls={{
@@ -209,9 +257,9 @@ describe('DocumentationSpecimenCanvas', () => {
     expect(host).not.toContainElement(controls)
     expect(specimen).not.toContainElement(controls)
     expect(host).toHaveAttribute('data-host-context', 'Portfolio overview')
-    expect(host).toHaveTextContent(
-      'Portfolio overview host · Background: Application shell · Inset: Portfolio page'
-    )
+    expect(host).toHaveTextContent('Context · Portfolio overview')
+    expect(host).not.toHaveTextContent('Background:')
+    expect(host).not.toHaveTextContent('Inset:')
     expect(screen.getByText('Canonical specimen')).toBeVisible()
   })
 
@@ -220,7 +268,7 @@ describe('DocumentationSpecimenCanvas', () => {
       <DocumentationSpecimenCanvas
         host={{
           name: 'Yield card',
-          backgroundOwner: 'Yield page',
+          backdropOwner: 'Documentation contrast canvas',
           insetOwner: 'Metric card',
         }}
         controls={{
@@ -259,7 +307,7 @@ describe('DocumentationSpecimenCanvas', () => {
       <DocumentationSpecimenCanvas
         host={{
           name: 'Table page',
-          backgroundOwner: 'Application shell',
+          backdropOwner: 'Documentation contrast canvas',
           insetOwner: 'Table region',
         }}
         fallbacks={[

@@ -8,6 +8,7 @@ import type { DocumentationSpecimenFallback } from './use-documentation-specimen
 
 const CONTROL_SLOTS = [
   'family',
+  'size',
   'operation',
   'step',
   'state',
@@ -21,18 +22,34 @@ const CONTROL_LABELS: Record<
   DocumentationControlSlot,
   ReturnType<typeof msg>
 > = {
-  family: msg`Family / variant`,
+  family: msg`Example`,
+  size: msg`Size`,
   operation: msg`Operation`,
-  step: msg`Step`,
+  step: msg`Phase`,
   state: msg`State`,
-  viewport: msg`Viewport`,
+  viewport: msg`Width`,
   identity: msg`Identity`,
 }
+
+export type DocumentationSpecimenMode =
+  | 'intrinsic'
+  | 'fluid'
+  | 'full-canvas'
+  | 'host-constrained'
+
+export type DocumentationSpecimenBackdrop =
+  | 'white'
+  | 'neutral'
+  | 'beige'
+  | 'transparent'
+
+export type DocumentationSpecimenPadding = 'contained' | 'compact' | 'none'
+export type DocumentationSpecimenAlignment = 'start' | 'center'
 
 export type DocumentationSpecimenCanvasProps = {
   host: {
     name: string
-    backgroundOwner: string
+    backdropOwner: string
     insetOwner: string
   }
   controls?: Partial<Record<DocumentationControlSlot, ReactNode>>
@@ -41,6 +58,11 @@ export type DocumentationSpecimenCanvasProps = {
   fallbacks?: readonly DocumentationSpecimenFallback[]
   provenance?: ReactNode
   children: ReactNode
+  mode?: DocumentationSpecimenMode
+  backdrop?: DocumentationSpecimenBackdrop
+  padding?: DocumentationSpecimenPadding
+  align?: DocumentationSpecimenAlignment
+  stableHeight?: 'compact' | 'standard' | 'tall'
   className?: string
   hostClassName?: string
   specimenClassName?: string
@@ -74,6 +96,11 @@ const DocumentationSpecimenCanvas = ({
   fallbacks = [],
   provenance,
   children,
+  mode = 'fluid',
+  backdrop = 'white',
+  padding = 'contained',
+  align = 'start',
+  stableHeight,
   className,
   hostClassName,
   specimenClassName,
@@ -109,7 +136,7 @@ const DocumentationSpecimenCanvas = ({
             </ControlSlot>
           ) : null}
           {link !== undefined ? (
-            <ControlSlot label={t`Link`} slot="link">
+            <ControlSlot label={t`More`} slot="link">
               {link}
             </ControlSlot>
           ) : null}
@@ -131,23 +158,43 @@ const DocumentationSpecimenCanvas = ({
       ) : null}
 
       <div
-        className={cn('min-w-0 overflow-x-auto bg-background', hostClassName)}
-        data-background-owner={host.backgroundOwner}
+        className={cn(
+          'min-w-0 overflow-x-auto',
+          backdrop === 'white' && 'bg-background',
+          backdrop === 'neutral' && 'bg-muted/20',
+          backdrop === 'beige' && 'bg-secondary',
+          backdrop === 'transparent' && 'bg-transparent',
+          hostClassName
+        )}
+        data-backdrop-owner={host.backdropOwner}
         data-host-context={host.name}
         data-inset-owner={host.insetOwner}
+        data-specimen-backdrop={backdrop}
       >
         <p className="py-2 text-xs leading-4 text-muted-foreground">
-          <Trans>
-            {host.name} host · Background: {host.backgroundOwner} · Inset:{' '}
-            {host.insetOwner}
-          </Trans>
+          <span className="font-medium text-foreground">
+            <Trans>Context</Trans>
+          </span>{' '}
+          · {host.name}
         </p>
         <div
           className={cn(
             'min-w-0 border border-dashed border-border',
+            padding === 'contained' && 'p-5 sm:p-8',
+            padding === 'compact' && 'p-4',
+            padding === 'none' && 'p-0',
+            align === 'center' &&
+              'flex items-center justify-center max-md:items-start',
+            stableHeight === 'compact' && 'min-h-64',
+            stableHeight === 'standard' && 'min-h-[32rem]',
+            stableHeight === 'tall' && 'min-h-[44rem]',
             specimenClassName
           )}
           data-specimen-boundary
+          data-specimen-mode={mode}
+          data-specimen-padding={padding}
+          data-specimen-align={align}
+          data-specimen-stable-height={stableHeight}
         >
           {children}
         </div>

@@ -1,31 +1,22 @@
 import { render, screen } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
-import { describe, expect, it, vi } from 'vitest'
+import { describe, expect, it } from 'vitest'
 
 import { WorkbenchOverviewPage } from '../documentation-pages'
 
-vi.mock('../documentation-transaction-workbench', () => ({
-  DocumentationTransactionWorkbench: () => (
-    <section id="transaction-workbench" data-testid="transaction-workbench" />
-  ),
-}))
-
 describe('Workbench documentation integration', () => {
-  it('places the paused transaction explorer before review indexes', () => {
+  it('keeps the transaction explorer on the Patterns page', () => {
     render(
       <MemoryRouter initialEntries={['/internal/design-system/workbench']}>
         <WorkbenchOverviewPage />
       </MemoryRouter>
     )
 
-    const workbench = screen.getByTestId('transaction-workbench')
-    const currentReview = document.getElementById('current-review')!
-    expect(workbench.compareDocumentPosition(currentReview)).toBe(
-      Node.DOCUMENT_POSITION_FOLLOWING
-    )
+    expect(screen.queryByTestId('transaction-workbench')).toBeNull()
+    expect(document.getElementById('current-review')).toBeVisible()
   })
 
-  it('routes transaction activity back to the bounded Workbench explorer', () => {
+  it('routes paused transaction activity to its Patterns section', () => {
     render(
       <MemoryRouter initialEntries={['/internal/design-system/workbench']}>
         <WorkbenchOverviewPage />
@@ -34,9 +25,6 @@ describe('Workbench documentation integration', () => {
 
     expect(
       screen.getByRole('link', { name: /Transaction systemPaused/i })
-    ).toHaveAttribute(
-      'href',
-      '/internal/design-system/workbench#transaction-workbench'
-    )
+    ).toHaveAttribute('href', '/internal/design-system/patterns#transactions')
   })
 })

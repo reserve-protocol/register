@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom'
 import { PageHeader } from './catalog-ui'
 import DocumentationPatternCharts from './documentation-pattern-charts'
 import NavigationPatternDocumentation from './documentation-pattern-navigation'
-import DocumentationToc from './documentation-toc'
+import { DocumentationTransactionWorkbench } from './documentation-transaction-workbench'
 import {
   PATTERN_PRESENTATIONS,
   hasAcceptedPatternAuthority,
@@ -15,6 +15,7 @@ import {
 } from './documentation-presentation'
 import { FormPatternSpecimen } from './documentation-pattern-specimens'
 import DocumentationPatternTables from './documentation-pattern-tables'
+import DocumentationSpecimenCanvas from './documentation-specimen-canvas'
 import { DocumentationStatus } from './documentation-status'
 
 const SPECIMENS: Partial<Record<PatternPresentation['id'], ReactNode>> = {
@@ -25,48 +26,24 @@ const RICH_SPECIMENS: Partial<Record<PatternPresentation['id'], ReactNode>> = {
   charts: <DocumentationPatternCharts />,
   tables: <DocumentationPatternTables />,
   navigation: <NavigationPatternDocumentation />,
+  transactions: <DocumentationTransactionWorkbench />,
 }
 
 const PatternsDocumentationOverview = () => {
   const { t } = useLingui()
 
   return (
-    <div
-      data-testid="patterns-overview"
-      className="grid gap-10 xl:grid-cols-[minmax(0,1fr)_11rem]"
-    >
-      <div className="min-w-0 space-y-10">
-        <PageHeader
-          eyebrow={t`Canonical compositions`}
-          title={t`Patterns`}
-          description={t`Scroll through the approved composition results. Workbench links open documentation summaries here; interactive review tooling remains in the integrated app until its preview origin is decided.`}
-        />
-        <nav
-          aria-label={t`Pattern families`}
-          className="flex flex-wrap gap-x-4 gap-y-2 border-b border-border pb-6"
-        >
-          {PATTERN_PRESENTATIONS.map((pattern) => (
-            <a
-              key={pattern.id}
-              href={`#${pattern.id}`}
-              className="text-sm font-medium text-muted-foreground underline-offset-4 hover:text-foreground hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-            >
-              {t(pattern.label)}
-            </a>
-          ))}
-        </nav>
-        <div data-testid="canonical-pattern-overview" className="space-y-16">
-          {PATTERN_PRESENTATIONS.map((pattern) => (
-            <PatternReference key={pattern.id} pattern={pattern} />
-          ))}
-        </div>
-      </div>
-      <DocumentationToc
-        items={PATTERN_PRESENTATIONS.map(({ id, label }) => ({
-          id,
-          label: t(label),
-        }))}
+    <div data-testid="patterns-overview" className="min-w-0 space-y-10">
+      <PageHeader
+        eyebrow={t`Canonical compositions`}
+        title={t`Patterns`}
+        description={t`Scroll through composition systems and their representative states. Accepted patterns lead; paused explorations are labeled in place.`}
       />
+      <div data-testid="canonical-pattern-overview" className="space-y-16">
+        {PATTERN_PRESENTATIONS.map((pattern) => (
+          <PatternReference key={pattern.id} pattern={pattern} />
+        ))}
+      </div>
     </div>
   )
 }
@@ -74,9 +51,10 @@ const PatternsDocumentationOverview = () => {
 const PatternReference = ({ pattern }: { pattern: PatternPresentation }) => {
   const { t } = useLingui()
   const hasAcceptedAuthority = hasAcceptedPatternAuthority(pattern.id)
-  const richSpecimen = hasAcceptedAuthority
-    ? RICH_SPECIMENS[pattern.id]
-    : undefined
+  const richSpecimen =
+    pattern.id === 'transactions' || hasAcceptedAuthority
+      ? RICH_SPECIMENS[pattern.id]
+      : undefined
   const specimen = hasAcceptedAuthority ? SPECIMENS[pattern.id] : undefined
   const componentId = pattern.sourceKey.replace('component:', '')
 
@@ -101,8 +79,7 @@ const PatternReference = ({ pattern }: { pattern: PatternPresentation }) => {
           </DocumentationStatus>
           {pattern.activityLabel && (
             <span className="text-xs text-muted-foreground">
-              <Trans>Activity</Trans> ·{' '}
-              <span>{t(pattern.activityLabel)}</span>
+              <Trans>Activity</Trans> · <span>{t(pattern.activityLabel)}</span>
             </span>
           )}
         </div>
@@ -178,23 +155,20 @@ const PatternCanvas = ({
       data-documentation-layer="canonical-pattern"
       className="py-5"
     >
-      <p className="text-xs font-medium text-muted-foreground">
-        {pattern.hostLabel ? t(pattern.hostLabel) : null}
-      </p>
-      <div
-        data-host-context="neutral-documentation"
-        className="mt-2 min-w-0 overflow-x-auto border-y border-border bg-muted/30 px-4 py-6 sm:px-6"
+      <DocumentationSpecimenCanvas
+        host={{
+          name: pattern.hostLabel ? t(pattern.hostLabel) : '',
+          backdropOwner: t`Documentation contrast canvas`,
+          insetOwner: t`Documentation specimen region`,
+        }}
+        mode="fluid"
+        backdrop="neutral"
+        padding="contained"
+        align="center"
+        provenance={pattern.provenance ? t(pattern.provenance) : undefined}
       >
-        <div
-          data-specimen-boundary={pattern.id}
-          className="flex min-h-28 min-w-0 items-center justify-center"
-        >
-          {children}
-        </div>
-      </div>
-      <p className="mt-2 text-xs leading-5 text-muted-foreground">
-        {pattern.provenance ? t(pattern.provenance) : null}
-      </p>
+        {children}
+      </DocumentationSpecimenCanvas>
     </div>
   )
 }

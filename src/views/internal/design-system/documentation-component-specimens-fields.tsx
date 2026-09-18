@@ -1,15 +1,11 @@
 import { Trans, useLingui } from '@lingui/react/macro'
 import { useState } from 'react'
 
-import { Button } from '@/components/button'
-import { Link as DesignSystemLink } from '@/components/design-system-v1/link'
-import {
-  SegmentedControl,
-  SegmentedControlItem,
-} from '@/components/design-system-v1/segmented-control'
 import {
   Field,
+  FieldDescription,
   FieldLabel,
+  FieldMessage,
   TextArea,
   TextInput,
 } from '@/components/design-system-v1/field'
@@ -22,46 +18,90 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/design-system-v1/select'
-import DocumentationSpecimenCanvas from './documentation-specimen-canvas'
+import ChainLogo from '@/components/icons/ChainLogo'
+import { ChainId } from '@/utils/chains'
 import {
   DocumentationSpecimenCell,
   DocumentationSpecimenGrid,
 } from './documentation-specimen-layout'
-import { useDocumentationSpecimenState } from './use-documentation-specimen-state'
-
-const SELECT_SCHEMA = {
-  family: {
-    defaultValue: 'default',
-    values: ['default', 'compact'],
-  },
-  state: {
-    defaultValue: 'ready',
-    values: ['ready', 'disabled'],
-  },
-} as const
 
 export const FieldComponentSpecimen = ({ itemId }: { itemId: string }) => {
   const { t } = useLingui()
-  const [query, setQuery] = useState('')
+  const [query, setQuery] = useState('governance')
   const [chains, setChains] = useState(['ethereum'])
-  const select = useDocumentationSpecimenState('select', SELECT_SCHEMA)
+  const [statuses, setStatuses] = useState<string[]>([])
+  const [requiredChains, setRequiredChains] = useState(['ethereum'])
 
   if (itemId === 'input') {
     return (
-      <DocumentationSpecimenGrid className="xl:grid-cols-2">
-        <DocumentationSpecimenCell label={<Trans>Default</Trans>}>
-          <Field className="w-full max-w-sm">
+      <DocumentationSpecimenGrid>
+        <DocumentationSpecimenCell label={<Trans>Empty with help</Trans>}>
+          <Field className="w-full max-w-md">
             <FieldLabel htmlFor="overview-text-input">
               <Trans>Token name</Trans>
             </FieldLabel>
             <TextInput
               id="overview-text-input"
               placeholder={t`Enter token name`}
+              aria-describedby="overview-text-input-help"
+            />
+            <FieldDescription id="overview-text-input-help">
+              <Trans>The public name shown across the app.</Trans>
+            </FieldDescription>
+          </Field>
+        </DocumentationSpecimenCell>
+        <DocumentationSpecimenCell label={<Trans>Filled</Trans>}>
+          <Field className="w-full max-w-md">
+            <FieldLabel htmlFor="overview-text-input-filled">
+              <Trans>Token symbol</Trans>
+            </FieldLabel>
+            <TextInput id="overview-text-input-filled" defaultValue="CMC20" />
+          </Field>
+        </DocumentationSpecimenCell>
+        <DocumentationSpecimenCell label={<Trans>Focus visible</Trans>}>
+          <Field className="w-full max-w-md">
+            <FieldLabel htmlFor="overview-text-input-focus">
+              <Trans>Token symbol</Trans>
+            </FieldLabel>
+            <TextInput
+              id="overview-text-input-focus"
+              data-documentation-state="focus-visible"
+              defaultValue="CMC20"
+              className="ring-2 ring-ring ring-offset-2 ring-offset-card"
+            />
+          </Field>
+        </DocumentationSpecimenCell>
+        <DocumentationSpecimenCell label={<Trans>Invalid</Trans>}>
+          <Field className="w-full max-w-md">
+            <FieldLabel htmlFor="overview-text-input-invalid">
+              <Trans>Wallet address</Trans>
+            </FieldLabel>
+            <TextInput
+              id="overview-text-input-invalid"
+              defaultValue="0x83a1"
+              invalid
+              aria-describedby="overview-text-input-error"
+              aria-errormessage="overview-text-input-error"
+            />
+            <FieldMessage id="overview-text-input-error">
+              <Trans>Enter a valid wallet address.</Trans>
+            </FieldMessage>
+          </Field>
+        </DocumentationSpecimenCell>
+        <DocumentationSpecimenCell label={<Trans>Read-only</Trans>}>
+          <Field className="w-full max-w-md">
+            <FieldLabel htmlFor="overview-text-input-readonly">
+              <Trans>Governor</Trans>
+            </FieldLabel>
+            <TextInput
+              id="overview-text-input-readonly"
+              value="0x6B17…1d0F"
+              readOnly
             />
           </Field>
         </DocumentationSpecimenCell>
         <DocumentationSpecimenCell label={<Trans>Unavailable</Trans>}>
-          <Field className="w-full max-w-sm">
+          <Field className="w-full max-w-md">
             <FieldLabel htmlFor="overview-text-input-disabled">
               <Trans>Token name</Trans>
             </FieldLabel>
@@ -80,20 +120,52 @@ export const FieldComponentSpecimen = ({ itemId }: { itemId: string }) => {
   if (itemId === 'textarea') {
     return (
       <DocumentationSpecimenGrid className="xl:grid-cols-2">
-        <DocumentationSpecimenCell label={<Trans>Default</Trans>}>
-          <Field className="w-full max-w-lg">
+        <DocumentationSpecimenCell label={<Trans>Multiline</Trans>}>
+          <Field className="w-full max-w-2xl">
             <FieldLabel htmlFor="overview-textarea">
               <Trans>Governance rationale</Trans>
             </FieldLabel>
             <TextArea
               id="overview-textarea"
-              rows={3}
-              placeholder={t`Explain the proposal`}
+              defaultValue={t`Explain why this proposal improves the DTF mandate and how delegates should evaluate it.`}
+              aria-describedby="overview-textarea-help"
+            />
+            <FieldDescription id="overview-textarea-help">
+              <Trans>Visible to delegates before they vote.</Trans>
+            </FieldDescription>
+          </Field>
+        </DocumentationSpecimenCell>
+        <DocumentationSpecimenCell label={<Trans>Invalid</Trans>}>
+          <Field className="w-full max-w-2xl">
+            <FieldLabel htmlFor="overview-textarea-invalid">
+              <Trans>Deployment summary</Trans>
+            </FieldLabel>
+            <TextArea
+              id="overview-textarea-invalid"
+              invalid
+              defaultValue={t`Missing required risk controls.`}
+              aria-describedby="overview-textarea-error"
+              aria-errormessage="overview-textarea-error"
+            />
+            <FieldMessage id="overview-textarea-error">
+              <Trans>Describe the intended risk controls.</Trans>
+            </FieldMessage>
+          </Field>
+        </DocumentationSpecimenCell>
+        <DocumentationSpecimenCell label={<Trans>Read-only</Trans>}>
+          <Field className="w-full max-w-2xl">
+            <FieldLabel htmlFor="overview-textarea-readonly">
+              <Trans>Submitted rationale</Trans>
+            </FieldLabel>
+            <TextArea
+              id="overview-textarea-readonly"
+              readOnly
+              value={t`This rationale is locked after submission.`}
             />
           </Field>
         </DocumentationSpecimenCell>
         <DocumentationSpecimenCell label={<Trans>Unavailable</Trans>}>
-          <Field className="w-full max-w-lg">
+          <Field className="w-full max-w-2xl">
             <FieldLabel htmlFor="overview-textarea-disabled">
               <Trans>Governance rationale</Trans>
             </FieldLabel>
@@ -111,128 +183,124 @@ export const FieldComponentSpecimen = ({ itemId }: { itemId: string }) => {
   }
 
   if (itemId === 'select') {
-    const href = `${select.href.split('#')[0]}#select`
-
     return (
-      <DocumentationSpecimenCanvas
-        host={{
-          name: t`Neutral form`,
-          backgroundOwner: t`Documentation neutral surface`,
-          insetOwner: t`Documentation specimen region`,
-        }}
-        controls={{
-          family: (
-            <SegmentedControl
-              aria-label={t`Select family`}
-              presentation="text-only"
-              size="compact"
-              textOnlyDensity="compact"
-              value={select.state.family}
-              onValueChange={(value) =>
-                select.setValue(
-                  'family',
-                  value as (typeof SELECT_SCHEMA.family.values)[number]
-                )
-              }
-            >
-              <SegmentedControlItem value="default">
-                <Trans>Default</Trans>
-              </SegmentedControlItem>
-              <SegmentedControlItem value="compact">
-                <Trans>Compact</Trans>
-              </SegmentedControlItem>
-            </SegmentedControl>
-          ),
-          state: (
-            <SegmentedControl
-              aria-label={t`Select state`}
-              presentation="text-only"
-              size="compact"
-              textOnlyDensity="compact"
-              value={select.state.state}
-              onValueChange={(value) =>
-                select.setValue(
-                  'state',
-                  value as (typeof SELECT_SCHEMA.state.values)[number]
-                )
-              }
-            >
-              <SegmentedControlItem value="ready">
-                <Trans>Ready</Trans>
-              </SegmentedControlItem>
-              <SegmentedControlItem value="disabled">
-                <Trans>Unavailable</Trans>
-              </SegmentedControlItem>
-            </SegmentedControl>
-          ),
-        }}
-        reset={
-          <Button
-            disabled={select.isDefault}
-            size="compact"
-            tone="quiet"
-            onClick={select.reset}
-          >
-            <Trans>Reset Select</Trans>
-          </Button>
-        }
-        link={
-          <DesignSystemLink href={href} treatment="standalone">
-            <Trans>Open this state</Trans>
-          </DesignSystemLink>
-        }
-        fallbacks={select.fallbacks}
-        provenance={
-          <Trans>
-            Accepted Select owner rendered directly in a provider-free
-            documentation specimen.
-          </Trans>
-        }
-      >
-        <DocumentationSpecimenGrid>
-          <DocumentationSpecimenCell
-            label={
-              select.state.family === 'compact' ? (
-                <Trans>Compact Select</Trans>
-              ) : (
-                <Trans>Default Select</Trans>
-              )
-            }
-          >
-            <Field className="w-full max-w-xs">
-              <FieldLabel htmlFor="overview-select">
-                <Trans>Chain</Trans>
-              </FieldLabel>
-              <Select defaultValue="ethereum">
-                <SelectTrigger
-                  id="overview-select"
-                  disabled={select.state.state === 'disabled'}
-                  size={select.state.family}
+      <DocumentationSpecimenGrid>
+        <DocumentationSpecimenCell label={<Trans>Placeholder</Trans>}>
+          <Field className="w-full max-w-sm">
+            <FieldLabel htmlFor="overview-select-placeholder">
+              <Trans>Chain</Trans>
+            </FieldLabel>
+            <Select>
+              <SelectTrigger id="overview-select-placeholder">
+                <SelectValue placeholder={t`Choose a chain`} />
+              </SelectTrigger>
+              <ChainSelectOptions />
+            </Select>
+          </Field>
+        </DocumentationSpecimenCell>
+        <DocumentationSpecimenCell label={<Trans>Selected</Trans>}>
+          <Field className="w-full max-w-sm">
+            <FieldLabel htmlFor="overview-select-selected">
+              <Trans>Created</Trans>
+            </FieldLabel>
+            <Select defaultValue="7d">
+              <SelectTrigger id="overview-select-selected">
+                <SelectValue />
+              </SelectTrigger>
+              <DateSelectOptions />
+            </Select>
+          </Field>
+        </DocumentationSpecimenCell>
+        <DocumentationSpecimenCell label={<Trans>Unavailable</Trans>}>
+          <Field className="w-full max-w-sm">
+            <FieldLabel htmlFor="overview-select-disabled">
+              <Trans>Created</Trans>
+            </FieldLabel>
+            <Select defaultValue="7d" disabled>
+              <SelectTrigger
+                id="overview-select-disabled"
+                aria-label={t`Unavailable range`}
+              >
+                <SelectValue />
+              </SelectTrigger>
+              <DateSelectOptions />
+            </Select>
+          </Field>
+        </DocumentationSpecimenCell>
+        <DocumentationSpecimenCell label={<Trans>Compact utility</Trans>}>
+          <div className="flex w-full max-w-sm items-center justify-between gap-4 text-sm text-muted-foreground">
+            <span>
+              <Trans>Rows per page</Trans>
+            </span>
+            <Select defaultValue="25">
+              <SelectTrigger
+                aria-label={t`Rows per page`}
+                size="compact"
+                className="w-[70px]"
+              >
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                {['10', '25', '50', '100'].map((value) => (
+                  <SelectItem key={value} value={value}>
+                    {value}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+        </DocumentationSpecimenCell>
+        <DocumentationSpecimenCell label={<Trans>Leading identity</Trans>}>
+          <Field className="w-full max-w-sm">
+            <FieldLabel htmlFor="overview-select-identity">
+              <Trans>Chain</Trans>
+            </FieldLabel>
+            <Select defaultValue="ethereum">
+              <SelectTrigger id="overview-select-identity">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem
+                  value="ethereum"
+                  leadingVisual={<ChainLogo chain={ChainId.Mainnet} />}
                 >
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="ethereum">Ethereum</SelectItem>
-                  <SelectItem value="base">Base</SelectItem>
-                  <SelectItem value="bsc">BNB Chain</SelectItem>
-                </SelectContent>
-              </Select>
-            </Field>
-          </DocumentationSpecimenCell>
-        </DocumentationSpecimenGrid>
-      </DocumentationSpecimenCanvas>
+                  Ethereum
+                </SelectItem>
+                <SelectItem
+                  value="base"
+                  leadingVisual={<ChainLogo chain={ChainId.Base} />}
+                >
+                  Base
+                </SelectItem>
+                <SelectItem
+                  value="bsc"
+                  leadingVisual={<ChainLogo chain={ChainId.BSC} />}
+                >
+                  BNB Chain
+                </SelectItem>
+              </SelectContent>
+            </Select>
+          </Field>
+        </DocumentationSpecimenCell>
+      </DocumentationSpecimenGrid>
     )
   }
 
   if (itemId === 'multi-select-filter') {
     return (
-      <DocumentationSpecimenGrid className="xl:grid-cols-2">
+      <DocumentationSpecimenGrid>
         <DocumentationSpecimenCell label={<Trans>Applied selection</Trans>}>
           <MultiSelectFilter
             accessibleLabel={t`Filter chains`}
             selected={chains}
             onApply={setChains}
-            triggerContent={<Trans>Chains</Trans>}
+            triggerContent={
+              chains.length === 0
+                ? t`All networks`
+                : chains.length === 1
+                  ? t`1 network`
+                  : t`${chains.length} networks`
+            }
             options={[
               { value: 'ethereum', label: 'Ethereum' },
               { value: 'base', label: 'Base' },
@@ -243,12 +311,32 @@ export const FieldComponentSpecimen = ({ itemId }: { itemId: string }) => {
         <DocumentationSpecimenCell label={<Trans>No selection</Trans>}>
           <MultiSelectFilter
             accessibleLabel={t`Filter statuses`}
-            selected={[]}
-            onApply={() => undefined}
-            triggerContent={<Trans>Statuses</Trans>}
+            selected={statuses}
+            onApply={setStatuses}
+            triggerContent={
+              statuses.length === 0
+                ? t`All statuses`
+                : statuses.length === 1
+                  ? t`1 status`
+                  : t`${statuses.length} statuses`
+            }
             options={[
               { value: 'active', label: t`Active` },
               { value: 'closed', label: t`Closed` },
+            ]}
+          />
+        </DocumentationSpecimenCell>
+        <DocumentationSpecimenCell label={<Trans>Required selection</Trans>}>
+          <MultiSelectFilter
+            accessibleLabel={t`Filter required networks`}
+            minSelected={1}
+            selected={requiredChains}
+            onApply={setRequiredChains}
+            triggerContent={t`Ethereum`}
+            options={[
+              { value: 'ethereum', label: 'Ethereum' },
+              { value: 'base', label: 'Base' },
+              { value: 'bsc', label: 'BNB Chain', disabled: true },
             ]}
           />
         </DocumentationSpecimenCell>
@@ -264,18 +352,45 @@ export const FieldComponentSpecimen = ({ itemId }: { itemId: string }) => {
             aria-label={t`Search tokens`}
             className="max-w-sm"
             placeholder={t`Search tokens`}
+          />
+        </DocumentationSpecimenCell>
+        <DocumentationSpecimenCell label={<Trans>Clearable query</Trans>}>
+          <SearchField
+            aria-label={t`Search proposals`}
+            className="max-w-sm"
             value={query}
             onChange={(event) => setQuery(event.target.value)}
             onClear={() => setQuery('')}
           />
         </DocumentationSpecimenCell>
-        <DocumentationSpecimenCell label={<Trans>With a query</Trans>}>
+        <DocumentationSpecimenCell label={<Trans>Focus visible</Trans>}>
           <SearchField
-            aria-label={t`Search proposals`}
+            aria-label={t`Focused search`}
+            className="max-w-sm ring-2 ring-ring ring-offset-2 ring-offset-card"
+            data-documentation-state="focus-visible"
+            value="reserve"
+            readOnly
+          />
+        </DocumentationSpecimenCell>
+        <DocumentationSpecimenCell label={<Trans>No results</Trans>}>
+          <div className="w-full max-w-sm space-y-2">
+            <SearchField
+              aria-label={t`Search with no results`}
+              value="reserve btc"
+              readOnly
+            />
+            <p role="status" className="text-sm text-muted-foreground">
+              <Trans>No matching tokens</Trans>
+            </p>
+          </div>
+        </DocumentationSpecimenCell>
+        <DocumentationSpecimenCell label={<Trans>Loading</Trans>}>
+          <SearchField
+            aria-label={t`Search loading`}
             className="max-w-sm"
-            value="governance"
+            value="coinmarketcap"
+            loading
             onChange={() => undefined}
-            onClear={() => undefined}
           />
         </DocumentationSpecimenCell>
         <DocumentationSpecimenCell label={<Trans>Unavailable</Trans>}>
@@ -293,3 +408,28 @@ export const FieldComponentSpecimen = ({ itemId }: { itemId: string }) => {
 
   return null
 }
+
+const ChainSelectOptions = () => (
+  <SelectContent>
+    <SelectItem value="ethereum">Ethereum</SelectItem>
+    <SelectItem value="base">Base</SelectItem>
+    <SelectItem value="bsc">BNB Chain</SelectItem>
+  </SelectContent>
+)
+
+const DateSelectOptions = () => (
+  <SelectContent>
+    <SelectItem value="all">
+      <Trans>All time</Trans>
+    </SelectItem>
+    <SelectItem value="24h">
+      <Trans>Last 24 hours</Trans>
+    </SelectItem>
+    <SelectItem value="7d">
+      <Trans>Last 7 days</Trans>
+    </SelectItem>
+    <SelectItem value="30d">
+      <Trans>Last 30 days</Trans>
+    </SelectItem>
+  </SelectContent>
+)

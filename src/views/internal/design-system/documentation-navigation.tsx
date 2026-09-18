@@ -1,5 +1,4 @@
-import { ChevronDown } from 'lucide-react'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef } from 'react'
 import { useLingui } from '@lingui/react/macro'
 import { Link, useLocation } from 'react-router-dom'
 
@@ -29,15 +28,14 @@ const containsPathname = (
 
 const DocumentationNavigation = ({
   onNavigate,
+  touchTargets = false,
 }: {
   onNavigate?: () => void
+  touchTargets?: boolean
 }) => {
   const { t } = useLingui()
   const { pathname } = useLocation()
   const { activeSectionId, activeSectionPath } = useDocumentationSection()
-  const [expandedItems, setExpandedItems] = useState<
-    Readonly<Record<string, boolean>>
-  >({})
   const navigationRef = useRef<HTMLDivElement>(null)
   const activeLinkRef = useRef<HTMLAnchorElement>(null)
   const isPointerInside = useRef(false)
@@ -60,14 +58,6 @@ const DocumentationNavigation = ({
           containsPathname(group, pathname)
   }
 
-  const activeGroup = navigationGroups.find(isGroupActive)
-  const activeGroupPathname = activeGroup
-    ? getRouteParts(activeGroup.route).pathname
-    : undefined
-
-  const toggleExpanded = (key: string, isExpanded: boolean) =>
-    setExpandedItems((current) => ({ ...current, [key]: !isExpanded }))
-
   useEffect(() => {
     const navigation = navigationRef.current
     const activeLink = activeLinkRef.current
@@ -82,138 +72,108 @@ const DocumentationNavigation = ({
     activeLink.scrollIntoView({ block: 'nearest' })
   }, [activeSectionId, pathname])
 
-  return (
-    <nav
-      aria-label={t`Design system documentation`}
-      className="flex h-full min-h-0 flex-col gap-3"
-    >
-      <div className="shrink-0 space-y-1">
-        {navigationGroups.map((group) => {
-          const isActive = isGroupActive(group)
-          return (
+  const renderItems = (
+    items: readonly DocumentationNavigationItem[],
+    groupActive: boolean,
+    depth: 1 | 2
+  ) => (
+    <div className={cn(depth === 1 ? 'space-y-px' : 'space-y-0')}>
+      {items.map((item) => {
+        const isCurrent = isItemCurrent(item)
+        const isActive =
+          groupActive && (isCurrent || activeSectionPath.includes(item.id))
+
+        return (
+          <div key={item.id}>
             <Link
-              key={group.id}
-              data-testid={`design-system-nav-${group.id}`}
-              aria-current={
-                isActive && !activeSectionId ? 'location' : undefined
+              ref={isCurrent ? activeLinkRef : undefined}
+              aria-current={isCurrent ? 'location' : undefined}
+              data-active={isActive ? 'true' : undefined}
+              data-testid={
+                item.id === 'contexts'
+                  ? 'design-system-nav-screens'
+                  : item.id === 'status'
+                    ? 'design-system-nav-status'
+                    : undefined
               }
-              to={group.route}
+              to={item.route}
               onClick={onNavigate}
               className={cn(
-                'flex min-h-11 items-center px-2 text-sm font-medium text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring md:min-h-8',
-                isActive ? 'bg-muted text-primary' : 'hover:bg-muted'
+                'relative flex min-w-0 items-center gap-2 py-0.5 leading-5 text-muted-foreground before:absolute before:-inset-y-0.5 before:inset-x-0 hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring',
+                depth === 1
+                  ? 'pl-3 pr-1 text-xs font-medium'
+                  : 'pl-6 pr-1 text-xs',
+                touchTargets && 'min-h-11',
+                isActive && 'font-medium text-foreground',
+                isCurrent && 'font-medium text-primary'
               )}
             >
-              {translateDocumentationText(group.label, t)}
+              <span className="min-w-0 flex-1 truncate">
+                {translateDocumentationText(item.label, t)}
+              </span>
+              {item.activityLabel ? (
+                <span className="shrink-0 text-[10px] font-medium uppercase tracking-wide text-muted-foreground">
+                  {translateDocumentationText(item.activityLabel, t)}
+                </span>
+              ) : null}
+              {item.legacy ? (
+                <span className="shrink-0 text-[10px] font-medium uppercase tracking-wide text-muted-foreground">
+                  {t`Legacy`}
+                </span>
+              ) : null}
             </Link>
+            {item.items?.length
+              ? renderItems(item.items, groupActive, 2)
+              : null}
+          </div>
+        )
+      })}
+    </div>
+  )
+
+  return (
+    <nav aria-label={t`Design system documentation`} className="h-full min-h-0">
+      <div
+        ref={navigationRef}
+        data-testid="documentation-navigation-scroll"
+        className="h-full min-h-0 space-y-2.5 overflow-y-auto overscroll-contain pr-1"
+        onPointerEnter={() => {
+          isPointerInside.current = true
+        }}
+        onPointerLeave={() => {
+          isPointerInside.current = false
+          if (!navigationRef.current?.contains(document.activeElement))
+            activeLinkRef.current?.scrollIntoView({ block: 'nearest' })
+        }}
+      >
+        {navigationGroups.map((group) => {
+          const isActive = isGroupActive(group)
+          const isCurrent = isItemCurrent(group)
+          return (
+            <div key={group.id}>
+              <Link
+                ref={isCurrent ? activeLinkRef : undefined}
+                data-testid={`design-system-nav-${group.id}`}
+                data-active={isActive ? 'true' : undefined}
+                aria-current={isCurrent ? 'page' : undefined}
+                to={group.route}
+                onClick={onNavigate}
+                className={cn(
+                  'relative flex items-center py-1 text-sm font-medium text-foreground before:absolute before:-inset-y-0.5 before:inset-x-0 hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring',
+                  touchTargets && 'min-h-11',
+                  isActive && 'font-semibold',
+                  isCurrent && 'text-primary'
+                )}
+              >
+                {translateDocumentationText(group.label, t)}
+              </Link>
+              {group.items?.length
+                ? renderItems(group.items, isActive, 1)
+                : null}
+            </div>
           )
         })}
       </div>
-
-      {activeGroup?.items && activeGroupPathname && (
-        <div
-          ref={navigationRef}
-          data-testid="documentation-current-subnavigation"
-          className="min-h-0 flex-1 overflow-y-auto border-t border-border pt-3"
-          onPointerEnter={() => {
-            isPointerInside.current = true
-          }}
-          onPointerLeave={() => {
-            isPointerInside.current = false
-            if (!navigationRef.current?.contains(document.activeElement))
-              activeLinkRef.current?.scrollIntoView({ block: 'nearest' })
-          }}
-        >
-          <div className="border-l border-border pl-2">
-            {activeGroup.items.map((item) => {
-              const isCurrent = isItemCurrent(item)
-              const hasChildren = Boolean(item.items?.length)
-              const expandedItemKey = `${activeGroupPathname}:${item.id}`
-              const isExpanded =
-                hasChildren &&
-                (expandedItems[expandedItemKey] ??
-                  (activeGroupPathname === pathname &&
-                    activeSectionPath.includes(item.id)))
-
-              return (
-                <div key={item.id}>
-                  <div className="flex items-center">
-                    <Link
-                      ref={isCurrent ? activeLinkRef : undefined}
-                      aria-current={isCurrent ? 'location' : undefined}
-                      data-testid={
-                        item.id === 'contexts'
-                          ? 'design-system-nav-screens'
-                          : item.id === 'status'
-                            ? 'design-system-nav-status'
-                            : undefined
-                      }
-                      to={item.route}
-                      onClick={onNavigate}
-                      className={cn(
-                        'flex min-h-11 min-w-0 flex-1 items-center gap-2 px-2 text-xs text-muted-foreground hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring md:min-h-8',
-                        isCurrent && 'text-foreground'
-                      )}
-                    >
-                      <span className="truncate">
-                        {translateDocumentationText(item.label, t)}
-                      </span>
-                      {item.legacy && (
-                        <span className="ml-auto shrink-0 text-xs font-medium uppercase tracking-wide text-muted-foreground">
-                          {t`Legacy lab`}
-                        </span>
-                      )}
-                    </Link>
-                    {hasChildren && (
-                      <button
-                        type="button"
-                        data-testid={`documentation-nav-group-${item.id}-toggle`}
-                        aria-label={translateDocumentationText(item.label, t)}
-                        aria-expanded={isExpanded}
-                        onClick={() =>
-                          toggleExpanded(expandedItemKey, isExpanded)
-                        }
-                        className="flex size-11 shrink-0 items-center justify-center text-muted-foreground hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring md:size-8"
-                      >
-                        <ChevronDown
-                          className={cn(
-                            'size-4 transition-transform',
-                            isExpanded && 'rotate-180'
-                          )}
-                        />
-                      </button>
-                    )}
-                  </div>
-                  {isExpanded && item.items && (
-                    <div className="ml-2 border-l border-border pl-2">
-                      {item.items.map((child) => {
-                        const isChildCurrent = isItemCurrent(child)
-                        return (
-                          <Link
-                            ref={isChildCurrent ? activeLinkRef : undefined}
-                            key={child.id}
-                            aria-current={
-                              isChildCurrent ? 'location' : undefined
-                            }
-                            to={child.route}
-                            onClick={onNavigate}
-                            className={cn(
-                              'flex min-h-11 items-center px-2 text-xs text-muted-foreground hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring md:min-h-8',
-                              isChildCurrent && 'bg-muted/60 text-foreground'
-                            )}
-                          >
-                            {translateDocumentationText(child.label, t)}
-                          </Link>
-                        )
-                      })}
-                    </div>
-                  )}
-                </div>
-              )
-            })}
-          </div>
-        </div>
-      )}
     </nav>
   )
 }

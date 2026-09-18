@@ -196,6 +196,16 @@ describe('documentation presentation', () => {
     }
   })
 
+  it('describes Patterns without promising retired Legacy lab routes', () => {
+    const patterns = searchDocumentation('Patterns').find(
+      ({ sourceKey }) => sourceKey === 'destination:patterns'
+    )
+
+    expect(patterns?.description).toBe(
+      'Composition guidance and family-level system examples'
+    )
+  })
+
   it('projects component groups with directly navigable component anchors', () => {
     const components = DOCUMENTATION_NAVIGATION.find(
       ({ id }) => id === 'components'
@@ -253,51 +263,45 @@ describe('documentation presentation', () => {
     ).toEqual(['navigation-global', 'navigation-product', 'navigation-anatomy'])
   })
 
-  it('routes the paused transaction family explorer through Workbench anchors', () => {
-    const workbench = DOCUMENTATION_NAVIGATION.find(
-      ({ id }) => id === 'workbench'
+  it('routes the paused transaction family explorer through Patterns anchors', () => {
+    const patterns = DOCUMENTATION_NAVIGATION.find(
+      ({ id }) => id === 'patterns'
     ) as DocumentationNavigationGroup | undefined
-    const transactionWorkbench = workbench?.items?.find(
-      ({ id }) => id === 'transaction-workbench'
+    const transactions = patterns?.items?.find(
+      ({ id }) => id === 'transactions'
     )
 
-    expect(workbench?.items?.slice(0, 2).map(({ id }) => id)).toEqual([
-      'transaction-workbench',
-      'current-review',
-    ])
-    expect(transactionWorkbench).toMatchObject({
-      route: '/internal/design-system/workbench#transaction-workbench',
+    expect(transactions).toMatchObject({
+      route: '/internal/design-system/patterns#transactions',
     })
-    expect(
-      transactionWorkbench?.items?.map(({ id, route }) => [id, route])
-    ).toEqual([
+    expect(transactions?.items?.map(({ id, route }) => [id, route])).toEqual([
       [
         'transactions-zapper',
-        '/internal/design-system/workbench#transactions-zapper',
+        '/internal/design-system/patterns#transactions-zapper',
       ],
       [
         'transactions-automated',
-        '/internal/design-system/workbench#transactions-automated',
+        '/internal/design-system/patterns#transactions-automated',
       ],
       [
         'transactions-stake',
-        '/internal/design-system/workbench#transactions-stake',
+        '/internal/design-system/patterns#transactions-stake',
       ],
       [
         'transactions-vote-lock',
-        '/internal/design-system/workbench#transactions-vote-lock',
+        '/internal/design-system/patterns#transactions-vote-lock',
       ],
       [
         'transactions-manual',
-        '/internal/design-system/workbench#transactions-manual',
+        '/internal/design-system/patterns#transactions-manual',
       ],
     ])
     expect(
       PATTERN_PRESENTATIONS.find(({ id }) => id === 'transactions')
         ?.workbenchRoute
-    ).toBe('/internal/design-system/workbench#transaction-workbench')
+    ).toBe('/internal/design-system/workbench#activity')
     expect(getWorkbenchActivity('component:transaction-action')?.route).toBe(
-      '/internal/design-system/workbench#transaction-workbench'
+      '/internal/design-system/patterns#transactions'
     )
   })
 
@@ -366,7 +370,7 @@ describe('documentation presentation', () => {
     expect(getComponentPresentation(transaction).design).toBe('exploring')
     expect(getWorkbenchActivity('component:transaction-action')).toMatchObject({
       sourceKey: 'component:transaction-action',
-      route: '/internal/design-system/workbench#transaction-workbench',
+      route: '/internal/design-system/patterns#transactions',
       activity: 'paused',
     })
     expect(getWorkbenchActivity('component:drawer')).toBeUndefined()

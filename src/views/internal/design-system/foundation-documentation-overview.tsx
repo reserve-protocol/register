@@ -20,22 +20,6 @@ const FoundationDocumentationOverview = () => {
         description={t`The current visual system in one continuous reference. Start with the result; open supporting detail only when you need it.`}
       />
 
-      <nav
-        aria-label={t`Foundation sections`}
-        className="-mx-1 flex gap-1 overflow-x-auto border-y border-border px-1 py-2"
-      >
-        {FOUNDATION_ITEMS.map((item) => (
-          <a
-            key={item.id}
-            href={`#${item.id}`}
-            data-testid={`foundation-anchor-${item.id}`}
-            className="flex min-h-11 shrink-0 items-center px-3 text-sm font-medium text-muted-foreground hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring"
-          >
-            {t(getFoundationNameMessage(item.id))}
-          </a>
-        ))}
-      </nav>
-
       <div>
         {FOUNDATION_ITEMS.map((item, index) => (
           <FoundationReferenceSection

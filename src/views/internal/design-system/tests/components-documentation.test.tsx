@@ -15,13 +15,6 @@ const renderOverview = () =>
     </MemoryRouter>
   )
 
-const renderOverviewAt = (entry: string) =>
-  render(
-    <MemoryRouter initialEntries={[entry]}>
-      <CanonicalComponentsOverview />
-    </MemoryRouter>
-  )
-
 describe('component documentation overview', () => {
   it('mounts a hard-coded specimen only while catalog authority remains accepted', () => {
     expect(canMountDocumentationComponentSpecimen('button', 'accepted')).toBe(
@@ -55,10 +48,6 @@ describe('component documentation overview', () => {
 
     for (const group of COMPONENT_GROUPS) {
       expect(document.getElementById(group.id)).toBeVisible()
-      expect(screen.getByRole('link', { name: group.name })).toHaveAttribute(
-        'href',
-        `#${group.id}`
-      )
     }
   })
 
@@ -78,7 +67,7 @@ describe('component documentation overview', () => {
     expect(screen.getAllByTestId('canonical-button')[0]).toBeVisible()
     expect(screen.getAllByTestId('canonical-text-input')[0]).toBeVisible()
     expect(screen.getAllByTestId('canonical-checkbox')[0]).toBeVisible()
-    expect(screen.getByTestId('canonical-dialog-surface')).toBeVisible()
+    expect(screen.getAllByTestId('canonical-dialog-surface')).toHaveLength(2)
     expect(screen.getAllByTestId('canonical-inline-message')[0]).toBeVisible()
     expect(screen.getAllByTestId('canonical-metric')[0]).toBeVisible()
     const copyableValue = document.getElementById('copy-value')!
@@ -120,12 +109,167 @@ describe('component documentation overview', () => {
     }
 
     const button = document.getElementById('button')!
-    expect(button.querySelectorAll('[data-tone]')).toHaveLength(8)
+    expect(button).toHaveTextContent('Variant')
+    expect(button).toHaveTextContent('Micro')
+    expect(button).toHaveTextContent('Compact')
+    expect(button).toHaveTextContent('Default')
+    expect(button).toHaveTextContent('Primary')
+    expect(button).toHaveTextContent('Secondary')
+    expect(button).toHaveTextContent('Quiet')
+    expect(button).toHaveTextContent('Destructive')
+    expect(button.querySelectorAll('[data-tone="primary"]')).toHaveLength(5)
+    expect(button.querySelectorAll('[data-tone="secondary"]')).toHaveLength(4)
+    expect(button.querySelectorAll('[data-tone="quiet"]')).toHaveLength(3)
+    expect(button.querySelectorAll('[data-tone="destructive"]')).toHaveLength(3)
     expect(button.querySelector('[data-size="micro"]')).not.toBeNull()
     expect(button.querySelector('[data-size="compact"]')).not.toBeNull()
     expect(button.querySelector('[data-size="default"]')).not.toBeNull()
     expect(button.querySelector('[aria-busy="true"]')).not.toBeNull()
     expect(button.querySelector('button:disabled')).not.toBeNull()
+
+    const switchSection = document.getElementById('switch')!
+    expect(switchSection).toHaveTextContent('Off')
+    expect(switchSection).toHaveTextContent('On')
+    expect(switchSection).toHaveTextContent('Unavailable')
+  })
+
+  it('keeps Icon button scoped to the accepted compact named-action role', () => {
+    renderOverview()
+
+    const iconButton = document.getElementById('icon-button')!
+    const specimens = iconButton.querySelectorAll(
+      '[data-testid="canonical-icon-button"]'
+    )
+
+    expect(specimens).toHaveLength(6)
+    expect(
+      Array.from(specimens).every(
+        (specimen) => specimen.getAttribute('data-size') === 'compact'
+      )
+    ).toBe(true)
+    expect(iconButton.querySelector('[data-size="micro"]')).toBeNull()
+    expect(iconButton.querySelector('[data-size="default"]')).toBeNull()
+  })
+
+  it('shows every accepted Segmented control presentation and size', () => {
+    renderOverview()
+
+    const segmentedControl = document.getElementById('segmented-control')!
+    const specimens = Array.from(
+      segmentedControl.querySelectorAll('[data-presentation][data-size]')
+    )
+
+    expect(
+      specimens.map(
+        (specimen) =>
+          `${specimen.getAttribute('data-presentation')}:${specimen.getAttribute('data-size')}`
+      )
+    ).toEqual([
+      'text-only:compact',
+      'text-only:default',
+      'contained:compact',
+      'contained:default',
+    ])
+  })
+
+  it('keeps matrix dividers across every cell until the final row', () => {
+    renderOverview()
+
+    const rows = document.getElementById('button')!.querySelectorAll('tbody tr')
+    const firstRowCells = rows[0].querySelectorAll('th, td')
+    const finalRowCells = rows[rows.length - 1].querySelectorAll('th, td')
+
+    expect(
+      Array.from(firstRowCells).every((cell) =>
+        cell.classList.contains('border-b')
+      )
+    ).toBe(true)
+    expect(
+      Array.from(finalRowCells).every(
+        (cell) => !cell.classList.contains('border-b')
+      )
+    ).toBe(true)
+  })
+
+  it('shows the accepted Tabs sizes, layout settings, panels, and important states', () => {
+    renderOverview()
+
+    const tabs = document.getElementById('tabs')!
+
+    expect(tabs.querySelector('[data-size="compact"]')).not.toBeNull()
+    expect(tabs.querySelector('[data-size="default"]')).not.toBeNull()
+    expect(tabs.querySelector('[data-width="intrinsic"]')).not.toBeNull()
+    expect(tabs.querySelector('[data-width="full"]')).not.toBeNull()
+    expect(
+      tabs.querySelector('[role="tab"][aria-selected="true"]')
+    ).not.toBeNull()
+    expect(tabs.querySelector('[role="tab"]:disabled')).not.toBeNull()
+    expect(tabs.querySelector('[role="tabpanel"]')).not.toBeNull()
+  })
+
+  it('makes Multi-select applied outcomes visibly distinct while preserving staged controls', () => {
+    renderOverview()
+
+    const multiSelect = document.getElementById('multi-select-filter')!
+
+    expect(multiSelect).toHaveTextContent('Applied selection')
+    expect(multiSelect).toHaveTextContent('No selection')
+    expect(
+      within(multiSelect).getByRole('button', { name: 'Filter chains' })
+    ).toHaveTextContent('1 network')
+    expect(
+      within(multiSelect).getByRole('button', { name: 'Filter statuses' })
+    ).toHaveTextContent('All statuses')
+  })
+
+  it('shows the exploring Eligibility composition without claiming the rejected generic Dialog', () => {
+    renderOverview()
+
+    const dialog = document.getElementById('dialog')!
+    const surfaces = within(dialog).getAllByTestId('canonical-dialog-surface')
+
+    expect(surfaces).toHaveLength(2)
+    expect(dialog).toHaveTextContent('Eligibility dialog')
+    expect(dialog).toHaveTextContent('Exploring')
+    expect(dialog).toHaveTextContent('Collapsed jurisdictions')
+    expect(dialog).toHaveTextContent('Expanded jurisdictions')
+    expect(dialog).toHaveTextContent('Verify your eligibility')
+    expect(dialog).not.toHaveTextContent('Proposal Simulation')
+    expect(within(dialog).queryByRole('button', { name: 'Simulate' })).toBeNull()
+  })
+
+  it('uses the accepted Multi-select Filter owner for the Popover result', () => {
+    renderOverview()
+
+    const popover = document.getElementById('popover')!
+
+    expect(
+      within(popover).getByRole('button', { name: 'Filter networks' })
+    ).toBeVisible()
+    expect(popover).not.toHaveTextContent(
+      'Filter controls belong to the composition.'
+    )
+  })
+
+  it('uses provider-free identity owners for direct, badged, stacked, fallback, and pressure states', () => {
+    renderOverview()
+
+    const identity = document.getElementById('entity-identity')!
+
+    expect(
+      identity.querySelector('[data-documentation-provider-safe-mark]')
+    ).not.toBeNull()
+    expect(
+      identity.querySelector('[data-testid="canonical-chain-logo-stack"]')
+    ).not.toBeNull()
+    expect(
+      within(identity).getByRole('img', { name: 'Unlisted collateral' })
+    ).toHaveAttribute('src', '/svgs/defaultLogo.svg')
+    expect(
+      within(identity).getByText(
+        'CoinMarketCap 20 Diversified Digital Asset Index DTF'
+      )
+    ).toHaveClass('truncate')
   })
 
   it('distinguishes deliberately not-planned work from work that has not started', () => {
@@ -139,39 +283,34 @@ describe('component documentation overview', () => {
     )
   })
 
-  it('pilots query-backed canvas controls on Select without putting controls inside the specimen', () => {
-    renderOverviewAt(
-      '/internal/design-system/components?select.family=compact&select.state=disabled#select'
-    )
+  it('shows the ordinary Select system directly without a teaser canvas', () => {
+    renderOverview()
 
     const section = document.getElementById('select')!
-    const documentation = section.querySelector<HTMLElement>(
-      '[data-documentation-layer]'
+    const output = section.querySelector<HTMLElement>(
+      '[data-testid="component-overview-output"]'
     )!
-    const controls = section.querySelector<HTMLElement>(
-      '[data-specimen-control-bar]'
-    )!
-    const host = section.querySelector<HTMLElement>('[data-host-context]')!
-    const specimen = section.querySelector<HTMLElement>(
-      '[data-specimen-boundary]'
-    )!
-    const trigger = specimen.querySelector<HTMLElement>('[data-size="compact"]')
 
-    expect(documentation).toContainElement(controls)
-    expect(documentation).toContainElement(host)
-    expect(host).toContainElement(specimen)
-    expect(host).not.toContainElement(controls)
-    expect(specimen).not.toContainElement(controls)
-    expect(
-      section.querySelectorAll('[data-specimen-control-slot]')
-    ).toHaveLength(4)
-    expect(trigger).toBeDisabled()
+    expect(output).toHaveClass('border', 'bg-muted/20')
+    expect(section.querySelector('[data-documentation-layer]')).toBeNull()
+    expect(section).toHaveTextContent('Placeholder')
+    expect(section).toHaveTextContent('Selected')
+    expect(section).toHaveTextContent('Unavailable')
+    expect(section).toHaveTextContent('Compact utility')
+    expect(section).toHaveTextContent('Leading identity')
+    expect(section.querySelector('[data-size="compact"]')).not.toBeNull()
+    expect(section.querySelector('[data-size="default"]')).not.toBeNull()
+    expect(section.querySelector('[data-disabled]')).not.toBeNull()
+    expect(within(section).queryByText('Open this state')).toBeNull()
   })
 
   it('uses the same three-layer canvas without unnecessary controls for Metric', () => {
     renderOverview()
 
     const section = document.getElementById('metric')!
+    const output = section.querySelector<HTMLElement>(
+      '[data-testid="component-overview-output"]'
+    )!
     const documentation = section.querySelector<HTMLElement>(
       '[data-documentation-layer]'
     )!
@@ -181,6 +320,9 @@ describe('component documentation overview', () => {
     )!
 
     expect(documentation).toContainElement(host)
+    expect(output).not.toHaveClass('border', 'bg-muted/20', 'p-4')
+    expect(specimen).toHaveAttribute('data-specimen-mode', 'fluid')
+    expect(specimen).toHaveAttribute('data-specimen-padding', 'contained')
     expect(host).toContainElement(specimen)
     expect(section.querySelector('[data-specimen-control-bar]')).toBeNull()
     expect(
@@ -197,7 +339,7 @@ describe('component documentation overview', () => {
     expect(screen.queryByTestId('transaction-truth-spectrum')).toBeNull()
   })
 
-  it('places the primary result before engineering facts and detail navigation', () => {
+  it('places the primary result before detail navigation and omits repeated engineering facts', () => {
     renderOverview()
 
     for (const componentId of ['button', 'icon-button', 'button-group']) {
@@ -205,22 +347,15 @@ describe('component documentation overview', () => {
       const result = section.querySelector(
         '[data-testid="component-overview-output"]'
       )
-      const code = screen
-        .getAllByText('Code')
-        .find((node) => section.contains(node))
-      const details = screen
-        .getAllByRole('link', { name: 'Open details' })
-        .find((node) => section.contains(node))
+      const details = within(section).getByRole('link', {
+        name: 'Open details',
+      })
 
       expect(result).not.toBeNull()
-      expect(code).toBeDefined()
-      expect(details).toBeDefined()
+      expect(within(section).queryByText('Code')).toBeNull()
+      expect(within(section).queryByText('Production')).toBeNull()
       expect(
-        result!.compareDocumentPosition(code!) &
-          Node.DOCUMENT_POSITION_FOLLOWING
-      ).toBeTruthy()
-      expect(
-        result!.compareDocumentPosition(details!) &
+        result!.compareDocumentPosition(details) &
           Node.DOCUMENT_POSITION_FOLLOWING
       ).toBeTruthy()
     }
@@ -235,8 +370,7 @@ describe('component documentation overview', () => {
       'global-navigation': '/internal/design-system/patterns#navigation-global',
       'product-navigation':
         '/internal/design-system/patterns#navigation-product',
-      'transaction-action':
-        '/internal/design-system/workbench#transaction-workbench',
+      'transaction-action': '/internal/design-system/patterns#transactions',
     }
 
     for (const [componentId, destination] of Object.entries(destinations)) {

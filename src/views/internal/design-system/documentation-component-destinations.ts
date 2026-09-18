@@ -4,6 +4,5 @@ export const COMPLEX_COMPONENT_DESTINATIONS: Readonly<Record<string, string>> =
     table: '/internal/design-system/patterns#tables',
     'global-navigation': '/internal/design-system/patterns#navigation-global',
     'product-navigation': '/internal/design-system/patterns#navigation-product',
-    'transaction-action':
-      '/internal/design-system/workbench#transaction-workbench',
+    'transaction-action': '/internal/design-system/patterns#transactions',
   }

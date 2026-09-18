@@ -103,7 +103,7 @@ test.describe('standalone design-system entry', () => {
     await expect(page.getByRole('heading', { name: 'Chart' })).toBeVisible()
     await expect(
       page.getByRole('link', {
-        name: 'Volver al resultado general canónico',
+        name: 'Open pattern documentation',
       })
     ).toBeVisible()
   })
@@ -168,7 +168,8 @@ test.describe('standalone design-system entry', () => {
 
     const desktopProduct = page.getByTestId('navigation-product-desktop')
     await desktopProduct.scrollIntoViewIfNeeded()
-    await desktopProduct.getByLabel('Product identity').selectOption('photon')
+    await desktopProduct.getByLabel('Product identity').click()
+    await page.getByRole('option', { name: 'PHOTON' }).click()
     await desktopProduct
       .getByRole('group', { name: 'Desktop Product state' })
       .getByText('Switcher', { exact: true })
@@ -181,9 +182,8 @@ test.describe('standalone design-system entry', () => {
       'navigation-product-constrained'
     )
     await constrainedProduct.scrollIntoViewIfNeeded()
-    await constrainedProduct
-      .getByLabel('Product identity')
-      .selectOption('neocloud')
+    await constrainedProduct.getByLabel('Product identity').click()
+    await page.getByRole('option', { name: 'NEOCLOUD' }).click()
     await constrainedProduct
       .getByRole('group', { name: 'Constrained Product state' })
       .getByText('Switcher', { exact: true })
@@ -206,7 +206,7 @@ test.describe('standalone design-system entry', () => {
   })
 })
 
-const DOCUMENTATION_SWITCHER_MARK_COUNT = 15
+const DOCUMENTATION_SWITCHER_MARK_COUNT = 16
 const DOCUMENTATION_DESKTOP_SWITCHER_MARK_COUNT = 16
 const isAssetUrl = (url: string) =>
   /\.(?:avif|gif|jpe?g|otf|png|svg|webp|woff2?)(?:\?|$)/i.test(url)

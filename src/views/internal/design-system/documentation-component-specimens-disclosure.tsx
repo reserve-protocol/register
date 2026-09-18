@@ -11,19 +11,22 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from '@/components/design-system-v1/collapsible'
-import {
-  DocumentationSpecimenCell,
-  DocumentationSpecimenGrid,
-} from './documentation-specimen-layout'
+import { DocumentationSpecimenCell } from './documentation-specimen-layout'
 
 export const DisclosureComponentSpecimen = ({ itemId }: { itemId: string }) => {
   const { t } = useLingui()
 
   if (itemId === 'accordion') {
     return (
-      <DocumentationSpecimenGrid className="xl:grid-cols-2">
-        <DocumentationSpecimenCell label={<Trans>Resting</Trans>}>
-          <Accordion type="single" collapsible className="w-full max-w-xl">
+      <div className="w-full space-y-8">
+        <DocumentationSpecimenCell
+          label={<Trans>Multiple · ordinary informational set</Trans>}
+        >
+          <Accordion
+            type="multiple"
+            defaultValue={['staking']}
+            className="w-full max-w-3xl"
+          >
             <AccordionItem value="staking">
               <AccordionTrigger>
                 <Trans>What is staking?</Trans>
@@ -35,36 +38,68 @@ export const DisclosureComponentSpecimen = ({ itemId }: { itemId: string }) => {
                 </Trans>
               </AccordionContent>
             </AccordionItem>
-          </Accordion>
-        </DocumentationSpecimenCell>
-        <DocumentationSpecimenCell label={<Trans>Expanded</Trans>}>
-          <Accordion
-            type="single"
-            collapsible
-            defaultValue="voting"
-            className="w-full max-w-xl"
-          >
-            <AccordionItem value="voting">
+            <AccordionItem value="first-loss">
               <AccordionTrigger>
-                <Trans>How does voting work?</Trans>
+                <Trans>How does first-loss protection work?</Trans>
               </AccordionTrigger>
               <AccordionContent>
                 <Trans>
-                  Voting power follows the accepted governance mechanics.
+                  Staked RSR covers eligible collateral losses before ordinary
+                  holders absorb them.
+                </Trans>
+              </AccordionContent>
+            </AccordionItem>
+            <AccordionItem value="archived" disabled>
+              <AccordionTrigger disabled>
+                <Trans>Archived supporting notes unavailable</Trans>
+              </AccordionTrigger>
+              <AccordionContent>
+                <Trans>Unavailable detail</Trans>
+              </AccordionContent>
+            </AccordionItem>
+          </Accordion>
+        </DocumentationSpecimenCell>
+        <DocumentationSpecimenCell
+          label={<Trans>Single · unusually long detail</Trans>}
+        >
+          <Accordion
+            type="single"
+            collapsible
+            defaultValue="changes"
+            className="w-full max-w-3xl"
+          >
+            <AccordionItem value="changes">
+              <AccordionTrigger>
+                <Trans>What changed in this version?</Trans>
+              </AccordionTrigger>
+              <AccordionContent>
+                <Trans>
+                  The update clarifies collateral-based issuance and expands the
+                  explanation of governance-controlled parameters.
+                </Trans>
+              </AccordionContent>
+            </AccordionItem>
+            <AccordionItem value="previous-version">
+              <AccordionTrigger>
+                <Trans>Previous version details</Trans>
+              </AccordionTrigger>
+              <AccordionContent>
+                <Trans>
+                  The earlier version remains available for comparison.
                 </Trans>
               </AccordionContent>
             </AccordionItem>
           </Accordion>
         </DocumentationSpecimenCell>
-      </DocumentationSpecimenGrid>
+      </div>
     )
   }
 
   if (itemId === 'collapsible') {
     return (
-      <DocumentationSpecimenGrid className="xl:grid-cols-2">
-        <DocumentationSpecimenCell label={<Trans>Resting</Trans>}>
-          <Collapsible className="w-full max-w-xl">
+      <div className="w-full space-y-8">
+        <DocumentationSpecimenCell label={<Trans>Independent · resting</Trans>}>
+          <Collapsible className="w-full max-w-3xl">
             <CollapsibleTrigger
               cue={{ closed: t`Show details`, open: t`Hide details` }}
             >
@@ -77,8 +112,10 @@ export const DisclosureComponentSpecimen = ({ itemId }: { itemId: string }) => {
             </CollapsibleContent>
           </Collapsible>
         </DocumentationSpecimenCell>
-        <DocumentationSpecimenCell label={<Trans>Expanded</Trans>}>
-          <Collapsible defaultOpen className="w-full max-w-xl">
+        <DocumentationSpecimenCell
+          label={<Trans>Independent · expanded</Trans>}
+        >
+          <Collapsible defaultOpen className="w-full max-w-3xl">
             <CollapsibleTrigger
               cue={{ closed: t`Show details`, open: t`Hide details` }}
             >
@@ -91,7 +128,19 @@ export const DisclosureComponentSpecimen = ({ itemId }: { itemId: string }) => {
             </CollapsibleContent>
           </Collapsible>
         </DocumentationSpecimenCell>
-      </DocumentationSpecimenGrid>
+        <DocumentationSpecimenCell
+          label={<Trans>Independent · unavailable</Trans>}
+        >
+          <Collapsible className="w-full max-w-3xl">
+            <CollapsibleTrigger disabled>
+              <Trans>Unavailable details</Trans>
+            </CollapsibleTrigger>
+            <CollapsibleContent>
+              <Trans>Unavailable detail</Trans>
+            </CollapsibleContent>
+          </Collapsible>
+        </DocumentationSpecimenCell>
+      </div>
     )
   }
 

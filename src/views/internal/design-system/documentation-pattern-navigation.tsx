@@ -3,13 +3,23 @@ import {
   EllipsisVertical,
   Languages,
   Menu,
+  MessageCircle,
   Moon,
   Search,
+  Wallet,
   X,
 } from 'lucide-react'
-import { useMemo, useState, type ReactNode } from 'react'
+import { useEffect, useMemo, useRef, useState, type ReactNode } from 'react'
 
 import { Button } from '@/components/button'
+import {
+  Drawer,
+  DrawerClose,
+  DrawerContent,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerTrigger,
+} from '@/components/design-system-v1/drawer'
 import {
   MobileGlobalHeader,
   MobileUtilityPanel,
@@ -30,6 +40,14 @@ import {
   SegmentedControl,
   SegmentedControlItem,
 } from '@/components/design-system-v1/segmented-control'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/design-system-v1/select'
+import { v1Typography } from '@/components/design-system-v1/typography'
 import { IconButton } from '@/components/icon-button'
 import ChainLogo from '@/components/icons/ChainLogo'
 import RBrand from '@/components/icons/RBrand'
@@ -48,12 +66,6 @@ import {
   DocumentationSpecimenGrid,
 } from './documentation-specimen-layout'
 import { useDocumentationSpecimenState } from './use-documentation-specimen-state'
-
-export const NAVIGATION_DOCUMENTATION_SECTIONS = [
-  'navigation-global',
-  'navigation-product',
-  'navigation-anatomy',
-] as const
 
 const GLOBAL_DESKTOP_SCHEMA = {
   state: {
@@ -91,34 +103,16 @@ const PRODUCT_CONSTRAINED_SCHEMA = {
     values: ['resting', 'pages', 'switcher'],
   },
   identity: PRODUCT_DESKTOP_SCHEMA.identity,
+  actionContext: {
+    defaultValue: 'holder',
+    values: ['holder', 'visitor', 'eligibility'],
+  },
 } as const
 
 const scopeDestinations = (
   destinations: NavigationDestination[],
   hash: string
 ) => destinations.map((destination) => ({ ...destination, href: hash }))
-
-const sectionHref = (href: string, sectionId: string) => {
-  const [pathAndSearch] = href.split('#')
-  const [pathname, search = ''] = pathAndSearch.split('?')
-  const params = new URLSearchParams(search)
-  const prefix = `${sectionId}.`
-
-  for (const key of Array.from(params.keys())) {
-    if (!key.startsWith(prefix)) params.delete(key)
-  }
-
-  const sectionSearch = params.toString()
-  return `${pathname}${sectionSearch ? `?${sectionSearch}` : ''}#${sectionId}`
-}
-
-const StateLink = ({ href }: { href: string }) => (
-  <Button asChild size="compact" tone="quiet">
-    <a href={href}>
-      <Trans>State URL</Trans>
-    </a>
-  </Button>
-)
 
 const ResetPreview = ({ onReset }: { onReset: () => void }) => (
   <Button size="compact" tone="quiet" onClick={onReset}>
@@ -163,18 +157,22 @@ const IdentityControl = ({
   const { t } = useLingui()
 
   return (
-    <select
-      aria-label={t`Product identity`}
-      className="min-h-11 rounded-full border border-border bg-card px-4 text-sm text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-      value={value}
-      onChange={(event) => onValueChange(event.target.value)}
-    >
-      {DOCUMENTATION_DTF_FIXTURES.map((dtf) => (
-        <option key={dtf.id} value={dtf.id}>
-          {dtf.symbol}
-        </option>
-      ))}
-    </select>
+    <Select value={value} onValueChange={onValueChange}>
+      <SelectTrigger
+        aria-label={t`Product identity`}
+        className="w-44"
+        size="compact"
+      >
+        <SelectValue />
+      </SelectTrigger>
+      <SelectContent>
+        {DOCUMENTATION_DTF_FIXTURES.map((dtf) => (
+          <SelectItem key={dtf.id} value={dtf.id}>
+            {dtf.symbol}
+          </SelectItem>
+        ))}
+      </SelectContent>
+    </Select>
   )
 }
 
@@ -300,6 +298,14 @@ const GlobalDesktopDocumentation = () => {
     GLOBAL_DESKTOP_SCHEMA
   )
   const isConnected = specimen.state.identity === 'connected'
+  const scrollHostRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    const scrollHost = scrollHostRef.current
+    if (isConnected && typeof scrollHost?.scrollTo === 'function') {
+      scrollHost.scrollTo({ left: scrollHost.scrollWidth, behavior: 'smooth' })
+    }
+  }, [isConnected])
 
   return (
     <div data-testid="navigation-global-desktop" className="space-y-3">
@@ -314,10 +320,15 @@ const GlobalDesktopDocumentation = () => {
       />
       <DocumentationSpecimenCanvas
         host={{
-          name: t`Cropped application header`,
-          backgroundOwner: t`Global Navigation`,
+          name: t`1200px application header — scroll horizontally for actions`,
+          backdropOwner: t`Documentation contrast canvas`,
           insetOwner: t`Global Navigation header`,
         }}
+        mode="intrinsic"
+        backdrop="neutral"
+        padding="contained"
+        align="start"
+        stableHeight="standard"
         controls={{
           state: (
             <ChoiceControl
@@ -357,11 +368,6 @@ const GlobalDesktopDocumentation = () => {
             <ResetPreview onReset={specimen.reset} />
           )
         }
-        link={
-          <StateLink
-            href={sectionHref(specimen.href, 'navigation-global-desktop')}
-          />
-        }
         fallbacks={specimen.fallbacks}
         provenance={
           <Trans>
@@ -371,21 +377,27 @@ const GlobalDesktopDocumentation = () => {
           </Trans>
         }
       >
-        <div className="min-w-[1200px]">
-          <GlobalNavigation
-            actions={<ApplicationActions connected={isConnected} />}
-            brand={<Brand />}
-            currentId="discover"
-            destinations={scopedGlobalDestinations}
-            label={t`Global navigation`}
-            onOverflowOpenChange={(open) =>
-              specimen.setValue('state', open ? 'overflow' : 'resting')
-            }
-            overflowAriaLabel={t`Additional destinations`}
-            overflowDestinations={scopedGlobalOverflow}
-            overflowLabel={t`More`}
-            overflowOpen={specimen.state.state === 'overflow'}
-          />
+        <div
+          ref={scrollHostRef}
+          className="overflow-x-auto"
+          data-testid="global-desktop-scroll-host"
+        >
+          <div className="min-w-[1200px]">
+            <GlobalNavigation
+              actions={<ApplicationActions connected={isConnected} />}
+              brand={<Brand />}
+              currentId="discover"
+              destinations={scopedGlobalDestinations}
+              label={t`Global navigation`}
+              onOverflowOpenChange={(open) =>
+                specimen.setValue('state', open ? 'overflow' : 'resting')
+              }
+              overflowAriaLabel={t`Additional destinations`}
+              overflowDestinations={scopedGlobalOverflow}
+              overflowLabel={t`More`}
+              overflowOpen={specimen.state.state === 'overflow'}
+            />
+          </div>
         </div>
       </DocumentationSpecimenCanvas>
     </div>
@@ -491,9 +503,13 @@ const GlobalConstrainedDocumentation = () => {
       <DocumentationSpecimenCanvas
         host={{
           name: t`Cropped constrained header`,
-          backgroundOwner: t`Global Navigation`,
+          backdropOwner: t`Documentation contrast canvas`,
           insetOwner: t`Constrained application header`,
         }}
+        mode="host-constrained"
+        backdrop="neutral"
+        padding="contained"
+        align="center"
         controls={{
           state: (
             <ChoiceControl
@@ -534,11 +550,6 @@ const GlobalConstrainedDocumentation = () => {
             <ResetPreview onReset={specimen.reset} />
           )
         }
-        link={
-          <StateLink
-            href={sectionHref(specimen.href, 'navigation-global-constrained')}
-          />
-        }
         fallbacks={specimen.fallbacks}
         provenance={
           <Trans>
@@ -547,7 +558,12 @@ const GlobalConstrainedDocumentation = () => {
           </Trans>
         }
       >
-        <div className="mx-auto min-h-14 w-[390px] max-w-full bg-muted/30">
+        <div
+          className={`mx-auto w-[390px] max-w-full bg-muted/30 ${
+            specimen.state.state === 'utilities' ? 'min-h-[22rem]' : 'min-h-14'
+          }`}
+          data-testid="global-constrained-host"
+        >
           <GlobalConstrainedResult
             connected={specimen.state.identity === 'connected'}
             state={specimen.state.state}
@@ -628,9 +644,13 @@ const ProductDesktopDocumentation = () => {
       <DocumentationSpecimenCanvas
         host={{
           name: t`Neutral product structure`,
-          backgroundOwner: t`Product page substrate`,
+          backdropOwner: t`Documentation Product-navigation frame`,
           insetOwner: t`Product Navigation rail`,
         }}
+        mode="full-canvas"
+        backdrop="beige"
+        padding="none"
+        align="start"
         controls={{
           state: (
             <ChoiceControl
@@ -661,57 +681,94 @@ const ProductDesktopDocumentation = () => {
             <ResetPreview onReset={specimen.reset} />
           )
         }
-        link={
-          <StateLink
-            href={sectionHref(specimen.href, 'navigation-product-desktop')}
-          />
-        }
         fallbacks={specimen.fallbacks}
         provenance={
           <Trans>
             Accepted ProductNavigation and identity owners in a neutral blank
             two-column host; no product data or application composition is
-            invented.
+            invented. Token initials are provider-safe placeholder marks.
           </Trans>
         }
       >
         <div
-          className="flex h-[360px] min-w-[720px] bg-muted/30"
+          className="relative grid h-[480px] w-full min-w-[720px] grid-cols-[72px_minmax(0,1fr)] gap-0.5 bg-secondary"
           data-testid="neutral-product-host"
         >
-          <ProductNavigation
-            currentId={isSwitcher ? undefined : 'overview'}
-            destinations={destinations}
-            expanded={expanded}
-            identity={
-              <ProductIdentity
-                expanded={expanded}
-                open={isSwitcher}
-                product={product}
-                onClick={() =>
-                  specimen.setValue(
-                    'state',
-                    isSwitcher ? 'expanded' : 'switcher'
-                  )
+          <div className="relative z-10 w-[72px]">
+            <div
+              className="absolute inset-y-0 left-0"
+              data-testid="product-navigation-rail-shell"
+              onMouseEnter={() => {
+                if (!isSwitcher) specimen.setValue('state', 'expanded')
+              }}
+              onMouseLeave={() => {
+                if (!isSwitcher) specimen.setValue('state', 'collapsed')
+              }}
+              onFocusCapture={() => {
+                if (!isSwitcher) specimen.setValue('state', 'expanded')
+              }}
+              onBlurCapture={(event) => {
+                if (
+                  !isSwitcher &&
+                  !event.currentTarget.contains(event.relatedTarget)
+                ) {
+                  specimen.setValue('state', 'collapsed')
                 }
+              }}
+              onClickCapture={(event) => {
+                if (
+                  isSwitcher &&
+                  (event.target as Element).closest('[data-navigation-id]')
+                ) {
+                  event.preventDefault()
+                }
+              }}
+            >
+              <ProductNavigation
+                currentId={isSwitcher ? undefined : 'overview'}
+                destinations={destinations}
+                expanded={expanded}
+                identity={
+                  <ProductIdentity
+                    expanded={expanded}
+                    open={isSwitcher}
+                    product={product}
+                    onClick={() =>
+                      specimen.setValue(
+                        'state',
+                        isSwitcher ? 'expanded' : 'switcher'
+                      )
+                    }
+                  />
+                }
+                label={
+                  isSwitcher ? t`Switch DTF` : t`${product.symbol} navigation`
+                }
+                onDestinationSelect={(destination) => {
+                  if (!isSwitcher) return
+                  specimen.setValues({
+                    identity: destination.id,
+                    state: 'expanded',
+                  })
+                }}
+                overflowFade={isSwitcher}
+                showDestinationChevron={!isSwitcher}
               />
-            }
-            label={isSwitcher ? t`Switch DTF` : t`${product.symbol} navigation`}
-            onDestinationSelect={(destination) => {
-              if (!isSwitcher) return
-              specimen.setValue('identity', destination.id)
-              specimen.setValue('state', 'expanded')
-            }}
-            overflowFade={isSwitcher}
-            showDestinationChevron={!isSwitcher}
-          />
+            </div>
+          </div>
           <div
             aria-label={t`Neutral two-column product structure`}
-            className="grid min-w-0 flex-1 grid-cols-[minmax(0,3fr)_minmax(12rem,2fr)] gap-2 p-2"
+            className="grid min-w-0 flex-1 grid-cols-[minmax(0,3fr)_minmax(12rem,2fr)] gap-px bg-secondary"
             role="img"
           >
-            <div className="bg-card" />
-            <div className="bg-card" />
+            <div
+              className="h-full bg-card"
+              data-testid="product-primary-region"
+            />
+            <div
+              className="h-full bg-card"
+              data-testid="product-supporting-region"
+            />
           </div>
         </div>
       </DocumentationSpecimenCanvas>
@@ -719,26 +776,30 @@ const ProductDesktopDocumentation = () => {
   )
 }
 
-const ProductPanelHeader = ({
-  label,
-  onClose,
-}: {
-  label: string
-  onClose: () => void
-}) => {
+const ProductPanelHeader = ({ label }: { label: string }) => {
   const { t } = useLingui()
 
   return (
-    <div className="flex min-h-14 items-center gap-4 px-6 py-3">
-      <p className="min-w-0 flex-1 truncate text-base font-medium">{label}</p>
-      <IconButton
-        label={t`Close ${label}`}
-        icon={<X aria-hidden="true" />}
-        onClick={onClose}
-        size="compact"
-        tone="secondary"
-      />
-    </div>
+    <DrawerHeader
+      action={
+        <DrawerClose asChild>
+          <IconButton
+            label={t`Close ${label}`}
+            icon={<X aria-hidden="true" />}
+            size="compact"
+            tone="secondary"
+          />
+        </DrawerClose>
+      }
+      data-slot="mobile-navigation-drawer-header"
+    >
+      <DrawerTitle
+        className={`flex min-h-8 min-w-0 items-center truncate ${v1Typography.itemTitle}`}
+        data-slot="mobile-navigation-drawer-title"
+      >
+        {label}
+      </DrawerTitle>
+    </DrawerHeader>
   )
 }
 
@@ -763,6 +824,10 @@ const ProductConstrainedDocumentation = () => {
         '#navigation-product'
       )
     : scopedProductDestinations
+  const [drawerContainer, setDrawerContainer] = useState<HTMLDivElement | null>(
+    null
+  )
+  const lastDrawerTriggerRef = useRef<HTMLButtonElement | null>(null)
 
   return (
     <div data-testid="navigation-product-constrained" className="space-y-3">
@@ -778,10 +843,31 @@ const ProductConstrainedDocumentation = () => {
       <DocumentationSpecimenCanvas
         host={{
           name: t`Neutral constrained product structure`,
-          backgroundOwner: t`Product page substrate`,
+          backdropOwner: t`Documentation mobile frame`,
           insetOwner: t`Detached Product Navigation controls`,
         }}
+        mode="host-constrained"
+        backdrop="neutral"
+        padding="contained"
+        align="center"
         controls={{
+          family: (
+            <ChoiceControl
+              label={t`Mobile action context`}
+              value={specimen.state.actionContext}
+              values={[
+                { label: t`Holder`, value: 'holder' },
+                { label: t`Visitor`, value: 'visitor' },
+                { label: t`Eligibility`, value: 'eligibility' },
+              ]}
+              onValueChange={(value) =>
+                specimen.setValue(
+                  'actionContext',
+                  value as (typeof PRODUCT_CONSTRAINED_SCHEMA.actionContext.values)[number]
+                )
+              }
+            />
+          ),
           state: (
             <ChoiceControl
               label={t`Constrained Product state`}
@@ -811,22 +897,99 @@ const ProductConstrainedDocumentation = () => {
             <ResetPreview onReset={specimen.reset} />
           )
         }
-        link={
-          <StateLink
-            href={sectionHref(specimen.href, 'navigation-product-constrained')}
-          />
-        }
         fallbacks={specimen.fallbacks}
         provenance={
           <Trans>
             Accepted mobile Product Navigation triggers and drawer presentation
-            shown against a neutral empty host; contextual product actions are
-            intentionally absent.
+            with presentation-only product action fixtures. The actions execute
+            no product behavior. Token initials are provider-safe placeholder
+            marks.
           </Trans>
         }
       >
-        <div className="relative mx-auto h-[430px] w-[390px] max-w-full overflow-hidden bg-muted/30">
-          {isPanelOpen ? (
+        <Drawer
+          open={isPanelOpen}
+          onOpenChange={(nextOpen) => {
+            if (!nextOpen) specimen.setValue('state', 'resting')
+          }}
+        >
+          <div
+            ref={setDrawerContainer}
+            className="relative mx-auto h-[560px] w-[390px] min-w-[390px] max-w-none overflow-hidden bg-card"
+            data-testid="mobile-product-host"
+          >
+            <div className="absolute inset-x-2 bottom-2 z-30 flex items-center justify-between gap-2">
+              <DrawerTrigger asChild>
+                <ProductNavigationMobileIdentityTrigger
+                  label={t`Switch DTF, current ${product.symbol}`}
+                  mark={<DocumentationDtfMark product={product} size="xl" />}
+                  onClick={(event) => {
+                    lastDrawerTriggerRef.current = event.currentTarget
+                    specimen.setValue('state', 'switcher')
+                  }}
+                  open={isSwitcher}
+                />
+              </DrawerTrigger>
+              <div className="flex items-center gap-2 rounded-full bg-card/90 p-2 shadow-lg backdrop-blur-sm">
+                <DrawerTrigger asChild>
+                  <IconButton
+                    aria-expanded={specimen.state.state === 'pages'}
+                    label={t`Open ${product.symbol} page navigation`}
+                    icon={<EllipsisVertical aria-hidden="true" />}
+                    onClick={(event) => {
+                      lastDrawerTriggerRef.current = event.currentTarget
+                      specimen.setValue('state', 'pages')
+                    }}
+                  />
+                </DrawerTrigger>
+                {specimen.state.actionContext === 'holder' ? (
+                  <Button
+                    asChild
+                    aria-label={t`View portfolio`}
+                    className="size-11 p-0"
+                    tone="secondary"
+                  >
+                    <a href="#navigation-product">
+                      <Wallet aria-hidden="true" />
+                    </a>
+                  </Button>
+                ) : null}
+                {specimen.state.actionContext === 'eligibility' ? (
+                  <Button size="compact">
+                    <Trans>Verify eligibility</Trans>
+                  </Button>
+                ) : (
+                  <Button size="compact">
+                    <Trans>Buy / Sell</Trans>
+                  </Button>
+                )}
+                <IconButton
+                  label={t`Ask Reserve AI`}
+                  icon={<MessageCircle aria-hidden="true" />}
+                  tone="secondary"
+                />
+              </div>
+            </div>
+          </div>
+          <DrawerContent
+            aria-describedby={undefined}
+            aria-label={isSwitcher ? t`Switch DTF` : t`${product.symbol} pages`}
+            data-slot="mobile-navigation-bottom-drawer"
+            onClickCapture={(event) => {
+              if (
+                isSwitcher &&
+                (event.target as Element).closest('[data-navigation-id]')
+              ) {
+                event.preventDefault()
+              }
+            }}
+            onCloseAutoFocus={(event) => {
+              event.preventDefault()
+              lastDrawerTriggerRef.current?.focus()
+            }}
+            placement="contained-bottom"
+            portalContainer={drawerContainer}
+          >
             <ProductNavigation
               currentId={isSwitcher ? undefined : 'overview'}
               destinations={destinations}
@@ -835,35 +998,21 @@ const ProductConstrainedDocumentation = () => {
                   label={
                     isSwitcher ? t`Switch DTF` : t`${product.symbol} pages`
                   }
-                  onClose={() => specimen.setValue('state', 'resting')}
                 />
               }
               label={isSwitcher ? t`Switch DTF` : t`${product.symbol} pages`}
               onDestinationSelect={(destination) => {
-                if (isSwitcher) specimen.setValue('identity', destination.id)
-                specimen.setValue('state', 'resting')
+                specimen.setValues({
+                  ...(isSwitcher ? { identity: destination.id } : {}),
+                  state: 'resting',
+                })
               }}
               overflowFade={isSwitcher}
               presentation="drawer"
               showDestinationChevron={!isSwitcher}
             />
-          ) : (
-            <div className="absolute inset-x-2 bottom-2 flex items-center justify-between gap-2">
-              <ProductNavigationMobileIdentityTrigger
-                label={t`Switch DTF, current ${product.symbol}`}
-                mark={<DocumentationDtfMark product={product} size="xl" />}
-                onClick={() => specimen.setValue('state', 'switcher')}
-              />
-              <div className="rounded-full bg-card/90 p-2 shadow-lg backdrop-blur-sm">
-                <IconButton
-                  label={t`Open ${product.symbol} page navigation`}
-                  icon={<EllipsisVertical aria-hidden="true" />}
-                  onClick={() => specimen.setValue('state', 'pages')}
-                />
-              </div>
-            </div>
-          )}
-        </div>
+          </DrawerContent>
+        </Drawer>
       </DocumentationSpecimenCanvas>
     </div>
   )
@@ -942,33 +1091,8 @@ const NavigationAnatomy = () => {
 }
 
 const NavigationPatternDocumentation = () => {
-  const { t } = useLingui()
-  const sectionLabels: Record<
-    (typeof NAVIGATION_DOCUMENTATION_SECTIONS)[number],
-    string
-  > = {
-    'navigation-global': t`Global system`,
-    'navigation-product': t`Product system`,
-    'navigation-anatomy': t`Anatomy and states`,
-  }
-
   return (
     <div className="space-y-12" data-testid="navigation-pattern-documentation">
-      <nav
-        aria-label={t`Navigation system sections`}
-        className="flex flex-wrap gap-x-4 gap-y-2 border-b border-border pb-4"
-      >
-        {NAVIGATION_DOCUMENTATION_SECTIONS.map((sectionId) => (
-          <a
-            key={sectionId}
-            className="min-h-11 content-center text-sm font-medium text-primary underline-offset-4 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-            href={`#${sectionId}`}
-          >
-            {sectionLabels[sectionId]}
-          </a>
-        ))}
-      </nav>
-
       <NavigationSection
         id="navigation-global"
         title={<Trans>Global navigation system</Trans>}

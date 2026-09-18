@@ -4,7 +4,6 @@ import type { ReactNode } from 'react'
 import { MemoryRouter } from 'react-router-dom'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 
-import DocumentationMobileSectionControl from '../documentation-mobile-section-control'
 import DocumentationSearch from '../documentation-search'
 import LabShell from '../lab-shell'
 
@@ -37,19 +36,6 @@ afterEach(() => {
 })
 
 describe('documentation accessibility controls', () => {
-  it('groups mobile sections with a visible native-control affordance', () => {
-    const { container } = render(<DocumentationMobileSectionControl />)
-
-    expect(screen.getByRole('group', { name: 'Actions' })).toBeVisible()
-    expect(screen.getByRole('group', { name: 'Feedback' })).toBeVisible()
-    expect(
-      screen
-        .getAllByRole('option')
-        .every((option) => !option.textContent?.startsWith('—'))
-    ).toBe(true)
-    expect(container.querySelector('svg[aria-hidden="true"]')).not.toBeNull()
-  })
-
   it('reports an empty search result while the query remains visible', async () => {
     const user = userEvent.setup()
     render(

@@ -14,6 +14,9 @@ test.describe('design-system documentation shell', () => {
     await expect(page.getByTestId('canonical-component-overview')).toBeVisible()
     await expect(page.getByTestId('component-overview-output')).toHaveCount(29)
     await expect(page.getByTestId('component-isolation-slot')).toHaveCount(0)
+    await expect(
+      page.getByRole('navigation', { name: 'Component families' })
+    ).toHaveCount(0)
     const buttonSection = page.locator('#button')
     await expect(
       buttonSection.getByRole('heading', { name: 'Button' })
@@ -34,7 +37,15 @@ test.describe('design-system documentation shell', () => {
         )
     ).toBe(0)
 
+    const isStandalone = await page
+      .locator('[data-runtime="standalone"]')
+      .isVisible()
     await page.goto('/')
+    if (isStandalone) {
+      await expect(page).toHaveURL(/\/internal\/design-system$/)
+      await expect(page.locator('[data-runtime="standalone"]')).toBeVisible()
+      return
+    }
     await expect
       .poll(() =>
         page
@@ -49,23 +60,31 @@ test.describe('design-system documentation shell', () => {
       .toBeGreaterThan(0)
   })
 
-  test('exposes mobile section controls and empty search feedback', async ({
+  test('uses the complete hierarchy for mobile navigation and empty search feedback', async ({
     page,
   }) => {
     for (const width of [320, 390]) {
       await page.setViewportSize({ width, height: 844 })
       await page.goto('/internal/design-system/components#tabs')
 
-      const sectionControl = page.getByTestId(
-        'documentation-mobile-section-control'
-      )
-      await expect(sectionControl).toBeVisible()
-      await expect(sectionControl.locator('optgroup')).not.toHaveCount(0)
-      await expect(
-        sectionControl.locator('xpath=..').locator('svg')
-      ).toBeVisible()
-
       await page.getByTestId('documentation-mobile-navigation').click()
+      const dialog = page.getByRole('dialog', {
+        name: 'Design system navigation',
+      })
+      const navigation = dialog.getByRole('navigation', {
+        name: 'Design system documentation',
+      })
+      await expect(
+        navigation.locator('a[href="/internal/design-system/components#tabs"]')
+      ).toHaveAttribute('aria-current', 'location')
+      await expect(
+        navigation.locator(
+          'a[href="/internal/design-system/patterns#transactions"]'
+        )
+      ).toContainText('Paused')
+      await expect(
+        page.getByTestId('documentation-mobile-section-control')
+      ).toHaveCount(0)
       const mobileSearch = page.locator('#design-system-search-mobile')
       await mobileSearch.fill('__documentation_no_match__')
       await expect(
@@ -91,7 +110,7 @@ test.describe('design-system documentation shell', () => {
     expect(page.url()).toBe(initialUrl)
   })
 
-  test('keeps every main destination reachable and reveals the active sidebar section', async ({
+  test('keeps the full hierarchy mounted and reveals the active sidebar section', async ({
     page,
   }) => {
     await page.setViewportSize({ width: 1400, height: 900 })
@@ -108,22 +127,26 @@ test.describe('design-system documentation shell', () => {
     ]) {
       await expect(
         sidebar.getByTestId(`design-system-nav-${destination}`)
-      ).toBeInViewport()
+      ).toBeAttached()
     }
-    const themeButton = sidebar.locator('button').last()
-    await expect(themeButton).toBeInViewport()
-    await expect
-      .poll(async () => {
-        const sidebarBox = await sidebar.boundingBox()
-        const themeBox = await themeButton.boundingBox()
-        return Boolean(
-          sidebarBox &&
-          themeBox &&
-          themeBox.y >= sidebarBox.y &&
-          themeBox.y + themeBox.height <= sidebarBox.y + sidebarBox.height
-        )
-      })
-      .toBe(true)
+    const navigation = sidebar.getByRole('navigation', {
+      name: 'Design system documentation',
+    })
+    await expect(
+      navigation.locator('a[href="/internal/design-system/foundations#color"]')
+    ).toBeAttached()
+    await expect(
+      navigation.locator('a[href="/internal/design-system/components#button"]')
+    ).toBeAttached()
+    await expect(
+      navigation.locator(
+        'a[href="/internal/design-system/patterns#transactions"]'
+      )
+    ).toContainText('Paused')
+    await expect(navigation.locator('button[aria-expanded]')).toHaveCount(0)
+    await expect(
+      page.getByTestId('documentation-table-of-contents')
+    ).toHaveCount(0)
 
     const scroller = page.locator('#app-container')
     await scroller.evaluate((node) => {
@@ -152,6 +175,9 @@ test.describe('design-system documentation shell', () => {
         )
       })
       .toBe(true)
+    await expect(
+      sidebar.getByTestId('design-system-nav-components')
+    ).toHaveAttribute('data-active', 'true')
   })
 
   test('searches with the keyboard and restores direct routes', async ({
@@ -259,30 +285,29 @@ test.describe('design-system documentation shell', () => {
     }
   })
 
-  test('renders the shell and accessibility facts from a translated catalog', async ({
+  test('keeps internal documentation in English when the product locale is translated', async ({
     page,
   }) => {
     await page.setViewportSize({ width: 1400, height: 900 })
-    await page.addInitScript(() => {
-      localStorage.setItem('register.locale', JSON.stringify('es'))
-    })
-    await page.goto('/internal/design-system')
-    await expect(page.locator('html')).toHaveAttribute('lang', 'es')
-    await expect(page.getByTestId('documentation-sidebar-subtitle')).toHaveText(
-      'Documentación y revisión'
-    )
+    for (const locale of ['es', 'ko', 'zh']) {
+      await page.goto('/internal/design-system')
+      await page.evaluate((nextLocale) => {
+        localStorage.setItem('register.locale', JSON.stringify(nextLocale))
+      }, locale)
+      await page.reload()
+      await expect(page.locator('html')).toHaveAttribute('lang', 'en')
+      await expect(
+        page.getByTestId('documentation-sidebar-subtitle')
+      ).toHaveText('Documentation and review')
 
-    await page.goto('/internal/design-system/components')
-    await expect(page.locator('html')).toHaveAttribute('lang', 'es')
-    const buttonSection = page.locator('#button')
-    await expect(buttonSection).toContainText('Aceptado')
-    await expect(buttonSection).toContainText('Código · Módulo reutilizable')
-    await expect(buttonSection).toContainText(
-      'Producción · No está en producción'
-    )
-    await expect(
-      buttonSection.getByRole('link', { name: 'Abrir detalles' })
-    ).toHaveAttribute('href', '/internal/design-system/components/button')
+      await page.goto('/internal/design-system/components')
+      await expect(page.locator('html')).toHaveAttribute('lang', 'en')
+      const buttonSection = page.locator('#button')
+      await expect(buttonSection).toContainText('Accepted')
+      await expect(
+        buttonSection.getByRole('link', { name: 'Open details' })
+      ).toHaveAttribute('href', '/internal/design-system/components/button')
+    }
   })
 
   test('uses the same hierarchy in the narrow navigation panel', async ({
@@ -313,7 +338,9 @@ test.describe('design-system documentation shell', () => {
       expect(panel!.width).toBeGreaterThanOrEqual(Math.min(320, width - 16) - 1)
       expect(panel!.x + panel!.width).toBeLessThanOrEqual(width + 1)
       await page.getByRole('link', { name: 'Workbench', exact: true }).click()
-      await expect(page).toHaveURL(/\/internal\/design-system\/workbench$/)
+      await expect(page).toHaveURL(
+        /\/internal\/design-system\/workbench#current-review$/
+      )
       await expect(
         page.getByText('Nothing is waiting for human review.')
       ).toBeVisible()
@@ -381,7 +408,6 @@ test.describe('design-system documentation shell', () => {
     await page.goto('/internal/design-system/components#unknown-section')
 
     const sidebar = page.getByTestId('documentation-sidebar')
-    const tableOfContents = page.getByTestId('documentation-table-of-contents')
     await expect(page).toHaveURL(
       /\/internal\/design-system\/components#actions$/
     )
@@ -389,10 +415,8 @@ test.describe('design-system documentation shell', () => {
       sidebar.locator('a[href="/internal/design-system/components#actions"]')
     ).toHaveAttribute('aria-current', 'location')
     await expect(
-      tableOfContents.locator(
-        'a[href="/internal/design-system/components#actions"]'
-      )
-    ).toHaveAttribute('aria-current', 'location')
+      page.getByTestId('documentation-table-of-contents')
+    ).toHaveCount(0)
   })
 
   test('keeps the current component synchronized across scrolling and history', async ({
@@ -403,7 +427,6 @@ test.describe('design-system documentation shell', () => {
     await page.goto('/internal/design-system/components#button')
 
     const sidebar = page.getByTestId('documentation-sidebar')
-    const tableOfContents = page.getByTestId('documentation-table-of-contents')
     const scroller = page.locator('#app-container')
     const buttonLink = sidebar.locator(
       'a[href="/internal/design-system/components#button"]'
@@ -411,19 +434,19 @@ test.describe('design-system documentation shell', () => {
     const iconButtonLink = sidebar.locator(
       'a[href="/internal/design-system/components#icon-button"]'
     )
-    const actionsToggle = sidebar.getByTestId(
-      'documentation-nav-group-actions-toggle'
+    const actionsLink = sidebar.locator(
+      'a[href="/internal/design-system/components#actions"]'
     )
 
     await expect(buttonLink).toHaveAttribute('aria-current', 'location')
-    await expect(actionsToggle).toHaveAttribute('aria-expanded', 'true')
-    await expect(sidebar.locator('[aria-current]')).toHaveCount(1)
-    await expect(tableOfContents.locator('[aria-current]')).toHaveCount(1)
+    await expect(actionsLink).toHaveAttribute('data-active', 'true')
     await expect(
-      tableOfContents.locator(
-        'a[href="/internal/design-system/components#actions"]'
-      )
-    ).toHaveAttribute('aria-current', 'location')
+      sidebar.getByTestId('design-system-nav-components')
+    ).toHaveAttribute('data-active', 'true')
+    await expect(sidebar.locator('[aria-current]')).toHaveCount(1)
+    await expect(
+      page.getByTestId('documentation-table-of-contents')
+    ).toHaveCount(0)
 
     await scroller.evaluate((node) => {
       node.dispatchEvent(new WheelEvent('wheel', { bubbles: true }))
@@ -438,23 +461,18 @@ test.describe('design-system documentation shell', () => {
       sidebar.locator('a[href="/internal/design-system/components#feedback"]')
     ).toHaveAttribute('aria-current', 'location')
     await expect(sidebar.locator('[aria-current]')).toHaveCount(1)
-    await expect(tableOfContents.locator('[aria-current]')).toHaveCount(1)
     await expect(
-      tableOfContents.locator(
-        'a[href="/internal/design-system/components#feedback"]'
-      )
-    ).toHaveAttribute('aria-current', 'location')
+      sidebar.getByTestId('design-system-nav-components')
+    ).toHaveAttribute('data-active', 'true')
 
-    await page
-      .getByRole('navigation', { name: 'Component families' })
-      .getByRole('link', { name: 'Fields', exact: true })
+    await sidebar
+      .locator('a[href="/internal/design-system/components#fields"]')
       .click()
     await expect(page).toHaveURL(
       /\/internal\/design-system\/components#fields$/
     )
     await expect(page.locator('#fields')).toBeInViewport()
 
-    await actionsToggle.click()
     await buttonLink.click()
     await expect(page).toHaveURL(
       /\/internal\/design-system\/components#button$/
@@ -533,43 +551,43 @@ test.describe('design-system documentation shell', () => {
       sidebar.locator('a[href="/internal/design-system/patterns#tables"]')
     ).toHaveAttribute('aria-current', 'location')
     await expect(sidebar.locator('[aria-current]')).toHaveCount(1)
-    const tableOfContents = page.getByTestId('documentation-table-of-contents')
-    await expect(tableOfContents.locator('[aria-current]')).toHaveCount(1)
+    await expect(
+      sidebar.getByTestId('design-system-nav-patterns')
+    ).toHaveAttribute('data-active', 'true')
   })
 
-  test('offers a compact current-section control on phones', async ({
+  test('navigates exact sections from the complete hierarchy on phones', async ({
     page,
   }) => {
     await page.setViewportSize({ width: 390, height: 844 })
     await page.goto('/internal/design-system/components#unknown-section')
 
-    const sectionControl = page.getByTestId(
-      'documentation-mobile-section-control'
-    )
     await expect(page).toHaveURL(
       /\/internal\/design-system\/components#actions$/
     )
-    await expect(sectionControl).toHaveValue('actions')
-
-    await page.goto('/internal/design-system/components#button')
-
-    await expect(sectionControl).toBeVisible()
-    await expect(sectionControl).toHaveValue('button')
-    const controlMetrics = await sectionControl.evaluate((element) => {
-      const style = window.getComputedStyle(element)
-      return {
-        fontSize: Number.parseFloat(style.fontSize),
-        height: element.getBoundingClientRect().height,
-      }
+    await page.getByTestId('documentation-mobile-navigation').click()
+    const dialog = page.getByRole('dialog', {
+      name: 'Design system navigation',
     })
-    expect(controlMetrics.fontSize).toBeGreaterThanOrEqual(12)
-    expect(controlMetrics.height).toBeGreaterThanOrEqual(44)
-
-    await sectionControl.selectOption('icon-button')
+    const navigation = dialog.getByRole('navigation', {
+      name: 'Design system documentation',
+    })
+    await expect(
+      navigation.locator('a[href="/internal/design-system/components#actions"]')
+    ).toHaveAttribute('aria-current', 'location')
+    await navigation
+      .locator('a[href="/internal/design-system/components#icon-button"]')
+      .click()
     await expect(page).toHaveURL(
       /\/internal\/design-system\/components#icon-button$/
     )
     await expect(page.locator('#icon-button')).toBeInViewport()
-    await expect(sectionControl).toHaveValue('icon-button')
+    await page.getByTestId('documentation-mobile-navigation').click()
+    await expect(
+      page
+        .getByRole('dialog', { name: 'Design system navigation' })
+        .getByRole('navigation', { name: 'Design system documentation' })
+        .locator('a[href="/internal/design-system/components#icon-button"]')
+    ).toHaveAttribute('aria-current', 'location')
   })
 })

@@ -73,8 +73,11 @@ test('captures the Select and no-control pilot surfaces', async ({ page }) => {
     const specimen = selectSection.locator('[data-specimen-boundary]')
 
     await expect(controls.locator('[data-specimen-control-slot]')).toHaveCount(
-      4
+      3
     )
+    await expect(
+      controls.locator('[data-specimen-control-slot="size"]')
+    ).toContainText('Size')
     await expect(host.locator('[data-specimen-boundary]')).toHaveCount(1)
     await expect(specimen.locator('[data-size="default"]')).toBeEnabled()
 
@@ -87,11 +90,8 @@ test('captures the Select and no-control pilot surfaces', async ({ page }) => {
     await expect(page).toHaveURL(/#select$/)
     await expect(specimen.locator('[data-size="compact"]')).toBeDisabled()
     await expect(
-      selectSection.getByRole('link', { name: 'Open this state' })
-    ).toHaveAttribute(
-      'href',
-      /select\.family=compact.*select\.state=disabled#select/
-    )
+      controls.locator('[data-specimen-control-slot="link"]')
+    ).toHaveCount(0)
     expect(
       Math.abs((await page.evaluate(() => window.scrollY)) - initialScrollY)
     ).toBeLessThanOrEqual(1)
@@ -114,7 +114,7 @@ test('captures the Select and no-control pilot surfaces', async ({ page }) => {
   }
 })
 
-test('keeps a direct component anchor through reload and specimen query changes', async ({
+test('keeps a direct component anchor through reload and continuous-reference scrolling', async ({
   page,
 }) => {
   await page.setViewportSize({ width: 1400, height: 900 })
@@ -127,10 +127,9 @@ test('keeps a direct component anchor through reload and specimen query changes'
   await expect(page.locator('#select')).toBeInViewport()
 
   const selectSection = page.locator('#select')
-  await selectSection.getByRole('radio', { name: 'Compact' }).click()
-  await selectSection.getByRole('radio', { name: 'Unavailable' }).click()
-  await expect(page).toHaveURL(/select\.family=compact/)
-  await expect(page).toHaveURL(/select\.state=disabled/)
+  await expect(selectSection.getByText('Placeholder')).toBeVisible()
+  await expect(selectSection.getByText('Compact utility')).toBeVisible()
+  await expect(selectSection.getByText('Unavailable')).toBeVisible()
   await expect(page).toHaveURL(/#select$/)
 
   const scroller = page.locator('#app-container')
@@ -195,8 +194,8 @@ test('routes complex component results directly to their documentation destinati
     },
     {
       componentId: 'transaction-action',
-      route: '/internal/design-system/workbench#transaction-workbench',
-      targetId: 'transaction-workbench',
+      route: '/internal/design-system/patterns#transactions',
+      targetId: 'transactions',
     },
   ] as const) {
     await page.goto(
@@ -235,7 +234,16 @@ test('renders the complete continuous component reference across the review matr
         29
       )
       await expect(page.getByTestId('component-specimen-set')).toHaveCount(29)
-      await expect(page.locator('[data-documentation-status]')).toHaveCount(45)
+      await expect(page.locator('#input')).toContainText('Focus visible')
+      await expect(page.locator('#search')).toContainText('No results')
+      await expect(page.locator('#search')).toContainText('No matching tokens')
+      await expect(page.locator('#checkbox')).toContainText('Focus visible')
+      await expect(page.locator('#switch')).toContainText('Focus visible')
+      await expect(
+        page.locator(
+          '[data-testid="component-reference-section"] > div > header [data-documentation-status]'
+        )
+      ).toHaveCount(45)
       await expect(page.getByTestId('component-isolation-slot')).toHaveCount(0)
       await expect(page.getByTestId('component-pattern-slot')).toHaveCount(4)
       await expect(
@@ -243,7 +251,7 @@ test('renders the complete continuous component reference across the review matr
       ).toHaveCount(1)
       await expect(
         page.locator('#copy-value [data-copyable-value-treatment="inline"]')
-      ).toHaveCount(1)
+      ).toHaveCount(2)
       for (const id of [
         'table',
         'chart',
@@ -304,17 +312,23 @@ test('preserves anchors, detail routes, and representative owner interactions', 
   await page.setViewportSize({ width: 1400, height: 900 })
   await page.goto('/internal/design-system/components')
 
+  const canonicalOverview = page.getByTestId('canonical-component-overview')
+  await expect(canonicalOverview).not.toContainText('Code ·')
+  await expect(canonicalOverview).not.toContainText('Production ·')
   const buttonReference = page.locator('#button')
-  await expect(buttonReference.locator('[data-tone]')).toHaveCount(8)
-  await expect(buttonReference.locator('[data-size="micro"]')).toBeVisible()
-  await expect(buttonReference.locator('[data-size="compact"]')).toBeVisible()
+  await expect(buttonReference.locator('[data-tone]')).toHaveCount(15)
+  for (const size of ['micro', 'compact', 'default']) {
+    await expect(
+      buttonReference.locator(`[data-size="${size}"]`).first()
+    ).toBeVisible()
+  }
   await expect(buttonReference.locator('[aria-busy="true"]')).toBeVisible()
   await expect(buttonReference.locator('button:disabled')).toHaveCount(2)
 
   for (const group of COMPONENT_GROUPS) {
     const groupLink = page
-      .getByRole('navigation', { name: 'Component families' })
-      .getByRole('link', { name: group.name, exact: true })
+      .getByRole('navigation', { name: 'Design system documentation' })
+      .locator(`a[href="/internal/design-system/components#${group.id}"]`)
     await groupLink.focus()
     await expect(groupLink).toBeFocused()
     await groupLink.press('Enter')
@@ -336,7 +350,9 @@ test('preserves anchors, detail routes, and representative owner interactions', 
   await checkbox.press('Space')
   await expect(checkbox).not.toBeChecked()
 
-  const activeSegment = page.getByRole('radio', { name: 'Active' })
+  const activeSegment = page.getByTestId(
+    'segmented-control-text-only-compact-active'
+  )
   await activeSegment.scrollIntoViewIfNeeded()
   await activeSegment.focus()
   await expect(activeSegment).toBeFocused()
@@ -347,7 +363,10 @@ test('preserves anchors, detail routes, and representative owner interactions', 
   await accordion.scrollIntoViewIfNeeded()
   await accordion.focus()
   await expect(accordion).toBeFocused()
-  await accordion.press('Enter')
+  await expect(accordion).toHaveAttribute('aria-expanded', 'true')
+  await accordion.click()
+  await expect(accordion).toHaveAttribute('aria-expanded', 'false')
+  await accordion.click()
   await expect(accordion).toHaveAttribute('aria-expanded', 'true')
 
   for (const componentId of ['button', 'dialog', 'chart'] as const) {

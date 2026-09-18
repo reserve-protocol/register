@@ -13,7 +13,6 @@ import {
   DrawerTrigger,
 } from '@/components/ui/drawer'
 import DocumentationNavigation from './documentation-navigation'
-import DocumentationMobileSectionControl from './documentation-mobile-section-control'
 import DocumentationSearch from './documentation-search'
 import { DocumentationSectionProvider } from './documentation-section-observer'
 
@@ -42,7 +41,10 @@ const SidebarContent = ({ onNavigate }: { onNavigate?: () => void }) => {
         </div>
       </div>
       <div className="min-h-0 flex-1 px-3 py-4">
-        <DocumentationNavigation onNavigate={onNavigate} />
+        <DocumentationNavigation
+          onNavigate={onNavigate}
+          touchTargets={Boolean(onNavigate)}
+        />
       </div>
       <div className="flex items-center justify-between border-t border-border px-4 py-3">
         <span className="text-xs text-muted-foreground">
@@ -88,7 +90,7 @@ const LabShellFrame = ({ children }: { children: ReactNode }) => {
       </a>
       <aside
         data-testid="documentation-sidebar"
-        className="sticky top-0 hidden h-[100dvh] w-64 shrink-0 overflow-y-auto border-r border-border bg-background md:block"
+        className="sticky top-0 hidden h-[100dvh] w-72 shrink-0 overflow-hidden border-r border-border bg-background md:block"
       >
         <SidebarContent />
       </aside>
@@ -102,12 +104,9 @@ const LabShellFrame = ({ children }: { children: ReactNode }) => {
           data-documentation-mobile-header
           className="sticky top-0 z-30 flex min-h-14 items-center justify-between border-b border-border bg-background/95 px-3 backdrop-blur md:hidden"
         >
-          <div className="flex min-w-0 flex-1 items-center gap-2">
-            <p className="hidden shrink-0 text-sm font-medium sm:block">
-              <Trans>Register design system</Trans>
-            </p>
-            <DocumentationMobileSectionControl />
-          </div>
+          <p className="min-w-0 truncate text-sm font-medium">
+            <Trans>Register design system</Trans>
+          </p>
           <Drawer
             open={isNavigationOpen}
             onOpenChange={setIsNavigationOpen}
@@ -152,7 +151,7 @@ const LabShellFrame = ({ children }: { children: ReactNode }) => {
           </Drawer>
         </header>
 
-        <div className="mx-auto w-full max-w-[90rem] px-4 py-6 sm:px-6 sm:py-8 lg:px-10">
+        <div className="mx-auto w-full max-w-[82rem] px-4 py-6 sm:px-6 sm:py-8 lg:px-10">
           {children}
         </div>
       </div>

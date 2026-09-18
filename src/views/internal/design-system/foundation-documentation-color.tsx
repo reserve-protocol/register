@@ -419,7 +419,7 @@ const FoundationDocumentationColor = () => {
             {t(group.title)}
           </h3>
           <div className="mt-3 overflow-hidden border border-border bg-card">
-            <div className="hidden grid-cols-[minmax(10rem,1fr)_8rem_9rem_9rem_minmax(14rem,1.5fr)] gap-4 border-b border-border px-4 py-3 text-xs text-muted-foreground lg:grid">
+            <div className="hidden grid-cols-[minmax(10rem,1fr)_8rem_9rem_9rem_minmax(14rem,1.5fr)] gap-4 border-b border-border px-4 py-3 text-xs text-muted-foreground xl:grid">
               <span>
                 <Trans>Semantic role</Trans>
               </span>
@@ -439,7 +439,7 @@ const FoundationDocumentationColor = () => {
             {group.roles.map((role) => (
               <article
                 key={role.variable}
-                className="grid gap-3 border-b border-border p-4 last:border-b-0 lg:grid-cols-[minmax(10rem,1fr)_8rem_9rem_9rem_minmax(14rem,1.5fr)] lg:items-center lg:gap-4"
+                className="grid gap-3 border-b border-border p-4 last:border-b-0 xl:grid-cols-[minmax(10rem,1fr)_8rem_9rem_9rem_minmax(14rem,1.5fr)] xl:items-center xl:gap-4"
               >
                 <div className="flex items-center gap-3">
                   <span
@@ -547,7 +547,7 @@ const FoundationDocumentationColor = () => {
           {PERFORMANCE_ROLES.map((role) => (
             <article
               key={role.variable}
-              className="grid gap-3 border-b border-border p-4 last:border-b-0 lg:grid-cols-[minmax(10rem,1fr)_9rem_12rem_12rem_minmax(14rem,1.5fr)] lg:items-center lg:gap-4"
+              className="grid gap-3 border-b border-border p-4 last:border-b-0 xl:grid-cols-[minmax(9rem,1fr)_9rem_10rem_10rem_minmax(12rem,1.5fr)] xl:items-center xl:gap-4"
             >
               <div className="flex items-center gap-3">
                 <span
@@ -602,7 +602,7 @@ const FoundationDocumentationColor = () => {
 
 const Value = ({ label, value }: { label: React.ReactNode; value: string }) => (
   <div className="min-w-0">
-    <span className="text-xs text-muted-foreground lg:hidden">{label} </span>
+    <span className="text-xs text-muted-foreground xl:hidden">{label} </span>
     <code className="break-words text-xs">{value}</code>
   </div>
 )

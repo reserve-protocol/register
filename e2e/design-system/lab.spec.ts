@@ -806,7 +806,7 @@ test.describe('design system lab', () => {
     ).toBeVisible()
     await expect(
       componentCatalog.getByTestId('documentation-table-of-contents')
-    ).toBeVisible()
+    ).toHaveCount(0)
     await expect(
       componentCatalog.getByTestId('component-overview-table')
     ).toBeVisible()

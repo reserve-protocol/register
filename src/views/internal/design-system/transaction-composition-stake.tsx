@@ -100,9 +100,11 @@ export const StakeTransactionComposition = () => (
 )
 
 export const StakeProductContext = ({
+  launcherOnly = false,
   setState,
   state,
 }: {
+  launcherOnly?: boolean
   setState: (state: StakeReviewState) => void
   state: StakeReviewState
 }) => {
@@ -114,22 +116,35 @@ export const StakeProductContext = ({
   }
 
   return (
-    <div className="relative isolate grid min-h-[680px] w-full grid-cols-1 overflow-hidden bg-background">
-      <section className="col-start-1 row-start-1 mx-auto my-6 w-full max-w-md self-start bg-card p-4 sm:p-6">
-        <p className={cn(v1Typography.label, 'text-primary')}>6.18% APY</p>
-        <h4 className="mt-6 text-xl font-medium">Stake RSR</h4>
-        <dl className="mt-6 grid grid-cols-2 gap-px bg-border">
-          <ContextFact label="Exchange rate" value="1 stRSR = 1.14384 RSR" />
-          <ContextFact label="Unstaking delay" value="14 days" />
-        </dl>
-        <Button
-          ref={openButtonRef}
-          className="mt-6 w-full"
-          onClick={() => setIsOpen(true)}
-        >
+    <div
+      className={cn(
+        'relative isolate grid min-h-[680px] w-full grid-cols-1',
+        launcherOnly
+          ? 'items-start overflow-visible bg-transparent [justify-items:safe_center] md:[align-items:safe_center]'
+          : 'overflow-hidden bg-background'
+      )}
+    >
+      {launcherOnly && !isOpen ? (
+        <Button ref={openButtonRef} onClick={() => setIsOpen(true)}>
           Stake RSR
         </Button>
-      </section>
+      ) : !launcherOnly ? (
+        <section className="col-start-1 row-start-1 mx-auto my-6 w-full max-w-md self-start bg-card p-4 sm:p-6">
+          <p className={cn(v1Typography.label, 'text-primary')}>6.18% APY</p>
+          <h4 className="mt-6 text-xl font-medium">Stake RSR</h4>
+          <dl className="mt-6 grid grid-cols-2 gap-px bg-border">
+            <ContextFact label="Exchange rate" value="1 stRSR = 1.14384 RSR" />
+            <ContextFact label="Unstaking delay" value="14 days" />
+          </dl>
+          <Button
+            ref={openButtonRef}
+            className="mt-6 w-full"
+            onClick={() => setIsOpen(true)}
+          >
+            Stake RSR
+          </Button>
+        </section>
+      ) : null}
       <TransactionContainedModal
         isOpen={isOpen}
         onOpenChange={handleOpenChange}

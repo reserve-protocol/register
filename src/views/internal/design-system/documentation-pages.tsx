@@ -5,7 +5,6 @@ import { PageHeader } from './catalog-ui'
 import { COMPONENT_ITEMS } from './component-catalog'
 import { CURRENT_REVIEW } from './current-review'
 import { getComponentNameMessage } from './documentation-catalog-messages'
-import { DocumentationTransactionWorkbench } from './documentation-transaction-workbench'
 import { FOUNDATION_ITEMS } from './foundation-catalog'
 import {
   PATTERN_PRESENTATIONS,
@@ -140,7 +139,6 @@ export const WorkbenchOverviewPage = () => {
         title={t`Workbench`}
         description={t`Review questions, studies, and product-context tools live here without changing design authority.`}
       />
-      <DocumentationTransactionWorkbench />
       <section id="current-review" aria-labelledby="workbench-review-title">
         <h2 id="workbench-review-title" className="text-xl font-medium">
           <Trans>Current review</Trans>

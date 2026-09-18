@@ -96,7 +96,9 @@ test('preserves anchors, keyboard navigation, and direct detail routes', async (
   await page.setViewportSize({ width: 1400, height: 900 })
   await page.goto('/internal/design-system/foundations')
 
-  const layoutLink = page.getByTestId('foundation-anchor-layout')
+  const layoutLink = page
+    .getByTestId('documentation-sidebar')
+    .locator('a[href="/internal/design-system/foundations#layout"]')
   await layoutLink.focus()
   await expect(layoutLink).toBeFocused()
   await page.keyboard.press('Enter')

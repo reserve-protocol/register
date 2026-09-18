@@ -22,6 +22,13 @@ import {
 } from '../transaction-composition-manual-scenarios'
 import type { ZapperReviewState } from '../transaction-composition-rfq'
 import { TRANSACTION_DOCUMENTATION_SECTIONS } from './navigation'
+import {
+  AUTOMATED_STATE_LABELS,
+  MANUAL_STATE_LABELS,
+  STAKE_STATE_LABELS,
+  VOTE_LOCK_STATE_LABELS,
+  ZAPPER_STATE_LABELS,
+} from './state-labels'
 
 export type TransactionFlowNode<State extends string = string> = {
   operation: string
@@ -29,6 +36,7 @@ export type TransactionFlowNode<State extends string = string> = {
   step: string
   stepLabel: MessageDescriptor
   state: State
+  stateLabel: MessageDescriptor
   stateSlug: string
 }
 
@@ -54,12 +62,14 @@ const nodes = <State extends string>({
   step,
   stepLabel,
   states,
+  stateLabels,
 }: {
   operation: string
   operationLabel: MessageDescriptor
   step: string
   stepLabel: MessageDescriptor
   states: readonly State[]
+  stateLabels: Record<State, MessageDescriptor>
 }): TransactionFlowNode<State>[] =>
   states.map((state) => ({
     operation,
@@ -67,6 +77,7 @@ const nodes = <State extends string>({
     step,
     stepLabel,
     state,
+    stateLabel: stateLabels[state],
     stateSlug: transactionStateSlug(state),
   }))
 
@@ -110,22 +121,25 @@ export const ZAPPER_FAMILY: TransactionFamilyDefinition<ZapperReviewState> = {
       operation: 'buy-sell',
       operationLabel: msg`Buy / Sell`,
       step: 'lifecycle',
-      stepLabel: msg`Lifecycle`,
+      stepLabel: msg`Transaction progress`,
       states: ZAPPER_LIFECYCLE_STATES,
+      stateLabels: ZAPPER_STATE_LABELS,
     }),
     ...nodes({
       operation: 'buy-sell',
       operationLabel: msg`Buy / Sell`,
       step: 'review-variant',
-      stepLabel: msg`Review variant`,
+      stepLabel: msg`Quote and availability`,
       states: ZAPPER_REVIEW_STATES,
+      stateLabels: ZAPPER_STATE_LABELS,
     }),
     ...nodes({
       operation: 'buy-sell',
       operationLabel: msg`Buy / Sell`,
       step: 'outcome-attachment',
-      stepLabel: msg`Outcome attachment`,
+      stepLabel: msg`Result details`,
       states: ZAPPER_ATTACHMENT_STATES,
+      stateLabels: ZAPPER_STATE_LABELS,
     }),
   ],
 }
@@ -152,6 +166,7 @@ const automatedNodes = AUTOMATED_MINT_STATE_GROUPS.flatMap((group) => {
         step,
         stepLabel,
         states: [state],
+        stateLabels: AUTOMATED_STATE_LABELS,
       })
     )
   })
@@ -181,6 +196,7 @@ export const STAKE_FAMILY: TransactionFamilyDefinition<StakeReviewState> = {
       step: 'stake',
       stepLabel: msg`Stake`,
       states: STAKE_STATES,
+      stateLabels: STAKE_STATE_LABELS,
     }),
     ...nodes({
       operation: 'unstake',
@@ -188,6 +204,7 @@ export const STAKE_FAMILY: TransactionFamilyDefinition<StakeReviewState> = {
       step: 'unstake',
       stepLabel: msg`Unstake`,
       states: UNSTAKE_STATES,
+      stateLabels: STAKE_STATE_LABELS,
     }),
     ...nodes({
       operation: 'delegate',
@@ -195,6 +212,7 @@ export const STAKE_FAMILY: TransactionFamilyDefinition<StakeReviewState> = {
       step: 'delegation',
       stepLabel: msg`Delegation`,
       states: STAKE_DELEGATE_STATES,
+      stateLabels: STAKE_STATE_LABELS,
     }),
     ...STAKE_RECOVERY_STATES.flatMap((state) =>
       nodes({
@@ -203,6 +221,7 @@ export const STAKE_FAMILY: TransactionFamilyDefinition<StakeReviewState> = {
         step: 'recovery',
         stepLabel: msg`Recovery`,
         states: [state],
+        stateLabels: STAKE_STATE_LABELS,
       })
     ),
   ],
@@ -222,6 +241,7 @@ export const VOTE_LOCK_FAMILY: TransactionFamilyDefinition<VoteLockReviewState> 
         step: 'lock',
         stepLabel: msg`Lock`,
         states: LOCK_STATES,
+        stateLabels: VOTE_LOCK_STATE_LABELS,
       }),
       ...nodes({
         operation: 'unlock',
@@ -229,6 +249,7 @@ export const VOTE_LOCK_FAMILY: TransactionFamilyDefinition<VoteLockReviewState> 
         step: 'unlock',
         stepLabel: msg`Unlock`,
         states: UNLOCK_STATES,
+        stateLabels: VOTE_LOCK_STATE_LABELS,
       }),
       ...nodes({
         operation: 'delegate',
@@ -236,6 +257,7 @@ export const VOTE_LOCK_FAMILY: TransactionFamilyDefinition<VoteLockReviewState> 
         step: 'delegation',
         stepLabel: msg`Delegation`,
         states: DELEGATION_STATES,
+        stateLabels: VOTE_LOCK_STATE_LABELS,
       }),
     ],
   }
@@ -261,13 +283,14 @@ export const MANUAL_FAMILY: TransactionFamilyDefinition<ManualReviewState> = {
         operationLabel: operation === 'mint' ? msg`Mint` : msg`Redeem`,
         step: transactionStateSlug(group.label),
         stepLabel: {
-          'Review anchors': msg`Review anchors`,
-          'Configuration and access': msg`Configuration and access`,
-          Permissions: msg`Permissions`,
-          'Mint transaction': msg`Mint transaction`,
-          'Redeem transaction': msg`Redeem transaction`,
+          'Review anchors': msg`Overview`,
+          'Configuration and access': msg`Amount and access`,
+          Permissions: msg`Approvals`,
+          'Mint transaction': msg`Mint progress`,
+          'Redeem transaction': msg`Redeem progress`,
         }[group.label],
         states: [state],
+        stateLabels: MANUAL_STATE_LABELS,
       })
     })
   ),

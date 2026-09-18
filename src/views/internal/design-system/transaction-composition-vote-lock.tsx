@@ -1,3 +1,4 @@
+import { Button } from '@/components/button'
 import {
   SegmentedControl,
   SegmentedControlItem,
@@ -86,9 +87,11 @@ export const VoteLockTransactionComposition = () => (
 )
 
 export const VoteLockProductContext = ({
+  launcherOnly = false,
   state,
   setState,
 }: {
+  launcherOnly?: boolean
   state: VoteLockReviewState
   setState: (state: VoteLockReviewState) => void
 }) => {
@@ -100,13 +103,26 @@ export const VoteLockProductContext = ({
   }
 
   return (
-    <div className="relative isolate grid min-h-[680px] w-full grid-cols-1 overflow-hidden bg-background">
-      <div className="col-start-1 row-start-1 p-6">
-        <VoteLockGovernanceContext
-          openButtonRef={openButtonRef}
-          onOpen={() => setIsOpen(true)}
-        />
-      </div>
+    <div
+      className={cn(
+        'relative isolate grid min-h-[680px] w-full grid-cols-1',
+        launcherOnly
+          ? 'items-start overflow-visible bg-transparent [justify-items:safe_center] md:[align-items:safe_center]'
+          : 'overflow-hidden bg-background'
+      )}
+    >
+      {launcherOnly && !isOpen ? (
+        <Button ref={openButtonRef} onClick={() => setIsOpen(true)}>
+          Vote-lock $RSR
+        </Button>
+      ) : !launcherOnly ? (
+        <div className="col-start-1 row-start-1 p-6">
+          <VoteLockGovernanceContext
+            openButtonRef={openButtonRef}
+            onOpen={() => setIsOpen(true)}
+          />
+        </div>
+      ) : null}
       <TransactionContainedModal
         isOpen={isOpen}
         onOpenChange={handleOpenChange}

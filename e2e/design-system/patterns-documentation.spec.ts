@@ -51,7 +51,7 @@ test('renders the continuous Patterns reference across the review matrix', async
       await expect(page.getByTestId('pattern-reference-section')).toHaveCount(
         PATTERNS.length
       )
-      await expect(page.getByTestId('pattern-rich-reference')).toHaveCount(3)
+      await expect(page.getByTestId('pattern-rich-reference')).toHaveCount(4)
       await expect(page.getByTestId('pattern-specimen-canvas')).toHaveCount(1)
       await expect(
         page.getByTestId('documentation-pattern-charts')
@@ -67,11 +67,23 @@ test('renders the continuous Patterns reference across the review matrix', async
       ).toBeVisible()
       await expect(page.getByTestId('current-rebalances-table')).toBeVisible()
       await expect(page.getByTestId('navigation-global-desktop')).toBeVisible()
-      await expect(page.getByTestId('pattern-no-specimen')).toHaveCount(1)
+      await expect(page.getByTestId('pattern-no-specimen')).toHaveCount(0)
       await expect(page.getByTestId('preset-or-custom-field')).toBeVisible()
       await expect(page.locator('#transactions')).toContainText('Exploring')
       await expect(page.locator('#transactions')).toContainText('Paused')
-      await expect(page.getByTestId('transaction-system-review')).toHaveCount(0)
+      const transactionReference = page.locator('#transactions')
+      await expect(
+        transactionReference.getByTestId('transaction-documentation-family')
+      ).toHaveCount(5)
+      await expect(
+        page.getByTestId('pattern-rich-reference').nth(3)
+      ).not.toContainText('Patterns · Paused')
+      await expect(
+        transactionReference.locator('[data-specimen-control-slot="link"]')
+      ).toHaveCount(0)
+      await expect(
+        transactionReference.getByTestId('transaction-audit-index')
+      ).toHaveCount(0)
       expect(
         await page.evaluate(
           () => document.documentElement.scrollWidth <= window.innerWidth
@@ -105,11 +117,14 @@ test('preserves anchors, aliases, and exact Workbench and Records depth', async 
 }) => {
   await page.setViewportSize({ width: 1400, height: 900 })
   await page.goto('/internal/design-system/patterns')
+  await expect(
+    page.getByRole('navigation', { name: 'Pattern families' })
+  ).toHaveCount(0)
 
   for (const pattern of PATTERNS) {
     const link = page
-      .getByRole('navigation', { name: 'Pattern families' })
-      .getByRole('link', { name: patternName(pattern), exact: true })
+      .getByRole('navigation', { name: 'Design system documentation' })
+      .locator(`a[href="/internal/design-system/patterns#${pattern}"]`)
     await link.focus()
     await expect(link).toBeFocused()
     await link.press('Enter')
@@ -178,12 +193,3 @@ test('keeps formerly unstable pattern anchors through repeated direct loads and 
     }
   }
 })
-
-const patternName = (pattern: (typeof PATTERNS)[number]) =>
-  ({
-    charts: 'Charts',
-    tables: 'Tables and records',
-    forms: 'Forms',
-    navigation: 'Navigation systems',
-    transactions: 'Transactions',
-  })[pattern]

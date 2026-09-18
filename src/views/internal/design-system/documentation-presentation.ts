@@ -64,6 +64,7 @@ export interface DocumentationNavigationItem {
   route: string
   sourceKey?: string
   legacy?: boolean
+  activityLabel?: DocumentationText
   items?: readonly DocumentationNavigationItem[]
 }
 
@@ -343,7 +344,7 @@ export const PATTERN_PRESENTATIONS = [
     description: msg`Coordinates truthful transaction requirements, execution, recovery, and outcomes.`,
     scope: msg`The verified checkpoint remains exploratory and paused. No complete transaction composition is canonical, and production mechanics remain outside this documentation candidate.`,
     activityLabel: WORKBENCH_ACTIVITY_MESSAGES.paused,
-    workbenchRoute: '/internal/design-system/workbench#transaction-workbench',
+    workbenchRoute: '/internal/design-system/workbench#activity',
     reviewRoute:
       '/internal/design-system/components/transaction-action#transaction-truth-spectrum',
     legacyRoute: '/internal/design-system/patterns/transactions',
@@ -434,6 +435,11 @@ const PATTERN_SECTION_NAVIGATION: Partial<
       route: '/internal/design-system/patterns#navigation-anatomy',
     },
   ],
+  transactions: TRANSACTION_DOCUMENTATION_SECTIONS.map(({ id, label }) => ({
+    id,
+    label,
+    route: `/internal/design-system/patterns#${id}`,
+  })),
 }
 
 export const DOCUMENTATION_NAVIGATION = [
@@ -471,14 +477,17 @@ export const DOCUMENTATION_NAVIGATION = [
     id: 'patterns',
     label: msg`Patterns`,
     route: '/internal/design-system/patterns',
-    items: PATTERN_PRESENTATIONS.map(({ id, label, sourceKey }) => ({
-      id,
-      label,
-      sourceKey,
-      legacy: false,
-      route: `/internal/design-system/patterns#${id}`,
-      items: PATTERN_SECTION_NAVIGATION[id],
-    })),
+    items: PATTERN_PRESENTATIONS.map(
+      ({ activityLabel, id, label, sourceKey }) => ({
+        id,
+        label,
+        sourceKey,
+        legacy: false,
+        activityLabel,
+        route: `/internal/design-system/patterns#${id}`,
+        items: PATTERN_SECTION_NAVIGATION[id],
+      })
+    ),
   },
   {
     id: 'workbench',
@@ -486,29 +495,36 @@ export const DOCUMENTATION_NAVIGATION = [
     route: '/internal/design-system/workbench',
     items: [
       {
-        id: 'transaction-workbench',
-        label: msg`Transaction systems`,
-        route: '/internal/design-system/workbench#transaction-workbench',
-        items: TRANSACTION_DOCUMENTATION_SECTIONS.map(({ id, label }) => ({
-          id,
-          label,
-          route: `/internal/design-system/workbench#${id}`,
-        })),
-      },
-      {
         id: 'current-review',
         label: msg`Current review`,
         route: '/internal/design-system/workbench#current-review',
       },
       {
-        id: 'studies',
-        label: msg`Experiments and studies`,
-        route: '/internal/design-system/studies',
+        id: 'activity',
+        label: msg`Other activity`,
+        route: '/internal/design-system/workbench#activity',
       },
       {
-        id: 'contexts',
-        label: msg`Product contexts`,
-        route: '/internal/design-system/screens',
+        id: 'tools',
+        label: msg`Review tools`,
+        route: '/internal/design-system/workbench#tools',
+        items: [
+          {
+            id: 'studies',
+            label: msg`Experiments and studies`,
+            route: '/internal/design-system/studies',
+          },
+          {
+            id: 'contexts',
+            label: msg`Product contexts`,
+            route: '/internal/design-system/screens',
+          },
+        ],
+      },
+      {
+        id: 'pattern-workbenches',
+        label: msg`Pattern workbenches`,
+        route: '/internal/design-system/workbench#pattern-workbenches',
       },
     ],
   },
@@ -539,7 +555,7 @@ export const DOCUMENTATION_NAVIGATION = [
 export const WORKBENCH_ACTIVITY = [
   {
     sourceKey: 'component:transaction-action',
-    route: '/internal/design-system/workbench#transaction-workbench',
+    route: '/internal/design-system/patterns#transactions',
     question: msg`Which transaction composition scope should resume?`,
     owner: msg`Human design review`,
     activity: 'paused',
@@ -602,7 +618,7 @@ const destinationRecords: DocumentationSearchRecord[] = [
     sourceKey: 'destination:patterns',
     label: msg`Patterns`,
     route: '/internal/design-system/patterns',
-    description: msg`Composition guidance and temporary Legacy lab routes.`,
+    description: msg`Composition guidance and family-level system examples`,
     destination: 'canonical',
     aliases: ['pattern'],
   },

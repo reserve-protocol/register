@@ -10,6 +10,7 @@ import { getComponentItem } from '../component-catalog'
 import { COMPLEX_COMPONENT_DESTINATIONS } from '../documentation-component-destinations'
 import {
   canMountDocumentationComponentSpecimen,
+  documentationComponentSpecimenOwnsCanvas,
   DocumentationComponentSpecimen,
 } from '../documentation-component-specimens'
 import { DocumentationStatus } from '../documentation-status'
@@ -38,6 +39,7 @@ const StandaloneComponentDetail = () => {
     item.id,
     presentation.design
   )
+  const specimenOwnsCanvas = documentationComponentSpecimenOwnsCanvas(item.id)
 
   return (
     <div data-testid={`component-detail-${item.id}`} className="space-y-8">
@@ -81,7 +83,11 @@ const StandaloneComponentDetail = () => {
         ) : canMountSpecimen ? (
           <section
             data-testid="standalone-canonical-specimen"
-            className="overflow-x-auto border-y border-border bg-muted/30 px-4 py-8 sm:px-6"
+            className={
+              specimenOwnsCanvas
+                ? 'min-w-0'
+                : 'overflow-x-auto border-y border-border bg-muted/30 px-4 py-8 sm:px-6'
+            }
           >
             <DocumentationComponentSpecimen
               groupId={group.id}
@@ -109,9 +115,7 @@ const StandaloneComponentDetail = () => {
               className="mt-4 inline-flex min-h-11 items-center gap-2 text-sm font-medium text-primary underline-offset-4 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
             >
               <ArrowLeft className="size-4" />
-              {item.id === 'transaction-action' ? (
-                <Trans>Open Workbench summary</Trans>
-              ) : COMPLEX_COMPONENT_DESTINATIONS[item.id] ? (
+              {COMPLEX_COMPONENT_DESTINATIONS[item.id] ? (
                 <Trans>Open pattern documentation</Trans>
               ) : (
                 <Trans>Return to the canonical overview result</Trans>

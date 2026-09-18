@@ -24,11 +24,13 @@ export const ManualIssuanceAnchor = ({
   amount,
   unlimited,
   remember,
+  showPreviewNote = true,
 }: {
   state: ManualReviewState
   amount: string
   unlimited: boolean
   remember: (amount: string, unlimited: boolean) => void
+  showPreviewNote?: boolean
 }) => {
   const [session, reduce] = useReducer(manualReducer, undefined, () =>
     manualScenario(state, amount, unlimited)
@@ -51,19 +53,21 @@ export const ManualIssuanceAnchor = ({
   const outcome = session.transaction === 'success'
   return (
     <>
-      <p
-        id="manual-issuance-preview-note"
-        data-testid="manual-issuance-preview-note"
-        className="px-6 py-4 text-sm text-supporting-foreground"
-      >
-        Synthetic basket and simulated transactions; no wallet or on-chain
-        writes. Use the lab controls to accept, reject, or confirm requests.
-        Approve All starts separate token transactions; its USDT reset mismatch
-        remains an engineering boundary. Navigation previews do not execute
-        swaps.
-        {outcome &&
-          ' Outcome design trial: the share amount is the submitted amount. Basket amounts remain expected, not receipt-verified; no transaction hash is fabricated.'}
-      </p>
+      {showPreviewNote ? (
+        <p
+          id="manual-issuance-preview-note"
+          data-testid="manual-issuance-preview-note"
+          className="px-6 py-4 text-sm text-supporting-foreground"
+        >
+          Synthetic basket and simulated transactions; no wallet or on-chain
+          writes. Use the lab controls to accept, reject, or confirm requests.
+          Approve All starts separate token transactions; its USDT reset
+          mismatch remains an engineering boundary. Navigation previews do not
+          execute swaps.
+          {outcome &&
+            ' Outcome design trial: the share amount is the submitted amount. Basket amounts remain expected, not receipt-verified; no transaction hash is fabricated.'}
+        </p>
+      ) : null}
       {navigationPreview && (
         <p
           data-testid="manual-navigation-preview"

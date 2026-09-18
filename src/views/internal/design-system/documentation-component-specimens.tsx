@@ -6,42 +6,14 @@ import { FieldComponentSpecimen } from './documentation-component-specimens-fiel
 import { NavigationComponentSpecimen } from './documentation-component-specimens-navigation'
 import { OverlayComponentSpecimen } from './documentation-component-specimens-overlays'
 import { SelectionComponentSpecimen } from './documentation-component-specimens-selection'
+import { getDocumentationComponentCoverage } from './documentation-component-coverage'
 import type { ComponentPresentation } from './documentation-presentation'
 
-const ACCEPTED_DIRECT_COMPONENTS = new Set([
-  'button',
-  'icon-button',
-  'button-group',
-  'input',
-  'textarea',
-  'select',
-  'multi-select-filter',
-  'search',
-  'checkbox',
-  'radio-group',
-  'switch',
-  'segmented-control',
-  'link',
-  'tabs',
-  'pagination',
-  'dialog',
-  'popover',
-  'dropdown-menu',
-  'tooltip',
-  'alert',
-  'spinner',
-  'skeleton',
-  'empty-state',
-  'badge',
-  'entity-identity',
-  'metric',
-  'copy-value',
-  'accordion',
-  'collapsible',
-])
-
 export const hasDocumentationComponentSpecimen = (itemId: string) =>
-  ACCEPTED_DIRECT_COMPONENTS.has(itemId)
+  getDocumentationComponentCoverage(itemId)?.overview === 'specimen'
+
+export const documentationComponentSpecimenOwnsCanvas = (itemId: string) =>
+  getDocumentationComponentCoverage(itemId)?.canvas.width === 'canvas-owned'
 
 export const canMountDocumentationComponentSpecimen = (
   itemId: string,
