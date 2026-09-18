@@ -21,7 +21,6 @@ time.
 |---|---|
 | Proposal list, filters, pagination | `e2e/tests/smoke/governance.spec.ts` |
 | Proposal detail, state banners/CTAs | `e2e/tests/flows/governance-states.spec.ts` |
-| Legacy basket proposal allocation preview | `components/proposal-preview/tests/legacy-basket-proposal-preview.test.tsx` (captured BDTF calldata); inspect Summary, Trades and Raw on desktop/mobile |
 | Vote UI/submission | `e2e/tests/flows/governance-vote.spec.ts` + `flows/failures-governance.spec.ts` (reject/revert) + `index-dtf/governance/vote-modal-long-title.spec.ts` (modal layout) |
 | Propose flow — DAO settings | `e2e/tests/flows/governance-propose.spec.ts` |
 | Propose flow — fees (dtf-settings) | `e2e/tests/flows/governance-propose-dtf-settings.spec.ts` (fee calldata round-trip) |
@@ -95,7 +94,6 @@ mapper dereferences — serve proposals ONLY through it or the list breaks).
 
 ## Traps
 
-- Legacy auction `buyLimit.spot = 10^54` is an unlimited cap, not a target allocation. Its preview transfers the available sell allocation in bigint; multiple sellers accumulate, repeated approvals cannot spend the same allocation twice. Keep finite-limit handling separate and executable calldata unchanged. See `docs/wiki/domains/governance-preview.md` for coverage limits.
 - The auctions subgraph query is misnamed `getGovernanceStats` in
   `use-rebalance-auctions.ts` — body-matched in the mock BEFORE the real
   governance branch. Renaming it requires updating `e2e/helpers/subgraph.ts`.
