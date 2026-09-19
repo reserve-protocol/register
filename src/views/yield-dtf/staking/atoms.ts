@@ -8,8 +8,14 @@ import {
   rTokenAtom,
   rTokenConfigurationAtom,
   rTokenStateAtom,
+  stRsrBalanceAtom,
   walletAtom,
 } from '@/state/atoms'
+import {
+  AccountStakeRecord,
+  calculateStakeLots,
+  calculateStakeRewards,
+} from './stake-accounting'
 
 export const unstakeDelayAtom = atom((get) => {
   const params = get(rTokenConfigurationAtom)
@@ -55,7 +61,7 @@ export const pendingRSRSummaryAtom = atom<{
   )
 })
 
-const accountStakeHistoryAtom = atomWithLoadable(async (get) => {
+const accountStakeLotsAtom = atomWithLoadable(async (get) => {
   const gqlClient = get(gqlClientAtom)
   const wallet = get(walletAtom)
   const rToken = get(rTokenAtom)
@@ -67,7 +73,12 @@ const accountStakeHistoryAtom = atomWithLoadable(async (get) => {
   const request: any = await gqlClient.request(
     gql`
       query getAccountStakeHistory($id: String!) {
-        accountStakeRecords(orderBy: blockNumber, where: { account: $id }) {
+        accountStakeRecords(
+          first: 1000
+          orderBy: blockNumber
+          orderDirection: asc
+          where: { account: $id }
+        ) {
           exchangeRate
           amount
           rsrAmount
@@ -82,83 +93,22 @@ const accountStakeHistoryAtom = atomWithLoadable(async (get) => {
     return null
   }
 
-  let stakes: [number, number, number][] = []
-  let totalRewardBalance = 0
-
-  for (const record of request.accountStakeRecords as {
-    exchangeRate: string
-    amount: string
-    rsrAmount: bigint
-    isStake: string | boolean
-  }[]) {
-    const recordAmount = Number(record.amount)
-    const recordExchangeRate = Number(record.exchangeRate)
-
-    if (record.isStake === 'true' || record.isStake === true) {
-      stakes.push([recordAmount, recordExchangeRate, Number(record.rsrAmount)])
-    } else {
-      let stakesRewarded = 0
-      let unstake = recordAmount
-
-      // Calculate current stake rewards
-      for (let i = 0; i < stakes.length; i++) {
-        const [stakeAmount, stakeExchangeRate, stakeRsrAmount] = stakes[i]
-        // Calculate rewards from this stake and keep going
-        const snapshotRsrAmount =
-          Math.min(unstake, stakeAmount) * stakeExchangeRate
-        const currentRsrAmount =
-          Math.min(unstake, stakeAmount) * recordExchangeRate
-
-        // Count rewards
-        totalRewardBalance += currentRsrAmount - snapshotRsrAmount
-
-        if (stakeAmount > unstake) {
-          stakes[i] = [
-            stakeAmount - unstake,
-            stakeExchangeRate,
-            stakeRsrAmount - snapshotRsrAmount,
-          ]
-          break
-        } else if (stakeAmount === unstake) {
-          stakesRewarded++
-          break
-        } else {
-          // Continue counting rewards
-          unstake = unstake - stakeAmount
-          stakesRewarded++
-        }
-      }
-      // Remove accrued stakes
-      stakes = stakes.slice(stakesRewarded)
-    }
-  }
-
-  return {
-    stakes,
-    totalRewardBalance,
-  }
+  return calculateStakeLots(request.accountStakeRecords as AccountStakeRecord[])
 })
 
 const exchangeRateAtom = atom((get) => get(rTokenStateAtom).exchangeRate)
 
 // TODO: Check re-renders on exchangeRateUpdate improve memo
 export const accountCurrentPositionAtom = atom((get) => {
-  const stakeHistory = get(accountStakeHistoryAtom)
+  const lots = get(accountStakeLotsAtom)
   const exchangeRate = get(exchangeRateAtom)
+  const stRsrBalance = get(stRsrBalanceAtom)
 
-  let stBalance = 0
-  let rsrBalance = 0
-
-  if (!stakeHistory) {
+  if (!lots) {
     return 0
   }
 
-  for (const [stakeAmount, _, stakeRsrAmount] of stakeHistory.stakes) {
-    stBalance += stakeAmount
-    rsrBalance += stakeRsrAmount
-  }
-
-  return stBalance * exchangeRate - rsrBalance
+  return calculateStakeRewards(lots, exchangeRate, +stRsrBalance.balance)
 })
 
 export const rateAtom = atom((get) => {

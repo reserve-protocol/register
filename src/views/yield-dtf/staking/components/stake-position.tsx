@@ -16,12 +16,7 @@ const StakePosition = ({ className }: StakePositionProps) => {
   const rate = useAtomValue(rateAtom)
   const balance = useAtomValue(stRsrBalanceAtom)
   const rsrPrice = useAtomValue(rsrPriceAtom)
-  let rewards = useAtomValue(accountCurrentPositionAtom)
-
-  // Prevent the case when the user withdraws and rewards get stuck awaiting for subgraph
-  if (!balance.value && rewards) {
-    rewards = 0
-  }
+  const rewards = useAtomValue(accountCurrentPositionAtom)
 
   return (
     <div className={cn(className)}>
