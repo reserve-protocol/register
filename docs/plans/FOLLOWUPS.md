@@ -13,7 +13,26 @@ PRs #1053/#1054/#1055/#1063, SDK PR #27). Delete items as they land.
 
 ## Next slices (in rough order)
 
-
+- **Index DTF v6 / auctions SDK integration**: contract in
+  [index-dtf-v6-integration.md](index-dtf-v6-integration.md); the Register
+  rebalance vertical ([index-dtf-v6-register-rebalance.md](index-dtf-v6-register-rebalance.md))
+  landed 2026-09-17 (version identity, SDK reads/calculations/writes for v5/v6,
+  RPC-first gating, one real launch on the BSC fork). Still open from that
+  vertical: v6 basket proposals in the atom builder (need nonce + deadline via
+  the client-bound SDK builder), the SDK client still appends default RPCs after
+  an override (read isolation on the fork lane), settings/propose `isV5` sites
+  treat v6 as non-v5, and the SDK pair must be published (prerelease) before the
+  Register pin replaces the `link:`. Settled: SDK is v5/v6 only, v4 stays
+  Register-local, the full 146-case suite is the release gate (S1+ in the
+  handoff), fork stack in `e2e/fork/docker/`.
+  Product question raised by the cross-model review: Folio lets the privileged
+  launcher replace a running auction (`Folio.sol` openAuction closes the prior
+  one), but Register has always disabled the launch CTA while an auction of the
+  current nonce is running; the RPC-first gate keeps that rule. Decide whether
+  the launcher UI should offer replacement (separate gate from the community
+  button). Fork-lane limits: the subgraph proxy truncates only entities that
+  carry `blockNumber`, and the SDK client appends its default RPCs after the
+  per-chain override.
 - **Portfolio SDK adoption (chk-4)**: extend SDK `AccountPortfolio` to the full
   6-field shape + validated partial-body mappers (SDK-side fixtures), migrate
   register's raw `use-portfolio`/`use-historical-portfolio`/
@@ -40,11 +59,6 @@ PRs #1053/#1054/#1055/#1063, SDK PR #27). Delete items as they land.
   `JSON.stringify` deps.
 
 ## Deferred to protocol-vNext
-
-- **Auctions SDK migration**: the remaining raw `/rebalance` fetches in the
-  auctions views move to SDK reads alongside the version's heavy rebalance
-  testing. Reminder: hybrid stays a curated allowlist (see log 2026-07-21) —
-  do not re-derive from weightControl.
 
 - **Zap max provider-seam regression**: the unavailable-max path is covered at
   the compute (`computeMaxTokenIn` → null) and button seams; a ZapProvider-

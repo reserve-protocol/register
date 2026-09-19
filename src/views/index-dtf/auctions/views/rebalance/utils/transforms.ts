@@ -1,3 +1,4 @@
+import type { FolioVersionState } from '@/state/dtf/atoms'
 import { FolioVersion, PriceControl } from '@reserve-protocol/dtf-rebalance-lib'
 import { Rebalance as RebalanceV4 } from '@reserve-protocol/dtf-rebalance-lib/dist/4.0.0/types'
 import { Rebalance as RebalanceV5 } from '@reserve-protocol/dtf-rebalance-lib/dist/types'
@@ -6,17 +7,32 @@ import { Rebalance as RebalanceV5 } from '@reserve-protocol/dtf-rebalance-lib/di
 // The library enum may be undefined during module initialization in some bundlers
 export const FOLIO_VERSION_V4 = 4 as FolioVersion
 export const FOLIO_VERSION_V5 = 5 as FolioVersion
+export const FOLIO_VERSION_V6 = 6 as FolioVersion
+
+export type IndexDtfWriteVersion = '5.0.0' | '6.0.0'
+
+// The SDK admits exactly these write versions; v4 stays Register-local.
+export function toIndexDtfWriteVersion(
+  version: FolioVersion
+): IndexDtfWriteVersion | undefined {
+  if (version === FOLIO_VERSION_V5) return '5.0.0'
+  if (version === FOLIO_VERSION_V6) return '6.0.0'
+  return undefined
+}
 
 // -------------------------------------------------------------------
 // Version Detection
 // -------------------------------------------------------------------
 
-/**
- * Convert version string to FolioVersion enum
- * v5.x.x → V5, everything else → V4
- */
-export function getFolioVersion(versionString: string): FolioVersion {
-  return versionString.startsWith('5') ? FOLIO_VERSION_V5 : FOLIO_VERSION_V4
+// Majors the rebalance flow handles; pending/unsupported return undefined so no ABI is guessed.
+export function getFolioVersion(
+  state: FolioVersionState
+): FolioVersion | undefined {
+  if (state.status !== 'ready') return undefined
+  if (state.major === 4) return FOLIO_VERSION_V4
+  if (state.major === 5) return FOLIO_VERSION_V5
+  if (state.major === 6) return FOLIO_VERSION_V6
+  return undefined
 }
 
 // -------------------------------------------------------------------
@@ -93,7 +109,7 @@ export function getRebalanceTokens(
   rebalance: RebalanceV4 | RebalanceV5,
   version: FolioVersion
 ): string[] {
-  if (version === FOLIO_VERSION_V5) {
+  if (version !== FOLIO_VERSION_V4) {
     return (rebalance as RebalanceV5).tokens.map((t) => t.token)
   }
   return (rebalance as RebalanceV4).tokens
@@ -104,7 +120,7 @@ export function getRebalanceWeights(
   rebalance: RebalanceV4 | RebalanceV5,
   version: FolioVersion
 ): Array<{ low: bigint; spot: bigint; high: bigint }> {
-  if (version === FOLIO_VERSION_V5) {
+  if (version !== FOLIO_VERSION_V4) {
     return (rebalance as RebalanceV5).tokens.map((t) => t.weight)
   }
   return (rebalance as RebalanceV4).weights
@@ -115,7 +131,7 @@ export function getRebalancePrices(
   rebalance: RebalanceV4 | RebalanceV5,
   version: FolioVersion
 ): Array<{ low: bigint; high: bigint }> {
-  if (version === FOLIO_VERSION_V5) {
+  if (version !== FOLIO_VERSION_V4) {
     return (rebalance as RebalanceV5).tokens.map((t) => t.price)
   }
   return (rebalance as RebalanceV4).initialPrices
@@ -126,7 +142,7 @@ export function getRebalanceInRebalance(
   rebalance: RebalanceV4 | RebalanceV5,
   version: FolioVersion
 ): boolean[] {
-  if (version === FOLIO_VERSION_V5) {
+  if (version !== FOLIO_VERSION_V4) {
     return (rebalance as RebalanceV5).tokens.map((t) => t.inRebalance)
   }
   return (rebalance as RebalanceV4).inRebalance
@@ -137,7 +153,7 @@ export function getRebalanceTimestamps(
   rebalance: RebalanceV4 | RebalanceV5,
   version: FolioVersion
 ): { startedAt: bigint; restrictedUntil: bigint; availableUntil: bigint } {
-  if (version === FOLIO_VERSION_V5) {
+  if (version !== FOLIO_VERSION_V4) {
     return (rebalance as RebalanceV5).timestamps
   }
   const r = rebalance as RebalanceV4

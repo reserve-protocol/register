@@ -28,7 +28,10 @@ const ProposeIndexUpgrade = () => {
   const handleRecentProposalReceipt = useRecentProposalReceipt()
 
   const upgrade =
-    !isLoading && isProposeAllowed && compareVersion(version, '2.0.0') < 0
+    !isLoading &&
+    isProposeAllowed &&
+    version !== undefined &&
+    compareVersion(version, '2.0.0') < 0
 
   const { writeContract, data: hash, isPending } = useWriteContract()
   const { data: receipt, isSuccess } = useWaitForTransactionReceipt({

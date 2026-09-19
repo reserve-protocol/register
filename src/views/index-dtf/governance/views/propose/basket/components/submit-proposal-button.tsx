@@ -1,6 +1,10 @@
 import { Button } from '@/components/ui/button'
 import { chainIdAtom, walletAtom } from '@/state/atoms'
-import { indexDTFAtom, iTokenAddressAtom } from '@/state/dtf/atoms'
+import {
+  folioVersionAtom,
+  indexDTFAtom,
+  iTokenAddressAtom,
+} from '@/state/dtf/atoms'
 import { ROUTES } from '@/utils/constants'
 import { Trans, useLingui } from '@lingui/react/macro'
 import { atom, useAtomValue } from 'jotai'
@@ -40,6 +44,7 @@ const tradingGovAddress = atom((get) => {
 })
 
 const ProposeGatekeeper = memo(() => {
+  const versionState = useAtomValue(folioVersionAtom)
   const govAddress = useAtomValue(tradingGovAddress)
   const indexDTF = useAtomValue(indexDTFAtom)
   const dtf = useAtomValue(iTokenAddressAtom)
@@ -58,6 +63,21 @@ const ProposeGatekeeper = memo(() => {
       calldatas,
     })
   const isOptimisticProposal = proposalType === 'optimistic'
+
+  // Folio 6.0 startRebalance needs the next nonce and a deadline from the
+  // client-bound SDK builder; the atom builder cannot produce it yet.
+  if (versionState.status === 'ready' && versionState.major === 6) {
+    return (
+      <Button
+        disabled
+        className="w-full"
+        variant="default"
+        data-testid="basket-propose-v6-unavailable"
+      >
+        <Trans>Basket proposals for Folio 6.0 are not available yet</Trans>
+      </Button>
+    )
+  }
   const canUseOptimisticProposal =
     isOptimisticProposal && isOptimisticEligible && !hasSelectorError
 

@@ -1,6 +1,6 @@
 ---
 title: SDK
-updated: 2026-07-23
+updated: 2026-09-17
 type: context
 ---
 
@@ -44,12 +44,22 @@ needs an invalidate/prefetch-style react-sdk primitive).
 ## Repo & versioning facts
 
 - pnpm+turbo monorepo: `packages/sdk` (`@reserve-protocol/sdk`) + `packages/react-sdk` (which `export *`s the core — import only from react-sdk) are **version-linked** via changesets and bump together; `packages/dtf-catalog` versions independently. ESM-only.
-- **Register pins react-sdk exactly** (`"0.5.0"`, no caret) — SDK bumps are deliberate, reviewed upgrades, never silent installs.
+- **Register pins react-sdk exactly** (no caret) — SDK bumps are deliberate, reviewed upgrades, never silent installs. The v6 branch is temporarily on `link:../sdk/packages/react-sdk` until the 0.6.0 pair is published; the pin is restored before merge.
 - **Yield namespace is implemented** (`sdk.yield.*`, ~40 `useYieldDtf*` hooks + query options). Long-term migration target for register's hand-rolled yield reads.
-- **Catalog**: `@reserve-protocol/dtf-catalog` (register pins `0.1.3`) is a static JSON registry — synchronous lookups, no fetch; `dtfCatalog`/`indexDtfCatalog`/`yieldDtfCatalog` also re-exported from the SDK barrel (successor to `@reserve-protocol/rtokens`); on address collisions index wins. **Index DTF `status` (active/deprecated) comes from here**, not the API.
-- **Config constants are exported** — `INDEX_DTF_SUBGRAPH_URL`, `YIELD_DTF_SUBGRAPH_URL`, `DEFAULT_API_BASE_URL`, `DEFAULT_RPC_URLS`, `SUPPORTED_CHAINS`, `supportedChainIds`, type `SupportedChainId`. Consolidating register's duplicates onto them is open debt ([[improvements]] #16).
-- **Write ABIs are version-gated, not auto-detected**: `getIndexDtfWriteAbi("5.0.0" | "6.0.0")`; v6-only ops throw for v5. Register must read `folio.version()` and thread it through (see [[index-protocol]] for the version landscape).
-- Local linking: link **both** sdk and react-sdk (react-sdk re-exports the core; mismatched instances duplicate viem/react-query peers) — `docs/local-sdk-development.md`.
+- **Catalog**: `@reserve-protocol/dtf-catalog` (register pins `0.1.5`) is a static JSON registry — synchronous lookups, no fetch; `dtfCatalog`/`indexDtfCatalog`/`yieldDtfCatalog` also re-exported from the SDK barrel (successor to `@reserve-protocol/rtokens`); on address collisions index wins. **Index DTF `status` (active/deprecated) comes from here**, not the API.
+- **Installed 0.5.3 exports** `INDEX_DTF_SUBGRAPH_URL`, `DEFAULT_RPC_URLS`, and `supportedChainIds` through the core barrel and react-sdk re-export (declarations checked 2026-09-15). Register still owns its configured RPC lists; any consolidation must preserve its chain/provider behavior. `SUPPORTED_CHAINS` is not the verified export name.
+- **Write ABIs are version-gated, not auto-detected** (`getIndexDtfWriteAbi` in the SDK source; the candidate's builders take `version` and reject anything but `5.0.0`/`6.0.0`). Register must read `folio.version()` and thread it through (see [[index-protocol]] for the version landscape).
+- Local linking: link react-sdk to the sibling workspace; it resolves core there. Build both packages and verify one set of React/Query/viem peers — `docs/local-sdk-development.md`.
+
+The [v6 integration plan](../plans/index-dtf-v6-integration.md) owns the
+three-chain fork regression, upgrade and native-deployment work; the
+[Register rebalance vertical](../plans/index-dtf-v6-register-rebalance.md)
+landed the rebalance migration (2026-09-17):
+
+- **Version identity**: `indexDTFVersionAtom` is undefined until `useIndexDtfVersion` resolves and resets on navigation; `folioVersionAtom` derives pending / ready (majors 1, 2, 4, 5, 6) / unsupported from exact deployed versions. Nothing selects an ABI or builds calldata while pending.
+- **Rebalance reads** (list, auction history, current/historical state, initial snapshot) come from react-sdk hooks for v5/v6; v4 keeps Register-local reads. Live launch gating is RPC-first (`useIndexDtfLatestAuction`): current nonce and not ended, warm-up included.
+- **Calculations**: v5/v6 open-auction math and start-rebalance args are SDK-owned (`prepareIndexDtfOpenAuctionArgs`, `buildIndexDtfStartRebalanceArgs`) behind Register's price pre-check and volatility presets; v4 stays on the local library. v6 basket proposals (nonce + deadline) are still pending: the atom builder blocks them.
+- **Writes**: launch buttons submit `prepareIndexDtfOpenAuction` / `prepareIndexDtfOpenAuctionUnrestricted` calls (v6 with `useIndexDtfMaxAuctionLength`) and invalidate the RPC-backed keys on receipt. The candidate SDK (0.6.0) requires `version` on every builder and rejects anything but `5.0.0`/`6.0.0`.
 
 ## What it gives you
 
@@ -83,26 +93,26 @@ Local SDK checkout linking: `docs/local-sdk-development.md`.
 
 ## Read before building a flow (`dtf-interface/docs`)
 
-| Building… | Read |
-| --- | --- |
+| Building…                   | Read                                                                                    |
+| --------------------------- | --------------------------------------------------------------------------------------- |
 | Index DTF reads / discovery | `protocol/data-sources.md` → `index-dtf/overview.md` → `index-dtf/discovery-holders.md` |
-| Mint / Redeem / Zap | `index-dtf/issuance-redemption.md` → `integrations/zapper.md` |
-| Governance / proposals | `protocol/governance.md` → `index-dtf/governance.md` → `register/governance-flows.md` |
-| Rebalance / auctions | `index-dtf/rebalance-auctions.md` → `index-dtf/contracts-and-versions.md` |
-| Revenue / fees / vote-lock | `index-dtf/revenue-fees.md` → `index-dtf/vote-lock.md` |
-| Matching Register behavior | `register/interface.md` |
+| Mint / Redeem / Zap         | `index-dtf/issuance-redemption.md` → `integrations/zapper.md`                           |
+| Governance / proposals      | `protocol/governance.md` → `index-dtf/governance.md` → `register/governance-flows.md`   |
+| Rebalance / auctions        | `index-dtf/rebalance-auctions.md` → `index-dtf/contracts-and-versions.md`               |
+| Revenue / fees / vote-lock  | `index-dtf/revenue-fees.md` → `index-dtf/vote-lock.md`                                  |
+| Matching Register behavior  | `register/interface.md`                                                                 |
 
 ## Data-source routing (full table: `docs/data-sources.md`)
 
-| Data | Source |
-| --- | --- |
-| Basket/balances, live supply (incl. pending fee shares) | RPC (`totalAssets()`, `totalSupply()`) |
-| Current price / discovery / vote-lock APR | Reserve API |
-| Index DTF status (active/deprecated) | `@reserve-protocol/dtf-catalog` (static, synchronous) |
-| Metadata, governance history, roles, holders | Index subgraph |
-| **Live** proposal state | RPC (`governor.state()`) — NOT subgraph |
-| **Live** rebalance/auction state | RPC (`getRebalance()`) — NOT subgraph |
-| Historical charts | Reserve API |
+| Data                                                    | Source                                                |
+| ------------------------------------------------------- | ----------------------------------------------------- |
+| Basket/balances, live supply (incl. pending fee shares) | RPC (`totalAssets()`, `totalSupply()`)                |
+| Current price / discovery / vote-lock APR               | Reserve API                                           |
+| Index DTF status (active/deprecated)                    | `@reserve-protocol/dtf-catalog` (static, synchronous) |
+| Metadata, governance history, roles, holders            | Index subgraph                                        |
+| **Live** proposal state                                 | RPC (`governor.state()`) — NOT subgraph               |
+| **Live** rebalance/auction state                        | RPC (`getRebalance()`) — NOT subgraph                 |
+| Historical charts                                       | Reserve API                                           |
 
 ## Top gotchas (full list: `dtf-interface/docs/known-gotchas.md`)
 
@@ -112,4 +122,4 @@ Local SDK checkout linking: `docs/local-sdk-development.md`.
 - Contract versions differ (v5/v6): `startRebalance`/`openAuction`/`bid` signatures vary — don't hardcode an old ABI.
 - `totalSupply()` includes pending fee shares — ignoring them breaks price/share math.
 
-Key feature locations: rebalance v4 `src/views/index-dtf/auctions/views/rebalance/` · governance `src/views/index-dtf/governance/` · issuance `src/views/index-dtf/issuance/` (zapper/manual/direct).
+Key feature locations: rebalance (v4 local, v5/v6 via SDK) `src/views/index-dtf/auctions/views/rebalance/` · governance `src/views/index-dtf/governance/` · issuance `src/views/index-dtf/issuance/` (zapper/manual/direct).

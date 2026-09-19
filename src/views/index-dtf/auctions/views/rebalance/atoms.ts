@@ -3,6 +3,7 @@ import {
   AuctionMetrics,
   WeightRange,
 } from '@reserve-protocol/dtf-rebalance-lib'
+import type { IndexDtfLatestAuction } from '@reserve-protocol/react-sdk'
 import { atom } from 'jotai'
 import { currentRebalanceAtom } from '../../atoms'
 
@@ -67,7 +68,29 @@ export const rebalanceTokenMapAtom = atom<Record<string, Token>>((get) => {
 
 export const refreshNonceAtom = atom(0)
 
+// Latest auction from RPC (v5/v6 via the SDK, protocol semantics: inclusive
+// window and nonce match). `undefined` while unresolved or on v4.
+export const latestAuctionAtom = atom<IndexDtfLatestAuction | null | undefined>(
+  undefined
+)
+// True while the SDK latest-auction read is failing; the launch gate stays closed and says so.
+export const latestAuctionErrorAtom = atom(false)
+
+// Live gating is RPC-first: the indexer lags receipts, so indexed auctions only
+// decide while the RPC read is unresolved (or on v4, which has no SDK read).
+// "Ongoing" is wider than the SDK's biddable `isActive`: an auction of the
+// current nonce that has not ended (warm-up included) blocks a new launch.
 export const isAuctionOngoingAtom = atom((get) => {
+  const latest = get(latestAuctionAtom)
+  if (latest !== undefined) {
+    if (!latest) return false
+    const now = BigInt(Math.floor(Date.now() / 1000))
+    return (
+      latest.rebalanceNonce === latest.currentRebalanceNonce &&
+      now <= latest.endTime
+    )
+  }
+
   const auctions = get(rebalanceAuctionsAtom)
 
   return auctions.some((auction) => {

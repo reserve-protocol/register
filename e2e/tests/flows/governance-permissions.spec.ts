@@ -86,10 +86,11 @@ function overlayProposal(overrides: MockOverrides, mutations: Record<string, unk
 }
 
 // The standard-proposal voting-power read the SDK issues: getVotes(account,
-// timepoint) on the GOVERNOR. At an 'active' clock, the snapshot timepoint
-// (voteStart-1) is the min, so the calldata is deterministic and overridable.
+// timepoint) on the GOVERNOR. react-sdk >= 0.6.0 reads at the proposal snapshot
+// itself (voteStart), matching the governor, so the calldata is deterministic
+// and overridable.
 function seedZeroVotingPower(overrides: MockOverrides, proposal: EnrichedProposal) {
-  const timepoint = BigInt(Number(proposal.voteStart) - 1)
+  const timepoint = BigInt(Number(proposal.voteStart))
   const calldata = encodeFunctionData({
     abi: GET_VOTES_ABI,
     functionName: 'getVotes',

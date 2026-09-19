@@ -13,9 +13,12 @@ Rebalance list (`rebalance-list/`, the AUCTIONS index route) + rebalance detail
 the legacy v2 UI (`legacy/`) renders instead when
 `indexDTFVersionAtom === '2.0.0'`, and also has its own `/auctions/legacy`
 route. The critical split: LIVE rebalance state (is there an active auction, what
-round) comes from **RPC `getRebalance()`** (selector `0xaa3b5568`), auction
-**HISTORY** comes from the **subgraph** (`getRebalances` → `rebalances.json`),
-and per-rebalance **metrics** come from the **API** (`/dtf/rebalance`). A test
+round) comes from **RPC** (`getRebalance()` selector `0xaa3b5568`, plus the
+SDK's `nextAuctionId()`/`auctions(id)` latest-auction read), auction
+**HISTORY** comes from the **subgraph** (`GetIndexDtfRebalances` →
+`rebalances.json`), and per-rebalance **metrics** come from the **API**
+(`/dtf/rebalance`). Version identity is `folioVersionAtom` (pending until the
+SDK resolves `version()`); nothing here reads or encodes while it is pending. A test
 that mocks the wrong layer passes wrongly or fails confusingly — see Traps.
 
 ## Did a diff here — which test?
@@ -84,6 +87,12 @@ Quick loop: `pnpm exec playwright test e2e/tests/smoke/auctions.spec.ts`
 - **Covered** (`flows/auctions-multichain.spec.ts`): historical bucketing +
   API metrics + idle empty active section + in-window active row on
   `bsc/cmc20` and `mainnet/open`.
+- **Covered** (`index-dtf/auctions/version-identity-nav.spec.ts`): the launch
+  button recovers after a direct cmc20 → photon → cmc20 hop through the command
+  menu (container stays mounted, version atom reset, cached same version).
+- **Evidence only** (`index-dtf/auctions/rebalance-evidence.spec.ts`): skipped
+  unless `E2E_EVIDENCE_DIR` is set; captures the launcher's active detail and
+  the list for stage handoffs. Never a gate.
 
 ## Edge cases to keep covered (or consciously skip)
 
@@ -103,11 +112,27 @@ Quick loop: `pnpm exec playwright test e2e/tests/smoke/auctions.spec.ts`
   `auctions-round[data-round]`, derived from the ±40% weight skew over captured
   chain-state. A basket-changing re-capture breaks it opaquely — assert `> 0` or
   document at the assertion (backlogged).
-- The auctions subgraph query is misnamed `getGovernanceStats` in
-  `use-rebalance-auctions.ts` but selects `auctions(...)` — matched by
-  `body.includes('auctions(')` in `e2e/helpers/subgraph.ts` BEFORE the real
-  `governances` branch. Renaming the query requires updating that matcher or the
-  hook silently degrades to `[]`.
+- Rebalance list, auction history and current/historical rebalance state come
+  from `@reserve-protocol/react-sdk` hooks for v5/v6 (`useIndexDtfRebalances`,
+  `useIndexDtfRebalanceAuctions`, `useIndexDtfCurrentRebalance`,
+  `useIndexDtfLatestAuction`); v4 keeps the Register-local reads by decision.
+  The view still stores the string-typed shapes — `utils/sdk-mappers.ts` is the
+  only conversion point. The SDK's auctions query is matched by
+  `body.includes('auctions(')` in `e2e/helpers/subgraph.ts` BEFORE the
+  `governances` branch; the SDK's latest-auction read starts at
+  `nextAuctionId()`, answered `0` by the `*:` wildcard in `e2e/helpers/rpc.ts`.
+- `isAuctionOngoingAtom` is RPC-first: once `latestAuctionAtom` resolves (SDK
+  read at one block) it decides; indexed auctions only decide while it is
+  unresolved or on v4. "Ongoing" is wider than the SDK's biddable `isActive`:
+  an auction of the current nonce that has not ended blocks a launch, warm-up
+  included (the first fork launch stayed enabled for 30 s on `isActive`). Don't
+  gate a write on indexed rows — the indexer lags receipts and re-enables the
+  launch button.
+- Real launches run on the fork lane (`playwright.fork.config.ts`,
+  `.claude/skills/fork-e2e/SKILL.md`): Register reads the production subgraph
+  through `e2e/fork/scripts/subgraph-proxy.mjs`, truncated at the fork block,
+  because an auction the subgraph already knows about switches this view to the
+  running/finished cards and unmounts the launch buttons.
 - Don't "fix" a live-state test by moving `getRebalance` data into the subgraph
   mock (or history into RPC) — the layers are distinct on purpose.
 

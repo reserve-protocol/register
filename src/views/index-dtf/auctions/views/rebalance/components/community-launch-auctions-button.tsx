@@ -1,20 +1,25 @@
 import dtfIndexAbi from '@/abis/dtf-index-abi'
 import { Button } from '@/components/ui/button'
-import { indexDTFAtom } from '@/state/dtf/atoms'
+import { folioVersionAtom, indexDTFAtom } from '@/state/dtf/atoms'
+import {
+  prepareIndexDtfOpenAuctionUnrestricted,
+  useIndexDtfIdentity,
+} from '@reserve-protocol/react-sdk'
 import { parseDuration, parseDurationShort } from '@/utils'
 import { Trans, useLingui } from '@lingui/react/macro'
-import { atom, useAtom, useAtomValue } from 'jotai'
+import { atom, useAtomValue } from 'jotai'
 import { LoaderCircle, MousePointerBan } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { useWaitForTransactionReceipt, useWriteContract } from 'wagmi'
 import { currentRebalanceAtom } from '../../../atoms'
 import {
   isAuctionOngoingAtom,
+  latestAuctionAtom,
   rebalanceAuctionsAtom,
   rebalancePercentAtom,
-  refreshNonceAtom,
 } from '../atoms'
 import useRebalanceParams from '../hooks/use-rebalance-params'
+import useLaunchReceipt from '../hooks/use-launch-receipt'
 import Help from '@/components/ui/help'
 
 const auctionNumberAtom = atom((get) => {
@@ -28,11 +33,17 @@ const CommunityLaunchAuctionsButton = () => {
   const rebalance = useAtomValue(currentRebalanceAtom)
   const rebalancePercent = useAtomValue(rebalancePercentAtom)
   const rebalanceParams = useRebalanceParams()
-  const [refreshNonce, setRefreshNonce] = useAtom(refreshNonceAtom)
   const auctionNumber = useAtomValue(auctionNumberAtom)
+  const identity = useIndexDtfIdentity()
+  const versionState = useAtomValue(folioVersionAtom)
+  const latestAuction = useAtomValue(latestAuctionAtom)
+  const major = versionState.status === 'ready' ? versionState.major : undefined
+  const isSdkVersion = major === 5 || major === 6
+  const isVersionReady =
+    major === 4 || (isSdkVersion && latestAuction !== undefined)
   const [isLaunching, setIsLaunching] = useState(false)
   const { writeContract, isError, isPending, data } = useWriteContract()
-  const { isSuccess } = useWaitForTransactionReceipt({
+  const { isSuccess, data: receipt } = useWaitForTransactionReceipt({
     hash: data,
     chainId: dtf?.chainId,
   })
@@ -47,7 +58,12 @@ const CommunityLaunchAuctionsButton = () => {
   const timeUntilPermissionless = isRestrictedPeriod
     ? restrictedUntil - currentTime
     : 0
-  const isValid = !!rebalanceParams && rebalancePercent > 0 && rebalance && dtf
+  const isValid =
+    !!rebalanceParams &&
+    rebalancePercent > 0 &&
+    rebalance &&
+    dtf &&
+    isVersionReady
   const isNotCommunityLaunch =
     rebalance?.rebalance.availableUntil === rebalance?.rebalance.restrictedUntil
 
@@ -68,24 +84,18 @@ const CommunityLaunchAuctionsButton = () => {
     }
   }, [isRestrictedPeriod, restrictedUntil])
 
-  useEffect(() => {
-    if (isSuccess) {
-      setError(null)
-      // Refresh nonce after 10s
-      let timeout = setTimeout(() => {
-        setRefreshNonce(refreshNonce + 1)
-      }, 1000 * 10)
-      // Remove loading after 15s
-      let launchTimeout = setTimeout(() => {
-        setIsLaunching(false)
-      }, 1000 * 15)
+  useLaunchReceipt(receipt?.blockNumber, () => setIsLaunching(false))
 
-      return () => {
-        clearTimeout(timeout)
-        clearTimeout(launchTimeout)
-      }
-    }
+  useEffect(() => {
+    if (isSuccess) setError(null)
   }, [isSuccess])
+
+  useEffect(() => {
+    if (isError) {
+      setIsLaunching(false)
+      setError(t`Transaction rejected or failed`)
+    }
+  }, [isError])
 
   const handleStartAuctions = () => {
     if (!isValid || !rebalanceParams) return
@@ -94,6 +104,23 @@ const CommunityLaunchAuctionsButton = () => {
       setIsLaunching(true)
       setError(null)
 
+      if (isSdkVersion) {
+        const call = prepareIndexDtfOpenAuctionUnrestricted({
+          address: dtf.id,
+          chainId: identity.chainId,
+          rebalanceNonce: BigInt(rebalance.rebalance.nonce),
+        })
+        writeContract({
+          address: call.contract.address,
+          abi: call.contract.abi,
+          functionName: call.contract.functionName,
+          args: call.contract.args as any,
+          chainId: call.chainId,
+        })
+        return
+      }
+
+      // v4 stays Register-local by decision.
       writeContract({
         address: dtf?.id,
         abi: dtfIndexAbi,
@@ -143,6 +170,7 @@ const CommunityLaunchAuctionsButton = () => {
     <div className="flex flex-col gap-2 p-2">
       <Button
         data-testid="auctions-community-launch-btn"
+        data-ongoing={isAuctionOngoing}
         className="rounded-xl w-full py-6 gap-2"
         disabled={
           !isValid ||

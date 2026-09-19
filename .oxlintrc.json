@@ -9,7 +9,9 @@
     "**/out/**",
     "**/.cache/**",
     "**/coverage/**",
-    "e2e/templates/**"
+    "e2e/templates/**",
+    "test-results-fork/**",
+    "playwright-report-fork/**"
   ],
   "plugins": ["typescript", "unicorn", "oxc", "react", "react-perf"],
   "settings": {

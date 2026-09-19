@@ -1,0 +1,15 @@
+# CI override: no persistent state, everything on tmpfs. fork.sh adds this
+# file automatically when CI is set.
+services:
+  anvil:
+    volumes: !reset []
+    tmpfs:
+      - '/anvil-state:rw,size=${FORK_CI_ANVIL_TMPFS_SIZE:-256m}'
+  ipfs:
+    volumes: !reset []
+    tmpfs:
+      - '/data/ipfs:size=${FORK_CI_IPFS_TMPFS_SIZE:-256m}'
+  postgres:
+    volumes: !reset []
+    tmpfs:
+      - '/var/lib/postgresql/data:size=${FORK_CI_POSTGRES_TMPFS_SIZE:-768m}'

@@ -1,100 +1,46 @@
-import { chainIdAtom } from '@/state/atoms'
-import { INDEX_DTF_SUBGRAPH_URL } from '@/state/chain/atoms/chainAtoms'
-import { useQuery } from '@tanstack/react-query'
-import request, { gql } from 'graphql-request'
+import {
+  useIndexDtfIdentity,
+  useIndexDtfRebalanceAuctions,
+  type IndexDtfAuction,
+} from '@reserve-protocol/react-sdk'
 import { useAtomValue } from 'jotai'
+import { useEffect } from 'react'
 import { currentRebalanceAtom } from '../../../atoms'
-import { Auction, refreshNonceAtom } from '../atoms'
+import { toAuction } from '../../../utils/sdk-mappers'
+import { refreshNonceAtom } from '../atoms'
 import { isRebalanceOngoing } from '../utils'
 
-type Response = {
-  auctions: Auction[]
-}
+const AUCTIONS_POLL_MS = 30_000
 
-const query = gql`
-  query getGovernanceStats($rebalanceId: String!) {
-    auctions(where: { rebalance: $rebalanceId }) {
-      id
-      tokens {
-        address
-        name
-        symbol
-        decimals
-      }
-      weightLowLimit
-      weightSpotLimit
-      weightHighLimit
-      rebalanceLowLimit
-      rebalanceSpotLimit
-      rebalanceHighLimit
-      priceLowLimit
-      priceHighLimit
-      startTime
-      endTime
-      blockNumber
-      timestamp
-      transactionHash
-      bids {
-        id
-        bidder
-        sellToken {
-          address
-          name
-          symbol
-          decimals
-        }
-        buyToken {
-          address
-          name
-          symbol
-          decimals
-        }
-        sellAmount
-        buyAmount
-        blockNumber
-        timestamp
-        transactionHash
-      }
-    }
-  }
-`
+// Stable identity so React Query memoizes the selection (inline selects loop the atom sync).
+const selectAuctions = (auctions: readonly IndexDtfAuction[]) =>
+  auctions.map(toAuction).sort((a, b) => +a.endTime - +b.endTime)
 
 const useRebalanceAuctions = () => {
+  const { chainId } = useIndexDtfIdentity()
   const rebalance = useAtomValue(currentRebalanceAtom)
-  const chainId = useAtomValue(chainIdAtom)
   const refreshNonce = useAtomValue(refreshNonceAtom)
+  const rebalanceId = rebalance?.rebalance.id
+  const availableUntil = rebalance?.rebalance.availableUntil
 
-  return useQuery({
-    queryKey: ['auctions', rebalance?.rebalance.id, refreshNonce],
-    queryFn: async () => {
-      if (!rebalance?.rebalance.id) throw new Error('No rebalance id')
+  const query = useIndexDtfRebalanceAuctions(
+    rebalanceId ? { chainId, rebalanceId } : undefined,
+    {
+      select: selectAuctions,
+      // Only poll while the rebalance window is open; stop on completed/historical.
+      refetchInterval: () =>
+        isRebalanceOngoing(availableUntil, Math.floor(Date.now() / 1000))
+          ? AUCTIONS_POLL_MS
+          : false,
+    }
+  )
 
-      try {
-        const data = await request<Response>(
-          INDEX_DTF_SUBGRAPH_URL[chainId],
-          query,
-          {
-            rebalanceId: rebalance?.rebalance.id,
-          }
-        )
-        return data.auctions.sort((a, b) => {
-          return +a.endTime - +b.endTime
-        })
-      } catch (e) {
-        console.error('error fetching', e)
-        return []
-      }
-    },
-    enabled: !!rebalance?.rebalance.id,
-    // Only poll while the rebalance window is open; stop on completed/historical.
-    refetchInterval: () =>
-      isRebalanceOngoing(
-        rebalance?.rebalance.availableUntil,
-        Math.floor(Date.now() / 1000)
-      )
-        ? 1000 * 30
-        : false,
-  })
+  const { refetch } = query
+  useEffect(() => {
+    if (refreshNonce > 0) refetch()
+  }, [refreshNonce, refetch])
+
+  return query
 }
 
 export default useRebalanceAuctions
