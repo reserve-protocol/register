@@ -1,6 +1,7 @@
 import type { HTMLAttributes } from 'react'
 
 import { cn } from '@/lib/utils'
+import './organic-brand-surface.css'
 
 export const OrganicBrandSurface = ({
   className,

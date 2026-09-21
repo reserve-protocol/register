@@ -1,6 +1,6 @@
 ---
 title: Log
-updated: 2026-09-16
+updated: 2026-09-18
 type: log
 ---
 
@@ -138,3 +138,48 @@ Play-by-play lives in git (PRs #1053/#1054/#1055/#1063, SDK PR #27). Durable out
 
 - The supported handoff is the rendered internal library, typed catalogs, accepted decisions, canonical implementations, concise consumer reference, and behavioral verification. Completed plans, review transcripts, checkpoint receipts, and generated evidence are retired from the working tree; Git history remains the chronology.
 - Design maturity and production adoption remain separate. Navigation, Tables, and Charts have bounded accepted lab baselines; Transactions remain exploratory and paused. Generated browser evidence is local or CI-only under ignored artifact paths.
+
+## 2026-09-18 — Storybook replacement
+
+- Replaced the bespoke internal/standalone lab with 28 Storybook stories, normal prop/theme/viewport controls and a five-test browser suite. Removed obsolete catalogs, simulators, lab-only tests/configuration and 1,072 messages per locale; retained translations and accepted visual decisions are unchanged. Production no longer hosts the lab or globally loads organic-brand demo styles.
+- Fixed uncontrolled GlobalNavigation overflow and the unsupported IconButton `asChild` type; retained focused behavior tests and added reduced-motion handling. Independent cross-reviews found no remaining verified issue. Review corrected a copied chart algorithm and an editable quote whose display could become inconsistent; the chart now shares the exact production tick hook and fixtures mock only chart atoms. Strict HTTP/wallet/WebSocket checks caught a transitive wallet startup that ordinary render assertions missed.
+- Storybook, focused tests, lint, E2E typecheck/helpers, product build/smoke and visual/manager-control checks pass. Full gate still encounters three missing-export errors and six test failures in the unrelated pre-existing untracked hook test; wiki lint reports existing basket-overview drift. Neither is hidden or changed. Engineer review remains required for shared APIs/defaults and production route/style separation; work is uncommitted. No skill changes were justified by this workload.
+
+## 2026-09-18 — Complete Storybook design preservation
+
+- The first representative-only migration omitted useful designer intent. Expanded
+  the library to 272 named stories and all 124 original transaction states, with
+  a source-to-story coverage map embedded in Introduction. Foundations, layouts,
+  navigation, cards/tables, governance/auctions and chart pressure cases remain
+  reviewable. Historical modal alternatives and transaction flows are labeled
+  explorations; lab process catalogs and fake execution engines stay removed.
+- Added standard Docs, Code and axe tooling, individual component entries and
+  supported controls. Verified desktop/phone and light/dark presentations, manager
+  controls, keyboard/focus, long overlays and DTF switching. Use local asset
+  adapters around canonical logos rather than copying their badge/stack geometry.
+- Independent review restored missing auction dimensions, Holdings datasets,
+  partial/constrained charts and Home navigation. Runtime checks caught nested
+  Storybook hooks, transitive wallet imports and remote assets. Both named-story
+  and transaction-state sweeps now enforce HTTP/wallet/WebSocket isolation.
+  Controls reset defaults and initially-open modal focus also have live proof.
+- Storybook build and 10 browser tests pass; focused units 87/87, smoke 59/1 skip,
+  Vite build, lint and E2E TypeScript pass. Full gate still reports only the three
+  unrelated untracked hook-test missing exports; wiki lint retains existing
+  basket-overview drift. Engineer review remains required before merge. No skill
+  changes: the concrete correction is to map preserved visual areas before
+  removing their host, and verify actual render/import behavior during migration.
+
+## 2026-09-21
+
+- Final Storybook review restored missing story-owned transaction keyframes and
+  responsive metadata styles, connected Holdings/chart controls to args, and fixed
+  the overflow chevron. Both review lenses cleared the corrections. Removed eight
+  redundant primitive, duplicate and screenshot-only tests.
+- Fresh verification: 8 Storybook checks across 272 stories and 124 transaction
+  states, staged-source TypeScript and 950 unit tests, 59 smoke passes/1 skip,
+  product build and lint. Live checks covered Controls synchronization, responsive
+  metadata and animations. The unrelated untracked hook test stays out of the
+  commit; workspace gate and basket wiki drift remain documented in the plan.
+- User authorized the new `design-system-storybook` branch and push. Engineer
+  review remains required before merge. No workflow changes: the fixes belong
+  to presentation ownership and verification, not additional process.

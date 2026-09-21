@@ -1,5 +1,5 @@
 import { PriceChartLaunchMarker } from './price-chart-launch-marker'
-import { ChartCandle, locateCandleBucket } from './use-candlestick-data'
+import { type ChartCandle, locateCandleBucket } from './candlestick-data'
 
 type BandScale = ((value: number) => number | undefined) & {
   bandwidth?: () => number

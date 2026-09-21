@@ -1,147 +1,96 @@
 ---
 title: Design System
-updated: 2026-09-18
+updated: 2026-09-21
 type: domain
 sources:
-  - docs/wiki/decisions.md
-  - src/views/internal/design-system/foundation-catalog.ts
-  - src/views/internal/design-system/component-catalog.ts
-  - src/views/internal/design-system/documentation-presentation.ts
-  - src/views/internal/design-system/current-review.ts
+  - .storybook/**
+  - src/stories/**
+  - src/components/design-system-v1/**
+  - src/components/button/**
+  - src/components/icon-button/**
+  - src/components/dialog/**
+  - src/app.css
+  - tailwind.config.ts
 ---
 
 # Design System
 
-This is the entry point for using Register's design system. It intentionally
-contains current usage and authority only; implementation history and review
-artifacts belong in Git history.
+Run `pnpm storybook` to browse the internal component library. Storybook replaces
+`/internal/design-system` and the standalone lab. It renders real components with
+local example data, without the product's wallet, RPC or analytics startup.
+Examples are English-only; production UI remains localized.
 
-## Browse it
+## Use a component
 
-Open `/internal/design-system` for the human-readable library. Foundations,
-Components, and Patterns are continuous references with stable deep links and a
-sidebar that follows the visible section. Component detail pages add usage depth;
-they are not required to see the supported variants and states.
+1. Find its story under `src/stories/` and import the same canonical module.
+2. Check the exported props and the accepted decisions in [[decisions]].
+3. Use the [consumer reference](design-system-reference.md) for visual semantics.
+4. Keep production adoption scoped: an example is not approval to change product
+   copy, money logic, permissions, shared defaults or SDK contracts.
 
-The library is internal and English-only. Product UI remains localized.
+Storybook is a demonstration host, not a second component implementation. Keep
+fixtures small and local. Do not add review dashboards, status catalogs or
+transaction simulators. Existing production `ui/` components retain their APIs
+until their callers are explicitly migrated.
 
-## Read status correctly
+Overview stories import the real price/candlestick bodies and shared pure chart
+helpers. Other chart families retain their original local presentation sources.
+Storybook aliases chart atoms and the token-logo icon atom to local fixtures,
+avoiding wallet startup through application state. Do not copy production chart
+calculations into stories.
+Automatic React prop extraction is disabled because its parser fails on the
+application's generic state graph; supported controls use explicit args/argTypes.
 
-The visible status and typed catalogs describe design maturity. They do not
-claim production adoption.
+## Sources
 
-- **Accepted**: the current visual/interaction baseline for new work in the
-  named scope.
-- **Exploring**: useful review material, but not a default to copy into product.
-- **Not planned**: no canonical V1 result is defined.
+| Need                                      | Owner                                                                   |
+| ----------------------------------------- | ----------------------------------------------------------------------- |
+| Component examples and interactive states | `src/stories/`                                                          |
+| Reusable implementation                   | The canonical module imported by its story                              |
+| Accepted design rationale                 | [[decisions]]                                                           |
+| Consumer guidance                         | [[design-system-reference]]                                             |
+| Semantic colors and theme values          | `src/app.css` and `tailwind.config.ts`                                  |
+| Typography and semantic relationships     | `src/components/design-system-v1/typography.ts` and `semantic-roles.ts` |
+| Layout relationships                      | `src/components/ui/v1-layout-recipes.ts`                                |
+| Browser behavior checks                   | `e2e/storybook/`                                                        |
+| Production-flow coverage                  | `e2e/TEST_MAP.md`                                                       |
 
-`adoptionStatus` is separate. An accepted component can still have no production
-consumer. Existing product behavior also does not become design authority merely
-because it is live.
+When sources conflict, repository safety rules and accepted decisions take
+precedence over examples. Preserve accessible names, focus, keyboard behavior,
+reduced motion and contrast. Use semantic tokens; compositions own width and
+placement. Financial values use Lausanne/tabular numerals, with `Amount`/`bigint`
+retained through money logic. Monospace is for machine identifiers.
 
-## Use it in code or with an LLM
+## Patterns and adoption
 
-1. Find the foundation, component, or pattern in the rendered library.
-2. Find the same ID in `foundation-catalog.ts` or `component-catalog*.ts`.
-3. Check `designAuthority`, `implementationStatus`, `implementationSource`, and
-   `adoptionStatus`.
-4. Import or compose the named implementation. Do not copy JSX from a specimen,
-   state sheet, documentation host, or product screenshot.
-5. Follow only the entry's accepted decisions and current implementation
-   sources. Product evidence preserves behavior and content constraints but does
-   not override an accepted component contract.
-6. Keep production adoption explicit and scoped. A lab result never authorizes
-   a shared-default, token, routing, transaction, or data-contract change.
+Navigation, table and chart stories preserve the original compositions and edge
+states. They do not define a universal page, row or chart API. The Introduction
+page embeds `src/stories/COVERAGE.md`, mapping removed design areas to current
+stories. Foundation/layout studies and historical modal alternatives remain
+browsable; review dashboards and simulation engines stay retired.
 
-Use the [consumer reference](design-system-reference.md) when the catalog and
-implementation do not contain enough practical guidance. Durable design choices
-and rationale live in [Accepted Decisions](../decisions.md).
+Use Docs for usage guidance and source, Controls for supported props and fixture
+states, and Accessibility for axe results. The sidebar separates canonical
+components, product compositions and explorations. Automated scans supplement
+manual keyboard and visual review; they do not certify accessibility.
 
-## Authority order
+Transaction compositions remain exploratory. Distinct issuance, zap, staking and
+vote-lock mechanics stay product-owned. Story states never certify protocol
+behavior, source freshness, financial calculations or production adoption.
 
-When sources disagree, use this order:
-
-1. Repository safety rules in `CLAUDE.md` and `docs/wiki/project.md`.
-2. Accepted decisions in `docs/wiki/decisions.md`.
-3. Typed foundation/component catalog state and the canonical implementation it
-   names.
-4. The consumer reference and component API documentation.
-5. Product implementations as behavior/content evidence.
-6. Lab specimens and exploratory studies.
-
-If resolving a conflict would create new design meaning, stop for human review.
-
-## Primary source map
-
-| Need                                    | Source                                                       |
-| --------------------------------------- | ------------------------------------------------------------ |
-| Human visual reference                  | `/internal/design-system`                                    |
-| Foundation status and relationships     | `foundation-catalog.ts`                                      |
-| Component/pattern status and owner      | `component-catalog.ts` and split catalog files               |
-| Human navigation and presentation order | `documentation-presentation.ts`                              |
-| Accepted rationale                      | `docs/wiki/decisions.md`                                     |
-| Canonical component APIs                | named `implementationSource` and local README                |
-| Design tokens                           | `tailwind.config.ts` and semantic variables in `src/app.css` |
-| Shared visual roles                     | `src/components/design-system-v1/semantic-roles.ts`          |
-| Shared layout relationships             | `src/components/ui/v1-layout-recipes.ts`                     |
-| Current internal review target          | `current-review.ts`                                          |
-| Behavioral coverage                     | `e2e/TEST_MAP.md` and focused tests                          |
-
-Catalog `contextSources` use these roles:
-
-- `authority`: current typed or canonical owner;
-- `accepted-decision`: durable human-reviewed meaning;
-- `implementation`: reusable or specimen implementation;
-- `product-evidence`: behavior, data, and content constraints;
-- `visual-evidence`: composition precedent without authority;
-- `legacy-evidence`: migration/coverage context only.
-
-## Consumption rules
-
-- Use semantic tokens and shared role owners; never hardcode colors.
-- Keep component defaults. Add a supported opt-in variant when the system owns a
-  real recurring need.
-- Let compositions own width and placement. Do not encode page-specific layout
-  into a reusable component.
-- Preserve product mechanics, financial meaning, transaction truth, data sources,
-  permissions, and copy unless separately authorized.
-- Keep `Amount`/`bigint` through money logic and use the SDK/RPC boundaries
-  defined by the product area.
-- Preserve accessible names, focus behavior, keyboard operation, target sizes,
-  reduced motion, and readable contrast.
-- Treat documentation/lab backgrounds as presentation context, not component
-  implementation requirements.
-
-## Patterns
-
-Navigation, Tables, Charts, and Transactions are documented as patterns because
-their useful result depends on composition and product state.
-
-- Navigation, Tables, and Charts have bounded accepted lab baselines. Use the
-  named owners and scope in their catalog entries; do not infer a universal page,
-  row, or chart API.
-- Transactions are an exploratory, paused composition reference. They preserve
-  distinct flow mechanics and are not a universal flow controller or production
-  migration approval.
-- A pattern may contain accepted lower-level components while the overall
-  composition remains exploratory.
+Transaction-only keyframes and container rules stay in the preserved story owners’
+`transaction-presentation.css`; importing production `app.css` is insufficient.
 
 ## Verification
 
-Generated screenshots, measurements, and browser reports are ephemeral and live
-under ignored `test-results/` or CI artifacts, never under documentation.
+- `pnpm storybook:build` creates the static library.
+- `pnpm storybook:test` exercises the library in Chromium using its own server on port 6008; the dev library stays on 6007.
+- `pnpm typecheck`, `pnpm lint` and focused component tests cover source changes.
+- Product integration also runs the relevant existing Playwright product specs.
 
-- `pnpm typecheck`
-- `pnpm design-system:docs:build`
-- `pnpm design-system:review` for the focused browser suite
-- focused unit tests for the component or pattern being consumed
-
-The review suite owns its own local server. Do not reuse or stop another
-developer's preview process.
-
-## Adoption boundary
-
-Production adoption, shared defaults, global tokens, package styling, routing,
-wallet/transaction behavior, and cross-feature migrations require their own
-scope and proportional review. For engineer-review surfaces listed in
-`docs/wiki/project.md`, include an explicit engineer handoff before shipping.
+Inspect default and relevant edge states, mobile/desktop and both themes when
+presentation changes. Use semantic behavior assertions rather than class lists,
+source-code string checks or documentation-copy snapshots. Browser artifacts live
+under ignored `test-results/`; they are not design approval or pixel baselines.
+Engineer review is required for shared defaults, routing and the other integration
+surfaces listed in [[project]].

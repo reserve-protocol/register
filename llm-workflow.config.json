@@ -41,31 +41,24 @@
       ]
     },
     {
-      "name": "design-system-browser",
+      "name": "storybook",
       "globs": [
+        ".storybook/**",
+        "src/stories/**",
         "src/components/design-system-v1/**",
         "src/components/{button,icon-button,checkbox,dialog,entity-identity,metric,lifecycle-status,empty-state}/**",
         "src/components/ui/v1-*",
-        "src/views/internal/design-system/**",
-        "src/styles/**",
+        "src/views/index-dtf/overview/components/charts/**",
         "src/app.css",
         "public/**",
-        "index.html",
-        "tsconfig*.json",
-        "src/utils/chart-performance-colors.ts",
-        "e2e/design-system/**",
-        "e2e/fixtures/**",
-        "e2e/helpers/**",
-        "playwright.design-system.config.ts",
-        "{tailwind,vite,postcss,lingui}.config.*",
+        "e2e/storybook/**",
+        "playwright.storybook.config.ts",
+        "{tailwind,postcss,lingui}.config.*",
         "{package.json,pnpm-lock.yaml,pnpm-workspace.yaml}",
         "llm-workflow.config.json",
         ".github/workflows/design-system.yml"
       ],
-      "commands": [
-        "pnpm exec vitest run e2e/helpers/tests/design-system-*.test.ts",
-        "pnpm design-system:review"
-      ]
+      "commands": ["pnpm storybook:test"]
     },
     {
       "name": "wiki-lint",

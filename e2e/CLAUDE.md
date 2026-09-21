@@ -44,14 +44,12 @@ work and when touching an existing spec.
   New surface → new spec; check the domain CLAUDE.md first.
 - Copy or styling-only diffs → no e2e change (selectors never use copy).
 
-For design-system lab and shared-foundation changes, use the scoped
-[design-system coverage map](TEST_MAP.md). Styling changes
-there require affected rendered proof, not the production copy-only shortcut.
-The owned-port source capture is read-only and excludes private fingerprints.
-The path-filtered design-system CI job runs typecheck, the full unit suite and
-the bounded browser review project; a local pass is not a remote CI result or
-design acceptance. Use an unused alternate port; never stop the user's preview
-to acquire 3005.
+For design-system components and shared-foundation changes, use Storybook and
+`pnpm storybook:test`; see [the coverage map](TEST_MAP.md). Inspect affected
+rendered states when styling changes. The Storybook suite owns its own server;
+never stop a developer preview to acquire its port. Its internal English-only
+examples may use accessible-name queries. Product specs below remain localized
+and keep their existing selector and mock contracts.
 
 ## Ground rules
 

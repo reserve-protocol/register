@@ -12,8 +12,8 @@ import {
 } from './candlestick-launch-marker'
 import { CandlestickTooltip } from './candlestick-tooltip'
 import { chartConfig, type Range } from './price-chart-constants'
-import { ChartCandle, getCandleYDomain } from './use-candlestick-data'
-import { useXAxisTicks } from './use-price-chart-data'
+import { type ChartCandle, getCandleYDomain } from './candlestick-data'
+import { useXAxisTicks } from './use-x-axis-ticks'
 import {
   getYAxisPresentation,
   useDisplayedYAxisLabelWidth,

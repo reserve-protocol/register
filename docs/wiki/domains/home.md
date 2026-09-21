@@ -1,6 +1,6 @@
 ---
 title: Home
-updated: 2026-09-16
+updated: 2026-09-18
 type: domain
 sources:
   - src/views/home/**
@@ -44,6 +44,11 @@ no-op there. On mobile, `use-filtered-index-dtf` requests `exposure` data
 (`useIndexDTFList({ exposure: !isDesktop })`) to render the basket/exposure
 column that desktop shows via hover.
 
+The canonical Discover card lives in `discover-index-dtf-card.tsx`; the parent
+index retains its export. Stories import that leaf and `highlighted-dtfs/feature-card.tsx`
+directly to avoid initializing the list hooks and wallet through feature barrels.
+Presentation and production callers are unchanged.
+
 ## Performance invariants (do not break)
 
 - The packing animation is ref-driven (`computePackingFrame` in
@@ -51,7 +56,7 @@ column that desktop shows via hover.
 - `feature-card.tsx` / `feature-card-header.tsx` are `React.memo` with stable
   props so the charts don't re-render on scroll.
 
-The chart lab alone opts into `PerformanceChart.latestPointMarker`. Its local
+The Storybook chart reference alone opts into `PerformanceChart.latestPointMarker`. Its local
 presentation helper aligns fill/stroke/launch geometry with endpoint clearance;
 the ring follows the host gradient via a supplied ref. Omitted props retain
 timestamp-only launch placement and existing gradient coordinates. This seam

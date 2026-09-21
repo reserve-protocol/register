@@ -1,6 +1,6 @@
 ---
 title: Overview Charts
-updated: 2026-09-15
+updated: 2026-09-18
 type: domain
 sources:
   - src/views/index-dtf/overview/components/charts/**
@@ -28,6 +28,11 @@ and range prefetch enable once RPC supply and current price are defined, even
 when either is `0`. The SDK accepts those zeroes when composing the synthetic
 live point, and the historical request settles the chart instead of leaving
 its skeleton mounted forever.
+
+The pure render dependencies live in `use-x-axis-ticks.ts` and
+`candlestick-data.ts`; data hooks retain re-exports for existing callers.
+Storybook uses the real chart bodies without importing product data startup.
+The extraction preserves calculations; do not create Storybook copies of them.
 
 ## Granularity policy (line chart)
 
@@ -109,42 +114,18 @@ E2E: charts are covered by [[e2e]] overview specs (`overview-price-chart`, `over
 
 See [[sdk]] for why other Index DTF data must go through the react-sdk.
 
-## Lab-only header inspection opt-in
+## Presentation opt-ins awaiting production adoption
 
-`PriceChartBody.onInspect` optionally forwards the selected event's finite
-timestamp/value through `chart-inspection.ts`, hides only the floating Tooltip content,
-and enables Recharts keyboard inspection. All production callers omit it and keep
-the existing tooltip/default behavior. The design-system replay is the sole caller;
-it owns focus, accessible readout, native-pointer exit/blur reset, touch compatibility
-handling and estimate disclosure. Before production
-adoption, engineer review must verify real modes/units, payload lifecycle and host
-integration. No query, SDK, sampling, return or chart-type-default change is implied.
-The generic pressure fixtures do not certify this renderer's reduced motion or
-production edge states. See [[design-system-reference]] for the review boundary.
+`PriceChartBody.onInspect` forwards a selected finite timestamp/value through
+`chart-inspection.ts`, hides the floating tooltip content and enables keyboard
+inspection. `launchMarkerVariant="annotation"`, `latestPointMarker` and
+`yAxisPresentation="compact"` expose additional bounded presentation options.
+`CandlestickChartBody.tooltipContent` accepts a custom OHLC tooltip and enables
+keyboard inspection while preserving the selected touch index.
 
-The lab also opts into `PriceChartBody.launchMarkerVariant="annotation"`: plain
-12px V1 launch text and a separate supporting estimate caption beneath the same
-dashed timestamp line. No launch date, range or series segmentation change.
-Omitted variants retain the original pill for production line/candle callers;
-Home's interactive token marker is unchanged. Check long translations and
-edge-of-domain placement before production adoption.
-
-`CandlestickChartBody.tooltipContent` is an optional Recharts content element.
-Only the lab passes its compact V1 OHLC surface; omitted values retain the
-original `CandlestickTooltip` and production interaction defaults unchanged.
-For this opt-in, the body also enables Recharts keyboard inspection and records
-the actual pressed candle's `activeTooltipIndex` as the Tooltip `defaultIndex`.
-That keeps all four OHLC fields on keyboard navigation and prevents focus from
-resetting a stable touch selection to the first candle. September 15 evidence
-passed focused keyboard/touch 2/2, protected geometry/hover 5/5, the full
-candlestick specification 12/12 and the integrated chart matrix 86/86. Validate
-payload injection, containment, localization and host behavior before production
-adoption; current evidence is linked from [[design-system-reference]].
-
-The lab-only `latestPointMarker` and `yAxisPresentation="compact"` opt-ins
-fit the line/candle label gutter and use actual renderer coordinates for one
-line endpoint or selected-point marker. Optional user-space gradient inputs
-keep its fill aligned with the line. Mouse exit resets selection; touch release
-retains it. Omitted props preserve existing axes, gradients and active dots.
-These are presentation seams requiring engineer review before adoption, not
-live-price guarantees or fixes to candle inspection.
+These options originated in the retired design-system lab. Production callers
+retain their existing defaults. Storybook examples and the original studies at
+commit `2bfca0d1c` are presentation evidence, not proof of financial calculations,
+source freshness, real-mode payload handling or production adoption. Before
+adoption, engineer review must check units, localized labels, containment, pointer/
+touch/keyboard behavior and host integration. See [[design-system-reference]].

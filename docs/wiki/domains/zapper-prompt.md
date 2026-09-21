@@ -89,8 +89,8 @@ the current session means "tomorrow" and uses the generic fallback copy).
 - `ZapperWrapper` keeps one mounted package element across connected and
   disconnected wallet states; changing the element type remounts an in-flight
   transaction. Its current package evidence is versioned product input, not
-  authority to destructively replace still-valid Design System V1 lab states.
+  authority to change the accepted design-system presentation.
 - Deep-liquidity search and force-mint settings are locked off only for the
   explicit featured BSC DTF allowlist in `locked-zap-settings.ts`; that product
-  constraint should remain a distinct lab state when it materially changes the
-  visible flow rather than becoming the assumed default for every Zapper.
+  constraint must stay explicit in product tests and relevant examples, rather
+  than becoming the assumed default for every Zapper.

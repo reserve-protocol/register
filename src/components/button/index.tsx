@@ -83,7 +83,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     const unavailable = disabled && !loading
     const asChildUnavailable = asChild && (disabled || loading)
     const effectiveLeadingIcon = loading ? (
-      <LoaderCircle className="animate-spin" />
+      <LoaderCircle className="animate-spin motion-reduce:animate-none" />
     ) : (
       leadingIcon
     )

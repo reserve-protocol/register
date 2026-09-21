@@ -4,7 +4,6 @@ import react from '@vitejs/plugin-react'
 import { viteStaticCopy } from 'vite-plugin-static-copy'
 import viteTsconfigPaths from 'vite-tsconfig-paths'
 import { defineConfig } from 'vitest/config'
-import { resolve } from 'node:path'
 
 const isTest = process.env.NODE_ENV === 'test' || process.env.VITEST
 const isDev = process.env.NODE_ENV === 'development'
@@ -48,13 +47,6 @@ export default defineConfig({
     outDir: 'build',
     sourcemap: true,
     rollupOptions: {
-      input: {
-        main: resolve(process.cwd(), 'index.html'),
-        chartMobilePreview: resolve(
-          process.cwd(),
-          'src/views/internal/design-system/charts/mobile-preview.html'
-        ),
-      },
       output: {
         manualChunks: (id) => {
           if (!id.includes('node_modules')) return undefined

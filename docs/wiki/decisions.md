@@ -44,13 +44,6 @@ The "choppy charts" task was solved by granularity policy, not by smoothing: the
 
 Every prompt was paying full-stage cost. Audit showed the mechanical gate is ~32s total (kept as the floor); the real cost was spawned reviewer pairs, double gate runs, visual evidence, and wiki ingest applied to diffs of any size. `skills/workflow.md` § Calibrate: Radius × Size now separates two independent questions: **blast radius** (how far can it break — buys checks and review) and **work size** (how much work — buys ceremony). Four profiles: **touch-up** (trivial+isolated: scoped verify + self-review), **low** (contained slice — button, visual change, in-domain fix: + self-review through fired lenses, eyeball if rendered output changed), **medium** (wide radius, modest size — the shared-machinery bugfix: one stage with spawned reviewers, full gate, one row, ingest only stale pages; no plan/phases), **high** (multi-phase or cross-package: plan → stages, whole-feature review at the end). The axes are the point: collapsing them into one ladder over-processes small risky fixes and under-reviews big "simple" ones. A fired lens names what to check, not who checks it — reviewer pairs spawn at medium/high only. `scope.mjs` prints per-axis mechanical signals (risk lenses → radius, >5 files → size) plus a profile hint, and `gate-equivalent: yes` when a scoped run covered every gate command (it then counts as the closeout gate). When debating two profiles, take the heavier one; the ledger-drift lint is the backstop against profile abuse. Kit and register stay byte-identical on kit-owned files. Follow-up guardrails (same day): ledger rows are pointers, not narratives — wiki-lint caps them at `wiki.ledgerRowMaxChars` (700); downgrades below a fired radius signal must be stated with a reason; profile boundaries change only on misfires recorded in [[log]].
 
-## 2026-08-07 — Design-system v1 uses an in-app lab and independent progress gates
-
-The four-week facelift starts with a contained in-app lab rather than Storybook or a framework migration. Tailwind, Radix, CVA, and the local shadcn-style primitives remain the implementation base while foundations and component families evolve. The project develops one visual direction iteratively rather than producing parallel alternatives, so the lab has no visual-directions comparison section. It also does not duplicate full product compositions: real local golden screens are the canonical pressure-test surface, using deterministic fixtures when live data cannot provide stable edge states. The tracker keeps inventory, definition, lab implementation, representative application, design review, production use, and verification separate so visible work cannot imply approval or adoption. Storybook stays deferred until the lab exposes a concrete unmet need; current usage and authority live in the [design-system domain guide](domains/design-system.md).
-
-## 2026-08-11 — The lab is a routed capability map, not a gallery or fixed backlog
-
-Foundations, Components, and real-product Screens are the lab's primary routed categories; the full project tracker is secondary under Project Status. Navigation links directly to category landing pages—the catalogs are already laid out there, so dropdowns would only duplicate information and complicate small-screen access. Expected system capabilities appear before audit so the empty structure itself guides the work, but catalog inclusion does not commit v1 to building a component. Missing items remain clickable and explain what they do, why their output is absent, and which decisions are open; disabled navigation would hide the information needed to resolve them. Shadcn, Radix, and general interaction-system practice inform the initial vocabulary, while Register's audit and design decisions determine which slots are defined, combined, or marked not needed. Catalog maturity, rendered output, and individual definition decisions remain separate. Foundation detail pages also keep current evidence, provisional candidate direction, and accepted v1 definition as distinct layers, so useful source review can enter the lab without masquerading as approval. Real local product routes, not simulated compositions, are the final pressure-test surface.
 
 ## 2026-08-13 — Modal widths follow content roles; workflows do not resize between states
 
@@ -467,24 +460,6 @@ trigger. Route taxonomy, live DTF inventory and ranking, domain-event sourcing,
 analytics, account-menu behavior, navigation-specific geometry promotion, and
 production adoption remain outside this acceptance.
 
-## 2026-08-27 — Design-system context routes through active owners
-
-The commonly loaded V1 plan now owns only the current goal, precedence,
-operating model, state, frontier, risks, and active synchronization; its former
-chronology remains load-on-demand history. The design-system domain page is a
-concise router to typed foundation/component catalogs, canonical
-implementations, accepted decisions, Current Review, product evidence, and
-adoption boundaries; its former detailed corpus remains an on-demand reference.
-
-Component groups declare actual typed foundation IDs. Selected high-value
-catalog entries declare source roles for current authority, accepted decisions,
-implementation, strong visual evidence, current product/behavior evidence, and
-legacy coverage. These roles improve discovery without scoring evidence or
-promoting it. Register-specific surface, financial-type, verification-cadence,
-and authorized-redesign rules live in `docs/wiki/project.md` as explicit
-overrides to reusable kit defaults. No design decision, transaction UI,
-production adoption, reusable Skill, or workflow changed.
-
 ## 2026-08-27 — Canonical-first ownership resolves by semantic specificity
 
 Canonical-first does not mean that the broadest generic canonical component
@@ -651,8 +626,8 @@ Do not infer a universal Table/Row API, new shared defaults, global pill geometr
 approval, chart acceptance or production adoption. Missing/failed data integration,
 real pagination/recovery and the central engineering register remain separate.
 
-Current Review moves to the prepared first chart slice; tables remain available
-for later corrections without reopening their entire visual review.
+The original table studies remain available at commit `2bfca0d1c`; later
+corrections may reopen a bounded part of their visual baseline.
 
 ## 2026-09-16 — Current chart work approved for now
 
@@ -670,6 +645,22 @@ palette. Provisional source, palette, stress-fixture and opt-in dependencies
 remain adoption constraints. Engineer review stays deferred to project closeout
 or a separately authorized production-adoption slice.
 
-Current Review is empty after this decision. No next component, composition,
-route, candidate, evidence package or plan is selected or prepared; further
-design-system work begins only after an explicit human choice.
+The original chart studies remain available at commit `2bfca0d1c`. The Storybook
+cleanup preserves these design decisions without retaining every study as an
+active application.
+
+## 2026-09-18 — Storybook replaces the bespoke design-system lab
+
+The user authorized removing the lab's excess infrastructure and moving component
+review into Storybook. Real canonical components, accepted visual decisions and
+useful behavioral checks remain; catalogs, review/status dashboards, parallel
+transaction simulators and the in-product demonstration route are removed.
+Storybook uses local examples with theme/viewport controls and a small Playwright
+suite. It is the only active demonstration host, so changes do not need duplicate
+lab and Storybook implementations. Product primitives keep their existing APIs
+until callers are explicitly migrated.
+
+Earlier decisions refer to the lab as the context in which visual choices
+were accepted. Those choices remain valid; the old host, catalogs, source paths
+and review machinery are historical evidence at commit `2bfca0d1c`, not current
+usage instructions. [[design-system]] owns current commands and source locations.

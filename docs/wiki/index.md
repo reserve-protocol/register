@@ -22,7 +22,7 @@ One line per page. Agents: start here, follow links, keep this list current on i
 
 ## Domains
 
-- [[design-system]] — concise V1 authority router: foundations, components, Current Review, evidence roles, and adoption boundaries
+- [[design-system]] — Storybook usage, canonical component ownership, verification and adoption boundaries
 - [[design-system-reference]] — accepted design-system usage guidance for foundations, components, and complex patterns; load on demand
 - [[zapper-prompt]] — informational Ondo-market prompt beside the instant zapper: variant priority, latch invariants, capacity gating, and host constraints
 - [[referral]] — influencer campaign attribution: ?referral= capture, last-touch Mixpanel super property, wallet↔code POST to reserve-api; conversions settled on-chain, out of scope

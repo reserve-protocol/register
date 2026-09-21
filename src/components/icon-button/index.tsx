@@ -5,7 +5,7 @@ import { cn } from '@/lib/utils'
 
 export interface IconButtonProps extends Omit<
   ButtonProps,
-  'children' | 'leadingIcon' | 'trailingIcon'
+  'asChild' | 'children' | 'leadingIcon' | 'trailingIcon'
 > {
   label: string
   icon: ReactNode

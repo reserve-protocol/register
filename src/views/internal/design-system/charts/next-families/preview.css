@@ -1,8 +1,0 @@
-html,
-body,
-#root,
-#root > div {
-  height: auto;
-  min-height: 100%;
-  overflow: visible;
-}

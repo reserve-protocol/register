@@ -7,17 +7,8 @@ import Header from './header'
 // Lazy so visitors who never open it don't pay for the chat bundle.
 const DtfChat = lazy(() => import('@/components/dtf-chat'))
 
-/**
- * Application Layout
- *
- * @param children - required
- * @returns {JSX.Element}
- */
 const Layout = ({ children }: { children: ReactNode }) => {
   const { pathname } = useLocation()
-  const isDesignSystem =
-    pathname === '/internal/design-system' ||
-    pathname.startsWith('/internal/design-system/')
   const isIndexDtfOverview =
     pathname.includes('/index-dtf/') && pathname.endsWith('/overview')
 
@@ -28,15 +19,13 @@ const Layout = ({ children }: { children: ReactNode }) => {
         isIndexDtfOverview && 'bg-secondary sm:bg-transparent'
       )}
     >
-      {!isDesignSystem && <Header />}
+      <Header />
       <div id="app-container" className="overflow-auto  flex-grow">
         {children}
       </div>
-      {!isDesignSystem && (
-        <Suspense fallback={null}>
-          <DtfChat />
-        </Suspense>
-      )}
+      <Suspense fallback={null}>
+        <DtfChat />
+      </Suspense>
     </div>
   )
 }

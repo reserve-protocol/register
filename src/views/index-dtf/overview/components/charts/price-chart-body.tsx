@@ -33,7 +33,7 @@ import { renderPriceChartDefs } from './price-chart-defs'
 import { PriceChartLaunchMarker } from './price-chart-launch-marker'
 import { renderPriceChartSeries } from './price-chart-series'
 import { PriceTooltip, YieldTooltip } from './price-chart-tooltips'
-import { useXAxisTicks } from './use-price-chart-data'
+import { useXAxisTicks } from './use-x-axis-ticks'
 import { inspectionFromPayload, type ChartInspection } from './chart-inspection'
 import {
   ChartLatestPointMarker,

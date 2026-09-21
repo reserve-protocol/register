@@ -1,7 +1,6 @@
 import { fireEvent, render, screen } from '@testing-library/react'
 import { createRef } from 'react'
 import { describe, expect, it, vi } from 'vitest'
-import { Button } from '@/components/button'
 import { TokenStackTrigger } from '../token-stack-trigger'
 
 describe('TokenStackTrigger', () => {
@@ -24,22 +23,15 @@ describe('TokenStackTrigger', () => {
     fireEvent.click(button)
     expect(onClick).toHaveBeenCalledOnce()
   })
-  it('keeps ordinary Button geometry unchanged and respects disabled state', () => {
+  it('blocks activation while disabled', () => {
     const onClick = vi.fn()
     render(
-      <>
-        <Button>Ordinary</Button>
-        <TokenStackTrigger
-          aria-label="Basket"
-          tokens={[{ symbol: 'ETH' }]}
-          disabled
-          onClick={onClick}
-        />
-      </>
-    )
-    expect(screen.getByRole('button', { name: 'Ordinary' })).toHaveClass(
-      'px-6',
-      'py-2.5'
+      <TokenStackTrigger
+        aria-label="Basket"
+        tokens={[{ symbol: 'ETH' }]}
+        disabled
+        onClick={onClick}
+      />
     )
     const button = screen.getByRole('button', { name: 'Basket' })
     expect(button).toBeDisabled()

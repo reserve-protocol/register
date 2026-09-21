@@ -100,22 +100,6 @@ export const DrawerContent = forwardRef<
 
 DrawerContent.displayName = 'DrawerContent'
 
-export const DrawerSurface = ({
-  className,
-  ...props
-}: HTMLAttributes<HTMLDivElement>) => (
-  <DialogPrimitive.Root>
-    <div
-      data-testid="canonical-drawer-surface"
-      className={cn(
-        'flex h-[32rem] w-full max-w-[512px] flex-col overflow-hidden bg-card p-2 shadow-lg',
-        className
-      )}
-      {...props}
-    />
-  </DialogPrimitive.Root>
-)
-
 export interface DrawerHeaderProps extends HTMLAttributes<HTMLDivElement> {
   action?: ReactNode
 }

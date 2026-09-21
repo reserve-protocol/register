@@ -389,7 +389,7 @@ export const GlobalNavigation = ({
   overflowAriaLabel,
   overflowDestinations = [],
   overflowLabel,
-  overflowOpen = false,
+  overflowOpen,
 }: GlobalNavigationProps) => {
   return (
     <header
@@ -413,9 +413,8 @@ export const GlobalNavigation = ({
                   type="button"
                   data-testid="global-navigation-overflow-trigger"
                   className={cn(
-                    `flex h-10 shrink-0 items-center gap-2 whitespace-nowrap rounded-full px-4 text-sm font-medium transition-colors duration-120 focus-visible:outline-none ${roles.interaction.subtleHover}`,
-                    roles.focus.visibleInset,
-                    overflowOpen && `${roles.surface.selected} text-primary`
+                    `group flex h-10 shrink-0 items-center gap-2 whitespace-nowrap rounded-full px-4 text-sm font-medium transition-colors duration-120 focus-visible:outline-none data-[state=open]:bg-accent/60 data-[state=open]:text-primary ${roles.interaction.subtleHover}`,
+                    roles.focus.visibleInset
                   )}
                 >
                   {overflowLabel}
@@ -423,7 +422,7 @@ export const GlobalNavigation = ({
                     aria-hidden="true"
                     className={cn(
                       'size-4 transition-transform duration-180 motion-reduce:transition-none',
-                      overflowOpen && 'rotate-180'
+                      'group-data-[state=open]:rotate-180'
                     )}
                     strokeWidth={1.5}
                   />

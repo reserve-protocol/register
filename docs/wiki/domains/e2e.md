@@ -1,11 +1,11 @@
 ---
 title: E2E Suite
-updated: 2026-09-17
+updated: 2026-09-18
 type: domain
 sources:
   - e2e/**
   - playwright.config.ts
-  - playwright.design-system*.config.ts
+  - playwright.storybook.config.ts
   - .github/workflows/playwright.yml
   - .github/workflows/design-system.yml
 ---
@@ -104,29 +104,12 @@ change (the domain guides' diff→test tables name the spec). An unmocked-call
 failure names the function + the helper to model it in (`e2e/CLAUDE.md` has the
 boundary map + new-test recipe).
 
-The internal design-system lab is a separate evidence surface under
-`e2e/design-system/`, not product-route acceptance. `lab.spec.ts` retains the
-route, catalog, foundation, and component contracts; dedicated
-`*-lab-regressions` and `*-source-capture` suites own the growing chart, table,
-Earn, Portfolio, governance, auction, and current-rebalance evidence. A green
-isolated candidate does not certify production adoption; exact coverage and
-non-claims live in `e2e/TEST_MAP.md`.
-
-The provider-free documentation entry adds isolated Components, Patterns,
-Foundations, standalone-runtime, and collaboration-readiness configurations.
-Its focused browser seams pin direct/reloaded anchors, canonical destination
-links, provider isolation, responsive presentation, and shareability behavior;
-the in-app documentation-shell spec remains a compatibility check. None is a
-substitute for design acceptance or production-route adoption evidence.
-
-`pnpm design-system:review` selects only those regression/capture suites through
-the separate `design-system-review` project. It runs on an owned port (3022 by
-default), never reuses the user's preview, and is
-workflow-routed through the path-filtered PR/manual design-system job alongside
-typecheck and the full unit suite, with 30-day artifacts. Linux CI captures
-viewport evidence and behavior as ephemeral artifacts; generated captures and
-pixel baselines are not stored in Git. The main production test configuration
-still owns port 3005.
+The component library uses `e2e/storybook/` and `playwright.storybook.config.ts`.
+`pnpm storybook:test` runs against the static Storybook build with an owned local
+server. It verifies component interactions and runtime isolation, independently
+of product-route acceptance. The path-filtered design-system workflow builds
+Storybook and runs this suite. See [[design-system]] for component usage.
+The product configuration retains its existing port and mocks.
 
 ## Maintenance rules
 

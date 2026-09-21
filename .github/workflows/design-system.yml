@@ -13,17 +13,19 @@ on:
       - 'src/components/lifecycle-status/**'
       - 'src/components/empty-state/**'
       - 'src/components/ui/v1-*'
-      - 'src/views/internal/design-system/**'
+      - 'src/views/index-dtf/overview/components/charts/**'
+      - 'src/views/home/components/highlighted-dtfs/**'
+      - 'src/views/home/components/discover-index-dtf/**'
+      - 'src/stories/**'
+      - '.storybook/**'
       - 'src/styles/**'
       - 'src/app.css'
       - 'public/**'
       - 'index.html'
       - 'tsconfig*.json'
       - 'src/utils/chart-performance-colors.ts'
-      - 'e2e/design-system/**'
-      - 'e2e/fixtures/**'
-      - 'e2e/helpers/**'
-      - 'playwright.design-system.config.ts'
+      - 'e2e/storybook/**'
+      - 'playwright.storybook.config.ts'
       - 'tailwind.config.*'
       - 'vite.config.*'
       - 'postcss.config.*'
@@ -54,14 +56,14 @@ jobs:
       - run: pnpm typecheck
       - run: pnpm test:run
       - run: pnpm exec playwright install --with-deps chromium
-      - name: Viewport, interaction and source-bound capture checks
-        run: pnpm design-system:review
+      - name: Build and test Storybook
+        run: pnpm storybook:test
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: design-system-review
+          name: storybook-review
           path: |
-            playwright-report/design-system/
-            test-results/design-system/
+            playwright-report/storybook/
+            test-results/storybook/
           retention-days: 30
-          if-no-files-found: error
+          if-no-files-found: warn

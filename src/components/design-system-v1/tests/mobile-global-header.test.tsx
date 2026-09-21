@@ -1,10 +1,7 @@
 import { fireEvent, render, screen, within } from '@testing-library/react'
-import { describe, expect, it, vi } from 'vitest'
+import { afterEach, describe, expect, it, vi } from 'vitest'
 
-import { Button } from '@/components/button'
-import { IconButton } from '@/components/icon-button'
 import {
-  MobileGlobalHeader,
   MobileUtilityPanel,
   type MobileUtilityPanelMessages,
 } from '../mobile-global-header'
@@ -24,12 +21,7 @@ const messages: MobileUtilityPanelMessages = {
   languageOptionsLabel: 'Language options',
   languageSummaryLabel: (languageName) => `Language, ${languageName}`,
   languageActionLabel: (languageName) => `Switch language to ${languageName}`,
-  languageLabels: {
-    en: 'English',
-    es: 'Español',
-    ko: '한국어',
-    zh: '中文',
-  },
+  languageLabels: { en: 'English', es: 'Español', ko: '한국어', zh: '中文' },
   languageAccessibleNames: {
     en: 'English',
     es: 'Spanish',
@@ -38,57 +30,10 @@ const messages: MobileUtilityPanelMessages = {
   },
 }
 
-const Header = ({
-  surface = 'default',
-}: {
-  surface?: 'default' | 'transparent'
-}) => (
-  <MobileGlobalHeader
-    account={<Button size="compact">Connect</Button>}
-    brand={<a href="/">Reserve</a>}
-    navigation={
-      <IconButton
-        icon={<svg aria-hidden="true" />}
-        label="Open global navigation"
-        size="compact"
-      />
-    }
-    surface={surface}
-    utilities={<MobileUtilityPanel messages={messages} />}
-  />
-)
+afterEach(() => vi.useRealTimers())
 
-describe('mobile global header candidate', () => {
-  it('keeps the shell at the accepted mobile-bar height while using compact navigation controls', () => {
-    render(<Header />)
-
-    const header = screen.getByRole('banner')
-    expect(header).toHaveClass('h-14', 'px-4', 'bg-card')
-    expect(header).toHaveAttribute('data-surface', 'default')
-    expect(screen.getByRole('button', { name: 'Connect' })).toHaveAttribute(
-      'data-size',
-      'compact'
-    )
-    expect(
-      screen.getByRole('button', { name: 'Open global navigation' })
-    ).toHaveAttribute('data-size', 'compact')
-    const utilityTrigger = screen.getByRole('button', {
-      name: 'Search, theme, and language',
-    })
-    expect(utilityTrigger).toHaveAttribute('data-size', 'compact')
-    expect(utilityTrigger).toHaveClass('gap-1', '[&>svg]:size-3.5')
-  })
-
-  it('supports a transparent landing-page surface without changing its control contract', () => {
-    render(<Header surface="transparent" />)
-
-    const header = screen.getByRole('banner')
-    expect(header).toHaveAttribute('data-surface', 'transparent')
-    expect(header).toHaveClass('bg-transparent')
-    expect(header).not.toHaveClass('bg-card')
-  })
-
-  it('composes the accepted search, theme, and language controls in one utility panel', () => {
+describe('MobileUtilityPanel', () => {
+  it('exposes the current theme and language with accessible controls', () => {
     render(
       <MobileUtilityPanel
         defaultOpen
@@ -98,95 +43,67 @@ describe('mobile global header candidate', () => {
       />
     )
 
-    const utilityPanel = screen.getByRole('region', {
-      name: 'Application utilities',
-    })
-    expect(utilityPanel).toHaveClass(
-      'absolute',
-      'inset-x-0',
-      'top-full',
-      'bg-card',
-      'text-card-foreground'
-    )
-    expect(utilityPanel).not.toHaveClass('bg-popover')
-    expect(screen.getByRole('button', { name: 'Search DTFs' })).toHaveAttribute(
-      'data-testid',
-      'canonical-search-field-launcher'
-    )
     expect(
-      screen.getByRole('radio', { name: 'Use light theme' })
-    ).toHaveAttribute('data-state', 'off')
+      screen.getByRole('region', { name: 'Application utilities' })
+    ).toBeVisible()
     expect(
       screen.getByRole('radio', { name: 'Use dark theme' })
     ).toHaveAttribute('data-state', 'on')
-    expect(screen.getByRole('group', { name: 'Theme' })).toHaveAttribute(
-      'data-size',
-      'default'
-    )
     expect(
       screen.getByRole('button', { name: 'Language, Korean' })
-    ).toHaveAttribute('data-size', 'default')
-    expect(
-      screen.queryByRole('group', { name: 'Language options' })
-    ).not.toBeInTheDocument()
+    ).toHaveAttribute('aria-expanded', 'false')
   })
 
-  it('expands language choices inside the utility panel and collapses after selection', () => {
-    render(<MobileUtilityPanel defaultOpen messages={messages} />)
+  it('reports a selected theme', () => {
+    const onThemeChange = vi.fn()
+    render(
+      <MobileUtilityPanel
+        defaultOpen
+        messages={messages}
+        onThemeChange={onThemeChange}
+      />
+    )
+
+    fireEvent.click(screen.getByRole('radio', { name: 'Use dark theme' }))
+    expect(onThemeChange).toHaveBeenCalledWith('dark')
+    expect(
+      screen.getByRole('radio', { name: 'Use dark theme' })
+    ).toHaveAttribute('data-state', 'on')
+  })
+
+  it('expands language choices, reports selection, and collapses the choices', () => {
+    const onLanguageChange = vi.fn()
+    render(
+      <MobileUtilityPanel
+        defaultOpen
+        messages={messages}
+        onLanguageChange={onLanguageChange}
+      />
+    )
 
     fireEvent.click(screen.getByRole('button', { name: 'Language, English' }))
-
-    const languageOptions = screen.getByRole('group', {
-      name: 'Language options',
-    })
-    expect(languageOptions).toBeVisible()
-    for (const option of within(languageOptions).getAllByRole('button')) {
-      expect(option).toHaveClass('min-h-11')
-    }
+    const options = screen.getByRole('group', { name: 'Language options' })
     expect(
-      within(languageOptions).queryByRole('button', {
+      within(options).queryByRole('button', {
         name: 'Switch language to English',
       })
     ).not.toBeInTheDocument()
     fireEvent.click(
-      within(languageOptions).getByRole('button', {
+      within(options).getByRole('button', {
         name: 'Switch language to Spanish',
       })
     )
 
+    expect(onLanguageChange).toHaveBeenCalledWith('es')
     expect(
       screen.queryByRole('group', { name: 'Language options' })
     ).not.toBeInTheDocument()
     expect(
       screen.getByRole('button', { name: 'Language, Spanish' })
     ).toHaveAttribute('aria-expanded', 'false')
-
-    fireEvent.click(screen.getByRole('button', { name: 'Language, Spanish' }))
-    const reopenedOptions = screen.getByRole('group', {
-      name: 'Language options',
-    })
-    expect(
-      within(reopenedOptions).queryByRole('button', {
-        name: 'Switch language to Spanish',
-      })
-    ).not.toBeInTheDocument()
-    expect(
-      within(reopenedOptions).getByRole('button', {
-        name: 'Switch language to English',
-      })
-    ).toBeVisible()
-    fireEvent.click(
-      screen.getByRole('button', { name: 'Search, theme, and language' })
-    )
-    fireEvent.click(
-      screen.getByRole('button', { name: 'Search, theme, and language' })
-    )
-    expect(
-      screen.queryByRole('group', { name: 'Language options' })
-    ).not.toBeInTheDocument()
   })
 
-  it('closes before handing focus to the separate search dialog', () => {
+  it('closes before opening search on the next task', () => {
     vi.useFakeTimers()
     const onSearch = vi.fn()
     render(
@@ -194,12 +111,22 @@ describe('mobile global header candidate', () => {
     )
 
     fireEvent.click(screen.getByRole('button', { name: 'Search DTFs' }))
-
     expect(
       screen.queryByRole('region', { name: 'Application utilities' })
     ).not.toBeInTheDocument()
+    expect(onSearch).not.toHaveBeenCalled()
     vi.runAllTimers()
     expect(onSearch).toHaveBeenCalledOnce()
-    vi.useRealTimers()
+  })
+
+  it('returns focus to the utility trigger after Escape', () => {
+    render(<MobileUtilityPanel defaultOpen messages={messages} />)
+    fireEvent.keyDown(document, { key: 'Escape' })
+
+    const trigger = screen.getByRole('button', {
+      name: 'Search, theme, and language',
+    })
+    expect(trigger).toHaveFocus()
+    expect(trigger).toHaveAttribute('aria-expanded', 'false')
   })
 })

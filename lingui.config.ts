@@ -11,6 +11,7 @@ const config: LinguiConfig = {
     {
       path: 'src/locales/{locale}',
       include: ['<rootDir>/src'],
+      exclude: ['<rootDir>/src/stories/**'],
     },
   ],
 }

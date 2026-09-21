@@ -28,7 +28,7 @@ export const DialogOverlay = forwardRef<
   <DialogPrimitive.Overlay
     ref={ref}
     className={cn(
-      'fixed inset-0 z-50 bg-black/50 data-[state=closed]:animate-out data-[state=open]:animate-in data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0',
+      'fixed inset-0 z-50 bg-black/50 data-[state=closed]:animate-out data-[state=open]:animate-in data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 motion-reduce:animate-none',
       className
     )}
     {...props}
@@ -68,7 +68,7 @@ export const DialogContent = forwardRef<
         data-testid="canonical-dialog-content"
         data-width={width}
         className={cn(
-          'fixed inset-x-0 bottom-0 z-50 flex max-h-[calc(100dvh-0.5rem)] w-full flex-col bg-card p-2 pb-[max(0.5rem,env(safe-area-inset-bottom))] shadow-lg duration-200 data-[state=closed]:animate-out data-[state=open]:animate-in data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:slide-out-to-bottom-[100%] data-[state=open]:slide-in-from-bottom-[100%] sm:bottom-auto sm:left-1/2 sm:right-auto sm:top-1/2 sm:max-h-[calc(100vh-2rem)] sm:w-[calc(100%-2rem)] sm:-translate-x-1/2 sm:-translate-y-1/2 sm:pb-2 sm:data-[state=closed]:slide-out-to-bottom-0 sm:data-[state=open]:slide-in-from-bottom-0 sm:data-[state=closed]:zoom-out-95 sm:data-[state=open]:zoom-in-95',
+          'fixed inset-x-0 bottom-0 z-50 flex max-h-[calc(100dvh-0.5rem)] w-full flex-col bg-card p-2 pb-[max(0.5rem,env(safe-area-inset-bottom))] shadow-lg duration-200 data-[state=closed]:animate-out data-[state=open]:animate-in data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:slide-out-to-bottom-[100%] data-[state=open]:slide-in-from-bottom-[100%] motion-reduce:animate-none sm:bottom-auto sm:left-1/2 sm:right-auto sm:top-1/2 sm:max-h-[calc(100vh-2rem)] sm:w-[calc(100%-2rem)] sm:-translate-x-1/2 sm:-translate-y-1/2 sm:pb-2 sm:data-[state=closed]:slide-out-to-bottom-0 sm:data-[state=open]:slide-in-from-bottom-0 sm:data-[state=closed]:zoom-out-95 sm:data-[state=open]:zoom-in-95',
           widthClasses[width],
           className
         )}
@@ -93,29 +93,6 @@ export const DialogContent = forwardRef<
 )
 
 DialogContent.displayName = 'DialogContent'
-
-export const DialogSurface = ({
-  className,
-  width = 'standard',
-  ...props
-}: HTMLAttributes<HTMLDivElement> & { width?: DialogWidth }) => {
-  // Static lab specimens still use the canonical Radix title/description
-  // primitives, so they need the same context as an interactive dialog.
-  return (
-    <DialogPrimitive.Root>
-      <div
-        data-testid="canonical-dialog-surface"
-        data-width={width}
-        className={cn(
-          'flex w-full flex-col bg-card p-2 shadow-lg',
-          widthClasses[width],
-          className
-        )}
-        {...props}
-      />
-    </DialogPrimitive.Root>
-  )
-}
 
 export interface DialogHeaderProps extends HTMLAttributes<HTMLDivElement> {
   action?: ReactNode

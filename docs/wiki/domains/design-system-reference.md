@@ -7,13 +7,12 @@ sources:
   - tailwind.config.ts
   - src/app.css
   - src/components/design-system-v1/**
-  - src/views/internal/design-system/foundation-catalog.ts
-  - src/views/internal/design-system/component-catalog.ts
+  - src/stories/**
 ---
 
 # Design System consumer reference
 
-Use this page only when the rendered library, typed catalog, and canonical owner
+Use this page only when the Storybook library and canonical owner
 do not already answer the question. It summarizes durable consumption rules; it
 does not preserve project chronology or review evidence.
 
@@ -35,7 +34,7 @@ and dark values; components consume the same semantic alias in both themes.
 - `interactive-content-hover` is opt-in for a whole actionable record. Static
   rows, nested controls, selected surfaces, and navigation keep their own roles.
 
-Lab canvas colors distinguish the specimen from its host. They do not prescribe
+Story canvas colors distinguish the specimen from its host. They do not prescribe
 the component's production background.
 
 ### Typography
@@ -43,7 +42,7 @@ the component's production background.
 Use the named roles in `src/components/design-system-v1/typography.ts`.
 Financial values use Lausanne with tabular numerals. Monospace is reserved for
 machine identifiers such as addresses and hashes. Inline label/value pairs share
-size and line height unless a catalog entry names a stronger hierarchy.
+size and line height unless the component API names a stronger hierarchy.
 
 ### Spacing and layout
 
@@ -100,8 +99,6 @@ Select chooses one item from a bounded list. Combobox adds search or creation.
 MultiSelectFilter represents a set of active filters and must expose applied,
 empty, disabled, open, keyboard, and long-label behavior.
 
-### MultiSelectFilter
-
 Use the canonical trigger and popup composition. Keep selected values visible or
 summarized truthfully, preserve removal and clear-all semantics, and do not make
 the closed trigger the only way to discover applied filters.
@@ -132,9 +129,8 @@ header and action regions remain stable. Dialogs do not nest. Routine reversible
 tasks need one completion action when shell dismissal already cancels;
 destructive confirmation adds an explicit safe exit.
 
-Do not treat an arbitrary lab dialog body as approved. The Eligibility example
-is intentionally shown as in-progress composition evidence rather than a general
-Dialog template.
+Example dialog bodies do not define approved product flows. Consume the shell
+with the product-owned content and actions.
 
 ### Metric anatomy
 
@@ -172,17 +168,19 @@ different states and must not collapse into EmptyState.
 
 ### Navigation
 
-Use the Global and Product navigation owners named by the catalog. Preserve
+Use GlobalNavigation and ProductNavigation from
+`src/components/design-system-v1/navigation.tsx`. Preserve
 their different jobs, responsive behavior, overflow, focus return, and current
 context. Documentation hosts should use neutral/empty page regions rather than
 fabricating approved product content.
 
 ### Tables
 
-Use the bounded family owners for Portfolio/withdrawals, Holdings, Discover,
-Earn/DeFi/owned positions, governance records, and current/history auctions.
-These examples establish useful column, hierarchy, responsive, loading, and
-interaction patterns; they do not define a universal Table/Row API.
+Use the existing DataTable API and product-owned columns. The accepted visual
+baselines cover Portfolio, Holdings, Discover, Earn, governance and auction
+records, now preserved under Storybook Patterns / Market with their original
+loading, missing, long-content and lifecycle states. These examples do not define
+a universal Table/Row API.
 
 Keep comparable records full-width within their realistic content container.
 Do not put active and historical tables side-by-side merely to save vertical
@@ -190,8 +188,9 @@ space. Sorting, filtering, selection, and pagination are opt-in DataTable jobs.
 
 ### Charts
 
-Use the source-backed Overview, Home, Discover, Yield, and Portfolio owners named
-by the catalog. Preserve truthful axes, units, source cadence, interaction,
+Use the actual Overview, Home, Discover, Yield and Portfolio renderers;
+Storybook preserves each family under Patterns / Market / Charts. Preserve
+truthful axes, units, source cadence, interaction,
 keyboard inspection, range semantics, loading/empty behavior, and accessible
 summaries. Never infer or alter financial calculations from visual similarity.
 
@@ -203,15 +202,16 @@ mechanics and information volume. Reusable components may standardize their
 presentation, but no universal flow controller or production migration is
 accepted.
 
-When studying these specimens, treat launcher buttons and lab navigation as lab
-controls—not approved product cards. Keep step navigation stable, preserve
+Each transaction family exposes its original states through the state control.
+Story controls are demonstration controls, not approved product actions. Keep
+step navigation stable, preserve
 entered values where the flow promises continuity, and distinguish wallet,
 submission, confirmation, recovery, durable queue, and outcome states.
 
 ## Adoption checklist
 
-- The catalog marks the target scope Accepted/current-baseline.
-- A canonical `implementationSource` or explicitly bounded pattern owner exists.
+- The relevant accepted decision covers the target scope.
+- A canonical component or explicitly bounded product owner exists.
 - The consumer imports the owner instead of copying a specimen.
 - Product copy, data, money, permissions, and transaction behavior are preserved.
 - Width and page placement remain composition-owned.

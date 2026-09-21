@@ -2,7 +2,7 @@ import { formatToSignificantDigits } from '@/utils'
 import { Trans } from '@lingui/react/macro'
 import dayjs from 'dayjs'
 import { TooltipProps } from 'recharts'
-import { ChartCandle } from './use-candlestick-data'
+import type { ChartCandle } from './candlestick-data'
 
 const Row = ({ label, value }: { label: React.ReactNode; value: number }) => (
   <div className="flex items-center justify-between gap-6">

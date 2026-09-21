@@ -106,13 +106,10 @@ const DtfChat = forwardRef<ReserveChatHandle, DtfChatProps>(function DtfChat(
   const gap = isDesktop ? 24 : 12
   const bottomOffset = gap
   const rightOffset = gap
-  const isInternalDesignSystem = pathname.startsWith('/internal/design-system')
   const launcherContainerRef = useRef<HTMLDivElement>(null)
   useDraggableLauncher(
     launcherContainerRef,
-    !embedded &&
-      !isInternalDesignSystem &&
-      !(isIndexDtfOverviewPathname(pathname) && isLargeDesktop)
+    !embedded && !(isIndexDtfOverviewPathname(pathname) && isLargeDesktop)
   )
 
   const dtfContext: DtfContext | undefined = onDtf
@@ -126,8 +123,6 @@ const DtfChat = forwardRef<ReserveChatHandle, DtfChatProps>(function DtfChat(
         basket: basket?.map((t) => ({ symbol: t.symbol })),
       }
     : undefined
-
-  if (!embedded && isInternalDesignSystem) return null
 
   // Inline variant (stocks FAQ card): no launcher/offsets, onOpen never fires.
   if (embedded) {

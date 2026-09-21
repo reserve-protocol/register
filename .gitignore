@@ -15,6 +15,7 @@
 
 # production
 /build
+/storybook-static
 
 # misc
 .DS_Store
@@ -36,12 +37,6 @@ yarn-error.log*
 /playwright-report/
 /playwright/.cache/
 
-/e2e/design-system/**/*.png
-/e2e/design-system/**/*.jpg
-/e2e/design-system/**/*.jpeg
-/src/views/internal/design-system/assets/patterns/*.png
-/src/views/internal/design-system/assets/patterns/*.jpg
-/src/views/internal/design-system/assets/patterns/*.jpeg
 tests/RTokens.json
 
 # Sentry Config File
