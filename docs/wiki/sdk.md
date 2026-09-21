@@ -1,6 +1,6 @@
 ---
 title: SDK
-updated: 2026-07-23
+updated: 2026-09-03
 type: context
 ---
 
@@ -44,9 +44,9 @@ needs an invalidate/prefetch-style react-sdk primitive).
 ## Repo & versioning facts
 
 - pnpm+turbo monorepo: `packages/sdk` (`@reserve-protocol/sdk`) + `packages/react-sdk` (which `export *`s the core — import only from react-sdk) are **version-linked** via changesets and bump together; `packages/dtf-catalog` versions independently. ESM-only.
-- **Register pins react-sdk exactly** (`"0.5.0"`, no caret) — SDK bumps are deliberate, reviewed upgrades, never silent installs.
+- **Register pins react-sdk exactly** (`"0.5.3"`, no caret) — SDK bumps are deliberate, reviewed upgrades, never silent installs.
 - **Yield namespace is implemented** (`sdk.yield.*`, ~40 `useYieldDtf*` hooks + query options). Long-term migration target for register's hand-rolled yield reads.
-- **Catalog**: `@reserve-protocol/dtf-catalog` (register pins `0.1.3`) is a static JSON registry — synchronous lookups, no fetch; `dtfCatalog`/`indexDtfCatalog`/`yieldDtfCatalog` also re-exported from the SDK barrel (successor to `@reserve-protocol/rtokens`); on address collisions index wins. **Index DTF `status` (active/deprecated) comes from here**, not the API.
+- **Catalog**: `@reserve-protocol/dtf-catalog` (register pins `0.1.5`) is a static JSON registry — synchronous lookups, no fetch; `dtfCatalog`/`indexDtfCatalog`/`yieldDtfCatalog` also re-exported from the SDK barrel (successor to `@reserve-protocol/rtokens`); on address collisions index wins. **Index DTF `status` (active/deprecated) comes from here**, not the API.
 - **Config constants are exported** — `INDEX_DTF_SUBGRAPH_URL`, `YIELD_DTF_SUBGRAPH_URL`, `DEFAULT_API_BASE_URL`, `DEFAULT_RPC_URLS`, `SUPPORTED_CHAINS`, `supportedChainIds`, type `SupportedChainId`. Consolidating register's duplicates onto them is open debt ([[improvements]] #16).
 - **Write ABIs are version-gated, not auto-detected**: `getIndexDtfWriteAbi("5.0.0" | "6.0.0")`; v6-only ops throw for v5. Register must read `folio.version()` and thread it through (see [[index-protocol]] for the version landscape).
 - Local linking: link **both** sdk and react-sdk (react-sdk re-exports the core; mismatched instances duplicate viem/react-query peers) — `docs/local-sdk-development.md`.
@@ -83,26 +83,26 @@ Local SDK checkout linking: `docs/local-sdk-development.md`.
 
 ## Read before building a flow (`dtf-interface/docs`)
 
-| Building… | Read |
-| --- | --- |
+| Building…                   | Read                                                                                    |
+| --------------------------- | --------------------------------------------------------------------------------------- |
 | Index DTF reads / discovery | `protocol/data-sources.md` → `index-dtf/overview.md` → `index-dtf/discovery-holders.md` |
-| Mint / Redeem / Zap | `index-dtf/issuance-redemption.md` → `integrations/zapper.md` |
-| Governance / proposals | `protocol/governance.md` → `index-dtf/governance.md` → `register/governance-flows.md` |
-| Rebalance / auctions | `index-dtf/rebalance-auctions.md` → `index-dtf/contracts-and-versions.md` |
-| Revenue / fees / vote-lock | `index-dtf/revenue-fees.md` → `index-dtf/vote-lock.md` |
-| Matching Register behavior | `register/interface.md` |
+| Mint / Redeem / Zap         | `index-dtf/issuance-redemption.md` → `integrations/zapper.md`                           |
+| Governance / proposals      | `protocol/governance.md` → `index-dtf/governance.md` → `register/governance-flows.md`   |
+| Rebalance / auctions        | `index-dtf/rebalance-auctions.md` → `index-dtf/contracts-and-versions.md`               |
+| Revenue / fees / vote-lock  | `index-dtf/revenue-fees.md` → `index-dtf/vote-lock.md`                                  |
+| Matching Register behavior  | `register/interface.md`                                                                 |
 
 ## Data-source routing (full table: `docs/data-sources.md`)
 
-| Data | Source |
-| --- | --- |
-| Basket/balances, live supply (incl. pending fee shares) | RPC (`totalAssets()`, `totalSupply()`) |
-| Current price / discovery / vote-lock APR | Reserve API |
-| Index DTF status (active/deprecated) | `@reserve-protocol/dtf-catalog` (static, synchronous) |
-| Metadata, governance history, roles, holders | Index subgraph |
-| **Live** proposal state | RPC (`governor.state()`) — NOT subgraph |
-| **Live** rebalance/auction state | RPC (`getRebalance()`) — NOT subgraph |
-| Historical charts | Reserve API |
+| Data                                                    | Source                                                |
+| ------------------------------------------------------- | ----------------------------------------------------- |
+| Basket/balances, live supply (incl. pending fee shares) | RPC (`totalAssets()`, `totalSupply()`)                |
+| Current price / discovery / vote-lock APR               | Reserve API                                           |
+| Index DTF status (active/deprecated)                    | `@reserve-protocol/dtf-catalog` (static, synchronous) |
+| Metadata, governance history, roles, holders            | Index subgraph                                        |
+| **Live** proposal state                                 | RPC (`governor.state()`) — NOT subgraph               |
+| **Live** rebalance/auction state                        | RPC (`getRebalance()`) — NOT subgraph                 |
+| Historical charts                                       | Reserve API                                           |
 
 ## Top gotchas (full list: `dtf-interface/docs/known-gotchas.md`)
 

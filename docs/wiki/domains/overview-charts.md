@@ -1,6 +1,6 @@
 ---
 title: Overview Charts
-updated: 2026-07-22
+updated: 2026-09-18
 type: domain
 sources:
   - src/views/index-dtf/overview/components/charts/**
@@ -8,7 +8,6 @@ sources:
   - src/views/index-dtf/overview/hooks/use-btc-price-history.ts
   - src/utils/chart-downsample.ts
 ---
-
 
 # Overview Charts (Index DTF price/candles)
 
@@ -29,6 +28,11 @@ and range prefetch enable once RPC supply and current price are defined, even
 when either is `0`. The SDK accepts those zeroes when composing the synthetic
 live point, and the historical request settles the chart instead of leaving
 its skeleton mounted forever.
+
+The pure render dependencies live in `use-x-axis-ticks.ts` and
+`candlestick-data.ts`; data hooks retain re-exports for existing callers.
+Storybook uses the real chart bodies without importing product data startup.
+The extraction preserves calculations; do not create Storybook copies of them.
 
 ## Granularity policy (line chart)
 
@@ -109,3 +113,19 @@ must keep the line chart's perceived range when toggling chart types:
 E2E: charts are covered by [[e2e]] overview specs (`overview-price-chart`, `overview-range-<value>` testids; range buttons render duplicated xl/non-xl — scope locators `:visible`). The api mock serves the candles endpoint line-shaped, so tests exercise the line-chart fallback, not candles.
 
 See [[sdk]] for why other Index DTF data must go through the react-sdk.
+
+## Presentation opt-ins awaiting production adoption
+
+`PriceChartBody.onInspect` forwards a selected finite timestamp/value through
+`chart-inspection.ts`, hides the floating tooltip content and enables keyboard
+inspection. `launchMarkerVariant="annotation"`, `latestPointMarker` and
+`yAxisPresentation="compact"` expose additional bounded presentation options.
+`CandlestickChartBody.tooltipContent` accepts a custom OHLC tooltip and enables
+keyboard inspection while preserving the selected touch index.
+
+These options originated in the retired design-system lab. Production callers
+retain their existing defaults. Storybook examples and the original studies at
+commit `2bfca0d1c` are presentation evidence, not proof of financial calculations,
+source freshness, real-mode payload handling or production adoption. Before
+adoption, engineer review must check units, localized labels, containment, pointer/
+touch/keyboard behavior and host integration. See [[design-system-reference]].

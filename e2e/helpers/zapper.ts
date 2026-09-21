@@ -19,7 +19,7 @@ import { loadSnapshot, loadSnapshotRaw, snapshotExists } from './snapshots'
 //
 //   native zap:  /api/zapper/{chainId}/swap?chainId&signer&tokenIn&amountIn
 //                  &tokenOut&slippage&trade&bypassCache&deepLiquidity
-//   aggregators: /{velora|enso}/swap?chainId&tokenIn&tokenOut&amountIn
+//   aggregators: /{velora|enso|1inch}/swap?chainId&tokenIn&tokenOut&amountIn
 //                  &slippage&signer
 //
 // plus, since react-zapper 2.10, the CoW Swap RFQ venue (enabled on every
@@ -230,7 +230,7 @@ export async function selectZapToken(
   await expect(trigger).toContainText(symbol)
 }
 
-const AGGREGATORS = ['velora', 'enso'] as const
+const AGGREGATORS = ['velora', 'enso', '1inch'] as const
 
 // Logger the zap specs hand to mockZapperRoutes: mirrors the base fixture's
 // collector — push into the test's `unmockedCalls` (so strict teardown fails on

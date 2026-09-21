@@ -359,7 +359,6 @@ The Alpha Base Index is a DAO-governed DTF, curating the Top 20 Base projects wi
 > `chainId` 8453 and `status: "active"`)
 > or use the [`@reserve-protocol/dtf-cli`](https://app.reserve.org/skills/dtf.md) skill.
 
-
 ---
 
 # AIndex (AI)
@@ -651,4 +650,3 @@ Curated index of the largest AI agents created on Virtuals Protocol, rebalanced 
 > change over time. For live data call `https://api.reserve.org/discover/dtfs` (filter by
 > `chainId` 8453 and `status: "active"`)
 > or use the [`@reserve-protocol/dtf-cli`](https://app.reserve.org/skills/dtf.md) skill.
-

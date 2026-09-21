@@ -1,6 +1,6 @@
 ---
 title: Log
-updated: 2026-09-16
+updated: 2026-09-21
 type: log
 ---
 
@@ -100,13 +100,12 @@ Append-only chronological record: lessons, corrections, friction. Newest section
 ## 2026-07-12
 
 - Yield DTF Phase F landed (capture + record/replay foundation + overview smokes). The Phase-F agent captured both fixtures (eUSD/hyUSD, 128 real eth_calls each at a pinned block) then died mid-debug; I took over the finish directly rather than respawn. Two isolation bugs it hit and I root-caused:
-  - **Index regression from a yield seam** (the subtle one): the index DTF page incidentally polls a `dtf-yield` subgraph via an app updater. Baseline answered those with `EMPTY_SHAPE`; the agent's `resolveYieldQuery` failed them loud, so the app fell back to on-chain price reads (`0xe45a5b2d` ×24) that aren't mocked → index smoke red. The diff LOOKED additive (index dispatch byte-identical), which sent the bisect in circles until I noticed `0xe45a5b2d` was a *yield* selector (26× in the yield capture) firing on an *index* page. Fix: the yield subgraph resolver only engages while a yield test is active (`isYieldReplayActive()`), so index tests stay byte-identical to baseline. Lesson: a "provably additive" seam can still change behavior if the OTHER product's page shares the boundary — verify the untouched path RUNS green, don't just diff it.
+  - **Index regression from a yield seam** (the subtle one): the index DTF page incidentally polls a `dtf-yield` subgraph via an app updater. Baseline answered those with `EMPTY_SHAPE`; the agent's `resolveYieldQuery` failed them loud, so the app fell back to on-chain price reads (`0xe45a5b2d` ×24) that aren't mocked → index smoke red. The diff LOOKED additive (index dispatch byte-identical), which sent the bisect in circles until I noticed `0xe45a5b2d` was a _yield_ selector (26× in the yield capture) firing on an _index_ page. Fix: the yield subgraph resolver only engages while a yield test is active (`isYieldReplayActive()`), so index tests stay byte-identical to baseline. Lesson: a "provably additive" seam can still change behavior if the OTHER product's page shares the boundary — verify the untouched path RUNS green, don't just diff it.
   - **hyUSD (base) hit the mainnet facade**: yield read atoms fire on first render with `chainIdAtom`'s mainnet default before the route's chain propagates (`useRTokenContext` sets it in an effect). eUSD passed only because mainnet IS the default. Fix: `setYieldReplay(chainId)` + a chain-aware absorb rule — wrong-chain-facade / zero-address transient reads return deterministic zeros unlogged, while a real miss on the fixture's OWN chain still fails loud.
 - Recovery mechanics worth remembering: a dropped `git stash` object survives in `git checkout <stash-sha> -- <files>` — used it to recover the agent's uncommitted subgraph/api/base after a bisect `git checkout` clobbered them.
 - E2E audit hardening (2 independent audits converged; goal = push B+ → S with speed + agent-workflow as the levers). Landed: Stage 1 chain-scoped identity + closed the yield fail-loud hole (uncaptured yield reads no longer fall through to index wildcards / the $1 feed); Stage 2.1 `e2e:check` yield identity + collision validation; speed — per-worker snapshot parse cache + local workers capped at 5 (single Vite server doesn't scale past ~5; 3× flake-free vs an intermittent zap flake at 7); agent-ergonomics — self-explaining unmocked failures (`helpers/selectors.ts` decodes the selector name + names the helper to model it in) + a boundary map / new-test recipe / speed tiers in `e2e/CLAUDE.md`; CI + scoped-verify now run the mock-contract unit tests.
 - Speed tiers established for the agent quick-loop: unit tests <1s (mock-contract logic) → one scoped spec ~3–5s → smoke ~16s → full ~78s. The floor per browser test (~4–5s) is app boot + hydration + clock pumps; the win for agents is running the NARROWEST tier, which the domain diff→test tables already route.
 - Chain-identity is NOT uniform across boundaries: RPC (host-routed) and subgraph (chain-specific Goldsky URL) genuinely encode chain, so they enforce it. The reserve-api does NOT — it keys DTF endpoints on the globally-unique folio address and treats `chainId` as advisory (the app sends `/current/dtf?address=<base DTF>&chainId=1`). Enforcing chain there fails legitimate requests — verified empirically, then reverted. Match the real boundary's semantics, don't assume a uniform rule.
-
 
 ## 2026-07-14 → 07-22 — Hardening × SDK-integration effort (compact record)
 
@@ -126,21 +125,12 @@ Play-by-play lives in git (PRs #1053/#1054/#1055/#1063, SDK PR #27). Durable out
 - Production chain cycling was a multi-tab feedback loop: each mounted DTF route automatically reasserted its own Ethereum/Base/BSC chain against one wallet-global network. Transaction buttons and the zapper only exposed the changing state. Automatic switching remains, but only the focused, visible document may request it; focusing another DTF tab makes that tab the new chain owner. Index and Yield DTF route contexts share the same guard.
 - Review caught two smaller bounce paths before closeout: Index initially targeted the lagging global chain atom instead of its provider identity, and cached focus state was not revalidated at the wallet-mutation boundary. Both are now regression-protected; future route-chain synchronization must use the route/provider chain directly.
 
-## 2026-08-08
+## 2026-09-01 — Earn Index DTF FAQ expansion
 
-- DTF Settings confirmation was globally gated by deploy-time schema validity, so unchanged on-chain values with display-rounding drift blocked unrelated governance changes even though those values were omitted from proposal calldata. The gate now scopes errors to changed settings while preserving no-change and changed-invalid guards; the E2E regression models an unchanged invalid distribution plus a valid mandate update.
+- PR #1094 expands the FAQ from three to nine validated questions, adds token-built graphics, and routes the Index DTF rate-help action into the relevant controlled FAQ item without opening the row drawer. The branch gate was green after rebase: lint, typecheck, 895 unit tests, 58 smoke tests, and zero missing active-catalog translations; desktop/mobile, light/dark, and Spanish states were inspected.
+- Review corrections included flexible localized flow chips, answer heading semantics, card-contained realized-value treatment, and delay-accurate unlock copy. Korean and Chinese retain their active-catalog Vote Lock terms. The English catalog must ship with es/ko/zh. The default-open first FAQ item does not emit its open event, so `faq_what_is_vote_locking` analytics remains an acknowledged under-count; the rate-help path emits `rate_help` and uses a one-shot request atom plus controlled open/scroll behavior.
 
-## 2026-08-19
-
-- Locale initialization now uses the first supported browser preference for visitors without a saved choice; a persisted explicit choice still wins. A clean Lingui extraction confirmed 2,543 active catalog messages with zero missing Spanish, Korean, or Simplified Chinese translations and removed obsolete catalog entries. This supersedes the earlier ~117-missing-message backlog entry. Live browser verification covered Spanish auto-selection plus a Korean selection surviving reload.
-## 2026-08-18
-
-- Kit refresh via `install.mjs --update` from agent-workflow @ b0da65a (+working-tree). 18 new skills landed (stage, foundation-review, scar-mining, codebase-deep-scan, taste, topology, wayfinder, experience-design, create/maintain-verification, evaluate-workflow, release-evidence, resume-work, resolving-merge-conflicts, model-capabilities, pair trio); router routes them all. Medium/high stage machinery moved from `workflow.md` to `skills/stage.md`.
-- Register's local area-guide drift detection (`scope.mjs` `area-guide:` lines) was upstreamed into the kit (now AGENTS.md/CLAUDE.md-aware, with a kit test) instead of being clobbered by the wholesale update; the kit had already absorbed the wiki-lint duplicate-key check and the one-line comment rules. Zero local rules lost.
-- Kit installer gap found and fixed upstream: skills reference `templates/{design,evaluation,evidence,verification}` in-repo but the installer never shipped them; they are now kit-owned dirs and live at `templates/` here.
-- All Overrides in [[project]] re-checked: none absorbed, all stand. Config schema unchanged. Chatty's capsule pilot is explicitly Chatty-only and was not ported; chatty itself is behind the current kit.
-
-## 2026-09-11
+## 2026-09-11 — Draggable Ask Reserve AI launcher
 
 - The floating Ask Reserve AI launcher now supports pointer dragging inside the viewport without opening the panel; ordinary activation still opens chat, and arrow keys provide a non-drag repositioning path. The behavior stays local to Register's existing `dtf-chat` compatibility wrapper because package 0.0.7 exposes no launcher-drag API. Desktop mouse and mobile touch/CDP Playwright coverage pins movement, edge clamping, touch cancellation, keyboard movement, and click/Enter activation.
 
@@ -184,3 +174,60 @@ PR #1094 merged on 2026-08-28. The following records the original stage evidence
 - Upstream-update check: registry metadata reported AppKit adapter 1.8.24, wagmi 3.7.7 and core 3.6.5. The installed wagmi/core 2.19.5/2.22.1 are the latest v2 versions. Published AppKit 1.8.24 has the identical WalletConnect connector and post-connect switching logic; core 3.6.5 has identical connect/switchChain actions. No version upgrade was applied. The failure is a review edge reproduced with a fixture, not a confirmed live Safe incident; Safe web's published approval includes chains. Check released fixes and real wallet evidence before choosing future compatibility work.
 - Validation: 6 focused regressions, 8 desktop/mobile wallet flows, 59 smoke checks (1 skip), app/strict lint, wiki lint, e2e types and 1,606 source/test files excluding the pre-existing transaction draft passed. Full unit results are 908 pass/6 existing draft failures; the full gate stops on that draft's three missing exports. Dark/Light review reconciled without outstanding scoped findings. CodeRabbit CLI was unavailable; its documentation was consulted.
 - Engineer review required before merging: the guard preserves upstream fallback1 and does not repair actual-chain reporting. Live Safe iframe/relay validation remains unperformed. No commit or push.
+## 2026-09-18 — Design system consumer handoff
+
+- The supported handoff is the rendered internal library, typed catalogs, accepted decisions, canonical implementations, concise consumer reference, and behavioral verification. Completed plans, review transcripts, checkpoint receipts, and generated evidence are retired from the working tree; Git history remains the chronology.
+- Design maturity and production adoption remain separate. Navigation, Tables, and Charts have bounded accepted lab baselines; Transactions remain exploratory and paused. Generated browser evidence is local or CI-only under ignored artifact paths.
+
+## 2026-09-18 — Storybook replacement
+
+- Replaced the bespoke internal/standalone lab with 28 Storybook stories, normal prop/theme/viewport controls and a five-test browser suite. Removed obsolete catalogs, simulators, lab-only tests/configuration and 1,072 messages per locale; retained translations and accepted visual decisions are unchanged. Production no longer hosts the lab or globally loads organic-brand demo styles.
+- Fixed uncontrolled GlobalNavigation overflow and the unsupported IconButton `asChild` type; retained focused behavior tests and added reduced-motion handling. Independent cross-reviews found no remaining verified issue. Review corrected a copied chart algorithm and an editable quote whose display could become inconsistent; the chart now shares the exact production tick hook and fixtures mock only chart atoms. Strict HTTP/wallet/WebSocket checks caught a transitive wallet startup that ordinary render assertions missed.
+- Storybook, focused tests, lint, E2E typecheck/helpers, product build/smoke and visual/manager-control checks pass. Full gate still encounters three missing-export errors and six test failures in the unrelated pre-existing untracked hook test; wiki lint reports existing basket-overview drift. Neither is hidden or changed. Engineer review remains required for shared APIs/defaults and production route/style separation; work is uncommitted. No skill changes were justified by this workload.
+
+## 2026-09-18 — Complete Storybook design preservation
+
+- The first representative-only migration omitted useful designer intent. Expanded
+  the library to 272 named stories and all 124 original transaction states, with
+  a source-to-story coverage map embedded in Introduction. Foundations, layouts,
+  navigation, cards/tables, governance/auctions and chart pressure cases remain
+  reviewable. Historical modal alternatives and transaction flows are labeled
+  explorations; lab process catalogs and fake execution engines stay removed.
+- Added standard Docs, Code and axe tooling, individual component entries and
+  supported controls. Verified desktop/phone and light/dark presentations, manager
+  controls, keyboard/focus, long overlays and DTF switching. Use local asset
+  adapters around canonical logos rather than copying their badge/stack geometry.
+- Independent review restored missing auction dimensions, Holdings datasets,
+  partial/constrained charts and Home navigation. Runtime checks caught nested
+  Storybook hooks, transitive wallet imports and remote assets. Both named-story
+  and transaction-state sweeps now enforce HTTP/wallet/WebSocket isolation.
+  Controls reset defaults and initially-open modal focus also have live proof.
+- Storybook build and 10 browser tests pass; focused units 87/87, smoke 59/1 skip,
+  Vite build, lint and E2E TypeScript pass. Full gate still reports only the three
+  unrelated untracked hook-test missing exports; wiki lint retains existing
+  basket-overview drift. Engineer review remains required before merge. No skill
+  changes: the concrete correction is to map preserved visual areas before
+  removing their host, and verify actual render/import behavior during migration.
+
+## 2026-09-21
+
+- Final Storybook review restored missing story-owned transaction keyframes and
+  responsive metadata styles, connected Holdings/chart controls to args, and fixed
+  the overflow chevron. Both review lenses cleared the corrections. Removed eight
+  redundant primitive, duplicate and screenshot-only tests.
+- Fresh verification: 8 Storybook checks across 272 stories and 124 transaction
+  states, staged-source TypeScript and 950 unit tests, 59 smoke passes/1 skip,
+  product build and lint. Live checks covered Controls synchronization, responsive
+  metadata and animations. The unrelated untracked hook test stays out of the
+  commit; workspace gate and basket wiki drift remain documented in the plan.
+- User authorized the new `design-system-storybook` branch and push. Engineer
+  review remains required before merge. No workflow changes: the fixes belong
+  to presentation ownership and verification, not additional process.
+
+- PR #1121: merged master `356066697`, preserving AppKit and the legacy rebalance
+  fix. Resolved five documentation conflicts plus the combined Storybook/AppKit
+  lockfile, then deduplicated union-merged wiki metadata and rows. Independent
+  Intent/Risk review passed; removed the unused DeFiLlama fixture left by the lab.
+  Frozen install, candidate TypeScript/950 units, 8 Storybook checks, 59 smoke
+  passes/1 skip, 8 wallet flows, product build, lint and wiki lint pass. Workspace
+  gate still stops on the unrelated untracked hook test, excluded from the commit.

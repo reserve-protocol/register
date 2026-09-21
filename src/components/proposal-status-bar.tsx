@@ -20,6 +20,7 @@ export type ProposalStage = {
 export interface ProposalStatusBarProps {
   stages: ProposalStage[]
   className?: string
+  tone?: 'current' | 'historical'
 }
 
 const HEIGHT = 10
@@ -51,11 +52,7 @@ const useElementWidth = (ref: RefObject<HTMLElement | null>) => {
   return width
 }
 
-const buildPath = (
-  w: number,
-  isFirst: boolean,
-  isLast: boolean
-): string => {
+const buildPath = (w: number, isFirst: boolean, isLast: boolean): string => {
   const r = Math.min(RADIUS, w / 2)
 
   if (isFirst && isLast) {
@@ -111,8 +108,7 @@ const allocateWidths = (durations: number[], drawable: number): number[] => {
   let changed = true
   while (changed) {
     changed = false
-    const remainingDrawable =
-      drawable - [...pinned].length * min
+    const remainingDrawable = drawable - [...pinned].length * min
     const remainingDuration = durations.reduce(
       (acc, d, i) => acc + (pinned.has(i) ? 0 : d),
       0
@@ -133,7 +129,11 @@ const allocateWidths = (durations: number[], drawable: number): number[] => {
   return widths
 }
 
-const ProposalStatusBar = ({ stages, className }: ProposalStatusBarProps) => {
+const ProposalStatusBar = ({
+  stages,
+  className,
+  tone = 'current',
+}: ProposalStatusBarProps) => {
   const containerRef = useRef<HTMLDivElement>(null)
   const containerWidth = useElementWidth(containerRef)
   const rawId = useId()
@@ -176,7 +176,11 @@ const ProposalStatusBar = ({ stages, className }: ProposalStatusBarProps) => {
   }, [stages, containerWidth, filterId])
 
   return (
-    <div ref={containerRef} className={cn('h-2.5 w-full', className)}>
+    <div
+      ref={containerRef}
+      data-proposal-progress-tone={tone}
+      className={cn('h-2.5 w-full', className)}
+    >
       {containerWidth > 0 && (
         <svg
           aria-hidden="true"
@@ -193,7 +197,11 @@ const ProposalStatusBar = ({ stages, className }: ProposalStatusBarProps) => {
           <defs>
             <filter id={filterId} colorInterpolationFilters="sRGB">
               <feFlood floodOpacity="0" result="BackgroundImageFix" />
-              <feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape" />
+              <feBlend
+                in="SourceGraphic"
+                in2="BackgroundImageFix"
+                result="shape"
+              />
               <feColorMatrix
                 in="SourceAlpha"
                 values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
@@ -201,11 +209,22 @@ const ProposalStatusBar = ({ stages, className }: ProposalStatusBarProps) => {
               />
               <feOffset dy="0.4" />
               <feGaussianBlur stdDeviation="1" />
-              <feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1" />
+              <feComposite
+                in2="hardAlpha"
+                operator="arithmetic"
+                k2="-1"
+                k3="1"
+              />
               <feColorMatrix values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.2 0" />
               <feBlend in2="shape" />
             </filter>
-            <linearGradient id={`${filterId}-shimmer`} x1="0" y1="0" x2="1" y2="0">
+            <linearGradient
+              id={`${filterId}-shimmer`}
+              x1="0"
+              y1="0"
+              x2="1"
+              y2="0"
+            >
               <stop offset="0" stopColor="hsl(var(--primary) / 0)" />
               <stop offset="0.5" stopColor="hsl(var(--primary) / 0.25)" />
               <stop offset="1" stopColor="hsl(var(--primary) / 0)" />
@@ -222,7 +241,9 @@ const ProposalStatusBar = ({ stages, className }: ProposalStatusBarProps) => {
           {segments.map((seg) => {
             const bgFill =
               seg.status === 'completed'
-                ? 'hsl(var(--primary))'
+                ? tone === 'historical'
+                  ? 'hsl(var(--muted-foreground) / 0.4)'
+                  : 'hsl(var(--primary))'
                 : 'hsl(var(--muted))'
 
             return (
@@ -234,7 +255,11 @@ const ProposalStatusBar = ({ stages, className }: ProposalStatusBarProps) => {
                       <g clipPath={`url(#${seg.activeClipId})`}>
                         <path
                           d={seg.progressPath}
-                          fill="hsl(var(--primary) / 0.3)"
+                          fill={
+                            tone === 'historical'
+                              ? 'hsl(var(--muted-foreground) / 0.25)'
+                              : 'hsl(var(--primary) / 0.3)'
+                          }
                         />
                       </g>
                     )}

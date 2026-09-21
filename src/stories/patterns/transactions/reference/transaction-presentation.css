@@ -1,0 +1,65 @@
+@keyframes transaction-attached-region-grow-down {
+  from {
+    opacity: 0;
+    transform: translateY(-16px) scaleY(0.92);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scaleY(1);
+  }
+}
+
+@keyframes transaction-outcome-surface-in {
+  from {
+    transform: scaleY(0);
+  }
+
+  to {
+    transform: scaleY(1);
+  }
+}
+
+@keyframes transaction-outcome-content-in {
+  0%,
+  30% {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@container (min-width: 408px) {
+  .zapper-selectable-quote-meta {
+    padding-block: 0.5rem;
+  }
+
+  .zapper-selectable-quote-meta-row {
+    height: 2.75rem;
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .zapper-selectable-route-meta {
+    width: auto;
+    max-height: none;
+  }
+
+  .zapper-selectable-route-meta[data-visible='true'] {
+    max-width: 12rem;
+  }
+
+  .zapper-selectable-route-meta[data-visible='false'] {
+    max-width: 0;
+  }
+
+  .zapper-selectable-route-meta-content {
+    width: auto;
+    justify-content: flex-start;
+    padding-left: 1rem;
+  }
+}

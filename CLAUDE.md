@@ -19,13 +19,14 @@ Loader, not playbook. Reusable workflow rules live in `skills/` (kit-owned, upda
 - Load-bearing decision (data model, wire contract, SDK contract, on-chain math shape, persistence, migration): read `skills/foundation-review.md` first — its cross-model step runs codex as the senior reviewer.
 - Consequential experience, public-seam, ownership, or persistent-shape choice: `skills/experience-design.md` before planning or implementation.
 - Before implementing a bug fix or non-trivial behavior change with a test seam, read `skills/testing.md` (RED→GREEN→REFACTOR; test the real seam, not a mock).
-- When debugging a failure, read `skills/debugging.md`; for architecture decisions, `skills/architecture-review.md`; when reconciling review findings, `skills/re-conciliate.md`; for a merge/rebase conflict, `skills/resolving-merge-conflicts.md`.
+- When debugging a failure, read `skills/debugging.md`; for architecture decisions, `skills/architecture-review.md`; when reconciling review findings, `skills/review-panel.md` § Reconciliation; for a requested workflow-kit refresh, `skills/re-conciliate.md`; for a merge/rebase conflict, `skills/resolving-merge-conflicts.md`.
 - Parallel work, competing candidates, or a requested agent count: `skills/topology.md`; widening agent authority adds `skills/model-capabilities.md`.
 - Missing repeatable real-surface proof: `skills/create-verification.md`; a drifted verification package: `skills/maintain-verification.md`. A misfiring workflow/skill change: `skills/evaluate-workflow.md`. Deploy/publish: `skills/release-evidence.md`. Explicit pause or multi-session resume: `skills/resume-work.md`.
 - Before writing or reviewing app code, read `skills/code-standards.md`, then scan `docs/wiki/improvements.md` for your area (anti-patterns are binding; fix listed debt opportunistically when touching it).
 - Before closing a stage, read `skills/review-panel.md` and `skills/wiki.md`.
 - Before user-facing UI work, read `skills/ui-ux.md`; slop-risk work (generated copy, templated layouts, filler states) adds `skills/taste.md`.
 - When changing the visual token system, read `skills/design.md` and `docs/wiki/domains/design-system.md`.
+- For design-system use, lab, audit, or migration work, read `docs/wiki/domains/design-system.md` before acting.
 - Before adding tooling or starting a project surface, read `skills/stack.md`.
 - Domain guides live next to the code: `e2e/CLAUDE.md` (mock cookbook, diff→test decisions) and `src/views/index-dtf/<area>/CLAUDE.md` (which specs cover the area, how to mock its states, edge cases). Read the area guide before changing a view or writing its tests.
 - For project context (product, stack specifics, safety rules, UI register, kit overrides), read `docs/wiki/project.md`.

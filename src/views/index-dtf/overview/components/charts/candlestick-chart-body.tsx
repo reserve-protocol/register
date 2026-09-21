@@ -4,6 +4,7 @@ import { cn } from '@/lib/utils'
 import { formatCurrency } from '@/utils'
 import { formatXAxisTick as formatTick } from '@/utils/chart-formatters'
 import { PERFORMANCE_COLORS } from '@/utils/chart-performance-colors'
+import { useRef, useState } from 'react'
 import { Bar, ComposedChart, Customized, Tooltip, XAxis, YAxis } from 'recharts'
 import {
   CandlestickLaunchMarker,
@@ -11,11 +12,16 @@ import {
 } from './candlestick-launch-marker'
 import { CandlestickTooltip } from './candlestick-tooltip'
 import { chartConfig, type Range } from './price-chart-constants'
-import { ChartCandle, getCandleYDomain } from './use-candlestick-data'
-import { useXAxisTicks } from './use-price-chart-data'
+import { type ChartCandle, getCandleYDomain } from './candlestick-data'
+import { useXAxisTicks } from './use-x-axis-ticks'
+import {
+  getYAxisPresentation,
+  useDisplayedYAxisLabelWidth,
+} from './chart-presentation'
 
 const UP_COLOR = PERFORMANCE_COLORS.positive.dot
 const DOWN_COLOR = PERFORMANCE_COLORS.negative.dot
+const COMPACT_CANDLE_RIGHT_PADDING = 9
 
 const formatYAxisTick = (value: number) =>
   '$' + formatCurrency(value, value >= 1000 ? 0 : value < 1 ? 4 : 2)
@@ -138,6 +144,9 @@ const CandlestickChartBody = ({
   useLaunchLabel = false,
   intervalSeconds,
   className,
+  launchMarkerVariant,
+  tooltipContent,
+  yAxisPresentation,
 }: {
   candles: ChartCandle[]
   range: Range
@@ -146,8 +155,14 @@ const CandlestickChartBody = ({
   useLaunchLabel?: boolean
   intervalSeconds: number
   className?: string
+  launchMarkerVariant?: 'annotation'
+  tooltipContent?: React.ReactElement
+  yAxisPresentation?: 'compact'
 }) => {
   const isMobile = useIsMobile()
+  const chartRef = useRef<HTMLDivElement>(null)
+  const [inspectionIndex, setInspectionIndex] = useState<number>()
+  const supportsStableInspection = tooltipContent !== undefined
 
   const visibleRangeSeconds =
     candles.length > 1
@@ -159,9 +174,23 @@ const CandlestickChartBody = ({
   // types keeps the perceived range. Values must be exact candle timestamps
   // (a band scale NaN-drops anything else); deduped for tiny candle counts.
   const xAxisTicks = [...new Set(useXAxisTicks(candles, isMobile))]
-
+  const yAxisDomain = getCandleYDomain(candles)
+  const yAxisValues = candles.flatMap(({ high, low }) => [high, low])
+  const yAxisMeasurementKey = `${range}:${candles.length}:${Math.min(...yAxisValues)}:${Math.max(...yAxisValues)}`
+  const yAxisLabelWidth = useDisplayedYAxisLabelWidth({
+    enabled: yAxisPresentation === 'compact' && !isMobile,
+    measurementKey: yAxisMeasurementKey,
+    rootRef: chartRef,
+  })
+  const yAxis = getYAxisPresentation({
+    isCompact: yAxisPresentation === 'compact',
+    isMobile,
+    labelWidth: yAxisLabelWidth,
+    plotEdgeInset: yAxisPresentation === 'compact' ? 12 : 0,
+  })
   return (
     <ChartContainer
+      ref={chartRef}
       config={chartConfig}
       className={cn('w-full overflow-hidden', className)}
     >
@@ -169,6 +198,19 @@ const CandlestickChartBody = ({
         data={candles}
         margin={{ left: 0, right: 0, top: 5, bottom: 5 }}
         barCategoryGap="5%"
+        accessibilityLayer={supportsStableInspection}
+        onMouseDown={
+          supportsStableInspection
+            ? ({ activeTooltipIndex }) => {
+                if (
+                  activeTooltipIndex !== undefined &&
+                  activeTooltipIndex >= 0
+                ) {
+                  setInspectionIndex(activeTooltipIndex)
+                }
+              }
+            : undefined
+        }
       >
         <XAxis
           dataKey="timestamp"
@@ -181,25 +223,34 @@ const CandlestickChartBody = ({
           interval="preserveStart"
           ticks={xAxisTicks}
           tickMargin={10}
-          padding={{ left: 28, right: 28 }}
+          padding={{
+            left: 28,
+            right:
+              yAxisPresentation === 'compact'
+                ? isMobile
+                  ? 0
+                  : COMPACT_CANDLE_RIGHT_PADDING
+                : 28,
+          }}
         />
         <YAxis
           orientation="right"
-          tick={
-            isMobile
-              ? false
-              : { fontSize: 13, opacity: 0.7, textAnchor: 'end', dx: 44 }
-          }
+          tick={yAxis.tick}
           tickFormatter={formatYAxisTick}
           className="[&_.recharts-cartesian-axis-tick_text]:!fill-muted-foreground"
           axisLine={false}
           tickLine={false}
-          domain={getCandleYDomain(candles)}
-          width={isMobile ? 0 : 55}
+          domain={yAxisDomain}
+          width={yAxis.width}
           tickCount={5}
-          tickMargin={5}
+          tickMargin={yAxis.tickMargin}
+          tickSize={yAxis.tickSize}
         />
-        <Tooltip content={<CandlestickTooltip />} cursor={<CandleCursor />} />
+        <Tooltip
+          content={tooltipContent ?? <CandlestickTooltip />}
+          cursor={<CandleCursor />}
+          defaultIndex={inspectionIndex}
+        />
         <Bar
           dataKey="highLow"
           shape={<Candle />}
@@ -216,6 +267,7 @@ const CandlestickChartBody = ({
               intervalSeconds={intervalSeconds}
               launchTimestamp={launchTimestamp}
               useLaunchLabel={useLaunchLabel}
+              variant={launchMarkerVariant}
             />
           )}
         />

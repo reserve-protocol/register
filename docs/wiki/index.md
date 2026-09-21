@@ -1,6 +1,6 @@
 ---
 title: Wiki Index
-updated: 2026-07-06
+updated: 2026-08-27
 type: ledger
 ---
 
@@ -22,8 +22,9 @@ One line per page. Agents: start here, follow links, keep this list current on i
 
 ## Domains
 
-- [[design-system]] — tokens, type, motion, ui primitives; never hardcode colors or change shared defaults
-- [[zapper-prompt]] — CoW Swap suggestion card beside the instant zapper: variant priority, latch reducer invariants, Ondo capacity gating
+- [[design-system]] — Storybook usage, canonical component ownership, verification and adoption boundaries
+- [[design-system-reference]] — accepted design-system usage guidance for foundations, components, and complex patterns; load on demand
+- [[zapper-prompt]] — informational Ondo-market prompt beside the instant zapper: variant priority, latch invariants, capacity gating, and host constraints
 - [[referral]] — influencer campaign attribution: ?referral= capture, last-touch Mixpanel super property, wallet↔code POST to reserve-api; conversions settled on-chain, out of scope
 - [[overview-charts]] — Index DTF price/candles charts: per-range fetch interval + client-side display buckets (shared `chart-downsample`), API supports only 5m/1h/1d, dedupe + no young-DTF hourly override
 - [[basket-overview]] — Holdings table (Exposure/Collateral tabs): two mcap numbers, one per tab (underlying tradfi vs tokenized supply, never cross them); exposure route schema strips undeclared fields; lowercased mcap-map keys

@@ -1,21 +1,22 @@
 ---
 title: E2E Suite
-updated: 2026-09-16
+updated: 2026-09-21
 type: domain
 sources:
   - e2e/**
   - playwright.config.ts
+  - playwright.storybook.config.ts
   - .github/workflows/playwright.yml
+  - .github/workflows/design-system.yml
 ---
 
 # E2E Suite (Playwright)
 
 Offline Index-DTF acceptance coverage for home/discover, overview, issuance,
-zaps, compliance, auctions, governance, and settings, plus Yield (RToken)
-render and staking-write coverage. The suite characterizes Register behavior
-at the installed
-`@reserve-protocol/react-sdk` version; SDK mapper/math/calldata correctness
-remains the SDK repositories' responsibility.
+zaps, compliance, auctions, governance, settings, and shell interactions, plus
+Yield (RToken) render and staking-write coverage. The suite characterizes Register
+behavior at the installed `@reserve-protocol/react-sdk` version; SDK mapper/math/
+calldata correctness remains the SDK repositories’ responsibility.
 
 ## How the suite is organized (foundational)
 
@@ -102,6 +103,13 @@ Snapshots are parse-cached per worker. Prefer the narrowest tier for a
 change (the domain guides' diff→test tables name the spec). An unmocked-call
 failure names the function + the helper to model it in (`e2e/CLAUDE.md` has the
 boundary map + new-test recipe).
+
+The component library uses `e2e/storybook/` and `playwright.storybook.config.ts`.
+`pnpm storybook:test` runs against the static Storybook build with an owned local
+server. It verifies component interactions and runtime isolation, independently
+of product-route acceptance. The path-filtered design-system workflow builds
+Storybook and runs this suite. See [[design-system]] for component usage.
+The product configuration retains its existing port and mocks.
 
 ## Maintenance rules
 

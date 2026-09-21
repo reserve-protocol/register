@@ -2,6 +2,7 @@ import type { LinguiConfig } from '@lingui/conf'
 
 const config: LinguiConfig = {
   locales: ['en', 'es', 'ko', 'zh', 'pseudo'],
+  sourceLocale: 'en',
   pseudoLocale: 'pseudo',
   fallbackLocales: {
     default: 'en',
@@ -10,6 +11,7 @@ const config: LinguiConfig = {
     {
       path: 'src/locales/{locale}',
       include: ['<rootDir>/src'],
+      exclude: ['<rootDir>/src/stories/**'],
     },
   ],
 }

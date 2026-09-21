@@ -9,7 +9,13 @@
     },
     {
       "name": "typecheck",
-      "globs": ["src/**", "tsconfig*.json", "package.json", "vite.config.ts", "tailwind.config.ts"],
+      "globs": [
+        "src/**",
+        "tsconfig*.json",
+        "package.json",
+        "vite.config.ts",
+        "tailwind.config.ts"
+      ],
       "commands": ["pnpm typecheck"]
     },
     {
@@ -33,6 +39,26 @@
         "pnpm exec vitest run e2e/helpers/tests",
         "pnpm e2e:smoke"
       ]
+    },
+    {
+      "name": "storybook",
+      "globs": [
+        ".storybook/**",
+        "src/stories/**",
+        "src/components/design-system-v1/**",
+        "src/components/{button,icon-button,checkbox,dialog,entity-identity,metric,lifecycle-status,empty-state}/**",
+        "src/components/ui/v1-*",
+        "src/views/index-dtf/overview/components/charts/**",
+        "src/app.css",
+        "public/**",
+        "e2e/storybook/**",
+        "playwright.storybook.config.ts",
+        "{tailwind,postcss,lingui}.config.*",
+        "{package.json,pnpm-lock.yaml,pnpm-workspace.yaml}",
+        "llm-workflow.config.json",
+        ".github/workflows/design-system.yml"
+      ],
+      "commands": ["pnpm storybook:test"]
     },
     {
       "name": "wiki-lint",

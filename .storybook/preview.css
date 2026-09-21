@@ -1,0 +1,16 @@
+html,
+body,
+#storybook-root {
+  min-height: 100%;
+  height: auto;
+  overflow: auto;
+}
+
+body {
+  background: hsl(var(--background));
+  color: hsl(var(--foreground));
+}
+
+#storybook-root {
+  isolation: isolate;
+}

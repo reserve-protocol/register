@@ -16,6 +16,7 @@ export const renderPriceChartSeries = ({
   priceLineShadowFilterId,
   shouldSplit,
   strokeColor,
+  activeDot,
 }: {
   chartKey: DataType | 'totalAPY'
   dotsMaskId: string
@@ -25,6 +26,7 @@ export const renderPriceChartSeries = ({
   priceLineShadowFilterId: string
   shouldSplit: boolean
   strokeColor: string
+  activeDot?: boolean
 }) => {
   const mask = !isYieldMode ? `url(#${dotsMaskId})` : undefined
 
@@ -37,6 +39,7 @@ export const renderPriceChartSeries = ({
         stroke="none"
         fill={preLaunchFill}
         mask={mask}
+        activeDot={activeDot}
         {...areaAnimation}
       />,
       <Area
@@ -46,6 +49,7 @@ export const renderPriceChartSeries = ({
         stroke="none"
         fill={fill}
         mask={mask}
+        activeDot={activeDot}
         {...areaAnimation}
       />,
       <Area
@@ -56,6 +60,7 @@ export const renderPriceChartSeries = ({
         strokeWidth={2}
         fill="transparent"
         filter={`url(#${priceLineShadowFilterId})`}
+        activeDot={activeDot}
         {...areaAnimation}
       />,
       <Area
@@ -66,6 +71,7 @@ export const renderPriceChartSeries = ({
         strokeWidth={2}
         fill="transparent"
         filter={`url(#${priceLineShadowFilterId})`}
+        activeDot={activeDot}
         {...areaAnimation}
       />,
     ]
@@ -79,6 +85,7 @@ export const renderPriceChartSeries = ({
       stroke="none"
       fill={fill}
       mask={mask}
+      activeDot={activeDot}
       {...areaAnimation}
     />,
     <Area
@@ -89,6 +96,7 @@ export const renderPriceChartSeries = ({
       strokeWidth={2}
       fill="transparent"
       filter={`url(#${priceLineShadowFilterId})`}
+      activeDot={activeDot}
       {...areaAnimation}
     />,
   ]

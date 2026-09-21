@@ -91,6 +91,7 @@ export const renderPerformancePatternSeries = ({
   preLaunchDotsPatternId,
   shouldSplit,
   showPattern,
+  animate = true,
 }: {
   direction: PerformanceDirection
   dotsMaskId: string
@@ -99,6 +100,7 @@ export const renderPerformancePatternSeries = ({
   preLaunchDotsPatternId: string
   shouldSplit: boolean
   showPattern: boolean
+  animate?: boolean
 }) => {
   if (!showPattern) return null
 
@@ -117,6 +119,7 @@ export const renderPerformancePatternSeries = ({
           fill={`url(#${preLaunchDotsPatternId})`}
           mask={`url(#${dotsMaskId})`}
           {...areaAnimation}
+          isAnimationActive={animate}
         />
         <Area
           type="monotone"
@@ -125,6 +128,7 @@ export const renderPerformancePatternSeries = ({
           fill={postLaunchFill}
           mask={`url(#${dotsMaskId})`}
           {...areaAnimation}
+          isAnimationActive={animate}
         />
       </>
     )
@@ -138,6 +142,7 @@ export const renderPerformancePatternSeries = ({
       fill={`url(#${dotsPatternId})`}
       mask={`url(#${dotsMaskId})`}
       {...areaAnimation}
+      isAnimationActive={animate}
     />
   )
 }
@@ -145,10 +150,12 @@ export const renderPerformancePatternSeries = ({
 export const renderPerformanceStrokeDefs = ({
   direction,
   lineShadowFilterId,
+  strokeGradientCoordinates,
   strokeGradientId,
 }: {
   direction: PerformanceDirection
   lineShadowFilterId: string
+  strokeGradientCoordinates?: { top: number; bottom: number }
   strokeGradientId: string
 }) => (
   <defs>
@@ -168,7 +175,14 @@ export const renderPerformanceStrokeDefs = ({
       />
     </filter>
     {direction !== 'neutral' && (
-      <linearGradient id={strokeGradientId} x1="0" y1="1" x2="0" y2="0">
+      <linearGradient
+        id={strokeGradientId}
+        x1="0"
+        y1={strokeGradientCoordinates?.bottom ?? '1'}
+        x2="0"
+        y2={strokeGradientCoordinates?.top ?? '0'}
+        gradientUnits={strokeGradientCoordinates ? 'userSpaceOnUse' : undefined}
+      >
         <stop offset="0%" stopColor={PERFORMANCE_COLORS[direction].end} />
         <stop offset="100%" stopColor={PERFORMANCE_COLORS[direction].start} />
       </linearGradient>
@@ -180,10 +194,12 @@ export const renderPerformanceStrokeSeries = ({
   lineShadowFilterId,
   performanceColor,
   shouldSplit,
+  animate = true,
 }: {
   lineShadowFilterId: string
   performanceColor: string
   shouldSplit: boolean
+  animate?: boolean
 }) => {
   if (shouldSplit) {
     return (
@@ -196,6 +212,7 @@ export const renderPerformanceStrokeSeries = ({
           fill="transparent"
           filter={`url(#${lineShadowFilterId})`}
           {...areaAnimation}
+          isAnimationActive={animate}
         />
         <Area
           type="monotone"
@@ -205,6 +222,7 @@ export const renderPerformanceStrokeSeries = ({
           fill="transparent"
           filter={`url(#${lineShadowFilterId})`}
           {...areaAnimation}
+          isAnimationActive={animate}
         />
       </>
     )
@@ -219,6 +237,7 @@ export const renderPerformanceStrokeSeries = ({
       fill="transparent"
       filter={`url(#${lineShadowFilterId})`}
       {...areaAnimation}
+      isAnimationActive={animate}
     />
   )
 }
