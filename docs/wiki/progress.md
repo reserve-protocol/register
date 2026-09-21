@@ -1,6 +1,6 @@
 ---
 title: Progress
-updated: 2026-09-16
+updated: 2026-09-21
 type: ledger
 ---
 
@@ -10,6 +10,7 @@ Stage ledger. One row per stage; keep entries short. Verifier = exact fresh comm
 
 | Stage | Status | Verifier | Review | Next |
 |---|---|---|---|---|
+| Fix MAG7 reward display for TokenJar vault | human-review-required (base 356066697) | scope gate lint/typecheck/unit · live MAG7 governance: $RSR, Automatic, APY, exchange rate | Independent Intent + Engineering Risk PASS; no Critical/Important findings; Engineer review still required | Review draft PR #1123 |
 | Guard Safe WalletConnect fallback switch | dropped 2026-09-16 (override + test + `@reown/appkit-common` removed after review; risk documented in [[wallet-connect]]) | lint · tsc (only the pre-existing untracked transaction test) · unit · wallet e2e 8/8 | Review: guarded a case never seen on a live Safe, verbatim upstream copy needing a re-diff per AppKit bump, left wagmi on fallback chain 1. | Re-open only with a real missing-chains Safe session. |
 | Use AppKit Binance and repair wiki lint | human-review-required (base c2a60855a) | App/strict lint, wiki-lint, tracked-source + e2e types, frozen offline install green; wallet 8/8 incl. default feature controls; smoke 59/1 skip; helpers 72. Raw types/unit fail only on the pre-existing untracked transaction test (3 errors/6 fails; 902 pass). | Medium: one wallet slice plus doc-lint repairs. Dark/Light review reconciled; AppKit defaults restored; deploy watchAsset uses connected wallet. | Engineer review wallet/provider changes; verify live dashboard/auth/Binance/payment flows. |
 | Fix wallet review: Safe visibility and ENS labels | implementation-verified (base 018a47b7e) | re-review: codex's 64px cap clipped plain addresses on phones (probe spec failed) — fixed with 4+4 address format + ENS-only cap; `flows/wallet-connect` 8/8 desktop+mobile incl. plain-address case; tsc/lint green; Cloudflare Pages OOM reproduced locally (heap 4.3 GB default, build needs ~6 GB) → build script sets 6144 MB | Safe auto-registration verified in adapter helpers.js; ENS truncation matches RainbowKit | push, watch Pages build |

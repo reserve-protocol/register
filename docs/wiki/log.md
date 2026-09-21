@@ -1,6 +1,6 @@
 ---
 title: Log
-updated: 2026-09-16
+updated: 2026-09-21
 type: log
 ---
 
@@ -184,3 +184,7 @@ PR #1094 merged on 2026-08-28. The following records the original stage evidence
 - Upstream-update check: registry metadata reported AppKit adapter 1.8.24, wagmi 3.7.7 and core 3.6.5. The installed wagmi/core 2.19.5/2.22.1 are the latest v2 versions. Published AppKit 1.8.24 has the identical WalletConnect connector and post-connect switching logic; core 3.6.5 has identical connect/switchChain actions. No version upgrade was applied. The failure is a review edge reproduced with a fixture, not a confirmed live Safe incident; Safe web's published approval includes chains. Check released fixes and real wallet evidence before choosing future compatibility work.
 - Validation: 6 focused regressions, 8 desktop/mobile wallet flows, 59 smoke checks (1 skip), app/strict lint, wiki lint, e2e types and 1,606 source/test files excluding the pre-existing transaction draft passed. Full unit results are 908 pass/6 existing draft failures; the full gate stops on that draft's three missing exports. Dark/Light review reconciled without outstanding scoped findings. CodeRabbit CLI was unavailable; its documentation was consulted.
 - Engineer review required before merging: the guard preserves upstream fallback1 and does not repair actual-chain reporting. Live Safe iframe/relay validation remains unperformed. No commit or push.
+
+## 2026-09-21
+
+- MAG7's Base vlRSR vault was missing from the self-appreciating-vault registry, so the UI fell back to MAG7/manual-claim copy despite the deployed TokenJar converting fees to RSR and increasing the vlRSR exchange rate. Added the verified vault address; the existing shared presentation now shows RSR, automatic claiming, APY, and the exchange rate across governance, overview, Earn, and portfolio.
