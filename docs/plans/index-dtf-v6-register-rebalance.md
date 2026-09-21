@@ -8,7 +8,11 @@ Fixed point: Register `feat/index-dtf-v6` at `dba79019b` (cut from master `d0db7
 
 Register's rebalance flow (list, detail, launch, community launch, basket proposal calldata) runs on the candidate `@reserve-protocol/react-sdk` 0.7.0 (branch `feat/index-dtf-v6-support`; 0.6.0 is already the published line) for Folio v5 and v6, keeps v4 on its Register-local path behind an explicit version switch, and is proven by unit differentials, the offline Playwright suite, and one real launch on the BSC fork. Each slice ends with a screenshot of the working surface.
 
-## Current state
+## Review follow-up and API extension (2026-09-17)
+
+The [API addendum](index-dtf-v6-api.md) extends this effort to Reserve API historical reads, event decoding and analytics. API verification does not close the latest Register review findings: v6 metrics/Ondo calculations still need the required `auctionLength`, and both launch buttons must block when a cached live RPC read enters an error state. These findings remain open pending fixes and regression evidence. SDK publication/pinning and v6 basket proposals remain deferred; no full-plan release readiness is claimed.
+
+## Audited starting state (2026-09-16)
 
 - Register reads live rebalance state through three raw wagmi multicalls (`use-rebalance-current-data.ts`, `use-rebalance-initial-data.ts`, `use-rebalance-params.ts`) selecting the v4 or v5 ABI from `getFolioVersion`, which maps every non-5 version to v4 (`utils/transforms.ts:19`). A v6 DTF would decode `getRebalance` with the v4 ABI and produce v4 calldata.
 - `indexDTFVersionAtom` initializes to `'4.0.0'` and is never reset (`src/state/dtf/atoms.ts:141`, `reset-index-dtf-atoms.ts:47`), so every consumer sees a fabricated v4 during the load window.

@@ -4,13 +4,13 @@ This is the execution companion to the [integration contract](index-dtf-v6-integ
 
 **Initial implementation status: S0 not started.** Earlier work audited code and ran scoped existing tests. No three-chain source inventory, new fork suite, SDK migration, v6 Register path, package publication or production upgrade has been completed under this plan.
 
-The work breakdown contains **69 numbered tasks** across S0–S7, with S3 split into reads, preparation and writes. Each packet has an owner, inputs, outputs and exit evidence; the catalog provides 146 concrete cases to assign to fixtures and execution lanes.
+The work breakdown contains **69 numbered tasks** across S0–S7, with S3 split into reads, preparation and writes. Each packet has an owner, inputs, outputs and exit evidence; the catalog provides 146 concrete cases to assign to fixtures and execution lanes. The [Reserve API addendum](index-dtf-v6-api.md), added 2026-09-17, adds backend acceptance obligations to S4/S6/S7 without renumbering those tasks or catalog cases. Read it alongside this handoff; full API release acceptance remains pending.
 
 ## 1. First session: exact starting procedure
 
 1. Open the interface hub. Read its AGENTS.md and the owning repo routers/configs. Attempt the protocol/product context paths; if still absent, use the fallback references named in the contract and record the limitation.
 2. Read the contract, this runbook, test catalog and cohort. Do not refresh the ranking automatically. Ten primary identities and two Ethereum supplements are already selected.
-3. Check branch, HEAD and full tracked/untracked status in `register/`, `sdk/`, `index-protocol/` and `index-subgraph/`. Compare with the contract baseline. Existing dirty SDK/protocol/subgraph files are part of the input, not disposable generated clutter.
+3. Check branch, HEAD and full tracked/untracked status in `register/`, `sdk/`, `index-protocol/`, `index-subgraph/` and the separate `~/projects/reserve-api` checkout. Compare with the contract baseline and API addendum. Existing dirty source files are part of the input, not disposable generated clutter.
 4. Assign one implementation owner per repo. If isolating worktrees, preserve/import the inspected dirty input deliberately; a worktree at HEAD alone omits it. Do not stash, restore, reset, commit or move another worker's changes implicitly.
 5. Record the candidate identity: HEAD, relevant diff, hashes of untracked source, lockfiles and generated ABI provenance. Exclude credentials and fork databases. Store command logs and artifact links under a run-specific ignored directory.
 6. Discover the installed sandbox skill directory and run its `scripts/sandbox.sh doctor` from the hub. The current skill runner is Mainnet-only and read-only `doctor` does not certify live chain health or test behavior.
@@ -76,6 +76,10 @@ Paths in the tables are relative to the named repository. **Existing** files wer
 | `e2e/TEST_MAP.md`, area `AGENTS.md`, `docs/wiki/sdk.md`, `docs/plans/FOLLOWUPS.md`                                                                   | Update coverage and ownership claims when implementation actually lands                                                                                       |
 
 Scan the affected areas for direct `dtf-rebalance-lib`, vendored Folio ABI, `readContract`/multicall, raw `/rebalance` fetches and `useDtfSdk` before and after migration. The scan output is a review list, not a license to remove unrelated legacy/Yield behavior.
+
+### Reserve API
+
+Reserve API ownership, current Hono/Workers file locations and its separate upstream Zapper boundary are specified in the [API addendum](index-dtf-v6-api.md). Include API historical version-at-block, analytics and response-contract evidence in S4 exit review; backend source changes alone do not close S6 simple creation.
 
 ### Protocol / subgraph
 
@@ -557,6 +561,7 @@ The new fork browser command must use a dedicated config and local build, not ex
 | Subgraph schema/mappings | SDK indexed queries, Register history                | Old queries remain valid; new queried fields deployed where used or explicitly version-gated; generated types/codegen and parity pass |
 | Core SDK                 | React SDK                                            | Paired version and build, public contract tests, one resolved core instance                                                           |
 | React SDK                | Register                                             | Exact version/artifact pin, peer-compatible React/Query/viem, rendered consumer and fork tests                                        |
+| Reserve API              | Register rebalance history/analytics                 | Version-at-block decoding, v4/v5/v6 analytics and Hono response-contract tests; compatible deployment before dependent UI enablement |
 | Zap API/router/deployer  | Register simple creation                             | Versioned request/response contract and executed v6 output in both governance modes                                                   |
 | All dependencies         | Production v6 capability gate                        | Full candidate matrix + chain-specific availability + engineer approval                                                               |
 

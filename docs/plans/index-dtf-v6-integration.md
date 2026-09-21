@@ -8,8 +8,9 @@
 - **[Implementation handoff](index-dtf-v6-handoff.md):** first-session procedure, repo/file map, interface and manifest requirements, numbered work packets, runnable versus proposed commands, rollout and recovery.
 - **[Detailed test catalog](index-dtf-v6-test-catalog.md):** stable concrete case IDs, setup/actions/assertions, exact protocol errors, independent arithmetic, governance/upgrade/native-creation recipes and infrastructure fault injection.
 - **[Frozen cohort](index-dtf-v6-cohort.json):** ranked real DTF identities, basket assets and selection provenance.
+- **[Reserve API addendum](index-dtf-v6-api.md):** backend ownership, historical version/read consistency, analytics and response-contract evidence, and standalone Zapper release dependency (scope added 2026-09-17).
 
-Read all four for implementation. Start at **S0; no implementation stage is complete**. Source paths and test commands below reflect the dated audit; revalidate them against the actual candidate before building. The detailed catalog expands the test families here and does not replace the mandatory real-source cohort with synthetic controls.
+Read these together for implementation. The original audit starts at **S0; no full-plan implementation stage is certified complete**. The [Register rebalance vertical](index-dtf-v6-register-rebalance.md) and API addendum track subsequent scoped work and open findings. Source paths and test commands below reflect the dated audit; revalidate them against the actual candidate before building. The detailed catalog expands the test families here and does not replace the mandatory real-source cohort with synthetic controls.
 
 ## Goal
 
@@ -136,7 +137,8 @@ Keep the existing stack: TypeScript/viem and Vitest in SDK; React, TanStack Quer
 | Core SDK       | Version-aware reads, protocol validation/math, ordered calldata, typed errors and deployment/upgrade preparation   |
 | React SDK      | Public read/async-builder hooks, canonical keys, enabled gating, refetch/prefetch/invalidation primitives          |
 | Register       | Form intent, product presets, explicit hybrid classification, display, wallet submission, receipt UX and analytics |
-| Subgraph / API | Indexed history/metadata and priced analytics with provenance; never live permission or execution truth            |
+| Subgraph       | Indexed history/metadata and event/state parity; never live permission or execution truth                          |
+| Reserve API    | Historical RPC/event decoding, priced analytics and response compatibility; [API acceptance](index-dtf-v6-api.md) |
 | Test runner    | Pinned forks, local bootstrap, state ownership, governance actors, scenario execution and evidence                 |
 
 Register imports from `@reserve-protocol/react-sdk`. Pure exported preparation functions can be called directly without a client. Client-bound work needs a public React hook/query primitive; **do not introduce `useDtfSdk()` or direct client calls in Register**. Do not create a hook for a synchronous function just to satisfy a naming convention.
@@ -241,7 +243,7 @@ Create native v6 DTFs on every chain using SDK-generated deployment calldata, th
 
 The new address must load before it exists in curated discovery/API lists. Use confirmed receipt + RPC and then indexed metadata; no dependency on being listed or having API price history. Execute first mint/redeem, ordinary and optimistic proposal where configured, first rebalance/auction/fill/close, fee changes/distribution and reload/navigation. Include meaningful nonzero self-fee and immutable-recipient variants, not only zero defaults. Test governed and direct-admin deployments where Register offers them; do not equate a direct-admin fixture with governance coverage. Also verify Register's separate Create DAO/new staking-token prerequisite; a preexisting synthetic vault does not prove this path.
 
-Register has manual and simple/zap deployment paths. The simple path currently uses Register's `useZapDeployQuery` and the Reserve API deployment endpoints, not the `react-zapper` UI package. S0 inventories the backend/router/deployer contracts and payloads before assigning ownership. Each entry point exposed for v6 must generate and execute the correct v6 deployment; an unsupported integration is explicitly gated and reported as an open product capability, never silently routed through a legacy deployer. Any required backend or package change follows its own build/test/release dependency before Register enablement.
+Register has manual and simple/zap deployment paths. The simple path currently uses Register's `useZapDeployQuery` and deployment operations forwarded by Reserve API to a standalone Zapper worker, not the `react-zapper` UI package. The [API addendum](index-dtf-v6-api.md) records the forwarding boundary verified against the updated Hono/Workers API. S0 inventories the upstream router/deployer contracts and payloads before assigning implementation ownership. Each entry point exposed for v6 must generate and execute the correct v6 deployment; an unsupported integration is explicitly gated and reported as an open product capability, never silently routed through a legacy deployer. Any required backend or package change follows its own build/test/release dependency before Register enablement.
 
 | Deployment mode       | Producer / dependency                                               | Required NEW-01 proof                                                                               |
 | --------------------- | ------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------- |
