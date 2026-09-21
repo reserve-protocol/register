@@ -17,8 +17,7 @@ const meta = {
   parameters: {
     docs: {
       description: {
-        component:
-          'Import Link from @/components/design-system-v1/link. Use for navigation; caller supplies visible and accessible external-destination context.',
+        component: '`@/components/design-system-v1/link`',
       },
     },
   },

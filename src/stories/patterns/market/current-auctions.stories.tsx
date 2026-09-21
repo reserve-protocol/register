@@ -111,8 +111,7 @@ const meta = {
     layout: 'padded',
     docs: {
       description: {
-        component:
-          'Story-only preservation of current rebalance tables and static detail states, including basket setup, bids, liquidity, outcomes, and weight editing.',
+        component: 'Rebalance auctions, bids and weight editing.',
       },
     },
   },

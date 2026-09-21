@@ -26,8 +26,7 @@ const meta = {
   parameters: {
     docs: {
       description: {
-        component:
-          'Import SegmentedControl and SegmentedControlItem from @/components/design-system-v1/segmented-control. Selection changes one value; use Tabs for separate content panels.',
+        component: '`@/components/design-system-v1/segmented-control`',
       },
     },
   },

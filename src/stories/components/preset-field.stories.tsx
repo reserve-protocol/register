@@ -20,8 +20,7 @@ const meta = {
   parameters: {
     docs: {
       description: {
-        component:
-          'Import PresetOrCustomField from @/components/design-system-v1/preset-or-custom-field. Choosing Custom moves focus into the input; validation remains caller-owned.',
+        component: '`@/components/design-system-v1/preset-or-custom-field`',
       },
     },
   },

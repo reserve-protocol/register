@@ -31,8 +31,7 @@ const meta = {
     layout: 'fullscreen',
     docs: {
       description: {
-        component:
-          'Exploratory fixed-point reference for the original automated mint and redeem entry, configuration, quote, durable-order workspace, recovery, and outcome compositions. All fixtures are local; wallet, quote, and transaction actions do not execute.',
+        component: 'Automated mint and redeem states.',
       },
     },
   },

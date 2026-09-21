@@ -42,8 +42,7 @@ const meta = {
     layout: 'padded',
     docs: {
       description: {
-        component:
-          'Canonical overview PriceChartBody and CandlestickChartBody rendered with captured local source data.',
+        component: 'Overview price and candlestick charts.',
       },
     },
   },

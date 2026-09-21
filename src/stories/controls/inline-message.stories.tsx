@@ -11,8 +11,7 @@ const meta = {
   parameters: {
     docs: {
       description: {
-        component:
-          'Import InlineMessage primitives from @/components/design-system-v1/inline-message. Summary/default and plain/contained icon variants preserve distinct information hierarchy.',
+        component: '`@/components/design-system-v1/inline-message`',
       },
     },
   },

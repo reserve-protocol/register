@@ -19,8 +19,7 @@ const meta = {
   parameters: {
     docs: {
       description: {
-        component:
-          'Import EmptyState from @/components/empty-state. Distinguish a true absence from loading, a failed request or blocked permissions.',
+        component: '`@/components/empty-state`',
       },
     },
   },

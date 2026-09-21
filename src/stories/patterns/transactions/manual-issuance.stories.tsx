@@ -18,8 +18,7 @@ const meta = {
     layout: 'fullscreen',
     docs: {
       description: {
-        component:
-          'Exploratory fixed-point reference for the original two-panel manual mint and redeem composition. Canonical amount, identity, feedback, action, and outcome components are rendered with local fixtures; no wallet or network action runs.',
+        component: 'Manual mint and redeem states.',
       },
     },
   },

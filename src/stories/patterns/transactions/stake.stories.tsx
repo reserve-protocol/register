@@ -24,8 +24,7 @@ const meta = {
     layout: 'fullscreen',
     docs: {
       description: {
-        component:
-          'Exploratory fixed-point reference for the original stake, delayed unstake, single-role delegation, recovery, and outcome dialog compositions. It reuses canonical transaction and dialog primitives with local fixtures only.',
+        component: 'Staking, unstaking and delegation states.',
       },
     },
   },

@@ -17,8 +17,7 @@ const meta = {
   parameters: {
     docs: {
       description: {
-        component:
-          'Import HelpTooltip from @/components/design-system-v1/help-tooltip. Hover, focus or click to reveal supporting information. The trigger needs its own accessible name.',
+        component: '`@/components/design-system-v1/help-tooltip`',
       },
     },
   },

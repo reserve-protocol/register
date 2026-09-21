@@ -35,8 +35,7 @@ const meta = {
     layout: 'padded',
     docs: {
       description: {
-        component:
-          'Story-only reference preserving the source Discover table, responsive cards, compact chart, asset ticker and missing-data states.',
+        component: 'Discover tables and responsive cards.',
       },
     },
   },

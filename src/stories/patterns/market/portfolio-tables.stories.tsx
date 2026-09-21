@@ -52,8 +52,7 @@ const meta = {
     layout: 'padded',
     docs: {
       description: {
-        component:
-          'Story-only reference preserving the original Portfolio position and pending-withdrawal tables. Reusable cells come from canonical component modules.',
+        component: 'Positions and pending withdrawals.',
       },
     },
   },

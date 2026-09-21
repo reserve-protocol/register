@@ -8,8 +8,7 @@ const meta = {
     controls: { disable: true },
     docs: {
       description: {
-        component:
-          'Original holdings composition combining EntityIdentity and MetricValue. Column layout remains owned by the table; this is not a universal row API.',
+        component: 'Holdings row with token identity and value.',
       },
     },
   },

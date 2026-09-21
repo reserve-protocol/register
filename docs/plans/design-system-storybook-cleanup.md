@@ -24,8 +24,8 @@ tests and fake transaction execution engines remain retired.
 - Light/dark themes, phone widths, keyboard behavior, loading, missing, disabled,
   long-content, recovery and outcome states can be inspected without wallet,
   RPC, subgraph or analytics startup.
-- Introduction embeds `src/stories/COVERAGE.md`, mapping removed design areas to
-  current destinations and explaining retired infrastructure.
+- Introduction gives a short browsing guide. `src/stories/COVERAGE.md` keeps the
+  migration map in the repository.
 
 ## Boundaries
 
@@ -127,8 +127,8 @@ application behavior, modal focus, Controls, accessibility tooling and API check
 | `wiki-lint.mjs`                              | Only existing basket-overview source drift remains                                                                                                 |
 
 Status: ready for review on `design-system-storybook`; commit and push authorized.
-No verified task finding remains open. The source-to-story map is in
-`src/stories/COVERAGE.md` and Storybook Introduction.
+No verified task finding remains open. The source-to-story map remains in
+`src/stories/COVERAGE.md`.
 
 `pnpm storybook` remains on port 6007; static browser verification uses 6008.
 Engineer review is required before merge for the initial migration's shared

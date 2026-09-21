@@ -18,8 +18,7 @@ const meta = {
     layout: 'fullscreen',
     docs: {
       description: {
-        component:
-          'Exploratory fixed-point reference for the original vote-lock, delayed unlock, normal and challenge delegation, recovery, and outcome dialog compositions. It reuses canonical transaction and dialog primitives with local fixtures only.',
+        component: 'Vote locking, unlocking and delegation states.',
       },
     },
   },

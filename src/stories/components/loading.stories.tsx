@@ -8,8 +8,7 @@ const meta = {
   parameters: {
     docs: {
       description: {
-        component:
-          'Import Spinner and Skeleton from @/components/design-system-v1/loading. Skeletons preserve unresolved content geometry; a labeled spinner announces an active operation. Both honor reduced motion.',
+        component: '`@/components/design-system-v1/loading`',
       },
     },
   },

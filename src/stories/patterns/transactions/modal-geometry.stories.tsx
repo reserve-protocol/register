@@ -11,8 +11,7 @@ const meta = {
     controls: { disable: true },
     docs: {
       description: {
-        component:
-          'Historical exploratory reference preserving the fixed-point 432px task and 384px compact modal specimens. These widths document the earlier geometry study and are not new canonical API.',
+        component: 'Modal width studies: 432px and 384px.',
       },
     },
   },

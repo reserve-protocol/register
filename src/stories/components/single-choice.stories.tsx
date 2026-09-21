@@ -21,8 +21,7 @@ const meta = {
   parameters: {
     docs: {
       description: {
-        component:
-          'Import SingleChoiceGroup from @/components/design-system-v1/single-choice-group. Native radio semantics preserve keyboard selection; constrained tracks reveal the selected option.',
+        component: '`@/components/design-system-v1/single-choice-group`',
       },
     },
   },

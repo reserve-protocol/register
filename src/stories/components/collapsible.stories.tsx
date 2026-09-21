@@ -12,8 +12,7 @@ const meta = {
   parameters: {
     docs: {
       description: {
-        component:
-          'Import Collapsible primitives from @/components/design-system-v1/collapsible. Use for optional supporting information; cue text follows the open state.',
+        component: '`@/components/design-system-v1/collapsible`',
       },
     },
   },

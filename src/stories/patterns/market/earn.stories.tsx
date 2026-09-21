@@ -60,8 +60,7 @@ const meta = {
     layout: 'padded',
     docs: {
       description: {
-        component:
-          'Story-only reference preserving Index and Yield Earn tables, DeFi opportunities, vote-lock positions and staked RSR positions.',
+        component: 'Earn opportunities and staking positions.',
       },
     },
   },

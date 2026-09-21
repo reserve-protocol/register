@@ -11,8 +11,7 @@ const meta = {
   parameters: {
     docs: {
       description: {
-        component:
-          'Import ActionGroup from @/components/design-system-v1/action-group. Use primary/secondary hierarchy; vertical groups keep equal full-width actions.',
+        component: '`@/components/design-system-v1/action-group`',
       },
     },
   },

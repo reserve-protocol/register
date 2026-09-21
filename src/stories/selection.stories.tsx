@@ -10,8 +10,7 @@ const meta = {
   parameters: {
     docs: {
       description: {
-        component:
-          'Import Checkbox from @/components/checkbox. Controls and canvas selection stay synchronized; disabled examples preserve checked and unchecked appearance.',
+        component: '`@/components/checkbox`',
       },
     },
   },

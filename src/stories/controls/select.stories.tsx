@@ -13,8 +13,7 @@ const meta = {
   parameters: {
     docs: {
       description: {
-        component:
-          'Import Select primitives from @/components/design-system-v1/select. Choose one item from a bounded list; keep placeholder, disabled and selected states distinct.',
+        component: '`@/components/design-system-v1/select`',
       },
     },
   },

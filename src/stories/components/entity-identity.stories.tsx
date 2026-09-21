@@ -38,8 +38,7 @@ const meta = {
   parameters: {
     docs: {
       description: {
-        component:
-          'Import EntityIdentity, ChainBadgedLogo, TokenLogoStack and ChainLogoStack from @/components/entity-identity. The mark owns geometry and surface separation; its parent owns row spacing and interaction.',
+        component: '`@/components/entity-identity`',
       },
     },
   },

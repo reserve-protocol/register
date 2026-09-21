@@ -66,8 +66,7 @@ const meta = {
     layout: 'padded',
     docs: {
       description: {
-        component:
-          'Story-only reference preserving the accepted Exposure and Collateral table projections and their responsive toolbar.',
+        component: 'Exposure and collateral tables.',
       },
     },
   },

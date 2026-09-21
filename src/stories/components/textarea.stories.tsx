@@ -26,8 +26,7 @@ const meta = {
   parameters: {
     docs: {
       description: {
-        component:
-          'Import TextArea and Field from @/components/design-system-v1/field. Keep a visible label and associate errors through aria-describedby.',
+        component: '`@/components/design-system-v1/field`',
       },
     },
   },

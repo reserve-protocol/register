@@ -20,8 +20,7 @@ const meta = {
   parameters: {
     docs: {
       description: {
-        component:
-          'Import SearchField from @/components/design-system-v1/search-field. The field owns query, clear and loading presentation; the caller owns results.',
+        component: '`@/components/design-system-v1/search-field`',
       },
     },
   },

@@ -37,8 +37,7 @@ const meta = {
     layout: 'fullscreen',
     docs: {
       description: {
-        component:
-          'Exploratory fixed-point reference for the original Zapper modal, including fixed and selectable routes, RFQ and atomic lifecycles, advisories, recovery, attachments, and outcomes. Controls are local and no quote, wallet, or network action runs.',
+        component: 'Quote, execution, recovery and outcome states.',
       },
     },
   },

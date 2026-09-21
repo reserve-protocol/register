@@ -158,7 +158,7 @@ test('Docs, live Controls and accessibility results are available', async ({
   await expect(page.getByRole('tab', { name: /Violations/ })).toBeVisible()
   await page.goto('/?path=/docs/components-button--docs')
   await expect(
-    frame.getByText('Import Button and InlineAction', { exact: false })
+    frame.getByRole('heading', { name: 'Button', exact: true })
   ).toBeVisible()
 })
 

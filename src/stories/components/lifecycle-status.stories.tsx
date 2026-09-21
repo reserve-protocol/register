@@ -25,8 +25,7 @@ const meta = {
   parameters: {
     docs: {
       description: {
-        component:
-          'Import LifecycleStatusPill from @/components/lifecycle-status. Role describes lifecycle meaning; financial gains/losses use PerformanceValue separately.',
+        component: '`@/components/lifecycle-status`',
       },
     },
   },

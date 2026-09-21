@@ -31,8 +31,7 @@ const meta = {
     layout: 'padded',
     docs: {
       description: {
-        component:
-          'Story-only reference preserving standard and optimistic governance records, lifecycle timing, decision evidence and terminal outcomes.',
+        component: 'Standard and optimistic governance proposals.',
       },
     },
   },

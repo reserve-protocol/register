@@ -54,8 +54,7 @@ const meta = {
     layout: 'padded',
     docs: {
       description: {
-        component:
-          'Canonical Home featured-card and Discover compact-card compositions with captured local data and local brand assets.',
+        component: 'Featured and compact Discover cards.',
       },
     },
   },

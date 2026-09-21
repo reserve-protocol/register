@@ -16,8 +16,7 @@ const meta = {
   parameters: {
     docs: {
       description: {
-        component:
-          'Import Tabs, TabsList, TabsTrigger and TabsContent from @/components/design-system-v1/tabs. Arrow keys move between available panels; disabled tabs are skipped.',
+        component: '`@/components/design-system-v1/tabs`',
       },
     },
   },

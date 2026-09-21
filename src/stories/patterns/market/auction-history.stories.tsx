@@ -51,8 +51,7 @@ const meta = {
     layout: 'padded',
     docs: {
       description: {
-        component:
-          'Story-only preservation of historical rebalance tables and browse records from the former design reference.',
+        component: 'Past rebalances and auction records.',
       },
     },
   },

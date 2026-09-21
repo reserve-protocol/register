@@ -76,10 +76,11 @@ retained through money logic. Monospace is for machine identifiers.
 ## Patterns and adoption
 
 Navigation, table and chart stories preserve the original compositions and edge
-states. They do not define a universal page, row or chart API. The Introduction
-page embeds `src/stories/COVERAGE.md`, mapping removed design areas to current
-stories. Foundation/layout studies and historical modal alternatives remain
-browsable; review dashboards and simulation engines stay retired.
+states. They do not define a universal page, row or chart API. The repository
+coverage map, `src/stories/COVERAGE.md`, maps removed design areas to current stories.
+Foundation/layout studies and historical modal alternatives remain browsable.
+Keep Storybook copy brief: an import path and useful usage notes. Migration records
+and coverage tables belong in the repository, not the Storybook interface.
 
 Use Docs for usage guidance and source, Controls for supported props and fixture
 states, and Accessibility for axe results. The sidebar separates canonical

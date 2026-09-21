@@ -19,8 +19,7 @@ const meta = {
   parameters: {
     docs: {
       description: {
-        component:
-          'Import Popover primitives from @/components/design-system-v1/popover. Anchored supporting content uses the canonical surface and collision behavior.',
+        component: '`@/components/design-system-v1/popover`',
       },
     },
   },

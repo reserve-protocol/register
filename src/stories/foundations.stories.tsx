@@ -10,8 +10,7 @@ const meta = {
     controls: { disable: true },
     docs: {
       description: {
-        component:
-          'The designer’s semantic roles and visual rules from the original mocks. Components consume src/app.css tokens, design-system-v1/typography.ts and semantic-roles.ts. Layout proportions remain exploratory.',
+        component: 'Colors, typography, spacing, shape and motion.',
       },
     },
   },

@@ -17,8 +17,7 @@ const meta = {
     controls: { disable: true },
     docs: {
       description: {
-        component:
-          'Original composition studies, preserved as design references. These sketches compare page structure; they do not approve production route or task changes.',
+        component: 'Page and workflow layout studies.',
       },
     },
   },

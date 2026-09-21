@@ -44,8 +44,7 @@ const meta = {
     layout: 'padded',
     docs: {
       description: {
-        component:
-          'Story-only preservation of captured price-history pressure states, including known zero, unavailable, interrupted, estimated, and constrained layouts.',
+        component: 'Price history with missing, partial and estimated data.',
       },
     },
   },

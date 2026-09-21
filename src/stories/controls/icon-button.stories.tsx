@@ -8,8 +8,7 @@ const meta = {
   parameters: {
     docs: {
       description: {
-        component:
-          'Import IconButton from @/components/icon-button. A label is required; loading/disabled preserve geometry. Slotting through asChild is unsupported.',
+        component: '`@/components/icon-button`',
       },
     },
   },

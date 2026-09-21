@@ -19,8 +19,7 @@ const meta = {
   parameters: {
     docs: {
       description: {
-        component:
-          'Import Drawer primitives from @/components/design-system-v1/drawer. Narrow screens use a bottom sheet; desktop uses a side drawer. Long content scrolls inside the body.',
+        component: '`@/components/design-system-v1/drawer`',
       },
     },
   },

@@ -20,8 +20,7 @@ const meta = {
     controls: { disable: true },
     docs: {
       description: {
-        component:
-          'Original designer examples showing the foundations under real content pressure. Historical comparison labels are retained; canonical component APIs and accepted decisions determine production adoption.',
+        component: 'Foundations applied to real content.',
       },
     },
   },

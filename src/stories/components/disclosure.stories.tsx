@@ -13,8 +13,7 @@ const meta = {
     controls: { disable: true },
     docs: {
       description: {
-        component:
-          'Import Accordion primitives from @/components/design-system-v1/accordion. Use for peer sections; disabled triggers remain visible without activation.',
+        component: '`@/components/design-system-v1/accordion`',
       },
     },
   },

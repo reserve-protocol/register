@@ -18,8 +18,7 @@ const meta = {
   parameters: {
     docs: {
       description: {
-        component:
-          'Import Pagination from @/components/design-system-v1/pagination. The caller owns page data; first/last boundaries disable the corresponding action.',
+        component: '`@/components/design-system-v1/pagination`',
       },
     },
   },

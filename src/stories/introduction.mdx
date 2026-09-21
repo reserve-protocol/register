@@ -1,16 +1,14 @@
-import { Meta, Markdown } from '@storybook/addon-docs/blocks'
-import coverage from './COVERAGE.md?raw'
+import { Meta } from '@storybook/addon-docs/blocks'
 
 <Meta title="Introduction" />
 
 # Register design system
 
-Start with **Components** to find an implementation, **Patterns** to review a product composition, or **Foundations** to inspect the visual rules. **Explorations** preserves proposals whose production adoption is still open.
+- **Foundations** — colors, typography, spacing and motion.
+- **Components** — reusable UI and its states.
+- **Patterns** — navigation, tables, charts and transactions.
+- **Explorations** — alternative layouts and early design studies.
 
-Use **Controls** to change supported props, the toolbar to switch theme and viewport, and **Code** to inspect the example. Component Docs include the canonical import and usage boundaries. The **Accessibility** panel reports automated findings; keyboard, content and visual review still matter.
+Use **Controls** to change props and transaction stages. Switch theme and screen size in the toolbar; open **Code** for the example source.
 
-For transaction stages, use the **state** control; form inputs remain editable.
-
-Examples use local fixtures. Wallet connections, quotes, approvals and transaction results are design states. They do not execute real transactions. English reference copy stays outside production translation catalogs.
-
-<Markdown>{coverage}</Markdown>
+Examples use mock data. Transactions do not execute.

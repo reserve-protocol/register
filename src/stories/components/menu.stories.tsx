@@ -15,8 +15,7 @@ const meta = {
     controls: { disable: true },
     docs: {
       description: {
-        component:
-          'Import Menu primitives from @/components/design-system-v1/menu. Arrow keys move through actions; Escape closes and returns focus.',
+        component: '`@/components/design-system-v1/menu`',
       },
     },
   },

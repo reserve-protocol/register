@@ -26,7 +26,7 @@ const meta = {
     docs: {
       description: {
         component:
-          'Import MultiSelectFilter from @/components/design-system-v1/multi-select-filter. Selections are drafts until Apply; closing cancels the draft. minSelected controls whether Clear all is available.',
+          '`@/components/design-system-v1/multi-select-filter` Changes take effect on Apply.',
       },
     },
   },

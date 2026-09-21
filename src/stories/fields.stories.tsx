@@ -26,8 +26,7 @@ const meta = {
   parameters: {
     docs: {
       description: {
-        component:
-          'Import Field, TextInput and FieldMessage from @/components/design-system-v1/field. Visible labels and aria-describedby associate guidance and validation with the field.',
+        component: '`@/components/design-system-v1/field`',
       },
     },
   },

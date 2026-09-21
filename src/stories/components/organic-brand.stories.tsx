@@ -11,8 +11,7 @@ const meta = {
   parameters: {
     docs: {
       description: {
-        component:
-          'Import OrganicBrandSurface from @/components/design-system-v1/organic-brand-surface. Decorative brand treatment used by the original card compositions; reduced motion keeps a static field.',
+        component: '`@/components/design-system-v1/organic-brand-surface`',
       },
     },
   },

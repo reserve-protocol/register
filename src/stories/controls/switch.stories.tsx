@@ -8,8 +8,7 @@ const meta = {
   parameters: {
     docs: {
       description: {
-        component:
-          'Import Switch from @/components/design-system-v1/switch. Use for an immediate binary setting and provide an accessible name.',
+        component: '`@/components/design-system-v1/switch`',
       },
     },
   },

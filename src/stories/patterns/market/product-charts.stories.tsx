@@ -72,8 +72,7 @@ const meta = {
     layout: 'padded',
     docs: {
       description: {
-        component:
-          'Preserved Home, Discover, Yield DTF metric and price, and Portfolio chart compositions using captured local fixtures.',
+        component: 'Home, Discover, Yield and Portfolio charts.',
       },
     },
   },

@@ -13,8 +13,7 @@ const meta = {
     controls: { disable: true },
     docs: {
       description: {
-        component:
-          'Original Global + Product navigation compositions using @/components/design-system-v1/navigation and mobile-global-header. The rail expands on hover/focus; its identity switches DTFs. Mobile examples preserve utility/language controls, connected identity and separate global/product navigation. Account actions are visual fixtures.',
+        component: 'Desktop and mobile navigation, including DTF switching.',
       },
     },
   },

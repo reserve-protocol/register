@@ -9,7 +9,7 @@ const meta = {
     docs: {
       description: {
         component:
-          'Import PerformanceValue from @/components/design-system-v1/performance-value. Financial direction is distinct from task success/failure; null is missing data, not zero.',
+          '`@/components/design-system-v1/performance-value` `null` means missing data; zero is a known value.',
       },
     },
   },

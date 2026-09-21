@@ -21,8 +21,7 @@ const meta = {
   parameters: {
     docs: {
       description: {
-        component:
-          'Import Dialog primitives from @/components/dialog. Body content scrolls while header/footer remain anchored. Escape dismissal is controlled by dismissible.',
+        component: '`@/components/dialog`',
       },
     },
   },
@@ -85,8 +84,7 @@ export const LongContent: Story = {
   parameters: {
     docs: {
       description: {
-        story:
-          'Original eligibility mock with expanded long content. Historical design copy, not the application’s current eligibility policy.',
+        story: 'Eligibility layout with long content. Sample policy text only.',
       },
     },
   },
@@ -110,8 +108,7 @@ export const Eligibility: Story = {
   parameters: {
     docs: {
       description: {
-        story:
-          'Original three-attestation eligibility composition; confirmation is a local visual state.',
+        story: 'Eligibility checklist.',
       },
     },
   },

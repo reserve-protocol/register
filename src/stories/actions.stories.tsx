@@ -11,8 +11,7 @@ const meta = {
   parameters: {
     docs: {
       description: {
-        component:
-          'Import Button and InlineAction from @/components/button. Loading preserves action geometry and prevents repeat activation; use a secondary action for safe cancellation.',
+        component: '`@/components/button`',
       },
     },
   },

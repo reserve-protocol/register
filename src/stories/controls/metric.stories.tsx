@@ -8,8 +8,7 @@ const meta = {
   parameters: {
     docs: {
       description: {
-        component:
-          'Import Metric from @/components/metric. Values are already formatted by the caller; zero, missing and loading remain different states.',
+        component: '`@/components/metric`',
       },
     },
   },

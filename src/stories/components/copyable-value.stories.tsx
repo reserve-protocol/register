@@ -15,8 +15,7 @@ const meta = {
   parameters: {
     docs: {
       description: {
-        component:
-          'Import CopyableValue from @/components/design-system-v1/copyable-value. Display a short identifier while copying the complete value; click to inspect success feedback.',
+        component: '`@/components/design-system-v1/copyable-value`',
       },
     },
   },
