@@ -4,7 +4,7 @@ import DTFIndexGovernance from '@/abis/dtf-index-governance'
 import { Button } from '@/components/ui/button'
 import { chainIdAtom } from '@/state/atoms'
 import { indexDTFAtom, indexDTFVersionAtom } from '@/state/dtf/atoms'
-import { getCurrentTime } from '@/utils'
+import { checkVersion, getCurrentTime } from '@/utils'
 import { ChainId } from '@/utils/chains'
 import { PROPOSAL_STATES } from '@/utils/constants'
 import type { IndexDtfProposalSummary } from '@reserve-protocol/react-sdk'
@@ -53,6 +53,11 @@ const fillerRegistryMapping = {
 }
 
 const UPGRADE_FOLIO_MESSAGE = 'Release 4.0.0 upgrade'
+
+const LEGACY_V4_UPGRADE_DTFS = {
+  BDTF: '0xb8753941196692e322846cfee9c14c97ac81928a',
+  CLUB: '0xf8ef6e785473e82527908b06023ac3e401ccfdcd',
+}
 
 const queryParams = {
   staleTime: 5 * 60 * 1000,
@@ -220,7 +225,13 @@ const validProposalExists = (
 export default function ProposeBanners() {
   const { isProposeAllowed } = useIsProposeAllowed()
   const proposals = useAtomValue(governanceProposalsAtom)
-  const isUpgradeable = useAtomValue(indexDTFVersionAtom) === '2.0.0'
+  const dtf = useAtomValue(indexDTFAtom)
+  const version = useAtomValue(indexDTFVersionAtom)
+  const isUpgradeable =
+    version === '2.0.0' ||
+    (dtf?.chainId === ChainId.Base &&
+      Object.values(LEGACY_V4_UPGRADE_DTFS).includes(dtf.id.toLowerCase()) &&
+      !checkVersion('4.0.0', version))
   const setRefetchToken = useSetAtom(refetchTokenAtom)
 
   const refetch = useCallback(() => {
