@@ -621,6 +621,7 @@ export const SELF_APPRECIATING_VOTE_LOCK_VAULTS: Record<
   number,
   readonly string[]
 > = {
+  [ChainId.Base]: ['0x2f0d6538807a77d4addcd4b4daf214ea2e818e3d'],
   [ChainId.BSC]: ['0xe744c8157c346b2931807f42552c8cbc0bb6d34f'],
 }
 
