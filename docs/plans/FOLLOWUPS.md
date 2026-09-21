@@ -134,3 +134,9 @@ surface unless noted.
   zero-protection dust leg (above,
   `e2e/tests/flows/issuance-manual-boundaries.spec.ts`). Each keeps its
   `test.fixme` + this entry as owner until fixed.
+
+## Stack e2e lane (2026-09-21)
+
+- Closed: v6 rebalance metrics omitted `auctionLength` (the metrics updater now passes `maxAuctionLength`, surfaced by the stack lane's "Unexpected error getting Rebalance data").
+- Open: the production API returns 404 on `/dtf/rebalance` for sandbox folios and has no 6.0.0 decoding, so the stack lane does not verify the rebalance metrics surface; a local `reserve-api` on the sandbox closes that (`FORK_RESERVE_API_URL`).
+- Open: the SDK client appends default public RPCs after an override; the lane's scripts pass a viem client so the fork can never fall through to a public endpoint, Register still can (`docs/plans/FOLLOWUPS.md` earlier item).

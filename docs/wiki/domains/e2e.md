@@ -1,6 +1,6 @@
 ---
 title: E2E Suite
-updated: 2026-09-17
+updated: 2026-09-21
 type: domain
 sources:
   - e2e/**
@@ -191,3 +191,7 @@ aborted; this proves injected-wallet behavior, not live WalletConnect relay,
 email/social authentication, or fiat-provider flows. See [[wallet-connect]].
 
 Related: [[project]], [[sdk]], [[yield-protocol]], [[subgraphs]].
+
+### Stack lane
+
+`e2e/fork/scripts/stack-lane.sh` runs the whole stack on the protocol sandbox (chain 1): `sandbox.sh all` (protocol + fork subgraph + parity + SDK fork smoke), then `propose-native-v6-rebalance.mjs` (SDK `buildBasketProposal` from live prices through the optimistic governor, seven-day deadline, appended blocks only), `prepare-native-v6.mjs` (moves the clock past the last auction, impersonates the sandbox actor as launcher, writes `e2e/fork/.state/1/native-v6-scenario.json`) and `launch-native-v6.fork.spec.ts` (six-arg launch from the UI, receipt and calldata checked on the fork, auction id checked on the fork subgraph, cold reload shows that auction live with the launcher hidden). The fork is persistent: the propose script records its proposal in `e2e/fork/.state/1/native-v6-proposal.json`, the manifest carries it, and the spec waits for the fork subgraph to reach the manifest block before picking the active item by description. `playwright.fork.config.ts` picks the chain profile from `FORK_CHAIN_ID` and the port from `FORK_WEB_PORT`; `VITE_RESERVE_API_URL` overrides the API base. Skill: hub `.claude/skills/stack-e2e/SKILL.md`.

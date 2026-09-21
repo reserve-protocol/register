@@ -1,5 +1,9 @@
 import { chainIdAtom, devModeAtom } from '@/state/atoms'
-import { isHybridDTFAtom } from '@/state/dtf/atoms'
+import { folioVersionAtom, isHybridDTFAtom } from '@/state/dtf/atoms'
+import {
+  useIndexDtfIdentity,
+  useIndexDtfMaxAuctionLength,
+} from '@reserve-protocol/react-sdk'
 import { ChainId } from '@/utils/chains'
 import { useLingui } from '@lingui/react/macro'
 import { useAtomValue, useSetAtom } from 'jotai'
@@ -35,6 +39,13 @@ const RebalanceMetricsUpdater = () => {
   const auctions = useAtomValue(rebalanceAuctionsAtom)
   const chainId = useAtomValue(chainIdAtom)
   const isDevMode = useAtomValue(devModeAtom)
+  const identity = useIndexDtfIdentity()
+  const versionState = useAtomValue(folioVersionAtom)
+  const major = versionState.status === 'ready' ? versionState.major : undefined
+  // Folio 6.0 metrics need the per-auction length the launch calldata will carry.
+  const { data: maxAuctionLength } = useIndexDtfMaxAuctionLength(
+    major === 6 && identity.address ? identity : undefined
+  )
 
   const updateMetrics = useCallback(
     (
@@ -60,9 +71,9 @@ const RebalanceMetricsUpdater = () => {
         // Use saved weights for hybrid DTFs on first auction if available
         const weightsToUse =
           isHybridDTF &&
-            areWeightsSaved &&
-            savedWeights &&
-            auctions.length === 0
+          areWeightsSaved &&
+          savedWeights &&
+          auctions.length === 0
             ? savedWeights
             : initialWeights
 
@@ -81,7 +92,8 @@ const RebalanceMetricsUpdater = () => {
           isTrackingDTF,
           tokenPriceVolatility,
           rebalancePercent,
-          isHybridDTF
+          isHybridDTF,
+          maxAuctionLength
         )
 
         // Determine if auction is small based on chain
@@ -115,9 +127,10 @@ const RebalanceMetricsUpdater = () => {
                 isTrackingDTF,
                 tokenPriceVolatility,
                 effectivePercent,
-                isHybridDTF
+                isHybridDTF,
+                maxAuctionLength
               )
-          : [, initialMetrics]
+            : [, initialMetrics]
 
         setRebalanceError('')
         setRebalanceMetrics({
@@ -167,6 +180,7 @@ const RebalanceMetricsUpdater = () => {
       auctions,
       chainId,
       isDevMode,
+      maxAuctionLength,
       setRebalanceError,
       t,
     ]

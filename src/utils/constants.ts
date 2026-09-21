@@ -18,9 +18,10 @@ const isStaging =
     import.meta.env.VITE_USE_STAGING) &&
   import.meta.env.VITE_STAGING_API
 
-export const RESERVE_API = isStaging
-  ? import.meta.env.VITE_STAGING_API
-  : 'https://api.reserve.org/'
+// Fork e2e lane points this at a local reserve-api; production otherwise.
+export const RESERVE_API =
+  import.meta.env.VITE_RESERVE_API_URL ||
+  (isStaging ? import.meta.env.VITE_STAGING_API : 'https://api.reserve.org/')
 
 export const ZAPPER_API = isStaging
   ? 'https://api-staging.reserve.org/'
@@ -624,10 +625,7 @@ export const SELF_APPRECIATING_VOTE_LOCK_VAULTS: Record<
   [ChainId.BSC]: ['0xe744c8157c346b2931807f42552c8cbc0bb6d34f'],
 }
 
-export const isSelfAppreciatingVoteLock = (
-  chainId: number,
-  address?: string
-) =>
+export const isSelfAppreciatingVoteLock = (chainId: number, address?: string) =>
   !!address &&
   (SELF_APPRECIATING_VOTE_LOCK_VAULTS[chainId] ?? []).includes(
     address.toLowerCase()

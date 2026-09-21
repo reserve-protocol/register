@@ -139,3 +139,5 @@ Quick loop: `pnpm exec playwright test e2e/tests/smoke/auctions.spec.ts`
 Engineer review is required for behavior changes here (on-chain rebalance math /
 launcher permissions are a repo stop-condition surface) — tests passing is not
 sign-off.
+
+Real-fork coverage: BSC CMC20 launch (`e2e/fork/tests/launch-cmc20.fork.spec.ts`) and the chain-1 stack lane (`e2e/fork/tests/launch-native-v6.fork.spec.ts`, run through `e2e/fork/scripts/stack-lane.sh`); see the hub skill `stack-e2e`. The live auction card carries `data-testid="auctions-active-auction"` and `data-auction-id` (subgraph id `<dtf>-<n>`); while it renders, `RebalanceAction` and the launch button are gone, so an "auction ongoing" proof asserts the card.

@@ -66,9 +66,16 @@ Ports and resource limits are all env-overridable (`chains/<chainId>.env`, `ANVI
   and a `playwright.fork.config.ts` that pins all three plus the Graph endpoints are proposed work
   (handoff §3.6); until they exist, Register browser cases can only target the chain-1 fork.
 
+## The stack lane (chain 1, protocol sandbox)
+
+The four-repo flow — protocol sandbox, fork subgraph, SDK, Register — lives in the hub skill
+`.claude/skills/stack-e2e/SKILL.md` and runs with `e2e/fork/scripts/stack-lane.sh`. It reuses this
+config with `FORK_CHAIN_ID=1` (Anvil :8545, fork subgraph :18000) and `FORK_WEB_PORT` when :3006
+is taken; `FORK_RESERVE_API_URL` points Register at a local API.
+
 ## The Register real-launch lane (BSC, CMC20)
 
-`playwright.fork.config.ts` boots Vite on :3006 with `VITE_RPC_URL_56` pointed at the fork
+`playwright.fork.config.ts` (`FORK_CHAIN_ID=56`, the default) boots Vite on :3006 with `VITE_RPC_URL_56` pointed at the fork
 and `VITE_DISABLE_COWBOT=true`; nothing is intercepted (API and subgraph are production). The
 subgraph is the catch: the rebalance list joins rebalances to proposals through it, so a
 rebalance started on the fork by impersonation never renders. Pin the fork **inside a real
