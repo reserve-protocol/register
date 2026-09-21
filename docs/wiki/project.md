@@ -1,6 +1,6 @@
 ---
 title: Project
-updated: 2026-09-18
+updated: 2026-09-21
 type: context
 ---
 
@@ -28,7 +28,7 @@ Register — the web interface for Reserve Protocol: **Index DTFs** (current foc
 
 ## Stack Specifics
 
-- React 18 + Vite · TypeScript strict · Jotai · wagmi/viem/RainbowKit · TailwindCSS + shadcn/ui · React Query · React Router v6 · Lingui i18n. Package manager is **pnpm, not npm**.
+- React 18 + Vite · TypeScript strict · Jotai · wagmi/viem/Reown AppKit · TailwindCSS + shadcn/ui · React Query · React Router v6 · Lingui i18n. Package manager is **pnpm, not npm**.
 - Commands: `pnpm start` (dev :3000) · `pnpm typecheck` · `pnpm lint` (oxlint) · `pnpm test:run` (vitest) · `pnpm build`. Env: `VITE_WALLETCONNECT_ID` required; `VITE_ALCHEMY_KEY`/`VITE_INFURA_KEY` recommended.
 - CI: typecheck is **blocking**; oxlint strict correctness subset on changed files; pre-commit runs oxlint on staged files. Baseline ~600 warnings grandfathered — new code shouldn't add warnings.
 - `chainIdAtom` is the chain source of truth — pass it to every wagmi hook; omitting `chainId` falls back to wallet/mainnet.
@@ -51,6 +51,7 @@ Register — the web interface for Reserve Protocol: **Index DTFs** (current foc
 - **Live state → RPC, not subgraph.** Basket balances, live proposal state, live rebalance/auction state come from RPC. Subgraph = metadata/history only.
 - **Money is `Amount`/`bigint`.** Never `Number` for on-chain math; convert only at display leaves. Keep SDK `Amount` objects intact through atoms and logic.
 - **Feature isolation.** One feature = one folder under `views/<domain>/<feature>/` owning its `components/`, `hooks/`, `atoms.ts`, `utils.ts`. Shared code never imports from a feature; features never reach into each other's internals. Fix local bugs locally — never via shared containers, providers, routing shells, or component defaults.
+- Do not patch third-party dependencies; keep compatibility changes in application code.
 - **Automatic DTF chain switching is focus-owned.** Only the focused, visible document may synchronize the wallet to its route chain; background tabs stay passive. The route/provider identity is the target — never a lagging global chain atom.
 - **Shared components keep their defaults** (`DataTable`, legacy `Table`, …) — behavior via opt-in props only.
 - **Design tokens only** — no hardcoded hex/hsl anywhere; see [[design-system]].
@@ -69,7 +70,7 @@ Register — the web interface for Reserve Protocol: **Index DTFs** (current foc
 ## Active Risks
 
 - `release/ai-dtf` window: cleanups must preserve JSX structure, classes, copy, and flow unless the task explicitly changes UI. Prefer pure helper/hook extraction + tests; no visual decomposition without screenshot/e2e coverage or explicit approval.
-- `src/app.css` overrides `@reserve-protocol/dtf-chat` internal `.rc-*` classes (launcher theming). Contained deliberately; real fix (theming props/CSS vars) is backlogged upstream in reserve-ai.
+- `src/components/dtf-chat/overrides.css` overrides `@reserve-protocol/dtf-chat` internal `.rc-*` classes (launcher theming). Contained deliberately; real fix (theming props/CSS vars) is backlogged upstream in reserve-ai.
 - Large SPA bundle (~10MB); Tailwind v4 upgrade planned.
 
 ## Overrides (vs kit skills)

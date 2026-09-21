@@ -4,7 +4,7 @@ import TokenLogoWithChain from '@/components/token-logo/TokenLogoWithChain'
 import { Button } from '@/components/ui/button'
 import DataTable from '@/components/ui/data-table'
 import { formatCurrency, formatToSignificantDigits, formatUSD } from '@/utils'
-import { useConnectModal } from '@rainbow-me/rainbowkit'
+import { useWalletModal } from '@/hooks/use-wallet-modal'
 import { ColumnDef } from '@tanstack/react-table'
 import { Trans, useLingui } from '@lingui/react/macro'
 import { useAtomValue } from 'jotai'
@@ -27,7 +27,7 @@ const ClaimButton = ({ reward }: { reward: RewardRow }) => {
   const { t } = useLingui()
   const wallet = useAtomValue(walletAtom)
   const walletChain = useAtomValue(walletChainAtom)
-  const { openConnectModal } = useConnectModal()
+  const { openConnectModal } = useWalletModal()
   const { switchChainAsync } = useSwitchChain()
   const { writeContract, data: hash, isPending } = useWriteContract()
   const { data: receipt } = useWaitForTransactionReceipt({
@@ -49,7 +49,7 @@ const ClaimButton = ({ reward }: { reward: RewardRow }) => {
 
   const handleClick = useCallback(async () => {
     if (!wallet) {
-      openConnectModal?.()
+      openConnectModal()
       return
     }
     if (walletChain !== reward.chainId) {

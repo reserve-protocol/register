@@ -134,3 +134,28 @@ No verified task finding remains open. The source-to-story map is in
 Engineer review is required before merge for the initial migration's shared
 API/default/routing changes and unchanged production leaf extractions. Designer
 review decides adoption of exploratory transaction and historical modal designs.
+
+## PR 1121 integration review
+
+Fixed points: PR head `f3d1d826b`, master `356066697`. Merge master without
+rewriting history, preserve AppKit/rebalance updates and the Storybook migration,
+review the combined PR, and push the resolved branch. No production adoption or
+new wallet behavior. Resolve documentation by retaining both current contracts;
+validate the combined lockfile with pnpm. Acceptance: no conflicts, independent
+Intent/Risk review, typecheck/unit/lint, Storybook isolation and product wallet
+checks against the merged source. The unrelated untracked hook test remains out
+of the commit.
+
+Resolved all six conflicts by retaining Storybook plus master’s AppKit guidance,
+wallet coverage and dependencies. Reconciled union-merge duplicates in the wiki
+ledger/log. Both review lenses passed; the sole minor finding was an unused
+DeFiLlama fixture from retired lab tests, now removed so the fixture matches master.
+AppKit and the legacy rebalance fix remain unchanged from master.
+
+Merged verification: frozen install, candidate app/E2E TypeScript, 950 unit tests,
+8 Storybook checks (272 stories/124 transaction states), 59 product smoke passes
+with one existing skip, 8 desktop/mobile wallet checks, Vite build and lint. Wiki
+lint now passes all 21 pages after retaining master’s refreshed documentation.
+The workspace gate still stops only on the unrelated untracked hook test; the
+candidate snapshot excludes that file. Engineer review remains required for shared
+component APIs and opt-in chart presentation extensions before merging PR #1121.

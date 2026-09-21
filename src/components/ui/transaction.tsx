@@ -4,7 +4,7 @@ import { ReactNode } from 'react'
 import { useSwitchChain } from 'wagmi'
 import { Button } from './button'
 import { CHAIN_TAGS } from '@/utils/constants'
-import { useConnectModal } from '@rainbow-me/rainbowkit'
+import { useWalletModal } from '@/hooks/use-wallet-modal'
 import { Trans } from '@lingui/react/macro'
 
 type ButtonSize =
@@ -32,7 +32,7 @@ export const ConnectWalletButton = ({
   className?: string
   size?: ButtonSize
 }) => {
-  const { openConnectModal } = useConnectModal()
+  const { openConnectModal } = useWalletModal()
 
   return (
     <Button

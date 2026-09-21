@@ -1,9 +1,13 @@
 {
-  "version": "0.6",
-  "suite": "Reserve Thematic AI DTF Suite",
-  "generated": "2026-07-08",
+  "version": "0.7",
+  "title": "Reserve DTF LLM reference documents",
+  "groups": [
+    "Reserve Thematic AI DTF Suite (BNB Smart Chain)",
+    "Reserve Magnificent 7 DTF (Base)"
+  ],
+  "generated": "2026-09-16",
   "index": "https://app.reserve.org/dtf-llm/llms.txt",
-  "disclaimer": "Auto-generated with LLM assistance, pending review. Not investment, legal, or tax advice and not an offer or solicitation. The DTFs are not ETFs and not regulated as such; they are concentrated, single-theme baskets of experimental tokenized assets that can lose value entirely, and are not available to US persons or persons in sanctioned jurisdictions. Where these documents disagree with Reserve's official sources, the official sources control. Verify everything on https://app.reserve.org.",
+  "disclaimer": "Auto-generated with LLM assistance, pending review. Not investment, legal, or tax advice and not an offer or solicitation. These DTFs are not ETFs and not regulated as such; they are concentrated baskets of experimental tokenized assets that can lose value entirely, and are not available to US persons or persons in sanctioned jurisdictions. Each document's underlying tokenized stocks are issued by a third party - Ondo Global Markets for the BNB Smart Chain AI DTFs, Coinbase Onchain SPV Ltd for MAG7 on Base - and eligibility to buy or redeem is set by that issuer, not by Reserve. Where these documents disagree with Reserve's official sources, the official sources control. Verify everything on https://app.reserve.org.",
   "docs": [
     {
       "symbol": "PHOTON",
@@ -13,7 +17,8 @@
       "chain": "BNB Smart Chain",
       "address": "0xa0fe4e0aeca5479705ce996615b2eacb6b6a10fb",
       "coingecko": "reserve-ai-photonics-dtf",
-      "bytes": 138962
+      "bytes": 138962,
+      "group": "Reserve Thematic AI DTF Suite (BNB Smart Chain)"
     },
     {
       "symbol": "BUILDOUT",
@@ -23,7 +28,8 @@
       "chain": "BNB Smart Chain",
       "address": "0xd7ce7a841310982acd976d1a6fe7bb6063c5689d",
       "coingecko": "reserve-ai-infrastructure-dtf",
-      "bytes": 149880
+      "bytes": 149880,
+      "group": "Reserve Thematic AI DTF Suite (BNB Smart Chain)"
     },
     {
       "symbol": "POWER",
@@ -33,7 +39,8 @@
       "chain": "BNB Smart Chain",
       "address": "0x290bCc0Fd5096cC3261AE2021841c7BC67Cb0f51",
       "coingecko": "reserve-ai-power-dtf",
-      "bytes": 153634
+      "bytes": 153634,
+      "group": "Reserve Thematic AI DTF Suite (BNB Smart Chain)"
     },
     {
       "symbol": "NEOCLOUD",
@@ -43,7 +50,8 @@
       "chain": "BNB Smart Chain",
       "address": "0xf571Fe3F0d74521Bc7310B111Faea931C748f27B",
       "coingecko": "reserve-ai-capacity-and-neocloud-dtf",
-      "bytes": 152454
+      "bytes": 152454,
+      "group": "Reserve Thematic AI DTF Suite (BNB Smart Chain)"
     },
     {
       "symbol": "ROBOTS",
@@ -53,7 +61,19 @@
       "chain": "BNB Smart Chain",
       "address": "0x75617e7653f86f074cc30b9fd4ebf52ba9b62247",
       "coingecko": "reserve-robotics-dtf",
-      "bytes": 149790
+      "bytes": 149790,
+      "group": "Reserve Thematic AI DTF Suite (BNB Smart Chain)"
+    },
+    {
+      "symbol": "MAG7",
+      "name": "Reserve Magnificent 7 DTF",
+      "group": "Reserve Magnificent 7 DTF (Base)",
+      "summary": "The seven US mega-caps commonly called the Magnificent Seven - Alphabet, Amazon, Apple, Meta, Microsoft, NVIDIA and Tesla - held in equal weights as Coinbase Tokenized Stocks on Base.",
+      "document": "https://app.reserve.org/dtf-llm/mag7-dtf.md",
+      "chain": "Base",
+      "address": "0xCEF8Db49E456f872E288E1C042F916E9ceD7c781",
+      "coingecko": "reserve-magnificent-7-dtf",
+      "bytes": 419177
     }
   ]
 }

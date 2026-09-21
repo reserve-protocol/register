@@ -20,7 +20,7 @@ body {
   position: relative;
 }
 
-/* Rainbowkit wrapper add an empty div, cascade height to make sticky elements to work */
+/* WHY: sticky children need the root wrapper to carry the full viewport height */
 #root > div {
   height: 100%;
 }

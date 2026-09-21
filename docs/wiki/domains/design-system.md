@@ -33,6 +33,18 @@ fixtures small and local. Do not add review dashboards, status catalogs or
 transaction simulators. Existing production `ui/` components retain their APIs
 until their callers are explicitly migrated.
 
+## Semantic tokens
+
+Semantic Tailwind colors map to HSL CSS variables:
+
+- Surfaces: `background`, `card`, `container`, `popover`, `muted`, `secondary`, `accent` — each with a `-foreground` pair.
+- Brand/intent: `primary`, `success`, `destructive` (+ `-foreground`); `warning` (no foreground pair).
+- Lines/inputs: `border`, `borderSecondary`, `input`, `ring`.
+- Data viz: `legend`, `tvl`. `--chart-1`…`--chart-5` exist as CSS variables but have no Tailwind color mapping.
+
+`container-foreground` and `legend-foreground` are mapped in Tailwind but their
+CSS variables are undefined; do not rely on them until both themes define them.
+
 Overview stories import the real price/candlestick bodies and shared pure chart
 helpers. Other chart families retain their original local presentation sources.
 Storybook aliases chart atoms and the token-logo icon atom to local fixtures,
@@ -80,6 +92,8 @@ behavior, source freshness, financial calculations or production adoption.
 
 Transaction-only keyframes and container rules stay in the preserved story owners’
 `transaction-presentation.css`; importing production `app.css` is insufficient.
+
+Third-party package internals are not a styling surface. The one live exception (`.rc-*` overrides for `@reserve-protocol/dtf-chat` in `src/components/dtf-chat/overrides.css`, imported by its wrapper) is documented in [[project]] § Active Risks with upstream work backlogged. AppKit uses its supported `themeVariables` API; see [[wallet-connect]].
 
 ## Verification
 

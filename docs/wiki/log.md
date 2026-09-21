@@ -1,6 +1,6 @@
 ---
 title: Log
-updated: 2026-09-18
+updated: 2026-09-21
 type: log
 ---
 
@@ -134,6 +134,46 @@ Play-by-play lives in git (PRs #1053/#1054/#1055/#1063, SDK PR #27). Durable out
 
 - The floating Ask Reserve AI launcher now supports pointer dragging inside the viewport without opening the panel; ordinary activation still opens chat, and arrow keys provide a non-drag repositioning path. The behavior stays local to Register's existing `dtf-chat` compatibility wrapper because package 0.0.7 exposes no launcher-drag API. Desktop mouse and mobile touch/CDP Playwright coverage pins movement, edge clamping, touch cancellation, keyboard movement, and click/Enter activation.
 
+## 2026-09-16
+
+- Wallet migration review fixes: AppKit lists explicitly registered external connectors even without a provider, so Safe registration now uses its built-in iframe detection. The header restores ENS shortening and bounds text width locally; the shared ENS hook keeps full names. Restoring the old character limit alone still clipped mobile navigation, so regression coverage checks both controls at 360/412px as well as the desktop header.
+- `flows/wallet-connect` failed on both bugs before the fixes, then passed all six desktop/mobile cases. ENS fixtures override the exact reverse-resolution RPC call. Full-gate failures remain isolated to the pre-existing untracked transaction test and existing wiki debt; real Safe iframe/relay validation remains manual. No workflow changes were needed.
+
+### Earn FAQ implementation record (preserved from the oversized ledger row)
+
+PR #1094 merged on 2026-08-28. The following records the original stage evidence and review, not a new verifier run.
+
+- **Stage:** earn-index-dtf-faq-expansion: 3→9 validated questions + token-built graphics + rate `?` deep link
+- **Original status:** PR #1094 open (branch feature/earn-faq-vote-lock, rebased onto 1251ac125; gate re-run green there: lint · tsc · unit 895 · smoke 58 · catalogs 0 missing)
+- **Verification:** lint · tsc (only pre-existing untracked use-index-dtf-transactions.test errors) · unit 886 (6 fails = same pre-existing file) · helper 72 · smoke 58+1 skip · extract: es/ko/zh 0 missing · visual: desktop light ×4 graphics, dark ×2, mobile ×3, es ×1 (scratchpad faq-shots)
+- **Review:** Dark (all hostile checks clean, 4 minors) + Light (3 findings); adopted: flexible flow chips (es labels), h3→span in answer panels, value-scheme moved into earn-faq via opt-in `onOpenChange(index)`, realized panel bg-secondary→border bg-card (blended into open item); accepted: ko/zh keep catalog's 투표 잠금/投票锁定 over glossary; .po ref-line churn is legit HEAD catch-up
+- **Original handoff:** Luis: review copy + commit (en.po must ride with es/ko/zh). Analytics note: `tap` cta `faq_<id>` on open; default-open first item never fires, so `faq_what_is_vote_locking` under-counts. Old FAQ's wrong "early unlocks are not allowed" answer replaced with delay-accurate copy. Slice 2: rate `?` icon (opt-in `onHelpClick` on EarnMetricCtaCell, index-dtf only) → `faqQuestionRequestAtom` (fresh-object one-shot) → EarnFAQ controlled `openItem` + smooth scroll (`scroll-mt-20`); `tap` cta `rate_help`; stopPropagation keeps the row drawer closed. Verified live via temp spec w/ daos override: click opens Q5, drawer count 0, heading inViewport, desktop+mobile; gate re-run green (lint 0 err · tsc clean outside pre-existing file · unit 886 · smoke 58)
+
+### AppKit defaults and Binance cleanup
+
+- Removed the custom Binance connector and dependency, retaining Binance in AppKit's featured discovery list. The user requested restoring the previously disabled features: removing local overrides enables AppKit's default email/social, onramp, swaps, send, activity and analytics. Remote project configuration still controls production availability; modal network switching remains app-owned to avoid exposing deprecated Arbitrum for Index DTFs.
+- Dependency removal exposed an ambient-type dependency in deploy success: `window.ethereum.request` now uses wagmi's connected-wallet `useWatchAsset`, matching Index navigation. Tracked-source typecheck reports 1,604 files and zero diagnostics. The deploy success action still lacks end-to-end coverage.
+- Fresh verification: app lint and CI-deny lint passed; e2e typecheck and 72 helper tests passed; wallet flows passed 8/8 with desktop/mobile screenshots of email/social and fund/swap/send/activity controls; smoke passed 59 with one existing skip. Frozen offline install passed with no new dependency versions. Full gate stops on three missing exports in the pre-existing untracked transaction-summary test; unit results are 902 passing and six failures from that same file.
+- Reconciled Dark's documentation audit and Light's wallet/configuration review, including the dependency fallout recheck. Corrected SDK exposure sourcing, Holdings expansion/tickers, design-token and chat-style locations, e2e project/coverage descriptions and zapper prompt notes before refreshing dates. Preserved the unimplemented metrics proposal under `docs/plans/overview-metrics-draft.md` and moved the oversized FAQ ledger narrative into this log. Wiki lint now passes all 20 pages.
+- Engineer review required for the wallet/provider and watch-asset changes. Offline evidence does not validate the production dashboard, actual email/social authentication, Binance app handoff, Safe relay/iframe sessions or payment execution. No commit/push or workflow-skill changes; no new workflow rule was needed.
+
+### Build: source maps gated on the Sentry token
+
+- `pnpm build` profiled locally at ~46s total (logos 7s, tsc 13s, vite 25s, SEO 0.5s); the reported 5-minute builds are not reproducible on the dev machine and point at the Cloudflare Pages runner (cold `pnpm install`, fewer cores, the same tsc + sourcemapped vite build). Levers that remain Luis's call: drop `tsc &&` from `build` (the lint workflow already typechecks PRs) and enable the Pages build cache.
+- Applied: `vite.config.ts` writes source maps and loads the Sentry plugin only when `SENTRY_AUTH_TOKEN` or `.env.sentry-build-plugin` exists; maps are `hidden` and deleted after upload. Without the token the build previously published 46 MB of public `.map` files that no one uploaded. `reportCompressedSize` is off (the gzip pass was the slowest tail of the vite step). Vite step 25s → 17s locally.
+
+### Safe override dropped (review outcome)
+
+- Luis reviewed the `SafeWagmiAdapter` override and dropped it: the missing-chains case was only reproduced with a provider fixture (the fixture mocks the whole universal provider, so the "reaches the wallet" step is a code reading), Safe web's session includes the chains field, the override was a verbatim copy of upstream `connectWalletConnect` needing a re-diff on every AppKit bump, and when it fired it left wagmi on fallback chain 1 while the Safe sat elsewhere. Override, its test and the `@reown/appkit-common` dependency are removed; the risk stays documented in [[wallet-connect]] with a pointer to commit 789016fdc for the code if a live Safe ever hits it.
+- Binance connector removal confirmed as requested by Luis.
+
+### Safe missing-chains review finding
+
+- The installed AppKit adapter/connector can reject connection when a Safe session omits `namespaces.eip155.chains`: the connector returns fallback chain 1, then the adapter requests a switch to it. Universal-provider's approved chains come from accounts and need not include Ethereum. A provider-boundary fixture reproduced this with the real adapter, connector and wagmi actions: two Safe cases failed while four controls passed.
+- The user explicitly rejected dependency patches. The attempted patch was removed completely, including workspace configuration, patch files and installed package changes. Application-owned `SafeWagmiAdapter` now overrides only WalletConnect completion, preserving upstream authentication, returned chain, client ID and error normalization. It skips only the post-connect switch for exact Safe origins with an absent chains field; later switches and other wallets keep their existing behavior. The already-installed `@reown/appkit-common` version is declared directly for its error helpers.
+- Upstream-update check: registry metadata reported AppKit adapter 1.8.24, wagmi 3.7.7 and core 3.6.5. The installed wagmi/core 2.19.5/2.22.1 are the latest v2 versions. Published AppKit 1.8.24 has the identical WalletConnect connector and post-connect switching logic; core 3.6.5 has identical connect/switchChain actions. No version upgrade was applied. The failure is a review edge reproduced with a fixture, not a confirmed live Safe incident; Safe web's published approval includes chains. Check released fixes and real wallet evidence before choosing future compatibility work.
+- Validation: 6 focused regressions, 8 desktop/mobile wallet flows, 59 smoke checks (1 skip), app/strict lint, wiki lint, e2e types and 1,606 source/test files excluding the pre-existing transaction draft passed. Full unit results are 908 pass/6 existing draft failures; the full gate stops on that draft's three missing exports. Dark/Light review reconciled without outstanding scoped findings. CodeRabbit CLI was unavailable; its documentation was consulted.
+- Engineer review required before merging: the guard preserves upstream fallback1 and does not repair actual-chain reporting. Live Safe iframe/relay validation remains unperformed. No commit or push.
 ## 2026-09-18 — Design system consumer handoff
 
 - The supported handoff is the rendered internal library, typed catalogs, accepted decisions, canonical implementations, concise consumer reference, and behavioral verification. Completed plans, review transcripts, checkpoint receipts, and generated evidence are retired from the working tree; Git history remains the chronology.
@@ -183,3 +223,11 @@ Play-by-play lives in git (PRs #1053/#1054/#1055/#1063, SDK PR #27). Durable out
 - User authorized the new `design-system-storybook` branch and push. Engineer
   review remains required before merge. No workflow changes: the fixes belong
   to presentation ownership and verification, not additional process.
+
+- PR #1121: merged master `356066697`, preserving AppKit and the legacy rebalance
+  fix. Resolved five documentation conflicts plus the combined Storybook/AppKit
+  lockfile, then deduplicated union-merged wiki metadata and rows. Independent
+  Intent/Risk review passed; removed the unused DeFiLlama fixture left by the lab.
+  Frozen install, candidate TypeScript/950 units, 8 Storybook checks, 59 smoke
+  passes/1 skip, 8 wallet flows, product build, lint and wiki lint pass. Workspace
+  gate still stops on the unrelated untracked hook test, excluded from the commit.

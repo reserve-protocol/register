@@ -1,6 +1,6 @@
 ---
 title: Zapper Prompt
-updated: 2026-09-02
+updated: 2026-09-21
 type: domain
 sources:
   - src/views/index-dtf/components/zapper/**
@@ -20,6 +20,10 @@ Renders in both mounts: inline on the issuance route, and portal-attached to
 the right edge of the overview zapper modal (mode `modal` gates on the modal
 being open; the portal geometry assumes the modal stays `sm:max-w-md`).
 BSC-only (Ondo-backed AI DTFs).
+
+`ZapperWrapper` disables Enso on every chain in react-zapper's provider map;
+quotes compete across the remaining enabled sources. On phones the prompt
+uses a Dialog instead of the desktop side-card.
 
 ## Ondo minting states (drive everything)
 
@@ -52,7 +56,7 @@ basket-weight fraction of a mint, so the cap is `min(capacityUsd / weight)`
 
 Every quote-derived signal needs input ≥ $100 (`MIN_PROMPT_INPUT`). A high
 price impact or quote error while minting is healthy shows nothing — the
-zapper already surfaced the best quote across every source, and its own error
+zapper already surfaced the best quote across enabled sources, and its own error
 state covers no-route.
 
 Come-back label: market closed → `formatOndoTime(market.nextOpen)`; open but
@@ -60,6 +64,8 @@ an asset paused → next tradable session (`getNextTradableSession`, cycle
 premarket → regular → postmarket → overnight; missing session buckets fall
 back to the regular cap, matching the API's `sessionCapacity`; a wrap back to
 the current session means "tomorrow" and uses the generic fallback copy).
+The closed-impact view also shows current Eastern Time and a reopening
+countdown, using the API's next opening or the US-market schedule fallback.
 
 ## Invariants
 

@@ -7,10 +7,8 @@ import type { TxRecord } from '../helpers/provider'
 import type { BoundaryRequest } from '../helpers/requests'
 import { mockRpcRoutes, setMockNow, setYieldReplay } from '../helpers/rpc'
 import { mockSubgraphRoutes } from '../helpers/subgraph'
-import type { DefiLlamaPool } from '../../src/types/defillama'
 
 export interface BaseFixtures {
-  defiPools: DefiLlamaPool[]
   // Compliance geolocation returned by the API mock. Override per-spec for
   // restricted-region tests: test.use({ compliance: {...} }). Named `compliance`
   // (not `geolocation`) to avoid clashing with Playwright's built-in geolocation.
@@ -45,7 +43,6 @@ async function fulfillEmpty(route: import('@playwright/test').Route, body: unkno
 export const test = base.extend<BaseFixtures>({
   compliance: [DEFAULT_GEOLOCATION, { option: true }],
   allowUnmocked: [false, { option: true }],
-  defiPools: [[], { option: true }],
 
   // Fresh per test — a new instance means overrides never leak between tests.
   // oxlint-disable-next-line no-empty-pattern -- Playwright derives fixture deps from the destructuring pattern; {} = no deps
@@ -66,7 +63,7 @@ export const test = base.extend<BaseFixtures>({
 
   unmockedCalls: [
     async (
-      { page, compliance, overrides, txLog, boundaryRequests, allowUnmocked, defiPools },
+      { page, compliance, overrides, txLog, boundaryRequests, allowUnmocked },
       use,
       testInfo
     ) => {
@@ -168,7 +165,6 @@ export const test = base.extend<BaseFixtures>({
 
       // Yield/reward aggregators the overview polls.
       await page.route('**yields.llama.fi**', (r) => fulfillEmpty(r, { status: 'success', data: [] }))
-      await page.route('https://yields.llama.fi/pools', (r) => fulfillEmpty(r, { status: 'success', data: defiPools }))
       await page.route('**api.llama.fi**', (r) => fulfillEmpty(r, { status: 'success', data: [] }))
       await page.route('**yields.reserve.org**', (r) => fulfillEmpty(r, { status: 'success', data: [] }))
       await page.route('**api.merkl.xyz**', (r) => fulfillEmpty(r, []))
@@ -184,6 +180,8 @@ export const test = base.extend<BaseFixtures>({
       // Analytics — abort is safe, they are fire-and-forget beacons.
       await page.route('**sentry.io**', (r) => r.abort())
       await page.route('**mixpanel.com**', (r) => r.abort())
+      // Coinbase Wallet SDK telemetry, initialised eagerly by AppKit's connector.
+      await page.route('**cca-lite.coinbase.com**', (r) => r.abort())
       await page.route('**segment.io**', (r) => r.abort())
       await page.route('**googletagmanager.com**', (r) => r.abort())
       await page.route('**connect.facebook.net**', (r) => r.abort())
