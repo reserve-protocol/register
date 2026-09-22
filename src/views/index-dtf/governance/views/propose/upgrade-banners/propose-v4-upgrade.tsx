@@ -65,10 +65,11 @@ const queryParams = {
 } as const
 
 type SpellUpgradeProps = {
+  description: string
   refetch: () => void
 }
 
-const ProposeBanner = ({ refetch }: SpellUpgradeProps) => {
+const ProposeBanner = ({ description, refetch }: SpellUpgradeProps) => {
   const { t } = useLingui()
   const dtf = useAtomValue(indexDTFAtom)
   const chainId = useAtomValue(chainIdAtom)
@@ -122,7 +123,7 @@ const ProposeBanner = ({ refetch }: SpellUpgradeProps) => {
             args: [fillerRegistryMapping[chainId], true],
           }),
         ],
-        UPGRADE_FOLIO_MESSAGE,
+        description,
       ],
     })
   }
@@ -227,6 +228,11 @@ export default function ProposeBanners() {
   const proposals = useAtomValue(governanceProposalsAtom)
   const dtf = useAtomValue(indexDTFAtom)
   const version = useAtomValue(indexDTFVersionAtom)
+  const description =
+    dtf?.chainId === ChainId.Base &&
+    dtf.id.toLowerCase() === LEGACY_V4_UPGRADE_DTFS.BDTF
+      ? `${UPGRADE_FOLIO_MESSAGE} #2`
+      : UPGRADE_FOLIO_MESSAGE
   const isUpgradeable =
     version === '2.0.0' ||
     (dtf?.chainId === ChainId.Base &&
@@ -240,14 +246,11 @@ export default function ProposeBanners() {
 
   if (!isProposeAllowed || !proposals || !isUpgradeable) return null
 
-  const existsFolioUpgrade = validProposalExists(
-    proposals,
-    UPGRADE_FOLIO_MESSAGE
-  )
+  const existsFolioUpgrade = validProposalExists(proposals, description)
 
   if (existsFolioUpgrade) {
     return null
   }
 
-  return <ProposeBanner refetch={refetch} />
+  return <ProposeBanner description={description} refetch={refetch} />
 }
