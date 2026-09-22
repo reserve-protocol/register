@@ -19,19 +19,11 @@ const TradingPausedBanner = ({ className }: { className?: string }) => {
           </span>
           <span className="block mt-1 text-warning">
             <Trans>
-              Trading has been temporarily paused due to an abundance of caution
-              related to the Kelp DAO exploit, the protocol keeps staked RSR
-              available as a safety measure in case recollateralization is
-              needed — this means withdrawals are blocked until trading resumes.
-            </Trans>{' '}
-            <a
-              href="https://x.com/reserveprotocol/status/2046007367679267080"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="underline"
-            >
-              <Trans>Read more</Trans>
-            </a>
+              Trading is paused for this DTF. While it is paused, the protocol
+              keeps staked RSR available as a safety measure in case
+              recollateralization is needed — this means withdrawals are blocked
+              until trading resumes.
+            </Trans>
           </span>
         </div>
       </div>

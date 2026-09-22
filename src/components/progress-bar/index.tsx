@@ -32,10 +32,13 @@ const ProgressBar: FC<ProgressBarProps> = ({
     return () => observer.disconnect()
   }, [])
 
-  const shouldPercentageBeOnForeground = percentage <= 8
-  const shouldTextBeOnForeground = percentage >= 40
-  const hideBackgroundText = percentage >= 70
-  const completed = percentage >= 100
+  const safePercentage = Number.isFinite(percentage)
+    ? Math.min(100, Math.max(0, percentage))
+    : 0
+  const shouldPercentageBeOnForeground = safePercentage <= 8
+  const shouldTextBeOnForeground = safePercentage >= 40
+  const hideBackgroundText = safePercentage >= 70
+  const completed = safePercentage >= 100
 
   return (
     <div
@@ -48,7 +51,7 @@ const ProgressBar: FC<ProgressBarProps> = ({
           completed ? '' : 'bg-black dark:bg-white'
         )}
         style={{
-          width: `${Math.min(100, percentage)}%`,
+          width: `${safePercentage}%`,
           background: completed
             ? isDarkMode
               ? 'linear-gradient(90deg, rgba(9, 85, 172, 0.00) 0%, rgba(9, 85, 172, 0.40) 100%)'
@@ -58,7 +61,7 @@ const ProgressBar: FC<ProgressBarProps> = ({
       >
         {!shouldTextBeOnForeground && !shouldPercentageBeOnForeground && (
           <span className="hidden md:block absolute top-1/2 right-4 -translate-y-1/2 text-white dark:text-black text-sm font-bold">
-            {`${formatPercentage(percentage)}`}
+            {`${formatPercentage(safePercentage)}`}
           </span>
         )}
       </div>
@@ -74,7 +77,7 @@ const ProgressBar: FC<ProgressBarProps> = ({
                 : 'text-foreground'
           )}
           style={{
-            left: `${Math.min(100, percentage)}%`,
+            left: `${safePercentage}%`,
             transform: shouldTextBeOnForeground
               ? 'translate(-100%, -50%)'
               : 'translateY(-50%)',
@@ -94,7 +97,7 @@ const ProgressBar: FC<ProgressBarProps> = ({
                       : 'text-white dark:text-black'
                 )}
               >
-                {`${formatPercentage(percentage)}`}
+                {`${formatPercentage(safePercentage)}`}
               </span>
             </>
           )}
@@ -119,7 +122,7 @@ const ProgressBar: FC<ProgressBarProps> = ({
           <span
             className={cn('text-sm font-bold', completed ? 'text-primary' : '')}
           >
-            {`${formatPercentage(percentage)}`}
+            {`${formatPercentage(safePercentage)}`}
           </span>
         </>
       </span>
