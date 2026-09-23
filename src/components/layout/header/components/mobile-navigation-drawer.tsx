@@ -213,6 +213,7 @@ const MobileNavigationDrawer = ({
     <Drawer open={open} onOpenChange={setOpen} shouldScaleBackground={false}>
       <DrawerTrigger asChild>
         <HeaderControlButton
+          data-testid="header-navigation-toggle"
           surface={surface}
           className={cn('w-9 min-[850px]:hidden', open && 'relative z-[60]')}
         >

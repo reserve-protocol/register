@@ -1,4 +1,4 @@
-import { useConnectModal } from '@rainbow-me/rainbowkit'
+import { useWalletModal } from '@/hooks/use-wallet-modal'
 import {
   PROVIDER_ENABLED,
   Zapper,
@@ -30,7 +30,7 @@ type ZapperWrapperProps = ZapperProps
 
 const ZapperWrapper = (props: ZapperWrapperProps) => {
   const { isConnected, address } = useAccount()
-  const { openConnectModal } = useConnectModal()
+  const { openConnectModal } = useWalletModal()
   // Drive the widget's language from the app locale. The zapper only ships
   // en/es/ko/zh, so the dev-only `pseudo` locale falls back to English.
   const appLocale = useAtomValue(localeAtom)

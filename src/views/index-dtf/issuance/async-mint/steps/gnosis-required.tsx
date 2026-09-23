@@ -7,7 +7,7 @@ import { chainIdAtom } from '@/state/atoms'
 import { indexDTFAtom } from '@/state/dtf/atoms'
 import { getFolioRoute } from '@/utils'
 import { ROUTES } from '@/utils/constants'
-import { useAccountModal, useConnectModal } from '@rainbow-me/rainbowkit'
+import { useWalletModal } from '@/hooks/use-wallet-modal'
 import { useAtomValue, useSetAtom } from 'jotai'
 import {
   ArrowLeft,
@@ -44,8 +44,7 @@ const ProcessArrow = () => (
 )
 
 const GnosisRequired = () => {
-  const { openConnectModal } = useConnectModal()
-  const { openAccountModal } = useAccountModal()
+  const { openConnectModal, openAccountModal } = useWalletModal()
   const { isConnected } = useAccount()
   const { disconnectAsync } = useDisconnect()
   const { atomicSupported, isLoading } = useAtomicBatch()
@@ -86,7 +85,7 @@ const GnosisRequired = () => {
     } catch {
       // ignore — nothing to disconnect
     }
-    openConnectModal?.()
+    openConnectModal()
   }
   const title = showRequirements
     ? t`Smart Account Required`

@@ -1,4 +1,5 @@
 import CowSwap from '@/components/icons/logos/CowSwap'
+import OneInch from '@/components/icons/logos/OneInch'
 import PancakeSwap from '@/components/icons/logos/PancakeSwap'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Skeleton } from '@/components/ui/skeleton'
@@ -16,7 +17,7 @@ import { isSafeHttpUrl } from '@/utils/url'
 import { useTrackIndexDTFClick } from '@/views/index-dtf/hooks/useTrackIndexDTFPage'
 import { Trans } from '@lingui/react/macro'
 import { useAtomValue } from 'jotai'
-import React, { type ComponentType, type SVGProps } from 'react'
+import React, { type ComponentType } from 'react'
 import ZapperWrapper from '../../../components/zapper/zapper-wrapper'
 import { indexDTFQuoteSourceAtom } from '../../../issuance'
 import AboutDTF, { useHasVideoLibrary } from '../about-dtf'
@@ -33,16 +34,17 @@ import { getDtfDexLinks, type DtfDex } from './external-dex-links'
 
 export const DEX_ICONS: Record<
   DtfDex,
-  ComponentType<SVGProps<SVGSVGElement>>
+  ComponentType<{ className?: string }>
 > = {
   pancakeswap: PancakeSwap,
   cowswap: CowSwap,
+  '1inch': OneInch,
 }
 
 type ExternalPlatform = {
   label: string
   url: string
-  Icon: ComponentType<SVGProps<SVGSVGElement>>
+  Icon: ComponentType<{ className?: string }>
 }
 
 const useExternalPlatforms = (): ExternalPlatform[] => {
@@ -83,7 +85,7 @@ const ExternalPlatformsPlug = () => {
           }}
           className="flex items-center gap-1 font-medium text-foreground transition-colors hover:text-primary"
         >
-          <platform.Icon className="h-3.5 w-3.5" />
+          <platform.Icon className="h-3.5 w-3.5 object-contain" />
           {platform.label}
         </a>
       ))}
@@ -146,10 +148,11 @@ const InlineSwapBox = () => {
         </Alert>
       ) : (
         isLargeDesktop && (
-          // Zero the package's tabpanel mt-2: nothing sits above it here.
+          // Zero the package's tabpanel mt-2 only when it leads: an alert above
+          // it (low liquidity, healthcheck) needs that gap back.
           <div
             data-testid="overview-inline-zapper"
-            className="[&_[role=tabpanel]]:mt-0"
+            className="[&_[role=tabpanel]:first-child]:mt-0"
           >
             <ZapperWrapper
               chain={dtf.chainId}

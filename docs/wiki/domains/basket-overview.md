@@ -1,6 +1,6 @@
 ---
 title: Basket Overview (Exposure / Collateral tabs)
-updated: 2026-07-08
+updated: 2026-09-16
 type: domain
 sources:
   - src/views/index-dtf/overview/components/basket-overview/**
@@ -9,9 +9,10 @@ sources:
 The Holdings table on the Index DTF overview page. Two tabs over the same
 basket: **Exposure** groups tokens by underlying asset (per-stock rows for
 nasdaq/nyse groups, one aggregated row per crypto native), **Collateral**
-lists the on-chain basket tokens. All data comes from the reserve-api
-`dtf/exposure` endpoint via `indexDTFExposureDataAtom` (fetched in
-`index-dtf-container.tsx`, refetched every 60s); live basket shares come from
+lists the on-chain basket tokens. `useIndexDtfExposure` in
+`index-dtf-container.tsx` reads exposure through the SDK with the DTF identity
+and selected performance period, then mirrors it into `indexDTFExposureDataAtom`.
+The consumer sets no polling interval. Live basket shares come from
 `indexDTFBasketAtom`/`indexDTFBasketSharesAtom`.
 
 ## Market cap semantics (the invariant that was once a bug)
@@ -29,10 +30,11 @@ Two different numbers, one per tab — do not cross them:
 
 Gotchas:
 
-- reserve-api's exposure route zod schema emits `additionalProperties: false` —
+- Historical upstream note (not verified by this repository): reserve-api's
+  exposure route zod schema emits `additionalProperties: false` —
   new fields the service adds are silently stripped until added to
   `exposureTokenSchema` (`reserve-api src/routes/dtf/exposure/index.ts`).
-- The route is CDN-cached (1h maxAge + 30m stale-while-revalidate): after an
+- Historical upstream cache policy: 1h maxAge + 30m stale-while-revalidate. After an
   api deploy, exposure mcaps can lag up to the cache window.
 - Exchange groups are flattened to per-stock rows (`buildExposureRows`), so a
   group-level mcap cannot represent them — per-token fields only.
@@ -42,3 +44,8 @@ Gotchas:
 Weight/performance sorting is client-side in `index.tsx`; mcap is display-only
 (not sortable). Bridge affordances come from [[zapper]]-adjacent `BridgeLabel`
 scanning exposure groups by address.
+
+The opt-in `progressive` mode limits desktop and mobile holdings to ten rows
+until expanded; mobile also limits rows without that prop. Switching tabs
+resets expansion and sorting. Stock exchange labels use the token's `ticker`,
+falling back to its symbol with a terminal `on` removed.

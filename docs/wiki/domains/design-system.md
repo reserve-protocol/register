@@ -1,6 +1,6 @@
 ---
 title: Design System
-updated: 2026-07-02
+updated: 2026-09-16
 type: domain
 sources:
   - tailwind.config.ts
@@ -14,12 +14,15 @@ Source of truth: `tailwind.config.ts` (tokens) + `src/app.css` (CSS variables, `
 
 ## Color tokens (semantic — never hardcode hex/hsl)
 
-Every color is an HSL CSS variable exposed as a Tailwind color:
+Semantic Tailwind colors map to HSL CSS variables:
 
 - Surfaces: `background`, `card`, `container`, `popover`, `muted`, `secondary`, `accent` — each with a `-foreground` pair.
 - Brand/intent: `primary`, `success`, `destructive` (+ `-foreground`); `warning` (no foreground pair).
 - Lines/inputs: `border`, `borderSecondary`, `input`, `ring`.
-- Data viz: `chart-1`…`chart-5`, `legend`, `tvl`.
+- Data viz: `legend`, `tvl`. `--chart-1`…`--chart-5` exist as CSS variables but have no Tailwind color mapping.
+
+`container-foreground` and `legend-foreground` are mapped in Tailwind but their
+CSS variables are undefined; do not rely on them until both themes define them.
 
 A new color means adding the CSS var in **both** `:root` and `.dark` in `src/app.css` first — never a one-off hex.
 
@@ -38,4 +41,4 @@ shadcn/ui primitives in `src/components/ui`: Dialog, Drawer, Modal, Card, Button
 
 ## Package-style containment
 
-Third-party package internals are not a styling surface. The one live exception (`.rc-*` overrides for `@reserve-protocol/dtf-chat` in `src/app.css`) is documented in [[project]] § Active Risks with upstream work backlogged.
+Third-party package internals are not a styling surface. The one live exception (`.rc-*` overrides for `@reserve-protocol/dtf-chat` in `src/components/dtf-chat/overrides.css`, imported by its wrapper) is documented in [[project]] § Active Risks with upstream work backlogged. AppKit uses its supported `themeVariables` API; see [[wallet-connect]].

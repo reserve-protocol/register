@@ -4,9 +4,13 @@ import react from '@vitejs/plugin-react'
 import { viteStaticCopy } from 'vite-plugin-static-copy'
 import viteTsconfigPaths from 'vite-tsconfig-paths'
 import { defineConfig } from 'vitest/config'
+import { existsSync } from 'node:fs'
 
 const isTest = process.env.NODE_ENV === 'test' || process.env.VITEST
 const isDev = process.env.NODE_ENV === 'development'
+// WHY: without a Sentry token nothing consumes the maps; they were only bloating the build and publishing source publicly.
+const hasSentryToken =
+  Boolean(process.env.SENTRY_AUTH_TOKEN) || existsSync('.env.sentry-build-plugin')
 
 export default defineConfig({
   plugins: [
@@ -34,7 +38,15 @@ export default defineConfig({
         { src: '_headers', dest: '' }, // Cloudflare security headers
       ],
     }),
-    sentryVitePlugin({ org: 'abc-labs-0g', project: 'register' }),
+    ...(hasSentryToken
+      ? [
+          sentryVitePlugin({
+            org: 'abc-labs-0g',
+            project: 'register',
+            sourcemaps: { filesToDeleteAfterUpload: ['./build/**/*.map'] },
+          }),
+        ]
+      : []),
   ],
 
   define: {
@@ -45,7 +57,8 @@ export default defineConfig({
 
   build: {
     outDir: 'build',
-    sourcemap: true,
+    sourcemap: hasSentryToken ? 'hidden' : false,
+    reportCompressedSize: false,
     rollupOptions: {
       output: {
         manualChunks: (id) => {
@@ -57,7 +70,6 @@ export default defineConfig({
             id.includes('/wagmi/') ||
             id.includes('/@wagmi/') ||
             id.includes('/viem/') ||
-            id.includes('/@rainbow-me/rainbowkit') ||
             id.includes('/@walletconnect/') ||
             id.includes('/@coinbase/wallet-sdk') ||
             id.includes('/@reown/')

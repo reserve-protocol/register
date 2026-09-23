@@ -24,10 +24,22 @@
   font-size: 0.875rem;
   font-weight: 500;
   letter-spacing: 0;
+  cursor: grab;
+  touch-action: none;
 }
 
 .rc-root .rc-launcher:hover {
   background: hsl(var(--card) / 0.9);
+}
+
+.rc-root .rc-launcher.rc-launcher-dragging {
+  cursor: grabbing;
+  transform: none;
+  transition: none;
+}
+
+.rc-root .rc-launcher.rc-launcher-dragged:hover {
+  transform: none;
 }
 
 .rc-root .rc-launcher-icon {

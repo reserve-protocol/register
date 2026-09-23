@@ -26,7 +26,7 @@ import {
   JsonView,
 } from 'react-json-view-lite'
 import { Link } from 'react-router-dom'
-import { Address, decodeFunctionData, Hex } from 'viem'
+import { Address, decodeFunctionData, formatUnits, Hex, parseUnits } from 'viem'
 import RebalanceBasketPreview from './rebalance-basket-preview'
 
 type Trade = {
@@ -439,6 +439,12 @@ const useBasketProposalContext = (
         },
         {} as EstimatedBasket
       )
+      const targetPortions = Object.fromEntries(
+        Object.entries(estimatedBasket).map(([address, asset]) => [
+          address,
+          parseUnits(asset.currentShares, 25),
+        ])
+      )
 
       // Track already substracted tokens "up to" shares
       const substractedMap = new Set<string>()
@@ -461,32 +467,50 @@ const useBasketProposalContext = (
           }
         }
 
-        const sellTokenShares =
-          getBasketPortion(
-            trade.sellLimit.spot,
-            BigInt(estimatedBasket[sellAddress].token.decimals),
-            allPrices[sellAddress],
-            dtfPrice
-          )[0] * 100
-        const buyTokenShares =
-          getBasketPortion(
-            trade.buyLimit.spot,
-            BigInt(estimatedBasket[buyAddress].token.decimals),
-            allPrices[buyAddress],
-            dtfPrice
-          )[0] * 100
+        const [, sellPortion] = getBasketPortion(
+          trade.sellLimit.spot,
+          BigInt(estimatedBasket[sellAddress].token.decimals),
+          allPrices[sellAddress],
+          dtfPrice
+        )
+        const isUnlimitedBuy = trade.buyLimit.spot === 10n ** 54n
+        const currentSellPortion = targetPortions[sellAddress]
+        const soldPortion =
+          currentSellPortion > sellPortion
+            ? currentSellPortion - sellPortion
+            : 0n
+        // An unlimited buy cap is funded by the sell allocation, not a target weight.
+        const buyPortion = isUnlimitedBuy
+          ? targetPortions[buyAddress] + soldPortion
+          : getBasketPortion(
+              trade.buyLimit.spot,
+              BigInt(estimatedBasket[buyAddress].token.decimals),
+              allPrices[buyAddress],
+              dtfPrice
+            )[1]
+        const sellTokenShares = Number(
+          formatUnits(
+            isUnlimitedBuy ? currentSellPortion - soldPortion : sellPortion,
+            25
+          )
+        )
+        const buyTokenShares = Number(formatUnits(buyPortion, 25))
 
         acc[sellAddress].trades.push({
           ...trade,
           index,
           token: estimatedBasket[buyAddress].token,
-          shares:
-            buyTokenShares - Number(estimatedBasket[buyAddress].currentShares),
+          shares: isUnlimitedBuy
+            ? Number(formatUnits(soldPortion, 25))
+            : buyTokenShares - Number(estimatedBasket[buyAddress].currentShares),
         })
         acc[sellAddress].sell.amount += trade.sellLimit.spot
         acc[sellAddress].sell.percent = sellTokenShares
 
-        if (!substractedMap.has(sellAddress)) {
+        if (!substractedMap.has(sellAddress) || isUnlimitedBuy) {
+          targetPortions[sellAddress] = isUnlimitedBuy
+            ? currentSellPortion - soldPortion
+            : sellPortion
           estimatedBasket[sellAddress].targetShares = sellTokenShares.toFixed(2)
           estimatedBasket[sellAddress].delta =
             Number(estimatedBasket[sellAddress].targetShares) -
@@ -494,7 +518,8 @@ const useBasketProposalContext = (
           substractedMap.add(sellAddress)
         }
 
-        if (!substractedMap.has(buyAddress)) {
+        if (!substractedMap.has(buyAddress) || isUnlimitedBuy) {
+          targetPortions[buyAddress] = buyPortion
           estimatedBasket[buyAddress].targetShares = buyTokenShares.toFixed(2)
           estimatedBasket[buyAddress].delta =
             Number(estimatedBasket[buyAddress].targetShares) -
@@ -520,6 +545,7 @@ const useBasketProposalContext = (
     basket,
     shares,
     prices,
+    trades,
     isThereMissingTokens,
   ])
 }

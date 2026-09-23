@@ -16,7 +16,7 @@ export interface WalletFixtures {
 
 // Extends the base fixture with the injected EIP-6963 wallet.
 //
-// RainbowKit's injectedWallet listens for `eip6963:announceProvider`, so the
+// AppKit discovers wallets through `eip6963:announceProvider`, so the
 // provider installed here shows up in the connect modal as "Test Wallet". The
 // provider must be installed before navigation (addInitScript), so install is an
 // auto fixture; connecting is still an explicit `connectWallet(page)` call.
@@ -46,7 +46,7 @@ export const test = baseTest.extend<WalletFixtures & { walletProvider: void }>({
 
 // Ensure the Test Wallet is connected. The injected provider is exposed as
 // window.ethereum, so wagmi auto-connects it on mount in most runs; if that
-// already happened we're done. Otherwise drive the RainbowKit modal (which
+// already happened we're done. Otherwise drive the AppKit modal (which
 // lists the wallet via its EIP-6963 announcement). Either path exercises the
 // wallet fixture and lands on the connected header state.
 export async function connectWallet(page: Page) {
