@@ -17,6 +17,7 @@ import { useMultichainQuery } from './use-query'
 import useTimeFrom from './useTimeFrom'
 import { useWatchReadContracts } from './useWatchReadContract'
 import { Token } from '@/types'
+import { getPluginByErc20 } from 'utils/plugins'
 
 export interface ListedToken {
   id: string
@@ -147,7 +148,7 @@ const useTokenList = () => {
       (chain) => data?.[chain]?.tokens?.map((token: any) => token.id) ?? []
     )
     return [_calls, _rTokenAddresses]
-  }, [data, supportedChainList])
+  }, [data])
 
   const { data: collateralized }: { data: boolean[] | undefined } =
     useWatchReadContracts({
@@ -181,7 +182,7 @@ const useTokenList = () => {
               +formatEther(token.totalSupply) * +token.lastPriceUSD
             const collaterals = (token?.rToken?.collaterals ?? []).map(
               (t: any) => {
-                let symbol = t.symbol
+                let symbol = getPluginByErc20(chain, t.id)?.symbol ?? t.symbol
                 // TODO: Temporal until usdbc plugin is removed
                 if (
                   t.id ===
@@ -266,7 +267,14 @@ const useTokenList = () => {
 
       setList(tokens)
     }
-  }, [data, collateralYield, currentRsrPrice, collateralized, rTokenAddresses])
+  }, [
+    data,
+    collateralYield,
+    currentRsrPrice,
+    collateralized,
+    rTokenAddresses,
+    setList,
+  ])
 
   return { list, isLoading }
 }

@@ -22,19 +22,18 @@ const BuckingBuffer = ({ className }: { className?: string }) => {
   const rTokenPrice = useAtomValue(rTokenPriceAtom)
 
   const [percentage, actual, required, percentageOfMCap] = useMemo(() => {
-    if (!backing) return [0, 0, 0]
+    if (!backing) return [0, '0', '0', '']
 
     const _actual = backing.backingBuffer.actual
     const _required = backing.backingBuffer.required
-    const _percentage = (_actual / _required) * 100
     const mCap = rTokenPrice * rTokenState.tokenSupply
-    const _percentageOfMCap = formatPercentage((_required / mCap) * 100)
 
+    // A supply-less RToken has no buffer requirement and no mcap to compare it against
     return [
-      _percentage,
+      _required > 0 ? (_actual / _required) * 100 : 0,
       formatCurrency(_actual),
       formatCurrency(_required),
-      _percentageOfMCap,
+      mCap > 0 ? formatPercentage((_required / mCap) * 100) : '—',
     ]
   }, [backing, rTokenPrice, rTokenState])
 

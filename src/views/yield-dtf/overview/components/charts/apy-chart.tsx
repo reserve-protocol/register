@@ -14,6 +14,7 @@ import { ChainId } from 'utils/chains'
 import { TIME_RANGES } from 'utils/constants'
 import { formatEther } from 'viem'
 import ExportCSVButton from './ExportCSVButton'
+import { getPluginByErc20 } from 'utils/plugins'
 
 const historicalBasketsQuery = gql`
   query getHistoricalBaskets($id: String!) {
@@ -84,7 +85,7 @@ const APYChart = ({ className }: { className?: string }) => {
   const currentYields = useAtomValue(estimatedApyAtom)
   const [current, setCurrent] = useState(TIME_RANGES.MONTH)
   const fromTime = useTimeFrom(current)
-  const [selectedOption, setSelectedOption] = useState<APYOptions>('rTokenAPY')
+  const [selectedOption] = useState<APYOptions>('rTokenAPY')
 
   const { data: historicalBaskets } = useQuery(
     rToken ? historicalBasketsQuery : null,
@@ -108,14 +109,16 @@ const APYChart = ({ className }: { className?: string }) => {
         return {
           timestamp: hb.timestamp,
           collaterals: hb.collaterals.map((c: any) => ({
-            symbol: c.symbol.replace('-VAULT', ''),
+            symbol: (
+              getPluginByErc20(rToken?.chainId ?? 0, c.id)?.symbol ?? c.symbol
+            ).replace('-VAULT', ''),
             distribution: +distribution[c.id]?.dist,
           })),
           rTokenDist: hb.rTokenDist / 10000,
           rsrDist: hb.rsrDist / 10000,
         }
       }),
-    [historicalBaskets]
+    [historicalBaskets, rToken?.chainId]
   )
 
   const allCollaterals = useMemo(
@@ -126,7 +129,7 @@ const APYChart = ({ className }: { className?: string }) => {
           .filter((c: any) => symbolMap[c.toLowerCase()] !== undefined)
       ),
     ],
-    [baskets, symbolMap]
+    [baskets]
   )
 
   const { data: historicalAPY } = useMultiFetch(
