@@ -1,6 +1,6 @@
 ---
 title: Progress
-updated: 2026-09-21
+updated: 2026-09-24
 type: ledger
 ---
 
@@ -10,6 +10,7 @@ Stage ledger. One row per stage; keep entries short. Verifier = exact fresh comm
 
 | Stage | Status | Verifier | Review | Next |
 |---|---|---|---|---|
+| VLONE and MVTT10F deprecation proposal | human-review-required (base 7155c7a21) | isolated tsc + oxlint + vitest: 920 pass; e2e tsc + helpers 72; playwright governance-propose: 1; smoke: 59 + 1 skip; live desktop/mobile both DTFs; wiki-lint green | Dark: owner-governor duplicate filter fixed, RED→GREEN; Light: pass | Engineer review before merge. Details: docs/plans/deprecation-proposal.md |
 | morpho-v2-plugins: list 8 Morpho Vault V2 mainnet plugins (protocol PR #1291) + wrap support (MORPHOV2) + erc20-first plugin resolution + deploy-modal search by display name | done (base b70fd6516) | lint · typecheck · unit 902 · e2e tsc · helpers · smoke 58 + 1 skip · plugins.test 2/2 · data script (8 plugins MORPHOV2, CMS joins, 8 DefiLlama ids) · live: deploy modal V1/V2 distinct, "morpho" search, USD3 wrap tab · yield/explorer/discover specs 15/15 · wiki-lint: pre-existing only | Engineer review by Juampi 2026-09-10: rTokenAtom erc20 resolution + MORPHOV2 wrap approved; names, symbol override = his calls | open PR; merge only after protocol PR #1291 |
 | morpho-v2-rewards: redeployed plugin addresses + auto-register Morpho reward assets (PYUSD, USDT) in deploy and basket proposals | implementation-verified (base 3003137fb) | on-chain: 8 plugins have code, erc20() = vault · parser output = catalog · rewards.test 8/8 · deploy utils.test 3/3 (RED on old builder) · scope.mjs: lint · typecheck · unit 913 · e2e tsc · helpers 72 · smoke 57 + eUSD issuance flake (4/4 isolated) | Julian (protocol) confirmed the vault→reward mapping and the check-registry-then-add behavior; live: test RToken registry holds PYUSD + USDT, neither a basket collateral | merge PR #1110 after protocol PR #1291 |
 | yield-dtf paused-state UX: generic pause copy (es/ko/zh), backing-buffer NaN guard, collateral panel without scroll, deployer defaults to unpaused | implementation-verified (base 3d9e52fd0) | scope.mjs: lint · typecheck · unit 917 · e2e tsc · helpers 72 · smoke 57 + known auctions flake (4/4 isolated) · offline hyUSD render shows the new mint/zap copy · live: no NaN on overview, 8 rows unscrolled, deployer shows fully functional | Julian (protocol) approved unpausing by default; staking trading-paused copy has no snapshot that renders it | commit + push to PR #1110 |

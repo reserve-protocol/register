@@ -34,8 +34,18 @@ test('create a DAO-settings proposal through the full submit flow', async ({
     proposalTime(proposal as { voteStart: string; voteEnd: string }, 'active')
   )
 
-  await page.goto(dtfPath(dtf, 'governance/propose/other'))
+  await page.goto(dtfPath(dtf, 'governance/propose'))
   await connectWallet(page)
+  await advanceTime(page, 5_000)
+  const {
+    dtf: { token },
+  } = loadSnapshot<{ dtf: { token: { symbol: string } } }>(
+    `${dtf.snapshotDir}/dtf.json`
+  )
+  await expect(page.getByTestId('dtf-nav')).toContainText(token.symbol)
+  await expect(page.getByTestId('deprecation-open')).toHaveCount(0)
+
+  await page.locator('a[href$="/governance/propose/other"]').click()
 
   // Pump — flush react-query: getFull (indexDTFAtom hydration) + proposer-state
   // reads resolve but never reach React under the paused clock. The DAO form

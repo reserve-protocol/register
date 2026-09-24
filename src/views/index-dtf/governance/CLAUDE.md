@@ -94,6 +94,13 @@ mapper dereferences — serve proposals ONLY through it or the list breaks).
 
 ## Traps
 
+- The deprecation action is allowlisted to Base VLONE/MVTT10F v5. It uses SDK
+  role lists (`auctionApprovers` holds REBALANCE_MANAGER members in v5), calls
+  `deprecateFolio`, revokes managers and launchers, then the owner timelock's
+  admin role last. Duplicate detection must be owner-governor scoped.
+- Deprecation calldata is pinned in `views/propose/deprecation/tests/proposal.test.ts`
+  against [the executed MVDA25 proposal](https://app.reserve.org/base/index-dtf/0xd600e748c17ca237fcb5967fa13d688aff17be78/governance/proposal/43007299078408767327104850561737592829350291890493050828532786368783084607576).
+
 - The auctions subgraph query is misnamed `getGovernanceStats` in
   `use-rebalance-auctions.ts` — body-matched in the mock BEFORE the real
   governance branch. Renaming it requires updating `e2e/helpers/subgraph.ts`.

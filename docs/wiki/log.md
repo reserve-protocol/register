@@ -1,6 +1,6 @@
 ---
 title: Log
-updated: 2026-09-21
+updated: 2026-09-24
 type: log
 ---
 
@@ -205,3 +205,8 @@ PR #1094 merged on 2026-08-28. The following records the original stage evidence
 ## 2026-09-21
 
 - MAG7's Base vlRSR vault was missing from the self-appreciating-vault registry, so the UI fell back to MAG7/manual-claim copy despite the deployed TokenJar converting fees to RSR and increasing the vlRSR exchange rate. Added the verified vault address; the existing shared presentation now shows RSR, automatic claiming, APY, and the exchange rate across governance, overview, Earn, and portfolio.
+
+## 2026-09-24
+
+- Added the Base VLONE/MVTT10F deprecation proposal action, using SDK role lists as requested. The MVDA25 reference pins deprecation first and admin revocation last; duplicate detection is owner-governor scoped. Dark/Light reviews resolved; type/lint, 920 unit checks, 59 smoke checks and the proposal browser flow passed. The unrelated untracked transaction-hook draft was excluded in an isolated verification copy and left untouched. Engineer review required; no commit or push.
+- User subsequently authorized committing the deprecation change, pushing its feature branch, and opening a PR against master; merge and on-chain execution remain outside the task.

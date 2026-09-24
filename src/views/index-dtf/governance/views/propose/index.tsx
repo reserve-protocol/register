@@ -17,6 +17,7 @@ import type { ReactNode } from 'react'
 import { useMemo } from 'react'
 import { Link } from 'react-router-dom'
 import UpgradeBanners from './upgrade-banners'
+import ProposeDeprecation from './deprecation'
 
 type ProposalType = {
   icon: ReactNode
@@ -103,13 +104,14 @@ const TypeList = () => {
 const ProposalTypeSelection = () => {
   return (
     <>
-      <div className="flex h-[calc(100vh-146px)] lg:h-[calc(100vh-72px)] w-full">
+      <div className="flex min-h-[calc(100vh-146px)] lg:min-h-[calc(100vh-72px)] w-full">
         <div className="flex flex-col gap-4 items-center justify-center m-4 flex-grow border-none sm:border-dashed border-2 border-foreground/40 rounded-3xl">
           <UpgradeBanners />
           <div className="bg-secondary rounded-3xl w-full sm:w-[408px]">
             <Header />
             <TypeList />
           </div>
+          <ProposeDeprecation />
         </div>
       </div>
     </>

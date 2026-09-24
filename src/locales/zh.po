@@ -12210,3 +12210,32 @@ msgstr "Zapper 错误"
 #: src/views/index-dtf/overview/components/zap-mint/zap-healthcheck.tsx:24
 msgid "Zaps are currently experiencing issues"
 msgstr "Zap 当前出现问题"
+
+#: src/views/index-dtf/governance/views/propose/deprecation/index.tsx:123
+msgid "Admin"
+msgstr "管理员"
+
+#: src/views/index-dtf/governance/views/propose/deprecation/index.tsx:122
+msgid "Auction launchers"
+msgstr "拍卖发起者"
+
+#. placeholder {0}: dtf.token.symbol
+#: src/views/index-dtf/governance/views/propose/deprecation/index.tsx:142
+msgid "Deprecate {0}"
+msgstr "弃用 {0}"
+
+#: src/views/index-dtf/governance/views/propose/deprecation/index.tsx:145
+msgid "If approved and executed, this permanently disables minting and revokes the roles below. Redemptions remain available."
+msgstr "如果获批并执行，将永久停用 Mint 并撤销以下角色。Redeem 仍可使用。"
+
+#: src/views/index-dtf/governance/views/propose/deprecation/index.tsx:134
+msgid "Propose deprecation"
+msgstr "提议弃用"
+
+#: src/views/index-dtf/governance/views/propose/deprecation/index.tsx:121
+msgid "Rebalance managers"
+msgstr "再平衡管理者"
+
+#: src/views/index-dtf/governance/views/propose/deprecation/index.tsx:186
+msgid "Transaction reverted. Please try again."
+msgstr "交易已回滚。请重试。"

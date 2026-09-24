@@ -12210,3 +12210,32 @@ msgstr "Error de Zapper"
 #: src/views/index-dtf/overview/components/zap-mint/zap-healthcheck.tsx:24
 msgid "Zaps are currently experiencing issues"
 msgstr "Los Zaps están presentando problemas actualmente"
+
+#: src/views/index-dtf/governance/views/propose/deprecation/index.tsx:123
+msgid "Admin"
+msgstr "Administrador"
+
+#: src/views/index-dtf/governance/views/propose/deprecation/index.tsx:122
+msgid "Auction launchers"
+msgstr "Iniciadores de subastas"
+
+#. placeholder {0}: dtf.token.symbol
+#: src/views/index-dtf/governance/views/propose/deprecation/index.tsx:142
+msgid "Deprecate {0}"
+msgstr "Retirar {0}"
+
+#: src/views/index-dtf/governance/views/propose/deprecation/index.tsx:145
+msgid "If approved and executed, this permanently disables minting and revokes the roles below. Redemptions remain available."
+msgstr "Si se aprueba y ejecuta, se desactivará Mint permanentemente y se revocarán los roles siguientes. Redeem seguirá disponible."
+
+#: src/views/index-dtf/governance/views/propose/deprecation/index.tsx:134
+msgid "Propose deprecation"
+msgstr "Proponer retirada"
+
+#: src/views/index-dtf/governance/views/propose/deprecation/index.tsx:121
+msgid "Rebalance managers"
+msgstr "Gestores de reequilibrio"
+
+#: src/views/index-dtf/governance/views/propose/deprecation/index.tsx:186
+msgid "Transaction reverted. Please try again."
+msgstr "La transacción se revirtió. Inténtalo de nuevo."
