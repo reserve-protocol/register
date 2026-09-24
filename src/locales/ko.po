@@ -12210,3 +12210,32 @@ msgstr "Zapper 오류"
 #: src/views/index-dtf/overview/components/zap-mint/zap-healthcheck.tsx:24
 msgid "Zaps are currently experiencing issues"
 msgstr "현재 Zap에 문제가 발생하고 있습니다"
+
+#: src/views/index-dtf/governance/views/propose/deprecation/index.tsx:123
+msgid "Admin"
+msgstr "관리자"
+
+#: src/views/index-dtf/governance/views/propose/deprecation/index.tsx:122
+msgid "Auction launchers"
+msgstr "경매 실행자"
+
+#. placeholder {0}: dtf.token.symbol
+#: src/views/index-dtf/governance/views/propose/deprecation/index.tsx:142
+msgid "Deprecate {0}"
+msgstr "{0} 사용 중단"
+
+#: src/views/index-dtf/governance/views/propose/deprecation/index.tsx:145
+msgid "If approved and executed, this permanently disables minting and revokes the roles below. Redemptions remain available."
+msgstr "승인 및 실행되면 Mint가 영구적으로 비활성화되고 아래 역할이 취소됩니다. Redeem은 계속 사용할 수 있습니다."
+
+#: src/views/index-dtf/governance/views/propose/deprecation/index.tsx:134
+msgid "Propose deprecation"
+msgstr "사용 중단 제안"
+
+#: src/views/index-dtf/governance/views/propose/deprecation/index.tsx:121
+msgid "Rebalance managers"
+msgstr "리밸런싱 관리자"
+
+#: src/views/index-dtf/governance/views/propose/deprecation/index.tsx:186
+msgid "Transaction reverted. Please try again."
+msgstr "트랜잭션이 되돌려졌습니다. 다시 시도하세요."

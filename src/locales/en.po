@@ -12199,3 +12199,32 @@ msgstr ""
 #: src/views/index-dtf/overview/components/zap-mint/zap-healthcheck.tsx:24
 msgid "Zaps are currently experiencing issues"
 msgstr ""
+
+#: src/views/index-dtf/governance/views/propose/deprecation/index.tsx:123
+msgid "Admin"
+msgstr "Admin"
+
+#: src/views/index-dtf/governance/views/propose/deprecation/index.tsx:122
+msgid "Auction launchers"
+msgstr "Auction launchers"
+
+#. placeholder {0}: dtf.token.symbol
+#: src/views/index-dtf/governance/views/propose/deprecation/index.tsx:142
+msgid "Deprecate {0}"
+msgstr "Deprecate {0}"
+
+#: src/views/index-dtf/governance/views/propose/deprecation/index.tsx:145
+msgid "If approved and executed, this permanently disables minting and revokes the roles below. Redemptions remain available."
+msgstr "If approved and executed, this permanently disables minting and revokes the roles below. Redemptions remain available."
+
+#: src/views/index-dtf/governance/views/propose/deprecation/index.tsx:134
+msgid "Propose deprecation"
+msgstr "Propose deprecation"
+
+#: src/views/index-dtf/governance/views/propose/deprecation/index.tsx:121
+msgid "Rebalance managers"
+msgstr "Rebalance managers"
+
+#: src/views/index-dtf/governance/views/propose/deprecation/index.tsx:186
+msgid "Transaction reverted. Please try again."
+msgstr "Transaction reverted. Please try again."
