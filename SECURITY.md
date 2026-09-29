@@ -4,7 +4,7 @@
 
 If you find a security issue in Register, please report it privately — do not open a public issue.
 
-Email: **luis.camargo@reserve.org**
+Email: **security@reserve.org**
 
 Include a description of the issue, steps to reproduce, and the potential impact. You'll get a response as soon as possible, and we ask that you give us reasonable time to ship a fix before any public disclosure.
 
