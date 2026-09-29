@@ -9344,8 +9344,8 @@ msgid "stRSR Token"
 msgstr "Token stRSR"
 
 #: src/views/index-dtf/overview/components/eligibility-card.tsx:140
-#~ msgid "Submit"
-#~ msgstr "Enviar"
+msgid "Submit"
+msgstr "Enviar"
 
 #: src/views/index-dtf/manage/components/submit-button.tsx:318
 msgid "Submit all changes"

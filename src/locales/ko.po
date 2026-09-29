@@ -9344,8 +9344,8 @@ msgid "stRSR Token"
 msgstr "stRSR 토큰"
 
 #: src/views/index-dtf/overview/components/eligibility-card.tsx:140
-#~ msgid "Submit"
-#~ msgstr "제출"
+msgid "Submit"
+msgstr "제출"
 
 #: src/views/index-dtf/manage/components/submit-button.tsx:318
 msgid "Submit all changes"
