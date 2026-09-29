@@ -9,7 +9,7 @@ import { storeReferralFromUrl } from './utils/referral'
 storeReferralFromUrl()
 
 Sentry.init({
-  dsn: 'https://b68198129f2305a28405a306efc7d779@o4509282817015808.ingest.us.sentry.io/4509282885566464',
+  dsn: 'https://a1035072f1595cfb8c8650f0594adf56@o4512169834643456.ingest.us.sentry.io/4512169868001280',
   sendDefaultPii: true,
 })
 

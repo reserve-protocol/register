@@ -41,7 +41,7 @@ export default defineConfig({
     ...(hasSentryToken
       ? [
           sentryVitePlugin({
-            org: 'abc-labs-0g',
+            org: 'reserve-1z',
             project: 'register',
             sourcemaps: { filesToDeleteAfterUpload: ['./build/**/*.map'] },
           }),
