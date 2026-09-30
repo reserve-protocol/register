@@ -458,6 +458,14 @@ export const collateralDisplay: Record<string, string> = {
   steakpyusd: 'Morpho pyUSD',
   bbusdt: 'Morpho USDT',
   steakusdc: 'Morpho Steakhouse USDC',
+  steakusdcprime: 'Morpho V2 Steakhouse Prime USDC',
+  steakusdt: 'Morpho V2 Steakhouse Prime USDT',
+  senpyusdmain: 'Morpho V2 Sentora PYUSD',
+  gtusdcf: 'Morpho V2 Gauntlet USDC Frontier',
+  gtusdcp: 'Morpho V2 Gauntlet USDC Prime',
+  gusdcq: 'Morpho V2 Galaxy USDC Quality',
+  gusdtq: 'Morpho V2 Galaxy USDT Quality',
+  skymoneyusdtsavings: 'Morpho V2 Sky USDT Savings',
   saarbusdcn: 'AAVE USDC V3',
   saarbusdt: 'AAVE USDT V3',
   'stkcvxeth+eth': 'Convex ETH+/ETH',
@@ -622,6 +630,7 @@ export const SELF_APPRECIATING_VOTE_LOCK_VAULTS: Record<
   number,
   readonly string[]
 > = {
+  [ChainId.Base]: ['0x2f0d6538807a77d4addcd4b4daf214ea2e818e3d'],
   [ChainId.BSC]: ['0xe744c8157c346b2931807f42552c8cbc0bb6d34f'],
 }
 

@@ -103,6 +103,10 @@ const SVGS = new Set([
   'weeth',
   'king',
   'usdi',
+  'steakusdcprime',
+  'steakusdt',
+  'gtusdcf',
+  'gtusdcp',
 ])
 
 const PNGS = new Set([
@@ -132,6 +136,10 @@ const PNGS = new Set([
   'wtao',
   'glwon',
   'tsemon',
+  'senpyusdmain',
+  'gusdcq',
+  'gusdtq',
+  'skymoneyusdtsavings',
 ])
 
 const EXTERNAL_ASSETS = new Set([

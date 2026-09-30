@@ -327,7 +327,7 @@ export const timeToBlocks = (seconds: number, secondsPerBlock = 12): number => {
 
 export const governanceDefaultValues = {
   defaultGovernance: true,
-  unpause: '0',
+  unpause: '1',
   votingDelay: '48', // 2 days
   votingPeriod: '72', // 3 days
   proposalThresholdAsMicroPercent: '0.01', // 0.01%

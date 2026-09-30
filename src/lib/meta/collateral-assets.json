@@ -1414,5 +1414,173 @@
     "underlyings": [
       "eeth"
     ]
+  },
+  {
+    "name": "Morpho V2 Steakhouse Prime USDC",
+    "id": "steakusdcprime",
+    "displaySymbol": "Morpho V2 Steakhouse Prime USDC",
+    "addresses": {
+      "1": "0xbeef088055857739C12CD3765F20b7679Def0f51"
+    },
+    "color": "#2775CA",
+    "llamaId": "931ea9be-5f4d-428e-beaf-205fc5b4e2b5",
+    "tokenDistribution": [
+      {
+        "token": "USDC",
+        "distribution": 1
+      }
+    ],
+    "description": "Morpho V2 Steakhouse Prime USDC: USDC lent to a Morpho Vault V2 curated by Steakhouse Finance, which aims to optimize yields by lending USDC against blue chip crypto and real world asset (RWA) collateral markets depending on market conditions.",
+    "protocol": "morphoblue",
+    "underlyings": [
+      "usdc"
+    ]
+  },
+  {
+    "name": "Morpho V2 Steakhouse Prime USDT",
+    "id": "steakusdt",
+    "displaySymbol": "Morpho V2 Steakhouse Prime USDT",
+    "addresses": {
+      "1": "0xbeef003C68896c7D2c3c60d363e8d71a49Ab2bf9"
+    },
+    "color": "#2775CA",
+    "llamaId": "ef5d3acb-b974-4db1-8076-e8db9f142493",
+    "tokenDistribution": [
+      {
+        "token": "USDT",
+        "distribution": 1
+      }
+    ],
+    "description": "Morpho V2 Steakhouse Prime USDT: USDT lent to a Morpho Vault V2 curated by Steakhouse Finance, which aims to optimize yields by lending USDT against blue chip crypto and real world asset (RWA) collateral markets depending on market conditions.",
+    "protocol": "morphoblue",
+    "underlyings": [
+      "usdt"
+    ]
+  },
+  {
+    "name": "Morpho V2 Sentora PYUSD",
+    "id": "senpyusdmain",
+    "displaySymbol": "Morpho V2 Sentora PYUSD",
+    "addresses": {
+      "1": "0xb576765fB15505433aF24FEe2c0325895C559FB2"
+    },
+    "color": "#2775CA",
+    "llamaId": "699f25fe-09f4-4f82-8f58-baa5b0af8fa4",
+    "tokenDistribution": [
+      {
+        "token": "PYUSD",
+        "distribution": 1
+      }
+    ],
+    "description": "Morpho V2 Sentora PYUSD (PayPal USD Main): PYUSD lent to a Morpho Vault V2 curated by Sentora, which targets risk-adjusted returns by lending against top-tier collateral from Bitcoin wrappers to staked ETH and yield-bearing stablecoin derivatives.",
+    "protocol": "morphoblue",
+    "underlyings": [
+      "PYUSD"
+    ]
+  },
+  {
+    "name": "Morpho V2 Gauntlet USDC Frontier",
+    "id": "gtusdcf",
+    "displaySymbol": "Morpho V2 Gauntlet USDC Frontier",
+    "addresses": {
+      "1": "0x9a1D6bd5b8642C41F25e0958129B85f8E1176F3e"
+    },
+    "color": "#2775CA",
+    "llamaId": "ff113246-f6e0-4e10-b92c-abd3cd1d7dd6",
+    "tokenDistribution": [
+      {
+        "token": "USDC",
+        "distribution": 1
+      }
+    ],
+    "description": "Morpho V2 Gauntlet USDC Frontier: USDC lent to a Morpho Vault V2 curated by Gauntlet under its Frontier framework, which targets higher yield by allocating to potentially higher-volatility yield sources that may face liquidity risk in exchange for greater returns.",
+    "protocol": "morphoblue",
+    "underlyings": [
+      "usdc"
+    ]
+  },
+  {
+    "name": "Morpho V2 Gauntlet USDC Prime",
+    "id": "gtusdcp",
+    "displaySymbol": "Morpho V2 Gauntlet USDC Prime",
+    "addresses": {
+      "1": "0x8c106EEDAd96553e64287A5A6839c3Cc78afA3D0"
+    },
+    "color": "#2775CA",
+    "llamaId": "71b34441-5a46-431b-a9b3-8c081cd0d74c",
+    "tokenDistribution": [
+      {
+        "token": "USDC",
+        "distribution": 1
+      }
+    ],
+    "description": "Morpho V2 Gauntlet USDC Prime: USDC lent to a Morpho Vault V2 curated by Gauntlet under its conservative Prime framework, which optimizes for risk-adjusted yield by allocating across large market cap assets and highly liquid yield sources.",
+    "protocol": "morphoblue",
+    "underlyings": [
+      "usdc"
+    ]
+  },
+  {
+    "name": "Morpho V2 Galaxy USDC Quality",
+    "id": "gusdcq",
+    "displaySymbol": "Morpho V2 Galaxy USDC Quality",
+    "addresses": {
+      "1": "0x91600E31fBeDc72433d4a57F16639cfe661Be7d8"
+    },
+    "color": "#2775CA",
+    "llamaId": "ba8f47b8-2cc2-4976-a0f9-1bd8da4bcb91",
+    "tokenDistribution": [
+      {
+        "token": "USDC",
+        "distribution": 1
+      }
+    ],
+    "description": "Morpho V2 Galaxy USDC Quality: USDC lent to a Morpho Vault V2 curated by Galaxy, which allocates stablecoin liquidity across a curated selection of markets collateralized exclusively by blue chip assets, prioritizing capital preservation over yield.",
+    "protocol": "morphoblue",
+    "underlyings": [
+      "usdc"
+    ]
+  },
+  {
+    "name": "Morpho V2 Galaxy USDT Quality",
+    "id": "gusdtq",
+    "displaySymbol": "Morpho V2 Galaxy USDT Quality",
+    "addresses": {
+      "1": "0x71ffB6a81786eC285D429d531Cf655107B9D878d"
+    },
+    "color": "#2775CA",
+    "llamaId": "09946099-2c68-4fcb-bc6c-32b6bf6019fe",
+    "tokenDistribution": [
+      {
+        "token": "USDT",
+        "distribution": 1
+      }
+    ],
+    "description": "Morpho V2 Galaxy USDT Quality: USDT lent to a Morpho Vault V2 curated by Galaxy, which allocates stablecoin liquidity across a curated selection of markets collateralized exclusively by blue chip assets, prioritizing capital preservation over yield.",
+    "protocol": "morphoblue",
+    "underlyings": [
+      "usdt"
+    ]
+  },
+  {
+    "name": "Morpho V2 Sky USDT Savings",
+    "id": "skymoneyusdtsavings",
+    "displaySymbol": "Morpho V2 Sky USDT Savings",
+    "addresses": {
+      "1": "0x23f5E9c35820f4baB695Ac1F19c203cC3f8e1e11"
+    },
+    "color": "#2775CA",
+    "llamaId": "89641d1d-6ee2-431b-b131-a0b49c59e2c5",
+    "tokenDistribution": [
+      {
+        "token": "USDT",
+        "distribution": 1
+      }
+    ],
+    "description": "Morpho V2 Sky USDT Savings: USDT deposited into a Morpho Vault V2 curated by sky.money that deploys deposits exclusively into an sUSDS-USDT Morpho market.",
+    "protocol": "morphoblue",
+    "underlyings": [
+      "usdt"
+    ]
   }
 ]

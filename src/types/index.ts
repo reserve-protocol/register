@@ -1,4 +1,3 @@
-import { AvailableChain } from '@/utils/chains'
 import type { IndexDtfData } from '@reserve-protocol/react-sdk'
 import { Address, Hex } from 'viem'
 
@@ -29,6 +28,7 @@ export type ProtocolKey =
   | 'SKY'
   | 'ORIGIN'
   | 'ETHERFI'
+  | 'MORPHOV2'
 
 export type AddressMap = { [chainId: number]: Address }
 

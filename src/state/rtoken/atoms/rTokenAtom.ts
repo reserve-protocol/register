@@ -8,10 +8,9 @@ import { getTokenReadCalls } from 'utils'
 import { FACADE_ADDRESS } from 'utils/addresses'
 import { atomWithLoadable } from 'utils/atoms/utils'
 import { collateralDisplay } from 'utils/constants'
-import { collateralsProtocolMap } from 'utils/plugins'
+import { collateralsProtocolMap, getPluginByErc20 } from 'utils/plugins'
 import { Address, formatEther, hexToString } from 'viem'
 import { readContracts } from 'wagmi/actions'
-import { base } from 'wagmi/chains'
 
 // RToken meta, pulled directly from the listed list or validated for unlisted tokens
 // Tokens without "logo" are unlisted
@@ -149,7 +148,8 @@ const rTokenAtom: Atom<ReserveToken | null> = atomWithLoadable(
       mandate,
       stToken: tokens.shift() as Token,
       collaterals: tokens.map((t) => {
-        let symbol = t.symbol
+        const plugin = getPluginByErc20(chainId, t.address)
+        let symbol = plugin?.symbol ?? t.symbol
 
         // TODO: Temporal until usdbc plugin is removed
         if (
@@ -165,7 +165,10 @@ const rTokenAtom: Atom<ReserveToken | null> = atomWithLoadable(
 
         return {
           ...t,
-          protocol: collateralsProtocolMap[chainId]?.[t.symbol] || 'GENERIC',
+          protocol:
+            plugin?.protocol ??
+            collateralsProtocolMap[chainId]?.[t.symbol] ??
+            'GENERIC',
           symbol,
           displayName,
         }

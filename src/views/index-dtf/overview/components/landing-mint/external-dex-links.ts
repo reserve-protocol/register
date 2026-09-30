@@ -1,7 +1,7 @@
 import { ChainId } from '@/utils/chains'
 import type { Address } from 'viem'
 
-export type DtfDex = 'pancakeswap' | 'cowswap'
+export type DtfDex = 'pancakeswap' | 'cowswap' | '1inch'
 
 export type DtfDexLink = {
   dex: DtfDex
@@ -24,6 +24,11 @@ const DTF_DEXES: Partial<
         label: 'CoW Swap',
         url: 'https://swap.cow.fi/#/56/swap/USDT/PHOTON',
       },
+      {
+        dex: '1inch',
+        label: '1inch',
+        url: 'https://1inch.com/swap?src=56:0x55d398326f99059fF775485246999027B3197955&dst=56:0xa0Fe4e0aEca5479705ce996615B2EACB6b6a10Fb',
+      },
     ],
     '0xd7ce7a841310982acd976d1a6fe7bb6063c5689d': [
       {
@@ -35,6 +40,11 @@ const DTF_DEXES: Partial<
         dex: 'cowswap',
         label: 'CoW Swap',
         url: 'https://swap.cow.fi/#/56/swap/USDT/BUILDOUT',
+      },
+      {
+        dex: '1inch',
+        label: '1inch',
+        url: 'https://1inch.com/swap?src=56:0x55d398326f99059fF775485246999027B3197955&dst=56:0xD7cE7a841310982AcD976D1a6fe7BB6063c5689D',
       },
     ],
     '0x75617e7653f86f074cc30b9fd4ebf52ba9b62247': [
@@ -48,6 +58,11 @@ const DTF_DEXES: Partial<
         label: 'CoW Swap',
         url: 'https://swap.cow.fi/#/56/swap/USDT/ROBOTS',
       },
+      {
+        dex: '1inch',
+        label: '1inch',
+        url: 'https://1inch.com/swap?src=56:0x55d398326f99059fF775485246999027B3197955&dst=56:0x75617e7653f86f074Cc30b9Fd4eBf52bA9b62247',
+      },
     ],
     '0x290bcc0fd5096cc3261ae2021841c7bc67cb0f51': [
       {
@@ -60,6 +75,11 @@ const DTF_DEXES: Partial<
         label: 'CoW Swap',
         url: 'https://swap.cow.fi/#/56/swap/USDT/POWER',
       },
+      {
+        dex: '1inch',
+        label: '1inch',
+        url: 'https://1inch.com/swap?src=56:0x55d398326f99059fF775485246999027B3197955&dst=56:0x290bCc0Fd5096cC3261AE2021841c7BC67Cb0f51',
+      },
     ],
     '0xf571fe3f0d74521bc7310b111faea931c748f27b': [
       {
@@ -71,6 +91,11 @@ const DTF_DEXES: Partial<
         dex: 'cowswap',
         label: 'CoW Swap',
         url: 'https://swap.cow.fi/#/56/swap/USDT/NEOCLOUD',
+      },
+      {
+        dex: '1inch',
+        label: '1inch',
+        url: 'https://1inch.com/swap?src=56:0x55d398326f99059fF775485246999027B3197955&dst=56:0xf571Fe3F0d74521Bc7310B111Faea931C748f27B',
       },
     ],
   },

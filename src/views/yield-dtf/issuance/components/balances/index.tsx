@@ -16,7 +16,7 @@ const CollateralBalances = () => {
       <h3 className="font-semibold mb-3 p-4 pb-0">
         <Trans>Available collateral</Trans>
       </h3>
-      <div className="overflow-auto max-h-[360px] p-4 pt-0">
+      <div className="p-4 pt-0">
         {!rToken?.collaterals && <Spinner size={18} />}
         {rToken?.collaterals.map((collateral) => (
           <CollateralBalance

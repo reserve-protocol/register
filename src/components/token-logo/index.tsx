@@ -3,7 +3,7 @@ import { cn } from '@/lib/utils'
 import { getAddress } from 'viem'
 import { UNIVERSAL_ASSETS } from '@/utils/constants'
 import { indexDTFIconsAtom } from '@/state/atoms'
-import { useAtom, useAtomValue } from 'jotai'
+import { useAtomValue, useSetAtom, useStore } from 'jotai'
 import * as React from 'react'
 import { routeCacheAtom } from './atoms'
 import { TOKEN_LOGO_MAPPINGS } from './token-logo-mappings'
@@ -27,7 +27,9 @@ interface Props extends React.ImgHTMLAttributes<HTMLImageElement> {
 
 const TokenLogo = React.forwardRef<HTMLImageElement, Props>((props, ref) => {
   const indexDTFIcons = useAtomValue(indexDTFIconsAtom)
-  const [routeCache, setRouteCache] = useAtom(routeCacheAtom)
+  // Read the shared cache on demand: subscribing would re-render and reload every logo on each cache write
+  const store = useStore()
+  const setRouteCache = useSetAtom(routeCacheAtom)
   const {
     symbol,
     size = 'md',
@@ -45,7 +47,7 @@ const TokenLogo = React.forwardRef<HTMLImageElement, Props>((props, ref) => {
   const h = height || sizeMap[size].height
   const w = width || sizeMap[size].width
   const [currentSrc, setCurrentSrc] = React.useState('')
-  const [isWrapped, setIsWrapped] = React.useState(false)
+  const [, setIsWrapped] = React.useState(false)
 
   const tryLoadImage = async (url: string): Promise<string> => {
     return new Promise((resolve, reject) => {
@@ -70,14 +72,17 @@ const TokenLogo = React.forwardRef<HTMLImageElement, Props>((props, ref) => {
     })
   }
 
-  const cacheUrl = (url: string) => {
-    if (address && chain) {
-      setRouteCache((prev) => ({
-        ...prev,
-        [`${address.toLowerCase()}-${chain}`]: url,
-      }))
-    }
-  }
+  const cacheUrl = React.useCallback(
+    (url: string) => {
+      if (address && chain) {
+        setRouteCache((prev) => ({
+          ...prev,
+          [`${address.toLowerCase()}-${chain}`]: url,
+        }))
+      }
+    },
+    [address, chain, setRouteCache]
+  )
 
   const loadImage = React.useCallback(async () => {
     try {
@@ -91,8 +96,9 @@ const TokenLogo = React.forwardRef<HTMLImageElement, Props>((props, ref) => {
       // check cache first
       if (address && chain) {
         const cacheKey = `${address.toLowerCase()}-${chain}`
-        if (routeCache[cacheKey]) {
-          setCurrentSrc(routeCache[cacheKey])
+        const cached = store.get(routeCacheAtom)[cacheKey]
+        if (cached) {
+          setCurrentSrc(cached)
           return
         }
       }
@@ -147,7 +153,7 @@ const TokenLogo = React.forwardRef<HTMLImageElement, Props>((props, ref) => {
           setCurrentSrc(url)
           setIsWrapped(true)
           return
-        } catch (error) {
+        } catch {
           console.debug(`Failed to load dexscreener image for ${address}`)
         }
       }
@@ -160,7 +166,7 @@ const TokenLogo = React.forwardRef<HTMLImageElement, Props>((props, ref) => {
           cacheUrl(url)
           setCurrentSrc(url)
           return
-        } catch (error) {
+        } catch {
           console.debug(`Failed to load smoldapp image for ${address}`)
         }
 
@@ -173,7 +179,7 @@ const TokenLogo = React.forwardRef<HTMLImageElement, Props>((props, ref) => {
             cacheUrl(url)
             setCurrentSrc(url)
             return
-          } catch (error) {
+          } catch {
             console.debug(`Failed to load trust wallet image for ${address}`)
           }
         }
@@ -184,7 +190,7 @@ const TokenLogo = React.forwardRef<HTMLImageElement, Props>((props, ref) => {
           cacheUrl(url)
           setCurrentSrc(url)
           return
-        } catch (error) {
+        } catch {
           console.debug(`Failed to load llama image for ${address}`)
         }
       }
@@ -194,7 +200,7 @@ const TokenLogo = React.forwardRef<HTMLImageElement, Props>((props, ref) => {
       console.debug('Failed to load token logo:', error)
       setCurrentSrc('/svgs/defaultLogo.svg')
     }
-  }, [propsSrc, symbol, address, chain, h, w])
+  }, [propsSrc, symbol, address, chain, h, w, cacheUrl, indexDTFIcons, store])
 
   React.useEffect(() => {
     setCurrentSrc('')
@@ -320,6 +326,10 @@ export const SVGS = new Set([
   'weeth',
   'king',
   'usdi',
+  'steakusdcprime',
+  'steakusdt',
+  'gtusdcf',
+  'gtusdcp',
 ])
 
 export const PNGS = new Set([
@@ -349,6 +359,10 @@ export const PNGS = new Set([
   'wtao',
   'glwon',
   'tsemon',
+  'senpyusdmain',
+  'gusdcq',
+  'gusdtq',
+  'skymoneyusdtsavings',
 ])
 
 export const WEBP = new Set([

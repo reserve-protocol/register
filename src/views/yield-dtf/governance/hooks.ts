@@ -4,7 +4,7 @@ import { wagmiConfig } from 'state/chain'
 import { truncateDecimals } from 'utils'
 import { FACADE_ADDRESS } from 'utils/addresses'
 import { AvailableChain } from 'utils/chains'
-import { collateralsMap } from 'utils/plugins'
+import { getPluginByErc20 } from 'utils/plugins'
 import { Address, formatEther, hexToString } from 'viem'
 import { useBlockNumber } from 'wagmi'
 import { readContract, readContracts } from 'wagmi/actions'
@@ -80,7 +80,8 @@ const getTokensMeta = async (erc20s: Address[], chainId: number) => {
     (acc, symbol, index) => {
       return {
         ...acc,
-        [erc20s[index]]: symbol as string,
+        [erc20s[index]]:
+          getPluginByErc20(chainId, erc20s[index])?.symbol ?? (symbol as string),
       }
     },
     {} as Record<string, string>
@@ -162,7 +163,7 @@ export const useBasketChangesSummary = (
           [current]: {
             address: current as Address,
             share: truncateDecimals(+formatEther(proposal[1][index]) * 100, 4),
-            targetUnit: collateralsMap[chainId]?.[current]?.targetName || 'USD',
+            targetUnit: getPluginByErc20(chainId, current)?.targetName || 'USD',
           },
         }
       }, {} as BasketItem)

@@ -246,6 +246,7 @@ const CollateralItem = ({ collateral, wrapping, className }: Props) => {
           args: [parsedAmount, wallet],
         }
       case 'MORPHO':
+      case 'MORPHOV2':
       case 'SDR':
       case 'SKY':
       case 'ORIGIN':

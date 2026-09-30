@@ -1,10 +1,11 @@
 import {
   BackupBasket,
   Basket,
+  Collateral,
   RevenueSplit,
 } from 'components/rtoken-setup/atoms'
 import { StringMap } from 'types'
-import { Address, parseEther, stringToHex, zeroAddress } from 'viem'
+import { Address, parseEther, stringToHex } from 'viem'
 import { parsePercent } from '@/utils'
 import {
   VERSION_REGISTRY_ADDRESS,
@@ -12,6 +13,7 @@ import {
   DAO_FEE_REGISTRY_ADDRESS,
   TRUSTED_FILLER_REGISTRY_ADDRESS,
 } from 'utils/addresses'
+import { getRewardAssetsToRegister } from 'utils/plugins'
 
 export interface RevenueDist {
   rTokenDist: number
@@ -204,24 +206,17 @@ export const getDeployParameters = (
     }
 
     // Basket configuration
-    const assets: Set<Address> = new Set()
     const primaryBasket: Address[] = []
     const weights: bigint[] = []
     const backups: BackupBasketConfiguration[] = []
+    const basketCollaterals: Collateral[] = []
 
     for (const targetUnit of Object.keys(basket)) {
       const { collaterals, distribution, scale } = basket[targetUnit]
 
       collaterals.forEach((collateral, index) => {
         primaryBasket.push(collateral.address as Address)
-        if (
-          !!collateral.rewardTokens?.length &&
-          collateral.rewardTokens[0] !== zeroAddress
-        ) {
-          collateral.rewardTokens.forEach((reward) =>
-            assets.add(reward as Address)
-          )
-        }
+        basketCollaterals.push(collateral)
 
         weights.push(
           parseEther(
@@ -235,9 +230,7 @@ export const getDeployParameters = (
           backupUnit: stringToHex(targetUnit.toUpperCase(), { size: 32 }),
           diversityFactor: BigInt(backup[targetUnit].diversityFactor),
           backupCollateral: backup[targetUnit].collaterals.map((c) => {
-            if (!!c.rewardTokens?.length && c.rewardTokens[0] !== zeroAddress) {
-              c.rewardTokens.forEach((reward) => assets.add(reward as Address))
-            }
+            basketCollaterals.push(c)
             return c.address as Address
           }),
         })
@@ -245,7 +238,11 @@ export const getDeployParameters = (
     }
 
     const basketConfig: BasketConfiguration = {
-      assets: Array.from(assets),
+      assets: getRewardAssetsToRegister(
+        chainId,
+        basketCollaterals,
+        basketCollaterals.flatMap((c) => [c.address, c.erc20])
+      ),
       primaryBasket,
       weights,
       backups,

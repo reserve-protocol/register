@@ -55,17 +55,9 @@ export const IssuancePausedBanner = ({ className }: { className?: string }) => {
           </span>
           <span className="block mt-1 text-warning">
             <Trans>
-              Minting has been temporarily paused due to an abundance of caution
-              related to the Kelp DAO exploit.
-            </Trans>{' '}
-            <a
-              href="https://x.com/reserveprotocol/status/2046007367679267080"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="underline"
-            >
-              <Trans>Read more</Trans>
-            </a>
+              Minting is paused for this DTF. Governance or an address with the
+              pauser role can resume it.
+            </Trans>
           </span>
         </div>
       </div>
@@ -88,18 +80,10 @@ export const IssuancePausedZapBanner = ({ className }: { className?: string }) =
           </span>
           <span className="block mt-1 text-warning">
             <Trans>
-              Due to limited liquidity on Aave related to the Kelp DAO exploit,
-              Zaps will swap for RTokens in DEX pools. Please pay attention to
-              price impact before redeeming.
-            </Trans>{' '}
-            <a
-              href="https://x.com/reserveprotocol/status/2046007367679267080"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="underline"
-            >
-              <Trans>Read more</Trans>
-            </a>
+              Minting is paused for this DTF, so Zaps will buy RTokens in DEX
+              pools instead of minting. Please pay attention to price impact
+              before confirming.
+            </Trans>
           </span>
         </div>
       </div>

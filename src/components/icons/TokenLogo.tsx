@@ -93,6 +93,10 @@ export const SVGS = new Set([
   'saethrlusd',
   'weeth',
   'king',
+  'steakusdcprime',
+  'steakusdt',
+  'gtusdcf',
+  'gtusdcp',
 ])
 
 const PNGS = new Set([
@@ -106,6 +110,10 @@ const PNGS = new Set([
   'wvamm-mog-weth',
   'wsuperoethb',
   'superoethb',
+  'senpyusdmain',
+  'gusdcq',
+  'gusdtq',
+  'skymoneyusdtsavings',
 ])
 
 // Memoized token image
