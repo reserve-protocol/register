@@ -3,11 +3,14 @@ import useContractWrite from '@/hooks/useContractWrite'
 import { ZapResult } from '@/views/yield-dtf/issuance/components/zapV2/api'
 import { useLingui } from '@lingui/react/macro'
 import { useAtomValue, useSetAtom } from 'jotai'
-import { Address, erc20Abi, parseEventLogs } from 'viem'
+import { Address, erc20Abi } from 'viem'
 import { useSendTransaction, useWaitForTransactionReceipt } from 'wagmi'
 import { daoCreatedAtom, deployedDTFAtom } from '../../../atoms'
 import { useEffect } from 'react'
-import dtfIndexDeployerAbi from '@/abis/dtf-index-deployer-abi'
+import {
+  getDeployedFolio,
+  getReserveDeployers,
+} from '../../../utils/deployed-folio'
 import useWatchTransaction from '@/hooks/useWatchTransaction'
 import { indexDeployFormDataAtom } from '../atoms'
 import { defaultInputTokenAtom, inputTokenAtom, ongoingTxAtom } from './atoms'
@@ -86,17 +89,14 @@ const SimpleDeployButton = ({
 
   useEffect(() => {
     if (receipt) {
-      const event = parseEventLogs({
-        abi: dtfIndexDeployerAbi,
-        logs: receipt.logs,
-        eventName: daoCreated ? 'GovernedFolioDeployed' : 'FolioDeployed',
-      })[0]
+      const folio = getDeployedFolio(
+        receipt.logs,
+        daoCreated ? 'GovernedFolioDeployed' : 'FolioDeployed',
+        getReserveDeployers(chainId)
+      )
 
-      // TODO: Handle edge case when event is not found? why would that happen?
-      if (event) {
-        const { folio } = event.args
-        setDeployedDTF(folio)
-      }
+      // TODO: surface an error when no single deployer event is found (look-alike or ambiguous logs are dropped).
+      if (folio) setDeployedDTF(folio)
     }
   }, [receipt])
 

@@ -13,6 +13,7 @@ import {
   deployedDTFAtom,
 } from '@/views/index-dtf/deploy/atoms'
 import { calculateRevenueDistribution } from '@/views/index-dtf/deploy/utils'
+import { getDeployedFolio } from '@/views/index-dtf/deploy/utils/deployed-folio'
 import { atom, useAtomValue, useSetAtom } from 'jotai'
 import { useEffect } from 'react'
 import {
@@ -20,7 +21,6 @@ import {
   Hex,
   keccak256,
   parseEther,
-  parseEventLogs,
   parseUnits,
   toBytes,
 } from 'viem'
@@ -263,18 +263,15 @@ const ConfirmManualDeployButton = () => {
   })
 
   useEffect(() => {
-    if (receipt) {
-      const event = parseEventLogs({
-        abi: dtfIndexDeployerAbi,
-        logs: receipt.logs,
-        eventName: daoCreated ? 'GovernedFolioDeployed' : 'FolioDeployed',
-      })[0]
+    if (receipt && tx) {
+      const folio = getDeployedFolio(
+        receipt.logs,
+        daoCreated ? 'GovernedFolioDeployed' : 'FolioDeployed',
+        [tx.address]
+      )
 
-      // TODO: Handle edge case when event is not found? why would that happen?
-      if (event) {
-        const { folio } = event.args
-        setDeployedDTF(folio)
-      }
+      // TODO: surface an error when no single deployer event is found (look-alike or ambiguous logs are dropped).
+      if (folio) setDeployedDTF(folio)
     }
   }, [receipt])
 
