@@ -116,8 +116,8 @@ importers:
         specifier: ^0.8.0
         version: 0.8.0(@tanstack/react-query@5.102.8(react@18.3.1))(ajv@8.18.0)(cross-fetch@4.1.0)(multiformats@14.0.0)(react@18.3.1)(viem@2.52.0(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@5.0.10)(zod@4.3.6))(wagmi@2.19.5(@tanstack/query-core@5.102.8)(@tanstack/react-query@5.102.8(react@18.3.1))(@types/react@18.3.28)(bufferutil@4.1.0)(react@18.3.1)(typescript@5.9.3)(utf-8-validate@5.0.10)(viem@2.52.0(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@5.0.10)(zod@4.3.6))(zod@4.3.6))
       '@reserve-protocol/dtf-catalog':
-        specifier: 0.1.5
-        version: 0.1.5
+        specifier: link:../sdk/packages/dtf-catalog
+        version: link:../sdk/packages/dtf-catalog
       '@reserve-protocol/dtf-chat':
         specifier: ^0.0.7
         version: 0.0.7(@ai-sdk/react@2.0.199(react@18.3.1)(zod@4.3.6))(ai@5.0.197(zod@4.3.6))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -3201,10 +3201,6 @@ packages:
       react: ^18.3.1
       viem: ^2.50.4
       wagmi: ^2.19.5
-
-  '@reserve-protocol/dtf-catalog@0.1.5':
-    resolution: {integrity: sha512-mEf7CIxw9z7uY+4RCq/BaIg7JWjtlNvN4mRlVLb4ZHQZYro2x/HKWH5lDGMm/lAnq0bnl87IFo36rbbTwB36NQ==}
-    engines: {node: '>=24'}
 
   '@reserve-protocol/dtf-chat@0.0.7':
     resolution: {integrity: sha512-3Qz6hA+QdNz7f/TUm+soKl6VyKXg/1uUGjCyghoWH9AlQ3V5Flc4DI4bL6VQ4Oacev+ak1ZTS5jhGEOodxeOCA==}
@@ -12070,8 +12066,6 @@ snapshots:
       - encoding
       - multiformats
       - supports-color
-
-  '@reserve-protocol/dtf-catalog@0.1.5': {}
 
   '@reserve-protocol/dtf-chat@0.0.7(@ai-sdk/react@2.0.199(react@18.3.1)(zod@4.3.6))(ai@5.0.197(zod@4.3.6))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:

@@ -45,7 +45,7 @@
     "@reown/appkit": "1.8.23",
     "@reown/appkit-adapter-wagmi": "1.8.23",
     "@reserve-protocol/async-zap-sdk": "^0.8.0",
-    "@reserve-protocol/dtf-catalog": "0.1.5",
+    "@reserve-protocol/dtf-catalog": "link:../sdk/packages/dtf-catalog",
     "@reserve-protocol/dtf-chat": "^0.0.7",
     "@reserve-protocol/dtf-rebalance-lib": "^3.3.1",
     "@reserve-protocol/react-sdk": "link:../sdk/packages/react-sdk",
