@@ -5,7 +5,8 @@ import { cn } from '@/lib/utils'
 import { walletAtom } from '@/state/atoms'
 import { indexDTFAtom } from '@/state/dtf/atoms'
 import { useTrackIndexDTFClick } from '@/views/index-dtf/hooks/useTrackIndexDTFPage'
-import useTurnstile from '@/views/index-dtf/overview/hooks/use-turnstile'
+import useTurnstile from '@/hooks/use-turnstile'
+import { FORMS_TURNSTILE_SITE_KEY, RESERVE_API } from '@/utils/constants'
 import { zodResolver } from '@hookform/resolvers/zod'
 import type { MessageDescriptor } from '@lingui/core'
 import { msg } from '@lingui/core/macro'
@@ -16,8 +17,6 @@ import { useMemo, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 
-const STORAGE_URL = import.meta.env.VITE_STORAGE_URL || ''
-const TURNSTILE_SITE_KEY = '0x4AAAAAAFJhIu3VZKkEMd1j'
 const ELIGIBILITY_DOCS_URL =
   'https://docs.ondo.finance/ondo-global-markets/eligibility'
 
@@ -44,7 +43,7 @@ const EligibilityForm = () => {
   const [submitting, setSubmitting] = useState(false)
   const [submitError, setSubmitError] = useState(false)
   const formSchema = useMemo(() => buildFormSchema(t), [t])
-  const turnstile = useTurnstile(TURNSTILE_SITE_KEY)
+  const turnstile = useTurnstile(FORMS_TURNSTILE_SITE_KEY, 'eligibility')
 
   const {
     register,
@@ -61,7 +60,7 @@ const EligibilityForm = () => {
     setSubmitError(false)
     trackClick('request_eligibility')
     try {
-      const response = await fetch(`${STORAGE_URL}eligibility`, {
+      const response = await fetch(`${RESERVE_API}forms/eligibility`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

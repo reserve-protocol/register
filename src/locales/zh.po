@@ -6102,6 +6102,10 @@ msgstr "大多数用户应使用 Swap"
 msgid "Must be 0 or greater"
 msgstr "必须为 0 或更大"
 
+#: src/views/index-dtf/deploy/components/deploy-coming-soon.tsx:31
+msgid "Must be at least 5 characters"
+msgstr "至少需要 5 个字符"
+
 #: src/views/index-dtf/manage/components/schema.ts:11
 msgid "Must be a valid Discord URL"
 msgstr "必须是有效的 Discord URL"

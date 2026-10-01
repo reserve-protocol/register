@@ -6102,6 +6102,10 @@ msgstr "대부분의 사용자는 Swap을 사용해야 합니다"
 msgid "Must be 0 or greater"
 msgstr "0 이상이어야 합니다"
 
+#: src/views/index-dtf/deploy/components/deploy-coming-soon.tsx:31
+msgid "Must be at least 5 characters"
+msgstr "5자 이상 입력해야 합니다"
+
 #: src/views/index-dtf/manage/components/schema.ts:11
 msgid "Must be a valid Discord URL"
 msgstr "유효한 Discord URL이어야 합니다"

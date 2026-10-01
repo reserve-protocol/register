@@ -13,10 +13,10 @@ import { useAtomValue } from 'jotai'
 import { useCallback, useEffect, useState } from 'react'
 import { ChevronDown, ChevronUp, Mail } from 'lucide-react'
 import { walletAtom } from 'state/atoms'
+import useTurnstile from '@/hooks/use-turnstile'
+import { FORMS_TURNSTILE_SITE_KEY, RESERVE_API } from '@/utils/constants'
 import { cn } from '@/lib/utils'
 import { useZap } from '../context/ZapContext'
-
-const STORAGE_URL = import.meta.env.VITE_STORAGE_URL || ''
 
 type SocialMediaOption = {
   key: string
@@ -87,6 +87,7 @@ const SocialMediaInput = ({ className }: { className?: string }) => {
   const [value, setValue] = useState('')
   const [submitted, setSubmitted] = useState(false)
   const [copied, setCopied] = useState(false)
+  const turnstile = useTurnstile(FORMS_TURNSTILE_SITE_KEY, 'vip-minter')
   const socialMediaOptions: SocialMediaOption[] = [
     {
       key: 'telegram',
@@ -131,9 +132,10 @@ const SocialMediaInput = ({ className }: { className?: string }) => {
 
   const handleTrackUsername = useCallback(
     async (key: string) => {
+      if (!value || !turnstile.token) return
       setSubmitted(true)
       try {
-        await fetch(STORAGE_URL, {
+        const response = await fetch(`${RESERVE_API}forms/vip-minter`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -142,14 +144,17 @@ const SocialMediaInput = ({ className }: { className?: string }) => {
             address: account,
             amount: `$${amount} in ${tokenIn.symbol} used to mint ${tokenOut.symbol}`,
             [key]: value,
+            turnstileToken: turnstile.token,
           }),
         })
+        if (!response.ok) throw new Error(`HTTP ${response.status}`)
       } catch (error) {
         setSubmitted(false)
+        turnstile.reset()
         console.error('Error submitting data:', error)
       }
     },
-    [value, account, setSubmitted, amount, tokenIn, tokenOut]
+    [value, account, setSubmitted, amount, tokenIn, tokenOut, turnstile]
   )
 
   const onChange = (newValue: string) => {
@@ -197,12 +202,13 @@ const SocialMediaInput = ({ className }: { className?: string }) => {
         <Button
           className="absolute right-1 top-1"
           size="sm"
-          disabled={!value || submitted}
+          disabled={!value || submitted || !turnstile.token}
           onClick={() => handleTrackUsername(selected.key)}
         >
           {t`Count me in`}
         </Button>
       )}
+      <div ref={turnstile.containerRef} />
     </div>
   )
 }

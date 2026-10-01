@@ -22,6 +22,9 @@ export const RESERVE_API = isStaging
   ? import.meta.env.VITE_STAGING_API
   : 'https://api.reserve.org/'
 
+// Cloudflare Turnstile widget shared by the Reserve API public forms
+export const FORMS_TURNSTILE_SITE_KEY = '0x4AAAAAAFJhIu3VZKkEMd1j'
+
 export const ZAPPER_API = isStaging
   ? 'https://api-staging.reserve.org/'
   : 'https://api.reserve.org/'

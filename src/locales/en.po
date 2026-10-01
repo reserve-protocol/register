@@ -6102,6 +6102,10 @@ msgstr ""
 msgid "Must be 0 or greater"
 msgstr ""
 
+#: src/views/index-dtf/deploy/components/deploy-coming-soon.tsx:31
+msgid "Must be at least 5 characters"
+msgstr ""
+
 #: src/views/index-dtf/manage/components/schema.ts:11
 msgid "Must be a valid Discord URL"
 msgstr ""

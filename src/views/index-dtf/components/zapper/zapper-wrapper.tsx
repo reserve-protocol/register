@@ -9,6 +9,7 @@ import { useAccount } from 'wagmi'
 import { useAtomValue } from 'jotai'
 import mixpanel from 'mixpanel-browser/src/loaders/loader-module-core'
 import { localeAtom } from '@/i18n'
+import { FORMS_TURNSTILE_SITE_KEY } from '@/utils/constants'
 import {
   CALENDLY_URL,
   isCallScheduled,
@@ -66,6 +67,7 @@ const ZapperWrapper = (props: ZapperWrapperProps) => {
     locale,
     scheduleCall,
     disabledSettings,
+    turnstileSiteKey: FORMS_TURNSTILE_SITE_KEY,
   }
 
   // The inline prompt is positioned `absolute` and anchors to the consumer's

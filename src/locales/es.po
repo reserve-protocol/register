@@ -6102,6 +6102,10 @@ msgstr "La mayoría de los usuarios debería usar Swap"
 msgid "Must be 0 or greater"
 msgstr "Debe ser 0 o mayor"
 
+#: src/views/index-dtf/deploy/components/deploy-coming-soon.tsx:31
+msgid "Must be at least 5 characters"
+msgstr "Debe tener al menos 5 caracteres"
+
 #: src/views/index-dtf/manage/components/schema.ts:11
 msgid "Must be a valid Discord URL"
 msgstr "Debe ser una URL de Discord válida"
