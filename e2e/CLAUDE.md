@@ -209,6 +209,7 @@ Do NOT run two suites at once (e.g. smoke + full, or two agents): the webServer
 never reuses an existing :3005 (a foreign server would void the pinned env /
 validation contract), so a second run fails on the occupied port — and if it
 didn't, contention would produce false flakes. Run one suite at a time; free a
-stray server with `lsof -ti :3005 | xargs kill`. A "failure" that vanishes when
+stray server with `lsof -ti :3005 | xargs kill`, or move this run off a busy
+port with `E2E_PORT=<free port>`. A "failure" that vanishes when
 re-run in isolation is contention, not a real regression — check before
 touching timeouts.

@@ -23,7 +23,7 @@ time.
 | Proposal detail, state banners/CTAs | `e2e/tests/flows/governance-states.spec.ts` |
 | Vote UI/submission | `e2e/tests/flows/governance-vote.spec.ts` + `flows/failures-governance.spec.ts` (reject/revert) + `index-dtf/governance/vote-modal-long-title.spec.ts` (modal layout) |
 | Propose flow — DAO settings | `e2e/tests/flows/governance-propose.spec.ts` |
-| Propose flow — fees (dtf-settings) | `e2e/tests/flows/governance-propose-dtf-settings.spec.ts` (fee calldata round-trip) |
+| Propose flow — fees (dtf-settings) | `e2e/tests/flows/governance-propose-dtf-settings.spec.ts` (fee calldata round-trip; Folio 6.0 shows `settings-propose-v6-unavailable` and never submits) + `propose-dtf-settings/tests/settings-version-gate.test.ts` (no calldata for 6.0, pending or unknown versions) |
 | Propose flow — basket | `e2e/tests/flows/governance-propose-basket.spec.ts` (form + guards; full submit blocked on golden `startRebalance` fixture) |
 | Propose flow — basket-settings (trading-gov params) | `e2e/tests/flows/governance-propose-basket-settings.spec.ts` (setVotingPeriod round-trip; phantom-threshold single-action + untouched-form-disabled regressions, live since E1) |
 | Proposal description markdown/XSS rendering | `e2e/tests/flows/governance-description-render.spec.ts` |
@@ -110,6 +110,13 @@ mapper dereferences — serve proposals ONLY through it or the list breaks).
   is a fixed 420px box, so its title needs `[overflow-wrap:anywhere]` — plain
   `break-words` does not shrink a flex item's min-content width, and the
   overflow pushes the checkboxes and separators outside the dialog.
+- Folio 6.0 settings writes are gated (`settingsWriteBlockAtom`): the local
+  encoders emit `setAuctionLength` and one-table `setFeeRecipients`, neither
+  of which exists on 6.0 (it has `setMaxAuctionLength` and two recipient
+  tables). Lift the gate only by routing settings through the SDK's
+  version-aware builders, including the v6 optimistic selectors
+  (`INDEX_DTF_START_REBALANCE_SELECTOR['6.0.0']`); don't add a 6.0 branch to
+  the atom encoder.
 - ERC-6372 `clock()` is mocked (timestamp mode); governor deadline math
   breaks silently if a new read bypasses the frozen clock.
 - Threshold change-detection MUST go through the shared

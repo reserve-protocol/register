@@ -1,7 +1,6 @@
 ---
 title: Progress
-updated: 2026-09-17
-updated: 2026-09-21
+updated: 2026-09-30
 type: ledger
 ---
 
@@ -13,6 +12,7 @@ Stage ledger. One row per stage; keep entries short. Verifier = exact fresh comm
 |---|---|---|---|---|
 | v6 register rebalance vertical (slices 1–5; [plan](../plans/index-dtf-v6-register-rebalance.md)) | human-review-required (base dba79019b; SDK 40b67f3 linked; register #1118 draft, dtf-interface #45) | final gate on the committed tree: typecheck · lint · unit 935 · helpers 74 · smoke 60 · flows 22 · wiki-lint; fork lane launch 4/4 runs (evidence page) | foundation 3 lenses + codex; whole-goal Intent, Engineering Risk and codex reconciled (fixed or deferred to Luis); [[log]] 2026-09-16/17 | Engineer review; publish SDK branch as 0.7.0 + exact pin + rerun; decide privileged replacement |
 | v6 register rebalance vertical | active (base dba79019b) | — | — | contract: [plan](../plans/index-dtf-v6-register-rebalance.md) |
+| v6 release fixes (C-1…C-8, B-4, D-1/D-4; master merged) | human-review-required (base 8f4cb4c8d; SDK linked) | RED→GREEN per finding (unit + 5 e2e, RED on unfixed tree) · scope.mjs gate-equivalent: lint · typecheck · unit · helpers · smoke 60 · auctions/governance flows 35 · screenshots desktop + 412px | Dark/Light pair reconciled ([[log]] 2026-09-30) | Engineer review (launch gating, settings gate, deploy extraction); publish SDK + exact pin; confirm zapper deployers |
 | morpho-v2-plugins: list 8 Morpho Vault V2 mainnet plugins (protocol PR #1291) + wrap support (MORPHOV2) + erc20-first plugin resolution + deploy-modal search by display name | done (base b70fd6516) | lint · typecheck · unit 902 · e2e tsc · helpers · smoke 58 + 1 skip · plugins.test 2/2 · data script (8 plugins MORPHOV2, CMS joins, 8 DefiLlama ids) · live: deploy modal V1/V2 distinct, "morpho" search, USD3 wrap tab · yield/explorer/discover specs 15/15 · wiki-lint: pre-existing only | Engineer review by Juampi 2026-09-10: rTokenAtom erc20 resolution + MORPHOV2 wrap approved; names, symbol override = his calls | open PR; merge only after protocol PR #1291 |
 | morpho-v2-rewards: redeployed plugin addresses + auto-register Morpho reward assets (PYUSD, USDT) in deploy and basket proposals | implementation-verified (base 3003137fb) | on-chain: 8 plugins have code, erc20() = vault · parser output = catalog · rewards.test 8/8 · deploy utils.test 3/3 (RED on old builder) · scope.mjs: lint · typecheck · unit 913 · e2e tsc · helpers 72 · smoke 57 + eUSD issuance flake (4/4 isolated) | Julian (protocol) confirmed the vault→reward mapping and the check-registry-then-add behavior; live: test RToken registry holds PYUSD + USDT, neither a basket collateral | merge PR #1110 after protocol PR #1291 |
 | yield-dtf paused-state UX: generic pause copy (es/ko/zh), backing-buffer NaN guard, collateral panel without scroll, deployer defaults to unpaused | implementation-verified (base 3d9e52fd0) | scope.mjs: lint · typecheck · unit 917 · e2e tsc · helpers 72 · smoke 57 + known auctions flake (4/4 isolated) · offline hyUSD render shows the new mint/zap copy · live: no NaN on overview, 8 rows unscrolled, deployer shows fully functional | Julian (protocol) approved unpausing by default; staking trading-paused copy has no snapshot that renders it | commit + push to PR #1110 |

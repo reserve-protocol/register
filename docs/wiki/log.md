@@ -1,6 +1,6 @@
 ---
 title: Log
-updated: 2026-09-21
+updated: 2026-09-30
 type: log
 ---
 
@@ -232,3 +232,9 @@ PR #1094 merged on 2026-08-28. The following records the original stage evidence
 ## 2026-09-21
 
 - MAG7's Base vlRSR vault was missing from the self-appreciating-vault registry, so the UI fell back to MAG7/manual-claim copy despite the deployed TokenJar converting fees to RSR and increasing the vlRSR exchange rate. Added the verified vault address; the existing shared presentation now shows RSR, automatic claiming, APY, and the exchange rate across governance, overview, Earn, and portfolio.
+
+## 2026-09-30
+
+- Release review fixes on `feat/index-dtf-v6` after merging master (conflicts only in `package.json`/lockfile: kept `link:` react-sdk + rebalance-lib ^3.3.1, took react-zapper 2.13.0). Folio 6.0 `startRebalance` proposals now decode (nonce first, deadline last) instead of an endless skeleton; settings writes are gated for 6.0/pending/unknown versions because the local encoders emit setters 6.0 does not have; every place that sizes a v6 auction (launch, metrics, Ondo cap) reads the RPC `maxAuctionLength` through one hook and treats "not loaded" as unavailable — the Ondo cap had silently collapsed to 1%.
+- Launch readiness no longer survives an RPC error after a cached success: both buttons close on any live read error and re-read the live rebalance and latest auction right before sending (nonce, window, and for community Folio's 120 s unrestricted buffer). The community window comes from the RPC read — Folio extends `restrictedUntil` on each launcher `openAuction` and the indexer never sees it. Deploy buttons accept `FolioDeployed`/`GovernedFolioDeployed` only from the deployer called (manual) or the chain's Reserve deployers (zap). Each fix had a test that was RED on the unfixed tree.
+
