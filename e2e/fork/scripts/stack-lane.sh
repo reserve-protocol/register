@@ -9,7 +9,7 @@
 #   e2e/fork/scripts/stack-lane.sh run      # propose → prepare → Register spec (sandbox already up)
 #   e2e/fork/scripts/stack-lane.sh down
 set -euo pipefail
-HUB="${RESERVE_SANDBOX_ROOT:-$(cd "$(dirname "${BASH_SOURCE[0]}")/../../.." && pwd)}"
+HUB="${RESERVE_SANDBOX_ROOT:-$(cd "$(dirname "${BASH_SOURCE[0]}")/../../../.." && pwd)}"
 export RESERVE_SANDBOX_ROOT="$HUB"
 SANDBOX="${RESERVE_SANDBOX_SCRIPT:-$HOME/.codex/skills/reserve-dtf-sandbox/scripts/sandbox.sh}"
 REGISTER="$HUB/register"
@@ -34,8 +34,17 @@ sandbox_up() {
   log "sandbox up (persisted state)"
   "$SANDBOX" up
 }
+# The indexed Anvil (8545) only ever gets reads: a snapshot/revert there rewinds under the fork Graph Node.
+require_read_only_sdk_smoke() {
+  local script
+  script="$(jq -r '.scripts["test:smoke:index:fork"] // empty' "$SDK/packages/sdk/package.json")"
+  if [[ -z "$script" || "$script" == *mutating* ]]; then
+    echo "refusing: SDK test:smoke:index:fork is missing or mutating: '$script'" >&2
+    exit 1
+  fi
+}
 verify_stack() {
-  log "subgraph parity + SDK fork smoke against the current sandbox"
+  log "subgraph parity + read-only SDK fork smoke against the indexed sandbox (8545)"
   FORK_SUBGRAPH_URL="$FORK_SUBGRAPH_URL" "$(dirname "$SANDBOX")/wait-for-index.sh" "$FIXTURE"
   (cd "$SUBGRAPH" && INDEX_DTF_FORK_MANIFEST="$FIXTURE" FORK_SUBGRAPH_URL="$FORK_SUBGRAPH_URL" pnpm test:fork:parity)
   (cd "$SDK" && INDEX_DTF_FORK_MANIFEST="$FIXTURE" INDEX_DTF_FORK_RPC_URL="http://127.0.0.1:8545" pnpm --filter @reserve-protocol/sdk test:smoke:index:fork)
@@ -50,6 +59,9 @@ run_register() {
   log "evidence: $EVIDENCE"
   jq '{transactionHash, blockNumber, auctionId, rebalanceNonce, auctionLengthArg, subgraphAuctionId}' "$EVIDENCE/receipt.json"
 }
+
+# Before any command: `all` also reaches the SDK smoke through the sandbox's own test step.
+require_read_only_sdk_smoke
 
 case "$CMD" in
   all) sandbox_all; verify_stack; run_register ;;

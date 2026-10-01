@@ -23,6 +23,8 @@ import { resolve } from 'node:path'
 import { createDtfSdk } from '../../../../sdk/packages/sdk/dist/index.mjs'
 
 const rpcUrl = process.env.FORK_RPC_URL_1 ?? 'http://127.0.0.1:8545'
+// Same override the browser gets as VITE_RESERVE_API_URL (playwright.fork.config.ts).
+const apiBaseUrl = process.env.FORK_RESERVE_API_URL || undefined
 const subgraphUrl =
   process.env.FORK_SUBGRAPH_URL_1 ??
   'http://127.0.0.1:18000/subgraphs/name/dtf-index-subgraph-fork'
@@ -55,8 +57,10 @@ if (
 }
 // The fork's own client, never a fallback to a public endpoint.
 const sdk = createDtfSdk({
+  ...(apiBaseUrl ? { apiBaseUrl } : {}),
   chains: { 1: { publicClient, indexSubgraphUrl: subgraphUrl } },
 })
+console.log('reserve api', apiBaseUrl ?? 'production (SDK default)')
 const rpc = (method, params = []) => publicClient.request({ method, params })
 const governorAbi = parseAbi([
   'function state(uint256) view returns (uint8)',
