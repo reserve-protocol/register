@@ -173,9 +173,11 @@ export const test = base.extend<BaseFixtures>({
       // silently accepts any malformed/new simulation request, defeating
       // default-deny. Simulation is out of scope; model it exactly (with request
       // recording + a negative test) when the first flow that needs it lands.
-      await page.route('**contentful-storage.reserve-337.workers.dev/status/**', (r) =>
-        fulfillEmpty(r, { restricted: false })
+      await page.route('**/forms/dtf-minter/status/**', (r) =>
+        fulfillEmpty(r, { ok: true, address: '', registered: false })
       )
+      // Turnstile never loads, so bot-checked forms stay without a token
+      await page.route('**challenges.cloudflare.com**', (r) => r.abort())
 
       // Analytics — abort is safe, they are fire-and-forget beacons.
       await page.route('**sentry.io**', (r) => r.abort())

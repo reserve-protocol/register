@@ -1363,10 +1363,6 @@ msgstr "¿Seguro que quieres salir? Esto puede causar que la subasta falle y se 
 msgid "Are you sure you wish to challenge?"
 msgstr "¿Estás seguro de que quieres impugnar?"
 
-#: src/components/layout/contact-modal/bell-button.tsx:52
-msgid "As a larger holder you get a direct line to the team behind Reserve. Schedule an intro call."
-msgstr "Como titular de una posición grande, tienes una línea directa con el equipo detrás de Reserve. Agenda una llamada introductoria."
-
 #: src/components/rtoken-setup/token/ExternalRevenueSplit.tsx:97
 msgid "As RSR"
 msgstr "Como RSR"
@@ -6102,6 +6098,10 @@ msgstr "La mayoría de los usuarios debería usar Swap"
 msgid "Must be 0 or greater"
 msgstr "Debe ser 0 o mayor"
 
+#: src/views/index-dtf/deploy/components/deploy-coming-soon.tsx:31
+msgid "Must be at least 5 characters"
+msgstr "Debe tener al menos 5 caracteres"
+
 #: src/views/index-dtf/manage/components/schema.ts:11
 msgid "Must be a valid Discord URL"
 msgstr "Debe ser una URL de Discord válida"
@@ -8561,12 +8561,6 @@ msgstr "Guardar"
 msgid "Save Weights {editedRows}/{totalRows} edited"
 msgstr "Guardar pesos: {editedRows}/{totalRows} editados"
 
-#: src/components/layout/contact-modal/bell-button.tsx:64
-#: src/views/index-dtf/overview/components/eligibility-card.tsx:103
-#: src/views/index-dtf/overview/components/eligibility-card.tsx:151
-msgid "Schedule a meeting"
-msgstr "Agendar una reunión"
-
 #: src/components/ondo-badge.tsx:180
 msgid "Scheduled event"
 msgstr "Evento programado"
@@ -9498,14 +9492,6 @@ msgstr "Símbolo"
 #: src/views/home/components/discover-index-dtf/index-dtf-table-placeholder.tsx:19
 msgid "Tags"
 msgstr "Etiquetas"
-
-#: src/components/layout/contact-modal/bell-button.tsx:40
-msgid "Talk to the Reserve team"
-msgstr "Habla con el equipo de Reserve"
-
-#: src/components/layout/contact-modal/bell-button.tsx:49
-msgid "Talk to the team"
-msgstr "Habla con el equipo"
 
 #: src/views/explorer/components/collaterals/index.tsx:130
 msgid "Target"

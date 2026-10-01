@@ -3,8 +3,16 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 const TURNSTILE_SCRIPT_SRC =
   'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit'
 
+// Must match the action the Reserve API endpoint expects for the token
+export type TurnstileAction =
+  | 'eligibility'
+  | 'confirm-eligibility'
+  | 'create-dtf'
+  | 'vip-minter'
+
 type TurnstileRenderOptions = {
   sitekey: string
+  action?: string
   appearance?: 'always' | 'execute' | 'interaction-only'
   size?: 'normal' | 'flexible' | 'compact'
   callback?: (token: string) => void
@@ -41,7 +49,7 @@ const loadTurnstile = () => {
   return scriptPromise
 }
 
-const useTurnstile = (siteKey: string) => {
+const useTurnstile = (siteKey: string, action: TurnstileAction) => {
   const containerRef = useRef<HTMLDivElement>(null)
   const widgetIdRef = useRef<string>()
   const [token, setToken] = useState<string | null>(null)
@@ -54,6 +62,7 @@ const useTurnstile = (siteKey: string) => {
         if (cancelled || !containerRef.current || !window.turnstile) return
         widgetIdRef.current = window.turnstile.render(containerRef.current, {
           sitekey: siteKey,
+          action,
           appearance: 'interaction-only',
           size: 'flexible',
           callback: setToken,
@@ -68,7 +77,7 @@ const useTurnstile = (siteKey: string) => {
       if (widgetIdRef.current) window.turnstile?.remove(widgetIdRef.current)
       widgetIdRef.current = undefined
     }
-  }, [siteKey])
+  }, [siteKey, action])
 
   // Tokens are single-use; a retry after any submit needs a fresh one
   const reset = useCallback(() => {

@@ -4,16 +4,10 @@ import {
   Zapper,
   ZapperProps,
 } from '@reserve-protocol/react-zapper'
-import { useMemo } from 'react'
 import { useAccount } from 'wagmi'
 import { useAtomValue } from 'jotai'
-import mixpanel from 'mixpanel-browser/src/loaders/loader-module-core'
 import { localeAtom } from '@/i18n'
-import {
-  CALENDLY_URL,
-  isCallScheduled,
-  markCallScheduled,
-} from '@/utils/schedule-call'
+import { FORMS_TURNSTILE_SITE_KEY } from '@/utils/constants'
 import LargeMintPrompt from './large-mint-prompt'
 import { hasLockedZapSettings } from './locked-zap-settings'
 
@@ -29,43 +23,21 @@ const LOCKED_SETTINGS: ZapperProps['disabledSettings'] = {
 type ZapperWrapperProps = ZapperProps
 
 const ZapperWrapper = (props: ZapperWrapperProps) => {
-  const { isConnected, address } = useAccount()
+  const { isConnected } = useAccount()
   const { openConnectModal } = useWalletModal()
   // Drive the widget's language from the app locale. The zapper only ships
   // en/es/ko/zh, so the dev-only `pseudo` locale falls back to English.
   const appLocale = useAtomValue(localeAtom)
   const locale = appLocale === 'pseudo' ? 'en' : appLocale
 
-  // Offer larger minters an intro call inside the success view (the zapper
-  // gates on the purchase size). Replaces the standalone "Earn RSR" modal.
-  // Read the persisted flag fresh each render (localStorage isn't reactive) and
-  // memoize on it, so the offer only disappears on the *next* render after the
-  // user schedules — the current view keeps the button (mis-close safety).
-  const scheduled = isCallScheduled(address)
-  const scheduleCall = useMemo<ZapperProps['scheduleCall']>(
-    () => ({
-      url: CALENDLY_URL,
-      minUsd: 500,
-      scheduled,
-      onSchedule: () => {
-        markCallScheduled(address)
-        mixpanel.track('contact_us_modal_click', {
-          action: 'scheduled',
-          source: 'success_modal',
-          wallet: address,
-        })
-      },
-    }),
-    [address, scheduled]
-  )
   const disabledSettings = hasLockedZapSettings(props.dtfAddress, props.chain)
     ? LOCKED_SETTINGS
     : undefined
   const zapperProps: ZapperProps = {
     ...props,
     locale,
-    scheduleCall,
     disabledSettings,
+    turnstileSiteKey: FORMS_TURNSTILE_SITE_KEY,
   }
 
   // The inline prompt is positioned `absolute` and anchors to the consumer's

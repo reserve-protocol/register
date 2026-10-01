@@ -1,11 +1,15 @@
 import { Button } from '@/components/ui/button'
-import { Separator } from '@/components/ui/separator'
 import { Textarea } from '@/components/ui/textarea'
+import useTurnstile from '@/hooks/use-turnstile'
 import { walletAtom } from '@/state/atoms'
-import { ROUTES } from '@/utils/constants'
+import {
+  FORMS_TURNSTILE_SITE_KEY,
+  RESERVE_API,
+  ROUTES,
+} from '@/utils/constants'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useAtomValue } from 'jotai'
-import { Combine, Globe, Palette, Zap } from 'lucide-react'
+import { Globe } from 'lucide-react'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import useIsDarkMode from '@/hooks/use-is-dark-mode'
@@ -19,18 +23,20 @@ import SocialMediaInput, {
   type SocialMediaOption,
 } from './social-media-input'
 
-const STORAGE_URL = import.meta.env.VITE_STORAGE_URL || ''
+// The Reserve API rejects descriptive answers shorter than this
+const MIN_ANSWER_LENGTH = 5
 
 const messages = {
   required: msg`Required`,
+  tooShort: msg`Must be at least 5 characters`,
 }
 
 const buildFormSchema = (t: (descriptor: MessageDescriptor) => string) =>
   z.object({
     contactValue: z.string().min(1, t(messages.required)),
-    dtfDescription: z.string().min(1, t(messages.required)),
-    investmentPlan: z.string().optional(),
-    whyPeopleWant: z.string().optional(),
+    dtfDescription: z.string().trim().min(MIN_ANSWER_LENGTH, t(messages.tooShort)),
+    investmentPlan: z.string().trim().min(MIN_ANSWER_LENGTH, t(messages.tooShort)),
+    whyPeopleWant: z.string().trim().min(MIN_ANSWER_LENGTH, t(messages.tooShort)),
   })
 
 type FormData = z.infer<ReturnType<typeof buildFormSchema>>
@@ -41,6 +47,8 @@ const DeployComingSoon = () => {
   const account = useAtomValue(walletAtom)
   const [submitted, setSubmitted] = useState(false)
   const [submitting, setSubmitting] = useState(false)
+  const [submitError, setSubmitError] = useState(false)
+  const turnstile = useTurnstile(FORMS_TURNSTILE_SITE_KEY, 'create-dtf')
   const [selectedContact, setSelectedContact] = useState<SocialMediaOption>(
     SOCIAL_MEDIA_OPTIONS[0]
   )
@@ -66,23 +74,27 @@ const DeployComingSoon = () => {
 
   const onSubmit = async (data: FormData) => {
     setSubmitting(true)
+    setSubmitError(false)
     try {
-      await fetch(STORAGE_URL, {
+      const response = await fetch(`${RESERVE_API}forms/create-dtf`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          address: account || 'Wallet not connected',
-          amount: 'Create index DTF',
+          ...(account ? { address: account } : {}),
           contactType: selectedContact.key,
           [selectedContact.key]: data.contactValue,
           dtfDescription: data.dtfDescription,
           investmentPlan: data.investmentPlan,
           whyPeopleWant: data.whyPeopleWant,
+          turnstileToken: turnstile.token,
         }),
       })
+      if (!response.ok) throw new Error(`HTTP ${response.status}`)
       setSubmitted(true)
     } catch (error) {
       console.error('Error submitting data:', error)
+      setSubmitError(true)
+      turnstile.reset()
     } finally {
       setSubmitting(false)
     }
@@ -152,35 +164,52 @@ const DeployComingSoon = () => {
 
               <div>
                 <label className="block text-sm font-medium mb-2">
-                  <Trans>How do you plan to get people to invest in your DTF?</Trans>
+                  <Trans>How do you plan to get people to invest in your DTF?</Trans>{' '}
+                  *
                 </label>
                 <Textarea
                   {...register('investmentPlan')}
-                  className="w-full lg:-mx-3 lg:w-[calc(100%+1.5rem)] rounded-xl"
+                  className={`w-full lg:-mx-3 lg:w-[calc(100%+1.5rem)] rounded-xl ${errors.investmentPlan ? 'border-destructive' : ''}`}
                   disabled={submitting}
                   rows={2}
                 />
+                {errors.investmentPlan && (
+                  <p className="text-destructive text-sm mt-1">
+                    {errors.investmentPlan.message}
+                  </p>
+                )}
               </div>
 
               <div>
                 <label className="block text-sm font-medium mb-2">
-                  <Trans>Why do you think people want this DTF?</Trans>
+                  <Trans>Why do you think people want this DTF?</Trans> *
                 </label>
                 <Textarea
                   {...register('whyPeopleWant')}
-                  className="w-full lg:-mx-3 lg:w-[calc(100%+1.5rem)] rounded-xl"
+                  className={`w-full lg:-mx-3 lg:w-[calc(100%+1.5rem)] rounded-xl ${errors.whyPeopleWant ? 'border-destructive' : ''}`}
                   disabled={submitting}
                   rows={2}
                 />
+                {errors.whyPeopleWant && (
+                  <p className="text-destructive text-sm mt-1">
+                    {errors.whyPeopleWant.message}
+                  </p>
+                )}
               </div>
 
+              <div ref={turnstile.containerRef} />
               <Button
                 type="submit"
-                disabled={submitting}
+                disabled={submitting || !turnstile.token}
                 className="w-full lg:-mx-3  lg:w-[calc(100%+1.5rem)] rounded-xl h-12"
               >
                 {submitting ? t`Submitting...` : t`Contact me`}
               </Button>
+              {submitError && (
+                <p className="text-destructive text-sm">
+                  <Trans>Something went wrong. Please try again.</Trans>
+                </p>
+              )}
             </form>
           )}
         </div>
