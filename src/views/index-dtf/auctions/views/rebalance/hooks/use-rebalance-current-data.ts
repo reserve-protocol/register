@@ -54,7 +54,9 @@ const useRebalanceCurrentData = () => {
   const isAuctionOngoing = useAtomValue(isAuctionOngoingAtom)
   const major = versionState.status === 'ready' ? versionState.major : undefined
   const isSdkVersion = major === 5 || major === 6
-  const refetchInterval = isAuctionOngoing ? AUCTION_POLL_MS : false
+  // An errored read keeps polling: launch readiness closes on it and must reopen on its own.
+  const refetchInterval = (query: { state: { status: string } }) =>
+    isAuctionOngoing || query.state.status === 'error' ? AUCTION_POLL_MS : false
 
   const sdkQuery = useIndexDtfCurrentRebalance(
     isSdkVersion && identity.address ? identity : undefined,

@@ -14,7 +14,6 @@ import {
 import { useRebalanceMetrics } from '../rebalance-list/hooks/use-rebalance-metrics'
 import {
   latestAuctionAtom,
-  latestAuctionErrorAtom,
   rebalanceAuctionsAtom,
   rebalanceErrorAtom,
   rebalancePercentAtom,
@@ -46,12 +45,11 @@ const LatestAuctionUpdater = () => {
   const rebalance = useAtomValue(currentRebalanceAtom)
   const versionState = useAtomValue(folioVersionAtom)
   const setLatestAuction = useSetAtom(latestAuctionAtom)
-  const setLatestAuctionError = useSetAtom(latestAuctionErrorAtom)
   const major = versionState.status === 'ready' ? versionState.major : undefined
   const isSdkVersion = major === 5 || major === 6
   const availableUntil = rebalance?.rebalance.availableUntil
 
-  const { data, isError } = useIndexDtfLatestAuction(
+  const { data } = useIndexDtfLatestAuction(
     isSdkVersion && identity.address ? identity : undefined,
     {
       refetchInterval: () =>
@@ -63,16 +61,9 @@ const LatestAuctionUpdater = () => {
 
   useEffect(() => {
     setLatestAuction(isSdkVersion ? data : undefined)
-    setLatestAuctionError(isSdkVersion && isError)
-  }, [data, isError, isSdkVersion, setLatestAuction, setLatestAuctionError])
+  }, [data, isSdkVersion, setLatestAuction])
 
-  useEffect(
-    () => () => {
-      setLatestAuction(undefined)
-      setLatestAuctionError(false)
-    },
-    [setLatestAuction, setLatestAuctionError]
-  )
+  useEffect(() => () => setLatestAuction(undefined), [setLatestAuction])
 
   return null
 }

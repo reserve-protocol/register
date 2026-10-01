@@ -1,9 +1,5 @@
 import { chainIdAtom, devModeAtom } from '@/state/atoms'
-import { folioVersionAtom, isHybridDTFAtom } from '@/state/dtf/atoms'
-import {
-  useIndexDtfIdentity,
-  useIndexDtfMaxAuctionLength,
-} from '@reserve-protocol/react-sdk'
+import { isHybridDTFAtom } from '@/state/dtf/atoms'
 import { ChainId } from '@/utils/chains'
 import { useLingui } from '@lingui/react/macro'
 import { useAtomValue, useSetAtom } from 'jotai'
@@ -17,6 +13,7 @@ import {
   rebalancePercentAtom,
   savedWeightsAtom,
 } from '../atoms'
+import useRebalanceAuctionLength from '../hooks/use-rebalance-auction-length'
 import useRebalanceParams, {
   RebalanceParams,
   useRebalancePrices,
@@ -39,13 +36,11 @@ const RebalanceMetricsUpdater = () => {
   const auctions = useAtomValue(rebalanceAuctionsAtom)
   const chainId = useAtomValue(chainIdAtom)
   const isDevMode = useAtomValue(devModeAtom)
-  const identity = useIndexDtfIdentity()
-  const versionState = useAtomValue(folioVersionAtom)
-  const major = versionState.status === 'ready' ? versionState.major : undefined
-  // Folio 6.0 metrics need the per-auction length the launch calldata will carry.
-  const { data: maxAuctionLength } = useIndexDtfMaxAuctionLength(
-    major === 6 && identity.address ? identity : undefined
-  )
+  const {
+    auctionLength: maxAuctionLength,
+    isReady: isAuctionLengthReady,
+    isError: isAuctionLengthError,
+  } = useRebalanceAuctionLength()
 
   const updateMetrics = useCallback(
     (
@@ -186,11 +181,23 @@ const RebalanceMetricsUpdater = () => {
     ]
   )
 
+  // Folio 6.0 math requires the RPC auction length; computing without it reads as a broken rebalance.
   useEffect(() => {
-    if (rebalanceParams && currentRebalance && rebalancePercent) {
+    if (
+      rebalanceParams &&
+      currentRebalance &&
+      rebalancePercent &&
+      isAuctionLengthReady
+    ) {
       updateMetrics(rebalanceParams, currentRebalance, rebalancePercent)
     }
-  }, [rebalanceParams, currentRebalance, updateMetrics, rebalancePercent])
+  }, [
+    rebalanceParams,
+    currentRebalance,
+    updateMetrics,
+    rebalancePercent,
+    isAuctionLengthReady,
+  ])
 
   // A hard price-fetch error leaves rebalanceParams undefined — surface the reason, not a silent skeleton.
   useEffect(() => {
@@ -198,6 +205,14 @@ const RebalanceMetricsUpdater = () => {
       setRebalanceError(t`Price data unavailable — cannot launch auction.`)
     }
   }, [isPriceError, setRebalanceError, t])
+
+  useEffect(() => {
+    if (isAuctionLengthError) {
+      setRebalanceError(
+        t`Live auction state unavailable — retrying before launch`
+      )
+    }
+  }, [isAuctionLengthError, setRebalanceError, t])
 
   return null
 }

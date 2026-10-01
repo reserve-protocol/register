@@ -29,6 +29,7 @@ that mocks the wrong layer passes wrongly or fails confusingly — see Traps.
 | Active vs historical bucketing, active/completed detail | `e2e/tests/flows/auctions.spec.ts` |
 | Rebalance detail (round, progress, metrics, liquidity) | `e2e/tests/flows/auctions.spec.ts` |
 | Any hook/atom/updater under `views/rebalance*/` | both: `pnpm exec playwright test --project=full e2e/tests/flows/auctions.spec.ts` + smoke |
+| Launch buttons, `use-launch-preflight`, `utils/launch-readiness`, receipt handling, v6 auction length | `pnpm exec playwright test --project=full --project=smoke e2e/tests/index-dtf/auctions/launch-write.spec.ts` + `pnpm exec vitest run src/views/index-dtf/auctions/views/rebalance/tests` |
 | Legacy v2 UI (`legacy/`) | not covered — deferred |
 
 Quick loop: `pnpm exec playwright test e2e/tests/smoke/auctions.spec.ts`
@@ -82,6 +83,17 @@ Quick loop: `pnpm exec playwright test e2e/tests/smoke/auctions.spec.ts`
   `weightControl` to drive that step. ENGINEER REVIEW STILL REQUIRED for the openAuction
   weight/price MATH (`getRebalanceOpenAuction`) — the spec proves the call fires,
   not that the args are numerically correct.
+- **Covered** (`launch-write.spec.ts`, full project): launch GUARDS — a
+  failing latest-auction read after a cached success disables the launcher
+  (`auctions-live-state-unavailable`); a stale page nonce is refused at click
+  time by the pre-send re-read (`use-launch-preflight.ts`, no tx); a reverted
+  receipt releases "Launching…"; the community button follows the RPC
+  `restrictedUntil` (launcher-extended) and shows
+  `auctions-community-launch-countdown` while the indexed window says
+  permissionless. Unit seams: `tests/launch-readiness.test.ts` (Folio window
+  rules), `tests/use-ondo-limit-status.test.tsx` (v6 Ondo cap = v5 cap with the
+  RPC length; unavailable while it loads), `tests/rebalance-metrics-updater.test.tsx`
+  (no transient error before the v6 length loads).
 - **Deferred** (needs testids/roles + engineer review): `bid` writes; legacy v2
   UI and `/auctions/legacy` route.
 - **Covered** (`flows/auctions-multichain.spec.ts`): historical bucketing +
@@ -128,6 +140,18 @@ Quick loop: `pnpm exec playwright test e2e/tests/smoke/auctions.spec.ts`
   included (the first fork launch stayed enabled for 30 s on `isActive`). Don't
   gate a write on indexed rows — the indexer lags receipts and re-enables the
   launch button.
+- Launch readiness never trusts a cached read: both buttons close on any live
+  read error (current rebalance, latest auction, v6 `maxAuctionLength`) and
+  re-read nonce/window/latest auction right before `writeContract` (community
+  also honours Folio's 120 s unrestricted buffer after the rebalance start and
+  the last auction's end — `cooldown` in `utils/launch-readiness.ts`; the
+  refused reason lands on the button as `data-blocker`). Errored live reads keep
+  polling so the buttons reopen without a reload. Live
+  windows come from the RPC rebalance read — Folio extends `restrictedUntil`
+  on every launcher `openAuction`, which the indexer never sees. Folio 6.0
+  math needs the RPC `maxAuctionLength` everywhere it sizes an auction (launch,
+  metrics, Ondo cap): read it through `hooks/use-rebalance-auction-length.ts`
+  and treat "not loaded" as unavailable, never as a 1% cap or an error.
 - Real launches run on the fork lane (`playwright.fork.config.ts`,
   `.claude/skills/fork-e2e/SKILL.md`): Register reads the production subgraph
   through `e2e/fork/scripts/subgraph-proxy.mjs`, truncated at the fork block,

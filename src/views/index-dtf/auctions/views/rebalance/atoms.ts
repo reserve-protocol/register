@@ -6,6 +6,7 @@ import {
 import type { IndexDtfLatestAuction } from '@reserve-protocol/react-sdk'
 import { atom } from 'jotai'
 import { currentRebalanceAtom } from '../../atoms'
+import { isLatestAuctionOngoing } from './utils/launch-readiness'
 
 export const AUCTION_PRICE_VOLATILITY: Record<Volatility, number> = {
   low: 0.02,
@@ -73,8 +74,6 @@ export const refreshNonceAtom = atom(0)
 export const latestAuctionAtom = atom<IndexDtfLatestAuction | null | undefined>(
   undefined
 )
-// True while the SDK latest-auction read is failing; the launch gate stays closed and says so.
-export const latestAuctionErrorAtom = atom(false)
 
 // Live gating is RPC-first: the indexer lags receipts, so indexed auctions only
 // decide while the RPC read is unresolved (or on v4, which has no SDK read).
@@ -83,12 +82,7 @@ export const latestAuctionErrorAtom = atom(false)
 export const isAuctionOngoingAtom = atom((get) => {
   const latest = get(latestAuctionAtom)
   if (latest !== undefined) {
-    if (!latest) return false
-    const now = BigInt(Math.floor(Date.now() / 1000))
-    return (
-      latest.rebalanceNonce === latest.currentRebalanceNonce &&
-      now <= latest.endTime
-    )
+    return isLatestAuctionOngoing(latest, BigInt(Math.floor(Date.now() / 1000)))
   }
 
   const auctions = get(rebalanceAuctionsAtom)
