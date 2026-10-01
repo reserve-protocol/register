@@ -1363,10 +1363,6 @@ msgstr ""
 msgid "Are you sure you wish to challenge?"
 msgstr ""
 
-#: src/components/layout/contact-modal/bell-button.tsx:52
-msgid "As a larger holder you get a direct line to the team behind Reserve. Schedule an intro call."
-msgstr ""
-
 #: src/components/rtoken-setup/token/ExternalRevenueSplit.tsx:97
 msgid "As RSR"
 msgstr ""
@@ -8565,12 +8561,6 @@ msgstr ""
 msgid "Save Weights {editedRows}/{totalRows} edited"
 msgstr ""
 
-#: src/components/layout/contact-modal/bell-button.tsx:64
-#: src/views/index-dtf/overview/components/eligibility-card.tsx:103
-#: src/views/index-dtf/overview/components/eligibility-card.tsx:151
-msgid "Schedule a meeting"
-msgstr ""
-
 #: src/components/ondo-badge.tsx:180
 msgid "Scheduled event"
 msgstr ""
@@ -9501,14 +9491,6 @@ msgstr ""
 
 #: src/views/home/components/discover-index-dtf/index-dtf-table-placeholder.tsx:19
 msgid "Tags"
-msgstr ""
-
-#: src/components/layout/contact-modal/bell-button.tsx:40
-msgid "Talk to the Reserve team"
-msgstr ""
-
-#: src/components/layout/contact-modal/bell-button.tsx:49
-msgid "Talk to the team"
 msgstr ""
 
 #: src/views/explorer/components/collaterals/index.tsx:130

@@ -1,6 +1,5 @@
 import CommandMenu from '@/components/command-menu'
 import DarkModeToggle from '@/components/dark-mode-toggle'
-import { ContactBellButton } from '@/components/layout/contact-modal'
 import { cn } from '@/lib/utils'
 import Account from 'components/account'
 import { useEffect, useState } from 'react'
@@ -97,9 +96,6 @@ const AppHeader = () => {
         <Brand />
         <AppNavigation />
         <div className="ml-auto flex items-center gap-1 sm:gap-2 min-[850px]:ml-0">
-          <div className="hidden min-[850px]:block">
-            <ContactBellButton />
-          </div>
           <div className="hidden xl:flex items-center gap-2">
             <CommandMenu />
             <DarkModeToggle />

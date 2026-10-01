@@ -1363,10 +1363,6 @@ msgstr "确定要离开吗？这可能导致拍卖失败并造成价值损失。
 msgid "Are you sure you wish to challenge?"
 msgstr "你确定要发起质疑吗？"
 
-#: src/components/layout/contact-modal/bell-button.tsx:52
-msgid "As a larger holder you get a direct line to the team behind Reserve. Schedule an intro call."
-msgstr "作为较大持有者，你可以直接联系 Reserve 背后的团队。预约一次介绍通话。"
-
 #: src/components/rtoken-setup/token/ExternalRevenueSplit.tsx:97
 msgid "As RSR"
 msgstr "以 RSR 形式"
@@ -8565,12 +8561,6 @@ msgstr "保存"
 msgid "Save Weights {editedRows}/{totalRows} edited"
 msgstr "保存权重 已编辑 {editedRows}/{totalRows}"
 
-#: src/components/layout/contact-modal/bell-button.tsx:64
-#: src/views/index-dtf/overview/components/eligibility-card.tsx:103
-#: src/views/index-dtf/overview/components/eligibility-card.tsx:151
-msgid "Schedule a meeting"
-msgstr "预约会议"
-
 #: src/components/ondo-badge.tsx:180
 msgid "Scheduled event"
 msgstr "预定事件"
@@ -9502,14 +9492,6 @@ msgstr "代号"
 #: src/views/home/components/discover-index-dtf/index-dtf-table-placeholder.tsx:19
 msgid "Tags"
 msgstr "标签"
-
-#: src/components/layout/contact-modal/bell-button.tsx:40
-msgid "Talk to the Reserve team"
-msgstr "联系 Reserve 团队"
-
-#: src/components/layout/contact-modal/bell-button.tsx:49
-msgid "Talk to the team"
-msgstr "联系团队"
 
 #: src/views/explorer/components/collaterals/index.tsx:130
 msgid "Target"
