@@ -201,7 +201,7 @@ msgid "{0} balance"
 msgstr ""
 
 #. placeholder {0}: rToken?.symbol || ''
-#: src/views/yield-dtf/overview/components/backing/backing-buffer.tsx:54
+#: src/views/yield-dtf/overview/components/backing/backing-buffer.tsx:53
 msgid "{0} buffer as % of mcap:"
 msgstr ""
 
@@ -271,7 +271,7 @@ msgstr ""
 #: src/components/ui/multiselect-dropdown.tsx:170
 #: src/views/explorer/components/filters/token-filter.tsx:75
 #: src/views/explorer/components/filters/TransactionTypeFilter.tsx:44
-#: src/views/explorer/components/governance/filters.tsx:45
+#: src/views/explorer/components/governance/filters.tsx:46
 msgid "{0} selected"
 msgstr ""
 
@@ -581,7 +581,7 @@ msgstr ""
 msgid "+${0} leftover collateral"
 msgstr ""
 
-#: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:144
+#: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:143
 msgid "<0>Note:</0> Some wallets, like MetaMask, need smart accounts enabled."
 msgstr ""
 
@@ -653,7 +653,7 @@ msgstr ""
 msgid "1:1 support from Reserve Institutional"
 msgstr ""
 
-#: src/views/yield-dtf/overview/components/backing/backing-buffer.tsx:75
+#: src/views/yield-dtf/overview/components/backing/backing-buffer.tsx:74
 msgid "100% at current mcap:"
 msgstr ""
 
@@ -997,7 +997,7 @@ msgid "Address avatar"
 msgstr ""
 
 #: src/views/index-dtf/components/navigation/index.tsx:287
-#: src/views/index-dtf/overview/components/basket-overview/bridge-info-dialog.tsx:74
+#: src/views/index-dtf/overview/components/basket-overview/bridge-info-dialog.tsx:75
 #: src/views/index-dtf/overview/components/index-token-address.tsx:49
 msgid "Address copied to clipboard"
 msgstr ""
@@ -1010,7 +1010,7 @@ msgstr ""
 msgid "Admin Timelock"
 msgstr ""
 
-#: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:293
+#: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:292
 msgid "Advanced"
 msgstr ""
 
@@ -1035,7 +1035,7 @@ msgstr ""
 
 #: src/components/token-selector-drawer/index.tsx:142
 #: src/views/earn/components/table-filters.tsx:33
-#: src/views/explorer/components/governance/filters.tsx:54
+#: src/views/explorer/components/governance/filters.tsx:55
 #: src/views/explorer/components/tokens/index.tsx:44
 #: src/views/index-dtf/deploy/steps/basket/token-selector.tsx:241
 #: src/views/index-dtf/factsheet/components/chart-overlay.tsx:85
@@ -1079,7 +1079,7 @@ msgstr ""
 msgid "All options"
 msgstr ""
 
-#: src/views/explorer/components/governance/filters.tsx:46
+#: src/views/explorer/components/governance/filters.tsx:47
 msgid "All statuses"
 msgstr ""
 
@@ -1133,7 +1133,7 @@ msgstr ""
 msgid "Allow optimistic proposals to rename the DTF token."
 msgstr ""
 
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/optimistic.ts:101
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/optimistic.ts:102
 msgid "Allow optimistic proposals to start basket rebalances."
 msgstr ""
 
@@ -1170,7 +1170,7 @@ msgstr ""
 msgid "Almost there..."
 msgstr ""
 
-#: src/views/index-dtf/overview/components/landing-mint/index.tsx:70
+#: src/views/index-dtf/overview/components/landing-mint/index.tsx:72
 msgid "Also available on:"
 msgstr ""
 
@@ -1192,6 +1192,10 @@ msgstr ""
 #: src/views/explorer/components/revenue/index.tsx:575
 #: src/views/index-dtf/issuance/manual/components/asset-list.tsx:179
 msgid "Amount:"
+msgstr ""
+
+#: src/views/index-dtf/auctions/views/rebalance/hooks/use-launch-preflight.ts:76
+msgid "An auction is already running for this rebalance"
 msgstr ""
 
 #: src/views/index-dtf/deploy/steps/basket/index.tsx:22
@@ -1375,7 +1379,7 @@ msgstr ""
 msgid "As RToken"
 msgstr ""
 
-#: src/components/dtf-chat/index.tsx:158
+#: src/components/dtf-chat/index.tsx:166
 #: src/views/index-dtf/overview/components/ask-reserve-ai.tsx:61
 #: src/views/index-dtf/overview/components/ask-reserve-ai.tsx:98
 #: src/views/index-dtf/overview/components/index-ctas-overview-mobile.tsx:176
@@ -1403,7 +1407,7 @@ msgstr ""
 msgid "Assets"
 msgstr ""
 
-#: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:195
+#: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:194
 msgid "Assets arrive"
 msgstr ""
 
@@ -1417,8 +1421,8 @@ msgstr ""
 
 #. placeholder {0}: auction.id
 #. placeholder {0}: index + 1
-#: src/views/index-dtf/auctions/views/rebalance/components/rebalance-auctions.tsx:105
-#: src/views/index-dtf/auctions/views/rebalance/components/rebalance-auctions.tsx:164
+#: src/views/index-dtf/auctions/views/rebalance/components/rebalance-auctions.tsx:104
+#: src/views/index-dtf/auctions/views/rebalance/components/rebalance-auctions.tsx:167
 msgid "Auction {0}"
 msgstr ""
 
@@ -1439,7 +1443,12 @@ msgstr ""
 msgid "Auction expires in: <0>{0}</0>"
 msgstr ""
 
-#: src/views/index-dtf/auctions/views/rebalance/components/launch-auctions-button.tsx:98
+#: src/views/index-dtf/auctions/views/rebalance/components/community-launch-auctions-button.tsx:119
+#: src/views/index-dtf/auctions/views/rebalance/components/launch-auctions-button.tsx:155
+#~ msgid "Auction launch reverted on chain"
+#~ msgstr ""
+
+#: src/views/index-dtf/auctions/views/rebalance/components/launch-auctions-button.tsx:138
 msgid "Auction launched successfully"
 msgstr ""
 
@@ -1529,15 +1538,15 @@ msgstr ""
 msgid "Audit Status"
 msgstr ""
 
-#: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:93
+#: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:92
 msgid "Automated Mint / Redeem"
 msgstr ""
 
-#: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:95
+#: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:94
 msgid "Automated minting and redemption require a wallet with smart account support. Hardware Wallets are not supported."
 msgstr ""
 
-#: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:178
+#: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:177
 msgid "Automated minting is an advanced feature. For most people, simple swaps are recommended."
 msgstr ""
 
@@ -1609,7 +1618,7 @@ msgstr ""
 msgid "Awaiting approvals... ({completedCount}/{totalCount})"
 msgstr ""
 
-#: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:254
+#: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:253
 msgid "Back to automated minting introduction"
 msgstr ""
 
@@ -1775,6 +1784,10 @@ msgstr ""
 msgid "Basket is not ready"
 msgstr ""
 
+#: src/views/index-dtf/governance/views/propose/basket/components/submit-proposal-button.tsx:77
+msgid "Basket proposals for Folio 6.0 are not available yet"
+msgstr ""
+
 #: src/components/rtoken-setup/basket/UnitBasket.tsx:129
 msgid "Basket scale for this unit of account. This is used to initially calculate how much of each token is required for minting."
 msgstr ""
@@ -1843,7 +1856,7 @@ msgstr ""
 msgid "Before continuing, please confirm the following."
 msgstr ""
 
-#: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:175
+#: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:174
 msgid "Before using automated minting"
 msgstr ""
 
@@ -1908,7 +1921,7 @@ msgstr ""
 msgid "Bidder:"
 msgstr ""
 
-#: src/views/index-dtf/auctions/views/rebalance/components/rebalance-auctions.tsx:167
+#: src/views/index-dtf/auctions/views/rebalance/components/rebalance-auctions.tsx:170
 msgid "Bidding is ongoing..."
 msgstr ""
 
@@ -1972,12 +1985,12 @@ msgstr ""
 msgid "Bridge RSR to BSC"
 msgstr ""
 
-#: src/views/index-dtf/overview/components/basket-overview/bridge-label.tsx:65
+#: src/views/index-dtf/overview/components/basket-overview/bridge-label.tsx:66
 #: src/views/index-dtf/overview/components/index-token-address.tsx:86
 msgid "Bridged"
 msgstr ""
 
-#: src/views/index-dtf/overview/components/basket-overview/bridge-info-dialog.tsx:207
+#: src/views/index-dtf/overview/components/basket-overview/bridge-info-dialog.tsx:214
 msgid "Bridged asset (held in basket)"
 msgstr ""
 
@@ -2198,7 +2211,7 @@ msgstr ""
 msgid "Chain"
 msgstr ""
 
-#: src/components/ui/seamless-transaction.tsx:41
+#: src/components/ui/seamless-transaction.tsx:42
 msgid "Chain {targetChain}"
 msgstr ""
 
@@ -2206,7 +2219,7 @@ msgstr ""
 msgid "Chain must be either Mainnet, Base or Binance Smart Chain"
 msgstr ""
 
-#: src/components/account/index.tsx:47
+#: src/components/account/index.tsx:50
 msgid "Chain: {chainId}"
 msgstr ""
 
@@ -2267,27 +2280,31 @@ msgstr ""
 msgid "Check for auctions"
 msgstr ""
 
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/submit-proposal-button.tsx:210
+msgid "Checking DTF version..."
+msgstr ""
+
 #: src/components/liquidity-badge.tsx:219
 #: src/views/index-dtf/governance/views/propose/basket/components/basket-proposal-overview.tsx:62
 msgid "Checking liquidity..."
 msgstr ""
 
-#: src/views/index-dtf/governance/views/propose/basket/components/submit-proposal-button.tsx:67
+#: src/views/index-dtf/governance/views/propose/basket/components/submit-proposal-button.tsx:87
 #: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/components/submit-proposal-button.tsx:59
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/submit-proposal-button.tsx:56
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/submit-proposal-button.tsx:54
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/submit-proposal-button.tsx:61
 msgid "Checking proposal type..."
 msgstr ""
 
-#: src/views/index-dtf/governance/views/propose/basket/components/submit-proposal-button.tsx:79
+#: src/views/index-dtf/governance/views/propose/basket/components/submit-proposal-button.tsx:99
 #: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/components/submit-proposal-button.tsx:73
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/submit-proposal-button.tsx:70
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/submit-proposal-button.tsx:68
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/submit-proposal-button.tsx:75
 msgid "Checking voting power..."
 msgstr ""
 
-#: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:274
-#: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:387
+#: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:273
+#: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:386
 msgid "Checking wallet..."
 msgstr ""
 
@@ -2369,7 +2386,7 @@ msgstr ""
 msgid "Close DTF pages"
 msgstr ""
 
-#: src/components/layout/header/components/mobile-navigation-drawer.tsx:226
+#: src/components/layout/header/components/mobile-navigation-drawer.tsx:227
 msgid "Close navigation menu"
 msgstr ""
 
@@ -2442,7 +2459,7 @@ msgstr ""
 msgid "Collateral token"
 msgstr ""
 
-#: src/views/yield-dtf/overview/components/backing/backing-buffer.tsx:86
+#: src/views/yield-dtf/overview/components/backing/backing-buffer.tsx:85
 msgid "Collateral yield is distributed as revenue when the backing buffer is full"
 msgstr ""
 
@@ -2489,8 +2506,12 @@ msgstr ""
 msgid "Community Discord"
 msgstr ""
 
-#: src/views/index-dtf/auctions/views/rebalance/components/community-launch-auctions-button.tsx:115
+#: src/views/index-dtf/auctions/views/rebalance/components/community-launch-auctions-button.tsx:173
 msgid "Community launch is not available for this rebalance"
+msgstr ""
+
+#: src/views/index-dtf/auctions/views/rebalance/hooks/use-launch-preflight.ts:75
+msgid "Community launch opens 2 minutes after the rebalance starts or the last auction ends — try again shortly"
 msgstr ""
 
 #: src/views/index-dtf/governance/views/propose/basket/components/proposal-basket-advance-settings.tsx:97
@@ -2635,7 +2656,7 @@ msgstr ""
 #: src/components/stake-drawer/components/submit-unstake-button.tsx:104
 #: src/components/vote-lock/components/submit-lock-button.tsx:211
 #: src/components/vote-lock/components/submit-unlock-button.tsx:124
-#: src/views/index-dtf/deploy/steps/confirm-deploy/manual/components/confirm-manual-deploy-button.tsx:298
+#: src/views/index-dtf/deploy/steps/confirm-deploy/manual/components/confirm-manual-deploy-button.tsx:295
 #: src/views/index-dtf/deploy/steps/confirm-deploy/simple/simple-deploy-button.tsx:133
 #: src/views/index-dtf/overview/components/zap-mint/submit-zap.tsx:215
 msgid "Confirming tx..."
@@ -2652,7 +2673,7 @@ msgid "Confirming…"
 msgstr ""
 
 #. placeholder {0}: form!.tokenName
-#: src/views/index-dtf/deploy/steps/confirm-deploy/success/index.tsx:76
+#: src/views/index-dtf/deploy/steps/confirm-deploy/success/index.tsx:75
 msgid "Congratulations {0} is now live"
 msgstr ""
 
@@ -2660,20 +2681,20 @@ msgstr ""
 msgid "Congratulations 🎉"
 msgstr ""
 
-#: src/components/account/index.tsx:104
+#: src/components/account/index.tsx:109
 msgid "Connect"
 msgstr ""
 
 #: src/components/stake-drawer/components/submit-stake-button.tsx:160
 #: src/components/stake-drawer/components/submit-unstake-button.tsx:72
 #: src/views/explorer/components/governance/index.tsx:144
-#: src/views/portfolio-page/components/portfolio-connect-button.tsx:29
+#: src/views/portfolio-page/components/portfolio-connect-button.tsx:20
 msgid "Connect wallet"
 msgstr ""
 
 #: src/components/ui/transaction-button.tsx:57
 #: src/components/ui/transaction.tsx:44
-#: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:357
+#: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:356
 msgid "Connect Wallet"
 msgstr ""
 
@@ -2693,7 +2714,7 @@ msgstr ""
 msgid "Contact me"
 msgstr ""
 
-#: src/views/index-dtf/overview/components/eligibility-card.tsx:195
+#: src/views/index-dtf/overview/components/eligibility-card.tsx:190
 msgid "Contact us for eligibility"
 msgstr ""
 
@@ -2702,7 +2723,7 @@ msgstr ""
 msgid "Contested"
 msgstr ""
 
-#: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:389
+#: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:388
 msgid "Continue"
 msgstr ""
 
@@ -2790,6 +2811,11 @@ msgstr ""
 msgid "Corrected F.6 to reflect that the CFB token has a dynamic collateral-based supply mechanism, not a fixed supply."
 msgstr ""
 
+#: src/views/index-dtf/auctions/views/rebalance/components/community-launch-auctions-button.tsx:117
+#: src/views/index-dtf/auctions/views/rebalance/components/launch-auctions-button.tsx:152
+msgid "Couldn't confirm the launch — check your wallet before retrying"
+msgstr ""
+
 #: src/views/yield-dtf/issuance/components/zapV2/minters-modal/SocialMediaInput.tsx:203
 msgid "Count me in"
 msgstr ""
@@ -2803,19 +2829,19 @@ msgstr ""
 msgid "cow"
 msgstr ""
 
-#: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:193
+#: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:192
 msgid "CoW routes"
 msgstr ""
 
-#: src/views/index-dtf/auctions/views/rebalance/components/cowbot/use-cowbot-query.ts:90
+#: src/views/index-dtf/auctions/views/rebalance/components/cowbot/use-cowbot-query.ts:93
 msgid "CowBot encountered errors"
 msgstr ""
 
-#: src/views/index-dtf/auctions/views/rebalance/components/cowbot/use-cowbot-query.ts:112
+#: src/views/index-dtf/auctions/views/rebalance/components/cowbot/use-cowbot-query.ts:115
 msgid "CowBot submitted {newOrdersCount} new order"
 msgstr ""
 
-#: src/views/index-dtf/auctions/views/rebalance/components/cowbot/use-cowbot-query.ts:113
+#: src/views/index-dtf/auctions/views/rebalance/components/cowbot/use-cowbot-query.ts:116
 msgid "CowBot submitted {newOrdersCount} new orders"
 msgstr ""
 
@@ -2868,7 +2894,7 @@ msgstr ""
 #: src/components/layout/header/components/app-navigation.tsx:89
 #: src/components/layout/header/components/app-navigation.tsx:96
 #: src/components/layout/header/components/mobile-navigation-drawer.tsx:143
-#: src/views/index-dtf/deploy/steps/confirm-deploy/manual/components/confirm-manual-deploy-button.tsx:281
+#: src/views/index-dtf/deploy/steps/confirm-deploy/manual/components/confirm-manual-deploy-button.tsx:278
 msgid "Create DTF"
 msgstr ""
 
@@ -2895,7 +2921,7 @@ msgstr ""
 msgid "Create the genesis token"
 msgstr ""
 
-#: src/views/index-dtf/governance/views/propose/components/propose-index-upgrade.tsx:119
+#: src/views/index-dtf/governance/views/propose/components/propose-index-upgrade.tsx:122
 msgid "Create update proposal"
 msgstr ""
 
@@ -3066,7 +3092,7 @@ msgstr ""
 msgid "Current units"
 msgstr ""
 
-#: src/views/yield-dtf/overview/components/backing/backing-buffer.tsx:68
+#: src/views/yield-dtf/overview/components/backing/backing-buffer.tsx:67
 msgid "Current value in buffer:"
 msgstr ""
 
@@ -3316,7 +3342,7 @@ msgid "Deploy your own RToken"
 msgstr ""
 
 #. placeholder {0}: form?.symbol || 'DTF'
-#: src/views/index-dtf/deploy/steps/confirm-deploy/simple/simple-deploy-button.tsx:73
+#: src/views/index-dtf/deploy/steps/confirm-deploy/simple/simple-deploy-button.tsx:76
 msgid "Deployed & minted {0}"
 msgstr ""
 
@@ -3507,7 +3533,7 @@ msgid "Download snapshot"
 msgstr ""
 
 #: src/views/index-dtf/manage/components/manage-about.tsx:37
-#: src/views/index-dtf/overview/components/dtf-downloadable-resources.tsx:142
+#: src/views/index-dtf/overview/components/dtf-downloadable-resources.tsx:158
 msgid "Downloadable resources"
 msgstr ""
 
@@ -3794,7 +3820,7 @@ msgstr ""
 msgid "Eligibility and how to get started."
 msgstr ""
 
-#: src/views/index-dtf/overview/components/eligibility-card.tsx:133
+#: src/views/index-dtf/overview/components/eligibility-card.tsx:127
 #: src/views/yield-dtf/issuance/components/zapV2/minters-modal/SocialMediaInput.tsx:111
 msgid "Email"
 msgstr ""
@@ -3966,8 +3992,8 @@ msgstr ""
 msgid "Error occurred, try again"
 msgstr ""
 
-#: src/views/index-dtf/auctions/views/rebalance/components/community-launch-auctions-button.tsx:107
-#: src/views/index-dtf/auctions/views/rebalance/components/launch-auctions-button.tsx:161
+#: src/views/index-dtf/auctions/views/rebalance/components/community-launch-auctions-button.tsx:165
+#: src/views/index-dtf/auctions/views/rebalance/components/launch-auctions-button.tsx:229
 msgid "Error opening auctions"
 msgstr ""
 
@@ -4131,7 +4157,7 @@ msgstr ""
 #: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/components/sections/propose-basket-governance.tsx:82
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/atoms.ts:185
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/sections/propose-dao-governance.tsx:93
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/atoms.ts:883
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/atoms.ts:905
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-governance-settings.tsx:91
 #: src/views/index-dtf/settings/components/index-settings-governance.tsx:128
 #: src/views/yield-dtf/settings/components/governance-info.tsx:57
@@ -4196,7 +4222,7 @@ msgstr ""
 msgid "Expected volatility"
 msgstr ""
 
-#: src/views/explorer/components/governance/filters.tsx:23
+#: src/views/explorer/components/governance/filters.tsx:24
 #: src/views/index-dtf/governance/views/proposal/components/proposal-deadline-alert.tsx:35
 #: src/views/index-dtf/issuance/async-mint/components/leg-row.tsx:74
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalAlert.tsx:56
@@ -4267,7 +4293,7 @@ msgstr ""
 msgid "Failed"
 msgstr ""
 
-#: src/components/ui/seamless-transaction.tsx:92
+#: src/components/ui/seamless-transaction.tsx:93
 msgid "Failed to connect wallet"
 msgstr ""
 
@@ -4294,7 +4320,7 @@ msgstr ""
 msgid "Failed to read CSV file"
 msgstr ""
 
-#: src/components/ui/seamless-transaction.tsx:72
+#: src/components/ui/seamless-transaction.tsx:73
 msgid "Failed to switch to {chainName}"
 msgstr ""
 
@@ -4605,7 +4631,7 @@ msgstr ""
 msgid "Get quote"
 msgstr ""
 
-#: src/views/index-dtf/deploy/steps/confirm-deploy/success/index.tsx:105
+#: src/views/index-dtf/deploy/steps/confirm-deploy/success/index.tsx:104
 #: src/views/index-dtf/overview/components/index-ctas-overview-mobile.tsx:214
 msgid "Go to DTF overview"
 msgstr ""
@@ -5041,7 +5067,7 @@ msgstr ""
 msgid "Including any power delegated to me."
 msgstr ""
 
-#: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:281
+#: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:280
 msgid "Incompatible wallet"
 msgstr ""
 
@@ -5049,7 +5075,7 @@ msgstr ""
 msgid "Increase"
 msgstr ""
 
-#: src/views/explorer/components/governance/filters.tsx:56
+#: src/views/explorer/components/governance/filters.tsx:57
 msgid "Index"
 msgstr ""
 
@@ -5187,7 +5213,7 @@ msgstr ""
 msgid "Inspect"
 msgstr ""
 
-#: src/views/index-dtf/deploy/steps/confirm-deploy/manual/components/confirm-manual-deploy-button.tsx:288
+#: src/views/index-dtf/deploy/steps/confirm-deploy/manual/components/confirm-manual-deploy-button.tsx:285
 msgid "Insufficient asset balance"
 msgstr ""
 
@@ -5259,7 +5285,7 @@ msgstr ""
 msgid "Invalid destination address"
 msgstr ""
 
-#: src/views/index-dtf/overview/components/eligibility-card.tsx:25
+#: src/views/index-dtf/overview/components/eligibility-card.tsx:26
 msgid "Invalid email"
 msgstr ""
 
@@ -5359,7 +5385,7 @@ msgstr ""
 msgid "just now"
 msgstr ""
 
-#: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:100
+#: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:99
 msgid "Known supported wallets"
 msgstr ""
 
@@ -5402,19 +5428,19 @@ msgstr ""
 msgid "Launch your own Index DTF"
 msgstr ""
 
-#: src/views/index-dtf/auctions/views/rebalance/components/community-launch-auctions-button.tsx:163
-#: src/views/index-dtf/auctions/views/rebalance/components/launch-auctions-button.tsx:197
+#: src/views/index-dtf/auctions/views/rebalance/components/community-launch-auctions-button.tsx:235
+#: src/views/index-dtf/auctions/views/rebalance/components/launch-auctions-button.tsx:275
 msgid "Launching..."
 msgstr ""
 
-#: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:339
-#: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:370
+#: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:338
+#: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:369
 #: src/views/index-dtf/overview/components/index-ctas-overview-mobile.tsx:63
-#: src/views/index-dtf/overview/components/landing-mint/index.tsx:143
+#: src/views/index-dtf/overview/components/landing-mint/index.tsx:145
 msgid "Learn More"
 msgstr ""
 
-#: src/views/index-dtf/overview/components/eligibility-card.tsx:211
+#: src/views/index-dtf/overview/components/eligibility-card.tsx:206
 msgid "Learn more about eligibility requirements."
 msgstr ""
 
@@ -5491,8 +5517,18 @@ msgstr ""
 msgid "Listed DTFs"
 msgstr ""
 
-#: src/views/index-dtf/auctions/views/rebalance/components/rebalance-auctions.tsx:106
+#: src/views/index-dtf/auctions/views/rebalance/components/community-launch-auctions-button.tsx:211
+#: src/views/index-dtf/auctions/views/rebalance/components/launch-auctions-button.tsx:245
+#: src/views/index-dtf/auctions/views/rebalance/updaters/rebalance-metrics-updater.tsx:212
+msgid "Live auction state unavailable — retrying before launch"
+msgstr ""
+
+#: src/views/index-dtf/auctions/views/rebalance/components/rebalance-auctions.tsx:105
 msgid "Live rebalance auction"
+msgstr ""
+
+#: src/views/index-dtf/auctions/views/rebalance/hooks/use-launch-preflight.ts:71
+msgid "Live rebalance state unavailable — try again"
 msgstr ""
 
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-optimistic-parameters.tsx:78
@@ -5570,7 +5606,7 @@ msgstr ""
 msgid "Loading..."
 msgstr ""
 
-#: src/views/index-dtf/overview/components/eligibility-card.tsx:173
+#: src/views/index-dtf/overview/components/eligibility-card.tsx:168
 msgid "Location restricted"
 msgstr ""
 
@@ -5702,7 +5738,7 @@ msgstr ""
 msgid "Manually estimated APY calculated from basket averaged yield."
 msgstr ""
 
-#: src/views/index-dtf/overview/components/dtf-downloadable-resources.tsx:69
+#: src/views/index-dtf/overview/components/dtf-downloadable-resources.tsx:85
 msgid "Markdown file for your LLM"
 msgstr ""
 
@@ -5993,7 +6029,7 @@ msgstr ""
 msgid "Mint Fee must be 5% or less"
 msgstr ""
 
-#: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:96
+#: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:95
 msgid "Mint large USDC amounts through batched CoW Swap orders, or redeem DTFs into the underlying assets. Recommended for market makers or transactions over 50,000 USDC."
 msgstr ""
 
@@ -6082,7 +6118,7 @@ msgstr ""
 msgid "More"
 msgstr ""
 
-#: src/views/index-dtf/overview/components/dtf-downloadable-resources.tsx:145
+#: src/views/index-dtf/overview/components/dtf-downloadable-resources.tsx:161
 msgid "More information on what {dtfName} is, what it’s all about, methodology and thesis."
 msgstr ""
 
@@ -6094,7 +6130,7 @@ msgstr ""
 msgid "More RSR per share"
 msgstr ""
 
-#: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:159
+#: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:158
 msgid "Most users should use Swap"
 msgstr ""
 
@@ -6125,7 +6161,7 @@ msgstr ""
 #: src/views/home/components/discover-index-dtf/index-dtf-table-columns.tsx:167
 #: src/views/home/components/discover-index-dtf/index-dtf-table-placeholder.tsx:17
 #: src/views/index-dtf/deploy/steps/metadata/form-basic-metadata.tsx:10
-#: src/views/index-dtf/overview/components/eligibility-card.tsx:118
+#: src/views/index-dtf/overview/components/eligibility-card.tsx:112
 #: src/views/index-dtf/settings/components/index-settings-basic.tsx:40
 #: src/views/portfolio-page/components/dtf-positions.tsx:31
 #: src/views/portfolio-page/components/rsr-section.tsx:18
@@ -6145,11 +6181,11 @@ msgstr ""
 msgid "Native"
 msgstr ""
 
-#: src/views/index-dtf/overview/components/basket-overview/bridge-info-dialog.tsx:127
+#: src/views/index-dtf/overview/components/basket-overview/bridge-info-dialog.tsx:128
 msgid "Native asset (reference)"
 msgstr ""
 
-#: src/views/index-dtf/overview/components/basket-overview/bridge-info-dialog.tsx:182
+#: src/views/index-dtf/overview/components/basket-overview/bridge-info-dialog.tsx:189
 msgid "Native L1 Asset"
 msgstr ""
 
@@ -6161,7 +6197,7 @@ msgstr ""
 msgid "NAV Growth"
 msgstr ""
 
-#: src/components/layout/header/components/mobile-navigation-drawer.tsx:239
+#: src/components/layout/header/components/mobile-navigation-drawer.tsx:240
 msgid "Navigation menu"
 msgstr ""
 
@@ -6178,7 +6214,7 @@ msgstr ""
 msgid "Net Performance Summary"
 msgstr ""
 
-#: src/components/account/index.tsx:42
+#: src/components/account/index.tsx:45
 #: src/components/tables/ListedTokensTable.tsx:60
 #: src/views/explorer/components/collaterals/index.tsx:71
 #: src/views/explorer/components/tokens/index.tsx:136
@@ -6564,10 +6600,10 @@ msgstr ""
 msgid "Not enough balance to bid"
 msgstr ""
 
-#: src/views/index-dtf/governance/views/propose/basket/components/submit-proposal-button.tsx:87
+#: src/views/index-dtf/governance/views/propose/basket/components/submit-proposal-button.tsx:107
 #: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/components/submit-proposal-button.tsx:83
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/submit-proposal-button.tsx:80
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/submit-proposal-button.tsx:78
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/submit-proposal-button.tsx:85
 msgid "Not enough voting power"
 msgstr ""
 
@@ -6632,7 +6668,7 @@ msgstr ""
 msgid "One or more approvals failed"
 msgstr ""
 
-#: src/views/index-dtf/auctions/views/rebalance/updaters/rebalance-metrics-updater.tsx:155
+#: src/views/index-dtf/auctions/views/rebalance/updaters/rebalance-metrics-updater.tsx:163
 msgid "One or more tokens in the rebalance is out of bounds. Rebalance must be closed."
 msgstr ""
 
@@ -6669,7 +6705,7 @@ msgstr ""
 msgid "Only Brand Manager"
 msgstr ""
 
-#: src/views/index-dtf/auctions/views/rebalance/components/community-launch-auctions-button.tsx:117
+#: src/views/index-dtf/auctions/views/rebalance/components/community-launch-auctions-button.tsx:175
 msgid "Only the auction launcher can start auctions"
 msgstr ""
 
@@ -6691,7 +6727,7 @@ msgstr ""
 msgid "Open"
 msgstr ""
 
-#: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:120
+#: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:119
 msgid "Open Ambire website"
 msgstr ""
 
@@ -6699,15 +6735,15 @@ msgstr ""
 msgid "Open DTF pages"
 msgstr ""
 
-#: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:107
+#: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:106
 msgid "Open MetaMask website"
 msgstr ""
 
-#: src/components/layout/header/components/mobile-navigation-drawer.tsx:228
+#: src/components/layout/header/components/mobile-navigation-drawer.tsx:229
 msgid "Open navigation menu"
 msgstr ""
 
-#: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:133
+#: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:132
 msgid "Open Safe website"
 msgstr ""
 
@@ -6819,7 +6855,7 @@ msgstr ""
 #: src/components/layout/navigation/index.tsx:77
 #: src/components/layout/navigation/TokenNavigation.tsx:176
 #: src/views/index-dtf/components/navigation/index.tsx:217
-#: src/views/index-dtf/overview/components/basket-overview/bridge-info-dialog.tsx:100
+#: src/views/index-dtf/overview/components/basket-overview/bridge-info-dialog.tsx:101
 msgid "Overview"
 msgstr ""
 
@@ -6907,7 +6943,7 @@ msgstr ""
 msgid "Pending"
 msgstr ""
 
-#: src/views/index-dtf/deploy/steps/confirm-deploy/manual/components/confirm-manual-deploy-button.tsx:284
+#: src/views/index-dtf/deploy/steps/confirm-deploy/manual/components/confirm-manual-deploy-button.tsx:281
 msgid "Pending allowance..."
 msgstr ""
 
@@ -6942,7 +6978,7 @@ msgstr ""
 #: src/components/vote-lock/components/submit-delegate-button.tsx:179
 #: src/components/vote-lock/components/submit-lock-button.tsx:212
 #: src/components/vote-lock/components/submit-unlock-button.tsx:125
-#: src/views/index-dtf/deploy/steps/confirm-deploy/manual/components/confirm-manual-deploy-button.tsx:298
+#: src/views/index-dtf/deploy/steps/confirm-deploy/manual/components/confirm-manual-deploy-button.tsx:295
 #: src/views/index-dtf/deploy/steps/confirm-deploy/simple/simple-deploy-button.tsx:134
 #: src/views/index-dtf/overview/components/zap-mint/submit-zap.tsx:216
 #: src/views/yield-dtf/deploy/components/DeployOverview.tsx:25
@@ -6951,8 +6987,8 @@ msgstr ""
 msgid "Pending, sign in wallet"
 msgstr ""
 
-#: src/views/index-dtf/governance/views/propose/basket/components/submit-proposal-button.tsx:195
-#: src/views/index-dtf/governance/views/propose/components/propose-index-upgrade.tsx:117
+#: src/views/index-dtf/governance/views/propose/basket/components/submit-proposal-button.tsx:215
+#: src/views/index-dtf/governance/views/propose/components/propose-index-upgrade.tsx:120
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-governance-spell-31-03-2025.tsx:304
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-governance-spell-31-03-2025.tsx:430
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v4-upgrade.tsx:188
@@ -6960,7 +6996,7 @@ msgstr ""
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v5-upgrade.tsx:217
 #: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/components/submit-proposal-button.tsx:186
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/submit-proposal-button.tsx:184
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/submit-proposal-button.tsx:181
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/submit-proposal-button.tsx:188
 msgid "Pending, sign in wallet..."
 msgstr ""
 
@@ -7023,7 +7059,7 @@ msgstr ""
 #. placeholder {0}: getTimerFormat(availableAt)
 #. placeholder {0}: parseDurationShort(countdown, { round: true }) .replaceAll(' ', '') .replaceAll(',', ' ')
 #: src/views/index-dtf/auctions/legacy/components/proposal-trades.tsx:103
-#: src/views/index-dtf/auctions/views/rebalance/components/community-launch-auctions-button.tsx:128
+#: src/views/index-dtf/auctions/views/rebalance/components/community-launch-auctions-button.tsx:190
 msgid "Permissionless in: <0>{0}</0>"
 msgstr ""
 
@@ -7132,7 +7168,7 @@ msgstr ""
 msgid "Please sign the transaction in your wallet to continue with the government configuration process."
 msgstr ""
 
-#: src/components/ui/seamless-transaction.tsx:60
+#: src/components/ui/seamless-transaction.tsx:61
 msgid "Please switch to {chainName} manually in your wallet"
 msgstr ""
 
@@ -7192,7 +7228,7 @@ msgid "Position"
 msgstr ""
 
 #. placeholder {0}: bridge.name
-#: src/views/index-dtf/overview/components/basket-overview/bridge-info-dialog.tsx:283
+#: src/views/index-dtf/overview/components/basket-overview/bridge-info-dialog.tsx:290
 msgid "Potential Risks Using {0}"
 msgstr ""
 
@@ -7232,7 +7268,7 @@ msgstr ""
 msgid "Preparing transaction"
 msgstr ""
 
-#: src/views/index-dtf/deploy/steps/confirm-deploy/manual/components/confirm-manual-deploy-button.tsx:281
+#: src/views/index-dtf/deploy/steps/confirm-deploy/manual/components/confirm-manual-deploy-button.tsx:278
 msgid "Preparing transaction..."
 msgstr ""
 
@@ -7296,7 +7332,7 @@ msgstr ""
 msgid "Price Change ({0})"
 msgstr ""
 
-#: src/views/index-dtf/auctions/views/rebalance/updaters/rebalance-metrics-updater.tsx:184
+#: src/views/index-dtf/auctions/views/rebalance/updaters/rebalance-metrics-updater.tsx:205
 msgid "Price data unavailable — cannot launch auction."
 msgstr ""
 
@@ -7324,19 +7360,19 @@ msgstr ""
 msgid "Price unavailable"
 msgstr ""
 
-#: src/views/index-dtf/auctions/views/rebalance/components/launch-auctions-button.tsx:180
+#: src/views/index-dtf/auctions/views/rebalance/components/launch-auctions-button.tsx:256
 msgid "Price unavailable — cannot launch"
 msgstr ""
 
-#: src/views/index-dtf/auctions/views/rebalance/updaters/rebalance-metrics-updater.tsx:137
+#: src/views/index-dtf/auctions/views/rebalance/updaters/rebalance-metrics-updater.tsx:145
 msgid "Price unavailable for \"{symbol}\" — cannot launch auction."
 msgstr ""
 
-#: src/views/index-dtf/auctions/views/rebalance/components/launch-auctions-button.tsx:178
+#: src/views/index-dtf/auctions/views/rebalance/components/launch-auctions-button.tsx:254
 msgid "Price unavailable for {unavailableSymbol} — cannot launch"
 msgstr ""
 
-#: src/views/index-dtf/auctions/views/rebalance/updaters/rebalance-metrics-updater.tsx:138
+#: src/views/index-dtf/auctions/views/rebalance/updaters/rebalance-metrics-updater.tsx:146
 msgid "Price unavailable for a basket token — cannot launch auction."
 msgstr ""
 
@@ -7456,7 +7492,7 @@ msgstr ""
 #: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/components/sections/propose-basket-governance.tsx:48
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/atoms.ts:166
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/sections/propose-dao-governance.tsx:60
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/atoms.ts:864
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/atoms.ts:886
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-governance-settings.tsx:58
 #: src/views/index-dtf/settings/components/index-settings-governance.tsx:94
 #: src/views/yield-dtf/settings/components/governance-info.tsx:61
@@ -7593,6 +7629,7 @@ msgstr ""
 msgid "Queue proposal"
 msgstr ""
 
+#: src/views/explorer/components/governance/filters.tsx:23
 #: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:269
 #: src/views/yield-dtf/governance/views/proposal-detail/components/proposal-timeline/TimelineItem.tsx:241
 msgid "Queued"
@@ -7676,11 +7713,11 @@ msgstr ""
 msgid "Raw"
 msgstr ""
 
-#: src/views/index-dtf/overview/components/basket-overview/bridge-info-dialog.tsx:272
+#: src/views/index-dtf/overview/components/basket-overview/bridge-info-dialog.tsx:279
 msgid "Read about risks"
 msgstr ""
 
-#: src/views/index-dtf/overview/components/basket-overview/bridge-info-dialog.tsx:264
+#: src/views/index-dtf/overview/components/basket-overview/bridge-info-dialog.tsx:271
 msgid "Read docs"
 msgstr ""
 
@@ -7741,13 +7778,17 @@ msgstr ""
 msgid "Rebalance Manager"
 msgstr ""
 
-#: src/views/index-dtf/auctions/views/rebalance/components/community-launch-auctions-button.tsx:161
-#: src/views/index-dtf/auctions/views/rebalance/components/launch-auctions-button.tsx:195
+#: src/views/index-dtf/auctions/views/rebalance/components/community-launch-auctions-button.tsx:233
+#: src/views/index-dtf/auctions/views/rebalance/components/launch-auctions-button.tsx:273
 msgid "Rebalance ongoing"
 msgstr ""
 
 #: src/views/index-dtf/auctions/views/rebalance/components/rebalance-completed.tsx:118
 msgid "Rebalance progress"
+msgstr ""
+
+#: src/views/index-dtf/auctions/views/rebalance/hooks/use-launch-preflight.ts:77
+msgid "Rebalance state just refreshed — try again"
 msgstr ""
 
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1401
@@ -8070,7 +8111,7 @@ msgid "Request plugin"
 msgstr ""
 
 #: src/views/index-dtf/deploy/components/deploy-coming-soon.tsx:25
-#: src/views/index-dtf/overview/components/eligibility-card.tsx:24
+#: src/views/index-dtf/overview/components/eligibility-card.tsx:25
 msgid "Required"
 msgstr ""
 
@@ -8202,7 +8243,7 @@ msgstr ""
 msgid "Revenue Distribution"
 msgstr ""
 
-#: src/views/yield-dtf/overview/components/backing/backing-buffer.tsx:48
+#: src/views/yield-dtf/overview/components/backing/backing-buffer.tsx:47
 msgid "Revenue distribution backing buffer"
 msgstr ""
 
@@ -8384,7 +8425,7 @@ msgstr ""
 msgid "Risk evaluation"
 msgstr ""
 
-#: src/views/index-dtf/overview/components/basket-overview/bridge-info-dialog.tsx:109
+#: src/views/index-dtf/overview/components/basket-overview/bridge-info-dialog.tsx:110
 msgid "Risks"
 msgstr ""
 
@@ -8562,8 +8603,6 @@ msgid "Save Weights {editedRows}/{totalRows} edited"
 msgstr ""
 
 #: src/components/layout/contact-modal/bell-button.tsx:64
-#: src/views/index-dtf/overview/components/eligibility-card.tsx:103
-#: src/views/index-dtf/overview/components/eligibility-card.tsx:151
 msgid "Schedule a meeting"
 msgstr ""
 
@@ -8778,6 +8817,14 @@ msgstr ""
 
 #: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:521
 msgid "Setting dust amount for token removal"
+msgstr ""
+
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/submit-proposal-button.tsx:206
+msgid "Settings proposals are not available for this DTF version"
+msgstr ""
+
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/submit-proposal-button.tsx:202
+msgid "Settings proposals for Folio 6.0 are not available yet"
 msgstr ""
 
 #: src/views/yield-dtf/auctions/components/useColumns.tsx:70
@@ -9033,7 +9080,7 @@ msgstr ""
 msgid "Small revenue auctions"
 msgstr ""
 
-#: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:92
+#: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:91
 msgid "Smart Account Required"
 msgstr ""
 
@@ -9066,7 +9113,7 @@ msgstr ""
 msgid "Some quotes couldn't be fetched."
 msgstr ""
 
-#: src/views/index-dtf/overview/components/eligibility-card.tsx:155
+#: src/views/index-dtf/overview/components/eligibility-card.tsx:150
 msgid "Something went wrong. Please try again."
 msgstr ""
 
@@ -9252,8 +9299,8 @@ msgstr ""
 msgid "Start {selectedCount} new auctions"
 msgstr ""
 
-#: src/views/index-dtf/auctions/views/rebalance/components/community-launch-auctions-button.tsx:170
-#: src/views/index-dtf/auctions/views/rebalance/components/launch-auctions-button.tsx:204
+#: src/views/index-dtf/auctions/views/rebalance/components/community-launch-auctions-button.tsx:242
+#: src/views/index-dtf/auctions/views/rebalance/components/launch-auctions-button.tsx:282
 msgid "Start auction {auctionNumber}"
 msgstr ""
 
@@ -9275,9 +9322,13 @@ msgstr ""
 msgid "Start over"
 msgstr ""
 
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:36
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/optimistic.ts:100
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:35
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/optimistic.ts:101
 msgid "Start rebalance"
+msgstr ""
+
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:36
+msgid "Start rebalance (Folio 6.0)"
 msgstr ""
 
 #. placeholder {0}: rTokenVault.name
@@ -9285,7 +9336,7 @@ msgstr ""
 msgid "Starts the next {0} reward period once the current one ends. Disabled until then."
 msgstr ""
 
-#: src/views/explorer/components/governance/filters.tsx:40
+#: src/views/explorer/components/governance/filters.tsx:41
 #: src/views/explorer/components/governance/index.tsx:126
 #: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:345
 #: src/views/portfolio-page/components/active-proposals.tsx:136
@@ -9343,7 +9394,7 @@ msgstr ""
 msgid "stRSR Token"
 msgstr ""
 
-#: src/views/index-dtf/overview/components/eligibility-card.tsx:140
+#: src/views/index-dtf/overview/components/eligibility-card.tsx:146
 msgid "Submit"
 msgstr ""
 
@@ -9355,10 +9406,10 @@ msgstr ""
 msgid "Submit proposal on-chain"
 msgstr ""
 
-#: src/views/index-dtf/governance/views/propose/basket/components/submit-proposal-button.tsx:197
+#: src/views/index-dtf/governance/views/propose/basket/components/submit-proposal-button.tsx:217
 #: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/components/submit-proposal-button.tsx:190
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/submit-proposal-button.tsx:188
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/submit-proposal-button.tsx:183
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/submit-proposal-button.tsx:190
 msgid "Submit proposal onchain"
 msgstr ""
 
@@ -9372,7 +9423,7 @@ msgstr ""
 
 #: src/views/index-dtf/deploy/components/deploy-coming-soon.tsx:182
 #: src/views/index-dtf/manage/components/submit-button.tsx:321
-#: src/views/index-dtf/overview/components/eligibility-card.tsx:151
+#: src/views/index-dtf/overview/components/eligibility-card.tsx:146
 msgid "Submitting..."
 msgstr ""
 
@@ -9484,7 +9535,7 @@ msgstr ""
 msgid "Switch to zap redeeming"
 msgstr ""
 
-#: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:326
+#: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:325
 msgid "Switch wallet"
 msgstr ""
 
@@ -9522,7 +9573,7 @@ msgstr ""
 msgid "Target(s)"
 msgstr ""
 
-#: src/views/index-dtf/overview/components/dtf-downloadable-resources.tsx:66
+#: src/views/index-dtf/overview/components/dtf-downloadable-resources.tsx:79
 msgid "Tear Sheet"
 msgstr ""
 
@@ -9550,7 +9601,7 @@ msgid "Terms and Conditions"
 msgstr ""
 
 #: src/views/index-dtf/deploy/components/deploy-coming-soon.tsx:109
-#: src/views/index-dtf/overview/components/eligibility-card.tsx:95
+#: src/views/index-dtf/overview/components/eligibility-card.tsx:97
 msgid "Thank you! We'll be in touch soon."
 msgstr ""
 
@@ -9570,7 +9621,11 @@ msgstr ""
 msgid "The approximate value of 1 unit of <0/> when the DTF is created. The exact price may be different due to market volatility and errors in oracle pricing."
 msgstr ""
 
-#: src/views/yield-dtf/overview/components/backing/backing-buffer.tsx:92
+#: src/views/index-dtf/auctions/views/rebalance/hooks/use-launch-preflight.ts:74
+msgid "The auction launcher still has priority — community launch is not open yet"
+msgstr ""
+
+#: src/views/yield-dtf/overview/components/backing/backing-buffer.tsx:91
 msgid "The backing buffer is extra collateral held to prevent RSR seizure from trading slippage. When the buffer exceeds 100%, any additional appreciation of collateral is recognized as revenue and sold off in auctions."
 msgstr ""
 
@@ -9586,7 +9641,7 @@ msgstr ""
 msgid "The basket governance provides a Guardian role that can improve the safety of DTF holders and governors. Guardians have the ability to veto any basket proposal prior to execution. This role is mutable and can be changed by governance in the future."
 msgstr ""
 
-#: src/components/account/index.tsx:54
+#: src/components/account/index.tsx:57
 msgid "The configured network \"{currentChain}\" is different from the wallet selected network \"{chainId}\"\". Change your network in the connected wallet."
 msgstr ""
 
@@ -9898,7 +9953,7 @@ msgstr ""
 msgid "This DTF"
 msgstr ""
 
-#: src/views/index-dtf/overview/components/landing-mint/index.tsx:120
+#: src/views/index-dtf/overview/components/landing-mint/index.tsx:122
 msgid "This DTF can only be sold"
 msgstr ""
 
@@ -9933,7 +9988,7 @@ msgid "This DTF is no longer actively governed and can only be sold. This DTF ca
 msgstr ""
 
 #. placeholder {0}: dtf.token.symbol
-#: src/views/index-dtf/overview/components/landing-mint/index.tsx:123
+#: src/views/index-dtf/overview/components/landing-mint/index.tsx:125
 msgid "This DTF is no longer actively governed, cannot rebalance, and no new ${0} can be created."
 msgstr ""
 
@@ -9982,6 +10037,14 @@ msgstr ""
 
 #: src/views/index-dtf/governance/views/proposal/components/proposal-vote.tsx:183
 msgid "This proposal will automatically pass if it is not challenged by governance. If it is challenged, it will be resubmitted as a standard proposal."
+msgstr ""
+
+#: src/views/index-dtf/auctions/views/rebalance/hooks/use-launch-preflight.ts:73
+msgid "This rebalance is no longer accepting auctions"
+msgstr ""
+
+#: src/views/index-dtf/auctions/views/rebalance/hooks/use-launch-preflight.ts:72
+msgid "This rebalance is no longer the current one — reload the page"
 msgstr ""
 
 #: src/views/yield-dtf/issuance/components/warnings/index.tsx:123
@@ -10056,7 +10119,7 @@ msgstr ""
 msgid "To learn more about the risks associated with DTFs,"
 msgstr ""
 
-#: src/views/index-dtf/overview/components/eligibility-card.tsx:198
+#: src/views/index-dtf/overview/components/eligibility-card.tsx:193
 msgid "To verify eligibility, please leave us your name and email, and we will reach out to you personally."
 msgstr ""
 
@@ -10087,7 +10150,7 @@ msgstr ""
 msgid "Token"
 msgstr ""
 
-#: src/views/index-dtf/auctions/views/rebalance/updaters/rebalance-metrics-updater.tsx:154
+#: src/views/index-dtf/auctions/views/rebalance/updaters/rebalance-metrics-updater.tsx:162
 msgid "Token \"{symbol}\" is out of bounds. Rebalance must be closed."
 msgstr ""
 
@@ -10195,7 +10258,7 @@ msgstr ""
 msgid "Token:"
 msgstr ""
 
-#: src/views/index-dtf/overview/components/basket-overview/bridge-info-dialog.tsx:205
+#: src/views/index-dtf/overview/components/basket-overview/bridge-info-dialog.tsx:212
 msgid "Tokenized Asset (held in basket)"
 msgstr ""
 
@@ -10423,7 +10486,8 @@ msgstr ""
 msgid "Transaction rejected"
 msgstr ""
 
-#: src/views/index-dtf/auctions/views/rebalance/components/launch-auctions-button.tsx:118
+#: src/views/index-dtf/auctions/views/rebalance/components/community-launch-auctions-button.tsx:109
+#: src/views/index-dtf/auctions/views/rebalance/components/launch-auctions-button.tsx:144
 msgid "Transaction rejected or failed"
 msgstr ""
 
@@ -10631,7 +10695,7 @@ msgstr ""
 msgid "Unexpected error"
 msgstr ""
 
-#: src/views/index-dtf/auctions/views/rebalance/updaters/rebalance-metrics-updater.tsx:158
+#: src/views/index-dtf/auctions/views/rebalance/updaters/rebalance-metrics-updater.tsx:166
 msgid "Unexpected error getting Rebalance data."
 msgstr ""
 
@@ -10779,7 +10843,7 @@ msgstr ""
 msgid "Unstaking RSR"
 msgstr ""
 
-#: src/components/account/index.tsx:50
+#: src/components/account/index.tsx:53
 msgid "Unsupported"
 msgstr ""
 
@@ -10811,7 +10875,7 @@ msgstr ""
 msgid "Update Auction Length"
 msgstr ""
 
-#: src/views/index-dtf/governance/views/propose/components/propose-index-upgrade.tsx:93
+#: src/views/index-dtf/governance/views/propose/components/propose-index-upgrade.tsx:96
 msgid "Update available"
 msgstr ""
 
@@ -10933,7 +10997,7 @@ msgstr ""
 msgid "Use connected wallet."
 msgstr ""
 
-#: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:168
+#: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:167
 #: src/views/index-dtf/issuance/panel-mode-switch.tsx:28
 msgid "Use Swap"
 msgstr ""
@@ -11029,7 +11093,7 @@ msgstr ""
 msgid "Version"
 msgstr ""
 
-#: src/views/index-dtf/governance/views/propose/components/propose-index-upgrade.tsx:96
+#: src/views/index-dtf/governance/views/propose/components/propose-index-upgrade.tsx:99
 msgid "Version 2.0.0 is now available. <0>View changelog</0>"
 msgstr ""
 
@@ -11416,7 +11480,7 @@ msgstr ""
 #: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/components/sections/propose-basket-governance.tsx:22
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/atoms.ts:148
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/sections/propose-dao-governance.tsx:34
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/atoms.ts:846
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/atoms.ts:868
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-governance-settings.tsx:32
 #: src/views/index-dtf/settings/components/index-settings-governance.tsx:82
 msgid "Voting Delay"
@@ -11452,7 +11516,7 @@ msgstr ""
 #: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/components/sections/propose-basket-governance.tsx:35
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/atoms.ts:157
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/sections/propose-dao-governance.tsx:47
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/atoms.ts:855
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/atoms.ts:877
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-governance-settings.tsx:45
 #: src/views/index-dtf/settings/components/index-settings-governance.tsx:88
 #: src/views/yield-dtf/governance/views/proposal-detail/components/proposal-timeline/TimelineItem.tsx:131
@@ -11505,7 +11569,7 @@ msgstr ""
 #: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/components/sections/propose-basket-governance.tsx:59
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/atoms.ts:176
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/sections/propose-dao-governance.tsx:71
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/atoms.ts:874
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/atoms.ts:896
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-governance-settings.tsx:69
 #: src/views/index-dtf/settings/components/index-settings-governance.tsx:100
 msgid "Voting Quorum"
@@ -11562,8 +11626,8 @@ msgstr ""
 msgid "Waiting for collateral"
 msgstr ""
 
-#: src/views/index-dtf/governance/views/propose/basket/components/submit-proposal-button.tsx:196
-#: src/views/index-dtf/governance/views/propose/components/propose-index-upgrade.tsx:118
+#: src/views/index-dtf/governance/views/propose/basket/components/submit-proposal-button.tsx:216
+#: src/views/index-dtf/governance/views/propose/components/propose-index-upgrade.tsx:121
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-governance-spell-31-03-2025.tsx:305
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-governance-spell-31-03-2025.tsx:431
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v4-upgrade.tsx:189
@@ -11571,7 +11635,7 @@ msgstr ""
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v5-upgrade.tsx:218
 #: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/components/submit-proposal-button.tsx:188
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/submit-proposal-button.tsx:186
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/submit-proposal-button.tsx:182
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/submit-proposal-button.tsx:189
 msgid "Waiting for confirmation..."
 msgstr ""
 
@@ -11671,7 +11735,7 @@ msgstr ""
 msgid "We're sorry, but the swap quote is unavailable. The amount may be too small to cover fees. Please <0>retry</0>, or <1>edit the amount</1>, and try again."
 msgstr ""
 
-#: src/views/index-dtf/overview/components/eligibility-card.tsx:176
+#: src/views/index-dtf/overview/components/eligibility-card.tsx:171
 msgid "We're sorry, this product isn't available to customers in your region. In order to access this DTF, you may need to qualify as a <0>qualified investor</0>."
 msgstr ""
 
@@ -11926,7 +11990,7 @@ msgstr ""
 msgid "Yes"
 msgstr ""
 
-#: src/views/explorer/components/governance/filters.tsx:55
+#: src/views/explorer/components/governance/filters.tsx:56
 #: src/views/index-dtf/overview/components/charts/data-type-selector.tsx:19
 #: src/views/yield-dtf/overview/components/backing/collateral-exposure.tsx:248
 msgid "Yield"
@@ -11979,12 +12043,12 @@ msgstr ""
 msgid "You can sell up to {maxAmountLabel} per transaction during {sessionLabel} hours in the US."
 msgstr ""
 
-#: src/views/index-dtf/deploy/steps/confirm-deploy/success/index.tsx:81
+#: src/views/index-dtf/deploy/steps/confirm-deploy/success/index.tsx:80
 msgid "You created {stTokenSymbol} DAO"
 msgstr ""
 
 #. placeholder {0}: form!.tokenName
-#: src/views/index-dtf/deploy/steps/confirm-deploy/success/index.tsx:86
+#: src/views/index-dtf/deploy/steps/confirm-deploy/success/index.tsx:85
 msgid "You created the {0} DTF"
 msgstr ""
 
@@ -11992,7 +12056,7 @@ msgstr ""
 msgid "You do not have enough funds to complete this transaction. Please try again with a smaller amount."
 msgstr ""
 
-#: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:191
+#: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:190
 msgid "You fund"
 msgstr ""
 
@@ -12004,7 +12068,7 @@ msgstr ""
 msgid "You may need to import it with the L2 contract address."
 msgstr ""
 
-#: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:197
+#: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:196
 msgid "You mint"
 msgstr ""
 
@@ -12012,7 +12076,7 @@ msgstr ""
 msgid "You mint:"
 msgstr ""
 
-#: src/views/index-dtf/deploy/steps/confirm-deploy/success/index.tsx:90
+#: src/views/index-dtf/deploy/steps/confirm-deploy/success/index.tsx:89
 msgid "You minted the {initialTokens} genesis tokens"
 msgstr ""
 
