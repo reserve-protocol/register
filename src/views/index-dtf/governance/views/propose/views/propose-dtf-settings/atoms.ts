@@ -5,6 +5,7 @@ import dtfIndexAbiV4 from '@/abis/dtf-index-abi-v4'
 import dtfIndexAbiV5 from '@/abis/dtf-index-abi'
 import timelockAbi from '@/abis/Timelock'
 import {
+  folioVersionAtom,
   indexDTFAtom,
   indexDTFBasketAtom,
   indexDTFBasketSharesAtom,
@@ -241,8 +242,29 @@ const BRAND_MANAGER_ROLE =
 const AUCTION_LAUNCHER_ROLE =
   '0x13ff1b2625181b311f257c723b5e6d366eb318b212d9dd694c48fcf227659df5' as const
 
+export type SettingsWriteBlock = 'pending' | 'unsupported' | 'v6'
+
+// The local encoders target the v1–v5 setters; Folio 6.0 replaced setAuctionLength and split fee recipients.
+const LOCAL_SETTINGS_MAJORS: readonly number[] = [1, 2, 4, 5]
+
+export const settingsWriteBlockAtom = atom<SettingsWriteBlock | undefined>(
+  (get) => {
+    const versionState = get(folioVersionAtom)
+    if (versionState.status === 'pending') return 'pending'
+    if (versionState.status === 'ready' && versionState.major === 6) return 'v6'
+    if (
+      versionState.status === 'ready' &&
+      LOCAL_SETTINGS_MAJORS.includes(versionState.major)
+    )
+      return undefined
+    return 'unsupported'
+  }
+)
+
 export const dtfSettingsProposalDataAtom = atom<ProposalData | undefined>(
   (get) => {
+    if (get(settingsWriteBlockAtom)) return undefined
+
     const isConfirmed = get(isProposalConfirmedAtom)
     const indexDTF = get(indexDTFAtom)
     const version = get(indexDTFVersionAtom)

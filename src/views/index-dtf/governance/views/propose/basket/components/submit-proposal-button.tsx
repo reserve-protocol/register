@@ -70,7 +70,7 @@ const ProposeGatekeeper = memo(() => {
     return (
       <Button
         disabled
-        className="w-full"
+        className="w-full h-auto min-h-10 whitespace-normal"
         variant="default"
         data-testid="basket-propose-v6-unavailable"
       >

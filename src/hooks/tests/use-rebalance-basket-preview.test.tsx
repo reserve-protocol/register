@@ -7,6 +7,7 @@ import { afterEach, describe, expect, it, vi } from 'vitest'
 import dtfIndexAbiV5 from '@/abis/dtf-index-abi'
 import dtfIndexAbiV4 from '@/abis/dtf-index-abi-v4'
 import { indexDTFVersionAtom } from '@/state/dtf/atoms'
+import { folioV6Abi, prepareContractCall } from '@reserve-protocol/react-sdk'
 import {
   computeSnapshotWeights,
   fetchSnapshotWeights,
@@ -74,6 +75,44 @@ describe('useDecodedRebalanceCalldata', () => {
     const { result } = renderHook(
       () => useDecodedRebalanceCalldata([calldata]),
       { wrapper: createWrapper('4.0.0') }
+    )
+
+    expect(result.current?.calldata.signature).toBe('startRebalance')
+    expect(result.current?.data.tokens).toEqual([TOKEN])
+    expect(result.current?.data.weights[0]).toMatchObject(WEIGHT_RANGE)
+    expect(result.current?.data.prices[0]).toMatchObject(PRICE_RANGE)
+    expect(result.current?.data.limits).toMatchObject(LIMITS)
+    expect(result.current?.data.auctionLauncherWindow).toBe(99n)
+    expect(result.current?.data.ttl).toBe(100n)
+  })
+
+  it('decodes SDK-built Folio 6.0 startRebalance calldata (nonce first, deadline last)', () => {
+    const call = prepareContractCall({
+      chainId: 1,
+      address: TOKEN,
+      abi: folioV6Abi,
+      functionName: 'startRebalance',
+      args: [
+        42n,
+        [
+          {
+            token: TOKEN,
+            weight: WEIGHT_RANGE,
+            price: PRICE_RANGE,
+            maxAuctionSize: 123n,
+            inRebalance: true,
+          },
+        ],
+        LIMITS,
+        99n,
+        100n,
+        1_900_000_000n,
+      ],
+    })
+
+    const { result } = renderHook(
+      () => useDecodedRebalanceCalldata([call.data]),
+      { wrapper: createWrapper('6.0.0') }
     )
 
     expect(result.current?.calldata.signature).toBe('startRebalance')

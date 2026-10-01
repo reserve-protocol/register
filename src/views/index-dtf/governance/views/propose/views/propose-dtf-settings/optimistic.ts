@@ -1,5 +1,6 @@
 import type { MessageDescriptor } from '@lingui/core'
 import { msg } from '@lingui/core/macro'
+import { INDEX_DTF_START_REBALANCE_SELECTOR } from '@reserve-protocol/react-sdk'
 import { parseEther, toFunctionSelector } from 'viem'
 import type { Address, Hex } from 'viem'
 
@@ -99,9 +100,8 @@ export const OPTIMISTIC_ACTIONS: OptimisticAction[] = [
     id: 'startRebalance',
     label: msg`Start rebalance`,
     description: msg`Allow optimistic proposals to start basket rebalances.`,
-    selector: toFunctionSelector(
-      'startRebalance((address,(uint256,uint256,uint256),(uint256,uint256),uint256,bool)[],(uint256,uint256,uint256),uint256,uint256)'
-    ),
+    // v5 selector only: Folio 6.0 settings writes are gated until they route through the SDK.
+    selector: INDEX_DTF_START_REBALANCE_SELECTOR['5.0.0'],
   },
   {
     id: 'setAuctionLength',

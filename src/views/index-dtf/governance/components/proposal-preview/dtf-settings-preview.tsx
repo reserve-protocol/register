@@ -22,6 +22,7 @@ import {
   Users,
   Wand2,
 } from 'lucide-react'
+import { INDEX_DTF_START_REBALANCE_SELECTOR } from '@reserve-protocol/react-sdk'
 import { Link } from 'react-router-dom'
 import { formatEther, toFunctionSelector, zeroHash } from 'viem'
 import type { Address, Hex } from 'viem'
@@ -31,9 +32,8 @@ const OPTIMISTIC_PROPOSER_ROLE =
   '0x26f49d08685d9cdd4951a7470bc8fbe9dd0f00419c1a44c1b89f845867ae12e0'
 
 const OPTIMISTIC_SELECTOR_LABELS: Record<string, MessageDescriptor> = {
-  [toFunctionSelector(
-    'startRebalance((address,(uint256,uint256,uint256),(uint256,uint256),uint256,bool)[],(uint256,uint256,uint256),uint256,uint256)'
-  )]: msg`Start rebalance`,
+  [INDEX_DTF_START_REBALANCE_SELECTOR['5.0.0']]: msg`Start rebalance`,
+  [INDEX_DTF_START_REBALANCE_SELECTOR['6.0.0']]: msg`Start rebalance (Folio 6.0)`,
   [toFunctionSelector('setAuctionLength(uint256)')]: msg`Auction length`,
   [toFunctionSelector('setBidsEnabled(bool)')]: msg`Permissionless bids`,
   [toFunctionSelector('setFeeRecipients((address,uint96)[])')]:
