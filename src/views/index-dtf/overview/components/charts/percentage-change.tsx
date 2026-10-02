@@ -48,13 +48,16 @@ const PercentageChange = ({
     <div
       className={cn('flex items-center gap-1', colorClass(change), className)}
     >
-      {wrap && '('}
+      {wrap && <span>(</span>}
       {change > 0 ? (
         <ArrowUp className="h-4 w-4" />
       ) : (
         <ArrowDown className="h-4 w-4" />
       )}
-      {change.toFixed(2)}%{wrap && ')'}
+      {/* WHY: bare text nodes next to the swapped icon crash React when browser translation wraps them */}
+      <span>
+        {change.toFixed(2)}%{wrap && ')'}
+      </span>
       <span className="ml-1">
         ({range === 'all' ? <Trans>All</Trans> : range})
       </span>
