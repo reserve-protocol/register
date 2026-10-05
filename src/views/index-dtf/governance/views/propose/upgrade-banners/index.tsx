@@ -1,14 +1,15 @@
 import ProposeV4Upgrade from './propose-v4-upgrade'
-import ProposeV5UpgradeOptimistic from './propose-v5-optimistic-upgrade'
+import ProposeOptimisticGovernanceUpgrade from './propose-optimistic-governance-upgrade'
+import ProposeRetireVoteLock from './propose-retire-vote-lock'
 import ProposeV5Upgrade from './propose-v5-upgrade'
 
 const UpgradeBanners = () => {
-
   return (
     <>
       <ProposeV4Upgrade />
       <ProposeV5Upgrade />
-      {/* <ProposeV5UpgradeOptimistic /> */}
+      <ProposeOptimisticGovernanceUpgrade />
+      <ProposeRetireVoteLock />
     </>
   )
 }

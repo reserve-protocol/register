@@ -28,6 +28,7 @@ time.
 | Propose flow — basket-settings (trading-gov params) | `e2e/tests/flows/governance-propose-basket-settings.spec.ts` (setVotingPeriod round-trip; phantom-threshold single-action + untouched-form-disabled regressions, live since E1) |
 | Proposal description markdown/XSS rendering | `e2e/tests/flows/governance-description-render.spec.ts` |
 | Queue/execute CTAs | `e2e/tests/flows/governance-queue-execute.spec.ts` + `flows/failures-governance.spec.ts` |
+| Governance migration (upgradeFolio banner, legacy-vault retire banner, vote-lock migration CTA/modal in `components/vote-lock-migration`) | `components/vote-lock-migration/tests/*.test.ts` (eligibility, old-vault discovery, stepper state) + the Base fork lane `e2e/fork/tests/optimistic-governance-upgrade.fork.spec.ts` (full UI flow on real contracts) |
 | Chain/version-gated behavior | `e2e/tests/flows/governance-multichain.spec.ts` (bsc v5 + mainnet v4) + `flows/governance-writes-v4.spec.ts` (v4 castVote/queue/execute calldata) |
 | Delegation UI | `e2e/tests/smoke/governance.spec.ts` (delegates section) |
 | Vote-lock card (claiming label, exchange rate) or drawer (lock/unlock quotes, redeem tx) | `e2e/tests/flows/vote-lock-drawer.spec.ts` + `governance/photon-featured.spec.ts` (card renders on the self-appreciating fixture) |
@@ -93,6 +94,8 @@ mapper dereferences — serve proposals ONLY through it or the list breaks).
   (`index-dtf/governance/fee-bounds.spec.ts`).
 
 ## Traps
+
+- Governance migration: after `upgradeFolio` the subgraph moves `stToken` to the vlRSR singleton; the old vault survives only behind `roles.admin.legacyGovernances` (`getOldVoteLocks` reads both). The retire banner's "still governed" list is the on-chain admin role, not the subgraph. Only RSR vote-lock vaults take part: the upgrade banner, the retire banner and the migration CTA all hide for a non-RSR vault (vlPMF, vlVIRTUAL…), whose holders would redeem a token vlRSR cannot take.
 
 - The auctions subgraph query is misnamed `getGovernanceStats` in
   `use-rebalance-auctions.ts` — body-matched in the mock BEFORE the real
