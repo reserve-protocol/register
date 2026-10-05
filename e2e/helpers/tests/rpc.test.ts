@@ -1,4 +1,4 @@
-import { decodeAbiParameters, encodeAbiParameters, encodeFunctionData, parseAbi } from 'viem'
+import { decodeAbiParameters, encodeAbiParameters, encodeFunctionData, keccak256, parseAbi, toHex } from 'viem'
 import { describe, expect, it, vi } from 'vitest'
 import { chainIdForUrl, handleRpcMethod, setYieldReplay, type RpcContext } from '../rpc'
 import { MockOverrides } from '../overrides'
@@ -503,6 +503,30 @@ describe('Folio admin-role reads for the vote-lock retire banner', () => {
   it('fails loud for any other account instead of granting roles blanket-wide', () => {
     const ctx = context()
     handleRpcMethod('eth_call', [{ to: lcap.address, data: hasRole(TEST_ADDRESS) }], ctx)
+    expect(ctx.log).toHaveBeenCalledWith('unmocked eth_call', expect.anything())
+  })
+})
+
+describe('Folio version registry reads for the 6.0.0 upgrade banner', () => {
+  const REGISTRY = '0xA665b273997F70b647B66fa7Ed021287544849dB'
+  const deployments = (version: string) =>
+    encodeFunctionData({
+      abi: parseAbi(['function deployments(bytes32) view returns (address)']),
+      functionName: 'deployments',
+      args: [keccak256(toHex(version))],
+    })
+
+  it('answers 6.0.0 as not registered, matching the chains today', () => {
+    const ctx = context()
+    const result = handleRpcMethod('eth_call', [{ to: REGISTRY, data: deployments('6.0.0') }], ctx) as `0x${string}`
+    expect(decodeAbiParameters([{ type: 'address' }], result)[0]).toBe(
+      '0x0000000000000000000000000000000000000000'
+    )
+  })
+
+  it('fails loud for any other version instead of inventing a deployment', () => {
+    const ctx = context()
+    handleRpcMethod('eth_call', [{ to: REGISTRY, data: deployments('7.0.0') }], ctx)
     expect(ctx.log).toHaveBeenCalledWith('unmocked eth_call', expect.anything())
   })
 })

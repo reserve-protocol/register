@@ -126,6 +126,19 @@ re-navigates instead of reloading. `fork-wallet.ts` pads gas estimates like a re
 fills the exact estimate and the legacy vault's `redeem` runs out of gas on nested calls. Use the
 Foundry `anvil`; an older one earlier on `PATH` rejects current `cast`/viem transaction fields.
 
+## The Register 6.0.0 upgrade lane (Base, MIDAS + ABX)
+
+`prepare-v6-upgrade.mjs` registers 6.0.0 in the Folio version registry by labelled impersonation of the
+RoleRegistry owner and picks a real voter per DTF; `upgrade-v6.fork.spec.ts` proposes from the banner and
+executes on the fork. MAG7 can't serve as the optimistic case: its basket tokens' code (`0xef`) is not
+executable on Anvil, so `totalAssets()` reverts and the DTF never loads.
+
+```bash
+FORK_RPC_URL_8453=http://127.0.0.1:8546 node e2e/fork/scripts/prepare-v6-upgrade.mjs
+PORT=18310 FORK_BLOCK=$(jq -r .forkBlock e2e/fork/.state/8453/v6-upgrade-scenario.json) UPSTREAM=<1.11.2-test base> node e2e/fork/scripts/subgraph-proxy.mjs &
+FORK_CHAIN_ID=8453 pnpm exec playwright test -c playwright.fork.config.ts e2e/fork/tests/upgrade-v6.fork.spec.ts
+```
+
 ## Archive RPC
 
 The Alchemy key in `.env` (`VITE_ALCHEMY`) is origin-allowlisted: Anvil must send the app origin or every
