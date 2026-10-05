@@ -111,10 +111,13 @@ const QuorumStat = ({
 
           <span className="text-legend whitespace-nowrap">
             {formatTokenAmount(currentQuorum)} <Trans>of</Trans>{' '}
+            {/* WHY: keyed spans so browser translation can't break the target swap */}
             {hasQuorumTarget ? (
-              formatTokenAmount(quorumNeeded)
+              <span key="target">{formatTokenAmount(quorumNeeded)}</span>
             ) : (
-              <Trans>Unavailable</Trans>
+              <span key="unavailable">
+                <Trans>Unavailable</Trans>
+              </span>
             )}
           </span>
         </div>
@@ -217,11 +220,14 @@ const ChallengeStat = ({
         <span className="text-base text-legend sm:text-lg">
           {formatTokenAmount(currentQuorum)} <Trans>of</Trans>{' '}
           {hasQuorumTarget ? (
-            formatTokenAmount(quorumNeeded)
+            <span key="target">
+              {`${formatTokenAmount(quorumNeeded)} (${formatPercentage(challengeProgress)})`}
+            </span>
           ) : (
-            <Trans>Unavailable</Trans>
+            <span key="unavailable">
+              <Trans>Unavailable</Trans>
+            </span>
           )}
-          {hasQuorumTarget && ` (${formatPercentage(challengeProgress)})`}
         </span>
       </div>
       <div className="h-2 rounded-full bg-gray-100">

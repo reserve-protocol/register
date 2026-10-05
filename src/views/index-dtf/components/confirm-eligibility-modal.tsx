@@ -13,9 +13,11 @@ import {
 } from '@/components/ui/dialog'
 import useComplianceRestrictions from '@/hooks/use-compliance-restrictions'
 import useDtfHasOndoAssets from '@/hooks/use-dtf-has-ondo-assets'
+import useTurnstile from '@/hooks/use-turnstile'
 import { trackEligibilityConfirmed } from '@/hooks/useTrackPage'
 import { walletAtom } from '@/state/atoms'
 import { indexDTFAtom } from '@/state/dtf/atoms'
+import { FORMS_TURNSTILE_SITE_KEY, RESERVE_API } from '@/utils/constants'
 import { Trans, useLingui } from '@lingui/react/macro'
 import { useAtomValue } from 'jotai'
 import { ChevronDown, Scale } from 'lucide-react'
@@ -26,8 +28,7 @@ const ELIGIBILITY_STORAGE_KEY = 'reserve:index-dtf-eligibility:v3'
 // v2 stored one entry per (chainId, dtf, wallet); superseded by wallet-wide
 // consent but still read so existing confirmations carry over.
 const LEGACY_ELIGIBILITY_STORAGE_KEY = 'reserve:index-dtf-eligibility:v2'
-const STORAGE_URL = import.meta.env.VITE_STORAGE_URL || ''
-const ELIGIBILITY_CONFIRMATION_API = `${STORAGE_URL}confirm-eligibility`
+const ELIGIBILITY_CONFIRMATION_API = `${RESERVE_API}forms/eligibility/confirm`
 // Version tag of the legal copy the user attests to; bump when the terms or
 // the attestation checkboxes change.
 const ELIGIBILITY_TERMS_VERSION = '2026-06'
@@ -80,13 +81,16 @@ const readEligibilityConfirmations = (): Set<string> => {
 }
 
 // Fire-and-forget mirror of the confirmation into our own store; localStorage
-// is the UX source of truth, so a failed POST never blocks or retries.
+// is the UX source of truth, so neither a failed POST nor a missing bot-check
+// token ever blocks the attestation.
 const postEligibilityConfirmation = (payload: {
   wallet: Address
   dtf: Address
   chainId: number
   ticker: string
+  turnstileToken: string | null
 }) => {
+  if (!payload.turnstileToken) return
   fetch(ELIGIBILITY_CONFIRMATION_API, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -102,6 +106,7 @@ const postEligibilityConfirmation = (payload: {
         tokenizedStocks: true,
       },
       termsVersion: ELIGIBILITY_TERMS_VERSION,
+      turnstileToken: payload.turnstileToken,
     }),
   }).catch(() => {})
 }
@@ -145,8 +150,13 @@ const EligibilityCheck = ({
   </div>
 )
 
-const EligibilityDialog = ({ onConfirm }: { onConfirm: () => void }) => {
+const EligibilityDialog = ({
+  onConfirm,
+}: {
+  onConfirm: (turnstileToken: string | null) => void
+}) => {
   const { t } = useLingui()
+  const turnstile = useTurnstile(FORMS_TURNSTILE_SITE_KEY, 'confirm-eligibility')
   const [acceptedTerms, setAcceptedTerms] = useState(false)
   const [confirmedJurisdiction, setConfirmedJurisdiction] = useState(false)
   const [confirmedTokenizedStocks, setConfirmedTokenizedStocks] =
@@ -157,7 +167,7 @@ const EligibilityDialog = ({ onConfirm }: { onConfirm: () => void }) => {
 
   const handleConfirm = () => {
     if (!canConfirm) return
-    onConfirm()
+    onConfirm(turnstile.token)
   }
 
   return (
@@ -258,6 +268,7 @@ const EligibilityDialog = ({ onConfirm }: { onConfirm: () => void }) => {
           </EligibilityCheck>
         </div>
 
+        <div ref={turnstile.containerRef} />
         <Button
           className="w-full rounded-2xl"
           size="lg"
@@ -311,7 +322,7 @@ const ConfirmEligibilityModal = () => {
 
   if (!shouldShow || !eligibilityKey) return null
 
-  const handleConfirm = () => {
+  const handleConfirm = (turnstileToken: string | null) => {
     writeEligibilityConfirmation(eligibilityKey)
     setConfirmedKeys((prev) => new Set(prev).add(eligibilityKey))
     if (wallet && dtf) {
@@ -326,6 +337,7 @@ const ConfirmEligibilityModal = () => {
         dtf: dtf.id,
         chainId: dtf.chainId,
         ticker: dtf.token.symbol,
+        turnstileToken,
       })
     }
   }
