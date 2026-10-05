@@ -1,4 +1,5 @@
 import { indexDTFAtom } from '@/state/dtf/atoms'
+import { INDEX_DTF_UPGRADE_SPELL_6_0_0_ADDRESS } from '@reserve-protocol/react-sdk'
 import { atom } from 'jotai'
 import {
   spellAddress as governanceSpell_31_03_2025Address,
@@ -54,6 +55,14 @@ export const dtfContractAliasAtom = atom((get) => {
 
   if (v5SpellAddress[dtf.chainId]) {
     aliasMapping[v5SpellAddress[dtf.chainId].toLowerCase()] = 'V5 Upgrade Spell'
+  }
+
+  const upgradeSpell600 =
+    INDEX_DTF_UPGRADE_SPELL_6_0_0_ADDRESS[
+      dtf.chainId as keyof typeof INDEX_DTF_UPGRADE_SPELL_6_0_0_ADDRESS
+    ]
+  if (upgradeSpell600) {
+    aliasMapping[upgradeSpell600.toLowerCase()] = 'Upgrade Spell 6.0.0'
   }
 
   if (governanceSpellAddress[dtf.chainId]) {
