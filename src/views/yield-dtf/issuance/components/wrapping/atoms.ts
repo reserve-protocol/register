@@ -102,7 +102,7 @@ const wrapableCollateralsAtom = atom((get) => {
   const chainId = get(chainIdAtom)
   const plugins: { [x: string]: CollateralPlugin } = {}
 
-  for (const c of collateralPlugins[chainId]) {
+  for (const c of collateralPlugins[chainId] ?? []) {
     if (c.protocol !== 'GENERIC') {
       plugins[c.symbol] = c
     }
