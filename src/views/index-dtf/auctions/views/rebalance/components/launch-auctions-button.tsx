@@ -37,7 +37,10 @@ import { toIndexDtfWriteVersion } from '../utils/transforms'
 import useLaunchPreflight, {
   LAUNCH_BLOCKER_MESSAGES,
 } from '../hooks/use-launch-preflight'
-import type { LaunchBlocker } from '../utils/launch-readiness'
+import {
+  isPriceSnapshotStale,
+  type LaunchBlocker,
+} from '../utils/launch-readiness'
 import useLaunchReceipt from '../hooks/use-launch-receipt'
 import useRebalanceAuctionLength from '../hooks/use-rebalance-auction-length'
 import { TransactionButtonContainer } from '@/components/ui/transaction'
@@ -54,7 +57,11 @@ const LaunchAuctionsButton = () => {
   const rebalancePercent = useAtomValue(rebalancePercentAtom)
   const priceVolatility = useAtomValue(priceVolatilityAtom)
   const rebalanceParams = useRebalanceParams()
-  const { isError: isPriceError } = useRebalancePrices()
+  const {
+    isError: isPriceError,
+    dataUpdatedAt: pricesUpdatedAt,
+    refetch: refetchPrices,
+  } = useRebalancePrices()
   const auctionNumber = useAtomValue(auctionNumberAtom)
   const identity = useIndexDtfIdentity()
   const versionState = useAtomValue(folioVersionAtom)
@@ -160,10 +167,16 @@ const LaunchAuctionsButton = () => {
     setBlocker(undefined)
     try {
       const pageNonce = BigInt(rebalance.rebalance.nonce)
-      // The args carry the render-time params' nonce; a re-read that just moved it needs a fresh render first.
+      const pricesStale = isPriceSnapshotStale(pricesUpdatedAt, Date.now())
+      if (pricesStale) void refetchPrices()
+      // The args carry the render-time params (nonce, balances, length, prices); any re-read that moved them needs a fresh render first.
       const found =
-        (await revalidate(pageNonce)) ??
-        (rebalanceParams.rebalance.nonce !== pageNonce
+        (await revalidate(pageNonce, {
+          supply: rebalanceParams.supply,
+          currentAssets: rebalanceParams.currentAssets,
+          auctionLength,
+        })) ??
+        (rebalanceParams.rebalance.nonce !== pageNonce || pricesStale
           ? 'state-refreshed'
           : undefined)
       if (found) {

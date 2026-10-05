@@ -62,3 +62,25 @@ export const getLaunchBlocker = ({
     return 'cooldown'
   return undefined
 }
+
+export type AuctionSizing = {
+  supply: bigint
+  currentAssets: Record<string, bigint>
+  auctionLength?: bigint
+}
+
+// The launcher sizes openAuction from the page's reads; a re-read that moved any of them needs a fresh render first.
+export const hasSizingDrift = (page: AuctionSizing, live: AuctionSizing) => {
+  if (page.supply !== live.supply) return true
+  if (page.auctionLength !== live.auctionLength) return true
+  const pageTokens = Object.keys(page.currentAssets)
+  if (pageTokens.length !== Object.keys(live.currentAssets).length) return true
+  return pageTokens.some(
+    (token) => page.currentAssets[token] !== live.currentAssets[token]
+  )
+}
+
+export const PRICE_MAX_AGE_MS = 60_000
+
+export const isPriceSnapshotStale = (updatedAt: number, now: number) =>
+  updatedAt === 0 || now - updatedAt > PRICE_MAX_AGE_MS

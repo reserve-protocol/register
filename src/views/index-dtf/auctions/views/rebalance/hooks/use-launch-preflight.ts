@@ -7,12 +7,15 @@ import {
 } from '@reserve-protocol/react-sdk'
 import { useAtomValue } from 'jotai'
 import {
+  type AuctionSizing,
   getLaunchBlocker,
+  hasSizingDrift,
   type LaunchBlocker,
   type LaunchMode,
   type RebalanceWindow,
 } from '../utils/launch-readiness'
 import { getRebalanceTimestamps } from '../utils/transforms'
+import useRebalanceAuctionLength from './use-rebalance-auction-length'
 import useRebalanceCurrentData, {
   type RebalanceCurrentData,
 } from './use-rebalance-current-data'
@@ -37,24 +40,40 @@ const useLaunchPreflight = (mode: LaunchMode) => {
   const latestAuction = useIndexDtfLatestAuction(
     isSdkVersion && identity.address ? identity : undefined
   )
+  const auctionLength = useRebalanceAuctionLength()
 
   const revalidate = async (
-    expectedNonce: bigint
+    expectedNonce: bigint,
+    pageSizing?: AuctionSizing
   ): Promise<LaunchBlocker | undefined> => {
-    const [live, latest] = await Promise.all([
+    const [live, latest, length] = await Promise.all([
       currentRebalance.refetch(),
       isSdkVersion ? latestAuction.refetch() : undefined,
+      pageSizing?.auctionLength !== undefined
+        ? auctionLength.refetch()
+        : undefined,
     ])
     if (latest && (latest.isError || latest.data === undefined))
       return 'live-state-unavailable'
+    if (length && (length.isError || length.data === undefined))
+      return 'live-state-unavailable'
 
-    return getLaunchBlocker({
+    const blocker = getLaunchBlocker({
       mode,
       window: live.isError ? undefined : toWindow(live.data),
       expectedNonce,
       latestAuction: latest?.data,
       now: BigInt(Math.floor(Date.now() / 1000)),
     })
+    if (blocker || !pageSizing || !live.data) return blocker
+
+    return hasSizingDrift(pageSizing, {
+      supply: live.data.supply,
+      currentAssets: live.data.currentAssets,
+      auctionLength: length?.data,
+    })
+      ? 'state-refreshed'
+      : undefined
   }
 
   return {

@@ -11,7 +11,7 @@ const useRebalanceAuctionLength = () => {
   const identity = useIndexDtfIdentity()
   const versionState = useAtomValue(folioVersionAtom)
   const isV6 = versionState.status === 'ready' && versionState.major === 6
-  const { data, isError } = useIndexDtfMaxAuctionLength(
+  const { data, isError, refetch } = useIndexDtfMaxAuctionLength(
     isV6 && identity.address ? identity : undefined,
     {
       refetchInterval: (query) =>
@@ -23,6 +23,7 @@ const useRebalanceAuctionLength = () => {
     auctionLength: isV6 ? data : undefined,
     isReady: !isV6 || (data !== undefined && !isError),
     isError: isV6 && isError,
+    refetch,
   }
 }
 

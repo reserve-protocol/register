@@ -142,7 +142,11 @@ Quick loop: `pnpm exec playwright test e2e/tests/smoke/auctions.spec.ts`
   launch button.
 - Launch readiness never trusts a cached read: both buttons close on any live
   read error (current rebalance, latest auction, v6 `maxAuctionLength`) and
-  re-read nonce/window/latest auction right before `writeContract` (community
+  re-read nonce/window/latest auction right before `writeContract`; the launcher
+  also refuses (`state-refreshed`) when the re-read moved supply, basket balances
+  or the v6 `maxAuctionLength`, or its prices are over a minute old, because
+  `openAuction` is sized from the page's reads (`hasSizingDrift` /
+  `isPriceSnapshotStale` in `utils/launch-readiness.ts`) (community
   also honours Folio's 120 s unrestricted buffer after the rebalance start and
   the last auction's end — `cooldown` in `utils/launch-readiness.ts`; the
   refused reason lands on the button as `data-blocker`). Errored live reads keep
