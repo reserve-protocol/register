@@ -43,7 +43,15 @@ export async function installForkWallet(page: Page, config: ForkWalletConfig) {
               return null
             case 'eth_sendTransaction': {
               const [tx] = (params ?? []) as [Record<string, unknown>]
-              return forward('eth_sendTransaction', [{ ...tx, from: address }])
+              const request: Record<string, unknown> = { ...tx, from: address }
+              // Real wallets pad their estimate; Anvil fills the exact one and starves nested calls (63/64 rule).
+              if (!request.gas) {
+                const estimate = BigInt(
+                  (await forward('eth_estimateGas', [request])) as string
+                )
+                request.gas = '0x' + ((estimate * 3n) / 2n).toString(16)
+              }
+              return forward('eth_sendTransaction', [request])
             }
             default:
               return forward(method, params)

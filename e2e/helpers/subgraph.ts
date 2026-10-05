@@ -41,6 +41,13 @@ function ensureAllLoaded() {
   for (const dtf of REGISTRY) ensureLoaded(dtf)
 }
 
+type VoteLockDependentSnapshot = {
+  token: { symbol: string; name: string }
+  stToken?: { id: string }
+  ownerGovernance?: { timelock?: { id: string } }
+  tradingGovernance?: { timelock?: { id: string } }
+}
+
 function dtfForAddress(address: string): RegistryDTF | undefined {
   const dtf = findDtfByAddress(address)
   if (dtf) ensureLoaded(dtf)
@@ -353,6 +360,30 @@ export function resolveIndexQuery(
   // registry vote-locks govern extra DTFs, so empty is the truthful default.
   if (op === 'GetGovernedDtfs') {
     return { data: { dtfs: [] } }
+  }
+
+  // Retire banner: DTFs governed through a vault, from the captured (pre-migration) metadata; legacy governors vote with the DTF's stToken.
+  if (op === 'GetIndexDtfVoteLockDependents') {
+    const voteLock = String(vars.voteLock ?? '').toLowerCase()
+    const dtfs = REGISTRY.flatMap((dtf) => {
+      const meta = loadSnapshot<{ dtf: VoteLockDependentSnapshot }>(
+        `${dtf.snapshotDir}/dtf.json`
+      ).dtf
+      if (meta.stToken?.id.toLowerCase() !== voteLock) return []
+      const governance = (ref?: { timelock?: { id: string } }) =>
+        ref?.timelock
+          ? { token: { id: voteLock }, timelock: { id: ref.timelock.id } }
+          : null
+      return [
+        {
+          id: dtf.address.toLowerCase(),
+          token: { symbol: meta.token.symbol, name: meta.token.name },
+          ownerGovernance: governance(meta.ownerGovernance),
+          tradingGovernance: governance(meta.tradingGovernance),
+        },
+      ]
+    })
+    return { data: { dtfs } }
   }
 
   // Delegates panel — deterministic empty (no staking token context). Specs

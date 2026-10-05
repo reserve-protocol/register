@@ -479,3 +479,30 @@ describe('address-specific protocol versions', () => {
     expect(readVersion(v4.address, v4.chainId)).toBe('4.0.0')
   })
 })
+
+describe('Folio admin-role reads for the vote-lock retire banner', () => {
+  const lcap = findDtfByAddress('0x4dA9A0f397dB1397902070f93a4D6ddBC0E0E6e8')!
+  const ownerTimelock = '0x98e702320f055c1073f9cee2b93f46c9715bc32d'
+  const hasRole = (account: string) =>
+    encodeFunctionData({
+      abi: parseAbi(['function hasRole(bytes32,address) view returns (bool)']),
+      functionName: 'hasRole',
+      args: [`0x${'0'.repeat(64)}`, account as `0x${string}`],
+    })
+
+  it('answers true only for the captured owner timelock as DEFAULT_ADMIN', () => {
+    const ctx = context()
+    const result = handleRpcMethod(
+      'eth_call',
+      [{ to: lcap.address, data: hasRole(ownerTimelock) }],
+      ctx
+    ) as `0x${string}`
+    expect(decodeAbiParameters([{ type: 'bool' }], result)[0]).toBe(true)
+  })
+
+  it('fails loud for any other account instead of granting roles blanket-wide', () => {
+    const ctx = context()
+    handleRpcMethod('eth_call', [{ to: lcap.address, data: hasRole(TEST_ADDRESS) }], ctx)
+    expect(ctx.log).toHaveBeenCalledWith('unmocked eth_call', expect.anything())
+  })
+})

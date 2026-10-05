@@ -198,3 +198,27 @@ describe('explorer aggregation branches (shape guards)', () => {
     expect(log).not.toHaveBeenCalled()
   })
 })
+
+describe('vote-lock dependents (retire banner)', () => {
+  const dependents = (voteLock: string) =>
+    resolveIndexQuery(
+      JSON.stringify({
+        operationName: 'GetIndexDtfVoteLockDependents',
+        variables: { voteLock },
+      }),
+      vi.fn()
+    ) as { data?: { dtfs: { id: string }[] } }
+
+  it("lists the DTF whose captured vault matches, with its owner timelock", () => {
+    const res = dependents('0x45a96cd0e4d89a41eebf3cc4204b00b1cf1582fa')
+    expect(res.data?.dtfs.map(({ id }) => id)).toContain(
+      base.address.toLowerCase()
+    )
+  })
+
+  it('answers no DTFs for a vault no captured DTF votes with', () => {
+    expect(dependents('0x00000000000000000000000000000000deadbeef').data).toEqual({
+      dtfs: [],
+    })
+  })
+})

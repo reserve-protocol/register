@@ -102,6 +102,30 @@ FORK_RPC_URL_56=http://127.0.0.1:8547 E2E_EVIDENCE_DIR=$PWD/temp/evidence/fork-5
 Impersonating the launcher is labelled as such in the manifest and the evidence; it proves
 Register's write path and the RPC-first refresh, not governance coverage.
 
+## The Register governance-upgrade lane (Base, LCAP)
+
+Plain Anvil on :8546 (no Docker stack) plus the subgraph proxy on :18310. The v6 SDK needs the
+1.11.x Index subgraph fields, so the proxy upstream is the `1.11.2-test` deployment until `prod`
+is promoted. `prepare-optimistic-governance.mjs` replays the protocol prerequisites by labelled
+impersonation (VersionRegistry `registerVersion` of the 1.1.0 deployer, vlRSR singleton upgrade
+to 1.1.0) and picks a real LCAP voter that clears threshold and quorum.
+
+```bash
+anvil --port 8546 --chain-id 8453 --fork-url https://base-mainnet.g.alchemy.com/v2/<key> &
+FORK_RPC_URL_8453=http://127.0.0.1:8546 node e2e/fork/scripts/prepare-optimistic-governance.mjs
+PORT=18310 FORK_BLOCK=$(jq -r .forkBlock e2e/fork/.state/8453/optimistic-governance-scenario.json) \
+  UPSTREAM=https://api.goldsky.com/api/public/project_cmgzim3e100095np2gjnbh6ry/subgraphs/dtf-index-base/1.11.2-test/gn \
+  node e2e/fork/scripts/subgraph-proxy.mjs &
+FORK_CHAIN_ID=8453 pnpm exec playwright test -c playwright.fork.config.ts e2e/fork/tests/optimistic-governance-upgrade.fork.spec.ts
+```
+
+The spec drives the whole migration from the UI (upgrade banner → retire banner → overview
+migration modal) and mutates the fork: restart Anvil and re-run the prepare script before the next
+run. After a proposal is created Register navigates to its (unindexed) detail page, so the spec
+re-navigates instead of reloading. `fork-wallet.ts` pads gas estimates like a real wallet: Anvil
+fills the exact estimate and the legacy vault's `redeem` runs out of gas on nested calls. Use the
+Foundry `anvil`; an older one earlier on `PATH` rejects current `cast`/viem transaction fields.
+
 ## Adding a new fork-backed suite
 
 1. Decide the lane: SDK runner (no browser) or Register browser. Browser cases use the future

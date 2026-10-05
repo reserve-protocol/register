@@ -8,6 +8,7 @@ import { defineConfig, devices } from '@playwright/test'
 // scripts warm them.
 //
 //   FORK_CHAIN_ID=56 → BSC fork stack in e2e/fork/docker (CMC20 launcher lane)
+//   FORK_CHAIN_ID=8453 → Base Anvil :8546 + subgraph-proxy :18310 (LCAP governance upgrade lane)
 //   FORK_CHAIN_ID=1  → the protocol sandbox (index-subgraph/.fork): Anvil :8545,
 //                      fork subgraph :18000 (native 6.0.0 stack lane)
 const HOST = '127.0.0.1'
@@ -16,6 +17,7 @@ const baseURL = `http://${HOST}:${PORT}`
 const chainId = process.env.FORK_CHAIN_ID ?? '56'
 const defaults: Record<string, { rpc: string; subgraph: string }> = {
   '56': { rpc: 'http://127.0.0.1:8547', subgraph: 'http://127.0.0.1:18300' },
+  '8453': { rpc: 'http://127.0.0.1:8546', subgraph: 'http://127.0.0.1:18310' },
   '1': {
     rpc: 'http://127.0.0.1:8545',
     subgraph: 'http://127.0.0.1:18000/subgraphs/name/dtf-index-subgraph-fork',
