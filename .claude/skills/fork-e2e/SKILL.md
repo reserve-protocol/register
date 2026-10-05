@@ -126,6 +126,19 @@ re-navigates instead of reloading. `fork-wallet.ts` pads gas estimates like a re
 fills the exact estimate and the legacy vault's `redeem` runs out of gas on nested calls. Use the
 Foundry `anvil`; an older one earlier on `PATH` rejects current `cast`/viem transaction fields.
 
+## Archive RPC
+
+The Alchemy key in `.env` (`VITE_ALCHEMY`) is origin-allowlisted: Anvil must send the app origin or every
+fork read fails with "Unspecified origin not on whitelist". BNB is enabled on it, so the CMC20 lane forks
+Alchemy directly (public BSC endpoints rate-limit mid-spec):
+
+```bash
+anvil --port 8547 --chain-id 56 --fork-block-number 119967348 \
+  --fork-url https://bnb-mainnet.g.alchemy.com/v2/<key> --fork-header "Origin: https://app.reserve.org"
+```
+
+Use the same `--fork-header` for the Base lane.
+
 ## Adding a new fork-backed suite
 
 1. Decide the lane: SDK runner (no browser) or Register browser. Browser cases use the future
