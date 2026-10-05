@@ -180,7 +180,11 @@ const IndexCTAsOverviewMobile = () => {
         }}
       >
         <MessageCircle className="h-4 w-4" />
-        {!isOverviewPage && <Trans>Ask Reserve AI</Trans>}
+        {!isOverviewPage && (
+          <span>
+            <Trans>Ask Reserve AI</Trans>
+          </span>
+        )}
       </Button>
     </div>
   )

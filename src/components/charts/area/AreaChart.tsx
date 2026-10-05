@@ -67,8 +67,7 @@ const Gain = ({ data }: { data?: ChartData }) => {
       {gain >= 0.01 && <ArrowUp strokeWidth={1.2} />}
       {gain < 0 && <ArrowDown strokeWidth={1.2} />}
       <span className="ml-2 font-bold">
-        {gain >= 0.01 && '+'}
-        {formatCurrency(gain)}%
+        {`${gain >= 0.01 ? '+' : ''}${formatCurrency(gain)}%`}
       </span>
     </div>
   )
