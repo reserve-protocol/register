@@ -4,6 +4,7 @@ import { connectWallet, expect, test } from '../../fixtures/wallet'
 import type { MockOverrides } from '../../helpers/overrides'
 import { dtfPath, findDtfByAddress } from '../../helpers/registry'
 import {
+  zapSubmit,
   fillAmountAwaitQuote,
   formatZapOutput,
   loadZapSnapshot,
@@ -96,7 +97,7 @@ test.describe('restricted region', () => {
     await expect(page.getByTestId('compliance-alert')).toBeVisible()
     await expect(widget).toHaveAttribute('data-restricted', 'true')
     await expect(widget.locator('input[inputmode="decimal"]:not([disabled])')).toHaveCount(0)
-    await expect(widget.locator('button').last()).toBeDisabled()
+    await expect(zapSubmit(widget)).toBeDisabled()
     expect(txLog).toEqual([])
   })
 })
@@ -122,7 +123,7 @@ test.describe('per-DTF VPN restriction', () => {
     await expect(page.getByTestId('compliance-alert')).toBeVisible()
     await expect(widget).toHaveAttribute('data-restricted', 'true')
     await expect(widget.locator('input[inputmode="decimal"]:not([disabled])')).toHaveCount(0)
-    await expect(widget.locator('button').last()).toBeDisabled()
+    await expect(zapSubmit(widget)).toBeDisabled()
     expect(txLog).toEqual([])
   })
 })
@@ -141,6 +142,6 @@ test.describe('unrestricted (default)', () => {
     await expect(page.getByTestId('dtf-issuance')).toBeVisible()
     await expect(page.getByTestId('compliance-alert')).toHaveCount(0)
     await expect(widget).toHaveAttribute('data-restricted', 'false')
-    await expect(widget.locator('button').last()).toBeEnabled()
+    await expect(zapSubmit(widget)).toBeEnabled()
   })
 })

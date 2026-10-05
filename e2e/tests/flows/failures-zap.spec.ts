@@ -4,6 +4,7 @@ import { connectWallet, expect, test } from '../../fixtures/wallet'
 import type { MockOverrides } from '../../helpers/overrides'
 import { dtfPath, findDtfByAddress } from '../../helpers/registry'
 import {
+  zapSubmit,
   fillAmountAwaitQuote,
   flipZapDirection,
   formatZapOutput,
@@ -102,7 +103,7 @@ async function enterAmountAndQuote(
   outputPrefix: string
 ) {
   await fillAmountAwaitQuote(panel, amount, outputPrefix)
-  return panel.locator('button').last()
+  return zapSubmit(panel)
 }
 
 // ---------------------------------------------------------------------------
