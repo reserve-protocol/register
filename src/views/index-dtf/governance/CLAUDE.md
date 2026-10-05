@@ -23,11 +23,13 @@ time.
 | Proposal detail, state banners/CTAs | `e2e/tests/flows/governance-states.spec.ts` |
 | Vote UI/submission | `e2e/tests/flows/governance-vote.spec.ts` + `flows/failures-governance.spec.ts` (reject/revert) + `index-dtf/governance/vote-modal-long-title.spec.ts` (modal layout) |
 | Propose flow — DAO settings | `e2e/tests/flows/governance-propose.spec.ts` |
-| Propose flow — fees (dtf-settings) | `e2e/tests/flows/governance-propose-dtf-settings.spec.ts` (fee calldata round-trip) |
+| Propose flow — fees (dtf-settings) | `e2e/tests/flows/governance-propose-dtf-settings.spec.ts` (fee calldata round-trip; Folio 6.0 shows `settings-propose-v6-unavailable` and never submits) + `propose-dtf-settings/tests/settings-version-gate.test.ts` (no calldata for 6.0, pending or unknown versions) |
 | Propose flow — basket | `e2e/tests/flows/governance-propose-basket.spec.ts` (form + guards; full submit blocked on golden `startRebalance` fixture) |
 | Propose flow — basket-settings (trading-gov params) | `e2e/tests/flows/governance-propose-basket-settings.spec.ts` (setVotingPeriod round-trip; phantom-threshold single-action + untouched-form-disabled regressions, live since E1) |
 | Proposal description markdown/XSS rendering | `e2e/tests/flows/governance-description-render.spec.ts` |
 | Queue/execute CTAs | `e2e/tests/flows/governance-queue-execute.spec.ts` + `flows/failures-governance.spec.ts` |
+| Governance migration (upgradeFolio banner, legacy-vault retire banner, vote-lock migration CTA/modal in `components/vote-lock-migration`) | `components/vote-lock-migration/tests/*.test.ts` (eligibility, old-vault discovery, stepper state) + the Base fork lane `e2e/fork/tests/optimistic-governance-upgrade.fork.spec.ts` (full UI flow on real contracts) |
+| Folio 6.0.0 upgrade banner (`upgrade-banners/propose-v6-upgrade.tsx` + `v6-upgrade.ts`: 5.0.0 only, registered + live 6.0.0 via the ProxyAdmin's version registry, standard `propose` with the SDK's spell calls, legacy hidden while the governance migration is pending, optimistic blocked without a selector registry) | `upgrade-banners/tests/v6-upgrade.test.ts` (eligibility + exact call encoding for both topologies) + the Base fork lane `e2e/fork/tests/upgrade-v6.fork.spec.ts` (MIDAS optimistic, ABX legacy, executed on the fork) |
 | Chain/version-gated behavior | `e2e/tests/flows/governance-multichain.spec.ts` (bsc v5 + mainnet v4) + `flows/governance-writes-v4.spec.ts` (v4 castVote/queue/execute calldata) |
 | Delegation UI | `e2e/tests/smoke/governance.spec.ts` (delegates section) |
 | Vote-lock card (claiming label, exchange rate) or drawer (lock/unlock quotes, redeem tx) | `e2e/tests/flows/vote-lock-drawer.spec.ts` + `governance/photon-featured.spec.ts` (card renders on the self-appreciating fixture) |
@@ -94,6 +96,8 @@ mapper dereferences — serve proposals ONLY through it or the list breaks).
 
 ## Traps
 
+- Governance migration: after `upgradeFolio` the subgraph moves `stToken` to the vlRSR singleton; the old vault survives only behind `roles.admin.legacyGovernances` (`getOldVoteLocks` reads both). The retire banner's "still governed" list is the on-chain admin role, not the subgraph. Only RSR vote-lock vaults take part: the upgrade banner, the retire banner and the migration CTA all hide for a non-RSR vault (vlPMF, vlVIRTUAL…), whose holders would redeem a token vlRSR cannot take.
+
 - The auctions subgraph query is misnamed `getGovernanceStats` in
   `use-rebalance-auctions.ts` — body-matched in the mock BEFORE the real
   governance branch. Renaming it requires updating `e2e/helpers/subgraph.ts`.
@@ -110,6 +114,13 @@ mapper dereferences — serve proposals ONLY through it or the list breaks).
   is a fixed 420px box, so its title needs `[overflow-wrap:anywhere]` — plain
   `break-words` does not shrink a flex item's min-content width, and the
   overflow pushes the checkboxes and separators outside the dialog.
+- Folio 6.0 settings writes are gated (`settingsWriteBlockAtom`): the local
+  encoders emit `setAuctionLength` and one-table `setFeeRecipients`, neither
+  of which exists on 6.0 (it has `setMaxAuctionLength` and two recipient
+  tables). Lift the gate only by routing settings through the SDK's
+  version-aware builders, including the v6 optimistic selectors
+  (`INDEX_DTF_START_REBALANCE_SELECTOR['6.0.0']`); don't add a 6.0 branch to
+  the atom encoder.
 - ERC-6372 `clock()` is mocked (timestamp mode); governor deadline math
   breaks silently if a new read bypasses the frozen clock.
 - Threshold change-detection MUST go through the shared

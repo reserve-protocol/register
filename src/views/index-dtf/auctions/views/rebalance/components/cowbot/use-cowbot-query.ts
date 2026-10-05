@@ -58,10 +58,13 @@ export const useCowbotQuery = ({ config, client }: UseCowbotQueryProps) => {
   } = config
 
   const isSupportedChain = SUPPORTED_CHAINS.includes(chainId as SupportedChainId)
+  // Fork e2e lane: the bot would post real CoW orders for fork-only DTFs.
+  const isDisabledByEnv = import.meta.env.VITE_DISABLE_COWBOT === 'true'
 
   // Should the query run?
   const shouldRun =
     enabled &&
+    !isDisabledByEnv &&
     isAuctionActive &&
     !isListedDTF &&
     isSupportedChain &&

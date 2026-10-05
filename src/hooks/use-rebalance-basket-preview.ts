@@ -11,6 +11,10 @@ import { DecodedCalldata, Token } from '@/types'
 import { calculatePriceFromRange } from '@/utils'
 import { RESERVE_API } from '@/utils/constants'
 import { getTargetBasket } from '@reserve-protocol/dtf-rebalance-lib'
+import {
+  folioV6Abi,
+  INDEX_DTF_START_REBALANCE_SELECTOR,
+} from '@reserve-protocol/react-sdk'
 import { useQuery } from '@tanstack/react-query'
 import { atom, useAtomValue } from 'jotai'
 import { useMemo } from 'react'
@@ -63,9 +67,8 @@ type Range = {
 const START_REBALANCE_V4_SELECTOR = toFunctionSelector(
   'startRebalance(address[],(uint256,uint256,uint256)[],(uint256,uint256)[],(uint256,uint256,uint256),uint256,uint256)'
 )
-const START_REBALANCE_V5_SELECTOR = toFunctionSelector(
-  'startRebalance((address,(uint256,uint256,uint256),(uint256,uint256),uint256,bool)[],(uint256,uint256,uint256),uint256,uint256)'
-)
+const START_REBALANCE_V5_SELECTOR = INDEX_DTF_START_REBALANCE_SELECTOR['5.0.0']
+const START_REBALANCE_V6_SELECTOR = INDEX_DTF_START_REBALANCE_SELECTOR['6.0.0']
 
 const getDecodedCalldata = (abi: Abi, calldata: Hex): DecodedCalldata => {
   const { functionName, args } = decodeFunctionData({
@@ -109,9 +112,11 @@ export const useDecodedRebalanceCalldata = (
 
     const selector = rebalanceCalldata.slice(0, 10)
     const isV5 = selector === START_REBALANCE_V5_SELECTOR
+    const isV6 = selector === START_REBALANCE_V6_SELECTOR
     let abi: Abi | undefined
 
     if (isV5) abi = dtfIndexAbiV5
+    if (isV6) abi = folioV6Abi as Abi
     if (selector === START_REBALANCE_V4_SELECTOR) abi = dtfIndexAbiV4
 
     if (!abi) return undefined
@@ -121,9 +126,10 @@ export const useDecodedRebalanceCalldata = (
 
       if (decodedCalldata.signature !== 'startRebalance') return undefined
 
-      if (isV5) {
-        // V5 format: startRebalance(TokenRebalanceParams[], limits, auctionLauncherWindow, ttl)
-        const data = decodedCalldata.data as unknown as [
+      if (isV5 || isV6) {
+        // v6 wraps the v5 args with a leading rebalanceNonce and a trailing deadline.
+        const args = decodedCalldata.data as unknown as unknown[]
+        const data = (isV6 ? args.slice(1, 5) : args) as [
           TokenRebalanceParams[],
           Range,
           bigint,
@@ -280,8 +286,8 @@ const useDTFBasketWeights = (timestamp?: number) => {
 /**
  * Hook to parse and preview rebalance basket changes from calldata
  *
- * Historical proposals can use v4 or v5 startRebalance signatures, so decode by
- * calldata selector instead of the DTF's current version.
+ * Historical proposals can use v4, v5 or v6 startRebalance signatures, so decode
+ * by calldata selector instead of the DTF's current version.
  */
 const useRebalanceBasketPreview = (
   calldata: Hex[] | undefined,

@@ -13,6 +13,7 @@ const OndoCapUpdater = () => {
   const touched = useAtomValue(rebalancePercentTouchedAtom)
 
   useEffect(() => {
+    if (maxSafePercent === undefined) return
     if (!touched && rebalancePercent > maxSafePercent) {
       setRebalancePercent(maxSafePercent)
     }

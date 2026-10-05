@@ -1,20 +1,30 @@
 import dtfIndexAbi from '@/abis/dtf-index-abi'
 import { Button } from '@/components/ui/button'
-import { indexDTFAtom } from '@/state/dtf/atoms'
+import { folioVersionAtom, indexDTFAtom } from '@/state/dtf/atoms'
+import {
+  prepareIndexDtfOpenAuctionUnrestricted,
+  useIndexDtfIdentity,
+} from '@reserve-protocol/react-sdk'
 import { parseDuration, parseDurationShort } from '@/utils'
 import { Trans, useLingui } from '@lingui/react/macro'
-import { atom, useAtom, useAtomValue } from 'jotai'
+import { atom, useAtomValue } from 'jotai'
 import { LoaderCircle, MousePointerBan } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { useWaitForTransactionReceipt, useWriteContract } from 'wagmi'
 import { currentRebalanceAtom } from '../../../atoms'
 import {
   isAuctionOngoingAtom,
+  latestAuctionAtom,
   rebalanceAuctionsAtom,
   rebalancePercentAtom,
-  refreshNonceAtom,
 } from '../atoms'
 import useRebalanceParams from '../hooks/use-rebalance-params'
+import { toIndexDtfWriteVersion } from '../utils/transforms'
+import useLaunchPreflight, {
+  LAUNCH_BLOCKER_MESSAGES,
+} from '../hooks/use-launch-preflight'
+import type { LaunchBlocker } from '../utils/launch-readiness'
+import useLaunchReceipt from '../hooks/use-launch-receipt'
 import Help from '@/components/ui/help'
 
 const auctionNumberAtom = atom((get) => {
@@ -28,28 +38,47 @@ const CommunityLaunchAuctionsButton = () => {
   const rebalance = useAtomValue(currentRebalanceAtom)
   const rebalancePercent = useAtomValue(rebalancePercentAtom)
   const rebalanceParams = useRebalanceParams()
-  const [refreshNonce, setRefreshNonce] = useAtom(refreshNonceAtom)
   const auctionNumber = useAtomValue(auctionNumberAtom)
+  const identity = useIndexDtfIdentity()
+  const versionState = useAtomValue(folioVersionAtom)
+  const latestAuction = useAtomValue(latestAuctionAtom)
+  const major = versionState.status === 'ready' ? versionState.major : undefined
+  const isSdkVersion = major === 5 || major === 6
+  const isVersionReady =
+    major === 4 || (isSdkVersion && latestAuction !== undefined)
   const [isLaunching, setIsLaunching] = useState(false)
   const { writeContract, isError, isPending, data } = useWriteContract()
-  const { isSuccess } = useWaitForTransactionReceipt({
+  const {
+    isSuccess,
+    isError: isReceiptError,
+    data: receipt,
+  } = useWaitForTransactionReceipt({
     hash: data,
     chainId: dtf?.chainId,
   })
   const [error, setError] = useState<string | null>(null)
   const [countdown, setCountdown] = useState<number>(0)
   const isAuctionOngoing = useAtomValue(isAuctionOngoingAtom)
+  // The launcher's openAuction extends restrictedUntil on chain; the indexed window never sees it.
+  const { liveWindow, hasLiveStateError, revalidate } =
+    useLaunchPreflight('community')
+  const [blocker, setBlocker] = useState<LaunchBlocker>()
   const currentTime = Math.floor(Date.now() / 1000)
-  const restrictedUntil = rebalance
-    ? Number(rebalance.rebalance.restrictedUntil)
-    : 0
-  const isRestrictedPeriod = rebalance && restrictedUntil > currentTime
+  const restrictedUntil = liveWindow ? Number(liveWindow.restrictedUntil) : 0
+  const isRestrictedPeriod = !!liveWindow && restrictedUntil > currentTime
   const timeUntilPermissionless = isRestrictedPeriod
     ? restrictedUntil - currentTime
     : 0
-  const isValid = !!rebalanceParams && rebalancePercent > 0 && rebalance && dtf
+  const isValid =
+    !!rebalanceParams &&
+    rebalancePercent > 0 &&
+    rebalance &&
+    dtf &&
+    !!liveWindow &&
+    !hasLiveStateError &&
+    isVersionReady
   const isNotCommunityLaunch =
-    rebalance?.rebalance.availableUntil === rebalance?.rebalance.restrictedUntil
+    !!liveWindow && liveWindow.restrictedUntil >= liveWindow.availableUntil
 
   // Countdown effect for restricted period
   useEffect(() => {
@@ -68,32 +97,61 @@ const CommunityLaunchAuctionsButton = () => {
     }
   }, [isRestrictedPeriod, restrictedUntil])
 
-  useEffect(() => {
-    if (isSuccess) {
-      setError(null)
-      // Refresh nonce after 10s
-      let timeout = setTimeout(() => {
-        setRefreshNonce(refreshNonce + 1)
-      }, 1000 * 10)
-      // Remove loading after 15s
-      let launchTimeout = setTimeout(() => {
-        setIsLaunching(false)
-      }, 1000 * 15)
+  useLaunchReceipt(receipt?.blockNumber, () => setIsLaunching(false))
 
-      return () => {
-        clearTimeout(timeout)
-        clearTimeout(launchTimeout)
-      }
-    }
+  useEffect(() => {
+    if (isSuccess) setError(null)
   }, [isSuccess])
 
-  const handleStartAuctions = () => {
+  useEffect(() => {
+    if (isError) {
+      setIsLaunching(false)
+      setError(t`Transaction rejected or failed`)
+    }
+  }, [isError])
+
+  // wagmi throws on a reverted receipt (and on a failed receipt poll), so the success path never settles it.
+  useEffect(() => {
+    if (isReceiptError) {
+      setIsLaunching(false)
+      setError(t`Couldn't confirm the launch — check your wallet before retrying`)
+    }
+  }, [isReceiptError, t])
+
+  const handleStartAuctions = async () => {
     if (!isValid || !rebalanceParams) return
 
+    setIsLaunching(true)
+    setError(null)
+    setBlocker(undefined)
     try {
-      setIsLaunching(true)
-      setError(null)
+      const found = await revalidate(BigInt(rebalance.rebalance.nonce))
+      if (found) {
+        setBlocker(found)
+        setIsLaunching(false)
+        setError(t(LAUNCH_BLOCKER_MESSAGES[found]))
+        return
+      }
 
+      const writeVersion = toIndexDtfWriteVersion(rebalanceParams.folioVersion)
+      if (isSdkVersion && writeVersion) {
+        const call = prepareIndexDtfOpenAuctionUnrestricted({
+          address: dtf.id,
+          chainId: identity.chainId,
+          version: writeVersion,
+          rebalanceNonce: BigInt(rebalance.rebalance.nonce),
+        })
+        writeContract({
+          address: call.contract.address,
+          abi: call.contract.abi,
+          functionName: call.contract.functionName,
+          args: call.contract.args as any,
+          chainId: call.chainId,
+        })
+        return
+      }
+
+      // v4 stays Register-local by decision.
       writeContract({
         address: dtf?.id,
         abi: dtfIndexAbi,
@@ -122,7 +180,11 @@ const CommunityLaunchAuctionsButton = () => {
   if (isRestrictedPeriod && timeUntilPermissionless > 0) {
     return (
       <div className="flex flex-col gap-2 p-2 text-center">
-        <Button className="rounded-xl w-full py-6 gap-2" disabled={true}>
+        <Button
+          data-testid="auctions-community-launch-countdown"
+          className="rounded-xl w-full py-6 gap-2"
+          disabled={true}
+        >
           <MousePointerBan size={14} strokeWidth={1.5} />
           <span className="text-sm text-muted-foreground">
             <Trans>
@@ -141,8 +203,18 @@ const CommunityLaunchAuctionsButton = () => {
 
   return (
     <div className="flex flex-col gap-2 p-2">
+      {hasLiveStateError && (
+        <p
+          data-testid="auctions-live-state-unavailable"
+          className="text-center text-sm text-destructive px-2 pb-2"
+        >
+          <Trans>Live auction state unavailable — retrying before launch</Trans>
+        </p>
+      )}
       <Button
         data-testid="auctions-community-launch-btn"
+        data-ongoing={isAuctionOngoing}
+        data-blocker={blocker}
         className="rounded-xl w-full py-6 gap-2"
         disabled={
           !isValid ||

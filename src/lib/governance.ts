@@ -2,6 +2,7 @@ import type {
   Amount,
   IndexDtfOptimisticProposalContext,
   IndexDtfProposalDecoded,
+  IndexDtfVoteChoice,
   ProposalVotingState,
   SupportedChainId,
 } from '@reserve-protocol/react-sdk'
@@ -66,7 +67,7 @@ export interface ProposalDetail extends PartialProposal {
   targets: Address[]
   decoded: IndexDtfProposalDecoded
   votes: {
-    choice: string
+    choice: IndexDtfVoteChoice
     weight: Amount
     voter: Address
   }[]

@@ -41,6 +41,13 @@ function ensureAllLoaded() {
   for (const dtf of REGISTRY) ensureLoaded(dtf)
 }
 
+type VoteLockDependentSnapshot = {
+  token: { symbol: string; name: string }
+  stToken?: { id: string }
+  ownerGovernance?: { timelock?: { id: string } }
+  tradingGovernance?: { timelock?: { id: string } }
+}
+
 function dtfForAddress(address: string): RegistryDTF | undefined {
   const dtf = findDtfByAddress(address)
   if (dtf) ensureLoaded(dtf)
@@ -87,19 +94,23 @@ interface GovEntry {
 }
 
 // The capture query under-selects proposal.governance to `{ id }`, but the SDK
-// mappers read governance.token.id and governance.timelock.id. Backfill both
+// mappers read governance.token.id, governance.token.token.decimals (react-sdk
+// >= 0.6.0 formats vote weights) and governance.timelock.id. Backfill all three
 // from the DTF snapshot, which carries full governance context. Every DTF
 // governor votes with the vote-lock stToken, so that's the vote token. Idempotent
-// — a snapshot already carrying token+timelock (re-captured) is returned as-is.
+// — a snapshot already carrying the full shape (re-captured) is returned as-is.
 function enrichProposalGovernance(
   proposal: Record<string, unknown>,
   dtfObj: Record<string, unknown> | undefined
 ): Record<string, unknown> {
   const gov = (proposal.governance ?? {}) as Record<string, unknown>
-  if (gov.token && gov.timelock) return proposal
+  const govToken = gov.token as { id?: string; token?: { decimals?: number } } | undefined
+  if (govToken?.token?.decimals !== undefined && gov.timelock) return proposal
 
   const govId = String(gov.id ?? '').toLowerCase()
-  const stToken = dtfObj?.stToken as { id?: string; governance?: GovEntry } | undefined
+  const stToken = dtfObj?.stToken as
+    | { id?: string; token?: { decimals?: number }; governance?: GovEntry }
+    | undefined
   const candidates = [
     dtfObj?.ownerGovernance,
     dtfObj?.tradingGovernance,
@@ -112,7 +123,10 @@ function enrichProposalGovernance(
     ...proposal,
     governance: {
       ...gov,
-      token: gov.token ?? { id: stToken?.id },
+      token: {
+        id: govToken?.id ?? stToken?.id,
+        token: govToken?.token ?? { decimals: stToken?.token?.decimals },
+      },
       timelock: gov.timelock ?? (timelock ? { id: timelock.id } : undefined),
     },
   }
@@ -285,6 +299,32 @@ export function resolveIndexQuery(
     return { data: { auctions: [] } }
   }
 
+  // react-sdk >= 0.6.0 resolves a DTF's proposal governors first (owner, trading,
+  // vote-lock governance, legacy admins) and then lists proposals by those ids.
+  // Served from the DTF snapshot object, which carries the same governance
+  // context the capture query selected.
+  if (op === 'GetIndexDtfProposalGovernanceAddresses') {
+    const dtfId = String(vars.dtfId ?? '')
+    const dtfObj = dtfObjectFor(dtfId)
+    if (!dtfObj) {
+      log('unmocked operation', { op, dtfId })
+      return graphError(`[E2E] unmocked operation: ${op} (no snapshot for ${dtfId})`)
+    }
+    const { ownerGovernance, tradingGovernance, legacyAdmins, legacyAuctionApprovers, stToken } =
+      dtfObj
+    return {
+      data: {
+        dtf: {
+          ownerGovernance: ownerGovernance ?? null,
+          tradingGovernance: tradingGovernance ?? null,
+          legacyAdmins: legacyAdmins ?? [],
+          legacyAuctionApprovers: legacyAuctionApprovers ?? [],
+          stToken: stToken ?? null,
+        },
+      },
+    }
+  }
+
   if (op === 'getGovernanceStats' || body.includes('governances(')) {
     const ids = ((vars.governanceIds as string[]) ?? (vars.ids as string[]) ?? []) as string[]
     let matched: RegistryDTF | undefined
@@ -320,6 +360,30 @@ export function resolveIndexQuery(
   // registry vote-locks govern extra DTFs, so empty is the truthful default.
   if (op === 'GetGovernedDtfs') {
     return { data: { dtfs: [] } }
+  }
+
+  // Retire banner: DTFs governed through a vault, from the captured (pre-migration) metadata; legacy governors vote with the DTF's stToken.
+  if (op === 'GetIndexDtfVoteLockDependents') {
+    const voteLock = String(vars.voteLock ?? '').toLowerCase()
+    const dtfs = REGISTRY.flatMap((dtf) => {
+      const meta = loadSnapshot<{ dtf: VoteLockDependentSnapshot }>(
+        `${dtf.snapshotDir}/dtf.json`
+      ).dtf
+      if (meta.stToken?.id.toLowerCase() !== voteLock) return []
+      const governance = (ref?: { timelock?: { id: string } }) =>
+        ref?.timelock
+          ? { token: { id: voteLock }, timelock: { id: ref.timelock.id } }
+          : null
+      return [
+        {
+          id: dtf.address.toLowerCase(),
+          token: { symbol: meta.token.symbol, name: meta.token.name },
+          ownerGovernance: governance(meta.ownerGovernance),
+          tradingGovernance: governance(meta.tradingGovernance),
+        },
+      ]
+    })
+    return { data: { dtfs } }
   }
 
   // Delegates panel — deterministic empty (no staking token context). Specs

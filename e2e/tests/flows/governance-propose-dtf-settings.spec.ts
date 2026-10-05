@@ -290,3 +290,28 @@ test('no change keeps confirm disabled and never submits', async ({
 
   expect(txLog).toHaveLength(0)
 })
+
+test('Folio 6.0: settings proposals are gated with a clear disabled state and never submit', async ({
+  page,
+  txLog,
+  overrides,
+}) => {
+  // Same proxy reported as 6.0.0, where the local setters do not exist.
+  overrides.ethCall(
+    DTF_ADDRESS,
+    '0x54fd4d50',
+    encodeAbiParameters([{ type: 'string' }], ['6.0.0'])
+  )
+  await bootProposeFees(page, overrides)
+
+  const input = tvlFeeInput(page)
+  const current = await readSeededFee(page, input)
+  await input.fill(String(current + 1 > 10 ? current - 1 : current + 1))
+  await advanceTime(page, 1_000)
+
+  const gate = page.getByTestId('settings-propose-v6-unavailable')
+  await expect(gate).toBeVisible()
+  await expect(gate).toBeDisabled()
+  await expect(submitButton(page)).toHaveCount(0)
+  expect(txLog).toHaveLength(0)
+})

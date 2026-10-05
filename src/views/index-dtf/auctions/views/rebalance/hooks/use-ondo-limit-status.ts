@@ -17,13 +17,14 @@ import {
   getScaledLegSizes,
   SizesByAddress,
 } from '../utils/get-max-safe-percent'
+import useRebalanceAuctionLength from './use-rebalance-auction-length'
 import useRebalanceParams from './use-rebalance-params'
 import useOndoLimits from './use-ondo-limits'
 
 type OndoLimitStatus = {
-  // Highest percent at which every open Ondo leg fits its session cap (soft —
-  // the slider can still surpass it). 100 when there are no Ondo constraints.
-  maxSafePercent: number
+  // Highest percent at which every open Ondo leg fits its soft session cap; 100
+  // without Ondo constraints, undefined while the legs can't be sized.
+  maxSafePercent: number | undefined
   // Open Ondo legs over their soft cap at the current percent.
   exceeded: ExceededOndoLeg[]
 }
@@ -37,10 +38,13 @@ const useOndoLimitStatus = (): OndoLimitStatus => {
   const auctions = useAtomValue(rebalanceAuctionsAtom)
   const metrics = useAtomValue(rebalanceMetricsAtom)
   const ondoLimits = useOndoLimits()
+  const { auctionLength, isReady: isAuctionLengthReady } =
+    useRebalanceAuctionLength()
 
   const maxSafePercent = useMemo(() => {
     if (!params || !currentRebalance || Object.keys(ondoLimits).length === 0)
       return 100
+    if (!isAuctionLengthReady) return undefined
 
     const weightsToUse =
       isHybridDTF && areWeightsSaved && savedWeights && auctions.length === 0
@@ -63,7 +67,8 @@ const useOndoLimitStatus = (): OndoLimitStatus => {
           params.isTrackingDTF,
           params.tokenPriceVolatility,
           percent,
-          isHybridDTF
+          isHybridDTF,
+          auctionLength
         )
         return m
       } catch (e) {
@@ -97,6 +102,8 @@ const useOndoLimitStatus = (): OndoLimitStatus => {
     savedWeights,
     areWeightsSaved,
     auctions.length,
+    auctionLength,
+    isAuctionLengthReady,
   ])
 
   const exceeded = useMemo(() => {

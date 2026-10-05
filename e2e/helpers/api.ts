@@ -30,6 +30,17 @@ export interface ApiMockOptions {
   requests?: BoundaryRequest[]
 }
 
+const ONE_INCH_CHAINS = new Set(['1', '8453', '56'])
+
+// No Fusion route offline: the zapper drops 1inch and keeps the pinned zapper quote. Specs wanting a 1inch route overlay it.
+export function oneInchFusionQuote(url: URL) {
+  if (!ONE_INCH_CHAINS.has(url.searchParams.get('chainId') ?? '')) return undefined
+  return {
+    status: 'ok',
+    result: { available: false, reason: 'no 1inch route in the offline suite' },
+  }
+}
+
 function json(
   route: import('@playwright/test').Route,
   data: unknown,
@@ -413,6 +424,14 @@ export async function mockApiRoutes(page: Page, options: ApiMockOptions) {
 
     if (path.includes('/dtf/daos')) {
       return json(route, [])
+    }
+
+    // react-zapper >= 2.14 also asks 1inch Fusion for a route on every quote.
+    if (path.includes('/1inch/fusion/quote')) {
+      const answer = oneInchFusionQuote(url)
+      if (answer) return json(route, answer)
+      log('unmocked operation identity', { path, search: url.search })
+      return json(route, { status: 'error', error: 'unmocked 1inch quote' }, 404)
     }
 
     // Token LIST endpoint — must match before the generic /zapper healthcheck:

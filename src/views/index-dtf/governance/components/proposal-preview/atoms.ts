@@ -1,4 +1,5 @@
 import { indexDTFAtom } from '@/state/dtf/atoms'
+import { INDEX_DTF_UPGRADE_SPELL_6_0_0_ADDRESS } from '@reserve-protocol/react-sdk'
 import { atom } from 'jotai'
 import {
   spellAddress as governanceSpell_31_03_2025Address,
@@ -9,9 +10,7 @@ import {
 import {
   spellAddress as v5SpellAddress,
 } from '../../views/propose/upgrade-banners/propose-v5-upgrade'
-import {
-  spellAddress as v5OptimisticSpellAddress,
-} from '../../views/propose/upgrade-banners/propose-v5-optimistic-upgrade'
+import { governanceSpellAddress } from '@/views/index-dtf/components/vote-lock-migration/governance-migration'
 
 export const dtfContractAliasAtom = atom((get) => {
   const dtf = get(indexDTFAtom)
@@ -58,8 +57,16 @@ export const dtfContractAliasAtom = atom((get) => {
     aliasMapping[v5SpellAddress[dtf.chainId].toLowerCase()] = 'V5 Upgrade Spell'
   }
 
-  if (v5OptimisticSpellAddress[dtf.chainId]) {
-    aliasMapping[v5OptimisticSpellAddress[dtf.chainId].toLowerCase()] =
+  const upgradeSpell600 =
+    INDEX_DTF_UPGRADE_SPELL_6_0_0_ADDRESS[
+      dtf.chainId as keyof typeof INDEX_DTF_UPGRADE_SPELL_6_0_0_ADDRESS
+    ]
+  if (upgradeSpell600) {
+    aliasMapping[upgradeSpell600.toLowerCase()] = 'Upgrade Spell 6.0.0'
+  }
+
+  if (governanceSpellAddress[dtf.chainId]) {
+    aliasMapping[governanceSpellAddress[dtf.chainId].toLowerCase()] =
       'Reserve Optimistic Governance Spell'
   }
 

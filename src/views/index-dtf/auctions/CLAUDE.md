@@ -13,9 +13,12 @@ Rebalance list (`rebalance-list/`, the AUCTIONS index route) + rebalance detail
 the legacy v2 UI (`legacy/`) renders instead when
 `indexDTFVersionAtom === '2.0.0'`, and also has its own `/auctions/legacy`
 route. The critical split: LIVE rebalance state (is there an active auction, what
-round) comes from **RPC `getRebalance()`** (selector `0xaa3b5568`), auction
-**HISTORY** comes from the **subgraph** (`getRebalances` → `rebalances.json`),
-and per-rebalance **metrics** come from the **API** (`/dtf/rebalance`). A test
+round) comes from **RPC** (`getRebalance()` selector `0xaa3b5568`, plus the
+SDK's `nextAuctionId()`/`auctions(id)` latest-auction read), auction
+**HISTORY** comes from the **subgraph** (`GetIndexDtfRebalances` →
+`rebalances.json`), and per-rebalance **metrics** come from the **API**
+(`/dtf/rebalance`). Version identity is `folioVersionAtom` (pending until the
+SDK resolves `version()`); nothing here reads or encodes while it is pending. A test
 that mocks the wrong layer passes wrongly or fails confusingly — see Traps.
 
 ## Did a diff here — which test?
@@ -26,6 +29,7 @@ that mocks the wrong layer passes wrongly or fails confusingly — see Traps.
 | Active vs historical bucketing, active/completed detail | `e2e/tests/flows/auctions.spec.ts` |
 | Rebalance detail (round, progress, metrics, liquidity) | `e2e/tests/flows/auctions.spec.ts` |
 | Any hook/atom/updater under `views/rebalance*/` | both: `pnpm exec playwright test --project=full e2e/tests/flows/auctions.spec.ts` + smoke |
+| Launch buttons, `use-launch-preflight`, `utils/launch-readiness`, receipt handling, v6 auction length | `pnpm exec playwright test --project=full --project=smoke e2e/tests/index-dtf/auctions/launch-write.spec.ts` + `pnpm exec vitest run src/views/index-dtf/auctions/views/rebalance/tests` |
 | Legacy v2 UI (`legacy/`) | not covered — deferred |
 
 Quick loop: `pnpm exec playwright test e2e/tests/smoke/auctions.spec.ts`
@@ -79,11 +83,28 @@ Quick loop: `pnpm exec playwright test e2e/tests/smoke/auctions.spec.ts`
   `weightControl` to drive that step. ENGINEER REVIEW STILL REQUIRED for the openAuction
   weight/price MATH (`getRebalanceOpenAuction`) — the spec proves the call fires,
   not that the args are numerically correct.
+- **Covered** (`launch-write.spec.ts`, full project): launch GUARDS — a
+  failing latest-auction read after a cached success disables the launcher
+  (`auctions-live-state-unavailable`); a stale page nonce is refused at click
+  time by the pre-send re-read (`use-launch-preflight.ts`, no tx); a reverted
+  receipt releases "Launching…"; the community button follows the RPC
+  `restrictedUntil` (launcher-extended) and shows
+  `auctions-community-launch-countdown` while the indexed window says
+  permissionless. Unit seams: `tests/launch-readiness.test.ts` (Folio window
+  rules), `tests/use-ondo-limit-status.test.tsx` (v6 Ondo cap = v5 cap with the
+  RPC length; unavailable while it loads), `tests/rebalance-metrics-updater.test.tsx`
+  (no transient error before the v6 length loads).
 - **Deferred** (needs testids/roles + engineer review): `bid` writes; legacy v2
   UI and `/auctions/legacy` route.
 - **Covered** (`flows/auctions-multichain.spec.ts`): historical bucketing +
   API metrics + idle empty active section + in-window active row on
   `bsc/cmc20` and `mainnet/open`.
+- **Covered** (`index-dtf/auctions/version-identity-nav.spec.ts`): the launch
+  button recovers after a direct cmc20 → photon → cmc20 hop through the command
+  menu (container stays mounted, version atom reset, cached same version).
+- **Evidence only** (`index-dtf/auctions/rebalance-evidence.spec.ts`): skipped
+  unless `E2E_EVIDENCE_DIR` is set; captures the launcher's active detail and
+  the list for stage handoffs. Never a gate.
 
 ## Edge cases to keep covered (or consciously skip)
 
@@ -103,14 +124,48 @@ Quick loop: `pnpm exec playwright test e2e/tests/smoke/auctions.spec.ts`
   `auctions-round[data-round]`, derived from the ±40% weight skew over captured
   chain-state. A basket-changing re-capture breaks it opaquely — assert `> 0` or
   document at the assertion (backlogged).
-- The auctions subgraph query is misnamed `getGovernanceStats` in
-  `use-rebalance-auctions.ts` but selects `auctions(...)` — matched by
-  `body.includes('auctions(')` in `e2e/helpers/subgraph.ts` BEFORE the real
-  `governances` branch. Renaming the query requires updating that matcher or the
-  hook silently degrades to `[]`.
+- Rebalance list, auction history and current/historical rebalance state come
+  from `@reserve-protocol/react-sdk` hooks for v5/v6 (`useIndexDtfRebalances`,
+  `useIndexDtfRebalanceAuctions`, `useIndexDtfCurrentRebalance`,
+  `useIndexDtfLatestAuction`); v4 keeps the Register-local reads by decision.
+  The view still stores the string-typed shapes — `utils/sdk-mappers.ts` is the
+  only conversion point. The SDK's auctions query is matched by
+  `body.includes('auctions(')` in `e2e/helpers/subgraph.ts` BEFORE the
+  `governances` branch; the SDK's latest-auction read starts at
+  `nextAuctionId()`, answered `0` by the `*:` wildcard in `e2e/helpers/rpc.ts`.
+- `isAuctionOngoingAtom` is RPC-first: once `latestAuctionAtom` resolves (SDK
+  read at one block) it decides; indexed auctions only decide while it is
+  unresolved or on v4. "Ongoing" is wider than the SDK's biddable `isActive`:
+  an auction of the current nonce that has not ended blocks a launch, warm-up
+  included (the first fork launch stayed enabled for 30 s on `isActive`). Don't
+  gate a write on indexed rows — the indexer lags receipts and re-enables the
+  launch button.
+- Launch readiness never trusts a cached read: both buttons close on any live
+  read error (current rebalance, latest auction, v6 `maxAuctionLength`) and
+  re-read nonce/window/latest auction right before `writeContract`; the launcher
+  also refuses (`state-refreshed`) when the re-read moved supply, basket balances
+  or the v6 `maxAuctionLength`, or its prices are over a minute old, because
+  `openAuction` is sized from the page's reads (`hasSizingDrift` /
+  `isPriceSnapshotStale` in `utils/launch-readiness.ts`) (community
+  also honours Folio's 120 s unrestricted buffer after the rebalance start and
+  the last auction's end — `cooldown` in `utils/launch-readiness.ts`; the
+  refused reason lands on the button as `data-blocker`). Errored live reads keep
+  polling so the buttons reopen without a reload. Live
+  windows come from the RPC rebalance read — Folio extends `restrictedUntil`
+  on every launcher `openAuction`, which the indexer never sees. Folio 6.0
+  math needs the RPC `maxAuctionLength` everywhere it sizes an auction (launch,
+  metrics, Ondo cap): read it through `hooks/use-rebalance-auction-length.ts`
+  and treat "not loaded" as unavailable, never as a 1% cap or an error.
+- Real launches run on the fork lane (`playwright.fork.config.ts`,
+  `.claude/skills/fork-e2e/SKILL.md`): Register reads the production subgraph
+  through `e2e/fork/scripts/subgraph-proxy.mjs`, truncated at the fork block,
+  because an auction the subgraph already knows about switches this view to the
+  running/finished cards and unmounts the launch buttons.
 - Don't "fix" a live-state test by moving `getRebalance` data into the subgraph
   mock (or history into RPC) — the layers are distinct on purpose.
 
 Engineer review is required for behavior changes here (on-chain rebalance math /
 launcher permissions are a repo stop-condition surface) — tests passing is not
 sign-off.
+
+Real-fork coverage: BSC CMC20 launch (`e2e/fork/tests/launch-cmc20.fork.spec.ts`) and the chain-1 stack lane (`e2e/fork/tests/launch-native-v6.fork.spec.ts`, run through `e2e/fork/scripts/stack-lane.sh`); see the hub skill `stack-e2e`. The live auction card carries `data-testid="auctions-active-auction"` and `data-auction-id` (subgraph id `<dtf>-<n>`); while it renders, `RebalanceAction` and the launch button are gone, so an "auction ongoing" proof asserts the card.

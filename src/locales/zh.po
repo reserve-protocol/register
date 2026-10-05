@@ -201,7 +201,7 @@ msgid "{0} balance"
 msgstr "{0} 余额"
 
 #. placeholder {0}: rToken?.symbol || ''
-#: src/views/yield-dtf/overview/components/backing/backing-buffer.tsx:54
+#: src/views/yield-dtf/overview/components/backing/backing-buffer.tsx:53
 msgid "{0} buffer as % of mcap:"
 msgstr "{0} 缓冲占市值的百分比："
 
@@ -271,7 +271,7 @@ msgstr "{0} 表现"
 #: src/components/ui/multiselect-dropdown.tsx:170
 #: src/views/explorer/components/filters/token-filter.tsx:75
 #: src/views/explorer/components/filters/TransactionTypeFilter.tsx:44
-#: src/views/explorer/components/governance/filters.tsx:45
+#: src/views/explorer/components/governance/filters.tsx:46
 msgid "{0} selected"
 msgstr "已选择 {0} 项"
 
@@ -581,7 +581,7 @@ msgstr "+{remaining} 更多"
 msgid "+${0} leftover collateral"
 msgstr "+${0} 剩余抵押品"
 
-#: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:144
+#: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:143
 msgid "<0>Note:</0> Some wallets, like MetaMask, need smart accounts enabled."
 msgstr "<0>注意：</0>某些 Wallet（例如 MetaMask）需要启用智能账户。"
 
@@ -653,7 +653,7 @@ msgstr "1 年"
 msgid "1:1 support from Reserve Institutional"
 msgstr "由 Reserve Institutional 提供 1:1 支撑"
 
-#: src/views/yield-dtf/overview/components/backing/backing-buffer.tsx:75
+#: src/views/yield-dtf/overview/components/backing/backing-buffer.tsx:74
 msgid "100% at current mcap:"
 msgstr "按当前市值 100%："
 
@@ -997,7 +997,7 @@ msgid "Address avatar"
 msgstr "地址头像"
 
 #: src/views/index-dtf/components/navigation/index.tsx:287
-#: src/views/index-dtf/overview/components/basket-overview/bridge-info-dialog.tsx:74
+#: src/views/index-dtf/overview/components/basket-overview/bridge-info-dialog.tsx:75
 #: src/views/index-dtf/overview/components/index-token-address.tsx:49
 msgid "Address copied to clipboard"
 msgstr "地址已复制到剪贴板"
@@ -1010,7 +1010,7 @@ msgstr "管理员 Gov"
 msgid "Admin Timelock"
 msgstr "管理员 Timelock"
 
-#: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:293
+#: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:292
 msgid "Advanced"
 msgstr "高级"
 
@@ -1035,7 +1035,7 @@ msgstr "Alexios 是采用自 Compound Governor Bravo 的标准代币投票机制
 
 #: src/components/token-selector-drawer/index.tsx:142
 #: src/views/earn/components/table-filters.tsx:33
-#: src/views/explorer/components/governance/filters.tsx:54
+#: src/views/explorer/components/governance/filters.tsx:55
 #: src/views/explorer/components/tokens/index.tsx:44
 #: src/views/index-dtf/deploy/steps/basket/token-selector.tsx:241
 #: src/views/index-dtf/factsheet/components/chart-overlay.tsx:85
@@ -1079,7 +1079,7 @@ msgstr "所有 DTFs"
 msgid "All options"
 msgstr "所有选项"
 
-#: src/views/explorer/components/governance/filters.tsx:46
+#: src/views/explorer/components/governance/filters.tsx:47
 msgid "All statuses"
 msgstr "所有状态"
 
@@ -1133,7 +1133,7 @@ msgstr "允许 Optimistic 提案启用或禁用直接竞价。"
 msgid "Allow optimistic proposals to rename the DTF token."
 msgstr "允许 Optimistic 提案重命名 DTF token。"
 
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/optimistic.ts:101
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/optimistic.ts:102
 msgid "Allow optimistic proposals to start basket rebalances."
 msgstr "允许 Optimistic 提案启动篮子再平衡。"
 
@@ -1170,7 +1170,7 @@ msgstr "启用权重控制后，再平衡可以调整篮子中代币的权重；
 msgid "Almost there..."
 msgstr "即将完成..."
 
-#: src/views/index-dtf/overview/components/landing-mint/index.tsx:70
+#: src/views/index-dtf/overview/components/landing-mint/index.tsx:72
 msgid "Also available on:"
 msgstr ""
 
@@ -1193,6 +1193,10 @@ msgstr "数量"
 #: src/views/index-dtf/issuance/manual/components/asset-list.tsx:179
 msgid "Amount:"
 msgstr "金额："
+
+#: src/views/index-dtf/auctions/views/rebalance/hooks/use-launch-preflight.ts:76
+msgid "An auction is already running for this rebalance"
+msgstr "此次再平衡已有一场拍卖正在进行"
 
 #: src/views/index-dtf/deploy/steps/basket/index.tsx:22
 msgid "An Index DTF is a tokenized basket of assets. Please add the tokens that will compose your index DTF basket at launch. The basket can be changed by governance in the future."
@@ -1371,7 +1375,7 @@ msgstr "以 RSR 形式"
 msgid "As RToken"
 msgstr "以 RToken 形式"
 
-#: src/components/dtf-chat/index.tsx:158
+#: src/components/dtf-chat/index.tsx:166
 #: src/views/index-dtf/overview/components/ask-reserve-ai.tsx:61
 #: src/views/index-dtf/overview/components/ask-reserve-ai.tsx:98
 #: src/views/index-dtf/overview/components/index-ctas-overview-mobile.tsx:176
@@ -1399,7 +1403,7 @@ msgstr "资产注册表"
 msgid "Assets"
 msgstr "资产"
 
-#: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:195
+#: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:194
 msgid "Assets arrive"
 msgstr "资产到账"
 
@@ -1413,8 +1417,8 @@ msgstr "拍卖"
 
 #. placeholder {0}: auction.id
 #. placeholder {0}: index + 1
-#: src/views/index-dtf/auctions/views/rebalance/components/rebalance-auctions.tsx:105
-#: src/views/index-dtf/auctions/views/rebalance/components/rebalance-auctions.tsx:164
+#: src/views/index-dtf/auctions/views/rebalance/components/rebalance-auctions.tsx:104
+#: src/views/index-dtf/auctions/views/rebalance/components/rebalance-auctions.tsx:167
 msgid "Auction {0}"
 msgstr "拍卖 {0}"
 
@@ -1435,7 +1439,12 @@ msgstr "拍卖结束于："
 msgid "Auction expires in: <0>{0}</0>"
 msgstr "拍卖将在以下时间后过期：<0>{0}</0>"
 
-#: src/views/index-dtf/auctions/views/rebalance/components/launch-auctions-button.tsx:98
+#: src/views/index-dtf/auctions/views/rebalance/components/community-launch-auctions-button.tsx:119
+#: src/views/index-dtf/auctions/views/rebalance/components/launch-auctions-button.tsx:155
+#~ msgid "Auction launch reverted on chain"
+#~ msgstr "拍卖发起交易在链上被回滚"
+
+#: src/views/index-dtf/auctions/views/rebalance/components/launch-auctions-button.tsx:138
 msgid "Auction launched successfully"
 msgstr "拍卖发起成功"
 
@@ -1525,15 +1534,15 @@ msgstr "已运行拍卖"
 msgid "Audit Status"
 msgstr "审计状态"
 
-#: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:93
+#: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:92
 msgid "Automated Mint / Redeem"
 msgstr "自动 Mint / Redeem"
 
-#: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:95
+#: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:94
 msgid "Automated minting and redemption require a wallet with smart account support. Hardware Wallets are not supported."
 msgstr "自动 Mint 和 Redeem 需要支持智能账户的 Wallet。不支持硬件 Wallet。"
 
-#: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:178
+#: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:177
 msgid "Automated minting is an advanced feature. For most people, simple swaps are recommended."
 msgstr "自动 Mint 是一项高级功能。对大多数人而言，推荐使用简单的 Swap。"
 
@@ -1605,7 +1614,7 @@ msgstr "30 天平均%"
 msgid "Awaiting approvals... ({completedCount}/{totalCount})"
 msgstr "等待授权... ({completedCount}/{totalCount})"
 
-#: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:254
+#: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:253
 msgid "Back to automated minting introduction"
 msgstr "返回自动 Mint 介绍"
 
@@ -1771,6 +1780,10 @@ msgstr "Basket Handler"
 msgid "Basket is not ready"
 msgstr "篮子尚未就绪"
 
+#: src/views/index-dtf/governance/views/propose/basket/components/submit-proposal-button.tsx:77
+msgid "Basket proposals for Folio 6.0 are not available yet"
+msgstr "Folio 6.0 的篮子提案暂不可用"
+
 #: src/components/rtoken-setup/basket/UnitBasket.tsx:129
 msgid "Basket scale for this unit of account. This is used to initially calculate how much of each token is required for minting."
 msgstr "此记账单位的篮子比例。用于初始计算 Mint 时每个代币所需的数量。"
@@ -1839,7 +1852,7 @@ msgstr "继续之前，请确认以下内容"
 msgid "Before continuing, please confirm the following."
 msgstr "继续之前，请确认以下内容。"
 
-#: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:175
+#: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:174
 msgid "Before using automated minting"
 msgstr "在使用自动 Mint 之前"
 
@@ -1904,7 +1917,7 @@ msgstr "出价者"
 msgid "Bidder:"
 msgstr "出价者："
 
-#: src/views/index-dtf/auctions/views/rebalance/components/rebalance-auctions.tsx:167
+#: src/views/index-dtf/auctions/views/rebalance/components/rebalance-auctions.tsx:170
 msgid "Bidding is ongoing..."
 msgstr "出价进行中……"
 
@@ -1968,12 +1981,12 @@ msgstr "桥接 DTFs 和 RSR"
 msgid "Bridge RSR to BSC"
 msgstr "将 RSR 跨链至 BSC"
 
-#: src/views/index-dtf/overview/components/basket-overview/bridge-label.tsx:65
+#: src/views/index-dtf/overview/components/basket-overview/bridge-label.tsx:66
 #: src/views/index-dtf/overview/components/index-token-address.tsx:86
 msgid "Bridged"
 msgstr "已桥接"
 
-#: src/views/index-dtf/overview/components/basket-overview/bridge-info-dialog.tsx:207
+#: src/views/index-dtf/overview/components/basket-overview/bridge-info-dialog.tsx:214
 msgid "Bridged asset (held in basket)"
 msgstr "已桥接的资产（持有于篮子中）"
 
@@ -2194,7 +2207,7 @@ msgstr "中心化治理会限制功能的访问权限"
 msgid "Chain"
 msgstr "Chain"
 
-#: src/components/ui/seamless-transaction.tsx:41
+#: src/components/ui/seamless-transaction.tsx:42
 msgid "Chain {targetChain}"
 msgstr "Chain {targetChain}"
 
@@ -2202,7 +2215,7 @@ msgstr "Chain {targetChain}"
 msgid "Chain must be either Mainnet, Base or Binance Smart Chain"
 msgstr "Chain 必须是 Mainnet、Base 或 Binance Smart Chain"
 
-#: src/components/account/index.tsx:47
+#: src/components/account/index.tsx:50
 msgid "Chain: {chainId}"
 msgstr "Chain: {chainId}"
 
@@ -2263,27 +2276,31 @@ msgstr "请稍后再试，或确认 API 可访问"
 msgid "Check for auctions"
 msgstr "检查拍卖"
 
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/submit-proposal-button.tsx:210
+msgid "Checking DTF version..."
+msgstr "正在检查 DTF 版本..."
+
 #: src/components/liquidity-badge.tsx:219
 #: src/views/index-dtf/governance/views/propose/basket/components/basket-proposal-overview.tsx:62
 msgid "Checking liquidity..."
 msgstr "正在检查流动性…"
 
-#: src/views/index-dtf/governance/views/propose/basket/components/submit-proposal-button.tsx:67
+#: src/views/index-dtf/governance/views/propose/basket/components/submit-proposal-button.tsx:87
 #: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/components/submit-proposal-button.tsx:59
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/submit-proposal-button.tsx:56
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/submit-proposal-button.tsx:54
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/submit-proposal-button.tsx:61
 msgid "Checking proposal type..."
 msgstr "正在检查提案类型..."
 
-#: src/views/index-dtf/governance/views/propose/basket/components/submit-proposal-button.tsx:79
+#: src/views/index-dtf/governance/views/propose/basket/components/submit-proposal-button.tsx:99
 #: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/components/submit-proposal-button.tsx:73
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/submit-proposal-button.tsx:70
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/submit-proposal-button.tsx:68
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/submit-proposal-button.tsx:75
 msgid "Checking voting power..."
 msgstr "正在检查投票权..."
 
-#: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:274
-#: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:387
+#: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:273
+#: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:386
 msgid "Checking wallet..."
 msgstr "正在检查 Wallet..."
 
@@ -2365,7 +2382,7 @@ msgstr "关闭"
 msgid "Close DTF pages"
 msgstr "关闭 DTF 页面"
 
-#: src/components/layout/header/components/mobile-navigation-drawer.tsx:226
+#: src/components/layout/header/components/mobile-navigation-drawer.tsx:227
 msgid "Close navigation menu"
 msgstr "关闭导航菜单"
 
@@ -2438,7 +2455,7 @@ msgstr "本次 Redeem 的抵押品 Swaps。"
 msgid "Collateral token"
 msgstr "抵押品代币"
 
-#: src/views/yield-dtf/overview/components/backing/backing-buffer.tsx:86
+#: src/views/yield-dtf/overview/components/backing/backing-buffer.tsx:85
 msgid "Collateral yield is distributed as revenue when the backing buffer is full"
 msgstr "当支撑缓冲已满时，抵押品收益将作为收入进行分配"
 
@@ -2485,9 +2502,13 @@ msgstr "社区创建的 DTFs"
 msgid "Community Discord"
 msgstr "社区 Discord"
 
-#: src/views/index-dtf/auctions/views/rebalance/components/community-launch-auctions-button.tsx:115
+#: src/views/index-dtf/auctions/views/rebalance/components/community-launch-auctions-button.tsx:173
 msgid "Community launch is not available for this rebalance"
 msgstr "此次再平衡不支持社区发起"
+
+#: src/views/index-dtf/auctions/views/rebalance/hooks/use-launch-preflight.ts:75
+msgid "Community launch opens 2 minutes after the rebalance starts or the last auction ends — try again shortly"
+msgstr "社区发起在再平衡开始或上一场拍卖结束 2 分钟后开放 — 请稍后重试"
 
 #: src/views/index-dtf/governance/views/propose/basket/components/proposal-basket-advance-settings.tsx:97
 #: src/views/index-dtf/governance/views/propose/basket/components/proposal-rebalance-launch-settings.tsx:121
@@ -2631,7 +2652,7 @@ msgstr "确认交易中……"
 #: src/components/stake-drawer/components/submit-unstake-button.tsx:104
 #: src/components/vote-lock/components/submit-lock-button.tsx:211
 #: src/components/vote-lock/components/submit-unlock-button.tsx:124
-#: src/views/index-dtf/deploy/steps/confirm-deploy/manual/components/confirm-manual-deploy-button.tsx:298
+#: src/views/index-dtf/deploy/steps/confirm-deploy/manual/components/confirm-manual-deploy-button.tsx:295
 #: src/views/index-dtf/deploy/steps/confirm-deploy/simple/simple-deploy-button.tsx:133
 #: src/views/index-dtf/overview/components/zap-mint/submit-zap.tsx:215
 msgid "Confirming tx..."
@@ -2648,7 +2669,7 @@ msgid "Confirming…"
 msgstr "确认中…"
 
 #. placeholder {0}: form!.tokenName
-#: src/views/index-dtf/deploy/steps/confirm-deploy/success/index.tsx:76
+#: src/views/index-dtf/deploy/steps/confirm-deploy/success/index.tsx:75
 msgid "Congratulations {0} is now live"
 msgstr "恭喜，{0} 现已上线"
 
@@ -2656,20 +2677,20 @@ msgstr "恭喜，{0} 现已上线"
 msgid "Congratulations 🎉"
 msgstr "恭喜 🎉"
 
-#: src/components/account/index.tsx:104
+#: src/components/account/index.tsx:109
 msgid "Connect"
 msgstr "连接钱包"
 
 #: src/components/stake-drawer/components/submit-stake-button.tsx:160
 #: src/components/stake-drawer/components/submit-unstake-button.tsx:72
 #: src/views/explorer/components/governance/index.tsx:144
-#: src/views/portfolio-page/components/portfolio-connect-button.tsx:29
+#: src/views/portfolio-page/components/portfolio-connect-button.tsx:20
 msgid "Connect wallet"
 msgstr "连接 Wallet"
 
 #: src/components/ui/transaction-button.tsx:57
 #: src/components/ui/transaction.tsx:44
-#: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:357
+#: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:356
 msgid "Connect Wallet"
 msgstr "连接 Wallet"
 
@@ -2689,7 +2710,7 @@ msgstr "连接 Wallet 以查看你的投资组合"
 msgid "Contact me"
 msgstr "联系我"
 
-#: src/views/index-dtf/overview/components/eligibility-card.tsx:195
+#: src/views/index-dtf/overview/components/eligibility-card.tsx:190
 msgid "Contact us for eligibility"
 msgstr "联系我们验证资格"
 
@@ -2698,7 +2719,7 @@ msgstr "联系我们验证资格"
 msgid "Contested"
 msgstr "有争议"
 
-#: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:389
+#: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:388
 msgid "Continue"
 msgstr "继续"
 
@@ -2786,6 +2807,11 @@ msgstr "复制到剪贴板"
 msgid "Corrected F.6 to reflect that the CFB token has a dynamic collateral-based supply mechanism, not a fixed supply."
 msgstr "修正了 F.6，以反映 CFB 代币采用基于抵押品的动态供应机制，而非固定供应量。"
 
+#: src/views/index-dtf/auctions/views/rebalance/components/community-launch-auctions-button.tsx:117
+#: src/views/index-dtf/auctions/views/rebalance/components/launch-auctions-button.tsx:152
+msgid "Couldn't confirm the launch — check your wallet before retrying"
+msgstr "无法确认发起结果 — 重试前请检查你的 Wallet"
+
 #: src/views/yield-dtf/issuance/components/zapV2/minters-modal/SocialMediaInput.tsx:203
 msgid "Count me in"
 msgstr "算我一个"
@@ -2799,19 +2825,19 @@ msgstr "封面预览"
 msgid "cow"
 msgstr "cow"
 
-#: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:193
+#: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:192
 msgid "CoW routes"
 msgstr "CoW 路由"
 
-#: src/views/index-dtf/auctions/views/rebalance/components/cowbot/use-cowbot-query.ts:90
+#: src/views/index-dtf/auctions/views/rebalance/components/cowbot/use-cowbot-query.ts:93
 msgid "CowBot encountered errors"
 msgstr "CowBot 遇到错误"
 
-#: src/views/index-dtf/auctions/views/rebalance/components/cowbot/use-cowbot-query.ts:112
+#: src/views/index-dtf/auctions/views/rebalance/components/cowbot/use-cowbot-query.ts:115
 msgid "CowBot submitted {newOrdersCount} new order"
 msgstr "CowBot 提交了 {newOrdersCount} 个新订单"
 
-#: src/views/index-dtf/auctions/views/rebalance/components/cowbot/use-cowbot-query.ts:113
+#: src/views/index-dtf/auctions/views/rebalance/components/cowbot/use-cowbot-query.ts:116
 msgid "CowBot submitted {newOrdersCount} new orders"
 msgstr "CowBot 提交了 {newOrdersCount} 个新订单"
 
@@ -2864,7 +2890,7 @@ msgstr "创建 DAO"
 #: src/components/layout/header/components/app-navigation.tsx:89
 #: src/components/layout/header/components/app-navigation.tsx:96
 #: src/components/layout/header/components/mobile-navigation-drawer.tsx:143
-#: src/views/index-dtf/deploy/steps/confirm-deploy/manual/components/confirm-manual-deploy-button.tsx:281
+#: src/views/index-dtf/deploy/steps/confirm-deploy/manual/components/confirm-manual-deploy-button.tsx:278
 msgid "Create DTF"
 msgstr "创建 DTF"
 
@@ -2891,7 +2917,7 @@ msgstr "创建 Spell 提案"
 msgid "Create the genesis token"
 msgstr "创建创世代币"
 
-#: src/views/index-dtf/governance/views/propose/components/propose-index-upgrade.tsx:119
+#: src/views/index-dtf/governance/views/propose/components/propose-index-upgrade.tsx:122
 msgid "Create update proposal"
 msgstr "创建更新提案"
 
@@ -3062,7 +3088,7 @@ msgstr "当前状态："
 msgid "Current units"
 msgstr "当前单位"
 
-#: src/views/yield-dtf/overview/components/backing/backing-buffer.tsx:68
+#: src/views/yield-dtf/overview/components/backing/backing-buffer.tsx:67
 msgid "Current value in buffer:"
 msgstr "缓冲中的当前价值："
 
@@ -3312,7 +3338,7 @@ msgid "Deploy your own RToken"
 msgstr "部署你自己的 RToken"
 
 #. placeholder {0}: form?.symbol || 'DTF'
-#: src/views/index-dtf/deploy/steps/confirm-deploy/simple/simple-deploy-button.tsx:73
+#: src/views/index-dtf/deploy/steps/confirm-deploy/simple/simple-deploy-button.tsx:76
 msgid "Deployed & minted {0}"
 msgstr "已部署并 Mint {0}"
 
@@ -3503,7 +3529,7 @@ msgid "Download snapshot"
 msgstr "下载快照"
 
 #: src/views/index-dtf/manage/components/manage-about.tsx:37
-#: src/views/index-dtf/overview/components/dtf-downloadable-resources.tsx:142
+#: src/views/index-dtf/overview/components/dtf-downloadable-resources.tsx:158
 msgid "Downloadable resources"
 msgstr "可下载资源"
 
@@ -3790,7 +3816,7 @@ msgstr "编辑提案"
 msgid "Eligibility and how to get started."
 msgstr ""
 
-#: src/views/index-dtf/overview/components/eligibility-card.tsx:133
+#: src/views/index-dtf/overview/components/eligibility-card.tsx:127
 #: src/views/yield-dtf/issuance/components/zapV2/minters-modal/SocialMediaInput.tsx:111
 msgid "Email"
 msgstr "Email"
@@ -3962,8 +3988,8 @@ msgstr "获取价格时出错"
 msgid "Error occurred, try again"
 msgstr "发生错误，请重试"
 
-#: src/views/index-dtf/auctions/views/rebalance/components/community-launch-auctions-button.tsx:107
-#: src/views/index-dtf/auctions/views/rebalance/components/launch-auctions-button.tsx:161
+#: src/views/index-dtf/auctions/views/rebalance/components/community-launch-auctions-button.tsx:165
+#: src/views/index-dtf/auctions/views/rebalance/components/launch-auctions-button.tsx:229
 msgid "Error opening auctions"
 msgstr "开启拍卖时出错"
 
@@ -4127,7 +4153,7 @@ msgstr "可执行时间："
 #: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/components/sections/propose-basket-governance.tsx:82
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/atoms.ts:185
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/sections/propose-dao-governance.tsx:93
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/atoms.ts:883
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/atoms.ts:905
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-governance-settings.tsx:91
 #: src/views/index-dtf/settings/components/index-settings-governance.tsx:128
 #: src/views/yield-dtf/settings/components/governance-info.tsx:57
@@ -4192,7 +4218,7 @@ msgstr "预期"
 msgid "Expected volatility"
 msgstr "预期波动率"
 
-#: src/views/explorer/components/governance/filters.tsx:23
+#: src/views/explorer/components/governance/filters.tsx:24
 #: src/views/index-dtf/governance/views/proposal/components/proposal-deadline-alert.tsx:35
 #: src/views/index-dtf/issuance/async-mint/components/leg-row.tsx:74
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalAlert.tsx:56
@@ -4263,7 +4289,7 @@ msgstr "额外保留的抵押品"
 msgid "Failed"
 msgstr "已失败"
 
-#: src/components/ui/seamless-transaction.tsx:92
+#: src/components/ui/seamless-transaction.tsx:93
 msgid "Failed to connect wallet"
 msgstr "连接 Wallet 失败"
 
@@ -4290,7 +4316,7 @@ msgstr "解析 CSV 文件失败。请检查格式。"
 msgid "Failed to read CSV file"
 msgstr "读取 CSV 文件失败"
 
-#: src/components/ui/seamless-transaction.tsx:72
+#: src/components/ui/seamless-transaction.tsx:73
 msgid "Failed to switch to {chainName}"
 msgstr "切换到 {chainName} 失败"
 
@@ -4601,7 +4627,7 @@ msgstr "轻松获得对各类主题、指数和生态系统的敞口"
 msgid "Get quote"
 msgstr "获取报价"
 
-#: src/views/index-dtf/deploy/steps/confirm-deploy/success/index.tsx:105
+#: src/views/index-dtf/deploy/steps/confirm-deploy/success/index.tsx:104
 #: src/views/index-dtf/overview/components/index-ctas-overview-mobile.tsx:214
 msgid "Go to DTF overview"
 msgstr "前往 DTF 概览"
@@ -5037,7 +5063,7 @@ msgstr "在标题中加入了代币简称 \"CFB Token\"。"
 msgid "Including any power delegated to me."
 msgstr "包括委托给我的任何投票权。"
 
-#: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:281
+#: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:280
 msgid "Incompatible wallet"
 msgstr "不兼容的 Wallet"
 
@@ -5045,7 +5071,7 @@ msgstr "不兼容的 Wallet"
 msgid "Increase"
 msgstr "增加"
 
-#: src/views/explorer/components/governance/filters.tsx:56
+#: src/views/explorer/components/governance/filters.tsx:57
 msgid "Index"
 msgstr "Index"
 
@@ -5183,7 +5209,7 @@ msgstr "补充了缺失的日期——通知日期、获准交易起始日期和
 msgid "Inspect"
 msgstr "查看"
 
-#: src/views/index-dtf/deploy/steps/confirm-deploy/manual/components/confirm-manual-deploy-button.tsx:288
+#: src/views/index-dtf/deploy/steps/confirm-deploy/manual/components/confirm-manual-deploy-button.tsx:285
 msgid "Insufficient asset balance"
 msgstr "资产余额不足"
 
@@ -5255,7 +5281,7 @@ msgstr "委托地址无效"
 msgid "Invalid destination address"
 msgstr "目标地址无效"
 
-#: src/views/index-dtf/overview/components/eligibility-card.tsx:25
+#: src/views/index-dtf/overview/components/eligibility-card.tsx:26
 msgid "Invalid email"
 msgstr "邮箱格式无效"
 
@@ -5355,7 +5381,7 @@ msgstr "基于司法管辖区的禁止事项："
 msgid "just now"
 msgstr "刚刚"
 
-#: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:100
+#: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:99
 msgid "Known supported wallets"
 msgstr "已知支持的 Wallets"
 
@@ -5398,19 +5424,19 @@ msgstr "发布状态"
 msgid "Launch your own Index DTF"
 msgstr "启动你自己的 Index DTF"
 
-#: src/views/index-dtf/auctions/views/rebalance/components/community-launch-auctions-button.tsx:163
-#: src/views/index-dtf/auctions/views/rebalance/components/launch-auctions-button.tsx:197
+#: src/views/index-dtf/auctions/views/rebalance/components/community-launch-auctions-button.tsx:235
+#: src/views/index-dtf/auctions/views/rebalance/components/launch-auctions-button.tsx:275
 msgid "Launching..."
 msgstr "发起中……"
 
-#: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:339
-#: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:370
+#: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:338
+#: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:369
 #: src/views/index-dtf/overview/components/index-ctas-overview-mobile.tsx:63
-#: src/views/index-dtf/overview/components/landing-mint/index.tsx:143
+#: src/views/index-dtf/overview/components/landing-mint/index.tsx:145
 msgid "Learn More"
 msgstr "了解更多"
 
-#: src/views/index-dtf/overview/components/eligibility-card.tsx:211
+#: src/views/index-dtf/overview/components/eligibility-card.tsx:206
 msgid "Learn more about eligibility requirements."
 msgstr "了解更多资格要求。"
 
@@ -5487,9 +5513,19 @@ msgstr "流动性模拟金额"
 msgid "Listed DTFs"
 msgstr "已列出的 DTF"
 
-#: src/views/index-dtf/auctions/views/rebalance/components/rebalance-auctions.tsx:106
+#: src/views/index-dtf/auctions/views/rebalance/components/community-launch-auctions-button.tsx:211
+#: src/views/index-dtf/auctions/views/rebalance/components/launch-auctions-button.tsx:245
+#: src/views/index-dtf/auctions/views/rebalance/updaters/rebalance-metrics-updater.tsx:212
+msgid "Live auction state unavailable — retrying before launch"
+msgstr "实时拍卖状态不可用 — 发起前正在重试"
+
+#: src/views/index-dtf/auctions/views/rebalance/components/rebalance-auctions.tsx:105
 msgid "Live rebalance auction"
 msgstr "实时再平衡拍卖"
+
+#: src/views/index-dtf/auctions/views/rebalance/hooks/use-launch-preflight.ts:71
+msgid "Live rebalance state unavailable — try again"
+msgstr "实时再平衡状态不可用 — 请重试"
 
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-optimistic-parameters.tsx:78
 msgid "Loading current allowed actions..."
@@ -5566,7 +5602,7 @@ msgstr "正在加载你的投资组合数据..."
 msgid "Loading..."
 msgstr "加载中..."
 
-#: src/views/index-dtf/overview/components/eligibility-card.tsx:173
+#: src/views/index-dtf/overview/components/eligibility-card.tsx:168
 msgid "Location restricted"
 msgstr "地区受限"
 
@@ -5698,7 +5734,7 @@ msgstr "手动 Redeem"
 msgid "Manually estimated APY calculated from basket averaged yield."
 msgstr "根据篮子平均收益手动估算的 APY。"
 
-#: src/views/index-dtf/overview/components/dtf-downloadable-resources.tsx:69
+#: src/views/index-dtf/overview/components/dtf-downloadable-resources.tsx:85
 msgid "Markdown file for your LLM"
 msgstr "适用于 LLM 的 Markdown 文件"
 
@@ -5989,7 +6025,7 @@ msgstr "Mint 费用必须大于或等于 0.15%"
 msgid "Mint Fee must be 5% or less"
 msgstr "Mint 费用必须小于或等于 5%"
 
-#: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:96
+#: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:95
 msgid "Mint large USDC amounts through batched CoW Swap orders, or redeem DTFs into the underlying assets. Recommended for market makers or transactions over 50,000 USDC."
 msgstr "通过批量 CoW Swap orders Mint 大额 USDC，或将 DTFs Redeem 为底层资产。推荐做市商或超过 50,000 USDC 的交易使用。"
 
@@ -6078,7 +6114,7 @@ msgstr "每月 P&L"
 msgid "More"
 msgstr "更多"
 
-#: src/views/index-dtf/overview/components/dtf-downloadable-resources.tsx:145
+#: src/views/index-dtf/overview/components/dtf-downloadable-resources.tsx:161
 msgid "More information on what {dtfName} is, what it’s all about, methodology and thesis."
 msgstr "了解 {dtfName} 是什么、其核心理念、方法论与投资逻辑的更多信息。"
 
@@ -6090,7 +6126,7 @@ msgstr "更多选项"
 msgid "More RSR per share"
 msgstr ""
 
-#: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:159
+#: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:158
 msgid "Most users should use Swap"
 msgstr "大多数用户应使用 Swap"
 
@@ -6125,7 +6161,7 @@ msgstr "必须介于 0 到 100 之间"
 #: src/views/home/components/discover-index-dtf/index-dtf-table-columns.tsx:167
 #: src/views/home/components/discover-index-dtf/index-dtf-table-placeholder.tsx:17
 #: src/views/index-dtf/deploy/steps/metadata/form-basic-metadata.tsx:10
-#: src/views/index-dtf/overview/components/eligibility-card.tsx:118
+#: src/views/index-dtf/overview/components/eligibility-card.tsx:112
 #: src/views/index-dtf/settings/components/index-settings-basic.tsx:40
 #: src/views/portfolio-page/components/dtf-positions.tsx:31
 #: src/views/portfolio-page/components/rsr-section.tsx:18
@@ -6145,11 +6181,11 @@ msgstr "名称 / 符号"
 msgid "Native"
 msgstr "原生"
 
-#: src/views/index-dtf/overview/components/basket-overview/bridge-info-dialog.tsx:127
+#: src/views/index-dtf/overview/components/basket-overview/bridge-info-dialog.tsx:128
 msgid "Native asset (reference)"
 msgstr "原生资产（参考）"
 
-#: src/views/index-dtf/overview/components/basket-overview/bridge-info-dialog.tsx:182
+#: src/views/index-dtf/overview/components/basket-overview/bridge-info-dialog.tsx:189
 msgid "Native L1 Asset"
 msgstr "原生 L1 资产"
 
@@ -6161,7 +6197,7 @@ msgstr "NAV 变化"
 msgid "NAV Growth"
 msgstr "NAV 增长"
 
-#: src/components/layout/header/components/mobile-navigation-drawer.tsx:239
+#: src/components/layout/header/components/mobile-navigation-drawer.tsx:240
 msgid "Navigation menu"
 msgstr "导航菜单"
 
@@ -6178,7 +6214,7 @@ msgstr "需要授权使用代币"
 msgid "Net Performance Summary"
 msgstr "净表现摘要"
 
-#: src/components/account/index.tsx:42
+#: src/components/account/index.tsx:45
 #: src/components/tables/ListedTokensTable.tsx:60
 #: src/views/explorer/components/collaterals/index.tsx:71
 #: src/views/explorer/components/tokens/index.tsx:136
@@ -6564,10 +6600,10 @@ msgstr "未委托"
 msgid "Not enough balance to bid"
 msgstr "余额不足以出价"
 
-#: src/views/index-dtf/governance/views/propose/basket/components/submit-proposal-button.tsx:87
+#: src/views/index-dtf/governance/views/propose/basket/components/submit-proposal-button.tsx:107
 #: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/components/submit-proposal-button.tsx:83
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/submit-proposal-button.tsx:80
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/submit-proposal-button.tsx:78
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/submit-proposal-button.tsx:85
 msgid "Not enough voting power"
 msgstr "投票权不足"
 
@@ -6632,7 +6668,7 @@ msgstr "Ondo 代币化股票。最大交易额为该时段每个账户的单笔�
 msgid "One or more approvals failed"
 msgstr "一项或多项授权失败"
 
-#: src/views/index-dtf/auctions/views/rebalance/updaters/rebalance-metrics-updater.tsx:155
+#: src/views/index-dtf/auctions/views/rebalance/updaters/rebalance-metrics-updater.tsx:163
 msgid "One or more tokens in the rebalance is out of bounds. Rebalance must be closed."
 msgstr "再平衡中有一个或多个代币超出范围。必须关闭再平衡。"
 
@@ -6669,7 +6705,7 @@ msgstr "只有拍卖发起者才能启动拍卖。在拍卖发起者的专属发
 msgid "Only Brand Manager"
 msgstr "仅限 Brand Manager"
 
-#: src/views/index-dtf/auctions/views/rebalance/components/community-launch-auctions-button.tsx:117
+#: src/views/index-dtf/auctions/views/rebalance/components/community-launch-auctions-button.tsx:175
 msgid "Only the auction launcher can start auctions"
 msgstr "只有拍卖发起者才能启动拍卖"
 
@@ -6691,7 +6727,7 @@ msgstr "开盘"
 msgid "Open"
 msgstr "开盘"
 
-#: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:120
+#: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:119
 msgid "Open Ambire website"
 msgstr "打开 Ambire 网站"
 
@@ -6699,15 +6735,15 @@ msgstr "打开 Ambire 网站"
 msgid "Open DTF pages"
 msgstr "打开 DTF 页面"
 
-#: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:107
+#: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:106
 msgid "Open MetaMask website"
 msgstr "打开 MetaMask 网站"
 
-#: src/components/layout/header/components/mobile-navigation-drawer.tsx:228
+#: src/components/layout/header/components/mobile-navigation-drawer.tsx:229
 msgid "Open navigation menu"
 msgstr "打开导航菜单"
 
-#: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:133
+#: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:132
 msgid "Open Safe website"
 msgstr "打开 Safe 网站"
 
@@ -6819,7 +6855,7 @@ msgstr ""
 #: src/components/layout/navigation/index.tsx:77
 #: src/components/layout/navigation/TokenNavigation.tsx:176
 #: src/views/index-dtf/components/navigation/index.tsx:217
-#: src/views/index-dtf/overview/components/basket-overview/bridge-info-dialog.tsx:100
+#: src/views/index-dtf/overview/components/basket-overview/bridge-info-dialog.tsx:101
 msgid "Overview"
 msgstr "概览"
 
@@ -6907,7 +6943,7 @@ msgstr "锚定："
 msgid "Pending"
 msgstr "待处理"
 
-#: src/views/index-dtf/deploy/steps/confirm-deploy/manual/components/confirm-manual-deploy-button.tsx:284
+#: src/views/index-dtf/deploy/steps/confirm-deploy/manual/components/confirm-manual-deploy-button.tsx:281
 msgid "Pending allowance..."
 msgstr "授权待处理……"
 
@@ -6942,7 +6978,7 @@ msgstr "待处理的提取"
 #: src/components/vote-lock/components/submit-delegate-button.tsx:179
 #: src/components/vote-lock/components/submit-lock-button.tsx:212
 #: src/components/vote-lock/components/submit-unlock-button.tsx:125
-#: src/views/index-dtf/deploy/steps/confirm-deploy/manual/components/confirm-manual-deploy-button.tsx:298
+#: src/views/index-dtf/deploy/steps/confirm-deploy/manual/components/confirm-manual-deploy-button.tsx:295
 #: src/views/index-dtf/deploy/steps/confirm-deploy/simple/simple-deploy-button.tsx:134
 #: src/views/index-dtf/overview/components/zap-mint/submit-zap.tsx:216
 #: src/views/yield-dtf/deploy/components/DeployOverview.tsx:25
@@ -6951,8 +6987,8 @@ msgstr "待处理的提取"
 msgid "Pending, sign in wallet"
 msgstr "待处理，请在 Wallet 中签名"
 
-#: src/views/index-dtf/governance/views/propose/basket/components/submit-proposal-button.tsx:195
-#: src/views/index-dtf/governance/views/propose/components/propose-index-upgrade.tsx:117
+#: src/views/index-dtf/governance/views/propose/basket/components/submit-proposal-button.tsx:215
+#: src/views/index-dtf/governance/views/propose/components/propose-index-upgrade.tsx:120
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-governance-spell-31-03-2025.tsx:304
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-governance-spell-31-03-2025.tsx:430
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v4-upgrade.tsx:188
@@ -6960,7 +6996,7 @@ msgstr "待处理，请在 Wallet 中签名"
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v5-upgrade.tsx:217
 #: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/components/submit-proposal-button.tsx:186
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/submit-proposal-button.tsx:184
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/submit-proposal-button.tsx:181
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/submit-proposal-button.tsx:188
 msgid "Pending, sign in wallet..."
 msgstr "待处理，请在 Wallet 中签名..."
 
@@ -7023,7 +7059,7 @@ msgstr "无需许可时间："
 #. placeholder {0}: getTimerFormat(availableAt)
 #. placeholder {0}: parseDurationShort(countdown, { round: true }) .replaceAll(' ', '') .replaceAll(',', ' ')
 #: src/views/index-dtf/auctions/legacy/components/proposal-trades.tsx:103
-#: src/views/index-dtf/auctions/views/rebalance/components/community-launch-auctions-button.tsx:128
+#: src/views/index-dtf/auctions/views/rebalance/components/community-launch-auctions-button.tsx:190
 msgid "Permissionless in: <0>{0}</0>"
 msgstr "无需许可时间：<0>{0}</0>"
 
@@ -7132,7 +7168,7 @@ msgstr "请在你的 Wallet 中签署交易以继续治理流程。"
 msgid "Please sign the transaction in your wallet to continue with the government configuration process."
 msgstr "请在你的 Wallet 中签署交易，以继续治理配置流程。"
 
-#: src/components/ui/seamless-transaction.tsx:60
+#: src/components/ui/seamless-transaction.tsx:61
 msgid "Please switch to {chainName} manually in your wallet"
 msgstr "请在你的 Wallet 中手动切换到 {chainName}"
 
@@ -7192,7 +7228,7 @@ msgid "Position"
 msgstr "持仓"
 
 #. placeholder {0}: bridge.name
-#: src/views/index-dtf/overview/components/basket-overview/bridge-info-dialog.tsx:283
+#: src/views/index-dtf/overview/components/basket-overview/bridge-info-dialog.tsx:290
 msgid "Potential Risks Using {0}"
 msgstr "使用 {0} 的潜在风险"
 
@@ -7232,7 +7268,7 @@ msgstr "正在准备 Mint"
 msgid "Preparing transaction"
 msgstr "正在准备交易"
 
-#: src/views/index-dtf/deploy/steps/confirm-deploy/manual/components/confirm-manual-deploy-button.tsx:281
+#: src/views/index-dtf/deploy/steps/confirm-deploy/manual/components/confirm-manual-deploy-button.tsx:278
 msgid "Preparing transaction..."
 msgstr "正在准备交易……"
 
@@ -7296,7 +7332,7 @@ msgstr "启动时价格"
 msgid "Price Change ({0})"
 msgstr "涨跌幅（{0}）"
 
-#: src/views/index-dtf/auctions/views/rebalance/updaters/rebalance-metrics-updater.tsx:184
+#: src/views/index-dtf/auctions/views/rebalance/updaters/rebalance-metrics-updater.tsx:205
 msgid "Price data unavailable — cannot launch auction."
 msgstr "价格数据不可用 — 无法启动拍卖。"
 
@@ -7324,19 +7360,19 @@ msgstr "价格设置"
 msgid "Price unavailable"
 msgstr "价格不可用"
 
-#: src/views/index-dtf/auctions/views/rebalance/components/launch-auctions-button.tsx:180
+#: src/views/index-dtf/auctions/views/rebalance/components/launch-auctions-button.tsx:256
 msgid "Price unavailable — cannot launch"
 msgstr "价格不可用 — 无法启动"
 
-#: src/views/index-dtf/auctions/views/rebalance/updaters/rebalance-metrics-updater.tsx:137
+#: src/views/index-dtf/auctions/views/rebalance/updaters/rebalance-metrics-updater.tsx:145
 msgid "Price unavailable for \"{symbol}\" — cannot launch auction."
 msgstr "\"{symbol}\" 的价格不可用 — 无法启动拍卖。"
 
-#: src/views/index-dtf/auctions/views/rebalance/components/launch-auctions-button.tsx:178
+#: src/views/index-dtf/auctions/views/rebalance/components/launch-auctions-button.tsx:254
 msgid "Price unavailable for {unavailableSymbol} — cannot launch"
 msgstr "{unavailableSymbol} 的价格不可用 — 无法启动"
 
-#: src/views/index-dtf/auctions/views/rebalance/updaters/rebalance-metrics-updater.tsx:138
+#: src/views/index-dtf/auctions/views/rebalance/updaters/rebalance-metrics-updater.tsx:146
 msgid "Price unavailable for a basket token — cannot launch auction."
 msgstr "篮子代币价格不可用 — 无法启动拍卖。"
 
@@ -7456,7 +7492,7 @@ msgstr "提案已通过"
 #: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/components/sections/propose-basket-governance.tsx:48
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/atoms.ts:166
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/sections/propose-dao-governance.tsx:60
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/atoms.ts:864
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/atoms.ts:886
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-governance-settings.tsx:58
 #: src/views/index-dtf/settings/components/index-settings-governance.tsx:94
 #: src/views/yield-dtf/settings/components/governance-info.tsx:61
@@ -7593,6 +7629,7 @@ msgstr "发布于：{0}"
 msgid "Queue proposal"
 msgstr "将提案加入队列"
 
+#: src/views/explorer/components/governance/filters.tsx:23
 #: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:269
 #: src/views/yield-dtf/governance/views/proposal-detail/components/proposal-timeline/TimelineItem.tsx:241
 msgid "Queued"
@@ -7676,11 +7713,11 @@ msgstr "评级："
 msgid "Raw"
 msgstr "原始数据"
 
-#: src/views/index-dtf/overview/components/basket-overview/bridge-info-dialog.tsx:272
+#: src/views/index-dtf/overview/components/basket-overview/bridge-info-dialog.tsx:279
 msgid "Read about risks"
 msgstr "阅读风险说明"
 
-#: src/views/index-dtf/overview/components/basket-overview/bridge-info-dialog.tsx:264
+#: src/views/index-dtf/overview/components/basket-overview/bridge-info-dialog.tsx:271
 msgid "Read docs"
 msgstr "阅读文档"
 
@@ -7741,14 +7778,18 @@ msgstr "再平衡已完成"
 msgid "Rebalance Manager"
 msgstr "再平衡管理员"
 
-#: src/views/index-dtf/auctions/views/rebalance/components/community-launch-auctions-button.tsx:161
-#: src/views/index-dtf/auctions/views/rebalance/components/launch-auctions-button.tsx:195
+#: src/views/index-dtf/auctions/views/rebalance/components/community-launch-auctions-button.tsx:233
+#: src/views/index-dtf/auctions/views/rebalance/components/launch-auctions-button.tsx:273
 msgid "Rebalance ongoing"
 msgstr "再平衡进行中"
 
 #: src/views/index-dtf/auctions/views/rebalance/components/rebalance-completed.tsx:118
 msgid "Rebalance progress"
 msgstr "再平衡进度"
+
+#: src/views/index-dtf/auctions/views/rebalance/hooks/use-launch-preflight.ts:77
+msgid "Rebalance state just refreshed — try again"
+msgstr "再平衡状态刚刚更新 — 请重试"
 
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1401
 #: src/views/index-dtf/issuance/async-mint/steps/success.tsx:240
@@ -8070,7 +8111,7 @@ msgid "Request plugin"
 msgstr "申请插件"
 
 #: src/views/index-dtf/deploy/components/deploy-coming-soon.tsx:25
-#: src/views/index-dtf/overview/components/eligibility-card.tsx:24
+#: src/views/index-dtf/overview/components/eligibility-card.tsx:25
 msgid "Required"
 msgstr "必填"
 
@@ -8202,7 +8243,7 @@ msgstr "收入分配"
 msgid "Revenue Distribution"
 msgstr "收入分配"
 
-#: src/views/yield-dtf/overview/components/backing/backing-buffer.tsx:48
+#: src/views/yield-dtf/overview/components/backing/backing-buffer.tsx:47
 msgid "Revenue distribution backing buffer"
 msgstr "收入分配支撑缓冲"
 
@@ -8384,7 +8425,7 @@ msgstr "RFC"
 msgid "Risk evaluation"
 msgstr "风险评估"
 
-#: src/views/index-dtf/overview/components/basket-overview/bridge-info-dialog.tsx:109
+#: src/views/index-dtf/overview/components/basket-overview/bridge-info-dialog.tsx:110
 msgid "Risks"
 msgstr "风险"
 
@@ -8774,6 +8815,14 @@ msgstr "设置每个代币用于模拟价格影响的 USD 金额。"
 msgid "Setting dust amount for token removal"
 msgstr "为代币移除设置粉尘数量"
 
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/submit-proposal-button.tsx:206
+msgid "Settings proposals are not available for this DTF version"
+msgstr "此 DTF 版本不支持设置提案"
+
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/submit-proposal-button.tsx:202
+msgid "Settings proposals for Folio 6.0 are not available yet"
+msgstr "Folio 6.0 的设置提案暂不可用"
+
 #: src/views/yield-dtf/auctions/components/useColumns.tsx:70
 msgid "Settle"
 msgstr "结算"
@@ -9027,7 +9076,7 @@ msgstr "慢速"
 msgid "Small revenue auctions"
 msgstr "小额收入拍卖"
 
-#: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:92
+#: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:91
 msgid "Smart Account Required"
 msgstr "需要智能账户"
 
@@ -9060,7 +9109,7 @@ msgstr "来自 Aave 和 Convex 等协议的某些抵押品代币在技术上与�
 msgid "Some quotes couldn't be fetched."
 msgstr "部分报价无法获取。"
 
-#: src/views/index-dtf/overview/components/eligibility-card.tsx:155
+#: src/views/index-dtf/overview/components/eligibility-card.tsx:150
 msgid "Something went wrong. Please try again."
 msgstr "出现错误，请重试。"
 
@@ -9246,8 +9295,8 @@ msgstr "启动"
 msgid "Start {selectedCount} new auctions"
 msgstr "启动 {selectedCount} 场新拍卖"
 
-#: src/views/index-dtf/auctions/views/rebalance/components/community-launch-auctions-button.tsx:170
-#: src/views/index-dtf/auctions/views/rebalance/components/launch-auctions-button.tsx:204
+#: src/views/index-dtf/auctions/views/rebalance/components/community-launch-auctions-button.tsx:242
+#: src/views/index-dtf/auctions/views/rebalance/components/launch-auctions-button.tsx:282
 msgid "Start auction {auctionNumber}"
 msgstr "启动拍卖 {auctionNumber}"
 
@@ -9269,17 +9318,21 @@ msgstr "启动下一场再抵押拍卖"
 msgid "Start over"
 msgstr "重新开始"
 
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:36
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/optimistic.ts:100
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:35
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/optimistic.ts:101
 msgid "Start rebalance"
 msgstr "开始再平衡"
+
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:36
+msgid "Start rebalance (Folio 6.0)"
+msgstr "开始再平衡（Folio 6.0）"
 
 #. placeholder {0}: rTokenVault.name
 #: src/views/yield-dtf/auctions/auctions-sidebar/StakingVaultRevenue.tsx:210
 msgid "Starts the next {0} reward period once the current one ends. Disabled until then."
 msgstr "在当前周期结束后启动下一个 {0} 奖励周期。在此之前禁用。"
 
-#: src/views/explorer/components/governance/filters.tsx:40
+#: src/views/explorer/components/governance/filters.tsx:41
 #: src/views/explorer/components/governance/index.tsx:126
 #: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:345
 #: src/views/portfolio-page/components/active-proposals.tsx:136
@@ -9337,7 +9390,7 @@ msgstr "stRSR 支付比例 0.0"
 msgid "stRSR Token"
 msgstr "stRSR 代币"
 
-#: src/views/index-dtf/overview/components/eligibility-card.tsx:140
+#: src/views/index-dtf/overview/components/eligibility-card.tsx:146
 msgid "Submit"
 msgstr "提交"
 
@@ -9349,10 +9402,10 @@ msgstr "提交所有更改"
 msgid "Submit proposal on-chain"
 msgstr "在链上提交提案"
 
-#: src/views/index-dtf/governance/views/propose/basket/components/submit-proposal-button.tsx:197
+#: src/views/index-dtf/governance/views/propose/basket/components/submit-proposal-button.tsx:217
 #: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/components/submit-proposal-button.tsx:190
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/submit-proposal-button.tsx:188
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/submit-proposal-button.tsx:183
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/submit-proposal-button.tsx:190
 msgid "Submit proposal onchain"
 msgstr "在链上提交提案"
 
@@ -9366,7 +9419,7 @@ msgstr "已提交！"
 
 #: src/views/index-dtf/deploy/components/deploy-coming-soon.tsx:182
 #: src/views/index-dtf/manage/components/submit-button.tsx:321
-#: src/views/index-dtf/overview/components/eligibility-card.tsx:151
+#: src/views/index-dtf/overview/components/eligibility-card.tsx:146
 msgid "Submitting..."
 msgstr "提交中…"
 
@@ -9478,7 +9531,7 @@ msgstr "切换到 zap Mint"
 msgid "Switch to zap redeeming"
 msgstr "切换到 zap Redeem"
 
-#: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:326
+#: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:325
 msgid "Switch wallet"
 msgstr "切换 Wallet"
 
@@ -9508,7 +9561,7 @@ msgstr "目标："
 msgid "Target(s)"
 msgstr "目标"
 
-#: src/views/index-dtf/overview/components/dtf-downloadable-resources.tsx:66
+#: src/views/index-dtf/overview/components/dtf-downloadable-resources.tsx:79
 msgid "Tear Sheet"
 msgstr "简报"
 
@@ -9536,7 +9589,7 @@ msgid "Terms and Conditions"
 msgstr "条款与条件"
 
 #: src/views/index-dtf/deploy/components/deploy-coming-soon.tsx:109
-#: src/views/index-dtf/overview/components/eligibility-card.tsx:95
+#: src/views/index-dtf/overview/components/eligibility-card.tsx:97
 msgid "Thank you! We'll be in touch soon."
 msgstr "谢谢！我们会尽快与您联系。"
 
@@ -9556,7 +9609,11 @@ msgstr "所选资产的数量会影响 gas 价格，此资产现在可能不值�
 msgid "The approximate value of 1 unit of <0/> when the DTF is created. The exact price may be different due to market volatility and errors in oracle pricing."
 msgstr "DTF 创建时 1 单位 <0/> 的大致价值。由于市场波动和预言机定价误差，实际价格可能有所不同。"
 
-#: src/views/yield-dtf/overview/components/backing/backing-buffer.tsx:92
+#: src/views/index-dtf/auctions/views/rebalance/hooks/use-launch-preflight.ts:74
+msgid "The auction launcher still has priority — community launch is not open yet"
+msgstr "拍卖发起者仍享有优先权 — 社区发起尚未开放"
+
+#: src/views/yield-dtf/overview/components/backing/backing-buffer.tsx:91
 msgid "The backing buffer is extra collateral held to prevent RSR seizure from trading slippage. When the buffer exceeds 100%, any additional appreciation of collateral is recognized as revenue and sold off in auctions."
 msgstr "支撑缓冲是为防止因交易滑点而扣押 RSR 所持有的额外抵押品。当缓冲超过 100% 时，抵押品的任何额外增值都将被确认为收入并在拍卖中卖出。"
 
@@ -9572,7 +9629,7 @@ msgstr "为你的产出而出售的篮子资产。"
 msgid "The basket governance provides a Guardian role that can improve the safety of DTF holders and governors. Guardians have the ability to veto any basket proposal prior to execution. This role is mutable and can be changed by governance in the future."
 msgstr "篮子治理设有守护者角色,可提升 DTF 持有者和治理者的安全性。守护者有权在执行前否决任何篮子提案。该角色可变,未来可由治理进行变更。"
 
-#: src/components/account/index.tsx:54
+#: src/components/account/index.tsx:57
 msgid "The configured network \"{currentChain}\" is different from the wallet selected network \"{chainId}\"\". Change your network in the connected wallet."
 msgstr "配置的 Network \"{currentChain}\" 与 Wallet 中所选的 Network \"{chainId}\"\" 不一致。请在已连接的 Wallet 中更改 Network。"
 
@@ -9895,7 +9952,7 @@ msgstr "此资产是在本 {0} 期间添加到篮子中的"
 msgid "This DTF"
 msgstr "此 DTF"
 
-#: src/views/index-dtf/overview/components/landing-mint/index.tsx:120
+#: src/views/index-dtf/overview/components/landing-mint/index.tsx:122
 msgid "This DTF can only be sold"
 msgstr "此 DTF 仅可卖出"
 
@@ -9930,7 +9987,7 @@ msgid "This DTF is no longer actively governed and can only be sold. This DTF ca
 msgstr "该 DTF 已不再受到积极治理，只能被卖出。该 DTF 无法对其篮子进行再平衡，也无法 Mint 新的 ${0} 代币。"
 
 #. placeholder {0}: dtf.token.symbol
-#: src/views/index-dtf/overview/components/landing-mint/index.tsx:123
+#: src/views/index-dtf/overview/components/landing-mint/index.tsx:125
 msgid "This DTF is no longer actively governed, cannot rebalance, and no new ${0} can be created."
 msgstr "此 DTF 已不再受积极治理，无法再平衡，也无法创建新的 ${0}。"
 
@@ -9980,6 +10037,14 @@ msgstr "由于当地限制，本产品在你所在的地区不可用。"
 #: src/views/index-dtf/governance/views/proposal/components/proposal-vote.tsx:183
 msgid "This proposal will automatically pass if it is not challenged by governance. If it is challenged, it will be resubmitted as a standard proposal."
 msgstr "如果治理未对此提案发起质疑，它将自动通过。如果被质疑，它将作为标准提案重新提交。"
+
+#: src/views/index-dtf/auctions/views/rebalance/hooks/use-launch-preflight.ts:73
+msgid "This rebalance is no longer accepting auctions"
+msgstr "此次再平衡已不再接受拍卖"
+
+#: src/views/index-dtf/auctions/views/rebalance/hooks/use-launch-preflight.ts:72
+msgid "This rebalance is no longer the current one — reload the page"
+msgstr "此次再平衡已不是当前的再平衡 — 请刷新页面"
 
 #: src/views/yield-dtf/issuance/components/warnings/index.tsx:123
 msgid "This should last for a few hours, manual minting/redemption is available."
@@ -10053,7 +10118,7 @@ msgstr "标题更新"
 msgid "To learn more about the risks associated with DTFs,"
 msgstr "如需进一步了解与 DTF 相关的风险，"
 
-#: src/views/index-dtf/overview/components/eligibility-card.tsx:198
+#: src/views/index-dtf/overview/components/eligibility-card.tsx:193
 msgid "To verify eligibility, please leave us your name and email, and we will reach out to you personally."
 msgstr "如需验证资格，请留下您的姓名和邮箱，我们将与您本人联系。"
 
@@ -10084,7 +10149,7 @@ msgstr "切换主题"
 msgid "Token"
 msgstr "代币"
 
-#: src/views/index-dtf/auctions/views/rebalance/updaters/rebalance-metrics-updater.tsx:154
+#: src/views/index-dtf/auctions/views/rebalance/updaters/rebalance-metrics-updater.tsx:162
 msgid "Token \"{symbol}\" is out of bounds. Rebalance must be closed."
 msgstr "代币 \"{symbol}\" 超出范围。必须关闭再平衡。"
 
@@ -10192,7 +10257,7 @@ msgstr "代币代码为必填项"
 msgid "Token:"
 msgstr "代币:"
 
-#: src/views/index-dtf/overview/components/basket-overview/bridge-info-dialog.tsx:205
+#: src/views/index-dtf/overview/components/basket-overview/bridge-info-dialog.tsx:212
 msgid "Tokenized Asset (held in basket)"
 msgstr "代币化资产（持有于篮子中）"
 
@@ -10420,7 +10485,8 @@ msgstr "交易无效"
 msgid "Transaction rejected"
 msgstr "交易被拒绝"
 
-#: src/views/index-dtf/auctions/views/rebalance/components/launch-auctions-button.tsx:118
+#: src/views/index-dtf/auctions/views/rebalance/components/community-launch-auctions-button.tsx:109
+#: src/views/index-dtf/auctions/views/rebalance/components/launch-auctions-button.tsx:144
 msgid "Transaction rejected or failed"
 msgstr "交易被拒绝或失败"
 
@@ -10628,7 +10694,7 @@ msgstr "了解项目与协议"
 msgid "Unexpected error"
 msgstr "意外错误"
 
-#: src/views/index-dtf/auctions/views/rebalance/updaters/rebalance-metrics-updater.tsx:158
+#: src/views/index-dtf/auctions/views/rebalance/updaters/rebalance-metrics-updater.tsx:166
 msgid "Unexpected error getting Rebalance data."
 msgstr "获取再平衡数据时发生意外错误。"
 
@@ -10776,7 +10842,7 @@ msgstr "已发起 Unstaking！延迟期结束后即可 Withdraw 你的 RSR。"
 msgid "Unstaking RSR"
 msgstr "Unstaking RSR"
 
-#: src/components/account/index.tsx:50
+#: src/components/account/index.tsx:53
 msgid "Unsupported"
 msgstr "不支持"
 
@@ -10808,7 +10874,7 @@ msgstr "更新年化 TVL 费用"
 msgid "Update Auction Length"
 msgstr "更新拍卖时长"
 
-#: src/views/index-dtf/governance/views/propose/components/propose-index-upgrade.tsx:93
+#: src/views/index-dtf/governance/views/propose/components/propose-index-upgrade.tsx:96
 msgid "Update available"
 msgstr "有可用更新"
 
@@ -10930,7 +10996,7 @@ msgstr "使用任意 ERC20 来治理 Index DTF，以换取 Mint 费用和 TVL �
 msgid "Use connected wallet."
 msgstr "使用已连接的 Wallet。"
 
-#: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:168
+#: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:167
 #: src/views/index-dtf/issuance/panel-mode-switch.tsx:28
 msgid "Use Swap"
 msgstr "使用 Swap"
@@ -11026,7 +11092,7 @@ msgstr "正在验证交易……"
 msgid "Version"
 msgstr "版本"
 
-#: src/views/index-dtf/governance/views/propose/components/propose-index-upgrade.tsx:96
+#: src/views/index-dtf/governance/views/propose/components/propose-index-upgrade.tsx:99
 msgid "Version 2.0.0 is now available. <0>View changelog</0>"
 msgstr "版本 2.0.0 现已可用。<0>查看更新日志</0>"
 
@@ -11413,7 +11479,7 @@ msgstr "投票延迟"
 #: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/components/sections/propose-basket-governance.tsx:22
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/atoms.ts:148
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/sections/propose-dao-governance.tsx:34
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/atoms.ts:846
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/atoms.ts:868
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-governance-settings.tsx:32
 #: src/views/index-dtf/settings/components/index-settings-governance.tsx:82
 msgid "Voting Delay"
@@ -11449,7 +11515,7 @@ msgstr "在你所 Stake 的 RToken 上投票，需要你将投票权委托给自
 #: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/components/sections/propose-basket-governance.tsx:35
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/atoms.ts:157
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/sections/propose-dao-governance.tsx:47
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/atoms.ts:855
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/atoms.ts:877
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-governance-settings.tsx:45
 #: src/views/index-dtf/settings/components/index-settings-governance.tsx:88
 #: src/views/yield-dtf/governance/views/proposal-detail/components/proposal-timeline/TimelineItem.tsx:131
@@ -11502,7 +11568,7 @@ msgstr "投票权委托"
 #: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/components/sections/propose-basket-governance.tsx:59
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/atoms.ts:176
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/sections/propose-dao-governance.tsx:71
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/atoms.ts:874
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/atoms.ts:896
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-governance-settings.tsx:69
 #: src/views/index-dtf/settings/components/index-settings-governance.tsx:100
 msgid "Voting Quorum"
@@ -11559,8 +11625,8 @@ msgstr "等待授权……"
 msgid "Waiting for collateral"
 msgstr "等待抵押品"
 
-#: src/views/index-dtf/governance/views/propose/basket/components/submit-proposal-button.tsx:196
-#: src/views/index-dtf/governance/views/propose/components/propose-index-upgrade.tsx:118
+#: src/views/index-dtf/governance/views/propose/basket/components/submit-proposal-button.tsx:216
+#: src/views/index-dtf/governance/views/propose/components/propose-index-upgrade.tsx:121
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-governance-spell-31-03-2025.tsx:305
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-governance-spell-31-03-2025.tsx:431
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v4-upgrade.tsx:189
@@ -11568,7 +11634,7 @@ msgstr "等待抵押品"
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v5-upgrade.tsx:218
 #: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/components/submit-proposal-button.tsx:188
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/submit-proposal-button.tsx:186
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/submit-proposal-button.tsx:182
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/submit-proposal-button.tsx:189
 msgid "Waiting for confirmation..."
 msgstr "等待确认中……"
 
@@ -11668,7 +11734,7 @@ msgstr "我们用你的 {0} 获取 Mint 所需的资产。"
 msgid "We're sorry, but the swap quote is unavailable. The amount may be too small to cover fees. Please <0>retry</0>, or <1>edit the amount</1>, and try again."
 msgstr "抱歉，Swap 报价不可用。金额可能太小，不足以覆盖费用。请<0>重试</0>，或<1>修改金额</1>后再试一次。"
 
-#: src/views/index-dtf/overview/components/eligibility-card.tsx:176
+#: src/views/index-dtf/overview/components/eligibility-card.tsx:171
 msgid "We're sorry, this product isn't available to customers in your region. In order to access this DTF, you may need to qualify as a <0>qualified investor</0>."
 msgstr "很抱歉，本产品不向您所在地区的客户提供。如需使用此 DTF，您可能需要符合<0>合格投资者</0>资格。"
 
@@ -11923,7 +11989,7 @@ msgstr "年初至今"
 msgid "Yes"
 msgstr "是"
 
-#: src/views/explorer/components/governance/filters.tsx:55
+#: src/views/explorer/components/governance/filters.tsx:56
 #: src/views/index-dtf/overview/components/charts/data-type-selector.tsx:19
 #: src/views/yield-dtf/overview/components/backing/collateral-exposure.tsx:248
 msgid "Yield"
@@ -11976,12 +12042,12 @@ msgstr "你可以直接继续。"
 msgid "You can sell up to {maxAmountLabel} per transaction during {sessionLabel} hours in the US."
 msgstr "在美国{sessionLabel}时段内，每笔交易最多可卖出 {maxAmountLabel}。"
 
-#: src/views/index-dtf/deploy/steps/confirm-deploy/success/index.tsx:81
+#: src/views/index-dtf/deploy/steps/confirm-deploy/success/index.tsx:80
 msgid "You created {stTokenSymbol} DAO"
 msgstr "你已创建 {stTokenSymbol} DAO"
 
 #. placeholder {0}: form!.tokenName
-#: src/views/index-dtf/deploy/steps/confirm-deploy/success/index.tsx:86
+#: src/views/index-dtf/deploy/steps/confirm-deploy/success/index.tsx:85
 msgid "You created the {0} DTF"
 msgstr "你已创建 {0} DTF"
 
@@ -11989,7 +12055,7 @@ msgstr "你已创建 {0} DTF"
 msgid "You do not have enough funds to complete this transaction. Please try again with a smaller amount."
 msgstr "你的资金不足以完成本次交易。请使用更小的金额重试。"
 
-#: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:191
+#: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:190
 msgid "You fund"
 msgstr "你出资"
 
@@ -12001,7 +12067,7 @@ msgstr "你锁定："
 msgid "You may need to import it with the L2 contract address."
 msgstr "你可能需要使用 L2 合约地址来导入它。"
 
-#: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:197
+#: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:196
 msgid "You mint"
 msgstr "你 Mint"
 
@@ -12009,7 +12075,7 @@ msgstr "你 Mint"
 msgid "You mint:"
 msgstr "你 Mint："
 
-#: src/views/index-dtf/deploy/steps/confirm-deploy/success/index.tsx:90
+#: src/views/index-dtf/deploy/steps/confirm-deploy/success/index.tsx:89
 msgid "You minted the {initialTokens} genesis tokens"
 msgstr "你已 Mint {initialTokens} 个创世代币"
 

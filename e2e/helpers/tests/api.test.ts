@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { knownPriceResponse } from '../api'
+import { knownPriceResponse, oneInchFusionQuote } from '../api'
 import { MockOverrides } from '../overrides'
 import { REGISTRY } from '../registry'
 import { loadSnapshot } from '../snapshots'
@@ -63,5 +63,22 @@ describe('knownPriceResponse price gaps', () => {
     expect(response).toHaveLength(1)
     expect(response[0].address.toLowerCase()).toBe(pricedAddress)
     expect(response[0].price).toBe(priced.price)
+  })
+})
+
+describe('1inch Fusion quotes', () => {
+  const quote = (search: string) =>
+    oneInchFusionQuote(new URL(`https://api.reserve.org/1inch/fusion/quote?${search}`))
+
+  it('answers "no route" on a supported chain so the zapper keeps its pinned quote', () => {
+    expect(quote('chainId=8453&tokenIn=0x1&tokenOut=0x2&amountIn=1')).toEqual({
+      status: 'ok',
+      result: expect.objectContaining({ available: false }),
+    })
+  })
+
+  it('fails loud for a chain the app does not quote on', () => {
+    expect(quote('chainId=42161&tokenIn=0x1&tokenOut=0x2&amountIn=1')).toBeUndefined()
+    expect(quote('tokenIn=0x1')).toBeUndefined()
   })
 })

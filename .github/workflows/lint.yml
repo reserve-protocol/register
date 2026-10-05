@@ -23,6 +23,9 @@ jobs:
       # Type errors are real bugs — this blocks the PR.
       - name: Typecheck
         run: pnpm typecheck
+      # Unit tests pin calldata, version gates and money math that typecheck cannot see.
+      - name: Unit tests
+        run: pnpm test:run
       # oxlint exits non-zero only on ERRORS. The ~600 legacy warnings (and
       # any/console.log) do not fail CI — gradual adoption, flexible by design.
       - name: Lint

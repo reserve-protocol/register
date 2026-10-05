@@ -1,9 +1,17 @@
 import dtfIndexAbi from '@/abis/dtf-index-abi'
 import { Button } from '@/components/ui/button'
-import { indexDTFAtom, isHybridDTFAtom } from '@/state/dtf/atoms'
+import {
+  folioVersionAtom,
+  indexDTFAtom,
+  isHybridDTFAtom,
+} from '@/state/dtf/atoms'
+import {
+  prepareIndexDtfOpenAuction,
+  useIndexDtfIdentity,
+} from '@reserve-protocol/react-sdk'
 import { parseDuration } from '@/utils'
 import { Trans, useLingui } from '@lingui/react/macro'
-import { atom, useAtom, useAtomValue } from 'jotai'
+import { atom, useAtomValue } from 'jotai'
 import { LoaderCircle } from 'lucide-react'
 import { useEffect, useMemo, useState } from 'react'
 import { toast } from 'sonner'
@@ -15,8 +23,8 @@ import {
   isAuctionOngoingAtom,
   priceVolatilityAtom,
   rebalanceAuctionsAtom,
+  latestAuctionAtom,
   rebalancePercentAtom,
-  refreshNonceAtom,
   savedWeightsAtom,
 } from '../atoms'
 import useRebalanceParams, {
@@ -25,6 +33,16 @@ import useRebalanceParams, {
 import getRebalanceOpenAuction, {
   buildRebalanceOpenAuctionArrays,
 } from '../utils/get-rebalance-open-auction'
+import { toIndexDtfWriteVersion } from '../utils/transforms'
+import useLaunchPreflight, {
+  LAUNCH_BLOCKER_MESSAGES,
+} from '../hooks/use-launch-preflight'
+import {
+  isPriceSnapshotStale,
+  type LaunchBlocker,
+} from '../utils/launch-readiness'
+import useLaunchReceipt from '../hooks/use-launch-receipt'
+import useRebalanceAuctionLength from '../hooks/use-rebalance-auction-length'
 import { TransactionButtonContainer } from '@/components/ui/transaction'
 
 const auctionNumberAtom = atom((get) => {
@@ -39,12 +57,31 @@ const LaunchAuctionsButton = () => {
   const rebalancePercent = useAtomValue(rebalancePercentAtom)
   const priceVolatility = useAtomValue(priceVolatilityAtom)
   const rebalanceParams = useRebalanceParams()
-  const { isError: isPriceError } = useRebalancePrices()
-  const [refreshNonce, setRefreshNonce] = useAtom(refreshNonceAtom)
+  const {
+    isError: isPriceError,
+    dataUpdatedAt: pricesUpdatedAt,
+    refetch: refetchPrices,
+  } = useRebalancePrices()
   const auctionNumber = useAtomValue(auctionNumberAtom)
+  const identity = useIndexDtfIdentity()
+  const versionState = useAtomValue(folioVersionAtom)
+  const latestAuction = useAtomValue(latestAuctionAtom)
+  const major = versionState.status === 'ready' ? versionState.major : undefined
+  const {
+    auctionLength,
+    isReady: isAuctionLengthReady,
+    isError: isAuctionLengthError,
+  } = useRebalanceAuctionLength()
+  const { hasLiveStateError, revalidate } = useLaunchPreflight('launcher')
+  const [blocker, setBlocker] = useState<LaunchBlocker>()
+  const isLiveStateUnavailable = hasLiveStateError || isAuctionLengthError
   const [isLaunching, setIsLaunching] = useState(false)
   const { writeContract, isError, isPending, data } = useWriteContract()
-  const { isSuccess } = useWaitForTransactionReceipt({
+  const {
+    isSuccess,
+    isError: isReceiptError,
+    data: receipt,
+  } = useWaitForTransactionReceipt({
     hash: data,
     chainId: dtf?.chainId,
   })
@@ -86,30 +123,26 @@ const LaunchAuctionsButton = () => {
         )?.symbol
       : undefined
 
+  // v5/v6 wait for the RPC latest-auction read so the ongoing gate is chain truth before a send.
+  const isVersionReady =
+    major === 4 ||
+    ((major === 5 || major === 6) &&
+      latestAuction !== undefined &&
+      isAuctionLengthReady)
+
   const isValid =
     !!rebalanceParams &&
     rebalancePercent > 0 &&
     rebalance &&
     dtf &&
-    !priceUnavailable
+    !priceUnavailable &&
+    !isLiveStateUnavailable &&
+    isVersionReady
+
+  useLaunchReceipt(receipt?.blockNumber, () => setIsLaunching(false))
 
   useEffect(() => {
-    if (isSuccess) {
-      toast.success(t`Auction launched successfully`)
-      // Refresh nonce after 10s
-      let timeout = setTimeout(() => {
-        setRefreshNonce(refreshNonce + 1)
-      }, 1000 * 10)
-      // Remove loading after 15s
-      let launchTimeout = setTimeout(() => {
-        setIsLaunching(false)
-      }, 1000 * 15)
-
-      return () => {
-        clearTimeout(timeout)
-        clearTimeout(launchTimeout)
-      }
-    }
+    if (isSuccess) toast.success(t`Auction launched successfully`)
   }, [isSuccess])
 
   useEffect(() => {
@@ -119,11 +152,39 @@ const LaunchAuctionsButton = () => {
     }
   }, [isError])
 
-  const handleStartAuctions = () => {
+  // wagmi throws on a reverted receipt (and on a failed receipt poll), so the success path never settles it.
+  useEffect(() => {
+    if (isReceiptError) {
+      setIsLaunching(false)
+      toast.error(t`Couldn't confirm the launch — check your wallet before retrying`)
+    }
+  }, [isReceiptError, t])
+
+  const handleStartAuctions = async () => {
     if (!isValid || !rebalanceParams || !weightsToUse) return
 
+    setIsLaunching(true)
+    setBlocker(undefined)
     try {
-      setIsLaunching(true)
+      const pageNonce = BigInt(rebalance.rebalance.nonce)
+      const pricesStale = isPriceSnapshotStale(pricesUpdatedAt, Date.now())
+      if (pricesStale) void refetchPrices()
+      // The args carry the render-time params (nonce, balances, length, prices); any re-read that moved them needs a fresh render first.
+      const found =
+        (await revalidate(pageNonce, {
+          supply: rebalanceParams.supply,
+          currentAssets: rebalanceParams.currentAssets,
+          auctionLength,
+        })) ??
+        (rebalanceParams.rebalance.nonce !== pageNonce || pricesStale
+          ? 'state-refreshed'
+          : undefined)
+      if (found) {
+        setBlocker(found)
+        setIsLaunching(false)
+        toast.error(t(LAUNCH_BLOCKER_MESSAGES[found]))
+        return
+      }
 
       const [openAuctionArgs] = getRebalanceOpenAuction(
         rebalanceParams.folioVersion,
@@ -139,9 +200,29 @@ const LaunchAuctionsButton = () => {
         rebalanceParams.isTrackingDTF,
         rebalanceParams.tokenPriceVolatility,
         rebalancePercent,
-        isHybridDTF
+        isHybridDTF,
+        auctionLength
       )
 
+      const writeVersion = toIndexDtfWriteVersion(rebalanceParams.folioVersion)
+      if (writeVersion) {
+        const call = prepareIndexDtfOpenAuction({
+          address: dtf.id,
+          chainId: identity.chainId,
+          version: writeVersion,
+          args: openAuctionArgs,
+        })
+        writeContract({
+          address: call.contract.address,
+          abi: call.contract.abi,
+          functionName: call.contract.functionName,
+          args: call.contract.args as any,
+          chainId: call.chainId,
+        })
+        return
+      }
+
+      // v4 stays Register-local by decision.
       writeContract({
         address: dtf?.id,
         abi: dtfIndexAbi,
@@ -169,6 +250,14 @@ const LaunchAuctionsButton = () => {
       connectButtonClassName="w-full"
       switchChainButtonClassName="w-full"
     >
+      {isLiveStateUnavailable && (
+        <p
+          data-testid="auctions-live-state-unavailable"
+          className="text-center text-sm text-destructive px-2 pb-2"
+        >
+          <Trans>Live auction state unavailable — retrying before launch</Trans>
+        </p>
+      )}
       {priceUnavailable && (
         <p
           data-testid="auctions-price-unavailable"
@@ -183,6 +272,8 @@ const LaunchAuctionsButton = () => {
       )}
       <Button
         data-testid="auctions-launch-btn"
+        data-ongoing={isAuctionOngoing}
+        data-blocker={blocker}
         className="rounded-xl py-6 w-full gap-2"
         disabled={!isValid || isPending || isAuctionOngoing || isLaunching}
         onClick={handleStartAuctions}

@@ -1,0 +1,174 @@
+---
+name: fork-e2e
+description: Bring up, check, and tear down the per-chain fork stack (Anvil + Graph Node + Postgres + IPFS) in e2e/fork/docker for real-transaction e2e against Ethereum, Base, or BSC forks. Use for the Index DTF v6 rebalance suite and any future fork-backed suite (issuance, governance, zaps); not for the offline mocked Playwright suite.
+---
+
+# Fork e2e stack
+
+The offline suite in `e2e/` intercepts every boundary; it proves rendering, not execution. When a
+case needs a real receipt (rebalance, upgrade, deploy), it runs against this stack instead. One
+Compose project per chain, all ports on loopback, state under `e2e/fork/.state/<chainId>/` (ignored).
+
+Plan that owns the first consumer: `docs/plans/index-dtf-v6-handoff.md` (S0.8, S1.8, §4.1).
+
+## Quick start
+
+```bash
+# archive RPC + pinned block come from your shell, never from the repo
+export FORK_RPC_URL=https://<archive endpoint for that chain>
+export FORK_BLOCK=<block that contains every source DTF on that chain>
+
+e2e/fork/docker/fork.sh 56 up          # pulls images, waits for health, runs doctor
+e2e/fork/docker/fork.sh 56 doctor      # loopback + anvil identity + chainId + head >= FORK_BLOCK + graph status
+e2e/fork/docker/fork.sh 56 ps
+e2e/fork/docker/fork.sh 56 logs graph-node
+e2e/fork/docker/fork.sh 56 down        # containers stop, state kept — `up` resumes the same fork
+FORK_RESET_CONFIRM=1 e2e/fork/docker/fork.sh 56 reset   # archives .state/<chain>, removes volumes
+CI=1 e2e/fork/docker/fork.sh 56 up     # tmpfs everywhere, nothing persists
+```
+
+Chains are `1`, `8453`, `56`. Run them as separate invocations; they never share a project, port
+or state directory. `FORK_BLOCK` is per chain — never reuse a number across chains.
+
+| Chain | Anvil | Graph HTTP / WS | Graph admin | Graph status | IPFS  | Graph network name |
+| ----- | ----- | --------------- | ----------- | ------------ | ----- | ------------------ |
+| 1     | 8545  | 18000 / 18001   | 18020       | 18030        | 15001 | `mainnet`          |
+| 8453  | 8546  | 18100 / 18101   | 18120       | 18130        | 15101 | `base`             |
+| 56    | 8547  | 18200 / 18201   | 18220       | 18230        | 15201 | `bsc`              |
+
+Ports and resource limits are all env-overridable (`chains/<chainId>.env`, `ANVIL_MEMORY`,
+`GRAPH_NODE_CPUS`, …). The Graph network name must match the subgraph manifest for that chain or
+`graph deploy` is rejected.
+
+## Rules that keep the runs honest
+
+- **Doctor before any write.** It refuses a non-Anvil RPC, a wrong chain id, or a head below the
+  pinned block. Never point a test at a production RPC "just to check".
+- **One mutation owner per chain.** Whoever advances time or sends transactions owns that project
+  for the run. Read-only checks may share it.
+- **Indexed scenarios append; isolated scenarios snapshot.** Never `anvil_revert` behind Graph
+  Node's head. If you need a revert, run it on a chain no indexer is watching, or reset both.
+- **Reset is archive, not delete.** `reset` moves the state dir to `.state/archive/` before
+  `down -v`. Keep failed-run state until the failure is understood.
+- **Secrets never land in artifacts.** Anvil's banner and `docker compose config` echo the
+  archive URL, so `fork.sh` masks URL paths in `up`, `logs` and `config`, and `ps` omits the
+  command column. Never call `docker compose` directly against this project, and never attach
+  raw container logs to a run artifact.
+
+## Pointing the other repos at it
+
+- **Subgraph** (`index-subgraph`): its fork scripts read `FORK_GRAPH_NODE_ADMIN_URL` and
+  `FORK_IPFS_URL`; set them to the admin/IPFS ports above and run `prepare:fork` → `parse:fork` →
+  `codegen:fork` → `build:fork` → `create-local:fork` → `deploy-local:fork`. Its generated manifest
+  currently assumes chain 1; multichain profiles are S1.1/S1.2 in the handoff.
+- **SDK** fork smoke: `INDEX_DTF_FORK_RPC_URL=http://127.0.0.1:<anvil port>` plus a manifest.
+- **Register**: today the only RPC override is `VITE_MAINNET_URL` (chain 1). Base/BSC overrides
+  and a `playwright.fork.config.ts` that pins all three plus the Graph endpoints are proposed work
+  (handoff §3.6); until they exist, Register browser cases can only target the chain-1 fork.
+
+## The stack lane (chain 1, protocol sandbox)
+
+The four-repo flow — protocol sandbox, fork subgraph, SDK, Register — lives in the hub skill
+`.claude/skills/stack-e2e/SKILL.md` and runs with `e2e/fork/scripts/stack-lane.sh`. It reuses this
+config with `FORK_CHAIN_ID=1` (Anvil :8545, fork subgraph :18000) and `FORK_WEB_PORT` when :3006
+is taken; `FORK_RESERVE_API_URL` points Register at a local API.
+
+## The Register real-launch lane (BSC, CMC20)
+
+`playwright.fork.config.ts` (`FORK_CHAIN_ID=56`, the default) boots Vite on :3006 with `VITE_RPC_URL_56` pointed at the fork
+and `VITE_DISABLE_COWBOT=true`; nothing is intercepted (API and subgraph are production). The
+subgraph is the catch: the rebalance list joins rebalances to proposals through it, so a
+rebalance started on the fork by impersonation never renders. Pin the fork **inside a real
+launcher window** instead (a block just after that DTF's `startRebalance`, before its first
+auction), freeze the browser clock to the fork timestamp, and let the real launcher open the
+auction from the UI.
+
+```bash
+# 1. fork inside the launcher window BEFORE the real launcher's first auction (CMC20 nonce 12
+#    started at ts 1788546765; block 119967348 is 60 s in). Re-derive by timestamp search.
+export FORK_RPC_URL=https://<bsc archive> FORK_BLOCK=119967348
+FORK_RESET_CONFIRM=1 e2e/fork/docker/fork.sh 56 reset && e2e/fork/docker/fork.sh 56 up
+# 2. serve the production subgraph truncated at the fork block (the UI must not know the
+#    future: a later auction switches it to the running/finished views); keep it running
+FORK_BLOCK=119967348 UPSTREAM=https://api.goldsky.com/api/public/project_cmgzim3e100095np2gjnbh6ry/subgraphs/dtf-index-bsc/prod/gn \
+  node e2e/fork/scripts/subgraph-proxy.mjs &
+# 3. impersonate + fund the real AUCTION_LAUNCHER, warm the reads, write the manifest
+FORK_RPC_URL_56=http://127.0.0.1:8547 node e2e/fork/scripts/prepare-cmc20.mjs
+# 4. the launch from the UI, verified on the fork with viem (receipt + AuctionOpened)
+FORK_RPC_URL_56=http://127.0.0.1:8547 E2E_EVIDENCE_DIR=$PWD/temp/evidence/fork-56 \
+  pnpm exec playwright test -c playwright.fork.config.ts
+```
+
+Impersonating the launcher is labelled as such in the manifest and the evidence; it proves
+Register's write path and the RPC-first refresh, not governance coverage.
+
+## The Register governance-upgrade lane (Base, LCAP)
+
+Plain Anvil on :8546 (no Docker stack) plus the subgraph proxy on :18310. The v6 SDK needs the
+1.11.x Index subgraph fields, so the proxy upstream is the `1.11.2-test` deployment until `prod`
+is promoted. `prepare-optimistic-governance.mjs` replays the protocol prerequisites by labelled
+impersonation (VersionRegistry `registerVersion` of the 1.1.0 deployer, vlRSR singleton upgrade
+to 1.1.0) and picks a real LCAP voter that clears threshold and quorum.
+
+```bash
+anvil --port 8546 --chain-id 8453 --fork-url https://base-mainnet.g.alchemy.com/v2/<key> &
+FORK_RPC_URL_8453=http://127.0.0.1:8546 node e2e/fork/scripts/prepare-optimistic-governance.mjs
+PORT=18310 FORK_BLOCK=$(jq -r .forkBlock e2e/fork/.state/8453/optimistic-governance-scenario.json) \
+  UPSTREAM=https://api.goldsky.com/api/public/project_cmgzim3e100095np2gjnbh6ry/subgraphs/dtf-index-base/1.11.2-test/gn \
+  node e2e/fork/scripts/subgraph-proxy.mjs &
+FORK_CHAIN_ID=8453 pnpm exec playwright test -c playwright.fork.config.ts e2e/fork/tests/optimistic-governance-upgrade.fork.spec.ts
+```
+
+The spec drives the whole migration from the UI (upgrade banner → retire banner → overview
+migration modal) and mutates the fork: restart Anvil and re-run the prepare script before the next
+run. After a proposal is created Register navigates to its (unindexed) detail page, so the spec
+re-navigates instead of reloading. `fork-wallet.ts` pads gas estimates like a real wallet: Anvil
+fills the exact estimate and the legacy vault's `redeem` runs out of gas on nested calls. Use the
+Foundry `anvil`; an older one earlier on `PATH` rejects current `cast`/viem transaction fields.
+
+## The Register 6.0.0 upgrade lane (Base, MIDAS + ABX)
+
+`prepare-v6-upgrade.mjs` registers 6.0.0 in the Folio version registry by labelled impersonation of the
+RoleRegistry owner and picks a real voter per DTF; `upgrade-v6.fork.spec.ts` proposes from the banner and
+executes on the fork. MAG7 can't serve as the optimistic case: its basket tokens' code (`0xef`) is not
+executable on Anvil, so `totalAssets()` reverts and the DTF never loads.
+
+```bash
+FORK_RPC_URL_8453=http://127.0.0.1:8546 node e2e/fork/scripts/prepare-v6-upgrade.mjs
+PORT=18310 FORK_BLOCK=$(jq -r .forkBlock e2e/fork/.state/8453/v6-upgrade-scenario.json) UPSTREAM=<1.11.2-test base> node e2e/fork/scripts/subgraph-proxy.mjs &
+FORK_CHAIN_ID=8453 pnpm exec playwright test -c playwright.fork.config.ts e2e/fork/tests/upgrade-v6.fork.spec.ts
+```
+
+## Archive RPC
+
+The Alchemy key in `.env` (`VITE_ALCHEMY`) is origin-allowlisted: Anvil must send the app origin or every
+fork read fails with "Unspecified origin not on whitelist". BNB is enabled on it, so the CMC20 lane forks
+Alchemy directly (public BSC endpoints rate-limit mid-spec):
+
+```bash
+anvil --port 8547 --chain-id 56 --fork-block-number 119967348 \
+  --fork-url https://bnb-mainnet.g.alchemy.com/v2/<key> --fork-header "Origin: https://app.reserve.org"
+```
+
+Use the same `--fork-header` for the Base lane.
+
+## Adding a new fork-backed suite
+
+1. Decide the lane: SDK runner (no browser) or Register browser. Browser cases use the future
+   `playwright.fork.config.ts`, never the offline config (it clears RPC env and owns :3005).
+2. Pin `FORK_BLOCK` per chain in the run config, not in this repo. Record the resolved nonsecret
+   env (`doctor` prints it) in the run artifacts.
+3. Fund actors from real token transfers where possible; label impersonation explicitly.
+4. Write assertions against independent expected values (hand-calculated or contract-derived), not
+   the production math you are testing.
+5. Add the suite's commands to its plan/handoff and a row to `e2e/TEST_MAP.md`.
+
+## When something is off
+
+| Symptom                                | Look at                                                        |
+| -------------------------------------- | -------------------------------------------------------------- |
+| `up` hangs on anvil health             | archive endpoint rate limit or wrong chain; `logs anvil`       |
+| graph-node restarts                    | platform (`GRAPH_NODE_PLATFORM`), or network name mismatch     |
+| `doctor` says head below FORK_BLOCK    | stale state dir from a different pin — `reset`, then `up`      |
+| port already in use                    | another chain's env or a leftover project: `docker compose ls` |
+| deploy accepted, entities never appear | data source `startBlock` after your transactions; re-prepare   |

@@ -1,11 +1,10 @@
 import Spinner from '@/components/ui/spinner'
 import useTimeRemaining from '@/hooks/use-time-remaining'
-import { cn } from '@/lib/utils'
 import { getCurrentTime } from '@/utils'
 import { Trans, useLingui } from '@lingui/react/macro'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { Clock } from 'lucide-react'
-import { useMemo, useEffect, useState } from 'react'
+import { useMemo, useEffect } from 'react'
 import { formatUnits } from 'viem'
 import { Auction, activeAuctionAtom, refreshNonceAtom } from '../atoms'
 import useRebalanceParams from '../hooks/use-rebalance-params'
@@ -130,7 +129,7 @@ const AuctionEndMonitor = ({ endTime }: { endTime: string }) => {
     const checkAuctionEnd = () => {
       const currentTime = Math.floor(Date.now() / 1000)
       const auctionEndTime = parseInt(endTime)
-      
+
       if (currentTime > auctionEndTime) {
         // Increment nonce to trigger data refresh
         setRefreshNonce((prev) => prev + 1)
@@ -154,7 +153,11 @@ const AuctionItem = ({
   index: number
 }) => {
   return (
-    <div className="border-b-0 rounded-xl">
+    <div
+      className="border-b-0 rounded-xl"
+      data-testid="auctions-active-auction"
+      data-auction-id={auction.id}
+    >
       <div className="flex items-center gap-2 p-4">
         <div className="h-8 w-8 flex items-center justify-center rounded-full bg-primary text-primary-foreground">
           <Spinner size={SPINNER_SIZE} />
