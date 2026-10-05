@@ -1,6 +1,6 @@
 ---
 title: E2E Suite
-updated: 2026-09-21
+updated: 2026-10-05
 type: domain
 sources:
   - e2e/**
@@ -191,6 +191,18 @@ aborted; this proves injected-wallet behavior, not live WalletConnect relay,
 email/social authentication, or fiat-provider flows. See [[wallet-connect]].
 
 Related: [[project]], [[sdk]], [[yield-protocol]], [[subgraphs]].
+
+### Base governance lanes
+
+Plain Anvil on :8546 (Alchemy fork with `--fork-header "Origin: https://app.reserve.org"`, the key is
+origin-allowlisted) plus the subgraph proxy on :18310 against the `1.11.2-test` deployment, because the v6 SDK
+queries fields `prod` lacks. `optimistic-governance-upgrade.fork.spec.ts` (LCAP) drives the governance migration
+from the UI: upgrade banner → execute → retire banner → execute → overview migration modal with a real holder.
+`upgrade-v6.fork.spec.ts` drives the Folio 6.0.0 upgrade for MIDAS (optimistic) and ABX (legacy). Both prepare
+scripts replay protocol prerequisites by labelled impersonation (version registrations, vault upgrade) and pick
+real voters; `e2e/fork/helpers/governance.ts` votes, queues and executes by time travel. Register navigates to a
+new proposal's (unindexed) detail page, so specs re-navigate instead of reloading. `fork-wallet.ts` pads gas
+estimates like a real wallet: Anvil fills the exact estimate and nested calls run out of gas (63/64 rule).
 
 ### Stack lane
 
