@@ -5,21 +5,32 @@ import { Button } from '@/components/ui/button'
 import { chainIdAtom } from '@/state/atoms'
 import { indexDTFAtom, indexDTFVersionAtom } from '@/state/dtf/atoms'
 import { getCurrentTime } from '@/utils'
-import { ChainId } from '@/utils/chains'
 import { PROPOSAL_STATES } from '@/utils/constants'
 import { Trans, useLingui } from '@lingui/react/macro'
 import type { IndexDtfProposalSummary } from '@reserve-protocol/react-sdk'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { AlertCircle, Loader2 } from 'lucide-react'
 import { useCallback, useEffect } from 'react'
-import { Address, encodeFunctionData, getAddress, Hex, pad } from 'viem'
-import { useWaitForTransactionReceipt, useWriteContract } from 'wagmi'
+import { encodeFunctionData, getAddress, Hex, pad, parseAbi } from 'viem'
+import {
+  useReadContract,
+  useWaitForTransactionReceipt,
+  useWriteContract,
+} from 'wagmi'
 import { governanceProposalsAtom, refetchTokenAtom } from '../../../atoms'
 import { useIsProposeAllowed } from '../../../hooks/use-is-propose-allowed'
 import useRecentProposalReceipt from '../../../hooks/use-recent-proposal-receipt'
 import { toast } from 'sonner'
+import {
+  governanceSpellAddress,
+  isOptimisticGovernanceUpgradeEligible,
+  newFeeRecipientAddress,
+  optimisticStakingVaultAddress,
+} from '@/views/index-dtf/components/vote-lock-migration/governance-migration'
 
-export const spellAbi = [
+const versionAbi = parseAbi(['function version() view returns (string)'])
+
+const spellAbi = [
   {
     inputs: [
       {
@@ -138,7 +149,7 @@ export const spellAbi = [
             type: 'address',
           },
         ],
-        internalType: 'struct GovernanceSpell_04_17_2026.NewDeployment',
+        internalType: 'struct GovernanceSpell_09_18_2026.NewDeployment',
         name: 'newDeployment',
         type: 'tuple',
       },
@@ -147,24 +158,6 @@ export const spellAbi = [
     type: 'function',
   },
 ] as const
-
-export const spellAddress: Record<number, `0x${string}`> = {
-  [ChainId.Mainnet]: getAddress('0xd7238463494fdd4b103c2ad9d229b3985b5bc6f1'),
-  [ChainId.Base]: getAddress('0xe9ae2cb2b5e5658035617f92efa1878429f9cd3f'),
-  [ChainId.BSC]: getAddress('0x3dde17cfd36e740cb7452cb2f59fc925eacb91ab'),
-}
-
-export const optimisticStakingVaultAddress: Record<number, Address> = {
-  [ChainId.Mainnet]: getAddress('0xABbDD9AC016e43c7CA85e2258E669948f029BC0c'),
-  [ChainId.Base]: getAddress('0x2F0D6538807a77d4AdDCd4b4DAf214Ea2E818E3D'),
-  [ChainId.BSC]: getAddress('0xE744C8157c346B2931807F42552c8CBc0BB6D34f'),
-}
-
-export const newFeeRecipientAddress: Record<number, Address> = {
-  [ChainId.Mainnet]: getAddress('0x2688c199049376eFc3aa54F395048B5430c16DE8'),
-  [ChainId.Base]: getAddress('0xEAfA84184BEb90891cb5c4942ebD59C18dda0bfE'),
-  [ChainId.BSC]: getAddress('0x0c2C5064C32800b26d3E0e8A031F366a892Ae793'),
-}
 
 const UPGRADE_FOLIO_MESSAGE = 'Reserve Optimistic Governor upgrade'
 
@@ -197,7 +190,7 @@ const ProposeBanner = ({ refetch, description }: SpellUpgradeProps) => {
   const { t } = useLingui()
   const dtf = useAtomValue(indexDTFAtom)
   const chainId = useAtomValue(chainIdAtom)
-  const spell = spellAddress[chainId]
+  const spell = governanceSpellAddress[chainId]
   const handleRecentProposalReceipt = useRecentProposalReceipt()
 
   const { writeContract, data: hash, isPending } = useWriteContract()
@@ -337,22 +330,16 @@ const ProposeBanner = ({ refetch, description }: SpellUpgradeProps) => {
           </h4>
           <p className="text-sm">
             <Trans>
-              <strong>Reserve Optimistic Governor upgrade</strong> introduces a
-              new governor system TBD COPY HERE!. <br />
-              See the{' '}
-              <a
-                className="text-primary underline"
-                href="https://github.com/reserve-protocol/reserve-index-dtf/releases/tag/r5.0.0"
-                target="_blank"
-              >
-                changelog
-              </a>{' '}
-              for more details.
+              <strong>Reserve Optimistic Governor upgrade</strong> moves this
+              DTF to optimistic governance, voted with the shared vlRSR
+              vote-lock vault. After it executes, voters lock RSR in the new
+              vault to keep governing this DTF.
             </Trans>
           </p>
         </div>
       </div>
       <Button
+        data-testid="governance-optimistic-upgrade-btn"
         disabled={!isReady || isPending || isSubmitted}
         onClick={handlePropose}
         className="w-full mt-2"
@@ -391,26 +378,47 @@ const validProposalExists = (
   })
 }
 
-export default function ProposeV5Upgrade() {
+export default function ProposeOptimisticGovernanceUpgrade() {
   const { isProposeAllowed } = useIsProposeAllowed()
   const proposals = useAtomValue(governanceProposalsAtom)
   const version = useAtomValue(indexDTFVersionAtom)
+  const dtf = useAtomValue(indexDTFAtom)
+  const chainId = useAtomValue(chainIdAtom)
   const setRefetchToken = useSetAtom(refetchTokenAtom)
+  const stakingVault = optimisticStakingVaultAddress[chainId]
+  const { data: stakingVaultVersion } = useReadContract({
+    address: stakingVault,
+    abi: versionAbi,
+    functionName: 'version',
+    chainId,
+    query: { enabled: !!stakingVault },
+  })
 
   const refetch = useCallback(() => {
     setRefetchToken(getCurrentTime())
   }, [setRefetchToken])
 
-  // Show banner for v5.x DTFs
-  const isUpgradeable = typeof version === 'string' && version.startsWith('5.')
+  if (!dtf || !isProposeAllowed || !proposals) return null
 
-  if (!isProposeAllowed || !proposals || !isUpgradeable) return null
+  const isEligible = isOptimisticGovernanceUpgradeEligible({
+    chainId,
+    dtfAddress: dtf.id,
+    folioVersion: version,
+    ownerGovernor: dtf.ownerGovernance?.id,
+    tradingGovernor: dtf.tradingGovernance?.id,
+    stakingVaultVersion,
+    ownerTimelock: dtf.ownerGovernance?.timelock.id,
+    tradingTimelock: dtf.tradingGovernance?.timelock.id,
+    oldVoteLock: dtf.stToken?.id,
+    oldVoteLockUnderlying: dtf.stToken?.underlying.address,
+    admins: dtf.roles.admin.all,
+    auctionApprovers: dtf.auctionApprovers,
+    auctionLaunchers: dtf.auctionLaunchers,
+    brandManagers: dtf.brandManagers,
+    feeRecipients: dtf.feeRecipients.map(({ address }) => address),
+  })
 
-  const existsFolioUpgrade = validProposalExists(proposals)
-
-  // if (existsFolioUpgrade) {
-  //   return null
-  // }
+  if (!isEligible || validProposalExists(proposals)) return null
 
   const description = getNextUpgradeDescription(proposals)
 

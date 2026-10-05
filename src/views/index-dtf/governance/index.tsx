@@ -1,3 +1,4 @@
+import VoteLockMigrationBanner from '../components/vote-lock-migration'
 import useTrackIndexDTFPage from '../hooks/useTrackIndexDTFPage'
 import GovernanceAccountInfo from './components/governance-account-info'
 import GovernanceDelegateList from './components/governance-delegate-list'
@@ -16,6 +17,7 @@ const IndexDTFGovernance = () => {
     >
       <GovernanceProposalList />
       <div className="flex flex-col gap-1 p-1 bg-muted rounded-4xl h-fit">
+        <VoteLockMigrationBanner subpage="governance" />
         <GovernanceVoteLock />
         <GovernanceAccountInfo />
         <GovernanceStats />
