@@ -38,6 +38,10 @@ const OPTIMISTIC_SELECTOR_LABELS: Record<string, MessageDescriptor> = {
   [toFunctionSelector('setBidsEnabled(bool)')]: msg`Permissionless bids`,
   [toFunctionSelector('setFeeRecipients((address,uint96)[])')]:
     msg`Fee recipients`,
+  [toFunctionSelector('setFeeRecipients((address,uint96)[],(address,uint96)[])')]:
+    msg`Fee recipients, including permanent ones (Folio 6.0)`,
+  [toFunctionSelector('setMaxAuctionLength(uint256)')]:
+    msg`Max auction length (Folio 6.0)`,
   [toFunctionSelector('setMandate(string)')]: msg`Mandate`,
   [toFunctionSelector('setMintFee(uint256)')]: msg`Mint fee`,
   [toFunctionSelector('setName(string)')]: msg`Token name`,
@@ -243,6 +247,11 @@ export const SetFeeRecipientsPreview = ({
     recipient: string
     portion: bigint
   }>
+  // Folio 6.0 takes a second table of recipients that governance can never remove or reduce.
+  const immutableRecipients = (decodedCalldata.data[1] ?? []) as Array<{
+    recipient: string
+    portion: bigint
+  }>
 
   if (!indexDTF || !isLoaded(platformFee)) return null
 
@@ -303,6 +312,10 @@ export const SetFeeRecipientsPreview = ({
   const adjustedExternalRecipients = externalRecipients.map((r) => ({
     ...r,
     percentage: r.percentage / PERCENT_ADJUST,
+  }))
+  const adjustedImmutableRecipients = immutableRecipients.map((r) => ({
+    address: r.recipient,
+    percentage: (Number(r.portion) / 1e18) * 100 / PERCENT_ADJUST,
   }))
 
   return (
@@ -383,6 +396,38 @@ export const SetFeeRecipientsPreview = ({
             </div>
           </div>
         ))}
+
+        {adjustedImmutableRecipients.length > 0 && (
+          <div className="p-3 rounded-xl border border-warning/40 bg-warning/10 space-y-2">
+            <div className="text-sm font-medium text-warning">
+              <Trans>Permanent recipients (governance can never remove these)</Trans>
+            </div>
+            {adjustedImmutableRecipients.map((recipient, idx) => (
+              <div
+                key={idx}
+                data-testid="settings-preview-immutable-recipient"
+                className="flex items-center justify-between"
+              >
+                <Link
+                  to={getExplorerLink(
+                    recipient.address,
+                    indexDTF.chainId,
+                    ExplorerDataType.ADDRESS
+                  )}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-sm text-muted-foreground hover:text-primary flex items-center gap-1"
+                >
+                  {shortenAddress(recipient.address)}
+                  <ArrowUpRight size={12} />
+                </Link>
+                <span className="text-sm text-primary">
+                  {recipient.percentage.toFixed(2)}%
+                </span>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   )
