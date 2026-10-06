@@ -182,6 +182,40 @@ export function knownPriceResponse(
   })
 }
 
+// Etherscan v2 lookups: the SDK proposal decoder fetches source/ABI for calls its contract map
+// can't decode. Answer as an unverified contract (the worst real case); any other action fails loud.
+export function etherscanResponse(
+  url: URL
+): { status: number; body: unknown } | undefined {
+  if (url.searchParams.get('module') !== 'contract') return undefined
+  const action = url.searchParams.get('action')
+  if (action === 'getabi') {
+    return {
+      status: 200,
+      body: { status: '0', message: 'NOTOK', result: 'Contract source code not verified' },
+    }
+  }
+  if (action === 'getsourcecode') {
+    return {
+      status: 200,
+      body: {
+        status: '1',
+        message: 'OK',
+        result: [
+          {
+            SourceCode: '',
+            ABI: 'Contract source code not verified',
+            ContractName: '',
+            Proxy: '0',
+            Implementation: '',
+          },
+        ],
+      },
+    }
+  }
+  return undefined
+}
+
 export async function mockApiRoutes(page: Page, options: ApiMockOptions) {
   const { log, geolocation, overrides, requests } = options
 
@@ -470,4 +504,17 @@ export async function mockApiRoutes(page: Page, options: ApiMockOptions) {
   // The glob above can't match the staging host (no `api.reserve.org` substring)
   // and src deliberately hits staging for featured DTFs — route it explicitly.
   await page.route('**/api-staging.reserve.org/**', handler)
+
+  await page.route('**/api.etherscan.io/**', async (route) => {
+    const url = new URL(route.request().url())
+    const response = etherscanResponse(url)
+    if (!response) {
+      log('unmocked etherscan', {
+        action: url.searchParams.get('action'),
+        hint: 'model in e2e/helpers/api.ts etherscanResponse',
+      })
+      return json(route, { status: '0', result: 'unmocked' }, 500)
+    }
+    return json(route, response.body, response.status)
+  })
 }
