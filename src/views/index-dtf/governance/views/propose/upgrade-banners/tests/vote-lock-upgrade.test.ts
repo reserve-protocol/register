@@ -21,6 +21,8 @@ const IMPLS = {
 }
 
 const ready = {
+  chainId: 8453,
+  vault: VAULT,
   versions: { vault: '1.0.0', governor: '1.0.0', timelock: '1.0.0' },
   latest: { version: '1.1.0', deprecated: false },
   implementations: IMPLS,
@@ -36,6 +38,12 @@ describe('getVoteLockUpgradeEligibility', () => {
     expect(getVoteLockUpgradeEligibility(ready)).toBe(true)
   })
 
+  it('matches the vlRSR singleton case-insensitively', () => {
+    expect(
+      getVoteLockUpgradeEligibility({ ...ready, vault: VAULT.toLowerCase() as Address })
+    ).toBe(true)
+  })
+
   it.each([
     ['the vault is already upgraded', { versions: { ...ready.versions, vault: '1.1.0' } }],
     ['a component read is missing', { versions: { ...ready.versions, governor: undefined } }],
@@ -43,6 +51,8 @@ describe('getVoteLockUpgradeEligibility', () => {
     ['the latest version is deprecated', { latest: { version: '1.1.0', deprecated: true } }],
     ['an implementation is unset', { implementations: { ...IMPLS, timelock: undefined } }],
     ['the governor points at another timelock', { governorTimelock: VAULT }],
+    ['the vault is not the vlRSR singleton', { vault: TIMELOCK }],
+    ['the vault is another chain’s vlRSR singleton', { chainId: 56 }],
   ])('is hidden when %s', (_, patch) => {
     expect(getVoteLockUpgradeEligibility({ ...ready, ...patch } as never)).toBe(false)
   })

@@ -1,9 +1,11 @@
 import DTFIndexGovernance from '@/abis/dtf-index-governance'
+import { ChainId } from '@/utils/chains'
 import { PROPOSAL_STATES } from '@/utils/constants'
 import type { IndexDtfProposalSummary } from '@reserve-protocol/react-sdk'
 import {
   decodeFunctionData,
   encodeFunctionData,
+  getAddress,
   parseAbi,
   toFunctionSelector,
   zeroAddress,
@@ -26,6 +28,13 @@ export const voteLockUpgradeAbi = parseAbi([
   'function initializeVersionRegistry(address registry)',
 ])
 
+// The rollout covers the vlRSR singletons only; other 1.0.0 vote-lock vaults are out of scope.
+export const VLRSR_SINGLETON: Record<number, Address> = {
+  [ChainId.Mainnet]: getAddress('0xABbDD9AC016e43c7CA85e2258E669948f029BC0c'),
+  [ChainId.Base]: getAddress('0x2F0D6538807a77d4AdDCd4b4DAf214Ea2E818E3D'),
+  [ChainId.BSC]: getAddress('0xE744C8157c346B2931807F42552c8CBc0BB6D34f'),
+}
+
 type Implementations = {
   vault?: Address
   governor?: Address
@@ -33,6 +42,8 @@ type Implementations = {
 }
 
 export type VoteLockUpgradeReads = {
+  chainId: number
+  vault: Address
   versions: { vault?: string; governor?: string; timelock?: string }
   latest?: { version: string; deprecated: boolean }
   implementations?: Implementations
@@ -46,12 +57,15 @@ const isSet = (address: Address | undefined): address is Address =>
 // The 1.1.0 vault and components check the registry's latest version on upgrade, so only offer
 // the hop from 1.0.0 straight to a live 1.1.0.
 export const getVoteLockUpgradeEligibility = ({
+  chainId,
+  vault,
   versions,
   latest,
   implementations,
   governorTimelock,
   timelock,
 }: VoteLockUpgradeReads): boolean =>
+  VLRSR_SINGLETON[chainId]?.toLowerCase() === vault.toLowerCase() &&
   versions.vault === VOTE_LOCK_UPGRADE_FROM &&
   versions.governor === VOTE_LOCK_UPGRADE_FROM &&
   versions.timelock === VOTE_LOCK_UPGRADE_FROM &&

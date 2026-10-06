@@ -145,7 +145,7 @@ export default function ProposeVoteLockUpgrade() {
     !timelock ||
     !isProposeAllowed ||
     !proposals ||
-    !getVoteLockUpgradeEligibility(reads) ||
+    !getVoteLockUpgradeEligibility({ ...reads, chainId, vault }) ||
     hasLiveVoteLockUpgrade(proposals)
   ) {
     return null
