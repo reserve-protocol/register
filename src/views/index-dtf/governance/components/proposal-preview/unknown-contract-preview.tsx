@@ -22,7 +22,10 @@ const UnknownContractPreview = ({
   const chainId = useAtomValue(chainIdAtom)
 
   return (
-    <div className="flex flex-col gap-4 p-2 rounded-3xl bg-background">
+    <div
+      className="flex flex-col gap-4 p-2 rounded-3xl bg-background"
+      data-testid="proposal-unknown-contract"
+    >
       <div className="mx-4 py-4 flex items-center flex-wrap gap-2 border-b">
         <h1 className="text-xl font-semibold text-primary">
           <Trans>Unknown Contract</Trans>
