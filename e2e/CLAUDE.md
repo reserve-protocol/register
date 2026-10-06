@@ -160,6 +160,7 @@ wrong chain fails loud.
 | Subgraph (index) | `helpers/subgraph.ts` `resolveIndexQuery` | URL chain + operation + variables |
 | Subgraph (yield) | `helpers/subgraph.ts` `resolveYieldQuery` | chainId + operation + query + identity |
 | Reserve API | `helpers/api.ts` (path branches) | method + path + query identity |
+| Etherscan v2 (SDK proposal decoder ABI/source lookups) | `helpers/api.ts` `etherscanResponse` (answers as unverified) | module + action |
 | Zapper quote | `helpers/zapper.ts` pinned fixtures | chainId + tokenIn/out + amountIn |
 | Per-test override (any) | the `overrides` fixture | exact identity you supply |
 
