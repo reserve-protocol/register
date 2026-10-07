@@ -139,6 +139,20 @@ PORT=18310 FORK_BLOCK=$(jq -r .forkBlock e2e/fork/.state/8453/v6-upgrade-scenari
 FORK_CHAIN_ID=8453 pnpm exec playwright test -c playwright.fork.config.ts e2e/fork/tests/upgrade-v6.fork.spec.ts
 ```
 
+Once MIDAS is on 6.0.0 on that Anvil, the 6.0 governance lanes drive Register's settings and basket
+proposals and execute them. Run them as separate invocations in this order (Playwright orders files
+alphabetically, and the basket allowlist case needs the settings lane's enforced allowlist):
+
+```bash
+FORK_CHAIN_ID=8453 pnpm exec playwright test -c playwright.fork.config.ts e2e/fork/tests/settings-v6.fork.spec.ts
+FORK_CHAIN_ID=8453 pnpm exec playwright test -c playwright.fork.config.ts e2e/fork/tests/basket-v6.fork.spec.ts
+```
+
+The settings lane skips once the allowlist is already enforced (restart Anvil and re-run the
+upgrade lane). Launching the new rebalance's auctions from the UI isn't reachable on this lane: the
+subgraph proxy serves the fork block, so the rebalance has no indexed proposal; launch is covered by
+the BSC CMC20 and native-v6 lanes.
+
 ## Archive RPC
 
 The Alchemy key in `.env` (`VITE_ALCHEMY`) is origin-allowlisted: Anvil must send the app origin or every
