@@ -23,8 +23,8 @@ time.
 | Proposal detail, state banners/CTAs | `e2e/tests/flows/governance-states.spec.ts` |
 | Vote UI/submission | `e2e/tests/flows/governance-vote.spec.ts` + `flows/failures-governance.spec.ts` (reject/revert) + `index-dtf/governance/vote-modal-long-title.spec.ts` (modal layout) |
 | Propose flow — DAO settings | `e2e/tests/flows/governance-propose.spec.ts` |
-| Propose flow — fees (dtf-settings) | `e2e/tests/flows/governance-propose-dtf-settings.spec.ts` (fee calldata round-trip; Folio 6.0 shows `settings-propose-v6-unavailable` and never submits) + `propose-dtf-settings/tests/settings-version-gate.test.ts` (no calldata for 6.0, pending or unknown versions) |
-| Propose flow — basket | `e2e/tests/flows/governance-propose-basket.spec.ts` (form + guards; full submit blocked on golden `startRebalance` fixture) |
+| Propose flow — fees (dtf-settings) | `e2e/tests/flows/governance-propose-dtf-settings.spec.ts` (fee calldata round-trip; Folio 6.0 TVL fee + trade allowlist submit as 6.0 setters, seeded by `seedFolioV6`) + `propose-dtf-settings/tests/settings-version-gate.test.ts` (no calldata while pending or for unknown versions) + `tests/settings-v6.test.ts` (6.0 setters, immutable table preserved, lone recipient = 1e18, SDK rejects block instead of throwing, v6 optimistic selectors) + Base fork lane `e2e/fork/tests/settings-v6.fork.spec.ts` (executed on MIDAS after the upgrade lane) |
+| Propose flow — basket | `e2e/tests/flows/governance-propose-basket.spec.ts` (form + guards; full submit blocked on golden `startRebalance` fixture) + `basket/utils/tests/{start-rebalance-calldata,rebalance-deadline}.test.ts` (v6 nonce/deadline encoding, deadline policy) + Base fork lane `e2e/fork/tests/basket-v6.fork.spec.ts` (6.0 proposal → vote → execute on MIDAS; enforced allowlist blocks a non-listed token) |
 | Propose flow — basket-settings (trading-gov params) | `e2e/tests/flows/governance-propose-basket-settings.spec.ts` (setVotingPeriod round-trip; phantom-threshold single-action + untouched-form-disabled regressions, live since E1) |
 | Proposal description markdown/XSS rendering | `e2e/tests/flows/governance-description-render.spec.ts` |
 | Queue/execute CTAs | `e2e/tests/flows/governance-queue-execute.spec.ts` + `flows/failures-governance.spec.ts` |
@@ -114,13 +114,21 @@ mapper dereferences — serve proposals ONLY through it or the list breaks).
   is a fixed 420px box, so its title needs `[overflow-wrap:anywhere]` — plain
   `break-words` does not shrink a flex item's min-content width, and the
   overflow pushes the checkboxes and separators outside the dialog.
-- Folio 6.0 settings writes are gated (`settingsWriteBlockAtom`): the local
-  encoders emit `setAuctionLength` and one-table `setFeeRecipients`, neither
-  of which exists on 6.0 (it has `setMaxAuctionLength` and two recipient
-  tables). Lift the gate only by routing settings through the SDK's
-  version-aware builders, including the v6 optimistic selectors
-  (`INDEX_DTF_START_REBALANCE_SELECTOR['6.0.0']`); don't add a 6.0 branch to
-  the atom encoder.
+- Folio 6.0 settings: every call whose signature changed in 6.0
+  (`setMaxAuctionLength`, two-table `setFeeRecipients`, `setFolioSelfFee`,
+  allowlist) goes through the SDK `prepareIndexDtf*` primitives inside
+  `prepareCalldata` (an SDK rejection blocks the proposal, it must never throw
+  out of the atom — that unmounts the page). Setters identical across versions
+  keep the local encoders so v4/v5 bytes don't move. `setFeeRecipients` on 6.0
+  must hand back the RPC-read immutable table unchanged; the mutable shares are
+  scaled into what it leaves, and the form shows them relative to that share.
+  Optimistic actions come from `optimisticActionsAtom` (6.0 selectors on 6.0).
+- Folio 6.0 basket proposals: `startRebalance` carries `getRebalanceNonce()+1`
+  and a deadline anchored at confirmation (`rebalance-deadline.ts`: trading
+  governor lifecycle, plus the veto window on optimistic governors because a
+  veto restarts it as a standard vote, plus 3 days). A competing rebalance
+  started first makes the proposal revert at execution; don't "repair" nonce or
+  deadline after submission.
 - ERC-6372 `clock()` is mocked (timestamp mode); governor deadline math
   breaks silently if a new read bypasses the frozen clock.
 - Threshold change-detection MUST go through the shared

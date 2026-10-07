@@ -22,17 +22,14 @@ PRs #1053/#1054/#1055/#1063, SDK PR #27). Delete items as they land.
   [index-dtf-v6-integration.md](index-dtf-v6-integration.md); the Register
   rebalance vertical ([index-dtf-v6-register-rebalance.md](index-dtf-v6-register-rebalance.md))
   landed 2026-09-17 (version identity, SDK reads/calculations/writes for v5/v6,
-  RPC-first gating, one real launch on the BSC fork). Still open from that
-  vertical: v6 basket proposals in the atom builder (need nonce + deadline via
-  the client-bound SDK builder), the SDK client still appends default RPCs after
-  an override (read isolation on the fork lane), and the SDK pair must be
-  published (prerelease) before the Register pin replaces the `link:` (until
-  then the new CI unit-test step cannot install either). Since 2026-09-30 v6 SETTINGS writes are
-  gated like basket writes (`settingsWriteBlockAtom`; the local encoders emit
-  `setAuctionLength` and one-table `setFeeRecipients`, absent on 6.0) — lifting
-  it means routing settings through the SDK's version-aware builders
-  (`setMaxAuctionLength`, mutable + immutable recipient tables, v6 optimistic
-  action selectors). Also open from the 2026-09-30 release review: the zap
+  RPC-first gating, one real launch on the BSC fork). v6 basket and settings
+  proposals landed 2026-10-06 ([operability plan](index-dtf-v6-operability.md),
+  fork-proven on MIDAS). Still open from that vertical: optimistic-action
+  permissions for the 6.0-only setters (self fee, allowlist) aren't offered, the
+  allowlist editor takes raw addresses (no token picker), the settings form and the `setFeeRecipients` preview show shares of the recipient pool (they don't net out the holder share and permanent recipients like the settings page does), an immutable-table read error leaves the settings form unseeded until React Query's retry succeeds, the SDK client still
+  appends default RPCs after an override (read isolation on the fork lane), and
+  the SDK pair must be published (prerelease) before the Register pin replaces
+  the `link:` (until then the new CI unit-test step cannot install either). Also open from the 2026-09-30 release review: the zap
   deploy path accepts a `FolioDeployed` only from the chain's Reserve v5/v6
   deployers (the zapper picks the deployer server-side; confirm it uses one of
   those), and a deploy receipt without a matching event still leaves the
