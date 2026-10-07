@@ -2664,6 +2664,10 @@ msgstr "Felicitaciones 🎉"
 msgid "Connect"
 msgstr "Conectar"
 
+#: src/components/vote-lock/migration-preview/migration-preview-card.tsx:146
+msgid "Connect to check"
+msgstr "Conecta para comprobar"
+
 #: src/components/stake-drawer/components/submit-stake-button.tsx:160
 #: src/components/stake-drawer/components/submit-unstake-button.tsx:72
 #: src/views/explorer/components/governance/index.tsx:117
@@ -6367,6 +6371,10 @@ msgstr "No se encontraron DTFs listados"
 msgid "No mandate set"
 msgstr "Sin mandato establecido"
 
+#: src/components/vote-lock/migration-preview/migration-preview-card.tsx:71
+msgid "No old vote-lock to migrate"
+msgstr "No hay ningún vote-lock antiguo que migrar"
+
 #. placeholder {0}: rToken?.symbol ?? 'rtoken'
 #: src/views/yield-dtf/auctions/components/OngoingAuctionsSkeleton.tsx:13
 msgid "No ongoing {0}-related auctions. Check for available auctions/unrealized revenue <0>here</0> if you want to poke the protocol to start the next auction."
@@ -6591,6 +6599,14 @@ msgstr "Documentación oficial del token CFB LCAP"
 #: src/views/index-dtf/governance/views/propose/basket/components/proposal-basket-setup/proposal-basket-table.tsx:54
 msgid "Old units"
 msgstr "Unidades anteriores"
+
+#: src/components/vote-lock/migration-preview/migration-preview-card.tsx:80
+msgid "Old vote-locks for this DTF no longer vote or earn rewards. If you already moved yours or only locked in vlRSR, you're all set. Connect to check this wallet."
+msgstr "Los vote-locks antiguos de este DTF ya no permiten votar ni obtener recompensas. Si ya moviste el tuyo o solo bloqueaste RSR en vlRSR, no necesitas hacer nada. Conecta tu Wallet para comprobarlo."
+
+#: src/components/vote-lock/migration-preview/migration-preview-card.tsx:69
+msgid "Old vote-locks need to move to vlRSR"
+msgstr "Los vote-locks antiguos deben pasar a vlRSR"
 
 #: src/views/yield-dtf/governance/views/proposal-detail/components/proposal-summary/BasketChangeSummary.tsx:201
 msgid "Old weight / New weight"
@@ -10005,6 +10021,10 @@ msgstr "Esta Wallet no tiene actualmente DTFs, RSR en Stake, posiciones con Vote
 msgid "This wallet is not eligible to access this product. If you think this is an error, try connecting a different wallet or contact support."
 msgstr "Este wallet no es elegible para acceder a este producto. Si crees que se trata de un error, intenta conectar un wallet diferente o contacta a soporte."
 
+#: src/components/vote-lock/migration-preview/migration-preview-card.tsx:83
+msgid "This wallet still holds an old vote-lock for this DTF. You can't vote or earn rewards with it anymore. Redeem its shares, then lock the RSR you receive in vlRSR."
+msgstr "Esta Wallet aún tiene un vote-lock antiguo de este DTF. Ya no puedes votar ni obtener recompensas con él. Haz Redeem de sus participaciones y después bloquea en vlRSR el RSR que recibas."
+
 #: src/views/index-dtf/governance/views/proposal/components/proposal-vote.tsx:161
 msgid "This was originally a fast proposal that did not pass governance. Please review the details of this contested proposal closely."
 msgstr "Originalmente esta fue una propuesta rápida que no pasó la gobernanza. Revisa de cerca los detalles de esta propuesta disputada."
@@ -11343,6 +11363,10 @@ msgstr "Token de DAO con bloqueo de votos"
 #: src/views/earn/views/index-dtf/components/header.tsx:9
 msgid "Vote-Lock on Index DTFs"
 msgstr "Vote-Lock en Index DTFs"
+
+#: src/components/vote-lock/migration-preview/migration-preview-card.tsx:108
+msgid "Vote-lock upgrade"
+msgstr "Actualización del vote-lock"
 
 #: src/views/earn/views/index-dtf/components/faq-graphics.tsx:90
 msgid "Vote-lock vault"

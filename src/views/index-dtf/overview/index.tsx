@@ -1,10 +1,16 @@
 import useScrollToHash from '@/hooks/use-scroll-to-hash'
+import { MigrationPreviewCard } from '@/components/vote-lock/migration-preview/migration-preview-card'
+import {
+  migrationPreviewTargetKeyForRoute,
+  useMigrationPreviewMode,
+} from '@/components/vote-lock/migration-preview/preview-state'
 import { useIsLargeDesktop, useIsMobile } from '@/hooks/use-media-query'
 import { Card } from '@/components/ui/card'
 import { indexDTFAtom } from '@/state/dtf/atoms'
 import { isYieldIndexDTFAtom } from '@/state/dtf/yield-index-atoms'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { useEffect } from 'react'
+import { useParams } from 'react-router-dom'
 import useTrackIndexDTFPage from '../hooks/useTrackIndexDTFPage'
 import AboutDTF, { useHasVideoLibrary } from './components/about-dtf'
 import AboutReserve from './components/about-reserve'
@@ -91,11 +97,23 @@ const AboutSection = () => {
 
 const Content = () => {
   const indexDTF = useAtomValue(indexDTFAtom)
+  const { chain, tokenId } = useParams()
+  const isLargeDesktop = useIsLargeDesktop()
+  const migrationPreview = useMigrationPreviewMode()
   useScrollToHash()
 
   return (
     <div className="min-w-0 flex-1">
       <div className="flex flex-col gap-0.5 sm:gap-1">
+        {!isLargeDesktop && migrationPreview === 'affected' && (
+          <MigrationPreviewCard
+            mode={migrationPreview}
+            targetKey={migrationPreviewTargetKeyForRoute(chain, tokenId)}
+            tokenSymbol={indexDTF?.stToken?.underlying.symbol ?? 'RSR'}
+            voteLockSymbol={indexDTF?.stToken?.token.symbol}
+            hideWhenComplete
+          />
+        )}
         <PriceChart />
         <AboutSection />
         {!!indexDTF?.stToken && <IndexGovernanceOverview />}

@@ -11,11 +11,15 @@ const fetchPortfolio = async (address: Address): Promise<PortfolioResponse> => {
   return response.json()
 }
 
-export const usePortfolio = (address?: Address | null) => {
+export const usePortfolio = (
+  address?: Address | null,
+  previewData?: PortfolioResponse
+) => {
   return useQuery({
-    queryKey: ['portfolio', address],
+    queryKey: ['portfolio', address, !!previewData],
     queryFn: () => fetchPortfolio(address!),
-    enabled: !!address,
+    enabled: !!address && !previewData,
+    initialData: previewData,
     staleTime: 60_000,
     refetchInterval: 60_000,
   })

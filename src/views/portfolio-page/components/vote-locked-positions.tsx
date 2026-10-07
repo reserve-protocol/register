@@ -1,4 +1,10 @@
 import { AnimatedNumber } from '@/components/ui/animated-number'
+import { migrationPreviewLegacyVoteLock } from '@/components/vote-lock/migration-preview/preview-portfolio-data'
+import {
+  migrationPreviewTargetKey,
+  useMigrationPreviewStep,
+  useMigrationPreviewMode,
+} from '@/components/vote-lock/migration-preview/preview-state'
 import TokenLogo from '@/components/token-logo'
 import TokenLogoWithChain from '@/components/token-logo/TokenLogoWithChain'
 import { Button } from '@/components/ui/button'
@@ -14,6 +20,9 @@ import { ColumnDef } from '@tanstack/react-table'
 import { Trans } from '@lingui/react/macro'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { ExternalLink, Lock } from 'lucide-react'
+import { useMemo } from 'react'
+import { useSearchParams } from 'react-router-dom'
+import { walletAtom } from '@/state/atoms'
 import { Address } from 'viem'
 import {
   openStakingSidebarAtom,
@@ -130,7 +139,48 @@ const ModifyButton = ({ voteLock }: { voteLock: PortfolioVoteLock }) => {
   )
 }
 
-const columns: ColumnDef<PortfolioVoteLock, any>[] = [
+const MigrationRowAction = ({
+  voteLock,
+  onOpen,
+}: {
+  voteLock: PortfolioVoteLock
+  onOpen: () => void
+}) => {
+  const targetKey = migrationPreviewTargetKey(
+    voteLock.chainId,
+    voteLock.stTokenAddress
+  )
+  const [step] = useMigrationPreviewStep(targetKey)
+
+  if (step === 3) return null
+
+  return (
+    <Button
+      data-testid="vote-lock-migration-row-action"
+      size="sm"
+      className="rounded-full"
+      onClick={(event) => {
+        event.stopPropagation()
+        onOpen()
+      }}
+    >
+      {step > 0 ? 'Continue migration' : 'Migrate'}
+    </Button>
+  )
+}
+
+const MigrationRowBadge = ({ targetKey }: { targetKey: string }) => {
+  const [step] = useMigrationPreviewStep(targetKey)
+
+  if (step === 3) return null
+
+  return <p className="text-xs font-medium text-primary">Migration needed</p>
+}
+
+const getColumns = (
+  migrationTargetKey?: string,
+  onMigrationOpen?: () => void
+): ColumnDef<PortfolioVoteLock, any>[] => [
   {
     id: 'stTokenName',
     accessorKey: 'stTokenName',
@@ -144,6 +194,17 @@ const columns: ColumnDef<PortfolioVoteLock, any>[] = [
         />
         <div>
           <p className="font-bold text-sm">{row.original.symbol}</p>
+          {migrationPreviewTargetKey(
+            row.original.chainId,
+            row.original.stTokenAddress
+          ) === migrationTargetKey && (
+            <MigrationRowBadge
+              targetKey={migrationPreviewTargetKey(
+                row.original.chainId,
+                row.original.stTokenAddress
+              )}
+            />
+          )}
           <p className="text-xs text-legend hidden sm:block">
             {row.original.name}
           </p>
@@ -236,17 +297,56 @@ const columns: ColumnDef<PortfolioVoteLock, any>[] = [
         <Trans>Action</Trans>
       </span>
     ),
-    cell: ({ row }) => (
-      <div className="flex justify-end">
-        <ModifyButton voteLock={row.original} />
-      </div>
-    ),
+    cell: ({ row }) => {
+      const needsMigration =
+        !!onMigrationOpen &&
+        migrationPreviewTargetKey(
+          row.original.chainId,
+          row.original.stTokenAddress
+        ) === migrationTargetKey
+
+      return (
+        <div className="flex justify-end gap-2">
+          {needsMigration && (
+            <MigrationRowAction
+              voteLock={row.original}
+              onOpen={onMigrationOpen}
+            />
+          )}
+          {!needsMigration && <ModifyButton voteLock={row.original} />}
+        </div>
+      )
+    },
   },
 ]
 
-const VoteLockedPositions = () => {
+const VoteLockedPositions = ({
+  onMigrationOpen,
+}: {
+  onMigrationOpen?: () => void
+}) => {
+  const migrationPreview = useMigrationPreviewMode()
+  const [searchParams] = useSearchParams()
+  const isAffectedPreview =
+    migrationPreview === 'affected' && !searchParams.get('account')
+  const wallet = useAtomValue(walletAtom)
+  const portfolioAddress = useAtomValue(portfolioAddressAtom)
   const voteLocks = useAtomValue(portfolioVoteLocksAtom)
   const filtered = voteLocks.filter((v) => Number(v.amount) > 0)
+  const isOwnPortfolio =
+    isAffectedPreview ||
+    (!!wallet && portfolioAddress?.toLowerCase() === wallet.toLowerCase())
+  const migrationTargetKey =
+    isAffectedPreview && isOwnPortfolio
+      ? migrationPreviewTargetKey(
+          migrationPreviewLegacyVoteLock.chainId,
+          migrationPreviewLegacyVoteLock.stTokenAddress
+        )
+      : undefined
+  const columns = useMemo(
+    () => getColumns(migrationTargetKey, onMigrationOpen),
+    [migrationTargetKey, onMigrationOpen]
+  )
   const { displayData, expanded, toggle, hasMore, total } =
     useExpandable(filtered)
 

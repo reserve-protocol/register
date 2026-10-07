@@ -1,11 +1,23 @@
 import { Button } from '@/components/ui/button'
+import { MigrationPreviewCard } from '@/components/vote-lock/migration-preview/migration-preview-card'
+import {
+  migrationPreviewTargetKey,
+  useMigrationPreviewMode,
+  useMigrationPreviewStep,
+} from '@/components/vote-lock/migration-preview/preview-state'
+import {
+  migrationPreviewAddress,
+  migrationPreviewLegacyVoteLock,
+  migrationPreviewPortfolio,
+  migrationPreviewPortfolioAtStep,
+} from '@/components/vote-lock/migration-preview/preview-portfolio-data'
 import Copy from '@/components/ui/copy'
 import { shortenAddress } from '@/utils'
 import { ROUTES } from '@/utils/constants'
 import { Trans } from '@lingui/react/macro'
 import { useSetAtom } from 'jotai'
 import { Binoculars, Eye, Landmark, X } from 'lucide-react'
-import { useEffect } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
 import { isAddress } from 'viem'
 import { useAccount } from 'wagmi'
@@ -32,7 +44,10 @@ import { usePortfolioNow } from './hooks/use-portfolio-now'
 import { hasReserveActivity } from './utils'
 
 const ConnectPrompt = () => (
-  <div data-testid="portfolio-connect-prompt" className="container mx-auto flex min-h-[calc(100vh-96px)] items-center justify-center px-4 py-10">
+  <div
+    data-testid="portfolio-connect-prompt"
+    className="container mx-auto flex min-h-[calc(100vh-96px)] items-center justify-center px-4 py-10"
+  >
     <div className="flex w-full max-w-[560px] flex-col items-center text-center">
       <h1 className="text-[2rem] font-semibold leading-9 text-primary dark:text-foreground md:text-5xl md:leading-[56px]">
         <Trans>Connect your wallet to view your portfolio</Trans>
@@ -117,8 +132,11 @@ const ImpersonationBanner = ({
 )
 
 const PortfolioPage = () => {
+  const migrationPreview = useMigrationPreviewMode()
   const { address: connectedAddress } = useAccount()
   const [searchParams, setSearchParams] = useSearchParams()
+  const isAffectedPreview =
+    migrationPreview === 'affected' && !searchParams.get('account')
   const accountParam = searchParams.get('account')
 
   const impersonatedAddress =
@@ -128,8 +146,32 @@ const PortfolioPage = () => {
       ? accountParam
       : undefined
 
-  const address = impersonatedAddress || connectedAddress
-  const { data, isLoading, isError, refetch } = usePortfolio(address)
+  const address = isAffectedPreview
+    ? migrationPreviewAddress
+    : impersonatedAddress || connectedAddress
+  const migrationTargetKey = migrationPreviewTargetKey(
+    migrationPreviewLegacyVoteLock.chainId,
+    migrationPreviewLegacyVoteLock.stTokenAddress
+  )
+  const [migrationStep] = useMigrationPreviewStep(migrationTargetKey)
+  const [migrationOpen, setMigrationOpen] = useState(false)
+  const openMigration = useCallback(() => setMigrationOpen(true), [])
+  const {
+    data: fetchedData,
+    isLoading,
+    isError,
+    refetch,
+  } = usePortfolio(
+    address,
+    isAffectedPreview ? migrationPreviewPortfolio : undefined
+  )
+  const data = useMemo(
+    () =>
+      isAffectedPreview
+        ? migrationPreviewPortfolioAtStep(migrationStep)
+        : fetchedData,
+    [fetchedData, isAffectedPreview, migrationStep]
+  )
   const setPortfolioData = useSetAtom(portfolioDataAtom)
   const setPortfolioAddress = useSetAtom(portfolioAddressAtom)
 
@@ -193,6 +235,20 @@ const PortfolioPage = () => {
           }}
         />
       )}
+      {!impersonatedAddress &&
+        isAffectedPreview &&
+        (migrationStep !== 3 || migrationOpen) && (
+          <MigrationPreviewCard
+            mode="affected"
+            targetKey={migrationTargetKey}
+            tokenSymbol={migrationPreviewLegacyVoteLock.underlying.symbol}
+            voteLockSymbol={migrationPreviewLegacyVoteLock.symbol}
+            layout="banner"
+            hideWhenComplete
+            open={migrationOpen}
+            onOpenChange={setMigrationOpen}
+          />
+        )}
       {/* Top section: Chart + Sidebar */}
       <div className="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-6">
         <PortfolioChart />
@@ -208,7 +264,7 @@ const PortfolioPage = () => {
       <AvailableRewards />
       <PendingWithdrawals />
       <StakedPositions />
-      <VoteLockedPositions />
+      <VoteLockedPositions onMigrationOpen={openMigration} />
       <ActiveProposals />
       <VotingPower />
       <RSRSection />

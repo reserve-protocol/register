@@ -2664,6 +2664,10 @@ msgstr "축하합니다 🎉"
 msgid "Connect"
 msgstr "연결"
 
+#: src/components/vote-lock/migration-preview/migration-preview-card.tsx:146
+msgid "Connect to check"
+msgstr "연결해 확인하세요"
+
 #: src/components/stake-drawer/components/submit-stake-button.tsx:160
 #: src/components/stake-drawer/components/submit-unstake-button.tsx:72
 #: src/views/explorer/components/governance/index.tsx:117
@@ -6367,6 +6371,10 @@ msgstr "등록된 DTF가 없습니다"
 msgid "No mandate set"
 msgstr "설정된 권한 없음"
 
+#: src/components/vote-lock/migration-preview/migration-preview-card.tsx:71
+msgid "No old vote-lock to migrate"
+msgstr "이전할 기존 vote-lock이 없습니다"
+
 #. placeholder {0}: rToken?.symbol ?? 'rtoken'
 #: src/views/yield-dtf/auctions/components/OngoingAuctionsSkeleton.tsx:13
 msgid "No ongoing {0}-related auctions. Check for available auctions/unrealized revenue <0>here</0> if you want to poke the protocol to start the next auction."
@@ -6591,6 +6599,14 @@ msgstr "CFB LCAP 토큰 공식 문서"
 #: src/views/index-dtf/governance/views/propose/basket/components/proposal-basket-setup/proposal-basket-table.tsx:54
 msgid "Old units"
 msgstr "이전 단위"
+
+#: src/components/vote-lock/migration-preview/migration-preview-card.tsx:80
+msgid "Old vote-locks for this DTF no longer vote or earn rewards. If you already moved yours or only locked in vlRSR, you're all set. Connect to check this wallet."
+msgstr "이 DTF의 기존 vote-lock으로는 더 이상 투표하거나 보상을 받을 수 없습니다. 이미 옮겼거나 vlRSR에서만 RSR을 잠갔다면 별도 조치가 필요하지 않습니다. Wallet을 연결해 확인하세요."
+
+#: src/components/vote-lock/migration-preview/migration-preview-card.tsx:69
+msgid "Old vote-locks need to move to vlRSR"
+msgstr "기존 vote-lock을 vlRSR로 옮겨야 합니다"
 
 #: src/views/yield-dtf/governance/views/proposal-detail/components/proposal-summary/BasketChangeSummary.tsx:201
 msgid "Old weight / New weight"
@@ -10005,6 +10021,10 @@ msgstr "이 지갑은 현재 DTF, Stake된 RSR, Vote-lock 포지션, 보상, 대
 msgid "This wallet is not eligible to access this product. If you think this is an error, try connecting a different wallet or contact support."
 msgstr "이 Wallet은 본 제품에 접근할 수 없습니다. 오류라고 생각되면 다른 Wallet으로 연결하거나 고객 지원에 문의하세요."
 
+#: src/components/vote-lock/migration-preview/migration-preview-card.tsx:83
+msgid "This wallet still holds an old vote-lock for this DTF. You can't vote or earn rewards with it anymore. Redeem its shares, then lock the RSR you receive in vlRSR."
+msgstr "이 Wallet에는 아직 이 DTF의 기존 vote-lock이 있습니다. 이 vote-lock으로는 더 이상 투표하거나 보상을 받을 수 없습니다. 지분을 Redeem한 다음 받은 RSR을 vlRSR에 잠그세요."
+
 #: src/views/index-dtf/governance/views/proposal/components/proposal-vote.tsx:161
 msgid "This was originally a fast proposal that did not pass governance. Please review the details of this contested proposal closely."
 msgstr "이 제안은 원래 거버넌스를 통과하지 못한 Fast 제안이었습니다. 이의가 제기된 이 제안의 세부 사항을 면밀히 검토하세요."
@@ -11343,6 +11363,10 @@ msgstr "투표 잠금 DAO 토큰"
 #: src/views/earn/views/index-dtf/components/header.tsx:9
 msgid "Vote-Lock on Index DTFs"
 msgstr "Index DTF의 투표 잠금"
+
+#: src/components/vote-lock/migration-preview/migration-preview-card.tsx:108
+msgid "Vote-lock upgrade"
+msgstr "vote-lock 업그레이드"
 
 #: src/views/earn/views/index-dtf/components/faq-graphics.tsx:90
 msgid "Vote-lock vault"

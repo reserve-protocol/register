@@ -1,4 +1,9 @@
 import CowSwap from '@/components/icons/logos/CowSwap'
+import { MigrationPreviewCard } from '@/components/vote-lock/migration-preview/migration-preview-card'
+import {
+  migrationPreviewTargetKeyForRoute,
+  useMigrationPreviewMode,
+} from '@/components/vote-lock/migration-preview/preview-state'
 import PancakeSwap from '@/components/icons/logos/PancakeSwap'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Skeleton } from '@/components/ui/skeleton'
@@ -17,6 +22,7 @@ import { useTrackIndexDTFClick } from '@/views/index-dtf/hooks/useTrackIndexDTFP
 import { Trans } from '@lingui/react/macro'
 import { useAtomValue } from 'jotai'
 import React, { type ComponentType, type SVGProps } from 'react'
+import { useParams } from 'react-router-dom'
 import ZapperWrapper from '../../../components/zapper/zapper-wrapper'
 import { indexDTFQuoteSourceAtom } from '../../../issuance'
 import AboutDTF, { useHasVideoLibrary } from '../about-dtf'
@@ -208,6 +214,9 @@ const CoverSlot = () => {
 }
 
 const LandingMint = (props: React.HTMLAttributes<HTMLDivElement>) => {
+  const dtf = useAtomValue(indexDTFAtom)
+  const { chain, tokenId } = useParams()
+  const migrationPreview = useMigrationPreviewMode()
   const { data: complianceData } = useComplianceRestrictions()
   const isGeoRestricted = complianceData?.reason === 'geolocation-restricted'
   const isLargeDesktop = useIsLargeDesktop()
@@ -220,6 +229,15 @@ const LandingMint = (props: React.HTMLAttributes<HTMLDivElement>) => {
       className="hidden xl:flex xl:w-[480px] xl:flex-col xl:gap-1 relative max-w-[480px]"
       {...props}
     >
+      {migrationPreview === 'affected' && (
+        <MigrationPreviewCard
+          mode={migrationPreview}
+          targetKey={migrationPreviewTargetKeyForRoute(chain, tokenId)}
+          tokenSymbol={dtf?.stToken?.underlying.symbol ?? 'RSR'}
+          voteLockSymbol={dtf?.stToken?.token.symbol}
+          hideWhenComplete
+        />
+      )}
       <div>
         {isGeoRestricted ? (
           <EligibilityCard className="bg-card" />

@@ -2664,6 +2664,10 @@ msgstr "恭喜 🎉"
 msgid "Connect"
 msgstr "连接钱包"
 
+#: src/components/vote-lock/migration-preview/migration-preview-card.tsx:146
+msgid "Connect to check"
+msgstr "连接以查看"
+
 #: src/components/stake-drawer/components/submit-stake-button.tsx:160
 #: src/components/stake-drawer/components/submit-unstake-button.tsx:72
 #: src/views/explorer/components/governance/index.tsx:117
@@ -6367,6 +6371,10 @@ msgstr "未找到已列出的 DTF"
 msgid "No mandate set"
 msgstr "未设置使命"
 
+#: src/components/vote-lock/migration-preview/migration-preview-card.tsx:71
+msgid "No old vote-lock to migrate"
+msgstr "没有需要迁移的旧 vote-lock"
+
 #. placeholder {0}: rToken?.symbol ?? 'rtoken'
 #: src/views/yield-dtf/auctions/components/OngoingAuctionsSkeleton.tsx:13
 msgid "No ongoing {0}-related auctions. Check for available auctions/unrealized revenue <0>here</0> if you want to poke the protocol to start the next auction."
@@ -6591,6 +6599,14 @@ msgstr "CFB LCAP 代币官方文档"
 #: src/views/index-dtf/governance/views/propose/basket/components/proposal-basket-setup/proposal-basket-table.tsx:54
 msgid "Old units"
 msgstr "旧单位"
+
+#: src/components/vote-lock/migration-preview/migration-preview-card.tsx:80
+msgid "Old vote-locks for this DTF no longer vote or earn rewards. If you already moved yours or only locked in vlRSR, you're all set. Connect to check this wallet."
+msgstr "此 DTF 的旧 vote-lock 已无法用于投票或赚取奖励。如果你已经迁移，或只在 vlRSR 中锁定过 RSR，就无需操作。连接 Wallet 以查看此账户是否受影响。"
+
+#: src/components/vote-lock/migration-preview/migration-preview-card.tsx:69
+msgid "Old vote-locks need to move to vlRSR"
+msgstr "旧的 vote-lock 需要迁移至 vlRSR"
 
 #: src/views/yield-dtf/governance/views/proposal-detail/components/proposal-summary/BasketChangeSummary.tsx:201
 msgid "Old weight / New weight"
@@ -10005,6 +10021,10 @@ msgstr "此钱包目前不持有任何 DTF、已 Stake 的 RSR、Vote-lock 头�
 msgid "This wallet is not eligible to access this product. If you think this is an error, try connecting a different wallet or contact support."
 msgstr "此 Wallet 无权访问本产品。如果你认为这是错误，请尝试连接其他 Wallet 或联系支持团队。"
 
+#: src/components/vote-lock/migration-preview/migration-preview-card.tsx:83
+msgid "This wallet still holds an old vote-lock for this DTF. You can't vote or earn rewards with it anymore. Redeem its shares, then lock the RSR you receive in vlRSR."
+msgstr "此 Wallet 仍持有该 DTF 的旧 vote-lock。它已无法用于投票或赚取奖励。先 Redeem 其份额，再将收到的 RSR 锁定到 vlRSR。"
+
 #: src/views/index-dtf/governance/views/proposal/components/proposal-vote.tsx:161
 msgid "This was originally a fast proposal that did not pass governance. Please review the details of this contested proposal closely."
 msgstr "这原本是一个未通过治理的快速提案。请仔细审阅这个有争议提案的细节。"
@@ -11343,6 +11363,10 @@ msgstr "投票锁定 DAO 代币"
 #: src/views/earn/views/index-dtf/components/header.tsx:9
 msgid "Vote-Lock on Index DTFs"
 msgstr "在 Index DTF 上进行投票锁定"
+
+#: src/components/vote-lock/migration-preview/migration-preview-card.tsx:108
+msgid "Vote-lock upgrade"
+msgstr "vote-lock 升级"
 
 #: src/views/earn/views/index-dtf/components/faq-graphics.tsx:90
 msgid "Vote-lock vault"
