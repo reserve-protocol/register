@@ -122,6 +122,8 @@ describe('useDecodedRebalanceCalldata', () => {
     expect(result.current?.data.limits).toMatchObject(LIMITS)
     expect(result.current?.data.auctionLauncherWindow).toBe(99n)
     expect(result.current?.data.ttl).toBe(100n)
+    expect(result.current?.data.rebalanceNonce).toBe(42n)
+    expect(result.current?.data.deadline).toBe(1_900_000_000n)
   })
 })
 

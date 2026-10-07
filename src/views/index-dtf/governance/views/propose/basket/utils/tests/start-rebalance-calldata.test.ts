@@ -2,6 +2,10 @@ import { getStartRebalance } from '@reserve-protocol/dtf-rebalance-lib'
 import type { StartRebalanceArgsPartial as StartRebalanceArgsPartialV5 } from '@reserve-protocol/dtf-rebalance-lib/dist/types'
 import { decodeFunctionData, encodeFunctionData, type Address } from 'viem'
 import { describe, expect, it, vi } from 'vitest'
+import {
+  folioV6Abi,
+  INDEX_DTF_START_REBALANCE_SELECTOR,
+} from '@reserve-protocol/react-sdk'
 import dtfIndexAbiV4 from '@/abis/dtf-index-abi-v4'
 import dtfIndexAbiV5 from '@/abis/dtf-index-abi'
 import {
@@ -30,7 +34,11 @@ const BTCB = '0x7130d2A12B9BCbFAe4f2634d864A1Ee1Ce3Ead9c' as Address
 
 // A 1000-share DTF holding stables, moving toward 40/30/30 USDC/WETH/BTCB.
 const input = (folioVersion: 4 | 5): StartRebalanceCalldataInput => ({
+  ...base,
   folioVersion,
+})
+
+const base = {
   supply: 1_000n * 10n ** 18n,
   tokens: [USDC, WETH, BTCB],
   decimals: [18n, 18n, 18n],
@@ -43,7 +51,7 @@ const input = (folioVersion: 4 | 5): StartRebalanceCalldataInput => ({
   deferWeights: false,
   auctionLauncherWindow: 259_200n,
   ttl: 604_800n,
-})
+}
 
 // Frozen pre-migration Register encoding: the library called directly.
 function legacyV5(i: StartRebalanceCalldataInput) {
@@ -97,5 +105,28 @@ describe('buildStartRebalanceCalldata', () => {
     expect(decoded.functionName).toBe('startRebalance')
     expect((decoded.args as unknown as unknown[])[0]).toEqual([USDC, WETH, BTCB])
     expect(sdkCalls.buildArgs).toBe(0)
+  })
+
+  it('v6: encodes the next nonce and the deadline around the same SDK-built args as v5', () => {
+    sdkCalls.buildArgs = 0
+    const calldata = buildStartRebalanceCalldata({
+      ...base,
+      folioVersion: 6,
+      rebalanceNonce: 8n,
+      deadline: 1_800_000_000n,
+    })
+    expect(calldata.slice(0, 10)).toBe(INDEX_DTF_START_REBALANCE_SELECTOR['6.0.0'])
+    expect(sdkCalls.buildArgs).toBe(1)
+
+    const v6 = decodeFunctionData({ abi: folioV6Abi, data: calldata })
+    const v5 = decodeFunctionData({
+      abi: dtfIndexAbiV5,
+      data: buildStartRebalanceCalldata(input(5)),
+    })
+    const args = v6.args as unknown as unknown[]
+    expect(v6.functionName).toBe('startRebalance')
+    expect(args[0]).toBe(8n)
+    expect(args.slice(1, 5)).toEqual(v5.args)
+    expect(args[5]).toBe(1_800_000_000n)
   })
 })

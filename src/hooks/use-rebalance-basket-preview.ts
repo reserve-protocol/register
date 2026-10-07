@@ -50,6 +50,9 @@ type RebalanceCall = {
   limits: Range
   auctionLauncherWindow: bigint
   ttl: bigint
+  // Folio 6.0 only
+  rebalanceNonce?: bigint
+  deadline?: bigint
 }
 
 type RebalanceBasketPreview = {
@@ -146,6 +149,12 @@ export const useDecodedRebalanceCalldata = (
             limits: data[1],
             auctionLauncherWindow: data[2],
             ttl: data[3],
+            ...(isV6
+              ? {
+                  rebalanceNonce: args[0] as bigint,
+                  deadline: args[5] as bigint,
+                }
+              : {}),
           } as RebalanceCall,
           calldata: decodedCalldata,
         }

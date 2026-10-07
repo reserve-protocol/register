@@ -3,6 +3,10 @@ import dtfIndexAbiV2 from '@/abis/dtf-index-abi-v2'
 import dtfIndexAbiV4 from '@/abis/dtf-index-abi-v4'
 import dtfIndexAbiV5 from '@/abis/dtf-index-abi'
 import { buildStartRebalanceCalldata } from './utils/start-rebalance-calldata'
+import {
+  getRebalanceProposalDeadline,
+  type RebalanceGovernanceTiming,
+} from './utils/rebalance-deadline'
 import { getAuctions } from '@/lib/index-rebalance/get-auctions'
 import { getCurrentBasket } from '@/lib/index-rebalance/utils'
 import {
@@ -52,6 +56,8 @@ export const dtfBalancesAtom = atom<Record<string, bigint> | undefined>(
 // Proposal state
 // ############################################################
 export const isProposalConfirmedAtom = atom(false)
+// Unix seconds at confirmation; anchors the Folio 6.0 rebalance deadline.
+export const proposalConfirmedAtAtom = atom<bigint | undefined>(undefined)
 export const proposalDescriptionAtom = atom<string | undefined>(undefined)
 export const proposalLiquidityLoadingAtom = atom(false)
 
@@ -483,6 +489,26 @@ const REBALANCE_PRICE_VOLATILITY: Record<Volatility, number> = {
 
 export const tokenPriceVolatilityAtom = atom<Record<string, Volatility>>({})
 
+export type V6RebalanceContext = {
+  currentNonce: bigint
+  timing: RebalanceGovernanceTiming
+}
+
+export const v6RebalanceContextAtom = atom<V6RebalanceContext | undefined>(
+  undefined
+)
+
+export const v6RebalanceTermsAtom = atom((get) => {
+  const context = get(v6RebalanceContextAtom)
+  const confirmedAt = get(proposalConfirmedAtAtom)
+  if (!context || confirmedAt === undefined) return undefined
+
+  return {
+    rebalanceNonce: context.currentNonce + 1n,
+    deadline: getRebalanceProposalDeadline(confirmedAt, context.timing),
+  }
+})
+
 export const basketProposalCalldatasAtom = atom<Hex[] | undefined>((get) => {
   const isSingleton = get(isSingletonRebalanceAtom)
 
@@ -508,15 +534,20 @@ export const basketProposalCalldatasAtom = atom<Hex[] | undefined>((get) => {
   const versionState = get(folioVersionAtom)
   const maxAuctionSizesMap = get(maxAuctionSizesAtom)
 
-  // Local encoder covers v4/v5 only; anything else must not produce calldata.
+  const v6Terms = get(v6RebalanceTermsAtom)
+
+  // Unknown majors must not produce calldata.
   const folioVersion =
     versionState.status === 'ready' &&
-    (versionState.major === 4 || versionState.major === 5)
+    (versionState.major === 4 ||
+      versionState.major === 5 ||
+      versionState.major === 6)
       ? versionState.major
       : undefined
 
   if (
     folioVersion === undefined ||
+    (folioVersion === 6 && !v6Terms) ||
     !isConfirmed ||
     !proposedBasket ||
     !rebalanceControl ||
@@ -560,9 +591,14 @@ export const basketProposalCalldatasAtom = atom<Hex[] | undefined>((get) => {
     )
   }
 
+  const versionInput =
+    folioVersion === 6 && v6Terms
+      ? { folioVersion, ...v6Terms }
+      : { folioVersion: folioVersion as 4 | 5 }
+
   return [
     buildStartRebalanceCalldata({
-      folioVersion,
+      ...versionInput,
       supply,
       tokens,
       decimals,
