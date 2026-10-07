@@ -1,4 +1,4 @@
-import { indexDTFAtom, indexDTFVersionAtom } from '@/state/dtf/atoms'
+import { indexDTFAtom } from '@/state/dtf/atoms'
 import { Trans, useLingui } from '@lingui/react/macro'
 import { useAtom, useAtomValue } from 'jotai'
 import { useFormContext } from 'react-hook-form'
@@ -8,14 +8,14 @@ import {
   hasMandateChangeAtom,
   tokenNameChangeAtom,
   hasTokenNameChangeAtom,
+  isFolioV5PlusAtom,
 } from '../../atoms'
 import { ChangeSection, RevertButton } from './shared'
 
 const BasicsChanges = () => {
   const { t } = useLingui()
   const indexDTF = useAtomValue(indexDTFAtom)
-  const version = useAtomValue(indexDTFVersionAtom)
-  const isV5 = version?.startsWith('5') === true
+  const isV5 = useAtomValue(isFolioV5PlusAtom)
   const [tokenNameChange, setTokenNameChange] = useAtom(tokenNameChangeAtom)
   const [mandateChange, setMandateChange] = useAtom(mandateChangeAtom)
   const hasTokenNameChange = useAtomValue(hasTokenNameChangeAtom)

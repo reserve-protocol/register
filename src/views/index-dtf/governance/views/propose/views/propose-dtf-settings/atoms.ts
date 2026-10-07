@@ -19,7 +19,19 @@ import { getFeePercentAdjust, isDisplayablePlatformFee } from '@/utils/fees'
 import type { MessageDescriptor } from '@lingui/core'
 import { msg } from '@lingui/core/macro'
 import { atom } from 'jotai'
-import { encodeFunctionData, parseEther } from 'viem'
+import {
+  INDEX_DTF_FEE_RECIPIENT_TOTAL,
+  prepareIndexDtfAddToAllowlist,
+  prepareIndexDtfRemoveFromAllowlist,
+  prepareIndexDtfSetAuctionLength,
+  prepareIndexDtfSetFeeRecipients,
+  prepareIndexDtfSetSelfFee,
+  prepareIndexDtfSetTradeAllowlistEnabled,
+  scaleIndexDtfFeeRecipients,
+  type IndexDtfFeeRecipient,
+  type SupportedChainId,
+} from '@reserve-protocol/react-sdk'
+import { encodeFunctionData, formatEther, parseEther } from 'viem'
 import type { Address, Hex } from 'viem'
 import {
   GovernanceChanges,
@@ -37,8 +49,8 @@ import {
   DEFAULT_OPTIMISTIC_VETO_DELAY,
   DEFAULT_OPTIMISTIC_VETO_PERIOD,
   DEFAULT_OPTIMISTIC_VETO_THRESHOLD,
-  OPTIMISTIC_ACTIONS,
   OPTIMISTIC_PROPOSER_ROLE,
+  getOptimisticActions,
   dtfIndexGovernanceOptimisticAbi,
   percentageToD18,
   selectorRegistryAbi,
@@ -84,6 +96,49 @@ export const auctionLengthChangeAtom = atom<number | undefined>(undefined)
 export const weightControlChangeAtom = atom<boolean | undefined>(undefined)
 
 export const bidsEnabledChangeAtom = atom<boolean | undefined>(undefined)
+
+// Folio 6.0: percent of non-DAO fees kept for holders.
+export const selfFeeChangeAtom = atom<number | undefined>(undefined)
+
+export type TradeAllowlistChanges = {
+  enabled?: boolean
+  add?: Address[]
+  remove?: Address[]
+}
+
+export const tradeAllowlistChangesAtom = atom<TradeAllowlistChanges>({})
+
+// Folio 6.0 reads, from RPC: setFeeRecipients must be handed the immutable table back exactly.
+export const immutableFeeRecipientsAtom = atom<
+  readonly IndexDtfFeeRecipient[] | undefined
+>(undefined)
+export const currentSelfFeeAtom = atom<number | undefined>(undefined)
+export const currentTradeAllowlistAtom = atom<
+  { enabled: boolean; tokens: readonly Address[] } | undefined
+>(undefined)
+
+const folioMajorAtom = atom((get) => {
+  const versionState = get(folioVersionAtom)
+  return versionState.status === 'ready' ? versionState.major : undefined
+})
+
+export const isFolioV6Atom = atom((get) => get(folioMajorAtom) === 6)
+
+// setName and setBidsEnabled exist from Folio 5.0 on.
+export const isFolioV5PlusAtom = atom((get) => (get(folioMajorAtom) ?? 0) >= 5)
+
+export const optimisticActionsAtom = atom((get) =>
+  getOptimisticActions(get(folioMajorAtom))
+)
+
+// Share of the recipient table the mutable recipients split; immutable recipients keep the rest.
+export const mutableFeeFractionAtom = atom((get) => {
+  if (!get(isFolioV6Atom)) return 1
+  const immutable = get(immutableFeeRecipientsAtom)
+  if (!immutable) return undefined
+  const total = immutable.reduce((sum, r) => sum + r.portion, 0n)
+  return Number(formatEther(INDEX_DTF_FEE_RECIPIENT_TOTAL - total))
+})
 
 export const governanceChangesAtom = atom<GovernanceChanges>({})
 
@@ -141,6 +196,19 @@ export const hasWeightControlChangeAtom = atom((get) => {
 export const hasBidsEnabledChangeAtom = atom((get) => {
   const change = get(bidsEnabledChangeAtom)
   return change !== undefined
+})
+
+export const hasSelfFeeChangeAtom = atom(
+  (get) => get(selfFeeChangeAtom) !== undefined
+)
+
+export const hasTradeAllowlistChangesAtom = atom((get) => {
+  const changes = get(tradeAllowlistChangesAtom)
+  return !!(
+    changes.enabled !== undefined ||
+    changes.add?.length ||
+    changes.remove?.length
+  )
 })
 
 export const hasGovernanceChangesAtom = atom((get) => {
@@ -205,6 +273,8 @@ export const isProposalValidAtom = atom((get) => {
     const hasOptimisticGovernanceChanges = get(
       hasOptimisticGovernanceChangesAtom
     )
+  const hasSelfFeeChange = get(hasSelfFeeChangeAtom)
+  const hasTradeAllowlistChanges = get(hasTradeAllowlistChangesAtom)
   const hasChanges =
     removedBasketTokens.length > 0 ||
     hasTokenNameChange ||
@@ -216,7 +286,9 @@ export const isProposalValidAtom = atom((get) => {
     hasWeightControlChange ||
     hasBidsEnabledChange ||
     hasGovernanceChanges ||
-    hasOptimisticGovernanceChanges
+    hasOptimisticGovernanceChanges ||
+    hasSelfFeeChange ||
+    hasTradeAllowlistChanges
 
   return hasChanges
 })
@@ -242,24 +314,35 @@ const BRAND_MANAGER_ROLE =
 const AUCTION_LAUNCHER_ROLE =
   '0x13ff1b2625181b311f257c723b5e6d366eb318b212d9dd694c48fcf227659df5' as const
 
-export type SettingsWriteBlock = 'pending' | 'unsupported' | 'v6'
+export type SettingsWriteBlock = 'pending' | 'unsupported'
 
-// The local encoders target the v1–v5 setters; Folio 6.0 replaced setAuctionLength and split fee recipients.
-const LOCAL_SETTINGS_MAJORS: readonly number[] = [1, 2, 4, 5]
+const SETTINGS_MAJORS: readonly number[] = [1, 2, 4, 5, 6]
 
 export const settingsWriteBlockAtom = atom<SettingsWriteBlock | undefined>(
   (get) => {
     const versionState = get(folioVersionAtom)
     if (versionState.status === 'pending') return 'pending'
-    if (versionState.status === 'ready' && versionState.major === 6) return 'v6'
     if (
       versionState.status === 'ready' &&
-      LOCAL_SETTINGS_MAJORS.includes(versionState.major)
+      SETTINGS_MAJORS.includes(versionState.major)
     )
       return undefined
     return 'unsupported'
   }
 )
+
+// An SDK prepare that rejects its input must block the proposal, not throw out of the atom and unmount the page.
+const prepareCalldata = (
+  label: string,
+  prepare: () => { data: Hex }
+): Hex | undefined => {
+  try {
+    return prepare().data
+  } catch (error) {
+    console.error(`[dtf-settings] ${label} rejected`, error)
+    return undefined
+  }
+}
 
 export const dtfSettingsProposalDataAtom = atom<ProposalData | undefined>(
   (get) => {
@@ -285,6 +368,16 @@ export const dtfSettingsProposalDataAtom = atom<ProposalData | undefined>(
     const feeRecipients = get(feeRecipientsAtom)
 
     if (!isConfirmed || !indexDTF) return undefined
+
+    const isV6 = get(isFolioV6Atom)
+    const v6Call = {
+      address: indexDTF.id as Address,
+      chainId: indexDTF.chainId as SupportedChainId,
+      version: '6.0.0' as const,
+    }
+    const selfFeeChange = get(selfFeeChangeAtom)
+    const tradeAllowlistChanges = get(tradeAllowlistChangesAtom)
+    const optimisticActions = get(optimisticActionsAtom)
 
     const calldatas: Hex[] = []
     const targets: Address[] = []
@@ -529,14 +622,34 @@ export const dtfSettingsProposalDataAtom = atom<ProposalData | undefined>(
       targets.push(indexDTF.id as Address)
     }
 
+    // 4c. Set self fee (v6)
+    if (selfFeeChange !== undefined && isV6) {
+      const data = prepareCalldata('setFolioSelfFee', () =>
+        prepareIndexDtfSetSelfFee({ ...v6Call, percentage: selfFeeChange })
+      )
+      if (!data) return undefined
+      calldatas.push(data)
+      targets.push(indexDTF.id as Address)
+    }
+
     // 5. Set auction length
     if (auctionLengthChange !== undefined) {
+      const v6Data = isV6
+        ? prepareCalldata('setMaxAuctionLength', () =>
+            prepareIndexDtfSetAuctionLength({
+              ...v6Call,
+              auctionLength: auctionLengthChange * 60,
+            })
+          )
+        : undefined
+      if (isV6 && !v6Data) return undefined
       calldatas.push(
-        encodeFunctionData({
-          abi: dtfIndexAbi,
-          functionName: 'setAuctionLength',
-          args: [BigInt(auctionLengthChange * 60)], // Convert minutes to seconds
-        })
+        v6Data ??
+          encodeFunctionData({
+              abi: dtfIndexAbi,
+              functionName: 'setAuctionLength',
+              args: [BigInt(auctionLengthChange * 60)], // Convert minutes to seconds
+            })
       )
       targets.push(indexDTF.id as Address)
     }
@@ -571,6 +684,34 @@ export const dtfSettingsProposalDataAtom = atom<ProposalData | undefined>(
       targets.push(indexDTF.id as Address)
     }
 
+    // 5d. Trade allowlist (v6)
+    if (isV6) {
+      const { add, remove, enabled } = tradeAllowlistChanges
+      const allowlistCalls = [
+        add?.length
+          ? prepareCalldata('addToAllowlist', () =>
+              prepareIndexDtfAddToAllowlist({ ...v6Call, tokens: add })
+            )
+          : null,
+        remove?.length
+          ? prepareCalldata('removeFromAllowlist', () =>
+              prepareIndexDtfRemoveFromAllowlist({ ...v6Call, tokens: remove })
+            )
+          : null,
+        enabled !== undefined
+          ? prepareCalldata('setTradeAllowlistEnabled', () =>
+              prepareIndexDtfSetTradeAllowlistEnabled({ ...v6Call, enabled })
+            )
+          : null,
+      ]
+      for (const data of allowlistCalls) {
+        if (data === null) continue
+        if (!data) return undefined
+        calldatas.push(data)
+        targets.push(indexDTF.id as Address)
+      }
+    }
+
     // 6. Set fee recipients
     if (
       revenueDistributionChanges.governanceShare !== undefined ||
@@ -578,6 +719,8 @@ export const dtfSettingsProposalDataAtom = atom<ProposalData | undefined>(
       revenueDistributionChanges.additionalRecipients !== undefined
     ) {
       if (!feeRecipients) return undefined
+      const immutableRecipients = get(immutableFeeRecipientsAtom)
+      if (isV6 && !immutableRecipients) return undefined
 
       // Calculate new fee recipients array similar to deploy logic
       const newFeeRecipients: { recipient: Address; portion: bigint }[] = []
@@ -647,10 +790,9 @@ export const dtfSettingsProposalDataAtom = atom<ProposalData | undefined>(
           .slice(0, -1)
           .reduce((sum, item) => sum + item.portion, 0n)
 
-        if (tempRecipients.length > 1) {
-          tempRecipients[tempRecipients.length - 1].portion =
-            parseEther('1') - currentSum
-        }
+        // A lone recipient also takes the whole table: platform-fee rounding can leave it off 1e18.
+        tempRecipients[tempRecipients.length - 1].portion =
+          parseEther('1') - currentSum
 
         // Sort by address
         tempRecipients.sort((a, b) =>
@@ -661,7 +803,25 @@ export const dtfSettingsProposalDataAtom = atom<ProposalData | undefined>(
       }
 
       // Only add the calldata if we have recipients
-      if (newFeeRecipients.length > 0) {
+      if (newFeeRecipients.length > 0 && isV6 && immutableRecipients) {
+        const immutableTotal = immutableRecipients.reduce(
+          (sum, r) => sum + r.portion,
+          0n
+        )
+        const data = prepareCalldata('setFeeRecipients', () =>
+          prepareIndexDtfSetFeeRecipients({
+            ...v6Call,
+            recipients: scaleIndexDtfFeeRecipients(
+              newFeeRecipients,
+              INDEX_DTF_FEE_RECIPIENT_TOTAL - immutableTotal
+            ),
+            immutableRecipients,
+          })
+        )
+        if (!data) return undefined
+        calldatas.push(data)
+        targets.push(indexDTF.id as Address)
+      } else if (newFeeRecipients.length > 0) {
         calldatas.push(
           encodeFunctionData({
             abi: dtfIndexAbi,
@@ -801,11 +961,11 @@ export const dtfSettingsProposalDataAtom = atom<ProposalData | undefined>(
         const newActions = optimisticGovernanceChanges.allowedActions
         const addedSelectors = newActions
           .filter((actionId) => !currentOptimisticAllowedActions.includes(actionId))
-          .map((actionId) => OPTIMISTIC_ACTIONS.find((action) => action.id === actionId)?.selector)
+          .map((actionId) => optimisticActions.find((action) => action.id === actionId)?.selector)
           .filter((selector): selector is Hex => !!selector)
         const removedSelectors = currentOptimisticAllowedActions
           .filter((actionId) => !newActions.includes(actionId))
-          .map((actionId) => OPTIMISTIC_ACTIONS.find((action) => action.id === actionId)?.selector)
+          .map((actionId) => optimisticActions.find((action) => action.id === actionId)?.selector)
           .filter((selector): selector is Hex => !!selector)
 
         if (addedSelectors.length > 0) {
@@ -939,8 +1099,15 @@ export const feeRecipientsAtom = atom((get) => {
   if (!isDisplayablePlatformFee(platformFee)) return undefined
   const PERCENT_ADJUST = getFeePercentAdjust(platformFee)
 
+  const mutableFraction = get(mutableFeeFractionAtom)
+  if (mutableFraction === undefined) return undefined
+  // Permanent recipients can take the whole table; nothing mutable is left to split.
+  if (mutableFraction === 0) {
+    return { deployerShare: 0, governanceShare: 0, externalRecipients: [] }
+  }
+
   const toShare = (pct: number) =>
-    Math.round((pct / PERCENT_ADJUST) * 100) / 100
+    Math.round((pct / mutableFraction / PERCENT_ADJUST) * 100) / 100
 
   // Fees routed to the stToken OR its tokenJar are the governance share.
   const tokenJar = get(tokenJarAtom)

@@ -1,5 +1,5 @@
+import { isFolioV5PlusAtom, isFolioV6Atom } from '../../atoms'
 import { Switch } from '@/components/ui/switch'
-import { indexDTFVersionAtom } from '@/state/dtf/atoms'
 import { humanizeMinutes } from '@/utils'
 import ToggleGroupWithCustom from '@/views/index-dtf/deploy/components/toggle-group-with-custom'
 import { Trans, useLingui } from '@lingui/react/macro'
@@ -10,8 +10,7 @@ import ProposeWeightControl from './propose-weight-control'
 
 const ProposeBidsEnabled = () => {
   const { control } = useFormContext()
-  const version = useAtomValue(indexDTFVersionAtom)
-  const isV5 = version?.startsWith('5') === true
+  const isV5 = useAtomValue(isFolioV5PlusAtom)
 
   if (!isV5) return null
 
@@ -45,10 +44,13 @@ const ProposeBidsEnabled = () => {
 
 const ProposeAuctionSettings = () => {
   const { t } = useLingui()
+  const isV6 = useAtomValue(isFolioV6Atom)
 
   const auctionLengthForm = {
-    title: t`Auction length`,
-    description: t`How long dutch auctions will run when swapping tokens out of the basket. Shorter auction lengths benefit from less market volatility affecting the price during the auction. Longer auctions benefit from having more time for discovering the best price when swapping two tokens.`,
+    title: isV6 ? t`Max auction length` : t`Auction length`,
+    description: isV6
+      ? t`The longest an auction can run. The auction launcher picks each auction's length up to this limit; community-launched auctions always run for the full length.`
+      : t`How long dutch auctions will run when swapping tokens out of the basket. Shorter auction lengths benefit from less market volatility affecting the price during the auction. Longer auctions benefit from having more time for discovering the best price when swapping two tokens.`,
     icon: <Hourglass size={14} strokeWidth={1.5} />,
     options: [15, 30, 45],
     optionsFormatter: (option: number) => humanizeMinutes(option),

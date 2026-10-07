@@ -37,10 +37,6 @@ describe('dtfSettingsProposalDataAtom version gate', () => {
     expect(data?.targets).toEqual([DTF, DTF])
   })
 
-  it('builds no calldata for a Folio 6.0 DTF (setAuctionLength does not exist there)', () => {
-    expect(makeStore('6.0.0').get(dtfSettingsProposalDataAtom)).toBeUndefined()
-  })
-
   it('builds no calldata while the version is pending', () => {
     expect(makeStore(undefined).get(dtfSettingsProposalDataAtom)).toBeUndefined()
   })

@@ -95,12 +95,11 @@ export type OptimisticAction = {
   selector: Hex
 }
 
-export const OPTIMISTIC_ACTIONS: OptimisticAction[] = [
+const OPTIMISTIC_ACTIONS: OptimisticAction[] = [
   {
     id: 'startRebalance',
     label: msg`Start rebalance`,
     description: msg`Allow optimistic proposals to start basket rebalances.`,
-    // v5 selector only: Folio 6.0 settings writes are gated until they route through the SDK.
     selector: INDEX_DTF_START_REBALANCE_SELECTOR['5.0.0'],
   },
   {
@@ -159,6 +158,25 @@ export const OPTIMISTIC_ACTIONS: OptimisticAction[] = [
   },
 ]
 
+// Folio 6.0 changed these signatures; the selector registry must hold the ones the proxy exposes.
+const V6_SELECTORS: Partial<Record<OptimisticActionId, Hex>> = {
+  startRebalance: INDEX_DTF_START_REBALANCE_SELECTOR['6.0.0'],
+  setAuctionLength: toFunctionSelector('setMaxAuctionLength(uint256)'),
+  setFeeRecipients: toFunctionSelector(
+    'setFeeRecipients((address,uint96)[],(address,uint96)[])'
+  ),
+}
+
+export const getOptimisticActions = (
+  folioMajor: number | undefined
+): OptimisticAction[] =>
+  folioMajor === 6
+    ? OPTIMISTIC_ACTIONS.map((action) => ({
+        ...action,
+        selector: V6_SELECTORS[action.id] ?? action.selector,
+      }))
+    : OPTIMISTIC_ACTIONS
+
 export type OptimisticGovernanceChanges = {
   vetoDelay?: number
   vetoPeriod?: number
@@ -170,10 +188,6 @@ export type OptimisticGovernanceChanges = {
 export const getOptimisticActionById = (id: OptimisticActionId) =>
   OPTIMISTIC_ACTIONS.find((action) => action.id === id)
 
-export const getOptimisticActionBySelector = (selector: Hex) =>
-  OPTIMISTIC_ACTIONS.find(
-    (action) => action.selector.toLowerCase() === selector.toLowerCase()
-  )
 
 export const percentageToD18 = (percentage: number) => {
   return parseEther((percentage / 100).toFixed(18))

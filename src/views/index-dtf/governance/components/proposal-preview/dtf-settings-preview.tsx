@@ -543,6 +543,84 @@ export const SetAuctionLengthPreview = ({
   )
 }
 
+// Folio 6.0 setFolioSelfFee: D18 fraction of non-platform fees kept for holders
+export const SetSelfFeePreview = ({
+  decodedCalldata,
+}: {
+  decodedCalldata: DecodedCalldata
+  targetAddress?: Address
+}) => {
+  const percentage = Number(formatEther(decodedCalldata.data[0] as unknown as bigint)) * 100
+
+  return (
+    <div className="rounded-2xl border bg-muted/70 p-2 space-y-3">
+      <div className="flex items-center gap-2 ml-2 pt-2">
+        <Edit2 size={16} className="text-primary" />
+        <div className="text-sm font-medium">
+          <Trans>Update Holder Share</Trans>
+        </div>
+      </div>
+      <div className="p-3 rounded-xl bg-primary/5 border border-primary/20">
+        <div className="flex items-center justify-between">
+          <span className="text-sm text-muted-foreground">
+            <Trans>New holder share:</Trans>
+          </span>
+          <span className="text-sm text-primary">
+            {percentage.toFixed(2)}%
+          </span>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+// Folio 6.0 trade allowlist: setTradeAllowlistEnabled, addToAllowlist, removeFromAllowlist
+export const TradeAllowlistPreview = ({
+  decodedCalldata,
+}: {
+  decodedCalldata: DecodedCalldata
+  targetAddress?: Address
+}) => {
+  const { t } = useLingui()
+  const chainId = useAtomValue(chainIdAtom)
+  const [arg] = decodedCalldata.data as unknown as [boolean | Address[]]
+  const title =
+    decodedCalldata.signature === 'setTradeAllowlistEnabled'
+      ? t`Trade Allowlist Enforcement`
+      : decodedCalldata.signature === 'addToAllowlist'
+        ? t`Add to Trade Allowlist`
+        : t`Remove from Trade Allowlist`
+
+  return (
+    <div
+      className="rounded-2xl border bg-muted/70 p-2 space-y-3"
+      data-testid="settings-preview-trade-allowlist"
+    >
+      <div className="flex items-center gap-2 ml-2 pt-2">
+        <Edit2 size={16} className="text-primary" />
+        <div className="text-sm font-medium">{title}</div>
+      </div>
+      <div className="p-3 rounded-xl bg-primary/5 border border-primary/20 text-sm space-y-1">
+        {typeof arg === 'boolean' ? (
+          <span className="text-primary">{arg ? t`Enforced` : t`Not enforced`}</span>
+        ) : (
+          arg.map((token) => (
+            <Link
+              key={token}
+              to={getExplorerLink(token, chainId, ExplorerDataType.TOKEN)}
+              target="_blank"
+              className="flex items-center gap-1 text-primary"
+            >
+              {shortenAddress(token)}
+              <ArrowUpRight size={14} />
+            </Link>
+          ))
+        )}
+      </div>
+    </div>
+  )
+}
+
 // Preview component for setDustAmount function (used in v2 tokens)
 export const SetDustAmountPreview = ({
   decodedCalldata,

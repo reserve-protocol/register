@@ -28,6 +28,8 @@ import {
   UpdateDelayPreview,
   SetOptimisticParamsPreview,
   SelectorRegistryPreview,
+  SetSelfFeePreview,
+  TradeAllowlistPreview,
 } from './dtf-settings-preview'
 
 const ChangesOverviewComponentMap: Record<
@@ -48,6 +50,11 @@ const ChangesOverviewComponentMap: Record<
   setMintFee: SetMintFeePreview,
   setTVLFee: SetTVLFeePreview,
   setAuctionLength: SetAuctionLengthPreview,
+  setMaxAuctionLength: SetAuctionLengthPreview,
+  setFolioSelfFee: SetSelfFeePreview,
+  setTradeAllowlistEnabled: TradeAllowlistPreview,
+  addToAllowlist: TradeAllowlistPreview,
+  removeFromAllowlist: TradeAllowlistPreview,
   setDustAmount: SetDustAmountPreview,
   // Governance functions
   setVotingDelay: SetVotingDelayPreview,

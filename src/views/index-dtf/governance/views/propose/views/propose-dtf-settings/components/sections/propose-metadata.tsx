@@ -1,3 +1,4 @@
+import { isFolioV5PlusAtom } from '../../atoms'
 import {
   FormControl,
   FormField,
@@ -7,7 +8,6 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
-import { indexDTFVersionAtom } from '@/state/dtf/atoms'
 import { Trans, useLingui } from '@lingui/react/macro'
 import { useAtomValue } from 'jotai'
 import { useFormContext } from 'react-hook-form'
@@ -15,8 +15,7 @@ import { useFormContext } from 'react-hook-form'
 const ProposeMetadata = () => {
   const { t } = useLingui()
   const form = useFormContext()
-  const version = useAtomValue(indexDTFVersionAtom)
-  const isV5 = version?.startsWith('5') === true
+  const isV5 = useAtomValue(isFolioV5PlusAtom)
 
   return (
     <div className="px-4 mb-4 flex flex-col gap-4">

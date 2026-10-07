@@ -13,7 +13,7 @@ import {
 } from 'viem'
 import type { MockOverrides } from '../../helpers/overrides'
 import type { Page } from '@playwright/test'
-import { seedFeeRegistry } from '../../harness/seed'
+import { seedFeeRegistry, seedFolioV6 } from '../../harness/seed'
 
 // DTF-settings (fees) propose flow — money-critical. Pure on-snapshot data
 // (no price/liquidity API), so we drive the fee form, submit, and decode the
@@ -291,27 +291,58 @@ test('no change keeps confirm disabled and never submits', async ({
   expect(txLog).toHaveLength(0)
 })
 
-test('Folio 6.0: settings proposals are gated with a clear disabled state and never submit', async ({
+// Folio 6.0: the same proxy reported as 6.0.0 with a 20% permanent recipient. The
+// settings proposal is writable; the permanent table is shown and an allowlist toggle
+// lands as the 6.0 setter.
+const PERMANENT = '0x9999999999999999999999999999999999999999' as Address
+const SET_TRADE_ALLOWLIST_ABI = parseAbi([
+  'function setTradeAllowlistEnabled(bool _enabled)',
+])
+
+test('Folio 6.0: TVL fee and trade allowlist changes submit as 6.0 setters', async ({
   page,
   txLog,
   overrides,
 }) => {
-  // Same proxy reported as 6.0.0, where the local setters do not exist.
-  overrides.ethCall(
-    DTF_ADDRESS,
-    '0x54fd4d50',
-    encodeAbiParameters([{ type: 'string' }], ['6.0.0'])
-  )
+  seedFolioV6(overrides, dtf, {
+    immutableRecipients: [{ recipient: PERMANENT, portion: parseEther('0.2') }],
+  })
   await bootProposeFees(page, overrides)
 
   const input = tvlFeeInput(page)
-  const current = await readSeededFee(page, input)
-  await input.fill(String(current + 1 > 10 ? current - 1 : current + 1))
+  const currentTvl = await readSeededFee(page, input)
+  await expect(page.getByTestId('settings-immutable-recipients')).toContainText('20%')
+  const newTvl = currentTvl + 1 > 10 ? currentTvl - 1 : currentTvl + 1
+  await input.fill(String(newTvl))
   await advanceTime(page, 1_000)
 
-  const gate = page.getByTestId('settings-propose-v6-unavailable')
-  await expect(gate).toBeVisible()
-  await expect(gate).toBeDisabled()
-  await expect(submitButton(page)).toHaveCount(0)
-  expect(txLog).toHaveLength(0)
+  await page.locator('#propose-section-allowlist').getByRole('button').first().click()
+  await advanceTime(page, 1_000)
+  await page.getByTestId('settings-trade-allowlist-enabled').click()
+  await advanceTime(page, 1_000)
+  await expect(page.getByTestId('settings-trade-allowlist-changes')).toBeVisible()
+
+  await confirmButton(page).click()
+  await advanceTime(page, 2_000)
+  await page.locator('#title').fill('Folio 6.0 settings')
+  await advanceTime(page, 1_000)
+  await submitButton(page).click()
+  await advanceTime(page, 10_000)
+
+  expect(txLog).toHaveLength(1)
+  const [targets, values, calldatas] = decodeFunctionData({
+    abi: PROPOSE_ABI,
+    data: txLog[0].data as Hex,
+  }).args
+  expect(values).toEqual([0n, 0n])
+  expect(targets.map((target) => target.toLowerCase())).toEqual([
+    DTF_ADDRESS.toLowerCase(),
+    DTF_ADDRESS.toLowerCase(),
+  ])
+  expect(
+    decodeFunctionData({ abi: SET_TVL_FEE_ABI, data: calldatas[0] as Hex }).args[0]
+  ).toBe(parseEther((newTvl / 100).toString()))
+  expect(
+    decodeFunctionData({ abi: SET_TRADE_ALLOWLIST_ABI, data: calldatas[1] as Hex }).args
+  ).toEqual([true])
 })

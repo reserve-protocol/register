@@ -2,7 +2,6 @@ import dtfIndexAbiV5 from '@/abis/dtf-index-abi'
 import {
   indexDTFAtom,
   indexDTFRebalanceControlAtom,
-  indexDTFVersionAtom,
 } from '@/state/dtf/atoms'
 import { Plural, Trans, useLingui } from '@lingui/react/macro'
 import { useAtom, useAtomValue } from 'jotai'
@@ -15,6 +14,7 @@ import {
   hasWeightControlChangeAtom,
   bidsEnabledChangeAtom,
   hasBidsEnabledChangeAtom,
+  isFolioV5PlusAtom,
 } from '../../atoms'
 import { ChangeSection, RevertButton } from './shared'
 import { useReadContract } from 'wagmi'
@@ -23,8 +23,7 @@ const AuctionSettingsChanges = () => {
   const { t } = useLingui()
   const indexDTF = useAtomValue(indexDTFAtom)
   const rebalanceControl = useAtomValue(indexDTFRebalanceControlAtom)
-  const version = useAtomValue(indexDTFVersionAtom)
-  const isV5 = version?.startsWith('5') === true
+  const isV5 = useAtomValue(isFolioV5PlusAtom)
 
   const [auctionLengthChange, setAuctionLengthChange] = useAtom(
     auctionLengthChangeAtom

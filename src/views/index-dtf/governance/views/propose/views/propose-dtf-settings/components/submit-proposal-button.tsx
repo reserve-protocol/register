@@ -175,6 +175,7 @@ const SubmitProposalButton = () => {
   return (
     <TransactionButtonContainer chain={chainId}>
       <Button
+        data-testid="settings-propose-submit"
         disabled={
           !isReady || isPending || isSubmitted || !dtf?.ownerGovernance?.id
         }
@@ -197,10 +198,6 @@ const WRITE_BLOCK_GATES: Record<
   SettingsWriteBlock,
   { testId: string; label: MessageDescriptor }
 > = {
-  v6: {
-    testId: 'settings-propose-v6-unavailable',
-    label: msg`Settings proposals for Folio 6.0 are not available yet`,
-  },
   unsupported: {
     testId: 'settings-propose-version-unsupported',
     label: msg`Settings proposals are not available for this DTF version`,
