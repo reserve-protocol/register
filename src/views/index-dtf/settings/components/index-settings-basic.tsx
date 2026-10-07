@@ -1,25 +1,76 @@
 import { Button } from '@/components/ui/button'
 import EnsName from '@/components/utils/ens-name'
 import {
+  folioVersionAtom,
   indexDTFAtom,
   indexDTFRebalanceControlAtom,
   indexDTFVersionAtom,
 } from '@/state/dtf/atoms'
-import { shortenAddress } from '@/utils'
+import { humanizeMinutes, shortenAddress } from '@/utils'
 import { useLingui } from '@lingui/react/macro'
+import {
+  useIndexDtfIdentity,
+  useIndexDtfMaxAuctionLength,
+  useIndexDtfTradeAllowlist,
+} from '@reserve-protocol/react-sdk'
 import { useAtomValue } from 'jotai'
-import { Braces, DollarSign, Hash, Signature, ToggleRight } from 'lucide-react'
+import {
+  Braces,
+  DollarSign,
+  Hash,
+  Hourglass,
+  ListChecks,
+  Signature,
+  ToggleRight,
+} from 'lucide-react'
 import { useState } from 'react'
 import { IconWrapper, InfoCard, InfoCardItem } from './settings-info-card'
 
 const MANDATE_TRUNCATE_LENGTH = 500
 
+const FolioV6Info = () => {
+  const { t } = useLingui()
+  const identity = useIndexDtfIdentity()
+  const params = identity.address ? identity : undefined
+  const { data: maxAuctionLength } = useIndexDtfMaxAuctionLength(params)
+  const { data: allowlist } = useIndexDtfTradeAllowlist(params)
+
+  return (
+    <>
+      <InfoCardItem
+        label={t`Max Auction Length`}
+        icon={<IconWrapper Component={Hourglass} />}
+        testId="settings-max-auction-length"
+        value={
+          maxAuctionLength !== undefined
+            ? humanizeMinutes(Number(maxAuctionLength) / 60)
+            : undefined
+        }
+      />
+      <InfoCardItem
+        label={t`Trade Allowlist`}
+        icon={<IconWrapper Component={ListChecks} />}
+        testId="settings-trade-allowlist"
+        value={
+          allowlist
+            ? allowlist.enabled
+              ? t`Enforced (${allowlist.tokens.length} tokens)`
+              : t`Not enforced`
+            : undefined
+        }
+      />
+    </>
+  )
+}
+
 const BasicInfo = () => {
   const { t } = useLingui()
   const indexDTF = useAtomValue(indexDTFAtom)
   const version = useAtomValue(indexDTFVersionAtom)
+  const versionState = useAtomValue(folioVersionAtom)
   const rebalanceControl = useAtomValue(indexDTFRebalanceControlAtom)
-  const isV5 = version?.startsWith('5') === true
+  const isV5 = versionState.status === 'ready' && versionState.major >= 5
+  const isV6 = versionState.status === 'ready' && versionState.major === 6
   const [mandateExpanded, setMandateExpanded] = useState(false)
 
   const mandate = indexDTF?.mandate
@@ -109,6 +160,7 @@ const BasicInfo = () => {
           value={indexDTF?.rebalance.bidsEnabled ? t`Enabled` : t`Disabled`}
         />
       )}
+      {isV6 && <FolioV6Info />}
     </InfoCard>
   )
 }

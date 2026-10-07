@@ -1,6 +1,6 @@
 import { IndexDTF } from '@/types'
 import { formatPercentage } from '@/utils'
-import { Address } from 'viem'
+import { Address, parseEther } from 'viem'
 import { describe, expect, it } from 'vitest'
 import { getFeeRecipients } from '../index-settings-fees'
 
@@ -125,5 +125,33 @@ describe('getFeeRecipients', () => {
     expect(getFeeRecipients(dtf, NaN, undefined)).toBeUndefined()
     expect(getFeeRecipients(dtf, 150, undefined)).toBeUndefined()
     expect(getFeeRecipients(dtf, -1, undefined)).toBeUndefined()
+  })
+
+  it('Folio 6.0: splits after the holder share and lists permanent recipients', () => {
+    const PERMANENT = '0x9999999999999999999999999999999999999999' as Address
+    const result = getFeeRecipients(
+      makeDTF(
+        [
+          { address: DEPLOYER, percentage: '40' },
+          { address: STTOKEN, percentage: '40' },
+        ],
+        STTOKEN
+      ),
+      PLATFORM_FEE,
+      undefined,
+      {
+        selfFee: 0.1,
+        immutableRecipients: [
+          { recipient: PERMANENT, portion: parseEther('0.2') },
+        ],
+      }
+    )
+
+    expect(find(result, 'Holder Share')?.value).toBe(formatPercentage(5))
+    expect(find(result, 'Deployer Share')?.value).toBe(formatPercentage(18))
+    expect(find(result, 'Governance Share')?.value).toBe(formatPercentage(18))
+    const permanent = result?.find((r) => r.address === PERMANENT)
+    expect(permanent?.value).toBe(formatPercentage(9))
+    expect(permanent?.testId).toBe('settings-fee-permanent-1')
   })
 })
