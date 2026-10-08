@@ -1,67 +1,61 @@
-import { Button } from '@/components/ui/button'
-import { useTrackIndexDTFClick } from '@/views/index-dtf/hooks/useTrackIndexDTFPage'
-import { Trans } from '@lingui/react/macro'
-import { ArrowRightLeft } from 'lucide-react'
-import { useState } from 'react'
 import {
-  useVoteLockMigration,
-  type VoteLockMigration,
-} from './use-vote-lock-migration'
-import VoteLockMigrationModal from './vote-lock-migration-modal'
+  MigrationCard,
+  MigrationConnectPrompt,
+} from '@/components/vote-lock/migration/migration-card'
+import { useVoteLockMigrations } from '@/components/vote-lock/migration/use-vote-lock-migrations'
+import { walletAtom } from '@/state/atoms'
+import { indexDTFAtom } from '@/state/dtf/atoms'
+import { useAtomValue } from 'jotai'
+import { useMemo } from 'react'
+import {
+  getOldVoteLocks,
+  optimisticStakingVaultAddress,
+} from './governance-migration'
 
-const VoteLockMigrationBanner = ({ subpage }: { subpage: string }) => {
-  const migration = useVoteLockMigration()
-  // The redeem zeroes the old balance; the modal keeps the snapshot (and its progress) until the migration finishes.
-  const [active, setActive] = useState<VoteLockMigration>()
-  const [open, setOpen] = useState(false)
-  const { trackClick } = useTrackIndexDTFClick('overview', subpage)
-  const shown = active ?? migration
-
-  if (!shown) return null
-
-  return (
-    <>
-      <div
-        data-testid="vote-lock-migration-banner"
-        className="flex flex-col sm:flex-row sm:items-center gap-3 p-4 rounded-3xl bg-primary/10"
-      >
-        <ArrowRightLeft size={24} className="text-primary shrink-0" />
-        <div className="flex-1">
-          <h4 className="font-bold text-primary">
-            <Trans>Move your vote-lock to vlRSR</Trans>
-          </h4>
-          <p className="text-sm">
-            <Trans>
-              This DTF now votes with the shared vlRSR vault. Your{' '}
-              {shown.oldSymbol} can move over in three transactions.
-            </Trans>
-          </p>
-        </div>
-        <Button
-          data-testid="vote-lock-migration-open-btn"
-          onClick={() => {
-            trackClick('vote_lock_migration_open')
-            setActive(shown)
-            setOpen(true)
-          }}
-        >
-          <Trans>Migrate</Trans>
-        </Button>
-      </div>
-      {active && (
-        <VoteLockMigrationModal
-          migration={active}
-          open={open}
-          onOpenChange={setOpen}
-          onFinished={() => {
-            setOpen(false)
-            setActive(undefined)
-          }}
-          subpage={subpage}
-        />
-      )}
-    </>
+// The DTF's retired per-DTF vote-locks, each moving into the chain's shared vlRSR.
+export const useDtfVoteLockMigration = () => {
+  const dtf = useAtomValue(indexDTFAtom)
+  const account = useAtomValue(walletAtom)
+  const chainId = dtf?.chainId
+  const newVoteLock = chainId ? optimisticStakingVaultAddress[chainId] : undefined
+  const candidates = useMemo(
+    () =>
+      dtf && chainId && newVoteLock
+        ? getOldVoteLocks(dtf, chainId).map(({ address }) => ({
+            chainId,
+            oldVoteLock: address,
+            newVoteLock,
+          }))
+        : [],
+    [dtf, chainId, newVoteLock]
   )
+  const { migrations, hasRetiredVoteLock } = useVoteLockMigrations(candidates, account)
+  const migration = migrations[0]
+
+  return {
+    migration,
+    // Shown in place of the regular vote-lock action until the holder dismisses the completion.
+    isActive: !!migration && !migration.record.acknowledged,
+    showConnectPrompt: !account && hasRetiredVoteLock,
+  }
 }
 
-export default VoteLockMigrationBanner
+const DtfVoteLockMigration = ({
+  page,
+  allowConnectPrompt = false,
+  className,
+}: {
+  page: string
+  allowConnectPrompt?: boolean
+  className?: string
+}) => {
+  const { migration, showConnectPrompt } = useDtfVoteLockMigration()
+
+  if (migration) return <MigrationCard migration={migration} page={page} className={className} />
+  if (allowConnectPrompt && showConnectPrompt) {
+    return <MigrationConnectPrompt page={page} className={className} />
+  }
+  return null
+}
+
+export default DtfVoteLockMigration

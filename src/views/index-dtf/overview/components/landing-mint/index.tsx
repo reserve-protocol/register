@@ -19,6 +19,7 @@ import { Trans } from '@lingui/react/macro'
 import { useAtomValue } from 'jotai'
 import React, { type ComponentType } from 'react'
 import ZapperWrapper from '../../../components/zapper/zapper-wrapper'
+import DtfVoteLockMigration from '../../../components/vote-lock-migration'
 import { indexDTFQuoteSourceAtom } from '../../../issuance'
 import AboutDTF, { useHasVideoLibrary } from '../about-dtf'
 import AboutReserve from '../about-reserve'
@@ -222,6 +223,7 @@ const LandingMint = (props: React.HTMLAttributes<HTMLDivElement>) => {
       className="hidden xl:flex xl:w-[480px] xl:flex-col xl:gap-1 relative max-w-[480px]"
       {...props}
     >
+      <DtfVoteLockMigration page="overview" />
       <div>
         {isGeoRestricted ? (
           <EligibilityCard className="bg-card" />
