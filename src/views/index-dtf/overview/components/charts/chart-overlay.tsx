@@ -106,7 +106,7 @@ const PriceValue = () => {
     if (priceInBTC === null) {
       return <Skeleton className="w-[100px] h-6 sm:h-7 mt-1" />
     }
-    return <>₿{formatToSignificantDigits(priceInBTC)}</>
+    return <span>{`₿${formatToSignificantDigits(priceInBTC)}`}</span>
   }
 
   if (!price) {
@@ -114,10 +114,9 @@ const PriceValue = () => {
   }
 
   return (
-    <>
-      {dataType !== 'totalSupply' ? '$' : ''}
-      {formatToSignificantDigits(price)}
-    </>
+    <span>
+      {`${dataType !== 'totalSupply' ? '$' : ''}${formatToSignificantDigits(price)}`}
+    </span>
   )
 }
 

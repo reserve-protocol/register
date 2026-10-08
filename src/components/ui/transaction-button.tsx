@@ -156,7 +156,7 @@ const TransactionButton = ({
         {...props}
       >
         {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-        {displayText}
+        <span>{displayText}</span>
       </Button>
       {!!gas && <GasEstimateLabel gas={gas} />}
       {!!error && (
