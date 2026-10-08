@@ -28,7 +28,7 @@ time.
 | Propose flow — basket-settings (trading-gov params) | `e2e/tests/flows/governance-propose-basket-settings.spec.ts` (setVotingPeriod round-trip; phantom-threshold single-action + untouched-form-disabled regressions, live since E1) |
 | Proposal description markdown/XSS rendering | `e2e/tests/flows/governance-description-render.spec.ts` |
 | Queue/execute CTAs | `e2e/tests/flows/governance-queue-execute.spec.ts` + `flows/failures-governance.spec.ts` |
-| Governance migration (upgradeFolio banner, legacy-vault retire banner, vote-lock migration CTA/modal in `components/vote-lock-migration`) | `components/vote-lock-migration/tests/*.test.ts` (eligibility, old-vault discovery, stepper state) + the Base fork lane `e2e/fork/tests/optimistic-governance-upgrade.fork.spec.ts` (full UI flow on real contracts) |
+| Governance migration (upgradeFolio banner, legacy-vault retire banner; the holder migration card + stepper is the shared `src/components/vote-lock/migration/` module — Erik's design — mounted on Governance, Overview and Portfolio through `components/vote-lock-migration/index.tsx`) | `components/vote-lock-migration/tests/*.test.ts` (eligibility, old-vault discovery) + `src/components/vote-lock/migration/tests/*` (steps, delegate choice, lock amount, resumable record) + the Base fork lane `e2e/fork/tests/optimistic-governance-upgrade.fork.spec.ts` (full UI flow on real contracts, reload mid-flow, Portfolio surface) |
 | Folio 6.0.0 upgrade banner (`upgrade-banners/propose-v6-upgrade.tsx` + `v6-upgrade.ts`: 5.0.0 only, registered + live 6.0.0 via the ProxyAdmin's version registry, standard `propose` with the SDK's spell calls, legacy hidden while the governance migration is pending, optimistic blocked without a selector registry) | `upgrade-banners/tests/v6-upgrade.test.ts` (eligibility + exact call encoding for both topologies) + the Base fork lane `e2e/fork/tests/upgrade-v6.fork.spec.ts` (MIDAS optimistic, ABX legacy, executed on the fork) |
 | Chain/version-gated behavior | `e2e/tests/flows/governance-multichain.spec.ts` (bsc v5 + mainnet v4) + `flows/governance-writes-v4.spec.ts` (v4 castVote/queue/execute calldata) |
 | Delegation UI | `e2e/tests/smoke/governance.spec.ts` (delegates section) |
@@ -96,6 +96,7 @@ mapper dereferences — serve proposals ONLY through it or the list breaks).
 
 ## Traps
 
+- Vote-lock migration keeps the holder's delegate (existing vlRSR delegation wins, then the old vault's `delegates`, then self) and resumes from a per-viewer `localStorage` record whose redeem receipt is re-read on load; zero old shares alone never means done. Copy/layout follow Erik's design branch `codex/v6-votelock-unlock-relock-ui`.
 - Governance migration: after `upgradeFolio` the subgraph moves `stToken` to the vlRSR singleton; the old vault survives only behind `roles.admin.legacyGovernances` (`getOldVoteLocks` reads both). The retire banner's "still governed" list is the on-chain admin role, not the subgraph. Only RSR vote-lock vaults take part: the upgrade banner, the retire banner and the migration CTA all hide for a non-RSR vault (vlPMF, vlVIRTUAL…), whose holders would redeem a token vlRSR cannot take.
 
 - The auctions subgraph query is misnamed `getGovernanceStats` in

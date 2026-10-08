@@ -1,6 +1,6 @@
 ---
 title: Progress
-updated: 2026-10-06
+updated: 2026-10-07
 type: ledger
 ---
 
@@ -10,7 +10,8 @@ Stage ledger. One row per stage; keep entries short. Verifier = exact fresh comm
 
 | Stage | Status | Verifier | Review | Next |
 |---|---|---|---|---|
-| index-dtf-v6-operability ([plan](../plans/index-dtf-v6-operability.md)) | human-review-required (base eeb707c25, uncommitted) | typecheck · lint · unit 1069 · helpers 82 · smoke 60 · flows dtf-settings 5/5 · wiki-lint · clean Base fork: upgrade-v6 2/2 → settings-v6 1/1 → basket-v6 2/2 (MIDAS 6.0 executed) | independent review: no high, 4 fixes applied; fork lane found + fixed lone-recipient ≠1e18 and SDK throw unmounting the page | Engineer review (deadline policy, v6 fee math, v5 lone-recipient fix); display follow-ups in FOLLOWUPS |
+| vote-lock-migration-ui ([plan](../plans/vote-lock-migration-ui.md)) | human-review-required (base 60138dbd3, uncommitted) | typecheck · lint · unit 1081 · helpers 82 · smoke 60 · Base fork LCAP lane: Governance/Portfolio/Overview cards, redeem → reload → approve → lock, delegate preserved, completion ack | self-review against Erik's handoff contract | Engineer review (vote-lock writes, delegation); Erik design review of the live UI |
+| index-dtf-v6-operability ([plan](../plans/index-dtf-v6-operability.md)) | human-review-required (base eeb707c25, committed 8016b56b1..60138dbd3, not pushed) | typecheck · lint · unit 1069 · helpers 82 · smoke 60 · flows dtf-settings 5/5 · wiki-lint · clean Base fork: upgrade-v6 2/2 → settings-v6 1/1 → basket-v6 2/2 (MIDAS 6.0 executed) | independent review: no high, 4 fixes applied; fork lane found + fixed lone-recipient ≠1e18 and SDK throw unmounting the page | Engineer review (deadline policy, v6 fee math, v5 lone-recipient fix); display follow-ups in FOLLOWUPS |
 | folio-v6-review-and-upgrade | done (engineer review required) | `pnpm typecheck` + `pnpm lint` + `pnpm test:run` (1050) + e2e helpers (82) + `pnpm e2e:smoke` (60) green · fork lanes green: BSC CMC20 launch, Base LCAP governance migration, Base 6.0.0 upgrade (MIDAS optimistic, ABX legacy) · deployed UpgradeSpell_6_0_0 byte-identical to reserve-index-dtf e4547b3 on all 3 chains | correctness: two independent subagent reviews of the v6 launch/settings/deploy/preview work; fixed v6 permanent fee-recipient preview (high) and launcher sizing/price staleness (medium) | SDK publish after subgraph prod promotion; 2 zap e2e failures shared with master (react-zapper 2.14.1) |
 | v6 register rebalance vertical (slices 1–5; [plan](../plans/index-dtf-v6-register-rebalance.md)) | human-review-required (base dba79019b; SDK 40b67f3 linked; register #1118 draft, dtf-interface #45) | final gate on the committed tree: typecheck · lint · unit 935 · helpers 74 · smoke 60 · flows 22 · wiki-lint; fork lane launch 4/4 runs (evidence page) | foundation 3 lenses + codex; whole-goal Intent, Engineering Risk and codex reconciled (fixed or deferred to Luis); [[log]] 2026-09-16/17 | Engineer review; publish SDK branch as 0.7.0 + exact pin + rerun; decide privileged replacement |
 | v6 release fixes (C-1…C-8, B-4, D-1/D-4; master merged) | human-review-required (base 8f4cb4c8d; SDK linked) | RED→GREEN per finding (unit + 5 e2e, RED on unfixed tree) · scope.mjs gate-equivalent: lint · typecheck · unit · helpers · smoke 60 · auctions/governance flows 35 · screenshots desktop + 412px | Dark/Light pair reconciled ([[log]] 2026-09-30) | Engineer review (launch gating, settings gate, deploy extraction); publish SDK + exact pin; confirm zapper deployers |
