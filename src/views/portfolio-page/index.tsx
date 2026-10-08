@@ -5,7 +5,8 @@ import { ROUTES } from '@/utils/constants'
 import { Trans } from '@lingui/react/macro'
 import { useSetAtom } from 'jotai'
 import { Binoculars, Eye, Landmark, X } from 'lucide-react'
-import { useEffect } from 'react'
+import { MigrationCard } from '@/components/vote-lock/migration/migration-card'
+import { useEffect, useMemo, useState } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
 import { isAddress } from 'viem'
 import { useAccount } from 'wagmi'
@@ -30,6 +31,7 @@ import VotingPower from './components/voting-power'
 import { usePortfolio } from './hooks/use-portfolio'
 import { usePortfolioNow } from './hooks/use-portfolio-now'
 import { hasReserveActivity } from './utils'
+import { usePortfolioVoteLockMigrations } from './hooks/use-portfolio-vote-lock-migrations'
 
 const ConnectPrompt = () => (
   <div data-testid="portfolio-connect-prompt" className="container mx-auto flex min-h-[calc(100vh-96px)] items-center justify-center px-4 py-10">
@@ -134,6 +136,21 @@ const PortfolioPage = () => {
   const setPortfolioAddress = useSetAtom(portfolioAddressAtom)
 
   usePortfolioNow()
+  const { migrations, byKey } = usePortfolioVoteLockMigrations()
+  const [migrationOpen, setMigrationOpen] = useState(false)
+  const [selectedMigration, setSelectedMigration] = useState<string>()
+  const shownMigration =
+    (selectedMigration && byKey.get(selectedMigration)) || migrations[0]
+  const rowMigrations = useMemo(
+    () => ({
+      byKey,
+      onMigrate: (key: string) => {
+        setSelectedMigration(key)
+        setMigrationOpen(true)
+      },
+    }),
+    [byKey]
+  )
 
   useEffect(() => {
     setPortfolioData(data ?? null)
@@ -193,6 +210,16 @@ const PortfolioPage = () => {
           }}
         />
       )}
+      {!impersonatedAddress && shownMigration && (
+        <MigrationCard
+          migration={shownMigration}
+          page="portfolio"
+          layout="banner"
+          context="vault"
+          open={migrationOpen}
+          onOpenChange={setMigrationOpen}
+        />
+      )}
       {/* Top section: Chart + Sidebar */}
       <div className="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-6">
         <PortfolioChart />
@@ -208,7 +235,7 @@ const PortfolioPage = () => {
       <AvailableRewards />
       <PendingWithdrawals />
       <StakedPositions />
-      <VoteLockedPositions />
+      <VoteLockedPositions migrations={rowMigrations} />
       <ActiveProposals />
       <VotingPower />
       <RSRSection />

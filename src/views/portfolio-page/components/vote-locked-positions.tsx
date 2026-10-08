@@ -14,6 +14,9 @@ import { ColumnDef } from '@tanstack/react-table'
 import { Trans } from '@lingui/react/macro'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { ExternalLink, Lock } from 'lucide-react'
+import { useMemo } from 'react'
+import type { VoteLockMigration } from '@/components/vote-lock/migration/use-vote-lock-migrations'
+import { migrationKey } from '../hooks/use-portfolio-vote-lock-migrations'
 import { Address } from 'viem'
 import {
   openStakingSidebarAtom,
@@ -130,7 +133,15 @@ const ModifyButton = ({ voteLock }: { voteLock: PortfolioVoteLock }) => {
   )
 }
 
-const columns: ColumnDef<PortfolioVoteLock, any>[] = [
+type RowMigrations = {
+  byKey: Map<string, VoteLockMigration>
+  onMigrate: (key: string) => void
+}
+
+const rowMigration = (voteLock: PortfolioVoteLock, migrations?: RowMigrations) =>
+  migrations?.byKey.get(migrationKey(voteLock.chainId, voteLock.stTokenAddress))
+
+const getColumns = (migrations?: RowMigrations): ColumnDef<PortfolioVoteLock, any>[] => [
   {
     id: 'stTokenName',
     accessorKey: 'stTokenName',
@@ -144,6 +155,14 @@ const columns: ColumnDef<PortfolioVoteLock, any>[] = [
         />
         <div>
           <p className="font-bold text-sm">{row.original.symbol}</p>
+          {rowMigration(row.original, migrations) && (
+            <p
+              data-testid="vote-lock-migration-row-badge"
+              className="text-xs font-medium text-primary"
+            >
+              <Trans>Migration needed</Trans>
+            </p>
+          )}
           <p className="text-xs text-legend hidden sm:block">
             {row.original.name}
           </p>
@@ -236,15 +255,39 @@ const columns: ColumnDef<PortfolioVoteLock, any>[] = [
         <Trans>Action</Trans>
       </span>
     ),
-    cell: ({ row }) => (
-      <div className="flex justify-end">
-        <ModifyButton voteLock={row.original} />
-      </div>
-    ),
+    cell: ({ row }) => {
+      const migration = rowMigration(row.original, migrations)
+      return (
+        <div className="flex justify-end">
+          {migration ? (
+            <Button
+              data-testid="vote-lock-migration-row-action"
+              size="sm"
+              className="rounded-full"
+              onClick={(event) => {
+                event.stopPropagation()
+                migrations?.onMigrate(
+                  migrationKey(row.original.chainId, row.original.stTokenAddress)
+                )
+              }}
+            >
+              {migration.record.redeem ? (
+                <Trans>Continue migration</Trans>
+              ) : (
+                <Trans>Migrate</Trans>
+              )}
+            </Button>
+          ) : (
+            <ModifyButton voteLock={row.original} />
+          )}
+        </div>
+      )
+    },
   },
 ]
 
-const VoteLockedPositions = () => {
+const VoteLockedPositions = ({ migrations }: { migrations?: RowMigrations }) => {
+  const columns = useMemo(() => getColumns(migrations), [migrations])
   const voteLocks = useAtomValue(portfolioVoteLocksAtom)
   const filtered = voteLocks.filter((v) => Number(v.amount) > 0)
   const { displayData, expanded, toggle, hasMore, total } =
