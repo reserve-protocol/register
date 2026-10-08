@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { knownPriceResponse, oneInchFusionQuote } from '../api'
+import { etherscanResponse, knownPriceResponse, oneInchFusionQuote } from '../api'
 import { MockOverrides } from '../overrides'
 import { REGISTRY } from '../registry'
 import { loadSnapshot } from '../snapshots'
@@ -80,5 +80,28 @@ describe('1inch Fusion quotes', () => {
   it('fails loud for a chain the app does not quote on', () => {
     expect(quote('chainId=42161&tokenIn=0x1&tokenOut=0x2&amountIn=1')).toBeUndefined()
     expect(quote('tokenIn=0x1')).toBeUndefined()
+  })
+})
+
+describe('etherscanResponse', () => {
+  const url = (query: string) => new URL(`https://api.etherscan.io/v2/api?chainid=8453&${query}`)
+
+  it('answers ABI lookups as an unverified contract', () => {
+    expect(etherscanResponse(url('module=contract&action=getabi&address=0x1'))).toEqual({
+      status: 200,
+      body: { status: '0', message: 'NOTOK', result: 'Contract source code not verified' },
+    })
+  })
+
+  it('answers source lookups as an unverified, non-proxy contract', () => {
+    const response = etherscanResponse(url('module=contract&action=getsourcecode&address=0x1'))
+    expect(response?.body).toMatchObject({
+      result: [{ ABI: 'Contract source code not verified', Proxy: '0' }],
+    })
+  })
+
+  it('leaves every other action unmodeled so it fails loud', () => {
+    expect(etherscanResponse(url('module=contract&action=getcontractcreation&address=0x1'))).toBeUndefined()
+    expect(etherscanResponse(url('module=account&action=balance&address=0x1'))).toBeUndefined()
   })
 })

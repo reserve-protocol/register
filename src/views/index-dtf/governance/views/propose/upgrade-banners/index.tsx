@@ -3,6 +3,7 @@ import ProposeOptimisticGovernanceUpgrade from './propose-optimistic-governance-
 import ProposeRetireVoteLock from './propose-retire-vote-lock'
 import ProposeV5Upgrade from './propose-v5-upgrade'
 import ProposeV6Upgrade from './propose-v6-upgrade'
+import ProposeVoteLockUpgrade from './propose-vote-lock-upgrade'
 
 const UpgradeBanners = () => {
   return (
@@ -12,6 +13,7 @@ const UpgradeBanners = () => {
       <ProposeV6Upgrade />
       <ProposeOptimisticGovernanceUpgrade />
       <ProposeRetireVoteLock />
+      <ProposeVoteLockUpgrade />
     </>
   )
 }

@@ -15,6 +15,13 @@ import { dtfContractAliasAtom } from './proposal-preview/atoms'
 import ContractProposalChanges from './proposal-preview/contract-proposal-changes'
 import FolioChangePreview from './proposal-preview/folio-change-preview'
 import UnknownContractPreview from './proposal-preview/unknown-contract-preview'
+import VoteLockUpgradePreview, {
+  type VoteLockUpgradeRow,
+} from './proposal-preview/vote-lock-upgrade-preview'
+import {
+  UPGRADE_TO_AND_CALL_SELECTOR,
+  decodeVoteLockUpgradeCall,
+} from '../views/propose/upgrade-banners/vote-lock-upgrade'
 import GovernanceProposalPreviewSkeleton from './proposal-preview/governance-proposal-preview-skeleton'
 
 /**
@@ -66,29 +73,46 @@ const GovernanceProposalPreview = ({
       : undefined
   const { data: decodedData } = useIndexDtfProposalDecode(decodeParams)
   const proposalDecoded = decodedData ?? decoded
+  const upgradeRows = useMemo(
+    () =>
+      (targets ?? []).flatMap((target, index) => {
+        const call = calldatas?.[index] && decodeVoteLockUpgradeCall(calldatas[index])
+        return call ? [{ ...call, target } as VoteLockUpgradeRow] : []
+      }),
+    [targets, calldatas]
+  )
   const decodedGroups = useMemo(
     () =>
-      proposalDecoded?.dataByContract.map((group) => ({
-        target: group.target,
-        contract: group.contract,
-        calls: group.calls.map(mapDecodedCall),
-      })) ?? [],
+      (proposalDecoded?.dataByContract ?? [])
+        .map((group) => ({
+          target: group.target,
+          contract: group.contract,
+          calls: group.calls
+            .filter((call) => !isUpgradeCall(call.callData))
+            .map(mapDecodedCall),
+        }))
+        .filter((group) => group.calls.length),
     [proposalDecoded]
   )
   const unknownGroups = useMemo(
     () =>
-      proposalDecoded?.unknownContracts.map((group) => ({
-        target: group.target,
-        calls: group.calls.map((call) => call.callData),
-      })) ?? [],
+      (proposalDecoded?.unknownContracts ?? [])
+        .map((group) => ({
+          target: group.target,
+          calls: group.calls
+            .map((call) => call.callData)
+            .filter((calldata) => !isUpgradeCall(calldata)),
+        }))
+        .filter((group) => group.calls.length),
     [proposalDecoded]
   )
 
-  if (!decodedGroups.length && !unknownGroups.length)
+  if (!decodedGroups.length && !unknownGroups.length && !upgradeRows.length)
     return <GovernanceProposalPreviewSkeleton />
 
   return (
     <>
+      {!!upgradeRows.length && <VoteLockUpgradePreview rows={upgradeRows} />}
       {decodedGroups.map((group, index) =>
         group.contract === 'Index DTF' || alias?.[group.target.toLowerCase()] === 'Folio' ? (
           <FolioChangePreview
@@ -116,6 +140,9 @@ const GovernanceProposalPreview = ({
     </>
   )
 }
+
+const isUpgradeCall = (calldata: Hex) =>
+  calldata.slice(0, 10).toLowerCase() === UPGRADE_TO_AND_CALL_SELECTOR
 
 function mapDecodedCall(call: IndexDtfDecodedCalldata): DecodedCalldata {
   return {
