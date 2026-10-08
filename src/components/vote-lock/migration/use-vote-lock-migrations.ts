@@ -1,0 +1,115 @@
+import { useMemo } from 'react'
+import { parseAbi, type Address } from 'viem'
+import { useReadContracts } from 'wagmi'
+import { readMigrationRecord, type MigrationRecord } from './migration-record'
+import { isRetired } from './migration-state'
+import { useMigrationRecordsVersion } from './use-migration-record'
+
+export const legacyVaultAbi = parseAbi([
+  'function owner() view returns (address)',
+  'function unstakingDelay() view returns (uint256)',
+  'function balanceOf(address) view returns (uint256)',
+  'function asset() view returns (address)',
+  'function symbol() view returns (string)',
+  'function delegates(address) view returns (address)',
+  'function previewRedeem(uint256) view returns (uint256)',
+])
+
+export type MigrationCandidate = {
+  chainId: number
+  oldVoteLock: Address
+  newVoteLock: Address
+}
+
+export type VoteLockMigration = MigrationCandidate & {
+  account: Address
+  oldSymbol: string
+  shares: bigint
+  underlying: Address
+  record: MigrationRecord
+  refetch: () => void
+}
+
+const OLD_READS = ['owner', 'unstakingDelay', 'asset', 'symbol'] as const
+
+// A retired old vault (renounced owner, zero delay) backed by the same asset as the chain's shared vault.
+export const useVoteLockMigrations = (
+  candidates: MigrationCandidate[],
+  account: Address | undefined | null
+) => {
+  useMigrationRecordsVersion()
+  const contracts = useMemo(
+    () =>
+      candidates.flatMap(({ chainId, oldVoteLock, newVoteLock }) => [
+        ...OLD_READS.map((functionName) => ({
+          address: oldVoteLock,
+          abi: legacyVaultAbi,
+          functionName,
+          chainId,
+        })),
+        {
+          address: oldVoteLock,
+          abi: legacyVaultAbi,
+          functionName: 'balanceOf' as const,
+          args: [account ?? oldVoteLock] as const,
+          chainId,
+        },
+        { address: newVoteLock, abi: legacyVaultAbi, functionName: 'asset' as const, chainId },
+      ]),
+    [candidates, account]
+  )
+  const { data, isLoading, refetch } = useReadContracts({
+    contracts,
+    query: { enabled: candidates.length > 0 },
+  })
+  const per = OLD_READS.length + 2
+
+  const vaults = candidates.map((candidate, index) => {
+    const reads = data?.slice(index * per, (index + 1) * per).map((r) => r.result)
+    const [owner, unstakingDelay, asset, symbol, balance, newAsset] = reads ?? []
+    const sameAsset =
+      !!asset &&
+      !!newAsset &&
+      (asset as string).toLowerCase() === (newAsset as string).toLowerCase()
+    return {
+      candidate,
+      retired:
+        sameAsset &&
+        isRetired({
+          owner: owner as string | undefined,
+          unstakingDelay: unstakingDelay as bigint | undefined,
+        }),
+      shares: account ? ((balance as bigint | undefined) ?? 0n) : 0n,
+      underlying: asset as Address | undefined,
+      symbol: (symbol as string | undefined) ?? '',
+    }
+  })
+
+  const migrations: VoteLockMigration[] = account
+    ? vaults.flatMap(({ candidate, retired, shares, underlying, symbol }) => {
+        if (!retired || !underlying) return []
+        const record = readMigrationRecord({ ...candidate, account })
+        // A redeemed position has no old shares left; its record carries it until the holder dismisses completion.
+        const inProgress = !!record.redeem && !record.acknowledged
+        if (shares === 0n && !inProgress) return []
+        return [
+          {
+            ...candidate,
+            account,
+            oldSymbol: symbol,
+            shares,
+            underlying,
+            record,
+            refetch: () => void refetch(),
+          },
+        ]
+      })
+    : []
+
+  return {
+    migrations,
+    hasRetiredVoteLock: vaults.some((vault) => vault.retired),
+    isLoading,
+    refetch: () => void refetch(),
+  }
+}
