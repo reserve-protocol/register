@@ -1,4 +1,4 @@
-import { expect, test } from '@playwright/test'
+import { expect, test, type Page } from '@playwright/test'
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs'
 import { resolve } from 'node:path'
 import {
@@ -255,56 +255,93 @@ test('LCAP migrates governance, retires its old vault and moves a holder to vlRS
     [manifest.proposer]
   )
   expect(oldShares).toBeGreaterThan(0n)
+  const oldDelegate = await read<Address>(manifest.oldVault, 'delegates', [
+    manifest.proposer,
+  ])
   await syncBrowserClock(page)
-  const banner = page.getByTestId('vote-lock-migration-banner')
+  const card = page.getByTestId('vote-lock-migration-card')
+  const cta = page.getByTestId('vote-lock-migration-cta')
   const modal = page.getByTestId('vote-lock-migration-modal')
+  const next = page.getByTestId('vote-lock-migration-next')
+  const designDir = `${evidenceDir}/design`
+  mkdirSync(designDir, { recursive: true })
   // Only the dialog's own enter animation: skeleton pulses elsewhere on the page never finish.
   const settled = () =>
     modal.evaluate((el) =>
       Promise.all(el.getAnimations({ subtree: true }).map((a) => a.finished))
     )
-  await page.goto(`/base/index-dtf/${manifest.dtf}/governance`)
-  await expect(banner).toBeVisible({ timeout: 120_000 })
-  await page.screenshot({ path: `${evidenceDir}/migration-governance-page.png` })
+  // Every state is captured at a desktop and a phone width for the design review.
+  const capture = async (name: string, target: Page = page, focus = card) => {
+    for (const [label, size] of [
+      ['desktop', { width: 1440, height: 900 }],
+      ['mobile', { width: 390, height: 844 }],
+    ] as const) {
+      await target.setViewportSize(size)
+      await expect(focus.first()).toBeVisible({ timeout: 120_000 })
+      await focus.first().scrollIntoViewIfNeeded()
+      if (focus === modal) await settled()
+      await target.screenshot({ path: `${designDir}/${name}-${label}.png` })
+    }
+    await target.setViewportSize({ width: 1440, height: 900 })
+  }
 
-  // Mobile: the banner stacks and the modal opens as a bottom sheet; closing it before any tx keeps nothing.
-  await page.setViewportSize({ width: 390, height: 844 })
-  await page.goto(`/base/index-dtf/${manifest.dtf}/overview`)
-  await expect(banner).toBeVisible({ timeout: 120_000 })
-  await banner.scrollIntoViewIfNeeded()
-  await page.screenshot({ path: `${evidenceDir}/migration-mobile-banner.png` })
-  await page.getByTestId('vote-lock-migration-open-btn').click()
-  await expect(modal).toBeVisible()
-  await settled()
-  await page.screenshot({ path: `${evidenceDir}/migration-mobile-modal.png` })
-  await page.keyboard.press('Escape')
-  await expect(modal).toBeHidden()
-  await page.setViewportSize({ width: 1280, height: 720 })
+  // A visitor without a wallet sees the prompt to check theirs.
+  const visitor = await page.context().newPage()
+  await visitor.goto(`/base/index-dtf/${manifest.dtf}/governance`)
+  const prompt = visitor.getByTestId('vote-lock-migration-card')
+  await expect(prompt).toContainText('Connect to check', { timeout: 120_000 })
+  await capture('governance-disconnected', visitor, prompt)
+  await visitor.close()
+
+  await page.goto(`/base/index-dtf/${manifest.dtf}/governance`)
+  await expect(card).toBeVisible({ timeout: 120_000 })
+  await expect(page.getByTestId('vote-lock-open-btn')).toHaveCount(0)
+  await capture('governance-card')
+
+  // Portfolio lists the old position from the Reserve API; the fork's reads mark it as needing migration.
+  await page.goto('/portfolio')
+  await expect(card).toContainText('vote-lock', { timeout: 120_000 })
+  await capture('portfolio-banner')
+  await capture('portfolio-row', page, page.getByTestId('vote-lock-migration-row-action'))
 
   await page.goto(`/base/index-dtf/${manifest.dtf}/overview`)
   await expect(wallet).toBeVisible({ timeout: 60_000 })
-  await expect(banner).toBeVisible({ timeout: 120_000 })
-  await page.screenshot({ path: `${evidenceDir}/migration-overview-banner.png` })
-  await page.getByTestId('vote-lock-migration-open-btn').click()
-  await expect(modal).toBeVisible()
-  const action = page.getByTestId('vote-lock-migration-action-btn')
-  for (const expected of ['redeem', 'approve', 'deposit']) {
-    await expect(action).toHaveAttribute('data-step', expected, {
+  await capture('overview-card')
+
+  await page.goto(`/base/index-dtf/${manifest.dtf}/governance`)
+  await cta.click()
+  await expect(next).toHaveAttribute('data-step', 'redeem', { timeout: 120_000 })
+  await expect(next).toBeEnabled({ timeout: 120_000 })
+  await capture('modal-redeem', page, modal)
+  await next.click()
+  await expect(next).not.toHaveAttribute('data-step', 'redeem', { timeout: 120_000 })
+
+  // A reload after the redeem resumes from the recorded receipt, not from the (now empty) old position.
+  await page.reload()
+  await expect(card).toContainText('Finish re-locking', { timeout: 120_000 })
+  await capture('card-recovering')
+  await cta.click()
+  for (const expected of ['approve', 'deposit']) {
+    await expect(next).toHaveAttribute('data-step', expected, {
       timeout: 120_000,
     })
-    await expect(action).toBeEnabled({ timeout: 120_000 })
-    await settled()
-    await page.screenshot({ path: `${evidenceDir}/migration-step-${expected}.png` })
-    await action.click()
+    await expect(next).toBeEnabled({ timeout: 120_000 })
+    await capture(`modal-${expected}`, page, modal)
+    await next.click()
   }
   await expect(page.getByTestId('vote-lock-migration-done')).toBeVisible({
     timeout: 120_000,
   })
-  await page.screenshot({ path: `${evidenceDir}/migration-step-done.png` })
-  await page.getByTestId('vote-lock-migration-done').click()
+  await capture('modal-done', page, modal)
+
+  // Closing the finished flow keeps an acknowledgment until the holder dismisses it.
+  await page.keyboard.press('Escape')
   await expect(modal).toBeHidden()
-  await expect(banner).toBeHidden({ timeout: 60_000 })
-  await page.screenshot({ path: `${evidenceDir}/migration-after.png` })
+  await expect(card).toContainText('locked in vlRSR')
+  await capture('card-complete')
+  await page.getByTestId('vote-lock-migration-dismiss').click()
+  await expect(card).toHaveCount(0)
+  await expect(page.getByTestId('vote-lock-open-btn')).toBeVisible({ timeout: 120_000 })
 
   expect(
     await read<bigint>(manifest.oldVault, 'balanceOf', [manifest.proposer])
@@ -314,15 +351,18 @@ test('LCAP migrates governance, retires its old vault and moves a holder to vlRS
       manifest.proposer,
     ])) - newSharesBefore
   expect(newShares).toBeGreaterThan(0n)
+  // The holder keeps the delegate they had on the old vault (self when they had none).
+  const expectedDelegate =
+    oldDelegate.toLowerCase() === zeroAddress ? manifest.proposer : oldDelegate
   expect(
     (
       await read<Address>(manifest.singletonVault, 'delegates', [
         manifest.proposer,
       ])
     ).toLowerCase()
-  ).toBe(manifest.proposer.toLowerCase())
+  ).toBe(expectedDelegate.toLowerCase())
   expect(
-    await read<bigint>(manifest.singletonVault, 'getVotes', [manifest.proposer])
+    await read<bigint>(manifest.singletonVault, 'getVotes', [expectedDelegate])
   ).toBeGreaterThanOrEqual(newShares)
 
   writeFileSync(
