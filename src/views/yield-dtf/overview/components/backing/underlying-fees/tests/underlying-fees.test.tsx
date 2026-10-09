@@ -3,7 +3,7 @@ import { chainIdAtom } from '@/state/atoms'
 import { rTokenMetaAtom } from '@/state/rtoken/atoms/rTokenAtom'
 import { createTestQueryClient } from '@/test-utils'
 import { QueryClientProvider } from '@tanstack/react-query'
-import { render, screen, waitFor } from '@testing-library/react'
+import { render, screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { createStore, Provider } from 'jotai'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
@@ -91,15 +91,18 @@ const renderSection = (rToken: string, chainId = 1) => {
   store.set(chainIdAtom, chainId as never)
   store.set(rTokenMetaAtom, { address: rToken, chain: chainId } as never)
 
-  return render(
+  const queryClient = createTestQueryClient()
+  const view = render(
     <Provider store={store}>
-      <QueryClientProvider client={createTestQueryClient()}>
+      <QueryClientProvider client={queryClient}>
         <TooltipProvider>
           <UnderlyingFeesSection />
         </TooltipProvider>
       </QueryClientProvider>
     </Provider>
   )
+
+  return { ...view, queryClient }
 }
 
 beforeEach(() => {
@@ -163,21 +166,21 @@ describe('UnderlyingFeesSection', () => {
 
   it('keeps the section and the toggle when another period fails', async () => {
     fetchMock.mockImplementation(async (url: string) =>
-      url.includes('period=all')
+      url.includes('period=ytd')
         ? { ok: false, status: 404, json: async () => ({}) }
         : { ok: true, status: 200, json: async () => payload() }
     )
 
     renderSection(EUSD)
     await screen.findByText('$17.50')
-    await userEvent.click(screen.getByText('Since tracking'))
+    await userEvent.click(screen.getByText('YTD'))
 
     expect(await screen.findByText(/not available right now/)).toBeVisible()
     expect(screen.getByText('30D')).toBeVisible()
-    expect(fetchMock.mock.calls.at(-1)?.[0]).toContain('period=all')
+    expect(fetchMock.mock.calls.at(-1)?.[0]).toContain('period=ytd')
     expect(trackClick).toHaveBeenCalledWith(
       'overview',
-      'underlying_fees_period_all',
+      'underlying_fees_period_ytd',
       EUSD
     )
   })
@@ -189,22 +192,43 @@ describe('UnderlyingFeesSection', () => {
 
     expect(await screen.findByText('$17.50')).toBeVisible()
     expect(screen.getByText('Underlying protocol fees')).toBeVisible()
-    expect(screen.getByText('12.35 bps')).toBeVisible()
+    expect(screen.getByText('0.12%')).toBeVisible()
     expect(screen.getByText('$0.0042')).toBeVisible()
     expect(screen.getByText('1% / yr')).toBeVisible()
-    expect(screen.getByText('Observed')).toBeVisible()
-    expect(screen.getByText('Estimated')).toBeVisible()
-    expect(screen.getByText('Unavailable')).toBeVisible()
+    expect(screen.queryByText('Observed')).toBeNull()
     expect(screen.getByText('Exited')).toBeVisible()
     expect(screen.getAllByText('—').length).toBeGreaterThanOrEqual(4)
-    expect(screen.queryByText(/data may be outdated/)).toBeNull()
   })
 
-  it('flags snapshots older than 3 hours', async () => {
+  it('moves the data source into the row tooltip', async () => {
+    respond(200, payload())
+
+    renderSection(EUSD)
+    const label = await screen.findByText('Old Collateral')
+    await userEvent.hover(within(label).getByRole('button'))
+
+    expect(
+      (await screen.findAllByText('Rates estimated, not read on-chain.'))[0]
+    ).toBeInTheDocument()
+  })
+
+  it('keeps loaded fees visible when a refresh fails', async () => {
+    respond(200, payload())
+
+    const { queryClient } = renderSection(EUSD)
+    await screen.findByText('$17.50')
+    respond(400, {})
+    await queryClient.refetchQueries({ queryKey: ['underlying-fees'] })
+    expect(await screen.findByText(/Could not refresh/)).toBeVisible()
+    expect(screen.getByText('$17.50')).toBeVisible()
+  })
+
+  it('shows the snapshot age without a stale warning', async () => {
     respond(200, payload({ lastSnapshotAt: NOW - 4 * 3_600 }))
 
     renderSection(EUSD)
 
-    expect(await screen.findByText(/data may be outdated/)).toBeVisible()
+    expect(await screen.findByText('Updated 4h ago')).toBeVisible()
+    expect(screen.queryByText(/outdated/)).toBeNull()
   })
 })

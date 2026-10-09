@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { isUnderlyingFeesEnabled, type FeeRate } from '../api'
 import {
+  formatDragPercent,
   formatFeeUsd,
   formatRatePercent,
   getCategoryRates,
@@ -72,6 +73,15 @@ describe('getCategoryRates', () => {
     })
   })
 
+  it('returns null when a category mixes bases', () => {
+    const result = getCategoryRates([
+      market('a', 0.1, 0.5),
+      row({ category: 'protocol', basis: 'aum', rate: 0.01 }),
+    ])
+
+    expect(result.protocol).toBeNull()
+  })
+
   it('returns 0 instead of NaN when the category has no weight', () => {
     expect(getCategoryRates([market('a', 0.1, 0)]).protocol?.rate).toBe(0)
   })
@@ -119,6 +129,13 @@ describe('formatting', () => {
     expect(formatRatePercent(0.00001)).toBe('0%')
     expect(formatRatePercent(0.0125)).toBe('1.25%')
     expect(formatRatePercent(0.1)).toBe('10%')
+  })
+
+  it('shows the annualized drag as a percent without rounding small values to zero', () => {
+    expect(formatDragPercent(0)).toBe('0%')
+    expect(formatDragPercent(4.27)).toBe('0.043%')
+    expect(formatDragPercent(0.5)).toBe('0.005%')
+    expect(formatDragPercent(125)).toBe('1.25%')
   })
 
   it('does not round small USD amounts to zero', () => {

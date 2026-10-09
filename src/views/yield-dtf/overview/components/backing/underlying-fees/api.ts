@@ -59,7 +59,7 @@ export type FeeCategory = z.infer<typeof feeCategorySchema>
 export type FeeRate = z.infer<typeof feeRateSchema>
 export type FeeCollateral = z.infer<typeof feeCollateralSchema>
 export type UnderlyingFees = z.infer<typeof underlyingFeesSchema>
-export type UnderlyingFeesPeriod = '30d' | 'all'
+export type UnderlyingFeesPeriod = '30d' | 'ytd' | '1y'
 
 export class UnderlyingFeesRequestError extends Error {
   constructor(readonly status: number) {

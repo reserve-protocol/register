@@ -53,28 +53,12 @@ const Chip = ({
   </span>
 )
 
-const StatusChip = ({ status }: { status: FeeCollateral['status'] }) => {
-  if (status === 'onchain') {
-    return (
-      <Chip className="bg-primary/10 text-primary">
-        <Trans>Observed</Trans>
-      </Chip>
-    )
-  }
-
+const StatusNote = ({ status }: { status: FeeCollateral['status'] }) => {
+  if (status === 'onchain') return <Trans>Rates read on-chain.</Trans>
   if (status === 'estimated') {
-    return (
-      <Chip className="bg-warning/15 text-warning">
-        <Trans>Estimated</Trans>
-      </Chip>
-    )
+    return <Trans>Rates estimated, not read on-chain.</Trans>
   }
-
-  return (
-    <Chip className="bg-muted text-legend">
-      <Trans>Unavailable</Trans>
-    </Chip>
-  )
+  return <Trans>This protocol is not tracked yet.</Trans>
 }
 
 const CategoryLabel = ({ category }: { category: FeeCategory }) => {
@@ -110,20 +94,30 @@ const LayerLine = ({ rate }: { rate: FeeRate }) => {
   )
 }
 
-const LayersBreakdown = ({ rates }: { rates: FeeRate[] }) => {
-  const { layers, zeroRateMarkets } = groupRateLayers(rates)
+const RowDetails = ({ collateral }: { collateral: FeeCollateral }) => {
+  const { layers, zeroRateMarkets } = groupRateLayers(collateral.rates)
 
   return (
-    <ul className="flex flex-col gap-1 text-xs min-w-56">
-      {layers.map((rate) => (
-        <LayerLine key={`${rate.category}-${rate.layer.address}`} rate={rate} />
-      ))}
-      {zeroRateMarkets > 0 && (
-        <li className="text-legend">
-          <Trans>+ {zeroRateMarkets} markets at 0%</Trans>
-        </li>
+    <div className="flex flex-col gap-2 text-xs min-w-56">
+      <span className="text-legend">
+        <StatusNote status={collateral.status} />
+      </span>
+      {layers.length > 0 && (
+        <ul className="flex flex-col gap-1">
+          {layers.map((rate) => (
+            <LayerLine
+              key={`${rate.category}-${rate.layer.address}`}
+              rate={rate}
+            />
+          ))}
+          {zeroRateMarkets > 0 && (
+            <li className="text-legend">
+              <Trans>+ {zeroRateMarkets} markets at 0%</Trans>
+            </li>
+          )}
+        </ul>
       )}
-    </ul>
+    </div>
   )
 }
 
@@ -138,9 +132,14 @@ const FeeCell = ({
   amount: number
   isTracked: boolean
 }) => (
-  <div className="flex sm:flex-col gap-1 sm:gap-0">
-    <span className="font-semibold sm:hidden">
-      <CategoryLabel category={category} />:
+  <div
+    className={cn(
+      'flex-col text-sm sm:text-base',
+      isTracked ? 'flex' : 'hidden sm:flex'
+    )}
+  >
+    <span className="text-xs text-legend sm:hidden">
+      <CategoryLabel category={category} />
     </span>
     {!isTracked ? (
       <NotTracked />
@@ -148,7 +147,9 @@ const FeeCell = ({
       <>
         <span>{rate ? <RateLabel rate={rate} /> : '—'}</span>
         {(!!rate || amount > 0) && (
-          <span className="text-sm text-legend">{formatFeeUsd(amount)}</span>
+          <span className="text-xs sm:text-sm text-legend">
+            {formatFeeUsd(amount)}
+          </span>
         )}
       </>
     )}
@@ -163,26 +164,28 @@ const CollateralRow = ({ collateral }: { collateral: FeeCollateral }) => {
   return (
     <div
       className={cn(
-        'grid grid-cols-1 gap-2 sm:gap-4 items-center p-3 sm:p-4 border-b border-border last:border-b-0',
+        'grid grid-cols-3 gap-x-3 gap-y-2 sm:gap-4 items-start sm:items-center p-3 sm:p-4 border-b border-border last:border-b-0',
         GRID,
         hasExited && 'opacity-60'
       )}
     >
-      <div className="flex items-center gap-2 flex-wrap">
-        <TokenLogo symbol={collateral.symbol} />
-        <span className="font-semibold">{collateral.label}</span>
-        {isTracked && collateral.rates.length > 0 && (
+      <div className="col-span-2 sm:col-span-1 flex items-center gap-2 min-w-0">
+        <TokenLogo symbol={collateral.symbol} className="shrink-0" />
+        <span className="text-sm sm:text-base font-semibold">
+          {collateral.label}{' '}
           <Help
-            content={<LayersBreakdown rates={collateral.rates} />}
-            className="text-legend"
+            content={<RowDetails collateral={collateral} />}
+            className="inline-flex align-middle text-legend"
           />
-        )}
-        <StatusChip status={collateral.status} />
-        {hasExited && (
-          <Chip className="bg-muted text-legend">
-            <Trans>Exited</Trans>
-          </Chip>
-        )}
+          {hasExited && (
+            <Chip className="ml-2 inline-block align-middle bg-muted text-legend">
+              <Trans>Exited</Trans>
+            </Chip>
+          )}
+        </span>
+      </div>
+      <div className="col-start-3 row-start-1 sm:col-start-5 self-center flex justify-end font-semibold">
+        {isTracked ? formatFeeUsd(collateral.accrued.total) : <NotTracked />}
       </div>
       {FEE_CATEGORIES.map((category) => (
         <FeeCell
@@ -193,12 +196,11 @@ const CollateralRow = ({ collateral }: { collateral: FeeCollateral }) => {
           isTracked={isTracked}
         />
       ))}
-      <div className="flex gap-1 sm:justify-end font-semibold">
-        <span className="sm:hidden">
-          <Trans>Total:</Trans>
+      {!isTracked && (
+        <span className="col-span-3 text-sm text-legend sm:hidden">
+          <Trans>This protocol is not tracked yet.</Trans>
         </span>
-        {isTracked ? formatFeeUsd(collateral.accrued.total) : <NotTracked />}
-      </div>
+      )}
     </div>
   )
 }

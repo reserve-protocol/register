@@ -19,7 +19,7 @@ export const getCategoryRates = (
   for (const category of FEE_CATEGORIES) {
     const rows = rates.filter((r) => r.category === category)
 
-    if (!rows.length) {
+    if (!rows.length || new Set(rows.map((r) => r.basis)).size > 1) {
       result[category] = null
       continue
     }
@@ -58,6 +58,17 @@ export const groupRateLayers = (rates: FeeRate[]) => {
 
 export const formatRatePercent = (rate: number) =>
   rate.toLocaleString('en-US', { style: 'percent', maximumFractionDigits: 2 })
+
+export const formatDragPercent = (bps: number) => {
+  const fraction = bps / 10_000
+
+  return fraction > 0 && fraction < 0.01
+    ? fraction.toLocaleString('en-US', {
+        style: 'percent',
+        maximumSignificantDigits: 2,
+      })
+    : formatRatePercent(fraction)
+}
 
 export const formatFeeUsd = (value: number) =>
   value > 0 && value < 0.01

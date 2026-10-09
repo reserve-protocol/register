@@ -19,6 +19,7 @@ const useUnderlyingFees = (period: UnderlyingFeesPeriod) => {
     queryFn: () => fetchUnderlyingFees(chainId, rToken!, period),
     enabled: isEnabled,
     staleTime: 5 * 60_000,
+    refetchInterval: 10 * 60_000,
     retry: (failureCount, error) =>
       failureCount < 2 &&
       (error instanceof UnderlyingFeesRequestError
