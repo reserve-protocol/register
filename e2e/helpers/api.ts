@@ -470,6 +470,20 @@ export async function mockApiRoutes(page: Page, options: ApiMockOptions) {
       })
     }
 
+    // Pre-tracking shape: the eUSD overview hides its underlying fees section.
+    if (path.includes('/yield-dtf/underlying-fees')) {
+      return json(route, {
+        rToken: url.searchParams.get('address'),
+        chainId: Number(url.searchParams.get('chainId')),
+        period: { from: null, to: null },
+        trackingSince: null,
+        lastSnapshotAt: null,
+        annualizedDragBps: 0,
+        totals: { management: 0, performance: 0, protocol: 0, total: 0 },
+        collaterals: [],
+      })
+    }
+
     if (path.endsWith('/health')) {
       return json(route, { status: 'ok' })
     }
