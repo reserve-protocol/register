@@ -8,6 +8,7 @@ import { rTokenAtom, rTokenBackingDistributionAtom } from 'state/atoms'
 import AssetBreakdown from './asset-breakdown'
 import RevenueSplitOverview from './revenue-split-overview'
 import BuckingBuffer from './backing-buffer'
+import UnderlyingFees from './underlying-fees'
 
 const pegsAtom = atom((get) => {
   const rToken = get(rTokenAtom)
@@ -112,6 +113,7 @@ const Backing = () => (
     <BuckingBuffer />
     <hr className="my-10 border-border" />
     <RevenueSplitOverview />
+    <UnderlyingFees />
   </div>
 )
 

@@ -60,7 +60,7 @@ which also runs on mobile because the wallet modal is a mobile-first surface).
 
 | Area | Spec file(s) | States covered | Lifecycle | Mobile | Gaps |
 |---|---|---|---|---|---|
-| Overview | [overview/render](tests/yield-dtf/overview/render.spec.ts) | renders offline from captured RPC+subgraph | none | yes | edge cases (empty/error chart) |
+| Overview | [overview/render](tests/yield-dtf/overview/render.spec.ts) | renders offline from captured RPC+subgraph; underlying fees section hidden pre-tracking | none | yes | edge cases (empty/error chart) |
 | Issuance | [issuance/state-space](tests/yield-dtf/issuance/state-space.spec.ts) | active DTF: mint+redeem panels; mint-paused DTF: redeem-only, no mint panel | none | yes | zap variant, write flow |
 | Staking | [staking/render](tests/yield-dtf/staking/render.spec.ts), [staking/history-partial](tests/yield-dtf/staking/history-partial.spec.ts), [staking/stake-write](tests/yield-dtf/staking/stake-write.spec.ts), [staking/unstake-write](tests/yield-dtf/staking/unstake-write.spec.ts) | exchange-rate+APY render; staked-history survives a snapshots-less response; `stake()`/`unstake()` submit to stRSR | none | partial (render + history only) | withdraw, cancel, cooldown-vs-available |
 | Governance | — | — | — | — | entirely uncovered |

@@ -2,7 +2,12 @@ import type { Page } from '@playwright/test'
 import type { UnmockedLogger } from './logger'
 import type { MockOverrides } from './overrides'
 import type { BoundaryRequest } from './requests'
-import { findDtfByAddress, REGISTRY, YIELD_REGISTRY } from './registry'
+import {
+  findDtfByAddress,
+  findYieldByAddress,
+  REGISTRY,
+  YIELD_REGISTRY,
+} from './registry'
 import { loadSnapshot, snapshotExists } from './snapshots'
 
 // api.reserve.org interception, dispatched by pathname. Per-DTF endpoints load
@@ -467,6 +472,32 @@ export async function mockApiRoutes(page: Page, options: ApiMockOptions) {
         market: null,
         totals: { sellUsd: 0, buyUsd: 0 },
         assets: [],
+      })
+    }
+
+    // Pre-tracking shape: the eUSD overview hides its underlying fees section.
+    if (path.includes('/yield-dtf/underlying-fees')) {
+      const address = url.searchParams.get('address') ?? ''
+      const chainId = Number(url.searchParams.get('chainId'))
+      const period = url.searchParams.get('period')
+      const dtf = findYieldByAddress(address)
+      if (
+        dtf?.symbol !== 'eUSD' ||
+        dtf.chainId !== chainId ||
+        !['30d', 'ytd', '1y'].includes(period ?? '')
+      ) {
+        log('unmocked reserve-api identity', { path, address, chainId, period })
+        return json(route, { error: 'unknown underlying-fees identity' }, 500)
+      }
+      return json(route, {
+        rToken: address,
+        chainId,
+        period: { from: null, to: null },
+        trackingSince: null,
+        lastSnapshotAt: null,
+        annualizedDragBps: 0,
+        totals: { management: 0, performance: 0, protocol: 0, total: 0 },
+        collaterals: [],
       })
     }
 
