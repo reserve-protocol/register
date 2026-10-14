@@ -66,11 +66,13 @@ const ZapConfirmButton = () => {
           className="w-full"
         >
           {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-          {isLoading
-            ? t`Finding route...`
-            : operation === 'mint'
-              ? t`Confirm Mint`
-              : t`Confirm Redeem`}
+          <span>
+            {isLoading
+              ? t`Finding route...`
+              : operation === 'mint'
+                ? t`Confirm Mint`
+                : t`Confirm Redeem`}
+          </span>
         </Button>
       )}
       <ZapGasCost className="mt-2" />

@@ -76,7 +76,8 @@ function FallbackUI({
   useEffect(() => {
     if (
       error.message.includes('Failed to fetch dynamically imported module') ||
-      error.message.includes('Importing a module script failed')
+      error.message.includes('Importing a module script failed') ||
+      error.message.includes('Unable to preload CSS')
     ) {
       window.location.reload()
     }
