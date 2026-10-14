@@ -151,13 +151,18 @@ export const backupBasketCollateralAtom = atom((get) => {
   return getCollateralFromBasket(get(backupCollateralAtom))
 })
 
+// Yield DTFs have no plugins on some chains (e.g. BSC), but the wallet can still select them
+export const collateralPluginsAtom = atom(
+  (get): CollateralPlugin[] => collateralPlugins[get(chainIdAtom)] ?? []
+)
+
 export const rtokenAllActiveCollateralsAtom = atom((get) => {
   const primaryBasketCollaterals = get(primaryBasketCollateralAtom)
   const backupBasketCollaterals = get(backupBasketCollateralAtom)
   const rToken = get(selectedRTokenAtom)
   const allAssets = get(rTokenAssetsAtom)
 
-  const plugins = collateralPlugins[get(chainIdAtom)]
+  const plugins = get(collateralPluginsAtom)
 
   const basketCollaterals = [
     ...primaryBasketCollaterals,
