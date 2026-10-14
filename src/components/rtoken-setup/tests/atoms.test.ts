@@ -1,6 +1,12 @@
 import { createStore } from 'jotai'
+import { chainIdAtom } from 'state/atoms'
+import { ChainId } from 'utils/chains'
 import { describe, expect, it } from 'vitest'
-import { isRevenueValidAtom, revenueSplitAtom } from '../atoms'
+import {
+  collateralPluginsAtom,
+  isRevenueValidAtom,
+  revenueSplitAtom,
+} from '../atoms'
 
 const external = (holders: string, stakers: string, total: string) => ({
   address: '0x0000000000000000000000000000000000000001',
@@ -59,5 +65,19 @@ describe('isRevenueValidAtom', () => {
       })
     ).toBe(false)
     expect(validate({ holders: ' ', stakers: '100', external: [] })).toBe(false)
+  })
+})
+
+describe('collateralPluginsAtom', () => {
+  it('lists the plugins of the selected chain', () => {
+    const store = createStore()
+    store.set(chainIdAtom, ChainId.Base as 8453)
+    expect(store.get(collateralPluginsAtom).length).toBeGreaterThan(0)
+  })
+
+  it('is empty on a chain without Yield DTF plugins', () => {
+    const store = createStore()
+    store.set(chainIdAtom, ChainId.BSC as 56)
+    expect(store.get(collateralPluginsAtom)).toEqual([])
   })
 })

@@ -2,7 +2,7 @@ import { Trans, useLingui } from '@lingui/react/macro'
 import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
 import { Modal, ModalProps } from 'components'
-import { atom, useAtomValue, useSetAtom } from 'jotai'
+import { useAtomValue, useSetAtom } from 'jotai'
 import { useMemo, useState } from 'react'
 import { CollateralPlugin } from 'types'
 import {
@@ -10,13 +10,12 @@ import {
   addBasketCollateralAtom,
   backupBasketCollateralAtom,
   Collateral,
+  collateralPluginsAtom,
   primaryBasketCollateralAtom,
 } from '../atoms'
 import CustomCollateral from './CustomCollateral'
 import PluginItem from './PluginItem'
-import collateralPlugins from 'utils/plugins'
 import { collateralDisplay } from 'utils/constants'
-import { chainIdAtom } from 'state/atoms'
 import { SearchInput } from '@/components/ui/input'
 
 interface Props extends Omit<ModalProps, 'children'> {
@@ -27,8 +26,6 @@ interface Props extends Omit<ModalProps, 'children'> {
 interface CollateralMap {
   [x: string]: Collateral | CollateralPlugin
 }
-
-const pluginsAtom = atom((get) => collateralPlugins[get(chainIdAtom)])
 
 // Get list of collateral plugins filtered by target unit and exclude already added collateral
 const getPlugins = (
@@ -69,7 +66,7 @@ const CollateralModal = ({
   const addCollateral = useSetAtom(
     basket === 'primary' ? addBasketCollateralAtom : addBackupCollateralAtom
   )
-  const plugins = useAtomValue(pluginsAtom)
+  const plugins = useAtomValue(collateralPluginsAtom)
 
   const [selected, setSelected] = useState<string[]>([])
   const [search, setSearch] = useState<string>('')
