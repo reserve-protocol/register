@@ -1,81 +1,91 @@
 {
   "_meta": {
-    "source": "https://api.reserve.org/current/prices?chainId=56&tokens=0x0C50323AF81D5C33822c6Add256Fb9093D42BC74,0x25a4DbAE9a0Cd8C75656D6b50FFDf4900CC20d8f,0x89a9F7114bE6b220fAe645ba0cbB720889867415,0x0fAcaFB97ffDbA3cAe88512070AF49bd30674cD9,0x0585756aAFB241b0f8A9Df62Db26c566091Bde0b,0x1dCd320C5d7b84CD407437c58d56CbbDd0D9d8f3,0xA1DaaB37dA2a29A1eC721922b55962eB8B481001,0x343324170C91c4D8Cf4D439B3E5a619F50621aE7,0x149Bda9e7251DC36f536d1fE7F92A5ea203F4F3D",
-    "capturedAt": "2026-08-25T16:35:47.385Z",
+    "source": "https://api.reserve.org/current/prices?chainId=56&tokens=0x0C50323AF81D5C33822c6Add256Fb9093D42BC74,0x25a4DbAE9a0Cd8C75656D6b50FFDf4900CC20d8f,0x89a9F7114bE6b220fAe645ba0cbB720889867415,0x0fAcaFB97ffDbA3cAe88512070AF49bd30674cD9,0x0585756aAFB241b0f8A9Df62Db26c566091Bde0b,0x1dCd320C5d7b84CD407437c58d56CbbDd0D9d8f3,0xA1DaaB37dA2a29A1eC721922b55962eB8B481001,0x343324170C91c4D8Cf4D439B3E5a619F50621aE7,0x149Bda9e7251DC36f536d1fE7F92A5ea203F4F3D,0x8ac76a51cc950d9822d68b83fe1ad97b32cd580d",
+    "capturedAt": "2026-10-14T14:41:32.674Z",
     "dtf": "0xa0fe4e0aeca5479705ce996615b2eacb6b6a10fb",
     "chainId": 56
   },
   "data": [
     {
       "address": "0x0C50323AF81D5C33822c6Add256Fb9093D42BC74",
-      "price": 68.61,
-      "timestamp": 1787675747,
+      "price": 64.433333,
+      "timestamp": 1791988892,
       "priceSources": [
         "ondo"
       ]
     },
     {
       "address": "0x25a4DbAE9a0Cd8C75656D6b50FFDf4900CC20d8f",
-      "price": 147.487143,
-      "timestamp": 1787675747,
+      "price": 146.79132141026955,
+      "timestamp": 1791988892,
       "priceSources": [
         "ondo"
       ]
     },
     {
       "address": "0x89a9F7114bE6b220fAe645ba0cbB720889867415",
-      "price": 381.803333,
-      "timestamp": 1787675747,
+      "price": 382.415,
+      "timestamp": 1791988892,
       "priceSources": [
         "ondo"
       ]
     },
     {
       "address": "0x0fAcaFB97ffDbA3cAe88512070AF49bd30674cD9",
-      "price": 860.903333,
-      "timestamp": 1787675747,
+      "price": 947.775,
+      "timestamp": 1791988892,
       "priceSources": [
         "ondo"
       ]
     },
     {
       "address": "0x0585756aAFB241b0f8A9Df62Db26c566091Bde0b",
-      "price": 284.326,
-      "timestamp": 1787675747,
+      "price": 277.3025,
+      "timestamp": 1791988892,
       "priceSources": [
         "ondo"
       ]
     },
     {
       "address": "0x1dCd320C5d7b84CD407437c58d56CbbDd0D9d8f3",
-      "price": 266.0925,
-      "timestamp": 1787675747,
+      "price": 301.326667,
+      "timestamp": 1791988892,
       "priceSources": [
         "ondo"
       ]
     },
     {
       "address": "0xA1DaaB37dA2a29A1eC721922b55962eB8B481001",
-      "price": 429.343333,
-      "timestamp": 1787675747,
+      "price": 413.703333,
+      "timestamp": 1791988892,
       "priceSources": [
         "ondo"
       ]
     },
     {
       "address": "0x343324170C91c4D8Cf4D439B3E5a619F50621aE7",
-      "price": 211.5,
-      "timestamp": 1787675747,
+      "price": 216.235,
+      "timestamp": 1791988892,
       "priceSources": [
         "ondo"
       ]
     },
     {
       "address": "0x149Bda9e7251DC36f536d1fE7F92A5ea203F4F3D",
-      "price": 112.81,
-      "timestamp": 1787675747,
+      "price": 91.65,
+      "timestamp": 1791988892,
       "priceSources": [
         "ondo"
+      ]
+    },
+    {
+      "address": "0x8AC76a51cc950d9822D68b83fE1Ad97B32Cd580d",
+      "price": 1.0002016815132835,
+      "timestamp": 1791988892,
+      "priceSources": [
+        "zapper",
+        "alchemy",
+        "defillama"
       ]
     }
   ]

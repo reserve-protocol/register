@@ -1,7 +1,7 @@
 {
   "_meta": {
     "source": "https://api.reserve.org/dtf/exposure?chainId=56&address=0xa0fe4e0aeca5479705ce996615b2eacb6b6a10fb&period=7d",
-    "capturedAt": "2026-08-25T16:35:46.133Z",
+    "capturedAt": "2026-10-14T14:41:29.459Z",
     "dtf": "0xa0fe4e0aeca5479705ce996615b2eacb6b6a10fb",
     "chainId": 56,
     "window": {
@@ -22,10 +22,11 @@
         {
           "address": "0x0C50323AF81D5C33822c6Add256Fb9093D42BC74",
           "symbol": "AXTIon",
-          "weight": 1.43,
-          "change": -0.19346509553542082,
-          "marketCap": 186917,
-          "underlyingMarketCap": 4499502661,
+          "ticker": "AXTI",
+          "weight": 1.31,
+          "change": -0.2143346837020878,
+          "marketCap": 127477,
+          "underlyingMarketCap": 4218324728,
           "bridge": {
             "id": "ondo",
             "name": "Ondo Tokenized Stocks",
@@ -46,10 +47,11 @@
         {
           "address": "0x0fAcaFB97ffDbA3cAe88512070AF49bd30674cD9",
           "symbol": "LITEon",
-          "weight": 21.36,
-          "change": -0.024307762604590645,
-          "marketCap": 1049747,
-          "underlyingMarketCap": 77261301000,
+          "ticker": "LITE",
+          "weight": 23.13,
+          "change": -0.1415458848902455,
+          "marketCap": 931236,
+          "underlyingMarketCap": 86342310179,
           "bridge": {
             "id": "ondo",
             "name": "Ondo Tokenized Stocks",
@@ -70,10 +72,11 @@
         {
           "address": "0x1dCd320C5d7b84CD407437c58d56CbbDd0D9d8f3",
           "symbol": "MTSIon",
-          "weight": 6.48,
-          "change": -0.10605119597146445,
-          "marketCap": 147678,
-          "underlyingMarketCap": 20324341323,
+          "ticker": "MTSI",
+          "weight": 7.2,
+          "change": -0.1056663679666566,
+          "marketCap": 165028,
+          "underlyingMarketCap": 23077386075,
           "bridge": {
             "id": "ondo",
             "name": "Ondo Tokenized Stocks",
@@ -94,10 +97,11 @@
         {
           "address": "0x343324170C91c4D8Cf4D439B3E5a619F50621aE7",
           "symbol": "TSEMon",
-          "weight": 7.61,
-          "change": -0.12104221040827351,
-          "marketCap": 181071,
-          "underlyingMarketCap": 23926452883,
+          "ticker": "TSEM",
+          "weight": 7.64,
+          "change": -0.12174389353241903,
+          "marketCap": 180551,
+          "underlyingMarketCap": 24529474549,
           "bridge": {
             "id": "ondo",
             "name": "Ondo Tokenized Stocks",
@@ -118,10 +122,11 @@
         {
           "address": "0x149Bda9e7251DC36f536d1fE7F92A5ea203F4F3D",
           "symbol": "AAOIon",
-          "weight": 2.68,
-          "change": -0.1739294793457978,
-          "marketCap": 574987,
-          "underlyingMarketCap": 9579734011,
+          "ticker": "AAOI",
+          "weight": 2.14,
+          "change": -0.241119041758963,
+          "marketCap": 484148,
+          "underlyingMarketCap": 7844067509,
           "bridge": {
             "id": "ondo",
             "name": "Ondo Tokenized Stocks",
@@ -140,10 +145,10 @@
           }
         }
       ],
-      "totalWeight": 39.56,
-      "change": -0.07255669543980023,
+      "totalWeight": 41.419999999999995,
+      "change": -0.1391031071577234,
       "hasNewlyAdded": false,
-      "marketCap": 186917
+      "marketCap": 127477
     },
     {
       "native": {
@@ -157,10 +162,11 @@
         {
           "address": "0x25a4DbAE9a0Cd8C75656D6b50FFDf4900CC20d8f",
           "symbol": "GLWon",
-          "weight": 20.55,
-          "change": -0.0805551224076095,
-          "marketCap": 1091666,
-          "underlyingMarketCap": 127181453729,
+          "ticker": "GLW",
+          "weight": 19.94,
+          "change": -0.11620850779780319,
+          "marketCap": 940419,
+          "underlyingMarketCap": 126240766850,
           "bridge": {
             "id": "ondo",
             "name": "Ondo Tokenized Stocks",
@@ -181,10 +187,11 @@
         {
           "address": "0x89a9F7114bE6b220fAe645ba0cbB720889867415",
           "symbol": "CIENon",
-          "weight": 17.24,
-          "change": -0.047431993303052075,
-          "marketCap": 394400,
-          "underlyingMarketCap": 54064156817,
+          "ticker": "CIEN",
+          "weight": 17.03,
+          "change": -0.1194921708589714,
+          "marketCap": 476538,
+          "underlyingMarketCap": 54534737225,
           "bridge": {
             "id": "ondo",
             "name": "Ondo Tokenized Stocks",
@@ -205,10 +212,11 @@
         {
           "address": "0x0585756aAFB241b0f8A9Df62Db26c566091Bde0b",
           "symbol": "COHRon",
-          "weight": 17.74,
-          "change": -0.082947776197791,
-          "marketCap": 1290095,
-          "underlyingMarketCap": 55750642777,
+          "ticker": "COHR",
+          "weight": 16.99,
+          "change": -0.13964961288979152,
+          "marketCap": 1301745,
+          "underlyingMarketCap": 54973334989,
           "bridge": {
             "id": "ondo",
             "name": "Ondo Tokenized Stocks",
@@ -229,10 +237,11 @@
         {
           "address": "0xA1DaaB37dA2a29A1eC721922b55962eB8B481001",
           "symbol": "FNon",
-          "weight": 4.91,
-          "change": -0.11057963386094621,
-          "marketCap": 122520,
-          "underlyingMarketCap": 15406244168,
+          "ticker": "FN",
+          "weight": 4.62,
+          "change": -0.13744709203484104,
+          "marketCap": 183060,
+          "underlyingMarketCap": 14837425439,
           "bridge": {
             "id": "ondo",
             "name": "Ondo Tokenized Stocks",
@@ -251,10 +260,10 @@
           }
         }
       ],
-      "totalWeight": 60.44,
-      "change": -0.07424842624134764,
+      "totalWeight": 58.57999999999999,
+      "change": -0.12563676687290892,
       "hasNewlyAdded": false,
-      "marketCap": 1091666
+      "marketCap": 940419
     }
   ]
 }
