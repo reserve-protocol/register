@@ -1,0 +1,147 @@
+{
+  "_meta": {
+    "source": "https://api.goldsky.com/api/public/project_cmgzim3e100095np2gjnbh6ry/subgraphs/dtf-index-mainnet/prod/gn",
+    "capturedAt": "2026-10-14T14:41:05.876Z",
+    "dtf": "0x323c03c48660fe31186fa82c289b0766d331ce21",
+    "chainId": 1,
+    "query": "getProposalDetail",
+    "proposalId": "62022237685122391383001373445194301022714926500172338142175229265310249611206"
+  },
+  "data": {
+    "proposal": {
+      "id": "62022237685122391383001373445194301022714926500172338142175229265310249611206",
+      "timelockId": null,
+      "description": "# Add rebalance operations executor for the OPEN index\n [n/a](n/a)\n Rebalances can only run after proposals pass vlSQUILL governance. Granting the operations executor Rebalance Manager rights lets approved rebalances execute on schedule, extending operational coverage beyond the SQUILL multisig's sole control. No change to index methodology, fee schedule or mandate.",
+      "creationTime": "1791728459",
+      "voteStart": "1791901259",
+      "voteEnd": "1792160459",
+      "queueBlock": null,
+      "queueTime": null,
+      "state": "ACTIVE",
+      "executionETA": null,
+      "executionTime": null,
+      "creationBlock": "26169770",
+      "cancellationTime": null,
+      "calldatas": [
+        "0x2f2ff15d4ff6ae4d6a29e79ca45c6441bdc89b93878ac6118485b33c8baa3749fc3cb130000000000000000000000000796fbff6299312166e6ca367e27fd6e92737d8f8"
+      ],
+      "targets": [
+        "0x323c03c48660fe31186fa82c289b0766d331ce21"
+      ],
+      "proposer": {
+        "address": "0x689ab689fac6b073607416687c6618c32d71ce97"
+      },
+      "votes": [
+        {
+          "choice": "AGAINST",
+          "voter": {
+            "address": "0x0208a8e743f0748fd8600171636b0bcd6fa01776"
+          },
+          "weight": "9841803768096909089438"
+        },
+        {
+          "choice": "AGAINST",
+          "voter": {
+            "address": "0x0e4d5032c0b076cb132a10347d940bfbb8354869"
+          },
+          "weight": "3154317483241006321549"
+        },
+        {
+          "choice": "AGAINST",
+          "voter": {
+            "address": "0x1a9152528aefbcd9e5df4e0770f4f510e7056913"
+          },
+          "weight": "31654195273397807760335"
+        },
+        {
+          "choice": "AGAINST",
+          "voter": {
+            "address": "0x759a159d78342340ebacffb027c05910c093f430"
+          },
+          "weight": "86393828909184803968949"
+        },
+        {
+          "choice": "AGAINST",
+          "voter": {
+            "address": "0x84afb4b60844f8759154d6ff7b0580daa2d4e37d"
+          },
+          "weight": "21116098164353480000000"
+        },
+        {
+          "choice": "AGAINST",
+          "voter": {
+            "address": "0x928cf40df6de703cd8b9a581819c2dd65974eb0a"
+          },
+          "weight": "1960000000000000000000"
+        },
+        {
+          "choice": "AGAINST",
+          "voter": {
+            "address": "0xb19d6b66b18fae0fca1023138b229e5f970b5180"
+          },
+          "weight": "63000000000000000000000"
+        },
+        {
+          "choice": "AGAINST",
+          "voter": {
+            "address": "0xb209eed4d80fb47e5c16577e44dad1073c5c5015"
+          },
+          "weight": "24193116333696692436634"
+        },
+        {
+          "choice": "AGAINST",
+          "voter": {
+            "address": "0xccbf601eb2f5aa2d5d68b069610da6f1627d485d"
+          },
+          "weight": "159977014591229913587030"
+        },
+        {
+          "choice": "AGAINST",
+          "voter": {
+            "address": "0xdad0aec93fc31016876377678a07a586f6557b52"
+          },
+          "weight": "5346664586899516545900"
+        },
+        {
+          "choice": "AGAINST",
+          "voter": {
+            "address": "0xec092c15e8d5a48a77cde36827f8e228ce39471a"
+          },
+          "weight": "93153680264353647282715"
+        },
+        {
+          "choice": "AGAINST",
+          "voter": {
+            "address": "0xf5d90ac6747cb3352f05bf61f48b991aceae28eb"
+          },
+          "weight": "333000000000000000000"
+        },
+        {
+          "choice": "AGAINST",
+          "voter": {
+            "address": "0xfd8bd978f198503a0ba9c5d7f7586e23fc4a4b40"
+          },
+          "weight": "7075446569485206000000"
+        }
+      ],
+      "forWeightedVotes": "0",
+      "againstWeightedVotes": "507199165943938982992550",
+      "abstainWeightedVotes": "0",
+      "quorumVotes": "148792743146767868437844",
+      "forDelegateVotes": "0",
+      "abstainDelegateVotes": "0",
+      "againstDelegateVotes": "13",
+      "executionTxnHash": null,
+      "governance": {
+        "id": "0x020d7c4a87485709d91e78aeeb2b2177ebfbaf41",
+        "token": {
+          "id": "0x2aea77c4757d897aae2710b8a60280777f504e8c"
+        },
+        "timelock": {
+          "id": "0xd900b9a9cf3a0ecc394b6b9935ea3e56dafc02c1",
+          "type": "OWNER"
+        }
+      }
+    }
+  }
+}

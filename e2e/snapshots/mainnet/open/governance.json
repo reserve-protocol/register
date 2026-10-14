@@ -1,7 +1,7 @@
 {
   "_meta": {
     "source": "https://api.goldsky.com/api/public/project_cmgzim3e100095np2gjnbh6ry/subgraphs/dtf-index-mainnet/prod/gn",
-    "capturedAt": "2026-08-25T16:35:16.998Z",
+    "capturedAt": "2026-10-14T14:41:04.043Z",
     "dtf": "0x323c03c48660fe31186fa82c289b0766d331ce21",
     "chainId": 1,
     "query": "getGovernanceStats"
@@ -10,8 +10,46 @@
     "governances": [
       {
         "id": "0x020d7c4a87485709d91e78aeeb2b2177ebfbaf41",
-        "proposalCount": "4",
+        "proposalCount": "7",
         "proposals": [
+          {
+            "id": "108018124472755119534442365132850479893226729531943823465863389542258308961864",
+            "description": "Open Stablecoin Index reconstitution: set timelock delay so approved basket auctions can settle in the operations window, and assign DEFAULT_ADMIN to the designated operations executor for committee-authorized rebalances. No change to index methodology.",
+            "creationTime": "1788865727",
+            "state": "ACTIVE",
+            "forWeightedVotes": "0",
+            "abstainWeightedVotes": "0",
+            "againstWeightedVotes": "633230049136581594956814",
+            "executionETA": null,
+            "executionTime": null,
+            "quorumVotes": "142225683342810532806932",
+            "voteStart": "1789038527",
+            "voteEnd": "1789297727",
+            "executionBlock": null,
+            "creationBlock": "25932252",
+            "proposer": {
+              "address": "0x35aef3018c9f60b04f6e89740bf08a40bb5ea7dd"
+            }
+          },
+          {
+            "id": "114507617790253507636989273168008375710739056351903668533000807203545982835844",
+            "description": "# Extend auction window and add rebalance operator for OPEN\n [OPEN Governance Parameters Update - Q2 2026](https://forum.reserve.org/t/open-governance-parameters-update-q2-2026/1528)\n Following the Q2 parameter discussion, this proposal delivers two operational improvements:\n\n 1. Increase auction duration from 30 to 40 minutes — wider bidding windows improve price discovery and reduce slippage during rebalance auctions, benefitting all OPEN holders.\n 2. Add a rebalance operator — extends rebalance execution coverage with a second executor alongside the existing operator, reducing single-point-of-failure risk. The operator contract is immutable and owner-gated.\n\n No change to index methodology, mandate, or fee schedule.",
+            "creationTime": "1791912491",
+            "state": "PENDING",
+            "forWeightedVotes": "0",
+            "abstainWeightedVotes": "0",
+            "againstWeightedVotes": "0",
+            "executionETA": null,
+            "executionTime": null,
+            "quorumVotes": "149664390826416544007960",
+            "voteStart": "1792085291",
+            "voteEnd": "1792344491",
+            "executionBlock": null,
+            "creationBlock": "26185063",
+            "proposer": {
+              "address": "0xd38a0c32559e070f062f532e8e3d0ef230842174"
+            }
+          },
           {
             "id": "22408187448678684076280204584290262121201672900977952611245090834594623585528",
             "description": "# Remove ENA dust \n []() \n Recently OPEN was rebalanced using the 2.0.0 protocol and there was ENA dust leftover. This proposal aims to clean up.",
@@ -48,6 +86,25 @@
             "creationBlock": "22933957",
             "proposer": {
               "address": "0x9d1d4d631ae6bc24bd09adff6ca82651e928b650"
+            }
+          },
+          {
+            "id": "62022237685122391383001373445194301022714926500172338142175229265310249611206",
+            "description": "# Add rebalance operations executor for the OPEN index\n [n/a](n/a)\n Rebalances can only run after proposals pass vlSQUILL governance. Granting the operations executor Rebalance Manager rights lets approved rebalances execute on schedule, extending operational coverage beyond the SQUILL multisig's sole control. No change to index methodology, fee schedule or mandate.",
+            "creationTime": "1791728459",
+            "state": "ACTIVE",
+            "forWeightedVotes": "0",
+            "abstainWeightedVotes": "0",
+            "againstWeightedVotes": "507199165943938982992550",
+            "executionETA": null,
+            "executionTime": null,
+            "quorumVotes": "148792743146767868437844",
+            "voteStart": "1791901259",
+            "voteEnd": "1792160459",
+            "executionBlock": null,
+            "creationBlock": "26169770",
+            "proposer": {
+              "address": "0x689ab689fac6b073607416687c6618c32d71ce97"
             }
           },
           {
@@ -371,25 +428,35 @@
     ],
     "stakingToken": {
       "id": "0x2aea77c4757d897aae2710b8a60280777f504e8c",
-      "totalDelegates": "233",
+      "totalDelegates": "241",
       "token": {
-        "totalSupply": "1125019273028853882740726"
+        "totalSupply": "1321608473688414662419752"
       },
       "delegates": [
         {
+          "address": "0xccbf601eb2f5aa2d5d68b069610da6f1627d485d",
+          "delegatedVotes": "159977.01459122991358703",
+          "numberVotes": 11
+        },
+        {
+          "address": "0xb7d411007208143b9fec4f0790f56a3de984e66b",
+          "delegatedVotes": "112547",
+          "numberVotes": 1
+        },
+        {
           "address": "0x73eb240a06f0e0747c698a219462059be6aaccc8",
-          "delegatedVotes": "101205.212086927529439034",
-          "numberVotes": 6
+          "delegatedVotes": "107210.833598215481278072",
+          "numberVotes": 7
         },
         {
           "address": "0xec092c15e8d5a48a77cde36827f8e228ce39471a",
           "delegatedVotes": "93153.680264353647282715",
-          "numberVotes": 4
+          "numberVotes": 6
         },
         {
           "address": "0x759a159d78342340ebacffb027c05910c093f430",
           "delegatedVotes": "86393.828909184803968949",
-          "numberVotes": 2
+          "numberVotes": 4
         },
         {
           "address": "0x9d1d4d631ae6bc24bd09adff6ca82651e928b650",
@@ -399,17 +466,12 @@
         {
           "address": "0xb19d6b66b18fae0fca1023138b229e5f970b5180",
           "delegatedVotes": "63000",
-          "numberVotes": 9
+          "numberVotes": 11
         },
         {
           "address": "0x9c768177521c9a832b0f8567265ef02e89d0282e",
           "delegatedVotes": "60467.787309696818",
-          "numberVotes": 1
-        },
-        {
-          "address": "0xb7d411007208143b9fec4f0790f56a3de984e66b",
-          "delegatedVotes": "57136",
-          "numberVotes": 0
+          "numberVotes": 2
         },
         {
           "address": "0xfe11a5009f2121622271e7dd0fd470264e076af6",
@@ -417,14 +479,9 @@
           "numberVotes": 0
         },
         {
-          "address": "0x17a8683c7a2490de2707e60c7c3a3341907a4b86",
-          "delegatedVotes": "50309.106197996347142734",
-          "numberVotes": 8
-        },
-        {
-          "address": "0x1a9152528aefbcd9e5df4e0770f4f510e7056913",
-          "delegatedVotes": "31446.61803319563257847",
-          "numberVotes": 11
+          "address": "0x16c7e68ca75eb0b7ca65eadd4d067af7d7654e11",
+          "delegatedVotes": "51565.102401279187640198",
+          "numberVotes": 4
         }
       ]
     }

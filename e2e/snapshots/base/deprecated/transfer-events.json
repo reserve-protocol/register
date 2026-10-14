@@ -1,13 +1,178 @@
 {
   "_meta": {
     "source": "https://api.goldsky.com/api/public/project_cmgzim3e100095np2gjnbh6ry/subgraphs/dtf-index-base/prod/gn",
-    "capturedAt": "2026-08-25T16:35:36.440Z",
+    "capturedAt": "2026-10-14T14:41:20.704Z",
     "dtf": "0x47686106181b3cefe4eaf94c4c10b48ac750370b",
     "chainId": 8453,
     "query": "getTransferEvents"
   },
   "data": {
     "transferEvents": [
+      {
+        "id": "0x47686106181b3cefe4eaf94c4c10b48ac750370b-0xa3b00f968488758d6d1cd28116c0204decb493fba92942937ba5138fae6bf900-681",
+        "hash": "0xa3b00f968488758d6d1cd28116c0204decb493fba92942937ba5138fae6bf900",
+        "amount": "457871748938089570",
+        "timestamp": "1790307019",
+        "to": null,
+        "from": {
+          "id": "0xc0269fc72c0138a3a551ccf07f0819adabaa8973"
+        },
+        "type": "REDEEM"
+      },
+      {
+        "id": "0x47686106181b3cefe4eaf94c4c10b48ac750370b-0x9417f757539f7e169ac36c49633939bbd5e9a5a95b22c878c8263518d747e541-158",
+        "hash": "0x9417f757539f7e169ac36c49633939bbd5e9a5a95b22c878c8263518d747e541",
+        "amount": "524144543482683074",
+        "timestamp": "1789419911",
+        "to": null,
+        "from": {
+          "id": "0xc0269fc72c0138a3a551ccf07f0819adabaa8973"
+        },
+        "type": "REDEEM"
+      },
+      {
+        "id": "0x47686106181b3cefe4eaf94c4c10b48ac750370b-0xe99246bb9ebc3ee04ee8bf2d987d7987dc5f8ac02281f85854aff6a5a32c2d2a-517",
+        "hash": "0xe99246bb9ebc3ee04ee8bf2d987d7987dc5f8ac02281f85854aff6a5a32c2d2a",
+        "amount": "785319734349891904",
+        "timestamp": "1789419909",
+        "to": null,
+        "from": {
+          "id": "0xc0269fc72c0138a3a551ccf07f0819adabaa8973"
+        },
+        "type": "REDEEM"
+      },
+      {
+        "id": "0x47686106181b3cefe4eaf94c4c10b48ac750370b-0x79c0d082957ea507c129b765496f7a933b4e02e54ec1db54d1be2a751d055142-1100",
+        "hash": "0x79c0d082957ea507c129b765496f7a933b4e02e54ec1db54d1be2a751d055142",
+        "amount": "1081655170216012367",
+        "timestamp": "1789419907",
+        "to": null,
+        "from": {
+          "id": "0xc0269fc72c0138a3a551ccf07f0819adabaa8973"
+        },
+        "type": "REDEEM"
+      },
+      {
+        "id": "0x47686106181b3cefe4eaf94c4c10b48ac750370b-0x591f52e15be97d9394d39faafbc099b64c4c69f2cee325f19d2a30a9903f5569-551",
+        "hash": "0x591f52e15be97d9394d39faafbc099b64c4c69f2cee325f19d2a30a9903f5569",
+        "amount": "1083333268271565279",
+        "timestamp": "1789419907",
+        "to": null,
+        "from": {
+          "id": "0xc0269fc72c0138a3a551ccf07f0819adabaa8973"
+        },
+        "type": "REDEEM"
+      },
+      {
+        "id": "0x47686106181b3cefe4eaf94c4c10b48ac750370b-0xba2aeb933058b5416da9fc7d251672cab9f61f4179924db9fdf6ed8d9933fc13-326",
+        "hash": "0xba2aeb933058b5416da9fc7d251672cab9f61f4179924db9fdf6ed8d9933fc13",
+        "amount": "1089861850054729236",
+        "timestamp": "1789419903",
+        "to": null,
+        "from": {
+          "id": "0xc0269fc72c0138a3a551ccf07f0819adabaa8973"
+        },
+        "type": "REDEEM"
+      },
+      {
+        "id": "0x47686106181b3cefe4eaf94c4c10b48ac750370b-0xcb8c4f8e569ef04fdc3edf72cad72d89952acf4bc9512d58a3fcc4cc0a9533fb-725",
+        "hash": "0xcb8c4f8e569ef04fdc3edf72cad72d89952acf4bc9512d58a3fcc4cc0a9533fb",
+        "amount": "1090812229433105603",
+        "timestamp": "1789419901",
+        "to": null,
+        "from": {
+          "id": "0xc0269fc72c0138a3a551ccf07f0819adabaa8973"
+        },
+        "type": "REDEEM"
+      },
+      {
+        "id": "0x47686106181b3cefe4eaf94c4c10b48ac750370b-0x4f80d9ec9cc49da5fb384151d8f6627cb15a25344b62fe0cd47a278c9cfbce0a-417",
+        "hash": "0x4f80d9ec9cc49da5fb384151d8f6627cb15a25344b62fe0cd47a278c9cfbce0a",
+        "amount": "1138919420019750342",
+        "timestamp": "1789419901",
+        "to": null,
+        "from": {
+          "id": "0xc0269fc72c0138a3a551ccf07f0819adabaa8973"
+        },
+        "type": "REDEEM"
+      },
+      {
+        "id": "0x47686106181b3cefe4eaf94c4c10b48ac750370b-0xee41d476638240af5493d4d5d492df203f6f40c9a08c6116e92834d9dc59732f-512",
+        "hash": "0xee41d476638240af5493d4d5d492df203f6f40c9a08c6116e92834d9dc59732f",
+        "amount": "985803072722588160",
+        "timestamp": "1789419899",
+        "to": null,
+        "from": {
+          "id": "0xc0269fc72c0138a3a551ccf07f0819adabaa8973"
+        },
+        "type": "REDEEM"
+      },
+      {
+        "id": "0x47686106181b3cefe4eaf94c4c10b48ac750370b-0x85c529b2f1f65389ca2708b5700928cb4700e218f5bbe256ae0c5f34b2edbf77-334",
+        "hash": "0x85c529b2f1f65389ca2708b5700928cb4700e218f5bbe256ae0c5f34b2edbf77",
+        "amount": "1138919420019750342",
+        "timestamp": "1789419899",
+        "to": null,
+        "from": {
+          "id": "0xc0269fc72c0138a3a551ccf07f0819adabaa8973"
+        },
+        "type": "REDEEM"
+      },
+      {
+        "id": "0x47686106181b3cefe4eaf94c4c10b48ac750370b-0x9c6b47c170bd693730453bbbdd66ae57fe65229114ef3fc1957d120efaf55d10-645",
+        "hash": "0x9c6b47c170bd693730453bbbdd66ae57fe65229114ef3fc1957d120efaf55d10",
+        "amount": "15000000000000000000",
+        "timestamp": "1789304745",
+        "to": null,
+        "from": {
+          "id": "0xc57775a3e13c7941eccfbaf740392c650b51453d"
+        },
+        "type": "REDEEM"
+      },
+      {
+        "id": "0x47686106181b3cefe4eaf94c4c10b48ac750370b-0xe4f36dea57aa83af98fdd7960493b70ce391dc32bb2e506b9c13f9d93f4b7d91-265",
+        "hash": "0xe4f36dea57aa83af98fdd7960493b70ce391dc32bb2e506b9c13f9d93f4b7d91",
+        "amount": "27000000000000000000",
+        "timestamp": "1789304637",
+        "to": null,
+        "from": {
+          "id": "0xc57775a3e13c7941eccfbaf740392c650b51453d"
+        },
+        "type": "REDEEM"
+      },
+      {
+        "id": "0x47686106181b3cefe4eaf94c4c10b48ac750370b-0xcbdd19e6eb465499fe8d805d3062fd1f9c94003a227b2a56c6e9983d7a7d15ff-203",
+        "hash": "0xcbdd19e6eb465499fe8d805d3062fd1f9c94003a227b2a56c6e9983d7a7d15ff",
+        "amount": "23000000000000000000",
+        "timestamp": "1789304593",
+        "to": null,
+        "from": {
+          "id": "0xc57775a3e13c7941eccfbaf740392c650b51453d"
+        },
+        "type": "REDEEM"
+      },
+      {
+        "id": "0x47686106181b3cefe4eaf94c4c10b48ac750370b-0x678cc1dfef88418f28403e9eb7fe20035dc2ad1de23ef0bc58b31f6a48c401b9-281",
+        "hash": "0x678cc1dfef88418f28403e9eb7fe20035dc2ad1de23ef0bc58b31f6a48c401b9",
+        "amount": "1138548490889554886",
+        "timestamp": "1788355315",
+        "to": null,
+        "from": {
+          "id": "0x9071384ebf7bb8d89a24723913d67583fc0b0c1d"
+        },
+        "type": "REDEEM"
+      },
+      {
+        "id": "0x47686106181b3cefe4eaf94c4c10b48ac750370b-0x3631277a6284a658347779dcbe99a764c3378c925bf11bd1b1badcd411788032-410",
+        "hash": "0x3631277a6284a658347779dcbe99a764c3378c925bf11bd1b1badcd411788032",
+        "amount": "9926534428229528457",
+        "timestamp": "1788320349",
+        "to": null,
+        "from": {
+          "id": "0xc57775a3e13c7941eccfbaf740392c650b51453d"
+        },
+        "type": "REDEEM"
+      },
       {
         "id": "0x47686106181b3cefe4eaf94c4c10b48ac750370b-0x119e037bee82a8d725dfd2e7a9a7ae70e75fb0d7bea69e1864f66f4d04573fe0-216",
         "hash": "0x119e037bee82a8d725dfd2e7a9a7ae70e75fb0d7bea69e1864f66f4d04573fe0",
@@ -937,171 +1102,6 @@
         "hash": "0x4491065ee5b6599c767956f4ea0983e0f13d9a03a4eebf34c6188e666c36ba26",
         "amount": "155404299696075447752",
         "timestamp": "1773581639",
-        "to": null,
-        "from": {
-          "id": "0x9071384ebf7bb8d89a24723913d67583fc0b0c1d"
-        },
-        "type": "REDEEM"
-      },
-      {
-        "id": "0x47686106181b3cefe4eaf94c4c10b48ac750370b-0xb4f049cacbaac6d6c13c1cd5e6fcbe553c6cec78b2fa1f3f847bd8f5f30238e3-537",
-        "hash": "0xb4f049cacbaac6d6c13c1cd5e6fcbe553c6cec78b2fa1f3f847bd8f5f30238e3",
-        "amount": "392411174944623269434",
-        "timestamp": "1773564213",
-        "to": null,
-        "from": {
-          "id": "0x9071384ebf7bb8d89a24723913d67583fc0b0c1d"
-        },
-        "type": "REDEEM"
-      },
-      {
-        "id": "0x47686106181b3cefe4eaf94c4c10b48ac750370b-0x632783553153c952e9819cd306b6b2901be8284a244ae16d27faa1d6c4a68a89-683",
-        "hash": "0x632783553153c952e9819cd306b6b2901be8284a244ae16d27faa1d6c4a68a89",
-        "amount": "205398825565686978807",
-        "timestamp": "1773564065",
-        "to": null,
-        "from": {
-          "id": "0x9071384ebf7bb8d89a24723913d67583fc0b0c1d"
-        },
-        "type": "REDEEM"
-      },
-      {
-        "id": "0x47686106181b3cefe4eaf94c4c10b48ac750370b-0x55c7e84bb5740d078376c7eec8f19b6bcd9e102930a411d65fc3d94a87b102af-806",
-        "hash": "0x55c7e84bb5740d078376c7eec8f19b6bcd9e102930a411d65fc3d94a87b102af",
-        "amount": "158769797488652089054",
-        "timestamp": "1773563569",
-        "to": null,
-        "from": {
-          "id": "0x9071384ebf7bb8d89a24723913d67583fc0b0c1d"
-        },
-        "type": "REDEEM"
-      },
-      {
-        "id": "0x47686106181b3cefe4eaf94c4c10b48ac750370b-0x2a6c310d7904194265285698d66da854ad0ec74cc3c74d5d8156e89165d7b3c2-685",
-        "hash": "0x2a6c310d7904194265285698d66da854ad0ec74cc3c74d5d8156e89165d7b3c2",
-        "amount": "400948919069473202251",
-        "timestamp": "1773562487",
-        "to": null,
-        "from": {
-          "id": "0x9071384ebf7bb8d89a24723913d67583fc0b0c1d"
-        },
-        "type": "REDEEM"
-      },
-      {
-        "id": "0x47686106181b3cefe4eaf94c4c10b48ac750370b-0xb03214b629d6ade778b2265190360ff735298a74b82c16b5153abbec7d343e8a-645",
-        "hash": "0xb03214b629d6ade778b2265190360ff735298a74b82c16b5153abbec7d343e8a",
-        "amount": "374231979811392075386",
-        "timestamp": "1773562253",
-        "to": null,
-        "from": {
-          "id": "0xebe7753c327ec70d6523db6b4c41b54090eb0498"
-        },
-        "type": "REDEEM"
-      },
-      {
-        "id": "0x47686106181b3cefe4eaf94c4c10b48ac750370b-0x91e8e9eedbf2a88c789ff32d2412d11ba001a5f917e1235a602f0fa855ba0f7e-881",
-        "hash": "0x91e8e9eedbf2a88c789ff32d2412d11ba001a5f917e1235a602f0fa855ba0f7e",
-        "amount": "162995359982389039131",
-        "timestamp": "1773561547",
-        "to": null,
-        "from": {
-          "id": "0x9071384ebf7bb8d89a24723913d67583fc0b0c1d"
-        },
-        "type": "REDEEM"
-      },
-      {
-        "id": "0x47686106181b3cefe4eaf94c4c10b48ac750370b-0xe523f63dc287551abb5aa2b82bf25343972eafc25feb383477213f3a2bc95b43-971",
-        "hash": "0xe523f63dc287551abb5aa2b82bf25343972eafc25feb383477213f3a2bc95b43",
-        "amount": "163738110141566907214",
-        "timestamp": "1773561515",
-        "to": null,
-        "from": {
-          "id": "0x9071384ebf7bb8d89a24723913d67583fc0b0c1d"
-        },
-        "type": "REDEEM"
-      },
-      {
-        "id": "0x47686106181b3cefe4eaf94c4c10b48ac750370b-0x9bc22164e9755e8a4be27feba36c28b9a9665b20be5d54e42830ed6d012759cc-361",
-        "hash": "0x9bc22164e9755e8a4be27feba36c28b9a9665b20be5d54e42830ed6d012759cc",
-        "amount": "1856935002290000000000",
-        "timestamp": "1773561081",
-        "to": {
-          "id": "0x130c5bc30567987861620971c6b60c08d3784ef8"
-        },
-        "from": null,
-        "type": "MINT"
-      },
-      {
-        "id": "0x47686106181b3cefe4eaf94c4c10b48ac750370b-0xf48d92a0b970309b375ce42c2d3db99477f61f740325cb1599402cd17e3e1d3d-640",
-        "hash": "0xf48d92a0b970309b375ce42c2d3db99477f61f740325cb1599402cd17e3e1d3d",
-        "amount": "156132756140057324481",
-        "timestamp": "1773560767",
-        "to": null,
-        "from": {
-          "id": "0x9071384ebf7bb8d89a24723913d67583fc0b0c1d"
-        },
-        "type": "REDEEM"
-      },
-      {
-        "id": "0x47686106181b3cefe4eaf94c4c10b48ac750370b-0x28e64612a728fbd77cd9381f42702e0a24e9838d6ce3e368db3939fc37375cac-634",
-        "hash": "0x28e64612a728fbd77cd9381f42702e0a24e9838d6ce3e368db3939fc37375cac",
-        "amount": "156829044863056119340",
-        "timestamp": "1773560763",
-        "to": null,
-        "from": {
-          "id": "0x9071384ebf7bb8d89a24723913d67583fc0b0c1d"
-        },
-        "type": "REDEEM"
-      },
-      {
-        "id": "0x47686106181b3cefe4eaf94c4c10b48ac750370b-0xc3ac5ddb92d65bcb6156007e73ae392158ece76f4a4ac9a0bc0cbe9d3d8f93c9-1094",
-        "hash": "0xc3ac5ddb92d65bcb6156007e73ae392158ece76f4a4ac9a0bc0cbe9d3d8f93c9",
-        "amount": "2060292115230000000000",
-        "timestamp": "1773560625",
-        "to": {
-          "id": "0x130c5bc30567987861620971c6b60c08d3784ef8"
-        },
-        "from": null,
-        "type": "MINT"
-      },
-      {
-        "id": "0x47686106181b3cefe4eaf94c4c10b48ac750370b-0xb64256ce91f6ba9aebf414676b5320f291285b97f0c80f9a11cbc227a90dceef-553",
-        "hash": "0xb64256ce91f6ba9aebf414676b5320f291285b97f0c80f9a11cbc227a90dceef",
-        "amount": "148438337847755146004",
-        "timestamp": "1773541121",
-        "to": null,
-        "from": {
-          "id": "0x9071384ebf7bb8d89a24723913d67583fc0b0c1d"
-        },
-        "type": "REDEEM"
-      },
-      {
-        "id": "0x47686106181b3cefe4eaf94c4c10b48ac750370b-0xa35ef97fa1503b0324b63691e5085a5529ea559651b66b47099a529b0cc105c8-1063",
-        "hash": "0xa35ef97fa1503b0324b63691e5085a5529ea559651b66b47099a529b0cc105c8",
-        "amount": "149043515147571042635",
-        "timestamp": "1773540107",
-        "to": null,
-        "from": {
-          "id": "0x9071384ebf7bb8d89a24723913d67583fc0b0c1d"
-        },
-        "type": "REDEEM"
-      },
-      {
-        "id": "0x47686106181b3cefe4eaf94c4c10b48ac750370b-0xc89bd20078846f0876eb13eaa54542536ea373d5f9cb8e684b20b3805d18785c-345",
-        "hash": "0xc89bd20078846f0876eb13eaa54542536ea373d5f9cb8e684b20b3805d18785c",
-        "amount": "149652400933348589050",
-        "timestamp": "1773539301",
-        "to": null,
-        "from": {
-          "id": "0x9071384ebf7bb8d89a24723913d67583fc0b0c1d"
-        },
-        "type": "REDEEM"
-      },
-      {
-        "id": "0x47686106181b3cefe4eaf94c4c10b48ac750370b-0x7926ef39f19b624b3aed1cf0be7d5c0c4fa9713921562db45284335982bf37cc-1113",
-        "hash": "0x7926ef39f19b624b3aed1cf0be7d5c0c4fa9713921562db45284335982bf37cc",
-        "amount": "150265025567579020070",
-        "timestamp": "1773538487",
         "to": null,
         "from": {
           "id": "0x9071384ebf7bb8d89a24723913d67583fc0b0c1d"

@@ -1,7 +1,7 @@
 {
   "_meta": {
     "source": "https://api.reserve.org/dtf/exposure?chainId=1&address=0x323c03c48660fe31186fa82c289b0766d331ce21&period=7d",
-    "capturedAt": "2026-08-25T16:35:14.617Z",
+    "capturedAt": "2026-10-14T14:41:01.868Z",
     "dtf": "0x323c03c48660fe31186fa82c289b0766d331ce21",
     "chainId": 1,
     "window": {
@@ -23,9 +23,9 @@
         {
           "address": "0x7Fc66500c84A76Ad7e9c93437bFc5Ac33E2DDaE9",
           "symbol": "AAVE",
-          "weight": 48.55,
-          "change": 0.44045015208696,
-          "marketCap": 2039850094,
+          "weight": 50.71,
+          "change": -0.08193795546050474,
+          "marketCap": 2474183361,
           "bridge": {
             "id": "native_wrap",
             "name": "Native Wrapped",
@@ -41,10 +41,10 @@
           }
         }
       ],
-      "totalWeight": 48.55,
-      "change": 0.44045015208696,
+      "totalWeight": 50.71,
+      "change": -0.08193795546050474,
       "hasNewlyAdded": false,
-      "marketCap": 1994265272
+      "marketCap": 2407612523
     },
     {
       "native": {
@@ -60,9 +60,9 @@
         {
           "address": "0xD533a949740bb3306d119CC777fa900bA034cd52",
           "symbol": "CRV",
-          "weight": 9.03,
-          "change": 0.3251528902752128,
-          "marketCap": 525975180,
+          "weight": 7.91,
+          "change": -0.05395740199344604,
+          "marketCap": 534058187,
           "bridge": {
             "id": "native_wrap",
             "name": "Native Wrapped",
@@ -78,10 +78,10 @@
           }
         }
       ],
-      "totalWeight": 9.03,
-      "change": 0.3251528902752128,
+      "totalWeight": 7.91,
+      "change": -0.05395740199344604,
       "hasNewlyAdded": false,
-      "marketCap": 503046387
+      "marketCap": 513875138
     },
     {
       "native": {
@@ -97,9 +97,9 @@
         {
           "address": "0x8207c1FfC5B6804F6024322CcF34F29c3541Ae26",
           "symbol": "OGN",
-          "weight": 3.12,
-          "change": 0.13452992324959054,
-          "marketCap": 12511982,
+          "weight": 4.58,
+          "change": 0.466622601774454,
+          "marketCap": 26361397,
           "bridge": {
             "id": "native_wrap",
             "name": "Native Wrapped",
@@ -115,10 +115,10 @@
           }
         }
       ],
-      "totalWeight": 3.12,
-      "change": 0.13452992324959054,
+      "totalWeight": 4.58,
+      "change": 0.466622601774454,
       "hasNewlyAdded": false,
-      "marketCap": 12609327
+      "marketCap": 23358787
     },
     {
       "native": null,
@@ -126,15 +126,15 @@
         {
           "address": "0x3432B6A60D23Ca0dFCa7761B7ab56459D9C964D0",
           "symbol": "FXS",
-          "weight": 4.41,
-          "change": 0.05523106420380648,
-          "marketCap": 28617149
+          "weight": 4.16,
+          "change": 0.10918256539537186,
+          "marketCap": 30296443
         }
       ],
-      "totalWeight": 4.41,
-      "change": 0.05523106420380648,
+      "totalWeight": 4.16,
+      "change": 0.10918256539537186,
       "hasNewlyAdded": false,
-      "marketCap": 28617149
+      "marketCap": 30296443
     },
     {
       "native": {
@@ -150,9 +150,9 @@
         {
           "address": "0x41D5D79431A913C4aE7d69a668ecdfE5fF9DFB68",
           "symbol": "INV",
-          "weight": 3.46,
-          "change": 0.08781090655511443,
-          "marketCap": 6714695,
+          "weight": 3.55,
+          "change": 0.15450906334384268,
+          "marketCap": 7856617,
           "bridge": {
             "id": "native_wrap",
             "name": "Native Wrapped",
@@ -168,10 +168,10 @@
           }
         }
       ],
-      "totalWeight": 3.46,
-      "change": 0.08781090655511443,
+      "totalWeight": 3.55,
+      "change": 0.15450906334384268,
       "hasNewlyAdded": false,
-      "marketCap": 6653122
+      "marketCap": 8195960
     },
     {
       "native": {
@@ -187,9 +187,9 @@
         {
           "address": "0x6DEA81C8171D0bA574754EF6F8b412F2Ed88c54D",
           "symbol": "LQTY",
-          "weight": 11.47,
-          "change": 0.12332409523207619,
-          "marketCap": 21297028,
+          "weight": 9.88,
+          "change": -0.08421035542719346,
+          "marketCap": 21662604,
           "bridge": {
             "id": "native_wrap",
             "name": "Native Wrapped",
@@ -205,10 +205,10 @@
           }
         }
       ],
-      "totalWeight": 11.47,
-      "change": 0.12332409523207619,
+      "totalWeight": 9.88,
+      "change": -0.08421035542719346,
       "hasNewlyAdded": false,
-      "marketCap": 21061464
+      "marketCap": 20568187
     },
     {
       "native": {
@@ -224,9 +224,9 @@
         {
           "address": "0x320623b8E4fF03373931769A31Fc52A4E78B5d70",
           "symbol": "RSR",
-          "weight": 1.17,
-          "change": 0.26356633693273046,
-          "marketCap": 91118671,
+          "weight": 1.35,
+          "change": 0.20617366475346352,
+          "marketCap": 130198113,
           "bridge": {
             "id": "native_wrap",
             "name": "Native Wrapped",
@@ -242,10 +242,10 @@
           }
         }
       ],
-      "totalWeight": 1.17,
-      "change": 0.26356633693273046,
+      "totalWeight": 1.35,
+      "change": 0.20617366475346352,
       "hasNewlyAdded": false,
-      "marketCap": 91101607
+      "marketCap": 121966146
     },
     {
       "native": {
@@ -260,9 +260,9 @@
         {
           "address": "0x419905009e4656fdC02418C7Df35B1E61Ed5F726",
           "symbol": "RSUP",
-          "weight": 4.15,
-          "change": 0.1753661394987912,
-          "marketCap": 3170935,
+          "weight": 3.3,
+          "change": -0.0676712854640788,
+          "marketCap": 3124189,
           "bridge": {
             "id": "native_wrap",
             "name": "Native Wrapped",
@@ -278,10 +278,10 @@
           }
         }
       ],
-      "totalWeight": 4.15,
-      "change": 0.1753661394987912,
+      "totalWeight": 3.3,
+      "change": -0.0676712854640788,
       "hasNewlyAdded": false,
-      "marketCap": 3158264
+      "marketCap": 3120604
     },
     {
       "native": {
@@ -296,9 +296,9 @@
         {
           "address": "0x365AccFCa291e7D3914637ABf1F7635dB165Bb09",
           "symbol": "FXN",
-          "weight": 13.23,
-          "change": 0.28285846677375875,
-          "marketCap": 3209598,
+          "weight": 13.12,
+          "change": -0.27373022448511347,
+          "marketCap": 3621748,
           "bridge": {
             "id": "native_wrap",
             "name": "Native Wrapped",
@@ -314,10 +314,10 @@
           }
         }
       ],
-      "totalWeight": 13.23,
-      "change": 0.28285846677375875,
+      "totalWeight": 13.12,
+      "change": -0.27373022448511347,
       "hasNewlyAdded": false,
-      "marketCap": 3202429
+      "marketCap": 3680125
     },
     {
       "native": {
@@ -333,9 +333,9 @@
         {
           "address": "0xdBdb4d16EdA451D0503b854CF79D55697F90c8DF",
           "symbol": "ALCX",
-          "weight": 1.41,
-          "change": 0.13483968498674176,
-          "marketCap": 5420796,
+          "weight": 1.44,
+          "change": -0.01919000605781506,
+          "marketCap": 6787160,
           "bridge": {
             "id": "native_wrap",
             "name": "Native Wrapped",
@@ -351,10 +351,10 @@
           }
         }
       ],
-      "totalWeight": 1.41,
-      "change": 0.13483968498674176,
+      "totalWeight": 1.44,
+      "change": -0.01919000605781506,
       "hasNewlyAdded": false,
-      "marketCap": 5493153
+      "marketCap": 6559590
     }
   ]
 }

@@ -16,7 +16,7 @@ const DisplayMode = ({ className }: Props) => {
   return (
     <div className={`flex items-center mx-6 ${className ?? ''}`}>
       <span className="text-legend text-sm">
-        <Trans>Display only {rToken?.symbol} related collaterals</Trans>
+        <Trans>Display only {rToken?.symbol ?? ''} related collaterals</Trans>
       </span>
       <div className="ml-auto">
         <label>

@@ -1,7 +1,7 @@
 {
   "_meta": {
     "source": "https://api.goldsky.com/api/public/project_cmgzim3e100095np2gjnbh6ry/subgraphs/dtf-index-bsc/prod/gn",
-    "capturedAt": "2026-08-25T16:35:01.662Z",
+    "capturedAt": "2026-10-14T14:40:52.703Z",
     "dtf": "0x2f8a339b5889ffac4c5a956787cda593b3c36867",
     "chainId": 56,
     "query": "GetIndexDTF"
@@ -32,10 +32,10 @@
         "0x7daaf7bc2ee8bf4c0ac7f37e6b6cfaeb3ed9a868",
         "0xc04d6885c1f45b2e69a56de7d791a573ef5894ce"
       ],
-      "totalRevenue": "1436302651339185204476",
-      "protocolRevenue": "478767550446395074152",
-      "governanceRevenue": "71457843350208342132",
-      "externalRevenue": "886077257542581788192",
+      "totalRevenue": "1496840946814940477334",
+      "protocolRevenue": "498946982271646832575",
+      "governanceRevenue": "74469698846514579755",
+      "externalRevenue": "923424265696779065004",
       "feeRecipients": "0x1d60bbbef79fb9540d271dbb01925380323a8f66:74626865671641780,0x51292ffb1f70b26b771ff3f410db18e3e2c450d7:850746268656716300,0xede6a014caa31e23e9d8c345c022101477a91292:74626865671641920",
       "bidsEnabled": true,
       "trustedFillerRegistry": "0x08424d7c52bf9edd4070701591ea3fe6dca6449b",
@@ -79,10 +79,10 @@
         "id": "0x12940889e849012c633f47ba8925bbee4ee96d45",
         "name": "Reserve Folio Governor",
         "version": "1",
-        "votingDelay": "7200",
-        "votingPeriod": "79200",
+        "votingDelay": "86400",
+        "votingPeriod": "86400",
         "proposalThreshold": "1000000000000000",
-        "quorumVotes": "11291909709154477665389774",
+        "quorumVotes": "7534153543617905324770563",
         "quorumNumerator": "100000000000000000",
         "quorumDenominator": "1000000000000000000",
         "isOptimistic": false,
@@ -111,14 +111,14 @@
         "name": "CoinMarketCap 20 Index DTF",
         "symbol": "CMC20",
         "decimals": 18,
-        "totalSupply": "37077381164834023083428",
-        "currentHolderCount": "38594",
-        "cumulativeHolderCount": "67609",
-        "transferCount": "1388853",
-        "mintCount": "39995",
-        "burnCount": "35339",
-        "totalBurned": "396327630008212386235564",
-        "totalMinted": "433405011173046409318992"
+        "totalSupply": "34749939339154337770204",
+        "currentHolderCount": "40951",
+        "cumulativeHolderCount": "73390",
+        "transferCount": "1843032",
+        "mintCount": "41918",
+        "burnCount": "37566",
+        "totalBurned": "408367010592679658478247",
+        "totalMinted": "443116949931833996248451"
       },
       "stToken": {
         "id": "0xede6a014caa31e23e9d8c345c022101477a91292",
@@ -128,18 +128,18 @@
           "name": "Vote Lock vlRSR-CMCindex",
           "symbol": "vlRSR-CMCindex",
           "decimals": 18,
-          "totalSupply": "112261073722079075704434085",
-          "currentHolderCount": "139",
+          "totalSupply": "74984955817300961271630665",
+          "currentHolderCount": "133",
           "cumulativeHolderCount": "186",
           "transferCount": "156",
           "mintCount": "266",
-          "burnCount": "52",
-          "totalBurned": "238490999633054231506675918",
+          "burnCount": "58",
+          "totalBurned": "275767117537832345939479338",
           "totalMinted": "350752073355133307211110003"
         },
-        "currentDelegates": "23",
+        "currentDelegates": "19",
         "totalDelegates": "65",
-        "delegatedVotesRaw": "110277632953402688640248645",
+        "delegatedVotesRaw": "73048483998424574207445225",
         "currentOptimisticDelegates": "0",
         "totalOptimisticDelegates": "0",
         "optimisticDelegatedVotesRaw": "0",
@@ -179,7 +179,6 @@
           }
         },
         "legacyGovernance": [
-          "0x0000000000000000000000000000000000000000",
           "0x270d928b9ee38bad93601d197256390b3c3c13ec"
         ],
         "rewards": [

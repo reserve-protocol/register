@@ -1,15 +1,15 @@
 {
   "_meta": {
-    "source": "https://api.reserve.org/current/prices?chainId=8453&tokens=0x4F9Fd6Be4a90f2620860d680c0d4d5Fb53d1A825,0x1C4CcA7C5DB003824208aDDA61Bd749e55F463a3,0x731814e491571A2e9eE3c5b1F7f3b962eE8f4870,0x55cD6469F597452B5A7536e2CD98fDE4c1247ee4,0x58Db197E91Bc8Cf1587F75850683e4bd0730e6BF,0x0b3AE50BaBE7FFa4E1A50569ceE6bDEFd4ccAeE0,0x98aC5B33A4Ef1151f138941c979211599c2fF953,0xA4A2E2ca3fBfE21aed83471D28b6f65A233C6e00,0xFAC77f01957ed1B3DD1cbEa992199B8f85B6E886,0xC44141a684f6AA4E36cD9264ab55550B03C88643",
-    "capturedAt": "2026-08-25T16:35:25.583Z",
+    "source": "https://api.reserve.org/current/prices?chainId=8453&tokens=0x4F9Fd6Be4a90f2620860d680c0d4d5Fb53d1A825,0x1C4CcA7C5DB003824208aDDA61Bd749e55F463a3,0x731814e491571A2e9eE3c5b1F7f3b962eE8f4870,0x55cD6469F597452B5A7536e2CD98fDE4c1247ee4,0x58Db197E91Bc8Cf1587F75850683e4bd0730e6BF,0x0b3AE50BaBE7FFa4E1A50569ceE6bDEFd4ccAeE0,0x98aC5B33A4Ef1151f138941c979211599c2fF953,0xA4A2E2ca3fBfE21aed83471D28b6f65A233C6e00,0xFAC77f01957ed1B3DD1cbEa992199B8f85B6E886,0xC44141a684f6AA4E36cD9264ab55550B03C88643,0x815269d17c10f0f3df7249370e0c1b9efe781aa8",
+    "capturedAt": "2026-10-14T14:41:22.619Z",
     "dtf": "0x47686106181b3cefe4eaf94c4c10b48ac750370b",
     "chainId": 8453
   },
   "data": [
     {
       "address": "0x4F9Fd6Be4a90f2620860d680c0d4d5Fb53d1A825",
-      "price": 0.020771607338331468,
-      "timestamp": 1787675725,
+      "price": 0.01932456851431483,
+      "timestamp": 1791988882,
       "priceSources": [
         "zapper",
         "alchemy",
@@ -18,8 +18,8 @@
     },
     {
       "address": "0x1C4CcA7C5DB003824208aDDA61Bd749e55F463a3",
-      "price": 0.00826505326845707,
-      "timestamp": 1787675725,
+      "price": 0.004335576442801094,
+      "timestamp": 1791988882,
       "priceSources": [
         "zapper",
         "alchemy",
@@ -28,8 +28,8 @@
     },
     {
       "address": "0x731814e491571A2e9eE3c5b1F7f3b962eE8f4870",
-      "price": 0.0013986427740876044,
-      "timestamp": 1787675725,
+      "price": 0.0010281283206043863,
+      "timestamp": 1791988882,
       "priceSources": [
         "zapper",
         "alchemy",
@@ -38,8 +38,8 @@
     },
     {
       "address": "0x55cD6469F597452B5A7536e2CD98fDE4c1247ee4",
-      "price": 0.006214498531202959,
-      "timestamp": 1787675725,
+      "price": 0.004928008106122127,
+      "timestamp": 1791988882,
       "priceSources": [
         "zapper",
         "alchemy",
@@ -48,8 +48,8 @@
     },
     {
       "address": "0x58Db197E91Bc8Cf1587F75850683e4bd0730e6BF",
-      "price": 0.000511244099468611,
-      "timestamp": 1787675725,
+      "price": 0.00027517432325115354,
+      "timestamp": 1791988882,
       "priceSources": [
         "zapper",
         "alchemy",
@@ -58,8 +58,8 @@
     },
     {
       "address": "0x0b3AE50BaBE7FFa4E1A50569ceE6bDEFd4ccAeE0",
-      "price": 0.0017275973977221607,
-      "timestamp": 1787675725,
+      "price": 0.0009713568399774352,
+      "timestamp": 1791988882,
       "priceSources": [
         "zapper",
         "alchemy",
@@ -68,8 +68,8 @@
     },
     {
       "address": "0x98aC5B33A4Ef1151f138941c979211599c2fF953",
-      "price": 0.00048446032358664596,
-      "timestamp": 1787675725,
+      "price": 0.00017181672148965392,
+      "timestamp": 1791988882,
       "priceSources": [
         "zapper",
         "alchemy",
@@ -78,8 +78,8 @@
     },
     {
       "address": "0xA4A2E2ca3fBfE21aed83471D28b6f65A233C6e00",
-      "price": 0.23751573832137354,
-      "timestamp": 1787675725,
+      "price": 0.1828173263698869,
+      "timestamp": 1791988882,
       "priceSources": [
         "zapper",
         "alchemy",
@@ -88,8 +88,8 @@
     },
     {
       "address": "0xFAC77f01957ed1B3DD1cbEa992199B8f85B6E886",
-      "price": 0.001526188122480187,
-      "timestamp": 1787675725,
+      "price": 0.000788175447567388,
+      "timestamp": 1791988882,
       "priceSources": [
         "zapper",
         "alchemy",
@@ -98,8 +98,18 @@
     },
     {
       "address": "0xC44141a684f6AA4E36cD9264ab55550B03C88643",
-      "price": 0.0018349405799211293,
-      "timestamp": 1787675725,
+      "price": 0.0011743784509022487,
+      "timestamp": 1791988882,
+      "priceSources": [
+        "zapper",
+        "alchemy",
+        "defillama"
+      ]
+    },
+    {
+      "address": "0x815269D17C10f0F3dF7249370E0c1B9efe781aa8",
+      "price": 0.0002375429479212195,
+      "timestamp": 1791988882,
       "priceSources": [
         "zapper",
         "alchemy",

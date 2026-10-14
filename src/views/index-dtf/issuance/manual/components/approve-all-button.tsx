@@ -59,7 +59,8 @@ const ApproveAllButton = () => {
   // Determine button state
   // Use states length when processing (captures initial batch size), otherwise use current tokens needing approval
   const batchSize = Object.keys(states).length
-  const totalCount = isProcessing || hasFailures ? batchSize : tokensNeedingApproval.length
+  const totalCount =
+    isProcessing || hasFailures ? batchSize : tokensNeedingApproval.length
 
   let label: ReactNode
   let onClick: () => void
@@ -96,7 +97,7 @@ const ApproveAllButton = () => {
           onClick={onClick}
         >
           {isProcessing && <Spinner />}
-          {label}
+          <span>{label}</span>
         </Button>
       </TransactionButtonContainer>
 

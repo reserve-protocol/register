@@ -211,7 +211,7 @@ const MintRedeemButton = () => {
           onClick={handleSubmit}
         >
           {isLoading && <Spinner />}
-          {label}
+          <span>{label}</span>
         </Button>
       </TransactionButtonContainer>
 

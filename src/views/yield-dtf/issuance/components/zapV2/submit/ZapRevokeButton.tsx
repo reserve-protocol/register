@@ -36,17 +36,21 @@ const ZapRevokeButton = () => {
     <div className="flex flex-col items-center gap-2 mb-6">
       <Button onClick={revoke} disabled={isLoading} className="w-full">
         {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-        {isLoading
-          ? loadingRevoke
-            ? t`Revoking...`
-            : t`Finding route...`
-          : t`Revoke existing ${tokenIn.symbol} allowance`}
+        <span>
+          {isLoading
+            ? loadingRevoke
+              ? t`Revoking...`
+              : t`Finding route...`
+            : t`Revoke existing ${tokenIn.symbol} allowance`}
+        </span>
       </Button>
       <div className="flex items-center gap-1">
         <span className="text-legend text-xs">
           <Trans>Why I do need to revoke my allowance?</Trans>
         </span>
-        <Help content={t`Due to how USDT approvals are managed, we need to reset your current allowance to zero before updating it to a new value. This step is necessary for completing your transaction.`} />
+        <Help
+          content={t`Due to how USDT approvals are managed, we need to reset your current allowance to zero before updating it to a new value. This step is necessary for completing your transaction.`}
+        />
       </div>
     </div>
   )
