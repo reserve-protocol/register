@@ -1,4 +1,4 @@
-// Page translators move React's text nodes into <font>, then React's DOM calls throw (facebook/react#11538)
+/** Page translators move React's text nodes into <font>, then React's DOM calls throw (facebook/react#11538) */
 export const installTranslationDomGuard = () => {
   if (typeof Node !== 'function') return () => {}
 
@@ -8,8 +8,13 @@ export const installTranslationDomGuard = () => {
     if (child.parentNode === this) return removeChild.call(this, child) as T
 
     console.warn('[translation-dom-guard] removeChild outside parent', child)
-    if (child.parentNode && this.contains(child)) {
-      removeChild.call(child.parentNode, child)
+    const wrapper = child.parentNode
+    if (wrapper && this.contains(child)) {
+      removeChild.call(wrapper, child)
+      const outer = wrapper.parentNode
+      if (outer && wrapper.nodeName === 'FONT' && !wrapper.hasChildNodes()) {
+        removeChild.call(outer, wrapper)
+      }
     }
     return child
   }

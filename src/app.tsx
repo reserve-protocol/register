@@ -15,6 +15,7 @@ import Layout from './components/layout'
 import { Toaster } from './components/ui/sonner'
 import { TooltipProvider } from './components/ui/tooltip'
 import LanguageProvider from './i18n'
+import { claimAutoReload, isChunkLoadError } from './utils/chunk-reload'
 import * as Sentry from '@sentry/react'
 
 // Deferred Mixpanel initialization to avoid blocking first render
@@ -74,11 +75,7 @@ function FallbackUI({
   resetErrorBoundary: () => void
 }) {
   useEffect(() => {
-    if (
-      error.message.includes('Failed to fetch dynamically imported module') ||
-      error.message.includes('Importing a module script failed') ||
-      error.message.includes('Unable to preload CSS')
-    ) {
+    if (isChunkLoadError(error) && claimAutoReload()) {
       window.location.reload()
     }
   }, [error])

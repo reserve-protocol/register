@@ -49,4 +49,15 @@ describe('isRevenueValidAtom', () => {
       })
     ).toBe(false)
   })
+
+  it('rejects blank allocations', () => {
+    expect(
+      validate({
+        holders: '50',
+        stakers: '50',
+        external: [external('60', '40', '')],
+      })
+    ).toBe(false)
+    expect(validate({ holders: ' ', stakers: '100', external: [] })).toBe(false)
+  })
 })

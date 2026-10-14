@@ -66,6 +66,7 @@ describe('translation DOM guard', () => {
     translate(container)
     expect(() => rerender(<Signed value={1} />)).not.toThrow()
     expect(container.textContent).toBe('1%')
+    expect(container.querySelectorAll('font')).toHaveLength(2)
   })
 
   it('inserts before the wrapper of a moved text node', () => {

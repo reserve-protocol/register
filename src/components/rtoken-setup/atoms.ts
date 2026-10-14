@@ -270,8 +270,9 @@ export const updateBasketUnitAtom = atom(
   }
 )
 
-// Free-text inputs can hold non-numbers (e.g. "1,5"), which BigInt() throws on
+// Free-text inputs can be blank or non-numeric (e.g. "1,5"), which BigInt() throws on
 const toBasisPoints = (value: string) => {
+  if (value.trim() === '') return null
   const scaled = Math.round(Number(value) * 100)
   return Number.isFinite(scaled) ? BigInt(scaled) : null
 }
