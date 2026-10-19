@@ -96,7 +96,7 @@ mapper dereferences — serve proposals ONLY through it or the list breaks).
 
 ## Traps
 
-- Governance migration: after `upgradeFolio` the subgraph moves `stToken` to the vlRSR singleton; the old vault survives only behind `roles.admin.legacyGovernances` (`getOldVoteLocks` reads both). The retire banner's "still governed" list is the on-chain admin role, not the subgraph. Only RSR vote-lock vaults take part: the upgrade banner, the retire banner and the migration CTA all hide for a non-RSR vault (vlPMF, vlVIRTUAL…), whose holders would redeem a token vlRSR cannot take.
+- Governance migration: after `upgradeFolio` the subgraph moves `stToken` to the vlRSR singleton; the old vault survives only behind `roles.admin.legacyGovernances` (`getOldVoteLocks` reads both). The retire banner's "still governed" list is the on-chain admin role, not the subgraph. Only RSR vote-lock vaults take part: the upgrade banner, the retire banner and the migration CTA all hide for a non-RSR vault (vlPMF, vlVIRTUAL…), whose holders would redeem a token vlRSR cannot take. Exception: `getGovernanceUpgradeTarget` routes OPEN's upgrade through its one-off `GovernanceSpell_10_19_2026` into its vlSQUILL successor vault (`newFeeRecipient` 0, so the spell moves the old vault's fee share straight to vlSQUILL); OPEN still skips the retire banner and migration CTA.
 
 - The auctions subgraph query is misnamed `getGovernanceStats` in
   `use-rebalance-auctions.ts` — body-matched in the mock BEFORE the real
