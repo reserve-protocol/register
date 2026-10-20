@@ -145,10 +145,16 @@ lane. `e2e/fork/scripts/subgraph-proxy.mjs` serves the production Index subgraph
 truncated at the fork block, so indexed history matches the fork state.
 `e2e/fork/helpers/fork-wallet.ts` signs as an impersonated account.
 
-- Governance migration (Base): `prepare-optimistic-governance.mjs` upgrades the
-  vlRSR singleton to 1.1.0 by labelled impersonation of its timelock, then
-  `optimistic-governance-upgrade.fork.spec.ts` proposes and executes
-  `upgradeFolio` for LCAP, retires the old vault and migrates a holder.
+- Governance migration: `FORK_SCENARIO` picks `lcap` (Base, vlRSR), `abx`
+  (Base, vlALTT) or `open` (Ethereum, vlSQUILL). `prepare-optimistic-governance.mjs`
+  writes `.state/<chainId>/optimistic-governance-<scenario>.json`; for LCAP it also
+  upgrades the vlRSR singleton to 1.1.0 by labelled impersonation of its timelock.
+  `optimistic-governance-upgrade.fork.spec.ts` locks into the new vault from the
+  pre-upgrade card, proposes and executes `upgradeFolio`, retires the old vault and
+  migrates a holder. Run it with `FORK_CHAIN_ID`, `FORK_RPC_URL_<chainId>` and
+  `FORK_SUBGRAPH_URL_<chainId>` pointing at the fork and its subgraph proxy.
+- The subgraph proxy is frozen at the fork block, so views that read the DTF from
+  the subgraph keep the pre-upgrade state after an on-chain upgrade.
 - The Alchemy archive RPC needs the app origin header
   (`--fork-header "Origin: https://app.reserve.org"` on Anvil).
 - Restart Anvil (or revert a snapshot) before a re-run: the spec spends the

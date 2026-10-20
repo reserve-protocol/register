@@ -17,26 +17,36 @@ import {
 } from 'viem'
 import { installForkWallet } from '../helpers/fork-wallet'
 
-// Real LCAP governance migration on the Base fork, driven from the Register UI:
-// banner 1 proposes upgradeFolio on the Folio governor, banner 2 proposes the
-// old vault's retirement on its DAO governor, and the migration modal moves a
-// real holder's stake into the vlRSR singleton. Proposals are voted, queued and
-// executed on the fork; every outcome is read back with viem.
-// Requires `prepare-optimistic-governance.mjs` and the subgraph proxy on :18310.
-const rpcUrl = process.env.FORK_RPC_URL_8453 ?? 'http://127.0.0.1:8546'
+// Real governance migration on a fork, driven from the Register UI: the
+// pre-upgrade card locks into the new vault, banner 1 proposes upgradeFolio on
+// the Folio governor, banner 2 proposes the old vault's retirement on its DAO
+// governor, and the migration modal moves a real holder's stake into the new
+// vault. Proposals are voted, queued and executed on the fork; every outcome is
+// read back with viem. FORK_SCENARIO picks the DTF: lcap (Base, vlRSR), abx
+// (Base, vlALTT) or open (Ethereum, vlSQUILL).
+// Requires `prepare-optimistic-governance.mjs` and the subgraph proxy for the chain.
+const scenario = process.env.FORK_SCENARIO ?? 'lcap'
+const chainId = Number(process.env.FORK_CHAIN_ID ?? '8453')
+const network = chainId === 1 ? 'ethereum' : 'base'
+const rpcUrl =
+  process.env[`FORK_RPC_URL_${chainId}`] ??
+  (chainId === 1 ? 'http://127.0.0.1:8545' : 'http://127.0.0.1:8546')
 const manifestPath = resolve(
-  'e2e/fork/.state/8453/optimistic-governance-scenario.json'
+  `e2e/fork/.state/${chainId}/optimistic-governance-${scenario}.json`
 )
 const evidenceDir =
-  process.env.E2E_EVIDENCE_DIR ?? resolve('temp/evidence/fork-8453')
-const TOKEN_JAR = '0xEAfA84184BEb90891cb5c4942ebD59C18dda0bfE'
+  process.env.E2E_EVIDENCE_DIR ?? resolve(`temp/evidence/fork-${scenario}`)
+const LOCK_AMOUNT = 1000n * 10n ** 18n
 const DEFAULT_ADMIN_ROLE = `0x${'0'.repeat(64)}` as Hex
 const REBALANCE_MANAGER = keccak256(toHex('REBALANCE_MANAGER'))
 
 interface Manifest {
+  chainId: number
+  symbol: string
   dtf: Address
   spell: Address
-  singletonVault: Address
+  newVault: Address
+  feeRecipient: Address
   oldVault: Address
   oldVaultGovernor: Address
   ownerGovernor: Address
@@ -74,6 +84,8 @@ const actionAbi = parseAbi([
   'event NewGovernanceDeployment((address stakingVault, address newGovernor, address newTimelock, address newSelectorRegistry) newDeployment)',
 ])
 const readAbi = parseAbi([
+  'function symbol() view returns (string)',
+  'function asset() view returns (address)',
   'function getMinDelay() view returns (uint256)',
   'function getRoleMemberCount(bytes32) view returns (uint256)',
   'function getRoleMember(bytes32,uint256) view returns (address)',
@@ -85,17 +97,25 @@ const readAbi = parseAbi([
   'function delegates(address) view returns (address)',
 ])
 
-test.skip(process.env.FORK_CHAIN_ID !== '8453', 'Base lane only')
+test.skip(!['1', '8453'].includes(process.env.FORK_CHAIN_ID ?? ''), 'Ethereum and Base lanes only')
 test.skip(
   !existsSync(manifestPath),
   'run prepare-optimistic-governance.mjs first'
 )
 
-test('LCAP migrates governance, retires its old vault and moves a holder to vlRSR from the Register UI', async ({
+test(`${scenario.toUpperCase()} migrates governance, retires its old vault and moves a holder to its new vault from the Register UI`, async ({
   page,
 }) => {
   test.setTimeout(600_000)
-  const manifest = JSON.parse(readFileSync(manifestPath, 'utf8')) as Manifest
+  const raw = JSON.parse(readFileSync(manifestPath, 'utf8')) as Manifest
+  const manifest = {
+    ...raw,
+    dtf: getAddress(raw.dtf),
+    newVault: getAddress(raw.newVault),
+    feeRecipient: getAddress(raw.feeRecipient),
+  }
+  expect(manifest.chainId).toBe(chainId)
+  const dtfRoute = `/${network}/index-dtf/${manifest.dtf.toLowerCase()}`
   const client = createPublicClient({
     transport: http(rpcUrl, { timeout: 120_000 }),
   })
@@ -135,6 +155,33 @@ test('LCAP migrates governance, retires its old vault and moves a holder to vlRS
       functionName: functionName as never,
       args: args as never,
     }) as Promise<T>
+
+  // Gives the holder underlying to lock without moving tokens out of a real vault.
+  // The balance slot is whichever slot balanceOf reads, so any storage layout works.
+  const dealErc20 = async (token: Address, account: Address, amount: bigint) => {
+    const trace = (await rpc('debug_traceCall', [
+      {
+        to: token,
+        data: encodeFunctionData({
+          abi: readAbi,
+          functionName: 'balanceOf',
+          args: [account],
+        }),
+      },
+      'latest',
+      { tracer: 'prestateTracer' },
+    ])) as Record<string, { storage?: Record<Hex, Hex> }>
+    const touched = Object.entries(trace).find(
+      ([address]) => address.toLowerCase() === token.toLowerCase()
+    )?.[1].storage
+    for (const key of Object.keys(touched ?? {}) as Hex[]) {
+      const previous = (await rpc('eth_getStorageAt', [token, key, 'latest'])) as Hex
+      await rpc('anvil_setStorageAt', [token, key, toHex(amount, { size: 32 })])
+      if ((await read<bigint>(token, 'balanceOf', [account])) === amount) return
+      await rpc('anvil_setStorageAt', [token, key, previous])
+    }
+    throw new Error(`no balance slot found for ${token}`)
+  }
 
   const proposeFromBanner = async (
     governor: Address,
@@ -206,13 +253,13 @@ test('LCAP migrates governance, retires its old vault and moves a holder to vlRS
 
   await installForkWallet(page, {
     address: manifest.proposer,
-    chainId: 8453,
+    chainId,
     rpcUrl,
   })
   await page.clock.install({
     time: (Number(manifest.forkTimestamp) + 30) * 1000,
   })
-  await page.goto(`/base/index-dtf/${manifest.dtf}/governance/propose`)
+  await page.goto(`${dtfRoute}/governance/propose`)
   const wallet = page.getByTestId('header-wallet')
   try {
     await expect(wallet).toBeVisible({ timeout: 15_000 })
@@ -222,10 +269,52 @@ test('LCAP migrates governance, retires its old vault and moves a holder to vlRS
     await expect(wallet).toBeVisible()
   }
 
-  // Before LCAP migrates, banner 2 lists it as still governed by the old vault and stays disabled.
+  const newSymbol = await read<string>(manifest.newVault, 'symbol')
+  const underlying = await read<Address>(manifest.newVault, 'asset')
+  const underlyingSymbol = await read<string>(underlying, 'symbol')
+
+  // Before the upgrade, the DTF page offers to lock straight into the new vault.
+  if ((await read<bigint>(underlying, 'balanceOf', [manifest.proposer])) < LOCK_AMOUNT) {
+    await dealErc20(underlying, manifest.proposer, LOCK_AMOUNT)
+  }
+  const sharesBeforeLock = await read<bigint>(manifest.newVault, 'balanceOf', [
+    manifest.proposer,
+  ])
+  await page.goto(`${dtfRoute}/governance`)
+  const upcoming = page.getByTestId('upcoming-vote-lock')
+  await expect(upcoming).toContainText(
+    `Lock ${underlyingSymbol} in ${newSymbol}`,
+    { timeout: 120_000 }
+  )
+  await page.screenshot({ path: `${evidenceDir}/00-upcoming-card.png` })
+  await page.getByTestId('upcoming-vote-lock-cta').click()
+  await page.getByTestId('vote-lock-input').fill('1000')
+  await expect(page.getByTestId('vote-lock-output')).not.toHaveValue('', {
+    timeout: 120_000,
+  })
+  await page.getByRole('dialog').getByRole('checkbox').click()
+  const lockSubmit = page.getByTestId('vote-lock-submit')
+  await expect(lockSubmit).toContainText('Approve', { timeout: 120_000 })
+  await lockSubmit.click()
+  await expect(lockSubmit).toContainText(`Vote lock ${underlyingSymbol}`, {
+    timeout: 120_000,
+  })
+  await expect(lockSubmit).toBeEnabled({ timeout: 120_000 })
+  await page.screenshot({ path: `${evidenceDir}/00-upcoming-drawer.png` })
+  await lockSubmit.click()
+  await expect
+    .poll(
+      () => read<bigint>(manifest.newVault, 'balanceOf', [manifest.proposer]),
+      { timeout: 120_000 }
+    )
+    .toBeGreaterThan(sharesBeforeLock)
+  await page.keyboard.press('Escape')
+
+  // Before the DTF migrates, banner 2 lists it as still governed by the old vault and stays disabled.
+  await page.goto(`${dtfRoute}/governance/propose`)
   await expect(
     page.getByTestId('governance-retire-vote-lock-pending')
-  ).toContainText('LCAP', { timeout: 120_000 })
+  ).toContainText(manifest.symbol, { timeout: 120_000 })
   await expect(page.getByTestId('governance-retire-vote-lock-btn')).toBeDisabled()
 
   // Banner 1: upgradeFolio on the Folio's owner governor.
@@ -253,11 +342,11 @@ test('LCAP migrates governance, retires its old vault and moves a holder to vlRS
   expect((upgradeArgs[1] as string).toLowerCase()).toBe(
     upgrade.targets[1].toLowerCase()
   )
-  expect(upgradeArgs[2]).toBe(manifest.singletonVault)
+  expect(upgradeArgs[2]).toBe(manifest.newVault)
   expect((upgradeArgs[3] as string).toLowerCase()).toBe(
     manifest.ownerGovernor.toLowerCase()
   )
-  expect(upgradeArgs[8]).toBe(TOKEN_JAR)
+  expect(upgradeArgs[8]).toBe(getAddress(manifest.feeRecipient))
 
   const executed = await passProposal(manifest.ownerGovernor, upgrade)
   const deploymentLog = executed.logs
@@ -284,7 +373,7 @@ test('LCAP migrates governance, retires its old vault and moves a holder to vlRS
       }
     }
   ).newDeployment
-  expect(deployment.stakingVault).toBe(manifest.singletonVault)
+  expect(deployment.stakingVault).toBe(manifest.newVault)
   expect(
     await read<bigint>(manifest.dtf, 'getRoleMemberCount', [DEFAULT_ADMIN_ROLE])
   ).toBe(1n)
@@ -298,7 +387,7 @@ test('LCAP migrates governance, retires its old vault and moves a holder to vlRS
     deployment.newTimelock
   )
   expect(await read<Address>(deployment.newGovernor, 'token')).toBe(
-    manifest.singletonVault
+    manifest.newVault
   )
   const recipients: string[] = []
   for (let i = 0n; ; i++) {
@@ -312,12 +401,15 @@ test('LCAP migrates governance, retires its old vault and moves a holder to vlRS
     if (!recipient) break
     recipients.push(recipient)
   }
-  expect(recipients).toContain(TOKEN_JAR.toLowerCase())
+  // A zero fee recipient makes the spell pay the old vault's share straight to the new vault.
+  const expectedRecipient =
+    manifest.feeRecipient === zeroAddress ? manifest.newVault : manifest.feeRecipient
+  expect(recipients).toContain(expectedRecipient.toLowerCase())
   expect(recipients).not.toContain(manifest.oldVault.toLowerCase())
 
-  // Banner 2: retire the old vault through its DAO governor (no dependent left after LCAP migrated).
+  // Banner 2: retire the old vault through its DAO governor (no dependent left after the DTF migrated).
   await syncBrowserClock(page)
-  await page.goto(`/base/index-dtf/${manifest.dtf}/governance/propose`)
+  await page.goto(`${dtfRoute}/governance/propose`)
   await expect(wallet).toBeVisible({ timeout: 60_000 })
   const retire = await proposeFromBanner(
     manifest.oldVaultGovernor,
@@ -349,7 +441,7 @@ test('LCAP migrates governance, retires its old vault and moves a holder to vlRS
     manifest.proposer,
   ])
   const newSharesBefore = await read<bigint>(
-    manifest.singletonVault,
+    manifest.newVault,
     'balanceOf',
     [manifest.proposer]
   )
@@ -386,13 +478,13 @@ test('LCAP migrates governance, retires its old vault and moves a holder to vlRS
 
   // A visitor without a wallet sees the prompt to check theirs.
   const visitor = await page.context().newPage()
-  await visitor.goto(`/base/index-dtf/${manifest.dtf}/governance`)
+  await visitor.goto(`${dtfRoute}/governance`)
   const prompt = visitor.getByTestId('vote-lock-migration-card')
   await expect(prompt).toContainText('Connect to check', { timeout: 120_000 })
   await capture('governance-disconnected', visitor, prompt)
   await visitor.close()
 
-  await page.goto(`/base/index-dtf/${manifest.dtf}/governance`)
+  await page.goto(`${dtfRoute}/governance`)
   await expect(card).toBeVisible({ timeout: 120_000 })
   await expect(page.getByTestId('vote-lock-open-btn')).toHaveCount(0)
   await capture('governance-card')
@@ -403,11 +495,11 @@ test('LCAP migrates governance, retires its old vault and moves a holder to vlRS
   await capture('portfolio-banner')
   await capture('portfolio-row', page, page.getByTestId('vote-lock-migration-row-action'))
 
-  await page.goto(`/base/index-dtf/${manifest.dtf}/overview`)
+  await page.goto(`${dtfRoute}/overview`)
   await expect(wallet).toBeVisible({ timeout: 60_000 })
   await capture('overview-card')
 
-  await page.goto(`/base/index-dtf/${manifest.dtf}/governance`)
+  await page.goto(`${dtfRoute}/governance`)
   await cta.click()
   await expect(next).toHaveAttribute('data-step', 'redeem', { timeout: 120_000 })
   await expect(next).toBeEnabled({ timeout: 120_000 })
@@ -436,7 +528,7 @@ test('LCAP migrates governance, retires its old vault and moves a holder to vlRS
   // Closing the finished flow keeps an acknowledgment until the holder dismisses it.
   await page.keyboard.press('Escape')
   await expect(modal).toBeHidden()
-  await expect(card).toContainText('locked in vlRSR')
+  await expect(card).toContainText(`locked in ${newSymbol}`)
   await capture('card-complete')
   await page.getByTestId('vote-lock-migration-dismiss').click()
   await expect(card).toHaveCount(0)
@@ -446,7 +538,7 @@ test('LCAP migrates governance, retires its old vault and moves a holder to vlRS
     await read<bigint>(manifest.oldVault, 'balanceOf', [manifest.proposer])
   ).toBe(0n)
   const newShares =
-    (await read<bigint>(manifest.singletonVault, 'balanceOf', [
+    (await read<bigint>(manifest.newVault, 'balanceOf', [
       manifest.proposer,
     ])) - newSharesBefore
   expect(newShares).toBeGreaterThan(0n)
@@ -455,13 +547,13 @@ test('LCAP migrates governance, retires its old vault and moves a holder to vlRS
     oldDelegate.toLowerCase() === zeroAddress ? manifest.proposer : oldDelegate
   expect(
     (
-      await read<Address>(manifest.singletonVault, 'delegates', [
+      await read<Address>(manifest.newVault, 'delegates', [
         manifest.proposer,
       ])
     ).toLowerCase()
   ).toBe(expectedDelegate.toLowerCase())
   expect(
-    await read<bigint>(manifest.singletonVault, 'getVotes', [expectedDelegate])
+    await read<bigint>(manifest.newVault, 'getVotes', [expectedDelegate])
   ).toBeGreaterThanOrEqual(newShares)
 
   writeFileSync(
@@ -479,7 +571,7 @@ test('LCAP migrates governance, retires its old vault and moves a holder to vlRS
         retireProposalTx: retire.transactionHash,
         oldVaultUnstakingDelay: '0',
         migratedOldShares: oldShares.toString(),
-        receivedSingletonShares: newShares.toString(),
+        receivedNewVaultShares: newShares.toString(),
       },
       null,
       2

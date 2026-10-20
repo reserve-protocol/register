@@ -8,9 +8,10 @@ import { defineConfig, devices } from '@playwright/test'
 // scripts warm them.
 //
 //   FORK_CHAIN_ID=56 → BSC fork stack in e2e/fork/docker (CMC20 launcher lane)
-//   FORK_CHAIN_ID=8453 → Base Anvil :8546 + subgraph-proxy :18310 (LCAP governance upgrade lane)
+//   FORK_CHAIN_ID=8453 → Base Anvil :8546 + subgraph-proxy :18310 (LCAP and ABX governance upgrade lane)
 //   FORK_CHAIN_ID=1  → the protocol sandbox (index-subgraph/.fork): Anvil :8545,
-//                      fork subgraph :18000 (native 6.0.0 stack lane)
+//                      fork subgraph :18000 (native 6.0.0 stack lane); the OPEN
+//                      governance upgrade lane overrides both with FORK_*_URL_1
 const HOST = '127.0.0.1'
 const PORT = Number(process.env.FORK_WEB_PORT ?? 3006)
 const baseURL = `http://${HOST}:${PORT}`
