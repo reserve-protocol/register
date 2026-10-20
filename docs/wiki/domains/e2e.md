@@ -1,10 +1,11 @@
 ---
 title: E2E Suite
-updated: 2026-10-08
+updated: 2026-10-20
 type: domain
 sources:
   - e2e/**
   - playwright.config.ts
+  - playwright.fork.config.ts
   - .github/workflows/playwright.yml
 ---
 
