@@ -73,6 +73,7 @@ const abi = parseAbi([
   'function proposalThreshold() view returns (uint256)',
   'function quorum(uint256) view returns (uint256)',
   'function getVotes(address) view returns (uint256)',
+  'function balanceOf(address) view returns (uint256)',
   'function token() view returns (address)',
 ])
 
@@ -131,8 +132,10 @@ const [threshold, quorum] = await Promise.all([
   read(ownerGovernor, 'quorum', [block.timestamp - 1n]),
 ])
 const votes = await Promise.all(delegates.map((d) => read(oldVault, 'getVotes', [d.address])))
-const proposerIndex = votes.findIndex((v) => v >= threshold && v >= quorum)
-if (proposerIndex < 0) throw new Error('no single delegate clears threshold and quorum')
+const balances = await Promise.all(delegates.map((d) => read(oldVault, 'balanceOf', [d.address])))
+// The proposer is also the migrating holder, so it must own old-vault shares, not only delegated votes.
+const proposerIndex = votes.findIndex((v, i) => v >= threshold && v >= quorum && balances[i] > 0n)
+if (proposerIndex < 0) throw new Error('no single delegate with old-vault shares clears threshold and quorum')
 const proposer = delegates[proposerIndex].address
 await client.request({ method: 'anvil_impersonateAccount', params: [proposer] })
 await client.request({ method: 'anvil_setBalance', params: [proposer, toHex(10n ** 18n)] })
