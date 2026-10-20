@@ -11,6 +11,17 @@ PRs #1053/#1054/#1055/#1063, SDK PR #27). Delete items as they land.
 2. After merge: reserve-api PR #227 (strip stale server-side `votingState`) —
    hold until confirmed reserve-ai does not read `votingState`.
 
+## Still to test (Folio 6.0 + governance migration)
+
+Protocol state on 2026-10-08: 6.0.0 is the latest in every chain's FolioVersionRegistry and 1.1.0 in the governance registry; the vlRSR singletons are still 1.0.0 (Taylor's RFC: https://forum.reserve.org/t/rfc-proposal-spam-protection-upgrade-for-vlrsr-governance/1661).
+
+- Real-chain QA with the dev wallet (test DTF 5.0.0 → governance migration → retire → holder migration → 6.0.0 upgrade → v6 rebalance); blocked on the vlRSR 1.1.0 upgrade passing.
+- Vote-lock migration: a holder whose old-vault delegate is someone else (unit-only today); confirming and rejected/failed wallet states on a real wallet; resuming in another browser (no record → no card, by design); Erik's design review of the live UI.
+- 6.0 rebalance: launching auctions for a rebalance proposed from Register (the Base proxy lane has no indexed proposal; launch is proven only on the BSC CMC20 and native-v6 lanes); an optimistic basket proposal (veto path) and a vetoed one restarting as a standard vote within the deadline.
+- 6.0 settings: a DTF with real permanent (immutable) recipients and a nonzero self fee end to end; a settings proposal that changes optimistic permissions for the 6.0 selectors.
+- vlRSR 1.1.0 upgrade banner on master: the live proposal's detail page on each chain once Taylor proposes.
+- 6.0.0 deploy ([plan](index-dtf-v6-deploy.md)): proven on the Base fork (manual governed by vlRSR from the wizard, ungoverned zap through a local zapper, builder → contracts for the new-vault path). Still untested: Create DAO (new vault) driven from the UI, mainnet and BSC deploys, a real-chain deploy with the dev wallet.
+
 ## Next slices (in rough order)
 
 - **Rebalance Lab**: spec in [rebalance-lab.md](rebalance-lab.md) — extract the
@@ -29,11 +40,7 @@ PRs #1053/#1054/#1055/#1063, SDK PR #27). Delete items as they land.
   allowlist editor takes raw addresses (no token picker), the settings form and the `setFeeRecipients` preview show shares of the recipient pool (they don't net out the holder share and permanent recipients like the settings page does), an immutable-table read error leaves the settings form unseeded until React Query's retry succeeds, the SDK client still
   appends default RPCs after an override (read isolation on the fork lane), and
   the SDK pair must be published (prerelease) before the Register pin replaces
-  the `link:` (until then the new CI unit-test step cannot install either). Also open from the 2026-09-30 release review: the zap
-  deploy path accepts a `FolioDeployed` only from the chain's Reserve v5/v6
-  deployers (the zapper picks the deployer server-side; confirm it uses one of
-  those), and a deploy receipt without a matching event still leaves the
-  button confirming with no error. The launcher's openAuction args come from
+  the `link:` (until then the new CI unit-test step cannot install either). The launcher's openAuction args come from
   the render-time params: the pre-send re-read pins nonce and window, but a
   same-nonce change between the last poll and the click is only caught by the
   chain. Settled: SDK is v5/v6 only, v4 stays

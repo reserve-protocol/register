@@ -1,6 +1,6 @@
 ---
 title: E2E Suite
-updated: 2026-10-05
+updated: 2026-10-08
 type: domain
 sources:
   - e2e/**
@@ -162,6 +162,9 @@ captured at a pinned block per RToken (eUSD mainnet, hyUSD base;
 - **Yield geo-compliance** — RToken issuance probes Cloudflare `cdn-cgi/trace`
   (distinct from index compliance); the base fixture serves a deterministic
   trace carrying the `compliance` fixture's country.
+- **Etherscan v2 lookups** — the SDK's proposal decoder asks Etherscan for ABIs and
+  source; `helpers/api.ts` `etherscanResponse` answers `getabi`/`getsourcecode` as
+  an unverified contract and leaves every other action unmodeled (fail loud).
 
 Trust rules (a yield test can't go green while wrong):
 
@@ -203,6 +206,10 @@ scripts replay protocol prerequisites by labelled impersonation (version registr
 real voters; `e2e/fork/helpers/governance.ts` votes, queues and executes by time travel. Register navigates to a
 new proposal's (unindexed) detail page, so specs re-navigate instead of reloading. `fork-wallet.ts` pads gas
 estimates like a real wallet: Anvil fills the exact estimate and nested calls run out of gas (63/64 rule).
+`deploy-v6.fork.spec.ts` drives the Folio 6.0.0 deploy wizard on the same Anvil with a fresh funded wallet per
+run: a manual deploy governed by vlRSR (read back on chain) and, with `ZAPPER_LOCAL_URL` +
+`VITE_ZAPPER_DEPLOY_API=/zapper-local/`, an ungoverned zap deploy through a local zapper-api (the spec mines blocks
+because the zap route waits for 3 confirmations on Base). `CAPTURE=1` writes desktop and phone shots per section.
 
 ### Stack lane
 
