@@ -1,6 +1,7 @@
 import { AddressMap } from 'types'
 import { ChainId } from 'utils/chains'
 import { zeroAddress } from 'viem'
+import { INDEX_DTF_V6_DEPLOYER_ADDRESS } from '@reserve-protocol/react-sdk'
 import { ink } from 'wagmi/chains'
 
 export const FURNACE_ADDRESS = '0x0000000000000000000000000000000000000001'
@@ -60,12 +61,14 @@ export const INDEX_DEPLOYER_ADDRESS: AddressMap = {
   [ChainId.BSC]: '0x72f87239981159ed23673012EE3806Ca6114AB2A',
 }
 
-// v5.0
-export const INDEX_GOVERNANCE_DEPLOYER_ADDRESS: AddressMap = {
-  [ChainId.Mainnet]: '0x72f87239981159ed23673012EE3806Ca6114AB2A',
-  [ChainId.Base]: '0xECA52a5BDBAd98a5B4B6B944C4C9cc636D4D7461',
+export const INDEX_V6_DEPLOYER_ADDRESS: AddressMap = INDEX_DTF_V6_DEPLOYER_ADDRESS
+
+// The zapper's 6.0.0 deploy route sends one tx to this contract, which is also the approval target.
+export const INDEX_ZAPPER_DEPLOYER_ADDRESS: AddressMap = {
+  [ChainId.Mainnet]: '0x680047a74BF67323e7CEa6B9103A2E983DE1a55E',
+  [ChainId.Base]: '0x70795b7B1fb868D24206Ca1A9362dCEdd2B9ce70',
   [ChainId.Arbitrum]: '0x',
-  [ChainId.BSC]: '0xA7BC1265C37A8D285cd2B10c842Efb8415A7bF9f',
+  [ChainId.BSC]: '0xd48a92694b329cFA0847527b628F6257bbf7B6bC',
 }
 
 /**

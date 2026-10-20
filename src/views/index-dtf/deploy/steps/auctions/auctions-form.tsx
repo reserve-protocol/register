@@ -76,16 +76,17 @@ const AuctionsForm = () => {
 
   const toggleForms = [
     {
-      title: t`Auction length`,
-      description: t`How long dutch auctions will run when swapping tokens out of the basket. Shorter auction lengths benefit from less market volatility affecting the price during the auction. Longer auctions benefit from having more time for discovering the best price when swapping two tokens.`,
+      title: t`Max auction length`,
+      description: t`The longest an auction can run. The auction launcher picks each auction's length up to this limit; community-launched auctions always run for the full length. Shorter auctions are less exposed to price moves; longer ones give more time to find the best price.`,
       icon: <Hourglass size={14} strokeWidth={1.5} />,
       options: [15, 30, 45],
       optionsFormatter: (option: number) => humanizeMinutes(option),
-      fieldName: 'auctionLength',
+      fieldName: 'maxAuctionLength',
       customLabel: t`minutes`,
       customPlaceholder: t`Enter custom length`,
       inputProps: {
-        max: 45,
+        min: 2,
+        max: 10_080,
       },
     },
   ]

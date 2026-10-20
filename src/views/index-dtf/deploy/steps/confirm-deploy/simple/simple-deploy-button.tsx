@@ -5,12 +5,11 @@ import { useLingui } from '@lingui/react/macro'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { Address, erc20Abi } from 'viem'
 import { useSendTransaction, useWaitForTransactionReceipt } from 'wagmi'
-import { daoCreatedAtom, deployedDTFAtom } from '../../../atoms'
-import { useEffect } from 'react'
-import {
-  getDeployedFolio,
-  getReserveDeployers,
-} from '../../../utils/deployed-folio'
+import { deployedDTFAtom } from '../../../atoms'
+import { useEffect, useState } from 'react'
+import { readDeployedFolio } from '../../../utils/deployed-folio'
+import { INDEX_ZAPPER_DEPLOYER_ADDRESS } from '@/utils/addresses'
+import { isSameAddress } from '@/components/vote-lock/utils'
 import useWatchTransaction from '@/hooks/useWatchTransaction'
 import { indexDeployFormDataAtom } from '../atoms'
 import { defaultInputTokenAtom, inputTokenAtom, ongoingTxAtom } from './atoms'
@@ -26,11 +25,16 @@ const SimpleDeployButton = ({
   const form = useAtomValue(indexDeployFormDataAtom)
   const inputToken = useAtomValue(inputTokenAtom)
   const defaultInputToken = useAtomValue(defaultInputTokenAtom)
-  const daoCreated = useAtomValue(daoCreatedAtom)
   const setDeployedDTF = useSetAtom(deployedDTFAtom)
   const setOngoingTx = useSetAtom(ongoingTxAtom)
   const usedToken = inputToken || defaultInputToken
   const chainId = useAtomValue(chainIdAtom)
+  const [receiptError, setReceiptError] = useState<string>()
+  // The quote picks the spender and target server-side; only the known ZapperDeployer may receive funds.
+  const zapperDeployer = INDEX_ZAPPER_DEPLOYER_ADDRESS[chainId]
+  const untrustedRoute =
+    !isSameAddress(tx?.to, zapperDeployer) ||
+    (approvalNeeded && !isSameAddress(approvalAddress, zapperDeployer))
   const {
     write: approve,
     isReady: approvalReady,
@@ -45,7 +49,7 @@ const SimpleDeployButton = ({
     address: tokenIn,
     functionName: 'approve',
     args: [approvalAddress, BigInt(amountIn)],
-    query: { enabled: approvalNeeded },
+    query: { enabled: approvalNeeded && !untrustedRoute },
   })
 
   const {
@@ -77,7 +81,7 @@ const SimpleDeployButton = ({
   })
 
   const execute = () => {
-    if (!tx || !readyToSubmit) return
+    if (!tx || !readyToSubmit || untrustedRoute) return
 
     sendTransaction({
       data: tx.data as Address,
@@ -88,17 +92,20 @@ const SimpleDeployButton = ({
   }
 
   useEffect(() => {
-    if (receipt) {
-      const folio = getDeployedFolio(
-        receipt.logs,
-        daoCreated ? 'GovernedFolioDeployed' : 'FolioDeployed',
-        getReserveDeployers(chainId)
-      )
+    if (receipt?.status !== 'success') return
+    const { folio, error } = readDeployedFolio(receipt.logs, chainId)
+    if (folio) setDeployedDTF(folio)
+    else setReceiptError(error)
+  }, [receipt, chainId, setDeployedDTF])
 
-      // TODO: surface an error when no single deployer event is found (look-alike or ambiguous logs are dropped).
-      if (folio) setDeployedDTF(folio)
-    }
-  }, [receipt])
+  useEffect(() => {
+    if (untrustedRoute)
+      console.error('[deploy] zap quote targets an unknown contract', {
+        to: tx?.to,
+        approvalAddress,
+        expected: zapperDeployer,
+      })
+  }, [untrustedRoute, tx?.to, approvalAddress, zapperDeployer])
 
   useEffect(() => {
     if (
@@ -122,8 +129,9 @@ const SimpleDeployButton = ({
 
   return (
     <TransactionButton
+      data-testid="deploy-zap-submit"
       disabled={
-        approvalNeeded
+        untrustedRoute || approvalNeeded
           ? !approvalReady || confirmingApproval || approving
           : !readyToSubmit || loadingTx || validatingTx
       }
@@ -146,6 +154,19 @@ const SimpleDeployButton = ({
       }
       className="w-full"
       error={
+        (untrustedRoute
+          ? Error(
+              t`The quote targets an unknown contract. Refresh the quote or use the manual deploy.`
+            )
+          : undefined) ||
+        (receipt?.status === 'reverted'
+          ? Error(t`Transaction reverted`)
+          : undefined) ||
+        (receiptError
+          ? Error(
+              t`The DTF was deployed but its address couldn't be read from the transaction. Check the transaction on the explorer.`
+            )
+          : undefined) ||
         approvalError ||
         approvalValidationError ||
         approvalTxError ||

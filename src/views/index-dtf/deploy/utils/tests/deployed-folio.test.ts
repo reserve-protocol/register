@@ -1,68 +1,97 @@
 import {
+  INDEX_DTF_DEPLOYER_ADDRESS,
+  INDEX_DTF_V6_DEPLOYER_ADDRESS,
+  folioDeployerV6Abi,
+} from '@reserve-protocol/react-sdk'
+import {
   type Address,
   type Log,
   encodeAbiParameters,
   encodeEventTopics,
 } from 'viem'
 import { describe, expect, it } from 'vitest'
-import dtfIndexDeployerAbi from '@/abis/dtf-index-deployer-abi'
-import { getDeployedFolio, getReserveDeployers } from '../deployed-folio'
+import { readDeployedFolio } from '../deployed-folio'
 
-const DEPLOYER = '0x4D201a6e5BF975E2CEE9e5cbDfc803C0Ff122073' as Address
+const V6 = INDEX_DTF_V6_DEPLOYER_ADDRESS[8453]
+const V5 = INDEX_DTF_DEPLOYER_ADDRESS[8453]
 const ATTACKER_TOKEN = '0x00000000000000000000000000000000000BAD01' as Address
-const REAL_FOLIO = '0x1111111111111111111111111111111111111111' as Address
-const FORGED_FOLIO = '0x2222222222222222222222222222222222222222' as Address
+const FOLIO = '0x1111111111111111111111111111111111111111' as Address
+const FORGED = '0x2222222222222222222222222222222222222222' as Address
 const OWNER = '0x3333333333333333333333333333333333333333' as Address
-const ADMIN = '0x4444444444444444444444444444444444444444' as Address
+const VAULT = '0x5555555555555555555555555555555555555555' as Address
+const GOVERNOR = '0x6666666666666666666666666666666666666666' as Address
+const TIMELOCK = '0x7777777777777777777777777777777777777777' as Address
 
-const folioDeployedLog = (emitter: Address, folio: Address, logIndex: number): Log =>
-  ({
-    address: emitter,
-    topics: encodeEventTopics({
-      abi: dtfIndexDeployerAbi,
+const log = (address: Address, topics: unknown, data: `0x${string}`): Log =>
+  ({ address, topics, data, logIndex: 0, removed: false }) as unknown as Log
+
+const folioDeployed = (
+  emitter: Address,
+  folio: Address,
+  owner: Address = OWNER
+) =>
+  log(
+    emitter,
+    encodeEventTopics({
+      abi: folioDeployerV6Abi,
       eventName: 'FolioDeployed',
-      args: { folioOwner: OWNER, folio },
+      args: { folioOwner: owner, folio },
     }),
-    data: encodeAbiParameters([{ type: 'address' }], [ADMIN]),
-    blockHash: '0x01',
-    blockNumber: 1n,
-    logIndex,
-    transactionHash: '0x02',
-    transactionIndex: 0,
-    removed: false,
-  }) as unknown as Log
+    encodeAbiParameters([{ type: 'address' }], [OWNER])
+  )
 
-describe('getDeployedFolio', () => {
-  it('reads the folio from the deployer that was called', () => {
-    const logs = [folioDeployedLog(DEPLOYER, REAL_FOLIO, 0)]
-    expect(getDeployedFolio(logs, 'FolioDeployed', [DEPLOYER])).toBe(REAL_FOLIO)
+const governedDeployed = (emitter: Address, folio: Address) =>
+  log(
+    emitter,
+    encodeEventTopics({
+      abi: folioDeployerV6Abi,
+      eventName: 'GovernedFolioDeployed',
+      args: { stToken: VAULT, folio },
+    }),
+    encodeAbiParameters(
+      [
+        { type: 'address' },
+        { type: 'address' },
+        { type: 'address' },
+        { type: 'address' },
+      ],
+      [GOVERNOR, TIMELOCK, GOVERNOR, TIMELOCK]
+    )
+  )
+
+describe('readDeployedFolio', () => {
+  it('reads an ungoverned deploy from the 6.0.0 deployer', () => {
+    expect(readDeployedFolio([folioDeployed(V6, FOLIO)], 8453)).toEqual({
+      folio: FOLIO,
+    })
   })
 
-  it('ignores a look-alike event emitted earlier by another contract', () => {
-    // A basket token can emit a forged FolioDeployed inside transferFrom, before the deployer's own log.
+  it('reads a governed deploy, including its inner FolioDeployed, as one Folio', () => {
+    expect(
+      readDeployedFolio(
+        [folioDeployed(V6, FOLIO, V6), governedDeployed(V6, FOLIO)],
+        8453
+      )
+    ).toEqual({
+      folio: FOLIO,
+    })
+  })
+
+  it('ignores look-alike events from other contracts and the 5.0.0 deployer', () => {
     const logs = [
-      folioDeployedLog(ATTACKER_TOKEN, FORGED_FOLIO, 0),
-      folioDeployedLog(DEPLOYER, REAL_FOLIO, 1),
+      folioDeployed(ATTACKER_TOKEN, FORGED),
+      folioDeployed(V5, FORGED),
+      governedDeployed(V6, FOLIO),
     ]
-    expect(getDeployedFolio(logs, 'FolioDeployed', [DEPLOYER])).toBe(REAL_FOLIO)
+    expect(readDeployedFolio(logs, 8453)).toEqual({ folio: FOLIO })
   })
 
-  it('returns nothing when only another contract emitted the event', () => {
-    const logs = [folioDeployedLog(ATTACKER_TOKEN, FORGED_FOLIO, 0)]
-    expect(getDeployedFolio(logs, 'FolioDeployed', [DEPLOYER])).toBeUndefined()
-  })
-
-  it('refuses an ambiguous receipt with two deploy events from the deployer', () => {
-    const logs = [
-      folioDeployedLog(DEPLOYER, REAL_FOLIO, 0),
-      folioDeployedLog(DEPLOYER, FORGED_FOLIO, 1),
-    ]
-    expect(getDeployedFolio(logs, 'FolioDeployed', [DEPLOYER])).toBeUndefined()
-  })
-})
-
-describe('getReserveDeployers', () => {
-  it('accepts no emitter on a chain without a Reserve deployer', () => {
-    expect(getReserveDeployers(42161)).toEqual([])
+  it('reports a receipt without a deployer event instead of silently doing nothing', () => {
+    const result = readDeployedFolio(
+      [folioDeployed(ATTACKER_TOKEN, FORGED)],
+      8453
+    )
+    expect(result.folio).toBeUndefined()
+    expect(result.error).toMatch(/Could not find/)
   })
 })
