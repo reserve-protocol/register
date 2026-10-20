@@ -39,18 +39,31 @@ const dtf = findDtfByAddress(DTF_ADDRESS)!
 type Snapshot = {
   dtf: {
     stToken: { id: Address; governance: { id: Address; timelock: { id: Address } } }
+    ownerGovernance: { id: Address; timelock: { id: Address } }
   }
 }
 
-function seedUpgradeProposal(overrides: MockOverrides, implementations: Address[]) {
+// `folio` seeds the AI DTF / MAG7 shape: the DTF's own governor and timelock, no vault.
+function seedUpgradeProposal(
+  overrides: MockOverrides,
+  implementations: Address[],
+  scope: 'vote-lock' | 'folio' = 'vote-lock'
+) {
   const { dtf: dtfObj } = loadSnapshot<Snapshot>(`${dtf.snapshotDir}/dtf.json`)
-  const { stToken } = dtfObj
+  const { stToken, ownerGovernance } = dtfObj
   const initRegistry = encodeFunctionData({
     abi,
     functionName: 'initializeVersionRegistry',
     args: [REGISTRY],
   })
-  const inits = [encodeFunctionData({ abi, functionName: 'initializeAverageVotes' }), initRegistry, initRegistry]
+  const inits =
+    scope === 'folio'
+      ? [initRegistry, initRegistry]
+      : [encodeFunctionData({ abi, functionName: 'initializeAverageVotes' }), initRegistry, initRegistry]
+  const targets =
+    scope === 'folio'
+      ? [ownerGovernance.id, ownerGovernance.timelock.id]
+      : [stToken.id, stToken.governance.id, stToken.governance.timelock.id]
   const { proposal } = loadEnrichedProposal(PROPOSAL_ID)!
   overrides.subgraph(
     { operationName: 'GetIndexDtfProposal', variables: { proposalId: PROPOSAL_ID } },
@@ -58,8 +71,11 @@ function seedUpgradeProposal(overrides: MockOverrides, implementations: Address[
       dtf: dtfObj,
       proposal: {
         ...proposal,
-        description: 'Upgrade vote-lock governance to 1.1.0 #1',
-        targets: [stToken.id, stToken.governance.id, stToken.governance.timelock.id],
+        description:
+          scope === 'folio'
+            ? 'Upgrade DTF governance to 1.1.0 #1'
+            : 'Upgrade vote-lock governance to 1.1.0 #1',
+        targets,
         calldatas: implementations.map((implementation, i) =>
           encodeFunctionData({ abi, functionName: 'upgradeToAndCall', args: [implementation, inits[i]] })
         ),
@@ -109,4 +125,22 @@ test('vote-lock upgrade proposal flags an implementation the registry does not l
 
   await expect(page.getByTestId('proposal-vote-lock-upgrade')).toBeVisible()
   await expect(page.getByTestId('proposal-vote-lock-upgrade-unregistered')).toHaveCount(1)
+})
+
+test('DTF governance upgrade proposal renders the governor and timelock upgrade', async ({
+  page,
+  overrides,
+}) => {
+  const proposal = seedUpgradeProposal(overrides, [IMPLS[1], IMPLS[2]], 'folio')
+  await freezeTime(page, proposalTime(proposal, 'active'))
+  await openProposal(page)
+
+  const card = page.getByTestId('proposal-vote-lock-upgrade')
+  await expect(card).toContainText('Governance upgrade to 1.1.0')
+  await expect(card.locator('a[href*="0x69c65"]')).toHaveCount(1)
+  await expect(page.getByTestId('proposal-unknown-contract')).toHaveCount(0)
+  await expect(page.getByTestId('proposal-vote-lock-upgrade-unregistered')).toHaveCount(0)
+  if (process.env.E2E_EVIDENCE_DIR) {
+    await card.screenshot({ path: `${process.env.E2E_EVIDENCE_DIR}/folio-governance-upgrade-preview.png` })
+  }
 })
