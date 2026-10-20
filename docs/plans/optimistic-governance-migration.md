@@ -12,6 +12,8 @@ holders move their stake in one guided flow:
    (button disabled until none remain).
 3. **Stake migration**: CTA on overview + governance for holders of a retired old vault; modal stepper
    `redeem` (delay 0 → RSR arrives directly) → `approve(singleton)` → `depositAndDelegate`.
+4. **DTF governance upgrade** (AI DTFs, MAG7): after the vlRSR singleton runs 1.1.0, a banner proposes on
+   the DTF's governor `upgradeToAndCall` of that governor and its timelock, with `initializeVersionRegistry`.
 
 ## Current state
 

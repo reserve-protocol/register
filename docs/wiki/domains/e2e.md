@@ -153,6 +153,12 @@ truncated at the fork block, so indexed history matches the fork state.
   pre-upgrade card, proposes and executes `upgradeFolio`, retires the old vault and
   migrates a holder. Run it with `FORK_CHAIN_ID`, `FORK_RPC_URL_<chainId>` and
   `FORK_SUBGRAPH_URL_<chainId>` pointing at the fork and its subgraph proxy.
+- DTF governance 1.1.0 upgrade (AI DTFs, MAG7): `prepare-folio-governance-upgrade.mjs`
+  upgrades the chain's vlRSR singleton to 1.1.0 and writes
+  `.state/<chainId>/folio-governance-upgrade-<scenario>.json`;
+  `folio-governance-upgrade.fork.spec.ts` proposes from the banner, executes, and
+  checks that the 1.1.0 governor still accepts a proposal. Use `FORK_SCENARIO=power`
+  on a BSC Anvil fork: MAG7 does not load on Anvil.
 - The subgraph proxy is frozen at the fork block, so views that read the DTF from
   the subgraph keep the pre-upgrade state after an on-chain upgrade.
 - The Alchemy archive RPC needs the app origin header
