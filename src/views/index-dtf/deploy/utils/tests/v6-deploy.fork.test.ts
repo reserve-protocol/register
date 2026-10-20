@@ -65,7 +65,6 @@ const vaultAbi = parseAbi([
   'function unstakingDelay() view returns (uint256)',
   'function CLOCK_MODE() view returns (string)',
 ])
-const wethAbi = parseAbi(['function deposit() payable'])
 
 const inputs = (patch: Partial<DeployInputs> = {}): DeployInputs => ({
   ...dtfDeployDefaultValues,

@@ -1,6 +1,5 @@
 import { GRAPH_CLIENTS, INDEX_GRAPH_CLIENTS } from '@/state/atoms'
 import { wagmiConfig } from '@/state/chain'
-import { DeployInputs } from '@/views/index-dtf/deploy/form-fields'
 import { gql } from 'graphql-request'
 import { Address, erc20Abi, isAddress, parseAbi } from 'viem'
 import { readContract } from 'wagmi/actions'
