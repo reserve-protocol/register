@@ -68,7 +68,13 @@ const UpcomingVoteLock = ({ page, className }: { page: string; className?: strin
     >
       <div className="p-4 pb-6">
         <div className="mb-6 flex items-center gap-2">
-          <TokenLogo size="xl" symbol={vault} address={stToken.id} chain={stToken.chainId} />
+          <TokenLogo
+            size="xl"
+            symbol={vault}
+            address={stToken.id}
+            underlyingAddress={stToken.underlying.address}
+            chain={stToken.chainId}
+          />
           <span className="ml-auto inline-flex h-8 items-center rounded-full border border-primary/30 bg-primary/10 px-3 text-sm font-medium text-primary">
             <Trans>Governance upgrade</Trans>
           </span>

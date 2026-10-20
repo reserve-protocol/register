@@ -151,6 +151,7 @@ const getColumns = (migrations?: RowMigrations): ColumnDef<PortfolioVoteLock, an
         <TokenLogoWithChain
           symbol={row.original.symbol}
           address={row.original.stTokenAddress}
+          underlyingAddress={row.original.underlying?.address}
           chain={row.original.chainId}
         />
         <div>

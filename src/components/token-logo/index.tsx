@@ -7,7 +7,10 @@ import { useAtomValue, useSetAtom, useStore } from 'jotai'
 import * as React from 'react'
 import { routeCacheAtom } from './atoms'
 import { TOKEN_LOGO_MAPPINGS } from './token-logo-mappings'
-import { getVoteLockTokenLogo } from './vote-lock-token-logo'
+import {
+  getVoteLockTokenLogo,
+  getVoteLockUnderlyingSymbol,
+} from './vote-lock-token-logo'
 
 type Sizes = 'sm' | 'md' | 'lg' | 'xl'
 
@@ -23,6 +26,7 @@ interface Props extends React.ImgHTMLAttributes<HTMLImageElement> {
   size?: Sizes
   address?: string
   chain?: number
+  underlyingAddress?: string
 }
 
 const TokenLogo = React.forwardRef<HTMLImageElement, Props>((props, ref) => {
@@ -31,10 +35,11 @@ const TokenLogo = React.forwardRef<HTMLImageElement, Props>((props, ref) => {
   const store = useStore()
   const setRouteCache = useSetAtom(routeCacheAtom)
   const {
-    symbol,
+    symbol: tokenSymbol,
     size = 'md',
     height,
-    address,
+    address: tokenAddress,
+    underlyingAddress,
     chain,
     width,
     className,
@@ -44,6 +49,9 @@ const TokenLogo = React.forwardRef<HTMLImageElement, Props>((props, ref) => {
     ...rest
   } = props
 
+  const voteLockUnderlying = getVoteLockUnderlyingSymbol(tokenSymbol)
+  const symbol = voteLockUnderlying || tokenSymbol
+  const address = voteLockUnderlying ? underlyingAddress : tokenAddress
   const h = height || sizeMap[size].height
   const w = width || sizeMap[size].width
   const [currentSrc, setCurrentSrc] = React.useState('')

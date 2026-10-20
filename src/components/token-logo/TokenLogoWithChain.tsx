@@ -14,6 +14,7 @@ const chainLogoSize: Record<Size, number> = {
 const TokenLogoWithChain = ({
   symbol,
   address,
+  underlyingAddress,
   chain,
   src,
   size = 'lg',
@@ -23,6 +24,7 @@ const TokenLogoWithChain = ({
 }: {
   symbol?: string
   address?: string
+  underlyingAddress?: string
   chain: number
   src?: string
   size?: Size
@@ -42,6 +44,7 @@ const TokenLogoWithChain = ({
       <TokenLogo
         symbol={symbol}
         address={address}
+        underlyingAddress={underlyingAddress}
         chain={chain}
         src={src}
         size={size}

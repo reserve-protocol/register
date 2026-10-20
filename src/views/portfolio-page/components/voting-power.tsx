@@ -53,6 +53,7 @@ const columns: ColumnDef<VotingPowerRow, any>[] = [
             <TokenLogoWithChain
               symbol={d.symbol}
               address={d.stTokenAddress}
+              underlyingAddress={d.underlying.address}
               chain={d.chainId}
               size="md"
             />

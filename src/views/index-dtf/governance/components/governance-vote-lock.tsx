@@ -383,6 +383,7 @@ const GovernanceVoteLock = () => {
             size="xl"
             symbol={indexDTF.stToken.token.symbol}
             address={indexDTF.stToken.id}
+            underlyingAddress={indexDTF.stToken.underlying.address}
             chain={indexDTF.stToken.chainId}
           />
           {!!aprLabel && (

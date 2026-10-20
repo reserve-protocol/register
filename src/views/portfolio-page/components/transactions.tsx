@@ -59,6 +59,7 @@ const TokenCell = ({ tx }: { tx: PortfolioTransaction }) => {
       <TokenLogoWithChain
         symbol={logoSymbol}
         address={logoAddress}
+        underlyingAddress={underlying?.address}
         chain={tx.chainId}
         size="md"
       />
