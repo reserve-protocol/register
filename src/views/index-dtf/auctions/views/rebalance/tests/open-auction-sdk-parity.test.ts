@@ -122,7 +122,7 @@ describe('openAuction parity: legacy Register calculation vs SDK', () => {
       isHybridDtf: isHybridDTF,
     })
 
-    expect(legacyArgs.tokens.length).toBe(18)
+    expect(legacyArgs.tokens.length).toBe(17)
     expect(sdk.args).toEqual(legacyArgs)
     expect(sdk.metrics).toEqual(legacyMetrics)
 

@@ -22,9 +22,8 @@ import { useIsProposeAllowed } from '../../../hooks/use-is-propose-allowed'
 import useRecentProposalReceipt from '../../../hooks/use-recent-proposal-receipt'
 import { toast } from 'sonner'
 import {
-  governanceSpellAddress,
+  getGovernanceUpgradeTarget,
   isOptimisticGovernanceUpgradeEligible,
-  newFeeRecipientAddress,
   optimisticStakingVaultAddress,
 } from '@/views/index-dtf/components/vote-lock-migration/governance-migration'
 
@@ -190,7 +189,10 @@ const ProposeBanner = ({ refetch, description }: SpellUpgradeProps) => {
   const { t } = useLingui()
   const dtf = useAtomValue(indexDTFAtom)
   const chainId = useAtomValue(chainIdAtom)
-  const spell = governanceSpellAddress[chainId]
+  const target = dtf ? getGovernanceUpgradeTarget(chainId, dtf.id) : undefined
+  const spell = target?.spell
+  const isSharedVault =
+    target?.stakingVault === optimisticStakingVaultAddress[chainId]
   const handleRecentProposalReceipt = useRecentProposalReceipt()
 
   const { writeContract, data: hash, isPending } = useWriteContract()
@@ -214,9 +216,16 @@ const ProposeBanner = ({ refetch, description }: SpellUpgradeProps) => {
   const proposalAvailable = !!spell
 
   const handlePropose = () => {
-    if (!dtf || !spell || !dtf.ownerGovernance || !dtf.tradingGovernance) return
+    if (
+      !dtf ||
+      !target ||
+      !spell ||
+      !dtf.ownerGovernance ||
+      !dtf.tradingGovernance
+    )
+      return
 
-    const newVaultAddress = optimisticStakingVaultAddress[chainId]
+    const newVaultAddress = target.stakingVault
     const oldFolioGovernor = dtf.ownerGovernance.id
     const tradingGovernor = dtf.tradingGovernance.id
     const optimisticParams = {
@@ -230,7 +239,7 @@ const ProposeBanner = ({ refetch, description }: SpellUpgradeProps) => {
     const guardians = dtf.ownerGovernance.timelock.guardians.filter(
       (guardian) => guardian.toLowerCase() !== oldFolioGovernor.toLowerCase()
     )
-    const newFeeRecipient = newFeeRecipientAddress[chainId]
+    const newFeeRecipient = target.feeRecipient
     // Generate a random 32-byte value for deploymentNonce as bytes32
     const deploymentNonce = `0x${[...crypto.getRandomValues(new Uint8Array(32))]
       .map((b) => b.toString(16).padStart(2, '0'))
@@ -329,12 +338,21 @@ const ProposeBanner = ({ refetch, description }: SpellUpgradeProps) => {
             <Trans>New version available</Trans>
           </h4>
           <p className="text-sm">
-            <Trans>
-              <strong>Reserve Optimistic Governor upgrade</strong> moves this
-              DTF to optimistic governance, voted with the shared vlRSR
-              vote-lock vault. After it executes, voters lock RSR in the new
-              vault to keep governing this DTF.
-            </Trans>
+            {isSharedVault ? (
+              <Trans>
+                <strong>Reserve Optimistic Governor upgrade</strong> moves this
+                DTF to optimistic governance, voted with the shared vlRSR
+                vote-lock vault. After it executes, voters lock RSR in the new
+                vault to keep governing this DTF.
+              </Trans>
+            ) : (
+              <Trans>
+                <strong>Reserve Optimistic Governor upgrade</strong> moves this
+                DTF to optimistic governance, voted with a new vote-lock vault.
+                After it executes, voters lock their tokens in the new vault to
+                keep governing this DTF.
+              </Trans>
+            )}
           </p>
         </div>
       </div>
@@ -385,7 +403,9 @@ export default function ProposeOptimisticGovernanceUpgrade() {
   const dtf = useAtomValue(indexDTFAtom)
   const chainId = useAtomValue(chainIdAtom)
   const setRefetchToken = useSetAtom(refetchTokenAtom)
-  const stakingVault = optimisticStakingVaultAddress[chainId]
+  const stakingVault = dtf
+    ? getGovernanceUpgradeTarget(chainId, dtf.id)?.stakingVault
+    : undefined
   const { data: stakingVaultVersion } = useReadContract({
     address: stakingVault,
     abi: versionAbi,

@@ -1,13 +1,126 @@
 {
   "_meta": {
     "source": "https://api.goldsky.com/api/public/project_cmgzim3e100095np2gjnbh6ry/subgraphs/dtf-index-base/prod/gn",
-    "capturedAt": "2026-08-25T16:34:49.956Z",
+    "capturedAt": "2026-10-14T14:40:44.203Z",
     "dtf": "0x4da9a0f397db1397902070f93a4d6ddbc0e0e6e8",
     "chainId": 8453,
     "query": "getRebalances"
   },
   "data": {
     "rebalances": [
+      {
+        "id": "0x4da9a0f397db1397902070f93a4d6ddbc0e0e6e8-0x6",
+        "nonce": "6",
+        "tokens": [
+          {
+            "address": "0x12e96c2bfea6e835cf8dd38a5834fa61cf723736",
+            "name": "Dogecoin (Universal)",
+            "symbol": "uDOGE",
+            "decimals": 18
+          },
+          {
+            "address": "0x15d0e0c55a3e7ee67152ad7e89acf164253ff68d",
+            "name": "HYPE",
+            "symbol": "HYPE",
+            "decimals": 18
+          },
+          {
+            "address": "0x2615a94df961278dcbc41fb0a54fec5f10a693ae",
+            "name": "XRP (Universal)",
+            "symbol": "uXRP",
+            "decimals": 18
+          },
+          {
+            "address": "0x378c326a472915d38b2d8d41e1345987835fab64",
+            "name": "Stellar (Universal)",
+            "symbol": "uXLM",
+            "decimals": 18
+          },
+          {
+            "address": "0x4200000000000000000000000000000000000006",
+            "name": "Wrapped Ether",
+            "symbol": "WETH",
+            "decimals": 18
+          },
+          {
+            "address": "0x9b8df6e244526ab5f6e6400d331db28c8fdddb55",
+            "name": "Solana (Universal)",
+            "symbol": "uSOL",
+            "decimals": 18
+          },
+          {
+            "address": "0xa3a34a0d9a08ccddb6ed422ac0a28a06731335aa",
+            "name": "Cardano (Universal)",
+            "symbol": "uADA",
+            "decimals": 18
+          },
+          {
+            "address": "0xcbb7c0000ab88b473b1f5afd9ef808440eed33bf",
+            "name": "Coinbase Wrapped BTC",
+            "symbol": "cbBTC",
+            "decimals": 8
+          }
+        ],
+        "priceControl": "1.0",
+        "weightLowLimit": [
+          "0",
+          "0",
+          "0",
+          "0",
+          "0",
+          "0",
+          "0",
+          "0"
+        ],
+        "weightSpotLimit": [
+          "3542125496323",
+          "584463948339277768669126",
+          "640777434888666291883945944",
+          "7236535335229589309147507",
+          "7791146054633542546811652",
+          "1656127339461258700601148840",
+          "454024145970711811156774951",
+          "341069818730768049888981103"
+        ],
+        "weightHighLimit": [
+          "1000000000000000000000000000000000000000000000000000000",
+          "1000000000000000000000000000000000000000000000000000000",
+          "1000000000000000000000000000000000000000000000000000000",
+          "1000000000000000000000000000000000000000000000000000000",
+          "1000000000000000000000000000000000000000000000000000000",
+          "1000000000000000000000000000000000000000000000000000000",
+          "1000000000000000000000000000000000000000000000000000000",
+          "1000000000000000000000000000000000000000000000000000000"
+        ],
+        "rebalanceLowLimit": "1",
+        "rebalanceSpotLimit": "1000000000000000000",
+        "rebalanceHighLimit": "1000000000000000000",
+        "priceLowLimit": [
+          "584058202150768725000000000000000",
+          "1837877908528767450000",
+          "687719488063220600",
+          "72199683858210540000",
+          "20187165559708595000",
+          "21129821899016983",
+          "102487514911560775",
+          "89682825316770075"
+        ],
+        "priceHighLimit": [
+          "1038325692712477733333333333333334",
+          "3267338504051142133334",
+          "2750877952252882401",
+          "128354993525707626668",
+          "322994648955337520001",
+          "338077150384271721",
+          "409950059646243101",
+          "358731301267080301"
+        ],
+        "restrictedUntil": "1788653511",
+        "availableUntil": "1788653511",
+        "transactionHash": "0xde76545471a8b51c210b27ffdf2dad46e8dd0a776f63d6fc7c8979928386624c",
+        "blockNumber": "50752082",
+        "timestamp": "1788293511"
+      },
       {
         "id": "0x4da9a0f397db1397902070f93a4d6ddbc0e0e6e8-0x5",
         "nonce": "5",

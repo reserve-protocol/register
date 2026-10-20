@@ -1,6 +1,9 @@
 import { describe, expect, it } from 'vitest'
+import { RSR_ADDRESS } from '@/utils/addresses'
 import { ChainId } from '@/utils/chains'
+import { zeroAddress } from 'viem'
 import {
+  getGovernanceUpgradeTarget,
   getOldVoteLocks,
   isGovernanceMigrationPending,
   isOptimisticGovernanceUpgradeEligible,
@@ -31,6 +34,46 @@ const legacy = {
   ],
 }
 const TOKEN_JAR = '0xEAfA84184BEb90891cb5c4942ebD59C18dda0bfE'
+const SQUILL = '0x7ebAB7190d3d574ce82D29F2FA1422f18E29969C'
+const VL_SQUILL = '0x8a8188D2bC61c43124CDED32F40faB456F68C15C'
+const OPEN_SPELL = '0x5CE95c60A1aaF3f500301735a92d608E1eE3515E'
+const open = {
+  ...legacy,
+  chainId: ChainId.Mainnet,
+  dtfAddress: OPEN,
+  folioVersion: '4.0.0',
+  oldVoteLock: '0x2aea77c4757d897aae2710b8a60280777f504e8c',
+  oldVoteLockUnderlying: SQUILL,
+  feeRecipients: [
+    '0x2aea77c4757d897aae2710b8a60280777f504e8c',
+    '0xde3b1a502a6f25b92434a00c4169b195b2f1528c',
+  ],
+}
+
+describe('getGovernanceUpgradeTarget', () => {
+  it('routes OPEN through its own spell into vlSQUILL, which also takes the fee share', () => {
+    expect(getGovernanceUpgradeTarget(ChainId.Mainnet, OPEN)).toEqual({
+      spell: OPEN_SPELL,
+      stakingVault: VL_SQUILL,
+      stakingVaultUnderlying: SQUILL,
+      feeRecipient: zeroAddress,
+    })
+  })
+
+  it('uses the shared spell, vlRSR singleton and token jar for everyone else', () => {
+    expect(getGovernanceUpgradeTarget(ChainId.Base, LCAP)).toEqual({
+      spell: '0x5771d976696AA180Fed276FB6571fE2f41D0b849',
+      stakingVault: '0x2F0D6538807a77d4AdDCd4b4DAf214Ea2E818E3D',
+      stakingVaultUnderlying: RSR_ADDRESS[ChainId.Base],
+      feeRecipient: TOKEN_JAR,
+    })
+  })
+
+  it('has no target for ABX or a chain without the spell', () => {
+    expect(getGovernanceUpgradeTarget(ChainId.Base, ABX)).toBeUndefined()
+    expect(getGovernanceUpgradeTarget(42161, LCAP)).toBeUndefined()
+  })
+})
 
 describe('isOptimisticGovernanceUpgradeEligible', () => {
   it('accepts a legacy 5.0.0 Folio once the singleton vault runs 1.1.0', () => {
@@ -76,13 +119,25 @@ describe('isOptimisticGovernanceUpgradeEligible', () => {
     ).toBe(false)
   })
 
-  it.each([
-    ['OPEN', ChainId.Mainnet, OPEN],
-    ['ABX', ChainId.Base, ABX],
-  ])('rejects %s, which stays on its own staking vault', (_, chainId, dtfAddress) => {
+  it('rejects ABX, which stays on its own staking vault', () => {
     expect(
-      isOptimisticGovernanceUpgradeEligible({ ...legacy, chainId, dtfAddress })
+      isOptimisticGovernanceUpgradeEligible({
+        ...legacy,
+        chainId: ChainId.Base,
+        dtfAddress: ABX,
+      })
     ).toBe(false)
+  })
+
+  it('accepts OPEN on its SQUILL vault', () => {
+    expect(isOptimisticGovernanceUpgradeEligible(open)).toBe(true)
+  })
+
+  it.each([
+    ['an RSR vault, which vlSQUILL cannot take', { oldVoteLockUnderlying: legacy.oldVoteLockUnderlying }],
+    ['vlSQUILL already a fee recipient', { feeRecipients: [...open.feeRecipients, VL_SQUILL] }],
+  ])('rejects OPEN with %s', (_, change) => {
+    expect(isOptimisticGovernanceUpgradeEligible({ ...open, ...change })).toBe(false)
   })
 
   it('rejects a DTF whose vote-lock vault is not an RSR vault', () => {
@@ -164,6 +219,7 @@ describe('getOldVoteLocks', () => {
   it('returns nothing for excluded DTFs or chains without the spell', () => {
     const current = dtf({ id: OLD_VAULT, governance: { id: OLD_DAO } })
     expect(getOldVoteLocks({ ...current, id: ABX }, ChainId.Base)).toEqual([])
+    expect(getOldVoteLocks({ ...current, id: OPEN }, ChainId.Mainnet)).toEqual([])
     expect(getOldVoteLocks(current, 42161)).toEqual([])
   })
 })
@@ -179,6 +235,17 @@ describe('isGovernanceMigrationPending', () => {
 
   it('flags a legacy RSR-vault DTF that the migration will move', () => {
     expect(isGovernanceMigrationPending(pending)).toBe(true)
+  })
+
+  it('flags OPEN, which migrates onto vlSQUILL', () => {
+    expect(
+      isGovernanceMigrationPending({
+        ...pending,
+        chainId: ChainId.Mainnet,
+        dtfAddress: OPEN,
+        oldVoteLockUnderlying: SQUILL,
+      })
+    ).toBe(true)
   })
 
   it.each([

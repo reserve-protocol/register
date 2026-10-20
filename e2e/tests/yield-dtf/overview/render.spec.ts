@@ -16,4 +16,6 @@ test('yield overview: renders offline @smoke @mobile', async ({ harness }) => {
   await harness.gotoYield(eusd, 'overview')
   for (let i = 0; i < 5; i++) await harness.chain.advance(4_000)
   await expect(page.getByTestId('yield-overview')).toBeVisible({ timeout: 15_000 })
+  await expect(page.getByText('Revenue distribution', { exact: true })).toBeVisible()
+  await expect(page.getByText('Underlying protocol fees')).toHaveCount(0)
 })

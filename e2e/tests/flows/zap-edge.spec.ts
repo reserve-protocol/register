@@ -104,7 +104,7 @@ async function setupZapPage(
   return panel
 }
 
-// The captured high-impact fixture's own impact (~57.8%) is far past the
+// The captured high-impact fixture's own impact (~54%) is far past the
 // widget's 8% toxic cut-off, which discards the quote before any gate can
 // render. The impact the widget uses is computed from Reserve prices, so the
 // high-impact tests pin ETH at the price that lands the fixture at ~6.5% true
@@ -125,8 +125,8 @@ function pinHighImpactIntoGateWindow(overrides: MockOverrides) {
 
 // ---------------------------------------------------------------------------
 // (1) HIGH PRICE IMPACT — the acknowledgment gate is MASKED by insufficient
-// balance. The pinned high-impact quote is 1000 ETH (impact pinned into the
-// gate window, see pinHighImpactIntoGateWindow), but 1000 ETH > the mocked
+// balance. The pinned high-impact quote is 3000 ETH (impact pinned into the
+// gate window, see pinHighImpactIntoGateWindow), but 3000 ETH > the mocked
 // 100 ETH wallet balance, so the widget renders the disabled insufficient-
 // balance button and never mounts the tx-button subtree that carries the
 // price-impact checkbox. Result: the quote resolves, yet NO warning checkbox
@@ -153,7 +153,7 @@ test('high price impact: insufficient-balance masks the warning; no submit, empt
 
   // Yet the price-impact acknowledgment checkbox never renders: it lives inside
   // the live tx-button subtree, which the client-side insufficient-balance
-  // check (1000 ETH > 100 ETH) suppressed in favor of the disabled fallback.
+  // check (3000 ETH > 100 ETH) suppressed in favor of the disabled fallback.
   await expect(widgetOf(page).locator('button[role="checkbox"]')).toHaveCount(0)
 
   // Not submittable, and nothing was ever sent.
@@ -163,7 +163,7 @@ test('high price impact: insufficient-balance masks the warning; no submit, empt
 })
 
 // ---------------------------------------------------------------------------
-// The AFFORDABLE high-impact path: fund the test wallet past the 1000 ETH
+// The AFFORDABLE high-impact path: fund the test wallet past the 3000 ETH
 // quote via the per-test balance override so the live tx-button subtree mounts,
 // then prove the >=5% acknowledgment gate actually gates — submit stays blocked
 // (txLog empty) until the checkbox is ticked.
@@ -174,7 +174,7 @@ test('high price impact: checkbox gate blocks submit until acknowledged', async 
   unmockedCalls,
   txLog,
 }) => {
-  overrides.ethBalance(TEST_ADDRESS, 2_000n * 10n ** 18n)
+  overrides.ethBalance(TEST_ADDRESS, 5_000n * 10n ** 18n)
   pinHighImpactIntoGateWindow(overrides)
 
   const hi = loadZapSnapshot(DTF_ADDRESS, 'buy-highimpact').data.result!

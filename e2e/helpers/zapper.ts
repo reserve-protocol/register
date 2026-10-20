@@ -54,7 +54,7 @@ export type ZapDirection = 'buy' | 'sell'
 
 // Every pinned quote fixture the mock can serve. Beyond the two happy paths:
 // edge-state characterizations captured live (see _meta.source in each file) —
-// 'buy-highimpact' (1000 ETH, ~58% impact, above the widget's 5% warning gate),
+// 'buy-highimpact' (3000 ETH, ~54% impact, above the widget's 5% warning gate),
 // 'buy-insufficient' (200 ETH, ~1% impact, server says insufficientFunds),
 // 'error' (1-wei quote the API cannot construct; served with its real 500).
 export const ZAP_FIXTURES = [
@@ -339,6 +339,18 @@ export async function mockZapperRoutes(
       })
     )
   }
+
+  // 1inch Fusion RFQ quotes (react-zapper >= 2.13): same deterministic provider error.
+  await page.route('**/api.reserve.org/1inch/fusion/**', (route) =>
+    route.fulfill({
+      status: 200,
+      contentType: 'application/json',
+      body: JSON.stringify({
+        status: 'error',
+        error: '[E2E] 1inch disabled — native zap is the only mocked provider',
+      }),
+    })
+  )
 }
 
 // ---------------------------------------------------------------------------

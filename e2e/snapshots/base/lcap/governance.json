@@ -1,7 +1,7 @@
 {
   "_meta": {
     "source": "https://api.goldsky.com/api/public/project_cmgzim3e100095np2gjnbh6ry/subgraphs/dtf-index-base/prod/gn",
-    "capturedAt": "2026-08-25T16:34:50.291Z",
+    "capturedAt": "2026-10-14T14:40:45.236Z",
     "dtf": "0x4da9a0f397db1397902070f93a4d6ddbc0e0e6e8",
     "chainId": 8453,
     "query": "getGovernanceStats"
@@ -54,8 +54,65 @@
       },
       {
         "id": "0x719eded05c7a6468e44acfbbd19b2df2eed7759e",
-        "proposalCount": "5",
+        "proposalCount": "9",
         "proposals": [
+          {
+            "id": "10228494323275726368804788410492539078613792331989829090941133779651064662585",
+            "description": "Optimize governance framework parameters for operational efficiency",
+            "creationTime": "1788887651",
+            "state": "ACTIVE",
+            "forWeightedVotes": "0",
+            "abstainWeightedVotes": "0",
+            "againstWeightedVotes": "36465919290819645604662491",
+            "executionETA": null,
+            "executionTime": null,
+            "quorumVotes": "11233862150455197408290122",
+            "voteStart": "1789060451",
+            "voteEnd": "1789319651",
+            "executionBlock": null,
+            "creationBlock": "51049152",
+            "proposer": {
+              "address": "0x43b77039b185efd3033933749aa8b01ec1c3b364"
+            }
+          },
+          {
+            "id": "106580137969249940391619721666595675883735857603253401743374318502877548658909",
+            "description": "Align execution delay with Base L2 block finality",
+            "creationTime": "1788850701",
+            "state": "ACTIVE",
+            "forWeightedVotes": "0",
+            "abstainWeightedVotes": "0",
+            "againstWeightedVotes": "36465919290819645604662491",
+            "executionETA": null,
+            "executionTime": null,
+            "quorumVotes": "11233862150455197408290122",
+            "voteStart": "1789023501",
+            "voteEnd": "1789282701",
+            "executionBlock": null,
+            "creationBlock": "51030677",
+            "proposer": {
+              "address": "0x8dfc4805eecf62861e55b166e01cc055dd167ebd"
+            }
+          },
+          {
+            "id": "17245707676046442758073815876040091566631031593607738329597028603961721148643",
+            "description": "Update rebalancing parameters Q4 2026",
+            "creationTime": "1788783989",
+            "state": "ACTIVE",
+            "forWeightedVotes": "0",
+            "abstainWeightedVotes": "0",
+            "againstWeightedVotes": "36465919290819645604662491",
+            "executionETA": null,
+            "executionTime": null,
+            "quorumVotes": "10932306608294466954426913",
+            "voteStart": "1788956789",
+            "voteEnd": "1789215989",
+            "executionBlock": null,
+            "creationBlock": "50997321",
+            "proposer": {
+              "address": "0x43b77039b185efd3033933749aa8b01ec1c3b364"
+            }
+          },
           {
             "id": "21099410171185742051694222199606736624560792765977942149486126906882545379295",
             "description": "# Increasing Governance share of revenue from 5% to 10% \n []() \n Increasing Governance share of revenue from 5% to 10% and Decreasing Creator share by 2.5% and External share by 2.5% ",
@@ -92,6 +149,25 @@
             "creationBlock": "34244776",
             "proposer": {
               "address": "0xb209eed4d80fb47e5c16577e44dad1073c5c5015"
+            }
+          },
+          {
+            "id": "58555876987403264065552427137025521378624653604746912413308278668035984065090",
+            "description": "Optimize reserve parameters for long-term stability v3",
+            "creationTime": "1788897203",
+            "state": "ACTIVE",
+            "forWeightedVotes": "12000000000000000000000",
+            "abstainWeightedVotes": "0",
+            "againstWeightedVotes": "36465919290819645604662491",
+            "executionETA": null,
+            "executionTime": null,
+            "quorumVotes": "8553579388721087398545965",
+            "voteStart": "1789070003",
+            "voteEnd": "1789329203",
+            "executionBlock": null,
+            "creationBlock": "51053928",
+            "proposer": {
+              "address": "0x9ed3cd291e66d80e3a8ec4f7f61c1243ff7cd6d2"
             }
           },
           {
@@ -155,7 +231,7 @@
       },
       {
         "id": "0xf9edb4491fbd5e1185e05ecba2d69251dd869096",
-        "proposalCount": "7",
+        "proposalCount": "10",
         "proposals": [
           {
             "id": "111337429388977163548785296806473337490511918976677753366781905746718791330309",
@@ -172,6 +248,25 @@
             "voteEnd": "1772149855",
             "executionBlock": null,
             "creationBlock": "42633454",
+            "proposer": {
+              "address": "0xb209eed4d80fb47e5c16577e44dad1073c5c5015"
+            }
+          },
+          {
+            "id": "1127023768328844770879405357677759086804432550816318101624067444976006130061",
+            "description": "# October 2026 Universal wind-down \n [https://forum.reserve.org/t/rfc-migrate-lcap-away-from-universal-assets/1663](https://forum.reserve.org/t/rfc-migrate-lcap-away-from-universal-assets/1663) \n October 2026 Universal wind-down",
+            "creationTime": "1791739113",
+            "state": "QUEUED",
+            "forWeightedVotes": "22635305000000000000000000",
+            "abstainWeightedVotes": "0",
+            "againstWeightedVotes": "0",
+            "executionETA": "1792005793",
+            "executionTime": null,
+            "quorumVotes": "8650384897208864492008593",
+            "voteStart": "1791746313",
+            "voteEnd": "1791832713",
+            "executionBlock": null,
+            "creationBlock": "52474883",
             "proposer": {
               "address": "0xb209eed4d80fb47e5c16577e44dad1073c5c5015"
             }
@@ -253,6 +348,44 @@
             }
           },
           {
+            "id": "38032552897949078662142722941943882759019273197822862843201814872320539417010",
+            "description": "# October 2026 Universal wind-down \n [https://forum.reserve.org/t/rfc-migrate-lcap-away-from-universal-assets/1663](https://forum.reserve.org/t/rfc-migrate-lcap-away-from-universal-assets/1663) \n October 2026 Universal wind-down",
+            "creationTime": "1791600979",
+            "state": "PENDING",
+            "forWeightedVotes": "0",
+            "abstainWeightedVotes": "0",
+            "againstWeightedVotes": "0",
+            "executionETA": null,
+            "executionTime": null,
+            "quorumVotes": "8650384897208864492008593",
+            "voteStart": "1791608179",
+            "voteEnd": "1791694579",
+            "executionBlock": null,
+            "creationBlock": "52405816",
+            "proposer": {
+              "address": "0xb209eed4d80fb47e5c16577e44dad1073c5c5015"
+            }
+          },
+          {
+            "id": "70553440855633899032381266306442354448152062630327199841633718680401834902399",
+            "description": "# September 2026 Rebalance \n [September 2026 Rebalance](September 2026 Rebalance) \n September 2026 Rebalance",
+            "creationTime": "1787760127",
+            "state": "EXECUTED",
+            "forWeightedVotes": "23111140907473658269222393",
+            "abstainWeightedVotes": "0",
+            "againstWeightedVotes": "0",
+            "executionETA": "1788026543",
+            "executionTime": "1788293511",
+            "quorumVotes": "8571325341331606928851492",
+            "voteStart": "1787767327",
+            "voteEnd": "1787853727",
+            "executionBlock": "50752082",
+            "creationBlock": "50485390",
+            "proposer": {
+              "address": "0xb209eed4d80fb47e5c16577e44dad1073c5c5015"
+            }
+          },
+          {
             "id": "75914420127307026715482575065237560171750119736187673455028325639939191395841",
             "description": "# March 2026 Rebalance \n []() \n This proposal allows the curator to conduct the quarterly rebalance for the LCAP DTF",
             "creationTime": "1772056617",
@@ -295,9 +428,9 @@
     ],
     "stakingToken": {
       "id": "0x45a96cd0e4d89a41eebf3cc4204b00b1cf1582fa",
-      "totalDelegates": "73",
+      "totalDelegates": "79",
       "token": {
-        "totalSupply": "85713253413316069288514920"
+        "totalSupply": "86493475972088644920085934"
       },
       "delegates": [
         {
@@ -308,37 +441,32 @@
         {
           "address": "0xb209eed4d80fb47e5c16577e44dad1073c5c5015",
           "delegatedVotes": "13623313",
-          "numberVotes": 9
+          "numberVotes": 15
+        },
+        {
+          "address": "0x106d88588d6ddd1ef2fb370e1791ee664978647e",
+          "delegatedVotes": "10000000",
+          "numberVotes": 0
         },
         {
           "address": "0x718841c68eab4038ef389c154f8e91f9923b2fda",
           "delegatedVotes": "9487827.907473658269222393",
-          "numberVotes": 7
+          "numberVotes": 8
         },
         {
           "address": "0x49b4564cb533e092d43c628386258f0b78d86c52",
           "delegatedVotes": "9011992",
-          "numberVotes": 7
-        },
-        {
-          "address": "0xb3e2e1c258a7c218c9b0e26fc848de01b3bce6fb",
-          "delegatedVotes": "6754089.71715212637318666",
-          "numberVotes": 0
+          "numberVotes": 12
         },
         {
           "address": "0x04f6980cbec49220e8bd380e89e962f9e5cf50fc",
           "delegatedVotes": "5011137",
-          "numberVotes": 0
+          "numberVotes": 4
         },
         {
           "address": "0x292372c183f4e3a750107b1b4d7354f2cf1d76d0",
           "delegatedVotes": "2570027.10008602",
           "numberVotes": 1
-        },
-        {
-          "address": "0xd7c69ec62dc0c71c4cd4d2d3503a69a0e8862a41",
-          "delegatedVotes": "2422952.43507192569072406",
-          "numberVotes": 0
         },
         {
           "address": "0x0bde85384fe4e2652f8c5d17e068574e01546212",
@@ -349,6 +477,11 @@
           "address": "0x510c8741f1f752b533011033c142847d3b5a4d53",
           "delegatedVotes": "2053113.629526554138151687",
           "numberVotes": 0
+        },
+        {
+          "address": "0x9458579d65e99c59858fdea120fa59dc618e732c",
+          "delegatedVotes": "1819477.290819645604662491",
+          "numberVotes": 8
         }
       ]
     }

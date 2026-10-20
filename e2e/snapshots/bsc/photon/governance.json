@@ -1,7 +1,7 @@
 {
   "_meta": {
     "source": "https://api.goldsky.com/api/public/project_cmgzim3e100095np2gjnbh6ry/subgraphs/dtf-index-bsc/prod/gn",
-    "capturedAt": "2026-08-25T16:35:49.218Z",
+    "capturedAt": "2026-10-14T14:41:33.021Z",
     "dtf": "0xa0fe4e0aeca5479705ce996615b2eacb6b6a10fb",
     "chainId": 56,
     "query": "getGovernanceStats"
@@ -185,16 +185,11 @@
     ],
     "stakingToken": {
       "id": "0xe744c8157c346b2931807f42552c8cbc0bb6d34f",
-      "totalDelegates": "47",
+      "totalDelegates": "68",
       "token": {
-        "totalSupply": "441417450065035720156805493"
+        "totalSupply": "480670873647115674169100110"
       },
       "delegates": [
-        {
-          "address": "0x49b4564cb533e092d43c628386258f0b78d86c52",
-          "delegatedVotes": "78228029.41490359",
-          "numberVotes": 9
-        },
         {
           "address": "0x6774db46ff94ff6bc70a5f69c438a3630ee52e68",
           "delegatedVotes": "60747378.494504316800534314",
@@ -203,6 +198,11 @@
         {
           "address": "0x67510e1104112484e73c20bb609070989e4e3f9b",
           "delegatedVotes": "53757053.092641823434108346",
+          "numberVotes": 0
+        },
+        {
+          "address": "0xc1ee3dd75c2a0582e0a9264c1429a063c9cb045f",
+          "delegatedVotes": "33177412.611173101199561565",
           "numberVotes": 0
         },
         {
@@ -216,8 +216,18 @@
           "numberVotes": 0
         },
         {
+          "address": "0x49b4564cb533e092d43c628386258f0b78d86c52",
+          "delegatedVotes": "22384029.41490359",
+          "numberVotes": 9
+        },
+        {
           "address": "0x7ed457eced2dbe2a90721dcc2cfda60f77d1388f",
           "delegatedVotes": "21146051.652376238722711011",
+          "numberVotes": 0
+        },
+        {
+          "address": "0x616b7de7560aa30d7ee6d361660309167a4c5139",
+          "delegatedVotes": "20895451.491243925281092452",
           "numberVotes": 0
         },
         {
@@ -228,16 +238,6 @@
         {
           "address": "0x4f3beac0277a9e80fc49d2d60a0849fcdd62ed35",
           "delegatedVotes": "19471271.721040612309498502",
-          "numberVotes": 0
-        },
-        {
-          "address": "0xb996408cbeecd330ba24a74a14314c4d3eda42ef",
-          "delegatedVotes": "17027748.44032731",
-          "numberVotes": 0
-        },
-        {
-          "address": "0x616b7de7560aa30d7ee6d361660309167a4c5139",
-          "delegatedVotes": "17026627.831676614268069127",
           "numberVotes": 0
         }
       ]

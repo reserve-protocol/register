@@ -1,7 +1,7 @@
 {
   "_meta": {
     "source": "https://api.goldsky.com/api/public/project_cmgzim3e100095np2gjnbh6ry/subgraphs/dtf-index-base/prod/gn",
-    "capturedAt": "2026-08-25T16:35:26.022Z",
+    "capturedAt": "2026-10-14T14:41:10.246Z",
     "dtf": "0x47686106181b3cefe4eaf94c4c10b48ac750370b",
     "chainId": 8453,
     "query": "GetIndexDTF"
@@ -108,13 +108,13 @@
         "name": "Virtuals Index",
         "symbol": "VTF",
         "decimals": 18,
-        "totalSupply": "25630323835171416787539",
+        "totalSupply": "25544882111794789538319",
         "currentHolderCount": "8132",
-        "cumulativeHolderCount": "10165",
-        "transferCount": "91341",
+        "cumulativeHolderCount": "10179",
+        "transferCount": "92224",
         "mintCount": "14829",
-        "burnCount": "7329",
-        "totalBurned": "3760330468709926842754910",
+        "burnCount": "7344",
+        "totalBurned": "3760415910433303470004130",
         "totalMinted": "3785960792545098259542449"
       },
       "stToken": {

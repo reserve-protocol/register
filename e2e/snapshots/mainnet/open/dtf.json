@@ -1,7 +1,7 @@
 {
   "_meta": {
     "source": "https://api.goldsky.com/api/public/project_cmgzim3e100095np2gjnbh6ry/subgraphs/dtf-index-mainnet/prod/gn",
-    "capturedAt": "2026-08-25T16:35:15.680Z",
+    "capturedAt": "2026-10-14T14:41:02.267Z",
     "dtf": "0x323c03c48660fe31186fa82c289b0766d331ce21",
     "chainId": 1,
     "query": "GetIndexDTF"
@@ -49,7 +49,7 @@
         "votingDelay": "172800",
         "votingPeriod": "259200",
         "proposalThreshold": "10000000000000000",
-        "quorumVotes": "77498736614114758067426",
+        "quorumVotes": "149664390826416544007960",
         "quorumNumerator": "10",
         "quorumDenominator": "100",
         "isOptimistic": false,
@@ -111,14 +111,14 @@
         "name": "Open Stablecoin Index",
         "symbol": "OPEN",
         "decimals": 18,
-        "totalSupply": "429612027818150580391665",
-        "currentHolderCount": "157",
-        "cumulativeHolderCount": "396",
-        "transferCount": "8969",
-        "mintCount": "2392",
-        "burnCount": "1564",
-        "totalBurned": "4290970733712515279516943",
-        "totalMinted": "4720582761530665859908608"
+        "totalSupply": "369953034378698012182637",
+        "currentHolderCount": "162",
+        "cumulativeHolderCount": "432",
+        "transferCount": "10307",
+        "mintCount": "3006",
+        "burnCount": "1975",
+        "totalBurned": "5028131203540288075133689",
+        "totalMinted": "5398084237918986087316326"
       },
       "stToken": {
         "id": "0x2aea77c4757d897aae2710b8a60280777f504e8c",
@@ -128,18 +128,18 @@
           "name": "Vote Lock vlSQUILL-OPEN",
           "symbol": "vlSQUILL-OPEN",
           "decimals": 18,
-          "totalSupply": "1125019273028853882740726",
-          "currentHolderCount": "221",
-          "cumulativeHolderCount": "230",
-          "transferCount": "4",
-          "mintCount": "388",
-          "burnCount": "53",
-          "totalBurned": "813496823618116586124703",
-          "totalMinted": "1938516096646970468865429"
+          "totalSupply": "1321608473688414662419752",
+          "currentHolderCount": "217",
+          "cumulativeHolderCount": "238",
+          "transferCount": "7",
+          "mintCount": "405",
+          "burnCount": "64",
+          "totalBurned": "1268947637992089783032365",
+          "totalMinted": "2590556111680504445452117"
         },
-        "currentDelegates": "176",
-        "totalDelegates": "233",
-        "delegatedVotesRaw": "1125019273028853882740726",
+        "currentDelegates": "173",
+        "totalDelegates": "241",
+        "delegatedVotesRaw": "1321608473688414662419752",
         "currentOptimisticDelegates": "0",
         "totalOptimisticDelegates": "0",
         "optimisticDelegatedVotesRaw": "0",
@@ -178,7 +178,6 @@
           }
         },
         "legacyGovernance": [
-          "0x0000000000000000000000000000000000000000",
           "0xe926577a152ffd5f5036f88bf7e8e8d3652b558c"
         ],
         "rewards": [

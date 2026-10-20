@@ -53,11 +53,13 @@ const ZapApprovalButton = () => {
   return (
     <Button onClick={approve} disabled={isLoading} className="w-full">
       {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-      {isLoading
-        ? loadingApproval
-          ? t`Approving...`
-          : t`Finding route...`
-        : t`Approve use of ${tokenIn.symbol}`}
+      <span>
+        {isLoading
+          ? loadingApproval
+            ? t`Approving...`
+            : t`Finding route...`
+          : t`Approve use of ${tokenIn.symbol}`}
+      </span>
     </Button>
   )
 }

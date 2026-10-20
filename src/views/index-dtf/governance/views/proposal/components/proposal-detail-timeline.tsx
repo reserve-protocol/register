@@ -82,7 +82,7 @@ const TimelineTitleLink = ({
 }) => {
   const chainId = useAtomValue(chainIdAtom)
 
-  if (!hash) return <>{title}</>
+  if (!hash) return <span>{title}</span>
 
   return (
     <Link
@@ -302,11 +302,15 @@ export const TimelineItemEnd = () => {
   const { t } = useLingui()
   const proposal = useAtomValue(proposalDetailAtom)
   const state = proposal?.votingState.state ?? ''
-  const currentTime = Math.max(useAtomValue(blockTimestampAtom), getCurrentTime())
+  const currentTime = Math.max(
+    useAtomValue(blockTimestampAtom),
+    getCurrentTime()
+  )
 
   const show = VALID_STATES_END.includes(state) && shouldShowEndStep(proposal)
   const enabled =
-    state !== PROPOSAL_STATES.QUEUED || canExecuteProposal(proposal, currentTime)
+    state !== PROPOSAL_STATES.QUEUED ||
+    canExecuteProposal(proposal, currentTime)
   const executionTime = +(proposal?.executionTime || 0)
   const executionETA = +(proposal?.executionETA || 0)
   const cancellationTime = +(proposal?.cancellationTime || 0)

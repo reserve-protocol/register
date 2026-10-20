@@ -55,7 +55,7 @@ const ZapSubmitButton = () => {
           className="w-full"
         >
           {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-          {isLoading ? t`Finding route...` : title}
+          <span>{isLoading ? t`Finding route...` : title}</span>
         </Button>
       </TransactionButtonContainer>
       <DisabledByGeolocationMessage />

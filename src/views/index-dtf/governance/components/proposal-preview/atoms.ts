@@ -10,7 +10,10 @@ import {
 import {
   spellAddress as v5SpellAddress,
 } from '../../views/propose/upgrade-banners/propose-v5-upgrade'
-import { governanceSpellAddress } from '@/views/index-dtf/components/vote-lock-migration/governance-migration'
+import {
+  getGovernanceUpgradeTarget,
+  governanceSpellAddress,
+} from '@/views/index-dtf/components/vote-lock-migration/governance-migration'
 
 export const dtfContractAliasAtom = atom((get) => {
   const dtf = get(indexDTFAtom)
@@ -67,6 +70,12 @@ export const dtfContractAliasAtom = atom((get) => {
 
   if (governanceSpellAddress[dtf.chainId]) {
     aliasMapping[governanceSpellAddress[dtf.chainId].toLowerCase()] =
+      'Reserve Optimistic Governance Spell'
+  }
+
+  const upgradeTarget = getGovernanceUpgradeTarget(dtf.chainId, dtf.id)
+  if (upgradeTarget) {
+    aliasMapping[upgradeTarget.spell.toLowerCase()] =
       'Reserve Optimistic Governance Spell'
   }
 

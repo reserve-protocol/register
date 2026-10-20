@@ -610,13 +610,6 @@ async function captureDtf(dtf: RegistryDTF, only?: OnlyMode) {
     })
   })
 
-  await tryCapture('token-prices', async () => {
-    const tokens = (currentPrice?.basket ?? []).map((t) => t.address).filter(Boolean)
-    if (!tokens.length) throw new Error(`current-price returned no basket tokens for ${dtf.slug}`)
-    const url = `${RESERVE_API}/current/prices?chainId=${chainId}&tokens=${tokens.join(',')}`
-    saveSnapshot(`${dir}/token-prices.json`, url, await fetchApi(url), { dtf: addr, chainId })
-  })
-
   const dtfData = await captureDtfSubgraph(dtf)
   await captureChainState(dtf)
 
@@ -625,9 +618,22 @@ async function captureDtf(dtf: RegistryDTF, only?: OnlyMode) {
     saveSnapshot(`${dir}/transfer-events.json`, subgraphUrlFor(chainId)!, data, { dtf: addr, chainId, query: 'getTransferEvents' })
   })
 
+  let latestRebalanceTokens: string[] = []
   await tryCapture('rebalances', async () => {
     const data = await fetchSubgraph(chainId, QUERIES.getRebalances, { dtf: addr })
     saveSnapshot(`${dir}/rebalances.json`, subgraphUrlFor(chainId)!, data, { dtf: addr, chainId, query: 'getRebalances' })
+    const rebalances = (data as { rebalances?: Array<{ tokens: Array<{ address: string }> }> }).rebalances
+    latestRebalanceTokens = (rebalances?.[0]?.tokens ?? []).map((t) => t.address)
+  })
+
+  // The auctions page prices every token in the latest rebalance, which can include tokens not yet in the basket
+  await tryCapture('token-prices', async () => {
+    const basket = (currentPrice?.basket ?? []).map((t) => t.address).filter((a): a is string => !!a)
+    if (!basket.length) throw new Error(`current-price returned no basket tokens for ${dtf.slug}`)
+    const seen = new Set(basket.map((t) => t.toLowerCase()))
+    const tokens = [...basket, ...latestRebalanceTokens.filter((t) => !seen.has(t.toLowerCase()))]
+    const url = `${RESERVE_API}/current/prices?chainId=${chainId}&tokens=${tokens.join(',')}`
+    saveSnapshot(`${dir}/token-prices.json`, url, await fetchApi(url), { dtf: addr, chainId })
   })
 
   const d = dtfData?.dtf as CapturedDtfGovernanceRefs | undefined

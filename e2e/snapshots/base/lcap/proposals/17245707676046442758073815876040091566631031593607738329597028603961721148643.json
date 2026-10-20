@@ -1,0 +1,91 @@
+{
+  "_meta": {
+    "source": "https://api.goldsky.com/api/public/project_cmgzim3e100095np2gjnbh6ry/subgraphs/dtf-index-base/prod/gn",
+    "capturedAt": "2026-10-14T14:40:46.970Z",
+    "dtf": "0x4da9a0f397db1397902070f93a4d6ddbc0e0e6e8",
+    "chainId": 8453,
+    "query": "getProposalDetail",
+    "proposalId": "17245707676046442758073815876040091566631031593607738329597028603961721148643"
+  },
+  "data": {
+    "proposal": {
+      "id": "17245707676046442758073815876040091566631031593607738329597028603961721148643",
+      "timelockId": null,
+      "description": "Update rebalancing parameters Q4 2026",
+      "creationTime": "1788783989",
+      "voteStart": "1788956789",
+      "voteEnd": "1789215989",
+      "queueBlock": null,
+      "queueTime": null,
+      "state": "ACTIVE",
+      "executionETA": null,
+      "executionTime": null,
+      "creationBlock": "50997321",
+      "cancellationTime": null,
+      "calldatas": [
+        "0x2f2ff15d241ecf16d79d0f8dbfb92cbc07fe17840425976cf0813f4230bb2f2838f3390000000000000000000000000043b77039b185efd3033933749aa8b01ec1c3b364"
+      ],
+      "targets": [
+        "0x4da9a0f397db1397902070f93a4d6ddbc0e0e6e8"
+      ],
+      "proposer": {
+        "address": "0x43b77039b185efd3033933749aa8b01ec1c3b364"
+      },
+      "votes": [
+        {
+          "choice": "AGAINST",
+          "voter": {
+            "address": "0x04f6980cbec49220e8bd380e89e962f9e5cf50fc"
+          },
+          "weight": "5011137000000000000000000"
+        },
+        {
+          "choice": "AGAINST",
+          "voter": {
+            "address": "0x49b4564cb533e092d43c628386258f0b78d86c52"
+          },
+          "weight": "9011992000000000000000000"
+        },
+        {
+          "choice": "AGAINST",
+          "voter": {
+            "address": "0x74c3d4f8fa561e0130529d311cc372526dea5977"
+          },
+          "weight": "7000000000000000000000000"
+        },
+        {
+          "choice": "AGAINST",
+          "voter": {
+            "address": "0x9458579d65e99c59858fdea120fa59dc618e732c"
+          },
+          "weight": "1819477290819645604662491"
+        },
+        {
+          "choice": "AGAINST",
+          "voter": {
+            "address": "0xb209eed4d80fb47e5c16577e44dad1073c5c5015"
+          },
+          "weight": "13623313000000000000000000"
+        }
+      ],
+      "forWeightedVotes": "0",
+      "againstWeightedVotes": "36465919290819645604662491",
+      "abstainWeightedVotes": "0",
+      "quorumVotes": "10932306608294466954426913",
+      "forDelegateVotes": "0",
+      "abstainDelegateVotes": "0",
+      "againstDelegateVotes": "5",
+      "executionTxnHash": null,
+      "governance": {
+        "id": "0x719eded05c7a6468e44acfbbd19b2df2eed7759e",
+        "token": {
+          "id": "0x45a96cd0e4d89a41eebf3cc4204b00b1cf1582fa"
+        },
+        "timelock": {
+          "id": "0x98e702320f055c1073f9cee2b93f46c9715bc32d",
+          "type": "OWNER"
+        }
+      }
+    }
+  }
+}

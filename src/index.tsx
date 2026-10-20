@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client'
 import App from './app'
 import * as Sentry from '@sentry/react'
 import { storeReferralFromUrl } from './utils/referral'
+import { installTranslationDomGuard } from './utils/translation-dom-guard'
 
 // Before render: React effects (legacy redirects, wallet link) must not run
 // before the ?referral= code is captured.
@@ -18,6 +19,8 @@ Sentry.init({
     import.meta.env.PROD && !['localhost', '127.0.0.1'].includes(hostname),
   environment: hostname === 'app.reserve.org' ? 'production' : 'preview',
 })
+
+installTranslationDomGuard()
 
 const root = createRoot(document.getElementById('root')!)
 

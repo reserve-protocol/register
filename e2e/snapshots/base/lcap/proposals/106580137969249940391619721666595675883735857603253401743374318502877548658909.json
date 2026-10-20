@@ -1,0 +1,93 @@
+{
+  "_meta": {
+    "source": "https://api.goldsky.com/api/public/project_cmgzim3e100095np2gjnbh6ry/subgraphs/dtf-index-base/prod/gn",
+    "capturedAt": "2026-10-14T14:40:46.650Z",
+    "dtf": "0x4da9a0f397db1397902070f93a4d6ddbc0e0e6e8",
+    "chainId": 8453,
+    "query": "getProposalDetail",
+    "proposalId": "106580137969249940391619721666595675883735857603253401743374318502877548658909"
+  },
+  "data": {
+    "proposal": {
+      "id": "106580137969249940391619721666595675883735857603253401743374318502877548658909",
+      "timelockId": null,
+      "description": "Align execution delay with Base L2 block finality",
+      "creationTime": "1788850701",
+      "voteStart": "1789023501",
+      "voteEnd": "1789282701",
+      "queueBlock": null,
+      "queueTime": null,
+      "state": "ACTIVE",
+      "executionETA": null,
+      "executionTime": null,
+      "creationBlock": "51030677",
+      "cancellationTime": null,
+      "calldatas": [
+        "0x64d623530000000000000000000000000000000000000000000000000000000000000000",
+        "0x2f2ff15d00000000000000000000000000000000000000000000000000000000000000000000000000000000000000008dfc4805eecf62861e55b166e01cc055dd167ebd"
+      ],
+      "targets": [
+        "0x98e702320f055c1073f9cee2b93f46c9715bc32d",
+        "0x4da9a0f397db1397902070f93a4d6ddbc0e0e6e8"
+      ],
+      "proposer": {
+        "address": "0x8dfc4805eecf62861e55b166e01cc055dd167ebd"
+      },
+      "votes": [
+        {
+          "choice": "AGAINST",
+          "voter": {
+            "address": "0x04f6980cbec49220e8bd380e89e962f9e5cf50fc"
+          },
+          "weight": "5011137000000000000000000"
+        },
+        {
+          "choice": "AGAINST",
+          "voter": {
+            "address": "0x49b4564cb533e092d43c628386258f0b78d86c52"
+          },
+          "weight": "9011992000000000000000000"
+        },
+        {
+          "choice": "AGAINST",
+          "voter": {
+            "address": "0x74c3d4f8fa561e0130529d311cc372526dea5977"
+          },
+          "weight": "7000000000000000000000000"
+        },
+        {
+          "choice": "AGAINST",
+          "voter": {
+            "address": "0x9458579d65e99c59858fdea120fa59dc618e732c"
+          },
+          "weight": "1819477290819645604662491"
+        },
+        {
+          "choice": "AGAINST",
+          "voter": {
+            "address": "0xb209eed4d80fb47e5c16577e44dad1073c5c5015"
+          },
+          "weight": "13623313000000000000000000"
+        }
+      ],
+      "forWeightedVotes": "0",
+      "againstWeightedVotes": "36465919290819645604662491",
+      "abstainWeightedVotes": "0",
+      "quorumVotes": "11233862150455197408290122",
+      "forDelegateVotes": "0",
+      "abstainDelegateVotes": "0",
+      "againstDelegateVotes": "5",
+      "executionTxnHash": null,
+      "governance": {
+        "id": "0x719eded05c7a6468e44acfbbd19b2df2eed7759e",
+        "token": {
+          "id": "0x45a96cd0e4d89a41eebf3cc4204b00b1cf1582fa"
+        },
+        "timelock": {
+          "id": "0x98e702320f055c1073f9cee2b93f46c9715bc32d",
+          "type": "OWNER"
+        }
+      }
+    }
+  }
+}

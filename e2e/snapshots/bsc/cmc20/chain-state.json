@@ -1,7 +1,7 @@
 {
   "_meta": {
     "source": "https://bsc-rpc.publicnode.com",
-    "capturedAt": "2026-08-25T16:35:02.261Z",
+    "capturedAt": "2026-10-14T14:40:53.374Z",
     "dtf": "0x2f8a339b5889ffac4c5a956787cda593b3c36867",
     "chainId": 56
   },
@@ -20,35 +20,33 @@
         "0xf8a0bf9cf54bb92f17374d9e9a321e6a111a51bd",
         "0x43c934a845205f0b514417d757d7235b8f53f1b9",
         "0x8ff795a6f4d97e7887c79bea79aba5cc76444adf",
-        "0xd57f2e190c11cffc667aa5ad026cd4c8de0772a7",
+        "0xbf5140a22578168fd562dccf235e5d43a02ce9b1",
         "0x1ce0c2827e2ef14d5c4f29a091d735a204794041",
         "0x0422f966bf8e978075a97d47ef4c7efd3563fa51",
         "0x4338665cbb7b2485a8855a139b75d5e34ab0db94",
-        "0x1ba42e5193dfa8b03d15dd1b86a3113bbbef8eeb",
-        "0x2859e4544c4bb03966803b044a93563bd2d0dd4d"
+        "0x1ba42e5193dfa8b03d15dd1b86a3113bbbef8eeb"
       ],
       "amounts": [
-        "0x2e72d84b114b80c13",
-        "0x1176982de35bc90e16",
-        "0x13493e6ab83cb832db",
-        "0x234cdef3b8bca15ddf2c",
-        "0x53e22d47ed87d49a55",
-        "0x3b1d592766",
-        "0x29a81ff38a55",
-        "0x145f06f49dc9c7b11b51",
-        "0x24c456ebe35b08479e",
-        "0x6b546fc489e7f1963d",
-        "0x134f1596852956260fb8",
-        "0x2f1be03fc7625852b",
-        "0x25d12d935fcc3d4a16c",
-        "0x3c9691452058852835",
-        "0x18e8ec3f48c4dd959fc7",
-        "0xb1039962dcc26e0e7",
-        "0x26c70b452acdb68ef",
-        "0x51f8f905ed0d10d2202f351"
+        "0x2b788850f0e09a4b0",
+        "0x108397bc9f23ba61e4",
+        "0x1203fe32dd10ed2dfe",
+        "0x214a7d3ba89ef35d6b01",
+        "0x4f952aef1a1003a6cc",
+        "0x375d5eeaeb",
+        "0x23b16cac5a8a",
+        "0x134f8c596401b38bfe63",
+        "0x2214c1ec7b50a5ab09",
+        "0x64f7c41107e5889b11",
+        "0x12c3b3ef536a23c366c2",
+        "0x2b16547da6d6d9f49",
+        "0x5576380093abb62a3f",
+        "0x3c45a5df3efb824783",
+        "0x175a5b5d0bb098ef89f7",
+        "0xa4d2b162ba0f8fd7c",
+        "0x24b36fa99fefb0351"
       ]
     },
-    "totalSupply": "0x7db246f8d61b2ff9a06",
+    "totalSupply": "0x75c0da7a243cc7a1103",
     "decimals": 18,
     "version": "5.0.0",
     "basketTokens": [
@@ -125,9 +123,9 @@
         "decimals": 18
       },
       {
-        "address": "0xd57f2e190c11cffc667aa5ad026cd4c8de0772a7",
-        "name": "Binance-Peg Sui",
-        "symbol": "SUI",
+        "address": "0xbf5140a22578168fd562dccf235e5d43a02ce9b1",
+        "name": "Uniswap",
+        "symbol": "UNI",
         "decimals": 18
       },
       {
@@ -152,12 +150,6 @@
         "address": "0x1ba42e5193dfa8b03d15dd1b86a3113bbbef8eeb",
         "name": "Zcash Token",
         "symbol": "ZEC",
-        "decimals": 18
-      },
-      {
-        "address": "0x2859e4544c4bb03966803b044a93563bd2d0dd4d",
-        "name": "SHIBA INU",
-        "symbol": "SHIB",
         "decimals": 18
       }
     ]

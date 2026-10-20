@@ -151,13 +151,18 @@ export const backupBasketCollateralAtom = atom((get) => {
   return getCollateralFromBasket(get(backupCollateralAtom))
 })
 
+// Yield DTFs have no plugins on some chains (e.g. BSC), but the wallet can still select them
+export const collateralPluginsAtom = atom(
+  (get): CollateralPlugin[] => collateralPlugins[get(chainIdAtom)] ?? []
+)
+
 export const rtokenAllActiveCollateralsAtom = atom((get) => {
   const primaryBasketCollaterals = get(primaryBasketCollateralAtom)
   const backupBasketCollaterals = get(backupBasketCollateralAtom)
   const rToken = get(selectedRTokenAtom)
   const allAssets = get(rTokenAssetsAtom)
 
-  const plugins = collateralPlugins[get(chainIdAtom)]
+  const plugins = get(collateralPluginsAtom)
 
   const basketCollaterals = [
     ...primaryBasketCollaterals,
@@ -270,6 +275,13 @@ export const updateBasketUnitAtom = atom(
   }
 )
 
+// Free-text inputs can be blank or non-numeric (e.g. "1,5"), which BigInt() throws on
+const toBasisPoints = (value: string) => {
+  if (value.trim() === '') return null
+  const scaled = Math.round(Number(value) * 100)
+  return Number.isFinite(scaled) ? BigInt(scaled) : null
+}
+
 // The sum of all allocations should be 100%
 // Multiply by 10 to avoid floating point precision issues (only 1 decimal allowed)
 export const isRevenueValidAtom = atom((get) => {
@@ -277,19 +289,26 @@ export const isRevenueValidAtom = atom((get) => {
   let total = 0n
 
   for (const external of revenue.external) {
-    const holders = BigInt(Math.round(+external.holders * 100))
-    const stakers = BigInt(Math.round(+external.stakers * 100))
+    const holders = toBasisPoints(external.holders)
+    const stakers = toBasisPoints(external.stakers)
+    const externalTotal = toBasisPoints(external.total)
+
+    if (holders === null || stakers === null || externalTotal === null) {
+      return false
+    }
 
     // Validate internal address allocation (allow small rounding differences)
     if (holders + stakers < 9999n || holders + stakers > 10001n) {
       return false
     }
 
-    total += BigInt(Math.round(+external.total * 100))
+    total += externalTotal
   }
 
-  const stakers = BigInt(Math.round(+revenue.stakers * 100))
-  const holders = BigInt(Math.round(+revenue.holders * 100))
+  const stakers = toBasisPoints(revenue.stakers)
+  const holders = toBasisPoints(revenue.holders)
+
+  if (stakers === null || holders === null) return false
 
   const sum = stakers + holders + total
 

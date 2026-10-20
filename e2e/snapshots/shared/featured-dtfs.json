@@ -1,14 +1,15 @@
 {
   "_meta": {
     "source": "https://api-staging.reserve.org/v1/discover/featured",
-    "capturedAt": "2026-08-25T16:34:37.803Z"
+    "capturedAt": "2026-10-14T14:40:39.237Z"
   },
   "data": {
     "order": [
+      "photon",
       "buildout",
       "power",
-      "photon",
       "neocloud",
+      "mag7",
       "robots"
     ],
     "items": {
@@ -17,162 +18,163 @@
           "address": "0xD7cE7a841310982AcD976D1a6fe7BB6063c5689D",
           "name": "Reserve AI Infrastructure DTF",
           "symbol": "BUILDOUT",
-          "price": 87.79999654347363,
-          "marketCap": 1604250.1844074258,
+          "price": 91.0380842327191,
+          "marketCap": 1484607.5709024554,
           "chainId": 56,
           "type": "index",
           "status": "active",
           "createdAt": 1781724378,
+          "fee": 0.6,
           "basket": [
             {
               "address": "0x0fAcaFB97ffDbA3cAe88512070AF49bd30674cD9",
               "symbol": "LITEon",
               "name": "Lumentum Holdings (Ondo Tokenized)",
-              "weight": "0.68"
+              "weight": "0.73"
             },
             {
               "address": "0xA9eE28C80f960B889dFbd1902055218cBa016F75",
               "symbol": "NVDAon",
               "name": "NVIDIA (Ondo Tokenized)",
-              "weight": "11.44"
+              "weight": "11.61"
             },
             {
               "address": "0xC37042A7a4fa510D8884a433762aB87257B91965",
               "symbol": "TSMon",
               "name": "Taiwan Semiconductor Manufacturing (Ondo Tokenized)",
-              "weight": "10.91"
+              "weight": "11.02"
             },
             {
               "address": "0x0ED2E3180EDf393e6bf8Db124bD15DDD54dE150A",
               "symbol": "AVGOon",
               "name": "Broadcom (Ondo Tokenized)",
-              "weight": "10.49"
+              "weight": "9.88"
             },
             {
               "address": "0x8b6ACf6041A81567f012Ff6A4C6D96d5818d74bF",
               "symbol": "MUon",
               "name": "Micron Technology (Ondo Tokenized)",
-              "weight": "9.78"
+              "weight": "9.53"
             },
             {
               "address": "0x9f16E46c73b43BDB70861247d537bEE4eA18F639",
               "symbol": "AMDon",
               "name": "AMD (Ondo Tokenized)",
-              "weight": "8.10"
+              "weight": "9.55"
             },
             {
               "address": "0xb034f6Cb52b7f2Fd5a7EeeffCa6b9aDCD6b9A6F6",
               "symbol": "ASMLon",
               "name": "ASML Holding NV (Ondo Tokenized)",
-              "weight": "7.16"
+              "weight": "6.77"
             },
             {
               "address": "0xA528CaaA2f96090e379d43F90834C75dF54D6E74",
               "symbol": "INTCon",
               "name": "Intel (Ondo Tokenized)",
-              "weight": "4.58"
+              "weight": "4.98"
             },
             {
               "address": "0x35895a1fa1AFf7FB3204fB01257409Fd75acB24C",
               "symbol": "LRCXon",
               "name": "Lam Research (Ondo Tokenized)",
-              "weight": "4.15"
+              "weight": "3.76"
             },
             {
               "address": "0x5ecC352C4640f1d26BD231dbBd171f40f7d0Eec6",
               "symbol": "AMATon",
               "name": "Applied Materials (Ondo Tokenized)",
-              "weight": "4.15"
+              "weight": "3.82"
             },
             {
               "address": "0x527C6436E1eAa4f2065CDE4090F798Cb5D031dD6",
               "symbol": "ARMon",
               "name": "Arm Holdings plc (Ondo Tokenized)",
-              "weight": "2.80"
+              "weight": "2.70"
             },
             {
               "address": "0xFc263946439b0d802bF4C5a6fCd34E2885259f91",
               "symbol": "KLACon",
               "name": "KLA (Ondo Tokenized)",
-              "weight": "2.49"
+              "weight": "2.42"
             },
             {
               "address": "0x4Fd67CB8CFEdc718BAc984b5936abE3330d0a2A4",
               "symbol": "SNDKon",
               "name": "SanDisk (Ondo Tokenized)",
-              "weight": "2.35"
+              "weight": "2.17"
             },
             {
               "address": "0xf26518958935654878De15BE7bC79A26971583Ba",
               "symbol": "DELLon",
               "name": "Dell Technologies (Ondo Tokenized)",
-              "weight": "3.21"
+              "weight": "3.62"
             },
             {
               "address": "0x1501EC83FFEf405B4331CC4f73277a40fb0C627d",
               "symbol": "MRVLon",
               "name": "Marvell Technology (Ondo Tokenized)",
-              "weight": "2.20"
+              "weight": "2.24"
             },
             {
               "address": "0x2Aea1D415D45CCF3EaBE565d45DcaF4ea2035b9c",
               "symbol": "GEVon",
               "name": "GE Vernova (Ondo Tokenized)",
-              "weight": "2.84"
+              "weight": "2.74"
             },
             {
               "address": "0xE8ff70859Ce4cbd72E4352b4fb45F5BF39d07464",
               "symbol": "IBMon",
               "name": "IBM (Ondo Tokenized)",
-              "weight": "2.45"
+              "weight": "2.35"
             },
             {
               "address": "0x538e2838f9ebC9B891399DF4a8dcc42890D9dc20",
               "symbol": "ANETon",
               "name": "Arista Networks (Ondo Tokenized)",
-              "weight": "2.61"
+              "weight": "2.68"
             },
             {
               "address": "0x25a4DbAE9a0Cd8C75656D6b50FFDf4900CC20d8f",
               "symbol": "GLWon",
               "name": "Corning (Ondo Tokenized)",
-              "weight": "1.33"
+              "weight": "1.28"
             },
             {
               "address": "0x4697b2A050f7B5A8e1ebc27c325f9D78D094f041",
               "symbol": "ETNon",
               "name": "Eaton (Ondo Tokenized)",
-              "weight": "1.78"
+              "weight": "1.72"
             },
             {
               "address": "0x9Cea8A7Be1Ab0320b709d368Ad60d8500f55995f",
               "symbol": "VRTon",
               "name": "Vertiv (Ondo Tokenized)",
-              "weight": "1.07"
+              "weight": "0.91"
             },
             {
               "address": "0x2418c2e1aE3B8D767594b3974D32610743f88155",
               "symbol": "PWRon",
               "name": "Quanta Services (Ondo Tokenized)",
-              "weight": "1.02"
+              "weight": "1.08"
             },
             {
               "address": "0x65D84F0990B7394209d591380C2952c83D778aA3",
               "symbol": "CEGon",
               "name": "Constellation Energy (Ondo Tokenized)",
-              "weight": "1.12"
+              "weight": "1.10"
             },
             {
               "address": "0x0585756aAFB241b0f8A9Df62Db26c566091Bde0b",
               "symbol": "COHRon",
               "name": "Coherent (Ondo Tokenized)",
-              "weight": "0.58"
+              "weight": "0.54"
             },
             {
               "address": "0x17D03aE104a9D12E9E5794Efb109B817Dd7f3404",
               "symbol": "BEon",
               "name": "Bloom Energy (Ondo Tokenized)",
-              "weight": "0.71"
+              "weight": "0.80"
             }
           ],
           "brand": {
@@ -1124,19 +1126,219 @@
               "value": 86.14467355210202
             },
             {
-              "timestamp": 1787673462,
-              "value": 87.70087317889343
+              "timestamp": 1787702189,
+              "value": 87.70384277017456
+            },
+            {
+              "timestamp": 1787788586,
+              "value": 90.36731308473894
+            },
+            {
+              "timestamp": 1787875012,
+              "value": 89.2743886907835
+            },
+            {
+              "timestamp": 1787961392,
+              "value": 87.46882520148131
+            },
+            {
+              "timestamp": 1788047787,
+              "value": 87.86151549737455
+            },
+            {
+              "timestamp": 1788134203,
+              "value": 87.12075983280715
+            },
+            {
+              "timestamp": 1788220602,
+              "value": 87.81682442217989
+            },
+            {
+              "timestamp": 1788306982,
+              "value": 86.4394069411242
+            },
+            {
+              "timestamp": 1788393384,
+              "value": 87.20851742469173
+            },
+            {
+              "timestamp": 1788479788,
+              "value": 87.72618431176119
+            },
+            {
+              "timestamp": 1788566164,
+              "value": 90.67721586156429
+            },
+            {
+              "timestamp": 1788652567,
+              "value": 90.89663226250782
+            },
+            {
+              "timestamp": 1788738963,
+              "value": 91.16813364888561
+            },
+            {
+              "timestamp": 1788825376,
+              "value": 91.65544035739622
+            },
+            {
+              "timestamp": 1788911773,
+              "value": 92.71924956411873
+            },
+            {
+              "timestamp": 1788998173,
+              "value": 92.71664559524898
+            },
+            {
+              "timestamp": 1789084571,
+              "value": 89.59411887698319
+            },
+            {
+              "timestamp": 1789170967,
+              "value": 91.40921371299696
+            },
+            {
+              "timestamp": 1789257370,
+              "value": 91.28776392356335
+            },
+            {
+              "timestamp": 1789343779,
+              "value": 89.60051972465904
+            },
+            {
+              "timestamp": 1789430195,
+              "value": 86.94140740838371
+            },
+            {
+              "timestamp": 1789516579,
+              "value": 86.56229168108082
+            },
+            {
+              "timestamp": 1789602983,
+              "value": 88.36719464216195
+            },
+            {
+              "timestamp": 1789689376,
+              "value": 90.40518394699494
+            },
+            {
+              "timestamp": 1789775786,
+              "value": 92.39283891454765
+            },
+            {
+              "timestamp": 1789862179,
+              "value": 92.31747606336907
+            },
+            {
+              "timestamp": 1789948587,
+              "value": 92.82686482520495
+            },
+            {
+              "timestamp": 1790034988,
+              "value": 96.58485176651595
+            },
+            {
+              "timestamp": 1790121401,
+              "value": 97.74872095029697
+            },
+            {
+              "timestamp": 1790207803,
+              "value": 96.40749631878862
+            },
+            {
+              "timestamp": 1790294206,
+              "value": 96.14296072929132
+            },
+            {
+              "timestamp": 1790380599,
+              "value": 96.94702819561842
+            },
+            {
+              "timestamp": 1790467006,
+              "value": 96.96154593647307
+            },
+            {
+              "timestamp": 1790553403,
+              "value": 97.06437498929398
+            },
+            {
+              "timestamp": 1790639815,
+              "value": 95.4019690693256
+            },
+            {
+              "timestamp": 1790726199,
+              "value": 96.97924747987781
+            },
+            {
+              "timestamp": 1790812618,
+              "value": 96.9283617179162
+            },
+            {
+              "timestamp": 1790899037,
+              "value": 97.93691381573682
+            },
+            {
+              "timestamp": 1790985396,
+              "value": 99.3742794214832
+            },
+            {
+              "timestamp": 1791071790,
+              "value": 99.40879441014705
+            },
+            {
+              "timestamp": 1791158186,
+              "value": 99.74563383731834
+            },
+            {
+              "timestamp": 1791244563,
+              "value": 99.86297042733486
+            },
+            {
+              "timestamp": 1791330977,
+              "value": 100.35450838709937
+            },
+            {
+              "timestamp": 1791417371,
+              "value": 99.93969363124928
+            },
+            {
+              "timestamp": 1791503782,
+              "value": 96.42766368172241
+            },
+            {
+              "timestamp": 1791590194,
+              "value": 96.14894404525147
+            },
+            {
+              "timestamp": 1791676602,
+              "value": 96.43860235692595
+            },
+            {
+              "timestamp": 1791762997,
+              "value": 96.71867081748782
+            },
+            {
+              "timestamp": 1791849384,
+              "value": 93.13348144758311
+            },
+            {
+              "timestamp": 1791935804,
+              "value": 93.42013247098491
+            },
+            {
+              "timestamp": 1791986256,
+              "value": 91.15000518412985
             }
           ],
           "priceChange": {
             "period": "ytd",
             "displayPeriod": "YTD",
-            "ratio": 0.5801983886867131,
-            "percent": 58.019838868671314,
+            "ratio": 0.6423450086630587,
+            "percent": 64.23450086630586,
             "startPrice": 55.49991305318362,
-            "endPrice": 87.70087317889343,
+            "endPrice": 91.15000518412985,
             "startTimestamp": 1767225600,
-            "endTimestamp": 1787673462
+            "endTimestamp": 1791986256
           },
           "exposure": [
             {
@@ -1151,7 +1353,7 @@
                 {
                   "address": "0xA9eE28C80f960B889dFbd1902055218cBa016F75",
                   "symbol": "NVDAon",
-                  "weight": 11.44,
+                  "weight": 11.61,
                   "bridge": {
                     "id": "ondo",
                     "name": "Ondo Tokenized Stocks",
@@ -1172,28 +1374,7 @@
                 {
                   "address": "0x0ED2E3180EDf393e6bf8Db124bD15DDD54dE150A",
                   "symbol": "AVGOon",
-                  "weight": 10.49,
-                  "bridge": {
-                    "id": "ondo",
-                    "name": "Ondo Tokenized Stocks",
-                    "url": "https://docs.ondo.finance/",
-                    "description": "An Ondo Tokenized Stock is a blockchain token that gives you the same economic exposure as owning the underlying stock or ETF. Please read the documentation for more details.",
-                    "logo": "https://storage-logos.reserve.org/logos/Ondo-Icon-Black.png",
-                    "logoDark": "https://storage-logos.reserve.org/logos/Ondo-Icon-White.png",
-                    "risks": [
-                      "Custodial risks - Tokens are claims on structures holding the underlying equities via third-party custodians, whose failure or insolvency could delay settlement or cause loss of value.",
-                      "Regulatory & compliance risks - Tokenized equities face evolving rules and may require whitelisting or eligibility, which can force restricted access, halted redemptions, or unwinding.",
-                      "Liquidity risks - On-chain trading is 24/7, but mint/redeem may be limited or windowed, and in stressed markets token prices can deviate from the underlying equities.",
-                      "Market access & redemption risks - Mint/redeem may be capacity-limited, whitelisted, or tied to market hours, which can block arbitrage and impair exits near NAV.",
-                      "Valuation & NAV risks - NAV relies on pricing from on-chain markets or oracles that can be stale or manipulated, distorting marks and mint/redeem pricing."
-                    ],
-                    "wrappedVersion": false
-                  }
-                },
-                {
-                  "address": "0x8b6ACf6041A81567f012Ff6A4C6D96d5818d74bF",
-                  "symbol": "MUon",
-                  "weight": 9.78,
+                  "weight": 9.88,
                   "bridge": {
                     "id": "ondo",
                     "name": "Ondo Tokenized Stocks",
@@ -1214,7 +1395,28 @@
                 {
                   "address": "0x9f16E46c73b43BDB70861247d537bEE4eA18F639",
                   "symbol": "AMDon",
-                  "weight": 8.1,
+                  "weight": 9.55,
+                  "bridge": {
+                    "id": "ondo",
+                    "name": "Ondo Tokenized Stocks",
+                    "url": "https://docs.ondo.finance/",
+                    "description": "An Ondo Tokenized Stock is a blockchain token that gives you the same economic exposure as owning the underlying stock or ETF. Please read the documentation for more details.",
+                    "logo": "https://storage-logos.reserve.org/logos/Ondo-Icon-Black.png",
+                    "logoDark": "https://storage-logos.reserve.org/logos/Ondo-Icon-White.png",
+                    "risks": [
+                      "Custodial risks - Tokens are claims on structures holding the underlying equities via third-party custodians, whose failure or insolvency could delay settlement or cause loss of value.",
+                      "Regulatory & compliance risks - Tokenized equities face evolving rules and may require whitelisting or eligibility, which can force restricted access, halted redemptions, or unwinding.",
+                      "Liquidity risks - On-chain trading is 24/7, but mint/redeem may be limited or windowed, and in stressed markets token prices can deviate from the underlying equities.",
+                      "Market access & redemption risks - Mint/redeem may be capacity-limited, whitelisted, or tied to market hours, which can block arbitrage and impair exits near NAV.",
+                      "Valuation & NAV risks - NAV relies on pricing from on-chain markets or oracles that can be stale or manipulated, distorting marks and mint/redeem pricing."
+                    ],
+                    "wrappedVersion": false
+                  }
+                },
+                {
+                  "address": "0x8b6ACf6041A81567f012Ff6A4C6D96d5818d74bF",
+                  "symbol": "MUon",
+                  "weight": 9.53,
                   "bridge": {
                     "id": "ondo",
                     "name": "Ondo Tokenized Stocks",
@@ -1235,7 +1437,7 @@
                 {
                   "address": "0xb034f6Cb52b7f2Fd5a7EeeffCa6b9aDCD6b9A6F6",
                   "symbol": "ASMLon",
-                  "weight": 7.16,
+                  "weight": 6.77,
                   "bridge": {
                     "id": "ondo",
                     "name": "Ondo Tokenized Stocks",
@@ -1256,28 +1458,7 @@
                 {
                   "address": "0xA528CaaA2f96090e379d43F90834C75dF54D6E74",
                   "symbol": "INTCon",
-                  "weight": 4.58,
-                  "bridge": {
-                    "id": "ondo",
-                    "name": "Ondo Tokenized Stocks",
-                    "url": "https://docs.ondo.finance/",
-                    "description": "An Ondo Tokenized Stock is a blockchain token that gives you the same economic exposure as owning the underlying stock or ETF. Please read the documentation for more details.",
-                    "logo": "https://storage-logos.reserve.org/logos/Ondo-Icon-Black.png",
-                    "logoDark": "https://storage-logos.reserve.org/logos/Ondo-Icon-White.png",
-                    "risks": [
-                      "Custodial risks - Tokens are claims on structures holding the underlying equities via third-party custodians, whose failure or insolvency could delay settlement or cause loss of value.",
-                      "Regulatory & compliance risks - Tokenized equities face evolving rules and may require whitelisting or eligibility, which can force restricted access, halted redemptions, or unwinding.",
-                      "Liquidity risks - On-chain trading is 24/7, but mint/redeem may be limited or windowed, and in stressed markets token prices can deviate from the underlying equities.",
-                      "Market access & redemption risks - Mint/redeem may be capacity-limited, whitelisted, or tied to market hours, which can block arbitrage and impair exits near NAV.",
-                      "Valuation & NAV risks - NAV relies on pricing from on-chain markets or oracles that can be stale or manipulated, distorting marks and mint/redeem pricing."
-                    ],
-                    "wrappedVersion": false
-                  }
-                },
-                {
-                  "address": "0x35895a1fa1AFf7FB3204fB01257409Fd75acB24C",
-                  "symbol": "LRCXon",
-                  "weight": 4.15,
+                  "weight": 4.98,
                   "bridge": {
                     "id": "ondo",
                     "name": "Ondo Tokenized Stocks",
@@ -1298,7 +1479,28 @@
                 {
                   "address": "0x5ecC352C4640f1d26BD231dbBd171f40f7d0Eec6",
                   "symbol": "AMATon",
-                  "weight": 4.15,
+                  "weight": 3.82,
+                  "bridge": {
+                    "id": "ondo",
+                    "name": "Ondo Tokenized Stocks",
+                    "url": "https://docs.ondo.finance/",
+                    "description": "An Ondo Tokenized Stock is a blockchain token that gives you the same economic exposure as owning the underlying stock or ETF. Please read the documentation for more details.",
+                    "logo": "https://storage-logos.reserve.org/logos/Ondo-Icon-Black.png",
+                    "logoDark": "https://storage-logos.reserve.org/logos/Ondo-Icon-White.png",
+                    "risks": [
+                      "Custodial risks - Tokens are claims on structures holding the underlying equities via third-party custodians, whose failure or insolvency could delay settlement or cause loss of value.",
+                      "Regulatory & compliance risks - Tokenized equities face evolving rules and may require whitelisting or eligibility, which can force restricted access, halted redemptions, or unwinding.",
+                      "Liquidity risks - On-chain trading is 24/7, but mint/redeem may be limited or windowed, and in stressed markets token prices can deviate from the underlying equities.",
+                      "Market access & redemption risks - Mint/redeem may be capacity-limited, whitelisted, or tied to market hours, which can block arbitrage and impair exits near NAV.",
+                      "Valuation & NAV risks - NAV relies on pricing from on-chain markets or oracles that can be stale or manipulated, distorting marks and mint/redeem pricing."
+                    ],
+                    "wrappedVersion": false
+                  }
+                },
+                {
+                  "address": "0x35895a1fa1AFf7FB3204fB01257409Fd75acB24C",
+                  "symbol": "LRCXon",
+                  "weight": 3.76,
                   "bridge": {
                     "id": "ondo",
                     "name": "Ondo Tokenized Stocks",
@@ -1319,7 +1521,7 @@
                 {
                   "address": "0x527C6436E1eAa4f2065CDE4090F798Cb5D031dD6",
                   "symbol": "ARMon",
-                  "weight": 2.8,
+                  "weight": 2.7,
                   "bridge": {
                     "id": "ondo",
                     "name": "Ondo Tokenized Stocks",
@@ -1340,28 +1542,7 @@
                 {
                   "address": "0xFc263946439b0d802bF4C5a6fCd34E2885259f91",
                   "symbol": "KLACon",
-                  "weight": 2.49,
-                  "bridge": {
-                    "id": "ondo",
-                    "name": "Ondo Tokenized Stocks",
-                    "url": "https://docs.ondo.finance/",
-                    "description": "An Ondo Tokenized Stock is a blockchain token that gives you the same economic exposure as owning the underlying stock or ETF. Please read the documentation for more details.",
-                    "logo": "https://storage-logos.reserve.org/logos/Ondo-Icon-Black.png",
-                    "logoDark": "https://storage-logos.reserve.org/logos/Ondo-Icon-White.png",
-                    "risks": [
-                      "Custodial risks - Tokens are claims on structures holding the underlying equities via third-party custodians, whose failure or insolvency could delay settlement or cause loss of value.",
-                      "Regulatory & compliance risks - Tokenized equities face evolving rules and may require whitelisting or eligibility, which can force restricted access, halted redemptions, or unwinding.",
-                      "Liquidity risks - On-chain trading is 24/7, but mint/redeem may be limited or windowed, and in stressed markets token prices can deviate from the underlying equities.",
-                      "Market access & redemption risks - Mint/redeem may be capacity-limited, whitelisted, or tied to market hours, which can block arbitrage and impair exits near NAV.",
-                      "Valuation & NAV risks - NAV relies on pricing from on-chain markets or oracles that can be stale or manipulated, distorting marks and mint/redeem pricing."
-                    ],
-                    "wrappedVersion": false
-                  }
-                },
-                {
-                  "address": "0x4Fd67CB8CFEdc718BAc984b5936abE3330d0a2A4",
-                  "symbol": "SNDKon",
-                  "weight": 2.35,
+                  "weight": 2.42,
                   "bridge": {
                     "id": "ondo",
                     "name": "Ondo Tokenized Stocks",
@@ -1382,7 +1563,28 @@
                 {
                   "address": "0x1501EC83FFEf405B4331CC4f73277a40fb0C627d",
                   "symbol": "MRVLon",
-                  "weight": 2.2,
+                  "weight": 2.24,
+                  "bridge": {
+                    "id": "ondo",
+                    "name": "Ondo Tokenized Stocks",
+                    "url": "https://docs.ondo.finance/",
+                    "description": "An Ondo Tokenized Stock is a blockchain token that gives you the same economic exposure as owning the underlying stock or ETF. Please read the documentation for more details.",
+                    "logo": "https://storage-logos.reserve.org/logos/Ondo-Icon-Black.png",
+                    "logoDark": "https://storage-logos.reserve.org/logos/Ondo-Icon-White.png",
+                    "risks": [
+                      "Custodial risks - Tokens are claims on structures holding the underlying equities via third-party custodians, whose failure or insolvency could delay settlement or cause loss of value.",
+                      "Regulatory & compliance risks - Tokenized equities face evolving rules and may require whitelisting or eligibility, which can force restricted access, halted redemptions, or unwinding.",
+                      "Liquidity risks - On-chain trading is 24/7, but mint/redeem may be limited or windowed, and in stressed markets token prices can deviate from the underlying equities.",
+                      "Market access & redemption risks - Mint/redeem may be capacity-limited, whitelisted, or tied to market hours, which can block arbitrage and impair exits near NAV.",
+                      "Valuation & NAV risks - NAV relies on pricing from on-chain markets or oracles that can be stale or manipulated, distorting marks and mint/redeem pricing."
+                    ],
+                    "wrappedVersion": false
+                  }
+                },
+                {
+                  "address": "0x4Fd67CB8CFEdc718BAc984b5936abE3330d0a2A4",
+                  "symbol": "SNDKon",
+                  "weight": 2.17,
                   "bridge": {
                     "id": "ondo",
                     "name": "Ondo Tokenized Stocks",
@@ -1403,7 +1605,7 @@
                 {
                   "address": "0x65D84F0990B7394209d591380C2952c83D778aA3",
                   "symbol": "CEGon",
-                  "weight": 1.12,
+                  "weight": 1.1,
                   "bridge": {
                     "id": "ondo",
                     "name": "Ondo Tokenized Stocks",
@@ -1424,7 +1626,7 @@
                 {
                   "address": "0x0fAcaFB97ffDbA3cAe88512070AF49bd30674cD9",
                   "symbol": "LITEon",
-                  "weight": 0.68,
+                  "weight": 0.73,
                   "bridge": {
                     "id": "ondo",
                     "name": "Ondo Tokenized Stocks",
@@ -1443,7 +1645,7 @@
                   }
                 }
               ],
-              "totalWeight": 71.49
+              "totalWeight": 71.26
             },
             {
               "native": {
@@ -1457,7 +1659,7 @@
                 {
                   "address": "0xC37042A7a4fa510D8884a433762aB87257B91965",
                   "symbol": "TSMon",
-                  "weight": 10.91,
+                  "weight": 11.02,
                   "bridge": {
                     "id": "ondo",
                     "name": "Ondo Tokenized Stocks",
@@ -1478,7 +1680,7 @@
                 {
                   "address": "0xf26518958935654878De15BE7bC79A26971583Ba",
                   "symbol": "DELLon",
-                  "weight": 3.21,
+                  "weight": 3.62,
                   "bridge": {
                     "id": "ondo",
                     "name": "Ondo Tokenized Stocks",
@@ -1499,7 +1701,7 @@
                 {
                   "address": "0x2Aea1D415D45CCF3EaBE565d45DcaF4ea2035b9c",
                   "symbol": "GEVon",
-                  "weight": 2.84,
+                  "weight": 2.74,
                   "bridge": {
                     "id": "ondo",
                     "name": "Ondo Tokenized Stocks",
@@ -1520,7 +1722,7 @@
                 {
                   "address": "0x538e2838f9ebC9B891399DF4a8dcc42890D9dc20",
                   "symbol": "ANETon",
-                  "weight": 2.61,
+                  "weight": 2.68,
                   "bridge": {
                     "id": "ondo",
                     "name": "Ondo Tokenized Stocks",
@@ -1541,7 +1743,7 @@
                 {
                   "address": "0xE8ff70859Ce4cbd72E4352b4fb45F5BF39d07464",
                   "symbol": "IBMon",
-                  "weight": 2.45,
+                  "weight": 2.35,
                   "bridge": {
                     "id": "ondo",
                     "name": "Ondo Tokenized Stocks",
@@ -1562,7 +1764,7 @@
                 {
                   "address": "0x4697b2A050f7B5A8e1ebc27c325f9D78D094f041",
                   "symbol": "ETNon",
-                  "weight": 1.78,
+                  "weight": 1.72,
                   "bridge": {
                     "id": "ondo",
                     "name": "Ondo Tokenized Stocks",
@@ -1583,28 +1785,7 @@
                 {
                   "address": "0x25a4DbAE9a0Cd8C75656D6b50FFDf4900CC20d8f",
                   "symbol": "GLWon",
-                  "weight": 1.33,
-                  "bridge": {
-                    "id": "ondo",
-                    "name": "Ondo Tokenized Stocks",
-                    "url": "https://docs.ondo.finance/",
-                    "description": "An Ondo Tokenized Stock is a blockchain token that gives you the same economic exposure as owning the underlying stock or ETF. Please read the documentation for more details.",
-                    "logo": "https://storage-logos.reserve.org/logos/Ondo-Icon-Black.png",
-                    "logoDark": "https://storage-logos.reserve.org/logos/Ondo-Icon-White.png",
-                    "risks": [
-                      "Custodial risks - Tokens are claims on structures holding the underlying equities via third-party custodians, whose failure or insolvency could delay settlement or cause loss of value.",
-                      "Regulatory & compliance risks - Tokenized equities face evolving rules and may require whitelisting or eligibility, which can force restricted access, halted redemptions, or unwinding.",
-                      "Liquidity risks - On-chain trading is 24/7, but mint/redeem may be limited or windowed, and in stressed markets token prices can deviate from the underlying equities.",
-                      "Market access & redemption risks - Mint/redeem may be capacity-limited, whitelisted, or tied to market hours, which can block arbitrage and impair exits near NAV.",
-                      "Valuation & NAV risks - NAV relies on pricing from on-chain markets or oracles that can be stale or manipulated, distorting marks and mint/redeem pricing."
-                    ],
-                    "wrappedVersion": false
-                  }
-                },
-                {
-                  "address": "0x9Cea8A7Be1Ab0320b709d368Ad60d8500f55995f",
-                  "symbol": "VRTon",
-                  "weight": 1.07,
+                  "weight": 1.28,
                   "bridge": {
                     "id": "ondo",
                     "name": "Ondo Tokenized Stocks",
@@ -1625,7 +1806,28 @@
                 {
                   "address": "0x2418c2e1aE3B8D767594b3974D32610743f88155",
                   "symbol": "PWRon",
-                  "weight": 1.02,
+                  "weight": 1.08,
+                  "bridge": {
+                    "id": "ondo",
+                    "name": "Ondo Tokenized Stocks",
+                    "url": "https://docs.ondo.finance/",
+                    "description": "An Ondo Tokenized Stock is a blockchain token that gives you the same economic exposure as owning the underlying stock or ETF. Please read the documentation for more details.",
+                    "logo": "https://storage-logos.reserve.org/logos/Ondo-Icon-Black.png",
+                    "logoDark": "https://storage-logos.reserve.org/logos/Ondo-Icon-White.png",
+                    "risks": [
+                      "Custodial risks - Tokens are claims on structures holding the underlying equities via third-party custodians, whose failure or insolvency could delay settlement or cause loss of value.",
+                      "Regulatory & compliance risks - Tokenized equities face evolving rules and may require whitelisting or eligibility, which can force restricted access, halted redemptions, or unwinding.",
+                      "Liquidity risks - On-chain trading is 24/7, but mint/redeem may be limited or windowed, and in stressed markets token prices can deviate from the underlying equities.",
+                      "Market access & redemption risks - Mint/redeem may be capacity-limited, whitelisted, or tied to market hours, which can block arbitrage and impair exits near NAV.",
+                      "Valuation & NAV risks - NAV relies on pricing from on-chain markets or oracles that can be stale or manipulated, distorting marks and mint/redeem pricing."
+                    ],
+                    "wrappedVersion": false
+                  }
+                },
+                {
+                  "address": "0x9Cea8A7Be1Ab0320b709d368Ad60d8500f55995f",
+                  "symbol": "VRTon",
+                  "weight": 0.91,
                   "bridge": {
                     "id": "ondo",
                     "name": "Ondo Tokenized Stocks",
@@ -1646,7 +1848,7 @@
                 {
                   "address": "0x17D03aE104a9D12E9E5794Efb109B817Dd7f3404",
                   "symbol": "BEon",
-                  "weight": 0.71,
+                  "weight": 0.8,
                   "bridge": {
                     "id": "ondo",
                     "name": "Ondo Tokenized Stocks",
@@ -1667,7 +1869,7 @@
                 {
                   "address": "0x0585756aAFB241b0f8A9Df62Db26c566091Bde0b",
                   "symbol": "COHRon",
-                  "weight": 0.58,
+                  "weight": 0.54,
                   "bridge": {
                     "id": "ondo",
                     "name": "Ondo Tokenized Stocks",
@@ -1686,9 +1888,10 @@
                   }
                 }
               ],
-              "totalWeight": 28.51
+              "totalWeight": 28.74
             }
-          ]
+          ],
+          "mandate": "The Reserve AI Infrastructure DTF (BUILDOUT) aims to be a weighted basket of public, US-listed semiconductor and hardware companies at the center of the AI buildout. \n\nThe basket shall be composed of the 25 largest US-listed companies across this AI hardware stack, weighted by market capitalization with a 10% cap, rebalanced quarterly. "
         }
       ],
       "power": [
@@ -1696,90 +1899,91 @@
           "address": "0x290bCc0Fd5096cC3261AE2021841c7BC67Cb0f51",
           "name": "Reserve AI Power DTF",
           "symbol": "POWER",
-          "price": 86.96620573941235,
-          "marketCap": 1706056.0380348824,
+          "price": 89.16700326852077,
+          "marketCap": 1727870.640264361,
           "chainId": 56,
           "type": "index",
           "status": "active",
           "createdAt": 1781725454,
+          "fee": 0.6,
           "basket": [
             {
               "address": "0xD381aec27DAAcCC87F102FF4Ad6652F8b5F20bA0",
               "symbol": "POWLon",
               "name": "Powell Industries (Ondo Tokenized)",
-              "weight": "0.83"
+              "weight": "0.73"
             },
             {
               "address": "0x2Aea1D415D45CCF3EaBE565d45DcaF4ea2035b9c",
               "symbol": "GEVon",
               "name": "GE Vernova (Ondo Tokenized)",
-              "weight": "20.40"
+              "weight": "19.96"
             },
             {
               "address": "0x4697b2A050f7B5A8e1ebc27c325f9D78D094f041",
               "symbol": "ETNon",
               "name": "Eaton (Ondo Tokenized)",
-              "weight": "19.22"
+              "weight": "18.82"
             },
             {
               "address": "0x9Cea8A7Be1Ab0320b709d368Ad60d8500f55995f",
               "symbol": "VRTon",
               "name": "Vertiv (Ondo Tokenized)",
-              "weight": "11.85"
+              "weight": "10.16"
             },
             {
               "address": "0x2418c2e1aE3B8D767594b3974D32610743f88155",
               "symbol": "PWRon",
               "name": "Quanta Services (Ondo Tokenized)",
-              "weight": "10.99"
+              "weight": "11.74"
             },
             {
               "address": "0x65D84F0990B7394209d591380C2952c83D778aA3",
               "symbol": "CEGon",
               "name": "Constellation Energy (Ondo Tokenized)",
-              "weight": "11.88"
+              "weight": "11.82"
             },
             {
               "address": "0xbbE4Dfe7a349Fb72aEc6f52d5CD9bDD78AE8f313",
               "symbol": "TLNon",
               "name": "Talen Energy (Ondo Tokenized)",
-              "weight": "1.67"
+              "weight": "1.93"
             },
             {
               "address": "0x17D03aE104a9D12E9E5794Efb109B817Dd7f3404",
               "symbol": "BEon",
               "name": "Bloom Energy (Ondo Tokenized)",
-              "weight": "7.25"
+              "weight": "8.26"
             },
             {
               "address": "0xf2C24c47805f4f72d3919C8674bFDd401505794B",
               "symbol": "VSTon",
               "name": "Vistra (Ondo Tokenized)",
-              "weight": "5.59"
+              "weight": "6.03"
             },
             {
               "address": "0xB35a9EAB5D25282f4e668798B629a9294e9A47aa",
               "symbol": "ONon",
               "name": "ON Semiconductor (Ondo Tokenized)",
-              "weight": "3.37"
+              "weight": "3.36"
             },
             {
               "address": "0x484Ce83BB55b50D70236C7D1E29E0Ba7524f905B",
               "symbol": "NVTon",
               "name": "nVent Electric (Ondo Tokenized)",
-              "weight": "2.96"
+              "weight": "2.94"
             },
             {
               "address": "0xa59469D91563CaeedDd2ffC731f41215E7b691ef",
               "symbol": "VICRon",
               "name": "Vicor (Ondo Tokenized)",
-              "weight": "1.06"
+              "weight": "1.35"
             },
             {
               "address": "0x1C42C07257F936a7c4f84B8D756c95817E23631A",
               "symbol": "HUBBon",
               "name": "Hubbell (Ondo Tokenized)",
-              "weight": "2.93"
+              "weight": "2.90"
             }
           ],
           "brand": {
@@ -2731,19 +2935,219 @@
               "value": 86.20860345876997
             },
             {
-              "timestamp": 1787673462,
-              "value": 87.1126063190742
+              "timestamp": 1787702189,
+              "value": 86.622820609978
+            },
+            {
+              "timestamp": 1787788586,
+              "value": 89.81136081243766
+            },
+            {
+              "timestamp": 1787875012,
+              "value": 88.47912495329106
+            },
+            {
+              "timestamp": 1787961392,
+              "value": 85.63274909804082
+            },
+            {
+              "timestamp": 1788047787,
+              "value": 85.63819761502091
+            },
+            {
+              "timestamp": 1788134203,
+              "value": 85.63678563524749
+            },
+            {
+              "timestamp": 1788220602,
+              "value": 85.18090701192453
+            },
+            {
+              "timestamp": 1788306982,
+              "value": 84.60594562150143
+            },
+            {
+              "timestamp": 1788393384,
+              "value": 86.1220819135657
+            },
+            {
+              "timestamp": 1788479788,
+              "value": 87.89278973398936
+            },
+            {
+              "timestamp": 1788566164,
+              "value": 90.7443767508003
+            },
+            {
+              "timestamp": 1788652567,
+              "value": 90.7027386963181
+            },
+            {
+              "timestamp": 1788738963,
+              "value": 90.70124321374142
+            },
+            {
+              "timestamp": 1788825376,
+              "value": 90.69974775582187
+            },
+            {
+              "timestamp": 1788911773,
+              "value": 92.82700886269268
+            },
+            {
+              "timestamp": 1788998173,
+              "value": 90.39499857694189
+            },
+            {
+              "timestamp": 1789084571,
+              "value": 87.72859628329023
+            },
+            {
+              "timestamp": 1789170967,
+              "value": 90.94029692824121
+            },
+            {
+              "timestamp": 1789257370,
+              "value": 90.9723311572872
+            },
+            {
+              "timestamp": 1789343779,
+              "value": 90.97083122974193
+            },
+            {
+              "timestamp": 1789430195,
+              "value": 85.31322021251597
+            },
+            {
+              "timestamp": 1789516579,
+              "value": 84.49696388924943
+            },
+            {
+              "timestamp": 1789602983,
+              "value": 86.80884467730509
+            },
+            {
+              "timestamp": 1789689376,
+              "value": 87.09620176180756
+            },
+            {
+              "timestamp": 1789775786,
+              "value": 88.23246775903883
+            },
+            {
+              "timestamp": 1789862179,
+              "value": 88.23983722406162
+            },
+            {
+              "timestamp": 1789948587,
+              "value": 88.23838234914787
+            },
+            {
+              "timestamp": 1790034988,
+              "value": 89.93007017165245
+            },
+            {
+              "timestamp": 1790121401,
+              "value": 90.62809066396356
+            },
+            {
+              "timestamp": 1790207803,
+              "value": 90.05524071849695
+            },
+            {
+              "timestamp": 1790294206,
+              "value": 89.69679229705886
+            },
+            {
+              "timestamp": 1790380599,
+              "value": 91.21193302881423
+            },
+            {
+              "timestamp": 1790467006,
+              "value": 91.18725482924339
+            },
+            {
+              "timestamp": 1790553403,
+              "value": 91.18575135809385
+            },
+            {
+              "timestamp": 1790639815,
+              "value": 89.19357467306114
+            },
+            {
+              "timestamp": 1790726199,
+              "value": 91.27114282780035
+            },
+            {
+              "timestamp": 1790812618,
+              "value": 90.00232402559668
+            },
+            {
+              "timestamp": 1790899037,
+              "value": 91.55496519247757
+            },
+            {
+              "timestamp": 1790985396,
+              "value": 92.56211548346565
+            },
+            {
+              "timestamp": 1791071790,
+              "value": 92.54578363341835
+            },
+            {
+              "timestamp": 1791158186,
+              "value": 92.54425776320805
+            },
+            {
+              "timestamp": 1791244563,
+              "value": 93.4042781401171
+            },
+            {
+              "timestamp": 1791330977,
+              "value": 97.19508447424829
+            },
+            {
+              "timestamp": 1791417371,
+              "value": 95.25999514504251
+            },
+            {
+              "timestamp": 1791503782,
+              "value": 92.69447769028285
+            },
+            {
+              "timestamp": 1791590194,
+              "value": 94.2561149476147
+            },
+            {
+              "timestamp": 1791676602,
+              "value": 94.25280098658557
+            },
+            {
+              "timestamp": 1791762997,
+              "value": 94.2512469715282
+            },
+            {
+              "timestamp": 1791849384,
+              "value": 92.50611164292243
+            },
+            {
+              "timestamp": 1791935804,
+              "value": 93.19909823417703
+            },
+            {
+              "timestamp": 1791986256,
+              "value": 90.13175199845631
             }
           ],
           "priceChange": {
             "period": "ytd",
             "displayPeriod": "YTD",
-            "ratio": 0.26918386625774954,
-            "percent": 26.918386625774954,
+            "ratio": 0.3131711965428559,
+            "percent": 31.31711965428559,
             "startPrice": 68.63671106687636,
-            "endPrice": 87.1126063190742,
+            "endPrice": 90.13175199845631,
             "startTimestamp": 1767225600,
-            "endTimestamp": 1787673462
+            "endTimestamp": 1791986256
           },
           "exposure": [
             {
@@ -2758,7 +3162,7 @@
                 {
                   "address": "0x2Aea1D415D45CCF3EaBE565d45DcaF4ea2035b9c",
                   "symbol": "GEVon",
-                  "weight": 20.4,
+                  "weight": 19.96,
                   "bridge": {
                     "id": "ondo",
                     "name": "Ondo Tokenized Stocks",
@@ -2779,28 +3183,7 @@
                 {
                   "address": "0x4697b2A050f7B5A8e1ebc27c325f9D78D094f041",
                   "symbol": "ETNon",
-                  "weight": 19.22,
-                  "bridge": {
-                    "id": "ondo",
-                    "name": "Ondo Tokenized Stocks",
-                    "url": "https://docs.ondo.finance/",
-                    "description": "An Ondo Tokenized Stock is a blockchain token that gives you the same economic exposure as owning the underlying stock or ETF. Please read the documentation for more details.",
-                    "logo": "https://storage-logos.reserve.org/logos/Ondo-Icon-Black.png",
-                    "logoDark": "https://storage-logos.reserve.org/logos/Ondo-Icon-White.png",
-                    "risks": [
-                      "Custodial risks - Tokens are claims on structures holding the underlying equities via third-party custodians, whose failure or insolvency could delay settlement or cause loss of value.",
-                      "Regulatory & compliance risks - Tokenized equities face evolving rules and may require whitelisting or eligibility, which can force restricted access, halted redemptions, or unwinding.",
-                      "Liquidity risks - On-chain trading is 24/7, but mint/redeem may be limited or windowed, and in stressed markets token prices can deviate from the underlying equities.",
-                      "Market access & redemption risks - Mint/redeem may be capacity-limited, whitelisted, or tied to market hours, which can block arbitrage and impair exits near NAV.",
-                      "Valuation & NAV risks - NAV relies on pricing from on-chain markets or oracles that can be stale or manipulated, distorting marks and mint/redeem pricing."
-                    ],
-                    "wrappedVersion": false
-                  }
-                },
-                {
-                  "address": "0x9Cea8A7Be1Ab0320b709d368Ad60d8500f55995f",
-                  "symbol": "VRTon",
-                  "weight": 11.85,
+                  "weight": 18.82,
                   "bridge": {
                     "id": "ondo",
                     "name": "Ondo Tokenized Stocks",
@@ -2821,7 +3204,28 @@
                 {
                   "address": "0x2418c2e1aE3B8D767594b3974D32610743f88155",
                   "symbol": "PWRon",
-                  "weight": 10.99,
+                  "weight": 11.74,
+                  "bridge": {
+                    "id": "ondo",
+                    "name": "Ondo Tokenized Stocks",
+                    "url": "https://docs.ondo.finance/",
+                    "description": "An Ondo Tokenized Stock is a blockchain token that gives you the same economic exposure as owning the underlying stock or ETF. Please read the documentation for more details.",
+                    "logo": "https://storage-logos.reserve.org/logos/Ondo-Icon-Black.png",
+                    "logoDark": "https://storage-logos.reserve.org/logos/Ondo-Icon-White.png",
+                    "risks": [
+                      "Custodial risks - Tokens are claims on structures holding the underlying equities via third-party custodians, whose failure or insolvency could delay settlement or cause loss of value.",
+                      "Regulatory & compliance risks - Tokenized equities face evolving rules and may require whitelisting or eligibility, which can force restricted access, halted redemptions, or unwinding.",
+                      "Liquidity risks - On-chain trading is 24/7, but mint/redeem may be limited or windowed, and in stressed markets token prices can deviate from the underlying equities.",
+                      "Market access & redemption risks - Mint/redeem may be capacity-limited, whitelisted, or tied to market hours, which can block arbitrage and impair exits near NAV.",
+                      "Valuation & NAV risks - NAV relies on pricing from on-chain markets or oracles that can be stale or manipulated, distorting marks and mint/redeem pricing."
+                    ],
+                    "wrappedVersion": false
+                  }
+                },
+                {
+                  "address": "0x9Cea8A7Be1Ab0320b709d368Ad60d8500f55995f",
+                  "symbol": "VRTon",
+                  "weight": 10.16,
                   "bridge": {
                     "id": "ondo",
                     "name": "Ondo Tokenized Stocks",
@@ -2842,7 +3246,7 @@
                 {
                   "address": "0x17D03aE104a9D12E9E5794Efb109B817Dd7f3404",
                   "symbol": "BEon",
-                  "weight": 7.25,
+                  "weight": 8.26,
                   "bridge": {
                     "id": "ondo",
                     "name": "Ondo Tokenized Stocks",
@@ -2863,7 +3267,7 @@
                 {
                   "address": "0xf2C24c47805f4f72d3919C8674bFDd401505794B",
                   "symbol": "VSTon",
-                  "weight": 5.59,
+                  "weight": 6.03,
                   "bridge": {
                     "id": "ondo",
                     "name": "Ondo Tokenized Stocks",
@@ -2884,7 +3288,7 @@
                 {
                   "address": "0x484Ce83BB55b50D70236C7D1E29E0Ba7524f905B",
                   "symbol": "NVTon",
-                  "weight": 2.96,
+                  "weight": 2.94,
                   "bridge": {
                     "id": "ondo",
                     "name": "Ondo Tokenized Stocks",
@@ -2905,7 +3309,7 @@
                 {
                   "address": "0x1C42C07257F936a7c4f84B8D756c95817E23631A",
                   "symbol": "HUBBon",
-                  "weight": 2.93,
+                  "weight": 2.9,
                   "bridge": {
                     "id": "ondo",
                     "name": "Ondo Tokenized Stocks",
@@ -2924,7 +3328,7 @@
                   }
                 }
               ],
-              "totalWeight": 81.19
+              "totalWeight": 80.81
             },
             {
               "native": {
@@ -2938,7 +3342,7 @@
                 {
                   "address": "0x65D84F0990B7394209d591380C2952c83D778aA3",
                   "symbol": "CEGon",
-                  "weight": 11.88,
+                  "weight": 11.82,
                   "bridge": {
                     "id": "ondo",
                     "name": "Ondo Tokenized Stocks",
@@ -2959,7 +3363,7 @@
                 {
                   "address": "0xB35a9EAB5D25282f4e668798B629a9294e9A47aa",
                   "symbol": "ONon",
-                  "weight": 3.37,
+                  "weight": 3.36,
                   "bridge": {
                     "id": "ondo",
                     "name": "Ondo Tokenized Stocks",
@@ -2980,7 +3384,7 @@
                 {
                   "address": "0xbbE4Dfe7a349Fb72aEc6f52d5CD9bDD78AE8f313",
                   "symbol": "TLNon",
-                  "weight": 1.67,
+                  "weight": 1.93,
                   "bridge": {
                     "id": "ondo",
                     "name": "Ondo Tokenized Stocks",
@@ -3001,7 +3405,7 @@
                 {
                   "address": "0xa59469D91563CaeedDd2ffC731f41215E7b691ef",
                   "symbol": "VICRon",
-                  "weight": 1.06,
+                  "weight": 1.35,
                   "bridge": {
                     "id": "ondo",
                     "name": "Ondo Tokenized Stocks",
@@ -3022,7 +3426,7 @@
                 {
                   "address": "0xD381aec27DAAcCC87F102FF4Ad6652F8b5F20bA0",
                   "symbol": "POWLon",
-                  "weight": 0.83,
+                  "weight": 0.73,
                   "bridge": {
                     "id": "ondo",
                     "name": "Ondo Tokenized Stocks",
@@ -3041,9 +3445,10 @@
                   }
                 }
               ],
-              "totalWeight": 18.81
+              "totalWeight": 19.19
             }
-          ]
+          ],
+          "mandate": "The Reserve AI Power DTF (POWER) aims to be a weighted basket of public, US-listed power companies at the center of the AI buildout.\n\nThe basket shall be composed of companies that generate significant revenue from AI data-center power demand, weighted by market capitalization with a 20% cap and a $10B minimum market cap, rebalanced quarterly. "
         }
       ],
       "photon": [
@@ -3051,66 +3456,67 @@
           "address": "0xa0Fe4e0aEca5479705ce996615B2EACB6b6a10Fb",
           "name": "Reserve AI Photonics DTF",
           "symbol": "PHOTON",
-          "price": 81.56102447296462,
-          "marketCap": 2272689.794424222,
+          "price": 82.92779073711272,
+          "marketCap": 2318208.598097446,
           "chainId": 56,
           "type": "index",
           "status": "active",
           "createdAt": 1781718876,
+          "fee": 0.6,
           "basket": [
             {
               "address": "0x0C50323AF81D5C33822c6Add256Fb9093D42BC74",
               "symbol": "AXTIon",
               "name": "AXT (Ondo Tokenized)",
-              "weight": "1.43"
+              "weight": "1.32"
             },
             {
               "address": "0x25a4DbAE9a0Cd8C75656D6b50FFDf4900CC20d8f",
               "symbol": "GLWon",
               "name": "Corning (Ondo Tokenized)",
-              "weight": "20.55"
+              "weight": "20.04"
             },
             {
               "address": "0x89a9F7114bE6b220fAe645ba0cbB720889867415",
               "symbol": "CIENon",
               "name": "Ciena (Ondo Tokenized)",
-              "weight": "17.24"
+              "weight": "16.93"
             },
             {
               "address": "0x0fAcaFB97ffDbA3cAe88512070AF49bd30674cD9",
               "symbol": "LITEon",
               "name": "Lumentum Holdings (Ondo Tokenized)",
-              "weight": "21.35"
+              "weight": "23.12"
             },
             {
               "address": "0x0585756aAFB241b0f8A9Df62Db26c566091Bde0b",
               "symbol": "COHRon",
               "name": "Coherent (Ondo Tokenized)",
-              "weight": "17.76"
+              "weight": "16.99"
             },
             {
               "address": "0x1dCd320C5d7b84CD407437c58d56CbbDd0D9d8f3",
               "symbol": "MTSIon",
               "name": "MACOM Technology Solutions Holdings (Ondo Tokenized)",
-              "weight": "6.47"
+              "weight": "7.19"
             },
             {
               "address": "0xA1DaaB37dA2a29A1eC721922b55962eB8B481001",
               "symbol": "FNon",
               "name": "Fabrinet (Ondo Tokenized)",
-              "weight": "4.91"
+              "weight": "4.64"
             },
             {
               "address": "0x343324170C91c4D8Cf4D439B3E5a619F50621aE7",
               "symbol": "TSEMon",
               "name": "Tower Semiconductor (Ondo Tokenized)",
-              "weight": "7.61"
+              "weight": "7.63"
             },
             {
               "address": "0x149Bda9e7251DC36f536d1fE7F92A5ea203F4F3D",
               "symbol": "AAOIon",
               "name": "Applied Optoelectronics (Ondo Tokenized)",
-              "weight": "2.68"
+              "weight": "2.14"
             }
           ],
           "brand": {
@@ -4054,19 +4460,219 @@
               "value": 78.83937914418695
             },
             {
-              "timestamp": 1787673462,
-              "value": 81.53151524703387
+              "timestamp": 1787702189,
+              "value": 82.11243481448419
+            },
+            {
+              "timestamp": 1787788586,
+              "value": 88.19223854661092
+            },
+            {
+              "timestamp": 1787875012,
+              "value": 84.69491958769595
+            },
+            {
+              "timestamp": 1787961392,
+              "value": 81.39835529301092
+            },
+            {
+              "timestamp": 1788047787,
+              "value": 81.53382927001036
+            },
+            {
+              "timestamp": 1788134203,
+              "value": 81.25739335266515
+            },
+            {
+              "timestamp": 1788220602,
+              "value": 81.64482843820518
+            },
+            {
+              "timestamp": 1788306982,
+              "value": 78.5876417431326
+            },
+            {
+              "timestamp": 1788393384,
+              "value": 78.54221554495443
+            },
+            {
+              "timestamp": 1788479788,
+              "value": 76.67861633283745
+            },
+            {
+              "timestamp": 1788566164,
+              "value": 80.05257701283759
+            },
+            {
+              "timestamp": 1788652567,
+              "value": 79.99662228035568
+            },
+            {
+              "timestamp": 1788738963,
+              "value": 80.07140101230085
+            },
+            {
+              "timestamp": 1788825376,
+              "value": 80.26713652360004
+            },
+            {
+              "timestamp": 1788911773,
+              "value": 85.5708473511029
+            },
+            {
+              "timestamp": 1788998173,
+              "value": 85.9598942629567
+            },
+            {
+              "timestamp": 1789084571,
+              "value": 82.48751619951435
+            },
+            {
+              "timestamp": 1789170967,
+              "value": 84.21824259169452
+            },
+            {
+              "timestamp": 1789257370,
+              "value": 84.23447892342087
+            },
+            {
+              "timestamp": 1789343779,
+              "value": 83.49321058677953
+            },
+            {
+              "timestamp": 1789430195,
+              "value": 76.07684071263981
+            },
+            {
+              "timestamp": 1789516579,
+              "value": 76.07781454896286
+            },
+            {
+              "timestamp": 1789602983,
+              "value": 80.82289089745498
+            },
+            {
+              "timestamp": 1789689376,
+              "value": 80.73604105531646
+            },
+            {
+              "timestamp": 1789775786,
+              "value": 83.62872219359525
+            },
+            {
+              "timestamp": 1789862179,
+              "value": 83.66285276108013
+            },
+            {
+              "timestamp": 1789948587,
+              "value": 83.99985960595059
+            },
+            {
+              "timestamp": 1790034988,
+              "value": 87.50902461871745
+            },
+            {
+              "timestamp": 1790121401,
+              "value": 86.42331624768975
+            },
+            {
+              "timestamp": 1790207803,
+              "value": 83.96332457089389
+            },
+            {
+              "timestamp": 1790294206,
+              "value": 83.20291372620984
+            },
+            {
+              "timestamp": 1790380599,
+              "value": 84.66891878672503
+            },
+            {
+              "timestamp": 1790467006,
+              "value": 84.67312889660495
+            },
+            {
+              "timestamp": 1790553403,
+              "value": 84.84828648659968
+            },
+            {
+              "timestamp": 1790639815,
+              "value": 81.74453148456257
+            },
+            {
+              "timestamp": 1790726199,
+              "value": 85.87289768401257
+            },
+            {
+              "timestamp": 1790812618,
+              "value": 84.22213129180953
+            },
+            {
+              "timestamp": 1790899037,
+              "value": 90.41480134633534
+            },
+            {
+              "timestamp": 1790985396,
+              "value": 93.78049344181622
+            },
+            {
+              "timestamp": 1791071790,
+              "value": 93.78418450114046
+            },
+            {
+              "timestamp": 1791158186,
+              "value": 93.85359210406334
+            },
+            {
+              "timestamp": 1791244563,
+              "value": 93.59509903942312
+            },
+            {
+              "timestamp": 1791330977,
+              "value": 98.50215129165716
+            },
+            {
+              "timestamp": 1791417371,
+              "value": 96.84390557467655
+            },
+            {
+              "timestamp": 1791503782,
+              "value": 90.88577826080576
+            },
+            {
+              "timestamp": 1791590194,
+              "value": 93.51010022892342
+            },
+            {
+              "timestamp": 1791676602,
+              "value": 93.48645941431874
+            },
+            {
+              "timestamp": 1791762997,
+              "value": 93.59616089661222
+            },
+            {
+              "timestamp": 1791849384,
+              "value": 85.05412919298111
+            },
+            {
+              "timestamp": 1791935804,
+              "value": 85.79663825573923
+            },
+            {
+              "timestamp": 1791986256,
+              "value": 82.67796495064384
             }
           ],
           "priceChange": {
             "period": "ytd",
             "displayPeriod": "YTD",
-            "ratio": 0.7198427953707269,
-            "percent": 71.9842795370727,
+            "ratio": 0.744026244642268,
+            "percent": 74.40262446422679,
             "startPrice": 47.40637659819312,
-            "endPrice": 81.53151524703387,
+            "endPrice": 82.67796495064384,
             "startTimestamp": 1767225600,
-            "endTimestamp": 1787673462
+            "endTimestamp": 1791986256
           },
           "exposure": [
             {
@@ -4081,7 +4687,7 @@
                 {
                   "address": "0x25a4DbAE9a0Cd8C75656D6b50FFDf4900CC20d8f",
                   "symbol": "GLWon",
-                  "weight": 20.55,
+                  "weight": 20.04,
                   "bridge": {
                     "id": "ondo",
                     "name": "Ondo Tokenized Stocks",
@@ -4102,7 +4708,7 @@
                 {
                   "address": "0x0585756aAFB241b0f8A9Df62Db26c566091Bde0b",
                   "symbol": "COHRon",
-                  "weight": 17.76,
+                  "weight": 16.99,
                   "bridge": {
                     "id": "ondo",
                     "name": "Ondo Tokenized Stocks",
@@ -4123,7 +4729,7 @@
                 {
                   "address": "0x89a9F7114bE6b220fAe645ba0cbB720889867415",
                   "symbol": "CIENon",
-                  "weight": 17.24,
+                  "weight": 16.93,
                   "bridge": {
                     "id": "ondo",
                     "name": "Ondo Tokenized Stocks",
@@ -4144,7 +4750,7 @@
                 {
                   "address": "0xA1DaaB37dA2a29A1eC721922b55962eB8B481001",
                   "symbol": "FNon",
-                  "weight": 4.91,
+                  "weight": 4.64,
                   "bridge": {
                     "id": "ondo",
                     "name": "Ondo Tokenized Stocks",
@@ -4163,7 +4769,7 @@
                   }
                 }
               ],
-              "totalWeight": 60.46
+              "totalWeight": 58.6
             },
             {
               "native": {
@@ -4177,7 +4783,7 @@
                 {
                   "address": "0x0fAcaFB97ffDbA3cAe88512070AF49bd30674cD9",
                   "symbol": "LITEon",
-                  "weight": 21.35,
+                  "weight": 23.12,
                   "bridge": {
                     "id": "ondo",
                     "name": "Ondo Tokenized Stocks",
@@ -4198,7 +4804,7 @@
                 {
                   "address": "0x343324170C91c4D8Cf4D439B3E5a619F50621aE7",
                   "symbol": "TSEMon",
-                  "weight": 7.61,
+                  "weight": 7.63,
                   "bridge": {
                     "id": "ondo",
                     "name": "Ondo Tokenized Stocks",
@@ -4219,7 +4825,7 @@
                 {
                   "address": "0x1dCd320C5d7b84CD407437c58d56CbbDd0D9d8f3",
                   "symbol": "MTSIon",
-                  "weight": 6.47,
+                  "weight": 7.19,
                   "bridge": {
                     "id": "ondo",
                     "name": "Ondo Tokenized Stocks",
@@ -4240,7 +4846,7 @@
                 {
                   "address": "0x149Bda9e7251DC36f536d1fE7F92A5ea203F4F3D",
                   "symbol": "AAOIon",
-                  "weight": 2.68,
+                  "weight": 2.14,
                   "bridge": {
                     "id": "ondo",
                     "name": "Ondo Tokenized Stocks",
@@ -4261,7 +4867,7 @@
                 {
                   "address": "0x0C50323AF81D5C33822c6Add256Fb9093D42BC74",
                   "symbol": "AXTIon",
-                  "weight": 1.43,
+                  "weight": 1.32,
                   "bridge": {
                     "id": "ondo",
                     "name": "Ondo Tokenized Stocks",
@@ -4280,9 +4886,10 @@
                   }
                 }
               ],
-              "totalWeight": 39.54
+              "totalWeight": 41.4
             }
-          ]
+          ],
+          "mandate": "The Reserve AI Photonics DTF (PHOTON) aims to be a weighted basket of public, US-listed photonics companies at the center of the AI buildout.\n\nThe basket shall be composed of companies that generate significant revenue from AI data-center photonics demand, weighted by market capitalization with a 20% cap and a $5B minimum market cap, rebalanced quarterly."
         }
       ],
       "neocloud": [
@@ -4290,60 +4897,61 @@
           "address": "0xf571Fe3F0d74521Bc7310B111Faea931C748f27B",
           "name": "Reserve AI Capacity & Neocloud DTF",
           "symbol": "NEOCLOUD",
-          "price": 69.69783752440426,
-          "marketCap": 2281108.441551208,
+          "price": 54.998176263831155,
+          "marketCap": 1987978.9304538302,
           "chainId": 56,
           "type": "index",
           "status": "active",
           "createdAt": 1781726065,
+          "fee": 0.6,
           "basket": [
             {
               "address": "0x25eD86472cf3012607DC6576c58e6432968255C2",
               "symbol": "CORZon",
               "name": "Core Scientific (Ondo Tokenized)",
-              "weight": "5.87"
+              "weight": "5.93"
             },
             {
               "address": "0x76E39171Cb665a35981e744e2CEB7012F76caEAc",
               "symbol": "CRWVon",
               "name": "CoreWeave (Ondo Tokenized)",
-              "weight": "23.28"
+              "weight": "22.33"
             },
             {
               "address": "0xee268780473E7a0e47baC41547C6E01512555A16",
               "symbol": "NBISon",
               "name": "Nebius Group (Ondo Tokenized)",
-              "weight": "23.62"
+              "weight": "25.71"
             },
             {
               "address": "0x8FD70eE385f470c8D6FDA2D93a4E49C849BAC6a6",
               "symbol": "IRENon",
               "name": "IREN (Ondo Tokenized)",
-              "weight": "15.38"
+              "weight": "14.77"
             },
             {
               "address": "0x3A82f1C847cc55e52e597fD81c63a812C6722541",
               "symbol": "HUTon",
               "name": "Hut 8 (Ondo Tokenized)",
-              "weight": "9.56"
+              "weight": "11.10"
             },
             {
               "address": "0x18De24acb876C0B8392d9C55583Bb21c0355980b",
               "symbol": "APLDon",
               "name": "Applied Digital (Ondo Tokenized)",
-              "weight": "8.31"
+              "weight": "7.71"
             },
             {
               "address": "0xaD56701D9e57957e28e546Db7db508A16d4f86CC",
               "symbol": "WULFon",
               "name": "Terawulf (Ondo Tokenized)",
-              "weight": "7.23"
+              "weight": "6.82"
             },
             {
               "address": "0xDad07D0Ca26ed4109Bc00893dBee3Ed4cE8ce2a4",
               "symbol": "CIFRon",
               "name": "Cipher Mining (Ondo Tokenized)",
-              "weight": "6.75"
+              "weight": "5.63"
             }
           ],
           "brand": {
@@ -5295,19 +5903,219 @@
               "value": 66.6373832317883
             },
             {
-              "timestamp": 1787673462,
-              "value": 69.89159128104704
+              "timestamp": 1787702189,
+              "value": 70.03021874452283
+            },
+            {
+              "timestamp": 1787788586,
+              "value": 70.86582485958577
+            },
+            {
+              "timestamp": 1787875012,
+              "value": 67.79237917811574
+            },
+            {
+              "timestamp": 1787961392,
+              "value": 64.65860870196674
+            },
+            {
+              "timestamp": 1788047787,
+              "value": 64.66764400668704
+            },
+            {
+              "timestamp": 1788134203,
+              "value": 64.66657778381135
+            },
+            {
+              "timestamp": 1788220602,
+              "value": 65.2657471601421
+            },
+            {
+              "timestamp": 1788306982,
+              "value": 62.55407201392497
+            },
+            {
+              "timestamp": 1788393384,
+              "value": 64.46982530847703
+            },
+            {
+              "timestamp": 1788479788,
+              "value": 68.19448170514163
+            },
+            {
+              "timestamp": 1788566164,
+              "value": 71.79612287713135
+            },
+            {
+              "timestamp": 1788652567,
+              "value": 71.8057754817032
+            },
+            {
+              "timestamp": 1788738963,
+              "value": 71.8045915672186
+            },
+            {
+              "timestamp": 1788825376,
+              "value": 71.80340767225402
+            },
+            {
+              "timestamp": 1788911773,
+              "value": 77.24076782974349
+            },
+            {
+              "timestamp": 1788998173,
+              "value": 73.50144819922923
+            },
+            {
+              "timestamp": 1789084571,
+              "value": 70.46353069914153
+            },
+            {
+              "timestamp": 1789170967,
+              "value": 71.78932870996015
+            },
+            {
+              "timestamp": 1789257370,
+              "value": 71.79293174007421
+            },
+            {
+              "timestamp": 1789343779,
+              "value": 71.7917480373538
+            },
+            {
+              "timestamp": 1789430195,
+              "value": 67.91299410708505
+            },
+            {
+              "timestamp": 1789516579,
+              "value": 65.25382790212474
+            },
+            {
+              "timestamp": 1789602983,
+              "value": 69.66403840796501
+            },
+            {
+              "timestamp": 1789689376,
+              "value": 68.63706944107895
+            },
+            {
+              "timestamp": 1789775786,
+              "value": 71.67921054401401
+            },
+            {
+              "timestamp": 1789862179,
+              "value": 71.66743084055356
+            },
+            {
+              "timestamp": 1789948587,
+              "value": 71.66624920705851
+            },
+            {
+              "timestamp": 1790034988,
+              "value": 74.63800251170588
+            },
+            {
+              "timestamp": 1790121401,
+              "value": 75.68463958667856
+            },
+            {
+              "timestamp": 1790207803,
+              "value": 73.16871372919982
+            },
+            {
+              "timestamp": 1790294206,
+              "value": 74.40293478862
+            },
+            {
+              "timestamp": 1790380599,
+              "value": 72.29880219835806
+            },
+            {
+              "timestamp": 1790467006,
+              "value": 72.29346617682216
+            },
+            {
+              "timestamp": 1790553403,
+              "value": 72.29227422142336
+            },
+            {
+              "timestamp": 1790639815,
+              "value": 69.51601881294634
+            },
+            {
+              "timestamp": 1790726199,
+              "value": 70.33926030100042
+            },
+            {
+              "timestamp": 1790812618,
+              "value": 69.1574382349379
+            },
+            {
+              "timestamp": 1790899037,
+              "value": 68.79493493458531
+            },
+            {
+              "timestamp": 1790985396,
+              "value": 70.71256986373044
+            },
+            {
+              "timestamp": 1791071790,
+              "value": 70.68300292212108
+            },
+            {
+              "timestamp": 1791158186,
+              "value": 70.68183751961114
+            },
+            {
+              "timestamp": 1791244563,
+              "value": 69.01596060575679
+            },
+            {
+              "timestamp": 1791330977,
+              "value": 71.65793114711956
+            },
+            {
+              "timestamp": 1791417371,
+              "value": 68.65328716412249
+            },
+            {
+              "timestamp": 1791503782,
+              "value": 63.740365445447836
+            },
+            {
+              "timestamp": 1791590194,
+              "value": 63.952230872915585
+            },
+            {
+              "timestamp": 1791676602,
+              "value": 63.94119549363828
+            },
+            {
+              "timestamp": 1791762997,
+              "value": 63.94014124825203
+            },
+            {
+              "timestamp": 1791849384,
+              "value": 61.67226068337509
+            },
+            {
+              "timestamp": 1791935804,
+              "value": 61.04489310468605
+            },
+            {
+              "timestamp": 1791986256,
+              "value": 55.14877054515692
             }
           ],
           "priceChange": {
             "period": "ytd",
             "displayPeriod": "YTD",
-            "ratio": 0.4246547205679382,
-            "percent": 42.46547205679382,
+            "ratio": 0.12414032719243093,
+            "percent": 12.414032719243092,
             "startPrice": 49.05861769312411,
-            "endPrice": 69.89159128104704,
+            "endPrice": 55.14877054515692,
             "startTimestamp": 1767225600,
-            "endTimestamp": 1787673462
+            "endTimestamp": 1791986256
           },
           "exposure": [
             {
@@ -5322,7 +6130,7 @@
                 {
                   "address": "0xee268780473E7a0e47baC41547C6E01512555A16",
                   "symbol": "NBISon",
-                  "weight": 23.62,
+                  "weight": 25.71,
                   "bridge": {
                     "id": "ondo",
                     "name": "Ondo Tokenized Stocks",
@@ -5343,7 +6151,7 @@
                 {
                   "address": "0x76E39171Cb665a35981e744e2CEB7012F76caEAc",
                   "symbol": "CRWVon",
-                  "weight": 23.28,
+                  "weight": 22.33,
                   "bridge": {
                     "id": "ondo",
                     "name": "Ondo Tokenized Stocks",
@@ -5364,7 +6172,7 @@
                 {
                   "address": "0x8FD70eE385f470c8D6FDA2D93a4E49C849BAC6a6",
                   "symbol": "IRENon",
-                  "weight": 15.38,
+                  "weight": 14.77,
                   "bridge": {
                     "id": "ondo",
                     "name": "Ondo Tokenized Stocks",
@@ -5385,7 +6193,7 @@
                 {
                   "address": "0x3A82f1C847cc55e52e597fD81c63a812C6722541",
                   "symbol": "HUTon",
-                  "weight": 9.56,
+                  "weight": 11.1,
                   "bridge": {
                     "id": "ondo",
                     "name": "Ondo Tokenized Stocks",
@@ -5406,7 +6214,7 @@
                 {
                   "address": "0x18De24acb876C0B8392d9C55583Bb21c0355980b",
                   "symbol": "APLDon",
-                  "weight": 8.31,
+                  "weight": 7.71,
                   "bridge": {
                     "id": "ondo",
                     "name": "Ondo Tokenized Stocks",
@@ -5427,28 +6235,7 @@
                 {
                   "address": "0xaD56701D9e57957e28e546Db7db508A16d4f86CC",
                   "symbol": "WULFon",
-                  "weight": 7.23,
-                  "bridge": {
-                    "id": "ondo",
-                    "name": "Ondo Tokenized Stocks",
-                    "url": "https://docs.ondo.finance/",
-                    "description": "An Ondo Tokenized Stock is a blockchain token that gives you the same economic exposure as owning the underlying stock or ETF. Please read the documentation for more details.",
-                    "logo": "https://storage-logos.reserve.org/logos/Ondo-Icon-Black.png",
-                    "logoDark": "https://storage-logos.reserve.org/logos/Ondo-Icon-White.png",
-                    "risks": [
-                      "Custodial risks - Tokens are claims on structures holding the underlying equities via third-party custodians, whose failure or insolvency could delay settlement or cause loss of value.",
-                      "Regulatory & compliance risks - Tokenized equities face evolving rules and may require whitelisting or eligibility, which can force restricted access, halted redemptions, or unwinding.",
-                      "Liquidity risks - On-chain trading is 24/7, but mint/redeem may be limited or windowed, and in stressed markets token prices can deviate from the underlying equities.",
-                      "Market access & redemption risks - Mint/redeem may be capacity-limited, whitelisted, or tied to market hours, which can block arbitrage and impair exits near NAV.",
-                      "Valuation & NAV risks - NAV relies on pricing from on-chain markets or oracles that can be stale or manipulated, distorting marks and mint/redeem pricing."
-                    ],
-                    "wrappedVersion": false
-                  }
-                },
-                {
-                  "address": "0xDad07D0Ca26ed4109Bc00893dBee3Ed4cE8ce2a4",
-                  "symbol": "CIFRon",
-                  "weight": 6.75,
+                  "weight": 6.82,
                   "bridge": {
                     "id": "ondo",
                     "name": "Ondo Tokenized Stocks",
@@ -5469,7 +6256,28 @@
                 {
                   "address": "0x25eD86472cf3012607DC6576c58e6432968255C2",
                   "symbol": "CORZon",
-                  "weight": 5.87,
+                  "weight": 5.93,
+                  "bridge": {
+                    "id": "ondo",
+                    "name": "Ondo Tokenized Stocks",
+                    "url": "https://docs.ondo.finance/",
+                    "description": "An Ondo Tokenized Stock is a blockchain token that gives you the same economic exposure as owning the underlying stock or ETF. Please read the documentation for more details.",
+                    "logo": "https://storage-logos.reserve.org/logos/Ondo-Icon-Black.png",
+                    "logoDark": "https://storage-logos.reserve.org/logos/Ondo-Icon-White.png",
+                    "risks": [
+                      "Custodial risks - Tokens are claims on structures holding the underlying equities via third-party custodians, whose failure or insolvency could delay settlement or cause loss of value.",
+                      "Regulatory & compliance risks - Tokenized equities face evolving rules and may require whitelisting or eligibility, which can force restricted access, halted redemptions, or unwinding.",
+                      "Liquidity risks - On-chain trading is 24/7, but mint/redeem may be limited or windowed, and in stressed markets token prices can deviate from the underlying equities.",
+                      "Market access & redemption risks - Mint/redeem may be capacity-limited, whitelisted, or tied to market hours, which can block arbitrage and impair exits near NAV.",
+                      "Valuation & NAV risks - NAV relies on pricing from on-chain markets or oracles that can be stale or manipulated, distorting marks and mint/redeem pricing."
+                    ],
+                    "wrappedVersion": false
+                  }
+                },
+                {
+                  "address": "0xDad07D0Ca26ed4109Bc00893dBee3Ed4cE8ce2a4",
+                  "symbol": "CIFRon",
+                  "weight": 5.63,
                   "bridge": {
                     "id": "ondo",
                     "name": "Ondo Tokenized Stocks",
@@ -5490,7 +6298,8 @@
               ],
               "totalWeight": 100
             }
-          ]
+          ],
+          "mandate": "The Reserve AI Capacity & Neocloud DTF (NEOCLOUD) aims to be a weighted basket of public, US-listed neocloud and AI data-center companies at the center of the AI buildout.  \n\nThe basket shall be composed of companies that generate significant revenue from AI compute demand, weighted by market capitalization with a 20% cap and a $5B minimum market cap, rebalanced quarterly. "
         }
       ],
       "robots": [
@@ -5498,66 +6307,67 @@
           "address": "0x75617e7653f86f074Cc30b9Fd4eBf52bA9b62247",
           "name": "Reserve Robotics DTF",
           "symbol": "ROBOTS",
-          "price": 91.78504745006153,
-          "marketCap": 1460290.2556821,
+          "price": 89.5288754478213,
+          "marketCap": 1424885.1854927111,
           "chainId": 56,
           "type": "index",
           "status": "active",
           "createdAt": 1781724769,
+          "fee": 0.6,
           "basket": [
             {
               "address": "0x30033A17ea24E90631532582a1917c64AFBF87Af",
               "symbol": "OUSTon",
               "name": "Ouster (Ondo Tokenized)",
-              "weight": "2.14"
+              "weight": "2.02"
             },
             {
               "address": "0x784584933C2192Caa062E90d8140D94768CE62d8",
               "symbol": "ISRGon",
               "name": "Intuitive Surgical (Ondo Tokenized)",
-              "weight": "19.71"
+              "weight": "22.54"
             },
             {
               "address": "0x95F7423c51Eab71cBD00ca855B0B2B2153F14184",
               "symbol": "ROKon",
               "name": "Rockwell Automation (Ondo Tokenized)",
-              "weight": "20.11"
+              "weight": "20.31"
             },
             {
               "address": "0xc79Fc7aF952c8B41c6b7b7657dd24F44f7C10F2A",
               "symbol": "SYMon",
               "name": "Symbotic (Ondo Tokenized)",
-              "weight": "21.61"
+              "weight": "21.21"
             },
             {
               "address": "0x80F03ABCb2BD85237740dD69f87d2F5De3909012",
               "symbol": "LSCCon",
               "name": "Lattice Semiconductor (Ondo Tokenized)",
-              "weight": "14.42"
+              "weight": "14.86"
             },
             {
               "address": "0x66a1409FE303d00209202933e3d31eE43AaAB39d",
               "symbol": "AURon",
               "name": "Aurora Innovation (Ondo Tokenized)",
-              "weight": "10.43"
+              "weight": "9.12"
             },
             {
               "address": "0x847ef23A3F99aF79A185ce033e1664165b846eEa",
               "symbol": "HSAIon",
               "name": "Hesai Group (Ondo Tokenized)",
-              "weight": "2.74"
+              "weight": "2.19"
             },
             {
               "address": "0xCC977B493f52B4b6B6a0c3594530f2BaEe565E96",
               "symbol": "MBLYon",
               "name": "Mobileye Global (Ondo Tokenized)",
-              "weight": "6.64"
+              "weight": "5.73"
             },
             {
               "address": "0x6cF3b84f0Ba4d86d9f6987812A11Db2c447D9483",
               "symbol": "HIMXon",
               "name": "Himax Technologies (Ondo Tokenized)",
-              "weight": "2.20"
+              "weight": "2.02"
             }
           ],
           "brand": {
@@ -6509,19 +7319,219 @@
               "value": 90.79000625164893
             },
             {
-              "timestamp": 1787673462,
-              "value": 91.57694069273519
+              "timestamp": 1787702189,
+              "value": 91.42958776074927
+            },
+            {
+              "timestamp": 1787788586,
+              "value": 91.90836024030429
+            },
+            {
+              "timestamp": 1787875012,
+              "value": 91.95945407994877
+            },
+            {
+              "timestamp": 1787961392,
+              "value": 90.88492703250922
+            },
+            {
+              "timestamp": 1788047787,
+              "value": 90.94440720009726
+            },
+            {
+              "timestamp": 1788134203,
+              "value": 90.94290773295471
+            },
+            {
+              "timestamp": 1788220602,
+              "value": 90.22475368749923
+            },
+            {
+              "timestamp": 1788306982,
+              "value": 87.8204678483754
+            },
+            {
+              "timestamp": 1788393384,
+              "value": 89.93320054591021
+            },
+            {
+              "timestamp": 1788479788,
+              "value": 92.02314092189106
+            },
+            {
+              "timestamp": 1788566164,
+              "value": 93.02658227134104
+            },
+            {
+              "timestamp": 1788652567,
+              "value": 93.0201824285488
+            },
+            {
+              "timestamp": 1788738963,
+              "value": 93.01864873657763
+            },
+            {
+              "timestamp": 1788825376,
+              "value": 93.01711506989359
+            },
+            {
+              "timestamp": 1788911773,
+              "value": 92.94088000802941
+            },
+            {
+              "timestamp": 1788998173,
+              "value": 91.83296660863712
+            },
+            {
+              "timestamp": 1789084571,
+              "value": 90.78288879673072
+            },
+            {
+              "timestamp": 1789170967,
+              "value": 93.05629948865783
+            },
+            {
+              "timestamp": 1789257370,
+              "value": 93.05476520119822
+            },
+            {
+              "timestamp": 1789343779,
+              "value": 93.05323093903553
+            },
+            {
+              "timestamp": 1789430195,
+              "value": 90.92785639781934
+            },
+            {
+              "timestamp": 1789516579,
+              "value": 90.95424186940694
+            },
+            {
+              "timestamp": 1789602983,
+              "value": 91.23739834407898
+            },
+            {
+              "timestamp": 1789689376,
+              "value": 92.44873573306045
+            },
+            {
+              "timestamp": 1789775786,
+              "value": 91.87364609752683
+            },
+            {
+              "timestamp": 1789862179,
+              "value": 91.87027008967709
+            },
+            {
+              "timestamp": 1789948587,
+              "value": 91.86875535715403
+            },
+            {
+              "timestamp": 1790034988,
+              "value": 95.04304767714255
+            },
+            {
+              "timestamp": 1790121401,
+              "value": 96.19329219001352
+            },
+            {
+              "timestamp": 1790207803,
+              "value": 94.8322634237961
+            },
+            {
+              "timestamp": 1790294206,
+              "value": 94.64628934502755
+            },
+            {
+              "timestamp": 1790380599,
+              "value": 95.95447821015864
+            },
+            {
+              "timestamp": 1790467006,
+              "value": 95.95969787227001
+            },
+            {
+              "timestamp": 1790553403,
+              "value": 95.95811571435186
+            },
+            {
+              "timestamp": 1790639815,
+              "value": 93.73648989093905
+            },
+            {
+              "timestamp": 1790726199,
+              "value": 93.72309146852331
+            },
+            {
+              "timestamp": 1790812618,
+              "value": 93.96614014345
+            },
+            {
+              "timestamp": 1790899037,
+              "value": 94.89160106958109
+            },
+            {
+              "timestamp": 1790985396,
+              "value": 95.61984666181245
+            },
+            {
+              "timestamp": 1791071790,
+              "value": 95.62146003313538
+            },
+            {
+              "timestamp": 1791158186,
+              "value": 95.61988345199252
+            },
+            {
+              "timestamp": 1791244563,
+              "value": 96.79791815329529
+            },
+            {
+              "timestamp": 1791330977,
+              "value": 97.21392211856005
+            },
+            {
+              "timestamp": 1791417371,
+              "value": 95.75269011543014
+            },
+            {
+              "timestamp": 1791503782,
+              "value": 93.83334033342393
+            },
+            {
+              "timestamp": 1791590194,
+              "value": 94.79977803228378
+            },
+            {
+              "timestamp": 1791676602,
+              "value": 94.79821499881469
+            },
+            {
+              "timestamp": 1791762997,
+              "value": 94.79665199111648
+            },
+            {
+              "timestamp": 1791849384,
+              "value": 92.61490359285781
+            },
+            {
+              "timestamp": 1791935804,
+              "value": 91.86115937014551
+            },
+            {
+              "timestamp": 1791986256,
+              "value": 90.0355547475121
             }
           ],
           "priceChange": {
             "period": "ytd",
             "displayPeriod": "YTD",
-            "ratio": -0.09077592154660252,
-            "percent": -9.077592154660252,
+            "ratio": -0.1060796126830948,
+            "percent": -10.60796126830948,
             "startPrice": 100.71988067947872,
-            "endPrice": 91.57694069273519,
+            "endPrice": 90.0355547475121,
             "startTimestamp": 1767225600,
-            "endTimestamp": 1787673462
+            "endTimestamp": 1791986256
           },
           "exposure": [
             {
@@ -6534,9 +7544,9 @@
               },
               "tokens": [
                 {
-                  "address": "0xc79Fc7aF952c8B41c6b7b7657dd24F44f7C10F2A",
-                  "symbol": "SYMon",
-                  "weight": 21.61,
+                  "address": "0x784584933C2192Caa062E90d8140D94768CE62d8",
+                  "symbol": "ISRGon",
+                  "weight": 22.54,
                   "bridge": {
                     "id": "ondo",
                     "name": "Ondo Tokenized Stocks",
@@ -6555,9 +7565,9 @@
                   }
                 },
                 {
-                  "address": "0x784584933C2192Caa062E90d8140D94768CE62d8",
-                  "symbol": "ISRGon",
-                  "weight": 19.71,
+                  "address": "0xc79Fc7aF952c8B41c6b7b7657dd24F44f7C10F2A",
+                  "symbol": "SYMon",
+                  "weight": 21.21,
                   "bridge": {
                     "id": "ondo",
                     "name": "Ondo Tokenized Stocks",
@@ -6578,7 +7588,7 @@
                 {
                   "address": "0x80F03ABCb2BD85237740dD69f87d2F5De3909012",
                   "symbol": "LSCCon",
-                  "weight": 14.42,
+                  "weight": 14.86,
                   "bridge": {
                     "id": "ondo",
                     "name": "Ondo Tokenized Stocks",
@@ -6599,7 +7609,7 @@
                 {
                   "address": "0x66a1409FE303d00209202933e3d31eE43AaAB39d",
                   "symbol": "AURon",
-                  "weight": 10.43,
+                  "weight": 9.12,
                   "bridge": {
                     "id": "ondo",
                     "name": "Ondo Tokenized Stocks",
@@ -6620,7 +7630,7 @@
                 {
                   "address": "0xCC977B493f52B4b6B6a0c3594530f2BaEe565E96",
                   "symbol": "MBLYon",
-                  "weight": 6.64,
+                  "weight": 5.73,
                   "bridge": {
                     "id": "ondo",
                     "name": "Ondo Tokenized Stocks",
@@ -6641,28 +7651,7 @@
                 {
                   "address": "0x847ef23A3F99aF79A185ce033e1664165b846eEa",
                   "symbol": "HSAIon",
-                  "weight": 2.74,
-                  "bridge": {
-                    "id": "ondo",
-                    "name": "Ondo Tokenized Stocks",
-                    "url": "https://docs.ondo.finance/",
-                    "description": "An Ondo Tokenized Stock is a blockchain token that gives you the same economic exposure as owning the underlying stock or ETF. Please read the documentation for more details.",
-                    "logo": "https://storage-logos.reserve.org/logos/Ondo-Icon-Black.png",
-                    "logoDark": "https://storage-logos.reserve.org/logos/Ondo-Icon-White.png",
-                    "risks": [
-                      "Custodial risks - Tokens are claims on structures holding the underlying equities via third-party custodians, whose failure or insolvency could delay settlement or cause loss of value.",
-                      "Regulatory & compliance risks - Tokenized equities face evolving rules and may require whitelisting or eligibility, which can force restricted access, halted redemptions, or unwinding.",
-                      "Liquidity risks - On-chain trading is 24/7, but mint/redeem may be limited or windowed, and in stressed markets token prices can deviate from the underlying equities.",
-                      "Market access & redemption risks - Mint/redeem may be capacity-limited, whitelisted, or tied to market hours, which can block arbitrage and impair exits near NAV.",
-                      "Valuation & NAV risks - NAV relies on pricing from on-chain markets or oracles that can be stale or manipulated, distorting marks and mint/redeem pricing."
-                    ],
-                    "wrappedVersion": false
-                  }
-                },
-                {
-                  "address": "0x6cF3b84f0Ba4d86d9f6987812A11Db2c447D9483",
-                  "symbol": "HIMXon",
-                  "weight": 2.2,
+                  "weight": 2.19,
                   "bridge": {
                     "id": "ondo",
                     "name": "Ondo Tokenized Stocks",
@@ -6683,7 +7672,28 @@
                 {
                   "address": "0x30033A17ea24E90631532582a1917c64AFBF87Af",
                   "symbol": "OUSTon",
-                  "weight": 2.14,
+                  "weight": 2.02,
+                  "bridge": {
+                    "id": "ondo",
+                    "name": "Ondo Tokenized Stocks",
+                    "url": "https://docs.ondo.finance/",
+                    "description": "An Ondo Tokenized Stock is a blockchain token that gives you the same economic exposure as owning the underlying stock or ETF. Please read the documentation for more details.",
+                    "logo": "https://storage-logos.reserve.org/logos/Ondo-Icon-Black.png",
+                    "logoDark": "https://storage-logos.reserve.org/logos/Ondo-Icon-White.png",
+                    "risks": [
+                      "Custodial risks - Tokens are claims on structures holding the underlying equities via third-party custodians, whose failure or insolvency could delay settlement or cause loss of value.",
+                      "Regulatory & compliance risks - Tokenized equities face evolving rules and may require whitelisting or eligibility, which can force restricted access, halted redemptions, or unwinding.",
+                      "Liquidity risks - On-chain trading is 24/7, but mint/redeem may be limited or windowed, and in stressed markets token prices can deviate from the underlying equities.",
+                      "Market access & redemption risks - Mint/redeem may be capacity-limited, whitelisted, or tied to market hours, which can block arbitrage and impair exits near NAV.",
+                      "Valuation & NAV risks - NAV relies on pricing from on-chain markets or oracles that can be stale or manipulated, distorting marks and mint/redeem pricing."
+                    ],
+                    "wrappedVersion": false
+                  }
+                },
+                {
+                  "address": "0x6cF3b84f0Ba4d86d9f6987812A11Db2c447D9483",
+                  "symbol": "HIMXon",
+                  "weight": 2.02,
                   "bridge": {
                     "id": "ondo",
                     "name": "Ondo Tokenized Stocks",
@@ -6702,7 +7712,7 @@
                   }
                 }
               ],
-              "totalWeight": 79.89
+              "totalWeight": 79.69
             },
             {
               "native": {
@@ -6716,7 +7726,7 @@
                 {
                   "address": "0x95F7423c51Eab71cBD00ca855B0B2B2153F14184",
                   "symbol": "ROKon",
-                  "weight": 20.11,
+                  "weight": 20.31,
                   "bridge": {
                     "id": "ondo",
                     "name": "Ondo Tokenized Stocks",
@@ -6735,9 +7745,1389 @@
                   }
                 }
               ],
-              "totalWeight": 20.11
+              "totalWeight": 20.31
             }
-          ]
+          ],
+          "mandate": "The Reserve Robotics DTF (ROBOTS) aims to be a weighted basket of public, US-listed robotics and automation companies at the center of the AI buildout.  \n\nThe basket shall be composed of companies with significant and growing exposure to robotics and automation demand, weighted by market capitalization with a 20% cap and a $2B minimum market cap, rebalanced quarterly. "
+        }
+      ],
+      "mag7": [
+        {
+          "address": "0xCEF8Db49E456f872E288E1C042F916E9ceD7c781",
+          "name": "Reserve Magnificent 7 DTF",
+          "symbol": "MAG7",
+          "price": 108.49633984686201,
+          "marketCap": 420842.4958998867,
+          "chainId": 8453,
+          "type": "index",
+          "status": "active",
+          "createdAt": 1787228703,
+          "tags": [
+            "RWA"
+          ],
+          "fee": 0.6,
+          "basket": [
+            {
+              "address": "0xb2000000000000000000001e800a7f5189430cD0",
+              "symbol": "TSLAc",
+              "name": "Tesla Inc.",
+              "weight": "13.46"
+            },
+            {
+              "address": "0xb200000000000000000000C2e324d24d7eEcd1fb",
+              "symbol": "AAPLc",
+              "name": "Apple Inc.",
+              "weight": "14.71"
+            },
+            {
+              "address": "0xb2000000000000000000002D0BA3164cc74f58B7",
+              "symbol": "GOOGLc",
+              "name": "Alphabet Inc.",
+              "weight": "14.14"
+            },
+            {
+              "address": "0xb2000000000000000000008bC8786B856E61707C",
+              "symbol": "METAc",
+              "name": "Meta Platforms Inc.",
+              "weight": "16.30"
+            },
+            {
+              "address": "0xb20000000000000000000078ee7ce2fE4908108C",
+              "symbol": "NVDAc",
+              "name": "NVIDIA Corporation",
+              "weight": "13.28"
+            },
+            {
+              "address": "0xb200000000000000000000d9192b6B456483C2E8",
+              "symbol": "AMZNc",
+              "name": "Amazon.com Inc.",
+              "weight": "13.40"
+            },
+            {
+              "address": "0xB200000000000000000000Ab99cFa739E253872B",
+              "symbol": "MSFTc",
+              "name": "Microsoft Corporation",
+              "weight": "14.71"
+            }
+          ],
+          "brand": {
+            "icon": "https://folio-assets.reserve.org/0xcef8db49e456f872e288e1c042f916e9ced7c781/mupND8QUUvXxzqKDLfYQHYMkBg1Lxv2Gn7Nsbhq6KaVwfopl.svg",
+            "cover": "",
+            "video": "",
+            "tags": [
+              "RWA"
+            ],
+            "about": "",
+            "files": []
+          },
+          "performance": [
+            {
+              "timestamp": 1767225600,
+              "value": 97.41150362148713
+            },
+            {
+              "timestamp": 1767312000,
+              "value": 97.3948833721946
+            },
+            {
+              "timestamp": 1767398400,
+              "value": 97.38070191388995
+            },
+            {
+              "timestamp": 1767484800,
+              "value": 97.37837929766194
+            },
+            {
+              "timestamp": 1767571200,
+              "value": 97.37789072394114
+            },
+            {
+              "timestamp": 1767657600,
+              "value": 97.40074507125571
+            },
+            {
+              "timestamp": 1767744000,
+              "value": 97.12817758160381
+            },
+            {
+              "timestamp": 1767830400,
+              "value": 97.19507484368636
+            },
+            {
+              "timestamp": 1767916800,
+              "value": 96.85683035362287
+            },
+            {
+              "timestamp": 1768003200,
+              "value": 97.26194221765556
+            },
+            {
+              "timestamp": 1768089600,
+              "value": 97.26762795678364
+            },
+            {
+              "timestamp": 1768176000,
+              "value": 97.25411193612511
+            },
+            {
+              "timestamp": 1768262400,
+              "value": 97.06780896274475
+            },
+            {
+              "timestamp": 1768348800,
+              "value": 97.14576492181733
+            },
+            {
+              "timestamp": 1768435200,
+              "value": 96.4195569998202
+            },
+            {
+              "timestamp": 1768521600,
+              "value": 96.72989122132047
+            },
+            {
+              "timestamp": 1768608000,
+              "value": 96.38488665150534
+            },
+            {
+              "timestamp": 1768694400,
+              "value": 96.47343693873022
+            },
+            {
+              "timestamp": 1768780800,
+              "value": 96.3229597952453
+            },
+            {
+              "timestamp": 1768867200,
+              "value": 96.33074196835933
+            },
+            {
+              "timestamp": 1768953600,
+              "value": 94.81901394535937
+            },
+            {
+              "timestamp": 1769040000,
+              "value": 95.76611580691599
+            },
+            {
+              "timestamp": 1769126400,
+              "value": 96.66753799807938
+            },
+            {
+              "timestamp": 1769212800,
+              "value": 96.89574297795801
+            },
+            {
+              "timestamp": 1769299200,
+              "value": 96.89796073057795
+            },
+            {
+              "timestamp": 1769385600,
+              "value": 96.90320561571892
+            },
+            {
+              "timestamp": 1769472000,
+              "value": 97.91162736962342
+            },
+            {
+              "timestamp": 1769558400,
+              "value": 98.32453598438771
+            },
+            {
+              "timestamp": 1769644800,
+              "value": 99.47534602696028
+            },
+            {
+              "timestamp": 1769731200,
+              "value": 99.90055897611542
+            },
+            {
+              "timestamp": 1769817600,
+              "value": 99.45584254037047
+            },
+            {
+              "timestamp": 1769904000,
+              "value": 99.46949723954668
+            },
+            {
+              "timestamp": 1769990400,
+              "value": 99.46569093485253
+            },
+            {
+              "timestamp": 1770076800,
+              "value": 99.86923655031649
+            },
+            {
+              "timestamp": 1770163200,
+              "value": 98.79664892560432
+            },
+            {
+              "timestamp": 1770249600,
+              "value": 98.1113852893677
+            },
+            {
+              "timestamp": 1770336000,
+              "value": 96.96900059970895
+            },
+            {
+              "timestamp": 1770422400,
+              "value": 98.14986929507243
+            },
+            {
+              "timestamp": 1770508800,
+              "value": 98.15771230602378
+            },
+            {
+              "timestamp": 1770595200,
+              "value": 98.1763422930501
+            },
+            {
+              "timestamp": 1770681600,
+              "value": 98.61252852715322
+            },
+            {
+              "timestamp": 1770768000,
+              "value": 98.28528770114592
+            },
+            {
+              "timestamp": 1770854400,
+              "value": 98.07089214368466
+            },
+            {
+              "timestamp": 1770940800,
+              "value": 96.393038458988
+            },
+            {
+              "timestamp": 1771027200,
+              "value": 95.59743836493432
+            },
+            {
+              "timestamp": 1771113600,
+              "value": 95.59989842043926
+            },
+            {
+              "timestamp": 1771200000,
+              "value": 95.59991309416365
+            },
+            {
+              "timestamp": 1771286400,
+              "value": 95.57963828663175
+            },
+            {
+              "timestamp": 1771372800,
+              "value": 96.15367761498585
+            },
+            {
+              "timestamp": 1771459200,
+              "value": 96.22290063031944
+            },
+            {
+              "timestamp": 1771545600,
+              "value": 96.36978511373536
+            },
+            {
+              "timestamp": 1771632000,
+              "value": 97.29138979016707
+            },
+            {
+              "timestamp": 1771718400,
+              "value": 97.29705760189833
+            },
+            {
+              "timestamp": 1771804800,
+              "value": 97.2942052715073
+            },
+            {
+              "timestamp": 1771891200,
+              "value": 97.02127258894366
+            },
+            {
+              "timestamp": 1771977600,
+              "value": 97.26817577601962
+            },
+            {
+              "timestamp": 1772064000,
+              "value": 97.7878082902614
+            },
+            {
+              "timestamp": 1772150400,
+              "value": 96.90851870362452
+            },
+            {
+              "timestamp": 1772236800,
+              "value": 95.97599904673284
+            },
+            {
+              "timestamp": 1772323200,
+              "value": 95.96844471963313
+            },
+            {
+              "timestamp": 1772409600,
+              "value": 95.97386884357647
+            },
+            {
+              "timestamp": 1772496000,
+              "value": 96.20488140138238
+            },
+            {
+              "timestamp": 1772582400,
+              "value": 96.02451322130216
+            },
+            {
+              "timestamp": 1772668800,
+              "value": 96.65819556367522
+            },
+            {
+              "timestamp": 1772755200,
+              "value": 96.15059885829915
+            },
+            {
+              "timestamp": 1772841600,
+              "value": 95.05732668383773
+            },
+            {
+              "timestamp": 1772928000,
+              "value": 95.17853047085677
+            },
+            {
+              "timestamp": 1773014400,
+              "value": 95.07424255632736
+            },
+            {
+              "timestamp": 1773100800,
+              "value": 95.74190636203313
+            },
+            {
+              "timestamp": 1773187200,
+              "value": 96.48699430523257
+            },
+            {
+              "timestamp": 1773273600,
+              "value": 96.11829208168119
+            },
+            {
+              "timestamp": 1773360000,
+              "value": 95.50720565561281
+            },
+            {
+              "timestamp": 1773446400,
+              "value": 94.29286863337246
+            },
+            {
+              "timestamp": 1773532800,
+              "value": 94.2831673441157
+            },
+            {
+              "timestamp": 1773619200,
+              "value": 94.28981251372582
+            },
+            {
+              "timestamp": 1773705600,
+              "value": 95.02020623315
+            },
+            {
+              "timestamp": 1773792000,
+              "value": 95.27723686792643
+            },
+            {
+              "timestamp": 1773878400,
+              "value": 94.64650770558671
+            },
+            {
+              "timestamp": 1773964800,
+              "value": 94.39386573628013
+            },
+            {
+              "timestamp": 1774051200,
+              "value": 93.67327022022717
+            },
+            {
+              "timestamp": 1774137600,
+              "value": 93.66222371707309
+            },
+            {
+              "timestamp": 1774224000,
+              "value": 93.67241251325844
+            },
+            {
+              "timestamp": 1774310400,
+              "value": 93.99286802420536
+            },
+            {
+              "timestamp": 1774396800,
+              "value": 93.56708299805878
+            },
+            {
+              "timestamp": 1774483200,
+              "value": 93.3323030382734
+            },
+            {
+              "timestamp": 1774569600,
+              "value": 91.66250430236349
+            },
+            {
+              "timestamp": 1774656000,
+              "value": 89.83317510188559
+            },
+            {
+              "timestamp": 1774742400,
+              "value": 89.83548542460635
+            },
+            {
+              "timestamp": 1774828800,
+              "value": 89.83333864511982
+            },
+            {
+              "timestamp": 1774915200,
+              "value": 89.84236855242811
+            },
+            {
+              "timestamp": 1775001600,
+              "value": 92.85418375184172
+            },
+            {
+              "timestamp": 1775088000,
+              "value": 93.28569005999991
+            },
+            {
+              "timestamp": 1775174400,
+              "value": 93.20365042320377
+            },
+            {
+              "timestamp": 1775260800,
+              "value": 93.19958778834977
+            },
+            {
+              "timestamp": 1775347200,
+              "value": 93.1839983674484
+            },
+            {
+              "timestamp": 1775433600,
+              "value": 93.186476125087
+            },
+            {
+              "timestamp": 1775520000,
+              "value": 93.41243470815006
+            },
+            {
+              "timestamp": 1775606400,
+              "value": 95.11920458872915
+            },
+            {
+              "timestamp": 1775692800,
+              "value": 95.51506571072285
+            },
+            {
+              "timestamp": 1775779200,
+              "value": 96.10478839800668
+            },
+            {
+              "timestamp": 1775865600,
+              "value": 96.4951199499728
+            },
+            {
+              "timestamp": 1775952000,
+              "value": 96.5054894898463
+            },
+            {
+              "timestamp": 1776038400,
+              "value": 96.50452842004192
+            },
+            {
+              "timestamp": 1776124800,
+              "value": 96.78603364150575
+            },
+            {
+              "timestamp": 1776211200,
+              "value": 98.41842693487756
+            },
+            {
+              "timestamp": 1776297600,
+              "value": 99.32631701961813
+            },
+            {
+              "timestamp": 1776384000,
+              "value": 99.2055014561301
+            },
+            {
+              "timestamp": 1776470400,
+              "value": 100.13105409246425
+            },
+            {
+              "timestamp": 1776556800,
+              "value": 100.12197655441608
+            },
+            {
+              "timestamp": 1776643200,
+              "value": 100.12655567935899
+            },
+            {
+              "timestamp": 1776729600,
+              "value": 99.74016050160473
+            },
+            {
+              "timestamp": 1776816000,
+              "value": 99.36093301668105
+            },
+            {
+              "timestamp": 1776902400,
+              "value": 99.86621984244051
+            },
+            {
+              "timestamp": 1776988800,
+              "value": 99.41424874669661
+            },
+            {
+              "timestamp": 1777075200,
+              "value": 100.40194452794556
+            },
+            {
+              "timestamp": 1777161600,
+              "value": 100.40210486409029
+            },
+            {
+              "timestamp": 1777248000,
+              "value": 100.40599175452208
+            },
+            {
+              "timestamp": 1777334400,
+              "value": 101.38926395727812
+            },
+            {
+              "timestamp": 1777420800,
+              "value": 100.82684821225077
+            },
+            {
+              "timestamp": 1777507200,
+              "value": 100.60758301577329
+            },
+            {
+              "timestamp": 1777593600,
+              "value": 100.34342020173753
+            },
+            {
+              "timestamp": 1777680000,
+              "value": 100.29652453697793
+            },
+            {
+              "timestamp": 1777766400,
+              "value": 100.3096451904495
+            },
+            {
+              "timestamp": 1777852800,
+              "value": 100.30693261728582
+            },
+            {
+              "timestamp": 1777939200,
+              "value": 100.02350155632051
+            },
+            {
+              "timestamp": 1778025600,
+              "value": 100.61015211559277
+            },
+            {
+              "timestamp": 1778112000,
+              "value": 101.7949888894083
+            },
+            {
+              "timestamp": 1778198400,
+              "value": 102.19007045122453
+            },
+            {
+              "timestamp": 1778284800,
+              "value": 102.6399056802942
+            },
+            {
+              "timestamp": 1778371200,
+              "value": 102.63887499258591
+            },
+            {
+              "timestamp": 1778457600,
+              "value": 102.63132045908142
+            },
+            {
+              "timestamp": 1778544000,
+              "value": 102.19173458535485
+            },
+            {
+              "timestamp": 1778630400,
+              "value": 102.34493393958655
+            },
+            {
+              "timestamp": 1778716800,
+              "value": 103.97857513771652
+            },
+            {
+              "timestamp": 1778803200,
+              "value": 104.50472570459227
+            },
+            {
+              "timestamp": 1778889600,
+              "value": 103.3508698318976
+            },
+            {
+              "timestamp": 1778976000,
+              "value": 103.34161374062126
+            },
+            {
+              "timestamp": 1779062400,
+              "value": 103.34705846395286
+            },
+            {
+              "timestamp": 1779148800,
+              "value": 103.26569823016582
+            },
+            {
+              "timestamp": 1779235200,
+              "value": 102.61968011394384
+            },
+            {
+              "timestamp": 1779321600,
+              "value": 102.65351271413412
+            },
+            {
+              "timestamp": 1779408000,
+              "value": 103.04776995668661
+            },
+            {
+              "timestamp": 1779494400,
+              "value": 102.49303061861511
+            },
+            {
+              "timestamp": 1779580800,
+              "value": 102.45303958459844
+            },
+            {
+              "timestamp": 1779667200,
+              "value": 102.44653124585696
+            },
+            {
+              "timestamp": 1779753600,
+              "value": 102.49011216245667
+            },
+            {
+              "timestamp": 1779840000,
+              "value": 102.85515748504042
+            },
+            {
+              "timestamp": 1779926400,
+              "value": 103.3039167739271
+            },
+            {
+              "timestamp": 1780012800,
+              "value": 103.563305960735
+            },
+            {
+              "timestamp": 1780099200,
+              "value": 103.03507351677077
+            },
+            {
+              "timestamp": 1780185600,
+              "value": 103.06621465300451
+            },
+            {
+              "timestamp": 1780272000,
+              "value": 103.10064895693058
+            },
+            {
+              "timestamp": 1780358400,
+              "value": 102.41194698082573
+            },
+            {
+              "timestamp": 1780444800,
+              "value": 102.31042715574172
+            },
+            {
+              "timestamp": 1780531200,
+              "value": 102.00987701414046
+            },
+            {
+              "timestamp": 1780617600,
+              "value": 102.68522963463653
+            },
+            {
+              "timestamp": 1780704000,
+              "value": 100.56869856542758
+            },
+            {
+              "timestamp": 1780790400,
+              "value": 100.63189409979536
+            },
+            {
+              "timestamp": 1780876800,
+              "value": 100.58338496021005
+            },
+            {
+              "timestamp": 1780963200,
+              "value": 100.37605728681493
+            },
+            {
+              "timestamp": 1781049600,
+              "value": 99.91935882313899
+            },
+            {
+              "timestamp": 1781136000,
+              "value": 98.58400346389601
+            },
+            {
+              "timestamp": 1781222400,
+              "value": 99.58084439222999
+            },
+            {
+              "timestamp": 1781308800,
+              "value": 99.30199721118564
+            },
+            {
+              "timestamp": 1781395200,
+              "value": 99.29752693550466
+            },
+            {
+              "timestamp": 1781481600,
+              "value": 99.2749159686078
+            },
+            {
+              "timestamp": 1781568000,
+              "value": 100.84739935906822
+            },
+            {
+              "timestamp": 1781654400,
+              "value": 100.9817007022685
+            },
+            {
+              "timestamp": 1781740800,
+              "value": 99.92023283220779
+            },
+            {
+              "timestamp": 1781827200,
+              "value": 100.23932053651559
+            },
+            {
+              "timestamp": 1781913600,
+              "value": 100.24491590343318
+            },
+            {
+              "timestamp": 1782000000,
+              "value": 100.2096392740953
+            },
+            {
+              "timestamp": 1782086400,
+              "value": 100.22272382177162
+            },
+            {
+              "timestamp": 1782172800,
+              "value": 98.84569497233113
+            },
+            {
+              "timestamp": 1782259200,
+              "value": 98.44374584952789
+            },
+            {
+              "timestamp": 1782345600,
+              "value": 97.8966086784148
+            },
+            {
+              "timestamp": 1782432000,
+              "value": 96.54941354382831
+            },
+            {
+              "timestamp": 1782518400,
+              "value": 96.63558774924498
+            },
+            {
+              "timestamp": 1782604800,
+              "value": 96.63718021422888
+            },
+            {
+              "timestamp": 1782691200,
+              "value": 96.65033164787792
+            },
+            {
+              "timestamp": 1782777600,
+              "value": 97.67651176026499
+            },
+            {
+              "timestamp": 1782864000,
+              "value": 98.46582577534312
+            },
+            {
+              "timestamp": 1782950400,
+              "value": 99.96511542978678
+            },
+            {
+              "timestamp": 1783036800,
+              "value": 99.67817867233147
+            },
+            {
+              "timestamp": 1783123200,
+              "value": 99.71081348128281
+            },
+            {
+              "timestamp": 1783209600,
+              "value": 99.70975726587972
+            },
+            {
+              "timestamp": 1783296000,
+              "value": 99.70436052937178
+            },
+            {
+              "timestamp": 1783382400,
+              "value": 100.65448675665776
+            },
+            {
+              "timestamp": 1783468800,
+              "value": 101.059614043722
+            },
+            {
+              "timestamp": 1783555200,
+              "value": 101.10683109579355
+            },
+            {
+              "timestamp": 1783641600,
+              "value": 101.79190072842049
+            },
+            {
+              "timestamp": 1783728000,
+              "value": 103.06205351017756
+            },
+            {
+              "timestamp": 1783814400,
+              "value": 103.01987119579023
+            },
+            {
+              "timestamp": 1783900800,
+              "value": 103.01670216591529
+            },
+            {
+              "timestamp": 1783987200,
+              "value": 102.21749769761443
+            },
+            {
+              "timestamp": 1784073600,
+              "value": 103.01778254054734
+            },
+            {
+              "timestamp": 1784160000,
+              "value": 104.6286782167095
+            },
+            {
+              "timestamp": 1784246400,
+              "value": 103.67154859131448
+            },
+            {
+              "timestamp": 1784332800,
+              "value": 102.2898218524288
+            },
+            {
+              "timestamp": 1784419200,
+              "value": 102.28155492693567
+            },
+            {
+              "timestamp": 1784505600,
+              "value": 102.29053577303543
+            },
+            {
+              "timestamp": 1784592000,
+              "value": 102.32974005532414
+            },
+            {
+              "timestamp": 1784678400,
+              "value": 102.22391097658078
+            },
+            {
+              "timestamp": 1784764800,
+              "value": 101.3341079079043
+            },
+            {
+              "timestamp": 1784851200,
+              "value": 100.05724237818313
+            },
+            {
+              "timestamp": 1784937600,
+              "value": 100.2264602222423
+            },
+            {
+              "timestamp": 1785024000,
+              "value": 100.23844070129967
+            },
+            {
+              "timestamp": 1785110400,
+              "value": 100.23769666483084
+            },
+            {
+              "timestamp": 1785196800,
+              "value": 100.10833795260898
+            },
+            {
+              "timestamp": 1785283200,
+              "value": 100.79790163921137
+            },
+            {
+              "timestamp": 1785369600,
+              "value": 98.91920857023312
+            },
+            {
+              "timestamp": 1785456000,
+              "value": 97.96074314949266
+            },
+            {
+              "timestamp": 1785542400,
+              "value": 98.95094980014048
+            },
+            {
+              "timestamp": 1785628800,
+              "value": 98.94383366861918
+            },
+            {
+              "timestamp": 1785715200,
+              "value": 98.91245594440802
+            },
+            {
+              "timestamp": 1785801600,
+              "value": 100.87482630665346
+            },
+            {
+              "timestamp": 1785888000,
+              "value": 102.1592961689869
+            },
+            {
+              "timestamp": 1785974400,
+              "value": 101.90765784567564
+            },
+            {
+              "timestamp": 1786060800,
+              "value": 101.56791952106329
+            },
+            {
+              "timestamp": 1786147200,
+              "value": 101.73611532197474
+            },
+            {
+              "timestamp": 1786233600,
+              "value": 101.69920920995885
+            },
+            {
+              "timestamp": 1786320000,
+              "value": 101.79140261468
+            },
+            {
+              "timestamp": 1786406400,
+              "value": 101.2554784244843
+            },
+            {
+              "timestamp": 1786492800,
+              "value": 100.77951414678427
+            },
+            {
+              "timestamp": 1786579200,
+              "value": 100.42468169506144
+            },
+            {
+              "timestamp": 1786665600,
+              "value": 101.1373027902624
+            },
+            {
+              "timestamp": 1786752000,
+              "value": 101.14491527113965
+            },
+            {
+              "timestamp": 1786838400,
+              "value": 101.11177155623561
+            },
+            {
+              "timestamp": 1786924800,
+              "value": 101.14146157638412
+            },
+            {
+              "timestamp": 1787011200,
+              "value": 100.39286068913921
+            },
+            {
+              "timestamp": 1787097600,
+              "value": 99.67995636420879
+            },
+            {
+              "timestamp": 1787270117,
+              "value": 99.46089698563036
+            },
+            {
+              "timestamp": 1787356569,
+              "value": 99.63654896315427
+            },
+            {
+              "timestamp": 1787442969,
+              "value": 99.6123073170385
+            },
+            {
+              "timestamp": 1787529373,
+              "value": 99.83831066372927
+            },
+            {
+              "timestamp": 1787615754,
+              "value": 99.58266337026936
+            },
+            {
+              "timestamp": 1787702153,
+              "value": 99.93369907099904
+            },
+            {
+              "timestamp": 1787788551,
+              "value": 100.504571199975
+            },
+            {
+              "timestamp": 1787874974,
+              "value": 100.82263778333504
+            },
+            {
+              "timestamp": 1787961356,
+              "value": 100.91748562220906
+            },
+            {
+              "timestamp": 1788047754,
+              "value": 101.04838570429192
+            },
+            {
+              "timestamp": 1788134160,
+              "value": 100.87578193856966
+            },
+            {
+              "timestamp": 1788220570,
+              "value": 100.63249357002553
+            },
+            {
+              "timestamp": 1788306948,
+              "value": 100.82388457639256
+            },
+            {
+              "timestamp": 1788393349,
+              "value": 101.82397815106891
+            },
+            {
+              "timestamp": 1788479751,
+              "value": 102.82838693738633
+            },
+            {
+              "timestamp": 1788566124,
+              "value": 102.41037835317606
+            },
+            {
+              "timestamp": 1788652529,
+              "value": 102.43446915968913
+            },
+            {
+              "timestamp": 1788738929,
+              "value": 102.42366612840635
+            },
+            {
+              "timestamp": 1788825335,
+              "value": 102.3487869532209
+            },
+            {
+              "timestamp": 1788911736,
+              "value": 101.93625604024457
+            },
+            {
+              "timestamp": 1788998136,
+              "value": 102.27089083773457
+            },
+            {
+              "timestamp": 1789084535,
+              "value": 101.80700267268428
+            },
+            {
+              "timestamp": 1789170931,
+              "value": 103.11431114024077
+            },
+            {
+              "timestamp": 1789257332,
+              "value": 103.4678760461962
+            },
+            {
+              "timestamp": 1789343737,
+              "value": 102.61274163285913
+            },
+            {
+              "timestamp": 1789430139,
+              "value": 103.34060333325621
+            },
+            {
+              "timestamp": 1789516533,
+              "value": 102.6717984587211
+            },
+            {
+              "timestamp": 1789602939,
+              "value": 103.0587407592141
+            },
+            {
+              "timestamp": 1789689338,
+              "value": 104.18043066067021
+            },
+            {
+              "timestamp": 1789775739,
+              "value": 104.26516535982941
+            },
+            {
+              "timestamp": 1789862138,
+              "value": 104.35212209295389
+            },
+            {
+              "timestamp": 1789948542,
+              "value": 104.48318148744126
+            },
+            {
+              "timestamp": 1790034947,
+              "value": 107.62827530670074
+            },
+            {
+              "timestamp": 1790121363,
+              "value": 107.43924653913903
+            },
+            {
+              "timestamp": 1790207762,
+              "value": 106.09377381597481
+            },
+            {
+              "timestamp": 1790294163,
+              "value": 106.87437077952936
+            },
+            {
+              "timestamp": 1790380560,
+              "value": 107.11286079198742
+            },
+            {
+              "timestamp": 1790466963,
+              "value": 106.97556886638833
+            },
+            {
+              "timestamp": 1790553361,
+              "value": 107.01859899387627
+            },
+            {
+              "timestamp": 1790639767,
+              "value": 105.41714169904297
+            },
+            {
+              "timestamp": 1790726162,
+              "value": 105.38424297714307
+            },
+            {
+              "timestamp": 1790812573,
+              "value": 105.97363649284604
+            },
+            {
+              "timestamp": 1790898989,
+              "value": 105.43102678562805
+            },
+            {
+              "timestamp": 1790985356,
+              "value": 106.85396935258372
+            },
+            {
+              "timestamp": 1791071754,
+              "value": 107.02628999601421
+            },
+            {
+              "timestamp": 1791158154,
+              "value": 107.05216799870945
+            },
+            {
+              "timestamp": 1791244527,
+              "value": 108.24818471086772
+            },
+            {
+              "timestamp": 1791330936,
+              "value": 108.80127968845962
+            },
+            {
+              "timestamp": 1791417340,
+              "value": 108.6009553532078
+            },
+            {
+              "timestamp": 1791503746,
+              "value": 107.39962809334963
+            },
+            {
+              "timestamp": 1791590158,
+              "value": 108.40126662060547
+            },
+            {
+              "timestamp": 1791676561,
+              "value": 108.51850111044112
+            },
+            {
+              "timestamp": 1791762957,
+              "value": 108.73634282782479
+            },
+            {
+              "timestamp": 1791849353,
+              "value": 108.66174661463963
+            },
+            {
+              "timestamp": 1791935759,
+              "value": 109.32245192688153
+            },
+            {
+              "timestamp": 1791986176,
+              "value": 108.99511890316478
+            }
+          ],
+          "priceChange": {
+            "period": "ytd",
+            "displayPeriod": "YTD",
+            "ratio": 0.11891424370871251,
+            "percent": 11.89142437087125,
+            "startPrice": 97.41150362148713,
+            "endPrice": 108.99511890316478,
+            "startTimestamp": 1767225600,
+            "endTimestamp": 1791986176
+          },
+          "exposure": [
+            {
+              "native": {
+                "symbol": "NASDAQ",
+                "name": "NASDAQ",
+                "logo": "https://storage-logos.reserve.org/logos/nasdaq--big.svg",
+                "caip2": "nasdaq",
+                "url": "https://www.nasdaq.com/"
+              },
+              "tokens": [
+                {
+                  "address": "0xb2000000000000000000008bC8786B856E61707C",
+                  "symbol": "METAc",
+                  "weight": 16.3,
+                  "bridge": {
+                    "id": "coinbase_equities",
+                    "name": "Coinbase Tokenized Stocks",
+                    "url": "https://www.coinbase.com/tokenize",
+                    "description": "A Coinbase Tokenized Stock is a B20 token on Base backed 1:1 by the underlying share held in regulated custody, giving you the same economic exposure as owning the stock. Please read the documentation for more details.",
+                    "logo": "https://storage-logos.reserve.org/logos/598a54dcc631--coinbase.svg",
+                    "risks": [
+                      "Custodial risks - Tokens are claims on underlying shares held by a regulated custodian, whose failure or insolvency could delay settlement or cause loss of value.",
+                      "Regulatory & compliance risks - Tokenized equities face evolving rules and are restricted to eligible non-US users, which can force restricted access, halted redemptions, or unwinding.",
+                      "Liquidity risks - On-chain trading is 24/7, but mint/redeem may be limited or windowed, and in stressed markets token prices can deviate from the underlying equities.",
+                      "Valuation & NAV risks - Pricing relies on oracles (Chainlink feeds) that can be stale or paused during corporate actions, distorting marks and mint/redeem pricing."
+                    ],
+                    "wrappedVersion": false
+                  }
+                },
+                {
+                  "address": "0xb200000000000000000000C2e324d24d7eEcd1fb",
+                  "symbol": "AAPLc",
+                  "weight": 14.71,
+                  "bridge": {
+                    "id": "coinbase_equities",
+                    "name": "Coinbase Tokenized Stocks",
+                    "url": "https://www.coinbase.com/tokenize",
+                    "description": "A Coinbase Tokenized Stock is a B20 token on Base backed 1:1 by the underlying share held in regulated custody, giving you the same economic exposure as owning the stock. Please read the documentation for more details.",
+                    "logo": "https://storage-logos.reserve.org/logos/598a54dcc631--coinbase.svg",
+                    "risks": [
+                      "Custodial risks - Tokens are claims on underlying shares held by a regulated custodian, whose failure or insolvency could delay settlement or cause loss of value.",
+                      "Regulatory & compliance risks - Tokenized equities face evolving rules and are restricted to eligible non-US users, which can force restricted access, halted redemptions, or unwinding.",
+                      "Liquidity risks - On-chain trading is 24/7, but mint/redeem may be limited or windowed, and in stressed markets token prices can deviate from the underlying equities.",
+                      "Valuation & NAV risks - Pricing relies on oracles (Chainlink feeds) that can be stale or paused during corporate actions, distorting marks and mint/redeem pricing."
+                    ],
+                    "wrappedVersion": false
+                  }
+                },
+                {
+                  "address": "0xB200000000000000000000Ab99cFa739E253872B",
+                  "symbol": "MSFTc",
+                  "weight": 14.71,
+                  "bridge": {
+                    "id": "coinbase_equities",
+                    "name": "Coinbase Tokenized Stocks",
+                    "url": "https://www.coinbase.com/tokenize",
+                    "description": "A Coinbase Tokenized Stock is a B20 token on Base backed 1:1 by the underlying share held in regulated custody, giving you the same economic exposure as owning the stock. Please read the documentation for more details.",
+                    "logo": "https://storage-logos.reserve.org/logos/598a54dcc631--coinbase.svg",
+                    "risks": [
+                      "Custodial risks - Tokens are claims on underlying shares held by a regulated custodian, whose failure or insolvency could delay settlement or cause loss of value.",
+                      "Regulatory & compliance risks - Tokenized equities face evolving rules and are restricted to eligible non-US users, which can force restricted access, halted redemptions, or unwinding.",
+                      "Liquidity risks - On-chain trading is 24/7, but mint/redeem may be limited or windowed, and in stressed markets token prices can deviate from the underlying equities.",
+                      "Valuation & NAV risks - Pricing relies on oracles (Chainlink feeds) that can be stale or paused during corporate actions, distorting marks and mint/redeem pricing."
+                    ],
+                    "wrappedVersion": false
+                  }
+                },
+                {
+                  "address": "0xb2000000000000000000002D0BA3164cc74f58B7",
+                  "symbol": "GOOGLc",
+                  "weight": 14.14,
+                  "bridge": {
+                    "id": "coinbase_equities",
+                    "name": "Coinbase Tokenized Stocks",
+                    "url": "https://www.coinbase.com/tokenize",
+                    "description": "A Coinbase Tokenized Stock is a B20 token on Base backed 1:1 by the underlying share held in regulated custody, giving you the same economic exposure as owning the stock. Please read the documentation for more details.",
+                    "logo": "https://storage-logos.reserve.org/logos/598a54dcc631--coinbase.svg",
+                    "risks": [
+                      "Custodial risks - Tokens are claims on underlying shares held by a regulated custodian, whose failure or insolvency could delay settlement or cause loss of value.",
+                      "Regulatory & compliance risks - Tokenized equities face evolving rules and are restricted to eligible non-US users, which can force restricted access, halted redemptions, or unwinding.",
+                      "Liquidity risks - On-chain trading is 24/7, but mint/redeem may be limited or windowed, and in stressed markets token prices can deviate from the underlying equities.",
+                      "Valuation & NAV risks - Pricing relies on oracles (Chainlink feeds) that can be stale or paused during corporate actions, distorting marks and mint/redeem pricing."
+                    ],
+                    "wrappedVersion": false
+                  }
+                },
+                {
+                  "address": "0xb2000000000000000000001e800a7f5189430cD0",
+                  "symbol": "TSLAc",
+                  "weight": 13.46,
+                  "bridge": {
+                    "id": "coinbase_equities",
+                    "name": "Coinbase Tokenized Stocks",
+                    "url": "https://www.coinbase.com/tokenize",
+                    "description": "A Coinbase Tokenized Stock is a B20 token on Base backed 1:1 by the underlying share held in regulated custody, giving you the same economic exposure as owning the stock. Please read the documentation for more details.",
+                    "logo": "https://storage-logos.reserve.org/logos/598a54dcc631--coinbase.svg",
+                    "risks": [
+                      "Custodial risks - Tokens are claims on underlying shares held by a regulated custodian, whose failure or insolvency could delay settlement or cause loss of value.",
+                      "Regulatory & compliance risks - Tokenized equities face evolving rules and are restricted to eligible non-US users, which can force restricted access, halted redemptions, or unwinding.",
+                      "Liquidity risks - On-chain trading is 24/7, but mint/redeem may be limited or windowed, and in stressed markets token prices can deviate from the underlying equities.",
+                      "Valuation & NAV risks - Pricing relies on oracles (Chainlink feeds) that can be stale or paused during corporate actions, distorting marks and mint/redeem pricing."
+                    ],
+                    "wrappedVersion": false
+                  }
+                },
+                {
+                  "address": "0xb200000000000000000000d9192b6B456483C2E8",
+                  "symbol": "AMZNc",
+                  "weight": 13.4,
+                  "bridge": {
+                    "id": "coinbase_equities",
+                    "name": "Coinbase Tokenized Stocks",
+                    "url": "https://www.coinbase.com/tokenize",
+                    "description": "A Coinbase Tokenized Stock is a B20 token on Base backed 1:1 by the underlying share held in regulated custody, giving you the same economic exposure as owning the stock. Please read the documentation for more details.",
+                    "logo": "https://storage-logos.reserve.org/logos/598a54dcc631--coinbase.svg",
+                    "risks": [
+                      "Custodial risks - Tokens are claims on underlying shares held by a regulated custodian, whose failure or insolvency could delay settlement or cause loss of value.",
+                      "Regulatory & compliance risks - Tokenized equities face evolving rules and are restricted to eligible non-US users, which can force restricted access, halted redemptions, or unwinding.",
+                      "Liquidity risks - On-chain trading is 24/7, but mint/redeem may be limited or windowed, and in stressed markets token prices can deviate from the underlying equities.",
+                      "Valuation & NAV risks - Pricing relies on oracles (Chainlink feeds) that can be stale or paused during corporate actions, distorting marks and mint/redeem pricing."
+                    ],
+                    "wrappedVersion": false
+                  }
+                },
+                {
+                  "address": "0xb20000000000000000000078ee7ce2fE4908108C",
+                  "symbol": "NVDAc",
+                  "weight": 13.28,
+                  "bridge": {
+                    "id": "coinbase_equities",
+                    "name": "Coinbase Tokenized Stocks",
+                    "url": "https://www.coinbase.com/tokenize",
+                    "description": "A Coinbase Tokenized Stock is a B20 token on Base backed 1:1 by the underlying share held in regulated custody, giving you the same economic exposure as owning the stock. Please read the documentation for more details.",
+                    "logo": "https://storage-logos.reserve.org/logos/598a54dcc631--coinbase.svg",
+                    "risks": [
+                      "Custodial risks - Tokens are claims on underlying shares held by a regulated custodian, whose failure or insolvency could delay settlement or cause loss of value.",
+                      "Regulatory & compliance risks - Tokenized equities face evolving rules and are restricted to eligible non-US users, which can force restricted access, halted redemptions, or unwinding.",
+                      "Liquidity risks - On-chain trading is 24/7, but mint/redeem may be limited or windowed, and in stressed markets token prices can deviate from the underlying equities.",
+                      "Valuation & NAV risks - Pricing relies on oracles (Chainlink feeds) that can be stale or paused during corporate actions, distorting marks and mint/redeem pricing."
+                    ],
+                    "wrappedVersion": false
+                  }
+                }
+              ],
+              "totalWeight": 100
+            }
+          ],
+          "mandate": "The Reserve Magnificent 7 DTF offers equal-weight exposure to seven of the largest publicly traded stocks, commonly known as the “Magnificent 7.” The basket comprises Alphabet (GOOGL), Amazon (AMZN), Apple (AAPL), Meta Platforms (META), Microsoft (MSFT), Nvidia (NVDA), and Tesla (TSLA) stocks in equal weights and rebalances every two months."
         }
       ]
     }

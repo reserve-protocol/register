@@ -1,6 +1,6 @@
 import { RSR_ADDRESS } from '@/utils/addresses'
 import { ChainId } from '@/utils/chains'
-import { Address, getAddress } from 'viem'
+import { Address, getAddress, zeroAddress } from 'viem'
 
 export const governanceSpellAddress: Record<number, Address> = {
   [ChainId.Mainnet]: getAddress('0x11B1bF67F0c6495E1F2d34cDe0296A02C2540926'),
@@ -20,10 +20,49 @@ export const newFeeRecipientAddress: Record<number, Address> = {
   [ChainId.BSC]: getAddress('0x0c2C5064C32800b26d3E0e8A031F366a892Ae793'),
 }
 
-// OPEN and ABX keep their own staking vaults instead of rotating to the vlRSR singleton.
+// OPEN and ABX keep their own staking vaults: they stay out of the vlRSR singleton flows (vault retirement, vote-lock migration).
 const EXCLUDED_DTFS: Record<number, string[]> = {
   [ChainId.Mainnet]: ['0x323c03c48660fe31186fa82c289b0766d331ce21'],
   [ChainId.Base]: ['0xebcda5b80f62dd4dd2a96357b42bb6facbf30267'],
+}
+
+export type GovernanceUpgradeTarget = {
+  spell: Address
+  stakingVault: Address
+  stakingVaultUnderlying: Address
+  // Zero hands the old vault's fee share straight to stakingVault; anything else must be a token jar paying into it.
+  feeRecipient: Address
+}
+
+// Excluded DTFs that still upgrade, each through a one-off spell into its own successor vault.
+const DTF_UPGRADE_TARGETS: Record<number, Record<string, GovernanceUpgradeTarget>> = {
+  [ChainId.Mainnet]: {
+    // OPEN: GovernanceSpell_10_19_2026 (5d vote, 3d timelock, 5% threshold, 15% quorum) into vlSQUILL, which also takes the old vault's fee share.
+    '0x323c03c48660fe31186fa82c289b0766d331ce21': {
+      spell: getAddress('0x5CE95c60A1aaF3f500301735a92d608E1eE3515E'),
+      stakingVault: getAddress('0x8a8188D2bC61c43124CDED32F40faB456F68C15C'),
+      stakingVaultUnderlying: getAddress('0x7ebAB7190d3d574ce82D29F2FA1422f18E29969C'),
+      feeRecipient: zeroAddress,
+    },
+  },
+}
+
+export const getGovernanceUpgradeTarget = (
+  chainId: number,
+  dtfAddress: string
+): GovernanceUpgradeTarget | undefined => {
+  const dtf = dtfAddress.toLowerCase()
+  const override = DTF_UPGRADE_TARGETS[chainId]?.[dtf]
+  if (override) return override
+  if (EXCLUDED_DTFS[chainId]?.includes(dtf)) return undefined
+
+  const spell = governanceSpellAddress[chainId]
+  const stakingVault = optimisticStakingVaultAddress[chainId]
+  const stakingVaultUnderlying = RSR_ADDRESS[chainId]
+  const feeRecipient = newFeeRecipientAddress[chainId]
+  if (!spell || !stakingVault || !stakingVaultUnderlying || !feeRecipient)
+    return undefined
+  return { spell, stakingVault, stakingVaultUnderlying, feeRecipient }
 }
 
 const SPELL_FOLIO_VERSIONS = ['4.0.0', '5.0.0']
@@ -69,20 +108,21 @@ export const isOptimisticGovernanceUpgradeEligible = ({
   brandManagers,
   feeRecipients,
 }: Eligibility): boolean => {
-  if (!governanceSpellAddress[chainId]) return false
-  if (EXCLUDED_DTFS[chainId]?.includes(dtfAddress.toLowerCase())) return false
+  const target = getGovernanceUpgradeTarget(chainId, dtfAddress)
+  if (!target) return false
   if (!folioVersion || !SPELL_FOLIO_VERSIONS.includes(folioVersion)) return false
   if (!ownerGovernor || !tradingGovernor) return false
   if (same(ownerGovernor, tradingGovernor)) return false
   if (stakingVaultVersion !== REQUIRED_STAKING_VAULT_VERSION) return false
-  if (!same(oldVoteLockUnderlying, RSR_ADDRESS[chainId])) return false
+  if (!same(oldVoteLockUnderlying, target.stakingVaultUnderlying)) return false
 
   return upgradeFolioWouldPass({
     ownerTimelock,
     tradingTimelock,
     oldVoteLock,
     governors: [ownerGovernor, tradingGovernor],
-    newFeeRecipient: newFeeRecipientAddress[chainId],
+    newFeeRecipient:
+      target.feeRecipient === zeroAddress ? target.stakingVault : target.feeRecipient,
     admins,
     auctionApprovers,
     auctionLaunchers,
@@ -126,7 +166,7 @@ const upgradeFolioWouldPass = ({
   return ![...governors, ...timelocks].some((g) => includes(feeRecipients, g))
 }
 
-// A legacy RSR-vault DTF the migration will move: it must not take another upgrade path first.
+// A legacy DTF the migration will move: it must not take another upgrade path first.
 export const isGovernanceMigrationPending = ({
   chainId,
   dtfAddress,
@@ -136,13 +176,16 @@ export const isGovernanceMigrationPending = ({
 }: Pick<
   Eligibility,
   'chainId' | 'dtfAddress' | 'ownerGovernor' | 'tradingGovernor' | 'oldVoteLockUnderlying'
->) =>
-  !!governanceSpellAddress[chainId] &&
-  !EXCLUDED_DTFS[chainId]?.includes(dtfAddress.toLowerCase()) &&
-  !!ownerGovernor &&
-  !!tradingGovernor &&
-  !same(ownerGovernor, tradingGovernor) &&
-  same(oldVoteLockUnderlying, RSR_ADDRESS[chainId])
+>) => {
+  const target = getGovernanceUpgradeTarget(chainId, dtfAddress)
+  return (
+    !!target &&
+    !!ownerGovernor &&
+    !!tradingGovernor &&
+    !same(ownerGovernor, tradingGovernor) &&
+    same(oldVoteLockUnderlying, target.stakingVaultUnderlying)
+  )
+}
 
 export type OldVoteLock = { address: Address; governance?: Address }
 

@@ -1,0 +1,177 @@
+{
+  "_meta": {
+    "source": "https://api.goldsky.com/api/public/project_cmgzim3e100095np2gjnbh6ry/subgraphs/dtf-index-mainnet/prod/gn",
+    "capturedAt": "2026-10-14T14:41:04.526Z",
+    "dtf": "0x323c03c48660fe31186fa82c289b0766d331ce21",
+    "chainId": 1,
+    "query": "getProposalDetail",
+    "proposalId": "108018124472755119534442365132850479893226729531943823465863389542258308961864"
+  },
+  "data": {
+    "proposal": {
+      "id": "108018124472755119534442365132850479893226729531943823465863389542258308961864",
+      "timelockId": null,
+      "description": "Open Stablecoin Index reconstitution: set timelock delay so approved basket auctions can settle in the operations window, and assign DEFAULT_ADMIN to the designated operations executor for committee-authorized rebalances. No change to index methodology.",
+      "creationTime": "1788865727",
+      "voteStart": "1789038527",
+      "voteEnd": "1789297727",
+      "queueBlock": null,
+      "queueTime": null,
+      "state": "ACTIVE",
+      "executionETA": null,
+      "executionTime": null,
+      "creationBlock": "25932252",
+      "cancellationTime": null,
+      "calldatas": [
+        "0x64d623530000000000000000000000000000000000000000000000000000000000000000",
+        "0x2f2ff15d000000000000000000000000000000000000000000000000000000000000000000000000000000000000000035aef3018c9f60b04f6e89740bf08a40bb5ea7dd"
+      ],
+      "targets": [
+        "0xd900b9a9cf3a0ecc394b6b9935ea3e56dafc02c1",
+        "0x323c03c48660fe31186fa82c289b0766d331ce21"
+      ],
+      "proposer": {
+        "address": "0x35aef3018c9f60b04f6e89740bf08a40bb5ea7dd"
+      },
+      "votes": [
+        {
+          "choice": "AGAINST",
+          "voter": {
+            "address": "0x0208a8e743f0748fd8600171636b0bcd6fa01776"
+          },
+          "weight": "9574154803175813453497"
+        },
+        {
+          "choice": "AGAINST",
+          "voter": {
+            "address": "0x0e4d5032c0b076cb132a10347d940bfbb8354869"
+          },
+          "weight": "2985444035848143391806"
+        },
+        {
+          "choice": "AGAINST",
+          "voter": {
+            "address": "0x1a9152528aefbcd9e5df4e0770f4f510e7056913"
+          },
+          "weight": "31446618033195632578470"
+        },
+        {
+          "choice": "AGAINST",
+          "voter": {
+            "address": "0x73eb240a06f0e0747c698a219462059be6aaccc8"
+          },
+          "weight": "101205212086927529439034"
+        },
+        {
+          "choice": "AGAINST",
+          "voter": {
+            "address": "0x759a159d78342340ebacffb027c05910c093f430"
+          },
+          "weight": "86393828909184803968949"
+        },
+        {
+          "choice": "AGAINST",
+          "voter": {
+            "address": "0x84afb4b60844f8759154d6ff7b0580daa2d4e37d"
+          },
+          "weight": "21116098164353480000000"
+        },
+        {
+          "choice": "AGAINST",
+          "voter": {
+            "address": "0x8e2f7d5aaae5abbd5052acb74019b9b11cb74349"
+          },
+          "weight": "1172605316252025301877"
+        },
+        {
+          "choice": "AGAINST",
+          "voter": {
+            "address": "0x9c768177521c9a832b0f8567265ef02e89d0282e"
+          },
+          "weight": "60467787309696818000000"
+        },
+        {
+          "choice": "AGAINST",
+          "voter": {
+            "address": "0xb19d6b66b18fae0fca1023138b229e5f970b5180"
+          },
+          "weight": "63000000000000000000000"
+        },
+        {
+          "choice": "AGAINST",
+          "voter": {
+            "address": "0xb209eed4d80fb47e5c16577e44dad1073c5c5015"
+          },
+          "weight": "24193116333696692436634"
+        },
+        {
+          "choice": "AGAINST",
+          "voter": {
+            "address": "0xb51074da03c55e79e3526cf6bbf31873443efc63"
+          },
+          "weight": "13307951059362000000000"
+        },
+        {
+          "choice": "AGAINST",
+          "voter": {
+            "address": "0xb7d411007208143b9fec4f0790f56a3de984e66b"
+          },
+          "weight": "112547000000000000000000"
+        },
+        {
+          "choice": "AGAINST",
+          "voter": {
+            "address": "0xdad0aec93fc31016876377678a07a586f6557b52"
+          },
+          "weight": "3298106251049803103832"
+        },
+        {
+          "choice": "AGAINST",
+          "voter": {
+            "address": "0xec092c15e8d5a48a77cde36827f8e228ce39471a"
+          },
+          "weight": "93153680264353647282715"
+        },
+        {
+          "choice": "AGAINST",
+          "voter": {
+            "address": "0xf5d90ac6747cb3352f05bf61f48b991aceae28eb"
+          },
+          "weight": "333000000000000000000"
+        },
+        {
+          "choice": "AGAINST",
+          "voter": {
+            "address": "0xfd8bd978f198503a0ba9c5d7f7586e23fc4a4b40"
+          },
+          "weight": "7075446569485206000000"
+        },
+        {
+          "choice": "AGAINST",
+          "voter": {
+            "address": "0xffa68ea3d4541493e29f9ca6f4d8219e45f5f23c"
+          },
+          "weight": "1960000000000000000000"
+        }
+      ],
+      "forWeightedVotes": "0",
+      "againstWeightedVotes": "633230049136581594956814",
+      "abstainWeightedVotes": "0",
+      "quorumVotes": "142225683342810532806932",
+      "forDelegateVotes": "0",
+      "abstainDelegateVotes": "0",
+      "againstDelegateVotes": "17",
+      "executionTxnHash": null,
+      "governance": {
+        "id": "0x020d7c4a87485709d91e78aeeb2b2177ebfbaf41",
+        "token": {
+          "id": "0x2aea77c4757d897aae2710b8a60280777f504e8c"
+        },
+        "timelock": {
+          "id": "0xd900b9a9cf3a0ecc394b6b9935ea3e56dafc02c1",
+          "type": "OWNER"
+        }
+      }
+    }
+  }
+}
