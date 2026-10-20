@@ -1,10 +1,11 @@
 ---
 title: E2E Suite
-updated: 2026-09-16
+updated: 2026-10-20
 type: domain
 sources:
   - e2e/**
   - playwright.config.ts
+  - playwright.fork.config.ts
   - .github/workflows/playwright.yml
 ---
 
@@ -116,7 +117,8 @@ hand-copied `GetIndexDTF` query in `e2e/scripts/capture.ts` from the new SDK
 dist (it is not exported) and re-run `pnpm e2e:capture` — the `dtf-data` canary
 smoke fails on drift but only a fresh capture fixes it.
 
-Non-goals: forked-chain execution, visual/pixel regression, v6 contracts.
+Non-goals: visual/pixel regression. Forked-chain execution lives in the
+separate fork lane below, never in the offline suite.
 Coverage state and open gaps live in `e2e/TEST_MAP.md`; harness-level debt in
 [[progress]] § Backlog. Governance, issuance, compliance, and
 transaction-contract edits require engineer review.
@@ -133,6 +135,24 @@ Hard-won spec traps:
   inside `useDTFStatus` (unit-pinned in `src/hooks/tests/use-dtf-status.test.ts`).
 - Brand is ONE folio-manager request (the SDK full-DTF read); unbranded (`{}`)
   is a settled state — the cover slot collapses, not a skeleton forever.
+
+## Fork lane (real transactions)
+
+`playwright.fork.config.ts` runs `e2e/fork/tests/*.fork.spec.ts` against a local
+Anvil fork, outside CI. The app reads the fork through `VITE_RPC_URL_<chainId>`
+and `VITE_INDEX_SUBGRAPH_URL_<chainId>`; both overrides are unused outside this
+lane. `e2e/fork/scripts/subgraph-proxy.mjs` serves the production Index subgraph
+truncated at the fork block, so indexed history matches the fork state.
+`e2e/fork/helpers/fork-wallet.ts` signs as an impersonated account.
+
+- Governance migration (Base): `prepare-optimistic-governance.mjs` upgrades the
+  vlRSR singleton to 1.1.0 by labelled impersonation of its timelock, then
+  `optimistic-governance-upgrade.fork.spec.ts` proposes and executes
+  `upgradeFolio` for LCAP, retires the old vault and migrates a holder.
+- The Alchemy archive RPC needs the app origin header
+  (`--fork-header "Origin: https://app.reserve.org"` on Anvil).
+- Restart Anvil (or revert a snapshot) before a re-run: the spec spends the
+  scenario state.
 
 ## Yield DTF (RToken) replay architecture
 
