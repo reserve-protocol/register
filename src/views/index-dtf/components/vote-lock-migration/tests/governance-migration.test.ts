@@ -15,6 +15,7 @@ const ABX = '0xEbcDa5b80F62dD4DD2A96357b42BB6Facbf30267'
 const legacy = {
   chainId: ChainId.Base,
   dtfAddress: LCAP,
+  status: 'active' as const,
   folioVersion: '5.0.0',
   ownerGovernor: '0x719eded05c7a6468e44acfbbd19b2df2eed7759e',
   tradingGovernor: '0xf9edb4491fbd5e1185e05ecba2d69251dd869096',
@@ -126,6 +127,10 @@ describe('isOptimisticGovernanceUpgradeEligible', () => {
         dtfAddress: ABX,
       })
     ).toBe(false)
+  })
+
+  it.each(['deprecated', 'unsupported'] as const)('rejects a %s DTF', (status) => {
+    expect(isOptimisticGovernanceUpgradeEligible({ ...legacy, status })).toBe(false)
   })
 
   it('accepts OPEN on its SQUILL vault', () => {

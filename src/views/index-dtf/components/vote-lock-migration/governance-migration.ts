@@ -71,6 +71,7 @@ const REQUIRED_STAKING_VAULT_VERSION = '1.1.0'
 type Eligibility = {
   chainId: number
   dtfAddress: string
+  status: 'active' | 'deprecated' | 'unsupported'
   folioVersion?: string
   ownerGovernor?: string
   tradingGovernor?: string
@@ -94,6 +95,7 @@ const includes = (list: readonly string[], value?: string) =>
 export const isOptimisticGovernanceUpgradeEligible = ({
   chainId,
   dtfAddress,
+  status,
   folioVersion,
   ownerGovernor,
   tradingGovernor,
@@ -108,6 +110,7 @@ export const isOptimisticGovernanceUpgradeEligible = ({
   brandManagers,
   feeRecipients,
 }: Eligibility): boolean => {
+  if (status !== 'active') return false
   const target = getGovernanceUpgradeTarget(chainId, dtfAddress)
   if (!target) return false
   if (!folioVersion || !SPELL_FOLIO_VERSIONS.includes(folioVersion)) return false
