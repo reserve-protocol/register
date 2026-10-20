@@ -16,14 +16,14 @@ holders move their stake in one guided flow:
 ## Current state
 
 - Order: VersionRegistry `registerVersion(1.1.0)` by the RoleRegistry owner → singleton vault/governor upgrades →
-  `upgradeFolio` per DTF (except OPEN, ABX and the non-RSR-vault DTFs, which do not migrate) →
+  `upgradeFolio` per DTF (OPEN through `GovernanceSpell_10_19_2026` into vlSQUILL, ABX into vlALTT; the other
+  non-RSR-vault DTFs do not migrate) →
   `retireOldStakingVault` per old vault → 6.0.0 upgrade.
 - Subgraph: after `upgradeFolio`, `dtf.stToken` moves to the singleton; the old owner governor lands in
   `dtf.legacyAdminGovernances` (`Governance.token` = old vault). `StakingToken.dtfs` only lists DTFs still
   pointing at a vault.
-- SDK (dtf-interface `feat/index-dtf-v6-support`): `getLegacyVoteLocks` only reads `stToken.legacyGovernance`;
-  proposal governance ids omit legacy admin governors and old-vault DAOs, so post-migration history and the
-  retire proposal are invisible.
+- SDK 0.7.0: `getLegacyVoteLocks` also reads the old admin governors' vaults, and proposal governance ids
+  include legacy admin governors and old-vault DAOs, so post-migration history and the retire proposal show.
 - Verified on a Base fork: old Ownable vault `redeem` with delay 0 transfers RSR in the same tx; the 1.1.0
   vault exposes `depositAndDelegate(uint256)`.
 
@@ -31,7 +31,7 @@ holders move their stake in one guided flow:
 
 - Exiting without re-depositing (the stepper always ends in the singleton).
 - Claiming pre-existing unstake locks (portfolio "pending withdrawals" already covers it).
-- OPEN/ABX vault paths, 6.0.0 upgrade gating.
+- 6.0.0 upgrade gating.
 
 ## Acceptance evidence
 
@@ -76,4 +76,4 @@ Status 2026-10-05: all three slices built; Base fork e2e green end to end (uncom
 
 - `registerVersion(1.1.0)` must land on each chain before the singleton vault upgrades (in progress).
 - Final design of the migration CTA/modal (this build is the functional baseline).
-- Publishing: SDK release that carries the v6 + migration changes (Register links it locally until then).
+- Publishing: done. Register pins `@reserve-protocol/react-sdk` 0.7.0.

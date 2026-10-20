@@ -143,7 +143,7 @@ Anvil fork, outside CI. The app reads the fork through `VITE_RPC_URL_<chainId>`
 and `VITE_INDEX_SUBGRAPH_URL_<chainId>`; both overrides are unused outside this
 lane. `e2e/fork/scripts/subgraph-proxy.mjs` serves the production Index subgraph
 truncated at the fork block, so indexed history matches the fork state.
-`e2e/fork/helpers/fork-wallet.ts` signs as an impersonated account.
+`e2e/fork/helpers/fork-wallet.ts` forwards transactions from an Anvil-impersonated account.
 
 - Governance migration: `FORK_SCENARIO` picks `lcap` (Base, vlRSR), `abx`
   (Base, vlALTT) or `open` (Ethereum, vlSQUILL). `prepare-optimistic-governance.mjs`

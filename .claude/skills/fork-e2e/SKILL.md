@@ -62,9 +62,9 @@ Ports and resource limits are all env-overridable (`chains/<chainId>.env`, `ANVI
   `codegen:fork` → `build:fork` → `create-local:fork` → `deploy-local:fork`. Its generated manifest
   currently assumes chain 1; multichain profiles are S1.1/S1.2 in the handoff.
 - **SDK** fork smoke: `INDEX_DTF_FORK_RPC_URL=http://127.0.0.1:<anvil port>` plus a manifest.
-- **Register**: today the only RPC override is `VITE_MAINNET_URL` (chain 1). Base/BSC overrides
-  and a `playwright.fork.config.ts` that pins all three plus the Graph endpoints are proposed work
-  (handoff §3.6); until they exist, Register browser cases can only target the chain-1 fork.
+- **Register**: `VITE_RPC_URL_<chainId>` and `VITE_INDEX_SUBGRAPH_URL_<chainId>` point any chain
+  at a fork; on chain 1 `VITE_MAINNET_URL` still wins. `playwright.fork.config.ts` sets both from
+  `FORK_CHAIN_ID` and that chain's `FORK_RPC_URL_<chainId>` / `FORK_SUBGRAPH_URL_<chainId>`.
 
 ## The stack lane (chain 1, protocol sandbox)
 
@@ -128,7 +128,7 @@ Foundry `anvil`; an older one earlier on `PATH` rejects current `cast`/viem tran
 
 ## Adding a new fork-backed suite
 
-1. Decide the lane: SDK runner (no browser) or Register browser. Browser cases use the future
+1. Decide the lane: SDK runner (no browser) or Register browser. Browser cases use
    `playwright.fork.config.ts`, never the offline config (it clears RPC env and owns :3005).
 2. Pin `FORK_BLOCK` per chain in the run config, not in this repo. Record the resolved nonsecret
    env (`doctor` prints it) in the run artifacts.
