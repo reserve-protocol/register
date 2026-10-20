@@ -3,7 +3,11 @@ import dtfIndexAbi from '@/abis/dtf-index-abi-v1'
 import DTFIndexGovernance from '@/abis/dtf-index-governance'
 import { Button } from '@/components/ui/button'
 import { chainIdAtom } from '@/state/atoms'
-import { indexDTFAtom, indexDTFVersionAtom } from '@/state/dtf/atoms'
+import {
+  indexDTFAtom,
+  indexDTFStatusAtom,
+  indexDTFVersionAtom,
+} from '@/state/dtf/atoms'
 import { getCurrentTime } from '@/utils'
 import { PROPOSAL_STATES } from '@/utils/constants'
 import { Trans, useLingui } from '@lingui/react/macro'
@@ -401,6 +405,7 @@ export default function ProposeOptimisticGovernanceUpgrade() {
   const proposals = useAtomValue(governanceProposalsAtom)
   const version = useAtomValue(indexDTFVersionAtom)
   const dtf = useAtomValue(indexDTFAtom)
+  const status = useAtomValue(indexDTFStatusAtom)
   const chainId = useAtomValue(chainIdAtom)
   const setRefetchToken = useSetAtom(refetchTokenAtom)
   const stakingVault = dtf
@@ -423,6 +428,7 @@ export default function ProposeOptimisticGovernanceUpgrade() {
   const isEligible = isOptimisticGovernanceUpgradeEligible({
     chainId,
     dtfAddress: dtf.id,
+    status,
     folioVersion: version,
     ownerGovernor: dtf.ownerGovernance?.id,
     tradingGovernor: dtf.tradingGovernance?.id,

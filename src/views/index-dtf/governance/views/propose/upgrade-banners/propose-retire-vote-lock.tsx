@@ -3,7 +3,7 @@ import { Alert, AlertDescription } from '@/components/ui/alert'
 import { Button } from '@/components/ui/button'
 import { chainIdAtom } from '@/state/atoms'
 import { RSR_ADDRESS } from '@/utils/addresses'
-import { indexDTFAtom } from '@/state/dtf/atoms'
+import { indexDTFAtom, indexDTFStatusAtom } from '@/state/dtf/atoms'
 import { getCurrentTime } from '@/utils'
 import { PROPOSAL_STATES } from '@/utils/constants'
 import { Trans, useLingui } from '@lingui/react/macro'
@@ -204,6 +204,7 @@ const RetireBanner = ({
 
 export default function ProposeRetireVoteLock() {
   const dtf = useAtomValue(indexDTFAtom)
+  const status = useAtomValue(indexDTFStatusAtom)
   const chainId = useAtomValue(chainIdAtom)
   const proposals = useAtomValue(governanceProposalsAtom)
   const setRefetchToken = useSetAtom(refetchTokenAtom)
@@ -251,6 +252,7 @@ export default function ProposeRetireVoteLock() {
     setRefetchToken(getCurrentTime())
   }, [setRefetchToken])
 
+  if (status !== 'active') return null
   if (!voteLock || !isProposeAllowed || !proposals || !dependents) return null
   const live = retireProposals(proposals, voteLock.address).some((p) =>
     LIVE_STATES.includes(p.votingState.state)
