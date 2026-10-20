@@ -270,6 +270,7 @@ test(`${scenario.toUpperCase()} migrates governance, retires its old vault and m
   }
 
   const newSymbol = await read<string>(manifest.newVault, 'symbol')
+  const oldSymbol = await read<string>(manifest.oldVault, 'symbol')
   const underlying = await read<Address>(manifest.newVault, 'asset')
   const underlyingSymbol = await read<string>(underlying, 'symbol')
 
@@ -283,7 +284,7 @@ test(`${scenario.toUpperCase()} migrates governance, retires its old vault and m
   await page.goto(`${dtfRoute}/governance`)
   const upcoming = page.getByTestId('upcoming-vote-lock')
   await expect(upcoming).toContainText(
-    `Lock ${underlyingSymbol} in ${newSymbol}`,
+    `${oldSymbol} → ${newSymbol}`,
     { timeout: 120_000 }
   )
   await page.screenshot({ path: `${evidenceDir}/00-upcoming-card.png` })

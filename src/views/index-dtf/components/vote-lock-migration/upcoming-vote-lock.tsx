@@ -46,7 +46,11 @@ const useUpcomingVoteLock = () => {
     governance: { isOptimistic: true },
   }
   const sharedVault = optimisticStakingVaultAddress[dtf.chainId]
-  return { stToken, shared: !!sharedVault && isAddressEqual(vault, sharedVault) }
+  return {
+    stToken,
+    oldVault: dtf.stToken.token.symbol,
+    shared: !!sharedVault && isAddressEqual(vault, sharedVault),
+  }
 }
 
 const UpcomingVoteLock = ({ page, className }: { page: string; className?: string }) => {
@@ -56,7 +60,7 @@ const UpcomingVoteLock = ({ page, className }: { page: string; className?: strin
 
   if (!upcoming) return null
 
-  const { stToken, shared } = upcoming
+  const { stToken, oldVault, shared } = upcoming
   const vault = stToken.token.symbol
   const symbol = stToken.underlying.symbol
 
@@ -76,22 +80,22 @@ const UpcomingVoteLock = ({ page, className }: { page: string; className?: strin
             chain={stToken.chainId}
           />
           <span className="ml-auto inline-flex h-8 items-center rounded-full border border-primary/30 bg-primary/10 px-3 text-sm font-medium text-primary">
-            <Trans>Governance upgrade</Trans>
+            <Trans>Upgrade</Trans>
           </span>
         </div>
         <h2 className="text-xl font-semibold leading-snug text-foreground">
-          <Trans>Lock {symbol} in {vault}</Trans>
+          {`${oldVault} → ${vault}`}
         </h2>
         <p className="mt-2 max-w-xl text-sm leading-relaxed text-legend">
           {shared ? (
             <Trans>
-              This DTF is moving to {vault}, the shared vote-lock for Reserve DTFs. You can lock now.
-              Your {vault} starts to vote on this DTF when the upgrade executes.
+              This DTF is moving to the shared, spam-resistant {vault}. Lock {symbol} now.
+              It starts to vote on this DTF when the upgrade executes.
             </Trans>
           ) : (
             <Trans>
-              This DTF is moving to its new {vault} vote-lock. You can lock now.
-              Your {vault} starts to vote on this DTF when the upgrade executes.
+              This DTF is moving to the new, spam-resistant {vault}. Lock {symbol} now.
+              It starts to vote on this DTF when the upgrade executes.
             </Trans>
           )}
         </p>
