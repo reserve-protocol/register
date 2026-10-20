@@ -502,9 +502,10 @@ msgstr "{swapCount} orden"
 msgid "{swapCount} orders"
 msgstr "{swapCount} órdenes"
 
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-folio-governance-upgrade.tsx:123
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-vote-lock-upgrade.tsx:185
 msgid "{symbol} governance 1.1.0 available"
-msgstr ""
+msgstr "Gobernanza 1.1.0 disponible para {symbol}"
 
 #: src/components/vote-lock/migration/migration-modal.tsx:256
 msgid "{symbol} to approve"
@@ -4783,6 +4784,10 @@ msgstr "Gobierna, haz Stake y encuentra oportunidades de rendimiento"
 msgid "Governance"
 msgstr "Gobernanza"
 
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-folio-governance-upgrade.tsx:58
+msgid "Governance 1.1.0 upgrade proposal created"
+msgstr "Propuesta de actualización de gobernanza 1.1.0 creada"
+
 #: src/views/index-dtf/deploy/components/deploy-accordion.tsx:81
 #: src/views/index-dtf/deploy/components/deploy-accordion.tsx:82
 msgid "Governance Body"
@@ -4845,6 +4850,10 @@ msgstr "Estadísticas de gobernanza"
 #: src/views/portfolio-page/components/voting-power.tsx:47
 msgid "Governance Token"
 msgstr "Token de gobernanza"
+
+#: src/views/index-dtf/governance/components/proposal-preview/vote-lock-upgrade-preview.tsx:67
+msgid "Governance upgrade to {VOTE_LOCK_UPGRADE_TO}"
+msgstr "Actualización de gobernanza a {VOTE_LOCK_UPGRADE_TO}"
 
 #: src/views/index-dtf/governance/views/propose/components/proposal-type-selector.tsx:114
 msgid "Governance with an execution delay greater than 1 week unstaking delay"
@@ -5604,7 +5613,7 @@ msgstr "Enlaces"
 #. placeholder {0}: shortenAddress(row.registry)
 #: src/views/index-dtf/governance/components/proposal-preview/vote-lock-upgrade-preview.tsx:54
 msgid "Links the version registry {0}"
-msgstr ""
+msgstr "Vincula el registro de versiones {0}"
 
 #: src/views/index-dtf/manage/components/manage-about.tsx:40
 msgid "Links to files holders can download from the DTF overview page, like a tear sheet or methodology document."
@@ -6578,7 +6587,7 @@ msgstr "No hay titulares para este rol..."
 
 #: src/views/index-dtf/governance/components/proposal-preview/vote-lock-upgrade-preview.tsx:55
 msgid "No initializer"
-msgstr ""
+msgstr "Sin inicializador"
 
 #: src/views/internal/dtf-listed/components/listed-dtf-table.tsx:193
 msgid "No listed DTFs found"
@@ -6751,9 +6760,9 @@ msgstr "delegado normal"
 msgid "Normal Delegate"
 msgstr "Delegado normal"
 
-#: src/views/index-dtf/governance/components/proposal-preview/vote-lock-upgrade-preview.tsx:99
+#: src/views/index-dtf/governance/components/proposal-preview/vote-lock-upgrade-preview.tsx:103
 msgid "Not a registered {VOTE_LOCK_UPGRADE_TO} implementation"
-msgstr ""
+msgstr "No es una implementación registrada de {VOTE_LOCK_UPGRADE_TO}"
 
 #: src/views/yield-dtf/auctions/auctions-sidebar/RevenueAuctionItem.tsx:22
 msgid "Not available"
@@ -7178,6 +7187,7 @@ msgstr "Pendiente, firma en la Wallet"
 
 #: src/views/index-dtf/governance/views/propose/basket/components/submit-proposal-button.tsx:195
 #: src/views/index-dtf/governance/views/propose/components/propose-index-upgrade.tsx:117
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-folio-governance-upgrade.tsx:152
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-governance-spell-31-03-2025.tsx:304
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-governance-spell-31-03-2025.tsx:430
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:362
@@ -7636,6 +7646,7 @@ msgstr "La propuesta no se puede ejecutar mientras haya otra subasta en curso"
 msgid "Proposal created"
 msgstr "Propuesta creada"
 
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-folio-governance-upgrade.tsx:57
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:297
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:305
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-retire-vote-lock.tsx:138
@@ -7727,9 +7738,10 @@ msgstr "Propuestas"
 msgid "Proposals voted"
 msgstr "Propuestas votadas"
 
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-folio-governance-upgrade.tsx:154
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-vote-lock-upgrade.tsx:215
 msgid "Propose {symbol} upgrade"
-msgstr ""
+msgstr "Proponer actualización de {symbol}"
 
 #. placeholder {0}: rToken?.symbol
 #: src/views/yield-dtf/governance/views/proposal/components/Intro.tsx:20
@@ -8231,9 +8243,9 @@ msgstr "Listado en Register"
 msgid "Register Optimistic Actions"
 msgstr "Registrar acciones optimistas"
 
-#: src/views/index-dtf/governance/components/proposal-preview/vote-lock-upgrade-preview.tsx:91
+#: src/views/index-dtf/governance/components/proposal-preview/vote-lock-upgrade-preview.tsx:95
 msgid "Registered {VOTE_LOCK_UPGRADE_TO} implementation"
-msgstr ""
+msgstr "Implementación registrada de {VOTE_LOCK_UPGRADE_TO}"
 
 #: src/views/yield-dtf/governance/views/proposal/components/ProposedRegisterPreview.tsx:33
 msgid "Registering assets"
@@ -10895,7 +10907,7 @@ msgstr "Activa los Zaps para hacer Mint usando 1 activo"
 
 #: src/views/index-dtf/governance/components/proposal-preview/vote-lock-upgrade-preview.tsx:52
 msgid "Turns on average-vote accounting"
-msgstr ""
+msgstr "Activa el cálculo de votos promedio"
 
 #: src/views/yield-dtf/deploy/components/Intro.tsx:44
 msgid "Tutorial video"
@@ -11275,9 +11287,13 @@ msgstr "Actualizar Folio Governance (1/2):"
 msgid "Upgrade to"
 msgstr "Actualizar a"
 
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-folio-governance-upgrade.tsx:126
+msgid "Upgrades the {symbol} governor and timelock to release 1.1.0, which adds a proposal throttle and a time-weighted vote check against proposal spam. See the <0>changelog</0> for details."
+msgstr "Actualiza el governor y el timelock de {symbol} a la versión 1.1.0, que agrega un límite de propuestas y una verificación de votos ponderada por tiempo contra el spam de propuestas. Consulta el <0>changelog</0> para más detalles."
+
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-vote-lock-upgrade.tsx:188
 msgid "Upgrades the {symbol} vault, its governor and timelock to release 1.1.0. The proposal goes to the {symbol} DAO. See the <0>changelog</0> for details."
-msgstr ""
+msgstr "Actualiza el vault de {symbol}, su governor y su timelock a la versión 1.1.0. La propuesta va al DAO de {symbol}. Consulta el <0>changelog</0> para más detalles."
 
 #: src/views/index-dtf/manage/components/submit-button.tsx:320
 msgid "Uploading files..."
@@ -11732,7 +11748,7 @@ msgstr "Bloquear votos de ${0}"
 
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-vote-lock-upgrade.tsx:125
 msgid "Vote-lock 1.1.0 upgrade proposal created"
-msgstr ""
+msgstr "Propuesta de actualización de vote-lock 1.1.0 creada"
 
 #: src/views/index-dtf/settings/components/index-settings-governance-token.tsx:18
 msgid "Vote-Lock DAO Token"
@@ -11750,9 +11766,9 @@ msgstr "Vote-Lock en Index DTFs"
 msgid "Vote-lock upgrade"
 msgstr "Actualización de vote-lock"
 
-#: src/views/index-dtf/governance/components/proposal-preview/vote-lock-upgrade-preview.tsx:64
+#: src/views/index-dtf/governance/components/proposal-preview/vote-lock-upgrade-preview.tsx:65
 msgid "Vote-lock upgrade to {VOTE_LOCK_UPGRADE_TO}"
-msgstr ""
+msgstr "Actualización de vote-lock a {VOTE_LOCK_UPGRADE_TO}"
 
 #: src/views/earn/views/index-dtf/components/faq-graphics.tsx:90
 msgid "Vote-lock vault"
@@ -11971,6 +11987,7 @@ msgstr "Esperando el colateral"
 
 #: src/views/index-dtf/governance/views/propose/basket/components/submit-proposal-button.tsx:196
 #: src/views/index-dtf/governance/views/propose/components/propose-index-upgrade.tsx:118
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-folio-governance-upgrade.tsx:153
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-governance-spell-31-03-2025.tsx:305
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-governance-spell-31-03-2025.tsx:431
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:363

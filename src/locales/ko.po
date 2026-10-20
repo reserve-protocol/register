@@ -502,9 +502,10 @@ msgstr "{swapCount}건 주문"
 msgid "{swapCount} orders"
 msgstr "{swapCount}건 주문"
 
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-folio-governance-upgrade.tsx:123
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-vote-lock-upgrade.tsx:185
 msgid "{symbol} governance 1.1.0 available"
-msgstr ""
+msgstr "{symbol} 거버넌스 1.1.0 사용 가능"
 
 #: src/components/vote-lock/migration/migration-modal.tsx:256
 msgid "{symbol} to approve"
@@ -4783,6 +4784,10 @@ msgstr "거버넌스에 참여하고, Stake하고, 수익 기회를 찾아보세
 msgid "Governance"
 msgstr "거버넌스"
 
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-folio-governance-upgrade.tsx:58
+msgid "Governance 1.1.0 upgrade proposal created"
+msgstr "거버넌스 1.1.0 업그레이드 제안이 생성됨"
+
 #: src/views/index-dtf/deploy/components/deploy-accordion.tsx:81
 #: src/views/index-dtf/deploy/components/deploy-accordion.tsx:82
 msgid "Governance Body"
@@ -4845,6 +4850,10 @@ msgstr "거버넌스 통계"
 #: src/views/portfolio-page/components/voting-power.tsx:47
 msgid "Governance Token"
 msgstr "거버넌스 토큰"
+
+#: src/views/index-dtf/governance/components/proposal-preview/vote-lock-upgrade-preview.tsx:67
+msgid "Governance upgrade to {VOTE_LOCK_UPGRADE_TO}"
+msgstr "거버넌스 {VOTE_LOCK_UPGRADE_TO} 업그레이드"
 
 #: src/views/index-dtf/governance/views/propose/components/proposal-type-selector.tsx:114
 msgid "Governance with an execution delay greater than 1 week unstaking delay"
@@ -5604,7 +5613,7 @@ msgstr "링크"
 #. placeholder {0}: shortenAddress(row.registry)
 #: src/views/index-dtf/governance/components/proposal-preview/vote-lock-upgrade-preview.tsx:54
 msgid "Links the version registry {0}"
-msgstr ""
+msgstr "버전 레지스트리 {0} 연결"
 
 #: src/views/index-dtf/manage/components/manage-about.tsx:40
 msgid "Links to files holders can download from the DTF overview page, like a tear sheet or methodology document."
@@ -6578,7 +6587,7 @@ msgstr "이 역할에 대한 보유자 없음..."
 
 #: src/views/index-dtf/governance/components/proposal-preview/vote-lock-upgrade-preview.tsx:55
 msgid "No initializer"
-msgstr ""
+msgstr "초기화 함수 없음"
 
 #: src/views/internal/dtf-listed/components/listed-dtf-table.tsx:193
 msgid "No listed DTFs found"
@@ -6751,9 +6760,9 @@ msgstr "일반 위임자"
 msgid "Normal Delegate"
 msgstr "일반 위임자"
 
-#: src/views/index-dtf/governance/components/proposal-preview/vote-lock-upgrade-preview.tsx:99
+#: src/views/index-dtf/governance/components/proposal-preview/vote-lock-upgrade-preview.tsx:103
 msgid "Not a registered {VOTE_LOCK_UPGRADE_TO} implementation"
-msgstr ""
+msgstr "등록된 {VOTE_LOCK_UPGRADE_TO} 구현이 아님"
 
 #: src/views/yield-dtf/auctions/auctions-sidebar/RevenueAuctionItem.tsx:22
 msgid "Not available"
@@ -7178,6 +7187,7 @@ msgstr "대기 중, Wallet에서 서명하세요"
 
 #: src/views/index-dtf/governance/views/propose/basket/components/submit-proposal-button.tsx:195
 #: src/views/index-dtf/governance/views/propose/components/propose-index-upgrade.tsx:117
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-folio-governance-upgrade.tsx:152
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-governance-spell-31-03-2025.tsx:304
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-governance-spell-31-03-2025.tsx:430
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:362
@@ -7636,6 +7646,7 @@ msgstr "다른 경매가 진행 중인 동안에는 제안을 실행할 수 없�
 msgid "Proposal created"
 msgstr "제안 생성됨"
 
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-folio-governance-upgrade.tsx:57
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:297
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:305
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-retire-vote-lock.tsx:138
@@ -7727,9 +7738,10 @@ msgstr "제안"
 msgid "Proposals voted"
 msgstr "투표한 제안"
 
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-folio-governance-upgrade.tsx:154
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-vote-lock-upgrade.tsx:215
 msgid "Propose {symbol} upgrade"
-msgstr ""
+msgstr "{symbol} 업그레이드 제안"
 
 #. placeholder {0}: rToken?.symbol
 #: src/views/yield-dtf/governance/views/proposal/components/Intro.tsx:20
@@ -8231,9 +8243,9 @@ msgstr "Register 리스팅"
 msgid "Register Optimistic Actions"
 msgstr "Optimistic 액션 등록"
 
-#: src/views/index-dtf/governance/components/proposal-preview/vote-lock-upgrade-preview.tsx:91
+#: src/views/index-dtf/governance/components/proposal-preview/vote-lock-upgrade-preview.tsx:95
 msgid "Registered {VOTE_LOCK_UPGRADE_TO} implementation"
-msgstr ""
+msgstr "등록된 {VOTE_LOCK_UPGRADE_TO} 구현"
 
 #: src/views/yield-dtf/governance/views/proposal/components/ProposedRegisterPreview.tsx:33
 msgid "Registering assets"
@@ -10895,7 +10907,7 @@ msgstr "1개의 자산으로 Mint 하려면 Zap을 켜세요"
 
 #: src/views/index-dtf/governance/components/proposal-preview/vote-lock-upgrade-preview.tsx:52
 msgid "Turns on average-vote accounting"
-msgstr ""
+msgstr "평균 투표권 계산 활성화"
 
 #: src/views/yield-dtf/deploy/components/Intro.tsx:44
 msgid "Tutorial video"
@@ -11275,9 +11287,13 @@ msgstr "Folio Governance 업그레이드 (1/2):"
 msgid "Upgrade to"
 msgstr "업그레이드 대상"
 
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-folio-governance-upgrade.tsx:126
+msgid "Upgrades the {symbol} governor and timelock to release 1.1.0, which adds a proposal throttle and a time-weighted vote check against proposal spam. See the <0>changelog</0> for details."
+msgstr "{symbol} 거버너와 타임락을 1.1.0 릴리스로 업그레이드합니다. 이 릴리스는 스팸 제안을 막기 위해 제안 제한과 시간 가중 투표권 확인을 추가합니다. 자세한 내용은 <0>changelog</0>를 참고하세요."
+
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-vote-lock-upgrade.tsx:188
 msgid "Upgrades the {symbol} vault, its governor and timelock to release 1.1.0. The proposal goes to the {symbol} DAO. See the <0>changelog</0> for details."
-msgstr ""
+msgstr "{symbol} 볼트와 거버너, 타임락을 1.1.0 릴리스로 업그레이드합니다. 제안은 {symbol} DAO로 전달됩니다. 자세한 내용은 <0>changelog</0>를 참고하세요."
 
 #: src/views/index-dtf/manage/components/submit-button.tsx:320
 msgid "Uploading files..."
@@ -11732,7 +11748,7 @@ msgstr "${0} 투표 잠금"
 
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-vote-lock-upgrade.tsx:125
 msgid "Vote-lock 1.1.0 upgrade proposal created"
-msgstr ""
+msgstr "Vote-lock 1.1.0 업그레이드 제안이 생성됨"
 
 #: src/views/index-dtf/settings/components/index-settings-governance-token.tsx:18
 msgid "Vote-Lock DAO Token"
@@ -11750,9 +11766,9 @@ msgstr "Index DTF의 투표 잠금"
 msgid "Vote-lock upgrade"
 msgstr "Vote-lock 업그레이드"
 
-#: src/views/index-dtf/governance/components/proposal-preview/vote-lock-upgrade-preview.tsx:64
+#: src/views/index-dtf/governance/components/proposal-preview/vote-lock-upgrade-preview.tsx:65
 msgid "Vote-lock upgrade to {VOTE_LOCK_UPGRADE_TO}"
-msgstr ""
+msgstr "Vote-lock {VOTE_LOCK_UPGRADE_TO} 업그레이드"
 
 #: src/views/earn/views/index-dtf/components/faq-graphics.tsx:90
 msgid "Vote-lock vault"
@@ -11971,6 +11987,7 @@ msgstr "담보 대기 중"
 
 #: src/views/index-dtf/governance/views/propose/basket/components/submit-proposal-button.tsx:196
 #: src/views/index-dtf/governance/views/propose/components/propose-index-upgrade.tsx:118
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-folio-governance-upgrade.tsx:153
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-governance-spell-31-03-2025.tsx:305
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-governance-spell-31-03-2025.tsx:431
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:363

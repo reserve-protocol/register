@@ -502,9 +502,10 @@ msgstr "{swapCount} 个 Order"
 msgid "{swapCount} orders"
 msgstr "{swapCount} 个 Orders"
 
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-folio-governance-upgrade.tsx:123
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-vote-lock-upgrade.tsx:185
 msgid "{symbol} governance 1.1.0 available"
-msgstr ""
+msgstr "{symbol} 治理 1.1.0 已可用"
 
 #: src/components/vote-lock/migration/migration-modal.tsx:256
 msgid "{symbol} to approve"
@@ -4783,6 +4784,10 @@ msgstr "参与治理、Stake 并发现收益机会"
 msgid "Governance"
 msgstr "社区治理"
 
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-folio-governance-upgrade.tsx:58
+msgid "Governance 1.1.0 upgrade proposal created"
+msgstr "治理 1.1.0 升级提案已创建"
+
 #: src/views/index-dtf/deploy/components/deploy-accordion.tsx:81
 #: src/views/index-dtf/deploy/components/deploy-accordion.tsx:82
 msgid "Governance Body"
@@ -4845,6 +4850,10 @@ msgstr "治理统计"
 #: src/views/portfolio-page/components/voting-power.tsx:47
 msgid "Governance Token"
 msgstr "治理代币"
+
+#: src/views/index-dtf/governance/components/proposal-preview/vote-lock-upgrade-preview.tsx:67
+msgid "Governance upgrade to {VOTE_LOCK_UPGRADE_TO}"
+msgstr "治理升级至 {VOTE_LOCK_UPGRADE_TO}"
 
 #: src/views/index-dtf/governance/views/propose/components/proposal-type-selector.tsx:114
 msgid "Governance with an execution delay greater than 1 week unstaking delay"
@@ -5604,7 +5613,7 @@ msgstr "链接"
 #. placeholder {0}: shortenAddress(row.registry)
 #: src/views/index-dtf/governance/components/proposal-preview/vote-lock-upgrade-preview.tsx:54
 msgid "Links the version registry {0}"
-msgstr ""
+msgstr "关联版本注册表 {0}"
 
 #: src/views/index-dtf/manage/components/manage-about.tsx:40
 msgid "Links to files holders can download from the DTF overview page, like a tear sheet or methodology document."
@@ -6578,7 +6587,7 @@ msgstr "该角色暂无持有者..."
 
 #: src/views/index-dtf/governance/components/proposal-preview/vote-lock-upgrade-preview.tsx:55
 msgid "No initializer"
-msgstr ""
+msgstr "无初始化函数"
 
 #: src/views/internal/dtf-listed/components/listed-dtf-table.tsx:193
 msgid "No listed DTFs found"
@@ -6751,9 +6760,9 @@ msgstr "普通委托人"
 msgid "Normal Delegate"
 msgstr "普通委托人"
 
-#: src/views/index-dtf/governance/components/proposal-preview/vote-lock-upgrade-preview.tsx:99
+#: src/views/index-dtf/governance/components/proposal-preview/vote-lock-upgrade-preview.tsx:103
 msgid "Not a registered {VOTE_LOCK_UPGRADE_TO} implementation"
-msgstr ""
+msgstr "不是已注册的 {VOTE_LOCK_UPGRADE_TO} 实现"
 
 #: src/views/yield-dtf/auctions/auctions-sidebar/RevenueAuctionItem.tsx:22
 msgid "Not available"
@@ -7178,6 +7187,7 @@ msgstr "待处理，请在 Wallet 中签名"
 
 #: src/views/index-dtf/governance/views/propose/basket/components/submit-proposal-button.tsx:195
 #: src/views/index-dtf/governance/views/propose/components/propose-index-upgrade.tsx:117
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-folio-governance-upgrade.tsx:152
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-governance-spell-31-03-2025.tsx:304
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-governance-spell-31-03-2025.tsx:430
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:362
@@ -7636,6 +7646,7 @@ msgstr "在另一场拍卖进行期间，提案无法执行"
 msgid "Proposal created"
 msgstr "提案已创建"
 
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-folio-governance-upgrade.tsx:57
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:297
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:305
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-retire-vote-lock.tsx:138
@@ -7727,9 +7738,10 @@ msgstr "提案"
 msgid "Proposals voted"
 msgstr "已投票提案"
 
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-folio-governance-upgrade.tsx:154
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-vote-lock-upgrade.tsx:215
 msgid "Propose {symbol} upgrade"
-msgstr ""
+msgstr "提议升级 {symbol}"
 
 #. placeholder {0}: rToken?.symbol
 #: src/views/yield-dtf/governance/views/proposal/components/Intro.tsx:20
@@ -8231,9 +8243,9 @@ msgstr "Register 上架信息"
 msgid "Register Optimistic Actions"
 msgstr "注册 Optimistic 操作"
 
-#: src/views/index-dtf/governance/components/proposal-preview/vote-lock-upgrade-preview.tsx:91
+#: src/views/index-dtf/governance/components/proposal-preview/vote-lock-upgrade-preview.tsx:95
 msgid "Registered {VOTE_LOCK_UPGRADE_TO} implementation"
-msgstr ""
+msgstr "已注册的 {VOTE_LOCK_UPGRADE_TO} 实现"
 
 #: src/views/yield-dtf/governance/views/proposal/components/ProposedRegisterPreview.tsx:33
 msgid "Registering assets"
@@ -10895,7 +10907,7 @@ msgstr "开启 Zaps 以使用 1 种资产进行 Mint"
 
 #: src/views/index-dtf/governance/components/proposal-preview/vote-lock-upgrade-preview.tsx:52
 msgid "Turns on average-vote accounting"
-msgstr ""
+msgstr "启用平均投票权计算"
 
 #: src/views/yield-dtf/deploy/components/Intro.tsx:44
 msgid "Tutorial video"
@@ -11275,9 +11287,13 @@ msgstr "升级 Folio 治理 (1/2):"
 msgid "Upgrade to"
 msgstr "升级至"
 
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-folio-governance-upgrade.tsx:126
+msgid "Upgrades the {symbol} governor and timelock to release 1.1.0, which adds a proposal throttle and a time-weighted vote check against proposal spam. See the <0>changelog</0> for details."
+msgstr "将 {symbol} 的 governor 和 timelock 升级到 1.1.0 版本，新增提案限流和基于时间加权的投票权检查，以防止垃圾提案。详情请参阅<0>changelog</0>。"
+
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-vote-lock-upgrade.tsx:188
 msgid "Upgrades the {symbol} vault, its governor and timelock to release 1.1.0. The proposal goes to the {symbol} DAO. See the <0>changelog</0> for details."
-msgstr ""
+msgstr "将 {symbol} 金库及其 governor 和 timelock 升级到 1.1.0 版本。该提案提交给 {symbol} DAO。详情请参阅<0>changelog</0>。"
 
 #: src/views/index-dtf/manage/components/submit-button.tsx:320
 msgid "Uploading files..."
@@ -11732,7 +11748,7 @@ msgstr "投票锁定 ${0}"
 
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-vote-lock-upgrade.tsx:125
 msgid "Vote-lock 1.1.0 upgrade proposal created"
-msgstr ""
+msgstr "Vote-lock 1.1.0 升级提案已创建"
 
 #: src/views/index-dtf/settings/components/index-settings-governance-token.tsx:18
 msgid "Vote-Lock DAO Token"
@@ -11750,9 +11766,9 @@ msgstr "在 Index DTF 上进行投票锁定"
 msgid "Vote-lock upgrade"
 msgstr "Vote-lock 升级"
 
-#: src/views/index-dtf/governance/components/proposal-preview/vote-lock-upgrade-preview.tsx:64
+#: src/views/index-dtf/governance/components/proposal-preview/vote-lock-upgrade-preview.tsx:65
 msgid "Vote-lock upgrade to {VOTE_LOCK_UPGRADE_TO}"
-msgstr ""
+msgstr "Vote-lock 升级至 {VOTE_LOCK_UPGRADE_TO}"
 
 #: src/views/earn/views/index-dtf/components/faq-graphics.tsx:90
 msgid "Vote-lock vault"
@@ -11971,6 +11987,7 @@ msgstr "等待抵押品"
 
 #: src/views/index-dtf/governance/views/propose/basket/components/submit-proposal-button.tsx:196
 #: src/views/index-dtf/governance/views/propose/components/propose-index-upgrade.tsx:118
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-folio-governance-upgrade.tsx:153
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-governance-spell-31-03-2025.tsx:305
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-governance-spell-31-03-2025.tsx:431
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:363
