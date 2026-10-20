@@ -1,9 +1,10 @@
 import { describe, expect, it } from 'vitest'
 import { RSR_ADDRESS } from '@/utils/addresses'
 import { ChainId } from '@/utils/chains'
-import { zeroAddress } from 'viem'
+import { getAddress, zeroAddress } from 'viem'
 import {
   getGovernanceUpgradeTarget,
+  getMigrationVault,
   getOldVoteLocks,
   isGovernanceMigrationPending,
   isOptimisticGovernanceUpgradeEligible,
@@ -38,6 +39,11 @@ const TOKEN_JAR = '0xEAfA84184BEb90891cb5c4942ebD59C18dda0bfE'
 const SQUILL = '0x7ebAB7190d3d574ce82D29F2FA1422f18E29969C'
 const VL_SQUILL = '0x8a8188D2bC61c43124CDED32F40faB456F68C15C'
 const OPEN_SPELL = '0x5CE95c60A1aaF3f500301735a92d608E1eE3515E'
+const OPEN_OLD_VAULT = getAddress('0x2aea77c4757d897aae2710b8a60280777f504e8c')
+const SHARED_BASE_SPELL = '0x5771d976696AA180Fed276FB6571fE2f41D0b849'
+const ALTT = getAddress('0x1b5ce2a593a840e3ad3549a34d7b3dec697c114d')
+const VL_ALTT = getAddress('0x77cd9520931ae628f870783d855f74bb14cdaf39')
+const ABX_OLD_VAULT = getAddress('0x6f1fe54c2275dc64ce1ce9cbf2007ef7bd53c117')
 const open = {
   ...legacy,
   chainId: ChainId.Mainnet,
@@ -53,7 +59,7 @@ const open = {
 
 describe('getGovernanceUpgradeTarget', () => {
   it('routes OPEN through its own spell into vlSQUILL, which also takes the fee share', () => {
-    expect(getGovernanceUpgradeTarget(ChainId.Mainnet, OPEN)).toEqual({
+    expect(getGovernanceUpgradeTarget(ChainId.Mainnet, OPEN)).toMatchObject({
       spell: OPEN_SPELL,
       stakingVault: VL_SQUILL,
       stakingVaultUnderlying: SQUILL,
@@ -70,9 +76,32 @@ describe('getGovernanceUpgradeTarget', () => {
     })
   })
 
-  it('has no target for ABX or a chain without the spell', () => {
-    expect(getGovernanceUpgradeTarget(ChainId.Base, ABX)).toBeUndefined()
+  it('routes ABX through the shared spell into vlALTT, which also takes the fee share', () => {
+    expect(getGovernanceUpgradeTarget(ChainId.Base, ABX)).toMatchObject({
+      spell: SHARED_BASE_SPELL,
+      stakingVault: VL_ALTT,
+      stakingVaultUnderlying: ALTT,
+      feeRecipient: zeroAddress,
+    })
+  })
+
+  it('has no target on a chain without the spell', () => {
     expect(getGovernanceUpgradeTarget(42161, LCAP)).toBeUndefined()
+  })
+})
+
+describe('getMigrationVault', () => {
+  it('moves OPEN and ABX holders into their own vaults', () => {
+    expect(getMigrationVault(ChainId.Mainnet, OPEN_OLD_VAULT)).toEqual({ address: VL_SQUILL, shared: false })
+    expect(getMigrationVault(ChainId.Base, ABX_OLD_VAULT)).toEqual({ address: VL_ALTT, shared: false })
+  })
+
+  it('moves every other old vault into the shared vlRSR', () => {
+    expect(getMigrationVault(ChainId.Base, '0x45A96cD0E4D89a41eebF3cC4204B00B1cf1582FA')).toEqual({
+      address: '0x2F0D6538807a77d4AdDCd4b4DAf214Ea2E818E3D',
+      shared: true,
+    })
+    expect(getMigrationVault(42161, ABX_OLD_VAULT)).toBeUndefined()
   })
 })
 
@@ -120,13 +149,17 @@ describe('isOptimisticGovernanceUpgradeEligible', () => {
     ).toBe(false)
   })
 
-  it('rejects ABX, which stays on its own staking vault', () => {
+  it('accepts ABX on its ALTT vault and rejects it with an RSR vault', () => {
+    const abx = {
+      ...legacy,
+      dtfAddress: ABX,
+      oldVoteLock: ABX_OLD_VAULT,
+      oldVoteLockUnderlying: ALTT,
+      feeRecipients: [ABX_OLD_VAULT],
+    }
+    expect(isOptimisticGovernanceUpgradeEligible(abx)).toBe(true)
     expect(
-      isOptimisticGovernanceUpgradeEligible({
-        ...legacy,
-        chainId: ChainId.Base,
-        dtfAddress: ABX,
-      })
+      isOptimisticGovernanceUpgradeEligible({ ...abx, oldVoteLockUnderlying: legacy.oldVoteLockUnderlying })
     ).toBe(false)
   })
 
@@ -221,11 +254,19 @@ describe('getOldVoteLocks', () => {
     ).toEqual([{ address: OLD_VAULT, governance: OLD_DAO }])
   })
 
-  it('returns nothing for excluded DTFs or chains without the spell', () => {
-    const current = dtf({ id: OLD_VAULT, governance: { id: OLD_DAO } })
-    expect(getOldVoteLocks({ ...current, id: ABX }, ChainId.Base)).toEqual([])
-    expect(getOldVoteLocks({ ...current, id: OPEN }, ChainId.Mainnet)).toEqual([])
-    expect(getOldVoteLocks(current, 42161)).toEqual([])
+  it("never returns OPEN's or ABX's own successor vault", () => {
+    const migrated = (id: string, successor: string, oldVault: string) =>
+      ({ ...dtf({ id: successor }, [{ governance: OLD_DAO, voteLock: oldVault, voteLockGovernance: OLD_DAO }]), id })
+    expect(getOldVoteLocks(migrated(OPEN, VL_SQUILL, OPEN_OLD_VAULT), ChainId.Mainnet)).toEqual([
+      { address: OPEN_OLD_VAULT, governance: OLD_DAO },
+    ])
+    expect(getOldVoteLocks(migrated(ABX, VL_ALTT, ABX_OLD_VAULT), ChainId.Base)).toEqual([
+      { address: ABX_OLD_VAULT, governance: OLD_DAO },
+    ])
+  })
+
+  it('returns nothing on a chain without the spell', () => {
+    expect(getOldVoteLocks(dtf({ id: OLD_VAULT, governance: { id: OLD_DAO } }), 42161)).toEqual([])
   })
 })
 

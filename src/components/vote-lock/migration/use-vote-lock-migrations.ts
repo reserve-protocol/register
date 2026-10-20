@@ -1,5 +1,5 @@
 import { useMemo } from 'react'
-import { parseAbi, type Address } from 'viem'
+import { erc20Abi, parseAbi, type Address } from 'viem'
 import { useReadContracts } from 'wagmi'
 import { readMigrationRecord, type MigrationRecord } from './migration-record'
 import { isRetired } from './migration-state'
@@ -19,11 +19,15 @@ export type MigrationCandidate = {
   chainId: number
   oldVoteLock: Address
   newVoteLock: Address
+  // True for the chain's shared vlRSR; false for a DTF's own successor vault.
+  shared: boolean
 }
 
 export type VoteLockMigration = MigrationCandidate & {
   account: Address
   oldSymbol: string
+  newSymbol: string
+  underlyingSymbol: string
   shares: bigint
   underlying: Address
   record: MigrationRecord
@@ -55,6 +59,7 @@ export const useVoteLockMigrations = (
           chainId,
         },
         { address: newVoteLock, abi: legacyVaultAbi, functionName: 'asset' as const, chainId },
+        { address: newVoteLock, abi: legacyVaultAbi, functionName: 'symbol' as const, chainId },
       ]),
     [candidates, account]
   )
@@ -62,11 +67,11 @@ export const useVoteLockMigrations = (
     contracts,
     query: { enabled: candidates.length > 0 },
   })
-  const per = OLD_READS.length + 2
+  const per = OLD_READS.length + 3
 
   const vaults = candidates.map((candidate, index) => {
     const reads = data?.slice(index * per, (index + 1) * per).map((r) => r.result)
-    const [owner, unstakingDelay, asset, symbol, balance, newAsset] = reads ?? []
+    const [owner, unstakingDelay, asset, symbol, balance, newAsset, newSymbol] = reads ?? []
     const sameAsset =
       !!asset &&
       !!newAsset &&
@@ -82,11 +87,31 @@ export const useVoteLockMigrations = (
       shares: account ? ((balance as bigint | undefined) ?? 0n) : 0n,
       underlying: asset as Address | undefined,
       symbol: (symbol as string | undefined) ?? '',
+      newSymbol: (newSymbol as string | undefined) ?? '',
     }
   })
 
+  const underlyings = vaults.flatMap(({ candidate, underlying }) =>
+    underlying ? [{ chainId: candidate.chainId, underlying }] : []
+  )
+  const { data: underlyingSymbols } = useReadContracts({
+    contracts: underlyings.map(({ chainId, underlying }) => ({
+      address: underlying,
+      abi: erc20Abi,
+      functionName: 'symbol' as const,
+      chainId,
+    })),
+    query: { enabled: underlyings.length > 0 },
+  })
+  const underlyingSymbolOf = (chainId: number, underlying: Address) => {
+    const index = underlyings.findIndex(
+      (u) => u.chainId === chainId && u.underlying.toLowerCase() === underlying.toLowerCase()
+    )
+    return (underlyingSymbols?.[index]?.result as string | undefined) ?? ''
+  }
+
   const migrations: VoteLockMigration[] = account
-    ? vaults.flatMap(({ candidate, retired, shares, underlying, symbol }) => {
+    ? vaults.flatMap(({ candidate, retired, shares, underlying, symbol, newSymbol }) => {
         if (!retired || !underlying) return []
         const record = readMigrationRecord({ ...candidate, account })
         // A redeemed position has no old shares left; its record carries it until the holder dismisses completion.
@@ -97,6 +122,8 @@ export const useVoteLockMigrations = (
             ...candidate,
             account,
             oldSymbol: symbol,
+            newSymbol,
+            underlyingSymbol: underlyingSymbolOf(candidate.chainId, underlying),
             shares,
             underlying,
             record,
@@ -109,6 +136,7 @@ export const useVoteLockMigrations = (
   return {
     migrations,
     hasRetiredVoteLock: vaults.some((vault) => vault.retired),
+    retiredNewSymbol: vaults.find((vault) => vault.retired)?.newSymbol ?? '',
     isLoading,
     refetch: () => void refetch(),
   }

@@ -89,7 +89,8 @@ export const MigrationCard = ({
   const open = controlledOpen ?? internalOpen
   const setOpen = onOpenChange ?? setInternalOpen
   const flow = useMigrationFlow(migration)
-  const symbol = 'RSR'
+  const symbol = migration.underlyingSymbol || 'RSR'
+  const vault = migration.newSymbol || 'vlRSR'
   const track = (cta: string) =>
     trackClick(page, cta, migration.oldVoteLock, migration.oldSymbol, migration.chainId)
 
@@ -103,9 +104,15 @@ export const MigrationCard = ({
     <Shell
       layout={layout}
       className={className}
-      badge={<TokenLogo size="xl" symbol="vlRSR" />}
-      title={<Trans>Your {symbol} is locked in vlRSR</Trans>}
-      description={<Trans>Your position is in the shared vlRSR vault.</Trans>}
+      badge={<TokenLogo size="xl" symbol={vault} />}
+      title={<Trans>Your {symbol} is locked in {vault}</Trans>}
+      description={
+        migration.shared ? (
+          <Trans>Your position is in the shared vlRSR vault.</Trans>
+        ) : (
+          <Trans>Your position is in the {vault} vault.</Trans>
+        )
+      }
       action={
         <Button
           data-testid="vote-lock-migration-dismiss"
@@ -132,7 +139,7 @@ export const MigrationCard = ({
         ) : isRecovering ? (
           <Trans>Finish re-locking your {symbol}</Trans>
         ) : (
-          <Trans>Re-lock your {symbol} in vlRSR</Trans>
+          <Trans>Re-lock your {symbol} in {vault}</Trans>
         )
       }
       description={
@@ -141,17 +148,17 @@ export const MigrationCard = ({
         ) : isRecovering ? (
           <Trans>
             Your old vote-lock has been redeemed. Your {symbol} is in your wallet but cannot vote or earn
-            rewards yet. Lock it in vlRSR to finish.
+            rewards yet. Lock it in {vault} to finish.
           </Trans>
         ) : context === 'vault' ? (
           <Trans>
             This wallet still holds an old {migration.oldSymbol} vote-lock. You can't vote or earn rewards
-            with it anymore. Redeem its shares, then lock the RSR you receive in vlRSR.
+            with it anymore. Redeem its shares, then lock the {symbol} you receive in {vault}.
           </Trans>
         ) : (
           <Trans>
             This wallet still holds an old vote-lock for this DTF. You can't vote or earn rewards with it
-            anymore. Redeem its shares, then lock the RSR you receive in vlRSR.
+            anymore. Redeem its shares, then lock the {symbol} you receive in {vault}.
           </Trans>
         )
       }
@@ -182,7 +189,15 @@ export const MigrationCard = ({
   )
 }
 
-export const MigrationConnectPrompt = ({ page, className }: { page: string; className?: string }) => {
+export const MigrationConnectPrompt = ({
+  page,
+  vault = 'vlRSR',
+  className,
+}: {
+  page: string
+  vault?: string
+  className?: string
+}) => {
   const { openConnectModal } = useWalletModal()
   return (
     <Shell
@@ -193,11 +208,11 @@ export const MigrationConnectPrompt = ({ page, className }: { page: string; clas
           <Trans>Vote-lock upgrade</Trans>
         </WarningBadge>
       }
-      title={<Trans>Old vote-locks need to move to vlRSR</Trans>}
+      title={<Trans>Old vote-locks need to move to {vault}</Trans>}
       description={
         <Trans>
           Old vote-locks for this DTF no longer vote or earn rewards. If you already moved yours or only locked
-          in vlRSR, you're all set. Connect to check this wallet.
+          in {vault}, you're all set. Connect to check this wallet.
         </Trans>
       }
       action={

@@ -7,29 +7,26 @@ import { walletAtom } from '@/state/atoms'
 import { indexDTFAtom } from '@/state/dtf/atoms'
 import { useAtomValue } from 'jotai'
 import { useMemo } from 'react'
-import {
-  getOldVoteLocks,
-  optimisticStakingVaultAddress,
-} from './governance-migration'
+import { getMigrationVault, getOldVoteLocks } from './governance-migration'
 
-// The DTF's retired per-DTF vote-locks, each moving into the chain's shared vlRSR.
+// The DTF's retired per-DTF vote-locks, each moving into vlRSR or the DTF's own successor vault.
 export const useDtfVoteLockMigration = () => {
   const dtf = useAtomValue(indexDTFAtom)
   const account = useAtomValue(walletAtom)
   const chainId = dtf?.chainId
-  const newVoteLock = chainId ? optimisticStakingVaultAddress[chainId] : undefined
   const candidates = useMemo(
     () =>
-      dtf && chainId && newVoteLock
-        ? getOldVoteLocks(dtf, chainId).map(({ address }) => ({
-            chainId,
-            oldVoteLock: address,
-            newVoteLock,
-          }))
+      dtf && chainId
+        ? getOldVoteLocks(dtf, chainId).flatMap(({ address }) => {
+            const vault = getMigrationVault(chainId, address)
+            return vault
+              ? [{ chainId, oldVoteLock: address, newVoteLock: vault.address, shared: vault.shared }]
+              : []
+          })
         : [],
-    [dtf, chainId, newVoteLock]
+    [dtf, chainId]
   )
-  const { migrations, hasRetiredVoteLock } = useVoteLockMigrations(candidates, account)
+  const { migrations, hasRetiredVoteLock, retiredNewSymbol } = useVoteLockMigrations(candidates, account)
   const migration = migrations[0]
 
   return {
@@ -37,6 +34,7 @@ export const useDtfVoteLockMigration = () => {
     // Shown in place of the regular vote-lock action until the holder dismisses the completion.
     isActive: !!migration && !migration.record.acknowledged,
     showConnectPrompt: !account && hasRetiredVoteLock,
+    retiredNewSymbol,
   }
 }
 
@@ -49,11 +47,13 @@ const DtfVoteLockMigration = ({
   allowConnectPrompt?: boolean
   className?: string
 }) => {
-  const { migration, showConnectPrompt } = useDtfVoteLockMigration()
+  const { migration, showConnectPrompt, retiredNewSymbol } = useDtfVoteLockMigration()
 
   if (migration) return <MigrationCard migration={migration} page={page} className={className} />
   if (allowConnectPrompt && showConnectPrompt) {
-    return <MigrationConnectPrompt page={page} className={className} />
+    return (
+      <MigrationConnectPrompt page={page} vault={retiredNewSymbol || undefined} className={className} />
+    )
   }
   return null
 }
