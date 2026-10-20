@@ -116,8 +116,8 @@ importers:
         specifier: ^0.8.0
         version: 0.8.0(@tanstack/react-query@5.99.0(react@18.3.1))(ajv@8.18.0)(cross-fetch@4.1.0)(multiformats@14.0.0)(react@18.3.1)(viem@2.52.0(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@5.0.10)(zod@4.3.6))(wagmi@2.19.5(@tanstack/query-core@5.99.0)(@tanstack/react-query@5.99.0(react@18.3.1))(@types/react@18.3.28)(bufferutil@4.1.0)(react@18.3.1)(typescript@5.9.3)(utf-8-validate@5.0.10)(viem@2.52.0(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@5.0.10)(zod@4.3.6))(zod@4.3.6))
       '@reserve-protocol/dtf-catalog':
-        specifier: 0.1.7
-        version: 0.1.7
+        specifier: 0.2.0
+        version: 0.2.0
       '@reserve-protocol/dtf-chat':
         specifier: ^0.0.7
         version: 0.0.7(@ai-sdk/react@2.0.199(react@18.3.1)(zod@4.3.6))(ai@5.0.197(zod@4.3.6))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -125,8 +125,8 @@ importers:
         specifier: ^3.2.1
         version: 3.2.1(decimal.js-light@2.5.1)
       '@reserve-protocol/react-sdk':
-        specifier: 0.6.2
-        version: 0.6.2(@tanstack/react-query@5.99.0(react@18.3.1))(bufferutil@4.1.0)(react@18.3.1)(typescript@5.9.3)(utf-8-validate@5.0.10)(viem@2.52.0(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@5.0.10)(zod@4.3.6))
+        specifier: 0.7.0
+        version: 0.7.0(@tanstack/react-query@5.99.0(react@18.3.1))(bufferutil@4.1.0)(react@18.3.1)(typescript@5.9.3)(utf-8-validate@5.0.10)(viem@2.52.0(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@5.0.10)(zod@4.3.6))
       '@reserve-protocol/react-zapper':
         specifier: 2.14.3
         version: 2.14.3(@babel/core@7.29.0)(@babel/template@7.28.6)(@tanstack/react-query@5.99.0(react@18.3.1))(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(ajv@8.18.0)(multiformats@14.0.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(viem@2.52.0(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@5.0.10)(zod@4.3.6))(wagmi@2.19.5(@tanstack/query-core@5.99.0)(@tanstack/react-query@5.99.0(react@18.3.1))(@types/react@18.3.28)(bufferutil@4.1.0)(react@18.3.1)(typescript@5.9.3)(utf-8-validate@5.0.10)(viem@2.52.0(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@5.0.10)(zod@4.3.6))(zod@4.3.6))
@@ -3202,8 +3202,8 @@ packages:
       viem: ^2.50.4
       wagmi: ^2.19.5
 
-  '@reserve-protocol/dtf-catalog@0.1.7':
-    resolution: {integrity: sha512-4kQ4lnzEDZb10Ze94Bg9Ll3PbGGIjLRfapphe3mHhIvbSW9sT261V0s6MwDJwrmUFATESzFj6fhtCQf2mQiusQ==}
+  '@reserve-protocol/dtf-catalog@0.2.0':
+    resolution: {integrity: sha512-xbPjW9a8TWUz9BzqlkDmFfuwa8/msfMYRIh0sppoBQy1r3GA5BsFSxjdZlMybYFuTtUMetWxP88YExB0UlqcLw==}
     engines: {node: '>=24'}
 
   '@reserve-protocol/dtf-chat@0.0.7':
@@ -3219,8 +3219,14 @@ packages:
     peerDependencies:
       decimal.js-light: ^2.5.1
 
-  '@reserve-protocol/react-sdk@0.6.2':
-    resolution: {integrity: sha512-cbfygBlbNdcAVQETPQcnc4eAWd3Ze6V5pyLcg3I5vNinItWBkNamtiZUik2ri5KvBg9d78tei2u7OeRVCR2zfw==}
+  '@reserve-protocol/dtf-rebalance-lib@3.3.2':
+    resolution: {integrity: sha512-PZ3Dy1wmY03CNQB4qAAPsAPeAiUBfjUOGfOEmil61O3QFJ7CkHJLlWxoyCwNAsxk3h/8KxSeGY3B03B4UOZ7Qw==}
+    engines: {node: '>=20'}
+    peerDependencies:
+      decimal.js-light: ^2.5.1
+
+  '@reserve-protocol/react-sdk@0.7.0':
+    resolution: {integrity: sha512-m2WKjhc/vTmFP1+rOgb2Qh5sfv1ZX2clDFS1KY2ILEnGBMANKVz6WO0H9XwPdCU/B7eF1cM/S2C4tLq6opfWMA==}
     engines: {node: '>=24'}
     peerDependencies:
       '@tanstack/react-query': ^5.102.7
@@ -3239,8 +3245,8 @@ packages:
   '@reserve-protocol/rtokens@1.1.23':
     resolution: {integrity: sha512-VYP0BNhULhFzAGpzaqe1pkuMpCvLmuNYsYHE0xkKgiqaMZdztSlnCNK2BRlsDbFD/HQZwcoAoYjFpEHQbq2GoA==}
 
-  '@reserve-protocol/sdk@0.6.2':
-    resolution: {integrity: sha512-ZfOgNhXXr8OYoj2v3F436rDcd0DzwIif/pN0TAfGHQdluxk9lChWhFIPlYm23qefm8ZzXQXVOpSAMi1Z8GQEdg==}
+  '@reserve-protocol/sdk@0.7.0':
+    resolution: {integrity: sha512-pmEjpo8gPC+FIvhlWA1peb+s2ia1NdcIKCPUPJeiijI8dcKlch4HNIGHw0VefPzrcyB7V+6rORtimGQSYcR52g==}
     engines: {node: '>=24'}
 
   '@reserve-protocol/trusted-fillers-sdk@0.3.0':
@@ -12082,7 +12088,7 @@ snapshots:
       - multiformats
       - supports-color
 
-  '@reserve-protocol/dtf-catalog@0.1.7': {}
+  '@reserve-protocol/dtf-catalog@0.2.0': {}
 
   '@reserve-protocol/dtf-chat@0.0.7(@ai-sdk/react@2.0.199(react@18.3.1)(zod@4.3.6))(ai@5.0.197(zod@4.3.6))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:
@@ -12097,9 +12103,13 @@ snapshots:
     dependencies:
       decimal.js-light: 2.5.1
 
-  '@reserve-protocol/react-sdk@0.6.2(@tanstack/react-query@5.99.0(react@18.3.1))(bufferutil@4.1.0)(react@18.3.1)(typescript@5.9.3)(utf-8-validate@5.0.10)(viem@2.52.0(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@5.0.10)(zod@4.3.6))':
+  '@reserve-protocol/dtf-rebalance-lib@3.3.2(decimal.js-light@2.5.1)':
     dependencies:
-      '@reserve-protocol/sdk': 0.6.2(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@5.0.10)
+      decimal.js-light: 2.5.1
+
+  '@reserve-protocol/react-sdk@0.7.0(@tanstack/react-query@5.99.0(react@18.3.1))(bufferutil@4.1.0)(react@18.3.1)(typescript@5.9.3)(utf-8-validate@5.0.10)(viem@2.52.0(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@5.0.10)(zod@4.3.6))':
+    dependencies:
+      '@reserve-protocol/sdk': 0.7.0(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@5.0.10)
       '@tanstack/react-query': 5.99.0(react@18.3.1)
       react: 18.3.1
       viem: 2.52.0(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@5.0.10)(zod@4.3.6)
@@ -12147,11 +12157,11 @@ snapshots:
 
   '@reserve-protocol/rtokens@1.1.23': {}
 
-  '@reserve-protocol/sdk@0.6.2(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@5.0.10)':
+  '@reserve-protocol/sdk@0.7.0(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@5.0.10)':
     dependencies:
       '@graphql-typed-document-node/core': 3.2.0(graphql@16.13.2)
-      '@reserve-protocol/dtf-catalog': 0.1.7
-      '@reserve-protocol/dtf-rebalance-lib': 3.2.1(decimal.js-light@2.5.1)
+      '@reserve-protocol/dtf-catalog': 0.2.0
+      '@reserve-protocol/dtf-rebalance-lib': 3.3.2(decimal.js-light@2.5.1)
       decimal.js-light: 2.5.1
       graphql: 16.13.2
       graphql-request: 7.4.0(graphql@16.13.2)
