@@ -3,11 +3,7 @@ import dtfIndexAbi from '@/abis/dtf-index-abi-v1'
 import DTFIndexGovernance from '@/abis/dtf-index-governance'
 import { Button } from '@/components/ui/button'
 import { chainIdAtom } from '@/state/atoms'
-import {
-  indexDTFAtom,
-  indexDTFStatusAtom,
-  indexDTFVersionAtom,
-} from '@/state/dtf/atoms'
+import { indexDTFAtom } from '@/state/dtf/atoms'
 import { getCurrentTime } from '@/utils'
 import { PROPOSAL_STATES } from '@/utils/constants'
 import { Trans, useLingui } from '@lingui/react/macro'
@@ -15,23 +11,17 @@ import type { IndexDtfProposalSummary } from '@reserve-protocol/react-sdk'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { AlertCircle, Loader2 } from 'lucide-react'
 import { useCallback, useEffect } from 'react'
-import { encodeFunctionData, getAddress, Hex, pad, parseAbi } from 'viem'
-import {
-  useReadContract,
-  useWaitForTransactionReceipt,
-  useWriteContract,
-} from 'wagmi'
+import { encodeFunctionData, getAddress, Hex, pad } from 'viem'
+import { useWaitForTransactionReceipt, useWriteContract } from 'wagmi'
 import { governanceProposalsAtom, refetchTokenAtom } from '../../../atoms'
 import { useIsProposeAllowed } from '../../../hooks/use-is-propose-allowed'
 import useRecentProposalReceipt from '../../../hooks/use-recent-proposal-receipt'
 import { toast } from 'sonner'
 import {
   getGovernanceUpgradeTarget,
-  isOptimisticGovernanceUpgradeEligible,
   optimisticStakingVaultAddress,
 } from '@/views/index-dtf/components/vote-lock-migration/governance-migration'
-
-const versionAbi = parseAbi(['function version() view returns (string)'])
+import { useOptimisticUpgradeEligibility } from '@/views/index-dtf/components/vote-lock-migration/use-upgrade-eligibility'
 
 const spellAbi = [
   {
@@ -403,47 +393,14 @@ const validProposalExists = (
 export default function ProposeOptimisticGovernanceUpgrade() {
   const { isProposeAllowed } = useIsProposeAllowed()
   const proposals = useAtomValue(governanceProposalsAtom)
-  const version = useAtomValue(indexDTFVersionAtom)
-  const dtf = useAtomValue(indexDTFAtom)
-  const status = useAtomValue(indexDTFStatusAtom)
-  const chainId = useAtomValue(chainIdAtom)
+  const { isEligible } = useOptimisticUpgradeEligibility()
   const setRefetchToken = useSetAtom(refetchTokenAtom)
-  const stakingVault = dtf
-    ? getGovernanceUpgradeTarget(chainId, dtf.id)?.stakingVault
-    : undefined
-  const { data: stakingVaultVersion } = useReadContract({
-    address: stakingVault,
-    abi: versionAbi,
-    functionName: 'version',
-    chainId,
-    query: { enabled: !!stakingVault },
-  })
 
   const refetch = useCallback(() => {
     setRefetchToken(getCurrentTime())
   }, [setRefetchToken])
 
-  if (!dtf || !isProposeAllowed || !proposals) return null
-
-  const isEligible = isOptimisticGovernanceUpgradeEligible({
-    chainId,
-    dtfAddress: dtf.id,
-    status,
-    folioVersion: version,
-    ownerGovernor: dtf.ownerGovernance?.id,
-    tradingGovernor: dtf.tradingGovernance?.id,
-    stakingVaultVersion,
-    ownerTimelock: dtf.ownerGovernance?.timelock.id,
-    tradingTimelock: dtf.tradingGovernance?.timelock.id,
-    oldVoteLock: dtf.stToken?.id,
-    oldVoteLockUnderlying: dtf.stToken?.underlying.address,
-    admins: dtf.roles.admin.all,
-    auctionApprovers: dtf.auctionApprovers,
-    auctionLaunchers: dtf.auctionLaunchers,
-    brandManagers: dtf.brandManagers,
-    feeRecipients: dtf.feeRecipients.map(({ address }) => address),
-  })
-
+  if (!isProposeAllowed || !proposals) return null
   if (!isEligible || validProposalExists(proposals)) return null
 
   const description = getNextUpgradeDescription(proposals)

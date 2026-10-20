@@ -1,6 +1,7 @@
 import DtfVoteLockMigration, {
   useDtfVoteLockMigration,
 } from '../components/vote-lock-migration'
+import UpcomingVoteLock from '../components/vote-lock-migration/upcoming-vote-lock'
 import useTrackIndexDTFPage from '../hooks/useTrackIndexDTFPage'
 import GovernanceAccountInfo from './components/governance-account-info'
 import GovernanceDelegateList from './components/governance-delegate-list'
@@ -23,6 +24,7 @@ const IndexDTFGovernance = () => {
       </div>
       <div className="flex flex-col gap-1 p-1 bg-muted rounded-4xl h-fit order-first lg:order-2">
         <DtfVoteLockMigration page="governance" allowConnectPrompt />
+        <UpcomingVoteLock page="governance" />
         {!isMigrating && <GovernanceVoteLock />}
         <GovernanceAccountInfo />
         <GovernanceStats />
