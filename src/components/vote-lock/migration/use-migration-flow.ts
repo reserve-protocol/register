@@ -54,7 +54,7 @@ export const useMigrationFlow = (migration: VoteLockMigration) => {
     functionName: 'delegates',
     args: [account],
     chainId,
-    query: { enabled: beforeRedeem },
+    query: { enabled: !record.delegate },
   })
   const { data: estimate } = useReadContract({
     address: oldVoteLock,
@@ -115,14 +115,21 @@ export const useMigrationFlow = (migration: VoteLockMigration) => {
       update(({ pending: _, ...rest }) => rest)
       return
     }
-    setFailed(undefined)
     if (pending.step === 'redeem') {
       const assets = redeemedFrom(pendingReceipt, oldVoteLock)
+      // A replacement transaction can succeed without redeeming from the old vault.
+      if (assets === undefined) {
+        setFailed('redeem')
+        update(({ pending: _, ...rest }) => rest)
+        migration.refetch()
+        return
+      }
       update(({ pending: _, ...rest }) => ({ ...rest, redeem: { hash: pending.hash, assets } }))
       void refetchBalance()
       void refetchAllowance()
       migration.refetch()
     }
+    setFailed(undefined)
     if (pending.step === 'approve') {
       update(({ pending: _, ...rest }) => ({ ...rest, approve: { hash: pending.hash } }))
       void refetchAllowance()
@@ -133,8 +140,19 @@ export const useMigrationFlow = (migration: VoteLockMigration) => {
     }
   }, [migration, oldVoteLock, pendingReceipt, record.pending, refetchAllowance, refetchBalance, update])
 
+  // A receipt wait that fails (timeout, dropped transaction, RPC error) frees the step for a retry.
+  useEffect(() => {
+    const pending = record.pending
+    if (!pending || !pendingError) return
+    setFailed(pending.step)
+    update(({ pending: _, ...rest }) => rest)
+    void refetchAllowance()
+    migration.refetch()
+  }, [migration, pendingError, record.pending, refetchAllowance, update])
+
   const lockAmount = getLockAmount(redeemed, walletBalance)
   const recovering = !!record.redeem && redeemed === undefined
+  const nothingToLock = !record.completed && !!record.redeem && lockAmount === 0n
   const step: MigrationFlowStep = record.completed
     ? 'done'
     : !record.redeem
@@ -163,7 +181,7 @@ export const useMigrationFlow = (migration: VoteLockMigration) => {
   const [rejected, setRejected] = useState(false)
 
   const submit = () => {
-    if (step === 'done' || recovering || record.pending) return
+    if (step === 'done' || recovering || nothingToLock || record.pending) return
     const call =
       step === 'redeem'
         ? getWriteContractParams(
@@ -216,6 +234,7 @@ export const useMigrationFlow = (migration: VoteLockMigration) => {
     isSigning,
     isConfirming: !!record.pending && !pendingError,
     isRecovering: recovering,
+    nothingToLock,
     rejected,
     failed,
     submit,

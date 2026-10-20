@@ -267,27 +267,43 @@ export const MigrationModal = ({ migration, flow, open, onOpenChange, onTrack }:
                             ? flow.estimate !== undefined
                               ? t`Your full old-vault position · about ${formatAmount(flow.estimate)} RSR`
                               : t`Your full old-vault position`
-                            : t`Received from your old-vault redemption`}
+                            : flow.nothingToLock
+                              ? t`No ${symbol} left in your wallet to lock.`
+                              : t`Received from your old-vault redemption`}
                         </p>
                         {stage === 'deposit' && delegateText && (
                           <p className="mt-1 text-sm leading-relaxed text-legend">{delegateText}</p>
                         )}
                       </div>
-                      <TransactionButtonContainer chain={chainId}>
+                      {flow.nothingToLock ? (
                         <Button
+                          data-testid="vote-lock-migration-dismiss-empty"
+                          variant="outline"
                           className="mt-2 h-[49px] w-full rounded-xl"
-                          data-testid="vote-lock-migration-next"
-                          data-step={stage}
-                          disabled={busy}
                           onClick={() => {
-                            onTrack(`vote_lock_migration_${stage}`)
-                            flow.submit()
+                            flow.acknowledge()
+                            onOpenChange(false)
                           }}
                         >
-                          {busy && <LoaderCircle className="mr-2 animate-spin" size={17} />}
-                          <span aria-live="polite">{actionLabel}</span>
+                          <Trans>Close</Trans>
                         </Button>
-                      </TransactionButtonContainer>
+                      ) : (
+                        <TransactionButtonContainer chain={chainId}>
+                          <Button
+                            className="mt-2 h-[49px] w-full rounded-xl"
+                            data-testid="vote-lock-migration-next"
+                            data-step={stage}
+                            disabled={busy}
+                            onClick={() => {
+                              onTrack(`vote_lock_migration_${stage}`)
+                              flow.submit()
+                            }}
+                          >
+                            {busy && <LoaderCircle className="mr-2 animate-spin" size={17} />}
+                            <span aria-live="polite">{actionLabel}</span>
+                          </Button>
+                        </TransactionButtonContainer>
+                      )}
                     </>
                   )}
                 </li>
