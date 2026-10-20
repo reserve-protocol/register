@@ -29,7 +29,7 @@ const CHANGELOG_URL =
 
 // Everything the proposal encodes is read from chain: component versions, the vault's
 // version registry and the implementations it registers for 1.1.0.
-const useVoteLockUpgradeReads = (
+export const useVoteLockUpgradeReads = (
   chainId: number | undefined,
   vault: Address | undefined,
   governor: Address | undefined

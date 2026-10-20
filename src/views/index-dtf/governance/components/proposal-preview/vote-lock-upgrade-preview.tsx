@@ -61,7 +61,11 @@ const VoteLockUpgradePreview = ({ rows }: { rows: VoteLockUpgradeRow[] }) => {
       data-testid="proposal-vote-lock-upgrade"
     >
       <h1 className="text-xl font-semibold text-primary">
-        <Trans>Vote-lock upgrade to {VOTE_LOCK_UPGRADE_TO}</Trans>
+        {rows.some((r) => r.initializer === 'initializeAverageVotes') ? (
+          <Trans>Vote-lock upgrade to {VOTE_LOCK_UPGRADE_TO}</Trans>
+        ) : (
+          <Trans>Governance upgrade to {VOTE_LOCK_UPGRADE_TO}</Trans>
+        )}
       </h1>
       {rows.map((row) => {
         const isRegistered = registered?.includes(row.implementation.toLowerCase())

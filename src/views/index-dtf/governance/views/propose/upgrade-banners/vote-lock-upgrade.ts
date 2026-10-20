@@ -14,6 +14,7 @@ import {
 } from 'viem'
 
 export const VOTE_LOCK_UPGRADE_MESSAGE = 'Upgrade vote-lock governance to 1.1.0'
+export const FOLIO_GOVERNANCE_UPGRADE_MESSAGE = 'Upgrade DTF governance to 1.1.0'
 export const VOTE_LOCK_UPGRADE_FROM = '1.0.0'
 export const VOTE_LOCK_UPGRADE_TO = '1.1.0'
 
@@ -77,6 +78,81 @@ export const getVoteLockUpgradeEligibility = ({
   isSet(timelock) &&
   governorTimelock?.toLowerCase() === timelock.toLowerCase()
 
+export type FolioGovernanceUpgradeReads = VoteLockUpgradeReads & {
+  ownerGovernor?: Address
+  tradingGovernor?: Address
+}
+
+// DTFs governed through a vlRSR singleton (AI DTFs, MAG7) upgrade their own governor and timelock after
+// the singleton: the 1.1.0 governor reads average votes, which only a 1.1.0 vault provides.
+export const getFolioGovernanceUpgradeEligibility = ({
+  chainId,
+  vault,
+  versions,
+  latest,
+  implementations,
+  governorTimelock,
+  timelock,
+  ownerGovernor,
+  tradingGovernor,
+}: FolioGovernanceUpgradeReads): boolean =>
+  VLRSR_SINGLETON[chainId]?.toLowerCase() === vault.toLowerCase() &&
+  !!ownerGovernor &&
+  ownerGovernor.toLowerCase() === tradingGovernor?.toLowerCase() &&
+  versions.vault === VOTE_LOCK_UPGRADE_TO &&
+  versions.governor === VOTE_LOCK_UPGRADE_FROM &&
+  versions.timelock === VOTE_LOCK_UPGRADE_FROM &&
+  latest?.version === VOTE_LOCK_UPGRADE_TO &&
+  !latest.deprecated &&
+  isSet(implementations?.governor) &&
+  isSet(implementations?.timelock) &&
+  isSet(timelock) &&
+  governorTimelock?.toLowerCase() === timelock.toLowerCase()
+
+const encodeUpgrade = (implementation: Address, init: Hex) =>
+  encodeFunctionData({
+    abi: voteLockUpgradeAbi,
+    functionName: 'upgradeToAndCall',
+    args: [implementation, init],
+  })
+
+const encodeInitRegistry = (registry: Address) =>
+  encodeFunctionData({
+    abi: voteLockUpgradeAbi,
+    functionName: 'initializeVersionRegistry',
+    args: [registry],
+  })
+
+export const buildFolioGovernanceUpgradeProposal = ({
+  chainId,
+  governor,
+  timelock,
+  registry,
+  implementations,
+  description,
+}: {
+  chainId: number
+  governor: Address
+  timelock: Address
+  registry: Address
+  implementations: { governor: Address; timelock: Address }
+  description: string
+}) => ({
+  chainId,
+  address: governor,
+  abi: DTFIndexGovernance,
+  functionName: 'propose' as const,
+  args: [
+    [governor, timelock],
+    [0n, 0n],
+    [
+      encodeUpgrade(implementations.governor, encodeInitRegistry(registry)),
+      encodeUpgrade(implementations.timelock, encodeInitRegistry(registry)),
+    ],
+    description,
+  ] as const,
+})
+
 export const buildVoteLockUpgradeProposal = ({
   chainId,
   governor,
@@ -94,17 +170,7 @@ export const buildVoteLockUpgradeProposal = ({
   implementations: Required<Implementations>
   description: string
 }) => {
-  const upgrade = (implementation: Address, init: `0x${string}`) =>
-    encodeFunctionData({
-      abi: voteLockUpgradeAbi,
-      functionName: 'upgradeToAndCall',
-      args: [implementation, init],
-    })
-  const initRegistry = encodeFunctionData({
-    abi: voteLockUpgradeAbi,
-    functionName: 'initializeVersionRegistry',
-    args: [registry],
-  })
+  const initRegistry = encodeInitRegistry(registry)
 
   return {
     chainId,
@@ -115,15 +181,15 @@ export const buildVoteLockUpgradeProposal = ({
       [vault, governor, timelock],
       [0n, 0n, 0n],
       [
-        upgrade(
+        encodeUpgrade(
           implementations.vault,
           encodeFunctionData({
             abi: voteLockUpgradeAbi,
             functionName: 'initializeAverageVotes',
           })
         ),
-        upgrade(implementations.governor, initRegistry),
-        upgrade(implementations.timelock, initRegistry),
+        encodeUpgrade(implementations.governor, initRegistry),
+        encodeUpgrade(implementations.timelock, initRegistry),
       ],
       description,
     ] as const,
@@ -138,25 +204,27 @@ const LIVE_STATES: string[] = [
   PROPOSAL_STATES.EXECUTED,
 ]
 
-const matchesMessage = (description: string) =>
-  description === VOTE_LOCK_UPGRADE_MESSAGE ||
-  description.startsWith(`${VOTE_LOCK_UPGRADE_MESSAGE} #`)
+const matchesMessage = (description: string, message: string) =>
+  description === message || description.startsWith(`${message} #`)
 
 export const hasLiveVoteLockUpgrade = (
-  proposals: readonly IndexDtfProposalSummary[]
+  proposals: readonly IndexDtfProposalSummary[],
+  message = VOTE_LOCK_UPGRADE_MESSAGE
 ) =>
   proposals.some(
     (p) =>
-      matchesMessage(p.description) && LIVE_STATES.includes(p.votingState.state)
+      matchesMessage(p.description, message) &&
+      LIVE_STATES.includes(p.votingState.state)
   )
 
 export const nextVoteLockUpgradeDescription = (
-  proposals: readonly IndexDtfProposalSummary[]
+  proposals: readonly IndexDtfProposalSummary[],
+  message = VOTE_LOCK_UPGRADE_MESSAGE
 ) => {
-  const prefix = `${VOTE_LOCK_UPGRADE_MESSAGE} #`
+  const prefix = `${message} #`
   let max = 0
   for (const { description } of proposals) {
-    if (description === VOTE_LOCK_UPGRADE_MESSAGE) max = Math.max(max, 1)
+    if (description === message) max = Math.max(max, 1)
     else if (description.startsWith(prefix)) {
       const n = Number.parseInt(description.slice(prefix.length), 10)
       if (Number.isFinite(n)) max = Math.max(max, n)
