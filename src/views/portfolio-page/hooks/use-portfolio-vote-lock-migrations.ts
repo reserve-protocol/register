@@ -5,7 +5,7 @@ import {
   type VoteLockMigration,
 } from '@/components/vote-lock/migration/use-vote-lock-migrations'
 import { walletAtom } from '@/state/atoms'
-import { optimisticStakingVaultAddress } from '@/views/index-dtf/components/vote-lock-migration/governance-migration'
+import { getMigrationVault } from '@/views/index-dtf/components/vote-lock-migration/governance-migration'
 import { useAtomValue } from 'jotai'
 import { useMemo } from 'react'
 import { isAddressEqual, type Address } from 'viem'
@@ -33,11 +33,11 @@ export const usePortfolioVoteLockMigrations = () => {
       ...listMigrationTargets(wallet),
     ]
     return vaults.flatMap(({ chainId, oldVoteLock }) => {
-      const newVoteLock = optimisticStakingVaultAddress[chainId]
+      const vault = getMigrationVault(chainId, oldVoteLock)
       const key = migrationKey(chainId, oldVoteLock)
-      if (!newVoteLock || isAddressEqual(newVoteLock, oldVoteLock) || seen.has(key)) return []
+      if (!vault || isAddressEqual(vault.address, oldVoteLock) || seen.has(key)) return []
       seen.add(key)
-      return [{ chainId, oldVoteLock, newVoteLock }]
+      return [{ chainId, oldVoteLock, newVoteLock: vault.address, shared: vault.shared }]
     })
     // recordsVersion re-reads the stored targets after a migration starts.
     // eslint-disable-next-line react-hooks/exhaustive-deps

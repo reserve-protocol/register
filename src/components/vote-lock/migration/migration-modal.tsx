@@ -43,24 +43,29 @@ type Props = {
 
 export const MigrationModal = ({ migration, flow, open, onOpenChange, onTrack }: Props) => {
   const { t } = useLingui()
-  const { chainId, account, oldSymbol } = migration
+  const { chainId, account, oldSymbol, shared } = migration
   const { step, record } = flow
   const isComplete = step === 'done'
   const stages: Stage[] = flow.needsApproval
     ? ['redeem', 'approve', 'deposit']
     : ['redeem', 'deposit']
   const activeIndex = isComplete ? -1 : stages.indexOf(step as Stage)
-  const symbol = 'RSR'
+  const symbol = migration.underlyingSymbol || 'RSR'
+  const vault = migration.newSymbol || 'vlRSR'
 
   const titles: Record<Stage, string> = {
     redeem: t`Redeem`,
-    approve: t`Approve RSR`,
-    deposit: t`Lock RSR in vlRSR`,
+    approve: t`Approve ${symbol}`,
+    deposit: t`Lock ${symbol} in ${vault}`,
   }
   const details: Record<Stage, string> = {
-    redeem: t`Receive RSR from your old vote-lock.`,
-    approve: t`Allow the shared vlRSR vault to use your RSR.`,
-    deposit: t`Lock your RSR in the shared vlRSR vault.`,
+    redeem: t`Receive ${symbol} from your old vote-lock.`,
+    approve: shared
+      ? t`Allow the shared vlRSR vault to use your RSR.`
+      : t`Allow the ${vault} vault to use your ${symbol}.`,
+    deposit: shared
+      ? t`Lock your RSR in the shared vlRSR vault.`
+      : t`Lock your ${symbol} in the ${vault} vault.`,
   }
   const doneTitles: Record<Stage, string> = {
     redeem: t`Redeem complete`,
@@ -68,14 +73,18 @@ export const MigrationModal = ({ migration, flow, open, onOpenChange, onTrack }:
     deposit: t`Lock complete`,
   }
   const activeDetails: Record<Stage, string> = {
-    redeem: t`Redeem all your old-vault shares. RSR arrives in your wallet in this transaction.`,
-    approve: t`Approve the exact RSR amount received for the shared vlRSR vault.`,
-    deposit: t`Lock the RSR you received in the shared vlRSR vault.`,
+    redeem: t`Redeem all your old-vault shares. ${symbol} arrives in your wallet in this transaction.`,
+    approve: shared
+      ? t`Approve the exact RSR amount received for the shared vlRSR vault.`
+      : t`Approve the exact ${symbol} amount received for the ${vault} vault.`,
+    deposit: shared
+      ? t`Lock the RSR you received in the shared vlRSR vault.`
+      : t`Lock the ${symbol} you received in the ${vault} vault.`,
   }
   const buttonLabels: Record<Stage, string> = {
     redeem: t`Redeem ${oldSymbol}`,
     approve: t`Approve ${symbol}`,
-    deposit: t`Lock ${symbol} in vlRSR`,
+    deposit: t`Lock ${symbol} in ${vault}`,
   }
   const hashes: Record<Stage, Hex | undefined> = {
     redeem: record.redeem?.hash,
@@ -86,8 +95,8 @@ export const MigrationModal = ({ migration, flow, open, onOpenChange, onTrack }:
   const delegateText = !flow.delegatee
     ? undefined
     : isAddressEqual(flow.delegatee, account)
-      ? t`Your vlRSR votes are delegated to you.`
-      : t`Your vlRSR votes are delegated to ${shortenAddress(flow.delegatee)}.`
+      ? t`Your ${vault} votes are delegated to you.`
+      : t`Your ${vault} votes are delegated to ${shortenAddress(flow.delegatee)}.`
 
   const busy = flow.isSigning || flow.isConfirming || flow.isRecovering
   const actionLabel = flow.isSigning
@@ -119,13 +128,21 @@ export const MigrationModal = ({ migration, flow, open, onOpenChange, onTrack }:
             {isComplete && <Check size={20} strokeWidth={2} className="shrink-0 text-success" />}
           </DialogTitle>
           <DialogDescription className="mt-2 leading-relaxed">
-            {isComplete
-              ? t`Your RSR is locked in the shared vlRSR vault.`
-              : record.redeem
-                ? t`Your redeemed RSR is in your wallet.`
-                : flow.needsApproval
-                  ? t`Redeem your old vote-lock, approve the RSR, then lock it in the shared vlRSR vault.`
-                  : t`Redeem your old vote-lock, then lock the RSR in the shared vlRSR vault.`}
+            {shared
+              ? isComplete
+                ? t`Your RSR is locked in the shared vlRSR vault.`
+                : record.redeem
+                  ? t`Your redeemed RSR is in your wallet.`
+                  : flow.needsApproval
+                    ? t`Redeem your old vote-lock, approve the RSR, then lock it in the shared vlRSR vault.`
+                    : t`Redeem your old vote-lock, then lock the RSR in the shared vlRSR vault.`
+              : isComplete
+                ? t`Your ${symbol} is locked in the ${vault} vault.`
+                : record.redeem
+                  ? t`Your redeemed ${symbol} is in your wallet.`
+                  : flow.needsApproval
+                    ? t`Redeem your old vote-lock, approve the ${symbol}, then lock it in the ${vault} vault.`
+                    : t`Redeem your old vote-lock, then lock the ${symbol} in the ${vault} vault.`}
           </DialogDescription>
           <Button
             data-testid="vote-lock-migration-close"
@@ -236,8 +253,8 @@ export const MigrationModal = ({ migration, flow, open, onOpenChange, onTrack }:
                           {stage === 'redeem'
                             ? t`Old vote-lock shares`
                             : stage === 'approve'
-                              ? t`RSR to approve`
-                              : t`RSR to lock`}
+                              ? t`${symbol} to approve`
+                              : t`${symbol} to lock`}
                         </p>
                         <p className="mt-1 text-2xl font-medium tabular-nums text-foreground">
                           {stage === 'redeem' ? formatAmount(flow.shares) : formatAmount(flow.lockAmount)}

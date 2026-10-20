@@ -2,7 +2,6 @@ import DTFIndexGovernance from '@/abis/dtf-index-governance'
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import { Button } from '@/components/ui/button'
 import { chainIdAtom } from '@/state/atoms'
-import { RSR_ADDRESS } from '@/utils/addresses'
 import { indexDTFAtom, indexDTFStatusAtom } from '@/state/dtf/atoms'
 import { getCurrentTime } from '@/utils'
 import { PROPOSAL_STATES } from '@/utils/constants'
@@ -31,8 +30,9 @@ import { governanceProposalsAtom, refetchTokenAtom } from '../../../atoms'
 import { useIsProposeAllowed } from '../../../hooks/use-is-propose-allowed'
 import useRecentProposalReceipt from '../../../hooks/use-recent-proposal-receipt'
 import {
+  getGovernanceUpgradeTarget,
   getOldVoteLocks,
-  governanceSpellAddress,
+  optimisticStakingVaultAddress,
   type OldVoteLock,
 } from '@/views/index-dtf/components/vote-lock-migration/governance-migration'
 
@@ -74,6 +74,9 @@ const nextRetireDescription = (
 
 type RetireBannerProps = {
   voteLock: Required<OldVoteLock>
+  spell: Address
+  // True when holders move to the chain's shared vlRSR rather than a DTF's own vault.
+  shared: boolean
   pending: readonly { symbol: string }[]
   description: string
   refetch: () => void
@@ -81,13 +84,14 @@ type RetireBannerProps = {
 
 const RetireBanner = ({
   voteLock,
+  spell,
+  shared,
   pending,
   description,
   refetch,
 }: RetireBannerProps) => {
   const { t } = useLingui()
   const chainId = useAtomValue(chainIdAtom)
-  const spell = governanceSpellAddress[chainId]
   const handleRecentProposalReceipt = useRecentProposalReceipt()
   const { writeContract, data: hash, isPending } = useWriteContract()
   const {
@@ -162,10 +166,17 @@ const RetireBanner = ({
             <Trans>Retire the legacy vote-lock vault</Trans>
           </h4>
           <p className="text-sm">
-            <Trans>
-              Sets the old vault's unstaking delay to zero so voters can move
-              their RSR to the shared vlRSR vault right away.
-            </Trans>
+            {shared ? (
+              <Trans>
+                Sets the old vault's unstaking delay to zero so voters can move
+                their RSR to the shared vlRSR vault right away.
+              </Trans>
+            ) : (
+              <Trans>
+                Sets the old vault's unstaking delay to zero so voters can move
+                to the new vote-lock vault right away.
+              </Trans>
+            )}
           </p>
         </div>
       </div>
@@ -227,8 +238,9 @@ export default function ProposeRetireVoteLock() {
     ]),
     query: { enabled: candidates.length > 0 },
   })
-  const rsr = RSR_ADDRESS[chainId]
-  // Retirable: an RSR vault still owned (not renounced) by the DAO timelock that will execute the proposal.
+  const target = dtf ? getGovernanceUpgradeTarget(chainId, dtf.id) : undefined
+  const underlying = target?.stakingVaultUnderlying
+  // Retirable: a vault in the target's token still owned (not renounced) by the DAO timelock that will execute the proposal.
   const voteLock = candidates.find((_, i) => {
     const [owner, asset, timelock] = (ownership ?? [])
       .slice(i * 3, i * 3 + 3)
@@ -239,8 +251,8 @@ export default function ProposeRetireVoteLock() {
       !!timelock &&
       isAddressEqual(owner, timelock) &&
       !!asset &&
-      !!rsr &&
-      isAddressEqual(asset, rsr)
+      !!underlying &&
+      isAddressEqual(asset, underlying)
     )
   })
   const { isProposeAllowed } = useIsProposeAllowed(voteLock?.governance)
@@ -253,7 +265,7 @@ export default function ProposeRetireVoteLock() {
   }, [setRefetchToken])
 
   if (status !== 'active') return null
-  if (!voteLock || !isProposeAllowed || !proposals || !dependents) return null
+  if (!target || !voteLock || !isProposeAllowed || !proposals || !dependents) return null
   const live = retireProposals(proposals, voteLock.address).some((p) =>
     LIVE_STATES.includes(p.votingState.state)
   )
@@ -262,6 +274,8 @@ export default function ProposeRetireVoteLock() {
   return (
     <RetireBanner
       voteLock={voteLock}
+      spell={target.spell}
+      shared={target.stakingVault === optimisticStakingVaultAddress[chainId]}
       pending={dependents.filter(({ governedByVoteLock }) => governedByVoteLock)}
       description={nextRetireDescription(proposals, voteLock.address)}
       refetch={refetch}
