@@ -104,11 +104,13 @@ const ProposalTypeSelection = () => {
   return (
     <>
       <div className="flex h-[calc(100vh-146px)] lg:h-[calc(100vh-72px)] w-full">
-        <div className="flex flex-col gap-4 items-center justify-center m-4 flex-grow border-none sm:border-dashed border-2 border-foreground/40 rounded-3xl">
-          <UpgradeBanners />
-          <div className="bg-secondary rounded-3xl w-full sm:w-[408px]">
-            <Header />
-            <TypeList />
+        <div className="flex flex-col m-4 flex-grow overflow-y-auto border-none sm:border-dashed border-2 border-foreground/40 rounded-3xl">
+          <div className="my-auto flex flex-col gap-4 items-center py-4">
+            <UpgradeBanners />
+            <div className="bg-secondary rounded-3xl w-full sm:w-[408px]">
+              <Header />
+              <TypeList />
+            </div>
           </div>
         </div>
       </div>

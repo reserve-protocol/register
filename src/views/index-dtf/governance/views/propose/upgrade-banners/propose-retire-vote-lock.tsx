@@ -32,8 +32,10 @@ import { useIsProposeAllowed } from '../../../hooks/use-is-propose-allowed'
 import useRecentProposalReceipt from '../../../hooks/use-recent-proposal-receipt'
 import {
   getGovernanceUpgradeTarget,
-  getOldVoteLocks,
   optimisticStakingVaultAddress,
+} from '@/components/vote-lock/migration/migration-targets'
+import {
+  getOldVoteLocks,
   type OldVoteLock,
 } from '@/views/index-dtf/components/vote-lock-migration/governance-migration'
 
@@ -107,9 +109,9 @@ const RetireBanner = ({
   const handlePropose = () => {
     if (!spell || isBlocked) return
 
+    trackClick('governance', 'propose_retire_vote_lock', voteLock.address, undefined, chainId)
     writeContract({
       chainId,
-    trackClick('governance', 'propose_retire_vote_lock', voteLock.address, undefined, chainId)
       address: voteLock.governance,
       abi: DTFIndexGovernance,
       functionName: 'propose',
@@ -267,7 +269,9 @@ export default function ProposeRetireVoteLock() {
   }, [setRefetchToken])
 
   if (status !== 'active') return null
-  if (!target || !voteLock || !isProposeAllowed || !proposals || !dependents) return null
+  if (!dtf || !target || !voteLock || !isProposeAllowed || !proposals || !dependents) return null
+  // This DTF's own upgrade comes first; until it executes the retirement could never pass.
+  if (dependents.some((d) => d.governedByVoteLock && isAddressEqual(d.address, dtf.id))) return null
   const live = retireProposals(proposals, voteLock.address).some((p) =>
     LIVE_STATES.includes(p.votingState.state)
   )

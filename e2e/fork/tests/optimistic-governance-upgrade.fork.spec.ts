@@ -311,12 +311,12 @@ test(`${scenario.toUpperCase()} migrates governance, retires its old vault and m
     .toBeGreaterThan(sharesBeforeLock)
   await page.keyboard.press('Escape')
 
-  // Before the DTF migrates, banner 2 lists it as still governed by the old vault and stays disabled.
+  // Before the DTF migrates, only banner 1 shows: banner 2 waits for this DTF's own upgrade.
   await page.goto(`${dtfRoute}/governance/propose`)
-  await expect(
-    page.getByTestId('governance-retire-vote-lock-pending')
-  ).toContainText(manifest.symbol, { timeout: 120_000 })
-  await expect(page.getByTestId('governance-retire-vote-lock-btn')).toBeDisabled()
+  await expect(page.getByTestId('governance-optimistic-upgrade-btn')).toBeEnabled({
+    timeout: 120_000,
+  })
+  await expect(page.getByTestId('governance-retire-vote-lock-btn')).toHaveCount(0)
 
   // Banner 1: upgradeFolio on the Folio's owner governor.
   const upgrade = await proposeFromBanner(
