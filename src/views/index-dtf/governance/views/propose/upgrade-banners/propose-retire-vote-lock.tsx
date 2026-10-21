@@ -3,6 +3,7 @@ import { Alert, AlertDescription } from '@/components/ui/alert'
 import { Button } from '@/components/ui/button'
 import { chainIdAtom } from '@/state/atoms'
 import { indexDTFAtom, indexDTFStatusAtom } from '@/state/dtf/atoms'
+import { trackClick } from '@/hooks/useTrackPage'
 import { getCurrentTime } from '@/utils'
 import { PROPOSAL_STATES } from '@/utils/constants'
 import { Trans, useLingui } from '@lingui/react/macro'
@@ -108,6 +109,7 @@ const RetireBanner = ({
 
     writeContract({
       chainId,
+    trackClick('governance', 'propose_retire_vote_lock', voteLock.address, undefined, chainId)
       address: voteLock.governance,
       abi: DTFIndexGovernance,
       functionName: 'propose',

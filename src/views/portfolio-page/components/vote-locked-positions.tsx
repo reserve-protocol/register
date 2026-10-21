@@ -3,6 +3,7 @@ import TokenLogo from '@/components/token-logo'
 import TokenLogoWithChain from '@/components/token-logo/TokenLogoWithChain'
 import { Button } from '@/components/ui/button'
 import DataTable from '@/components/ui/data-table'
+import { trackClick } from '@/hooks/useTrackPage'
 import { formatCurrency, formatToSignificantDigits, formatUSD } from '@/utils'
 import { isSelfAppreciatingVoteLock, toCompoundApy } from '@/utils/constants'
 import { ExplorerDataType, getExplorerLink } from '@/utils/getExplorerLink'
@@ -267,6 +268,13 @@ const getColumns = (migrations?: RowMigrations): ColumnDef<PortfolioVoteLock, an
               className="rounded-full"
               onClick={(event) => {
                 event.stopPropagation()
+                trackClick(
+                  'portfolio',
+                  'vote_lock_migration_row',
+                  row.original.stTokenAddress,
+                  row.original.symbol,
+                  row.original.chainId
+                )
                 migrations?.onMigrate(
                   migrationKey(row.original.chainId, row.original.stTokenAddress)
                 )

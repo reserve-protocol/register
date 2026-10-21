@@ -1,5 +1,6 @@
 import { Button } from '@/components/ui/button'
 import { indexDTFAtom, indexDTFStatusAtom } from '@/state/dtf/atoms'
+import { trackClick } from '@/hooks/useTrackPage'
 import { getCurrentTime } from '@/utils'
 import { Trans, useLingui } from '@lingui/react/macro'
 import { useAtomValue, useSetAtom } from 'jotai'
@@ -94,6 +95,7 @@ export default function ProposeFolioGovernanceUpgrade() {
   const symbol = dtf.token.symbol
 
   const handlePropose = () => {
+    trackClick('governance', 'propose_folio_governance_upgrade', dtf.id, symbol, chainId)
     const { governor: governorImpl, timelock: timelockImpl } =
       reads.implementations!
     writeContract(

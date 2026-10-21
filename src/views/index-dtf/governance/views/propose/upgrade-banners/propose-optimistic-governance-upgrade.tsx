@@ -4,6 +4,7 @@ import DTFIndexGovernance from '@/abis/dtf-index-governance'
 import { Button } from '@/components/ui/button'
 import { chainIdAtom } from '@/state/atoms'
 import { indexDTFAtom } from '@/state/dtf/atoms'
+import { trackClick } from '@/hooks/useTrackPage'
 import { getCurrentTime } from '@/utils'
 import { PROPOSAL_STATES } from '@/utils/constants'
 import { Trans, useLingui } from '@lingui/react/macro'
@@ -219,6 +220,7 @@ const ProposeBanner = ({ refetch, description }: SpellUpgradeProps) => {
     )
       return
 
+    trackClick('governance', 'propose_governance_upgrade', dtf.id, dtf.token.symbol, chainId)
     const newVaultAddress = target.stakingVault
     const oldFolioGovernor = dtf.ownerGovernance.id
     const tradingGovernor = dtf.tradingGovernance.id
