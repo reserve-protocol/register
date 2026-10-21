@@ -92,6 +92,23 @@ describe('TokenLogo for a vote-lock vault without its own logo', () => {
       )
     })
   })
+
+  it('keeps its own address lookup when the caller does not pass the underlying', async () => {
+    const { getByAltText } = render(
+      createElement(TokenLogo, {
+        symbol: 'vlSQUILL',
+        address: '0xdef',
+        chain: 1,
+        alt: 'vlSQUILL',
+      })
+    )
+
+    await waitFor(() => {
+      expect(getByAltText('vlSQUILL').getAttribute('src')).toBe(
+        '/svgs/cached-logo.svg'
+      )
+    })
+  })
 })
 
 describe('TokenLogo route cache', () => {

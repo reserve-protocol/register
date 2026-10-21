@@ -49,7 +49,9 @@ const TokenLogo = React.forwardRef<HTMLImageElement, Props>((props, ref) => {
     ...rest
   } = props
 
-  const voteLockUnderlying = getVoteLockUnderlyingSymbol(tokenSymbol)
+  const voteLockUnderlying = underlyingAddress
+    ? getVoteLockUnderlyingSymbol(tokenSymbol)
+    : ''
   const symbol = voteLockUnderlying || tokenSymbol
   const address = voteLockUnderlying ? underlyingAddress : tokenAddress
   const h = height || sizeMap[size].height
