@@ -502,16 +502,16 @@ msgstr "{swapCount} 个 Order"
 msgid "{swapCount} orders"
 msgstr "{swapCount} 个 Orders"
 
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-folio-governance-upgrade.tsx:123
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-vote-lock-upgrade.tsx:185
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-folio-governance-upgrade.tsx:125
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-vote-lock-upgrade.tsx:187
 msgid "{symbol} governance 1.1.0 available"
 msgstr "{symbol} 治理 1.1.0 已可用"
 
-#: src/components/vote-lock/migration/migration-modal.tsx:256
+#: src/components/vote-lock/migration/migration-modal.tsx:258
 msgid "{symbol} to approve"
 msgstr "待授权的 {symbol}"
 
-#: src/components/vote-lock/migration/migration-modal.tsx:257
+#: src/components/vote-lock/migration/migration-modal.tsx:259
 msgid "{symbol} to lock"
 msgstr "待锁定的 {symbol}"
 
@@ -622,11 +622,11 @@ msgstr "<0>5.0.0 版本</0>引入了改进的再平衡功能，支持单代币�
 #~ msgid "<0>Reserve Optimistic Governor upgrade</0> introduces a new governor system TBD COPY HERE!. <1/>See the <2>changelog</2> for more details."
 #~ msgstr "<0>Reserve Optimistic Governor 升级</0>引入了全新的治理者系统 TBD COPY HERE!。<1/>详情请参阅<2>更新日志</2>。"
 
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:343
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:473
 msgid "<0>Reserve Optimistic Governor upgrade</0> moves this DTF to optimistic governance, voted with a new vote-lock vault. After it executes, voters lock their tokens in the new vault to keep governing this DTF."
 msgstr "<0>Reserve Optimistic Governor 升级</0>将此 DTF 转为乐观治理，由新的 vote-lock 金库投票。执行后，投票者需将代币锁定在新金库中，才能继续治理此 DTF。"
 
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:336
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:466
 msgid "<0>Reserve Optimistic Governor upgrade</0> moves this DTF to optimistic governance, voted with the shared vlRSR vote-lock vault. After it executes, voters lock RSR in the new vault to keep governing this DTF."
 msgstr "<0>Reserve Optimistic Governor 升级</0>将此 DTF 转为乐观治理，由共享的 vlRSR vote-lock 金库投票。执行后，投票者需将 RSR 锁定在新金库中，才能继续治理此 DTF。"
 
@@ -885,7 +885,7 @@ msgstr "在 Mint 之前获取资产"
 #: src/views/internal/dtf-list/components/dtf-table.tsx:201
 #: src/views/portfolio-page/components/pending-withdrawals.tsx:370
 #: src/views/portfolio-page/components/staked-positions.tsx:118
-#: src/views/portfolio-page/components/vote-locked-positions.tsx:256
+#: src/views/portfolio-page/components/vote-locked-positions.tsx:257
 msgid "Action"
 msgstr "操作"
 
@@ -1245,7 +1245,7 @@ msgstr ""
 msgid "Amount"
 msgstr "数量"
 
-#: src/components/vote-lock/migration/migration-modal.tsx:228
+#: src/components/vote-lock/migration/migration-modal.tsx:230
 msgid "Amount locked"
 msgstr "已锁定数量"
 
@@ -1413,7 +1413,7 @@ msgid "April 1"
 msgstr "4 月 1 日"
 
 #: src/views/portfolio-page/components/staked-positions.tsx:68
-#: src/views/portfolio-page/components/vote-locked-positions.tsx:221
+#: src/views/portfolio-page/components/vote-locked-positions.tsx:222
 msgid "APY"
 msgstr "APY"
 
@@ -1768,7 +1768,7 @@ msgstr "备用项"
 #: src/views/portfolio-page/components/pending-withdrawals.tsx:338
 #: src/views/portfolio-page/components/rsr-section.tsx:47
 #: src/views/portfolio-page/components/staked-positions.tsx:85
-#: src/views/portfolio-page/components/vote-locked-positions.tsx:243
+#: src/views/portfolio-page/components/vote-locked-positions.tsx:244
 #: src/views/yield-dtf/issuance/components/zapV2/input/ZapInputMaxButton.tsx:22
 #: src/views/yield-dtf/issuance/components/zapV2/output/ZapOutputBalance.tsx:14
 #: src/views/yield-dtf/staking/components/stake/stake-input.tsx:58
@@ -2010,6 +2010,10 @@ msgstr "博客"
 #: src/views/index-dtf/governance/views/propose/basket/components/proposal-rebalance-launch-settings.tsx:275
 msgid "Both Auction Launchers AND community members can start auctions. Auction Launchers will still have an Exclusive Launch Window, but afterward anyone in the community can start an auction. Please specify how long community members should be allow to start auctions after the Exclusive Launch Window."
 msgstr "拍卖发起者和社区成员均可启动拍卖。拍卖发起者仍将拥有专属启动窗口，但在此之后，社区中的任何人都可以启动拍卖。请指定在专属启动窗口结束后，社区成员可以启动拍卖的时长。"
+
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:332
+msgid "Both proposals are created once the Safe transaction executes."
+msgstr "Safe 交易执行后，两个提案都会创建。"
 
 #: src/views/index-dtf/auctions/legacy/components/auction-item.tsx:132
 #: src/views/yield-dtf/auctions/components/useColumns.tsx:36
@@ -2369,7 +2373,7 @@ msgstr "正在检查投票权..."
 msgid "Checking wallet..."
 msgstr "正在检查 Wallet..."
 
-#: src/components/vote-lock/migration/migration-modal.tsx:107
+#: src/components/vote-lock/migration/migration-modal.tsx:109
 msgid "Checking your redemption..."
 msgstr "正在检查你的 Redeem..."
 
@@ -2442,7 +2446,7 @@ msgid "Click retry or use individual approve buttons below."
 msgstr "点击重试或使用下方的单独授权按钮。"
 
 #: src/components/video-modal/index.tsx:58
-#: src/components/vote-lock/migration/migration-modal.tsx:288
+#: src/components/vote-lock/migration/migration-modal.tsx:290
 #: src/views/index-dtf/overview/components/charts/candlestick-tooltip.tsx:36
 #: src/views/index-dtf/overview/components/video-library/series-modal.tsx:129
 msgid "Close"
@@ -2452,7 +2456,7 @@ msgstr "关闭"
 msgid "Close DTF pages"
 msgstr "关闭 DTF 页面"
 
-#: src/components/vote-lock/migration/migration-modal.tsx:150
+#: src/components/vote-lock/migration/migration-modal.tsx:152
 msgid "Close migration"
 msgstr "关闭迁移"
 
@@ -2719,7 +2723,7 @@ msgstr "确认授权中..."
 msgid "Confirming transaction"
 msgstr "交易确认中"
 
-#: src/components/vote-lock/migration/migration-modal.tsx:105
+#: src/components/vote-lock/migration/migration-modal.tsx:107
 #: src/views/index-dtf/issuance/manual/components/index-manual-issuance.tsx:202
 msgid "Confirming transaction..."
 msgstr "确认交易中……"
@@ -2804,7 +2808,7 @@ msgid "Continue"
 msgstr "继续"
 
 #: src/components/vote-lock/migration/migration-card.tsx:183
-#: src/views/portfolio-page/components/vote-locked-positions.tsx:276
+#: src/views/portfolio-page/components/vote-locked-positions.tsx:284
 msgid "Continue migration"
 msgstr "继续迁移"
 
@@ -3600,7 +3604,7 @@ msgid "Don’t see your token?"
 msgstr "没看到你的代币？"
 
 #: src/components/vote-lock/migration/migration-card.tsx:131
-#: src/components/vote-lock/migration/migration-modal.tsx:244
+#: src/components/vote-lock/migration/migration-modal.tsx:246
 msgid "Done"
 msgstr "完成"
 
@@ -4599,7 +4603,7 @@ msgid "Finding route..."
 msgstr "正在查找路由…"
 
 #: src/components/vote-lock/migration/migration-card.tsx:148
-#: src/components/vote-lock/migration/migration-modal.tsx:126
+#: src/components/vote-lock/migration/migration-modal.tsx:128
 msgid "Finish re-locking your {symbol}"
 msgstr "完成重新锁定你的 {symbol}"
 
@@ -4784,7 +4788,7 @@ msgstr "参与治理、Stake 并发现收益机会"
 msgid "Governance"
 msgstr "社区治理"
 
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-folio-governance-upgrade.tsx:58
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-folio-governance-upgrade.tsx:59
 msgid "Governance 1.1.0 upgrade proposal created"
 msgstr "治理 1.1.0 升级提案已创建"
 
@@ -4846,7 +4850,7 @@ msgid "Governance Stats"
 msgstr "治理统计"
 
 #: src/views/index-dtf/settings/components/index-settings-governance-token.tsx:16
-#: src/views/portfolio-page/components/vote-locked-positions.tsx:148
+#: src/views/portfolio-page/components/vote-locked-positions.tsx:149
 #: src/views/portfolio-page/components/voting-power.tsx:47
 msgid "Governance Token"
 msgstr "治理代币"
@@ -4878,7 +4882,7 @@ msgstr "Governor 授权声明"
 #: src/views/earn/views/index-dtf/components/vote-lock-positions.tsx:281
 #: src/views/earn/views/yield-dtf/components/staking-positions.tsx:141
 #: src/views/portfolio-page/components/staked-positions.tsx:42
-#: src/views/portfolio-page/components/vote-locked-positions.tsx:212
+#: src/views/portfolio-page/components/vote-locked-positions.tsx:213
 msgid "Governs"
 msgstr "治理"
 
@@ -5478,6 +5482,14 @@ msgstr "发行限流速率（%）"
 msgid "Issue"
 msgstr "发行"
 
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:490
+msgid "It also proposes the old vault's retirement to its DAO, so both votes run at the same time. You sign two proposals."
+msgstr "它还会向旧金库的 DAO 提议停用该金库，两个投票同时进行。你需要签署两个提案。"
+
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:484
+msgid "It also proposes the old vault's retirement to its DAO, so both votes run at the same time. Your Safe signs both in one transaction."
+msgstr "它还会向旧金库的 DAO 提议停用该金库，两个投票同时进行。你的 Safe 在一笔交易中签署两个提案。"
+
 #: src/views/internal/dtf-list/components/dtf-pagination.tsx:67
 msgid "Items per page:"
 msgstr "每页条数:"
@@ -5582,7 +5594,8 @@ msgstr "剩余抵押品不计入 DTF 产出价值。由于 Mint 使用固定的�
 msgid "Leftover dust"
 msgstr "剩余零头"
 
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-retire-vote-lock.tsx:139
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:414
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-retire-vote-lock.tsx:70
 msgid "Legacy vote-lock vault retirement proposal created"
 msgstr "旧版 vote-lock 金库停用提案已创建"
 
@@ -6042,11 +6055,11 @@ msgstr "在 Telegram 上联系我们"
 msgid "Metadata"
 msgstr "元数据"
 
-#: src/views/portfolio-page/components/vote-locked-positions.tsx:278
+#: src/views/portfolio-page/components/vote-locked-positions.tsx:286
 msgid "Migrate"
 msgstr "迁移"
 
-#: src/components/vote-lock/migration/migration-modal.tsx:124
+#: src/components/vote-lock/migration/migration-modal.tsx:126
 msgid "Migration complete"
 msgstr "迁移完成"
 
@@ -6054,7 +6067,7 @@ msgstr "迁移完成"
 msgid "Migration in progress"
 msgstr "迁移进行中"
 
-#: src/views/portfolio-page/components/vote-locked-positions.tsx:164
+#: src/views/portfolio-page/components/vote-locked-positions.tsx:165
 msgid "Migration needed"
 msgstr "需要迁移"
 
@@ -6264,7 +6277,7 @@ msgid "Modified"
 msgstr "已修改"
 
 #: src/views/portfolio-page/components/staked-positions.tsx:139
-#: src/views/portfolio-page/components/vote-locked-positions.tsx:131
+#: src/views/portfolio-page/components/vote-locked-positions.tsx:132
 msgid "Modify"
 msgstr "修改"
 
@@ -6453,7 +6466,7 @@ msgstr "新 TVL 费用："
 msgid "New units"
 msgstr "新单位"
 
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:332
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:462
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v4-upgrade.tsx:167
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v5-upgrade.tsx:189
 msgid "New version available"
@@ -6503,7 +6516,7 @@ msgstr ""
 msgid "No"
 msgstr "否"
 
-#: src/components/vote-lock/migration/migration-modal.tsx:271
+#: src/components/vote-lock/migration/migration-modal.tsx:273
 msgid "No {symbol} left in your wallet to lock."
 msgstr "你的 Wallet 中没有可锁定的 {symbol}。"
 
@@ -6827,7 +6840,7 @@ msgstr "CFB LCAP 代币官方文档"
 msgid "Old units"
 msgstr "旧单位"
 
-#: src/components/vote-lock/migration/migration-modal.tsx:254
+#: src/components/vote-lock/migration/migration-modal.tsx:256
 msgid "Old vote-lock shares"
 msgstr "旧 vote-lock 份额"
 
@@ -7090,7 +7103,7 @@ msgstr "赚取收益"
 msgid "Participate and earn"
 msgstr "参与并赚取收益"
 
-#: src/views/portfolio-page/components/vote-locked-positions.tsx:305
+#: src/views/portfolio-page/components/vote-locked-positions.tsx:313
 msgid "Participate in governance with any ERC-20 token and earn APY rewards. <0>Learn more</0>."
 msgstr "使用任意 ERC-20 代币参与治理并赚取 APY 奖励。<0>了解更多</0>。"
 
@@ -7187,14 +7200,14 @@ msgstr "待处理，请在 Wallet 中签名"
 
 #: src/views/index-dtf/governance/views/propose/basket/components/submit-proposal-button.tsx:195
 #: src/views/index-dtf/governance/views/propose/components/propose-index-upgrade.tsx:117
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-folio-governance-upgrade.tsx:152
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-folio-governance-upgrade.tsx:154
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-governance-spell-31-03-2025.tsx:304
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-governance-spell-31-03-2025.tsx:430
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:362
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-retire-vote-lock.tsx:208
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:446
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-retire-vote-lock.tsx:139
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v4-upgrade.tsx:188
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v5-upgrade.tsx:217
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-vote-lock-upgrade.tsx:213
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-vote-lock-upgrade.tsx:215
 #: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/components/submit-proposal-button.tsx:186
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/submit-proposal-button.tsx:184
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/submit-proposal-button.tsx:181
@@ -7646,15 +7659,16 @@ msgstr "在另一场拍卖进行期间，提案无法执行"
 msgid "Proposal created"
 msgstr "提案已创建"
 
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-folio-governance-upgrade.tsx:57
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:297
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:305
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-retire-vote-lock.tsx:138
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-folio-governance-upgrade.tsx:58
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:372
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:380
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:413
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-retire-vote-lock.tsx:69
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v4-upgrade.tsx:132
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v4-upgrade.tsx:140
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v5-upgrade.tsx:154
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v5-upgrade.tsx:162
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-vote-lock-upgrade.tsx:124
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-vote-lock-upgrade.tsx:125
 msgid "Proposal created!"
 msgstr "提案已创建！"
 
@@ -7734,12 +7748,16 @@ msgstr "提案未通过"
 msgid "Proposals"
 msgstr "提案"
 
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:331
+msgid "Proposals sent to your Safe"
+msgstr "提案已发送到你的 Safe"
+
 #: src/views/yield-dtf/governance/components/TopVoters.tsx:131
 msgid "Proposals voted"
 msgstr "已投票提案"
 
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-folio-governance-upgrade.tsx:154
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-vote-lock-upgrade.tsx:215
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-folio-governance-upgrade.tsx:156
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-vote-lock-upgrade.tsx:217
 msgid "Propose {symbol} upgrade"
 msgstr "提议升级 {symbol}"
 
@@ -7764,13 +7782,17 @@ msgstr "提议新的备用配置"
 msgid "Propose new basket"
 msgstr "提议新的篮子"
 
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:364
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:451
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v4-upgrade.tsx:190
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v5-upgrade.tsx:219
 msgid "Propose upgrade"
 msgstr "发起升级提案"
 
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-retire-vote-lock.tsx:210
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:450
+msgid "Propose upgrade and vault retirement"
+msgstr "提议升级并停用金库"
+
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-retire-vote-lock.tsx:141
 msgid "Propose vault retirement"
 msgstr "提议停用金库"
 
@@ -7936,7 +7958,7 @@ msgstr "评级："
 msgid "Raw"
 msgstr "原始数据"
 
-#: src/components/vote-lock/migration/migration-modal.tsx:127
+#: src/components/vote-lock/migration/migration-modal.tsx:129
 msgid "Re-lock your {symbol}"
 msgstr "重新锁定你的 {symbol}"
 
@@ -8031,7 +8053,7 @@ msgstr "从你的旧 vote-lock 中取回 {symbol}。"
 msgid "Received"
 msgstr "已收到"
 
-#: src/components/vote-lock/migration/migration-modal.tsx:272
+#: src/components/vote-lock/migration/migration-modal.tsx:274
 msgid "Received from your old-vault redemption"
 msgstr "来自旧金库 Redeem 的数量"
 
@@ -8138,19 +8160,19 @@ msgstr "Redeem 已完成"
 msgid "Redeem using"
 msgstr "使用以下方式 Redeem"
 
-#: src/components/vote-lock/migration/migration-modal.tsx:144
+#: src/components/vote-lock/migration/migration-modal.tsx:146
 msgid "Redeem your old vote-lock, approve the {symbol}, then lock it in the {vault} vault."
 msgstr "Redeem 你的旧 vote-lock，授权 {symbol}，然后将其锁定到 {vault} 金库。"
 
-#: src/components/vote-lock/migration/migration-modal.tsx:137
+#: src/components/vote-lock/migration/migration-modal.tsx:139
 msgid "Redeem your old vote-lock, approve the RSR, then lock it in the shared vlRSR vault."
 msgstr "Redeem 你的旧 vote-lock，授权 RSR，然后将其锁定到共享的 vlRSR 金库。"
 
-#: src/components/vote-lock/migration/migration-modal.tsx:145
+#: src/components/vote-lock/migration/migration-modal.tsx:147
 msgid "Redeem your old vote-lock, then lock the {symbol} in the {vault} vault."
 msgstr "Redeem 你的旧 vote-lock，然后将 {symbol} 锁定到 {vault} 金库。"
 
-#: src/components/vote-lock/migration/migration-modal.tsx:138
+#: src/components/vote-lock/migration/migration-modal.tsx:140
 msgid "Redeem your old vote-lock, then lock the RSR in the shared vlRSR vault."
 msgstr "Redeem 你的旧 vote-lock，然后将 RSR 锁定到共享的 vlRSR 金库。"
 
@@ -8262,6 +8284,10 @@ msgstr "常规 Minting "
 #: src/views/index-dtf/overview/components/index-disclousure.tsx:269
 msgid "Regulatory and Compliance Risk: Tokenized equities and related on-chain transfer mechanisms may be subject to evolving regulatory interpretations and enforcement actions. Ondo Tokenized Stocks may also be subject to contractual eligibility requirements, permissioning, whitelisting, jurisdictional limitations, sanctions screening, or other compliance gating that can be changed or applied with little notice. If regulations or compliance requirements change, the DTF may be forced to restrict access, halt mints/redemptions, rebalance away from affected components, or wind down positions under adverse market conditions, potentially causing tracking error, reduced liquidity, and losses."
 msgstr "监管与合规风险：代币化股票及相关链上转移机制可能面临不断变化的监管解释和执法行动。Ondo Tokenized Stocks 还可能受到合约资格要求、许可、白名单、司法管辖区限制、制裁筛查或其他合规限制的约束，且这些限制可能在几乎没有通知的情况下被更改或实施。如果监管或合规要求发生变化，DTF 可能被迫限制访问、暂停 Mint/Redeem、调仓移出受影响的成分，或在不利的市场条件下平仓，这可能导致跟踪误差、流动性下降和损失。"
+
+#: src/components/vote-lock/migration/migration-modal.tsx:314
+msgid "Rejected it in your Safe? Sign again"
+msgstr "在 Safe 中拒绝了？重新签署"
 
 #: src/views/yield-dtf/settings/components/contracts-info.tsx:30
 msgid "Related Contracts"
@@ -8382,7 +8408,7 @@ msgstr "在 Canny 上提交请求"
 msgid "Request plugin"
 msgstr "申请插件"
 
-#: src/components/vote-lock/migration/migration-modal.tsx:111
+#: src/components/vote-lock/migration/migration-modal.tsx:113
 msgid "Request rejected · Retry"
 msgstr "请求被拒绝 · 重试"
 
@@ -8433,8 +8459,8 @@ msgstr "Reserve 让你以单一 token 买入整个投资组合"
 msgid "Reserve logo"
 msgstr ""
 
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:298
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:306
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:373
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:381
 msgid "Reserve Optimistic Governor Upgrade proposal created"
 msgstr "Reserve Optimistic Governor 升级提案已创建"
 
@@ -8466,7 +8492,7 @@ msgstr "资源"
 msgid "Restricted in your region"
 msgstr "您所在地区受限"
 
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-retire-vote-lock.tsx:166
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-retire-vote-lock.tsx:97
 msgid "Retire the legacy vote-lock vault"
 msgstr "停用旧版 vote-lock 金库"
 
@@ -9091,11 +9117,11 @@ msgstr "设置每个代币以 USD 计的最大拍卖规模。默认值：{0}"
 msgid "Set the USD amount per token used to simulate price impact."
 msgstr "设置每个代币用于模拟价格影响的 USD 金额。"
 
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-retire-vote-lock.tsx:170
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-retire-vote-lock.tsx:101
 msgid "Sets the old vault's unstaking delay to zero so voters can move their RSR to the shared vlRSR vault right away."
 msgstr "将旧金库的解除质押延迟设为零，使投票者可以立即将 RSR 转入共享的 vlRSR 金库。"
 
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-retire-vote-lock.tsx:175
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-retire-vote-lock.tsx:106
 msgid "Sets the old vault's unstaking delay to zero so voters can move to the new vote-lock vault right away."
 msgstr "将旧金库的解除质押延迟设为零，使投票者可以立即转入新的 vote-lock 金库。"
 
@@ -9240,6 +9266,14 @@ msgstr "在你的 Wallet 中签名…"
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:100
 msgid "Sign mint…"
 msgstr "签名 Mint…"
+
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:442
+msgid "Sign the retirement proposal in wallet..."
+msgstr "请在 Wallet 中签署停用提案..."
+
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:445
+msgid "Sign the upgrade proposal in wallet..."
+msgstr "请在 Wallet 中签署升级提案..."
 
 #: src/views/index-dtf/deploy/components/right-panel.tsx:51
 msgid "Sign tx to create governance DAO"
@@ -9637,8 +9671,8 @@ msgstr "通过长文保持最新动态"
 
 #. placeholder {0}: index + 1
 #. placeholder {1}: stages.length
-#: src/components/vote-lock/migration/migration-modal.tsx:179
-#: src/components/vote-lock/migration/migration-modal.tsx:194
+#: src/components/vote-lock/migration/migration-modal.tsx:181
+#: src/components/vote-lock/migration/migration-modal.tsx:196
 msgid "Step {0} of {1}"
 msgstr "第 {0} 步，共 {1} 步"
 
@@ -9651,7 +9685,7 @@ msgid "Step 2. {buttonLabel}"
 msgstr "步骤 2. {buttonLabel}"
 
 #. placeholder {0}: pending.map(({ symbol }) => symbol).join(', ')
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-retire-vote-lock.tsx:191
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-retire-vote-lock.tsx:122
 msgid "Still governed by this vault: {0}. Each must pass its governance upgrade before the vault can be retired."
 msgstr "仍由此金库治理：{0}。每个 DTF 都必须先通过其治理升级，才能停用该金库。"
 
@@ -10786,7 +10820,7 @@ msgstr "交易失败"
 msgid "Transaction Failed"
 msgstr "交易失败"
 
-#: src/components/vote-lock/migration/migration-modal.tsx:109
+#: src/components/vote-lock/migration/migration-modal.tsx:111
 msgid "Transaction failed · Retry"
 msgstr "交易失败 · 重试"
 
@@ -10986,7 +11020,7 @@ msgid "Unavailable"
 msgstr "不可用"
 
 #: src/views/explorer/components/collaterals/index.tsx:100
-#: src/views/portfolio-page/components/vote-locked-positions.tsx:176
+#: src/views/portfolio-page/components/vote-locked-positions.tsx:177
 msgid "Underlying"
 msgstr "底层资产"
 
@@ -10998,7 +11032,7 @@ msgstr "底层平台敞口"
 msgid "Underlying protocol fees"
 msgstr ""
 
-#: src/views/index-dtf/settings/components/index-settings-governance-token.tsx:32
+#: src/views/index-dtf/settings/components/index-settings-governance-token.tsx:33
 msgid "Underlying Token"
 msgstr "底层代币"
 
@@ -11287,11 +11321,11 @@ msgstr "升级 Folio 治理 (1/2):"
 msgid "Upgrade to"
 msgstr "升级至"
 
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-folio-governance-upgrade.tsx:126
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-folio-governance-upgrade.tsx:128
 msgid "Upgrades the {symbol} governor and timelock to release 1.1.0, which adds a proposal throttle and a time-weighted vote check against proposal spam. See the <0>changelog</0> for details."
 msgstr "将 {symbol} 的 governor 和 timelock 升级到 1.1.0 版本，新增提案限流和基于时间加权的投票权检查，以防止垃圾提案。详情请参阅<0>changelog</0>。"
 
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-vote-lock-upgrade.tsx:188
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-vote-lock-upgrade.tsx:190
 msgid "Upgrades the {symbol} vault, its governor and timelock to release 1.1.0. The proposal goes to the {symbol} DAO. See the <0>changelog</0> for details."
 msgstr "将 {symbol} 金库及其 governor 和 timelock 升级到 1.1.0 版本。该提案提交给 {symbol} DAO。详情请参阅<0>changelog</0>。"
 
@@ -11381,7 +11415,7 @@ msgstr "估值与 NAV 计算风险——DTF 的 NAV 依赖于对代币化股票�
 #: src/views/portfolio-page/components/pending-withdrawals.tsx:351
 #: src/views/portfolio-page/components/rsr-section.tsx:60
 #: src/views/portfolio-page/components/staked-positions.tsx:102
-#: src/views/portfolio-page/components/vote-locked-positions.tsx:249
+#: src/views/portfolio-page/components/vote-locked-positions.tsx:250
 #: src/views/yield-dtf/overview/components/backing/collateral-exposure.tsx:251
 msgid "Value"
 msgstr "价值"
@@ -11506,7 +11540,7 @@ msgid "View {0} on block explorer"
 msgstr "在区块浏览器上查看 {0}"
 
 #. placeholder {0}: titles[stage]
-#: src/components/vote-lock/migration/migration-modal.tsx:202
+#: src/components/vote-lock/migration/migration-modal.tsx:204
 msgid "View {0} transaction on explorer"
 msgstr "在浏览器中查看 {0} 交易"
 
@@ -11746,7 +11780,7 @@ msgstr "将 {underlyingSymbol} Vote-lock 为 {voteLockSymbol}，参与治理并�
 msgid "Vote-lock ${0}"
 msgstr "投票锁定 ${0}"
 
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-vote-lock-upgrade.tsx:125
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-vote-lock-upgrade.tsx:126
 msgid "Vote-lock 1.1.0 upgrade proposal created"
 msgstr "Vote-lock 1.1.0 升级提案已创建"
 
@@ -11779,7 +11813,7 @@ msgstr ""
 msgid "Vote-locked"
 msgstr "Vote-locked"
 
-#: src/views/portfolio-page/components/vote-locked-positions.tsx:303
+#: src/views/portfolio-page/components/vote-locked-positions.tsx:311
 msgid "Vote-locked positions"
 msgstr "Vote-locked 仓位"
 
@@ -11987,14 +12021,14 @@ msgstr "等待抵押品"
 
 #: src/views/index-dtf/governance/views/propose/basket/components/submit-proposal-button.tsx:196
 #: src/views/index-dtf/governance/views/propose/components/propose-index-upgrade.tsx:118
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-folio-governance-upgrade.tsx:153
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-folio-governance-upgrade.tsx:155
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-governance-spell-31-03-2025.tsx:305
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-governance-spell-31-03-2025.tsx:431
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:363
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-retire-vote-lock.tsx:209
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:448
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-retire-vote-lock.tsx:140
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v4-upgrade.tsx:189
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v5-upgrade.tsx:218
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-vote-lock-upgrade.tsx:214
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-vote-lock-upgrade.tsx:216
 #: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/components/submit-proposal-button.tsx:188
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/submit-proposal-button.tsx:186
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/submit-proposal-button.tsx:182
@@ -12004,6 +12038,10 @@ msgstr "等待确认中……"
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:524
 msgid "Waiting for orders"
 msgstr "等待 Orders"
+
+#: src/components/vote-lock/migration/migration-modal.tsx:105
+msgid "Waiting for your Safe to execute..."
+msgstr "等待你的 Safe 执行..."
 
 #: src/views/explorer/components/transactions/Filters.tsx:17
 msgid "Wallet"
@@ -12537,7 +12575,7 @@ msgstr "你的 {0} 已被 Redeem。"
 msgid "Your {symbol} is locked in {vault}"
 msgstr "你的 {symbol} 已锁定在 {vault}"
 
-#: src/components/vote-lock/migration/migration-modal.tsx:140
+#: src/components/vote-lock/migration/migration-modal.tsx:142
 msgid "Your {symbol} is locked in the {vault} vault."
 msgstr "你的 {symbol} 已锁定在 {vault} 金库中。"
 
@@ -12562,12 +12600,12 @@ msgstr "你的 Decentralized Token Fund 投资。"
 msgid "Your DTF has been minted."
 msgstr "你的 DTF 已被 Mint。"
 
-#: src/components/vote-lock/migration/migration-modal.tsx:269
+#: src/components/vote-lock/migration/migration-modal.tsx:271
 msgid "Your full old-vault position"
 msgstr "你在旧金库中的全部仓位"
 
 #. placeholder {0}: formatAmount(flow.estimate)
-#: src/components/vote-lock/migration/migration-modal.tsx:268
+#: src/components/vote-lock/migration/migration-modal.tsx:270
 msgid "Your full old-vault position · about {0} RSR"
 msgstr "你在旧金库中的全部仓位 · 约 {0} RSR"
 
@@ -12607,15 +12645,15 @@ msgstr "你近期的链上活动。"
 msgid "Your redeemable"
 msgstr "您的可赎回金额"
 
-#: src/components/vote-lock/migration/migration-modal.tsx:142
+#: src/components/vote-lock/migration/migration-modal.tsx:144
 msgid "Your redeemed {symbol} is in your wallet."
 msgstr "你 Redeem 的 {symbol} 已在你的 Wallet 中。"
 
-#: src/components/vote-lock/migration/migration-modal.tsx:135
+#: src/components/vote-lock/migration/migration-modal.tsx:137
 msgid "Your redeemed RSR is in your wallet."
 msgstr "你 Redeem 的 RSR 已在你的 Wallet 中。"
 
-#: src/components/vote-lock/migration/migration-modal.tsx:133
+#: src/components/vote-lock/migration/migration-modal.tsx:135
 msgid "Your RSR is locked in the shared vlRSR vault."
 msgstr "你的 RSR 已锁定在共享的 vlRSR 金库中。"
 

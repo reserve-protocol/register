@@ -502,16 +502,16 @@ msgstr "{swapCount}건 주문"
 msgid "{swapCount} orders"
 msgstr "{swapCount}건 주문"
 
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-folio-governance-upgrade.tsx:123
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-vote-lock-upgrade.tsx:185
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-folio-governance-upgrade.tsx:125
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-vote-lock-upgrade.tsx:187
 msgid "{symbol} governance 1.1.0 available"
 msgstr "{symbol} 거버넌스 1.1.0 사용 가능"
 
-#: src/components/vote-lock/migration/migration-modal.tsx:256
+#: src/components/vote-lock/migration/migration-modal.tsx:258
 msgid "{symbol} to approve"
 msgstr "승인할 {symbol}"
 
-#: src/components/vote-lock/migration/migration-modal.tsx:257
+#: src/components/vote-lock/migration/migration-modal.tsx:259
 msgid "{symbol} to lock"
 msgstr "잠글 {symbol}"
 
@@ -622,11 +622,11 @@ msgstr "<0>릴리스 5.0.0</0>은 토큰별 경매 규모 제한과 개별 토�
 #~ msgid "<0>Reserve Optimistic Governor upgrade</0> introduces a new governor system TBD COPY HERE!. <1/>See the <2>changelog</2> for more details."
 #~ msgstr "<0>Reserve Optimistic Governor 업그레이드</0>는 새로운 거버너 시스템을 도입합니다 TBD COPY HERE!. <1/>자세한 내용은 <2>변경 로그</2>를 참조하세요."
 
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:343
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:473
 msgid "<0>Reserve Optimistic Governor upgrade</0> moves this DTF to optimistic governance, voted with a new vote-lock vault. After it executes, voters lock their tokens in the new vault to keep governing this DTF."
 msgstr "<0>Reserve Optimistic Governor 업그레이드</0>는 이 DTF를 새로운 vote-lock 볼트로 투표하는 옵티미스틱 거버넌스로 전환합니다. 실행 후 투표자는 이 DTF의 거버넌스를 계속하려면 새 볼트에 토큰을 잠가야 합니다."
 
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:336
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:466
 msgid "<0>Reserve Optimistic Governor upgrade</0> moves this DTF to optimistic governance, voted with the shared vlRSR vote-lock vault. After it executes, voters lock RSR in the new vault to keep governing this DTF."
 msgstr "<0>Reserve Optimistic Governor 업그레이드</0>는 이 DTF를 공유 vlRSR vote-lock 볼트로 투표하는 옵티미스틱 거버넌스로 전환합니다. 실행 후 투표자는 이 DTF의 거버넌스를 계속하려면 새 볼트에 RSR을 잠가야 합니다."
 
@@ -885,7 +885,7 @@ msgstr "Mint 전에 자산 확보"
 #: src/views/internal/dtf-list/components/dtf-table.tsx:201
 #: src/views/portfolio-page/components/pending-withdrawals.tsx:370
 #: src/views/portfolio-page/components/staked-positions.tsx:118
-#: src/views/portfolio-page/components/vote-locked-positions.tsx:256
+#: src/views/portfolio-page/components/vote-locked-positions.tsx:257
 msgid "Action"
 msgstr "작업"
 
@@ -1245,7 +1245,7 @@ msgstr ""
 msgid "Amount"
 msgstr "금액"
 
-#: src/components/vote-lock/migration/migration-modal.tsx:228
+#: src/components/vote-lock/migration/migration-modal.tsx:230
 msgid "Amount locked"
 msgstr "잠긴 수량"
 
@@ -1413,7 +1413,7 @@ msgid "April 1"
 msgstr "4월 1일"
 
 #: src/views/portfolio-page/components/staked-positions.tsx:68
-#: src/views/portfolio-page/components/vote-locked-positions.tsx:221
+#: src/views/portfolio-page/components/vote-locked-positions.tsx:222
 msgid "APY"
 msgstr "APY"
 
@@ -1768,7 +1768,7 @@ msgstr "백업"
 #: src/views/portfolio-page/components/pending-withdrawals.tsx:338
 #: src/views/portfolio-page/components/rsr-section.tsx:47
 #: src/views/portfolio-page/components/staked-positions.tsx:85
-#: src/views/portfolio-page/components/vote-locked-positions.tsx:243
+#: src/views/portfolio-page/components/vote-locked-positions.tsx:244
 #: src/views/yield-dtf/issuance/components/zapV2/input/ZapInputMaxButton.tsx:22
 #: src/views/yield-dtf/issuance/components/zapV2/output/ZapOutputBalance.tsx:14
 #: src/views/yield-dtf/staking/components/stake/stake-input.tsx:58
@@ -2010,6 +2010,10 @@ msgstr "블로그"
 #: src/views/index-dtf/governance/views/propose/basket/components/proposal-rebalance-launch-settings.tsx:275
 msgid "Both Auction Launchers AND community members can start auctions. Auction Launchers will still have an Exclusive Launch Window, but afterward anyone in the community can start an auction. Please specify how long community members should be allow to start auctions after the Exclusive Launch Window."
 msgstr "경매 실행자와 커뮤니티 구성원 모두 경매를 시작할 수 있습니다. 경매 실행자는 여전히 독점 실행 윈도우를 가지지만, 그 이후에는 커뮤니티의 누구나 경매를 시작할 수 있습니다. 독점 실행 윈도우 이후 커뮤니티 구성원이 경매를 시작할 수 있는 기간을 지정해 주세요."
+
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:332
+msgid "Both proposals are created once the Safe transaction executes."
+msgstr "Safe 트랜잭션이 실행되면 두 제안이 모두 생성됩니다."
 
 #: src/views/index-dtf/auctions/legacy/components/auction-item.tsx:132
 #: src/views/yield-dtf/auctions/components/useColumns.tsx:36
@@ -2369,7 +2373,7 @@ msgstr "투표권 확인 중..."
 msgid "Checking wallet..."
 msgstr "Wallet 확인 중..."
 
-#: src/components/vote-lock/migration/migration-modal.tsx:107
+#: src/components/vote-lock/migration/migration-modal.tsx:109
 msgid "Checking your redemption..."
 msgstr "Redeem 확인 중..."
 
@@ -2442,7 +2446,7 @@ msgid "Click retry or use individual approve buttons below."
 msgstr "재시도를 클릭하거나 아래의 개별 승인 버튼을 사용하세요."
 
 #: src/components/video-modal/index.tsx:58
-#: src/components/vote-lock/migration/migration-modal.tsx:288
+#: src/components/vote-lock/migration/migration-modal.tsx:290
 #: src/views/index-dtf/overview/components/charts/candlestick-tooltip.tsx:36
 #: src/views/index-dtf/overview/components/video-library/series-modal.tsx:129
 msgid "Close"
@@ -2452,7 +2456,7 @@ msgstr "닫기"
 msgid "Close DTF pages"
 msgstr "DTF 페이지 닫기"
 
-#: src/components/vote-lock/migration/migration-modal.tsx:150
+#: src/components/vote-lock/migration/migration-modal.tsx:152
 msgid "Close migration"
 msgstr "마이그레이션 닫기"
 
@@ -2719,7 +2723,7 @@ msgstr "승인 확인 중..."
 msgid "Confirming transaction"
 msgstr "트랜잭션 확인 중"
 
-#: src/components/vote-lock/migration/migration-modal.tsx:105
+#: src/components/vote-lock/migration/migration-modal.tsx:107
 #: src/views/index-dtf/issuance/manual/components/index-manual-issuance.tsx:202
 msgid "Confirming transaction..."
 msgstr "트랜잭션 확인 중..."
@@ -2804,7 +2808,7 @@ msgid "Continue"
 msgstr "계속"
 
 #: src/components/vote-lock/migration/migration-card.tsx:183
-#: src/views/portfolio-page/components/vote-locked-positions.tsx:276
+#: src/views/portfolio-page/components/vote-locked-positions.tsx:284
 msgid "Continue migration"
 msgstr "마이그레이션 계속"
 
@@ -3600,7 +3604,7 @@ msgid "Don’t see your token?"
 msgstr "토큰이 보이지 않나요?"
 
 #: src/components/vote-lock/migration/migration-card.tsx:131
-#: src/components/vote-lock/migration/migration-modal.tsx:244
+#: src/components/vote-lock/migration/migration-modal.tsx:246
 msgid "Done"
 msgstr "완료"
 
@@ -4599,7 +4603,7 @@ msgid "Finding route..."
 msgstr "경로 찾는 중..."
 
 #: src/components/vote-lock/migration/migration-card.tsx:148
-#: src/components/vote-lock/migration/migration-modal.tsx:126
+#: src/components/vote-lock/migration/migration-modal.tsx:128
 msgid "Finish re-locking your {symbol}"
 msgstr "{symbol} 재잠금 완료하기"
 
@@ -4784,7 +4788,7 @@ msgstr "거버넌스에 참여하고, Stake하고, 수익 기회를 찾아보세
 msgid "Governance"
 msgstr "거버넌스"
 
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-folio-governance-upgrade.tsx:58
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-folio-governance-upgrade.tsx:59
 msgid "Governance 1.1.0 upgrade proposal created"
 msgstr "거버넌스 1.1.0 업그레이드 제안이 생성됨"
 
@@ -4846,7 +4850,7 @@ msgid "Governance Stats"
 msgstr "거버넌스 통계"
 
 #: src/views/index-dtf/settings/components/index-settings-governance-token.tsx:16
-#: src/views/portfolio-page/components/vote-locked-positions.tsx:148
+#: src/views/portfolio-page/components/vote-locked-positions.tsx:149
 #: src/views/portfolio-page/components/voting-power.tsx:47
 msgid "Governance Token"
 msgstr "거버넌스 토큰"
@@ -4878,7 +4882,7 @@ msgstr "Governor 위임 사항"
 #: src/views/earn/views/index-dtf/components/vote-lock-positions.tsx:281
 #: src/views/earn/views/yield-dtf/components/staking-positions.tsx:141
 #: src/views/portfolio-page/components/staked-positions.tsx:42
-#: src/views/portfolio-page/components/vote-locked-positions.tsx:212
+#: src/views/portfolio-page/components/vote-locked-positions.tsx:213
 msgid "Governs"
 msgstr "거버넌스 대상"
 
@@ -5478,6 +5482,14 @@ msgstr "발행 스로틀 비율 (%)"
 msgid "Issue"
 msgstr "발행"
 
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:490
+msgid "It also proposes the old vault's retirement to its DAO, so both votes run at the same time. You sign two proposals."
+msgstr "기존 볼트의 DAO에 볼트 종료도 함께 제안하므로 두 투표가 동시에 진행됩니다. 두 개의 제안에 서명합니다."
+
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:484
+msgid "It also proposes the old vault's retirement to its DAO, so both votes run at the same time. Your Safe signs both in one transaction."
+msgstr "기존 볼트의 DAO에 볼트 종료도 함께 제안하므로 두 투표가 동시에 진행됩니다. Safe는 한 번의 트랜잭션으로 두 제안에 서명합니다."
+
 #: src/views/internal/dtf-list/components/dtf-pagination.tsx:67
 msgid "Items per page:"
 msgstr "페이지당 항목 수:"
@@ -5582,7 +5594,8 @@ msgstr "잔여 담보는 DTF 출력 가치에 포함되지 않습니다. Mint는
 msgid "Leftover dust"
 msgstr "잔여 더스트"
 
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-retire-vote-lock.tsx:139
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:414
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-retire-vote-lock.tsx:70
 msgid "Legacy vote-lock vault retirement proposal created"
 msgstr "기존 vote-lock 볼트 종료 제안이 생성됨"
 
@@ -6042,11 +6055,11 @@ msgstr "Telegram으로 메시지 보내기"
 msgid "Metadata"
 msgstr "메타데이터"
 
-#: src/views/portfolio-page/components/vote-locked-positions.tsx:278
+#: src/views/portfolio-page/components/vote-locked-positions.tsx:286
 msgid "Migrate"
 msgstr "마이그레이션"
 
-#: src/components/vote-lock/migration/migration-modal.tsx:124
+#: src/components/vote-lock/migration/migration-modal.tsx:126
 msgid "Migration complete"
 msgstr "마이그레이션 완료"
 
@@ -6054,7 +6067,7 @@ msgstr "마이그레이션 완료"
 msgid "Migration in progress"
 msgstr "마이그레이션 진행 중"
 
-#: src/views/portfolio-page/components/vote-locked-positions.tsx:164
+#: src/views/portfolio-page/components/vote-locked-positions.tsx:165
 msgid "Migration needed"
 msgstr "마이그레이션 필요"
 
@@ -6264,7 +6277,7 @@ msgid "Modified"
 msgstr "수정됨"
 
 #: src/views/portfolio-page/components/staked-positions.tsx:139
-#: src/views/portfolio-page/components/vote-locked-positions.tsx:131
+#: src/views/portfolio-page/components/vote-locked-positions.tsx:132
 msgid "Modify"
 msgstr "수정"
 
@@ -6453,7 +6466,7 @@ msgstr "새 TVL 수수료:"
 msgid "New units"
 msgstr "신규 단위"
 
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:332
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:462
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v4-upgrade.tsx:167
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v5-upgrade.tsx:189
 msgid "New version available"
@@ -6503,7 +6516,7 @@ msgstr ""
 msgid "No"
 msgstr "아니요"
 
-#: src/components/vote-lock/migration/migration-modal.tsx:271
+#: src/components/vote-lock/migration/migration-modal.tsx:273
 msgid "No {symbol} left in your wallet to lock."
 msgstr "Wallet에 잠글 {symbol}이(가) 남아 있지 않습니다."
 
@@ -6827,7 +6840,7 @@ msgstr "CFB LCAP 토큰 공식 문서"
 msgid "Old units"
 msgstr "이전 단위"
 
-#: src/components/vote-lock/migration/migration-modal.tsx:254
+#: src/components/vote-lock/migration/migration-modal.tsx:256
 msgid "Old vote-lock shares"
 msgstr "기존 vote-lock 지분"
 
@@ -7090,7 +7103,7 @@ msgstr "참여하고 수익 얻기"
 msgid "Participate and earn"
 msgstr "참여하고 보상을 받으세요"
 
-#: src/views/portfolio-page/components/vote-locked-positions.tsx:305
+#: src/views/portfolio-page/components/vote-locked-positions.tsx:313
 msgid "Participate in governance with any ERC-20 token and earn APY rewards. <0>Learn more</0>."
 msgstr "ERC-20 토큰으로 거버넌스에 참여하고 APY 리워드를 받으세요. <0>자세히 보기</0>."
 
@@ -7187,14 +7200,14 @@ msgstr "대기 중, Wallet에서 서명하세요"
 
 #: src/views/index-dtf/governance/views/propose/basket/components/submit-proposal-button.tsx:195
 #: src/views/index-dtf/governance/views/propose/components/propose-index-upgrade.tsx:117
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-folio-governance-upgrade.tsx:152
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-folio-governance-upgrade.tsx:154
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-governance-spell-31-03-2025.tsx:304
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-governance-spell-31-03-2025.tsx:430
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:362
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-retire-vote-lock.tsx:208
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:446
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-retire-vote-lock.tsx:139
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v4-upgrade.tsx:188
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v5-upgrade.tsx:217
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-vote-lock-upgrade.tsx:213
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-vote-lock-upgrade.tsx:215
 #: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/components/submit-proposal-button.tsx:186
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/submit-proposal-button.tsx:184
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/submit-proposal-button.tsx:181
@@ -7646,15 +7659,16 @@ msgstr "다른 경매가 진행 중인 동안에는 제안을 실행할 수 없�
 msgid "Proposal created"
 msgstr "제안 생성됨"
 
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-folio-governance-upgrade.tsx:57
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:297
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:305
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-retire-vote-lock.tsx:138
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-folio-governance-upgrade.tsx:58
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:372
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:380
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:413
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-retire-vote-lock.tsx:69
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v4-upgrade.tsx:132
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v4-upgrade.tsx:140
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v5-upgrade.tsx:154
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v5-upgrade.tsx:162
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-vote-lock-upgrade.tsx:124
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-vote-lock-upgrade.tsx:125
 msgid "Proposal created!"
 msgstr "제안이 생성되었습니다!"
 
@@ -7734,12 +7748,16 @@ msgstr "제안이 부결되었습니다"
 msgid "Proposals"
 msgstr "제안"
 
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:331
+msgid "Proposals sent to your Safe"
+msgstr "Safe로 제안을 보냈습니다"
+
 #: src/views/yield-dtf/governance/components/TopVoters.tsx:131
 msgid "Proposals voted"
 msgstr "투표한 제안"
 
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-folio-governance-upgrade.tsx:154
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-vote-lock-upgrade.tsx:215
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-folio-governance-upgrade.tsx:156
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-vote-lock-upgrade.tsx:217
 msgid "Propose {symbol} upgrade"
 msgstr "{symbol} 업그레이드 제안"
 
@@ -7764,13 +7782,17 @@ msgstr "새 백업 구성 제안"
 msgid "Propose new basket"
 msgstr "새 바스켓 제안"
 
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:364
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:451
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v4-upgrade.tsx:190
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v5-upgrade.tsx:219
 msgid "Propose upgrade"
 msgstr "업그레이드 제안하기"
 
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-retire-vote-lock.tsx:210
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:450
+msgid "Propose upgrade and vault retirement"
+msgstr "업그레이드 및 볼트 종료 제안"
+
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-retire-vote-lock.tsx:141
 msgid "Propose vault retirement"
 msgstr "볼트 종료 제안"
 
@@ -7936,7 +7958,7 @@ msgstr "등급:"
 msgid "Raw"
 msgstr "원본"
 
-#: src/components/vote-lock/migration/migration-modal.tsx:127
+#: src/components/vote-lock/migration/migration-modal.tsx:129
 msgid "Re-lock your {symbol}"
 msgstr "{symbol} 다시 잠그기"
 
@@ -8031,7 +8053,7 @@ msgstr "기존 vote-lock에서 {symbol}을(를) 받습니다."
 msgid "Received"
 msgstr "수령됨"
 
-#: src/components/vote-lock/migration/migration-modal.tsx:272
+#: src/components/vote-lock/migration/migration-modal.tsx:274
 msgid "Received from your old-vault redemption"
 msgstr "기존 볼트 Redeem으로 받은 수량"
 
@@ -8138,19 +8160,19 @@ msgstr "Redeem 완료됨"
 msgid "Redeem using"
 msgstr "Redeem에 사용할 토큰"
 
-#: src/components/vote-lock/migration/migration-modal.tsx:144
+#: src/components/vote-lock/migration/migration-modal.tsx:146
 msgid "Redeem your old vote-lock, approve the {symbol}, then lock it in the {vault} vault."
 msgstr "기존 vote-lock을 Redeem하고 {symbol}을(를) 승인한 뒤 {vault} 볼트에 잠그세요."
 
-#: src/components/vote-lock/migration/migration-modal.tsx:137
+#: src/components/vote-lock/migration/migration-modal.tsx:139
 msgid "Redeem your old vote-lock, approve the RSR, then lock it in the shared vlRSR vault."
 msgstr "기존 vote-lock을 Redeem하고 RSR을 승인한 뒤 공유 vlRSR 볼트에 잠그세요."
 
-#: src/components/vote-lock/migration/migration-modal.tsx:145
+#: src/components/vote-lock/migration/migration-modal.tsx:147
 msgid "Redeem your old vote-lock, then lock the {symbol} in the {vault} vault."
 msgstr "기존 vote-lock을 Redeem한 뒤 {symbol}을(를) {vault} 볼트에 잠그세요."
 
-#: src/components/vote-lock/migration/migration-modal.tsx:138
+#: src/components/vote-lock/migration/migration-modal.tsx:140
 msgid "Redeem your old vote-lock, then lock the RSR in the shared vlRSR vault."
 msgstr "기존 vote-lock을 Redeem한 뒤 RSR을 공유 vlRSR 볼트에 잠그세요."
 
@@ -8262,6 +8284,10 @@ msgstr "일반 Mint "
 #: src/views/index-dtf/overview/components/index-disclousure.tsx:269
 msgid "Regulatory and Compliance Risk: Tokenized equities and related on-chain transfer mechanisms may be subject to evolving regulatory interpretations and enforcement actions. Ondo Tokenized Stocks may also be subject to contractual eligibility requirements, permissioning, whitelisting, jurisdictional limitations, sanctions screening, or other compliance gating that can be changed or applied with little notice. If regulations or compliance requirements change, the DTF may be forced to restrict access, halt mints/redemptions, rebalance away from affected components, or wind down positions under adverse market conditions, potentially causing tracking error, reduced liquidity, and losses."
 msgstr "규제 및 컴플라이언스 위험: 토큰화 주식 및 관련 온체인 이전 메커니즘은 변화하는 규제 해석과 집행 조치의 대상이 될 수 있습니다. Ondo Tokenized Stocks는 또한 계약상의 적격성 요건, 허가, 화이트리스트, 관할권 제한, 제재 심사 또는 기타 컴플라이언스 게이트의 적용을 받을 수 있으며, 이는 예고 없이 변경되거나 적용될 수 있습니다. 규제 또는 컴플라이언스 요건이 변경되면 DTF는 접근 제한, Mint/Redeem 중단, 영향을 받는 구성 요소에서의 리밸런싱 또는 불리한 시장 상황에서의 포지션 청산을 강요받을 수 있으며, 이는 추적 오차, 유동성 감소 및 손실을 초래할 수 있습니다."
+
+#: src/components/vote-lock/migration/migration-modal.tsx:314
+msgid "Rejected it in your Safe? Sign again"
+msgstr "Safe에서 거부했나요? 다시 서명하기"
 
 #: src/views/yield-dtf/settings/components/contracts-info.tsx:30
 msgid "Related Contracts"
@@ -8382,7 +8408,7 @@ msgstr "Canny에 요청하기"
 msgid "Request plugin"
 msgstr "플러그인 요청"
 
-#: src/components/vote-lock/migration/migration-modal.tsx:111
+#: src/components/vote-lock/migration/migration-modal.tsx:113
 msgid "Request rejected · Retry"
 msgstr "요청 거부됨 · 재시도"
 
@@ -8433,8 +8459,8 @@ msgstr "Reserve를 통해 전체 포트폴리오를 단일 토큰으로 구매�
 msgid "Reserve logo"
 msgstr ""
 
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:298
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:306
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:373
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:381
 msgid "Reserve Optimistic Governor Upgrade proposal created"
 msgstr "Reserve Optimistic Governor 업그레이드 제안이 생성됨"
 
@@ -8466,7 +8492,7 @@ msgstr "리소스"
 msgid "Restricted in your region"
 msgstr "거주 지역에서 제한됨"
 
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-retire-vote-lock.tsx:166
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-retire-vote-lock.tsx:97
 msgid "Retire the legacy vote-lock vault"
 msgstr "기존 vote-lock 볼트 종료"
 
@@ -9091,11 +9117,11 @@ msgstr "각 토큰의 최대 경매 규모를 USD로 설정하세요. 기본값:
 msgid "Set the USD amount per token used to simulate price impact."
 msgstr "가격 영향을 시뮬레이션하는 데 사용할 토큰당 USD 금액을 설정합니다."
 
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-retire-vote-lock.tsx:170
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-retire-vote-lock.tsx:101
 msgid "Sets the old vault's unstaking delay to zero so voters can move their RSR to the shared vlRSR vault right away."
 msgstr "기존 볼트의 언스테이킹 지연을 0으로 설정하여 투표자가 RSR을 즉시 공유 vlRSR 볼트로 옮길 수 있게 합니다."
 
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-retire-vote-lock.tsx:175
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-retire-vote-lock.tsx:106
 msgid "Sets the old vault's unstaking delay to zero so voters can move to the new vote-lock vault right away."
 msgstr "기존 볼트의 언스테이킹 지연을 0으로 설정하여 투표자가 즉시 새 vote-lock 볼트로 옮길 수 있게 합니다."
 
@@ -9240,6 +9266,14 @@ msgstr "Wallet에서 서명하세요…"
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:100
 msgid "Sign mint…"
 msgstr "Mint 서명…"
+
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:442
+msgid "Sign the retirement proposal in wallet..."
+msgstr "Wallet에서 종료 제안에 서명하세요..."
+
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:445
+msgid "Sign the upgrade proposal in wallet..."
+msgstr "Wallet에서 업그레이드 제안에 서명하세요..."
 
 #: src/views/index-dtf/deploy/components/right-panel.tsx:51
 msgid "Sign tx to create governance DAO"
@@ -9637,8 +9671,8 @@ msgstr "장문으로 최신 소식 받기"
 
 #. placeholder {0}: index + 1
 #. placeholder {1}: stages.length
-#: src/components/vote-lock/migration/migration-modal.tsx:179
-#: src/components/vote-lock/migration/migration-modal.tsx:194
+#: src/components/vote-lock/migration/migration-modal.tsx:181
+#: src/components/vote-lock/migration/migration-modal.tsx:196
 msgid "Step {0} of {1}"
 msgstr "{0}/{1}단계"
 
@@ -9651,7 +9685,7 @@ msgid "Step 2. {buttonLabel}"
 msgstr "2단계. {buttonLabel}"
 
 #. placeholder {0}: pending.map(({ symbol }) => symbol).join(', ')
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-retire-vote-lock.tsx:191
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-retire-vote-lock.tsx:122
 msgid "Still governed by this vault: {0}. Each must pass its governance upgrade before the vault can be retired."
 msgstr "아직 이 볼트로 거버넌스되는 DTF: {0}. 볼트를 종료하려면 각 DTF의 거버넌스 업그레이드가 먼저 통과되어야 합니다."
 
@@ -10786,7 +10820,7 @@ msgstr "트랜잭션 실패"
 msgid "Transaction Failed"
 msgstr "트랜잭션 실패"
 
-#: src/components/vote-lock/migration/migration-modal.tsx:109
+#: src/components/vote-lock/migration/migration-modal.tsx:111
 msgid "Transaction failed · Retry"
 msgstr "트랜잭션 실패 · 재시도"
 
@@ -10986,7 +11020,7 @@ msgid "Unavailable"
 msgstr "사용 불가"
 
 #: src/views/explorer/components/collaterals/index.tsx:100
-#: src/views/portfolio-page/components/vote-locked-positions.tsx:176
+#: src/views/portfolio-page/components/vote-locked-positions.tsx:177
 msgid "Underlying"
 msgstr "기초 자산"
 
@@ -10998,7 +11032,7 @@ msgstr "기초 플랫폼 노출"
 msgid "Underlying protocol fees"
 msgstr ""
 
-#: src/views/index-dtf/settings/components/index-settings-governance-token.tsx:32
+#: src/views/index-dtf/settings/components/index-settings-governance-token.tsx:33
 msgid "Underlying Token"
 msgstr "기초 토큰"
 
@@ -11287,11 +11321,11 @@ msgstr "Folio Governance 업그레이드 (1/2):"
 msgid "Upgrade to"
 msgstr "업그레이드 대상"
 
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-folio-governance-upgrade.tsx:126
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-folio-governance-upgrade.tsx:128
 msgid "Upgrades the {symbol} governor and timelock to release 1.1.0, which adds a proposal throttle and a time-weighted vote check against proposal spam. See the <0>changelog</0> for details."
 msgstr "{symbol} 거버너와 타임락을 1.1.0 릴리스로 업그레이드합니다. 이 릴리스는 스팸 제안을 막기 위해 제안 제한과 시간 가중 투표권 확인을 추가합니다. 자세한 내용은 <0>changelog</0>를 참고하세요."
 
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-vote-lock-upgrade.tsx:188
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-vote-lock-upgrade.tsx:190
 msgid "Upgrades the {symbol} vault, its governor and timelock to release 1.1.0. The proposal goes to the {symbol} DAO. See the <0>changelog</0> for details."
 msgstr "{symbol} 볼트와 거버너, 타임락을 1.1.0 릴리스로 업그레이드합니다. 제안은 {symbol} DAO로 전달됩니다. 자세한 내용은 <0>changelog</0>를 참고하세요."
 
@@ -11381,7 +11415,7 @@ msgstr "평가 및 NAV 산정 위험 – DTF의 NAV는 토큰화 주식 및 관�
 #: src/views/portfolio-page/components/pending-withdrawals.tsx:351
 #: src/views/portfolio-page/components/rsr-section.tsx:60
 #: src/views/portfolio-page/components/staked-positions.tsx:102
-#: src/views/portfolio-page/components/vote-locked-positions.tsx:249
+#: src/views/portfolio-page/components/vote-locked-positions.tsx:250
 #: src/views/yield-dtf/overview/components/backing/collateral-exposure.tsx:251
 msgid "Value"
 msgstr "가치"
@@ -11506,7 +11540,7 @@ msgid "View {0} on block explorer"
 msgstr "블록 탐색기에서 {0} 보기"
 
 #. placeholder {0}: titles[stage]
-#: src/components/vote-lock/migration/migration-modal.tsx:202
+#: src/components/vote-lock/migration/migration-modal.tsx:204
 msgid "View {0} transaction on explorer"
 msgstr "익스플로러에서 {0} 트랜잭션 보기"
 
@@ -11746,7 +11780,7 @@ msgstr "{underlyingSymbol}을(를) {voteLockSymbol}에 Vote-lock하여 {voteLock
 msgid "Vote-lock ${0}"
 msgstr "${0} 투표 잠금"
 
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-vote-lock-upgrade.tsx:125
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-vote-lock-upgrade.tsx:126
 msgid "Vote-lock 1.1.0 upgrade proposal created"
 msgstr "Vote-lock 1.1.0 업그레이드 제안이 생성됨"
 
@@ -11779,7 +11813,7 @@ msgstr ""
 msgid "Vote-locked"
 msgstr "투표 잠금됨"
 
-#: src/views/portfolio-page/components/vote-locked-positions.tsx:303
+#: src/views/portfolio-page/components/vote-locked-positions.tsx:311
 msgid "Vote-locked positions"
 msgstr "투표 잠금 포지션"
 
@@ -11987,14 +12021,14 @@ msgstr "담보 대기 중"
 
 #: src/views/index-dtf/governance/views/propose/basket/components/submit-proposal-button.tsx:196
 #: src/views/index-dtf/governance/views/propose/components/propose-index-upgrade.tsx:118
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-folio-governance-upgrade.tsx:153
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-folio-governance-upgrade.tsx:155
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-governance-spell-31-03-2025.tsx:305
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-governance-spell-31-03-2025.tsx:431
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:363
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-retire-vote-lock.tsx:209
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:448
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-retire-vote-lock.tsx:140
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v4-upgrade.tsx:189
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v5-upgrade.tsx:218
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-vote-lock-upgrade.tsx:214
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-vote-lock-upgrade.tsx:216
 #: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/components/submit-proposal-button.tsx:188
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/submit-proposal-button.tsx:186
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/submit-proposal-button.tsx:182
@@ -12004,6 +12038,10 @@ msgstr "확인 대기 중..."
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:524
 msgid "Waiting for orders"
 msgstr "주문 대기 중"
+
+#: src/components/vote-lock/migration/migration-modal.tsx:105
+msgid "Waiting for your Safe to execute..."
+msgstr "Safe 실행을 기다리는 중..."
 
 #: src/views/explorer/components/transactions/Filters.tsx:17
 msgid "Wallet"
@@ -12537,7 +12575,7 @@ msgstr "{0}이(가) Redeem되었습니다."
 msgid "Your {symbol} is locked in {vault}"
 msgstr "{symbol}이(가) {vault}에 잠겼습니다"
 
-#: src/components/vote-lock/migration/migration-modal.tsx:140
+#: src/components/vote-lock/migration/migration-modal.tsx:142
 msgid "Your {symbol} is locked in the {vault} vault."
 msgstr "{symbol}이(가) {vault} 볼트에 잠겼습니다."
 
@@ -12562,12 +12600,12 @@ msgstr "보유 중인 Decentralized Token Fund 투자."
 msgid "Your DTF has been minted."
 msgstr "DTF가 Mint되었습니다."
 
-#: src/components/vote-lock/migration/migration-modal.tsx:269
+#: src/components/vote-lock/migration/migration-modal.tsx:271
 msgid "Your full old-vault position"
 msgstr "기존 볼트의 전체 포지션"
 
 #. placeholder {0}: formatAmount(flow.estimate)
-#: src/components/vote-lock/migration/migration-modal.tsx:268
+#: src/components/vote-lock/migration/migration-modal.tsx:270
 msgid "Your full old-vault position · about {0} RSR"
 msgstr "기존 볼트의 전체 포지션 · 약 {0} RSR"
 
@@ -12607,15 +12645,15 @@ msgstr "최근 온체인 활동."
 msgid "Your redeemable"
 msgstr "상환 가능 금액"
 
-#: src/components/vote-lock/migration/migration-modal.tsx:142
+#: src/components/vote-lock/migration/migration-modal.tsx:144
 msgid "Your redeemed {symbol} is in your wallet."
 msgstr "Redeem한 {symbol}이(가) Wallet에 있습니다."
 
-#: src/components/vote-lock/migration/migration-modal.tsx:135
+#: src/components/vote-lock/migration/migration-modal.tsx:137
 msgid "Your redeemed RSR is in your wallet."
 msgstr "Redeem한 RSR이 Wallet에 있습니다."
 
-#: src/components/vote-lock/migration/migration-modal.tsx:133
+#: src/components/vote-lock/migration/migration-modal.tsx:135
 msgid "Your RSR is locked in the shared vlRSR vault."
 msgstr "RSR이 공유 vlRSR 볼트에 잠겼습니다."
 

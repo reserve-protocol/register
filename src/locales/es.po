@@ -502,16 +502,16 @@ msgstr "{swapCount} orden"
 msgid "{swapCount} orders"
 msgstr "{swapCount} órdenes"
 
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-folio-governance-upgrade.tsx:123
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-vote-lock-upgrade.tsx:185
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-folio-governance-upgrade.tsx:125
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-vote-lock-upgrade.tsx:187
 msgid "{symbol} governance 1.1.0 available"
 msgstr "Gobernanza 1.1.0 disponible para {symbol}"
 
-#: src/components/vote-lock/migration/migration-modal.tsx:256
+#: src/components/vote-lock/migration/migration-modal.tsx:258
 msgid "{symbol} to approve"
 msgstr "{symbol} a aprobar"
 
-#: src/components/vote-lock/migration/migration-modal.tsx:257
+#: src/components/vote-lock/migration/migration-modal.tsx:259
 msgid "{symbol} to lock"
 msgstr "{symbol} a bloquear"
 
@@ -622,11 +622,11 @@ msgstr "<0>Release 5.0.0</0> introduce un reequilibrio mejorado con límites de 
 #~ msgid "<0>Reserve Optimistic Governor upgrade</0> introduces a new governor system TBD COPY HERE!. <1/>See the <2>changelog</2> for more details."
 #~ msgstr "<0>La actualización Reserve Optimistic Governor</0> introduce un nuevo sistema de gobernador TBD COPY HERE!. <1/>Consulta el <2>changelog</2> para más detalles."
 
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:343
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:473
 msgid "<0>Reserve Optimistic Governor upgrade</0> moves this DTF to optimistic governance, voted with a new vote-lock vault. After it executes, voters lock their tokens in the new vault to keep governing this DTF."
 msgstr "La <0>actualización del Reserve Optimistic Governor</0> pasa este DTF a gobernanza optimista, votada con un nuevo vault de vote-lock. Después de su ejecución, los votantes bloquean sus tokens en el nuevo vault para seguir gobernando este DTF."
 
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:336
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:466
 msgid "<0>Reserve Optimistic Governor upgrade</0> moves this DTF to optimistic governance, voted with the shared vlRSR vote-lock vault. After it executes, voters lock RSR in the new vault to keep governing this DTF."
 msgstr "La <0>actualización del Reserve Optimistic Governor</0> pasa este DTF a gobernanza optimista, votada con el vault de vote-lock compartido vlRSR. Después de su ejecución, los votantes bloquean RSR en el nuevo vault para seguir gobernando este DTF."
 
@@ -885,7 +885,7 @@ msgstr "Adquirir activos antes del Mint"
 #: src/views/internal/dtf-list/components/dtf-table.tsx:201
 #: src/views/portfolio-page/components/pending-withdrawals.tsx:370
 #: src/views/portfolio-page/components/staked-positions.tsx:118
-#: src/views/portfolio-page/components/vote-locked-positions.tsx:256
+#: src/views/portfolio-page/components/vote-locked-positions.tsx:257
 msgid "Action"
 msgstr "Acción"
 
@@ -1245,7 +1245,7 @@ msgstr ""
 msgid "Amount"
 msgstr "Monto"
 
-#: src/components/vote-lock/migration/migration-modal.tsx:228
+#: src/components/vote-lock/migration/migration-modal.tsx:230
 msgid "Amount locked"
 msgstr "Cantidad bloqueada"
 
@@ -1413,7 +1413,7 @@ msgid "April 1"
 msgstr "1 de abril"
 
 #: src/views/portfolio-page/components/staked-positions.tsx:68
-#: src/views/portfolio-page/components/vote-locked-positions.tsx:221
+#: src/views/portfolio-page/components/vote-locked-positions.tsx:222
 msgid "APY"
 msgstr "APY"
 
@@ -1768,7 +1768,7 @@ msgstr "Respaldos"
 #: src/views/portfolio-page/components/pending-withdrawals.tsx:338
 #: src/views/portfolio-page/components/rsr-section.tsx:47
 #: src/views/portfolio-page/components/staked-positions.tsx:85
-#: src/views/portfolio-page/components/vote-locked-positions.tsx:243
+#: src/views/portfolio-page/components/vote-locked-positions.tsx:244
 #: src/views/yield-dtf/issuance/components/zapV2/input/ZapInputMaxButton.tsx:22
 #: src/views/yield-dtf/issuance/components/zapV2/output/ZapOutputBalance.tsx:14
 #: src/views/yield-dtf/staking/components/stake/stake-input.tsx:58
@@ -2010,6 +2010,10 @@ msgstr "Blog"
 #: src/views/index-dtf/governance/views/propose/basket/components/proposal-rebalance-launch-settings.tsx:275
 msgid "Both Auction Launchers AND community members can start auctions. Auction Launchers will still have an Exclusive Launch Window, but afterward anyone in the community can start an auction. Please specify how long community members should be allow to start auctions after the Exclusive Launch Window."
 msgstr "Tanto los lanzadores de subastas como los miembros de la comunidad pueden iniciar subastas. Los lanzadores de subastas seguirán teniendo una ventana de lanzamiento exclusiva, pero después cualquier miembro de la comunidad podrá iniciar una subasta. Especifica durante cuánto tiempo se permitirá a los miembros de la comunidad iniciar subastas tras la ventana de lanzamiento exclusiva."
+
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:332
+msgid "Both proposals are created once the Safe transaction executes."
+msgstr "Las dos propuestas se crean cuando se ejecuta la transacción de la Safe."
 
 #: src/views/index-dtf/auctions/legacy/components/auction-item.tsx:132
 #: src/views/yield-dtf/auctions/components/useColumns.tsx:36
@@ -2369,7 +2373,7 @@ msgstr "Verificando el poder de voto..."
 msgid "Checking wallet..."
 msgstr "Verificando la Wallet..."
 
-#: src/components/vote-lock/migration/migration-modal.tsx:107
+#: src/components/vote-lock/migration/migration-modal.tsx:109
 msgid "Checking your redemption..."
 msgstr "Verificando tu redeem..."
 
@@ -2442,7 +2446,7 @@ msgid "Click retry or use individual approve buttons below."
 msgstr "Haz clic en reintentar o usa los botones de aprobación individuales que aparecen abajo."
 
 #: src/components/video-modal/index.tsx:58
-#: src/components/vote-lock/migration/migration-modal.tsx:288
+#: src/components/vote-lock/migration/migration-modal.tsx:290
 #: src/views/index-dtf/overview/components/charts/candlestick-tooltip.tsx:36
 #: src/views/index-dtf/overview/components/video-library/series-modal.tsx:129
 msgid "Close"
@@ -2452,7 +2456,7 @@ msgstr "Cerrar"
 msgid "Close DTF pages"
 msgstr "Cerrar páginas del DTF"
 
-#: src/components/vote-lock/migration/migration-modal.tsx:150
+#: src/components/vote-lock/migration/migration-modal.tsx:152
 msgid "Close migration"
 msgstr "Cerrar migración"
 
@@ -2719,7 +2723,7 @@ msgstr "Confirmando aprobación..."
 msgid "Confirming transaction"
 msgstr "Confirmando transacción"
 
-#: src/components/vote-lock/migration/migration-modal.tsx:105
+#: src/components/vote-lock/migration/migration-modal.tsx:107
 #: src/views/index-dtf/issuance/manual/components/index-manual-issuance.tsx:202
 msgid "Confirming transaction..."
 msgstr "Confirmando transacción..."
@@ -2804,7 +2808,7 @@ msgid "Continue"
 msgstr "Continuar"
 
 #: src/components/vote-lock/migration/migration-card.tsx:183
-#: src/views/portfolio-page/components/vote-locked-positions.tsx:276
+#: src/views/portfolio-page/components/vote-locked-positions.tsx:284
 msgid "Continue migration"
 msgstr "Continuar migración"
 
@@ -3600,7 +3604,7 @@ msgid "Don’t see your token?"
 msgstr "¿No ves tu token?"
 
 #: src/components/vote-lock/migration/migration-card.tsx:131
-#: src/components/vote-lock/migration/migration-modal.tsx:244
+#: src/components/vote-lock/migration/migration-modal.tsx:246
 msgid "Done"
 msgstr "Listo"
 
@@ -4599,7 +4603,7 @@ msgid "Finding route..."
 msgstr "Buscando ruta..."
 
 #: src/components/vote-lock/migration/migration-card.tsx:148
-#: src/components/vote-lock/migration/migration-modal.tsx:126
+#: src/components/vote-lock/migration/migration-modal.tsx:128
 msgid "Finish re-locking your {symbol}"
 msgstr "Termina de volver a bloquear tu {symbol}"
 
@@ -4784,7 +4788,7 @@ msgstr "Gobierna, haz Stake y encuentra oportunidades de rendimiento"
 msgid "Governance"
 msgstr "Gobernanza"
 
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-folio-governance-upgrade.tsx:58
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-folio-governance-upgrade.tsx:59
 msgid "Governance 1.1.0 upgrade proposal created"
 msgstr "Propuesta de actualización de gobernanza 1.1.0 creada"
 
@@ -4846,7 +4850,7 @@ msgid "Governance Stats"
 msgstr "Estadísticas de gobernanza"
 
 #: src/views/index-dtf/settings/components/index-settings-governance-token.tsx:16
-#: src/views/portfolio-page/components/vote-locked-positions.tsx:148
+#: src/views/portfolio-page/components/vote-locked-positions.tsx:149
 #: src/views/portfolio-page/components/voting-power.tsx:47
 msgid "Governance Token"
 msgstr "Token de gobernanza"
@@ -4878,7 +4882,7 @@ msgstr "Mandato del Governor"
 #: src/views/earn/views/index-dtf/components/vote-lock-positions.tsx:281
 #: src/views/earn/views/yield-dtf/components/staking-positions.tsx:141
 #: src/views/portfolio-page/components/staked-positions.tsx:42
-#: src/views/portfolio-page/components/vote-locked-positions.tsx:212
+#: src/views/portfolio-page/components/vote-locked-positions.tsx:213
 msgid "Governs"
 msgstr "Gobierna"
 
@@ -5478,6 +5482,14 @@ msgstr "Tasa límite de emisión (%)"
 msgid "Issue"
 msgstr "Emisión"
 
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:490
+msgid "It also proposes the old vault's retirement to its DAO, so both votes run at the same time. You sign two proposals."
+msgstr "También propone el retiro del vault anterior a su DAO, así las dos votaciones corren al mismo tiempo. Firmas dos propuestas."
+
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:484
+msgid "It also proposes the old vault's retirement to its DAO, so both votes run at the same time. Your Safe signs both in one transaction."
+msgstr "También propone el retiro del vault anterior a su DAO, así las dos votaciones corren al mismo tiempo. Tu Safe firma ambas en una sola transacción."
+
 #: src/views/internal/dtf-list/components/dtf-pagination.tsx:67
 msgid "Items per page:"
 msgstr "Elementos por página:"
@@ -5582,7 +5594,8 @@ msgstr "El colateral sobrante no se incluye en el valor de salida del DTF. Puede
 msgid "Leftover dust"
 msgstr "Dust restante"
 
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-retire-vote-lock.tsx:139
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:414
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-retire-vote-lock.tsx:70
 msgid "Legacy vote-lock vault retirement proposal created"
 msgstr "Propuesta de retiro del vault de vote-lock anterior creada"
 
@@ -6042,11 +6055,11 @@ msgstr "Escríbenos por Telegram"
 msgid "Metadata"
 msgstr "Metadatos"
 
-#: src/views/portfolio-page/components/vote-locked-positions.tsx:278
+#: src/views/portfolio-page/components/vote-locked-positions.tsx:286
 msgid "Migrate"
 msgstr "Migrar"
 
-#: src/components/vote-lock/migration/migration-modal.tsx:124
+#: src/components/vote-lock/migration/migration-modal.tsx:126
 msgid "Migration complete"
 msgstr "Migración completa"
 
@@ -6054,7 +6067,7 @@ msgstr "Migración completa"
 msgid "Migration in progress"
 msgstr "Migración en curso"
 
-#: src/views/portfolio-page/components/vote-locked-positions.tsx:164
+#: src/views/portfolio-page/components/vote-locked-positions.tsx:165
 msgid "Migration needed"
 msgstr "Migración necesaria"
 
@@ -6264,7 +6277,7 @@ msgid "Modified"
 msgstr "Modificado"
 
 #: src/views/portfolio-page/components/staked-positions.tsx:139
-#: src/views/portfolio-page/components/vote-locked-positions.tsx:131
+#: src/views/portfolio-page/components/vote-locked-positions.tsx:132
 msgid "Modify"
 msgstr "Modificar"
 
@@ -6453,7 +6466,7 @@ msgstr "Nueva comisión de TVL:"
 msgid "New units"
 msgstr "Unidades nuevas"
 
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:332
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:462
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v4-upgrade.tsx:167
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v5-upgrade.tsx:189
 msgid "New version available"
@@ -6503,7 +6516,7 @@ msgstr ""
 msgid "No"
 msgstr "No"
 
-#: src/components/vote-lock/migration/migration-modal.tsx:271
+#: src/components/vote-lock/migration/migration-modal.tsx:273
 msgid "No {symbol} left in your wallet to lock."
 msgstr "No queda {symbol} en tu wallet para bloquear."
 
@@ -6827,7 +6840,7 @@ msgstr "Documentación oficial del token CFB LCAP"
 msgid "Old units"
 msgstr "Unidades anteriores"
 
-#: src/components/vote-lock/migration/migration-modal.tsx:254
+#: src/components/vote-lock/migration/migration-modal.tsx:256
 msgid "Old vote-lock shares"
 msgstr "Shares del vote-lock anterior"
 
@@ -7090,7 +7103,7 @@ msgstr "Participa y obtén rendimientos"
 msgid "Participate and earn"
 msgstr "Participa y gana"
 
-#: src/views/portfolio-page/components/vote-locked-positions.tsx:305
+#: src/views/portfolio-page/components/vote-locked-positions.tsx:313
 msgid "Participate in governance with any ERC-20 token and earn APY rewards. <0>Learn more</0>."
 msgstr "Participa en la gobernanza con cualquier token ERC-20 y gana recompensas en APY. <0>Más información</0>."
 
@@ -7187,14 +7200,14 @@ msgstr "Pendiente, firma en la Wallet"
 
 #: src/views/index-dtf/governance/views/propose/basket/components/submit-proposal-button.tsx:195
 #: src/views/index-dtf/governance/views/propose/components/propose-index-upgrade.tsx:117
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-folio-governance-upgrade.tsx:152
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-folio-governance-upgrade.tsx:154
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-governance-spell-31-03-2025.tsx:304
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-governance-spell-31-03-2025.tsx:430
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:362
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-retire-vote-lock.tsx:208
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:446
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-retire-vote-lock.tsx:139
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v4-upgrade.tsx:188
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v5-upgrade.tsx:217
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-vote-lock-upgrade.tsx:213
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-vote-lock-upgrade.tsx:215
 #: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/components/submit-proposal-button.tsx:186
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/submit-proposal-button.tsx:184
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/submit-proposal-button.tsx:181
@@ -7646,15 +7659,16 @@ msgstr "La propuesta no se puede ejecutar mientras haya otra subasta en curso"
 msgid "Proposal created"
 msgstr "Propuesta creada"
 
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-folio-governance-upgrade.tsx:57
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:297
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:305
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-retire-vote-lock.tsx:138
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-folio-governance-upgrade.tsx:58
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:372
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:380
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:413
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-retire-vote-lock.tsx:69
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v4-upgrade.tsx:132
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v4-upgrade.tsx:140
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v5-upgrade.tsx:154
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v5-upgrade.tsx:162
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-vote-lock-upgrade.tsx:124
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-vote-lock-upgrade.tsx:125
 msgid "Proposal created!"
 msgstr "¡Propuesta creada!"
 
@@ -7734,12 +7748,16 @@ msgstr "La propuesta fue rechazada"
 msgid "Proposals"
 msgstr "Propuestas"
 
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:331
+msgid "Proposals sent to your Safe"
+msgstr "Propuestas enviadas a tu Safe"
+
 #: src/views/yield-dtf/governance/components/TopVoters.tsx:131
 msgid "Proposals voted"
 msgstr "Propuestas votadas"
 
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-folio-governance-upgrade.tsx:154
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-vote-lock-upgrade.tsx:215
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-folio-governance-upgrade.tsx:156
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-vote-lock-upgrade.tsx:217
 msgid "Propose {symbol} upgrade"
 msgstr "Proponer actualización de {symbol}"
 
@@ -7764,13 +7782,17 @@ msgstr "Proponer nueva configuración de respaldo"
 msgid "Propose new basket"
 msgstr "Proponer nueva cesta"
 
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:364
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:451
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v4-upgrade.tsx:190
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v5-upgrade.tsx:219
 msgid "Propose upgrade"
 msgstr "Proponer actualización"
 
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-retire-vote-lock.tsx:210
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:450
+msgid "Propose upgrade and vault retirement"
+msgstr "Proponer actualización y retiro del vault"
+
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-retire-vote-lock.tsx:141
 msgid "Propose vault retirement"
 msgstr "Proponer el retiro del vault"
 
@@ -7936,7 +7958,7 @@ msgstr "Calificación:"
 msgid "Raw"
 msgstr "Sin procesar"
 
-#: src/components/vote-lock/migration/migration-modal.tsx:127
+#: src/components/vote-lock/migration/migration-modal.tsx:129
 msgid "Re-lock your {symbol}"
 msgstr "Vuelve a bloquear tu {symbol}"
 
@@ -8031,7 +8053,7 @@ msgstr "Recibe {symbol} de tu vote-lock anterior."
 msgid "Received"
 msgstr "Recibido"
 
-#: src/components/vote-lock/migration/migration-modal.tsx:272
+#: src/components/vote-lock/migration/migration-modal.tsx:274
 msgid "Received from your old-vault redemption"
 msgstr "Recibido del redeem de tu vault anterior"
 
@@ -8138,19 +8160,19 @@ msgstr "Redeem completado"
 msgid "Redeem using"
 msgstr "Redeem usando"
 
-#: src/components/vote-lock/migration/migration-modal.tsx:144
+#: src/components/vote-lock/migration/migration-modal.tsx:146
 msgid "Redeem your old vote-lock, approve the {symbol}, then lock it in the {vault} vault."
 msgstr "Haz redeem de tu vote-lock anterior, aprueba el {symbol} y luego bloquéalo en el vault {vault}."
 
-#: src/components/vote-lock/migration/migration-modal.tsx:137
+#: src/components/vote-lock/migration/migration-modal.tsx:139
 msgid "Redeem your old vote-lock, approve the RSR, then lock it in the shared vlRSR vault."
 msgstr "Haz redeem de tu vote-lock anterior, aprueba el RSR y luego bloquéalo en el vault compartido vlRSR."
 
-#: src/components/vote-lock/migration/migration-modal.tsx:145
+#: src/components/vote-lock/migration/migration-modal.tsx:147
 msgid "Redeem your old vote-lock, then lock the {symbol} in the {vault} vault."
 msgstr "Haz redeem de tu vote-lock anterior y luego bloquea el {symbol} en el vault {vault}."
 
-#: src/components/vote-lock/migration/migration-modal.tsx:138
+#: src/components/vote-lock/migration/migration-modal.tsx:140
 msgid "Redeem your old vote-lock, then lock the RSR in the shared vlRSR vault."
 msgstr "Haz redeem de tu vote-lock anterior y luego bloquea el RSR en el vault compartido vlRSR."
 
@@ -8262,6 +8284,10 @@ msgstr "Mint regular "
 #: src/views/index-dtf/overview/components/index-disclousure.tsx:269
 msgid "Regulatory and Compliance Risk: Tokenized equities and related on-chain transfer mechanisms may be subject to evolving regulatory interpretations and enforcement actions. Ondo Tokenized Stocks may also be subject to contractual eligibility requirements, permissioning, whitelisting, jurisdictional limitations, sanctions screening, or other compliance gating that can be changed or applied with little notice. If regulations or compliance requirements change, the DTF may be forced to restrict access, halt mints/redemptions, rebalance away from affected components, or wind down positions under adverse market conditions, potentially causing tracking error, reduced liquidity, and losses."
 msgstr "Riesgo regulatorio y de cumplimiento: las acciones tokenizadas y los mecanismos de transferencia on-chain relacionados pueden estar sujetos a interpretaciones regulatorias cambiantes y a acciones de aplicación de la ley. Las Ondo Tokenized Stocks también pueden estar sujetas a requisitos contractuales de elegibilidad, permisos, listas blancas, limitaciones jurisdiccionales, controles de sanciones u otras restricciones de cumplimiento que pueden cambiar o aplicarse con poca antelación. Si la regulación o los requisitos de cumplimiento cambian, el DTF podría verse obligado a restringir el acceso, detener los Mints/Redeems, rebalancear fuera de los componentes afectados o liquidar posiciones en condiciones de mercado adversas, lo que podría causar errores de seguimiento, menor liquidez y pérdidas."
+
+#: src/components/vote-lock/migration/migration-modal.tsx:314
+msgid "Rejected it in your Safe? Sign again"
+msgstr "¿La rechazaste en tu Safe? Firma de nuevo"
 
 #: src/views/yield-dtf/settings/components/contracts-info.tsx:30
 msgid "Related Contracts"
@@ -8382,7 +8408,7 @@ msgstr "Solicitar en Canny"
 msgid "Request plugin"
 msgstr "Solicitar plugin"
 
-#: src/components/vote-lock/migration/migration-modal.tsx:111
+#: src/components/vote-lock/migration/migration-modal.tsx:113
 msgid "Request rejected · Retry"
 msgstr "Solicitud rechazada · Reintentar"
 
@@ -8433,8 +8459,8 @@ msgstr "Reserve te permite comprar portafolios enteros como un solo token"
 msgid "Reserve logo"
 msgstr ""
 
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:298
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:306
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:373
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:381
 msgid "Reserve Optimistic Governor Upgrade proposal created"
 msgstr "Propuesta de actualización del Reserve Optimistic Governor creada"
 
@@ -8466,7 +8492,7 @@ msgstr "Recursos"
 msgid "Restricted in your region"
 msgstr "Restringido en tu región"
 
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-retire-vote-lock.tsx:166
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-retire-vote-lock.tsx:97
 msgid "Retire the legacy vote-lock vault"
 msgstr "Retirar el vault de vote-lock anterior"
 
@@ -9091,11 +9117,11 @@ msgstr "Establece el tamaño máximo de subasta en USD para cada token. Predeter
 msgid "Set the USD amount per token used to simulate price impact."
 msgstr "Define el monto en USD por token usado para simular el impacto en el precio."
 
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-retire-vote-lock.tsx:170
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-retire-vote-lock.tsx:101
 msgid "Sets the old vault's unstaking delay to zero so voters can move their RSR to the shared vlRSR vault right away."
 msgstr "Pone en cero el retraso de unstaking del vault anterior para que los votantes puedan mover su RSR al vault compartido vlRSR de inmediato."
 
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-retire-vote-lock.tsx:175
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-retire-vote-lock.tsx:106
 msgid "Sets the old vault's unstaking delay to zero so voters can move to the new vote-lock vault right away."
 msgstr "Pone en cero el retraso de unstaking del vault anterior para que los votantes puedan pasar al nuevo vault de vote-lock de inmediato."
 
@@ -9240,6 +9266,14 @@ msgstr "Firma en tu Wallet…"
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:100
 msgid "Sign mint…"
 msgstr "Firma el Mint…"
+
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:442
+msgid "Sign the retirement proposal in wallet..."
+msgstr "Firma la propuesta de retiro en tu wallet..."
+
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:445
+msgid "Sign the upgrade proposal in wallet..."
+msgstr "Firma la propuesta de actualización en tu wallet..."
 
 #: src/views/index-dtf/deploy/components/right-panel.tsx:51
 msgid "Sign tx to create governance DAO"
@@ -9637,8 +9671,8 @@ msgstr "Mantente al día en formato extenso"
 
 #. placeholder {0}: index + 1
 #. placeholder {1}: stages.length
-#: src/components/vote-lock/migration/migration-modal.tsx:179
-#: src/components/vote-lock/migration/migration-modal.tsx:194
+#: src/components/vote-lock/migration/migration-modal.tsx:181
+#: src/components/vote-lock/migration/migration-modal.tsx:196
 msgid "Step {0} of {1}"
 msgstr "Paso {0} de {1}"
 
@@ -9651,7 +9685,7 @@ msgid "Step 2. {buttonLabel}"
 msgstr "Paso 2. {buttonLabel}"
 
 #. placeholder {0}: pending.map(({ symbol }) => symbol).join(', ')
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-retire-vote-lock.tsx:191
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-retire-vote-lock.tsx:122
 msgid "Still governed by this vault: {0}. Each must pass its governance upgrade before the vault can be retired."
 msgstr "Aún gobernados por este vault: {0}. Cada uno debe aprobar su actualización de gobernanza antes de retirar el vault."
 
@@ -10786,7 +10820,7 @@ msgstr "Transacción fallida"
 msgid "Transaction Failed"
 msgstr "Transacción fallida"
 
-#: src/components/vote-lock/migration/migration-modal.tsx:109
+#: src/components/vote-lock/migration/migration-modal.tsx:111
 msgid "Transaction failed · Retry"
 msgstr "Transacción fallida · Reintentar"
 
@@ -10986,7 +11020,7 @@ msgid "Unavailable"
 msgstr "No disponible"
 
 #: src/views/explorer/components/collaterals/index.tsx:100
-#: src/views/portfolio-page/components/vote-locked-positions.tsx:176
+#: src/views/portfolio-page/components/vote-locked-positions.tsx:177
 msgid "Underlying"
 msgstr "Subyacente"
 
@@ -10998,7 +11032,7 @@ msgstr "Exposición a plataformas subyacentes"
 msgid "Underlying protocol fees"
 msgstr ""
 
-#: src/views/index-dtf/settings/components/index-settings-governance-token.tsx:32
+#: src/views/index-dtf/settings/components/index-settings-governance-token.tsx:33
 msgid "Underlying Token"
 msgstr "Token subyacente"
 
@@ -11287,11 +11321,11 @@ msgstr "Actualizar Folio Governance (1/2):"
 msgid "Upgrade to"
 msgstr "Actualizar a"
 
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-folio-governance-upgrade.tsx:126
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-folio-governance-upgrade.tsx:128
 msgid "Upgrades the {symbol} governor and timelock to release 1.1.0, which adds a proposal throttle and a time-weighted vote check against proposal spam. See the <0>changelog</0> for details."
 msgstr "Actualiza el governor y el timelock de {symbol} a la versión 1.1.0, que agrega un límite de propuestas y una verificación de votos ponderada por tiempo contra el spam de propuestas. Consulta el <0>changelog</0> para más detalles."
 
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-vote-lock-upgrade.tsx:188
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-vote-lock-upgrade.tsx:190
 msgid "Upgrades the {symbol} vault, its governor and timelock to release 1.1.0. The proposal goes to the {symbol} DAO. See the <0>changelog</0> for details."
 msgstr "Actualiza el vault de {symbol}, su governor y su timelock a la versión 1.1.0. La propuesta va al DAO de {symbol}. Consulta el <0>changelog</0> para más detalles."
 
@@ -11381,7 +11415,7 @@ msgstr "Riesgo de valoración y cálculo del NAV: el NAV del DTF depende de valo
 #: src/views/portfolio-page/components/pending-withdrawals.tsx:351
 #: src/views/portfolio-page/components/rsr-section.tsx:60
 #: src/views/portfolio-page/components/staked-positions.tsx:102
-#: src/views/portfolio-page/components/vote-locked-positions.tsx:249
+#: src/views/portfolio-page/components/vote-locked-positions.tsx:250
 #: src/views/yield-dtf/overview/components/backing/collateral-exposure.tsx:251
 msgid "Value"
 msgstr "Valor"
@@ -11506,7 +11540,7 @@ msgid "View {0} on block explorer"
 msgstr "Ver {0} en el explorador de bloques"
 
 #. placeholder {0}: titles[stage]
-#: src/components/vote-lock/migration/migration-modal.tsx:202
+#: src/components/vote-lock/migration/migration-modal.tsx:204
 msgid "View {0} transaction on explorer"
 msgstr "Ver la transacción de {0} en el explorador"
 
@@ -11746,7 +11780,7 @@ msgstr "Haz Vote-lock de {underlyingSymbol} en {voteLockSymbol} para gobernar y 
 msgid "Vote-lock ${0}"
 msgstr "Bloquear votos de ${0}"
 
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-vote-lock-upgrade.tsx:125
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-vote-lock-upgrade.tsx:126
 msgid "Vote-lock 1.1.0 upgrade proposal created"
 msgstr "Propuesta de actualización de vote-lock 1.1.0 creada"
 
@@ -11779,7 +11813,7 @@ msgstr ""
 msgid "Vote-locked"
 msgstr "Con bloqueo de votos"
 
-#: src/views/portfolio-page/components/vote-locked-positions.tsx:303
+#: src/views/portfolio-page/components/vote-locked-positions.tsx:311
 msgid "Vote-locked positions"
 msgstr "Posiciones con bloqueo de votos"
 
@@ -11987,14 +12021,14 @@ msgstr "Esperando el colateral"
 
 #: src/views/index-dtf/governance/views/propose/basket/components/submit-proposal-button.tsx:196
 #: src/views/index-dtf/governance/views/propose/components/propose-index-upgrade.tsx:118
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-folio-governance-upgrade.tsx:153
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-folio-governance-upgrade.tsx:155
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-governance-spell-31-03-2025.tsx:305
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-governance-spell-31-03-2025.tsx:431
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:363
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-retire-vote-lock.tsx:209
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:448
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-retire-vote-lock.tsx:140
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v4-upgrade.tsx:189
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v5-upgrade.tsx:218
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-vote-lock-upgrade.tsx:214
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-vote-lock-upgrade.tsx:216
 #: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/components/submit-proposal-button.tsx:188
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/submit-proposal-button.tsx:186
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/submit-proposal-button.tsx:182
@@ -12004,6 +12038,10 @@ msgstr "Esperando confirmación..."
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:524
 msgid "Waiting for orders"
 msgstr "Esperando las órdenes"
+
+#: src/components/vote-lock/migration/migration-modal.tsx:105
+msgid "Waiting for your Safe to execute..."
+msgstr "Esperando que tu Safe ejecute..."
 
 #: src/views/explorer/components/transactions/Filters.tsx:17
 msgid "Wallet"
@@ -12537,7 +12575,7 @@ msgstr "Se ha hecho Redeem de tu {0}."
 msgid "Your {symbol} is locked in {vault}"
 msgstr "Tu {symbol} está bloqueado en {vault}"
 
-#: src/components/vote-lock/migration/migration-modal.tsx:140
+#: src/components/vote-lock/migration/migration-modal.tsx:142
 msgid "Your {symbol} is locked in the {vault} vault."
 msgstr "Tu {symbol} está bloqueado en el vault {vault}."
 
@@ -12562,12 +12600,12 @@ msgstr "Tus inversiones en Decentralized Token Fund."
 msgid "Your DTF has been minted."
 msgstr "Se ha hecho Mint de tu DTF."
 
-#: src/components/vote-lock/migration/migration-modal.tsx:269
+#: src/components/vote-lock/migration/migration-modal.tsx:271
 msgid "Your full old-vault position"
 msgstr "Toda tu posición en el vault anterior"
 
 #. placeholder {0}: formatAmount(flow.estimate)
-#: src/components/vote-lock/migration/migration-modal.tsx:268
+#: src/components/vote-lock/migration/migration-modal.tsx:270
 msgid "Your full old-vault position · about {0} RSR"
 msgstr "Toda tu posición en el vault anterior · unos {0} RSR"
 
@@ -12607,15 +12645,15 @@ msgstr "Tu actividad on-chain reciente."
 msgid "Your redeemable"
 msgstr "Tu monto canjeable"
 
-#: src/components/vote-lock/migration/migration-modal.tsx:142
+#: src/components/vote-lock/migration/migration-modal.tsx:144
 msgid "Your redeemed {symbol} is in your wallet."
 msgstr "Tu {symbol} con redeem está en tu wallet."
 
-#: src/components/vote-lock/migration/migration-modal.tsx:135
+#: src/components/vote-lock/migration/migration-modal.tsx:137
 msgid "Your redeemed RSR is in your wallet."
 msgstr "Tu RSR con redeem está en tu wallet."
 
-#: src/components/vote-lock/migration/migration-modal.tsx:133
+#: src/components/vote-lock/migration/migration-modal.tsx:135
 msgid "Your RSR is locked in the shared vlRSR vault."
 msgstr "Tu RSR está bloqueado en el vault compartido vlRSR."
 
