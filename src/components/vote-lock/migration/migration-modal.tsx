@@ -267,7 +267,7 @@ export const MigrationModal = ({ migration, flow, open, onOpenChange, onTrack }:
                         <p className="mt-1 text-sm leading-relaxed text-legend">
                           {stage === 'redeem'
                             ? flow.estimate !== undefined
-                              ? t`Your full old-vault position · about ${formatAmount(flow.estimate)} RSR`
+                              ? t`Your full old-vault position · about ${formatAmount(flow.estimate)} ${symbol}`
                               : t`Your full old-vault position`
                             : flow.nothingToLock
                               ? t`No ${symbol} left in your wallet to lock.`

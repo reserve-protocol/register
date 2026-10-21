@@ -12606,8 +12606,8 @@ msgstr "你在旧金库中的全部仓位"
 
 #. placeholder {0}: formatAmount(flow.estimate)
 #: src/components/vote-lock/migration/migration-modal.tsx:270
-msgid "Your full old-vault position · about {0} RSR"
-msgstr "你在旧金库中的全部仓位 · 约 {0} RSR"
+msgid "Your full old-vault position · about {0} {symbol}"
+msgstr "你在旧金库中的全部仓位 · 约 {0} {symbol}"
 
 #: src/views/earn/views/index-dtf/components/vote-lock-positions.tsx:272
 msgid "Your lock"
