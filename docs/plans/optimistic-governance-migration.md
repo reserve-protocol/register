@@ -13,10 +13,12 @@ move their stake in one guided flow:
    the DTF's governor `upgradeToAndCall` of that governor and its timelock, with `initializeVersionRegistry`.
 4. **Vault retirement**: `transferOwnership(spell)` + `retireOldStakingVault(oldVault)` on the old vault's
    DAO governor. It is a separate proposal because the vault's own timelock owns the vault, but the Folio
-   upgrade CTA proposes both when no other DTF votes with that vault: two signatures from a wallet, one
-   batch (`wallet_sendCalls`) from a Safe, so holders are never left between the two votes. The retire
-   banner alone shows while the DTF's upgrade is live (to finish a pair) or after it executed, and stays
-   disabled while any other DTF still votes with that vault.
+   upgrade CTA proposes both when no other DTF votes with that vault and the vault DAO cannot execute
+   first (voting delay + voting period + timelock delay, read on chain): two signatures from a wallet, one
+   batch (`wallet_sendCalls`) from a Safe, so holders are never left between the two votes. ABX's vault DAO
+   executes in 2 days against 7 for its Folio, so ABX stays sequential. The retire banner alone shows while
+   a paired upgrade is live (to finish the pair) or after the upgrade executed, and stays disabled while
+   any other DTF still votes with that vault.
 5. **Pre-upgrade lock**: a Governance card lets holders lock in the new vault before the upgrade executes.
 6. **Stake migration**: card + modal on Governance, Overview and Portfolio for holders of a retired vault:
    `redeem` (delay 0 → tokens arrive in the same tx) → `approve` when short → `deposit`/`depositAndDelegate`.
