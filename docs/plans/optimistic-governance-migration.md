@@ -7,7 +7,7 @@ move their stake in one guided flow:
 
 1. **Vote-lock upgrade**: banner proposes the vlRSR singleton's vault, governor and timelock upgrade to 1.1.0.
 2. **Folio upgrade**: banner proposes `upgradeFolio` on the Folio's owner governor once the target vault
-   runs 1.1.0. Shared vlRSR for most DTFs; OPEN moves into vlSQUILL through `GovernanceSpell_10_19_2026`
+   runs 1.1.0. Shared vlRSR for most DTFs; OPEN moves into vlSQUILL through `GovernanceSpell_10_21_2026`
    and ABX into vlALTT through the shared spell.
 3. **DTF governance upgrade** (AI DTFs, MAG7): after the vlRSR singleton runs 1.1.0, a banner proposes on
    the DTF's governor `upgradeToAndCall` of that governor and its timelock, with `initializeVersionRegistry`.

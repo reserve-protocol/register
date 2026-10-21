@@ -42,7 +42,7 @@ const SCENARIOS = {
     chainId: 1,
     symbol: 'OPEN',
     dtf: '0x323c03c48660fe31186fa82c289b0766d331ce21',
-    spell: '0x5CE95c60A1aaF3f500301735a92d608E1eE3515E',
+    spell: '0xaf029ad44Cc44fB2AefFF84029dd0c29D5Ea8D87',
     newVault: '0x60e71dd36Fa5Bf92bcd9320e85cF0040ffe437Bc',
     feeRecipient: zeroAddress,
     upgradesSharedVault: false,
