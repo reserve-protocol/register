@@ -153,6 +153,8 @@ truncated at the fork block, so indexed history matches the fork state.
   pre-upgrade card, proposes and executes `upgradeFolio`, retires the old vault and
   migrates a holder. Run it with `FORK_CHAIN_ID`, `FORK_RPC_URL_<chainId>` and
   `FORK_SUBGRAPH_URL_<chainId>` pointing at the fork and its subgraph proxy.
+  `FORK_SAFE=1` gives the holder contract code and puts the fork wallet in Safe mode
+  (sends return a hash that is never mined; `wallet_sendCalls` runs the batch).
 - DTF governance 1.1.0 upgrade (AI DTFs, MAG7): `prepare-folio-governance-upgrade.mjs`
   upgrades the chain's vlRSR singleton to 1.1.0 and writes
   `.state/<chainId>/folio-governance-upgrade-<scenario>.json`;

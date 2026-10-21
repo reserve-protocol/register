@@ -11,9 +11,12 @@ move their stake in one guided flow:
    and ABX into vlALTT through the shared spell.
 3. **DTF governance upgrade** (AI DTFs, MAG7): after the vlRSR singleton runs 1.1.0, a banner proposes on
    the DTF's governor `upgradeToAndCall` of that governor and its timelock, with `initializeVersionRegistry`.
-4. **Vault retirement**: banner proposes `transferOwnership(spell)` + `retireOldStakingVault(oldVault)` on
-   the old vault's DAO governor. It is a separate proposal because the vault's own timelock owns it. It
-   shows after the page's DTF has upgraded, and stays disabled while any other DTF still votes with that vault.
+4. **Vault retirement**: `transferOwnership(spell)` + `retireOldStakingVault(oldVault)` on the old vault's
+   DAO governor. It is a separate proposal because the vault's own timelock owns the vault, but the Folio
+   upgrade CTA proposes both when no other DTF votes with that vault: two signatures from a wallet, one
+   batch (`wallet_sendCalls`) from a Safe, so holders are never left between the two votes. The retire
+   banner alone shows while the DTF's upgrade is live (to finish a pair) or after it executed, and stays
+   disabled while any other DTF still votes with that vault.
 5. **Pre-upgrade lock**: a Governance card lets holders lock in the new vault before the upgrade executes.
 6. **Stake migration**: card + modal on Governance, Overview and Portfolio for holders of a retired vault:
    `redeem` (delay 0 → tokens arrive in the same tx) → `approve` when short → `deposit`/`depositAndDelegate`.
@@ -38,6 +41,9 @@ move their stake in one guided flow:
   received amount, the delegate captured before redeeming and the pending hash. The redeem receipt is
   re-read on load; storage alone never advances a step. A failed receipt wait or a redeem without a
   `Withdraw` log from the old vault frees the step for a retry.
+- Safe accounts (contract code, not an EIP-7702 delegation) confirm each step from on-chain effects: old
+  shares gone (payout = wallet balance minus the pre-send baseline), allowance covering the lock, new
+  shares above the pre-send baseline. The holder can drop a step the Safe rejected and sign again.
 - Amount locked = min(received, wallet balance). Approval is exact and only when allowance is short. With
   nothing left to lock, the modal offers Close and acknowledges the migration.
 - DTFs whose vault is neither RSR-backed nor OPEN/ABX do not migrate.
