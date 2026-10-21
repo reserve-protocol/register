@@ -346,35 +346,15 @@ test(`${scenario.toUpperCase()}${safeMode ? ' (Safe)' : ''} migrates governance,
   })
   await expect(page.getByTestId('governance-retire-vote-lock-btn')).toHaveCount(0)
 
-  // One CTA proposes upgradeFolio and the retirement together unless the vault DAO would execute first.
-  const timeToExecute = async (governor: Address) =>
-    (await read<bigint>(governor, 'votingDelay')) +
-    (await read<bigint>(governor, 'votingPeriod')) +
-    (await read<bigint>(await read<Address>(governor, 'timelock'), 'getMinDelay'))
-  const paired =
-    (await timeToExecute(manifest.oldVaultGovernor)) >=
-    (await timeToExecute(manifest.ownerGovernor))
-  await expect(page.getByTestId('governance-optimistic-upgrade-pair')).toHaveCount(paired ? 1 : 0)
-  const pairFrom = await client.getBlockNumber()
   const upgrade = await proposeFromBanner(
     manifest.ownerGovernor,
     'governance-optimistic-upgrade-btn',
     '01-upgrade-banner.png'
   )
-  const retireCreated = () =>
-    client.getContractEvents({
-      address: manifest.oldVaultGovernor,
-      abi: governorAbi,
-      eventName: 'ProposalCreated',
-      fromBlock: pairFrom + 1n,
-    })
-  let retire: (Proposal & { transactionHash: Hex }) | undefined
-  if (paired) {
-    await expect.poll(async () => (await retireCreated()).length, { timeout: 120_000 }).toBe(1)
-    const [retireLog] = await retireCreated()
-    retire = { ...(retireLog.args as Proposal), transactionHash: retireLog.transactionHash }
-    await page.screenshot({ path: `${evidenceDir}/02-pair-proposed.png`, fullPage: true })
-  }
+  // A live upgrade does not unlock the retirement: it waits until the upgrade executes.
+  await page.reload()
+  await expect(wallet).toBeVisible({ timeout: 60_000 })
+  await expect(page.getByTestId('governance-retire-vote-lock-btn')).toHaveCount(0)
   expect(upgrade.targets[0].toLowerCase()).toBe(manifest.dtf.toLowerCase())
   expect(upgrade.targets[2].toLowerCase()).toBe(manifest.spell.toLowerCase())
   const actions = upgrade.calldatas.map((data) =>
@@ -402,7 +382,6 @@ test(`${scenario.toUpperCase()}${safeMode ? ' (Safe)' : ''} migrates governance,
 
   const [executed] = await passProposals([
     { governor: manifest.ownerGovernor, proposal: upgrade },
-    ...(retire ? [{ governor: manifest.oldVaultGovernor, proposal: retire }] : []),
   ])
   const deploymentLog = executed.logs
     .filter((log) => log.address.toLowerCase() === manifest.spell.toLowerCase())
@@ -463,18 +442,15 @@ test(`${scenario.toUpperCase()}${safeMode ? ' (Safe)' : ''} migrates governance,
   expect(recipients).not.toContain(manifest.oldVault.toLowerCase())
 
   await syncBrowserClock(page)
-  if (!retire) {
-    // Unpaired: the retire banner proposes once the upgrade executed.
-    await page.goto(`${dtfRoute}/governance/propose`)
-    await expect(wallet).toBeVisible({ timeout: 60_000 })
-    retire = await proposeFromBanner(
-      manifest.oldVaultGovernor,
-      'governance-retire-vote-lock-btn',
-      '02-retire-banner.png'
-    )
-    await passProposals([{ governor: manifest.oldVaultGovernor, proposal: retire }])
-    await syncBrowserClock(page)
-  }
+  await page.goto(`${dtfRoute}/governance/propose`)
+  await expect(wallet).toBeVisible({ timeout: 60_000 })
+  const retire = await proposeFromBanner(
+    manifest.oldVaultGovernor,
+    'governance-retire-vote-lock-btn',
+    '02-retire-banner.png'
+  )
+  await passProposals([{ governor: manifest.oldVaultGovernor, proposal: retire }])
+  await syncBrowserClock(page)
   expect(retire.targets.map((t) => t.toLowerCase())).toEqual([
     manifest.oldVault.toLowerCase(),
     manifest.spell.toLowerCase(),

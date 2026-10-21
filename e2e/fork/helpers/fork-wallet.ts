@@ -4,7 +4,7 @@ export interface ForkWalletConfig {
   address: string
   chainId: number
   rpcUrl: string
-  // Acts like a Safe: sends execute but return a hash that is never mined, and batches run through wallet_sendCalls.
+  // Acts like a Safe: sends execute but return a hash that is never mined.
   safe?: boolean
 }
 
@@ -58,12 +58,6 @@ export async function installForkWallet(page: Page, config: ForkWalletConfig) {
               const [tx] = (params ?? []) as [Record<string, unknown>]
               const sent = await send(tx)
               return safe ? randomHash() : sent
-            }
-            case 'wallet_sendCalls': {
-              if (!safe) throw new Error('wallet_sendCalls is only available in Safe mode')
-              const [batch] = (params ?? []) as [{ calls: Record<string, unknown>[] }]
-              for (const call of batch.calls) await send(call)
-              return { id: randomHash() }
             }
             default:
               return forward(method, params)
