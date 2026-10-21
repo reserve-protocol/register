@@ -622,11 +622,11 @@ msgstr "<0>5.0.0 版本</0>引入了改进的再平衡功能，支持单代币�
 #~ msgid "<0>Reserve Optimistic Governor upgrade</0> introduces a new governor system TBD COPY HERE!. <1/>See the <2>changelog</2> for more details."
 #~ msgstr "<0>Reserve Optimistic Governor 升级</0>引入了全新的治理者系统 TBD COPY HERE!。<1/>详情请参阅<2>更新日志</2>。"
 
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:473
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:325
 msgid "<0>Reserve Optimistic Governor upgrade</0> moves this DTF to optimistic governance, voted with a new vote-lock vault. After it executes, voters lock their tokens in the new vault to keep governing this DTF."
 msgstr "<0>Reserve Optimistic Governor 升级</0>将此 DTF 转为乐观治理，由新的 vote-lock 金库投票。执行后，投票者需将代币锁定在新金库中，才能继续治理此 DTF。"
 
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:466
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:318
 msgid "<0>Reserve Optimistic Governor upgrade</0> moves this DTF to optimistic governance, voted with the shared vlRSR vote-lock vault. After it executes, voters lock RSR in the new vault to keep governing this DTF."
 msgstr "<0>Reserve Optimistic Governor 升级</0>将此 DTF 转为乐观治理，由共享的 vlRSR vote-lock 金库投票。执行后，投票者需将 RSR 锁定在新金库中，才能继续治理此 DTF。"
 
@@ -2010,10 +2010,6 @@ msgstr "博客"
 #: src/views/index-dtf/governance/views/propose/basket/components/proposal-rebalance-launch-settings.tsx:275
 msgid "Both Auction Launchers AND community members can start auctions. Auction Launchers will still have an Exclusive Launch Window, but afterward anyone in the community can start an auction. Please specify how long community members should be allow to start auctions after the Exclusive Launch Window."
 msgstr "拍卖发起者和社区成员均可启动拍卖。拍卖发起者仍将拥有专属启动窗口，但在此之后，社区中的任何人都可以启动拍卖。请指定在专属启动窗口结束后，社区成员可以启动拍卖的时长。"
-
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:332
-msgid "Both proposals are created once the Safe transaction executes."
-msgstr "Safe 交易执行后，两个提案都会创建。"
 
 #: src/views/index-dtf/auctions/legacy/components/auction-item.tsx:132
 #: src/views/yield-dtf/auctions/components/useColumns.tsx:36
@@ -5482,14 +5478,6 @@ msgstr "发行限流速率（%）"
 msgid "Issue"
 msgstr "发行"
 
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:490
-msgid "It also proposes the old vault's retirement to its DAO, so both votes run at the same time. You sign two proposals."
-msgstr "它还会向旧金库的 DAO 提议停用该金库，两个投票同时进行。你需要签署两个提案。"
-
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:484
-msgid "It also proposes the old vault's retirement to its DAO, so both votes run at the same time. Your Safe signs both in one transaction."
-msgstr "它还会向旧金库的 DAO 提议停用该金库，两个投票同时进行。你的 Safe 在一笔交易中签署两个提案。"
-
 #: src/views/internal/dtf-list/components/dtf-pagination.tsx:67
 msgid "Items per page:"
 msgstr "每页条数:"
@@ -5594,7 +5582,6 @@ msgstr "剩余抵押品不计入 DTF 产出价值。由于 Mint 使用固定的�
 msgid "Leftover dust"
 msgstr "剩余零头"
 
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:414
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-retire-vote-lock.tsx:70
 msgid "Legacy vote-lock vault retirement proposal created"
 msgstr "旧版 vote-lock 金库停用提案已创建"
@@ -6466,7 +6453,7 @@ msgstr "新 TVL 费用："
 msgid "New units"
 msgstr "新单位"
 
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:462
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:314
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v4-upgrade.tsx:167
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v5-upgrade.tsx:189
 msgid "New version available"
@@ -7203,7 +7190,7 @@ msgstr "待处理，请在 Wallet 中签名"
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-folio-governance-upgrade.tsx:154
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-governance-spell-31-03-2025.tsx:304
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-governance-spell-31-03-2025.tsx:430
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:446
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:344
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-retire-vote-lock.tsx:139
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v4-upgrade.tsx:188
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v5-upgrade.tsx:217
@@ -7660,9 +7647,8 @@ msgid "Proposal created"
 msgstr "提案已创建"
 
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-folio-governance-upgrade.tsx:58
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:372
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:380
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:413
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:276
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:284
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-retire-vote-lock.tsx:69
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v4-upgrade.tsx:132
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v4-upgrade.tsx:140
@@ -7748,10 +7734,6 @@ msgstr "提案未通过"
 msgid "Proposals"
 msgstr "提案"
 
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:331
-msgid "Proposals sent to your Safe"
-msgstr "提案已发送到你的 Safe"
-
 #: src/views/yield-dtf/governance/components/TopVoters.tsx:131
 msgid "Proposals voted"
 msgstr "已投票提案"
@@ -7782,15 +7764,11 @@ msgstr "提议新的备用配置"
 msgid "Propose new basket"
 msgstr "提议新的篮子"
 
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:451
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:346
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v4-upgrade.tsx:190
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v5-upgrade.tsx:219
 msgid "Propose upgrade"
 msgstr "发起升级提案"
-
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:450
-msgid "Propose upgrade and vault retirement"
-msgstr "提议升级并停用金库"
 
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-retire-vote-lock.tsx:141
 msgid "Propose vault retirement"
@@ -8459,8 +8437,8 @@ msgstr "Reserve 让你以单一 token 买入整个投资组合"
 msgid "Reserve logo"
 msgstr ""
 
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:373
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:381
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:277
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:285
 msgid "Reserve Optimistic Governor Upgrade proposal created"
 msgstr "Reserve Optimistic Governor 升级提案已创建"
 
@@ -9266,14 +9244,6 @@ msgstr "在你的 Wallet 中签名…"
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:100
 msgid "Sign mint…"
 msgstr "签名 Mint…"
-
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:442
-msgid "Sign the retirement proposal in wallet..."
-msgstr "请在 Wallet 中签署停用提案..."
-
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:445
-msgid "Sign the upgrade proposal in wallet..."
-msgstr "请在 Wallet 中签署升级提案..."
 
 #: src/views/index-dtf/deploy/components/right-panel.tsx:51
 msgid "Sign tx to create governance DAO"
@@ -12024,7 +11994,7 @@ msgstr "等待抵押品"
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-folio-governance-upgrade.tsx:155
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-governance-spell-31-03-2025.tsx:305
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-governance-spell-31-03-2025.tsx:431
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:448
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:345
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-retire-vote-lock.tsx:140
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v4-upgrade.tsx:189
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v5-upgrade.tsx:218

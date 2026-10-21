@@ -622,11 +622,11 @@ msgstr "<0>릴리스 5.0.0</0>은 토큰별 경매 규모 제한과 개별 토�
 #~ msgid "<0>Reserve Optimistic Governor upgrade</0> introduces a new governor system TBD COPY HERE!. <1/>See the <2>changelog</2> for more details."
 #~ msgstr "<0>Reserve Optimistic Governor 업그레이드</0>는 새로운 거버너 시스템을 도입합니다 TBD COPY HERE!. <1/>자세한 내용은 <2>변경 로그</2>를 참조하세요."
 
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:473
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:325
 msgid "<0>Reserve Optimistic Governor upgrade</0> moves this DTF to optimistic governance, voted with a new vote-lock vault. After it executes, voters lock their tokens in the new vault to keep governing this DTF."
 msgstr "<0>Reserve Optimistic Governor 업그레이드</0>는 이 DTF를 새로운 vote-lock 볼트로 투표하는 옵티미스틱 거버넌스로 전환합니다. 실행 후 투표자는 이 DTF의 거버넌스를 계속하려면 새 볼트에 토큰을 잠가야 합니다."
 
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:466
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:318
 msgid "<0>Reserve Optimistic Governor upgrade</0> moves this DTF to optimistic governance, voted with the shared vlRSR vote-lock vault. After it executes, voters lock RSR in the new vault to keep governing this DTF."
 msgstr "<0>Reserve Optimistic Governor 업그레이드</0>는 이 DTF를 공유 vlRSR vote-lock 볼트로 투표하는 옵티미스틱 거버넌스로 전환합니다. 실행 후 투표자는 이 DTF의 거버넌스를 계속하려면 새 볼트에 RSR을 잠가야 합니다."
 
@@ -2010,10 +2010,6 @@ msgstr "블로그"
 #: src/views/index-dtf/governance/views/propose/basket/components/proposal-rebalance-launch-settings.tsx:275
 msgid "Both Auction Launchers AND community members can start auctions. Auction Launchers will still have an Exclusive Launch Window, but afterward anyone in the community can start an auction. Please specify how long community members should be allow to start auctions after the Exclusive Launch Window."
 msgstr "경매 실행자와 커뮤니티 구성원 모두 경매를 시작할 수 있습니다. 경매 실행자는 여전히 독점 실행 윈도우를 가지지만, 그 이후에는 커뮤니티의 누구나 경매를 시작할 수 있습니다. 독점 실행 윈도우 이후 커뮤니티 구성원이 경매를 시작할 수 있는 기간을 지정해 주세요."
-
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:332
-msgid "Both proposals are created once the Safe transaction executes."
-msgstr "Safe 트랜잭션이 실행되면 두 제안이 모두 생성됩니다."
 
 #: src/views/index-dtf/auctions/legacy/components/auction-item.tsx:132
 #: src/views/yield-dtf/auctions/components/useColumns.tsx:36
@@ -5482,14 +5478,6 @@ msgstr "발행 스로틀 비율 (%)"
 msgid "Issue"
 msgstr "발행"
 
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:490
-msgid "It also proposes the old vault's retirement to its DAO, so both votes run at the same time. You sign two proposals."
-msgstr "기존 볼트의 DAO에 볼트 종료도 함께 제안하므로 두 투표가 동시에 진행됩니다. 두 개의 제안에 서명합니다."
-
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:484
-msgid "It also proposes the old vault's retirement to its DAO, so both votes run at the same time. Your Safe signs both in one transaction."
-msgstr "기존 볼트의 DAO에 볼트 종료도 함께 제안하므로 두 투표가 동시에 진행됩니다. Safe는 한 번의 트랜잭션으로 두 제안에 서명합니다."
-
 #: src/views/internal/dtf-list/components/dtf-pagination.tsx:67
 msgid "Items per page:"
 msgstr "페이지당 항목 수:"
@@ -5594,7 +5582,6 @@ msgstr "잔여 담보는 DTF 출력 가치에 포함되지 않습니다. Mint는
 msgid "Leftover dust"
 msgstr "잔여 더스트"
 
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:414
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-retire-vote-lock.tsx:70
 msgid "Legacy vote-lock vault retirement proposal created"
 msgstr "기존 vote-lock 볼트 종료 제안이 생성됨"
@@ -6466,7 +6453,7 @@ msgstr "새 TVL 수수료:"
 msgid "New units"
 msgstr "신규 단위"
 
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:462
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:314
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v4-upgrade.tsx:167
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v5-upgrade.tsx:189
 msgid "New version available"
@@ -7203,7 +7190,7 @@ msgstr "대기 중, Wallet에서 서명하세요"
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-folio-governance-upgrade.tsx:154
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-governance-spell-31-03-2025.tsx:304
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-governance-spell-31-03-2025.tsx:430
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:446
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:344
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-retire-vote-lock.tsx:139
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v4-upgrade.tsx:188
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v5-upgrade.tsx:217
@@ -7660,9 +7647,8 @@ msgid "Proposal created"
 msgstr "제안 생성됨"
 
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-folio-governance-upgrade.tsx:58
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:372
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:380
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:413
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:276
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:284
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-retire-vote-lock.tsx:69
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v4-upgrade.tsx:132
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v4-upgrade.tsx:140
@@ -7748,10 +7734,6 @@ msgstr "제안이 부결되었습니다"
 msgid "Proposals"
 msgstr "제안"
 
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:331
-msgid "Proposals sent to your Safe"
-msgstr "Safe로 제안을 보냈습니다"
-
 #: src/views/yield-dtf/governance/components/TopVoters.tsx:131
 msgid "Proposals voted"
 msgstr "투표한 제안"
@@ -7782,15 +7764,11 @@ msgstr "새 백업 구성 제안"
 msgid "Propose new basket"
 msgstr "새 바스켓 제안"
 
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:451
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:346
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v4-upgrade.tsx:190
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v5-upgrade.tsx:219
 msgid "Propose upgrade"
 msgstr "업그레이드 제안하기"
-
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:450
-msgid "Propose upgrade and vault retirement"
-msgstr "업그레이드 및 볼트 종료 제안"
 
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-retire-vote-lock.tsx:141
 msgid "Propose vault retirement"
@@ -8459,8 +8437,8 @@ msgstr "Reserve를 통해 전체 포트폴리오를 단일 토큰으로 구매�
 msgid "Reserve logo"
 msgstr ""
 
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:373
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:381
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:277
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:285
 msgid "Reserve Optimistic Governor Upgrade proposal created"
 msgstr "Reserve Optimistic Governor 업그레이드 제안이 생성됨"
 
@@ -9266,14 +9244,6 @@ msgstr "Wallet에서 서명하세요…"
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:100
 msgid "Sign mint…"
 msgstr "Mint 서명…"
-
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:442
-msgid "Sign the retirement proposal in wallet..."
-msgstr "Wallet에서 종료 제안에 서명하세요..."
-
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:445
-msgid "Sign the upgrade proposal in wallet..."
-msgstr "Wallet에서 업그레이드 제안에 서명하세요..."
 
 #: src/views/index-dtf/deploy/components/right-panel.tsx:51
 msgid "Sign tx to create governance DAO"
@@ -12024,7 +11994,7 @@ msgstr "담보 대기 중"
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-folio-governance-upgrade.tsx:155
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-governance-spell-31-03-2025.tsx:305
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-governance-spell-31-03-2025.tsx:431
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:448
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:345
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-retire-vote-lock.tsx:140
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v4-upgrade.tsx:189
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v5-upgrade.tsx:218
