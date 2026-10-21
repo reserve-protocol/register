@@ -182,7 +182,8 @@ test(`${scenario.toUpperCase()}${safeMode ? ' (Safe)' : ''} migrates governance,
     for (const key of Object.keys(touched ?? {}) as Hex[]) {
       const previous = (await rpc('eth_getStorageAt', [token, key, 'latest'])) as Hex
       await rpc('anvil_setStorageAt', [token, key, toHex(amount, { size: 32 })])
-      if ((await read<bigint>(token, 'balanceOf', [account])) === amount) return
+      const balance = await read<bigint>(token, 'balanceOf', [account]).catch(() => undefined)
+      if (balance === amount) return
       await rpc('anvil_setStorageAt', [token, key, previous])
     }
     throw new Error(`no balance slot found for ${token}`)

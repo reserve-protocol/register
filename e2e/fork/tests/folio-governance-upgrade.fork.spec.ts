@@ -97,8 +97,10 @@ test(`${scenario.toUpperCase()} upgrades its governor and timelock to 1.1.0 from
       args: args as never,
     }) as Promise<T>
   const send = async (data: Hex) => {
+    const tx = { from: manifest.proposer, to: manifest.governor, data }
+    const estimate = BigInt((await rpc('eth_estimateGas', [tx])) as Hex)
     const hash = (await rpc('eth_sendTransaction', [
-      { from: manifest.proposer, to: manifest.governor, data },
+      { ...tx, gas: toHex((estimate * 3n) / 2n) },
     ])) as Hex
     const receipt = await client.waitForTransactionReceipt({ hash })
     expect(receipt.status, data.slice(0, 10)).toBe('success')
