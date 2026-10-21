@@ -6,10 +6,8 @@ import {
 import { useAtomValue } from 'jotai'
 import { parseAbi } from 'viem'
 import { useReadContract } from 'wagmi'
-import {
-  getGovernanceUpgradeTarget,
-  isOptimisticGovernanceUpgradeEligible,
-} from './governance-migration'
+import { getGovernanceUpgradeTarget } from '@/components/vote-lock/migration/migration-targets'
+import { isOptimisticGovernanceUpgradeEligible } from './governance-migration'
 
 const versionAbi = parseAbi(['function version() view returns (string)'])
 

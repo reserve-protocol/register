@@ -57,8 +57,7 @@ export type DepositChoice =
 const isSet = (address: string | undefined): address is Address =>
   !!address && address.toLowerCase() !== zeroAddress
 
-// The holder keeps their delegate: an existing vlRSR delegation wins (it covers every vlRSR share they hold),
-// then the old vault's delegate, then the holder.
+// An existing new-vault delegation wins because it covers every share the holder already has there.
 export const chooseDeposit = ({
   account,
   oldDelegate,

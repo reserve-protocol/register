@@ -21,7 +21,7 @@ import { toast } from 'sonner'
 import {
   getGovernanceUpgradeTarget,
   optimisticStakingVaultAddress,
-} from '@/views/index-dtf/components/vote-lock-migration/governance-migration'
+} from '@/components/vote-lock/migration/migration-targets'
 import { useOptimisticUpgradeEligibility } from '@/views/index-dtf/components/vote-lock-migration/use-upgrade-eligibility'
 
 const spellAbi = [

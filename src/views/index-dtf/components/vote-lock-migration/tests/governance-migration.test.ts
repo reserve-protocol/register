@@ -5,6 +5,8 @@ import { getAddress, zeroAddress } from 'viem'
 import {
   getGovernanceUpgradeTarget,
   getMigrationVault,
+} from '@/components/vote-lock/migration/migration-targets'
+import {
   getOldVoteLocks,
   isOptimisticGovernanceUpgradeEligible,
 } from '../governance-migration'

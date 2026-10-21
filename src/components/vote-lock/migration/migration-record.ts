@@ -2,8 +2,7 @@ import { isAddress, isHex, type Address, type Hex } from 'viem'
 
 export type MigrationStepName = 'redeem' | 'approve' | 'deposit'
 
-// Per-viewer progress so a holder can resume after a reload. Hashes are re-read from chain before any step
-// advances; this never stands in for a receipt.
+// Per-viewer resume state; a step only advances on a receipt read from chain, never on this record alone.
 export type MigrationRecord = {
   redeem?: { hash: Hex; assets?: bigint }
   delegate?: Address

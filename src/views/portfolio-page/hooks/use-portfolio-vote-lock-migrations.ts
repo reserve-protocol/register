@@ -5,7 +5,7 @@ import {
   type VoteLockMigration,
 } from '@/components/vote-lock/migration/use-vote-lock-migrations'
 import { walletAtom } from '@/state/atoms'
-import { getMigrationVault } from '@/views/index-dtf/components/vote-lock-migration/governance-migration'
+import { getMigrationVault } from '@/components/vote-lock/migration/migration-targets'
 import { useAtomValue } from 'jotai'
 import { useMemo } from 'react'
 import { isAddressEqual, type Address } from 'viem'

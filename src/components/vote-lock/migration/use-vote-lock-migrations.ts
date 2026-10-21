@@ -36,7 +36,7 @@ export type VoteLockMigration = MigrationCandidate & {
 
 const OLD_READS = ['owner', 'unstakingDelay', 'asset', 'symbol'] as const
 
-// A retired old vault (renounced owner, zero delay) backed by the same asset as the chain's shared vault.
+// A retired old vault (renounced owner, zero delay) backed by the same asset as its new vault.
 export const useVoteLockMigrations = (
   candidates: MigrationCandidate[],
   account: Address | undefined | null
