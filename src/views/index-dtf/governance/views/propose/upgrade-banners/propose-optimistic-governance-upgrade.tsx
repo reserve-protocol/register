@@ -2,7 +2,8 @@ import dtfAdminAbi from '@/abis/dtf-admin-abi'
 import dtfIndexAbi from '@/abis/dtf-index-abi-v1'
 import DTFIndexGovernance from '@/abis/dtf-index-governance'
 import { Button } from '@/components/ui/button'
-import { chainIdAtom, isSafeMultisigAtom } from '@/state/atoms'
+import { useIsSafeAccount } from '@/hooks/use-is-safe-account'
+import { chainIdAtom } from '@/state/atoms'
 import { indexDTFAtom } from '@/state/dtf/atoms'
 import { trackClick } from '@/hooks/useTrackPage'
 import { getCurrentTime } from '@/utils'
@@ -169,7 +170,7 @@ const ProposeBanner = ({ refetch, description, retire, onPairChange }: SpellUpgr
   const { t } = useLingui()
   const dtf = useAtomValue(indexDTFAtom)
   const chainId = useAtomValue(chainIdAtom)
-  const isSafe = useAtomValue(isSafeMultisigAtom)
+  const isSafe = useIsSafeAccount(chainId)
   const target = dtf ? getGovernanceUpgradeTarget(chainId, dtf.id) : undefined
   const spell = target?.spell
   const isSharedVault =
