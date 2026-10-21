@@ -9,8 +9,6 @@ The offline suite in `e2e/` intercepts every boundary; it proves rendering, not 
 case needs a real receipt (rebalance, upgrade, deploy), it runs against this stack instead. One
 Compose project per chain, all ports on loopback, state under `e2e/fork/.state/<chainId>/` (ignored).
 
-Plan that owns the first consumer: `docs/plans/index-dtf-v6-handoff.md` (S0.8, S1.8, §4.1).
-
 ## Quick start
 
 ```bash
@@ -60,7 +58,7 @@ Ports and resource limits are all env-overridable (`chains/<chainId>.env`, `ANVI
 - **Subgraph** (`index-subgraph`): its fork scripts read `FORK_GRAPH_NODE_ADMIN_URL` and
   `FORK_IPFS_URL`; set them to the admin/IPFS ports above and run `prepare:fork` → `parse:fork` →
   `codegen:fork` → `build:fork` → `create-local:fork` → `deploy-local:fork`. Its generated manifest
-  currently assumes chain 1; multichain profiles are S1.1/S1.2 in the handoff.
+  currently assumes chain 1.
 - **SDK** fork smoke: `INDEX_DTF_FORK_RPC_URL=http://127.0.0.1:<anvil port>` plus a manifest.
 - **Register**: `VITE_RPC_URL_<chainId>` and `VITE_INDEX_SUBGRAPH_URL_<chainId>` point any chain
   at a fork; on chain 1 `VITE_MAINNET_URL` still wins. `playwright.fork.config.ts` sets both from
@@ -135,7 +133,7 @@ Foundry `anvil`; an older one earlier on `PATH` rejects current `cast`/viem tran
 3. Fund actors from real token transfers where possible; label impersonation explicitly.
 4. Write assertions against independent expected values (hand-calculated or contract-derived), not
    the production math you are testing.
-5. Add the suite's commands to its plan/handoff and a row to `e2e/TEST_MAP.md`.
+5. Add the suite's commands to its plan and a row to `e2e/TEST_MAP.md`.
 
 ## When something is off
 

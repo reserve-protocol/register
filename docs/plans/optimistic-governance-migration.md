@@ -1,81 +1,75 @@
-# Optimistic governance migration (legacy DTFs → governance 1.1.0)
+# Optimistic governance migration (Index DTFs → governance 1.1.0)
 
 ## Goal
 
-Register lets anyone with voting power drive the whole legacy-DTF migration from the UI, and lets
-holders move their stake in one guided flow:
+Register lets anyone with voting power drive the governance 1.1.0 rollout from the UI, and lets holders
+move their stake in one guided flow:
 
-1. **Folio upgrade** (done): banner proposes `GovernanceSpell_09_18_2026.upgradeFolio` on the Folio's
-   owner governor once the vlRSR singleton runs 1.1.0.
-2. **Vault retirement**: banner proposes `transferOwnership(spell)` + `retireOldStakingVault(oldVault)`
-   on the old vault's DAO governor, with a warning listing DTFs still governed by that vault
-   (button disabled until none remain).
-3. **Stake migration**: CTA on overview + governance for holders of a retired old vault; modal stepper
-   `redeem` (delay 0 → RSR arrives directly) → `approve(singleton)` → `depositAndDelegate`.
-4. **DTF governance upgrade** (AI DTFs, MAG7): after the vlRSR singleton runs 1.1.0, a banner proposes on
+1. **Vote-lock upgrade**: banner proposes the vlRSR singleton's vault, governor and timelock upgrade to 1.1.0.
+2. **Folio upgrade**: banner proposes `upgradeFolio` on the Folio's owner governor once the target vault
+   runs 1.1.0. Shared vlRSR for most DTFs; OPEN moves into vlSQUILL through `GovernanceSpell_10_19_2026`
+   and ABX into vlALTT through the shared spell.
+3. **DTF governance upgrade** (AI DTFs, MAG7): after the vlRSR singleton runs 1.1.0, a banner proposes on
    the DTF's governor `upgradeToAndCall` of that governor and its timelock, with `initializeVersionRegistry`.
+4. **Vault retirement**: banner proposes `transferOwnership(spell)` + `retireOldStakingVault(oldVault)` on
+   the old vault's DAO governor. It is a separate proposal because the vault's own timelock owns it. It
+   shows after the page's DTF has upgraded, and stays disabled while any other DTF still votes with that vault.
+5. **Pre-upgrade lock**: a Governance card lets holders lock in the new vault before the upgrade executes.
+6. **Stake migration**: card + modal on Governance, Overview and Portfolio for holders of a retired vault:
+   `redeem` (delay 0 → tokens arrive in the same tx) → `approve` when short → `deposit`/`depositAndDelegate`.
 
 ## Current state
 
-- Order: VersionRegistry `registerVersion(1.1.0)` by the RoleRegistry owner → singleton vault/governor upgrades →
-  `upgradeFolio` per DTF (OPEN through `GovernanceSpell_10_19_2026` into vlSQUILL, ABX into vlALTT; the other
-  non-RSR-vault DTFs do not migrate) →
-  `retireOldStakingVault` per old vault → 6.0.0 upgrade.
-- Subgraph: after `upgradeFolio`, `dtf.stToken` moves to the singleton; the old owner governor lands in
+- Order: VersionRegistry `registerVersion(1.1.0)` → singleton vault upgrades → `upgradeFolio` per legacy DTF
+  and the DTF governance upgrade per AI DTF → `retireOldStakingVault` per old vault.
+- Subgraph: after `upgradeFolio`, `dtf.stToken` moves to the new vault; the old owner governor lands in
   `dtf.legacyAdminGovernances` (`Governance.token` = old vault). `StakingToken.dtfs` only lists DTFs still
   pointing at a vault.
 - SDK 0.7.0: `getLegacyVoteLocks` also reads the old admin governors' vaults, and proposal governance ids
   include legacy admin governors and old-vault DAOs, so post-migration history and the retire proposal show.
-- Verified on a Base fork: old Ownable vault `redeem` with delay 0 transfers RSR in the same tx; the 1.1.0
-  vault exposes `depositAndDelegate(uint256)`.
+- All banners and cards show only for active DTFs (catalog status).
+
+## Decisions
+
+- Delegation is preserved: standard = existing new-vault delegate, else the old vault's `delegates(account)`,
+  else self; optimistic = existing optimistic delegate, else the standard one. When the account already
+  delegates both on the new vault, it deposits plainly so its delegation is untouched.
+- Recovery: a per-viewer `localStorage` record (chain, old vault, account) holds the redeem hash, the
+  received amount, the delegate captured before redeeming and the pending hash. The redeem receipt is
+  re-read on load; storage alone never advances a step. A failed receipt wait or a redeem without a
+  `Withdraw` log from the old vault frees the step for a retry.
+- Amount locked = min(received, wallet balance). Approval is exact and only when allowance is short. With
+  nothing left to lock, the modal offers Close and acknowledges the migration.
+- DTFs whose vault is neither RSR-backed nor OPEN/ABX do not migrate.
 
 ## Non-goals
 
-- Exiting without re-depositing (the stepper always ends in the singleton).
-- Claiming pre-existing unstake locks (portfolio "pending withdrawals" already covers it).
+- Exiting without re-depositing.
+- Claiming pre-existing unstake locks (Portfolio "pending withdrawals" covers it).
+- Migrating positions of other accounts (Portfolio impersonation shows no action).
 - 6.0.0 upgrade gating.
 
 ## Acceptance evidence
 
-- Base fork e2e (no mocks): banner 1 → execute → banner 2 from the UI → execute (old vault retired, delay 0)
-  → migration modal from the UI with a real holder → old shares 0, singleton shares and self-delegated
-  votes up by the redeemed RSR.
-- SDK unit tests for the new mapping/reads; Register unit tests for every eligibility rule.
-- Offline smoke + governance flows stay green.
-
-## Test seams
-
-- SDK: subgraph/RPC client mocks in the existing `legacy-vote-lock.test.ts` style.
-- Register: pure eligibility helpers (vitest); UI + writes through the Base fork lane.
-
-## Slices
-
-Status 2026-10-05: all three slices built; Base fork e2e green end to end (uncommitted, engineer review required).
-
-- SDK legacy vote-lock data: `legacyAdminGovernances` in the DTF + proposal-governance queries,
-  `getLegacyVoteLocks` includes old admin governors' vaults, proposal ids include legacy admin governors
-  and their vault DAOs, new `getVoteLockDependents(vault)` (subgraph `StakingToken.dtfs` + on-chain
-  `hasRole(DEFAULT_ADMIN_ROLE, ownerTimelock)`), react hooks; blocked by: none.
-- Register retire banner (banner 2) + fork e2e extension; blocked by: SDK slice.
-- Register stake-migration CTA + modal stepper + Mixpanel events + fork e2e extension; blocked by: SDK slice.
+- Unit: eligibility for every banner, proposal encoding, record parsing, step derivation, delegate choice.
+- Fork lanes (no mocks): LCAP, ABX (Base) and OPEN (Ethereum) lock from the pre-upgrade card, execute
+  `upgradeFolio`, retire the old vault and migrate a holder; POWER (BSC) executes the DTF governance
+  upgrade and the 1.1.0 governor accepts a new proposal.
+- Offline smoke and the proposal-detail e2e for the upgrade calls stay green.
 
 ## Findings
 
-- Independent review (2026-10-05) fixed: retire proposals carry a `#n` nonce (a defeated attempt left the same
-  proposal id); dependents also count trading governance (REBALANCE_MANAGER) voting with the vault; the upgrade
-  banner mirrors `upgradeFolio`'s role/fee-recipient requires so it never offers a proposal that reverts at
-  execute; the stepper resolves receipts against the submitted step and waits for the allowance read; closing the
-  modal keeps progress; the retire banner requires the vault owner to be the DAO timelock and checks every old vault.
-
-- DTFs whose vote-lock vault is not an RSR vault (vlPMF, vlVIRTUAL, vlDTF…) do not migrate: the upgrade banner,
-  the retire banner and the migration CTA all require an RSR vault.
+- Retire proposals carry a `#n` nonce (a defeated attempt left the same proposal id); dependents also count
+  trading governance voting with the vault; the upgrade banner mirrors `upgradeFolio`'s role and
+  fee-recipient requires so it never offers a proposal that reverts at execute.
+- The 1.1.0 governor reads `getPastAverageVotes` from its vault, so the DTF governance upgrade must wait for
+  the vault upgrade or every pessimistic proposal reverts.
 - Anvil fills `eth_sendTransaction` gas with the exact estimate and the legacy vault `redeem` runs out of gas
-  (nested calls, 63/64 rule); real wallets pad estimates. Watch for OOG reports on wallets that don't.
-- After on-chain execution and before the subgraph indexes it, the upgrade banner can briefly show again
-  (subgraph still reports legacy governors); the executed-proposal check hides it once indexed.
+  (nested calls, 63/64 rule); real wallets pad estimates.
+- After execution and before the subgraph indexes it, the upgrade banner and the pre-upgrade card can show
+  briefly; they hide once indexed.
+- MAG7 does not load on Anvil (a basket token's `totalAssets` reverts), so its fork lane uses POWER.
 
 ## Unresolved decisions
 
-- `registerVersion(1.1.0)` must land on each chain before the singleton vault upgrades (in progress).
-- Final design of the migration CTA/modal (this build is the functional baseline).
-- Publishing: done. Register pins `@reserve-protocol/react-sdk` 0.7.0.
+None blocking. Engineer review required (governance calldata, vote-lock writes, delegation).

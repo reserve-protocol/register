@@ -8,7 +8,7 @@
 //
 // Prerequisites replayed by impersonation (labelled in the manifest):
 //   0. RoleRegistry owner registers the 1.1.0 governor deployer in the VersionRegistry.
-//   1. The vlRSR singleton's timelock upgrades the vault to 1.1.0 (Taylor's step 2; LCAP only).
+//   1. The vlRSR singleton's timelock upgrades the vault to 1.1.0 (step 1a; LCAP only).
 import { createPublicClient, encodeFunctionData, http, keccak256, parseAbi, toHex, zeroAddress } from 'viem'
 import { mkdirSync, writeFileSync } from 'node:fs'
 import { resolve } from 'node:path'
@@ -18,7 +18,7 @@ const SUBGRAPHS = {
   8453: 'https://api.goldsky.com/api/public/project_cmgzim3e100095np2gjnbh6ry/subgraphs/dtf-index-base/prod/gn',
 }
 const TOKEN_JAR_BASE = '0xEAfA84184BEb90891cb5c4942ebD59C18dda0bfE'
-// Mirrors DTF_UPGRADE_TARGETS and the shared defaults in governance-migration.ts.
+// Mirrors DTF_UPGRADE_TARGETS and the shared defaults in src/components/vote-lock/migration/migration-targets.ts.
 const SCENARIOS = {
   lcap: {
     chainId: 8453,

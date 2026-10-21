@@ -3,7 +3,7 @@ import { defineConfig, devices } from '@playwright/test'
 // Real-fork lane: Register against a loopback Anvil fork. Nothing is intercepted:
 // reads and writes hit the fork, the subgraph is whichever endpoint the chain
 // profile names, the API is production unless VITE_RESERVE_API_URL points at a
-// local one. Port 3006, never 3000 (Luis) or 3005 (offline suite). Fork reads are
+// local one. Port 3006, never 3000 (dev server) or 3005 (offline suite). Fork reads are
 // cold on first touch (seconds), so the timeouts are generous; the prepare
 // scripts warm them.
 //
