@@ -117,6 +117,10 @@ test(`${scenario.toUpperCase()} upgrades its governor and timelock to 1.1.0 from
     })
 
   await installForkWallet(page, { address: manifest.proposer, chainId, rpcUrl })
+  // AI DTFs hold tokenized stocks: an unconfirmed wallet gets an eligibility modal over the banner.
+  await page.addInitScript((wallet) => {
+    localStorage.setItem('reserve:index-dtf-eligibility:v3', JSON.stringify([wallet]))
+  }, manifest.proposer.toLowerCase())
   await page.clock.install({ time: (Number(manifest.forkTimestamp) + 30) * 1000 })
   const proposeRoute = `/${manifest.network}/index-dtf/${manifest.dtf.toLowerCase()}/governance/propose`
   await page.goto(proposeRoute)
