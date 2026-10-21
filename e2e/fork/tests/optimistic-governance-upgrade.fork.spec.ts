@@ -34,8 +34,11 @@ const rpcUrl =
 const manifestPath = resolve(
   `e2e/fork/.state/${chainId}/optimistic-governance-${scenario}.json`
 )
+// FORK_SAFE=1 runs the holder as a Safe: the account gets code and the wallet never returns a mined hash.
+const safeMode = process.env.FORK_SAFE === '1'
 const evidenceDir =
-  process.env.E2E_EVIDENCE_DIR ?? resolve(`temp/evidence/fork-${scenario}`)
+  process.env.E2E_EVIDENCE_DIR ??
+  resolve(`temp/evidence/fork-${scenario}${safeMode ? '-safe' : ''}`)
 const LOCK_AMOUNT = 1000n * 10n ** 18n
 const DEFAULT_ADMIN_ROLE = `0x${'0'.repeat(64)}` as Hex
 const REBALANCE_MANAGER = keccak256(toHex('REBALANCE_MANAGER'))
@@ -103,7 +106,7 @@ test.skip(
   'run prepare-optimistic-governance.mjs first'
 )
 
-test(`${scenario.toUpperCase()} migrates governance, retires its old vault and moves a holder to its new vault from the Register UI`, async ({
+test(`${scenario.toUpperCase()}${safeMode ? ' (Safe)' : ''} migrates governance, retires its old vault and moves a holder to its new vault from the Register UI`, async ({
   page,
 }) => {
   test.setTimeout(600_000)
@@ -265,10 +268,12 @@ test(`${scenario.toUpperCase()} migrates governance, retires its old vault and m
     await target.clock.setSystemTime(Number(timestamp + 30n) * 1000)
   }
 
+  if (safeMode) await rpc('anvil_setCode', [manifest.proposer, '0x00'])
   await installForkWallet(page, {
     address: manifest.proposer,
     chainId,
     rpcUrl,
+    safe: safeMode,
   })
   await page.clock.install({
     time: (Number(manifest.forkTimestamp) + 30) * 1000,
@@ -302,28 +307,31 @@ test(`${scenario.toUpperCase()} migrates governance, retires its old vault and m
     { timeout: 120_000 }
   )
   await page.screenshot({ path: `${evidenceDir}/00-upcoming-card.png` })
-  await page.getByTestId('upcoming-vote-lock-cta').click()
-  await page.getByTestId('vote-lock-input').fill('1000')
-  await expect(page.getByTestId('vote-lock-output')).not.toHaveValue('', {
-    timeout: 120_000,
-  })
-  await page.getByRole('dialog').getByRole('checkbox').click()
-  const lockSubmit = page.getByTestId('vote-lock-submit')
-  await expect(lockSubmit).toContainText('Approve', { timeout: 120_000 })
-  await lockSubmit.click()
-  await expect(lockSubmit).toContainText(`Vote lock ${underlyingSymbol}`, {
-    timeout: 120_000,
-  })
-  await expect(lockSubmit).toBeEnabled({ timeout: 120_000 })
-  await page.screenshot({ path: `${evidenceDir}/00-upcoming-drawer.png` })
-  await lockSubmit.click()
-  await expect
-    .poll(
-      () => read<bigint>(manifest.newVault, 'balanceOf', [manifest.proposer]),
-      { timeout: 120_000 }
-    )
-    .toBeGreaterThan(sharesBeforeLock)
-  await page.keyboard.press('Escape')
+  // The vote-lock drawer waits for a mined receipt, so the Safe run only checks the card.
+  if (!safeMode) {
+    await page.getByTestId('upcoming-vote-lock-cta').click()
+    await page.getByTestId('vote-lock-input').fill('1000')
+    await expect(page.getByTestId('vote-lock-output')).not.toHaveValue('', {
+      timeout: 120_000,
+    })
+    await page.getByRole('dialog').getByRole('checkbox').click()
+    const lockSubmit = page.getByTestId('vote-lock-submit')
+    await expect(lockSubmit).toContainText('Approve', { timeout: 120_000 })
+    await lockSubmit.click()
+    await expect(lockSubmit).toContainText(`Vote lock ${underlyingSymbol}`, {
+      timeout: 120_000,
+    })
+    await expect(lockSubmit).toBeEnabled({ timeout: 120_000 })
+    await page.screenshot({ path: `${evidenceDir}/00-upcoming-drawer.png` })
+    await lockSubmit.click()
+    await expect
+      .poll(
+        () => read<bigint>(manifest.newVault, 'balanceOf', [manifest.proposer]),
+        { timeout: 120_000 }
+      )
+      .toBeGreaterThan(sharesBeforeLock)
+    await page.keyboard.press('Escape')
+  }
 
   // Before the DTF migrates, only banner 1 shows: banner 2 waits for this DTF's own upgrade.
   await page.goto(`${dtfRoute}/governance/propose`)

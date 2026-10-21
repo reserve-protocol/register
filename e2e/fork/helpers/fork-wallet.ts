@@ -4,6 +4,8 @@ export interface ForkWalletConfig {
   address: string
   chainId: number
   rpcUrl: string
+  // Acts like a Safe: sends execute but return a hash that is never mined, and batches run through wallet_sendCalls.
+  safe?: boolean
 }
 
 // EIP-6963/EIP-1193 wallet that forwards every request to the Anvil fork.
@@ -13,8 +15,10 @@ export interface ForkWalletConfig {
 // owns accounts, chain and sends.
 export async function installForkWallet(page: Page, config: ForkWalletConfig) {
   await page.addInitScript(
-    ({ address, chainId, rpcUrl }) => {
+    ({ address, chainId, rpcUrl, safe }) => {
       let id = 1
+      const randomHash = () =>
+        '0x' + [...crypto.getRandomValues(new Uint8Array(32))].map((b) => b.toString(16).padStart(2, '0')).join('')
       const forward = async (method: string, params?: unknown[]) => {
         const res = await fetch(rpcUrl, {
           method: 'POST',
@@ -24,6 +28,15 @@ export async function installForkWallet(page: Page, config: ForkWalletConfig) {
         const json = (await res.json()) as { result?: unknown; error?: { message: string } }
         if (json.error) throw new Error(json.error.message)
         return json.result
+      }
+      const send = async (tx: Record<string, unknown>) => {
+        const request: Record<string, unknown> = { ...tx, from: address }
+        // Real wallets pad their estimate; Anvil fills the exact one and starves nested calls (63/64 rule).
+        if (!request.gas) {
+          const estimate = BigInt((await forward('eth_estimateGas', [request])) as string)
+          request.gas = '0x' + ((estimate * 3n) / 2n).toString(16)
+        }
+        return forward('eth_sendTransaction', [request])
       }
       const listeners = new Map<string, Set<(payload: unknown) => void>>()
       const provider = {
@@ -43,15 +56,14 @@ export async function installForkWallet(page: Page, config: ForkWalletConfig) {
               return null
             case 'eth_sendTransaction': {
               const [tx] = (params ?? []) as [Record<string, unknown>]
-              const request: Record<string, unknown> = { ...tx, from: address }
-              // Real wallets pad their estimate; Anvil fills the exact one and starves nested calls (63/64 rule).
-              if (!request.gas) {
-                const estimate = BigInt(
-                  (await forward('eth_estimateGas', [request])) as string
-                )
-                request.gas = '0x' + ((estimate * 3n) / 2n).toString(16)
-              }
-              return forward('eth_sendTransaction', [request])
+              const sent = await send(tx)
+              return safe ? randomHash() : sent
+            }
+            case 'wallet_sendCalls': {
+              if (!safe) throw new Error('wallet_sendCalls is only available in Safe mode')
+              const [batch] = (params ?? []) as [{ calls: Record<string, unknown>[] }]
+              for (const call of batch.calls) await send(call)
+              return { id: randomHash() }
             }
             default:
               return forward(method, params)
