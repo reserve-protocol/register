@@ -1,10 +1,11 @@
 ---
 title: E2E Suite
-updated: 2026-09-16
+updated: 2026-10-20
 type: domain
 sources:
   - e2e/**
   - playwright.config.ts
+  - playwright.fork.config.ts
   - .github/workflows/playwright.yml
 ---
 
@@ -116,7 +117,8 @@ hand-copied `GetIndexDTF` query in `e2e/scripts/capture.ts` from the new SDK
 dist (it is not exported) and re-run `pnpm e2e:capture` — the `dtf-data` canary
 smoke fails on drift but only a fresh capture fixes it.
 
-Non-goals: forked-chain execution, visual/pixel regression, v6 contracts.
+Non-goals: visual/pixel regression. Forked-chain execution lives in the
+separate fork lane below, never in the offline suite.
 Coverage state and open gaps live in `e2e/TEST_MAP.md`; harness-level debt in
 [[progress]] § Backlog. Governance, issuance, compliance, and
 transaction-contract edits require engineer review.
@@ -133,6 +135,38 @@ Hard-won spec traps:
   inside `useDTFStatus` (unit-pinned in `src/hooks/tests/use-dtf-status.test.ts`).
 - Brand is ONE folio-manager request (the SDK full-DTF read); unbranded (`{}`)
   is a settled state — the cover slot collapses, not a skeleton forever.
+
+## Fork lane (real transactions)
+
+`playwright.fork.config.ts` runs `e2e/fork/tests/*.fork.spec.ts` against a local
+Anvil fork, outside CI. The app reads the fork through `VITE_RPC_URL_<chainId>`
+and `VITE_INDEX_SUBGRAPH_URL_<chainId>`; both overrides are unused outside this
+lane. `e2e/fork/scripts/subgraph-proxy.mjs` serves the production Index subgraph
+truncated at the fork block, so indexed history matches the fork state.
+`e2e/fork/helpers/fork-wallet.ts` forwards transactions from an Anvil-impersonated account.
+
+- Governance migration: `FORK_SCENARIO` picks `lcap` (Base, vlRSR), `abx`
+  (Base, vlALTT) or `open` (Ethereum, vlSQUILL). `prepare-optimistic-governance.mjs`
+  writes `.state/<chainId>/optimistic-governance-<scenario>.json`; for LCAP it also
+  upgrades the vlRSR singleton to 1.1.0 by labelled impersonation of its timelock.
+  `optimistic-governance-upgrade.fork.spec.ts` locks into the new vault from the
+  pre-upgrade card, proposes and executes `upgradeFolio`, retires the old vault and
+  migrates a holder. Run it with `FORK_CHAIN_ID`, `FORK_RPC_URL_<chainId>` and
+  `FORK_SUBGRAPH_URL_<chainId>` pointing at the fork and its subgraph proxy.
+  `FORK_SAFE=1` gives the holder contract code and puts the fork wallet in Safe mode
+  (sends return a hash that is never mined).
+- DTF governance 1.1.0 upgrade (AI DTFs, MAG7): `prepare-folio-governance-upgrade.mjs`
+  upgrades the chain's vlRSR singleton to 1.1.0 and writes
+  `.state/<chainId>/folio-governance-upgrade-<scenario>.json`;
+  `folio-governance-upgrade.fork.spec.ts` proposes from the banner, executes, and
+  checks that the 1.1.0 governor still accepts a proposal. Use `FORK_SCENARIO=power`
+  on a BSC Anvil fork: MAG7 does not load on Anvil.
+- The subgraph proxy is frozen at the fork block, so views that read the DTF from
+  the subgraph keep the pre-upgrade state after an on-chain upgrade.
+- The Alchemy archive RPC needs the app origin header
+  (`--fork-header "Origin: https://app.reserve.org"` on Anvil).
+- Restart Anvil (or revert a snapshot) before a re-run: the spec spends the
+  scenario state.
 
 ## Yield DTF (RToken) replay architecture
 

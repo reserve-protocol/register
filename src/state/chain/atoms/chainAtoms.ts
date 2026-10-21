@@ -89,14 +89,21 @@ export const SUBGRAPH_URL = {
     'https://api.goldsky.com/api/public/project_cmgzim3e100095np2gjnbh6ry/subgraphs/reserve-arbitrum/prod/gn', // TODO? maybe never
 }
 
+// Per-chain override for the fork e2e lane (a local subgraph or a proxy truncated at the fork block).
+const indexSubgraphOverride = (chainId: number): string | undefined =>
+  import.meta.env[`VITE_INDEX_SUBGRAPH_URL_${chainId}`] || undefined
+
 export const INDEX_DTF_SUBGRAPH_URL = {
   [ChainId.Mainnet]:
+    indexSubgraphOverride(ChainId.Mainnet) ??
     'https://api.goldsky.com/api/public/project_cmgzim3e100095np2gjnbh6ry/subgraphs/dtf-index-mainnet/prod/gn',
   [ChainId.Base]:
+    indexSubgraphOverride(ChainId.Base) ??
     'https://api.goldsky.com/api/public/project_cmgzim3e100095np2gjnbh6ry/subgraphs/dtf-index-base/prod/gn',
   [ChainId.Arbitrum]:
     'https://api.goldsky.com/api/public/project_cmgzim3e100095np2gjnbh6ry/subgraphs/dtf-index-bsc/prod/gn', // TODO? maybe never
   [ChainId.BSC]:
+    indexSubgraphOverride(ChainId.BSC) ??
     'https://api.goldsky.com/api/public/project_cmgzim3e100095np2gjnbh6ry/subgraphs/dtf-index-bsc/prod/gn',
 }
 

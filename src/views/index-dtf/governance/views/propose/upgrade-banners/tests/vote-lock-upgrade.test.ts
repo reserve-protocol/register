@@ -1,9 +1,12 @@
 import { decodeFunctionData, getAddress, type Address } from 'viem'
 import { describe, expect, it } from 'vitest'
 import {
+  FOLIO_GOVERNANCE_UPGRADE_MESSAGE,
   VOTE_LOCK_UPGRADE_MESSAGE,
+  buildFolioGovernanceUpgradeProposal,
   buildVoteLockUpgradeProposal,
   decodeVoteLockUpgradeCall,
+  getFolioGovernanceUpgradeEligibility,
   getVoteLockUpgradeEligibility,
   hasLiveVoteLockUpgrade,
   nextVoteLockUpgradeDescription,
@@ -134,5 +137,70 @@ describe('decodeVoteLockUpgradeCall', () => {
   it('ignores anything that is not upgradeToAndCall', () => {
     expect(decodeVoteLockUpgradeCall('0x12345678')).toBeUndefined()
     expect(decodeVoteLockUpgradeCall('0x')).toBeUndefined()
+  })
+})
+
+const FOLIO_GOVERNOR = getAddress('0x91deccef10a7fce6485a3ea62794d1a90781bdc1')
+const FOLIO_TIMELOCK = getAddress('0xdb29158ce7ab8f9c59cb20dfcd0221160b4eae37')
+const folioReady = {
+  ...ready,
+  versions: { vault: '1.1.0', governor: '1.0.0', timelock: '1.0.0' },
+  governorTimelock: FOLIO_TIMELOCK,
+  timelock: FOLIO_TIMELOCK,
+  ownerGovernor: FOLIO_GOVERNOR,
+  tradingGovernor: FOLIO_GOVERNOR,
+}
+
+describe('getFolioGovernanceUpgradeEligibility', () => {
+  it('is ready for a single-governor DTF on a 1.1.0 vlRSR singleton', () => {
+    expect(getFolioGovernanceUpgradeEligibility(folioReady)).toBe(true)
+  })
+
+  it.each([
+    ['the singleton is still on 1.0.0', { versions: { ...folioReady.versions, vault: '1.0.0' } }],
+    ['the governor is already upgraded', { versions: { ...folioReady.versions, governor: '1.1.0' } }],
+    ['the timelock is already upgraded', { versions: { ...folioReady.versions, timelock: '1.1.0' } }],
+    ['the DTF has a separate trading governor', { tradingGovernor: TIMELOCK }],
+    ['the DTF votes with another vault', { vault: TIMELOCK }],
+    ['the latest version is deprecated', { latest: { version: '1.1.0', deprecated: true } }],
+    ['an implementation is unset', { implementations: { ...IMPLS, governor: undefined } }],
+    ['the governor points at another timelock', { governorTimelock: VAULT }],
+  ])('is hidden when %s', (_, patch) => {
+    expect(getFolioGovernanceUpgradeEligibility({ ...folioReady, ...patch } as never)).toBe(
+      false
+    )
+  })
+})
+
+describe('buildFolioGovernanceUpgradeProposal', () => {
+  it('upgrades the governor and timelock and links the version registry on both', () => {
+    const { address, args } = buildFolioGovernanceUpgradeProposal({
+      chainId: 8453,
+      governor: FOLIO_GOVERNOR,
+      timelock: FOLIO_TIMELOCK,
+      registry: REGISTRY,
+      implementations: { governor: IMPLS.governor, timelock: IMPLS.timelock },
+      description: `${FOLIO_GOVERNANCE_UPGRADE_MESSAGE} #1`,
+    })
+    const [targets, values, calldatas, description] = args
+    expect(address).toBe(FOLIO_GOVERNOR)
+    expect(targets).toEqual([FOLIO_GOVERNOR, FOLIO_TIMELOCK])
+    expect(values).toEqual([0n, 0n])
+    expect(calldatas.map(decodeVoteLockUpgradeCall)).toEqual([
+      { implementation: IMPLS.governor, initializer: 'initializeVersionRegistry', registry: REGISTRY },
+      { implementation: IMPLS.timelock, initializer: 'initializeVersionRegistry', registry: REGISTRY },
+    ])
+    expect(description).toBe(`${FOLIO_GOVERNANCE_UPGRADE_MESSAGE} #1`)
+  })
+
+  it('numbers its proposals apart from the vote-lock upgrade', () => {
+    const proposals = [
+      proposal(`${VOTE_LOCK_UPGRADE_MESSAGE} #3`, 'EXECUTED'),
+      proposal(`${FOLIO_GOVERNANCE_UPGRADE_MESSAGE} #1`, 'DEFEATED'),
+    ]
+    expect(hasLiveVoteLockUpgrade(proposals, FOLIO_GOVERNANCE_UPGRADE_MESSAGE)).toBe(false)
+    expect(nextVoteLockUpgradeDescription(proposals, FOLIO_GOVERNANCE_UPGRADE_MESSAGE)).toBe(
+      `${FOLIO_GOVERNANCE_UPGRADE_MESSAGE} #2`
+    )
   })
 })

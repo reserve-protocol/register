@@ -19,6 +19,7 @@ import IndexGovernanceOverview from './components/index-governance-overview'
 import IndexTransactionTable from './components/index-transaction-table-with-swaps'
 import LandingMint from './components/landing-mint'
 import { watchedCoverDtfAtom } from './components/landing-mint/dtf-cover'
+import DtfVoteLockMigration from '../components/vote-lock-migration'
 import YieldIndexAbout from './components/yield-index/yield-index-about'
 import YieldIndexAssetExposure from './components/yield-index/yield-index-asset-exposure'
 import YieldIndexComposition from './components/yield-index/yield-index-composition'
@@ -91,11 +92,14 @@ const AboutSection = () => {
 
 const Content = () => {
   const indexDTF = useAtomValue(indexDTFAtom)
+  const isLargeDesktop = useIsLargeDesktop()
   useScrollToHash()
 
   return (
     <div className="min-w-0 flex-1">
       <div className="flex flex-col gap-0.5 sm:gap-1">
+        {/* xl renders the card at the top of the right rail (LandingMint). */}
+        {!isLargeDesktop && <DtfVoteLockMigration page="overview" />}
         <PriceChart />
         <AboutSection />
         {!!indexDTF?.stToken && <IndexGovernanceOverview />}

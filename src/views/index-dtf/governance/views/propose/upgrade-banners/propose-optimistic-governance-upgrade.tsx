@@ -3,23 +3,27 @@ import dtfIndexAbi from '@/abis/dtf-index-abi-v1'
 import DTFIndexGovernance from '@/abis/dtf-index-governance'
 import { Button } from '@/components/ui/button'
 import { chainIdAtom } from '@/state/atoms'
-import { indexDTFAtom, indexDTFVersionAtom } from '@/state/dtf/atoms'
+import { indexDTFAtom } from '@/state/dtf/atoms'
+import { trackClick } from '@/hooks/useTrackPage'
 import { getCurrentTime } from '@/utils'
-import { ChainId } from '@/utils/chains'
-import { PROPOSAL_STATES } from '@/utils/constants'
 import { Trans, useLingui } from '@lingui/react/macro'
-import type { IndexDtfProposalSummary } from '@reserve-protocol/react-sdk'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { AlertCircle, Loader2 } from 'lucide-react'
 import { useCallback, useEffect } from 'react'
-import { Address, encodeFunctionData, getAddress, Hex, pad } from 'viem'
+import { encodeFunctionData, getAddress, Hex, pad } from 'viem'
 import { useWaitForTransactionReceipt, useWriteContract } from 'wagmi'
 import { governanceProposalsAtom, refetchTokenAtom } from '../../../atoms'
 import { useIsProposeAllowed } from '../../../hooks/use-is-propose-allowed'
 import useRecentProposalReceipt from '../../../hooks/use-recent-proposal-receipt'
 import { toast } from 'sonner'
+import {
+  getGovernanceUpgradeTarget,
+  optimisticStakingVaultAddress,
+} from '@/components/vote-lock/migration/migration-targets'
+import { useOptimisticUpgradeEligibility } from '@/views/index-dtf/components/vote-lock-migration/use-upgrade-eligibility'
+import { hasLiveUpgradeFolio, nextUpgradeFolioDescription } from './migration-proposals'
 
-export const spellAbi = [
+const spellAbi = [
   {
     inputs: [
       {
@@ -138,7 +142,7 @@ export const spellAbi = [
             type: 'address',
           },
         ],
-        internalType: 'struct GovernanceSpell_04_17_2026.NewDeployment',
+        internalType: 'struct GovernanceSpell_09_18_2026.NewDeployment',
         name: 'newDeployment',
         type: 'tuple',
       },
@@ -147,46 +151,6 @@ export const spellAbi = [
     type: 'function',
   },
 ] as const
-
-export const spellAddress: Record<number, `0x${string}`> = {
-  [ChainId.Mainnet]: getAddress('0xd7238463494fdd4b103c2ad9d229b3985b5bc6f1'),
-  [ChainId.Base]: getAddress('0xe9ae2cb2b5e5658035617f92efa1878429f9cd3f'),
-  [ChainId.BSC]: getAddress('0x3dde17cfd36e740cb7452cb2f59fc925eacb91ab'),
-}
-
-export const optimisticStakingVaultAddress: Record<number, Address> = {
-  [ChainId.Mainnet]: getAddress('0xABbDD9AC016e43c7CA85e2258E669948f029BC0c'),
-  [ChainId.Base]: getAddress('0x2F0D6538807a77d4AdDCd4b4DAf214Ea2E818E3D'),
-  [ChainId.BSC]: getAddress('0xE744C8157c346B2931807F42552c8CBc0BB6D34f'),
-}
-
-export const newFeeRecipientAddress: Record<number, Address> = {
-  [ChainId.Mainnet]: getAddress('0x2688c199049376eFc3aa54F395048B5430c16DE8'),
-  [ChainId.Base]: getAddress('0xEAfA84184BEb90891cb5c4942ebD59C18dda0bfE'),
-  [ChainId.BSC]: getAddress('0x0c2C5064C32800b26d3E0e8A031F366a892Ae793'),
-}
-
-const UPGRADE_FOLIO_MESSAGE = 'Reserve Optimistic Governor upgrade'
-
-const matchesUpgradeMessage = (description: string) =>
-  description === UPGRADE_FOLIO_MESSAGE ||
-  description.startsWith(`${UPGRADE_FOLIO_MESSAGE} #`)
-
-const getNextUpgradeDescription = (
-  proposals: readonly IndexDtfProposalSummary[]
-): string => {
-  let maxNonce = 0
-  const prefix = `${UPGRADE_FOLIO_MESSAGE} #`
-  for (const p of proposals) {
-    if (p.description === UPGRADE_FOLIO_MESSAGE) {
-      maxNonce = Math.max(maxNonce, 1)
-    } else if (p.description.startsWith(prefix)) {
-      const n = Number.parseInt(p.description.slice(prefix.length), 10)
-      if (Number.isFinite(n)) maxNonce = Math.max(maxNonce, n)
-    }
-  }
-  return `${UPGRADE_FOLIO_MESSAGE} #${maxNonce + 1}`
-}
 
 type SpellUpgradeProps = {
   refetch: () => void
@@ -197,7 +161,10 @@ const ProposeBanner = ({ refetch, description }: SpellUpgradeProps) => {
   const { t } = useLingui()
   const dtf = useAtomValue(indexDTFAtom)
   const chainId = useAtomValue(chainIdAtom)
-  const spell = spellAddress[chainId]
+  const target = dtf ? getGovernanceUpgradeTarget(chainId, dtf.id) : undefined
+  const spell = target?.spell
+  const isSharedVault =
+    target?.stakingVault === optimisticStakingVaultAddress[chainId]
   const handleRecentProposalReceipt = useRecentProposalReceipt()
 
   const { writeContract, data: hash, isPending } = useWriteContract()
@@ -221,9 +188,17 @@ const ProposeBanner = ({ refetch, description }: SpellUpgradeProps) => {
   const proposalAvailable = !!spell
 
   const handlePropose = () => {
-    if (!dtf || !spell || !dtf.ownerGovernance || !dtf.tradingGovernance) return
+    if (
+      !dtf ||
+      !target ||
+      !spell ||
+      !dtf.ownerGovernance ||
+      !dtf.tradingGovernance
+    )
+      return
 
-    const newVaultAddress = optimisticStakingVaultAddress[chainId]
+    trackClick('governance', 'propose_governance_upgrade', dtf.id, dtf.token.symbol, chainId)
+    const newVaultAddress = target.stakingVault
     const oldFolioGovernor = dtf.ownerGovernance.id
     const tradingGovernor = dtf.tradingGovernance.id
     const optimisticParams = {
@@ -237,7 +212,7 @@ const ProposeBanner = ({ refetch, description }: SpellUpgradeProps) => {
     const guardians = dtf.ownerGovernance.timelock.guardians.filter(
       (guardian) => guardian.toLowerCase() !== oldFolioGovernor.toLowerCase()
     )
-    const newFeeRecipient = newFeeRecipientAddress[chainId]
+    const newFeeRecipient = target.feeRecipient
     // Generate a random 32-byte value for deploymentNonce as bytes32
     const deploymentNonce = `0x${[...crypto.getRandomValues(new Uint8Array(32))]
       .map((b) => b.toString(16).padStart(2, '0'))
@@ -328,7 +303,10 @@ const ProposeBanner = ({ refetch, description }: SpellUpgradeProps) => {
   }
 
   return (
-    <div className="sm:w-[408px] p-4 rounded-3xl bg-primary/10">
+    <div
+      data-testid="governance-optimistic-upgrade"
+      className="sm:w-[408px] p-4 rounded-3xl bg-primary/10"
+    >
       <div className="flex flex-row items-center gap-2 ">
         <AlertCircle size={24} className="text-primary shrink-0" />
         <div>
@@ -336,23 +314,26 @@ const ProposeBanner = ({ refetch, description }: SpellUpgradeProps) => {
             <Trans>New version available</Trans>
           </h4>
           <p className="text-sm">
-            <Trans>
-              <strong>Reserve Optimistic Governor upgrade</strong> introduces a
-              new governor system TBD COPY HERE!. <br />
-              See the{' '}
-              <a
-                className="text-primary underline"
-                href="https://github.com/reserve-protocol/reserve-index-dtf/releases/tag/r5.0.0"
-                target="_blank"
-              >
-                changelog
-              </a>{' '}
-              for more details.
-            </Trans>
+            {isSharedVault ? (
+              <Trans>
+                <strong>Reserve Optimistic Governor upgrade</strong> moves this
+                DTF to optimistic governance, voted with the shared vlRSR
+                vote-lock vault. After it executes, voters lock RSR in the new
+                vault to keep governing this DTF.
+              </Trans>
+            ) : (
+              <Trans>
+                <strong>Reserve Optimistic Governor upgrade</strong> moves this
+                DTF to optimistic governance, voted with a new vote-lock vault.
+                After it executes, voters lock their tokens in the new vault to
+                keep governing this DTF.
+              </Trans>
+            )}
           </p>
         </div>
       </div>
       <Button
+        data-testid="governance-optimistic-upgrade-btn"
         disabled={!isReady || isPending || isSubmitted}
         onClick={handlePropose}
         className="w-full mt-2"
@@ -368,51 +349,20 @@ const ProposeBanner = ({ refetch, description }: SpellUpgradeProps) => {
   )
 }
 
-const validProposalExists = (
-  proposals: readonly IndexDtfProposalSummary[]
-): boolean => {
-  const states = [
-    PROPOSAL_STATES.PENDING,
-    PROPOSAL_STATES.ACTIVE,
-    PROPOSAL_STATES.SUCCEEDED,
-    PROPOSAL_STATES.QUEUED,
-    PROPOSAL_STATES.EXECUTED,
-  ]
-  return proposals.some((p) => {
-    if (!matchesUpgradeMessage(p.description)) {
-      return false
-    }
-
-    if (p.votingState.state === PROPOSAL_STATES.EXPIRED) {
-      return false
-    }
-
-    return states.includes(p.votingState.state)
-  })
-}
-
-export default function ProposeV5Upgrade() {
+export default function ProposeOptimisticGovernanceUpgrade() {
   const { isProposeAllowed } = useIsProposeAllowed()
   const proposals = useAtomValue(governanceProposalsAtom)
-  const version = useAtomValue(indexDTFVersionAtom)
+  const { isEligible } = useOptimisticUpgradeEligibility()
   const setRefetchToken = useSetAtom(refetchTokenAtom)
 
   const refetch = useCallback(() => {
     setRefetchToken(getCurrentTime())
   }, [setRefetchToken])
 
-  // Show banner for v5.x DTFs
-  const isUpgradeable = typeof version === 'string' && version.startsWith('5.')
+  if (!isProposeAllowed || !proposals) return null
+  if (!isEligible || hasLiveUpgradeFolio(proposals)) return null
 
-  if (!isProposeAllowed || !proposals || !isUpgradeable) return null
-
-  const existsFolioUpgrade = validProposalExists(proposals)
-
-  // if (existsFolioUpgrade) {
-  //   return null
-  // }
-
-  const description = getNextUpgradeDescription(proposals)
+  const description = nextUpgradeFolioDescription(proposals)
 
   return <ProposeBanner refetch={refetch} description={description} />
 }

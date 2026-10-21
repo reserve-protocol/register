@@ -3,8 +3,12 @@ import {
   decodeFunctionData,
   decodeAbiParameters,
   encodeAbiParameters,
+  encodeFunctionData,
   encodeFunctionResult,
+  keccak256,
   multicall3Abi,
+  parseAbi,
+  toHex,
   type Hex,
 } from 'viem'
 import type { UnmockedLogger } from './logger'
@@ -185,6 +189,7 @@ const callOverrides: Record<string, Hex> = {
   '*:0x01e1d114': EMPTY_ASSETS, // totalAssets() — registry DTFs get real baskets (chain-state)
   '*:0x4d2301cc': ETH_BALANCE, // Multicall3.getEthBalance(address)
   '*:0xaa3b5568': IDLE_REBALANCE, // getRebalance() — no active rebalance by default
+  '*:0xfc528482': ZERO_RETURN, // nextAuctionId() — no auction opened by default (SDK latest-auction read)
   // Fee-display reads on the DTF container (peripheral to governance). A DTF
   // with no DAO fee registry reads as fee-free — a valid, deterministic state.
   '*:0x9980cb23': ZERO_RETURN, // daoFeeRegistry() → zero address
@@ -324,7 +329,28 @@ const SELECTOR = {
   version: '0x54fd4d50',
   name: '0x06fdde03',
   symbol: '0x95d89b41',
+  owner: '0x8da5cb5b',
+  asset: '0x38d52e0f',
+  timelock: '0xd33219b4',
 } as const
+
+const HAS_ROLE_ABI = parseAbi([
+  'function hasRole(bytes32 role, address account) view returns (bool)',
+])
+const DEFAULT_ADMIN_ROLE = `0x${'0'.repeat(64)}` as const
+const REBALANCE_MANAGER_ROLE = keccak256(toHex('REBALANCE_MANAGER'))
+// Full-calldata answers, checked before the selector table (one role/account, never a blanket role grant).
+const exactCallOverrides = new Map<string, Hex>()
+
+// Governance migration destination vaults (vlRSR singletons, vlSQUILL for OPEN, vlALTT for ABX) → their token;
+// the migration banner compares assets and the card names the vault from symbol().
+const MIGRATION_VAULTS: Array<[string, `0x${string}`, string]> = [
+  ['0xabbdd9ac016e43c7ca85e2258e669948f029bc0c', '0x320623b8e4ff03373931769a31fc52a4e78b5d70', 'vlRSR'],
+  ['0x2f0d6538807a77d4addcd4b4daf214ea2e818e3d', '0xab36452dbac151be02b16ca17d8919826072f64a', 'vlRSR'],
+  ['0xe744c8157c346b2931807f42552c8cbc0bb6d34f', '0x23f72a3db61d6cb8abe5d9af1ac4b6c99327bfee', 'vlRSR'],
+  ['0x8a8188d2bc61c43124cded32f40fab456f68c15c', '0x7ebab7190d3d574ce82d29f2fa1422f18e29969c', 'vlSQUILL'],
+  ['0x77cd9520931ae628f870783d855f74bb14cdaf39', '0x1b5ce2a593a840e3ad3549a34d7b3dec697c114d', 'vlALTT'],
+]
 
 // stRSR staking WRITE functions (all void). wagmi's `useSimulateContract` fires
 // an eth_call to simulate each before the write — including transiently, e.g. the
@@ -507,7 +533,53 @@ function seedChainState() {
         [{ type: 'uint256' }],
         [10n ** 18n]
       )
+      // Captured vaults are pre-migration legacy vaults: Ownable, owned by their DAO timelock, never retired.
+      const daoTimelock = metadata.stToken.governance?.timelock?.id
+      const daoGovernor = metadata.stToken.governance?.id
+      if (daoTimelock) {
+        callOverrides[`${vault}:${SELECTOR.owner}`] = encodeAbiParameters(
+          [{ type: 'address' }],
+          [daoTimelock as `0x${string}`]
+        )
+      }
+      if (daoGovernor && daoTimelock) {
+        callOverrides[`${daoGovernor.toLowerCase()}:${SELECTOR.timelock}`] =
+          encodeAbiParameters([{ type: 'address' }], [daoTimelock as `0x${string}`])
+      }
+      if (metadata.stToken.underlying) {
+        callOverrides[`${vault}:${SELECTOR.asset}`] = encodeAbiParameters(
+          [{ type: 'address' }],
+          [metadata.stToken.underlying.address as `0x${string}`]
+        )
+      }
     }
+    // The retire banner asks whether each Folio's legacy timelocks still hold their roles; captured (pre-migration) state says yes.
+    const legacyRoles: Array<[`0x${string}`, string | undefined]> = [
+      [DEFAULT_ADMIN_ROLE, metadata.ownerGovernance?.timelock?.id],
+      [REBALANCE_MANAGER_ROLE, metadata.tradingGovernance?.timelock?.id],
+    ]
+    for (const [role, timelock] of legacyRoles) {
+      if (!timelock) continue
+      exactCallOverrides.set(
+        `${dtf.address.toLowerCase()}:${encodeFunctionData({
+          abi: HAS_ROLE_ABI,
+          functionName: 'hasRole',
+          args: [role, timelock as `0x${string}`],
+        })}`.toLowerCase(),
+        encodeAbiParameters([{ type: 'bool' }], [true])
+      )
+    }
+  }
+
+  for (const [vault, underlying, symbol] of MIGRATION_VAULTS) {
+    callOverrides[`${vault}:${SELECTOR.asset}`] = encodeAbiParameters(
+      [{ type: 'address' }],
+      [underlying]
+    )
+    callOverrides[`${vault}:${SELECTOR.symbol}`] = encodeAbiParameters(
+      [{ type: 'string' }],
+      [symbol]
+    )
   }
 
   // These balances are polled by the wallet updater on every Base page and are
@@ -702,7 +774,11 @@ function lookupOverride(to: string, data: string): Hex | undefined {
   seedChainState()
   const selector = selectorOf(data)
   const addr = to.toLowerCase()
-  return callOverrides[`${addr}:${selector}`] ?? callOverrides[`*:${selector}`]
+  return (
+    exactCallOverrides.get(`${addr}:${data.toLowerCase()}`) ??
+    callOverrides[`${addr}:${selector}`] ??
+    callOverrides[`*:${selector}`]
+  )
 }
 
 // Answer one inner eth_call (used directly and for each Multicall3 sub-call).

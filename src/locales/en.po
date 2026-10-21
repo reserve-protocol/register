@@ -13,7 +13,7 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
-#: src/views/yield-dtf/overview/components/backing/index.tsx:74
+#: src/views/yield-dtf/overview/components/backing/index.tsx:75
 msgid " and "
 msgstr ""
 
@@ -201,7 +201,7 @@ msgid "{0} balance"
 msgstr ""
 
 #. placeholder {0}: rToken?.symbol || ''
-#: src/views/yield-dtf/overview/components/backing/backing-buffer.tsx:54
+#: src/views/yield-dtf/overview/components/backing/backing-buffer.tsx:53
 msgid "{0} buffer as % of mcap:"
 msgstr ""
 
@@ -240,7 +240,7 @@ msgid "{0} exposure"
 msgstr ""
 
 #. placeholder {0}: pegs.symbol
-#: src/views/yield-dtf/overview/components/backing/index.tsx:69
+#: src/views/yield-dtf/overview/components/backing/index.tsx:70
 msgid "{0} has"
 msgstr ""
 
@@ -271,7 +271,7 @@ msgstr ""
 #: src/components/ui/multiselect-dropdown.tsx:170
 #: src/views/explorer/components/filters/token-filter.tsx:75
 #: src/views/explorer/components/filters/TransactionTypeFilter.tsx:44
-#: src/views/explorer/components/governance/filters.tsx:45
+#: src/views/explorer/components/governance/filters.tsx:46
 msgid "{0} selected"
 msgstr ""
 
@@ -332,7 +332,7 @@ msgstr ""
 msgid "{chainLabel} (Native)"
 msgstr ""
 
-#: src/views/yield-dtf/overview/components/backing/index.tsx:78
+#: src/views/yield-dtf/overview/components/backing/index.tsx:79
 msgid "{count, plural, one {# Collateral pegged to} other {# Collaterals pegged to}}"
 msgstr ""
 
@@ -382,8 +382,12 @@ msgstr ""
 msgid "{delayInHours, plural, one {# hour} other {# hours}}"
 msgstr ""
 
+#: src/views/yield-dtf/overview/components/backing/underlying-fees/fees-table.tsx:89
+msgid "{exposure} exposure"
+msgstr ""
+
 #: src/views/index-dtf/deploy/steps/confirm-deploy/manual/components/approve-all-deploy-button.tsx:85
-#: src/views/index-dtf/issuance/manual/components/approve-all-button.tsx:77
+#: src/views/index-dtf/issuance/manual/components/approve-all-button.tsx:78
 msgid "{failedCount, plural, one {# approval failed - Retry} other {# approvals failed - Retry}}"
 msgstr ""
 
@@ -450,6 +454,14 @@ msgstr ""
 msgid "{pendingOrderCount} pending"
 msgstr ""
 
+#: src/views/yield-dtf/overview/components/backing/underlying-fees/fees-table.tsx:33
+msgid "{percent} / yr"
+msgstr ""
+
+#: src/views/yield-dtf/overview/components/backing/underlying-fees/fees-table.tsx:35
+msgid "{percent} of yield"
+msgstr ""
+
 #: src/components/liquidity-badge.tsx:254
 msgid "{percent} price impact"
 msgstr ""
@@ -488,6 +500,19 @@ msgstr ""
 
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:497
 msgid "{swapCount} orders"
+msgstr ""
+
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-folio-governance-upgrade.tsx:125
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-vote-lock-upgrade.tsx:187
+msgid "{symbol} governance 1.1.0 available"
+msgstr ""
+
+#: src/components/vote-lock/migration/migration-modal.tsx:258
+msgid "{symbol} to approve"
+msgstr ""
+
+#: src/components/vote-lock/migration/migration-modal.tsx:259
+msgid "{symbol} to lock"
 msgstr ""
 
 #: src/views/index-dtf/issuance/async-mint/components/ondo-limits-banner.tsx:67
@@ -567,6 +592,10 @@ msgstr ""
 msgid "% to external address"
 msgstr ""
 
+#: src/views/yield-dtf/overview/components/backing/underlying-fees/fees-table.tsx:115
+msgid "+ {zeroRateMarkets} markets at 0%"
+msgstr ""
+
 #. placeholder {0}: rToken?.symbol ?? ''
 #: src/views/yield-dtf/issuance/components/issue/Issue.tsx:117
 msgid "+ Mint {0}"
@@ -581,7 +610,7 @@ msgstr ""
 msgid "+${0} leftover collateral"
 msgstr ""
 
-#: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:144
+#: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:143
 msgid "<0>Note:</0> Some wallets, like MetaMask, need smart accounts enabled."
 msgstr ""
 
@@ -590,7 +619,15 @@ msgid "<0>Release 5.0.0</0> introduces improved rebalancing with per-token aucti
 msgstr ""
 
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v5-optimistic-upgrade.tsx:339
-msgid "<0>Reserve Optimistic Governor upgrade</0> introduces a new governor system TBD COPY HERE!. <1/>See the <2>changelog</2> for more details."
+#~ msgid "<0>Reserve Optimistic Governor upgrade</0> introduces a new governor system TBD COPY HERE!. <1/>See the <2>changelog</2> for more details."
+#~ msgstr ""
+
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:325
+msgid "<0>Reserve Optimistic Governor upgrade</0> moves this DTF to optimistic governance, voted with a new vote-lock vault. After it executes, voters lock their tokens in the new vault to keep governing this DTF."
+msgstr ""
+
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:318
+msgid "<0>Reserve Optimistic Governor upgrade</0> moves this DTF to optimistic governance, voted with the shared vlRSR vote-lock vault. After it executes, voters lock RSR in the new vault to keep governing this DTF."
 msgstr ""
 
 #: src/views/home/components/highlighted-dtfs/historical-price-disclaimer.tsx:5
@@ -653,7 +690,7 @@ msgstr ""
 msgid "1:1 support from Reserve Institutional"
 msgstr ""
 
-#: src/views/yield-dtf/overview/components/backing/backing-buffer.tsx:75
+#: src/views/yield-dtf/overview/components/backing/backing-buffer.tsx:74
 msgid "100% at current mcap:"
 msgstr ""
 
@@ -663,6 +700,10 @@ msgstr ""
 
 #: src/components/rtoken-setup/token/TokenConfiguration.tsx:33
 msgid "15 params"
+msgstr ""
+
+#: src/views/yield-dtf/overview/components/backing/underlying-fees.tsx:144
+msgid "1Y"
 msgstr ""
 
 #: src/views/earn/views/index-dtf/components/faq-graphics.tsx:154
@@ -699,6 +740,10 @@ msgstr ""
 
 #: src/views/yield-dtf/governance/views/proposal-detail/components/proposal-summary/BasketChangeSummary.tsx:157
 msgid "30-day blended APY:"
+msgstr ""
+
+#: src/views/yield-dtf/overview/components/backing/underlying-fees.tsx:138
+msgid "30D"
 msgstr ""
 
 #. placeholder {0}: rTokenVault.name
@@ -820,7 +865,7 @@ msgstr ""
 msgid "Above minimum trade volume"
 msgstr ""
 
-#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:292
+#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:298
 #: src/views/index-dtf/governance/views/proposal/components/proposal-detail-votes.tsx:118
 #: src/views/index-dtf/governance/views/proposal/components/vote-modal.tsx:79
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalDetailStats.tsx:236
@@ -840,8 +885,12 @@ msgstr ""
 #: src/views/internal/dtf-list/components/dtf-table.tsx:201
 #: src/views/portfolio-page/components/pending-withdrawals.tsx:370
 #: src/views/portfolio-page/components/staked-positions.tsx:118
-#: src/views/portfolio-page/components/vote-locked-positions.tsx:236
+#: src/views/portfolio-page/components/vote-locked-positions.tsx:257
 msgid "Action"
+msgstr ""
+
+#: src/components/vote-lock/migration/migration-card.tsx:141
+msgid "Action needed"
 msgstr ""
 
 #: src/views/explorer/components/governance/filters.tsx:17
@@ -929,7 +978,7 @@ msgstr ""
 msgid "Add reward token"
 msgstr ""
 
-#: src/components/rtoken-setup/basket/CollateralModal.tsx:169
+#: src/components/rtoken-setup/basket/CollateralModal.tsx:166
 msgid "Add to backup basket"
 msgstr ""
 
@@ -938,7 +987,7 @@ msgstr ""
 msgid "Add to basket"
 msgstr ""
 
-#: src/components/rtoken-setup/basket/CollateralModal.tsx:167
+#: src/components/rtoken-setup/basket/CollateralModal.tsx:164
 msgid "Add to primary basket"
 msgstr ""
 
@@ -997,7 +1046,7 @@ msgid "Address avatar"
 msgstr ""
 
 #: src/views/index-dtf/components/navigation/index.tsx:287
-#: src/views/index-dtf/overview/components/basket-overview/bridge-info-dialog.tsx:74
+#: src/views/index-dtf/overview/components/basket-overview/bridge-info-dialog.tsx:75
 #: src/views/index-dtf/overview/components/index-token-address.tsx:49
 msgid "Address copied to clipboard"
 msgstr ""
@@ -1010,7 +1059,7 @@ msgstr ""
 msgid "Admin Timelock"
 msgstr ""
 
-#: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:293
+#: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:292
 msgid "Advanced"
 msgstr ""
 
@@ -1022,7 +1071,7 @@ msgstr ""
 msgid "Advanced Controls"
 msgstr ""
 
-#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:271
+#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:277
 #: src/views/index-dtf/governance/views/proposal/components/vote-modal.tsx:78
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalDetailStats.tsx:216
 #: src/views/yield-dtf/governance/views/proposal-detail/components/VoteModal.tsx:55
@@ -1035,11 +1084,11 @@ msgstr ""
 
 #: src/components/token-selector-drawer/index.tsx:142
 #: src/views/earn/components/table-filters.tsx:33
-#: src/views/explorer/components/governance/filters.tsx:54
+#: src/views/explorer/components/governance/filters.tsx:55
 #: src/views/explorer/components/tokens/index.tsx:44
 #: src/views/index-dtf/deploy/steps/basket/token-selector.tsx:241
 #: src/views/index-dtf/factsheet/components/chart-overlay.tsx:85
-#: src/views/index-dtf/overview/components/charts/percentage-change.tsx:59
+#: src/views/index-dtf/overview/components/charts/percentage-change.tsx:63
 #: src/views/index-dtf/overview/components/charts/time-range-menu.tsx:38
 #: src/views/index-dtf/overview/components/charts/time-range-menu.tsx:57
 #: src/views/portfolio-page/components/portfolio-chart.tsx:61
@@ -1079,7 +1128,7 @@ msgstr ""
 msgid "All options"
 msgstr ""
 
-#: src/views/explorer/components/governance/filters.tsx:46
+#: src/views/explorer/components/governance/filters.tsx:47
 msgid "All statuses"
 msgstr ""
 
@@ -1157,6 +1206,14 @@ msgstr ""
 msgid "Allow RToken basket to change weights"
 msgstr ""
 
+#: src/components/vote-lock/migration/migration-modal.tsx:65
+msgid "Allow the {vault} vault to use your {symbol}."
+msgstr ""
+
+#: src/components/vote-lock/migration/migration-modal.tsx:64
+msgid "Allow the shared vlRSR vault to use your RSR."
+msgstr ""
+
 #: src/components/transaction-modal/index.tsx:53
 msgid "Allow use of {symbol}"
 msgstr ""
@@ -1170,7 +1227,7 @@ msgstr ""
 msgid "Almost there..."
 msgstr ""
 
-#: src/views/index-dtf/overview/components/landing-mint/index.tsx:70
+#: src/views/index-dtf/overview/components/landing-mint/index.tsx:73
 msgid "Also available on:"
 msgstr ""
 
@@ -1186,6 +1243,10 @@ msgstr ""
 #: src/views/yield-dtf/auctions/components/useColumns.tsx:40
 #: src/views/yield-dtf/overview/components/rtoken-transactions.tsx:110
 msgid "Amount"
+msgstr ""
+
+#: src/components/vote-lock/migration/migration-modal.tsx:230
+msgid "Amount locked"
 msgstr ""
 
 #: src/views/explorer/components/revenue/index.tsx:435
@@ -1224,6 +1285,10 @@ msgstr ""
 
 #: src/views/earn/views/index-dtf/components/faq-graphics.tsx:201
 msgid "Annualized APY / APR"
+msgstr ""
+
+#: src/views/yield-dtf/overview/components/backing/underlying-fees.tsx:156
+msgid "Annualized drag"
 msgstr ""
 
 #: src/views/home/components/protocol-metrics.tsx:63
@@ -1265,6 +1330,10 @@ msgstr ""
 msgid "Apply"
 msgstr ""
 
+#: src/components/vote-lock/migration/migration-modal.tsx:72
+msgid "Approval complete"
+msgstr ""
+
 #: src/views/index-dtf/deploy/steps/confirm-deploy/manual/components/deploy-assets-approvals.tsx:212
 #: src/views/index-dtf/issuance/manual/components/asset-list.tsx:157
 #: src/views/yield-dtf/issuance/components/issue/CollateralApprovals.tsx:119
@@ -1277,8 +1346,13 @@ msgstr ""
 msgid "Approve {0}"
 msgstr ""
 
+#: src/components/vote-lock/migration/migration-modal.tsx:58
+#: src/components/vote-lock/migration/migration-modal.tsx:86
+msgid "Approve {symbol}"
+msgstr ""
+
 #: src/views/index-dtf/deploy/steps/confirm-deploy/manual/components/approve-all-deploy-button.tsx:93
-#: src/views/index-dtf/issuance/manual/components/approve-all-button.tsx:85
+#: src/views/index-dtf/issuance/manual/components/approve-all-button.tsx:86
 msgid "Approve All ({totalCount})"
 msgstr ""
 
@@ -1291,12 +1365,20 @@ msgstr ""
 msgid "Approve RSR"
 msgstr ""
 
+#: src/components/vote-lock/migration/migration-modal.tsx:79
+msgid "Approve the exact {symbol} amount received for the {vault} vault."
+msgstr ""
+
+#: src/components/vote-lock/migration/migration-modal.tsx:78
+msgid "Approve the exact RSR amount received for the shared vlRSR vault."
+msgstr ""
+
 #. placeholder {0}: stToken.underlying.symbol
 #. placeholder {0}: tokenIn.symbol
 #. placeholder {0}: usedToken.symbol || 'ERC20'
 #: src/components/vote-lock/components/submit-lock-button.tsx:220
 #: src/views/index-dtf/deploy/steps/confirm-deploy/simple/simple-deploy-button.tsx:145
-#: src/views/yield-dtf/issuance/components/zapV2/submit/ZapApprovalButton.tsx:60
+#: src/views/yield-dtf/issuance/components/zapV2/submit/ZapApprovalButton.tsx:61
 msgid "Approve use of {0}"
 msgstr ""
 
@@ -1314,7 +1396,7 @@ msgstr ""
 
 #: src/views/index-dtf/deploy/steps/confirm-deploy/manual/components/deploy-assets-approvals.tsx:212
 #: src/views/index-dtf/issuance/manual/components/asset-list.tsx:157
-#: src/views/yield-dtf/issuance/components/zapV2/submit/ZapApprovalButton.tsx:58
+#: src/views/yield-dtf/issuance/components/zapV2/submit/ZapApprovalButton.tsx:59
 msgid "Approving..."
 msgstr ""
 
@@ -1331,7 +1413,7 @@ msgid "April 1"
 msgstr ""
 
 #: src/views/portfolio-page/components/staked-positions.tsx:68
-#: src/views/portfolio-page/components/vote-locked-positions.tsx:201
+#: src/views/portfolio-page/components/vote-locked-positions.tsx:222
 msgid "APY"
 msgstr ""
 
@@ -1371,15 +1453,15 @@ msgstr ""
 msgid "As RToken"
 msgstr ""
 
-#: src/components/dtf-chat/index.tsx:158
+#: src/components/dtf-chat/index.tsx:166
 #: src/views/index-dtf/overview/components/ask-reserve-ai.tsx:61
 #: src/views/index-dtf/overview/components/ask-reserve-ai.tsx:98
 #: src/views/index-dtf/overview/components/index-ctas-overview-mobile.tsx:176
-#: src/views/index-dtf/overview/components/index-ctas-overview-mobile.tsx:183
+#: src/views/index-dtf/overview/components/index-ctas-overview-mobile.tsx:185
 msgid "Ask Reserve AI"
 msgstr ""
 
-#: src/components/ui/swap.tsx:271
+#: src/components/ui/swap.tsx:279
 msgid "Assembling different routes"
 msgstr ""
 
@@ -1399,7 +1481,7 @@ msgstr ""
 msgid "Assets"
 msgstr ""
 
-#: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:195
+#: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:194
 msgid "Assets arrive"
 msgstr ""
 
@@ -1525,20 +1607,20 @@ msgstr ""
 msgid "Audit Status"
 msgstr ""
 
-#: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:93
+#: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:92
 msgid "Automated Mint / Redeem"
 msgstr ""
 
-#: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:95
+#: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:94
 msgid "Automated minting and redemption require a wallet with smart account support. Hardware Wallets are not supported."
 msgstr ""
 
-#: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:178
+#: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:177
 msgid "Automated minting is an advanced feature. For most people, simple swaps are recommended."
 msgstr ""
 
 #: src/views/earn/views/index-dtf/components/faq-graphics.tsx:61
-#: src/views/index-dtf/governance/components/governance-vote-lock.tsx:422
+#: src/views/index-dtf/governance/components/governance-vote-lock.tsx:423
 msgid "Automatic"
 msgstr ""
 
@@ -1601,11 +1683,11 @@ msgid "Avg. 30d%"
 msgstr ""
 
 #: src/views/index-dtf/deploy/steps/confirm-deploy/manual/components/approve-all-deploy-button.tsx:74
-#: src/views/index-dtf/issuance/manual/components/approve-all-button.tsx:69
+#: src/views/index-dtf/issuance/manual/components/approve-all-button.tsx:70
 msgid "Awaiting approvals... ({completedCount}/{totalCount})"
 msgstr ""
 
-#: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:254
+#: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:253
 msgid "Back to automated minting introduction"
 msgstr ""
 
@@ -1626,7 +1708,7 @@ msgid "Backing"
 msgstr ""
 
 #: src/components/layout/navigation/TokenNavigation.tsx:180
-#: src/views/yield-dtf/overview/components/backing/index.tsx:99
+#: src/views/yield-dtf/overview/components/backing/index.tsx:100
 msgid "Backing & Risk"
 msgstr ""
 
@@ -1679,14 +1761,14 @@ msgstr ""
 msgid "Backups"
 msgstr ""
 
-#: src/components/ui/swap.tsx:218
+#: src/components/ui/swap.tsx:226
 #: src/views/index-dtf/issuance/async-mint/steps/configure-mint.tsx:218
 #: src/views/portfolio-page/components/available-rewards.tsx:122
 #: src/views/portfolio-page/components/dtf-positions.tsx:134
 #: src/views/portfolio-page/components/pending-withdrawals.tsx:338
 #: src/views/portfolio-page/components/rsr-section.tsx:47
 #: src/views/portfolio-page/components/staked-positions.tsx:85
-#: src/views/portfolio-page/components/vote-locked-positions.tsx:223
+#: src/views/portfolio-page/components/vote-locked-positions.tsx:244
 #: src/views/yield-dtf/issuance/components/zapV2/input/ZapInputMaxButton.tsx:22
 #: src/views/yield-dtf/issuance/components/zapV2/output/ZapOutputBalance.tsx:14
 #: src/views/yield-dtf/staking/components/stake/stake-input.tsx:58
@@ -1831,15 +1913,15 @@ msgstr ""
 msgid "Because the Reserve protocol is built using smart contracts, it's possible that undiscovered bugs or vulnerabilities in these contracts could be exploited, resulting in loss of user funds. Accordingly, the protocol's contracts undergo <0>regular and rigorous security audits.</0>"
 msgstr ""
 
-#: src/views/index-dtf/components/confirm-eligibility-modal.tsx:182
+#: src/views/index-dtf/components/confirm-eligibility-modal.tsx:192
 msgid "Before continuing, please confirm the following"
 msgstr ""
 
-#: src/views/index-dtf/components/confirm-eligibility-modal.tsx:170
+#: src/views/index-dtf/components/confirm-eligibility-modal.tsx:180
 msgid "Before continuing, please confirm the following."
 msgstr ""
 
-#: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:175
+#: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:174
 msgid "Before using automated minting"
 msgstr ""
 
@@ -1968,12 +2050,12 @@ msgstr ""
 msgid "Bridge RSR to BSC"
 msgstr ""
 
-#: src/views/index-dtf/overview/components/basket-overview/bridge-label.tsx:65
+#: src/views/index-dtf/overview/components/basket-overview/bridge-label.tsx:66
 #: src/views/index-dtf/overview/components/index-token-address.tsx:86
 msgid "Bridged"
 msgstr ""
 
-#: src/views/index-dtf/overview/components/basket-overview/bridge-info-dialog.tsx:207
+#: src/views/index-dtf/overview/components/basket-overview/bridge-info-dialog.tsx:214
 msgid "Bridged asset (held in basket)"
 msgstr ""
 
@@ -2109,7 +2191,7 @@ msgstr ""
 msgid "Can I unstake my RSR anytime?"
 msgstr ""
 
-#: src/views/index-dtf/deploy/components/deploy-coming-soon.tsx:137
+#: src/views/index-dtf/deploy/components/deploy-coming-soon.tsx:149
 msgid "Can you describe the DTF you want to create? *"
 msgstr ""
 
@@ -2194,7 +2276,7 @@ msgstr ""
 msgid "Chain"
 msgstr ""
 
-#: src/components/ui/seamless-transaction.tsx:41
+#: src/components/ui/seamless-transaction.tsx:42
 msgid "Chain {targetChain}"
 msgstr ""
 
@@ -2202,12 +2284,12 @@ msgstr ""
 msgid "Chain must be either Mainnet, Base or Binance Smart Chain"
 msgstr ""
 
-#: src/components/account/index.tsx:47
+#: src/components/account/index.tsx:50
 msgid "Chain: {chainId}"
 msgstr ""
 
 #: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:102
-#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:214
+#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:217
 #: src/views/index-dtf/governance/views/proposal/components/vote-modal.tsx:84
 msgid "Challenge"
 msgstr ""
@@ -2282,9 +2364,13 @@ msgstr ""
 msgid "Checking voting power..."
 msgstr ""
 
-#: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:274
-#: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:387
+#: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:273
+#: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:386
 msgid "Checking wallet..."
+msgstr ""
+
+#: src/components/vote-lock/migration/migration-modal.tsx:109
+msgid "Checking your redemption..."
 msgstr ""
 
 #: src/components/rtoken-setup/governance/GovernanceSetup.tsx:52
@@ -2346,16 +2432,17 @@ msgstr ""
 msgid "Clarified in H.8/H.9 that the LCAP token contracts are based on the Reserve Index Protocol factory smart contracts, which have been audited by Trust Security, Cantina, and Trail of Bits with no critical issues ever found."
 msgstr ""
 
-#: src/views/portfolio-page/index.tsx:114
+#: src/views/portfolio-page/index.tsx:116
 msgid "Clear"
 msgstr ""
 
 #: src/views/index-dtf/deploy/steps/confirm-deploy/manual/components/approve-all-deploy-button.tsx:118
-#: src/views/index-dtf/issuance/manual/components/approve-all-button.tsx:110
+#: src/views/index-dtf/issuance/manual/components/approve-all-button.tsx:111
 msgid "Click retry or use individual approve buttons below."
 msgstr ""
 
 #: src/components/video-modal/index.tsx:58
+#: src/components/vote-lock/migration/migration-modal.tsx:290
 #: src/views/index-dtf/overview/components/charts/candlestick-tooltip.tsx:36
 #: src/views/index-dtf/overview/components/video-library/series-modal.tsx:129
 msgid "Close"
@@ -2365,7 +2452,11 @@ msgstr ""
 msgid "Close DTF pages"
 msgstr ""
 
-#: src/components/layout/header/components/mobile-navigation-drawer.tsx:226
+#: src/components/vote-lock/migration/migration-modal.tsx:152
+msgid "Close migration"
+msgstr ""
+
+#: src/components/layout/header/components/mobile-navigation-drawer.tsx:227
 msgid "Close navigation menu"
 msgstr ""
 
@@ -2383,6 +2474,7 @@ msgid "Collapse orders"
 msgstr ""
 
 #: src/views/explorer/components/collaterals/index.tsx:80
+#: src/views/yield-dtf/overview/components/backing/underlying-fees/fees-table.tsx:217
 msgid "Collateral"
 msgstr ""
 
@@ -2417,7 +2509,7 @@ msgstr ""
 msgid "Collateral Plugin Wrappers"
 msgstr ""
 
-#: src/components/rtoken-setup/basket/CollateralModal.tsx:120
+#: src/components/rtoken-setup/basket/CollateralModal.tsx:117
 msgid "Collateral Plugins"
 msgstr ""
 
@@ -2438,7 +2530,7 @@ msgstr ""
 msgid "Collateral token"
 msgstr ""
 
-#: src/views/yield-dtf/overview/components/backing/backing-buffer.tsx:86
+#: src/views/yield-dtf/overview/components/backing/backing-buffer.tsx:85
 msgid "Collateral yield is distributed as revenue when the backing buffer is full"
 msgstr ""
 
@@ -2550,7 +2642,7 @@ msgstr ""
 msgid "Configure your vote"
 msgstr ""
 
-#: src/views/index-dtf/components/confirm-eligibility-modal.tsx:267
+#: src/views/index-dtf/components/confirm-eligibility-modal.tsx:278
 #: src/views/index-dtf/deploy/components/next-button.tsx:90
 #: src/views/index-dtf/governance/views/propose/basket/components/proposal-basket-advance-settings.tsx:152
 msgid "Confirm"
@@ -2585,13 +2677,17 @@ msgstr ""
 msgid "Confirm delegate"
 msgstr ""
 
+#: src/components/vote-lock/migration/migration-modal.tsx:103
+msgid "Confirm in wallet..."
+msgstr ""
+
 #: src/views/yield-dtf/issuance/components/zapV2/submit/ZapConfirmButton.tsx:31
-#: src/views/yield-dtf/issuance/components/zapV2/submit/ZapConfirmButton.tsx:72
+#: src/views/yield-dtf/issuance/components/zapV2/submit/ZapConfirmButton.tsx:73
 msgid "Confirm Mint"
 msgstr ""
 
 #: src/views/yield-dtf/issuance/components/zapV2/submit/ZapConfirmButton.tsx:32
-#: src/views/yield-dtf/issuance/components/zapV2/submit/ZapConfirmButton.tsx:73
+#: src/views/yield-dtf/issuance/components/zapV2/submit/ZapConfirmButton.tsx:74
 msgid "Confirm Redeem"
 msgstr ""
 
@@ -2623,6 +2719,7 @@ msgstr ""
 msgid "Confirming transaction"
 msgstr ""
 
+#: src/components/vote-lock/migration/migration-modal.tsx:107
 #: src/views/index-dtf/issuance/manual/components/index-manual-issuance.tsx:202
 msgid "Confirming transaction..."
 msgstr ""
@@ -2648,7 +2745,7 @@ msgid "Confirming…"
 msgstr ""
 
 #. placeholder {0}: form!.tokenName
-#: src/views/index-dtf/deploy/steps/confirm-deploy/success/index.tsx:76
+#: src/views/index-dtf/deploy/steps/confirm-deploy/success/index.tsx:75
 msgid "Congratulations {0} is now live"
 msgstr ""
 
@@ -2656,20 +2753,24 @@ msgstr ""
 msgid "Congratulations 🎉"
 msgstr ""
 
-#: src/components/account/index.tsx:104
+#: src/components/account/index.tsx:109
 msgid "Connect"
+msgstr ""
+
+#: src/components/vote-lock/migration/migration-card.tsx:233
+msgid "Connect to check"
 msgstr ""
 
 #: src/components/stake-drawer/components/submit-stake-button.tsx:160
 #: src/components/stake-drawer/components/submit-unstake-button.tsx:72
 #: src/views/explorer/components/governance/index.tsx:144
-#: src/views/portfolio-page/components/portfolio-connect-button.tsx:29
+#: src/views/portfolio-page/components/portfolio-connect-button.tsx:20
 msgid "Connect wallet"
 msgstr ""
 
 #: src/components/ui/transaction-button.tsx:57
 #: src/components/ui/transaction.tsx:44
-#: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:357
+#: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:356
 msgid "Connect Wallet"
 msgstr ""
 
@@ -2681,15 +2782,15 @@ msgstr ""
 msgid "Connect your wallet to set a delegate after vote-locking."
 msgstr ""
 
-#: src/views/portfolio-page/index.tsx:38
+#: src/views/portfolio-page/index.tsx:40
 msgid "Connect your wallet to view your portfolio"
 msgstr ""
 
-#: src/views/index-dtf/deploy/components/deploy-coming-soon.tsx:182
+#: src/views/index-dtf/deploy/components/deploy-coming-soon.tsx:206
 msgid "Contact me"
 msgstr ""
 
-#: src/views/index-dtf/overview/components/eligibility-card.tsx:195
+#: src/views/index-dtf/overview/components/eligibility-card.tsx:189
 msgid "Contact us for eligibility"
 msgstr ""
 
@@ -2698,8 +2799,13 @@ msgstr ""
 msgid "Contested"
 msgstr ""
 
-#: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:389
+#: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:388
 msgid "Continue"
+msgstr ""
+
+#: src/components/vote-lock/migration/migration-card.tsx:183
+#: src/views/portfolio-page/components/vote-locked-positions.tsx:284
+msgid "Continue migration"
 msgstr ""
 
 #: src/components/layout/navigation/TokenNavigation.tsx:221
@@ -2749,11 +2855,11 @@ msgid "Copied to clipboard!"
 msgstr ""
 
 #: src/components/section-anchor.tsx:14
-#: src/views/yield-dtf/issuance/components/zapV2/minters-modal/SocialMediaInput.tsx:194
+#: src/views/yield-dtf/issuance/components/zapV2/minters-modal/SocialMediaInput.tsx:199
 msgid "Copied!"
 msgstr ""
 
-#: src/views/yield-dtf/issuance/components/zapV2/minters-modal/SocialMediaInput.tsx:194
+#: src/views/yield-dtf/issuance/components/zapV2/minters-modal/SocialMediaInput.tsx:199
 msgid "Copy"
 msgstr ""
 
@@ -2786,7 +2892,11 @@ msgstr ""
 msgid "Corrected F.6 to reflect that the CFB token has a dynamic collateral-based supply mechanism, not a fixed supply."
 msgstr ""
 
-#: src/views/yield-dtf/issuance/components/zapV2/minters-modal/SocialMediaInput.tsx:203
+#: src/views/yield-dtf/overview/components/backing/underlying-fees.tsx:76
+msgid "Could not refresh, showing the last data"
+msgstr ""
+
+#: src/views/yield-dtf/issuance/components/zapV2/minters-modal/SocialMediaInput.tsx:208
 msgid "Count me in"
 msgstr ""
 
@@ -2799,19 +2909,19 @@ msgstr ""
 msgid "cow"
 msgstr ""
 
-#: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:193
+#: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:192
 msgid "CoW routes"
 msgstr ""
 
-#: src/views/index-dtf/auctions/views/rebalance/components/cowbot/use-cowbot-query.ts:90
+#: src/views/index-dtf/auctions/views/rebalance/components/cowbot/use-cowbot-query.ts:93
 msgid "CowBot encountered errors"
 msgstr ""
 
-#: src/views/index-dtf/auctions/views/rebalance/components/cowbot/use-cowbot-query.ts:112
+#: src/views/index-dtf/auctions/views/rebalance/components/cowbot/use-cowbot-query.ts:115
 msgid "CowBot submitted {newOrdersCount} new order"
 msgstr ""
 
-#: src/views/index-dtf/auctions/views/rebalance/components/cowbot/use-cowbot-query.ts:113
+#: src/views/index-dtf/auctions/views/rebalance/components/cowbot/use-cowbot-query.ts:116
 msgid "CowBot submitted {newOrdersCount} new orders"
 msgstr ""
 
@@ -3062,7 +3172,7 @@ msgstr ""
 msgid "Current units"
 msgstr ""
 
-#: src/views/yield-dtf/overview/components/backing/backing-buffer.tsx:68
+#: src/views/yield-dtf/overview/components/backing/backing-buffer.tsx:67
 msgid "Current value in buffer:"
 msgstr ""
 
@@ -3070,7 +3180,7 @@ msgstr ""
 msgid "Current Version (v2)"
 msgstr ""
 
-#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:329
+#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:335
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalDetailStats.tsx:104
 msgid "Current votes"
 msgstr ""
@@ -3079,7 +3189,7 @@ msgstr ""
 msgid "Custodial Risks: Ondo Tokenized Stocks represent claims on SPVs and other structures that hold underlying equity positions through custodians. DTF exposure therefore depends on the operational integrity and solvency of third parties. Any failure, suspension, error, insolvency, fraud, cyber incident, or transfer restriction affecting these parties could result in delayed settlement, blocked transfers, impaired redemptions, forced liquidation, or partial or total loss of value for the DTF’s holdings."
 msgstr ""
 
-#: src/components/ui/swap.tsx:506
+#: src/components/ui/swap.tsx:514
 #: src/views/index-dtf/deploy/components/toggle-group-preset.tsx:31
 #: src/views/yield-dtf/issuance/components/zapV2/settings/ZapSettingsCustomSlippage.tsx:24
 msgid "Custom"
@@ -3117,7 +3227,7 @@ msgstr ""
 msgid "Dark"
 msgstr ""
 
-#: src/views/portfolio-page/components/transactions.tsx:90
+#: src/views/portfolio-page/components/transactions.tsx:91
 msgid "Date"
 msgstr ""
 
@@ -3231,7 +3341,7 @@ msgstr ""
 msgid "Delegate"
 msgstr ""
 
-#: src/views/portfolio-page/components/voting-power.tsx:115
+#: src/views/portfolio-page/components/voting-power.tsx:116
 msgid "Delegate Address"
 msgstr ""
 
@@ -3343,7 +3453,7 @@ msgstr ""
 #: src/views/explorer/components/governance/index.tsx:84
 #: src/views/index-dtf/governance/views/proposal/components/proposal-detail-content.tsx:15
 #: src/views/index-dtf/governance/views/proposal/components/proposal-detail-content.tsx:41
-#: src/views/portfolio-page/components/transactions.tsx:113
+#: src/views/portfolio-page/components/transactions.tsx:114
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalDetailContent.tsx:45
 #: src/views/yield-dtf/governance/views/proposal/components/ConfirmProposalForm.tsx:70
 #: src/views/yield-dtf/overview/components/hero/token-mandate.tsx:25
@@ -3384,7 +3494,7 @@ msgstr ""
 msgid "Discord Link"
 msgstr ""
 
-#: src/views/yield-dtf/issuance/components/zapV2/minters-modal/SocialMediaInput.tsx:106
+#: src/views/yield-dtf/issuance/components/zapV2/minters-modal/SocialMediaInput.tsx:107
 msgid "Discord username"
 msgstr ""
 
@@ -3416,7 +3526,7 @@ msgstr ""
 msgid "Dismiss suggestion"
 msgstr ""
 
-#. placeholder {0}: rToken?.symbol
+#. placeholder {0}: rToken?.symbol ?? ''
 #: src/views/yield-dtf/issuance/components/wrapping/DisplayMode.tsx:19
 msgid "Display only {0} related collaterals"
 msgstr ""
@@ -3489,6 +3599,11 @@ msgstr ""
 msgid "Don’t see your token?"
 msgstr ""
 
+#: src/components/vote-lock/migration/migration-card.tsx:131
+#: src/components/vote-lock/migration/migration-modal.tsx:246
+msgid "Done"
+msgstr ""
+
 #: src/views/index-dtf/factsheet/components/net-performance-summary.tsx:119
 msgid "Download as CSV"
 msgstr ""
@@ -3503,7 +3618,7 @@ msgid "Download snapshot"
 msgstr ""
 
 #: src/views/index-dtf/manage/components/manage-about.tsx:37
-#: src/views/index-dtf/overview/components/dtf-downloadable-resources.tsx:142
+#: src/views/index-dtf/overview/components/dtf-downloadable-resources.tsx:158
 msgid "Downloadable resources"
 msgstr ""
 
@@ -3642,7 +3757,7 @@ msgstr ""
 msgid "DTFs where I'm a Guardian"
 msgstr ""
 
-#: src/views/yield-dtf/issuance/components/zapV2/submit/ZapRevokeButton.tsx:49
+#: src/views/yield-dtf/issuance/components/zapV2/submit/ZapRevokeButton.tsx:52
 msgid "Due to how USDT approvals are managed, we need to reset your current allowance to zero before updating it to a new value. This step is necessary for completing your transaction."
 msgstr ""
 
@@ -3719,7 +3834,7 @@ msgstr ""
 msgid "Dutch trade"
 msgstr ""
 
-#: src/views/index-dtf/deploy/components/deploy-coming-soon.tsx:141
+#: src/views/index-dtf/deploy/components/deploy-coming-soon.tsx:153
 msgid "e.g. tokens to be included, strategy, methodology"
 msgstr ""
 
@@ -3790,13 +3905,13 @@ msgstr ""
 msgid "Eligibility and how to get started."
 msgstr ""
 
-#: src/views/index-dtf/overview/components/eligibility-card.tsx:133
-#: src/views/yield-dtf/issuance/components/zapV2/minters-modal/SocialMediaInput.tsx:111
+#: src/views/index-dtf/overview/components/eligibility-card.tsx:126
+#: src/views/yield-dtf/issuance/components/zapV2/minters-modal/SocialMediaInput.tsx:112
 msgid "Email"
 msgstr ""
 
 #: src/views/index-dtf/deploy/components/social-media-input.tsx:39
-#: src/views/yield-dtf/issuance/components/zapV2/minters-modal/SocialMediaInput.tsx:112
+#: src/views/yield-dtf/issuance/components/zapV2/minters-modal/SocialMediaInput.tsx:113
 msgid "Email address"
 msgstr ""
 
@@ -4052,7 +4167,7 @@ msgstr ""
 msgid "ETH address"
 msgstr ""
 
-#: src/components/ui/swap.tsx:272
+#: src/components/ui/swap.tsx:280
 msgid "Evaluating slippage"
 msgstr ""
 
@@ -4093,7 +4208,7 @@ msgstr ""
 
 #: src/views/index-dtf/governance/components/proposal-preview/raw-call-preview.tsx:44
 #: src/views/index-dtf/governance/components/proposal-preview/rebalance-preview/legacy-basket-proposal-preview.tsx:317
-#: src/views/index-dtf/governance/components/proposal-preview/unknown-contract-preview.tsx:72
+#: src/views/index-dtf/governance/components/proposal-preview/unknown-contract-preview.tsx:75
 #: src/views/index-dtf/governance/views/propose/basket/components/proposal-basket-preview.tsx:400
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ContractProposalDetails.tsx:48
 msgid "Executable code"
@@ -4170,6 +4285,10 @@ msgstr ""
 msgid "Exit Deployer"
 msgstr ""
 
+#: src/views/yield-dtf/overview/components/backing/underlying-fees/fees-table.tsx:182
+msgid "Exited"
+msgstr ""
+
 #: src/views/index-dtf/overview/components/index-disclousure.tsx:99
 msgid "Expanded J.1 to include energy usage data and the sources and methodologies used for its calculation."
 msgstr ""
@@ -4192,7 +4311,7 @@ msgstr ""
 msgid "Expected volatility"
 msgstr ""
 
-#: src/views/explorer/components/governance/filters.tsx:23
+#: src/views/explorer/components/governance/filters.tsx:24
 #: src/views/index-dtf/governance/views/proposal/components/proposal-deadline-alert.tsx:35
 #: src/views/index-dtf/issuance/async-mint/components/leg-row.tsx:74
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalAlert.tsx:56
@@ -4212,7 +4331,7 @@ msgstr ""
 msgid "Explore"
 msgstr ""
 
-#: src/views/portfolio-page/index.tsx:73
+#: src/views/portfolio-page/index.tsx:75
 msgid "Explore DTFs"
 msgstr ""
 
@@ -4229,7 +4348,7 @@ msgstr ""
 msgid "Explore yield opportunities for {0}"
 msgstr ""
 
-#: src/views/portfolio-page/components/transactions.tsx:132
+#: src/views/portfolio-page/components/transactions.tsx:133
 msgid "Explorer"
 msgstr ""
 
@@ -4263,7 +4382,7 @@ msgstr ""
 msgid "Failed"
 msgstr ""
 
-#: src/components/ui/seamless-transaction.tsx:92
+#: src/components/ui/seamless-transaction.tsx:93
 msgid "Failed to connect wallet"
 msgstr ""
 
@@ -4271,7 +4390,7 @@ msgstr ""
 msgid "Failed to find a route"
 msgstr ""
 
-#: src/views/portfolio-page/index.tsx:155
+#: src/views/portfolio-page/index.tsx:172
 msgid "Failed to load portfolio data"
 msgstr ""
 
@@ -4290,7 +4409,7 @@ msgstr ""
 msgid "Failed to read CSV file"
 msgstr ""
 
-#: src/components/ui/seamless-transaction.tsx:72
+#: src/components/ui/seamless-transaction.tsx:73
 msgid "Failed to switch to {chainName}"
 msgstr ""
 
@@ -4322,6 +4441,10 @@ msgstr ""
 
 #: src/views/index-dtf/overview/components/zap-mint/zap-details.tsx:91
 msgid "Fee"
+msgstr ""
+
+#: src/views/yield-dtf/overview/components/backing/underlying-fees.tsx:164
+msgid "Fee data for this period is not available right now."
 msgstr ""
 
 #: src/views/index-dtf/deploy/steps/revenue/index.tsx:119
@@ -4359,6 +4482,10 @@ msgstr ""
 
 #: src/views/index-dtf/overview/components/fees-stats.tsx:128
 msgid "Fees & Stats"
+msgstr ""
+
+#: src/views/yield-dtf/overview/components/backing/underlying-fees.tsx:99
+msgid "Fees charged by the protocols and curators of the collateral. They are already reflected in the collateral yield and are not deducted again from the APY shown."
 msgstr ""
 
 #: src/views/index-dtf/settings/components/distribute-fees.tsx:85
@@ -4416,7 +4543,7 @@ msgstr ""
 msgid "File size exceeds 1MB limit. Please choose a smaller file."
 msgstr ""
 
-#: src/views/index-dtf/deploy/components/deploy-coming-soon.tsx:103
+#: src/views/index-dtf/deploy/components/deploy-coming-soon.tsx:115
 msgid "Fill out the information below and ABC Labs will reach out!"
 msgstr ""
 
@@ -4449,7 +4576,7 @@ msgstr ""
 msgid "Final price in:"
 msgstr ""
 
-#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:331
+#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:337
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalDetailStats.tsx:105
 msgid "Final votes"
 msgstr ""
@@ -4464,11 +4591,16 @@ msgstr ""
 msgid "Finalize DAO proposal"
 msgstr ""
 
-#: src/views/yield-dtf/issuance/components/zapV2/submit/ZapApprovalButton.tsx:59
-#: src/views/yield-dtf/issuance/components/zapV2/submit/ZapConfirmButton.tsx:70
-#: src/views/yield-dtf/issuance/components/zapV2/submit/ZapRevokeButton.tsx:42
+#: src/views/yield-dtf/issuance/components/zapV2/submit/ZapApprovalButton.tsx:60
+#: src/views/yield-dtf/issuance/components/zapV2/submit/ZapConfirmButton.tsx:71
+#: src/views/yield-dtf/issuance/components/zapV2/submit/ZapRevokeButton.tsx:43
 #: src/views/yield-dtf/issuance/components/zapV2/submit/ZapSubmitButton.tsx:58
 msgid "Finding route..."
+msgstr ""
+
+#: src/components/vote-lock/migration/migration-card.tsx:148
+#: src/components/vote-lock/migration/migration-modal.tsx:128
+msgid "Finish re-locking your {symbol}"
 msgstr ""
 
 #: src/views/earn/views/yield-dtf/index.tsx:19
@@ -4479,7 +4611,7 @@ msgstr ""
 msgid "Fixed Platform Share"
 msgstr ""
 
-#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:255
+#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:261
 #: src/views/index-dtf/governance/views/proposal/components/vote-modal.tsx:77
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalDetailStats.tsx:203
 #: src/views/yield-dtf/governance/views/proposal-detail/components/VoteModal.tsx:54
@@ -4601,8 +4733,8 @@ msgstr ""
 msgid "Get quote"
 msgstr ""
 
-#: src/views/index-dtf/deploy/steps/confirm-deploy/success/index.tsx:105
-#: src/views/index-dtf/overview/components/index-ctas-overview-mobile.tsx:214
+#: src/views/index-dtf/deploy/steps/confirm-deploy/success/index.tsx:104
+#: src/views/index-dtf/overview/components/index-ctas-overview-mobile.tsx:218
 msgid "Go to DTF overview"
 msgstr ""
 
@@ -4624,7 +4756,7 @@ msgid "Gov. Token"
 msgstr ""
 
 #. placeholder {0}: indexDTF.token.symbol
-#: src/views/index-dtf/governance/components/governance-vote-lock.tsx:395
+#: src/views/index-dtf/governance/components/governance-vote-lock.tsx:396
 msgid "Govern ${0}"
 msgstr ""
 
@@ -4650,6 +4782,10 @@ msgstr ""
 #: src/views/yield-dtf/overview/components/backing/risks.tsx:83
 #: src/views/yield-dtf/settings/components/navigation-sidebar.tsx:17
 msgid "Governance"
+msgstr ""
+
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-folio-governance-upgrade.tsx:59
+msgid "Governance 1.1.0 upgrade proposal created"
 msgstr ""
 
 #: src/views/index-dtf/deploy/components/deploy-accordion.tsx:81
@@ -4710,9 +4846,13 @@ msgid "Governance Stats"
 msgstr ""
 
 #: src/views/index-dtf/settings/components/index-settings-governance-token.tsx:16
-#: src/views/portfolio-page/components/vote-locked-positions.tsx:137
+#: src/views/portfolio-page/components/vote-locked-positions.tsx:149
 #: src/views/portfolio-page/components/voting-power.tsx:47
 msgid "Governance Token"
+msgstr ""
+
+#: src/views/index-dtf/governance/components/proposal-preview/vote-lock-upgrade-preview.tsx:67
+msgid "Governance upgrade to {VOTE_LOCK_UPGRADE_TO}"
 msgstr ""
 
 #: src/views/index-dtf/governance/views/propose/components/proposal-type-selector.tsx:114
@@ -4738,7 +4878,7 @@ msgstr ""
 #: src/views/earn/views/index-dtf/components/vote-lock-positions.tsx:281
 #: src/views/earn/views/yield-dtf/components/staking-positions.tsx:141
 #: src/views/portfolio-page/components/staked-positions.tsx:42
-#: src/views/portfolio-page/components/vote-locked-positions.tsx:192
+#: src/views/portfolio-page/components/vote-locked-positions.tsx:213
 msgid "Governs"
 msgstr ""
 
@@ -4857,7 +4997,7 @@ msgstr ""
 msgid "How are APYs so high?"
 msgstr ""
 
-#: src/views/index-dtf/deploy/components/deploy-coming-soon.tsx:116
+#: src/views/index-dtf/deploy/components/deploy-coming-soon.tsx:128
 msgid "How can we reach you? *"
 msgstr ""
 
@@ -4869,7 +5009,7 @@ msgstr ""
 msgid "How do vote-lock rewards work?"
 msgstr ""
 
-#: src/views/index-dtf/deploy/components/deploy-coming-soon.tsx:155
+#: src/views/index-dtf/deploy/components/deploy-coming-soon.tsx:167
 msgid "How do you plan to get people to invest in your DTF?"
 msgstr ""
 
@@ -4940,15 +5080,15 @@ msgstr ""
 msgid "How to buy an entire portfolio in a single token."
 msgstr ""
 
-#: src/views/index-dtf/components/confirm-eligibility-modal.tsx:222
+#: src/views/index-dtf/components/confirm-eligibility-modal.tsx:232
 msgid "I confirm I am not located in, a resident of, or a citizen of a <0>restricted jurisdiction</0>."
 msgstr ""
 
-#: src/views/index-dtf/components/confirm-eligibility-modal.tsx:254
+#: src/views/index-dtf/components/confirm-eligibility-modal.tsx:264
 msgid "I confirm that I am allowed to purchase tokenized stocks under the laws of my country of residence."
 msgstr ""
 
-#: src/views/index-dtf/components/confirm-eligibility-modal.tsx:192
+#: src/views/index-dtf/components/confirm-eligibility-modal.tsx:202
 msgid "I have read and agree to the <0>Terms of Use</0>."
 msgstr ""
 
@@ -5033,11 +5173,11 @@ msgstr ""
 msgid "Included the token abbreviation \"CFB Token\" in the title."
 msgstr ""
 
-#: src/views/portfolio-page/components/voting-power.tsx:149
+#: src/views/portfolio-page/components/voting-power.tsx:150
 msgid "Including any power delegated to me."
 msgstr ""
 
-#: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:281
+#: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:280
 msgid "Incompatible wallet"
 msgstr ""
 
@@ -5045,7 +5185,7 @@ msgstr ""
 msgid "Increase"
 msgstr ""
 
-#: src/views/explorer/components/governance/filters.tsx:56
+#: src/views/explorer/components/governance/filters.tsx:57
 msgid "Index"
 msgstr ""
 
@@ -5347,7 +5487,7 @@ msgstr ""
 msgid "Join the conversation or ask questions"
 msgstr ""
 
-#: src/views/index-dtf/components/confirm-eligibility-modal.tsx:237
+#: src/views/index-dtf/components/confirm-eligibility-modal.tsx:247
 msgid "Jurisdiction-Based Prohibitions:"
 msgstr ""
 
@@ -5355,7 +5495,7 @@ msgstr ""
 msgid "just now"
 msgstr ""
 
-#: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:100
+#: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:99
 msgid "Known supported wallets"
 msgstr ""
 
@@ -5403,14 +5543,14 @@ msgstr ""
 msgid "Launching..."
 msgstr ""
 
-#: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:339
-#: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:370
+#: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:338
+#: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:369
 #: src/views/index-dtf/overview/components/index-ctas-overview-mobile.tsx:63
-#: src/views/index-dtf/overview/components/landing-mint/index.tsx:143
+#: src/views/index-dtf/overview/components/landing-mint/index.tsx:146
 msgid "Learn More"
 msgstr ""
 
-#: src/views/index-dtf/overview/components/eligibility-card.tsx:211
+#: src/views/index-dtf/overview/components/eligibility-card.tsx:205
 msgid "Learn more about eligibility requirements."
 msgstr ""
 
@@ -5442,6 +5582,10 @@ msgstr ""
 msgid "Leftover dust"
 msgstr ""
 
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-retire-vote-lock.tsx:70
+msgid "Legacy vote-lock vault retirement proposal created"
+msgstr ""
+
 #: src/components/layout/header/components/header-actions-menu.tsx:113
 msgid "Light"
 msgstr ""
@@ -5464,6 +5608,11 @@ msgstr ""
 
 #: src/views/index-dtf/overview/components/index-about-meta.tsx:86
 msgid "Links"
+msgstr ""
+
+#. placeholder {0}: shortenAddress(row.registry)
+#: src/views/index-dtf/governance/components/proposal-preview/vote-lock-upgrade-preview.tsx:54
+msgid "Links the version registry {0}"
 msgstr ""
 
 #: src/views/index-dtf/manage/components/manage-about.tsx:40
@@ -5495,7 +5644,7 @@ msgstr ""
 msgid "Loading current allowed actions..."
 msgstr ""
 
-#: src/components/ui/swap.tsx:274
+#: src/components/ui/swap.tsx:282
 msgid "Loading DTF"
 msgstr ""
 
@@ -5566,13 +5715,42 @@ msgstr ""
 msgid "Loading..."
 msgstr ""
 
-#: src/views/index-dtf/overview/components/eligibility-card.tsx:173
+#: src/views/index-dtf/overview/components/eligibility-card.tsx:167
 msgid "Location restricted"
+msgstr ""
+
+#: src/components/vote-lock/migration/migration-modal.tsx:59
+#: src/components/vote-lock/migration/migration-modal.tsx:87
+msgid "Lock {symbol} in {vault}"
 msgstr ""
 
 #. placeholder {0}: dtf.stToken?.underlying.symbol ?? 'Unknown'
 #: src/views/index-dtf/overview/components/index-governance-overview.tsx:86
 msgid "Lock ${0} to Govern"
+msgstr ""
+
+#: src/components/vote-lock/migration/migration-modal.tsx:73
+msgid "Lock complete"
+msgstr ""
+
+#: src/views/index-dtf/components/vote-lock-migration/upcoming-vote-lock.tsx:111
+msgid "Lock in {vault}"
+msgstr ""
+
+#: src/components/vote-lock/migration/migration-modal.tsx:82
+msgid "Lock the {symbol} you received in the {vault} vault."
+msgstr ""
+
+#: src/components/vote-lock/migration/migration-modal.tsx:81
+msgid "Lock the RSR you received in the shared vlRSR vault."
+msgstr ""
+
+#: src/components/vote-lock/migration/migration-modal.tsx:68
+msgid "Lock your {symbol} in the {vault} vault."
+msgstr ""
+
+#: src/components/vote-lock/migration/migration-modal.tsx:67
+msgid "Lock your RSR in the shared vlRSR vault."
 msgstr ""
 
 #: src/views/earn/views/index-dtf/components/faq.tsx:184
@@ -5605,7 +5783,7 @@ msgstr ""
 msgid "Looking for Yield DTFs?"
 msgstr ""
 
-#: src/views/index-dtf/deploy/components/deploy-coming-soon.tsx:200
+#: src/views/index-dtf/deploy/components/deploy-coming-soon.tsx:229
 msgid "Looking to create a Yield DTF?"
 msgstr ""
 
@@ -5632,7 +5810,7 @@ msgstr ""
 msgid "Main"
 msgstr ""
 
-#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:160
+#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:163
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalDetailStats.tsx:156
 msgid "Majority support"
 msgstr ""
@@ -5651,6 +5829,10 @@ msgstr ""
 
 #: src/views/index-dtf/auctions/views/rebalance/components/manage-weights/manage-weights-hero.tsx:17
 msgid "Manage weights before proceeding"
+msgstr ""
+
+#: src/views/yield-dtf/overview/components/backing/underlying-fees/fees-table.tsx:65
+msgid "Management"
 msgstr ""
 
 #: src/components/rtoken-setup/token/TokenForm.tsx:39
@@ -5678,7 +5860,7 @@ msgstr ""
 msgid "Mandate Update"
 msgstr ""
 
-#: src/views/index-dtf/governance/components/governance-vote-lock.tsx:424
+#: src/views/index-dtf/governance/components/governance-vote-lock.tsx:425
 msgid "Manual"
 msgstr ""
 
@@ -5698,7 +5880,7 @@ msgstr ""
 msgid "Manually estimated APY calculated from basket averaged yield."
 msgstr ""
 
-#: src/views/index-dtf/overview/components/dtf-downloadable-resources.tsx:69
+#: src/views/index-dtf/overview/components/dtf-downloadable-resources.tsx:85
 msgid "Markdown file for your LLM"
 msgstr ""
 
@@ -5736,7 +5918,7 @@ msgstr ""
 msgid "Market closed"
 msgstr ""
 
-#: src/components/ui/swap.tsx:228
+#: src/components/ui/swap.tsx:236
 #: src/views/index-dtf/issuance/async-mint/steps/configure-mint.tsx:232
 #: src/views/yield-dtf/issuance/components/zapV2/input/ZapInputMaxButton.tsx:39
 #: src/views/yield-dtf/staking/components/stake/stake-input.tsx:67
@@ -5753,7 +5935,7 @@ msgstr ""
 msgid "Max precision is 0.01%"
 msgstr ""
 
-#: src/components/ui/swap.tsx:479
+#: src/components/ui/swap.tsx:487
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1284
 msgid "Max slippage"
 msgstr ""
@@ -5858,6 +6040,22 @@ msgstr ""
 #: src/views/index-dtf/deploy/components/deploy-accordion.tsx:67
 #: src/views/index-dtf/deploy/components/deploy-accordion.tsx:68
 msgid "Metadata"
+msgstr ""
+
+#: src/views/portfolio-page/components/vote-locked-positions.tsx:286
+msgid "Migrate"
+msgstr ""
+
+#: src/components/vote-lock/migration/migration-modal.tsx:126
+msgid "Migration complete"
+msgstr ""
+
+#: src/components/vote-lock/migration/migration-card.tsx:141
+msgid "Migration in progress"
+msgstr ""
+
+#: src/views/portfolio-page/components/vote-locked-positions.tsx:165
+msgid "Migration needed"
 msgstr ""
 
 #: src/views/index-dtf/overview/components/zap-mint/zap-details.tsx:132
@@ -5989,7 +6187,7 @@ msgstr ""
 msgid "Mint Fee must be 5% or less"
 msgstr ""
 
-#: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:96
+#: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:95
 msgid "Mint large USDC amounts through batched CoW Swap orders, or redeem DTFs into the underlying assets. Recommended for market makers or transactions over 50,000 USDC."
 msgstr ""
 
@@ -6066,7 +6264,7 @@ msgid "Modified"
 msgstr ""
 
 #: src/views/portfolio-page/components/staked-positions.tsx:139
-#: src/views/portfolio-page/components/vote-locked-positions.tsx:128
+#: src/views/portfolio-page/components/vote-locked-positions.tsx:132
 msgid "Modify"
 msgstr ""
 
@@ -6078,7 +6276,7 @@ msgstr ""
 msgid "More"
 msgstr ""
 
-#: src/views/index-dtf/overview/components/dtf-downloadable-resources.tsx:145
+#: src/views/index-dtf/overview/components/dtf-downloadable-resources.tsx:161
 msgid "More information on what {dtfName} is, what it’s all about, methodology and thesis."
 msgstr ""
 
@@ -6090,16 +6288,16 @@ msgstr ""
 msgid "More RSR per share"
 msgstr ""
 
-#: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:159
+#: src/views/yield-dtf/overview/components/backing/underlying-fees.tsx:94
+msgid "Morpho vaults charge fees by minting new shares, which dilutes holders. Aave and Compound keep part of the interest paid by borrowers before it reaches suppliers. In no case is it a separate payment."
+msgstr ""
+
+#: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:158
 msgid "Most users should use Swap"
 msgstr ""
 
 #: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/form-fields.ts:14
 msgid "Must be 0 or greater"
-msgstr ""
-
-#: src/views/index-dtf/deploy/components/deploy-coming-soon.tsx:31
-msgid "Must be at least 5 characters"
 msgstr ""
 
 #: src/views/index-dtf/manage/components/schema.ts:11
@@ -6118,6 +6316,10 @@ msgstr ""
 msgid "Must be a valid YouTube URL"
 msgstr ""
 
+#: src/views/index-dtf/deploy/components/deploy-coming-soon.tsx:31
+msgid "Must be at least 5 characters"
+msgstr ""
+
 #: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/form-fields.ts:15
 msgid "Must be between 0 and 100"
 msgstr ""
@@ -6125,7 +6327,7 @@ msgstr ""
 #: src/views/home/components/discover-index-dtf/index-dtf-table-columns.tsx:167
 #: src/views/home/components/discover-index-dtf/index-dtf-table-placeholder.tsx:17
 #: src/views/index-dtf/deploy/steps/metadata/form-basic-metadata.tsx:10
-#: src/views/index-dtf/overview/components/eligibility-card.tsx:118
+#: src/views/index-dtf/overview/components/eligibility-card.tsx:111
 #: src/views/index-dtf/settings/components/index-settings-basic.tsx:40
 #: src/views/portfolio-page/components/dtf-positions.tsx:31
 #: src/views/portfolio-page/components/rsr-section.tsx:18
@@ -6145,11 +6347,11 @@ msgstr ""
 msgid "Native"
 msgstr ""
 
-#: src/views/index-dtf/overview/components/basket-overview/bridge-info-dialog.tsx:127
+#: src/views/index-dtf/overview/components/basket-overview/bridge-info-dialog.tsx:128
 msgid "Native asset (reference)"
 msgstr ""
 
-#: src/views/index-dtf/overview/components/basket-overview/bridge-info-dialog.tsx:182
+#: src/views/index-dtf/overview/components/basket-overview/bridge-info-dialog.tsx:189
 msgid "Native L1 Asset"
 msgstr ""
 
@@ -6161,7 +6363,7 @@ msgstr ""
 msgid "NAV Growth"
 msgstr ""
 
-#: src/components/layout/header/components/mobile-navigation-drawer.tsx:239
+#: src/components/layout/header/components/mobile-navigation-drawer.tsx:240
 msgid "Navigation menu"
 msgstr ""
 
@@ -6178,7 +6380,7 @@ msgstr ""
 msgid "Net Performance Summary"
 msgstr ""
 
-#: src/components/account/index.tsx:42
+#: src/components/account/index.tsx:45
 #: src/components/tables/ListedTokensTable.tsx:60
 #: src/views/explorer/components/collaterals/index.tsx:71
 #: src/views/explorer/components/tokens/index.tsx:136
@@ -6251,10 +6453,14 @@ msgstr ""
 msgid "New units"
 msgstr ""
 
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:314
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v4-upgrade.tsx:167
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v5-optimistic-upgrade.tsx:336
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v5-upgrade.tsx:189
 msgid "New version available"
+msgstr ""
+
+#: src/views/index-dtf/components/vote-lock-migration/upcoming-vote-lock.tsx:70
+msgid "New vote-lock vault"
 msgstr ""
 
 #: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:559
@@ -6290,11 +6496,15 @@ msgid "Next video"
 msgstr ""
 
 #: src/views/index-dtf/auctions/views/rebalance/components/rebalance-overview.tsx:74
-#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:167
+#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:170
 #: src/views/portfolio-page/components/active-proposals.tsx:97
 #: src/views/yield-dtf/governance/components/ProposalList.tsx:119
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalDetailStats.tsx:166
 msgid "No"
+msgstr ""
+
+#: src/components/vote-lock/migration/migration-modal.tsx:273
+msgid "No {symbol} left in your wallet to lock."
 msgstr ""
 
 #: src/views/yield-dtf/auctions/auctions-sidebar/Revenue.tsx:36
@@ -6328,10 +6538,10 @@ msgstr ""
 msgid "No collateral swaps were needed for this redeem."
 msgstr ""
 
-#: src/components/charts/area/AreaChart.tsx:132
+#: src/components/charts/area/AreaChart.tsx:131
 #: src/views/home/components/discover-index-dtf/index-dtf-table-columns.tsx:109
 #: src/views/home/components/highlighted-dtfs/feature-card-header.tsx:160
-#: src/views/index-dtf/overview/components/charts/percentage-change.tsx:30
+#: src/views/index-dtf/overview/components/charts/percentage-change.tsx:32
 #: src/views/top100/components/top100-table.tsx:35
 #: src/views/top100/components/top100-table.tsx:43
 msgid "No data"
@@ -6375,6 +6585,10 @@ msgstr ""
 msgid "No holders for this role..."
 msgstr ""
 
+#: src/views/index-dtf/governance/components/proposal-preview/vote-lock-upgrade-preview.tsx:55
+msgid "No initializer"
+msgstr ""
+
 #: src/views/internal/dtf-listed/components/listed-dtf-table.tsx:193
 msgid "No listed DTFs found"
 msgstr ""
@@ -6393,7 +6607,7 @@ msgstr ""
 msgid "No Permissionless Launching Allowed"
 msgstr ""
 
-#: src/components/rtoken-setup/basket/CollateralModal.tsx:154
+#: src/components/rtoken-setup/basket/CollateralModal.tsx:151
 msgid "No plugins available"
 msgstr ""
 
@@ -6409,7 +6623,7 @@ msgstr ""
 msgid "No rebalances found"
 msgstr ""
 
-#: src/views/portfolio-page/index.tsx:59
+#: src/views/portfolio-page/index.tsx:61
 msgid "No Reserve activity found in this wallet"
 msgstr ""
 
@@ -6546,6 +6760,10 @@ msgstr ""
 msgid "Normal Delegate"
 msgstr ""
 
+#: src/views/index-dtf/governance/components/proposal-preview/vote-lock-upgrade-preview.tsx:103
+msgid "Not a registered {VOTE_LOCK_UPGRADE_TO} implementation"
+msgstr ""
+
 #: src/views/yield-dtf/auctions/auctions-sidebar/RevenueAuctionItem.tsx:22
 msgid "Not available"
 msgstr ""
@@ -6597,7 +6815,7 @@ msgid "Nudge"
 msgstr ""
 
 #: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:113
-#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:218
+#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:221
 msgid "of"
 msgstr ""
 
@@ -6607,6 +6825,18 @@ msgstr ""
 
 #: src/views/index-dtf/governance/views/propose/basket/components/proposal-basket-setup/proposal-basket-table.tsx:54
 msgid "Old units"
+msgstr ""
+
+#: src/components/vote-lock/migration/migration-modal.tsx:256
+msgid "Old vote-lock shares"
+msgstr ""
+
+#: src/components/vote-lock/migration/migration-card.tsx:221
+msgid "Old vote-locks for this DTF no longer vote or earn rewards. If you already moved yours or only locked in {vault}, you're all set. Connect to check this wallet."
+msgstr ""
+
+#: src/components/vote-lock/migration/migration-card.tsx:219
+msgid "Old vote-locks need to move to {vault}"
 msgstr ""
 
 #: src/views/yield-dtf/governance/views/proposal-detail/components/proposal-summary/BasketChangeSummary.tsx:201
@@ -6628,7 +6858,7 @@ msgid "Ondo tokenized equity. Max trade is the per-account single-trade size for
 msgstr ""
 
 #: src/views/index-dtf/deploy/steps/confirm-deploy/manual/components/approve-all-deploy-button.tsx:115
-#: src/views/index-dtf/issuance/manual/components/approve-all-button.tsx:107
+#: src/views/index-dtf/issuance/manual/components/approve-all-button.tsx:108
 msgid "One or more approvals failed"
 msgstr ""
 
@@ -6691,7 +6921,7 @@ msgstr ""
 msgid "Open"
 msgstr ""
 
-#: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:120
+#: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:119
 msgid "Open Ambire website"
 msgstr ""
 
@@ -6699,15 +6929,15 @@ msgstr ""
 msgid "Open DTF pages"
 msgstr ""
 
-#: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:107
+#: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:106
 msgid "Open MetaMask website"
 msgstr ""
 
-#: src/components/layout/header/components/mobile-navigation-drawer.tsx:228
+#: src/components/layout/header/components/mobile-navigation-drawer.tsx:229
 msgid "Open navigation menu"
 msgstr ""
 
-#: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:133
+#: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:132
 msgid "Open Safe website"
 msgstr ""
 
@@ -6819,7 +7049,7 @@ msgstr ""
 #: src/components/layout/navigation/index.tsx:77
 #: src/components/layout/navigation/TokenNavigation.tsx:176
 #: src/views/index-dtf/components/navigation/index.tsx:217
-#: src/views/index-dtf/overview/components/basket-overview/bridge-info-dialog.tsx:100
+#: src/views/index-dtf/overview/components/basket-overview/bridge-info-dialog.tsx:101
 msgid "Overview"
 msgstr ""
 
@@ -6839,6 +7069,10 @@ msgstr ""
 msgid "Owners"
 msgstr ""
 
+#: src/views/yield-dtf/overview/components/backing/underlying-fees.tsx:152
+msgid "Paid in period"
+msgstr ""
+
 #: src/views/index-dtf/governance/components/proposal-preview/raw-call-preview.tsx:28
 #: src/views/index-dtf/governance/components/proposal-preview/rebalance-preview/legacy-basket-proposal-preview.tsx:305
 #: src/views/index-dtf/governance/views/propose/basket/components/proposal-basket-preview.tsx:388
@@ -6852,11 +7086,11 @@ msgstr ""
 msgid "Participate & Earn"
 msgstr ""
 
-#: src/views/portfolio-page/index.tsx:79
+#: src/views/portfolio-page/index.tsx:81
 msgid "Participate and earn"
 msgstr ""
 
-#: src/views/portfolio-page/components/vote-locked-positions.tsx:261
+#: src/views/portfolio-page/components/vote-locked-positions.tsx:313
 msgid "Participate in governance with any ERC-20 token and earn APY rewards. <0>Learn more</0>."
 msgstr ""
 
@@ -6953,11 +7187,14 @@ msgstr ""
 
 #: src/views/index-dtf/governance/views/propose/basket/components/submit-proposal-button.tsx:195
 #: src/views/index-dtf/governance/views/propose/components/propose-index-upgrade.tsx:117
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-folio-governance-upgrade.tsx:154
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-governance-spell-31-03-2025.tsx:304
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-governance-spell-31-03-2025.tsx:430
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:344
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-retire-vote-lock.tsx:139
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v4-upgrade.tsx:188
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v5-optimistic-upgrade.tsx:363
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v5-upgrade.tsx:217
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-vote-lock-upgrade.tsx:215
 #: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/components/submit-proposal-button.tsx:186
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/submit-proposal-button.tsx:184
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/submit-proposal-button.tsx:181
@@ -6981,6 +7218,7 @@ msgstr ""
 
 #: src/views/portfolio-page/components/dtf-positions.tsx:53
 #: src/views/portfolio-page/components/rsr-section.tsx:36
+#: src/views/yield-dtf/overview/components/backing/underlying-fees/fees-table.tsx:66
 msgid "Performance"
 msgstr ""
 
@@ -7132,7 +7370,7 @@ msgstr ""
 msgid "Please sign the transaction in your wallet to continue with the government configuration process."
 msgstr ""
 
-#: src/components/ui/seamless-transaction.tsx:60
+#: src/components/ui/seamless-transaction.tsx:61
 msgid "Please switch to {chainName} manually in your wallet"
 msgstr ""
 
@@ -7179,7 +7417,7 @@ msgstr ""
 
 #: src/components/layout/header/components/app-navigation.tsx:84
 #: src/components/layout/header/components/mobile-navigation-drawer.tsx:132
-#: src/views/portfolio-page/index.tsx:152
+#: src/views/portfolio-page/index.tsx:169
 msgid "Portfolio"
 msgstr ""
 
@@ -7192,7 +7430,7 @@ msgid "Position"
 msgstr ""
 
 #. placeholder {0}: bridge.name
-#: src/views/index-dtf/overview/components/basket-overview/bridge-info-dialog.tsx:283
+#: src/views/index-dtf/overview/components/basket-overview/bridge-info-dialog.tsx:290
 msgid "Potential Risks Using {0}"
 msgstr ""
 
@@ -7408,12 +7646,15 @@ msgstr ""
 msgid "Proposal created"
 msgstr ""
 
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-folio-governance-upgrade.tsx:58
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:276
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:284
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-retire-vote-lock.tsx:69
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v4-upgrade.tsx:132
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v4-upgrade.tsx:140
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v5-optimistic-upgrade.tsx:301
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v5-optimistic-upgrade.tsx:309
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v5-upgrade.tsx:154
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v5-upgrade.tsx:162
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-vote-lock-upgrade.tsx:125
 msgid "Proposal created!"
 msgstr ""
 
@@ -7497,6 +7738,11 @@ msgstr ""
 msgid "Proposals voted"
 msgstr ""
 
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-folio-governance-upgrade.tsx:156
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-vote-lock-upgrade.tsx:217
+msgid "Propose {symbol} upgrade"
+msgstr ""
+
 #. placeholder {0}: rToken?.symbol
 #: src/views/yield-dtf/governance/views/proposal/components/Intro.tsx:20
 msgid "Propose changes to ${0}"
@@ -7518,10 +7764,14 @@ msgstr ""
 msgid "Propose new basket"
 msgstr ""
 
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:346
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v4-upgrade.tsx:190
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v5-optimistic-upgrade.tsx:365
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v5-upgrade.tsx:219
 msgid "Propose upgrade"
+msgstr ""
+
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-retire-vote-lock.tsx:141
+msgid "Propose vault retirement"
 msgstr ""
 
 #: src/views/index-dtf/auctions/legacy/components/auction-proposed-basket.tsx:114
@@ -7559,6 +7809,7 @@ msgid "Proposed:"
 msgstr ""
 
 #: src/views/explorer/components/collaterals/index.tsx:133
+#: src/views/yield-dtf/overview/components/backing/underlying-fees/fees-table.tsx:67
 msgid "Protocol"
 msgstr ""
 
@@ -7593,6 +7844,7 @@ msgstr ""
 msgid "Queue proposal"
 msgstr ""
 
+#: src/views/explorer/components/governance/filters.tsx:23
 #: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:269
 #: src/views/yield-dtf/governance/views/proposal-detail/components/proposal-timeline/TimelineItem.tsx:241
 msgid "Queued"
@@ -7663,6 +7915,14 @@ msgstr ""
 msgid "Rate"
 msgstr ""
 
+#: src/views/yield-dtf/overview/components/backing/underlying-fees/fees-table.tsx:59
+msgid "Rates estimated, not read on-chain."
+msgstr ""
+
+#: src/views/yield-dtf/overview/components/backing/underlying-fees/fees-table.tsx:57
+msgid "Rates read on-chain."
+msgstr ""
+
 #: src/views/yield-dtf/overview/components/backing/token-exposure.tsx:131
 msgid "Rating:"
 msgstr ""
@@ -7676,11 +7936,19 @@ msgstr ""
 msgid "Raw"
 msgstr ""
 
-#: src/views/index-dtf/overview/components/basket-overview/bridge-info-dialog.tsx:272
+#: src/components/vote-lock/migration/migration-modal.tsx:129
+msgid "Re-lock your {symbol}"
+msgstr ""
+
+#: src/components/vote-lock/migration/migration-card.tsx:150
+msgid "Re-lock your {symbol} in {vault}"
+msgstr ""
+
+#: src/views/index-dtf/overview/components/basket-overview/bridge-info-dialog.tsx:279
 msgid "Read about risks"
 msgstr ""
 
-#: src/views/index-dtf/overview/components/basket-overview/bridge-info-dialog.tsx:264
+#: src/views/index-dtf/overview/components/basket-overview/bridge-info-dialog.tsx:271
 msgid "Read docs"
 msgstr ""
 
@@ -7708,6 +7976,10 @@ msgstr ""
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:519
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1404
 msgid "Ready to mint"
+msgstr ""
+
+#: src/views/yield-dtf/overview/components/backing/underlying-fees.tsx:158
+msgid "Realized cost over the last 7 days, weighted by position. It is not a projection."
 msgstr ""
 
 #: src/views/index-dtf/auctions/views/rebalance/components/rebalance-completed.tsx:67
@@ -7750,9 +8022,17 @@ msgstr ""
 msgid "Rebalance progress"
 msgstr ""
 
+#: src/components/vote-lock/migration/migration-modal.tsx:62
+msgid "Receive {symbol} from your old vote-lock."
+msgstr ""
+
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1401
 #: src/views/index-dtf/issuance/async-mint/steps/success.tsx:240
 msgid "Received"
+msgstr ""
+
+#: src/components/vote-lock/migration/migration-modal.tsx:274
+msgid "Received from your old-vault redemption"
 msgstr ""
 
 #: src/components/rtoken-setup/token/ExternalRevenueSplit.tsx:109
@@ -7787,6 +8067,7 @@ msgid "Record limit"
 msgstr ""
 
 #: src/components/transactions/table/index.tsx:47
+#: src/components/vote-lock/migration/migration-modal.tsx:57
 #: src/views/explorer/components/filters/TransactionTypeFilter.tsx:12
 #: src/views/explorer/components/transactions/useTransactionColumns.tsx:31
 #: src/views/index-dtf/issuance/async-mint/steps/configure-mint.tsx:154
@@ -7819,6 +8100,14 @@ msgstr ""
 msgid "Redeem {0} for {1}."
 msgstr ""
 
+#: src/components/vote-lock/migration/migration-modal.tsx:85
+msgid "Redeem {oldSymbol}"
+msgstr ""
+
+#: src/components/vote-lock/migration/migration-modal.tsx:76
+msgid "Redeem all your old-vault shares. {symbol} arrives in your wallet in this transaction."
+msgstr ""
+
 #: src/views/index-dtf/issuance/async-mint/steps/configure-mint.tsx:170
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:739
 #: src/views/yield-dtf/issuance/components/redeem/RedeemInput.tsx:17
@@ -7833,6 +8122,10 @@ msgstr ""
 msgid "Redeem Amount:"
 msgstr ""
 
+#: src/components/vote-lock/migration/migration-modal.tsx:71
+msgid "Redeem complete"
+msgstr ""
+
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1327
 msgid "Redeem completed"
 msgstr ""
@@ -7843,6 +8136,22 @@ msgstr ""
 
 #: src/views/yield-dtf/issuance/components/zapV2/token-selector/ZapTokensModal.tsx:111
 msgid "Redeem using"
+msgstr ""
+
+#: src/components/vote-lock/migration/migration-modal.tsx:146
+msgid "Redeem your old vote-lock, approve the {symbol}, then lock it in the {vault} vault."
+msgstr ""
+
+#: src/components/vote-lock/migration/migration-modal.tsx:139
+msgid "Redeem your old vote-lock, approve the RSR, then lock it in the shared vlRSR vault."
+msgstr ""
+
+#: src/components/vote-lock/migration/migration-modal.tsx:147
+msgid "Redeem your old vote-lock, then lock the {symbol} in the {vault} vault."
+msgstr ""
+
+#: src/components/vote-lock/migration/migration-modal.tsx:140
+msgid "Redeem your old vote-lock, then lock the RSR in the shared vlRSR vault."
 msgstr ""
 
 #: src/views/yield-dtf/issuance/components/issue/IssuanceInfo.tsx:180
@@ -7897,7 +8206,7 @@ msgstr ""
 msgid "Reduce"
 msgstr ""
 
-#: src/components/ui/swap.tsx:273
+#: src/components/ui/swap.tsx:281
 msgid "Reducing potential dust"
 msgstr ""
 
@@ -7934,6 +8243,10 @@ msgstr ""
 msgid "Register Optimistic Actions"
 msgstr ""
 
+#: src/views/index-dtf/governance/components/proposal-preview/vote-lock-upgrade-preview.tsx:95
+msgid "Registered {VOTE_LOCK_UPGRADE_TO} implementation"
+msgstr ""
+
 #: src/views/yield-dtf/governance/views/proposal/components/ProposedRegisterPreview.tsx:33
 msgid "Registering assets"
 msgstr ""
@@ -7948,6 +8261,10 @@ msgstr ""
 
 #: src/views/index-dtf/overview/components/index-disclousure.tsx:269
 msgid "Regulatory and Compliance Risk: Tokenized equities and related on-chain transfer mechanisms may be subject to evolving regulatory interpretations and enforcement actions. Ondo Tokenized Stocks may also be subject to contractual eligibility requirements, permissioning, whitelisting, jurisdictional limitations, sanctions screening, or other compliance gating that can be changed or applied with little notice. If regulations or compliance requirements change, the DTF may be forced to restrict access, halt mints/redemptions, rebalance away from affected components, or wind down positions under adverse market conditions, potentially causing tracking error, reduced liquidity, and losses."
+msgstr ""
+
+#: src/components/vote-lock/migration/migration-modal.tsx:314
+msgid "Rejected it in your Safe? Sign again"
 msgstr ""
 
 #: src/views/yield-dtf/settings/components/contracts-info.tsx:30
@@ -8069,7 +8386,11 @@ msgstr ""
 msgid "Request plugin"
 msgstr ""
 
-#: src/views/index-dtf/deploy/components/deploy-coming-soon.tsx:25
+#: src/components/vote-lock/migration/migration-modal.tsx:113
+msgid "Request rejected · Retry"
+msgstr ""
+
+#: src/views/index-dtf/deploy/components/deploy-coming-soon.tsx:30
 #: src/views/index-dtf/overview/components/eligibility-card.tsx:24
 msgid "Required"
 msgstr ""
@@ -8116,8 +8437,8 @@ msgstr ""
 msgid "Reserve logo"
 msgstr ""
 
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v5-optimistic-upgrade.tsx:302
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v5-optimistic-upgrade.tsx:310
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:277
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:285
 msgid "Reserve Optimistic Governor Upgrade proposal created"
 msgstr ""
 
@@ -8129,7 +8450,7 @@ msgstr ""
 msgid "Reserve Rights (RSR) is an ERC-20 token that unifies governance, risk management, and value accrual across the Reserve ecosystem."
 msgstr ""
 
-#: src/views/index-dtf/deploy/components/deploy-coming-soon.tsx:191
+#: src/views/index-dtf/deploy/components/deploy-coming-soon.tsx:220
 msgid "reserve splash"
 msgstr ""
 
@@ -8147,6 +8468,10 @@ msgstr ""
 
 #: src/hooks/use-compliance-restrictions.ts:49
 msgid "Restricted in your region"
+msgstr ""
+
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-retire-vote-lock.tsx:97
+msgid "Retire the legacy vote-lock vault"
 msgstr ""
 
 #: src/views/portfolio-page/components/portfolio-chart.tsx:167
@@ -8202,7 +8527,7 @@ msgstr ""
 msgid "Revenue Distribution"
 msgstr ""
 
-#: src/views/yield-dtf/overview/components/backing/backing-buffer.tsx:48
+#: src/views/yield-dtf/overview/components/backing/backing-buffer.tsx:47
 msgid "Revenue distribution backing buffer"
 msgstr ""
 
@@ -8296,7 +8621,7 @@ msgid "Revoke"
 msgstr ""
 
 #. placeholder {0}: tokenIn.symbol
-#: src/views/yield-dtf/issuance/components/zapV2/submit/ZapRevokeButton.tsx:43
+#: src/views/yield-dtf/issuance/components/zapV2/submit/ZapRevokeButton.tsx:44
 msgid "Revoke existing {0} allowance"
 msgstr ""
 
@@ -8310,7 +8635,7 @@ msgstr ""
 
 #: src/views/index-dtf/deploy/steps/confirm-deploy/manual/components/deploy-assets-approvals.tsx:187
 #: src/views/index-dtf/issuance/manual/components/asset-list.tsx:132
-#: src/views/yield-dtf/issuance/components/zapV2/submit/ZapRevokeButton.tsx:41
+#: src/views/yield-dtf/issuance/components/zapV2/submit/ZapRevokeButton.tsx:42
 msgid "Revoking..."
 msgstr ""
 
@@ -8384,7 +8709,7 @@ msgstr ""
 msgid "Risk evaluation"
 msgstr ""
 
-#: src/views/index-dtf/overview/components/basket-overview/bridge-info-dialog.tsx:109
+#: src/views/index-dtf/overview/components/basket-overview/bridge-info-dialog.tsx:110
 msgid "Risks"
 msgstr ""
 
@@ -8524,7 +8849,7 @@ msgstr ""
 msgid "RToken/RSR split:"
 msgstr ""
 
-#: src/views/yield-dtf/overview/components/backing/index.tsx:104
+#: src/views/yield-dtf/overview/components/backing/index.tsx:105
 msgid "RTokens are 100% backed by a diversified set of underlying collateral tokens..."
 msgstr ""
 
@@ -8572,7 +8897,7 @@ msgstr ""
 msgid "Search"
 msgstr ""
 
-#: src/components/rtoken-setup/basket/CollateralModal.tsx:126
+#: src/components/rtoken-setup/basket/CollateralModal.tsx:123
 msgid "Search by collateral symbol or target name"
 msgstr ""
 
@@ -8614,7 +8939,7 @@ msgstr ""
 msgid "Search pool"
 msgstr ""
 
-#: src/components/ui/swap.tsx:270
+#: src/components/ui/swap.tsx:278
 msgid "Searching DEX Liquidity"
 msgstr ""
 
@@ -8770,6 +9095,14 @@ msgstr ""
 msgid "Set the USD amount per token used to simulate price impact."
 msgstr ""
 
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-retire-vote-lock.tsx:101
+msgid "Sets the old vault's unstaking delay to zero so voters can move their RSR to the shared vlRSR vault right away."
+msgstr ""
+
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-retire-vote-lock.tsx:106
+msgid "Sets the old vault's unstaking delay to zero so voters can move to the new vote-lock vault right away."
+msgstr ""
+
 #: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:521
 msgid "Setting dust amount for token removal"
 msgstr ""
@@ -8880,7 +9213,7 @@ msgstr ""
 msgid "Show orders"
 msgstr ""
 
-#: src/views/index-dtf/components/confirm-eligibility-modal.tsx:216
+#: src/views/index-dtf/components/confirm-eligibility-modal.tsx:226
 msgid "Show restricted jurisdictions"
 msgstr ""
 
@@ -9015,7 +9348,7 @@ msgstr ""
 msgid "Slashing Risk"
 msgstr ""
 
-#: src/components/ui/swap.tsx:476
+#: src/components/ui/swap.tsx:484
 msgid "Slippage"
 msgstr ""
 
@@ -9027,7 +9360,7 @@ msgstr ""
 msgid "Small revenue auctions"
 msgstr ""
 
-#: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:92
+#: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:91
 msgid "Smart Account Required"
 msgstr ""
 
@@ -9060,7 +9393,8 @@ msgstr ""
 msgid "Some quotes couldn't be fetched."
 msgstr ""
 
-#: src/views/index-dtf/overview/components/eligibility-card.tsx:155
+#: src/views/index-dtf/deploy/components/deploy-coming-soon.tsx:210
+#: src/views/index-dtf/overview/components/eligibility-card.tsx:149
 msgid "Something went wrong. Please try again."
 msgstr ""
 
@@ -9261,6 +9595,10 @@ msgstr ""
 msgid "Start Issue"
 msgstr ""
 
+#: src/components/vote-lock/migration/migration-card.tsx:185
+msgid "Start migration"
+msgstr ""
+
 #: src/views/yield-dtf/auctions/auctions-sidebar/ConfirmAuction.tsx:57
 msgid "Start next recollaterization auction"
 msgstr ""
@@ -9279,9 +9617,9 @@ msgstr ""
 msgid "Starts the next {0} reward period once the current one ends. Disabled until then."
 msgstr ""
 
-#: src/views/explorer/components/governance/filters.tsx:40
+#: src/views/explorer/components/governance/filters.tsx:41
 #: src/views/explorer/components/governance/index.tsx:126
-#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:345
+#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:349
 #: src/views/portfolio-page/components/active-proposals.tsx:136
 #: src/views/yield-dtf/governance/views/proposal-detail/components/proposal-timeline/index.tsx:16
 msgid "Status"
@@ -9301,12 +9639,24 @@ msgstr ""
 msgid "Stay up to date in long form"
 msgstr ""
 
+#. placeholder {0}: index + 1
+#. placeholder {1}: stages.length
+#: src/components/vote-lock/migration/migration-modal.tsx:181
+#: src/components/vote-lock/migration/migration-modal.tsx:196
+msgid "Step {0} of {1}"
+msgstr ""
+
 #: src/views/index-dtf/overview/components/zap-mint/submit-zap.tsx:235
 msgid "Step 1. Approve use of {inputSymbol}"
 msgstr ""
 
 #: src/views/index-dtf/overview/components/zap-mint/submit-zap.tsx:232
 msgid "Step 2. {buttonLabel}"
+msgstr ""
+
+#. placeholder {0}: pending.map(({ symbol }) => symbol).join(', ')
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-retire-vote-lock.tsx:122
+msgid "Still governed by this vault: {0}. Each must pass its governance upgrade before the vault can be retired."
 msgstr ""
 
 #: src/views/home/components/register-about.tsx:81
@@ -9337,7 +9687,7 @@ msgstr ""
 msgid "stRSR Token"
 msgstr ""
 
-#: src/views/index-dtf/overview/components/eligibility-card.tsx:140
+#: src/views/index-dtf/overview/components/eligibility-card.tsx:145
 msgid "Submit"
 msgstr ""
 
@@ -9364,9 +9714,9 @@ msgstr ""
 msgid "Submitted!"
 msgstr ""
 
-#: src/views/index-dtf/deploy/components/deploy-coming-soon.tsx:182
+#: src/views/index-dtf/deploy/components/deploy-coming-soon.tsx:206
 #: src/views/index-dtf/manage/components/submit-button.tsx:321
-#: src/views/index-dtf/overview/components/eligibility-card.tsx:151
+#: src/views/index-dtf/overview/components/eligibility-card.tsx:145
 msgid "Submitting..."
 msgstr ""
 
@@ -9478,7 +9828,7 @@ msgstr ""
 msgid "Switch to zap redeeming"
 msgstr ""
 
-#: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:326
+#: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:325
 msgid "Switch wallet"
 msgstr ""
 
@@ -9508,7 +9858,7 @@ msgstr ""
 msgid "Target(s)"
 msgstr ""
 
-#: src/views/index-dtf/overview/components/dtf-downloadable-resources.tsx:66
+#: src/views/index-dtf/overview/components/dtf-downloadable-resources.tsx:79
 msgid "Tear Sheet"
 msgstr ""
 
@@ -9523,7 +9873,7 @@ msgid "Telegram Link"
 msgstr ""
 
 #: src/views/index-dtf/deploy/components/social-media-input.tsx:27
-#: src/views/yield-dtf/issuance/components/zapV2/minters-modal/SocialMediaInput.tsx:94
+#: src/views/yield-dtf/issuance/components/zapV2/minters-modal/SocialMediaInput.tsx:95
 msgid "Telegram username"
 msgstr ""
 
@@ -9535,8 +9885,8 @@ msgstr ""
 msgid "Terms and Conditions"
 msgstr ""
 
-#: src/views/index-dtf/deploy/components/deploy-coming-soon.tsx:109
-#: src/views/index-dtf/overview/components/eligibility-card.tsx:95
+#: src/views/index-dtf/deploy/components/deploy-coming-soon.tsx:121
+#: src/views/index-dtf/overview/components/eligibility-card.tsx:96
 msgid "Thank you! We'll be in touch soon."
 msgstr ""
 
@@ -9556,7 +9906,7 @@ msgstr ""
 msgid "The approximate value of 1 unit of <0/> when the DTF is created. The exact price may be different due to market volatility and errors in oracle pricing."
 msgstr ""
 
-#: src/views/yield-dtf/overview/components/backing/backing-buffer.tsx:92
+#: src/views/yield-dtf/overview/components/backing/backing-buffer.tsx:91
 msgid "The backing buffer is extra collateral held to prevent RSR seizure from trading slippage. When the buffer exceeds 100%, any additional appreciation of collateral is recognized as revenue and sold off in auctions."
 msgstr ""
 
@@ -9572,7 +9922,7 @@ msgstr ""
 msgid "The basket governance provides a Guardian role that can improve the safety of DTF holders and governors. Guardians have the ability to veto any basket proposal prior to execution. This role is mutable and can be changed by governance in the future."
 msgstr ""
 
-#: src/components/account/index.tsx:54
+#: src/components/account/index.tsx:57
 msgid "The configured network \"{currentChain}\" is different from the wallet selected network \"{chainId}\"\". Change your network in the connected wallet."
 msgstr ""
 
@@ -9884,7 +10234,7 @@ msgstr ""
 msgid "This DTF"
 msgstr ""
 
-#: src/views/index-dtf/overview/components/landing-mint/index.tsx:120
+#: src/views/index-dtf/overview/components/landing-mint/index.tsx:123
 msgid "This DTF can only be sold"
 msgstr ""
 
@@ -9909,6 +10259,14 @@ msgstr ""
 msgid "This DTF is inactive. New issuance and governance proposals are disabled, but holders can still redeem their tokens and stakers can unstake."
 msgstr ""
 
+#: src/views/index-dtf/components/vote-lock-migration/upcoming-vote-lock.tsx:96
+msgid "This DTF is moving to the new, spam-resistant {vault}. Lock {symbol} now. It starts to vote on this DTF when the upgrade executes."
+msgstr ""
+
+#: src/views/index-dtf/components/vote-lock-migration/upcoming-vote-lock.tsx:91
+msgid "This DTF is moving to the shared, spam-resistant {vault}. Lock {symbol} now. It starts to vote on this DTF when the upgrade executes."
+msgstr ""
+
 #: src/views/yield-dtf/issuance/components/warnings/index.tsx:164
 msgid "This DTF is no longer actively governed and can only be sold. This DTF cannot rebalance its basket nor can it new {symbol} tokens be created."
 msgstr ""
@@ -9919,7 +10277,7 @@ msgid "This DTF is no longer actively governed and can only be sold. This DTF ca
 msgstr ""
 
 #. placeholder {0}: dtf.token.symbol
-#: src/views/index-dtf/overview/components/landing-mint/index.tsx:123
+#: src/views/index-dtf/overview/components/landing-mint/index.tsx:126
 msgid "This DTF is no longer actively governed, cannot rebalance, and no new ${0} can be created."
 msgstr ""
 
@@ -9970,6 +10328,12 @@ msgstr ""
 msgid "This proposal will automatically pass if it is not challenged by governance. If it is challenged, it will be resubmitted as a standard proposal."
 msgstr ""
 
+#: src/views/yield-dtf/overview/components/backing/underlying-fees/fees-table.tsx:24
+#: src/views/yield-dtf/overview/components/backing/underlying-fees/fees-table.tsx:61
+#: src/views/yield-dtf/overview/components/backing/underlying-fees/fees-table.tsx:201
+msgid "This protocol is not tracked yet."
+msgstr ""
+
 #: src/views/yield-dtf/issuance/components/warnings/index.tsx:123
 msgid "This should last for a few hours, manual minting/redemption is available."
 msgstr ""
@@ -9982,12 +10346,21 @@ msgstr ""
 msgid "This upgrade spell fixes the proposal-threshold on the FolioGovernor contract that administers the DAO (StakingVault) relevant to this DTF. Once this spell is approved and executed, the proposal-threshold will be the correct % that was initially intended at deployment."
 msgstr ""
 
-#: src/views/portfolio-page/index.tsx:62
+#: src/views/portfolio-page/index.tsx:64
 msgid "This wallet does not currently hold any DTFs, staked RSR, vote-locked positions, rewards, pending withdrawals, or active governance activity."
 msgstr ""
 
 #: src/hooks/use-compliance-restrictions.ts:42
 msgid "This wallet is not eligible to access this product. If you think this is an error, try connecting a different wallet or contact support."
+msgstr ""
+
+#. placeholder {0}: migration.oldSymbol
+#: src/components/vote-lock/migration/migration-card.tsx:162
+msgid "This wallet still holds an old {0} vote-lock. You can't vote or earn rewards with it anymore. Redeem its shares, then lock the {symbol} you receive in {vault}."
+msgstr ""
+
+#: src/components/vote-lock/migration/migration-card.tsx:167
+msgid "This wallet still holds an old vote-lock for this DTF. You can't vote or earn rewards with it anymore. Redeem its shares, then lock the {symbol} you receive in {vault}."
 msgstr ""
 
 #: src/views/index-dtf/governance/views/proposal/components/proposal-vote.tsx:161
@@ -10042,7 +10415,7 @@ msgstr ""
 msgid "To learn more about the risks associated with DTFs,"
 msgstr ""
 
-#: src/views/index-dtf/overview/components/eligibility-card.tsx:198
+#: src/views/index-dtf/overview/components/eligibility-card.tsx:192
 msgid "To verify eligibility, please leave us your name and email, and we will reach out to you personally."
 msgstr ""
 
@@ -10050,7 +10423,7 @@ msgstr ""
 msgid "Today"
 msgstr ""
 
-#: src/components/ui/swap.tsx:495
+#: src/components/ui/swap.tsx:503
 msgid "Toggle {option}"
 msgstr ""
 
@@ -10067,7 +10440,7 @@ msgstr ""
 #: src/views/index-dtf/governance/views/propose/basket/components/proposal-basket-preview.tsx:160
 #: src/views/index-dtf/governance/views/propose/basket/components/proposal-basket-setup/proposal-basket-table.tsx:49
 #: src/views/portfolio-page/components/pending-withdrawals.tsx:307
-#: src/views/portfolio-page/components/transactions.tsx:99
+#: src/views/portfolio-page/components/transactions.tsx:100
 #: src/views/tokens/components/UnlistedTokensTable.tsx:83
 #: src/views/yield-dtf/overview/components/backing/collateral-exposure.tsx:245
 msgid "Token"
@@ -10181,7 +10554,7 @@ msgstr ""
 msgid "Token:"
 msgstr ""
 
-#: src/views/index-dtf/overview/components/basket-overview/bridge-info-dialog.tsx:205
+#: src/views/index-dtf/overview/components/basket-overview/bridge-info-dialog.tsx:212
 msgid "Tokenized Asset (held in basket)"
 msgstr ""
 
@@ -10214,6 +10587,7 @@ msgid "Top voting addresses"
 msgstr ""
 
 #: src/views/portfolio-page/components/portfolio-chart.tsx:125
+#: src/views/yield-dtf/overview/components/backing/underlying-fees/fees-table.tsx:225
 msgid "Total"
 msgstr ""
 
@@ -10277,6 +10651,11 @@ msgstr ""
 
 #: src/components/layout/header/components/mobile-navigation-drawer.tsx:133
 msgid "Track your Reserve activity"
+msgstr ""
+
+#. placeholder {0}: dayjs.unix(trackingSince).format('MMM D, YYYY')
+#: src/views/yield-dtf/overview/components/backing/underlying-fees.tsx:64
+msgid "Tracking since {0}"
 msgstr ""
 
 #. placeholder {0}: inputToken.symbol
@@ -10400,6 +10779,10 @@ msgstr ""
 msgid "Transaction Failed"
 msgstr ""
 
+#: src/components/vote-lock/migration/migration-modal.tsx:111
+msgid "Transaction failed · Retry"
+msgstr ""
+
 #: src/components/ui/transaction-button.tsx:225
 msgid "Transaction not valid"
 msgstr ""
@@ -10450,7 +10833,7 @@ msgstr ""
 #: src/views/explorer/index.tsx:33
 #: src/views/index-dtf/overview/components/index-transaction-table-with-swaps/index.tsx:39
 #: src/views/index-dtf/overview/components/index-transaction-table.tsx:152
-#: src/views/portfolio-page/components/transactions.tsx:166
+#: src/views/portfolio-page/components/transactions.tsx:167
 #: src/views/yield-dtf/overview/components/rtoken-transactions.tsx:222
 msgid "Transactions"
 msgstr ""
@@ -10499,7 +10882,7 @@ msgid "Try adjusting your filters or check back later"
 msgstr ""
 
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1090
-#: src/views/portfolio-page/index.tsx:161
+#: src/views/portfolio-page/index.tsx:178
 msgid "Try again"
 msgstr ""
 
@@ -10513,6 +10896,10 @@ msgstr ""
 
 #: src/views/yield-dtf/issuance/components/zapV2/ZapToggle.tsx:23
 msgid "Turn on Zaps to mint using 1 asset"
+msgstr ""
+
+#: src/views/index-dtf/governance/components/proposal-preview/vote-lock-upgrade-preview.tsx:52
+msgid "Turns on average-vote accounting"
 msgstr ""
 
 #: src/views/yield-dtf/deploy/components/Intro.tsx:44
@@ -10572,7 +10959,7 @@ msgstr ""
 #: src/views/index-dtf/overview/components/index-transaction-table-with-swaps/columns.tsx:41
 #: src/views/index-dtf/overview/components/index-transaction-table.tsx:40
 #: src/views/index-dtf/overview/components/yield-index/yield-index-composition-tabs.tsx:14
-#: src/views/portfolio-page/components/transactions.tsx:105
+#: src/views/portfolio-page/components/transactions.tsx:106
 #: src/views/yield-dtf/overview/components/rtoken-transactions.tsx:98
 msgid "Type"
 msgstr ""
@@ -10581,18 +10968,18 @@ msgstr ""
 msgid "Unable to copy address"
 msgstr ""
 
-#: src/views/index-dtf/governance/components/proposal-preview/unknown-contract-preview.tsx:49
+#: src/views/index-dtf/governance/components/proposal-preview/unknown-contract-preview.tsx:52
 msgid "Unable to parse contract data"
 msgstr ""
 
-#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:117
-#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:222
+#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:119
+#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:228
 #: src/views/index-dtf/settings/components/index-settings-fees.tsx:157
 msgid "Unavailable"
 msgstr ""
 
 #: src/views/explorer/components/collaterals/index.tsx:100
-#: src/views/portfolio-page/components/vote-locked-positions.tsx:156
+#: src/views/portfolio-page/components/vote-locked-positions.tsx:177
 msgid "Underlying"
 msgstr ""
 
@@ -10600,7 +10987,11 @@ msgstr ""
 msgid "Underlying Platform Exposure"
 msgstr ""
 
-#: src/views/index-dtf/settings/components/index-settings-governance-token.tsx:32
+#: src/views/yield-dtf/overview/components/backing/underlying-fees.tsx:91
+msgid "Underlying protocol fees"
+msgstr ""
+
+#: src/views/index-dtf/settings/components/index-settings-governance-token.tsx:33
 msgid "Underlying Token"
 msgstr ""
 
@@ -10648,7 +11039,7 @@ msgstr ""
 msgid "Unknown amount of recollateralization auctions left to run"
 msgstr ""
 
-#: src/views/index-dtf/governance/components/proposal-preview/unknown-contract-preview.tsx:28
+#: src/views/index-dtf/governance/components/proposal-preview/unknown-contract-preview.tsx:31
 msgid "Unknown Contract"
 msgstr ""
 
@@ -10765,7 +11156,7 @@ msgstr ""
 msgid "Unstaking RSR"
 msgstr ""
 
-#: src/components/account/index.tsx:50
+#: src/components/account/index.tsx:53
 msgid "Unsupported"
 msgstr ""
 
@@ -10838,6 +11229,11 @@ msgstr ""
 msgid "Update Voting Quorum"
 msgstr ""
 
+#. placeholder {0}: relativeTime(lastSnapshotAt, now)
+#: src/views/yield-dtf/overview/components/backing/underlying-fees.tsx:71
+msgid "Updated {0} ago"
+msgstr ""
+
 #: src/views/index-dtf/overview/components/index-disclousure.tsx:79
 msgid "Updated references to reflect that the token was launched on 24 September 2025 (Section 10)."
 msgstr ""
@@ -10859,6 +11255,7 @@ msgstr ""
 msgid "Updating {0}..."
 msgstr ""
 
+#: src/views/index-dtf/components/vote-lock-migration/upcoming-vote-lock.tsx:83
 #: src/views/yield-dtf/governance/views/proposal/components/ContractUpgrades.tsx:95
 msgid "Upgrade"
 msgstr ""
@@ -10881,6 +11278,14 @@ msgstr ""
 
 #: src/views/yield-dtf/governance/views/proposal/components/ContractUpgrades.tsx:39
 msgid "Upgrade to"
+msgstr ""
+
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-folio-governance-upgrade.tsx:128
+msgid "Upgrades the {symbol} governor and timelock to release 1.1.0, which adds a proposal throttle and a time-weighted vote check against proposal spam. See the <0>changelog</0> for details."
+msgstr ""
+
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-vote-lock-upgrade.tsx:190
+msgid "Upgrades the {symbol} vault, its governor and timelock to release 1.1.0. The proposal goes to the {symbol} DAO. See the <0>changelog</0> for details."
 msgstr ""
 
 #: src/views/index-dtf/manage/components/submit-button.tsx:320
@@ -10919,7 +11324,7 @@ msgstr ""
 msgid "Use connected wallet."
 msgstr ""
 
-#: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:168
+#: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:167
 #: src/views/index-dtf/issuance/panel-mode-switch.tsx:28
 msgid "Use Swap"
 msgstr ""
@@ -10969,7 +11374,7 @@ msgstr ""
 #: src/views/portfolio-page/components/pending-withdrawals.tsx:351
 #: src/views/portfolio-page/components/rsr-section.tsx:60
 #: src/views/portfolio-page/components/staked-positions.tsx:102
-#: src/views/portfolio-page/components/vote-locked-positions.tsx:229
+#: src/views/portfolio-page/components/vote-locked-positions.tsx:250
 #: src/views/yield-dtf/overview/components/backing/collateral-exposure.tsx:251
 msgid "Value"
 msgstr ""
@@ -10995,8 +11400,8 @@ msgstr ""
 msgid "Verify wallet"
 msgstr ""
 
-#: src/views/index-dtf/components/confirm-eligibility-modal.tsx:167
-#: src/views/index-dtf/components/confirm-eligibility-modal.tsx:179
+#: src/views/index-dtf/components/confirm-eligibility-modal.tsx:177
+#: src/views/index-dtf/components/confirm-eligibility-modal.tsx:189
 msgid "Verify your eligibility"
 msgstr ""
 
@@ -11091,6 +11496,11 @@ msgstr ""
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/vault-proposal-form.tsx:190
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/remove-dust-tokens.tsx:39
 msgid "View {0} on block explorer"
+msgstr ""
+
+#. placeholder {0}: titles[stage]
+#: src/components/vote-lock/migration/migration-modal.tsx:204
+msgid "View {0} transaction on explorer"
 msgstr ""
 
 #: src/views/index-dtf/overview/components/basket-overview/index.tsx:218
@@ -11189,6 +11599,10 @@ msgstr ""
 msgid "View portfolio"
 msgstr ""
 
+#: src/components/vote-lock/migration/migration-card.tsx:181
+msgid "View progress"
+msgstr ""
+
 #: src/views/index-dtf/auctions/legacy/components/auction-list.tsx:26
 msgid "View proposal"
 msgstr ""
@@ -11214,7 +11628,7 @@ msgstr ""
 msgid "View transaction on explorer"
 msgstr ""
 
-#: src/views/portfolio-page/index.tsx:99
+#: src/views/portfolio-page/index.tsx:101
 msgid "Viewing portfolio of"
 msgstr ""
 
@@ -11286,7 +11700,7 @@ msgstr ""
 msgid "Vote on-chain"
 msgstr ""
 
-#: src/views/portfolio-page/components/voting-power.tsx:74
+#: src/views/portfolio-page/components/voting-power.tsx:75
 msgid "Vote Power"
 msgstr ""
 
@@ -11304,7 +11718,7 @@ msgstr ""
 msgid "Vote weight"
 msgstr ""
 
-#: src/views/portfolio-page/components/voting-power.tsx:86
+#: src/views/portfolio-page/components/voting-power.tsx:87
 msgid "Vote Weight"
 msgstr ""
 
@@ -11312,25 +11726,41 @@ msgstr ""
 msgid "Vote-lock"
 msgstr ""
 
-#: src/views/index-dtf/governance/components/governance-vote-lock.tsx:412
+#: src/views/index-dtf/governance/components/governance-vote-lock.tsx:413
 msgid "Vote-lock {underlyingSymbol} in {voteLockSymbol} to govern and earn from this DTF's TVL fee."
 msgstr ""
 
-#: src/views/index-dtf/governance/components/governance-vote-lock.tsx:407
+#: src/views/index-dtf/governance/components/governance-vote-lock.tsx:408
 msgid "Vote-lock {underlyingSymbol} in {voteLockSymbol} to govern and earn from TVL fees across all {voteLockGovernedLabel} DTFs."
 msgstr ""
 
 #. placeholder {0}: indexDTF.stToken.underlying.symbol
-#: src/views/index-dtf/governance/components/governance-vote-lock.tsx:458
+#: src/views/index-dtf/governance/components/governance-vote-lock.tsx:459
 msgid "Vote-lock ${0}"
+msgstr ""
+
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-vote-lock-upgrade.tsx:126
+msgid "Vote-lock 1.1.0 upgrade proposal created"
 msgstr ""
 
 #: src/views/index-dtf/settings/components/index-settings-governance-token.tsx:18
 msgid "Vote-Lock DAO Token"
 msgstr ""
 
+#: src/components/vote-lock/migration/migration-card.tsx:35
+msgid "Vote-lock migration"
+msgstr ""
+
 #: src/views/earn/views/index-dtf/components/header.tsx:9
 msgid "Vote-Lock on Index DTFs"
+msgstr ""
+
+#: src/components/vote-lock/migration/migration-card.tsx:216
+msgid "Vote-lock upgrade"
+msgstr ""
+
+#: src/views/index-dtf/governance/components/proposal-preview/vote-lock-upgrade-preview.tsx:65
+msgid "Vote-lock upgrade to {VOTE_LOCK_UPGRADE_TO}"
 msgstr ""
 
 #: src/views/earn/views/index-dtf/components/faq-graphics.tsx:90
@@ -11342,11 +11772,11 @@ msgstr ""
 msgid "Vote-locked"
 msgstr ""
 
-#: src/views/portfolio-page/components/vote-locked-positions.tsx:259
+#: src/views/portfolio-page/components/vote-locked-positions.tsx:311
 msgid "Vote-locked positions"
 msgstr ""
 
-#: src/views/portfolio-page/components/voting-power.tsx:99
+#: src/views/portfolio-page/components/voting-power.tsx:100
 msgid "Vote-locker Address"
 msgstr ""
 
@@ -11474,7 +11904,7 @@ msgid "Voting power"
 msgstr ""
 
 #: src/views/index-dtf/governance/components/governance-account-info.tsx:243
-#: src/views/portfolio-page/components/voting-power.tsx:148
+#: src/views/portfolio-page/components/voting-power.tsx:149
 msgid "Voting Power"
 msgstr ""
 
@@ -11550,11 +11980,14 @@ msgstr ""
 
 #: src/views/index-dtf/governance/views/propose/basket/components/submit-proposal-button.tsx:196
 #: src/views/index-dtf/governance/views/propose/components/propose-index-upgrade.tsx:118
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-folio-governance-upgrade.tsx:155
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-governance-spell-31-03-2025.tsx:305
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-governance-spell-31-03-2025.tsx:431
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:345
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-retire-vote-lock.tsx:140
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v4-upgrade.tsx:189
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v5-optimistic-upgrade.tsx:364
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v5-upgrade.tsx:218
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-vote-lock-upgrade.tsx:216
 #: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/components/submit-proposal-button.tsx:188
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/submit-proposal-button.tsx:186
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/submit-proposal-button.tsx:182
@@ -11563,6 +11996,10 @@ msgstr ""
 
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:524
 msgid "Waiting for orders"
+msgstr ""
+
+#: src/components/vote-lock/migration/migration-modal.tsx:105
+msgid "Waiting for your Safe to execute..."
 msgstr ""
 
 #: src/views/explorer/components/transactions/Filters.tsx:17
@@ -11579,7 +12016,7 @@ msgstr ""
 msgid "Wallet restricted"
 msgstr ""
 
-#: src/views/index-dtf/deploy/components/deploy-coming-soon.tsx:100
+#: src/views/index-dtf/deploy/components/deploy-coming-soon.tsx:112
 msgid "Want to create an Index DTF?"
 msgstr ""
 
@@ -11626,7 +12063,7 @@ msgstr ""
 msgid "We call these tokenized portfolios DTFs:"
 msgstr ""
 
-#: src/views/index-dtf/governance/components/proposal-preview/unknown-contract-preview.tsx:52
+#: src/views/index-dtf/governance/components/proposal-preview/unknown-contract-preview.tsx:55
 msgid "We couldn’t retrieve the contract’s ABI from Etherscan. This usually means the contract is not verified. Without its interface, we’re unable to decode any function calls or parameters."
 msgstr ""
 
@@ -11657,7 +12094,7 @@ msgstr ""
 msgid "We're sorry, but the swap quote is unavailable. The amount may be too small to cover fees. Please <0>retry</0>, or <1>edit the amount</1>, and try again."
 msgstr ""
 
-#: src/views/index-dtf/overview/components/eligibility-card.tsx:176
+#: src/views/index-dtf/overview/components/eligibility-card.tsx:170
 msgid "We're sorry, this product isn't available to customers in your region. In order to access this DTF, you may need to qualify as a <0>qualified investor</0>."
 msgstr ""
 
@@ -11795,11 +12232,11 @@ msgstr ""
 msgid "Why do some vaults show APY and others show APR?"
 msgstr ""
 
-#: src/views/index-dtf/deploy/components/deploy-coming-soon.tsx:167
+#: src/views/index-dtf/deploy/components/deploy-coming-soon.tsx:185
 msgid "Why do you think people want this DTF?"
 msgstr ""
 
-#: src/views/yield-dtf/issuance/components/zapV2/submit/ZapRevokeButton.tsx:47
+#: src/views/yield-dtf/issuance/components/zapV2/submit/ZapRevokeButton.tsx:49
 msgid "Why I do need to revoke my allowance?"
 msgstr ""
 
@@ -11895,7 +12332,7 @@ msgid "X Account"
 msgstr ""
 
 #: src/views/index-dtf/deploy/components/social-media-input.tsx:33
-#: src/views/yield-dtf/issuance/components/zapV2/minters-modal/SocialMediaInput.tsx:100
+#: src/views/yield-dtf/issuance/components/zapV2/minters-modal/SocialMediaInput.tsx:101
 msgid "x.com username"
 msgstr ""
 
@@ -11905,14 +12342,14 @@ msgstr ""
 
 #: src/views/index-dtf/auctions/views/rebalance/components/rebalance-overview.tsx:60
 #: src/views/index-dtf/auctions/views/rebalance/components/rebalance-overview.tsx:74
-#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:167
+#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:170
 #: src/views/portfolio-page/components/active-proposals.tsx:97
 #: src/views/yield-dtf/governance/components/ProposalList.tsx:119
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalDetailStats.tsx:166
 msgid "Yes"
 msgstr ""
 
-#: src/views/explorer/components/governance/filters.tsx:55
+#: src/views/explorer/components/governance/filters.tsx:56
 #: src/views/index-dtf/overview/components/charts/data-type-selector.tsx:19
 #: src/views/yield-dtf/overview/components/backing/collateral-exposure.tsx:248
 msgid "Yield"
@@ -11965,12 +12402,12 @@ msgstr ""
 msgid "You can sell up to {maxAmountLabel} per transaction during {sessionLabel} hours in the US."
 msgstr ""
 
-#: src/views/index-dtf/deploy/steps/confirm-deploy/success/index.tsx:81
+#: src/views/index-dtf/deploy/steps/confirm-deploy/success/index.tsx:80
 msgid "You created {stTokenSymbol} DAO"
 msgstr ""
 
 #. placeholder {0}: form!.tokenName
-#: src/views/index-dtf/deploy/steps/confirm-deploy/success/index.tsx:86
+#: src/views/index-dtf/deploy/steps/confirm-deploy/success/index.tsx:85
 msgid "You created the {0} DTF"
 msgstr ""
 
@@ -11978,7 +12415,7 @@ msgstr ""
 msgid "You do not have enough funds to complete this transaction. Please try again with a smaller amount."
 msgstr ""
 
-#: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:191
+#: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:190
 msgid "You fund"
 msgstr ""
 
@@ -11990,7 +12427,7 @@ msgstr ""
 msgid "You may need to import it with the L2 contract address."
 msgstr ""
 
-#: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:197
+#: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:196
 msgid "You mint"
 msgstr ""
 
@@ -11998,7 +12435,7 @@ msgstr ""
 msgid "You mint:"
 msgstr ""
 
-#: src/views/index-dtf/deploy/steps/confirm-deploy/success/index.tsx:90
+#: src/views/index-dtf/deploy/steps/confirm-deploy/success/index.tsx:89
 msgid "You minted the {initialTokens} genesis tokens"
 msgstr ""
 
@@ -12020,7 +12457,7 @@ msgstr ""
 msgid "You receive"
 msgstr ""
 
-#: src/components/ui/swap.tsx:368
+#: src/components/ui/swap.tsx:376
 #: src/views/yield-dtf/issuance/components/zapV2/output/ZapOutputContainer.tsx:15
 #: src/views/yield-dtf/issuance/components/zapV2/submit/ZapSubmitModal.tsx:41
 #: src/views/yield-dtf/staking/components/stake/stake-output.tsx:36
@@ -12051,7 +12488,7 @@ msgstr ""
 msgid "You unstake:"
 msgstr ""
 
-#: src/components/ui/swap.tsx:243
+#: src/components/ui/swap.tsx:251
 #: src/views/yield-dtf/issuance/components/zapV2/input/ZapInputContainer.tsx:21
 #: src/views/yield-dtf/issuance/components/zapV2/submit/ZapSubmitModal.tsx:29
 #: src/views/yield-dtf/staking/components/stake/stake-modal.tsx:35
@@ -12093,6 +12530,27 @@ msgstr ""
 msgid "Your {0} has been redeemed."
 msgstr ""
 
+#: src/components/vote-lock/migration/migration-card.tsx:116
+msgid "Your {symbol} is locked in {vault}"
+msgstr ""
+
+#: src/components/vote-lock/migration/migration-modal.tsx:142
+msgid "Your {symbol} is locked in the {vault} vault."
+msgstr ""
+
+#: src/components/vote-lock/migration/migration-card.tsx:146
+msgid "Your {symbol} transaction is confirming"
+msgstr ""
+
+#. placeholder {0}: shortenAddress(flow.delegatee)
+#: src/components/vote-lock/migration/migration-modal.tsx:99
+msgid "Your {vault} votes are delegated to {0}."
+msgstr ""
+
+#: src/components/vote-lock/migration/migration-modal.tsx:98
+msgid "Your {vault} votes are delegated to you."
+msgstr ""
+
 #: src/views/portfolio-page/components/dtf-positions.tsx:177
 msgid "Your Decentralized Token Fund investments."
 msgstr ""
@@ -12101,15 +12559,36 @@ msgstr ""
 msgid "Your DTF has been minted."
 msgstr ""
 
+#: src/components/vote-lock/migration/migration-modal.tsx:271
+msgid "Your full old-vault position"
+msgstr ""
+
+#. placeholder {0}: formatAmount(flow.estimate)
+#: src/components/vote-lock/migration/migration-modal.tsx:270
+msgid "Your full old-vault position · about {0} {symbol}"
+msgstr ""
+
 #: src/views/earn/views/index-dtf/components/vote-lock-positions.tsx:272
 msgid "Your lock"
 msgstr ""
 
-#: src/views/portfolio-page/index.tsx:41
+#: src/components/vote-lock/migration/migration-card.tsx:157
+msgid "Your old vote-lock has been redeemed. Your {symbol} is in your wallet but cannot vote or earn rewards yet. Lock it in {vault} to finish."
+msgstr ""
+
+#: src/views/portfolio-page/index.tsx:43
 msgid "Your portfolio brings together DTF holdings, staked and vote-locked governance positions, rewards, pending withdrawals, voting power, RSR balances, and recent transactions."
 msgstr ""
 
-#: src/views/index-dtf/components/confirm-eligibility-modal.tsx:271
+#: src/components/vote-lock/migration/migration-card.tsx:121
+msgid "Your position is in the {vault} vault."
+msgstr ""
+
+#: src/components/vote-lock/migration/migration-card.tsx:119
+msgid "Your position is in the shared vlRSR vault."
+msgstr ""
+
+#: src/views/index-dtf/components/confirm-eligibility-modal.tsx:282
 msgid "Your privacy is protected. This confirmation is only ever associated with your wallet address - never your personal information. <0>Privacy Policy</0>"
 msgstr ""
 
@@ -12117,12 +12596,24 @@ msgstr ""
 msgid "Your realized return"
 msgstr ""
 
-#: src/views/portfolio-page/components/transactions.tsx:167
+#: src/views/portfolio-page/components/transactions.tsx:168
 msgid "Your recent on-chain activity."
 msgstr ""
 
 #: src/views/index-dtf/governance/components/governance-vote-lock.tsx:263
 msgid "Your redeemable"
+msgstr ""
+
+#: src/components/vote-lock/migration/migration-modal.tsx:144
+msgid "Your redeemed {symbol} is in your wallet."
+msgstr ""
+
+#: src/components/vote-lock/migration/migration-modal.tsx:137
+msgid "Your redeemed RSR is in your wallet."
+msgstr ""
+
+#: src/components/vote-lock/migration/migration-modal.tsx:135
+msgid "Your RSR is locked in the shared vlRSR vault."
 msgstr ""
 
 #: src/views/earn/views/yield-dtf/components/staking-positions.tsx:125
@@ -12141,6 +12632,10 @@ msgstr ""
 msgid "Your total participation awards available across all chains"
 msgstr ""
 
+#: src/components/vote-lock/migration/migration-card.tsx:155
+msgid "Your transaction was submitted. Check its status before taking another action."
+msgstr ""
+
 #: src/views/explorer/components/governance/index.tsx:139
 msgid "Your Vote"
 msgstr ""
@@ -12152,6 +12647,10 @@ msgstr ""
 
 #: src/views/portfolio-page/components/dtf-positions.tsx:218
 msgid "Your yield-bearing stablecoin holdings."
+msgstr ""
+
+#: src/views/yield-dtf/overview/components/backing/underlying-fees.tsx:141
+msgid "YTD"
 msgstr ""
 
 #: src/views/yield-dtf/issuance/components/zapV2/submit/ZapSubmitButton.tsx:25

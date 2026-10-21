@@ -98,7 +98,6 @@ describe('index subgraph chain enforcement (HARN-001/002)', () => {
 
   // getGovernanceStats keys on a chain-specific governor id (`governanceIds`),
   // which is not a `id`/`dtf`/`proposalId` var — it must still be chain-gated.
-  const baseGovId = '0x719eded05c7a6468e44acfbbd19b2df2eed7759e' // base/lcap ownerGovernance
   const govStats = (governanceIds: string[]) =>
     JSON.stringify({ operationName: 'getGovernanceStats', variables: { governanceIds } })
 
@@ -113,6 +112,36 @@ describe('index subgraph chain enforcement (HARN-001/002)', () => {
   it('REFUSES a governance-stats governor id requested on the wrong-chain host (HARN-002 gov path)', () => {
     const log = vi.fn()
     const res = resolveIndexQuery(govStats([baseGovId]), log, undefined, otherChain) as {
+      errors?: { message: string }[]
+      data?: unknown
+    }
+    expect(res.errors?.[0]?.message).toContain('wrong-chain')
+    expect(res.data).toBeNull()
+  })
+})
+
+const baseGovId = '0x719eded05c7a6468e44acfbbd19b2df2eed7759e' // base/lcap ownerGovernance
+
+describe('GetIndexDtfProposalGovernanceAddresses (react-sdk >= 0.6.0 proposal listing)', () => {
+  const govAddresses = (dtfId: string) =>
+    JSON.stringify({ operationName: 'GetIndexDtfProposalGovernanceAddresses', variables: { dtfId } })
+
+  it('serves the governance context from the DTF snapshot on the owner-chain host', () => {
+    const log = vi.fn()
+    const res = resolveIndexQuery(govAddresses(base.address), log, undefined, base.chainId) as {
+      errors?: unknown
+      data?: { dtf?: { ownerGovernance?: { id?: string }; stToken?: unknown } }
+    }
+    expect(res.errors).toBeUndefined()
+    // The owner governor id must be the one the proposal list is later keyed on.
+    expect(res.data?.dtf?.ownerGovernance?.id?.toLowerCase()).toBe(baseGovId)
+    expect(res.data?.dtf?.stToken).toBeTruthy()
+    expect(log).not.toHaveBeenCalled()
+  })
+
+  it('REFUSES the op on the wrong-chain host (HARN-002 dtf path)', () => {
+    const log = vi.fn()
+    const res = resolveIndexQuery(govAddresses(base.address), log, undefined, otherChain) as {
       errors?: { message: string }[]
       data?: unknown
     }
@@ -167,5 +196,29 @@ describe('explorer aggregation branches (shape guards)', () => {
     ) as { data?: { accountBalanceDailySnapshots?: unknown } }
     expect(Array.isArray(res.data?.accountBalanceDailySnapshots)).toBe(true)
     expect(log).not.toHaveBeenCalled()
+  })
+})
+
+describe('vote-lock dependents (retire banner)', () => {
+  const dependents = (voteLock: string) =>
+    resolveIndexQuery(
+      JSON.stringify({
+        operationName: 'GetIndexDtfVoteLockDependents',
+        variables: { voteLock },
+      }),
+      vi.fn()
+    ) as { data?: { dtfs: { id: string }[] } }
+
+  it("lists the DTF whose captured vault matches, with its owner timelock", () => {
+    const res = dependents('0x45a96cd0e4d89a41eebf3cc4204b00b1cf1582fa')
+    expect(res.data?.dtfs.map(({ id }) => id)).toContain(
+      base.address.toLowerCase()
+    )
+  })
+
+  it('answers no DTFs for a vault no captured DTF votes with', () => {
+    expect(dependents('0x00000000000000000000000000000000deadbeef').data).toEqual({
+      dtfs: [],
+    })
   })
 })

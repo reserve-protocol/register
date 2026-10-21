@@ -2,7 +2,10 @@ import { createElement } from 'react'
 import { render, waitFor } from '@testing-library/react'
 import { describe, expect, it, vi } from 'vitest'
 import TokenLogo from '..'
-import { getVoteLockTokenLogo } from '../vote-lock-token-logo'
+import {
+  getVoteLockTokenLogo,
+  getVoteLockUnderlyingSymbol,
+} from '../vote-lock-token-logo'
 
 const routeCache: Record<string, string> = {
   '0xabc-56': '/wrong-cached-logo.svg',
@@ -49,6 +52,60 @@ describe('getVoteLockTokenLogo', () => {
     await waitFor(() => {
       expect(getByAltText('vlRSR-LCAP').getAttribute('src')).toBe(
         '/svgs/vlrsr.svg'
+      )
+    })
+  })
+})
+
+describe('getVoteLockUnderlyingSymbol', () => {
+  it.each([
+    ['vlSQUILL', 'SQUILL'],
+    ['vlSQUILL-OPEN', 'SQUILL'],
+    ['vlALTT-ABX', 'ALTT'],
+  ])('maps %s to its underlying %s', (symbol, underlying) => {
+    expect(getVoteLockUnderlyingSymbol(symbol)).toBe(underlying)
+  })
+
+  it.each(['vlRSR', 'vlRSR-LCAP', 'VLX', 'USDC', undefined])(
+    'leaves %s alone',
+    (symbol) => {
+      expect(getVoteLockUnderlyingSymbol(symbol)).toBe('')
+    }
+  )
+})
+
+describe('TokenLogo for a vote-lock vault without its own logo', () => {
+  it('shows the underlying logo from the underlying address', async () => {
+    const { getByAltText } = render(
+      createElement(TokenLogo, {
+        symbol: 'vlSQUILL',
+        address: '0xabc',
+        underlyingAddress: '0xDEF',
+        chain: 1,
+        alt: 'vlSQUILL',
+      })
+    )
+
+    await waitFor(() => {
+      expect(getByAltText('vlSQUILL').getAttribute('src')).toBe(
+        '/svgs/cached-logo.svg'
+      )
+    })
+  })
+
+  it('keeps its own address lookup when the caller does not pass the underlying', async () => {
+    const { getByAltText } = render(
+      createElement(TokenLogo, {
+        symbol: 'vlSQUILL',
+        address: '0xdef',
+        chain: 1,
+        alt: 'vlSQUILL',
+      })
+    )
+
+    await waitFor(() => {
+      expect(getByAltText('vlSQUILL').getAttribute('src')).toBe(
+        '/svgs/cached-logo.svg'
       )
     })
   })

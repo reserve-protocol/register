@@ -21,6 +21,7 @@ const GovernanceTokenInfo = () => {
             chain={chainId}
             symbol={indexDTF?.stToken?.token.symbol}
             address={indexDTF?.stToken?.id}
+            underlyingAddress={indexDTF?.stToken?.underlying.address}
             size="xl"
           />
         }
