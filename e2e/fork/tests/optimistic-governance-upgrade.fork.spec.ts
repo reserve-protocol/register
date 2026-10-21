@@ -78,6 +78,8 @@ const governorAbi = parseAbi([
   'function state(uint256 proposalId) view returns (uint8)',
   'function timelock() view returns (address)',
   'function token() view returns (address)',
+  'function votingDelay() view returns (uint256)',
+  'function votingPeriod() view returns (uint256)',
 ])
 const actionAbi = parseAbi([
   'function grantRole(bytes32 role, address account)',
@@ -225,8 +227,11 @@ test(`${scenario.toUpperCase()}${safeMode ? ' (Safe)' : ''} migrates governance,
     for (const { proposal } of items) {
       expect(proposal.proposer.toLowerCase()).toBe(manifest.proposer.toLowerCase())
     }
-    await warpTo(max(items.map(({ proposal }) => proposal.voteStart)) + 1n)
-    for (const { governor, proposal } of items) {
+    // Governors keep their own windows (ABX's vault DAO votes in a day), so each vote waits for its own start.
+    const byStart = [...items].sort((a, b) => Number(a.proposal.voteStart - b.proposal.voteStart))
+    for (const { governor, proposal } of byStart) {
+      const now = (await client.getBlock()).timestamp
+      if (now <= proposal.voteStart) await warpTo(proposal.voteStart + 1n)
       await send(
         manifest.proposer,
         governor,
@@ -340,8 +345,15 @@ test(`${scenario.toUpperCase()}${safeMode ? ' (Safe)' : ''} migrates governance,
   })
   await expect(page.getByTestId('governance-retire-vote-lock-btn')).toHaveCount(0)
 
-  // One CTA proposes upgradeFolio on the Folio's owner governor, then the retirement on the old vault DAO.
-  await expect(page.getByTestId('governance-optimistic-upgrade-pair')).toBeVisible()
+  // One CTA proposes upgradeFolio and the retirement together unless the vault DAO would execute first.
+  const timeToExecute = async (governor: Address) =>
+    (await read<bigint>(governor, 'votingDelay')) +
+    (await read<bigint>(governor, 'votingPeriod')) +
+    (await read<bigint>(await read<Address>(governor, 'timelock'), 'getMinDelay'))
+  const paired =
+    (await timeToExecute(manifest.oldVaultGovernor)) >=
+    (await timeToExecute(manifest.ownerGovernor))
+  await expect(page.getByTestId('governance-optimistic-upgrade-pair')).toHaveCount(paired ? 1 : 0)
   const pairFrom = await client.getBlockNumber()
   const upgrade = await proposeFromBanner(
     manifest.ownerGovernor,
@@ -355,23 +367,13 @@ test(`${scenario.toUpperCase()}${safeMode ? ' (Safe)' : ''} migrates governance,
       eventName: 'ProposalCreated',
       fromBlock: pairFrom + 1n,
     })
-  await expect.poll(async () => (await retireCreated()).length, { timeout: 120_000 }).toBe(1)
-  const [retireLog] = await retireCreated()
-  const retire = { ...(retireLog.args as Proposal), transactionHash: retireLog.transactionHash }
-  await page.screenshot({ path: `${evidenceDir}/02-pair-proposed.png`, fullPage: true })
-  expect(retire.targets.map((t) => t.toLowerCase())).toEqual([
-    manifest.oldVault.toLowerCase(),
-    manifest.spell.toLowerCase(),
-  ])
-  expect(
-    retire.calldatas.map((data) => decodeFunctionData({ abi: actionAbi, data }))
-  ).toEqual([
-    { functionName: 'transferOwnership', args: [getAddress(manifest.spell)] },
-    {
-      functionName: 'retireOldStakingVault',
-      args: [getAddress(manifest.oldVault)],
-    },
-  ])
+  let retire: (Proposal & { transactionHash: Hex }) | undefined
+  if (paired) {
+    await expect.poll(async () => (await retireCreated()).length, { timeout: 120_000 }).toBe(1)
+    const [retireLog] = await retireCreated()
+    retire = { ...(retireLog.args as Proposal), transactionHash: retireLog.transactionHash }
+    await page.screenshot({ path: `${evidenceDir}/02-pair-proposed.png`, fullPage: true })
+  }
   expect(upgrade.targets[0].toLowerCase()).toBe(manifest.dtf.toLowerCase())
   expect(upgrade.targets[2].toLowerCase()).toBe(manifest.spell.toLowerCase())
   const actions = upgrade.calldatas.map((data) =>
@@ -399,7 +401,7 @@ test(`${scenario.toUpperCase()}${safeMode ? ' (Safe)' : ''} migrates governance,
 
   const [executed] = await passProposals([
     { governor: manifest.ownerGovernor, proposal: upgrade },
-    { governor: manifest.oldVaultGovernor, proposal: retire },
+    ...(retire ? [{ governor: manifest.oldVaultGovernor, proposal: retire }] : []),
   ])
   const deploymentLog = executed.logs
     .filter((log) => log.address.toLowerCase() === manifest.spell.toLowerCase())
@@ -460,6 +462,31 @@ test(`${scenario.toUpperCase()}${safeMode ? ' (Safe)' : ''} migrates governance,
   expect(recipients).not.toContain(manifest.oldVault.toLowerCase())
 
   await syncBrowserClock(page)
+  if (!retire) {
+    // Unpaired: the retire banner proposes once the upgrade executed.
+    await page.goto(`${dtfRoute}/governance/propose`)
+    await expect(wallet).toBeVisible({ timeout: 60_000 })
+    retire = await proposeFromBanner(
+      manifest.oldVaultGovernor,
+      'governance-retire-vote-lock-btn',
+      '02-retire-banner.png'
+    )
+    await passProposals([{ governor: manifest.oldVaultGovernor, proposal: retire }])
+    await syncBrowserClock(page)
+  }
+  expect(retire.targets.map((t) => t.toLowerCase())).toEqual([
+    manifest.oldVault.toLowerCase(),
+    manifest.spell.toLowerCase(),
+  ])
+  expect(
+    retire.calldatas.map((data) => decodeFunctionData({ abi: actionAbi, data }))
+  ).toEqual([
+    { functionName: 'transferOwnership', args: [getAddress(manifest.spell)] },
+    {
+      functionName: 'retireOldStakingVault',
+      args: [getAddress(manifest.oldVault)],
+    },
+  ])
   expect(await read<bigint>(manifest.oldVault, 'unstakingDelay')).toBe(0n)
   expect(await read<Address>(manifest.oldVault, 'owner')).toBe(zeroAddress)
 
