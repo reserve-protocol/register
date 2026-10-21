@@ -15,6 +15,7 @@ import {
   type TransactionReceipt,
 } from 'viem'
 import {
+  usePublicClient,
   useReadContract,
   useReadContracts,
   useTransactionReceipt,
@@ -100,7 +101,12 @@ export const useMigrationFlow = (migration: VoteLockMigration) => {
     }
   }, [oldVoteLock, redeemReceipt, redeemed, update])
 
-  const { data: pendingReceipt, error: pendingError } = useWaitForTransactionReceipt({
+  const client = usePublicClient({ chainId })
+  const {
+    data: pendingReceipt,
+    error: pendingError,
+    refetch: refetchPending,
+  } = useWaitForTransactionReceipt({
     hash: record.pending?.hash,
     chainId,
   })
@@ -140,15 +146,27 @@ export const useMigrationFlow = (migration: VoteLockMigration) => {
     }
   }, [migration, oldVoteLock, pendingReceipt, record.pending, refetchAllowance, refetchBalance, update])
 
-  // A receipt wait that fails (timeout, dropped transaction, RPC error) frees the step for a retry.
+  // Slow chains outlast the receipt wait timeout, so only a transaction the node no longer knows frees the step.
   useEffect(() => {
     const pending = record.pending
-    if (!pending || !pendingError) return
-    setFailed(pending.step)
-    update(({ pending: _, ...rest }) => rest)
-    void refetchAllowance()
-    migration.refetch()
-  }, [migration, pendingError, record.pending, refetchAllowance, update])
+    if (!pending || !pendingError || !client) return
+    let cancelled = false
+    client.getTransaction({ hash: pending.hash }).then(
+      () => {
+        if (!cancelled) void refetchPending()
+      },
+      () => {
+        if (cancelled) return
+        setFailed(pending.step)
+        update(({ pending: _, ...rest }) => rest)
+        void refetchAllowance()
+        migration.refetch()
+      }
+    )
+    return () => {
+      cancelled = true
+    }
+  }, [client, migration, pendingError, record.pending, refetchAllowance, refetchPending, update])
 
   const lockAmount = getLockAmount(redeemed, walletBalance)
   const recovering = !!record.redeem && redeemed === undefined
@@ -182,6 +200,9 @@ export const useMigrationFlow = (migration: VoteLockMigration) => {
 
   const submit = () => {
     if (step === 'done' || recovering || nothingToLock || record.pending) return
+    // Depositing without the current delegation would re-delegate every share the holder already has.
+    if (step === 'deposit' && sharedDelegation?.some((read) => read.status !== 'success') !== false)
+      return
     const call =
       step === 'redeem'
         ? getWriteContractParams(
@@ -232,7 +253,7 @@ export const useMigrationFlow = (migration: VoteLockMigration) => {
     received: redeemed,
     delegatee,
     isSigning,
-    isConfirming: !!record.pending && !pendingError,
+    isConfirming: !!record.pending,
     isRecovering: recovering,
     nothingToLock,
     rejected,
