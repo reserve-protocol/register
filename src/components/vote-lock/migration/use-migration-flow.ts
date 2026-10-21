@@ -11,6 +11,7 @@ import {
   isAddressEqual,
   parseAbi,
   parseEventLogs,
+  TransactionNotFoundError,
   type Address,
   type Hex,
   type TransactionReceipt,
@@ -173,12 +174,17 @@ export const useMigrationFlow = (migration: VoteLockMigration) => {
     const pending = record.pending
     if (!pending || !pendingError || !client) return
     let cancelled = false
+    let retry: ReturnType<typeof setTimeout> | undefined
     client.getTransaction({ hash: pending.hash }).then(
       () => {
         if (!cancelled) void refetchPending()
       },
-      () => {
+      (error) => {
         if (cancelled) return
+        if (!(error instanceof TransactionNotFoundError)) {
+          retry = setTimeout(() => void refetchPending(), 5_000)
+          return
+        }
         setFailed(pending.step)
         update(({ pending: _, ...rest }) => rest)
         void refetchAllowance()
@@ -187,6 +193,7 @@ export const useMigrationFlow = (migration: VoteLockMigration) => {
     )
     return () => {
       cancelled = true
+      clearTimeout(retry)
     }
   }, [client, migration, pendingError, record.pending, refetchAllowance, refetchPending, update])
 
