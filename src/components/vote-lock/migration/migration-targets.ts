@@ -36,7 +36,7 @@ const DTF_UPGRADE_TARGETS: Record<number, Record<string, DtfUpgradeTarget>> = {
     // OPEN: GovernanceSpell_10_19_2026 (5d vote, 3d timelock, 5% threshold, 15% quorum) into vlSQUILL.
     '0x323c03c48660fe31186fa82c289b0766d331ce21': {
       spell: getAddress('0x5CE95c60A1aaF3f500301735a92d608E1eE3515E'),
-      stakingVault: getAddress('0x8a8188D2bC61c43124CDED32F40faB456F68C15C'),
+      stakingVault: getAddress('0x60e71dd36Fa5Bf92bcd9320e85cF0040ffe437Bc'),
       stakingVaultUnderlying: getAddress('0x7ebAB7190d3d574ce82D29F2FA1422f18E29969C'),
       feeRecipient: zeroAddress,
       legacyVoteLock: getAddress('0x2aea77c4757d897aae2710b8a60280777f504e8c'),

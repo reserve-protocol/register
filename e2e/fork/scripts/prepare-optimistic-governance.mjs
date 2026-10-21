@@ -43,7 +43,7 @@ const SCENARIOS = {
     symbol: 'OPEN',
     dtf: '0x323c03c48660fe31186fa82c289b0766d331ce21',
     spell: '0x5CE95c60A1aaF3f500301735a92d608E1eE3515E',
-    newVault: '0x8a8188D2bC61c43124CDED32F40faB456F68C15C',
+    newVault: '0x60e71dd36Fa5Bf92bcd9320e85cF0040ffe437Bc',
     feeRecipient: zeroAddress,
     upgradesSharedVault: false,
   },
