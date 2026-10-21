@@ -154,8 +154,9 @@ export default function ProposeRetireVoteLock() {
   }, [setRefetchToken])
 
   if (!retire || !proposals || !retire.isProposeAllowed || retire.isLive) return null
-  // Until this DTF's own upgrade is proposed the retirement could never pass, so the upgrade banner goes first.
-  if (retire.selfPending && !hasLiveUpgradeFolio(proposals)) return null
+  // While this DTF still votes with the vault, the retirement only runs alongside a live upgrade it cannot outpace.
+  if (retire.selfPending && !(hasLiveUpgradeFolio(proposals) && retire.canExecuteAfterUpgrade))
+    return null
 
   return (
     <RetireBanner

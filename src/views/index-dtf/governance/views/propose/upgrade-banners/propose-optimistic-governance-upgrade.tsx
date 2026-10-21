@@ -528,6 +528,7 @@ export default function ProposeOptimisticGovernanceUpgrade() {
   const canPair =
     !!retire &&
     retire.isProposeAllowed &&
+    retire.canExecuteAfterUpgrade &&
     !retire.isLive &&
     retire.othersPending.length === 0
 
