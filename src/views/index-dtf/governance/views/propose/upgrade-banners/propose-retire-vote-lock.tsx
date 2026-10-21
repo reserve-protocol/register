@@ -12,7 +12,7 @@ import type { Address } from 'viem'
 import { useWaitForTransactionReceipt, useWriteContract } from 'wagmi'
 import { governanceProposalsAtom, refetchTokenAtom } from '../../../atoms'
 import useRecentProposalReceipt from '../../../hooks/use-recent-proposal-receipt'
-import { buildRetireProposal, hasLiveUpgradeFolio } from './migration-proposals'
+import { buildRetireProposal } from './migration-proposals'
 import { useRetirableVoteLock } from './use-retirable-vote-lock'
 import type { OldVoteLock } from '@/views/index-dtf/components/vote-lock-migration/governance-migration'
 
@@ -154,9 +154,8 @@ export default function ProposeRetireVoteLock() {
   }, [setRefetchToken])
 
   if (!retire || !proposals || !retire.isProposeAllowed || retire.isLive) return null
-  // While this DTF still votes with the vault, the retirement only runs alongside a live upgrade it cannot outpace.
-  if (retire.selfPending && !(hasLiveUpgradeFolio(proposals) && retire.canExecuteAfterUpgrade))
-    return null
+  // The spell does not check dependents, so the retirement is proposed only after this DTF's upgrade executes.
+  if (retire.selfPending) return null
 
   return (
     <RetireBanner

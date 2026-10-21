@@ -2,7 +2,6 @@ import dtfAdminAbi from '@/abis/dtf-admin-abi'
 import dtfIndexAbi from '@/abis/dtf-index-abi-v1'
 import DTFIndexGovernance from '@/abis/dtf-index-governance'
 import { Button } from '@/components/ui/button'
-import { useIsSafeAccount } from '@/hooks/use-is-safe-account'
 import { chainIdAtom } from '@/state/atoms'
 import { indexDTFAtom } from '@/state/dtf/atoms'
 import { trackClick } from '@/hooks/useTrackPage'
@@ -10,9 +9,9 @@ import { getCurrentTime } from '@/utils'
 import { Trans, useLingui } from '@lingui/react/macro'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { AlertCircle, Loader2 } from 'lucide-react'
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { useCallback, useEffect } from 'react'
 import { encodeFunctionData, getAddress, Hex, pad } from 'viem'
-import { useSendCalls, useWaitForTransactionReceipt, useWriteContract } from 'wagmi'
+import { useWaitForTransactionReceipt, useWriteContract } from 'wagmi'
 import { governanceProposalsAtom, refetchTokenAtom } from '../../../atoms'
 import { useIsProposeAllowed } from '../../../hooks/use-is-propose-allowed'
 import useRecentProposalReceipt from '../../../hooks/use-recent-proposal-receipt'
@@ -22,12 +21,7 @@ import {
   optimisticStakingVaultAddress,
 } from '@/components/vote-lock/migration/migration-targets'
 import { useOptimisticUpgradeEligibility } from '@/views/index-dtf/components/vote-lock-migration/use-upgrade-eligibility'
-import {
-  buildRetireProposal,
-  hasLiveUpgradeFolio,
-  nextUpgradeFolioDescription,
-} from './migration-proposals'
-import { type RetirableVoteLock, useRetirableVoteLock } from './use-retirable-vote-lock'
+import { hasLiveUpgradeFolio, nextUpgradeFolioDescription } from './migration-proposals'
 
 const spellAbi = [
   {
@@ -161,16 +155,12 @@ const spellAbi = [
 type SpellUpgradeProps = {
   refetch: () => void
   description: string
-  // Set for legacy DTFs whose old vault DAO can retire it: the CTA proposes the upgrade and the retirement together.
-  retire?: RetirableVoteLock
-  onPairChange: (inFlight: boolean) => void
 }
 
-const ProposeBanner = ({ refetch, description, retire, onPairChange }: SpellUpgradeProps) => {
+const ProposeBanner = ({ refetch, description }: SpellUpgradeProps) => {
   const { t } = useLingui()
   const dtf = useAtomValue(indexDTFAtom)
   const chainId = useAtomValue(chainIdAtom)
-  const isSafe = useIsSafeAccount(chainId)
   const target = dtf ? getGovernanceUpgradeTarget(chainId, dtf.id) : undefined
   const spell = target?.spell
   const isSharedVault =
@@ -178,6 +168,7 @@ const ProposeBanner = ({ refetch, description, retire, onPairChange }: SpellUpgr
   const handleRecentProposalReceipt = useRecentProposalReceipt()
 
   const { writeContract, data: hash, isPending } = useWriteContract()
+
   const {
     data: receipt,
     isSuccess,
@@ -189,34 +180,6 @@ const ProposeBanner = ({ refetch, description, retire, onPairChange }: SpellUpgr
   const isConfirming = !!hash && !receipt && !receiptError
   const isSubmitted = isConfirming || receipt?.status === 'success'
 
-  const retireWrite = useWriteContract()
-  const { data: retireReceipt, error: retireReceiptError } =
-    useWaitForTransactionReceipt({ hash: retireWrite.data, chainId })
-  const isRetireConfirming =
-    !!retireWrite.data && !retireReceipt && !retireReceiptError
-  const { sendCalls, isPending: isBatching } = useSendCalls()
-  const pairStarted = useRef(false)
-  const retireRequested = useRef(false)
-
-  const retireGovernor = retire?.voteLock.governance
-  const retireVault = retire?.voteLock.address
-  const retireSpell = retire?.spell
-  const retireDescription = retire?.description
-  const retireCall = useMemo(
-    () =>
-      retireGovernor && retireVault && retireSpell && retireDescription
-        ? buildRetireProposal({
-            chainId,
-            governor: retireGovernor,
-            voteLock: retireVault,
-            spell: retireSpell,
-            description: retireDescription,
-          })
-        : undefined,
-    [chainId, retireDescription, retireGovernor, retireSpell, retireVault]
-  )
-  const handledRetire = useRef<Hex>()
-
   const isReady =
     dtf?.id &&
     dtf?.proxyAdmin &&
@@ -224,7 +187,7 @@ const ProposeBanner = ({ refetch, description, retire, onPairChange }: SpellUpgr
     dtf?.tradingGovernance?.id
   const proposalAvailable = !!spell
 
-  const buildUpgradeCall = () => {
+  const handlePropose = () => {
     if (
       !dtf ||
       !target ||
@@ -232,8 +195,9 @@ const ProposeBanner = ({ refetch, description, retire, onPairChange }: SpellUpgr
       !dtf.ownerGovernance ||
       !dtf.tradingGovernance
     )
-      return undefined
+      return
 
+    trackClick('governance', 'propose_governance_upgrade', dtf.id, dtf.token.symbol, chainId)
     const newVaultAddress = target.stakingVault
     const oldFolioGovernor = dtf.ownerGovernance.id
     const tradingGovernor = dtf.tradingGovernance.id
@@ -254,11 +218,11 @@ const ProposeBanner = ({ refetch, description, retire, onPairChange }: SpellUpgr
       .map((b) => b.toString(16).padStart(2, '0'))
       .join('')}` as Hex
 
-    return {
+    writeContract({
       chainId,
       address: dtf.ownerGovernance.id,
       abi: DTFIndexGovernance,
-      functionName: 'propose' as const,
+      functionName: 'propose',
       args: [
         [dtf.id, dtf.proxyAdmin, spell],
         [0n, 0n, 0n],
@@ -291,61 +255,7 @@ const ProposeBanner = ({ refetch, description, retire, onPairChange }: SpellUpgr
           }),
         ],
         description,
-      ] as const,
-    }
-  }
-
-  const endPair = useCallback(() => {
-    pairStarted.current = false
-    onPairChange(false)
-    refetch()
-  }, [onPairChange, refetch])
-
-  const handlePropose = () => {
-    const upgradeCall = buildUpgradeCall()
-    if (!dtf || !upgradeCall) return
-
-    trackClick(
-      'governance',
-      retireCall ? 'propose_governance_upgrade_and_retire' : 'propose_governance_upgrade',
-      dtf.id,
-      dtf.token.symbol,
-      chainId
-    )
-    // A Safe executes both proposals in one batch; it never returns a mined hash to chain the second on.
-    if (retireCall && isSafe) {
-      sendCalls(
-        {
-          chainId,
-          calls: [upgradeCall, retireCall].map((call) => ({
-            to: call.address,
-            data: encodeFunctionData({
-              abi: DTFIndexGovernance,
-              functionName: 'propose',
-              args: call.args,
-            }),
-          })),
-        },
-        {
-          onSuccess: () => {
-            toast(t`Proposals sent to your Safe`, {
-              description: t`Both proposals are created once the Safe transaction executes.`,
-            })
-            setTimeout(refetch, 10000)
-          },
-        }
-      )
-      return
-    }
-    if (retireCall) {
-      pairStarted.current = true
-      retireRequested.current = false
-      onPairChange(true)
-    }
-    writeContract(upgradeCall, {
-      onError: () => {
-        if (pairStarted.current) endPair()
-      },
+      ],
     })
   }
 
@@ -359,12 +269,6 @@ const ProposeBanner = ({ refetch, description, retire, onPairChange }: SpellUpgr
       return
     }
 
-    if (pairStarted.current && !retireRequested.current) {
-      retireRequested.current = true
-      if (retireCall) retireWrite.writeContract(retireCall, { onError: endPair })
-      else endPair()
-    }
-
     void handleRecentProposalReceipt({
       receipt,
       governor: dtf.ownerGovernance.id,
@@ -373,7 +277,7 @@ const ProposeBanner = ({ refetch, description, retire, onPairChange }: SpellUpgr
           description: t`Reserve Optimistic Governor Upgrade proposal created`,
           icon: '🎉',
         })
-        if (!pairStarted.current) refetch()
+        refetch()
       },
       onFallback: () => {
         setTimeout(() => {
@@ -381,74 +285,22 @@ const ProposeBanner = ({ refetch, description, retire, onPairChange }: SpellUpgr
             description: t`Reserve Optimistic Governor Upgrade proposal created`,
             icon: '🎉',
           })
-          if (!pairStarted.current) refetch()
+          refetch()
         }, 10000)
       },
     })
   }, [
     dtf?.ownerGovernance?.id,
-    endPair,
     handleRecentProposalReceipt,
     isSuccess,
     receipt,
     refetch,
-    retireCall,
-    retireWrite,
-    t,
-  ])
-
-  useEffect(() => {
-    const sent = retireWrite.data
-    if (!sent || !retireGovernor || handledRetire.current === sent) return
-    if (!retireReceipt && !retireReceiptError) return
-    handledRetire.current = sent
-    if (retireReceipt?.status !== 'success') {
-      endPair()
-      return
-    }
-    void handleRecentProposalReceipt({
-      receipt: retireReceipt,
-      governor: retireGovernor,
-      onSuccess: () => {
-        toast(t`Proposal created!`, {
-          description: t`Legacy vote-lock vault retirement proposal created`,
-          icon: '🎉',
-        })
-        endPair()
-      },
-      onFallback: () => setTimeout(endPair, 10000),
-    })
-  }, [
-    endPair,
-    handleRecentProposalReceipt,
-    retireGovernor,
-    retireReceipt,
-    retireReceiptError,
-    retireWrite.data,
     t,
   ])
 
   if (!proposalAvailable) {
     return null
   }
-
-  const isBusy =
-    isPending ||
-    isSubmitted ||
-    isBatching ||
-    retireWrite.isPending ||
-    isRetireConfirming
-  const label = retireWrite.isPending
-    ? t`Sign the retirement proposal in wallet...`
-    : isPending || isBatching
-      ? retireCall && !isSafe
-        ? t`Sign the upgrade proposal in wallet...`
-        : t`Pending, sign in wallet...`
-      : isSubmitted || isRetireConfirming
-        ? t`Waiting for confirmation...`
-        : retireCall
-          ? t`Propose upgrade and vault retirement`
-          : t`Propose upgrade`
 
   return (
     <div
@@ -478,32 +330,20 @@ const ProposeBanner = ({ refetch, description, retire, onPairChange }: SpellUpgr
               </Trans>
             )}
           </p>
-          {retireCall && (
-            <p className="text-sm mt-2" data-testid="governance-optimistic-upgrade-pair">
-              {isSafe ? (
-                <Trans>
-                  It also proposes the old vault's retirement to its DAO, so
-                  both votes run at the same time. Your Safe signs both in one
-                  transaction.
-                </Trans>
-              ) : (
-                <Trans>
-                  It also proposes the old vault's retirement to its DAO, so
-                  both votes run at the same time. You sign two proposals.
-                </Trans>
-              )}
-            </p>
-          )}
         </div>
       </div>
       <Button
         data-testid="governance-optimistic-upgrade-btn"
-        disabled={!isReady || isBusy}
+        disabled={!isReady || isPending || isSubmitted}
         onClick={handlePropose}
         className="w-full mt-2"
       >
-        {isBusy && <Loader2 className="w-4 h-4 animate-spin mr-2" />}
-        {label}
+        {(isPending || isSubmitted) && (
+          <Loader2 className="w-4 h-4 animate-spin mr-2" />
+        )}
+        {isPending && t`Pending, sign in wallet...`}
+        {!isPending && isSubmitted && t`Waiting for confirmation...`}
+        {!isPending && !isSubmitted && t`Propose upgrade`}
       </Button>
     </div>
   )
@@ -513,31 +353,16 @@ export default function ProposeOptimisticGovernanceUpgrade() {
   const { isProposeAllowed } = useIsProposeAllowed()
   const proposals = useAtomValue(governanceProposalsAtom)
   const { isEligible } = useOptimisticUpgradeEligibility()
-  const retire = useRetirableVoteLock()
   const setRefetchToken = useSetAtom(refetchTokenAtom)
-  // The banner stays mounted between the two signatures, while the first proposal already counts as live.
-  const [pairInFlight, setPairInFlight] = useState(false)
 
   const refetch = useCallback(() => {
     setRefetchToken(getCurrentTime())
   }, [setRefetchToken])
 
   if (!isProposeAllowed || !proposals) return null
-  if (!pairInFlight && (!isEligible || hasLiveUpgradeFolio(proposals))) return null
+  if (!isEligible || hasLiveUpgradeFolio(proposals)) return null
 
-  const canPair =
-    !!retire &&
-    retire.isProposeAllowed &&
-    retire.canExecuteAfterUpgrade &&
-    !retire.isLive &&
-    retire.othersPending.length === 0
+  const description = nextUpgradeFolioDescription(proposals)
 
-  return (
-    <ProposeBanner
-      refetch={refetch}
-      description={nextUpgradeFolioDescription(proposals)}
-      retire={canPair ? retire : undefined}
-      onPairChange={setPairInFlight}
-    />
-  )
+  return <ProposeBanner refetch={refetch} description={description} />
 }

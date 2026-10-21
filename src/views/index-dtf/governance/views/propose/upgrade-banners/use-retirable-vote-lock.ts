@@ -21,38 +21,6 @@ import {
 } from './migration-proposals'
 
 const governorTimelockAbi = parseAbi(['function timelock() view returns (address)'])
-const governanceTimingAbi = parseAbi([
-  'function votingDelay() view returns (uint256)',
-  'function votingPeriod() view returns (uint256)',
-  'function timelock() view returns (address)',
-  'function getMinDelay() view returns (uint256)',
-])
-
-// Seconds from proposal to the earliest execution: voting delay + voting period + timelock delay.
-const useTimeToExecute = (chainId: number, governor?: Address) => {
-  const { data } = useReadContracts({
-    contracts: [
-      { address: governor, abi: governanceTimingAbi, functionName: 'votingDelay', chainId },
-      { address: governor, abi: governanceTimingAbi, functionName: 'votingPeriod', chainId },
-      { address: governor, abi: governanceTimingAbi, functionName: 'timelock', chainId },
-    ],
-    query: { enabled: !!governor },
-  })
-  const [delay, period, timelock] = (data ?? []).map((read) => read.result) as [
-    bigint?,
-    bigint?,
-    Address?,
-  ]
-  const { data: minDelay } = useReadContracts({
-    contracts: [{ address: timelock, abi: governanceTimingAbi, functionName: 'getMinDelay', chainId }],
-    query: { enabled: !!timelock },
-  })
-  const timelockDelay = minDelay?.[0]?.result as bigint | undefined
-  return delay !== undefined && period !== undefined && timelockDelay !== undefined
-    ? delay + period + timelockDelay
-    : undefined
-}
-
 // The DTF's old vault when its DAO can retire it: a vault in the target's token still owned by the DAO timelock.
 export const useRetirableVoteLock = () => {
   const dtf = useAtomValue(indexDTFAtom)
@@ -92,8 +60,6 @@ export const useRetirableVoteLock = () => {
   const { data: dependents } = useIndexDtfVoteLockDependents(
     dtf && voteLock ? { chainId: dtf.chainId, voteLock: voteLock.address } : undefined
   )
-  const upgradeTime = useTimeToExecute(chainId, dtf?.ownerGovernance?.id as Address | undefined)
-  const retireTime = useTimeToExecute(chainId, voteLock?.governance)
 
   if (status !== 'active' || !dtf || !target || !voteLock || !proposals || !dependents) {
     return undefined
@@ -107,9 +73,6 @@ export const useRetirableVoteLock = () => {
     selfPending: governed.some(({ address }) => isAddressEqual(address, dtf.id)),
     othersPending: governed.filter(({ address }) => !isAddressEqual(address, dtf.id)),
     isProposeAllowed,
-    // A retirement executed first would let holders leave a vault that still votes on the upgrade.
-    canExecuteAfterUpgrade:
-      upgradeTime !== undefined && retireTime !== undefined && retireTime >= upgradeTime,
     isLive: hasLiveRetire(proposals, voteLock.address),
     description: nextRetireDescription(proposals, voteLock.address),
   }
