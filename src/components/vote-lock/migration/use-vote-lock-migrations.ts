@@ -114,8 +114,8 @@ export const useVoteLockMigrations = (
     ? vaults.flatMap(({ candidate, retired, shares, underlying, symbol, newSymbol }) => {
         if (!retired || !underlying) return []
         const record = readMigrationRecord({ ...candidate, account })
-        // A redeemed position has no old shares left; its record carries it until the holder dismisses completion.
-        const inProgress = !!record.redeem && !record.acknowledged
+        // A redeemed position, or one whose redeem is still confirming, has no old shares left; its record carries it.
+        const inProgress = (!!record.redeem || !!record.pending) && !record.acknowledged
         if (shares === 0n && !inProgress) return []
         return [
           {

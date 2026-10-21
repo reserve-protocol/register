@@ -9,8 +9,10 @@ export type MigrationRecord = {
   approve?: { hash: Hex }
   deposit?: { hash: Hex }
   locked?: bigint
-  pending?: { step: MigrationStepName; hash: Hex }
+  // Safe steps confirm from on-chain effects: the wallet returns a Safe tx hash, never a mined one.
+  pending?: { step: MigrationStepName; hash: Hex; viaSafe?: boolean; baseline?: bigint }
   completed?: boolean
+  viaSafe?: boolean
   acknowledged?: boolean
 }
 
@@ -56,10 +58,16 @@ const parse = (raw: unknown): MigrationRecord => {
   if (deposit) record.deposit = deposit
   const pending = asObject(value.pending)
   if (pending && isStep(pending.step) && isTxHash(pending.hash)) {
-    record.pending = { step: pending.step, hash: pending.hash }
+    record.pending = {
+      step: pending.step,
+      hash: pending.hash,
+      ...(pending.viaSafe === true ? { viaSafe: true } : {}),
+      ...(isUint(pending.baseline) ? { baseline: BigInt(pending.baseline) } : {}),
+    }
   }
   if (isUint(value.locked)) record.locked = BigInt(value.locked)
   if (value.completed === true) record.completed = true
+  if (value.viaSafe === true) record.viaSafe = true
   if (value.acknowledged === true) record.acknowledged = true
   return record
 }

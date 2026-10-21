@@ -101,15 +101,17 @@ export const MigrationModal = ({ migration, flow, open, onOpenChange, onTrack }:
   const busy = flow.isSigning || flow.isConfirming || flow.isRecovering
   const actionLabel = flow.isSigning
     ? t`Confirm in wallet...`
-    : flow.isConfirming
-      ? t`Confirming transaction...`
-      : flow.isRecovering
-        ? t`Checking your redemption...`
-        : flow.failed
-          ? t`Transaction failed · Retry`
-          : flow.rejected
-            ? t`Request rejected · Retry`
-            : buttonLabels[step as Stage]
+    : flow.isWaitingForSafe
+      ? t`Waiting for your Safe to execute...`
+      : flow.isConfirming
+        ? t`Confirming transaction...`
+        : flow.isRecovering
+          ? t`Checking your redemption...`
+          : flow.failed
+            ? t`Transaction failed · Retry`
+            : flow.rejected
+              ? t`Request rejected · Retry`
+              : buttonLabels[step as Stage]
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -198,7 +200,7 @@ export const MigrationModal = ({ migration, flow, open, onOpenChange, onTrack }:
                           <h3 className="mt-0.5 text-sm font-medium leading-tight">{doneTitles[stage]}</h3>
                         </div>
                       </div>
-                      {hash && (
+                      {hash && !record.viaSafe && (
                         <TxLink hash={hash} chainId={chainId} label={t`View ${titles[stage]} transaction on explorer`} />
                       )}
                     </div>
@@ -302,6 +304,16 @@ export const MigrationModal = ({ migration, flow, open, onOpenChange, onTrack }:
                             {busy && <LoaderCircle className="mr-2 animate-spin" size={17} />}
                             <span aria-live="polite">{actionLabel}</span>
                           </Button>
+                          {flow.isWaitingForSafe && (
+                            <Button
+                              variant="ghost"
+                              data-testid="vote-lock-migration-safe-cancel"
+                              className="mt-1 w-full rounded-xl text-legend"
+                              onClick={flow.cancelSafePending}
+                            >
+                              <Trans>Rejected it in your Safe? Sign again</Trans>
+                            </Button>
+                          )}
                         </TransactionButtonContainer>
                       )}
                     </>

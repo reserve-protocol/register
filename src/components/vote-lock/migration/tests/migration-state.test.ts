@@ -3,6 +3,7 @@ import {
   chooseDeposit,
   getLockAmount,
   getMigrationStep,
+  getSafeStepOutcome,
   isRetiredWithBalance,
 } from '../migration-state'
 
@@ -94,5 +95,41 @@ describe('chooseDeposit', () => {
     expect(
       chooseDeposit({ account: ACCOUNT, oldDelegate: OLD_DELEGATE, delegate: VLRSR_DELEGATE, optimisticDelegate: ZERO })
     ).toEqual({ type: 'depositAndDelegate', delegatee: VLRSR_DELEGATE, optimisticDelegatee: VLRSR_DELEGATE })
+  })
+})
+
+describe('getSafeStepOutcome', () => {
+  it('confirms a redeem once the old shares are gone, with what the wallet gained since sending', () => {
+    expect(
+      getSafeStepOutcome({ step: 'redeem', baseline: 40n, oldShares: 5n, walletBalance: 140n })
+    ).toBeUndefined()
+    expect(
+      getSafeStepOutcome({ step: 'redeem', baseline: 40n, oldShares: 0n, walletBalance: 140n })
+    ).toEqual({ step: 'redeem', assets: 100n })
+  })
+
+  it('never reports a negative payout when the wallet moved funds meanwhile', () => {
+    expect(
+      getSafeStepOutcome({ step: 'redeem', baseline: 40n, oldShares: 0n, walletBalance: 10n })
+    ).toEqual({ step: 'redeem', assets: 0n })
+  })
+
+  it('waits for the baseline before confirming a redeem or a deposit', () => {
+    expect(getSafeStepOutcome({ step: 'redeem', oldShares: 0n, walletBalance: 10n })).toBeUndefined()
+    expect(getSafeStepOutcome({ step: 'deposit', newShares: 10n })).toBeUndefined()
+  })
+
+  it('confirms an approval once the allowance covers the lock amount', () => {
+    expect(getSafeStepOutcome({ step: 'approve', allowance: 99n, lockAmount: 100n })).toBeUndefined()
+    expect(getSafeStepOutcome({ step: 'approve', allowance: 100n, lockAmount: 100n })).toEqual({
+      step: 'approve',
+    })
+  })
+
+  it('confirms a deposit once the new vault shares grew', () => {
+    expect(getSafeStepOutcome({ step: 'deposit', baseline: 7n, newShares: 7n })).toBeUndefined()
+    expect(getSafeStepOutcome({ step: 'deposit', baseline: 7n, newShares: 8n })).toEqual({
+      step: 'deposit',
+    })
   })
 })

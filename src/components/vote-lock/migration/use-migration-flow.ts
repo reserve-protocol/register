@@ -1,4 +1,5 @@
 import { getWriteContractParams } from '@/components/vote-lock/utils'
+import { useIsSafeAccount } from '@/hooks/use-is-safe-account'
 import {
   prepareErc20Approval,
   prepareVoteLockDeposit,
@@ -23,7 +24,7 @@ import {
   useWriteContract,
 } from 'wagmi'
 import type { MigrationStepName } from './migration-record'
-import { chooseDeposit, getLockAmount } from './migration-state'
+import { chooseDeposit, getLockAmount, getSafeStepOutcome } from './migration-state'
 import { useMigrationRecord } from './use-migration-record'
 import { legacyVaultAbi, type VoteLockMigration } from './use-vote-lock-migrations'
 
@@ -48,6 +49,9 @@ export const useMigrationFlow = (migration: VoteLockMigration) => {
   const [record, update] = useMigrationRecord({ chainId, oldVoteLock, account })
   const redeemed = record.redeem?.assets
   const beforeRedeem = !record.redeem
+  const isSafe = useIsSafeAccount(chainId, account)
+  const safePending = record.pending?.viaSafe ? record.pending : undefined
+  const poll = safePending ? { refetchInterval: 5_000 } : {}
 
   const { data: oldDelegate } = useReadContract({
     address: oldVoteLock,
@@ -71,14 +75,32 @@ export const useMigrationFlow = (migration: VoteLockMigration) => {
     functionName: 'allowance',
     args: [account, newVoteLock],
     chainId,
+    query: poll,
   })
+  // Read before the redeem too: a Safe redeem measures what it received against this balance.
   const { data: walletBalance, refetch: refetchBalance } = useReadContract({
     address: underlying,
     abi: erc20Abi,
     functionName: 'balanceOf',
     args: [account],
     chainId,
-    query: { enabled: !beforeRedeem },
+    query: poll,
+  })
+  const { data: newShares } = useReadContract({
+    address: newVoteLock,
+    abi: erc20Abi,
+    functionName: 'balanceOf',
+    args: [account],
+    chainId,
+    query: poll,
+  })
+  const { data: oldShares } = useReadContract({
+    address: oldVoteLock,
+    abi: erc20Abi,
+    functionName: 'balanceOf',
+    args: [account],
+    chainId,
+    query: { enabled: safePending?.step === 'redeem', ...poll },
   })
   const { data: sharedDelegation } = useReadContracts({
     contracts: [
@@ -107,7 +129,7 @@ export const useMigrationFlow = (migration: VoteLockMigration) => {
     error: pendingError,
     refetch: refetchPending,
   } = useWaitForTransactionReceipt({
-    hash: record.pending?.hash,
+    hash: safePending ? undefined : record.pending?.hash,
     chainId,
   })
   const [failed, setFailed] = useState<MigrationStepName>()
@@ -168,7 +190,45 @@ export const useMigrationFlow = (migration: VoteLockMigration) => {
     }
   }, [client, migration, pendingError, record.pending, refetchAllowance, refetchPending, update])
 
+
   const lockAmount = getLockAmount(redeemed, walletBalance)
+
+  const settlingRedeem = useRef<Hex>()
+  useEffect(() => {
+    if (!safePending) return
+    const { hash, baseline } = safePending
+    // The balance polls on its own clock, so re-read it once the old shares are gone before measuring the payout.
+    if (safePending.step === 'redeem') {
+      if (oldShares !== 0n || settlingRedeem.current === hash) return
+      settlingRedeem.current = hash
+      void refetchBalance().then(({ data: balance }) => {
+        const outcome = getSafeStepOutcome({ step: 'redeem', baseline, oldShares: 0n, walletBalance: balance })
+        if (outcome?.step !== 'redeem') {
+          settlingRedeem.current = undefined
+          return
+        }
+        update(({ pending: _, ...rest }) => ({ ...rest, viaSafe: true, redeem: { hash, assets: outcome.assets } }))
+        void refetchAllowance()
+        migration.refetch()
+      })
+      return
+    }
+    const outcome = getSafeStepOutcome({
+      step: safePending.step,
+      baseline,
+      allowance,
+      lockAmount,
+      newShares,
+    })
+    if (!outcome) return
+    if (outcome.step === 'approve') {
+      update(({ pending: _, ...rest }) => ({ ...rest, viaSafe: true, approve: { hash } }))
+    }
+    if (outcome.step === 'deposit') {
+      update(({ pending: _, ...rest }) => ({ ...rest, viaSafe: true, deposit: { hash }, completed: true }))
+      migration.refetch()
+    }
+  }, [allowance, lockAmount, migration, newShares, oldShares, refetchAllowance, refetchBalance, safePending, update])
   const recovering = !!record.redeem && redeemed === undefined
   const nothingToLock = !record.completed && !!record.redeem && lockAmount === 0n
   const step: MigrationFlowStep = record.completed
@@ -231,11 +291,19 @@ export const useMigrationFlow = (migration: VoteLockMigration) => {
     setRejected(false)
     setFailed(undefined)
     const submitted = step
+    // Captured before sending: some Safes only resolve once the transaction has executed.
+    const baseline =
+      submitted === 'redeem' ? walletBalance : submitted === 'deposit' ? newShares : undefined
+    if (isSafe && submitted !== 'approve' && baseline === undefined) return
     writeContract(call as never, {
       onSuccess: (hash) =>
         update((current) => ({
           ...current,
-          pending: { step: submitted, hash },
+          pending: {
+            step: submitted,
+            hash,
+            ...(isSafe ? { viaSafe: true, ...(baseline !== undefined ? { baseline } : {}) } : {}),
+          },
           ...(submitted === 'redeem' && oldDelegate ? { delegate: oldDelegate } : {}),
           ...(submitted === 'deposit' ? { locked: lockAmount } : {}),
         })),
@@ -254,6 +322,9 @@ export const useMigrationFlow = (migration: VoteLockMigration) => {
     delegatee,
     isSigning,
     isConfirming: !!record.pending,
+    isWaitingForSafe: !!safePending,
+    // A Safe transaction rejected in the Safe never confirms, so the holder can drop it and sign again.
+    cancelSafePending: () => update(({ pending: _, ...rest }) => rest),
     isRecovering: recovering,
     nothingToLock,
     rejected,

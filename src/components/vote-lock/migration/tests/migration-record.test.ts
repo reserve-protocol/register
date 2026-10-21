@@ -41,6 +41,17 @@ describe('migration record', () => {
     })
   })
 
+  it('round-trips a pending Safe step with its pre-send baseline', () => {
+    writeMigrationRecord(target, {
+      pending: { step: 'redeem', hash: HASH, viaSafe: true, baseline: 40n },
+      viaSafe: true,
+    })
+    expect(readMigrationRecord(target)).toEqual({
+      pending: { step: 'redeem', hash: HASH, viaSafe: true, baseline: 40n },
+      viaSafe: true,
+    })
+  })
+
   it('ignores a malformed or foreign value instead of throwing', () => {
     localStorage.setItem(migrationRecordKey(target), '{not json')
     expect(readMigrationRecord(target)).toEqual({})
