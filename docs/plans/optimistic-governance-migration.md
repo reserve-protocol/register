@@ -11,14 +11,10 @@ move their stake in one guided flow:
    and ABX into vlALTT through the shared spell.
 3. **DTF governance upgrade** (AI DTFs, MAG7): after the vlRSR singleton runs 1.1.0, a banner proposes on
    the DTF's governor `upgradeToAndCall` of that governor and its timelock, with `initializeVersionRegistry`.
-4. **Vault retirement**: `transferOwnership(spell)` + `retireOldStakingVault(oldVault)` on the old vault's
-   DAO governor. It is a separate proposal because the vault's own timelock owns the vault, but the Folio
-   upgrade CTA proposes both when no other DTF votes with that vault and the vault DAO cannot execute
-   first (voting delay + voting period + timelock delay, read on chain): two signatures from a wallet, one
-   batch (`wallet_sendCalls`) from a Safe, so holders are never left between the two votes. ABX's vault DAO
-   executes in 2 days against 7 for its Folio, so ABX stays sequential. The retire banner alone shows while
-   a paired upgrade is live (to finish the pair) or after the upgrade executed, and stays disabled while
-   any other DTF still votes with that vault.
+4. **Vault retirement**: banner proposes `transferOwnership(spell)` + `retireOldStakingVault(oldVault)` on
+   the old vault's DAO governor. It is a separate proposal because the vault's own timelock owns it. The
+   spell does not check which Folios still vote with the vault, so the banner shows only after the page's
+   DTF upgrade executed, and stays disabled while any other DTF still votes with that vault.
 5. **Pre-upgrade lock**: a Governance card lets holders lock in the new vault before the upgrade executes.
 6. **Stake migration**: card + modal on Governance, Overview and Portfolio for holders of a retired vault:
    `redeem` (delay 0 → tokens arrive in the same tx) → `approve` when short → `deposit`/`depositAndDelegate`.
