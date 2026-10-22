@@ -16,7 +16,7 @@ Register is one node in a multi-repo system. Work touching a boundary usually me
 | [react-zapper](https://github.com/reserve-protocol/react-zapper) | `@reserve-protocol/react-zapper` (2.3.x) | Zap mint/redeem widget — see [[zapper]] |
 | [reserve-index-dtf](https://github.com/reserve-protocol/reserve-index-dtf) | — (Solidity, Folio) | Index DTF protocol contracts — see [[index-protocol]] |
 | [protocol](https://github.com/reserve-protocol/protocol) | — (Solidity, RToken) | Yield DTF protocol contracts — see [[yield-protocol]] |
-| [trusted-fillers](https://github.com/reserve-protocol/trusted-fillers) | `@reserve-protocol/trusted-fillers-sdk` | Async CoW fills for Folio auctions — see [[index-protocol]] |
+| [reserve-fillers-monorepo](https://github.com/reserve-protocol/reserve-fillers-monorepo) | `@reserve-protocol/trusted-fillers-sdk` | Async CoW fills for Folio auctions — see [[index-protocol]] |
 | reserve-api (private) | `api.reserve.org` | Prices, discovery, portfolio, compliance, zap quotes, folio-manager |
 | reserve-ai (private) | `@reserve-protocol/dtf-chat` | "Ask Reserve AI" widget (`chat.reserve.org`) |
 | async-zap-sdk | `@reserve-protocol/async-zap-sdk` | CoW-backed automated mint/redeem wizard (`issuance/async-mint`) |
