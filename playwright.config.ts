@@ -1,9 +1,9 @@
 import { cpus } from 'os'
 import { defineConfig, devices } from '@playwright/test'
 
-// Port 3005 — NEVER 3000 (Luis's own dev server lives there).
+// Port 3005 — NEVER 3000 (Luis's own dev server lives there). E2E_PORT moves it off a busy port.
 const HOST = '127.0.0.1'
-const PORT = 3005
+const PORT = Number(process.env.E2E_PORT ?? 3005)
 const baseURL = `http://${HOST}:${PORT}`
 
 // Cap local workers at 5. Every worker's Chromium hits ONE Vite dev server +

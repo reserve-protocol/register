@@ -2,6 +2,11 @@ import { ZAPPER_API } from '@/utils/constants'
 import { Address } from 'viem'
 
 const getBaseZapApiUrl = (chain: number) => ZAPPER_API + `api/zapper/${chain}`
+// Development override for the deploy endpoints only (a local zapper-api through the Vite proxy).
+const DEPLOY_API: string =
+  (import.meta.env.DEV && import.meta.env.VITE_ZAPPER_DEPLOY_API) || ZAPPER_API
+const getBaseDeployApiUrl = (chain: number) =>
+  DEPLOY_API + `api/zapper/${chain}`
 
 export type ZapPayload = {
   chainId: number
@@ -76,10 +81,10 @@ const zapper = {
     `${getBaseZapApiUrl(chainId)}/swap?chainId=${chainId}&signer=${signer}&tokenIn=${tokenIn}&amountIn=${amountIn}&tokenOut=${tokenOut}&slippage=${slippage}&trade=${trade}&bypassCache=${bypassCache}`,
 
   zapDeploy: (chainId: number) =>
-    `${getBaseZapApiUrl(chainId)}/deploy?chainId=${chainId}`,
+    `${getBaseDeployApiUrl(chainId)}/deploy?chainId=${chainId}`,
 
   zapDeployUngoverned: (chainId: number) =>
-    `${getBaseZapApiUrl(chainId)}/deploy-ungoverned?chainId=${chainId}`,
+    `${getBaseDeployApiUrl(chainId)}/deploy-ungoverned?chainId=${chainId}`,
 }
 
 export default zapper

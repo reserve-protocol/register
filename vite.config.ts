@@ -113,6 +113,18 @@ export default defineConfig({
 
   server: {
     port: 3000,
+    // A local zapper-api has no CORS; pair ZAPPER_LOCAL_URL with VITE_ZAPPER_DEPLOY_API=/zapper-local/.
+    ...(process.env.ZAPPER_LOCAL_URL
+      ? {
+          proxy: {
+            '/zapper-local': {
+              target: process.env.ZAPPER_LOCAL_URL,
+              changeOrigin: true,
+              rewrite: (path: string) => path.replace(/^\/zapper-local/, ''),
+            },
+          },
+        }
+      : {}),
   },
 
   test: {

@@ -32,8 +32,9 @@ const CowbotCard = ({
   // Only show when there's an active auction
   if (!isAuctionActive) return null
 
-  // Don't show for external bots or errors
-  if (status === 'external' || status === 'error') return null
+  // Don't show for external bots, errors or Folio versions the SDK skips
+  if (status === 'external' || status === 'error' || status === 'unsupported')
+    return null
 
   // Stopped state - show restart option
   if (isStopped) {

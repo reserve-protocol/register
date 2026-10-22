@@ -2,9 +2,11 @@ import dtfIndexAbi from '@/abis/dtf-index-abi-v1'
 import dtfIndexAbiV2 from '@/abis/dtf-index-abi-v2'
 import dtfIndexAbiV4 from '@/abis/dtf-index-abi-v4'
 import dtfIndexAbiV5 from '@/abis/dtf-index-abi'
-import { getStartRebalance } from '@reserve-protocol/dtf-rebalance-lib'
-import { StartRebalanceArgsPartial as StartRebalanceArgsPartialV4 } from '@reserve-protocol/dtf-rebalance-lib/dist/4.0.0/types'
-import { StartRebalanceArgsPartial as StartRebalanceArgsPartialV5 } from '@reserve-protocol/dtf-rebalance-lib/dist/types'
+import { buildStartRebalanceCalldata } from './utils/start-rebalance-calldata'
+import {
+  getRebalanceProposalDeadline,
+  type RebalanceGovernanceTiming,
+} from './utils/rebalance-deadline'
 import { getAuctions } from '@/lib/index-rebalance/get-auctions'
 import { getCurrentBasket } from '@/lib/index-rebalance/utils'
 import {
@@ -12,6 +14,7 @@ import {
   indexDTFBrandAtom,
   indexDTFPriceAtom,
   indexDTFRebalanceControlAtom,
+  folioVersionAtom,
   indexDTFVersionAtom,
   isHybridDTFAtom,
   isSingletonRebalanceAtom,
@@ -53,6 +56,8 @@ export const dtfBalancesAtom = atom<Record<string, bigint> | undefined>(
 // Proposal state
 // ############################################################
 export const isProposalConfirmedAtom = atom(false)
+// Unix seconds at confirmation; anchors the Folio 6.0 rebalance deadline.
+export const proposalConfirmedAtAtom = atom<bigint | undefined>(undefined)
 export const proposalDescriptionAtom = atom<string | undefined>(undefined)
 export const proposalLiquidityLoadingAtom = atom(false)
 
@@ -484,6 +489,26 @@ const REBALANCE_PRICE_VOLATILITY: Record<Volatility, number> = {
 
 export const tokenPriceVolatilityAtom = atom<Record<string, Volatility>>({})
 
+export type V6RebalanceContext = {
+  currentNonce: bigint
+  timing: RebalanceGovernanceTiming
+}
+
+export const v6RebalanceContextAtom = atom<V6RebalanceContext | undefined>(
+  undefined
+)
+
+export const v6RebalanceTermsAtom = atom((get) => {
+  const context = get(v6RebalanceContextAtom)
+  const confirmedAt = get(proposalConfirmedAtAtom)
+  if (!context || confirmedAt === undefined) return undefined
+
+  return {
+    rebalanceNonce: context.currentNonce + 1n,
+    deadline: getRebalanceProposalDeadline(confirmedAt, context.timing),
+  }
+})
+
 export const basketProposalCalldatasAtom = atom<Hex[] | undefined>((get) => {
   const isSingleton = get(isSingletonRebalanceAtom)
 
@@ -506,13 +531,23 @@ export const basketProposalCalldatasAtom = atom<Hex[] | undefined>((get) => {
   const proposedShares = get(proposedSharesAtom)
   const priceMap = get(priceMapAtom)
   const tokenPriceVolatility = get(tokenPriceVolatilityAtom)
-  const version = get(indexDTFVersionAtom)
+  const versionState = get(folioVersionAtom)
   const maxAuctionSizesMap = get(maxAuctionSizesAtom)
 
-  // Determine folio version (4 and 5 are the enum values)
-  const folioVersion = version.startsWith('5') ? 5 : 4
+  const v6Terms = get(v6RebalanceTermsAtom)
+
+  // Unknown majors must not produce calldata.
+  const folioVersion =
+    versionState.status === 'ready' &&
+    (versionState.major === 4 ||
+      versionState.major === 5 ||
+      versionState.major === 6)
+      ? versionState.major
+      : undefined
 
   if (
+    folioVersion === undefined ||
+    (folioVersion === 6 && !v6Terms) ||
     !isConfirmed ||
     !proposedBasket ||
     !rebalanceControl ||
@@ -556,50 +591,26 @@ export const basketProposalCalldatasAtom = atom<Hex[] | undefined>((get) => {
     )
   }
 
-  const startRebalanceArgs = getStartRebalance(
-    folioVersion,
-    supply,
-    tokens,
-    balances,
-    decimals,
-    targetBasket,
-    _prices,
-    error,
-    maxAuctionSizes,
-    rebalanceControl?.weightControl,
-    isHybridDTF
-  )
+  const versionInput =
+    folioVersion === 6 && v6Terms
+      ? { folioVersion, ...v6Terms }
+      : { folioVersion: folioVersion as 4 | 5 }
 
-  // Encode with version-appropriate ABI and arguments
-  if (folioVersion === 5) {
-    const argsV5 = startRebalanceArgs as StartRebalanceArgsPartialV5
-    return [
-      encodeFunctionData({
-        abi: dtfIndexAbiV5,
-        functionName: 'startRebalance',
-        args: [
-          argsV5.tokens as any,
-          argsV5.limits as any,
-          BigInt(ttl.auctionLauncherWindow),
-          BigInt(ttl.ttl),
-        ],
-      }),
-    ]
-  } else {
-    const argsV4 = startRebalanceArgs as StartRebalanceArgsPartialV4
-    return [
-      encodeFunctionData({
-        abi: dtfIndexAbiV4,
-        functionName: 'startRebalance',
-        args: [
-          tokens,
-          argsV4.weights as any,
-          argsV4.prices as any,
-          argsV4.limits as any,
-          BigInt(ttl.auctionLauncherWindow),
-          BigInt(ttl.ttl),
-        ],
-      }),
-    ]
-  }
+  return [
+    buildStartRebalanceCalldata({
+      ...versionInput,
+      supply,
+      tokens,
+      decimals,
+      balances,
+      targetBasket,
+      prices: _prices,
+      priceErrors: error,
+      maxAuctionSizesUsd: maxAuctionSizes,
+      weightControl: rebalanceControl.weightControl,
+      deferWeights: isHybridDTF,
+      auctionLauncherWindow: BigInt(ttl.auctionLauncherWindow),
+      ttl: BigInt(ttl.ttl),
+    }),
+  ]
 })

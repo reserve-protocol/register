@@ -7,6 +7,7 @@ import { DecodedCalldata } from '@/types'
 import { ExplorerDataType, getExplorerLink } from '@/utils/getExplorerLink'
 import RawCallPreview from '@/views/index-dtf/governance/components/proposal-preview/raw-call-preview'
 import { Trans } from '@lingui/react/macro'
+import { folioV6Abi } from '@reserve-protocol/react-sdk'
 import {
   SetMandatePreview,
   RemoveFromBasketPreview,
@@ -19,6 +20,8 @@ import {
   SetDustAmountPreview,
   SetOptimisticParamsPreview,
   SelectorRegistryPreview,
+  SetSelfFeePreview,
+  TradeAllowlistPreview,
 } from '@/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview'
 import { useAtomValue } from 'jotai'
 import { ArrowUpRightIcon } from 'lucide-react'
@@ -81,6 +84,7 @@ const useDecodedCalldatas = (
           dtfIndexAbiV2,
           dtfIndexGovernanceOptimisticAbi,
           selectorRegistryAbi,
+          folioV6Abi,
         ] as const
 
         for (const abi of abis) {
@@ -155,6 +159,11 @@ const dtfSettingsPreviewComponents: Record<string, React.ComponentType<any>> = {
   setMintFee: SetMintFeePreview,
   setTVLFee: SetTVLFeePreview,
   setAuctionLength: SetAuctionLengthPreview,
+  setMaxAuctionLength: SetAuctionLengthPreview,
+  setFolioSelfFee: SetSelfFeePreview,
+  setTradeAllowlistEnabled: TradeAllowlistPreview,
+  addToAllowlist: TradeAllowlistPreview,
+  removeFromAllowlist: TradeAllowlistPreview,
   setFeeRecipients: SetFeeRecipientsPreview,
 
   // Role management

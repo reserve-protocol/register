@@ -13,6 +13,7 @@ import { useAtom, useAtomValue } from 'jotai'
 import { RefreshCw } from 'lucide-react'
 import { useEffect } from 'react'
 import { Address, formatEther, parseUnits } from 'viem'
+import { daoTokenAddressAtom } from '../../../atoms'
 import { indexDeployFormDataAtom } from '../atoms'
 import {
   defaultInputTokenAtom,
@@ -22,6 +23,7 @@ import {
   ongoingTxAtom,
   slippageAtom,
   tokensAtom,
+  zapDeployBuildErrorAtom,
   zapDeployPayloadAtom,
 } from './atoms'
 import SimpleDeployButton from './simple-deploy-button'
@@ -68,13 +70,15 @@ const SimpleIndexDeploy = () => {
   const [inputAmount, setInputAmount] = useAtom(inputAmountAtom)
   const [slippage, setSlippage] = useAtom(slippageAtom)
   const zapDeployPayload = useAtomValue(zapDeployPayloadAtom)
+  const buildError = useAtomValue(zapDeployBuildErrorAtom)
   const tokens = useAtomValue(tokensAtom)
   const [ongoingTx, setOngoingTx] = useAtom(ongoingTxAtom)
   const formChainId = form?.chain as number
+  const stToken = useAtomValue(daoTokenAddressAtom)
 
-  const url = form?.governanceWalletAddress
-    ? zapper.zapDeployUngoverned(formChainId)
-    : zapper.zapDeploy(formChainId)
+  const url = stToken
+    ? zapper.zapDeploy(formChainId)
+    : zapper.zapDeployUngoverned(formChainId)
   const requestBody = useDebounce(zapDeployPayload, 500)
 
   const tokenIn = inputToken || defaultInputToken
@@ -103,7 +107,7 @@ const SimpleIndexDeploy = () => {
   if (!form) return null
 
   return (
-    <div className="flex flex-col h-full gap-2">
+    <div className="flex flex-col h-full gap-2" data-testid="deploy-simple">
       <div>
         <div className="flex items-center mx-2 mb-1">
           <h4 className="font-bold ml-4 mr-auto">
@@ -154,10 +158,13 @@ const SimpleIndexDeploy = () => {
                     ? t`Insufficient balance`
                     : t`Deploy`}
               </Button>
-              {(data?.error || failureReason?.message) && (
+              {(buildError || data?.error || failureReason?.message) && (
                 <div className="flex flex-col items-center gap-2">
-                  <div className="text-red-500 text-sm text-center mt-2">
-                    {data?.error || failureReason?.message}
+                  <div
+                    className="text-red-500 text-sm text-center mt-2"
+                    data-testid="deploy-zap-error"
+                  >
+                    {buildError || data?.error || failureReason?.message}
                   </div>
                   <CopyPayloadButton />
                 </div>

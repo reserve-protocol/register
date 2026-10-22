@@ -23,14 +23,15 @@ time.
 | Proposal detail, state banners/CTAs | `e2e/tests/flows/governance-states.spec.ts` |
 | Vote UI/submission | `e2e/tests/flows/governance-vote.spec.ts` + `flows/failures-governance.spec.ts` (reject/revert) + `index-dtf/governance/vote-modal-long-title.spec.ts` (modal layout) |
 | Propose flow — DAO settings | `e2e/tests/flows/governance-propose.spec.ts` |
-| Propose flow — fees (dtf-settings) | `e2e/tests/flows/governance-propose-dtf-settings.spec.ts` (fee calldata round-trip) |
-| Propose flow — basket | `e2e/tests/flows/governance-propose-basket.spec.ts` (form + guards; full submit blocked on golden `startRebalance` fixture) |
+| Propose flow — fees (dtf-settings) | `e2e/tests/flows/governance-propose-dtf-settings.spec.ts` (fee calldata round-trip; Folio 6.0 TVL fee + trade allowlist submit as 6.0 setters, seeded by `seedFolioV6`) + `propose-dtf-settings/tests/settings-version-gate.test.ts` (no calldata while pending or for unknown versions) + `tests/settings-v6.test.ts` (6.0 setters, immutable table preserved, lone recipient = 1e18, SDK rejects block instead of throwing, v6 optimistic selectors) + Base fork lane `e2e/fork/tests/settings-v6.fork.spec.ts` (executed on MIDAS after the upgrade lane) |
+| Propose flow — basket | `e2e/tests/flows/governance-propose-basket.spec.ts` (form + guards; full submit blocked on golden `startRebalance` fixture) + `basket/utils/tests/{start-rebalance-calldata,rebalance-deadline}.test.ts` (v6 nonce/deadline encoding, deadline policy) + Base fork lane `e2e/fork/tests/basket-v6.fork.spec.ts` (6.0 proposal → vote → execute on MIDAS; enforced allowlist blocks a non-listed token) |
 | Propose flow — basket-settings (trading-gov params) | `e2e/tests/flows/governance-propose-basket-settings.spec.ts` (setVotingPeriod round-trip; phantom-threshold single-action + untouched-form-disabled regressions, live since E1) |
 | Proposal description markdown/XSS rendering | `e2e/tests/flows/governance-description-render.spec.ts` |
 | Queue/execute CTAs | `e2e/tests/flows/governance-queue-execute.spec.ts` + `flows/failures-governance.spec.ts` |
 | Vote-lock 1.1.0 upgrade (`upgrade-banners/propose-vote-lock-upgrade.tsx` + `vote-lock-upgrade.ts`: vlRSR singletons only (`VLRSR_SINGLETON`), vault, governor and timelock on 1.0.0 and the vault's version registry latest = live 1.1.0 → one `propose` to the vote-lock DAO with three `upgradeToAndCall`, impls read from the registry; detail page decodes them in `proposal-preview/vote-lock-upgrade-preview.tsx` because the SDK contract map has no UUPS entries) | `upgrade-banners/tests/vote-lock-upgrade.test.ts` (eligibility incl. vlRSR-only, exact encoding, decoder, live-proposal dedupe) + `e2e/tests/index-dtf/governance/vote-lock-upgrade-preview.spec.ts` (decoded card, registered vs unregistered implementation) |
 | DTF governance 1.1.0 upgrade (`upgrade-banners/propose-folio-governance-upgrade.tsx` + `vote-lock-upgrade.ts`: active single-governor DTFs on a vlRSR singleton (AI DTFs, MAG7); shows only after the singleton runs 1.1.0, because the 1.1.0 governor reads the vault's average votes; one `propose` to the DTF governor with `upgradeToAndCall` on its governor and timelock, both with `initializeVersionRegistry`; the detail card titles it "Governance upgrade") | `upgrade-banners/tests/vote-lock-upgrade.test.ts` (eligibility, encoding, separate proposal numbering) + `vote-lock-upgrade-preview.spec.ts` (decoded card) + the fork lane `e2e/fork/tests/folio-governance-upgrade.fork.spec.ts` (POWER on BSC: propose from the banner, execute, governor accepts a new proposal) |
 | Governance migration (upgradeFolio banner, legacy-vault retire banner; the holder migration card + stepper is the shared `src/components/vote-lock/migration/` module, mounted on Governance, Overview and Portfolio through `components/vote-lock-migration/index.tsx`; the pre-upgrade "lock in the new vault" card is `components/vote-lock-migration/upcoming-vote-lock.tsx`, gated by the same eligibility as the upgrade banner) | `components/vote-lock-migration/tests/*.test.ts` (eligibility, old-vault discovery) + `src/components/vote-lock/migration/tests/*` (steps, delegate choice, lock amount, resumable record) + the fork lane `e2e/fork/tests/optimistic-governance-upgrade.fork.spec.ts` (LCAP, ABX and OPEN: pre-upgrade lock, full UI flow on real contracts, reload mid-flow, Portfolio surface) |
+| Folio 6.0.0 upgrade banner (`upgrade-banners/propose-v6-upgrade.tsx` + `v6-upgrade.ts`: 5.0.0 only, registered + live 6.0.0 via the ProxyAdmin's version registry, standard `propose` with the SDK's spell calls, legacy hidden while the governance migration is pending, optimistic blocked without a selector registry, hidden while a live proposal under any description casts the spell for this Folio: the calls come from the SDK proposal detail) | `upgrade-banners/tests/v6-upgrade.test.ts` (eligibility + exact call encoding for both topologies + live spell-cast dedupe) + the Base fork lane `e2e/fork/tests/upgrade-v6.fork.spec.ts` (MIDAS optimistic, ABX legacy, executed on the fork) |
 | Chain/version-gated behavior | `e2e/tests/flows/governance-multichain.spec.ts` (bsc v5 + mainnet v4) + `flows/governance-writes-v4.spec.ts` (v4 castVote/queue/execute calldata) |
 | Delegation UI | `e2e/tests/smoke/governance.spec.ts` (delegates section) |
 | Vote-lock card (claiming label, exchange rate) or drawer (lock/unlock quotes, redeem tx) | `e2e/tests/flows/vote-lock-drawer.spec.ts` + `governance/photon-featured.spec.ts` (card renders on the self-appreciating fixture) |
@@ -116,6 +117,21 @@ mapper dereferences — serve proposals ONLY through it or the list breaks).
   is a fixed 420px box, so its title needs `[overflow-wrap:anywhere]` — plain
   `break-words` does not shrink a flex item's min-content width, and the
   overflow pushes the checkboxes and separators outside the dialog.
+- Folio 6.0 settings: every call whose signature changed in 6.0
+  (`setMaxAuctionLength`, two-table `setFeeRecipients`, `setFolioSelfFee`,
+  allowlist) goes through the SDK `prepareIndexDtf*` primitives inside
+  `prepareCalldata` (an SDK rejection blocks the proposal, it must never throw
+  out of the atom — that unmounts the page). Setters identical across versions
+  keep the local encoders so v4/v5 bytes don't move. `setFeeRecipients` on 6.0
+  must hand back the RPC-read immutable table unchanged; the mutable shares are
+  scaled into what it leaves, and the form shows them relative to that share.
+  Optimistic actions come from `optimisticActionsAtom` (6.0 selectors on 6.0).
+- Folio 6.0 basket proposals: `startRebalance` carries `getRebalanceNonce()+1`
+  and a deadline anchored at confirmation (`rebalance-deadline.ts`: trading
+  governor lifecycle, plus the veto window on optimistic governors because a
+  veto restarts it as a standard vote, plus 3 days). A competing rebalance
+  started first makes the proposal revert at execution; don't "repair" nonce or
+  deadline after submission.
 - ERC-6372 `clock()` is mocked (timestamp mode); governor deadline math
   breaks silently if a new read bypasses the frozen clock.
 - Threshold change-detection MUST go through the shared

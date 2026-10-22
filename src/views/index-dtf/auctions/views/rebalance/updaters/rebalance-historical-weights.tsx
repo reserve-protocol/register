@@ -1,13 +1,13 @@
 import dtfIndexAbiV4 from '@/abis/dtf-index-abi-v4'
 import dtfIndexAbiV5 from '@/abis/dtf-index-abi'
-import { indexDTFAtom, indexDTFVersionAtom, isHybridDTFAtom } from '@/state/dtf/atoms'
+import { folioVersionAtom, indexDTFAtom, isHybridDTFAtom } from '@/state/dtf/atoms'
 import { WeightRange } from '@reserve-protocol/dtf-rebalance-lib'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { useEffect, useMemo } from 'react'
 import { useReadContract } from 'wagmi'
 import { originalRebalanceWeightsAtom, rebalanceAuctionsAtom } from '../atoms'
 import {
-  FOLIO_VERSION_V5,
+  FOLIO_VERSION_V4,
   getFolioVersion,
   getRebalanceTokens,
   getRebalanceWeights,
@@ -20,13 +20,13 @@ const RebalanceHistoricalWeightsUpdater = () => {
   const auctions = useAtomValue(rebalanceAuctionsAtom)
   const isHybridDTF = useAtomValue(isHybridDTFAtom)
   const setOriginalWeights = useSetAtom(originalRebalanceWeightsAtom)
-  const versionString = useAtomValue(indexDTFVersionAtom)
+  const versionState = useAtomValue(folioVersionAtom)
 
   const folioVersion = useMemo(
-    () => getFolioVersion(versionString),
-    [versionString]
+    () => getFolioVersion(versionState),
+    [versionState]
   )
-  const abi = folioVersion === FOLIO_VERSION_V5 ? dtfIndexAbiV5 : dtfIndexAbiV4
+  const abi = folioVersion === FOLIO_VERSION_V4 ? dtfIndexAbiV4 : dtfIndexAbiV5
 
   // Query for historical weights at first auction block for hybrid DTFs
   const result = useReadContract({
@@ -43,15 +43,16 @@ const RebalanceHistoricalWeightsUpdater = () => {
         isHybridDTF &&
         auctions.length > 0 &&
         !!auctions[0]?.blockNumber &&
-        !!dtf?.id,
+        !!dtf?.id &&
+        folioVersion !== undefined,
     },
   })
 
   // Store historical weights for hybrid DTFs
   useEffect(() => {
-    if (result.data && isHybridDTF) {
+    if (result.data && isHybridDTF && folioVersion !== undefined) {
       const historicalRebalance =
-        folioVersion === FOLIO_VERSION_V5
+        folioVersion !== FOLIO_VERSION_V4
           ? transformV5Rebalance(result.data as readonly unknown[])
           : transformV4Rebalance(result.data as readonly unknown[])
 

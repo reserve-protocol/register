@@ -1,13 +1,12 @@
 import dtfIndexAbiV4 from '@/abis/dtf-index-abi-v4'
-import dtfIndexAbiV5 from '@/abis/dtf-index-abi'
 import useAssetPricesWithSnapshot, {
   TokenPriceWithSnapshot,
 } from '@/hooks/use-asset-prices-with-snapshot'
 import {
+  folioVersionAtom,
   indexDTFAtom,
   indexDTFBasketAtom,
   indexDTFRebalanceControlAtom,
-  indexDTFVersionAtom,
   isHybridDTFAtom,
 } from '@/state/dtf/atoms'
 import { Token, Volatility } from '@/types'
@@ -15,19 +14,21 @@ import { calculatePriceFromRange } from '@/utils'
 import { FolioVersion, WeightRange } from '@reserve-protocol/dtf-rebalance-lib'
 import { Rebalance as RebalanceV4 } from '@reserve-protocol/dtf-rebalance-lib/dist/4.0.0/types'
 import { Rebalance as RebalanceV5 } from '@reserve-protocol/dtf-rebalance-lib/dist/types'
+import {
+  useIndexDtfCurrentRebalance,
+  useIndexDtfIdentity,
+} from '@reserve-protocol/react-sdk'
 import { useAtomValue } from 'jotai'
 import { useMemo } from 'react'
 import { useReadContract } from 'wagmi'
 import { currentRebalanceAtom } from '../../../atoms'
 import { originalRebalanceWeightsAtom, rebalanceAuctionsAtom } from '../atoms'
 import {
-  FOLIO_VERSION_V5,
   getFolioVersion,
   getRebalancePrices,
   getRebalanceTokens,
   getRebalanceWeights,
   transformV4Rebalance,
-  transformV5Rebalance,
 } from '../utils/transforms'
 import useRebalanceCurrentData from './use-rebalance-current-data'
 import useRebalanceInitialData from './use-rebalance-initial-data'
@@ -80,28 +81,44 @@ const useRebalanceParams = () => {
   const auctions = useAtomValue(rebalanceAuctionsAtom)
   const originalWeights = useAtomValue(originalRebalanceWeightsAtom)
   const tokenPriceVolatility = useRebalancePriceVolatility()
-  const versionString = useAtomValue(indexDTFVersionAtom)
+  const versionState = useAtomValue(folioVersionAtom)
+  const identity = useIndexDtfIdentity()
 
   const folioVersion = useMemo(
-    () => getFolioVersion(versionString),
-    [versionString]
+    () => getFolioVersion(versionState),
+    [versionState]
   )
-  const abi = folioVersion === FOLIO_VERSION_V5 ? dtfIndexAbiV5 : dtfIndexAbiV4
+  const major = versionState.status === 'ready' ? versionState.major : undefined
+  const isSdkVersion = major === 5 || major === 6
+  const startBlock = rebalance?.rebalance.blockNumber
+    ? BigInt(rebalance.rebalance.blockNumber)
+    : undefined
 
   const { data: prices } = useRebalancePrices()
   const { data: currentRebalanceData } = useRebalanceCurrentData()
   const { data: initialRebalanceData } = useRebalanceInitialData()
-  const { data: initialRebalanceRaw } = useReadContract({
-    abi,
+  // The rebalance as started (weights, prices) at its start block: v5/v6 via the SDK, v4 local.
+  const { data: sdkHistorical } = useIndexDtfCurrentRebalance(
+    isSdkVersion && identity.address && startBlock !== undefined
+      ? { ...identity, blockNumber: startBlock }
+      : undefined
+  )
+  const { data: v4HistoricalRaw } = useReadContract({
+    abi: dtfIndexAbiV4,
     address: dtf?.id,
     functionName: 'getRebalance',
     chainId: dtf?.chainId,
     args: [],
-    blockNumber: BigInt(rebalance?.rebalance.blockNumber ?? '0'),
+    blockNumber: startBlock ?? 0n,
     query: {
-      enabled: !!rebalance?.rebalance.blockNumber && !!dtf?.id,
+      enabled: startBlock !== undefined && !!dtf?.id && major === 4,
     },
   })
+  const historicalRebalance = useMemo(() => {
+    if (isSdkVersion) return sdkHistorical?.rebalance
+    if (!v4HistoricalRaw) return undefined
+    return transformV4Rebalance(v4HistoricalRaw as readonly unknown[])
+  }, [isSdkVersion, sdkHistorical, v4HistoricalRaw])
 
   return useMemo(() => {
     if (
@@ -110,8 +127,9 @@ const useRebalanceParams = () => {
       !prices ||
       !rebalanceControl ||
       !rebalance ||
-      !initialRebalanceRaw ||
-      !tokenPriceVolatility
+      !historicalRebalance ||
+      !tokenPriceVolatility ||
+      folioVersion === undefined
     )
       return undefined
 
@@ -123,12 +141,6 @@ const useRebalanceParams = () => {
       },
       {} as Record<string, Token>
     )
-
-    // Transform historical rebalance using version-aware helpers
-    const historicalRebalance =
-      folioVersion === FOLIO_VERSION_V5
-        ? transformV5Rebalance(initialRebalanceRaw as readonly unknown[])
-        : transformV4Rebalance(initialRebalanceRaw as readonly unknown[])
 
     const historicalTokens = getRebalanceTokens(historicalRebalance, folioVersion)
     const historicalWeights = getRebalanceWeights(historicalRebalance, folioVersion)
@@ -173,7 +185,7 @@ const useRebalanceParams = () => {
   }, [
     currentRebalanceData,
     initialRebalanceData,
-    initialRebalanceRaw,
+    historicalRebalance,
     prices,
     rebalance,
     rebalanceControl,

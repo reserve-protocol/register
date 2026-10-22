@@ -1,22 +1,34 @@
 import dtfStakingVaultAbi from '@/abis/dtf-index-staking-vault'
-import { indexDTFAtom, indexDTFFeeAtom } from '@/state/dtf/atoms'
+import {
+  folioVersionAtom,
+  indexDTFAtom,
+  indexDTFFeeAtom,
+} from '@/state/dtf/atoms'
 import { IndexDTF } from '@/types'
 import { formatPercentage, isLoaded } from '@/utils'
 import { getFeePercentAdjust, isDisplayablePlatformFee } from '@/utils/fees'
 import { msg } from '@lingui/core/macro'
 import type { MessageDescriptor } from '@lingui/core'
 import { useLingui } from '@lingui/react/macro'
+import {
+  useIndexDtfIdentity,
+  useIndexDtfImmutableFeeRecipients,
+  useIndexDtfSelfFee,
+  type IndexDtfFeeRecipient,
+} from '@reserve-protocol/react-sdk'
 import { useAtomValue } from 'jotai'
 import {
   ChartPie,
+  Coins,
   Hash,
   Landmark,
   LandPlot,
+  Lock,
   TableRowsSplit,
   TrainTrack,
 } from 'lucide-react'
 import { useMemo } from 'react'
-import { Address } from 'viem'
+import { Address, formatEther } from 'viem'
 import { useReadContract } from 'wagmi'
 import { IconWrapper, InfoCard, InfoCardItem } from './settings-info-card'
 
@@ -32,10 +44,17 @@ type Recipient = {
 // tokenJar() (which converts them into the underlying token) rather than to the
 // stToken itself. Without recognizing it, that recipient shows up as an
 // unrelated "Other recipient" instead of folding into the Governance Share.
+// Folio 6.0: holders keep `selfFee` of the non-platform fees before the recipient tables split the rest.
+type FolioV6Fees = {
+  selfFee: number
+  immutableRecipients: readonly IndexDtfFeeRecipient[]
+}
+
 export const getFeeRecipients = (
   indexDTF: IndexDTF | undefined,
   platformFee: number | undefined,
-  tokenJar: Address | undefined
+  tokenJar: Address | undefined,
+  v6?: FolioV6Fees
 ): Recipient[] | undefined => {
   if (!indexDTF || platformFee === undefined) return undefined
   // A fee outside [0, 100) has no real share-of-total split — signal indeterminate, never fabricate.
@@ -61,7 +80,8 @@ export const getFeeRecipients = (
     testId: 'settings-fee-governance',
   }
   const externalRecipients: Recipient[] = []
-  const PERCENT_ADJUST = getFeePercentAdjust(platformFee)
+  const recipientFraction = 1 - (v6?.selfFee ?? 0)
+  const PERCENT_ADJUST = getFeePercentAdjust(platformFee) / recipientFraction
 
   const deployer = indexDTF.deployer.toLowerCase()
   const governanceRecipients = new Set(
@@ -90,7 +110,54 @@ export const getFeeRecipients = (
     }
   }
 
-  return [platformShare, governanceShare, deployerShare, ...externalRecipients]
+  if (!v6) {
+    return [platformShare, governanceShare, deployerShare, ...externalRecipients]
+  }
+
+  const holderShare: Recipient = {
+    label: msg`Holder Share`,
+    value: formatPercentage((100 - platformFee) * v6.selfFee),
+    icon: <IconWrapper Component={Coins} />,
+    testId: 'settings-fee-holders',
+  }
+  const permanentRecipients = v6.immutableRecipients.map(
+    ({ recipient, portion }, index): Recipient => ({
+      label: msg`Permanent recipient ${index + 1}`,
+      value: formatPercentage(
+        (Number(formatEther(portion)) * 100) / PERCENT_ADJUST
+      ),
+      address: recipient,
+      icon: <IconWrapper Component={Lock} />,
+      testId: `settings-fee-permanent-${index + 1}`,
+    })
+  )
+
+  return [
+    platformShare,
+    holderShare,
+    governanceShare,
+    deployerShare,
+    ...externalRecipients,
+    ...permanentRecipients,
+  ]
+}
+
+const useFolioV6Fees = (): { v6?: FolioV6Fees; isLoading: boolean } => {
+  const versionState = useAtomValue(folioVersionAtom)
+  const identity = useIndexDtfIdentity()
+  const isV6 = versionState.status === 'ready' && versionState.major === 6
+  const params = isV6 && identity.address ? identity : undefined
+  const { data: selfFee } = useIndexDtfSelfFee(params)
+  const { data: immutableRecipients } =
+    useIndexDtfImmutableFeeRecipients(params)
+
+  if (!isV6) return { isLoading: false }
+  if (!selfFee || !immutableRecipients) return { isLoading: true }
+
+  return {
+    isLoading: false,
+    v6: { selfFee: Number(selfFee.formatted), immutableRecipients },
+  }
 }
 
 // TODO: Share distribution pending subgraph work!
@@ -109,14 +176,19 @@ const FeesInfo = () => {
     },
   })
 
+  const { v6, isLoading: isV6Loading } = useFolioV6Fees()
+
   const feeRecipients = useMemo(
     () =>
-      getFeeRecipients(
-        indexDTF,
-        isLoaded(platformFee) ? platformFee : undefined,
-        tokenJar
-      ),
-    [indexDTF, platformFee, tokenJar]
+      isV6Loading
+        ? undefined
+        : getFeeRecipients(
+            indexDTF,
+            isLoaded(platformFee) ? platformFee : undefined,
+            tokenJar,
+            v6
+          ),
+    [indexDTF, platformFee, tokenJar, v6, isV6Loading]
   )
 
   return (

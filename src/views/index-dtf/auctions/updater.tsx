@@ -1,64 +1,27 @@
 import LegacyUpdater from './legacy/updater'
-import { useAtomValue, useSetAtom } from 'jotai'
-import { Rebalance, rebalancesAtom } from './atoms'
-import { useQuery } from '@tanstack/react-query'
-import { indexDTFAtom } from '@/state/dtf/atoms'
-import request, { gql } from 'graphql-request'
-import { INDEX_DTF_SUBGRAPH_URL } from '@/state/atoms'
+import { useSetAtom } from 'jotai'
+import { rebalancesAtom } from './atoms'
+import {
+  useIndexDtfIdentity,
+  useIndexDtfRebalances,
+} from '@reserve-protocol/react-sdk'
 import { useEffect } from 'react'
+import { toRebalance } from './utils/sdk-mappers'
+import type { IndexDtfRebalance } from '@reserve-protocol/react-sdk'
 
-const query = gql`
-  query getRebalances($dtf: String!) {
-    rebalances(where: { dtf: $dtf }, orderBy: timestamp, orderDirection: desc) {
-      id
-      nonce
-      tokens {
-        address
-        name
-        symbol
-        decimals
-      }
-      priceControl
-      weightLowLimit
-      weightSpotLimit
-      weightHighLimit
-      rebalanceLowLimit
-      rebalanceSpotLimit
-      rebalanceHighLimit
-      priceLowLimit
-      priceHighLimit
-      restrictedUntil
-      availableUntil
-      transactionHash
-      blockNumber
-      timestamp
-    }
-  }
-`
+// Module-level so React Query memoizes the selection; an inline select returns
+// a fresh array every render and the atom-sync effect below would loop.
+const selectRebalances = (rebalances: readonly IndexDtfRebalance[]) =>
+  rebalances.map(toRebalance)
 
 const useRebalances = () => {
-  const dtf = useAtomValue(indexDTFAtom)
+  const identity = useIndexDtfIdentity()
 
-  return useQuery({
-    queryKey: ['rebalances', dtf?.id],
-    queryFn: async () => {
-      if (!dtf) throw new Error('DTF not found')
-
-      const response = await request<{ rebalances: Rebalance[] }>(
-        INDEX_DTF_SUBGRAPH_URL[dtf.chainId],
-        query,
-        {
-          dtf: dtf?.id?.toLowerCase() ?? '',
-        }
-      )
-
-      console.log('response', response)
-
-      return response.rebalances ?? []
-    },
-    enabled: !!dtf?.id,
+  return useIndexDtfRebalances(identity.address ? identity : undefined, {
+    select: selectRebalances,
   })
 }
+
 const RebalancesUpdater = () => {
   const setRebalances = useSetAtom(rebalancesAtom)
   const { data } = useRebalances()
@@ -76,9 +39,11 @@ const RebalancesUpdater = () => {
   return null
 }
 
-export default () => (
+const Updater = () => (
   <>
     <RebalancesUpdater />
     <LegacyUpdater />
   </>
 )
+
+export default Updater

@@ -3,6 +3,7 @@ import { decodeFunctionData, formatUnits, parseAbi } from 'viem'
 import { connectWallet, expect, test } from '../../fixtures/wallet'
 import { dtfPath, findDtfByAddress } from '../../helpers/registry'
 import {
+  zapSubmit,
   fillAmountAwaitQuote,
   flipZapDirection,
   formatZapOutput,
@@ -123,7 +124,7 @@ test('buy LCAP with ETH: quote -> submit -> success', async ({
   await fillAmountAwaitQuote(buyPanel, buy.inputAmount, buy.outputPrefix)
 
   // ETH needs no approval — the last button in the panel is the swap submit.
-  const submit = buyPanel.locator('button').last()
+  const submit = zapSubmit(buyPanel)
   await expect(submit).toBeEnabled()
   await submit.click()
 
@@ -180,7 +181,7 @@ test('sell LCAP for ETH: quote -> approve -> submit -> success', async ({
 
   await fillAmountAwaitQuote(sellPanel, sell.inputAmount, sell.outputPrefix)
 
-  const submit = sellPanel.locator('button').last()
+  const submit = zapSubmit(sellPanel)
 
   // Step 1 — approve: sends the approval tx (mock hash). Wait for the approval
   // receipt poll to answer before touching the button again — the button is

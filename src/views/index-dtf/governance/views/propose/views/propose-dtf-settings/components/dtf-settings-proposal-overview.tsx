@@ -33,6 +33,7 @@ const ConfirmProposalButton = ({ canProceed }: { canProceed: boolean }) => {
 
   return (
     <Button
+      data-testid="settings-confirm-btn"
       className="w-full"
       disabled={!canProceed && !isProposalConfirmed}
       variant={isProposalConfirmed ? 'outline' : 'default'}

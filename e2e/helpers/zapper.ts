@@ -192,6 +192,11 @@ export function activeZapPanel(widget: Locator): Locator {
   return widget.locator('div[role="tabpanel"][data-state="active"]')
 }
 
+// The trade CTA is the panel's last button, except react-zapper >= 2.14 appends an error Report button (wrapped in a right-aligned column) after it.
+export function zapSubmit(panel: Locator): Locator {
+  return panel.locator('button:not(div.flex-col.items-end > button)').last()
+}
+
 export function zapFlipButton(scope: Locator): Locator {
   return scope.locator('button:has(svg.lucide-arrow-up-down)')
 }

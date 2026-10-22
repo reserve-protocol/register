@@ -24,9 +24,11 @@ Releases: 1.0.0 → 2.0.0 → (3.0.0 skipped) → **4.0.0** (rebalance-target mo
 - **Roles**: `DEFAULT_ADMIN_ROLE` = owner governor timelock (fees, roles, basket edits, deprecation); `REBALANCE_MANAGER` = trading governor timelock; `AUCTION_LAUNCHER` = semi-trusted EOA whose worst case is bounded value leakage.
 - Registry addresses (canonical, from `script/Deploy.s.sol`): versionRegistry `0xA665b273997F70b647B66fa7Ed021287544849dB` (ETH+Base; BSC `0x79A4E963378AE34fC6c796a24c764322fC6c9390`); trustedFillerRegistry Base `0x72DB5f49D0599C314E2f2FEDf6Fe33E1bA6C7A18`, ETH `0x279ccF56441fC74f1aAC39E7faC165Dec5A88B3A`, BSC `0x08424d7C52bf9edd4070701591Ea3FE6dca6449B`. Per-DTF addresses: GitHub Releases page of the repo.
 
-## Trusted fillers ([trusted-fillers](https://github.com/reserve-protocol/trusted-fillers))
+## Trusted fillers ([reserve-fillers-monorepo](https://github.com/reserve-protocol/reserve-fillers-monorepo))
 
 Async CoW Swap fills for Folio auctions (Folio ≥ some 4.x deployments; register consumes via `@reserve-protocol/trusted-fillers-sdk` in the cowbot at `src/views/index-dtf/auctions/views/rebalance/components/cowbot/`).
+
+- `processFolioAuctions` returns a `status` union (0.9.0+): a version outside `SUPPORTED_FOLIO_VERSIONS` comes back `skipped / unsupported_version`, and the cowbot shows nothing for it. 6.0.0 support is [reserve-fillers-monorepo#39](https://github.com/reserve-protocol/reserve-fillers-monorepo/pull/39): 6.0.0 keeps the 5.0.0 `getRebalance`, `auctions` and `getBid`, so it reads through the R500 FolioLens.
 
 - Flow: Folio calls `TrustedFillerRegistry.createTrustedFiller(...)` → deterministic EIP-1167 clone of a governance-approved filler implementation (`CowSwapFiller`) → clone holds sell tokens and validates the CoW settlement via EIP-1271 → funds return on close.
 - **Same-block invariant**: a filler is valid only in the block it was initialized — settlement happens pre-hook→settle→post-hook within one block. Don't expect a persistent contract to query; between order placement and solver execution there is nothing on-chain.
