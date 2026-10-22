@@ -7,8 +7,11 @@ import { isGovernanceMigrationPending } from '@/views/index-dtf/components/vote-
 import { Trans, useLingui } from '@lingui/react/macro'
 import {
   INDEX_DTF_UPGRADE_SPELL_6_0_0_ADDRESS,
+  indexDtfProposalQueryOptions,
+  useDtfSdk,
   useIndexDtfVersionDeployment,
 } from '@reserve-protocol/react-sdk'
+import { useQueries } from '@tanstack/react-query'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { AlertCircle, Loader2, TriangleAlert } from 'lucide-react'
 import { useCallback, useEffect } from 'react'
@@ -23,6 +26,7 @@ import { useIsProposeAllowed } from '../../../hooks/use-is-propose-allowed'
 import useRecentProposalReceipt from '../../../hooks/use-recent-proposal-receipt'
 import {
   buildV6UpgradeProposal,
+  getV6UpgradeCandidates,
   getV6UpgradeEligibility,
   hasLiveV6Upgrade,
   nextV6UpgradeDescription,
@@ -53,6 +57,25 @@ export default function ProposeV6Upgrade() {
       ? { chainId, registry: versionRegistry, version: '6.0.0' }
       : undefined
   )
+  const sdk = useDtfSdk()
+  const isUpgradeAvailable =
+    version === '5.0.0' && !!deployment && !deployment.deprecated
+  const castProposals = useQueries({
+    queries:
+      dtf && isUpgradeAvailable && proposals
+        ? getV6UpgradeCandidates(proposals).map((p) =>
+            indexDtfProposalQueryOptions(sdk, {
+              address: dtf.id,
+              chainId: dtf.chainId,
+              proposalId: p.id,
+            })
+          )
+        : [],
+    combine: (results) => ({
+      data: results.flatMap(({ data }) => (data ? [data] : [])),
+      isPending: results.some(({ isPending }) => isPending),
+    }),
+  })
   const { writeContract, data: hash, isPending } = useWriteContract()
   const { data: receipt, isSuccess, error: receiptError } =
     useWaitForTransactionReceipt({ hash, chainId })
@@ -102,7 +125,11 @@ export default function ProposeV6Upgrade() {
       oldVoteLockUnderlying: dtf.stToken?.underlying.address,
     }),
   })
-  if (eligibility.status === 'hidden' || hasLiveV6Upgrade(proposals, governor)) {
+  if (
+    eligibility.status === 'hidden' ||
+    castProposals.isPending ||
+    hasLiveV6Upgrade(proposals, governor, castProposals.data, dtf.id, spell)
+  ) {
     return null
   }
 

@@ -6,8 +6,11 @@ import {
 } from '@reserve-protocol/react-sdk'
 import {
   type Address,
+  type Hex,
+  decodeFunctionData,
   encodeFunctionData,
   isAddressEqual,
+  parseAbi,
   zeroAddress,
 } from 'viem'
 
@@ -104,20 +107,60 @@ const LIVE_STATES: string[] = [
   PROPOSAL_STATES.EXECUTED,
 ]
 
+const PRE_EXECUTION_STATES: string[] = [
+  PROPOSAL_STATES.PENDING,
+  PROPOSAL_STATES.ACTIVE,
+  PROPOSAL_STATES.SUCCEEDED,
+  PROPOSAL_STATES.QUEUED,
+]
+
+const spellCastAbi = parseAbi([
+  'function cast(address folio, address proxyAdmin, address selectorRegistry)',
+])
+
 const isUpgradeDescription = (description: string) =>
   description === UPGRADE_V6_MESSAGE ||
   description.startsWith(`${UPGRADE_V6_MESSAGE} #`)
 
+// Live proposals whose calls must be read to find a spell cast under another description.
+export const getV6UpgradeCandidates = (
+  proposals: readonly IndexDtfProposalSummary[]
+) =>
+  proposals.filter(
+    (p) =>
+      !isUpgradeDescription(p.description) &&
+      PRE_EXECUTION_STATES.includes(p.votingState.state)
+  )
+
+export const castsV6Spell = (
+  { targets, calldatas }: { targets: readonly Address[]; calldatas: readonly Hex[] },
+  folio: Address,
+  spell: Address
+) =>
+  targets.some((target, i) => {
+    if (!isAddressEqual(target, spell)) return false
+    try {
+      const { args } = decodeFunctionData({ abi: spellCastAbi, data: calldatas[i] })
+      return isAddressEqual(args[0], folio)
+    } catch {
+      return false
+    }
+  })
+
 export const hasLiveV6Upgrade = (
   proposals: readonly IndexDtfProposalSummary[],
-  governor: Address
+  governor: Address,
+  castProposals: readonly { targets: readonly Address[]; calldatas: readonly Hex[] }[] = [],
+  folio?: Address,
+  spell?: Address
 ) =>
   proposals.some(
     (p) =>
       isUpgradeDescription(p.description) &&
       isAddressEqual(p.governance, governor) &&
       LIVE_STATES.includes(p.votingState.state)
-  )
+  ) ||
+  (!!folio && !!spell && castProposals.some((p) => castsV6Spell(p, folio, spell)))
 
 export const nextV6UpgradeDescription = (
   proposals: readonly IndexDtfProposalSummary[]

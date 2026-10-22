@@ -2,6 +2,7 @@ import { decodeFunctionData, getAddress, parseAbi, zeroAddress } from 'viem'
 import { describe, expect, it } from 'vitest'
 import {
   buildV6UpgradeProposal,
+  getV6UpgradeCandidates,
   getV6UpgradeEligibility,
   hasLiveV6Upgrade,
   nextV6UpgradeDescription,
@@ -121,6 +122,37 @@ describe('upgrade proposal retries', () => {
     expect(
       hasLiveV6Upgrade([proposal('Release 6.0.0 upgrade #1', 'ACTIVE', '0x00000000000000000000000000000000000000ee')], GOVERNOR)
     ).toBe(false)
+  })
+
+  it('hides the action while a live proposal casts the spell for this Folio under another description', () => {
+    const calls = buildV6UpgradeProposal({
+      chainId: 8453,
+      folio: FOLIO,
+      proxyAdmin: PROXY_ADMIN,
+      spell: SPELL,
+      governor: GOVERNOR,
+      selectorRegistry: REGISTRY,
+      description: 'Upgrade to 6.0',
+    }).args
+    const cast = { targets: calls[0], calldatas: calls[2] }
+    const other = getAddress('0x00000000000000000000000000000000000000f1')
+
+    expect(hasLiveV6Upgrade([], GOVERNOR, [cast], FOLIO, SPELL)).toBe(true)
+    expect(hasLiveV6Upgrade([], GOVERNOR, [cast], other, SPELL)).toBe(false)
+    expect(hasLiveV6Upgrade([], GOVERNOR, [cast], FOLIO, other)).toBe(false)
+    expect(
+      hasLiveV6Upgrade([], GOVERNOR, [{ targets: [SPELL], calldatas: ['0x1234'] }], FOLIO, SPELL)
+    ).toBe(false)
+  })
+
+  it('reads the calls of live proposals only when the description does not already match', () => {
+    const candidates = getV6UpgradeCandidates([
+      proposal('Upgrade to 6.0', 'ACTIVE'),
+      proposal('Upgrade to 6.0', 'DEFEATED'),
+      proposal('Upgrade to 6.0', 'EXECUTED'),
+      proposal('Release 6.0.0 upgrade #1', 'ACTIVE'),
+    ])
+    expect(candidates.map((p) => (p as { votingState: { state: string } }).votingState.state)).toEqual(['ACTIVE'])
   })
 
   it('numbers the next attempt after any earlier one, live or not', () => {
