@@ -295,7 +295,9 @@ const LaunchAuctionsButton = () => {
               <Trans>Start auction {auctionNumber}</Trans>
             </span>
             <span className="font-light">
-              ({parseDuration(dtf?.auctionLength ?? 0, { round: true })})
+              ({parseDuration(Number(auctionLength ?? dtf?.auctionLength ?? 0), {
+                round: true,
+              })})
             </span>
           </>
         )}

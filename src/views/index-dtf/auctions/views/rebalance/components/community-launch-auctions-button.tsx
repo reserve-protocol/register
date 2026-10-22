@@ -18,6 +18,7 @@ import {
   rebalanceAuctionsAtom,
   rebalancePercentAtom,
 } from '../atoms'
+import useRebalanceAuctionLength from '../hooks/use-rebalance-auction-length'
 import useRebalanceParams from '../hooks/use-rebalance-params'
 import { toIndexDtfWriteVersion } from '../utils/transforms'
 import useLaunchPreflight, {
@@ -35,6 +36,7 @@ const auctionNumberAtom = atom((get) => {
 const CommunityLaunchAuctionsButton = () => {
   const { t } = useLingui()
   const dtf = useAtomValue(indexDTFAtom)
+  const { auctionLength } = useRebalanceAuctionLength()
   const rebalance = useAtomValue(currentRebalanceAtom)
   const rebalancePercent = useAtomValue(rebalancePercentAtom)
   const rebalanceParams = useRebalanceParams()
@@ -242,7 +244,9 @@ const CommunityLaunchAuctionsButton = () => {
               <Trans>Start auction {auctionNumber}</Trans>
             </span>
             <span className="font-light">
-              ({parseDuration(dtf?.auctionLength ?? 0, { round: true })})
+              ({parseDuration(Number(auctionLength ?? dtf?.auctionLength ?? 0), {
+                round: true,
+              })})
             </span>
           </>
         )}
