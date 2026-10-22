@@ -2,16 +2,17 @@ import { isAddress, isHex, type Address, type Hex } from 'viem'
 
 export type MigrationStepName = 'redeem' | 'approve' | 'deposit'
 
-// Per-viewer progress so a holder can resume after a reload. Hashes are re-read from chain before any step
-// advances; this never stands in for a receipt.
+// Per-viewer resume state; a step only advances on a receipt read from chain, never on this record alone.
 export type MigrationRecord = {
   redeem?: { hash: Hex; assets?: bigint }
   delegate?: Address
   approve?: { hash: Hex }
   deposit?: { hash: Hex }
   locked?: bigint
-  pending?: { step: MigrationStepName; hash: Hex }
+  // Safe steps confirm from on-chain effects: the wallet returns a Safe tx hash, never a mined one.
+  pending?: { step: MigrationStepName; hash: Hex; viaSafe?: boolean; baseline?: bigint }
   completed?: boolean
+  viaSafe?: boolean
   acknowledged?: boolean
 }
 
@@ -28,21 +29,25 @@ export const migrationRecordKey = ({ chainId, oldVoteLock, account }: MigrationT
 
 const isTxHash = (value: unknown): value is Hex =>
   typeof value === 'string' && isHex(value) && value.length === 66
-const hashEntry = (value: unknown) =>
-  value && typeof value === 'object' && isTxHash((value as { hash?: unknown }).hash)
-    ? { hash: (value as { hash: Hex }).hash }
-    : undefined
+const isStep = (value: unknown): value is MigrationStepName =>
+  value === 'redeem' || value === 'approve' || value === 'deposit'
+const isUint = (value: unknown): value is string =>
+  typeof value === 'string' && /^\d+$/.test(value)
+const asObject = (value: unknown) =>
+  value && typeof value === 'object' ? (value as Record<string, unknown>) : undefined
+const hashEntry = (value: unknown) => {
+  const hash = asObject(value)?.hash
+  return isTxHash(hash) ? { hash } : undefined
+}
 
 const parse = (raw: unknown): MigrationRecord => {
-  if (!raw || typeof raw !== 'object') return {}
-  const value = raw as Record<string, any>
+  const value = asObject(raw)
+  if (!value) return {}
   const record: MigrationRecord = {}
   const redeem = hashEntry(value.redeem)
   if (redeem) {
-    record.redeem =
-      typeof value.redeem.assets === 'string' && /^\d+$/.test(value.redeem.assets)
-        ? { ...redeem, assets: BigInt(value.redeem.assets) }
-        : redeem
+    const assets = asObject(value.redeem)?.assets
+    record.redeem = isUint(assets) ? { ...redeem, assets: BigInt(assets) } : redeem
   }
   if (typeof value.delegate === 'string' && isAddress(value.delegate, { strict: false })) {
     record.delegate = value.delegate
@@ -51,17 +56,18 @@ const parse = (raw: unknown): MigrationRecord => {
   if (approve) record.approve = approve
   const deposit = hashEntry(value.deposit)
   if (deposit) record.deposit = deposit
-  if (
-    value.pending &&
-    ['redeem', 'approve', 'deposit'].includes(value.pending.step) &&
-    isTxHash(value.pending.hash)
-  ) {
-    record.pending = { step: value.pending.step, hash: value.pending.hash }
+  const pending = asObject(value.pending)
+  if (pending && isStep(pending.step) && isTxHash(pending.hash)) {
+    record.pending = {
+      step: pending.step,
+      hash: pending.hash,
+      ...(pending.viaSafe === true ? { viaSafe: true } : {}),
+      ...(isUint(pending.baseline) ? { baseline: BigInt(pending.baseline) } : {}),
+    }
   }
-  if (typeof value.locked === 'string' && /^\d+$/.test(value.locked)) {
-    record.locked = BigInt(value.locked)
-  }
+  if (isUint(value.locked)) record.locked = BigInt(value.locked)
   if (value.completed === true) record.completed = true
+  if (value.viaSafe === true) record.viaSafe = true
   if (value.acknowledged === true) record.acknowledged = true
   return record
 }

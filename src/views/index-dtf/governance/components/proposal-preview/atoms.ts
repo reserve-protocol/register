@@ -13,7 +13,7 @@ import {
 import {
   getGovernanceUpgradeTarget,
   governanceSpellAddress,
-} from '@/views/index-dtf/components/vote-lock-migration/governance-migration'
+} from '@/components/vote-lock/migration/migration-targets'
 
 export const dtfContractAliasAtom = atom((get) => {
   const dtf = get(indexDTFAtom)

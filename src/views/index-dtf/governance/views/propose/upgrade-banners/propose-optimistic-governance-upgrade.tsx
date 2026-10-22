@@ -3,35 +3,25 @@ import dtfIndexAbi from '@/abis/dtf-index-abi-v1'
 import DTFIndexGovernance from '@/abis/dtf-index-governance'
 import { Button } from '@/components/ui/button'
 import { chainIdAtom } from '@/state/atoms'
-import {
-  indexDTFAtom,
-  indexDTFStatusAtom,
-  indexDTFVersionAtom,
-} from '@/state/dtf/atoms'
+import { indexDTFAtom } from '@/state/dtf/atoms'
+import { trackClick } from '@/hooks/useTrackPage'
 import { getCurrentTime } from '@/utils'
-import { PROPOSAL_STATES } from '@/utils/constants'
 import { Trans, useLingui } from '@lingui/react/macro'
-import type { IndexDtfProposalSummary } from '@reserve-protocol/react-sdk'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { AlertCircle, Loader2 } from 'lucide-react'
 import { useCallback, useEffect } from 'react'
-import { encodeFunctionData, getAddress, Hex, pad, parseAbi } from 'viem'
-import {
-  useReadContract,
-  useWaitForTransactionReceipt,
-  useWriteContract,
-} from 'wagmi'
+import { encodeFunctionData, getAddress, Hex, pad } from 'viem'
+import { useWaitForTransactionReceipt, useWriteContract } from 'wagmi'
 import { governanceProposalsAtom, refetchTokenAtom } from '../../../atoms'
 import { useIsProposeAllowed } from '../../../hooks/use-is-propose-allowed'
 import useRecentProposalReceipt from '../../../hooks/use-recent-proposal-receipt'
 import { toast } from 'sonner'
 import {
   getGovernanceUpgradeTarget,
-  isOptimisticGovernanceUpgradeEligible,
   optimisticStakingVaultAddress,
-} from '@/views/index-dtf/components/vote-lock-migration/governance-migration'
-
-const versionAbi = parseAbi(['function version() view returns (string)'])
+} from '@/components/vote-lock/migration/migration-targets'
+import { useOptimisticUpgradeEligibility } from '@/views/index-dtf/components/vote-lock-migration/use-upgrade-eligibility'
+import { hasLiveUpgradeFolio, nextUpgradeFolioDescription } from './migration-proposals'
 
 const spellAbi = [
   {
@@ -162,28 +152,6 @@ const spellAbi = [
   },
 ] as const
 
-const UPGRADE_FOLIO_MESSAGE = 'Reserve Optimistic Governor upgrade'
-
-const matchesUpgradeMessage = (description: string) =>
-  description === UPGRADE_FOLIO_MESSAGE ||
-  description.startsWith(`${UPGRADE_FOLIO_MESSAGE} #`)
-
-const getNextUpgradeDescription = (
-  proposals: readonly IndexDtfProposalSummary[]
-): string => {
-  let maxNonce = 0
-  const prefix = `${UPGRADE_FOLIO_MESSAGE} #`
-  for (const p of proposals) {
-    if (p.description === UPGRADE_FOLIO_MESSAGE) {
-      maxNonce = Math.max(maxNonce, 1)
-    } else if (p.description.startsWith(prefix)) {
-      const n = Number.parseInt(p.description.slice(prefix.length), 10)
-      if (Number.isFinite(n)) maxNonce = Math.max(maxNonce, n)
-    }
-  }
-  return `${UPGRADE_FOLIO_MESSAGE} #${maxNonce + 1}`
-}
-
 type SpellUpgradeProps = {
   refetch: () => void
   description: string
@@ -229,6 +197,7 @@ const ProposeBanner = ({ refetch, description }: SpellUpgradeProps) => {
     )
       return
 
+    trackClick('governance', 'propose_governance_upgrade', dtf.id, dtf.token.symbol, chainId)
     const newVaultAddress = target.stakingVault
     const oldFolioGovernor = dtf.ownerGovernance.id
     const tradingGovernor = dtf.tradingGovernance.id
@@ -334,7 +303,10 @@ const ProposeBanner = ({ refetch, description }: SpellUpgradeProps) => {
   }
 
   return (
-    <div className="sm:w-[408px] p-4 rounded-3xl bg-primary/10">
+    <div
+      data-testid="governance-optimistic-upgrade"
+      className="sm:w-[408px] p-4 rounded-3xl bg-primary/10"
+    >
       <div className="flex flex-row items-center gap-2 ">
         <AlertCircle size={24} className="text-primary shrink-0" />
         <div>
@@ -377,76 +349,20 @@ const ProposeBanner = ({ refetch, description }: SpellUpgradeProps) => {
   )
 }
 
-const validProposalExists = (
-  proposals: readonly IndexDtfProposalSummary[]
-): boolean => {
-  const states = [
-    PROPOSAL_STATES.PENDING,
-    PROPOSAL_STATES.ACTIVE,
-    PROPOSAL_STATES.SUCCEEDED,
-    PROPOSAL_STATES.QUEUED,
-    PROPOSAL_STATES.EXECUTED,
-  ]
-  return proposals.some((p) => {
-    if (!matchesUpgradeMessage(p.description)) {
-      return false
-    }
-
-    if (p.votingState.state === PROPOSAL_STATES.EXPIRED) {
-      return false
-    }
-
-    return states.includes(p.votingState.state)
-  })
-}
-
 export default function ProposeOptimisticGovernanceUpgrade() {
   const { isProposeAllowed } = useIsProposeAllowed()
   const proposals = useAtomValue(governanceProposalsAtom)
-  const version = useAtomValue(indexDTFVersionAtom)
-  const dtf = useAtomValue(indexDTFAtom)
-  const status = useAtomValue(indexDTFStatusAtom)
-  const chainId = useAtomValue(chainIdAtom)
+  const { isEligible } = useOptimisticUpgradeEligibility()
   const setRefetchToken = useSetAtom(refetchTokenAtom)
-  const stakingVault = dtf
-    ? getGovernanceUpgradeTarget(chainId, dtf.id)?.stakingVault
-    : undefined
-  const { data: stakingVaultVersion } = useReadContract({
-    address: stakingVault,
-    abi: versionAbi,
-    functionName: 'version',
-    chainId,
-    query: { enabled: !!stakingVault },
-  })
 
   const refetch = useCallback(() => {
     setRefetchToken(getCurrentTime())
   }, [setRefetchToken])
 
-  if (!dtf || !isProposeAllowed || !proposals) return null
+  if (!isProposeAllowed || !proposals) return null
+  if (!isEligible || hasLiveUpgradeFolio(proposals)) return null
 
-  const isEligible = isOptimisticGovernanceUpgradeEligible({
-    chainId,
-    dtfAddress: dtf.id,
-    status,
-    folioVersion: version,
-    ownerGovernor: dtf.ownerGovernance?.id,
-    tradingGovernor: dtf.tradingGovernance?.id,
-    stakingVaultVersion,
-    ownerTimelock: dtf.ownerGovernance?.timelock.id,
-    tradingTimelock: dtf.tradingGovernance?.timelock.id,
-    oldVoteLock: dtf.stToken?.id,
-    oldVoteLockUnderlying: dtf.stToken?.underlying.address,
-    admins: dtf.roles.admin.all,
-    auctionApprovers: dtf.auctionApprovers,
-    auctionLaunchers: dtf.auctionLaunchers,
-    brandManagers: dtf.brandManagers,
-    feeRecipients: dtf.feeRecipients.map(({ address }) => address),
-  })
-
-  if (!isEligible || validProposalExists(proposals)) return null
-
-  const description = getNextUpgradeDescription(proposals)
+  const description = nextUpgradeFolioDescription(proposals)
 
   return <ProposeBanner refetch={refetch} description={description} />
 }

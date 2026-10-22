@@ -5,6 +5,8 @@ import { getAddress, zeroAddress } from 'viem'
 import {
   getGovernanceUpgradeTarget,
   getMigrationVault,
+} from '@/components/vote-lock/migration/migration-targets'
+import {
   getOldVoteLocks,
   isGovernanceMigrationPending,
   isOptimisticGovernanceUpgradeEligible,
@@ -37,8 +39,8 @@ const legacy = {
 }
 const TOKEN_JAR = '0xEAfA84184BEb90891cb5c4942ebD59C18dda0bfE'
 const SQUILL = '0x7ebAB7190d3d574ce82D29F2FA1422f18E29969C'
-const VL_SQUILL = '0x8a8188D2bC61c43124CDED32F40faB456F68C15C'
-const OPEN_SPELL = '0x5CE95c60A1aaF3f500301735a92d608E1eE3515E'
+const VL_SQUILL = '0x60e71dd36Fa5Bf92bcd9320e85cF0040ffe437Bc'
+const OPEN_SPELL = '0xaf029ad44Cc44fB2AefFF84029dd0c29D5Ea8D87'
 const OPEN_OLD_VAULT = getAddress('0x2aea77c4757d897aae2710b8a60280777f504e8c')
 const SHARED_BASE_SPELL = '0x5771d976696AA180Fed276FB6571fE2f41D0b849'
 const ALTT = getAddress('0x1b5ce2a593a840e3ad3549a34d7b3dec697c114d')

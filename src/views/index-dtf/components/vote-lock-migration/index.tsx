@@ -7,7 +7,8 @@ import { walletAtom } from '@/state/atoms'
 import { indexDTFAtom } from '@/state/dtf/atoms'
 import { useAtomValue } from 'jotai'
 import { useMemo } from 'react'
-import { getMigrationVault, getOldVoteLocks } from './governance-migration'
+import { getMigrationVault } from '@/components/vote-lock/migration/migration-targets'
+import { getOldVoteLocks } from './governance-migration'
 
 // The DTF's retired per-DTF vote-locks, each moving into vlRSR or the DTF's own successor vault.
 export const useDtfVoteLockMigration = () => {

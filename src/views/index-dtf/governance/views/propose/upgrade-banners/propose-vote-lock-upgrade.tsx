@@ -1,5 +1,5 @@
 import { Button } from '@/components/ui/button'
-import { indexDTFAtom } from '@/state/dtf/atoms'
+import { indexDTFAtom, indexDTFStatusAtom } from '@/state/dtf/atoms'
 import { getCurrentTime } from '@/utils'
 import { Trans, useLingui } from '@lingui/react/macro'
 import { useAtomValue, useSetAtom } from 'jotai'
@@ -29,7 +29,7 @@ const CHANGELOG_URL =
 
 // Everything the proposal encodes is read from chain: component versions, the vault's
 // version registry and the implementations it registers for 1.1.0.
-const useVoteLockUpgradeReads = (
+export const useVoteLockUpgradeReads = (
   chainId: number | undefined,
   vault: Address | undefined,
   governor: Address | undefined
@@ -94,6 +94,7 @@ const useVoteLockUpgradeReads = (
 export default function ProposeVoteLockUpgrade() {
   const { t } = useLingui()
   const dtf = useAtomValue(indexDTFAtom)
+  const status = useAtomValue(indexDTFStatusAtom)
   const proposals = useAtomValue(governanceProposalsAtom)
   const setRefetchToken = useSetAtom(refetchTokenAtom)
   const handleRecentProposalReceipt = useRecentProposalReceipt()
@@ -138,6 +139,7 @@ export default function ProposeVoteLockUpgrade() {
 
   if (
     !dtf ||
+    status !== 'active' ||
     !chainId ||
     !vault ||
     !governor ||

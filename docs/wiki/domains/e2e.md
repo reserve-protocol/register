@@ -129,6 +129,27 @@ wallet (`e2e/fork/helpers/fork-wallet.ts`) forwards sends to Anvil for an
 impersonated account; the spec verifies state with viem, never from the page.
 First case: `launch-cmc20.fork.spec.ts` (auction 29, nonce 12, 2026-09-17).
 
+- Governance migration: `FORK_SCENARIO` picks `lcap` (Base, vlRSR), `abx`
+  (Base, vlALTT) or `open` (Ethereum, vlSQUILL). `prepare-optimistic-governance.mjs`
+  writes `.state/<chainId>/optimistic-governance-<scenario>.json`; for LCAP it also
+  upgrades the vlRSR singleton to 1.1.0 by labelled impersonation of its timelock.
+  `optimistic-governance-upgrade.fork.spec.ts` locks into the new vault from the
+  pre-upgrade card, proposes and executes `upgradeFolio`, retires the old vault and
+  migrates a holder. `FORK_SAFE=1` gives the holder contract code and puts the fork
+  wallet in Safe mode (sends return a hash that is never mined).
+- DTF governance 1.1.0 upgrade (AI DTFs, MAG7): `prepare-folio-governance-upgrade.mjs`
+  upgrades the chain's vlRSR singleton to 1.1.0 and writes
+  `.state/<chainId>/folio-governance-upgrade-<scenario>.json`;
+  `folio-governance-upgrade.fork.spec.ts` proposes from the banner, executes, and
+  checks that the 1.1.0 governor still accepts a proposal. Use `FORK_SCENARIO=power`
+  on a BSC fork: MAG7 does not load on Anvil.
+- The subgraph proxy is frozen at the fork block, so views that read the DTF from
+  the subgraph keep the pre-upgrade state after an on-chain upgrade.
+- The Alchemy archive RPC needs the app origin header
+  (`--fork-header "Origin: https://app.reserve.org"` on Anvil).
+- Restart Anvil (or revert a snapshot) before a re-run: the spec spends the
+  scenario state.
+
 Non-goals of the offline suite: forked-chain execution (fork lane), visual/pixel regression.
 Coverage state and open gaps live in `e2e/TEST_MAP.md`; harness-level debt in
 [[progress]] § Backlog. Governance, issuance, compliance, and

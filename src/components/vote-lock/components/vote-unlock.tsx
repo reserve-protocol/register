@@ -57,6 +57,7 @@ const VoteUnlock = () => {
         from={{
           title: t`You unlock:`,
           address: stToken.id,
+          underlyingAddress: stToken.underlying.address,
           symbol: stToken.token.symbol,
           value: input,
           onChange,

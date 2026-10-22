@@ -101,15 +101,17 @@ export const MigrationModal = ({ migration, flow, open, onOpenChange, onTrack }:
   const busy = flow.isSigning || flow.isConfirming || flow.isRecovering
   const actionLabel = flow.isSigning
     ? t`Confirm in wallet...`
-    : flow.isConfirming
-      ? t`Confirming transaction...`
-      : flow.isRecovering
-        ? t`Checking your redemption...`
-        : flow.failed
-          ? t`Transaction failed · Retry`
-          : flow.rejected
-            ? t`Request rejected · Retry`
-            : buttonLabels[step as Stage]
+    : flow.isWaitingForSafe
+      ? t`Waiting for your Safe to execute...`
+      : flow.isConfirming
+        ? t`Confirming transaction...`
+        : flow.isRecovering
+          ? t`Checking your redemption...`
+          : flow.failed
+            ? t`Transaction failed · Retry`
+            : flow.rejected
+              ? t`Request rejected · Retry`
+              : buttonLabels[step as Stage]
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -198,7 +200,7 @@ export const MigrationModal = ({ migration, flow, open, onOpenChange, onTrack }:
                           <h3 className="mt-0.5 text-sm font-medium leading-tight">{doneTitles[stage]}</h3>
                         </div>
                       </div>
-                      {hash && (
+                      {hash && !record.viaSafe && (
                         <TxLink hash={hash} chainId={chainId} label={t`View ${titles[stage]} transaction on explorer`} />
                       )}
                     </div>
@@ -265,29 +267,55 @@ export const MigrationModal = ({ migration, flow, open, onOpenChange, onTrack }:
                         <p className="mt-1 text-sm leading-relaxed text-legend">
                           {stage === 'redeem'
                             ? flow.estimate !== undefined
-                              ? t`Your full old-vault position · about ${formatAmount(flow.estimate)} RSR`
+                              ? t`Your full old-vault position · about ${formatAmount(flow.estimate)} ${symbol}`
                               : t`Your full old-vault position`
-                            : t`Received from your old-vault redemption`}
+                            : flow.nothingToLock
+                              ? t`No ${symbol} left in your wallet to lock.`
+                              : t`Received from your old-vault redemption`}
                         </p>
                         {stage === 'deposit' && delegateText && (
                           <p className="mt-1 text-sm leading-relaxed text-legend">{delegateText}</p>
                         )}
                       </div>
-                      <TransactionButtonContainer chain={chainId}>
+                      {flow.nothingToLock ? (
                         <Button
+                          data-testid="vote-lock-migration-dismiss-empty"
+                          variant="outline"
                           className="mt-2 h-[49px] w-full rounded-xl"
-                          data-testid="vote-lock-migration-next"
-                          data-step={stage}
-                          disabled={busy}
                           onClick={() => {
-                            onTrack(`vote_lock_migration_${stage}`)
-                            flow.submit()
+                            flow.acknowledge()
+                            onOpenChange(false)
                           }}
                         >
-                          {busy && <LoaderCircle className="mr-2 animate-spin" size={17} />}
-                          <span aria-live="polite">{actionLabel}</span>
+                          <Trans>Close</Trans>
                         </Button>
-                      </TransactionButtonContainer>
+                      ) : (
+                        <TransactionButtonContainer chain={chainId}>
+                          <Button
+                            className="mt-2 h-[49px] w-full rounded-xl"
+                            data-testid="vote-lock-migration-next"
+                            data-step={stage}
+                            disabled={busy}
+                            onClick={() => {
+                              onTrack(`vote_lock_migration_${stage}`)
+                              flow.submit()
+                            }}
+                          >
+                            {busy && <LoaderCircle className="mr-2 animate-spin" size={17} />}
+                            <span aria-live="polite">{actionLabel}</span>
+                          </Button>
+                          {flow.isWaitingForSafe && (
+                            <Button
+                              variant="ghost"
+                              data-testid="vote-lock-migration-safe-cancel"
+                              className="mt-1 w-full rounded-xl text-legend"
+                              onClick={flow.cancelSafePending}
+                            >
+                              <Trans>Rejected it in your Safe? Sign again</Trans>
+                            </Button>
+                          )}
+                        </TransactionButtonContainer>
+                      )}
                     </>
                   )}
                 </li>

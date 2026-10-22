@@ -366,10 +366,9 @@ export function resolveIndexQuery(
   if (op === 'GetIndexDtfVoteLockDependents') {
     const voteLock = String(vars.voteLock ?? '').toLowerCase()
     const dtfs = REGISTRY.flatMap((dtf) => {
-      const meta = loadSnapshot<{ dtf: VoteLockDependentSnapshot }>(
-        `${dtf.snapshotDir}/dtf.json`
-      ).dtf
-      if (meta.stToken?.id.toLowerCase() !== voteLock) return []
+      if (urlChain !== undefined && dtf.chainId !== urlChain) return []
+      const meta = dtfObjectFor(dtf.address) as VoteLockDependentSnapshot | undefined
+      if (!meta || meta.stToken?.id.toLowerCase() !== voteLock) return []
       const governance = (ref?: { timelock?: { id: string } }) =>
         ref?.timelock
           ? { token: { id: voteLock }, timelock: { id: ref.timelock.id } }

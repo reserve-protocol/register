@@ -361,7 +361,7 @@ const MIGRATION_VAULTS: Array<[string, `0x${string}`, string]> = [
   ['0xabbdd9ac016e43c7ca85e2258e669948f029bc0c', '0x320623b8e4ff03373931769a31fc52a4e78b5d70', 'vlRSR'],
   ['0x2f0d6538807a77d4addcd4b4daf214ea2e818e3d', '0xab36452dbac151be02b16ca17d8919826072f64a', 'vlRSR'],
   ['0xe744c8157c346b2931807f42552c8cbc0bb6d34f', '0x23f72a3db61d6cb8abe5d9af1ac4b6c99327bfee', 'vlRSR'],
-  ['0x8a8188d2bc61c43124cded32f40fab456f68c15c', '0x7ebab7190d3d574ce82d29f2fa1422f18e29969c', 'vlSQUILL'],
+  ['0x60e71dd36fa5bf92bcd9320e85cf0040ffe437bc', '0x7ebab7190d3d574ce82d29f2fa1422f18e29969c', 'vlSQUILL'],
   ['0x77cd9520931ae628f870783d855f74bb14cdaf39', '0x1b5ce2a593a840e3ad3549a34d7b3dec697c114d', 'vlALTT'],
 ]
 

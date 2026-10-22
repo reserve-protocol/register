@@ -49,6 +49,7 @@ type SwapItem = {
   title?: ReactNode
   price?: ReactNode
   address?: string
+  underlyingAddress?: string
   symbol?: string
   balance?: string
   onMax?: () => void
@@ -110,9 +111,15 @@ const TokenSelector = ({
   tokens,
   onTokenSelect,
   chainClassName,
+  underlyingAddress,
 }: Pick<
   SwapItem,
-  'address' | 'symbol' | 'tokens' | 'onTokenSelect' | 'chainClassName'
+  | 'address'
+  | 'symbol'
+  | 'tokens'
+  | 'onTokenSelect'
+  | 'chainClassName'
+  | 'underlyingAddress'
 >) => {
   const chainId = useAtomValue(chainIdAtom)
   const brand = useAtomValue(indexDTFBrandAtom)
@@ -132,6 +139,7 @@ const TokenSelector = ({
             src={src}
             symbol={symbol}
             address={address}
+            underlyingAddress={underlyingAddress}
             chain={chainId}
             chainClassName={chainClassName}
           />

@@ -104,7 +104,15 @@ export const MigrationCard = ({
     <Shell
       layout={layout}
       className={className}
-      badge={<TokenLogo size="xl" symbol={vault} />}
+      badge={
+        <TokenLogo
+          size="xl"
+          symbol={vault}
+          address={migration.newVoteLock}
+          underlyingAddress={migration.underlying}
+          chain={migration.chainId}
+        />
+      }
       title={<Trans>Your {symbol} is locked in {vault}</Trans>}
       description={
         migration.shared ? (

@@ -3,14 +3,15 @@ import { defineConfig, devices } from '@playwright/test'
 // Real-fork lane: Register against a loopback Anvil fork. Nothing is intercepted:
 // reads and writes hit the fork, the subgraph is whichever endpoint the chain
 // profile names, the API is production unless VITE_RESERVE_API_URL points at a
-// local one. Port 3006, never 3000 (Luis) or 3005 (offline suite). Fork reads are
+// local one. Port 3006, never 3000 (dev server) or 3005 (offline suite). Fork reads are
 // cold on first touch (seconds), so the timeouts are generous; the prepare
 // scripts warm them.
 //
 //   FORK_CHAIN_ID=56 → BSC fork stack in e2e/fork/docker (CMC20 launcher lane)
-//   FORK_CHAIN_ID=8453 → Base Anvil :8546 + subgraph-proxy :18310 (LCAP governance upgrade lane)
+//   FORK_CHAIN_ID=8453 → Base Anvil :8546 + subgraph-proxy :18310 (LCAP and ABX governance upgrade lane)
 //   FORK_CHAIN_ID=1  → the protocol sandbox (index-subgraph/.fork): Anvil :8545,
-//                      fork subgraph :18000 (native 6.0.0 stack lane)
+//                      fork subgraph :18000 (native 6.0.0 stack lane); the OPEN
+//                      governance upgrade lane overrides both with FORK_*_URL_1
 const HOST = '127.0.0.1'
 const PORT = Number(process.env.FORK_WEB_PORT ?? 3006)
 const baseURL = `http://${HOST}:${PORT}`

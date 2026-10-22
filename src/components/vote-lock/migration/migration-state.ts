@@ -57,8 +57,7 @@ export type DepositChoice =
 const isSet = (address: string | undefined): address is Address =>
   !!address && address.toLowerCase() !== zeroAddress
 
-// The holder keeps their delegate: an existing vlRSR delegation wins (it covers every vlRSR share they hold),
-// then the old vault's delegate, then the holder.
+// An existing new-vault delegation wins because it covers every share the holder already has there.
 export const chooseDeposit = ({
   account,
   oldDelegate,
@@ -81,4 +80,41 @@ export const chooseDeposit = ({
     delegatee,
     optimisticDelegatee: isSet(optimisticDelegate) ? optimisticDelegate : delegatee,
   }
+}
+
+export type SafeStepOutcome =
+  | { step: 'redeem'; assets: bigint }
+  | { step: 'approve' }
+  | { step: 'deposit' }
+
+// A Safe step is done once its on-chain effect shows: old shares gone, allowance covers the lock, or new shares up.
+export const getSafeStepOutcome = ({
+  step,
+  baseline,
+  oldShares,
+  walletBalance,
+  allowance,
+  lockAmount,
+  newShares,
+}: {
+  step: 'redeem' | 'approve' | 'deposit'
+  baseline?: bigint
+  oldShares?: bigint
+  walletBalance?: bigint
+  allowance?: bigint
+  lockAmount?: bigint
+  newShares?: bigint
+}): SafeStepOutcome | undefined => {
+  if (step === 'redeem') {
+    if (oldShares !== 0n || walletBalance === undefined || baseline === undefined) return undefined
+    return { step, assets: walletBalance > baseline ? walletBalance - baseline : 0n }
+  }
+  if (step === 'approve') {
+    return allowance !== undefined && lockAmount !== undefined && allowance >= lockAmount
+      ? { step }
+      : undefined
+  }
+  return newShares !== undefined && baseline !== undefined && newShares > baseline
+    ? { step }
+    : undefined
 }

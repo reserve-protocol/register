@@ -59,6 +59,7 @@ const VoteLock = () => {
         }}
         to={{
           address: stToken.id,
+          underlyingAddress: stToken.underlying.address,
           symbol: stToken.token.symbol,
           inputTestId: 'vote-lock-output',
           price: `$${formatCurrency(inputPrice)}`,
