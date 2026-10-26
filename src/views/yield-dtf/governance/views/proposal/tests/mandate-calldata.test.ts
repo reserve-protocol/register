@@ -1,8 +1,10 @@
 import { describe, expect, it } from 'vitest'
 import { decodeFunctionData, encodeFunctionData } from 'viem'
 import RToken from '@/abis/RToken'
-import { supportsMandateUpdates } from '../components/ProposalForm'
-import { hasMandate } from '../components/mandate-proposal'
+import {
+  hasMandate,
+  supportsMandateUpdates,
+} from '../components/mandate-proposal'
 
 describe('Yield DTF mandate proposal calldata', () => {
   it('encodes the governance-only RToken mandate setter', () => {

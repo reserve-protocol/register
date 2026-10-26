@@ -1,6 +1,10 @@
 import { Trans, useLingui } from '@lingui/react/macro'
 import { Card } from '@/components/ui/card'
 import { FormField } from 'components/field'
+import { checkVersion } from '@/utils'
+
+export const supportsMandateUpdates = (version?: string) =>
+  !!version && checkVersion('4.2.0', version)
 
 export const hasMandate = (value?: string) => !!value?.trim()
 
