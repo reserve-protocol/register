@@ -1,6 +1,6 @@
 ---
 title: Log
-updated: 2026-09-21
+updated: 2026-10-26
 type: log
 ---
 
@@ -205,3 +205,8 @@ PR #1094 merged on 2026-08-28. The following records the original stage evidence
 ## 2026-09-21
 
 - MAG7's Base vlRSR vault was missing from the self-appreciating-vault registry, so the UI fell back to MAG7/manual-claim copy despite the deployed TokenJar converting fees to RSR and increasing the vlRSR exchange rate. Added the verified vault address; the existing shared presentation now shows RSR, automatic claiming, APY, and the exchange rate across governance, overview, Earn, and portfolio.
+
+## 2026-10-26
+
+- Yield mandate proposals reuse the parameter-change pipeline and the RToken component's 4.2+ capability boundary. Check only mandate validation here, rather than newly imposing whole-form validity on unrelated legacy proposals. The committed browser regression rejects blank/whitespace text and checks edit/discard/decoded calls on desktop and mobile; removing the validation guard made it fail as expected.
+- Extended eUSD's replay with three real reads at its existing block 26191271; future yield capture also visits the proposal route. Local Ethereum fork block 26278898 verified governor-authorized scheduling, timelock execution, and exact mandate readback; no live-chain writes. Node 26 needs `NODE_OPTIONS=--no-experimental-webstorage` for this repo's jsdom storage tests; CI uses Node 24.

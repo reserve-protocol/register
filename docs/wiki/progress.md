@@ -1,6 +1,6 @@
 ---
 title: Progress
-updated: 2026-10-20
+updated: 2026-10-26
 type: ledger
 ---
 
@@ -10,6 +10,7 @@ Stage ledger. One row per stage; keep entries short. Verifier = exact fresh comm
 
 | Stage | Status | Verifier | Review | Next |
 |---|---|---|---|---|
+| Yield governance mandate setter: expose RToken 4.2+ `setMandate` through the existing proposal pipeline; no protocol/Index changes | human-review-required (base cfe4702e8) | gate: lint/types/unit 1084; helpers 81; smoke 59/1 skip; mandate desktop/mobile 4/4; validation RED: blank left prepare enabled without guard; eUSD fork 26278898: governor schedule → timelock execute → mandate readback | Independent review: no blockers; legacy-parameter enablement checked; capability matched live version and Sourcify ABI | Draft PR; Engineer review before merge; no live-chain writes |
 | eusd-underlying-fees: eUSD-only "Underlying protocol fees" section on the yield overview (reserve-api `yield-dtf/underlying-fees`, zod-validated; gate = `UNDERLYING_FEES_RTOKENS`) | done (base f6f08a20f) | lint · typecheck · unit 955 (18 new) · e2e tsc · helpers · smoke 59 (overview spec RED-verified: section hidden pre-tracking) · live prod: eUSD 1 request + hidden on `collaterals: []`, ETH+ no request · mock screenshots desktop+mobile | correctness+product: background reviewer, 4 findings fixed (toggle error kept section, placeholder dim, tap tooltip, no retry on schema error) | the section appears once the new eUSD basket executes |
 | vlrsr-1.1.0-upgrade-banner | human-review-required (base dc273a18f, uncommitted, branch feat/vlrsr-1.1.0-upgrade) | unit 12 (banner logic) · e2e preview spec 2/2 (RED-verified) · helpers etherscan model · Base fork: banner's exact proposal proposed/voted/queued/executed through the vlRSR DAO, vault+governor+timelock read 1.1.0 · banner rendered on live Base MAG7 as a delegate (read-only) | self-review; SDK decoder lacks UUPS entries → Register-side preview | Engineer review (governance upgrade path); lingui extract on the release branch |
 | governance-1.1.0-migration ([plan](../plans/optimistic-governance-migration.md)) | human-review-required (PR #1141) | typecheck · lint · unit 1058 · helpers 81 · smoke · proposal-detail e2e · fork lanes: LCAP, ABX (Base), OPEN (Ethereum) pre-upgrade lock → upgradeFolio → retire → holder migration; POWER (BSC) DTF governance upgrade | correctness, product and code-standards reviews; CodeRabbit threads resolved | Engineer review (governance calldata, vote-lock writes, delegation) |

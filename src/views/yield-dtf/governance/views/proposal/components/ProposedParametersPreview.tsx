@@ -23,6 +23,7 @@ const ProposedParametersPreview = ({ className }: Props) => {
       count={changes.length}
       title={t`Parameters`}
       className={cn('border border-border rounded-xl p-6', className)}
+      testId="yield-proposal-parameters"
     >
       {changes.map((change) => (
         <ParameterPreview key={change.field} className="mt-4" values={change} />

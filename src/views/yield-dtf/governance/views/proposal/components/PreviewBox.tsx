@@ -9,6 +9,7 @@ interface Props {
   collapsed?: boolean
   children?: React.ReactNode
   className?: string
+  testId?: string
 }
 
 const PreviewBox = ({
@@ -17,11 +18,12 @@ const PreviewBox = ({
   children,
   collapsed = true,
   className,
+  testId,
 }: Props) => {
   const [visible, setVisible] = useState(!collapsed)
 
   return (
-    <div className={className}>
+    <div className={className} data-testid={testId}>
       <div
         className={cn(
           'flex items-center cursor-pointer',

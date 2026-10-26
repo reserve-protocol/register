@@ -1,6 +1,6 @@
 ---
 title: E2E Suite
-updated: 2026-10-20
+updated: 2026-10-26
 type: domain
 sources:
   - e2e/**
@@ -13,7 +13,7 @@ sources:
 
 Offline Index-DTF acceptance coverage for home/discover, overview, issuance,
 zaps, compliance, auctions, governance, and settings, plus Yield (RToken)
-render and staking-write coverage. The suite characterizes Register behavior
+render, staking-write, and mandate-proposal coverage. The suite characterizes Register behavior
 at the installed
 `@reserve-protocol/react-sdk` version; SDK mapper/math/calldata correctness
 remains the SDK repositories' responsibility.
@@ -200,7 +200,7 @@ Trust rules (a yield test can't go green while wrong):
   and within-chain key collisions.
 
 Covered: overview / issuance / staking render smokes, issuance active/paused
-states, partial staking history, and stake/unstake writes. Remaining yield
+states, partial staking history, stake/unstake writes, and governance mandate edit/discard/validation/decoded preview on desktop and mobile. Yield capture also visits `governance/proposal`; its additional reads share the same pinned block. Mandate proposal tests assert the encoded Governor call at the RPC boundary, not a successful live submission. Remaining yield
 phases and deferred writes are tracked in `e2e/TEST_MAP.md` § gaps.
 
 ## Wallet modal
