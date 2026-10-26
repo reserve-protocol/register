@@ -51,7 +51,7 @@ const ProposalForm = () => {
         : []),
       ProposalGovernanceParams,
     ],
-    [version, canUpdateMandate]
+    [version, canUpdateMandate, contracts?.token?.address]
   )
 
   return (
