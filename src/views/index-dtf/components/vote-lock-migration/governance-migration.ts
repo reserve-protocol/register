@@ -105,6 +105,27 @@ const upgradeFolioWouldPass = ({
   return ![...governors, ...timelocks].some((g) => includes(feeRecipients, g))
 }
 
+// A legacy DTF the migration will move: it must not take another upgrade path first.
+export const isGovernanceMigrationPending = ({
+  chainId,
+  dtfAddress,
+  ownerGovernor,
+  tradingGovernor,
+  oldVoteLockUnderlying,
+}: Pick<
+  Eligibility,
+  'chainId' | 'dtfAddress' | 'ownerGovernor' | 'tradingGovernor' | 'oldVoteLockUnderlying'
+>) => {
+  const target = getGovernanceUpgradeTarget(chainId, dtfAddress)
+  return (
+    !!target &&
+    !!ownerGovernor &&
+    !!tradingGovernor &&
+    !same(ownerGovernor, tradingGovernor) &&
+    same(oldVoteLockUnderlying, target.stakingVaultUnderlying)
+  )
+}
+
 export type OldVoteLock = { address: Address; governance?: Address }
 
 type VoteLockSource = {

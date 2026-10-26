@@ -1,6 +1,10 @@
 import { Button } from '@/components/ui/button'
 import { chainIdAtom, walletAtom } from '@/state/atoms'
-import { indexDTFAtom, iTokenAddressAtom } from '@/state/dtf/atoms'
+import {
+  folioVersionAtom,
+  indexDTFAtom,
+  iTokenAddressAtom,
+} from '@/state/dtf/atoms'
 import { ROUTES } from '@/utils/constants'
 import { Trans, useLingui } from '@lingui/react/macro'
 import { atom, useAtomValue } from 'jotai'
@@ -9,7 +13,11 @@ import { memo, useEffect, useMemo, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Address } from 'viem'
 import { useWaitForTransactionReceipt, useWriteContract } from 'wagmi'
-import { proposalDescriptionAtom, basketProposalCalldatasAtom } from '../atoms'
+import {
+  proposalDescriptionAtom,
+  basketProposalCalldatasAtom,
+  proposedIndexBasketAtom,
+} from '../atoms'
 import { useIsProposeAllowed } from '@/views/index-dtf/governance/hooks/use-is-propose-allowed'
 import { indexDTFRefreshFnAtom } from '@/views/index-dtf/index-dtf-container'
 import { TransactionButtonContainer } from '@/components/ui/transaction'
@@ -21,6 +29,8 @@ import {
 import {
   prepareIndexDtfSubmitOptimisticProposal,
   prepareIndexDtfSubmitProposal,
+  useIndexDtfIdentity,
+  useIndexDtfTradeAllowlist,
   type SupportedChainId,
 } from '@reserve-protocol/react-sdk'
 
@@ -38,6 +48,33 @@ const tradingGovAddress = atom((get) => {
 
   return dtfData?.tradingGovernance?.id
 })
+
+// Folio 6.0 startRebalance reverts for any rebalance token missing from an enforced trade allowlist.
+const useTokensOutsideTradeAllowlist = () => {
+  const versionState = useAtomValue(folioVersionAtom)
+  const basket = useAtomValue(proposedIndexBasketAtom)
+  const identity = useIndexDtfIdentity()
+  const isV6 = versionState.status === 'ready' && versionState.major === 6
+  const { data: allowlist, isLoading, isError } = useIndexDtfTradeAllowlist(
+    isV6 && identity.address ? identity : undefined
+  )
+
+  return useMemo(() => {
+    if (!isV6) return { isLoading: false, isError: false, symbols: [] }
+    if (isError) return { isLoading: false, isError: true, symbols: [] }
+    if (!allowlist || !basket) return { isLoading, isError: false, symbols: [] }
+    if (!allowlist.enabled) return { isLoading: false, isError: false, symbols: [] }
+
+    const allowed = new Set(allowlist.tokens.map((t) => t.toLowerCase()))
+    return {
+      isLoading: false,
+      isError: false,
+      symbols: Object.values(basket)
+        .filter(({ token }) => !allowed.has(token.address.toLowerCase()))
+        .map(({ token }) => token.symbol),
+    }
+  }, [isV6, allowlist, basket, isLoading, isError])
+}
 
 const ProposeGatekeeper = memo(() => {
   const govAddress = useAtomValue(tradingGovAddress)
@@ -58,6 +95,42 @@ const ProposeGatekeeper = memo(() => {
       calldatas,
     })
   const isOptimisticProposal = proposalType === 'optimistic'
+  const outsideAllowlist = useTokensOutsideTradeAllowlist()
+
+  if (outsideAllowlist.isLoading) {
+    return (
+      <Button disabled className="w-full" variant="default">
+        <Trans>Checking trade allowlist...</Trans>
+      </Button>
+    )
+  }
+
+  if (outsideAllowlist.isError) {
+    return (
+      <Button
+        disabled
+        className="w-full h-auto min-h-10 whitespace-normal"
+        variant="default"
+        data-testid="basket-propose-allowlist-unavailable"
+      >
+        <Trans>Couldn't read this DTF's trade allowlist. Try again later.</Trans>
+      </Button>
+    )
+  }
+
+  if (outsideAllowlist.symbols.length) {
+    const symbols = outsideAllowlist.symbols.join(', ')
+    return (
+      <Button
+        disabled
+        className="w-full h-auto min-h-10 whitespace-normal"
+        variant="default"
+        data-testid="basket-propose-not-allowlisted"
+      >
+        <Trans>Not in this DTF's trade allowlist: {symbols}</Trans>
+      </Button>
+    )
+  }
   const canUseOptimisticProposal =
     isOptimisticProposal && isOptimisticEligible && !hasSelectorError
 
@@ -184,6 +257,7 @@ const SubmitProposalButton = () => {
       switchChainButtonClassName="w-full"
     >
       <Button
+        data-testid="basket-propose-submit"
         disabled={!isReady || isPending || isSubmitted || !govAddress}
         onClick={handleSubmit}
         className="w-full"

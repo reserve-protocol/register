@@ -183,3 +183,8 @@ recorded unique hash. This is the suite's contract with Register's transaction
 builder; protocol math and calldata construction still require SDK unit/live
 tests. Governance, issuance, compliance, auction, fee, deployment, and staking
 writes require engineer review before shipping.
+
+## Real-fork lane
+
+Cases that need a real receipt (rebalance, upgrade, deploy) do not run here. They use the
+per-chain fork stack in `e2e/fork/docker/` — see `.claude/skills/fork-e2e/SKILL.md`.

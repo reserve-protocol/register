@@ -1,12 +1,12 @@
 import daoFeeRegistryAbi from '@/abis/dao-fee-registry-abi'
 import dtfIndexDeployerAbi from '@/abis/dtf-index-deployer-abi'
-import { INDEX_DEPLOYER_ADDRESS } from '@/utils/addresses'
+import { INDEX_V6_DEPLOYER_ADDRESS } from '@/utils/addresses'
 import { FALLBACK_PLATFORM_FEES } from '@/utils/constants'
 import { Address, zeroAddress } from 'viem'
 import { useReadContract } from 'wagmi'
 
 const usePlatformFee = (chainId: number): number => {
-  const deployerAddress = INDEX_DEPLOYER_ADDRESS[chainId]
+  const deployerAddress = INDEX_V6_DEPLOYER_ADDRESS[chainId]
   const fallback = FALLBACK_PLATFORM_FEES[chainId] ?? 50
 
   const { data: registryAddress } = useReadContract({

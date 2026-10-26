@@ -6,6 +6,7 @@ export type CowbotStatus =
   | 'running'
   | 'error'
   | 'external'
+  | 'unsupported'
 
 export type SupportedChainId = 1 | 8453 | 56
 

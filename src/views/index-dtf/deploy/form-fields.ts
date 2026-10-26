@@ -8,6 +8,7 @@ import {
   isERC20,
   isNotStRSR,
   isNotVoteLockAddress,
+  isOptimisticVault,
   isVoteLockAddress,
   noSpecialCharacters,
 } from './utils'
@@ -21,8 +22,7 @@ export type DeployStepId =
   | 'revenue-distribution'
   | 'auctions'
   | 'roles'
-  | 'basket-changes'
-  | 'other-changes'
+  | 'governance-settings'
 
 export const dtfDeploySteps: Record<DeployStepId, { fields: string[] }> = {
   metadata: {
@@ -45,31 +45,33 @@ export const dtfDeploySteps: Record<DeployStepId, { fields: string[] }> = {
       'governanceShare',
       'deployerShare',
       'fixedPlatformFee',
+      'holderShare',
       'additionalRevenueRecipients',
+      'permanentRevenueRecipients',
     ],
   },
   auctions: {
-    fields: ['auctionLength', 'weightControl', 'bidsEnabled'],
+    fields: ['maxAuctionLength', 'weightControl', 'bidsEnabled'],
   },
   roles: {
     fields: ['guardians', 'brandManagers', 'auctionLaunchers'],
   },
-  'basket-changes': {
-    fields: [
-      'basketVotingDelay',
-      'basketVotingPeriod',
-      'basketVotingThreshold',
-      'basketVotingQuorum',
-      'basketExecutionDelay',
-    ],
-  },
-  'other-changes': {
+  'governance-settings': {
     fields: [
       'governanceVotingDelay',
       'governanceVotingPeriod',
+      'governanceVoteExtension',
       'governanceVotingThreshold',
       'governanceVotingQuorum',
       'governanceExecutionDelay',
+      'optimisticVetoDelay',
+      'optimisticVetoPeriod',
+      'optimisticVetoThreshold',
+      'proposalThrottleCapacity',
+      'optimisticActions',
+      'optimisticProposers',
+      'vaultUnstakingDelay',
+      'vaultRewardHalfLife',
     ],
   },
 }
@@ -92,11 +94,20 @@ const messages = {
   mintFeeMin: msg`Mint Fee must be 0.15% or greater`,
   mintFeeMax: msg`Mint Fee must be 5% or less`,
   maxPrecision: msg`Max precision is 0.01%`,
-  auctionLengthMax: msg`Auction length must not exceed 45 minutes`,
+  maxAuctionLengthMin: msg`Max auction length must be at least 2 minutes`,
+  maxAuctionLengthMax: msg`Max auction length must not exceed 1 week (10080 minutes)`,
+  vetoPeriodMin: msg`Veto period must be at least 5 minutes`,
+  vetoDelayMin: msg`Veto delay must be at least 1 second`,
+  positivePercentage: msg`Must be above 0% and at most 100%`,
+  throttleRange: msg`Proposals per 12 hours must be between 1 and 12`,
+  rewardHalfLifeRange: msg`Reward half-life must be between 1 and 14 days`,
+  unstakingDelayMax: msg`Unstaking delay must not exceed 28 days`,
+  duplicatedOptimisticProposers: msg`Duplicated optimistic proposers`,
   invalidERC20: msg`Invalid ERC20 address`,
   voteLockNotAllowed: msg`Vote Lock address is not allowed for new DAO`,
   stRSRNotSupported: msg`stRSR DAO contracts for Index DTFs are not supported`,
   unsupportedVoteLock: msg`Unsupported Vote Lock Address`,
+  legacyVoteLock: msg`This vote-lock can't govern a 6.0 DTF. Use a vault created with the current governance deployer, like vlRSR, or create a new one.`,
   allTokenUnitsPositive: msg`All token units must be valid positive numbers`,
   invalidGovernanceSettings: msg`Invalid governance settings`,
   duplicatedGuardians: msg`Duplicated guardians`,
@@ -122,12 +133,34 @@ const revenueTotalMessage = (t: Translate, difference: Decimal) => {
   const displayDifference = difference.abs().toDisplayString()
   return difference.isPositive()
     ? t(
-        msg`The sum of governance share, creator share, additional recipients shares and platform share must be 100% (${displayDifference}% missing)`
+        msg`The sum of holder share, governance share, creator share, additional and permanent recipients shares and platform share must be 100% (${displayDifference}% missing)`
       )
     : t(
-        msg`The sum of governance share, creator share, additional recipients shares and platform share must be 100% (${displayDifference}% excess)`
+        msg`The sum of holder share, governance share, creator share, additional and permanent recipients shares and platform share must be 100% (${displayDifference}% excess)`
       )
 }
+
+const recipientsSchema = (t: Translate) =>
+  z
+    .array(
+      z.object({
+        address: z.string().refine(isAddressNotStrict, {
+          message: t(messages.invalidAddress),
+        }),
+        share: z.coerce
+          .number<number>()
+          .multipleOf(0.01, t(messages.maxPrecision))
+          .min(0)
+          .max(100),
+      })
+    )
+    .optional()
+
+const positivePercentage = (t: Translate) =>
+  z.coerce
+    .number<number>()
+    .gt(0, t(messages.positivePercentage))
+    .max(100, t(messages.positivePercentage))
 
 export const buildDeployFormSchema = (t: Translate) =>
   z
@@ -214,24 +247,17 @@ export const buildDeployFormSchema = (t: Translate) =>
         .multipleOf(0.01, t(messages.maxPrecision))
         .min(0)
         .max(100),
-      additionalRevenueRecipients: z
-        .array(
-          z.object({
-            address: z.string().refine(isAddressNotStrict, {
-              message: t(messages.invalidAddress),
-            }),
-            share: z.coerce
-              .number<number>()
-              .multipleOf(0.01, t(messages.maxPrecision))
-              .min(0)
-              .max(100),
-          })
-        )
-        .optional(),
-      auctionLength: z.coerce
+      holderShare: z.coerce
         .number<number>()
+        .multipleOf(0.01, t(messages.maxPrecision))
         .min(0)
-        .max(45, t(messages.auctionLengthMax)),
+        .max(100),
+      additionalRevenueRecipients: recipientsSchema(t),
+      permanentRevenueRecipients: recipientsSchema(t),
+      maxAuctionLength: z.coerce
+        .number<number>()
+        .min(2, t(messages.maxAuctionLengthMin))
+        .max(10_080, t(messages.maxAuctionLengthMax)),
       weightControl: z.boolean(),
       bidsEnabled: z.boolean(),
       guardians: z.array(
@@ -258,16 +284,43 @@ export const buildDeployFormSchema = (t: Translate) =>
           })
           .optional()
       ),
-      basketVotingDelay: z.coerce.number<number>().min(0),
-      basketVotingPeriod: z.coerce.number<number>().min(0),
-      basketVotingQuorum: z.coerce.number<number>().min(0).max(100),
-      basketVotingThreshold: z.coerce.number<number>().min(0).max(100),
-      basketExecutionDelay: z.coerce.number<number>().min(0),
       governanceVotingDelay: z.coerce.number<number>().min(0),
       governanceVotingPeriod: z.coerce.number<number>().min(0),
-      governanceVotingQuorum: z.coerce.number<number>().min(0).max(100),
-      governanceVotingThreshold: z.coerce.number<number>().min(0).max(100),
+      governanceVoteExtension: z.coerce.number<number>().min(0),
+      governanceVotingQuorum: positivePercentage(t),
+      governanceVotingThreshold: positivePercentage(t),
       governanceExecutionDelay: z.coerce.number<number>().min(0),
+      // Veto window in hours; the governor needs a delay of at least 1s and a period of at least 5 minutes.
+      optimisticVetoDelay: z.coerce
+        .number<number>()
+        .min(1 / 3600, t(messages.vetoDelayMin)),
+      optimisticVetoPeriod: z.coerce
+        .number<number>()
+        .min(5 / 60, t(messages.vetoPeriodMin)),
+      optimisticVetoThreshold: positivePercentage(t),
+      proposalThrottleCapacity: z.coerce
+        .number<number>()
+        .int(t(messages.throttleRange))
+        .min(1, t(messages.throttleRange))
+        .max(12, t(messages.throttleRange)),
+      optimisticActions: z.array(z.string()),
+      optimisticProposers: z.array(
+        z
+          .string()
+          .refine((value) => !value || isAddressNotStrict(value), {
+            message: t(messages.invalidAddress),
+          })
+          .optional()
+      ),
+      // A new vault's own settings, in days.
+      vaultUnstakingDelay: z.coerce
+        .number<number>()
+        .min(0)
+        .max(28, t(messages.unstakingDelayMax)),
+      vaultRewardHalfLife: z.coerce
+        .number<number>()
+        .min(1, t(messages.rewardHalfLifeRange))
+        .max(14, t(messages.rewardHalfLifeRange)),
     })
     .refine(
       (data) =>
@@ -305,6 +358,15 @@ export const buildDeployFormSchema = (t: Translate) =>
         path: ['governanceVoteLock'],
       }
     )
+    .refine(
+      (data) =>
+        !data.governanceVoteLock ||
+        isOptimisticVault(data.governanceVoteLock as `0x${string}`, data.chain),
+      {
+        message: t(messages.legacyVoteLock),
+        path: ['governanceVoteLock'],
+      }
+    )
     .superRefine((data, ctx) => {
       if (data.inputType === 'unit') {
         const allValid = data.tokensDistribution.every(
@@ -339,9 +401,11 @@ export const buildDeployFormSchema = (t: Translate) =>
     })
     .superRefine((data, ctx) => {
       const totalShares = [
+        data.holderShare,
         data.governanceShare,
         data.deployerShare,
         ...(data.additionalRevenueRecipients?.map((r) => r.share) || []),
+        ...(data.permanentRevenueRecipients?.map((r) => r.share) || []),
       ]
 
       const total = totalShares.reduce(
@@ -403,6 +467,16 @@ export const buildDeployFormSchema = (t: Translate) =>
       }
     )
     .refine(
+      (data) =>
+        new Set(
+          data.optimisticProposers?.map((item) => item?.toLowerCase() || item)
+        ).size === data.optimisticProposers.length,
+      {
+        message: t(messages.duplicatedOptimisticProposers),
+        path: ['governance-settings'],
+      }
+    )
+    .refine(
       (data) => {
         const governanceAddresses = [
           ...(data.governanceERC20address
@@ -417,12 +491,14 @@ export const buildDeployFormSchema = (t: Translate) =>
         ]
         return (
           new Set([
-            ...(data.additionalRevenueRecipients?.map(
-              (item) => item?.address?.toLowerCase() || item?.address
-            ) || []),
+            ...[
+              ...(data.additionalRevenueRecipients ?? []),
+              ...(data.permanentRevenueRecipients ?? []),
+            ].map((item) => item?.address?.toLowerCase() || item?.address),
             ...governanceAddresses,
           ]).size ===
           (data.additionalRevenueRecipients?.length || 0) +
+            (data.permanentRevenueRecipients?.length || 0) +
             governanceAddresses.length
         )
       },
@@ -464,23 +540,27 @@ export const dtfDeployDefaultValues: DeployInputs = {
   governanceShare: 0,
   deployerShare: 0,
   fixedPlatformFee: 50,
+  holderShare: 0,
   additionalRevenueRecipients: [],
-  auctionLength: 30,
+  permanentRevenueRecipients: [],
+  maxAuctionLength: 30,
   weightControl: false,
   bidsEnabled: true,
   guardians: [],
   brandManagers: [],
   auctionLaunchers: [],
-  // TODO: This is different unit than owner governance settings
-  basketVotingDelay: 48,
-  basketVotingPeriod: 72,
-  basketVotingThreshold: 0.01,
-  basketVotingQuorum: 10,
-  basketExecutionDelay: 48,
-  // TODO: This is in days, we should use an standard unit of time
   governanceVotingDelay: 2,
   governanceVotingPeriod: 3,
+  governanceVoteExtension: 2,
   governanceVotingThreshold: 0.01,
   governanceVotingQuorum: 10,
   governanceExecutionDelay: 2,
+  optimisticVetoDelay: 4,
+  optimisticVetoPeriod: 20,
+  optimisticVetoThreshold: 1,
+  proposalThrottleCapacity: 3,
+  optimisticActions: [],
+  optimisticProposers: [],
+  vaultUnstakingDelay: 7,
+  vaultRewardHalfLife: 7,
 }

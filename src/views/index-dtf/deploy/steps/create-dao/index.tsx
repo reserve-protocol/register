@@ -1,21 +1,17 @@
-import dtfIndexGovernanceDeployerAbi from '@/abis/dtf-index-governance-deployer-abi'
 import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
+import { TransactionButtonContainer } from '@/components/ui/transaction-button'
+import { getWriteContractParams } from '@/components/vote-lock/utils'
 import { chainIdAtom } from '@/state/atoms'
-import { getCurrentTime } from '@/utils'
-import { INDEX_GOVERNANCE_DEPLOYER_ADDRESS } from '@/utils/addresses'
+import {
+  extractIndexDtfDeployedStakingVault,
+  prepareIndexDtfDeployStakingVault,
+  type SupportedChainId,
+} from '@reserve-protocol/react-sdk'
+import { Trans, useLingui } from '@lingui/react/macro'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { useEffect, useState } from 'react'
-import { Trans, useLingui } from '@lingui/react/macro'
 import { useFormContext } from 'react-hook-form'
-import {
-  erc20Abi,
-  isAddress,
-  keccak256,
-  parseEther,
-  parseEventLogs,
-  toBytes,
-} from 'viem'
+import { erc20Abi, isAddress, type Address } from 'viem'
 import {
   useReadContract,
   useWaitForTransactionReceipt,
@@ -27,20 +23,21 @@ import {
   daoTokenSymbolAtom,
   formReadyForSubmitAtom,
 } from '../../atoms'
-import { TransactionButtonContainer } from '@/components/ui/transaction-button'
+import type { DeployInputs } from '../../form-fields'
+import { buildV6Governance } from '../../utils/v6-deploy-params'
 
 const CreateDAO = () => {
   const { t } = useLingui()
   const chainId = useAtomValue(chainIdAtom)
-  const [name, setName] = useState('')
   const formReadyForSubmit = useAtomValue(formReadyForSubmitAtom)
   const { watch, getValues } = useFormContext()
   const governanceERC20address = watch('governanceERC20address')
-  const indexDTFSymbol = watch('symbol')
   const formChainId = watch('chain')
   const setDaoCreated = useSetAtom(daoCreatedAtom)
   const setStTokenAddress = useSetAtom(daoTokenAddressAtom)
   const setStTokenSymbol = useSetAtom(daoTokenSymbolAtom)
+  const [buildError, setBuildError] = useState<string>()
+  const [receiptError, setReceiptError] = useState<string>()
 
   const { data: symbol } = useReadContract({
     abi: erc20Abi,
@@ -61,83 +58,72 @@ const CreateDAO = () => {
     chainId,
   })
 
-  const vlSymbol = `vl${symbol}${name ? `-${name}` : ''}`
+  const vlSymbol = `vl${symbol ?? ''}`
 
   const submit = () => {
-    const formData = getValues()
-
-    // TODO: This is in days, we should use an standard unit of time
-    const votingDelay = (formData.governanceVotingDelay || 0) * 86400
-    const votingPeriod = (formData.governanceVotingPeriod || 0) * 86400
-    const votingThreshold = (formData.governanceVotingThreshold || 0) / 100
-    const quorumThreshold = (formData.governanceVotingQuorum || 0) / 100
-    const executionDelay = (formData.governanceExecutionDelay || 0) * 86400
-    const guardians = formData.guardians.filter(Boolean)
-
-    writeContract({
-      address: INDEX_GOVERNANCE_DEPLOYER_ADDRESS[chainId],
-      abi: dtfIndexGovernanceDeployerAbi,
-      functionName: 'deployGovernedStakingToken',
-      args: [
-        `Vote Lock ${vlSymbol}`,
-        vlSymbol,
-        governanceERC20address,
-        {
-          votingDelay: votingDelay,
-          votingPeriod: votingPeriod,
-          proposalThreshold: parseEther(votingThreshold.toString()),
-          quorumThreshold: parseEther(quorumThreshold.toString()),
-          timelockDelay: BigInt(Math.floor(executionDelay)),
-          guardians,
-        },
-        keccak256(toBytes(getCurrentTime())),
-      ],
-    })
+    const formData = getValues() as DeployInputs
+    setBuildError(undefined)
+    try {
+      // The vault's own DAO has no Folio yet, so it takes no optimistic selectors.
+      const { optimisticSelectors: _, ...vaultGovernance } =
+        buildV6Governance(formData)
+      writeContract(
+        getWriteContractParams(
+          prepareIndexDtfDeployStakingVault({
+            chainId: chainId as SupportedChainId,
+            underlying: governanceERC20address as Address,
+            rewardHalfLife: BigInt(
+              Math.round(formData.vaultRewardHalfLife * 86_400)
+            ),
+            unstakingDelay: BigInt(
+              Math.round(formData.vaultUnstakingDelay * 86_400)
+            ),
+            governance: vaultGovernance,
+          })
+        )
+      )
+    } catch (error) {
+      console.error('[deploy] could not build the vault deploy', error)
+      setBuildError(error instanceof Error ? error.message : String(error))
+    }
   }
 
   useEffect(() => {
-    setName(indexDTFSymbol)
-  }, [indexDTFSymbol])
-
-  useEffect(() => {
-    if (receipt?.status === 'success') {
+    if (receipt?.status !== 'success') return
+    try {
+      const { stakingVault } = extractIndexDtfDeployedStakingVault(
+        receipt.logs,
+        {
+          chainId: chainId as SupportedChainId,
+        }
+      )
+      setStTokenAddress(stakingVault)
+      setStTokenSymbol(vlSymbol)
       setDaoCreated(true)
-
-      const event = parseEventLogs({
-        abi: dtfIndexGovernanceDeployerAbi,
-        logs: receipt.logs,
-        eventName: 'DeployedGovernedStakingToken',
-      })[0]
-
-      if (event) {
-        const { stToken } = event.args
-        setStTokenAddress(stToken)
-        setStTokenSymbol(vlSymbol)
-      }
+    } catch (error) {
+      console.error('[deploy] could not read the new vault', error)
+      setReceiptError(error instanceof Error ? error.message : String(error))
     }
-  }, [receipt, setDaoCreated])
+  }, [
+    receipt,
+    chainId,
+    vlSymbol,
+    setDaoCreated,
+    setStTokenAddress,
+    setStTokenSymbol,
+  ])
+
+  const error =
+    buildError ?? receiptError ?? prepareWriteError?.message ?? txError?.message
 
   return (
     <div className="flex flex-col gap-2">
-      {!!formReadyForSubmit && (
-        <Input
-          className="[&:focus::placeholder]:opacity-0 [&:focus::placeholder]:transition-opacity"
-          placeholder={t`suffix`}
-          startAdornment={
-            <span className="text-sm text-muted-foreground">{`vl${symbol}-`}</span>
-          }
-          value={name}
-          onChange={(e) =>
-            setName(e.target.value.slice(0, 12).replaceAll(' ', ''))
-          }
-        />
-      )}
       <TransactionButtonContainer chain={formChainId}>
         <Button
+          data-testid="deploy-create-dao"
           className="w-full"
           disabled={
             !formReadyForSubmit ||
-            !name ||
             !governanceERC20address ||
             !symbol ||
             isPending ||
@@ -148,14 +134,13 @@ const CreateDAO = () => {
           {isPending || (data && !receipt)
             ? t`Creating...`
             : symbol
-              ? t`Create ${vlSymbol} DAO`
-              : t`Create DAO`}
+              ? t`Create ${vlSymbol} vault`
+              : t`Create vault`}
         </Button>
       </TransactionButtonContainer>
-      {(prepareWriteError || txError) && (
+      {error && (
         <div className="px-4 py-2 text-sm font-medium text-red-800 bg-red-100 rounded-md break-words">
-          <Trans>Error creating DAO token.</Trans>
-          {prepareWriteError?.message || txError?.message}
+          <Trans>Error creating the vote-lock vault.</Trans> {error}
         </div>
       )}
     </div>

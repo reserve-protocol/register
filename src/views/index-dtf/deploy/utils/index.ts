@@ -1,10 +1,8 @@
 import { GRAPH_CLIENTS, INDEX_GRAPH_CLIENTS } from '@/state/atoms'
 import { wagmiConfig } from '@/state/chain'
-import { DeployInputs } from '@/views/index-dtf/deploy/form-fields'
 import { gql } from 'graphql-request'
-import { Address, erc20Abi, isAddress, parseEther } from 'viem'
+import { Address, erc20Abi, isAddress, parseAbi } from 'viem'
 import { readContract } from 'wagmi/actions'
-import { FeeRecipient } from '../steps/confirm-deploy/manual/components/confirm-manual-deploy-button'
 import { AvailableChain } from '@/utils/chains'
 
 export const isERC20 = async (address: Address, chainId: number) => {
@@ -48,6 +46,35 @@ export const isVoteLockAddress = async (address: Address, chainId: number) => {
   return Boolean(await getStToken(address, chainId))
 }
 
+const optimisticVaultAbi = parseAbi([
+  'function getOptimisticVotes(address) view returns (uint256)',
+  'function CLOCK_MODE() view returns (string)',
+])
+
+// Folio 6.0 governance needs an optimistic vote-lock vault on a timestamp clock; legacy vote-locks revert the deploy.
+export const isOptimisticVault = async (address: Address, chainId: number) => {
+  try {
+    const [, clock] = await Promise.all([
+      readContract(wagmiConfig, {
+        abi: optimisticVaultAbi,
+        functionName: 'getOptimisticVotes',
+        args: [address],
+        address,
+        chainId: chainId as AvailableChain,
+      }),
+      readContract(wagmiConfig, {
+        abi: optimisticVaultAbi,
+        functionName: 'CLOCK_MODE',
+        address,
+        chainId: chainId as AvailableChain,
+      }),
+    ])
+    return clock === 'mode=timestamp'
+  } catch {
+    return false
+  }
+}
+
 export const isNotVoteLockAddress = async (
   address: Address,
   chainId: number
@@ -75,64 +102,6 @@ export const getStRSR = async (address: Address, chainId: number) => {
 
 export const isNotStRSR = async (address: Address, chainId: number) => {
   return !Boolean(await getStRSR(address, chainId))
-}
-
-const calculateShare = (sharePercentage: number, denominator: number) => {
-  const share = sharePercentage / 100
-
-  if (denominator > 0) {
-    const shareNumerator = share / denominator
-    return parseEther(shareNumerator.toString())
-  }
-
-  return parseEther(share.toString())
-}
-
-export const calculateRevenueDistribution = (
-  formData: DeployInputs,
-  wallet: Address,
-  stToken?: Address
-) => {
-  const totalSharesDenominator = (100 - formData.fixedPlatformFee) / 100
-
-  let revenueDistribution: FeeRecipient[] = (
-    formData.additionalRevenueRecipients || []
-  ).map((recipient) => ({
-    recipient: recipient.address,
-    portion: calculateShare(recipient.share, totalSharesDenominator),
-  }))
-
-  // Add deployer share if not the last one
-  if (formData.deployerShare > 0) {
-    revenueDistribution.push({
-      recipient: wallet,
-      portion: calculateShare(formData.deployerShare, totalSharesDenominator),
-    })
-  }
-
-  // Add governance share if not the last one
-  if (formData.governanceShare > 0 && stToken) {
-    revenueDistribution.push({
-      recipient: stToken,
-      portion: calculateShare(formData.governanceShare, totalSharesDenominator),
-    })
-  }
-
-  // Calculate sum of all portions so far
-  if (revenueDistribution.length > 1) {
-    const currentSum = revenueDistribution
-      .slice(0, -1)
-      .reduce((sum, item) => sum + item.portion, 0n)
-
-    revenueDistribution[revenueDistribution.length - 1].portion =
-      parseEther('1') - currentSum
-  }
-
-  revenueDistribution.sort((a, b) =>
-    a.recipient.toLowerCase().localeCompare(b.recipient.toLowerCase())
-  )
-
-  return revenueDistribution
 }
 
 export const noSpecialCharacters = (value: string) => {

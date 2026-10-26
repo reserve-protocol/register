@@ -31,6 +31,11 @@ const cases: Array<{
     change: (c) => (c.mandateChange = true),
   },
   {
+    name: 'self fee',
+    error: 'selfFee',
+    change: (c) => (c.selfFeeChange = 5),
+  },
+  {
     name: 'guardians',
     error: 'guardians',
     change: (c) => (c.rolesChanges.guardians = true),
@@ -169,5 +174,10 @@ describe('hasRelevantFormErrors', () => {
     expect(hasRelevantFormErrors(errorFor('mandate'), baseChanges())).toBe(
       false
     )
+  })
+
+  it('always reports a trade allowlist error: seeded entries are valid on-chain addresses', () => {
+    expect(hasRelevantFormErrors(errorFor('tradeAllowlistTokens'), baseChanges())).toBe(true)
+    expect(hasRelevantFormErrors(errorFor('trade-allowlist'), baseChanges())).toBe(true)
   })
 })

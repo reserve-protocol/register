@@ -9,6 +9,7 @@ import {
   optimisticGovernanceChangesAtom,
   revenueDistributionChangesAtom,
   rolesChangesAtom,
+  selfFeeChangeAtom,
   tokenNameChangeAtom,
   weightControlChangeAtom,
 } from '../atoms'
@@ -24,6 +25,7 @@ export const useHasRelevantFormErrors = (formErrors: FieldErrors) =>
     auctionLengthChange: useAtomValue(auctionLengthChangeAtom),
     weightControlChange: useAtomValue(weightControlChangeAtom),
     bidsEnabledChange: useAtomValue(bidsEnabledChangeAtom),
+    selfFeeChange: useAtomValue(selfFeeChangeAtom),
     governanceChanges: useAtomValue(governanceChangesAtom),
     optimisticChanges: useAtomValue(optimisticGovernanceChangesAtom),
   })

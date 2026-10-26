@@ -11,9 +11,49 @@ PRs #1053/#1054/#1055/#1063, SDK PR #27). Delete items as they land.
 2. After merge: reserve-api PR #227 (strip stale server-side `votingState`) —
    hold until confirmed reserve-ai does not read `votingState`.
 
+## Still to test (Folio 6.0 + governance migration)
+
+Protocol state on 2026-10-08: 6.0.0 is the latest in every chain's FolioVersionRegistry and 1.1.0 in the governance registry; the vlRSR singletons are still 1.0.0 (Taylor's RFC: https://forum.reserve.org/t/rfc-proposal-spam-protection-upgrade-for-vlrsr-governance/1661).
+
+- Real-chain QA with the dev wallet (test DTF 5.0.0 → governance migration → retire → holder migration → 6.0.0 upgrade → v6 rebalance); blocked on the vlRSR 1.1.0 upgrade passing.
+- Vote-lock migration: a holder whose old-vault delegate is someone else (unit-only today); confirming and rejected/failed wallet states on a real wallet; resuming in another browser (no record → no card, by design); Erik's design review of the live UI.
+- 6.0 rebalance: launching auctions for a rebalance proposed from Register (the Base proxy lane has no indexed proposal; launch is proven only on the BSC CMC20 and native-v6 lanes); an optimistic basket proposal (veto path) and a vetoed one restarting as a standard vote within the deadline.
+- 6.0 settings: a DTF with real permanent (immutable) recipients and a nonzero self fee end to end; a settings proposal that changes optimistic permissions for the 6.0 selectors.
+- vlRSR 1.1.0 upgrade banner on master: the live proposal's detail page on each chain once Taylor proposes.
+- 6.0.0 deploy ([plan](index-dtf-v6-deploy.md)): proven on the Base fork (manual governed by vlRSR from the wizard, ungoverned zap through a local zapper, builder → contracts for the new-vault path). Still untested: Create DAO (new vault) driven from the UI, mainnet and BSC deploys, a real-chain deploy with the dev wallet.
+
 ## Next slices (in rough order)
 
+- **Rebalance Lab**: spec in [rebalance-lab.md](rebalance-lab.md) — extract the
+  fork lane into a standalone, agent-driven scenario runner that also simulates
+  rebalance proposals (propose → govern → launch → bid → metrics). Decisions for
+  Luis listed in the spec; slice 1 is the extraction.
 
+- **Index DTF v6 / auctions SDK integration**: contract in
+  [index-dtf-v6-integration.md](index-dtf-v6-integration.md); the Register
+  rebalance vertical ([index-dtf-v6-register-rebalance.md](index-dtf-v6-register-rebalance.md))
+  landed 2026-09-17 (version identity, SDK reads/calculations/writes for v5/v6,
+  RPC-first gating, one real launch on the BSC fork). v6 basket and settings
+  proposals landed 2026-10-06 ([operability plan](index-dtf-v6-operability.md),
+  fork-proven on MIDAS). Still open from that vertical: optimistic-action
+  permissions for the 6.0-only setters (self fee, allowlist) aren't offered, the
+  allowlist editor takes raw addresses (no token picker), the settings form and the `setFeeRecipients` preview show shares of the recipient pool (they don't net out the holder share and permanent recipients like the settings page does), an immutable-table read error leaves the settings form unseeded until React Query's retry succeeds, the SDK client still
+  appends default RPCs after an override (read isolation on the fork lane), and
+  the SDK pair must be published (prerelease) before the Register pin replaces
+  the `link:` (until then the new CI unit-test step cannot install either). The launcher's openAuction args come from
+  the render-time params: the pre-send re-read pins nonce and window, but a
+  same-nonce change between the last poll and the click is only caught by the
+  chain. Settled: SDK is v5/v6 only, v4 stays
+  Register-local, the full 146-case suite is the release gate (S1+ in the
+  handoff), fork stack in `e2e/fork/docker/`.
+  Product question raised by the cross-model review: Folio lets the privileged
+  launcher replace a running auction (`Folio.sol` openAuction closes the prior
+  one), but Register has always disabled the launch CTA while an auction of the
+  current nonce is running; the RPC-first gate keeps that rule. Decide whether
+  the launcher UI should offer replacement (separate gate from the community
+  button). Fork-lane limits: the subgraph proxy truncates only entities that
+  carry `blockNumber`, and the SDK client appends its default RPCs after the
+  per-chain override.
 - **Portfolio SDK adoption (chk-4)**: extend SDK `AccountPortfolio` to the full
   6-field shape + validated partial-body mappers (SDK-side fixtures), migrate
   register's raw `use-portfolio`/`use-historical-portfolio`/
@@ -40,11 +80,6 @@ PRs #1053/#1054/#1055/#1063, SDK PR #27). Delete items as they land.
   `JSON.stringify` deps.
 
 ## Deferred to protocol-vNext
-
-- **Auctions SDK migration**: the remaining raw `/rebalance` fetches in the
-  auctions views move to SDK reads alongside the version's heavy rebalance
-  testing. Reminder: hybrid stays a curated allowlist (see log 2026-07-21) —
-  do not re-derive from weightControl.
 
 - **Zap max provider-seam regression**: the unavailable-max path is covered at
   the compute (`computeMaxTokenIn` → null) and button seams; a ZapProvider-
@@ -115,3 +150,11 @@ surface unless noted.
   zero-protection dust leg (above,
   `e2e/tests/flows/issuance-manual-boundaries.spec.ts`). Each keeps its
   `test.fixme` + this entry as owner until fixed.
+
+## Stack e2e lane (2026-09-21)
+
+- Closed: v6 rebalance metrics omitted `auctionLength` (the metrics updater now passes `maxAuctionLength` and waits for it, surfaced by the stack lane's "Unexpected error getting Rebalance data"); the Ondo cap sizing now carries it too.
+- Closed (2026-09-30): `verify` runs only the read-only SDK fork smoke on the indexed 8545 (refuses a mutating `test:smoke:index:fork`), the default `HUB` resolves to the interface hub, and the propose script passes `FORK_RESERVE_API_URL` to the SDK as `apiBaseUrl`.
+- Open: in the browser only Register's own API calls follow `VITE_RESERVE_API_URL`; the `DtfSdkProvider` gets no `apiBaseUrl`, so SDK-routed API reads stay on production in the fork lane.
+- Open: the production API returns 404 on `/dtf/rebalance` for sandbox folios and has no 6.0.0 decoding, so the stack lane does not verify the rebalance metrics surface; a local `reserve-api` on the sandbox closes that (`FORK_RESERVE_API_URL`).
+- Open: the SDK client appends default public RPCs after an override; the lane's scripts pass a viem client so the fork can never fall through to a public endpoint, Register still can (`docs/plans/FOLLOWUPS.md` earlier item).

@@ -6,9 +6,9 @@ import {
   DrawerTrigger,
 } from '@/components/ui/drawer'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { useAtom, useAtomValue, useSetAtom } from 'jotai'
+import { useAtomValue, useSetAtom } from 'jotai'
 import { useResetAtom } from 'jotai/utils'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { SubmitHandler, useFormContext } from 'react-hook-form'
 import {
   basketDerivedSharesAtom,
@@ -17,12 +17,13 @@ import {
   deployedDTFAtom,
 } from '../../atoms'
 import { DeployInputs } from '../../form-fields'
-import { indexDeployFormDataAtom, triggerDeployDrawerAtom } from './atoms'
+import { indexDeployFormDataAtom } from './atoms'
 import ManualIndexDeploy from './manual'
 import { initialTokensAtom } from './manual/atoms'
 import SimpleIndexDeploy from './simple'
 import { inputAmountAtom } from './simple/atoms'
 import SuccessView from './success'
+import GovernanceRecipientUpdater from './governance-recipient-updater'
 import Ticker from '../../utils/ticker'
 import { TransactionButtonContainer } from '@/components/ui/transaction-button'
 import { Address } from 'viem'
@@ -59,7 +60,6 @@ const ConfirmIndexDeploy = ({ isActive }: { isActive: boolean }) => {
   const inputType = useAtomValue(basketInputTypeAtom)
 
   const [drawerOpen, setDrawerOpen] = useState(false)
-  const [triggerDeploy, setTriggerDeploy] = useAtom(triggerDeployDrawerAtom)
 
   const processForm: SubmitHandler<DeployInputs> = (data) => {
     // Apply unit basket transformation regardless of DAO type
@@ -85,20 +85,13 @@ const ConfirmIndexDeploy = ({ isActive }: { isActive: boolean }) => {
     handleSubmit(processForm)()
   }
 
-  // Open drawer programmatically (e.g. from NextButton in permissionless flow)
-  useEffect(() => {
-    if (triggerDeploy && isActive) {
-      submitForm()
-      setDrawerOpen(true)
-      setTriggerDeploy(false)
-    }
-  }, [triggerDeploy, isActive])
-
   return (
     <Drawer open={drawerOpen} onOpenChange={setDrawerOpen}>
+      <GovernanceRecipientUpdater />
       <TransactionButtonContainer chain={formChainId}>
         <DrawerTrigger disabled={!isActive} asChild>
           <Button
+            data-testid="deploy-open-drawer"
             className="w-full"
             disabled={!isActive}
             onClick={() => {
@@ -138,6 +131,7 @@ const ConfirmIndexDeploy = ({ isActive }: { isActive: boolean }) => {
                   <Trans>Simple deploy</Trans>
                 </TabsTrigger>
                 <TabsTrigger
+                  data-testid="deploy-tab-manual"
                   value="manual"
                   className="w-max h-7"
                   onClick={resetInitialTokens}
