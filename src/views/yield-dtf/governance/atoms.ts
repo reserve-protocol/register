@@ -1,3 +1,6 @@
+import RevenueRouter from '@/abis/RevenueRouter'
+import { EUSD_REVENUE_ROUTER_ADDRESS } from '@/utils/addresses'
+import { isEusdRevenueRouter } from './views/proposal/utils/revenue-router'
 import AssetRegistry from 'abis/AssetRegistry'
 import BackingManager from 'abis/BackingManager'
 import BasketHandler from 'abis/BasketHandler'
@@ -133,6 +136,13 @@ export const interfaceMapAtom = atom((get) => {
 
   if (rToken) {
     map[rToken.address] = contractDetails.rToken
+  }
+
+  if (isEusdRevenueRouter(rToken)) {
+    map[getAddress(EUSD_REVENUE_ROUTER_ADDRESS)] = {
+      interface: RevenueRouter,
+      label: 'eUSD Revenue Router',
+    }
   }
 
   return map

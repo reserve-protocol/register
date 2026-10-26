@@ -78,6 +78,9 @@ export const RSR_ADDRESS: AddressMap = {
   [ChainId.BSC]: '0x23f72a3Db61D6CB8aBE5d9AF1Ac4B6c99327bFee',
 }
 
+export const EUSD_REVENUE_ROUTER_ADDRESS =
+  '0xdfD0CF858afe6010C83238461C6d7142d1b5265d'
+
 export const EUSD_ADDRESS: AddressMap = {
   [ChainId.Mainnet]: '0xA0d69E286B938e21CBf7E51D71F6A4c8918f482F',
   [ChainId.Base]: '0xCfA3Ef56d303AE4fAabA0592388F19d7C3399FB4',
