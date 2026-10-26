@@ -17,6 +17,7 @@ import SpellUpgrade4_2_0 from './SpellUpgrade4_2_0'
 import TraderImplementationProposal from './TraderImplementationProposal'
 import PauseIssuanceProposal from './PauseIssuanceProposal'
 import UnregisterProposal from './UnregisterProposal'
+import MandateProposal, { supportsMandateUpdates } from './mandate-proposal'
 
 const ALLOWED_RTOKENS = [
   '0xcb327b99ff831bf8223cced12b1338ff3aa322ff',
@@ -28,10 +29,12 @@ const ALLOWED_RTOKENS = [
 const ProposalForm = () => {
   const contracts = useAtomValue(rTokenContractsAtom)
   const version = contracts?.main?.version ?? VERSION
+  const canUpdateMandate = supportsMandateUpdates(contracts?.token?.version)
 
   const sections = useMemo(
     () => [
       Intro,
+      ...(canUpdateMandate ? [MandateProposal] : []),
       BackingManager,
       OtherSetup,
       TraderImplementationProposal,
@@ -48,7 +51,7 @@ const ProposalForm = () => {
         : []),
       ProposalGovernanceParams,
     ],
-    [version]
+    [version, canUpdateMandate, contracts?.token?.address]
   )
 
   return (

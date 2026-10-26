@@ -15,8 +15,8 @@ Playwright runs 3 projects (`playwright.config.ts`): **smoke** (`@smoke`-tagged,
 Desktop Chrome), **full** (everything else, Desktop Chrome), **mobile**
 (`@mobile`-tagged, Pixel 7 viewport — off CI, `pnpm e2e:mobile`).
 
-74 specs across 5 top-level dirs: `general/` (8), `index-dtf/` (17),
-`yield-dtf/` (6), `smoke/` (12), `flows/` (31). `index-dtf/` and `yield-dtf/`
+79 specs across 5 top-level dirs: `general/` (8), `index-dtf/` (19),
+`yield-dtf/` (7), `smoke/` (13), `flows/` (32). `index-dtf/` and `yield-dtf/`
 hold render/lifecycle/mobile specs per route; `flows/` holds deeper
 behavior/write/edge-case specs (desktop only, except `flows/wallet-connect`,
 which also runs on mobile because the wallet modal is a mobile-first surface).
@@ -65,7 +65,7 @@ which also runs on mobile because the wallet modal is a mobile-first surface).
 | Overview | [overview/render](tests/yield-dtf/overview/render.spec.ts) | renders offline from captured RPC+subgraph; underlying fees section hidden pre-tracking | none | yes | edge cases (empty/error chart) |
 | Issuance | [issuance/state-space](tests/yield-dtf/issuance/state-space.spec.ts) | active DTF: mint+redeem panels; mint-paused DTF: redeem-only, no mint panel | none | yes | zap variant, write flow |
 | Staking | [staking/render](tests/yield-dtf/staking/render.spec.ts), [staking/history-partial](tests/yield-dtf/staking/history-partial.spec.ts), [staking/stake-write](tests/yield-dtf/staking/stake-write.spec.ts), [staking/unstake-write](tests/yield-dtf/staking/unstake-write.spec.ts) | exchange-rate+APY render; staked-history survives a snapshots-less response; `stake()`/`unstake()` submit to stRSR | none | partial (render + history only) | withdraw, cancel, cooldown-vs-available |
-| Governance | — | — | — | — | entirely uncovered |
+| Governance – create mandate proposal | [governance/mandate](tests/yield-dtf/governance/mandate.spec.ts) | current value; edit/preview/discard; empty/whitespace blocks prepare; encoded RToken setter in Governor proposal RPC; unsupported token version hides mandate without blocking parameter edits | settled-state assertions | yes | loading islands, other proposal actions, successful wallet submission |
 | Auctions | — | — | — | — | entirely uncovered |
 | Settings / Roles | — | — | — | — | entirely uncovered (pause/freeze writes, roles) |
 
@@ -89,8 +89,7 @@ additional state coverage: [boot](tests/smoke/boot.spec.ts) (home shell),
   unexercised.
 - Automated (CoW) issuance wizard: zero specs, zero testids.
 - Legacy v2 auctions UI and bid writes: no specs.
-- Yield DTF governance, auctions, and settings/roles: no specs at all (no
-  `yield-dtf/governance|auctions|settings` dirs exist).
+- Yield DTF governance beyond mandate proposals, auctions, and settings/roles remain uncovered.
 - Create Index DTF / Create Yield DTF deploy wizards: no specs.
 - Explorer: only 3 of the tab surfaces render-tested (transactions, governance,
   malformed-body edge); tokens/collaterals/revenue tabs, filters, and

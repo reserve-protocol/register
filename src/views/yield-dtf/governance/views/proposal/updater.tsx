@@ -123,7 +123,9 @@ export const ChangesUpdater = () => {
   const isRevenueSplitValid = useAtomValue(isRevenueValidAtom)
   const isValidExternalMap = useAtomValue(isValidExternalMapAtom)
   const {
-    formState: { isValid },
+    formState: {
+      errors: { mandate: mandateError },
+    },
   } = useFormContext()
   // Setters
   const setBackupChanges = useSetAtom(backupChangesAtom)
@@ -175,7 +177,8 @@ export const ChangesUpdater = () => {
       setValidState(false)
     } else {
       setValidState(
-        (!isNewBasket || isBasketValid) &&
+        !mandateError &&
+          (!isNewBasket || isBasketValid) &&
           isRevenueSplitValid &&
           isValidExternalMap
       )
@@ -192,7 +195,7 @@ export const ChangesUpdater = () => {
     hasUpgrades,
     hasSpell,
     hasPauseIssuance,
-    isValid,
+    mandateError,
   ])
 
   return null
