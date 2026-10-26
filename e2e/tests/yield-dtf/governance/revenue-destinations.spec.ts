@@ -167,6 +167,46 @@ test('eUSD destinations: current list, combined delta, exact proposal calldata a
   await page.screenshot({
     path: testInfo.outputPath('revenue-destinations-confirmation.png'),
   })
+  const title = 'Update eUSD routing'
+  const rfc = 'https://forum.reserve.org/t/eusd-routing'
+  const description = 'Route revenue to the configured recipients.'
+  const populatedProposal = encodeFunctionData({
+    abi: Governance,
+    functionName: 'propose',
+    args: [
+      [router, router],
+      [0n, 0n],
+      calls,
+      `# ${title} \n [${rfc}](${rfc}) \n ${description}`,
+    ],
+  })
+  overrides.ethCallRevert(
+    '0x96dc1c14d3d5e2ddaa52368adfe6e6b20b976832',
+    populatedProposal,
+    'Governor: proposer votes below proposal threshold'
+  )
+  await page.getByTestId('yield-proposal-title').fill(title)
+  await page.getByTestId('yield-proposal-rfc').fill(rfc)
+  await page
+    .getByTestId('yield-proposal-description')
+    .locator('textarea')
+    .fill(description)
+  overrides.ethCall(router, readData, '0x')
+  await expect(async () => {
+    await harness.chain.advance(16_000)
+    await expect(
+      page.getByTestId('destinations-confirmation-invalid')
+    ).toBeVisible()
+  }).toPass()
+  overrides.ethCall(router, readData, result(current))
+  await expect(async () => {
+    await harness.chain.advance(16_000)
+    await expect(page.getByTestId('yield-proposal-title')).toHaveValue(title)
+  }).toPass()
+  await expect(page.getByTestId('yield-proposal-rfc')).toHaveValue(rfc)
+  await expect(
+    page.getByTestId('yield-proposal-description').locator('textarea')
+  ).toHaveValue(description)
   overrides.ethCall(router, readData, result([current[1]]))
   await expect(async () => {
     await harness.chain.advance(16_000)
