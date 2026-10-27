@@ -51,4 +51,3 @@ There is no offline (mocked) deploy spec yet; the fork lane is the coverage.
 
 - The zapper has no CORS: use the dev proxy (`ZAPPER_LOCAL_URL`) with `VITE_ZAPPER_DEPLOY_API=/zapper-local/`; the
   override is ignored outside dev builds.
-- The subgraph's `proposalThreshold` at creation is a token amount, not a D18 ratio (see the plan).
