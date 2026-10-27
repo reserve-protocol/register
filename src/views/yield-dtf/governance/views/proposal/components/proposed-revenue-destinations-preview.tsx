@@ -1,11 +1,8 @@
 import { Trans, useLingui } from '@lingui/react/macro'
-import { Button } from '@/components/ui/button'
-import { useAtomValue, useSetAtom } from 'jotai'
+import { cn } from '@/lib/utils'
+import { useAtomValue } from 'jotai'
 import { formatUnits } from 'viem'
-import {
-  revenueRouterChangesAtom,
-  revenueRouterDraftAtom,
-} from '../revenue-router-atoms'
+import { revenueRouterChangesAtom } from '../revenue-router-atoms'
 import PreviewBox from './PreviewBox'
 
 export default function ProposedRevenueDestinationsPreview({
@@ -15,13 +12,13 @@ export default function ProposedRevenueDestinationsPreview({
 }) {
   const { t } = useLingui()
   const { removed, added } = useAtomValue(revenueRouterChangesAtom)
-  const setDraft = useSetAtom(revenueRouterDraftAtom)
   if (!removed.length && !added.length) return null
+
   return (
     <PreviewBox
       title={t`eUSD revenue router destinations`}
       count={removed.length + added.length}
-      className={`border border-border rounded-xl p-6 ${className ?? ''}`}
+      className={cn('border border-border rounded-xl p-6', className)}
       testId="yield-revenue-destinations-preview"
     >
       {[
@@ -30,7 +27,7 @@ export default function ProposedRevenueDestinationsPreview({
       ].map(({ label, destinations }) =>
         destinations.map((d) => (
           <div key={`${label}-${d.holder}`} className="text-sm mt-4 break-all">
-            <span className="font-semibold">{label}</span>
+            <span className="text-legend text-xs block">{label}</span>
             <p>
               <Trans>Holder</Trans>: {d.holder}
             </p>
@@ -43,14 +40,6 @@ export default function ProposedRevenueDestinationsPreview({
           </div>
         ))
       )}
-      <Button
-        variant="ghost"
-        size="sm"
-        className="mt-4"
-        onClick={() => setDraft(null)}
-      >
-        <Trans>Discard destination changes</Trans>
-      </Button>
     </PreviewBox>
   )
 }

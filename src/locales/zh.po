@@ -917,6 +917,7 @@ msgstr "实际影响"
 #: src/views/yield-dtf/governance/views/proposal-detail/components/proposal-summary/BasketChangeSummary.tsx:45
 #: src/views/yield-dtf/governance/views/proposal/components/ItemPreview.tsx:45
 #: src/views/yield-dtf/governance/views/proposal/components/ListItemPreview.tsx:22
+#: src/views/yield-dtf/governance/views/proposal/components/proposed-revenue-destinations-preview.tsx:26
 #: src/views/yield-dtf/governance/views/proposal/components/ProposedRevenueSplitPreview.tsx:131
 msgid "Add"
 msgstr "添加"
@@ -946,6 +947,10 @@ msgstr "添加更多 Optimistic 提案人"
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-revenue-distribution.tsx:33
 msgid "Add additional recipients"
 msgstr "添加额外接收者"
+
+#: src/views/yield-dtf/governance/views/proposal/components/revenue-destinations-proposal.tsx:149
+msgid "Add destination"
+msgstr "添加目标"
 
 #: src/views/index-dtf/manage/components/manage-about.tsx:93
 msgid "Add file"
@@ -2329,7 +2334,7 @@ msgstr "更改分配"
 msgid "Change diversity factor"
 msgstr "更改多样性因子"
 
-#: src/views/yield-dtf/governance/views/proposal/components/PreviewBox.tsx:36
+#: src/views/yield-dtf/governance/views/proposal/components/PreviewBox.tsx:38
 msgid "Change in:"
 msgstr "变更于："
 
@@ -2652,7 +2657,7 @@ msgstr "确认"
 #: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/components/basket-settings-proposal-overview.tsx:53
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/dao-settings-proposal-overview.tsx:45
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/dtf-settings-proposal-overview.tsx:41
-#: src/views/yield-dtf/governance/views/proposal/components/ProposalOverview.tsx:41
+#: src/views/yield-dtf/governance/views/proposal/components/ProposalOverview.tsx:42
 msgid "Confirm & prepare proposal"
 msgstr "确认并准备提案"
 
@@ -3185,6 +3190,11 @@ msgstr "当前版本（v2）"
 msgid "Current votes"
 msgstr "当前投票"
 
+#. placeholder {0}: current?.length ?? 0
+#: src/views/yield-dtf/governance/views/proposal/components/revenue-destinations-proposal.tsx:69
+msgid "Currently configured: {0} / {MAX_REVENUE_DESTINATIONS}"
+msgstr "当前已配置：{0} / {MAX_REVENUE_DESTINATIONS}"
+
 #: src/views/index-dtf/overview/components/index-disclousure.tsx:257
 msgid "Custodial Risks: Ondo Tokenized Stocks represent claims on SPVs and other structures that hold underlying equity positions through custodians. DTF exposure therefore depends on the operational integrity and solvency of third parties. Any failure, suspension, error, insolvency, fraud, cyber incident, or transfer restriction affecting these parties could result in delayed settlement, blocked transfers, impaired redemptions, forced liquidation, or partial or total loss of value for the DTF’s holdings."
 msgstr "托管风险：Ondo Tokenized Stocks 代表对通过托管人持有基础股票头寸的 SPV 及其他结构的求偿权。因此，DTF 的敞口取决于第三方的运营完整性和偿付能力。影响这些主体的任何故障、暂停、错误、破产、欺诈、网络事件或转账限制，都可能导致结算延迟、转账受阻、赎回受损、强制清算，或 DTF 持仓价值的部分或全部损失。"
@@ -3460,6 +3470,11 @@ msgstr "已弃用"
 msgid "Description"
 msgstr "描述"
 
+#. placeholder {0}: index + 1
+#: src/views/yield-dtf/governance/views/proposal/components/revenue-destinations-proposal.tsx:91
+msgid "Destination {0}"
+msgstr "目标 {0}"
+
 #: src/views/yield-dtf/overview/components/backing/collateral-exposure.tsx:254
 msgid "Detail"
 msgstr "详情"
@@ -3485,6 +3500,10 @@ msgstr "已禁用"
 #: src/views/yield-dtf/governance/views/proposal/components/PauseIssuanceProposal.tsx:38
 msgid "Discard"
 msgstr "放弃"
+
+#: src/views/yield-dtf/governance/views/proposal/components/revenue-destinations-proposal.tsx:158
+msgid "Discard changes"
+msgstr "放弃更改"
 
 #: src/views/index-dtf/overview/components/index-disclousure.tsx:334
 msgid "Disclosures"
@@ -3838,6 +3857,12 @@ msgstr "荷兰式交易"
 msgid "e.g. tokens to be included, strategy, methodology"
 msgstr "例如：将纳入的代币、策略、方法论"
 
+#: src/views/yield-dtf/governance/views/proposal/components/revenue-destinations-proposal.tsx:166
+msgid "Each holder's eUSD balance × multiplier sets its recipient's share of the router's revenue. Multipliers are not percentages; 1 means 1×. Only add holders whose balances third parties cannot inflate. Changed or removed destinations are removed first, then new values are added, in one proposal."
+msgstr "每个 holder 的 eUSD 余额 × 乘数决定其接收方获得的路由器收入份额。乘数不是百分比；1 表示 1×。只添加第三方无法抬高余额的 holder。已修改或删除的目标会先被移除，然后添加新值，全部在同一提案中完成。"
+
+#: src/views/yield-dtf/governance/views/proposal/components/revenue-destinations-proposal.tsx:152
+
 #: src/components/rtoken-setup/basket/BackupBasket.tsx:39
 msgid "Each target unit of your primary basket will have defined emergency collateral to replace with in case of default."
 msgstr "主篮子中的每个目标单位都将设定紧急抵押品，以便在发生违约时用于替换。"
@@ -4166,6 +4191,11 @@ msgstr "预计总影响"
 #: src/views/yield-dtf/governance/components/DelegateModal.tsx:50
 msgid "ETH address"
 msgstr "ETH 地址"
+
+#: src/views/yield-dtf/governance/views/proposal/components/proposed-revenue-destinations-preview.tsx:19
+#: src/views/yield-dtf/governance/views/proposal/components/revenue-destinations-proposal.tsx:55
+msgid "eUSD revenue router destinations"
+msgstr "eUSD 收入路由器目标"
 
 #: src/components/ui/swap.tsx:280
 msgid "Evaluating slippage"
@@ -4980,6 +5010,11 @@ msgstr "历史指标"
 msgid "Historical Rebalances"
 msgstr "历史再平衡"
 
+#: src/views/yield-dtf/governance/views/proposal/components/proposed-revenue-destinations-preview.tsx:32
+#: src/views/yield-dtf/governance/views/proposal/components/revenue-destinations-proposal.tsx:29
+msgid "Holder"
+msgstr "Holder"
+
 #: src/views/top100/components/top100-table-placeholder.tsx:21
 #: src/views/top100/components/top100-table.tsx:204
 msgid "Holders"
@@ -5644,6 +5679,10 @@ msgstr "实时再平衡拍卖"
 msgid "Loading current allowed actions..."
 msgstr "正在加载当前允许的操作..."
 
+#: src/views/yield-dtf/governance/views/proposal/components/revenue-destinations-proposal.tsx:64
+msgid "Loading current destinations…"
+msgstr "正在加载当前目标…"
+
 #: src/components/ui/swap.tsx:282
 msgid "Loading DTF"
 msgstr "正在加载 DTF"
@@ -5842,6 +5881,9 @@ msgstr ""
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/optimistic.ts:126
 #: src/views/index-dtf/settings/components/index-settings-basic.tsx:58
 #: src/views/yield-dtf/deploy/components/TokenForm.tsx:50
+#: src/views/yield-dtf/governance/views/proposal/components/ItemPreview.tsx:118
+#: src/views/yield-dtf/governance/views/proposal/components/mandate-proposal.tsx:17
+#: src/views/yield-dtf/governance/views/proposal/components/mandate-proposal.tsx:21
 #: src/views/yield-dtf/settings/components/basic-info.tsx:21
 msgid "Mandate"
 msgstr "Mandate"
@@ -5853,6 +5895,7 @@ msgstr "Mandate 不能超过 256 个字符"
 
 #: src/components/rtoken-setup/token/TokenForm.tsx:44
 #: src/views/yield-dtf/deploy/components/TokenForm.tsx:56
+#: src/views/yield-dtf/governance/views/proposal/components/mandate-proposal.tsx:26
 msgid "Mandate is required"
 msgstr "Mandate 为必填项"
 
@@ -6296,6 +6339,14 @@ msgstr ""
 msgid "Most users should use Swap"
 msgstr "大多数用户应使用 Swap"
 
+#: src/views/yield-dtf/governance/views/proposal/components/proposed-revenue-destinations-preview.tsx:38
+msgid "Multiplier"
+msgstr "乘数"
+
+#: src/views/yield-dtf/governance/views/proposal/components/revenue-destinations-proposal.tsx:31
+msgid "Multiplier (×)"
+msgstr "乘数 (×)"
+
 #: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/form-fields.ts:14
 msgid "Must be 0 or greater"
 msgstr "必须为 0 或更大"
@@ -6558,6 +6609,10 @@ msgstr "未找到委托人"
 #: src/views/index-dtf/governance/views/proposal/components/proposal-detail-content.tsx:45
 msgid "No description provided for this proposal."
 msgstr "此提案未提供描述。"
+
+#: src/views/yield-dtf/governance/views/proposal/components/revenue-destinations-proposal.tsx:76
+msgid "No destinations. The router cannot forward revenue with an empty list."
+msgstr "没有目标。列表为空时路由器无法转发收入。"
 
 #: src/views/internal/dtf-list/components/dtf-table.tsx:218
 #: src/views/top100/components/top100-table.tsx:247
@@ -8048,6 +8103,11 @@ msgstr "近期提案"
 msgid "Recent rewards may still be streaming into the exchange rate, and your own observation window may not match the 30-day window used for the estimate. That is why a short-term realized calculation can differ significantly from the displayed forward-looking estimate."
 msgstr ""
 
+#: src/views/yield-dtf/governance/views/proposal/components/proposed-revenue-destinations-preview.tsx:35
+#: src/views/yield-dtf/governance/views/proposal/components/revenue-destinations-proposal.tsx:30
+msgid "Recipient"
+msgstr "接收方"
+
 #. placeholder {0}: index + 1
 #: src/views/index-dtf/deploy/steps/revenue/additional-revenue-recipients.tsx:63
 msgid "Recipient {0} address"
@@ -8291,7 +8351,9 @@ msgstr "剩余分配："
 #: src/views/yield-dtf/governance/views/proposal-detail/components/proposal-summary/BasketChangeSummary.tsx:49
 #: src/views/yield-dtf/governance/views/proposal/components/ItemPreview.tsx:45
 #: src/views/yield-dtf/governance/views/proposal/components/ListItemPreview.tsx:22
+#: src/views/yield-dtf/governance/views/proposal/components/proposed-revenue-destinations-preview.tsx:25
 #: src/views/yield-dtf/governance/views/proposal/components/ProposedRevenueSplitPreview.tsx:131
+#: src/views/yield-dtf/governance/views/proposal/components/revenue-destinations-proposal.tsx:99
 msgid "Remove"
 msgstr "移除"
 
@@ -8313,6 +8375,11 @@ msgstr "从篮子中移除 {formattedTokens}"
 #: src/views/index-dtf/manage/components/cover-image-upload.tsx:179
 msgid "Remove {variant} cover image"
 msgstr "移除{variant}封面图片"
+
+#. placeholder {0}: index + 1
+#: src/views/yield-dtf/governance/views/proposal/components/revenue-destinations-proposal.tsx:96
+msgid "Remove destination {0}"
+msgstr "移除目标 {0}"
 
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/changes/removed-tokens-changes.tsx:26
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/dtf-settings-proposal-sections.tsx:167
@@ -8814,6 +8881,7 @@ msgstr "Wallet 中的 RToken"
 
 #: src/components/rtoken-setup/token/TokenForm.tsx:40
 #: src/views/yield-dtf/deploy/components/TokenForm.tsx:51
+#: src/views/yield-dtf/governance/views/proposal/components/mandate-proposal.tsx:22
 msgid "RToken mandate"
 msgstr "RToken 授权说明"
 
@@ -10979,6 +11047,10 @@ msgstr "类型"
 msgid "Unable to copy address"
 msgstr "无法复制地址"
 
+#: src/views/yield-dtf/governance/views/proposal/components/revenue-destinations-proposal.tsx:60
+msgid "Unable to load current destinations."
+msgstr "无法加载当前目标。"
+
 #: src/views/index-dtf/governance/components/proposal-preview/unknown-contract-preview.tsx:52
 msgid "Unable to parse contract data"
 msgstr "无法解析合约数据"
@@ -11319,6 +11391,18 @@ msgstr "使用"
 msgid "Use a custom plugin contract address"
 msgstr "使用自定义插件合约地址"
 
+#: src/views/yield-dtf/governance/views/proposal/components/revenue-destinations-proposal.tsx:36
+msgid "Use a positive number with up to 18 decimals, at most 79228162514.264337593543950335."
+msgstr "请输入最多 18 位小数的正数，最大为 79228162514.264337593543950335。"
+
+#: src/views/yield-dtf/governance/views/proposal/components/revenue-destinations-proposal.tsx:34
+msgid "Use a unique holder address, not zero, eUSD or the router."
+msgstr "请使用唯一的 holder 地址，不能是零地址、eUSD 或路由器。"
+
+#: src/views/yield-dtf/governance/views/proposal/components/revenue-destinations-proposal.tsx:35
+msgid "Use a valid address, not zero, eUSD or the router."
+msgstr "请使用有效地址，不能是零地址、eUSD 或路由器。"
+
 #: src/views/index-dtf/deploy/steps/governance/governance-options.tsx:41
 msgid "Use an Existing DAO"
 msgstr "使用现有 DAO"
@@ -11347,6 +11431,8 @@ msgstr "使用所获取的抵押品 Mint DTF。"
 #: src/components/rtoken-setup/governance/GovernanceSetup.tsx:49
 msgid "Use the Alexios governor format?"
 msgstr "使用 Alexios governor 格式？"
+
+#: src/views/yield-dtf/governance/views/proposal/components/revenue-destinations-proposal.tsx:140
 
 #: src/views/index-dtf/overview/components/yield-index/yield-index-composition-tabs.tsx:15
 msgid "Used in"

@@ -1,5 +1,6 @@
 import RevenueRouter from '@/abis/RevenueRouter'
 import { EUSD_REVENUE_ROUTER_ADDRESS } from '@/utils/addresses'
+import { ChainId } from '@/utils/chains'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { useResetAtom } from 'jotai/utils'
 import { useEffect } from 'react'
@@ -12,8 +13,6 @@ import {
   revenueRouterReadErrorAtom,
 } from './revenue-router-atoms'
 
-// Mounted outside the editing view so confirmation/simulation keep the same draft
-// and continue to reject intervening onchain configuration changes.
 export default function RevenueRouterUpdater() {
   const token = useAtomValue(rTokenAtom)
   const enabled = useAtomValue(revenueRouterEnabledAtom)
@@ -26,8 +25,8 @@ export default function RevenueRouterUpdater() {
     address: EUSD_REVENUE_ROUTER_ADDRESS,
     abi: RevenueRouter,
     functionName: 'destinations',
-    chainId: 1,
-    query: { enabled, refetchInterval: enabled ? 12_000 : false, retry: false },
+    chainId: ChainId.Mainnet,
+    query: { enabled },
   })
 
   useEffect(
@@ -44,7 +43,7 @@ export default function RevenueRouterUpdater() {
       setCurrent(data)
       setReadError(isError)
     }
-  }, [enabled, data, isError, token?.address, setCurrent, setReadError])
+  }, [enabled, data, isError, setCurrent, setReadError])
 
   return null
 }

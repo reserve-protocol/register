@@ -917,6 +917,7 @@ msgstr "Impacto real"
 #: src/views/yield-dtf/governance/views/proposal-detail/components/proposal-summary/BasketChangeSummary.tsx:45
 #: src/views/yield-dtf/governance/views/proposal/components/ItemPreview.tsx:45
 #: src/views/yield-dtf/governance/views/proposal/components/ListItemPreview.tsx:22
+#: src/views/yield-dtf/governance/views/proposal/components/proposed-revenue-destinations-preview.tsx:26
 #: src/views/yield-dtf/governance/views/proposal/components/ProposedRevenueSplitPreview.tsx:131
 msgid "Add"
 msgstr "Agregar"
@@ -946,6 +947,10 @@ msgstr "Agregar otro proposer optimista"
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-revenue-distribution.tsx:33
 msgid "Add additional recipients"
 msgstr "Agregar destinatarios adicionales"
+
+#: src/views/yield-dtf/governance/views/proposal/components/revenue-destinations-proposal.tsx:149
+msgid "Add destination"
+msgstr "Agregar destino"
 
 #: src/views/index-dtf/manage/components/manage-about.tsx:93
 msgid "Add file"
@@ -2329,7 +2334,7 @@ msgstr "Cambiar distribución"
 msgid "Change diversity factor"
 msgstr "Cambiar factor de diversidad"
 
-#: src/views/yield-dtf/governance/views/proposal/components/PreviewBox.tsx:36
+#: src/views/yield-dtf/governance/views/proposal/components/PreviewBox.tsx:38
 msgid "Change in:"
 msgstr "Cambio en:"
 
@@ -2652,7 +2657,7 @@ msgstr "Confirmar"
 #: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/components/basket-settings-proposal-overview.tsx:53
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/dao-settings-proposal-overview.tsx:45
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/dtf-settings-proposal-overview.tsx:41
-#: src/views/yield-dtf/governance/views/proposal/components/ProposalOverview.tsx:41
+#: src/views/yield-dtf/governance/views/proposal/components/ProposalOverview.tsx:42
 msgid "Confirm & prepare proposal"
 msgstr "Confirmar y preparar propuesta"
 
@@ -3185,6 +3190,11 @@ msgstr "Versión actual (v2)"
 msgid "Current votes"
 msgstr "Votos actuales"
 
+#. placeholder {0}: current?.length ?? 0
+#: src/views/yield-dtf/governance/views/proposal/components/revenue-destinations-proposal.tsx:69
+msgid "Currently configured: {0} / {MAX_REVENUE_DESTINATIONS}"
+msgstr "Configurados actualmente: {0} / {MAX_REVENUE_DESTINATIONS}"
+
 #: src/views/index-dtf/overview/components/index-disclousure.tsx:257
 msgid "Custodial Risks: Ondo Tokenized Stocks represent claims on SPVs and other structures that hold underlying equity positions through custodians. DTF exposure therefore depends on the operational integrity and solvency of third parties. Any failure, suspension, error, insolvency, fraud, cyber incident, or transfer restriction affecting these parties could result in delayed settlement, blocked transfers, impaired redemptions, forced liquidation, or partial or total loss of value for the DTF’s holdings."
 msgstr "Riesgos de custodia: las Ondo Tokenized Stocks representan derechos sobre SPVs y otras estructuras que mantienen posiciones en acciones subyacentes a través de custodios. Por lo tanto, la exposición del DTF depende de la integridad operativa y la solvencia de terceros. Cualquier fallo, suspensión, error, insolvencia, fraude, incidente cibernético o restricción de transferencia que afecte a estas partes podría resultar en liquidaciones retrasadas, transferencias bloqueadas, reembolsos afectados, liquidación forzosa o una pérdida parcial o total del valor de las posiciones del DTF."
@@ -3460,6 +3470,11 @@ msgstr "OBSOLETO"
 msgid "Description"
 msgstr "Descripción"
 
+#. placeholder {0}: index + 1
+#: src/views/yield-dtf/governance/views/proposal/components/revenue-destinations-proposal.tsx:91
+msgid "Destination {0}"
+msgstr "Destino {0}"
+
 #: src/views/yield-dtf/overview/components/backing/collateral-exposure.tsx:254
 msgid "Detail"
 msgstr "Detalle"
@@ -3485,6 +3500,10 @@ msgstr "Deshabilitado"
 #: src/views/yield-dtf/governance/views/proposal/components/PauseIssuanceProposal.tsx:38
 msgid "Discard"
 msgstr "Descartar"
+
+#: src/views/yield-dtf/governance/views/proposal/components/revenue-destinations-proposal.tsx:158
+msgid "Discard changes"
+msgstr "Descartar cambios"
 
 #: src/views/index-dtf/overview/components/index-disclousure.tsx:334
 msgid "Disclosures"
@@ -3838,6 +3857,12 @@ msgstr "Subasta holandesa"
 msgid "e.g. tokens to be included, strategy, methodology"
 msgstr "p. ej. tokens a incluir, estrategia, metodología"
 
+#: src/views/yield-dtf/governance/views/proposal/components/revenue-destinations-proposal.tsx:166
+msgid "Each holder's eUSD balance × multiplier sets its recipient's share of the router's revenue. Multipliers are not percentages; 1 means 1×. Only add holders whose balances third parties cannot inflate. Changed or removed destinations are removed first, then new values are added, in one proposal."
+msgstr "El balance de eUSD de cada holder × multiplicador define la parte de los ingresos del router que recibe su destinatario. Los multiplicadores no son porcentajes; 1 significa 1×. Agrega solo holders cuyos balances no puedan inflar terceros. Los destinos modificados o eliminados se quitan primero y luego se agregan los nuevos valores, en una sola propuesta."
+
+#: src/views/yield-dtf/governance/views/proposal/components/revenue-destinations-proposal.tsx:152
+
 #: src/components/rtoken-setup/basket/BackupBasket.tsx:39
 msgid "Each target unit of your primary basket will have defined emergency collateral to replace with in case of default."
 msgstr "Cada target unit de tu cesta principal tendrá un colateral de emergencia definido para reemplazarlo en caso de impago."
@@ -4166,6 +4191,11 @@ msgstr "Impacto total estimado"
 #: src/views/yield-dtf/governance/components/DelegateModal.tsx:50
 msgid "ETH address"
 msgstr "Dirección ETH"
+
+#: src/views/yield-dtf/governance/views/proposal/components/proposed-revenue-destinations-preview.tsx:19
+#: src/views/yield-dtf/governance/views/proposal/components/revenue-destinations-proposal.tsx:55
+msgid "eUSD revenue router destinations"
+msgstr "Destinos del revenue router de eUSD"
 
 #: src/components/ui/swap.tsx:280
 msgid "Evaluating slippage"
@@ -4980,6 +5010,11 @@ msgstr "Métricas históricas"
 msgid "Historical Rebalances"
 msgstr "Reequilibrios históricos"
 
+#: src/views/yield-dtf/governance/views/proposal/components/proposed-revenue-destinations-preview.tsx:32
+#: src/views/yield-dtf/governance/views/proposal/components/revenue-destinations-proposal.tsx:29
+msgid "Holder"
+msgstr "Holder"
+
 #: src/views/top100/components/top100-table-placeholder.tsx:21
 #: src/views/top100/components/top100-table.tsx:204
 msgid "Holders"
@@ -5644,6 +5679,10 @@ msgstr "Subasta de reequilibrio en vivo"
 msgid "Loading current allowed actions..."
 msgstr "Cargando las acciones permitidas actuales..."
 
+#: src/views/yield-dtf/governance/views/proposal/components/revenue-destinations-proposal.tsx:64
+msgid "Loading current destinations…"
+msgstr "Cargando destinos actuales…"
+
 #: src/components/ui/swap.tsx:282
 msgid "Loading DTF"
 msgstr "Cargando DTF"
@@ -5842,6 +5881,9 @@ msgstr ""
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/optimistic.ts:126
 #: src/views/index-dtf/settings/components/index-settings-basic.tsx:58
 #: src/views/yield-dtf/deploy/components/TokenForm.tsx:50
+#: src/views/yield-dtf/governance/views/proposal/components/ItemPreview.tsx:118
+#: src/views/yield-dtf/governance/views/proposal/components/mandate-proposal.tsx:17
+#: src/views/yield-dtf/governance/views/proposal/components/mandate-proposal.tsx:21
 #: src/views/yield-dtf/settings/components/basic-info.tsx:21
 msgid "Mandate"
 msgstr "Mandato"
@@ -5853,6 +5895,7 @@ msgstr "El mandato no puede tener más de 256 caracteres"
 
 #: src/components/rtoken-setup/token/TokenForm.tsx:44
 #: src/views/yield-dtf/deploy/components/TokenForm.tsx:56
+#: src/views/yield-dtf/governance/views/proposal/components/mandate-proposal.tsx:26
 msgid "Mandate is required"
 msgstr "El mandato es obligatorio"
 
@@ -6296,6 +6339,14 @@ msgstr ""
 msgid "Most users should use Swap"
 msgstr "La mayoría de los usuarios debería usar Swap"
 
+#: src/views/yield-dtf/governance/views/proposal/components/proposed-revenue-destinations-preview.tsx:38
+msgid "Multiplier"
+msgstr "Multiplicador"
+
+#: src/views/yield-dtf/governance/views/proposal/components/revenue-destinations-proposal.tsx:31
+msgid "Multiplier (×)"
+msgstr "Multiplicador (×)"
+
 #: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/form-fields.ts:14
 msgid "Must be 0 or greater"
 msgstr "Debe ser 0 o mayor"
@@ -6558,6 +6609,10 @@ msgstr "No se encontraron delegados"
 #: src/views/index-dtf/governance/views/proposal/components/proposal-detail-content.tsx:45
 msgid "No description provided for this proposal."
 msgstr "No se proporcionó una descripción para esta propuesta."
+
+#: src/views/yield-dtf/governance/views/proposal/components/revenue-destinations-proposal.tsx:76
+msgid "No destinations. The router cannot forward revenue with an empty list."
+msgstr "Sin destinos. El router no puede reenviar ingresos con una lista vacía."
 
 #: src/views/internal/dtf-list/components/dtf-table.tsx:218
 #: src/views/top100/components/top100-table.tsx:247
@@ -8048,6 +8103,11 @@ msgstr "Propuestas recientes"
 msgid "Recent rewards may still be streaming into the exchange rate, and your own observation window may not match the 30-day window used for the estimate. That is why a short-term realized calculation can differ significantly from the displayed forward-looking estimate."
 msgstr ""
 
+#: src/views/yield-dtf/governance/views/proposal/components/proposed-revenue-destinations-preview.tsx:35
+#: src/views/yield-dtf/governance/views/proposal/components/revenue-destinations-proposal.tsx:30
+msgid "Recipient"
+msgstr "Destinatario"
+
 #. placeholder {0}: index + 1
 #: src/views/index-dtf/deploy/steps/revenue/additional-revenue-recipients.tsx:63
 msgid "Recipient {0} address"
@@ -8291,7 +8351,9 @@ msgstr "Asignación restante:"
 #: src/views/yield-dtf/governance/views/proposal-detail/components/proposal-summary/BasketChangeSummary.tsx:49
 #: src/views/yield-dtf/governance/views/proposal/components/ItemPreview.tsx:45
 #: src/views/yield-dtf/governance/views/proposal/components/ListItemPreview.tsx:22
+#: src/views/yield-dtf/governance/views/proposal/components/proposed-revenue-destinations-preview.tsx:25
 #: src/views/yield-dtf/governance/views/proposal/components/ProposedRevenueSplitPreview.tsx:131
+#: src/views/yield-dtf/governance/views/proposal/components/revenue-destinations-proposal.tsx:99
 msgid "Remove"
 msgstr "Eliminar"
 
@@ -8313,6 +8375,11 @@ msgstr "Eliminar {formattedTokens} de la cesta"
 #: src/views/index-dtf/manage/components/cover-image-upload.tsx:179
 msgid "Remove {variant} cover image"
 msgstr "Eliminar imagen de portada de {variant}"
+
+#. placeholder {0}: index + 1
+#: src/views/yield-dtf/governance/views/proposal/components/revenue-destinations-proposal.tsx:96
+msgid "Remove destination {0}"
+msgstr "Eliminar destino {0}"
 
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/changes/removed-tokens-changes.tsx:26
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/dtf-settings-proposal-sections.tsx:167
@@ -8814,6 +8881,7 @@ msgstr "RToken en la Wallet"
 
 #: src/components/rtoken-setup/token/TokenForm.tsx:40
 #: src/views/yield-dtf/deploy/components/TokenForm.tsx:51
+#: src/views/yield-dtf/governance/views/proposal/components/mandate-proposal.tsx:22
 msgid "RToken mandate"
 msgstr "Mandato del RToken"
 
@@ -10979,6 +11047,10 @@ msgstr "Tipo"
 msgid "Unable to copy address"
 msgstr "No se pudo copiar la dirección"
 
+#: src/views/yield-dtf/governance/views/proposal/components/revenue-destinations-proposal.tsx:60
+msgid "Unable to load current destinations."
+msgstr "No se pudieron cargar los destinos actuales."
+
 #: src/views/index-dtf/governance/components/proposal-preview/unknown-contract-preview.tsx:52
 msgid "Unable to parse contract data"
 msgstr "No se pueden analizar los datos del contrato"
@@ -11319,6 +11391,18 @@ msgstr "Usar"
 msgid "Use a custom plugin contract address"
 msgstr "Usar la dirección de un contrato de plugin personalizado"
 
+#: src/views/yield-dtf/governance/views/proposal/components/revenue-destinations-proposal.tsx:36
+msgid "Use a positive number with up to 18 decimals, at most 79228162514.264337593543950335."
+msgstr "Usa un número positivo con hasta 18 decimales, como máximo 79228162514.264337593543950335."
+
+#: src/views/yield-dtf/governance/views/proposal/components/revenue-destinations-proposal.tsx:34
+msgid "Use a unique holder address, not zero, eUSD or the router."
+msgstr "Usa una dirección de holder única que no sea la dirección cero, eUSD ni el router."
+
+#: src/views/yield-dtf/governance/views/proposal/components/revenue-destinations-proposal.tsx:35
+msgid "Use a valid address, not zero, eUSD or the router."
+msgstr "Usa una dirección válida que no sea la dirección cero, eUSD ni el router."
+
 #: src/views/index-dtf/deploy/steps/governance/governance-options.tsx:41
 msgid "Use an Existing DAO"
 msgstr "Usar un DAO existente"
@@ -11347,6 +11431,8 @@ msgstr "Usa el colateral adquirido para hacer Mint del DTF."
 #: src/components/rtoken-setup/governance/GovernanceSetup.tsx:49
 msgid "Use the Alexios governor format?"
 msgstr "¿Usar el formato de gobernador Alexios?"
+
+#: src/views/yield-dtf/governance/views/proposal/components/revenue-destinations-proposal.tsx:140
 
 #: src/views/index-dtf/overview/components/yield-index/yield-index-composition-tabs.tsx:15
 msgid "Used in"

@@ -190,7 +190,7 @@ const useProposalTx = () => {
     }
 
   return useMemo(() => {
-    if (!contracts || !assets || !governance.governor || !routerChanges.valid) {
+    if (!contracts || !assets || !governance.governor) {
       return undefined
     }
 

@@ -1,15 +1,16 @@
 import { describe, expect, it } from 'vitest'
-import { decodeFunctionData, parseUnits, zeroAddress } from 'viem'
+import { decodeFunctionData, getAddress, parseUnits, zeroAddress } from 'viem'
 import RevenueRouter from '@/abis/RevenueRouter'
 import { EUSD_ADDRESS, EUSD_REVENUE_ROUTER_ADDRESS } from '@/utils/addresses'
 import {
   buildRevenueRouterCalls,
   getDestinationChanges,
-  isEusdRevenueRouter,
+  getDestinationErrors,
   parseDestinations,
   toDestinationInputs,
   type RevenueDestination,
 } from '../utils/revenue-router'
+import { isEusdRevenueRouter } from '../../../utils'
 
 const a = '0x00000000000000000000000000000000000000AA'
 const b = '0x00000000000000000000000000000000000000bb'
@@ -37,7 +38,7 @@ describe('eUSD revenue router destination proposals', () => {
   it('ignores row order, address casing and equivalent multiplier formatting', () => {
     const proposed = toDestinationInputs([...current].reverse()).map((d) => ({
       ...d,
-      holder: d.holder.toUpperCase().replace('0X', '0x'),
+      holder: d.holder.toLowerCase(),
       multiplier: `${d.multiplier}.00`,
     }))
     const parsed = parseDestinations(proposed)!
@@ -114,10 +115,7 @@ describe('eUSD revenue router destination proposals', () => {
       ])?.[0].multiplier
     ).toBe(1n)
     expect(
-      parseDestinations([
-        valid[0],
-        { ...valid[0], holder: a.toUpperCase().replace('0X', '0x') },
-      ])
+      parseDestinations([valid[0], { ...valid[0], holder: a.toLowerCase() }])
     ).toBeNull()
     expect(parseDestinations(valid)).not.toBeNull() // repeated recipients are allowed
     expect(parseDestinations([])).toEqual([])
@@ -127,5 +125,39 @@ describe('eUSD revenue router destination proposals', () => {
     }))
     expect(parseDestinations(hundred)).toHaveLength(100)
     expect(parseDestinations([...hundred, valid[0]])).toBeNull()
+  })
+
+  it('rejects bad checksums instead of crashing the encoder, and checksums lowercase input', () => {
+    const recipient = '0x00000000000000000000000000000000000000bb'
+    for (const holder of [
+      '0xA0D69E286B938E21CBF7E51D71F6A4C8918F482E',
+      '0xa0D69E286B938e21CBF7E51D71F6A4c8918f482E',
+    ]) {
+      expect(
+        parseDestinations([{ holder, recipient, multiplier: '1' }])
+      ).toBeNull()
+    }
+    const parsed = parseDestinations([
+      {
+        holder: '0xa0d69e286b938e21cbf7e51d71f6a4c8918f482e',
+        recipient,
+        multiplier: '1',
+      },
+    ])!
+    expect(parsed[0].holder).toBe(
+      getAddress('0xa0d69e286b938e21cbf7e51d71f6a4c8918f482e')
+    )
+    expect(() => buildRevenueRouterCalls([], parsed)).not.toThrow()
+  })
+
+  it('reports errors per row and field', () => {
+    const errors = getDestinationErrors([
+      { holder: a, recipient: b, multiplier: '1' },
+      { holder: a.toLowerCase(), recipient: 'bad', multiplier: '0' },
+    ])
+    expect(errors.map((e) => [...e].sort())).toEqual([
+      [],
+      ['holder', 'multiplier', 'recipient'],
+    ])
   })
 })

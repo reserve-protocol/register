@@ -1,11 +1,11 @@
 import { atom } from 'jotai'
 import { atomWithReset } from 'jotai/utils'
 import { rTokenAtom } from '@/state/atoms'
+import { isEusdRevenueRouter } from '../../utils'
 import {
   buildRevenueRouterCalls,
   DestinationInput,
   getDestinationChanges,
-  isEusdRevenueRouter,
   parseDestinations,
   RevenueDestination,
 } from './utils/revenue-router'
@@ -22,22 +22,16 @@ export const revenueRouterDraftAtom = atomWithReset<{
   proposed: DestinationInput[]
 } | null>(null)
 
+// Diff against the list the user started from; if it changed onchain since, execution reverts.
 export const revenueRouterChangesAtom = atom((get) => {
-  const empty = { removed: [], added: [], calls: [], valid: true, stale: false }
-  if (!get(revenueRouterEnabledAtom)) return empty
+  const empty = { removed: [], added: [], calls: [], valid: true }
   const draft = get(revenueRouterDraftAtom)
-  if (!draft) return empty
-  const current = get(revenueRouterCurrentAtom)
-  const drift = current && getDestinationChanges(draft.baseline, current)
-  const stale = !drift || !!(drift.removed.length || drift.added.length)
+  if (!get(revenueRouterEnabledAtom) || !draft) return empty
   const proposed = parseDestinations(draft.proposed)
-  if (!proposed || stale || get(revenueRouterReadErrorAtom)) {
-    return { ...empty, valid: false, stale }
-  }
+  if (!proposed) return { ...empty, valid: false }
   return {
-    ...getDestinationChanges(current!, proposed),
-    calls: buildRevenueRouterCalls(current!, proposed),
+    ...getDestinationChanges(draft.baseline, proposed),
+    calls: buildRevenueRouterCalls(draft.baseline, proposed),
     valid: true,
-    stale: false,
   }
 })
