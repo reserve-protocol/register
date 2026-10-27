@@ -12,6 +12,7 @@ import {
   MousePointerBan,
   Pause,
   ShieldCheck,
+  TimerReset,
 } from 'lucide-react'
 import { IconWrapper, InfoCard, InfoCardItem } from './settings-info-card'
 import { cn } from '@/lib/utils'
@@ -92,7 +93,13 @@ export const InnerGovernanceInfo = ({
       <InfoCardItem
         icon={icon(FileLock2)}
         label={t`Proposal Threshold`}
-        value={data ? formatPercentage(data.proposalThreshold) : undefined}
+        value={
+          data
+            ? data.proposalThresholdExact
+              ? formatPercentage(data.proposalThreshold)
+              : '—'
+            : undefined
+        }
         layout={layout}
       />
       <InfoCardItem
@@ -101,6 +108,14 @@ export const InnerGovernanceInfo = ({
         value={data ? formatPercentage(data.quorum) : undefined}
         layout={layout}
       />
+      {data?.voteExtension !== undefined && (
+        <InfoCardItem
+          icon={icon(TimerReset)}
+          label={t`Vote Extension`}
+          value={parseDuration(data.voteExtension)}
+          layout={layout}
+        />
+      )}
       {data?.isOptimistic && data.optimistic && (
         <>
           <InfoCardItem

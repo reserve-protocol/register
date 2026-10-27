@@ -43,7 +43,8 @@ import {
   encodeQuorum,
   encodeExecutionDelay,
   humanizeTimeFromSeconds,
-  proposalThresholdToPercentage,
+  getCurrentProposalThreshold,
+  formatCurrentProposalThreshold,
 } from '../../shared'
 import {
   DEFAULT_OPTIMISTIC_VETO_DELAY,
@@ -1044,7 +1045,7 @@ export const dtfGovernanceChangesDisplayAtom = atom<
     changes.push({
       key: 'proposalThreshold' as keyof GovernanceChanges,
       title: msg`Proposal Threshold`,
-      current: `${proposalThresholdToPercentage(governance.proposalThreshold).toFixed(2)}%`,
+      current: formatCurrentProposalThreshold(getCurrentProposalThreshold(governance)),
       new: `${Number(governanceChanges.proposalThreshold).toFixed(2)}%`,
     })
   }

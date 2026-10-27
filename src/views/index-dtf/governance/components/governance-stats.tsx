@@ -89,7 +89,9 @@ const GovernanceStats = () => {
         text={
           proposalThreshold === undefined
             ? undefined
-            : formatPercentage(proposalThreshold)
+            : dtf?.ownerGovernance?.proposalThresholdExact
+              ? formatPercentage(proposalThreshold)
+              : '—'
         }
       />
       <InfoGroupLabel>

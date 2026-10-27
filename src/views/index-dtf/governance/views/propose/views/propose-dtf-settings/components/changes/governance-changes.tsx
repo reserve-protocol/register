@@ -9,7 +9,7 @@ import {
   dtfGovernanceChangesDisplayAtom,
 } from '../../atoms'
 import { ChangeSection, RevertButton } from './shared'
-import { secondsToDays, proposalThresholdToPercentage } from '../../../../shared'
+import { secondsToDays, getCurrentProposalThreshold } from '../../../../shared'
 
 const iconMap = {
   'votingDelay': <Pause size={16} />,
@@ -45,7 +45,7 @@ const GovernanceChanges = () => {
         setValue('governanceVotingPeriod', secondsToDays(Number(governance.votingPeriod)))
         break
       case 'proposalThreshold':
-        setValue('governanceVotingThreshold', proposalThresholdToPercentage(governance.proposalThreshold))
+        setValue('governanceVotingThreshold', getCurrentProposalThreshold(governance))
         break
       case 'quorumPercent':
         setValue('governanceVotingQuorum', Number(governance.quorumNumerator))

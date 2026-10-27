@@ -45,7 +45,7 @@ import {
 } from './atoms'
 import {
   isProposalThresholdChanged,
-  proposalThresholdToPercentage,
+  getCurrentProposalThreshold,
   secondsToDays,
 } from '../../shared'
 import {
@@ -303,9 +303,7 @@ const Updater = () => {
       const currentVotingPeriod = secondsToDays(
         Number(indexDTF.ownerGovernance.votingPeriod)
       )
-      const currentThreshold = proposalThresholdToPercentage(
-        indexDTF.ownerGovernance.proposalThreshold
-      )
+      const currentThreshold = getCurrentProposalThreshold(indexDTF.ownerGovernance)
       const currentExecutionDelay = secondsToDays(
         Number(indexDTF.ownerGovernance.timelock.executionDelay)
       )
@@ -717,7 +715,7 @@ const Updater = () => {
           if (
             isProposalThresholdChanged(
               governanceVotingThreshold,
-              governance.proposalThreshold
+              getCurrentProposalThreshold(governance)
             )
           ) {
             changes.proposalThreshold = governanceVotingThreshold
