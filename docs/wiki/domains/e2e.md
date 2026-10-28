@@ -200,7 +200,7 @@ Trust rules (a yield test can't go green while wrong):
   and within-chain key collisions.
 
 Covered: overview / issuance / staking render smokes, issuance active/paused
-states, partial staking history, stake/unstake writes, and governance mandate edit/discard/validation/decoded preview on desktop and mobile. Yield capture also visits `governance/proposal`; its additional reads share the same pinned block. Mandate proposal tests assert the encoded Governor call at the RPC boundary, not a successful live submission. Remaining yield
+states, partial staking history, stake/unstake writes, governance mandate edit/discard/validation/decoded preview, and eUSD revenue-router destinations (add/edit/remove delta, validation, failed read) on desktop and mobile. Yield capture also visits `governance/proposal`; its additional reads share the same pinned block. Mandate proposal tests assert the encoded Governor call at the RPC boundary, not a successful live submission. Remaining yield
 phases and deferred writes are tracked in `e2e/TEST_MAP.md` § gaps.
 
 ## Wallet modal

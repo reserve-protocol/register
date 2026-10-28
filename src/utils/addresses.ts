@@ -1,6 +1,6 @@
 import { AddressMap } from 'types'
 import { ChainId } from 'utils/chains'
-import { zeroAddress } from 'viem'
+import { Address, zeroAddress } from 'viem'
 import { ink } from 'wagmi/chains'
 
 export const FURNACE_ADDRESS = '0x0000000000000000000000000000000000000001'
@@ -77,6 +77,9 @@ export const RSR_ADDRESS: AddressMap = {
   [ChainId.Arbitrum]: '0xCa5Ca9083702c56b481D1eec86F1776FDbd2e594',
   [ChainId.BSC]: '0x23f72a3Db61D6CB8aBE5d9AF1Ac4B6c99327bFee',
 }
+
+export const EUSD_REVENUE_ROUTER_ADDRESS: Address =
+  '0xdfD0CF858afe6010C83238461C6d7142d1b5265d'
 
 export const EUSD_ADDRESS: AddressMap = {
   [ChainId.Mainnet]: '0xA0d69E286B938e21CBf7E51D71F6A4c8918f482F',

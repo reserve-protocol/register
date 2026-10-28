@@ -7,6 +7,7 @@ import Furnace from 'abis/Furnace'
 import Governance from 'abis/Governance'
 import Main from 'abis/Main'
 import RToken from 'abis/RToken'
+import RevenueRouter from '@/abis/RevenueRouter'
 import RevenueTrader from 'abis/RevenueTrader'
 import Spell3_4_0 from '@/abis/Spell3_4_0'
 import Spell4_2_0 from '@/abis/Spell4_2_0'
@@ -19,7 +20,9 @@ import {
   rTokenGovernanceAtom,
 } from 'state/atoms'
 import { ContractKey } from 'state/rtoken/atoms/rTokenContractsAtom'
+import { EUSD_REVENUE_ROUTER_ADDRESS } from '@/utils/addresses'
 import { Abi, getAddress } from 'viem'
+import { isEusdRevenueRouter } from './utils'
 import { spell3_4_0AddressAtom } from './views/proposal/components/SpellUpgrade3_4_0'
 import { spell4_2_0AddressAtom } from './views/proposal/components/SpellUpgrade4_2_0'
 
@@ -133,6 +136,13 @@ export const interfaceMapAtom = atom((get) => {
 
   if (rToken) {
     map[rToken.address] = contractDetails.rToken
+  }
+
+  if (isEusdRevenueRouter(rToken)) {
+    map[getAddress(EUSD_REVENUE_ROUTER_ADDRESS)] = {
+      interface: RevenueRouter,
+      label: 'eUSD Revenue Router',
+    }
   }
 
   return map

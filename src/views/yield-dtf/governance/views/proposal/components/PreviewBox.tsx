@@ -24,26 +24,28 @@ const PreviewBox = ({
 
   return (
     <div className={className} data-testid={testId}>
-      <div
+      <button
+        type="button"
+        aria-expanded={visible}
         className={cn(
-          'flex items-center cursor-pointer',
+          'flex w-full items-center text-left cursor-pointer',
           visible ? 'border-b border-border pb-4' : ''
         )}
         onClick={() => setVisible(!visible)}
       >
-        <div>
-          <div className="flex items-center">
+        <span className="block">
+          <span className="flex items-center">
             <span className="font-semibold mr-2">{count}</span>
             <span className="text-legend text-xs">
               <Trans>Change in:</Trans>
             </span>
-          </div>
-          <span className="font-semibold">{title}</span>
-        </div>
-        <div className="ml-auto flex items-center">
+          </span>
+          <span className="block font-semibold">{title}</span>
+        </span>
+        <span className="ml-auto flex items-center">
           {visible ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
-        </div>
-      </div>
+        </span>
+      </button>
       {visible && children}
     </div>
   )

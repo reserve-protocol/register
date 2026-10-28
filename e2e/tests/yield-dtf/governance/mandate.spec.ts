@@ -2,10 +2,12 @@ import {
   decodeAbiParameters,
   encodeAbiParameters,
   encodeFunctionData,
+  encodeFunctionResult,
   type Hex,
 } from 'viem'
 import Governance from '../../../../src/abis/Governance'
 import RToken from '../../../../src/abis/RToken'
+import RevenueRouter from '../../../../src/abis/RevenueRouter'
 import { test, expect } from '../../../harness'
 import { YIELD_REGISTRY } from '../../../helpers/registry'
 import { setYieldReplay } from '../../../helpers/rpc'
@@ -22,7 +24,16 @@ const currentMandate = decodeAbiParameters(
 )[0]
 const proposedMandate = `${currentMandate}\nPreserve capital while earning sustainable yield.`
 
-test.beforeEach(async ({ harness }) => {
+test.beforeEach(async ({ harness, overrides }) => {
+  overrides.ethCall(
+    '0xdfD0CF858afe6010C83238461C6d7142d1b5265d',
+    encodeFunctionData({ abi: RevenueRouter, functionName: 'destinations' }),
+    encodeFunctionResult({
+      abi: RevenueRouter,
+      functionName: 'destinations',
+      result: [],
+    })
+  )
   setYieldReplay(eusd.chainId)
   await harness.chain.freezeAt(yieldPinnedTimestamp(eusd))
 })
@@ -65,10 +76,10 @@ test('yield mandate proposal: edit, discard, validation and execution preview @m
     await harness.chain.advance(4_000)
     await expect(prepare).toBeEnabled()
   }).toPass()
-  await preview.locator(':scope > div').first().click()
+  await preview.getByRole('button', { expanded: false }).click()
   await expect(preview).toContainText(currentMandate)
   await expect(preview).toContainText(proposedMandate)
-  await preview.getByRole('button').click()
+  await preview.getByRole('button').last().click()
   await expect(mandate).toHaveValue(currentMandate)
   await expect(preview).toHaveCount(0)
   await expect(prepare).toBeDisabled()
@@ -139,8 +150,6 @@ test('yield mandate proposal: unsupported RToken version stays hidden @mobile', 
   ).toBeDisabled()
   await harness.page.locator('input[name="tradingDelay"]').fill('1')
   await harness.chain.advance(4_000)
-  await expect(
-    harness.page.getByTestId('yield-proposal-prepare')
-  ).toBeEnabled()
+  await expect(harness.page.getByTestId('yield-proposal-prepare')).toBeEnabled()
   expect(harness.tx.log).toHaveLength(0)
 })

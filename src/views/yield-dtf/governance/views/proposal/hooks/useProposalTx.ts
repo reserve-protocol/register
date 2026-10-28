@@ -60,6 +60,7 @@ import {
   revenueSplitChangesAtom,
   roleChangesAtom,
 } from '../atoms'
+import { revenueRouterChangesAtom } from '../revenue-router-atoms'
 import useUpgradeHelper from './useUpgradeHelper'
 import { isTimeunitGovernance } from '@/views/yield-dtf/governance/utils'
 import Spell3_4_0 from '@/abis/Spell3_4_0'
@@ -159,6 +160,7 @@ const useProposalTx = () => {
   const spell3_4_0Contract = useAtomValue(spell3_4_0AddressAtom)
   const spell4_2_0Contract = useAtomValue(spell4_2_0AddressAtom)
   const pauseAction = useAtomValue(pauseIssuanceAtom)
+  const routerChanges = useAtomValue(revenueRouterChangesAtom)
   const rTokenManagers = useAtomValue(rTokenManagersAtom)
   const rTokenConfig = useAtomValue(rTokenConfigurationAtom)
   const autoRegisterBasketAssets = useAtomValue(autoRegisterBasketAssetsAtom)
@@ -696,6 +698,11 @@ const useProposalTx = () => {
         }
       }
 
+      for (const call of routerChanges.calls) {
+        addresses.push(call.address)
+        calls.push(call.calldata)
+      }
+
       // Append deferred owner revokes last so all other calls execute
       // while the timelock still has OWNER permissions
       for (const deferred of deferredOwnerRevokes) {
@@ -719,7 +726,7 @@ const useProposalTx = () => {
       ] as [Address[], bigint[], Hex[], string],
       enabled: !!description,
     }
-  }, [contracts, assets, description, rToken, currentBackup])
+  }, [contracts, assets, description, rToken, currentBackup, routerChanges])
 }
 
 export default useProposalTx

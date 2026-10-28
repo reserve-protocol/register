@@ -1,6 +1,6 @@
 ---
 title: Progress
-updated: 2026-10-26
+updated: 2026-10-27
 type: ledger
 ---
 
@@ -10,6 +10,7 @@ Stage ledger. One row per stage; keep entries short. Verifier = exact fresh comm
 
 | Stage | Status | Verifier | Review | Next |
 |---|---|---|---|---|
+| eUSD revenue router destinations (PR #1146 review pass): simplify to a one-time router read with the delta against the draft baseline; revert shared ConfirmProposal changes and the hand-edited hyUSD snapshot; full router ABI; locales; docs | human-review-required (base 2bd0b1130) | typecheck; unit full; governance unit 30/30; yield governance e2e desktop/mobile 11/11; gate via scope.mjs | Dark: checksum crash → fixed; Light: per-field errors + a11y → fixed; Minor deferred. Router verified on mainnet: no setDestinations selector, eUSD timelock 0xd979 holds OWNER, destinations empty, Distributor share 0/0 | Engineer review done; Distributor share for the router is a separate proposal |
 | Yield governance mandate setter: expose RToken 4.2+ `setMandate` through the existing proposal pipeline; no protocol/Index changes | human-review-required (base cfe4702e8) | gate: lint/types/unit 1084; helpers 81; smoke 59/1 skip; mandate desktop/mobile 4/4; validation RED: blank left prepare enabled without guard; eUSD fork 26278898: governor schedule → timelock execute → mandate readback | Independent review: no blockers; legacy-parameter enablement checked; capability matched live version and Sourcify ABI | Draft PR; Engineer review before merge; no live-chain writes |
 | eusd-underlying-fees: eUSD-only "Underlying protocol fees" section on the yield overview (reserve-api `yield-dtf/underlying-fees`, zod-validated; gate = `UNDERLYING_FEES_RTOKENS`) | done (base f6f08a20f) | lint · typecheck · unit 955 (18 new) · e2e tsc · helpers · smoke 59 (overview spec RED-verified: section hidden pre-tracking) · live prod: eUSD 1 request + hidden on `collaterals: []`, ETH+ no request · mock screenshots desktop+mobile | correctness+product: background reviewer, 4 findings fixed (toggle error kept section, placeholder dim, tap tooltip, no retry on schema error) | the section appears once the new eUSD basket executes |
 | vlrsr-1.1.0-upgrade-banner | human-review-required (base dc273a18f, uncommitted, branch feat/vlrsr-1.1.0-upgrade) | unit 12 (banner logic) · e2e preview spec 2/2 (RED-verified) · helpers etherscan model · Base fork: banner's exact proposal proposed/voted/queued/executed through the vlRSR DAO, vault+governor+timelock read 1.1.0 · banner rendered on live Base MAG7 as a delegate (read-only) | self-review; SDK decoder lacks UUPS entries → Register-side preview | Engineer review (governance upgrade path); lingui extract on the release branch |

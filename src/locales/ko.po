@@ -917,6 +917,7 @@ msgstr "실제 영향"
 #: src/views/yield-dtf/governance/views/proposal-detail/components/proposal-summary/BasketChangeSummary.tsx:45
 #: src/views/yield-dtf/governance/views/proposal/components/ItemPreview.tsx:45
 #: src/views/yield-dtf/governance/views/proposal/components/ListItemPreview.tsx:22
+#: src/views/yield-dtf/governance/views/proposal/components/proposed-revenue-destinations-preview.tsx:26
 #: src/views/yield-dtf/governance/views/proposal/components/ProposedRevenueSplitPreview.tsx:131
 msgid "Add"
 msgstr "추가"
@@ -946,6 +947,10 @@ msgstr "Optimistic 제안자 추가"
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-revenue-distribution.tsx:33
 msgid "Add additional recipients"
 msgstr "수령인 추가"
+
+#: src/views/yield-dtf/governance/views/proposal/components/revenue-destinations-proposal.tsx:149
+msgid "Add destination"
+msgstr "대상 추가"
 
 #: src/views/index-dtf/manage/components/manage-about.tsx:93
 msgid "Add file"
@@ -2329,7 +2334,7 @@ msgstr "분배 변경"
 msgid "Change diversity factor"
 msgstr "다양성 계수 변경"
 
-#: src/views/yield-dtf/governance/views/proposal/components/PreviewBox.tsx:36
+#: src/views/yield-dtf/governance/views/proposal/components/PreviewBox.tsx:38
 msgid "Change in:"
 msgstr "변경 내용:"
 
@@ -2652,7 +2657,7 @@ msgstr "확인"
 #: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/components/basket-settings-proposal-overview.tsx:53
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/dao-settings-proposal-overview.tsx:45
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/dtf-settings-proposal-overview.tsx:41
-#: src/views/yield-dtf/governance/views/proposal/components/ProposalOverview.tsx:41
+#: src/views/yield-dtf/governance/views/proposal/components/ProposalOverview.tsx:42
 msgid "Confirm & prepare proposal"
 msgstr "제안 확인 및 준비"
 
@@ -3185,6 +3190,11 @@ msgstr "현재 버전 (v2)"
 msgid "Current votes"
 msgstr "현재 투표"
 
+#. placeholder {0}: current?.length ?? 0
+#: src/views/yield-dtf/governance/views/proposal/components/revenue-destinations-proposal.tsx:69
+msgid "Currently configured: {0} / {MAX_REVENUE_DESTINATIONS}"
+msgstr "현재 구성됨: {0} / {MAX_REVENUE_DESTINATIONS}"
+
 #: src/views/index-dtf/overview/components/index-disclousure.tsx:257
 msgid "Custodial Risks: Ondo Tokenized Stocks represent claims on SPVs and other structures that hold underlying equity positions through custodians. DTF exposure therefore depends on the operational integrity and solvency of third parties. Any failure, suspension, error, insolvency, fraud, cyber incident, or transfer restriction affecting these parties could result in delayed settlement, blocked transfers, impaired redemptions, forced liquidation, or partial or total loss of value for the DTF’s holdings."
 msgstr "수탁 위험: Ondo Tokenized Stocks는 수탁 기관을 통해 기초 주식 포지션을 보유하는 SPV 및 기타 구조에 대한 청구권을 나타냅니다. 따라서 DTF의 익스포저는 제3자의 운영 건전성과 지급 능력에 좌우됩니다. 이러한 당사자에게 영향을 미치는 장애, 중단, 오류, 지급불능, 사기, 사이버 사고 또는 이전 제한은 결제 지연, 이체 차단, 상환 제한, 강제 청산 또는 DTF 보유 자산 가치의 부분적 또는 전체적 손실로 이어질 수 있습니다."
@@ -3460,6 +3470,11 @@ msgstr "DEPRECATED"
 msgid "Description"
 msgstr "설명"
 
+#. placeholder {0}: index + 1
+#: src/views/yield-dtf/governance/views/proposal/components/revenue-destinations-proposal.tsx:91
+msgid "Destination {0}"
+msgstr "대상 {0}"
+
 #: src/views/yield-dtf/overview/components/backing/collateral-exposure.tsx:254
 msgid "Detail"
 msgstr "세부 정보"
@@ -3485,6 +3500,10 @@ msgstr "비활성화됨"
 #: src/views/yield-dtf/governance/views/proposal/components/PauseIssuanceProposal.tsx:38
 msgid "Discard"
 msgstr "취소"
+
+#: src/views/yield-dtf/governance/views/proposal/components/revenue-destinations-proposal.tsx:158
+msgid "Discard changes"
+msgstr "변경 사항 취소"
 
 #: src/views/index-dtf/overview/components/index-disclousure.tsx:334
 msgid "Disclosures"
@@ -3838,6 +3857,12 @@ msgstr "더치 트레이드"
 msgid "e.g. tokens to be included, strategy, methodology"
 msgstr "예: 포함될 토큰, 전략, 방법론"
 
+#: src/views/yield-dtf/governance/views/proposal/components/revenue-destinations-proposal.tsx:166
+msgid "Each holder's eUSD balance × multiplier sets its recipient's share of the router's revenue. Multipliers are not percentages; 1 means 1×. Only add holders whose balances third parties cannot inflate. Changed or removed destinations are removed first, then new values are added, in one proposal."
+msgstr "각 holder의 eUSD 잔액 × 배수가 해당 수령인이 받는 라우터 수익의 몫을 결정합니다. 배수는 백분율이 아니며 1은 1×를 의미합니다. 제3자가 잔액을 부풀릴 수 없는 holder만 추가하세요. 변경되거나 삭제된 대상은 먼저 제거된 후 새 값이 추가되며, 모두 하나의 제안으로 처리됩니다."
+
+#: src/views/yield-dtf/governance/views/proposal/components/revenue-destinations-proposal.tsx:152
+
 #: src/components/rtoken-setup/basket/BackupBasket.tsx:39
 msgid "Each target unit of your primary basket will have defined emergency collateral to replace with in case of default."
 msgstr "기본 바스켓의 각 타깃 유닛에는 디폴트 발생 시 교체할 비상 담보가 정의됩니다."
@@ -4166,6 +4191,11 @@ msgstr "예상 총 영향"
 #: src/views/yield-dtf/governance/components/DelegateModal.tsx:50
 msgid "ETH address"
 msgstr "ETH 주소"
+
+#: src/views/yield-dtf/governance/views/proposal/components/proposed-revenue-destinations-preview.tsx:19
+#: src/views/yield-dtf/governance/views/proposal/components/revenue-destinations-proposal.tsx:55
+msgid "eUSD revenue router destinations"
+msgstr "eUSD 수익 라우터 대상"
 
 #: src/components/ui/swap.tsx:280
 msgid "Evaluating slippage"
@@ -4980,6 +5010,11 @@ msgstr "과거 지표"
 msgid "Historical Rebalances"
 msgstr "과거 리밸런싱"
 
+#: src/views/yield-dtf/governance/views/proposal/components/proposed-revenue-destinations-preview.tsx:32
+#: src/views/yield-dtf/governance/views/proposal/components/revenue-destinations-proposal.tsx:29
+msgid "Holder"
+msgstr "Holder"
+
 #: src/views/top100/components/top100-table-placeholder.tsx:21
 #: src/views/top100/components/top100-table.tsx:204
 msgid "Holders"
@@ -5644,6 +5679,10 @@ msgstr "실시간 리밸런싱 경매"
 msgid "Loading current allowed actions..."
 msgstr "현재 허용된 액션 불러오는 중..."
 
+#: src/views/yield-dtf/governance/views/proposal/components/revenue-destinations-proposal.tsx:64
+msgid "Loading current destinations…"
+msgstr "현재 대상을 불러오는 중…"
+
 #: src/components/ui/swap.tsx:282
 msgid "Loading DTF"
 msgstr "DTF 로딩 중"
@@ -5842,6 +5881,9 @@ msgstr ""
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/optimistic.ts:126
 #: src/views/index-dtf/settings/components/index-settings-basic.tsx:58
 #: src/views/yield-dtf/deploy/components/TokenForm.tsx:50
+#: src/views/yield-dtf/governance/views/proposal/components/ItemPreview.tsx:118
+#: src/views/yield-dtf/governance/views/proposal/components/mandate-proposal.tsx:17
+#: src/views/yield-dtf/governance/views/proposal/components/mandate-proposal.tsx:21
 #: src/views/yield-dtf/settings/components/basic-info.tsx:21
 msgid "Mandate"
 msgstr "Mandate"
@@ -5853,6 +5895,7 @@ msgstr "Mandate는 256자를 초과할 수 없습니다"
 
 #: src/components/rtoken-setup/token/TokenForm.tsx:44
 #: src/views/yield-dtf/deploy/components/TokenForm.tsx:56
+#: src/views/yield-dtf/governance/views/proposal/components/mandate-proposal.tsx:26
 msgid "Mandate is required"
 msgstr "Mandate는 필수입니다"
 
@@ -6296,6 +6339,14 @@ msgstr ""
 msgid "Most users should use Swap"
 msgstr "대부분의 사용자는 Swap을 사용해야 합니다"
 
+#: src/views/yield-dtf/governance/views/proposal/components/proposed-revenue-destinations-preview.tsx:38
+msgid "Multiplier"
+msgstr "배수"
+
+#: src/views/yield-dtf/governance/views/proposal/components/revenue-destinations-proposal.tsx:31
+msgid "Multiplier (×)"
+msgstr "배수 (×)"
+
 #: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/form-fields.ts:14
 msgid "Must be 0 or greater"
 msgstr "0 이상이어야 합니다"
@@ -6558,6 +6609,10 @@ msgstr "위임자를 찾을 수 없음"
 #: src/views/index-dtf/governance/views/proposal/components/proposal-detail-content.tsx:45
 msgid "No description provided for this proposal."
 msgstr "이 제안에 대한 설명이 제공되지 않았습니다."
+
+#: src/views/yield-dtf/governance/views/proposal/components/revenue-destinations-proposal.tsx:76
+msgid "No destinations. The router cannot forward revenue with an empty list."
+msgstr "대상이 없습니다. 목록이 비어 있으면 라우터가 수익을 전달할 수 없습니다."
 
 #: src/views/internal/dtf-list/components/dtf-table.tsx:218
 #: src/views/top100/components/top100-table.tsx:247
@@ -8048,6 +8103,11 @@ msgstr "최근 제안"
 msgid "Recent rewards may still be streaming into the exchange rate, and your own observation window may not match the 30-day window used for the estimate. That is why a short-term realized calculation can differ significantly from the displayed forward-looking estimate."
 msgstr ""
 
+#: src/views/yield-dtf/governance/views/proposal/components/proposed-revenue-destinations-preview.tsx:35
+#: src/views/yield-dtf/governance/views/proposal/components/revenue-destinations-proposal.tsx:30
+msgid "Recipient"
+msgstr "수령인"
+
 #. placeholder {0}: index + 1
 #: src/views/index-dtf/deploy/steps/revenue/additional-revenue-recipients.tsx:63
 msgid "Recipient {0} address"
@@ -8291,7 +8351,9 @@ msgstr "남은 할당량:"
 #: src/views/yield-dtf/governance/views/proposal-detail/components/proposal-summary/BasketChangeSummary.tsx:49
 #: src/views/yield-dtf/governance/views/proposal/components/ItemPreview.tsx:45
 #: src/views/yield-dtf/governance/views/proposal/components/ListItemPreview.tsx:22
+#: src/views/yield-dtf/governance/views/proposal/components/proposed-revenue-destinations-preview.tsx:25
 #: src/views/yield-dtf/governance/views/proposal/components/ProposedRevenueSplitPreview.tsx:131
+#: src/views/yield-dtf/governance/views/proposal/components/revenue-destinations-proposal.tsx:99
 msgid "Remove"
 msgstr "제거"
 
@@ -8313,6 +8375,11 @@ msgstr "바스켓에서 {formattedTokens} 제거"
 #: src/views/index-dtf/manage/components/cover-image-upload.tsx:179
 msgid "Remove {variant} cover image"
 msgstr "{variant} 커버 이미지 제거"
+
+#. placeholder {0}: index + 1
+#: src/views/yield-dtf/governance/views/proposal/components/revenue-destinations-proposal.tsx:96
+msgid "Remove destination {0}"
+msgstr "대상 {0} 제거"
 
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/changes/removed-tokens-changes.tsx:26
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/dtf-settings-proposal-sections.tsx:167
@@ -8814,6 +8881,7 @@ msgstr "Wallet 내 RToken"
 
 #: src/components/rtoken-setup/token/TokenForm.tsx:40
 #: src/views/yield-dtf/deploy/components/TokenForm.tsx:51
+#: src/views/yield-dtf/governance/views/proposal/components/mandate-proposal.tsx:22
 msgid "RToken mandate"
 msgstr "RToken 권한 위임 선언"
 
@@ -10979,6 +11047,10 @@ msgstr "유형"
 msgid "Unable to copy address"
 msgstr "주소를 복사할 수 없습니다"
 
+#: src/views/yield-dtf/governance/views/proposal/components/revenue-destinations-proposal.tsx:60
+msgid "Unable to load current destinations."
+msgstr "현재 대상을 불러올 수 없습니다."
+
 #: src/views/index-dtf/governance/components/proposal-preview/unknown-contract-preview.tsx:52
 msgid "Unable to parse contract data"
 msgstr "컨트랙트 데이터를 파싱할 수 없습니다"
@@ -11319,6 +11391,18 @@ msgstr "사용"
 msgid "Use a custom plugin contract address"
 msgstr "사용자 지정 플러그인 컨트랙트 주소 사용"
 
+#: src/views/yield-dtf/governance/views/proposal/components/revenue-destinations-proposal.tsx:36
+msgid "Use a positive number with up to 18 decimals, at most 79228162514.264337593543950335."
+msgstr "소수점 이하 최대 18자리의 양수를 입력하세요(최대 79228162514.264337593543950335)."
+
+#: src/views/yield-dtf/governance/views/proposal/components/revenue-destinations-proposal.tsx:34
+msgid "Use a unique holder address, not zero, eUSD or the router."
+msgstr "제로 주소, eUSD, 라우터가 아닌 고유한 holder 주소를 사용하세요."
+
+#: src/views/yield-dtf/governance/views/proposal/components/revenue-destinations-proposal.tsx:35
+msgid "Use a valid address, not zero, eUSD or the router."
+msgstr "제로 주소, eUSD, 라우터가 아닌 유효한 주소를 사용하세요."
+
 #: src/views/index-dtf/deploy/steps/governance/governance-options.tsx:41
 msgid "Use an Existing DAO"
 msgstr "기존 DAO 사용"
@@ -11347,6 +11431,8 @@ msgstr "확보된 담보를 사용하여 DTF를 Mint합니다."
 #: src/components/rtoken-setup/governance/GovernanceSetup.tsx:49
 msgid "Use the Alexios governor format?"
 msgstr "Alexios 거버너 형식을 사용하시겠습니까?"
+
+#: src/views/yield-dtf/governance/views/proposal/components/revenue-destinations-proposal.tsx:140
 
 #: src/views/index-dtf/overview/components/yield-index/yield-index-composition-tabs.tsx:15
 msgid "Used in"

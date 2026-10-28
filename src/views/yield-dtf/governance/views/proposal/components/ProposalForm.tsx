@@ -1,3 +1,5 @@
+import RevenueDestinationsProposal from './revenue-destinations-proposal'
+import { revenueRouterEnabledAtom } from '../revenue-router-atoms'
 import SectionWrapper from '@/components/section-navigation/section-wrapper'
 import { rTokenContractsAtom } from '@/state/atoms'
 import { VERSION } from '@/utils/constants'
@@ -28,6 +30,7 @@ const ALLOWED_RTOKENS = [
 
 const ProposalForm = () => {
   const contracts = useAtomValue(rTokenContractsAtom)
+  const revenueRouterEnabled = useAtomValue(revenueRouterEnabledAtom)
   const version = contracts?.main?.version ?? VERSION
   const canUpdateMandate = supportsMandateUpdates(contracts?.token?.version)
 
@@ -41,6 +44,7 @@ const ProposalForm = () => {
       RolesProposal,
       PauseIssuanceProposal,
       RevenueSplit,
+      ...(revenueRouterEnabled ? [RevenueDestinationsProposal] : []),
       UnregisterProposal,
       RegisterProposal,
       ContractUpgrades,
@@ -51,7 +55,7 @@ const ProposalForm = () => {
         : []),
       ProposalGovernanceParams,
     ],
-    [version, canUpdateMandate, contracts?.token?.address]
+    [version, canUpdateMandate, contracts?.token?.address, revenueRouterEnabled]
   )
 
   return (
