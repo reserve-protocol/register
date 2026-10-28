@@ -73,13 +73,13 @@ export const getPermissionlessDefaults = (
     // Basket governance (hours)
     basketVotingDelay: 0,
     basketVotingPeriod: 24,
-    basketVotingThreshold: 1,
+    basketVotingThreshold: 2,
     basketVotingQuorum: 3,
     basketExecutionDelay: 24,
     // Non-basket governance (days)
     governanceVotingDelay: 0,
     governanceVotingPeriod: 1,
-    governanceVotingThreshold: 1,
+    governanceVotingThreshold: 2,
     governanceVotingQuorum: 3,
     governanceExecutionDelay: 1,
     bidsEnabled: true,

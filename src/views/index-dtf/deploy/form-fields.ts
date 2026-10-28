@@ -474,13 +474,13 @@ export const dtfDeployDefaultValues: DeployInputs = {
   // TODO: This is different unit than owner governance settings
   basketVotingDelay: 48,
   basketVotingPeriod: 72,
-  basketVotingThreshold: 0.01,
+  basketVotingThreshold: 2,
   basketVotingQuorum: 10,
   basketExecutionDelay: 48,
   // TODO: This is in days, we should use an standard unit of time
   governanceVotingDelay: 2,
   governanceVotingPeriod: 3,
-  governanceVotingThreshold: 0.01,
+  governanceVotingThreshold: 2,
   governanceVotingQuorum: 10,
   governanceExecutionDelay: 2,
 }
