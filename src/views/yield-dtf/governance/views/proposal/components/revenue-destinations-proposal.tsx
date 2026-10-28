@@ -55,7 +55,7 @@ export default function RevenueDestinationsProposal() {
         <Trans>eUSD revenue router destinations</Trans>
       </span>
       <Separator className="my-6 -mx-6 w-[calc(100%+3rem)]" />
-      {readError && !draft ? (
+      {readError && !draft && current === undefined ? (
         <p role="alert" className="text-sm text-destructive">
           <Trans>Unable to load current destinations.</Trans>
         </p>

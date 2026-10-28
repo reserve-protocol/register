@@ -3859,7 +3859,7 @@ msgstr "p. ej. tokens a incluir, estrategia, metodología"
 
 #: src/views/yield-dtf/governance/views/proposal/components/revenue-destinations-proposal.tsx:166
 msgid "Each holder's eUSD balance × multiplier sets its recipient's share of the router's revenue. Multipliers are not percentages; 1 means 1×. Only add holders whose balances third parties cannot inflate. Changed or removed destinations are removed first, then new values are added, in one proposal."
-msgstr "El balance de eUSD de cada holder × multiplicador define la parte de los ingresos del router que recibe su destinatario. Los multiplicadores no son porcentajes; 1 significa 1×. Agrega solo holders cuyos balances no puedan inflar terceros. Los destinos modificados o eliminados se quitan primero y luego se agregan los nuevos valores, en una sola propuesta."
+msgstr "El balance de eUSD de cada holder × multiplicador define la parte de los ingresos del router que recibe su destinatario. Los multiplicadores no son porcentajes; 1 significa 1×. Agrega solo holders cuyos balances no puedan ser inflados por terceros. Los destinos modificados o eliminados se quitan primero y luego se agregan los nuevos valores, en una sola propuesta."
 
 #: src/views/yield-dtf/governance/views/proposal/components/revenue-destinations-proposal.tsx:152
 

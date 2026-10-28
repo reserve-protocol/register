@@ -155,7 +155,8 @@ test('eUSD destinations: current list, combined delta, exact proposal calldata @
   }))
   expect(bounds.content).toBeLessThanOrEqual(bounds.width)
   const preview = page.getByTestId('yield-revenue-destinations-preview')
-  await preview.locator(':scope > div').first().click()
+  await preview.getByRole('button', { expanded: false }).press('Enter')
+  await expect(preview.getByRole('button', { expanded: true })).toBeVisible()
   await expect(preview).toContainText('1.25×')
   await page.getByTestId('yield-proposal-prepare').click()
   await expect(
