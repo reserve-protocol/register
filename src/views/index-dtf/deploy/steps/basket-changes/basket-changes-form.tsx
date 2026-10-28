@@ -32,7 +32,7 @@ export const buildVotingPresets = (t: Translate) => ({
   VOTING_THRESHOLD: {
     title: t`Proposal Threshold`,
     icon: <FileLock2 size={14} strokeWidth={1.5} />,
-    options: [0.01, 0.1, 1, 10],
+    options: [0.1, 1, 2, 10],
     optionsFormatter: (option: number) => `${option.toString()}%`,
     customLabel: '%',
     customPlaceholder: t`Enter custom`,
