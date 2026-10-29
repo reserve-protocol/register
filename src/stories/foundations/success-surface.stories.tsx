@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import { OrganicBrandSurface } from '@/components/design-system-v1/organic-brand-surface'
 const meta = {
-  title: 'Foundations/Organic brand',
+  title: 'Foundations/Success surface',
   component: OrganicBrandSurface,
   args: { tone: 'default', className: 'h-80 w-[min(48rem,90vw)]' },
   argTypes: {

@@ -78,7 +78,19 @@ const preview: Preview = {
         order: [
           'Introduction',
           'Foundations',
-          ['Principles', 'Organic brand', '*'],
+          [
+            'Color',
+            'Typography',
+            'Spacing',
+            'Radius',
+            'Layout',
+            'Elevation',
+            'Motion',
+            'Iconography',
+            'Accessibility',
+            'Success surface',
+            '*',
+          ],
           'Components',
           [
             'Actions',
