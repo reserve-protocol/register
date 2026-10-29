@@ -12,8 +12,24 @@ describe('getPaginationPages', () => {
   })
 
   it('shows the leading window with an end ellipsis near the start', () => {
-    expect(getPaginationPages(12, 1)).toEqual([1, 2, 3, 4, 5, 'end-ellipsis', 12])
-    expect(getPaginationPages(12, 4)).toEqual([1, 2, 3, 4, 5, 'end-ellipsis', 12])
+    expect(getPaginationPages(12, 1)).toEqual([
+      1,
+      2,
+      3,
+      4,
+      5,
+      'end-ellipsis',
+      12,
+    ])
+    expect(getPaginationPages(12, 4)).toEqual([
+      1,
+      2,
+      3,
+      4,
+      5,
+      'end-ellipsis',
+      12,
+    ])
   })
 
   it('shows the trailing window with a start ellipsis near the end', () => {
@@ -57,6 +73,24 @@ describe('getPaginationPages', () => {
       5,
       6,
       'end-ellipsis',
+      12,
+    ])
+  })
+
+  it('supports a five-item window for constrained pagination', () => {
+    expect(getPaginationPages(12, 1, 5)).toEqual([1, 2, 3, 'end-ellipsis', 12])
+    expect(getPaginationPages(12, 6, 5)).toEqual([
+      1,
+      'start-ellipsis',
+      6,
+      'end-ellipsis',
+      12,
+    ])
+    expect(getPaginationPages(12, 12, 5)).toEqual([
+      1,
+      'start-ellipsis',
+      10,
+      11,
       12,
     ])
   })

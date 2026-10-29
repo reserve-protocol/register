@@ -120,7 +120,10 @@ export const FeatureCardHeader = memo(function FeatureCardHeader({
         </div>
 
         <div className="w-full min-w-0">
-          <div className="flex min-h-[48px] min-w-0 items-end">
+          <div
+            className="flex min-h-[48px] min-w-0 items-end"
+            data-feature-card-title-slot
+          >
             <div className="flex min-w-0 items-end gap-2">
               <h3 className="min-w-0 text-xl font-normal leading-tight text-foreground [text-wrap:pretty] transition-colors lg:group-hover:text-primary dark:lg:group-hover:text-foreground">
                 {selectedVersion.name}
@@ -132,7 +135,10 @@ export const FeatureCardHeader = memo(function FeatureCardHeader({
               )}
             </div>
           </div>
-          <div className="mt-1.5 flex w-full min-w-0 items-center justify-between gap-3 text-base text-legend">
+          <div
+            className="mt-1.5 flex w-full min-w-0 items-center justify-between gap-3 text-base text-legend"
+            data-feature-card-market-row
+          >
             <span className="truncate">
               <span className="text-primary tabular-nums transition-colors lg:text-foreground lg:group-hover:text-primary">
                 <span className="text-primary/60 transition-colors lg:text-legend lg:group-hover:text-primary/60">

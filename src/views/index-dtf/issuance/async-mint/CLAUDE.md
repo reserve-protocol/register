@@ -36,7 +36,7 @@ hooks/use-price-impact.ts → per-leg price impact (CoW quote price vs Reserve
   separate processing step). Shows the SDK `quote` (shares, budget used) plus a
   per-leg list driven by `legStates` (each leg loads individually — skeleton
   while `pending`/`idle`, final amounts + price impact on `success`). On submit
-  it calls `execution.run()` *without navigating away*: the button becomes a
+  it calls `execution.run()` _without navigating away_: the button becomes a
   loading button labelled by `execution.step`, and each leg row gains a status
   icon read from `execution.ordersByLegId[leg.id].phase` (spinner → check / X).
   On `execution.step === 'error'` (incl. a rejected signature) the screen stays
@@ -66,8 +66,16 @@ SDK params: `mode: 'maxInput'` + `inputAmount` for mint, `shares` for redeem;
   completion, valued via the SDK's `fetchTokenPrices`.
 - **No granular collateral selection** — only `useExistingBalances` (all-or-
   nothing). Approvals are `maxUint256`. The old per-token picker was removed.
+- **Existing collateral is a distinct audit branch** — compare an input-token-
+  only wallet with one that also has usable basket assets. Enabling
+  `useExistingBalances` can change which legs are needed and their amounts; do
+  not treat the toggle as presentation-only evidence.
+- **Leg direction is user-facing transaction truth** — `assetAmount` and
+  `quoteTokenAmount`, interpreted through `leg.side`, determine the amount sold
+  and amount bought. Preserve both sides when changing the leg presentation;
+  neither a token-only status nor one aggregate amount is equivalent.
 
 ## Tests
 
-`npx vitest run src/views/index-dtf/issuance/async-mint` — atom tests only;
+`pnpm exec vitest run src/views/index-dtf/issuance/async-mint` — atom tests only;
 the SDK owns the previously-tested quoting/iteration logic.

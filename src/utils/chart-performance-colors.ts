@@ -43,11 +43,10 @@ export const PERFORMANCE_COLORS = {
   },
 } as const
 
-// Text classes for the same palette (light = end, dark = start). Kept as
-// literal class strings because Tailwind's scanner can't see computed values.
+// Text uses theme tokens; positive is deeper than the chart line for text contrast.
 export const PERFORMANCE_TEXT_CLASSES = {
-  positive: 'text-[#11845F] dark:text-[#55D6A2]',
-  negative: 'text-[#C24130] dark:text-[#FF8A6A]',
+  positive: 'text-performance-positive',
+  negative: 'text-performance-negative',
 } as const
 
 type PerformanceColorMode = 'default' | 'darkSurface'

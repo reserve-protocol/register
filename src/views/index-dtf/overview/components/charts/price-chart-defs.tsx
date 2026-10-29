@@ -18,6 +18,7 @@ export const renderPriceChartDefs = ({
   priceColors,
   priceLineShadowFilterId,
   priceStrokeGradientId,
+  strokeGradientCoordinates,
   usePerformanceColors,
 }: {
   dotFillColor: string
@@ -31,6 +32,7 @@ export const renderPriceChartDefs = ({
   priceColors: PriceChartColorSet
   priceLineShadowFilterId: string
   priceStrokeGradientId: string
+  strokeGradientCoordinates?: { top: number; bottom: number }
   usePerformanceColors: boolean
 }) => (
   <defs>
@@ -50,7 +52,14 @@ export const renderPriceChartDefs = ({
       />
     </filter>
     {usePerformanceColors && performanceDirection !== 'neutral' && (
-      <linearGradient id={priceStrokeGradientId} x1="0" y1="1" x2="0" y2="0">
+      <linearGradient
+        id={priceStrokeGradientId}
+        x1="0"
+        y1={strokeGradientCoordinates?.bottom ?? '1'}
+        x2="0"
+        y2={strokeGradientCoordinates?.top ?? '0'}
+        gradientUnits={strokeGradientCoordinates ? 'userSpaceOnUse' : undefined}
+      >
         {performanceDirection === 'positive' ? (
           <>
             <stop offset="0%" stopColor={priceColors.positive.end} />

@@ -109,8 +109,7 @@ const DtfChat = forwardRef<ReserveChatHandle, DtfChatProps>(function DtfChat(
   const launcherContainerRef = useRef<HTMLDivElement>(null)
   useDraggableLauncher(
     launcherContainerRef,
-    !embedded &&
-      !(isIndexDtfOverviewPathname(pathname) && isLargeDesktop)
+    !embedded && !(isIndexDtfOverviewPathname(pathname) && isLargeDesktop)
   )
 
   const dtfContext: DtfContext | undefined = onDtf

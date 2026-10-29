@@ -7,7 +7,7 @@ Loader, not playbook. Reusable workflow rules live in `skills/` (kit-owned, upda
 - Package manager is **pnpm**, not npm. Chains: Ethereum, Base, BSC — **Arbitrum is deprecated for Index DTFs, never add it**.
 - Index DTF data goes through `@reserve-protocol/react-sdk` — read `docs/wiki/sdk.md` before writing any Index DTF hook/updater.
 - Money is `Amount`/`bigint`, never `Number` for on-chain math. Live state comes from RPC, not the subgraph.
-- Shared components keep their defaults; design tokens only (no hardcoded hex/hsl); feature isolation (`docs/wiki/project.md` § Safety Rules).
+- Preserve unrelated shared defaults; scoped V1 owner corrections follow `docs/wiki/domains/design-system.md` § Design authority. Design tokens only (no hardcoded hex/hsl); feature isolation (`docs/wiki/project.md` § Safety Rules).
 - **Comment budget:** a comment is one line stating a WHY the code cannot show (a human choice, a constraint, an upstream quirk). Never narrate what the code does, why the diff is right, or the layout intent — `scope.mjs` flags `comment-block`, reviewers reject it (`docs/wiki/project.md` § Overrides).
 - **Never commit or push unless told. Never push to main/master. No Co-Authored-By. PR descriptions: clean human summary, no AI attribution.**
 - **Docs hygiene:** plans/ledgers/findings live in `docs/plans/`, never the repo root (root allows only README/LICENSE/SECURITY + the AGENTS/CLAUDE routers). Domain references live next to their domain (e.g. `e2e/TEST_MAP.md`). Delete superseded docs — git keeps history; stale docs at root leak into every agent's context. **Any task that creates or invalidates documentation ends with its own housekeeping pass** — delete/merge what it superseded, update the claims it made stale (wiki pages, area guides, TEST_MAP, FOLLOWUPS), don't wait to be asked.
@@ -19,13 +19,13 @@ Loader, not playbook. Reusable workflow rules live in `skills/` (kit-owned, upda
 - Load-bearing decision (data model, wire contract, SDK contract, on-chain math shape, persistence, migration): read `skills/foundation-review.md` first — its cross-model step runs codex as the senior reviewer.
 - Consequential experience, public-seam, ownership, or persistent-shape choice: `skills/experience-design.md` before planning or implementation.
 - Before implementing a bug fix or non-trivial behavior change with a test seam, read `skills/testing.md` (RED→GREEN→REFACTOR; test the real seam, not a mock).
-- When debugging a failure, read `skills/debugging.md`; for architecture decisions, `skills/architecture-review.md`; when reconciling review findings, `skills/re-conciliate.md`; for a merge/rebase conflict, `skills/resolving-merge-conflicts.md`.
+- When debugging a failure, read `skills/debugging.md`; for architecture decisions, `skills/architecture-review.md`; when reconciling review findings, `skills/review-panel.md` § Reconciliation; for a requested workflow-kit refresh, `skills/re-conciliate.md`; for a merge/rebase conflict, `skills/resolving-merge-conflicts.md`.
 - Parallel work, competing candidates, or a requested agent count: `skills/topology.md`; widening agent authority adds `skills/model-capabilities.md`.
 - Missing repeatable real-surface proof: `skills/create-verification.md`; a drifted verification package: `skills/maintain-verification.md`. A misfiring workflow/skill change: `skills/evaluate-workflow.md`. Deploy/publish: `skills/release-evidence.md`. Explicit pause or multi-session resume: `skills/resume-work.md`.
-- Before writing or reviewing app code, read `skills/code-standards.md`, then scan `docs/wiki/improvements.md` for your area (anti-patterns are binding; fix listed debt opportunistically when touching it).
+- Before writing or reviewing app code, load the project context (including Design authority for UI), then `skills/code-standards.md`; scan `docs/wiki/improvements.md` for your area (anti-patterns are binding; fix listed debt opportunistically when touching it).
 - Before closing a stage, read `skills/review-panel.md` and `skills/wiki.md`.
-- Before user-facing UI work, read `skills/ui-ux.md`; slop-risk work (generated copy, templated layouts, filler states) adds `skills/taste.md`.
-- When changing the visual token system, read `skills/design.md` and `docs/wiki/domains/design-system.md`.
+- Before UI or design-system work, read `docs/wiki/project.md` and `docs/wiki/domains/design-system.md` § Design authority, then `skills/ui-ux.md`. Generic skills inherit the project's accepted visual contract.
+- Slop-risk UI work (generated copy, templated layouts, filler states) adds `skills/taste.md`; visual token work adds `skills/design.md` after the project authority above.
 - Before adding tooling or starting a project surface, read `skills/stack.md`.
 - Domain guides live next to the code: `e2e/CLAUDE.md` (mock cookbook, diff→test decisions) and `src/views/index-dtf/<area>/CLAUDE.md` (which specs cover the area, how to mock its states, edge cases). Read the area guide before changing a view or writing its tests.
 - For project context (product, stack specifics, safety rules, UI register, kit overrides), read `docs/wiki/project.md`.

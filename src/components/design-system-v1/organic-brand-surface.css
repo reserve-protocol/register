@@ -1,0 +1,116 @@
+@keyframes organic-brand-field-in {
+  from {
+    opacity: 0;
+    filter: blur(28px);
+  }
+
+  to {
+    opacity: var(--organic-brand-field-opacity);
+    filter: blur(18px);
+  }
+}
+
+@keyframes organic-brand-cyan-drift {
+  from {
+    transform: translate3d(-5%, 4%, 0) rotate(-8deg) scale(1);
+  }
+
+  to {
+    transform: translate3d(18%, -10%, 0) rotate(14deg) scale(1.18);
+  }
+}
+
+@keyframes organic-brand-violet-drift {
+  from {
+    transform: translate3d(8%, -6%, 0) rotate(10deg) scale(1.08);
+  }
+
+  to {
+    transform: translate3d(-16%, 14%, 0) rotate(-12deg) scale(1.24);
+  }
+}
+
+@keyframes organic-brand-glow-drift {
+  from {
+    transform: translate3d(-8%, 8%, 0) rotate(-4deg) scale(1.04);
+  }
+
+  to {
+    transform: translate3d(12%, -8%, 0) rotate(9deg) scale(1.2);
+  }
+}
+
+.organic-brand-surface__field {
+  position: absolute;
+  border-radius: 44% 56% 62% 38% / 52% 42% 58% 48%;
+  opacity: var(--organic-brand-field-opacity);
+  filter: blur(18px);
+  mix-blend-mode: screen;
+  will-change: transform;
+}
+
+.organic-brand-surface__field--cyan {
+  --organic-brand-field-opacity: 0.24;
+  bottom: -78%;
+  left: -30%;
+  width: 96%;
+  aspect-ratio: 1;
+  background: radial-gradient(
+    ellipse at center,
+    var(--brand-atmosphere-cyan) 0%,
+    transparent 68%
+  );
+  animation:
+    organic-brand-field-in 900ms ease-out both,
+    organic-brand-cyan-drift 14s 900ms ease-in-out infinite alternate;
+}
+
+.organic-brand-surface__field--violet {
+  --organic-brand-field-opacity: 0.2;
+  top: -76%;
+  right: -32%;
+  width: 94%;
+  aspect-ratio: 1;
+  background: radial-gradient(
+    ellipse at center,
+    var(--brand-atmosphere-violet) 0%,
+    transparent 68%
+  );
+  animation:
+    organic-brand-field-in 1100ms ease-out both,
+    organic-brand-violet-drift 18s 1100ms ease-in-out infinite alternate;
+}
+
+.organic-brand-surface__field--glow {
+  --organic-brand-field-opacity: 0.18;
+  top: 12%;
+  left: 28%;
+  width: 72%;
+  aspect-ratio: 1.2;
+  background: radial-gradient(
+    ellipse at center,
+    var(--brand-atmosphere-glow) 0%,
+    transparent 70%
+  );
+  animation:
+    organic-brand-field-in 1000ms ease-out both,
+    organic-brand-glow-drift 21s 1000ms ease-in-out infinite alternate;
+}
+
+.dark .organic-brand-surface--deep .organic-brand-surface__field--cyan {
+  --organic-brand-field-opacity: 0.14;
+}
+
+.dark .organic-brand-surface--deep .organic-brand-surface__field--violet {
+  --organic-brand-field-opacity: 0.12;
+}
+
+.dark .organic-brand-surface--deep .organic-brand-surface__field--glow {
+  --organic-brand-field-opacity: 0.1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .organic-brand-surface__field {
+    animation: none;
+  }
+}

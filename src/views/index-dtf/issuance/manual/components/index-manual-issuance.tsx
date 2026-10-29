@@ -122,9 +122,8 @@ const MintRedeemButton = () => {
 
   useEffect(() => {
     if (isSuccess) {
-      toast(t`Transaction successful`, {
+      toast.success(t`Transaction successful`, {
         description: actionMsg,
-        icon: '🎉',
       })
       reset()
       setAmount('')

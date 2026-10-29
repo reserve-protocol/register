@@ -1,0 +1,78 @@
+html,
+body,
+#storybook-root {
+  min-height: 100%;
+  height: auto;
+  overflow: auto;
+}
+
+html,
+body {
+  min-height: 100vh;
+}
+
+html {
+  background: hsl(var(--background));
+}
+
+body {
+  background: hsl(var(--background));
+  color: hsl(var(--foreground));
+}
+
+#storybook-root {
+  isolation: isolate;
+}
+
+/* The docs page keeps its light theme; dark-theme stories need a dark canvas to inherit from. */
+html.dark .sbdocs-preview {
+  background: hsl(var(--background));
+}
+
+body:has([data-story-surface='neutral'], [data-wide-docs]) .sbdocs-content {
+  max-width: 1440px;
+}
+
+.storybook-docs-interactive.sb-unstyled .docblock-argstable {
+  margin: 0;
+}
+
+.storybook-docs-interactive .sbdocs-preview {
+  margin: 0;
+}
+
+/* Storybook pulls the code bar up over the canvas; keep it below the specimen. */
+.storybook-docs-interactive .sbdocs-preview-actions {
+  margin-top: 0;
+}
+
+[data-story-featured-card] > a {
+  border-radius: 0;
+  background: hsl(var(--card));
+}
+
+[data-story-featured-card] > a > div:first-child {
+  border-radius: 0;
+}
+
+[data-story-featured-card] > a > div:first-child > div:first-child {
+  gap: 1rem;
+}
+
+[data-story-featured-card] [data-feature-card-title-slot] {
+  min-height: 0;
+}
+
+[data-story-featured-card] [data-feature-card-market-row] {
+  margin-top: 0.5rem;
+}
+
+body:has(#storybook-root [data-testid='overview-pilot-viewport']),
+body:has(#storybook-root [data-testid='overview-pilot-viewport'])
+  #storybook-root {
+  overflow: visible;
+}
+
+.sb-story {
+  font-family: 'TWK Lausanne', system-ui, sans-serif;
+}

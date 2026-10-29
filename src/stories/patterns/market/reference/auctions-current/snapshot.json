@@ -1,0 +1,194 @@
+{
+  "bsc/cmc20": {
+    "address": "0x2f8a339b5889ffac4c5a956787cda593b3c36867",
+    "chainId": 56,
+    "symbol": "CMC20",
+    "duration": 1800,
+    "identity": {
+      "id": "61599063002015809294990623651485426780864054918295694975209877368266408019309",
+      "title": "August 2026 Rebalance",
+      "creationTime": 1785783029,
+      "proposer": "0xb209eed4d80fb47e5c16577e44dad1073c5c5015",
+      "nonce": 11,
+      "restrictedUntil": 1786227244,
+      "availableUntil": 1786313644
+    },
+    "tokens": [
+      {
+        "address": "0x0422f966bf8e978075a97d47ef4c7efd3563fa51",
+        "name": "Binance-Peg Hedera",
+        "symbol": "HBAR",
+        "decimals": 18
+      },
+      {
+        "address": "0x1ba42e5193dfa8b03d15dd1b86a3113bbbef8eeb",
+        "name": "Zcash Token",
+        "symbol": "ZEC",
+        "decimals": 18
+      },
+      {
+        "address": "0x1ce0c2827e2ef14d5c4f29a091d735a204794041",
+        "name": "Avalanche",
+        "symbol": "AVAX",
+        "decimals": 18
+      },
+      {
+        "address": "0x1d2f0da169ceb9fc7b3144628db156f3f6c60dbe",
+        "name": "XRP Token",
+        "symbol": "XRP",
+        "decimals": 18
+      },
+      {
+        "address": "0x2170ed0880ac9a755fd29b2688956bd959f933f8",
+        "name": "Ethereum Token",
+        "symbol": "ETH",
+        "decimals": 18
+      },
+      {
+        "address": "0x2859e4544c4bb03966803b044a93563bd2d0dd4d",
+        "name": "SHIBA INU",
+        "symbol": "SHIB",
+        "decimals": 18
+      },
+      {
+        "address": "0x3ee2200efb3400fabb9aacf31297cbdd1d435d47",
+        "name": "Cardano Token",
+        "symbol": "ADA",
+        "decimals": 18
+      },
+      {
+        "address": "0x4338665cbb7b2485a8855a139b75d5e34ab0db94",
+        "name": "Litecoin Token",
+        "symbol": "LTC",
+        "decimals": 18
+      },
+      {
+        "address": "0x43c934a845205f0b514417d757d7235b8f53f1b9",
+        "name": "Stellar",
+        "symbol": "XLM",
+        "decimals": 18
+      },
+      {
+        "address": "0x570a5d26f7765ecb712c0924e4de545b89fd43df",
+        "name": "SOLANA",
+        "symbol": "SOL",
+        "decimals": 18
+      },
+      {
+        "address": "0x7130d2a12b9bcbfae4f2634d864a1ee1ce3ead9c",
+        "name": "BTCB Token",
+        "symbol": "BTCB",
+        "decimals": 18
+      },
+      {
+        "address": "0x8ff795a6f4d97e7887c79bea79aba5cc76444adf",
+        "name": "Bitcoin Cash Token",
+        "symbol": "BCH",
+        "decimals": 18
+      },
+      {
+        "address": "0xaed86a53a8f3dbba4fb6ae7a5f65f337c606bf28",
+        "name": "Hyperliquid",
+        "symbol": "HYPE",
+        "decimals": 18
+      },
+      {
+        "address": "0xba2ae424d960c26247dd6c32edc70b295c744c43",
+        "name": "Dogecoin",
+        "symbol": "DOGE",
+        "decimals": 8
+      },
+      {
+        "address": "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c",
+        "name": "Wrapped BNB",
+        "symbol": "WBNB",
+        "decimals": 18
+      },
+      {
+        "address": "0xce7de646e7208a4ef112cb6ed5038fa6cc6b12e3",
+        "name": "TRON",
+        "symbol": "TRX",
+        "decimals": 6
+      },
+      {
+        "address": "0xd57f2e190c11cffc667aa5ad026cd4c8de0772a7",
+        "name": "Binance-Peg Sui",
+        "symbol": "SUI",
+        "decimals": 18
+      },
+      {
+        "address": "0xf8a0bf9cf54bb92f17374d9e9a321e6a111a51bd",
+        "name": "ChainLink Token",
+        "symbol": "LINK",
+        "decimals": 18
+      }
+    ],
+    "transactionHash": "0x146dcb4cfcaa4a11b305454dc9513d53d5bce5a2ea62bac70f93bb099d9c800b"
+  },
+  "base/lcap": {
+    "address": "0x4da9a0f397db1397902070f93a4d6ddbc0e0e6e8",
+    "chainId": 8453,
+    "symbol": "LCAP",
+    "duration": 900,
+    "identity": {
+      "id": "25357398061448644947226757434409416074264928120007321410008361214457907702971",
+      "title": "June 2026 Rebalance",
+      "creationTime": 1779905615,
+      "proposer": "0xb209eed4d80fb47e5c16577e44dad1073c5c5015",
+      "nonce": 5,
+      "restrictedUntil": 1780886195,
+      "availableUntil": 1780886195
+    },
+    "tokens": [
+      {
+        "address": "0x12e96c2bfea6e835cf8dd38a5834fa61cf723736",
+        "name": "Dogecoin (Universal)",
+        "symbol": "uDOGE",
+        "decimals": 18
+      },
+      {
+        "address": "0x15d0e0c55a3e7ee67152ad7e89acf164253ff68d",
+        "name": "HYPE",
+        "symbol": "HYPE",
+        "decimals": 18
+      },
+      {
+        "address": "0x2615a94df961278dcbc41fb0a54fec5f10a693ae",
+        "name": "XRP (Universal)",
+        "symbol": "uXRP",
+        "decimals": 18
+      },
+      {
+        "address": "0x378c326a472915d38b2d8d41e1345987835fab64",
+        "name": "Stellar (Universal)",
+        "symbol": "uXLM",
+        "decimals": 18
+      },
+      {
+        "address": "0x4200000000000000000000000000000000000006",
+        "name": "Wrapped Ether",
+        "symbol": "WETH",
+        "decimals": 18
+      },
+      {
+        "address": "0x9b8df6e244526ab5f6e6400d331db28c8fdddb55",
+        "name": "Solana (Universal)",
+        "symbol": "uSOL",
+        "decimals": 18
+      },
+      {
+        "address": "0xa3a34a0d9a08ccddb6ed422ac0a28a06731335aa",
+        "name": "Cardano (Universal)",
+        "symbol": "uADA",
+        "decimals": 18
+      },
+      {
+        "address": "0xcbb7c0000ab88b473b1f5afd9ef808440eed33bf",
+        "name": "Coinbase Wrapped BTC",
+        "symbol": "cbBTC",
+        "decimals": 8
+      }
+    ],
+    "transactionHash": "0x19228182a69cf033141c3df02b018e25a9f3297cc285aad1ece5465215491a73"
+  }
+}

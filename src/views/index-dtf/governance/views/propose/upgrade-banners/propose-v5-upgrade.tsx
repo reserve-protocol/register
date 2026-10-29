@@ -151,17 +151,15 @@ const ProposeBanner = ({ refetch, description }: SpellUpgradeProps) => {
       receipt,
       governor: dtf.ownerGovernance.id,
       onSuccess: () => {
-        toast(t`Proposal created!`, {
+        toast.success(t`Proposal created!`, {
           description: t`DTF V5.0.0 upgrade proposal created`,
-          icon: '🎉',
         })
         refetch()
       },
       onFallback: () => {
         setTimeout(() => {
-          toast(t`Proposal created!`, {
+          toast.success(t`Proposal created!`, {
             description: t`DTF V5.0.0 upgrade proposal created`,
-            icon: '🎉',
           })
           refetch()
         }, 10000)

@@ -9,6 +9,7 @@ import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { useCallback, useRef, useState } from 'react'
 import { toast } from 'sonner'
 import { PublicClient } from 'viem'
+import { DETAILED_ERROR_TOAST_DURATION_MS } from '@/components/ui/toast-policy'
 import { CowbotConfig, CowbotStatus } from './types'
 
 const SUPPORTED_CHAINS: SupportedChainId[] = [1, 8453, 56]
@@ -92,6 +93,7 @@ export const useCowbotQuery = ({ config, client }: UseCowbotQueryProps) => {
         console.error('CowBot errors:', result.errors)
         toast.error(t`CowBot encountered errors`, {
           description: result.errors[0].message,
+          duration: DETAILED_ERROR_TOAST_DURATION_MS,
         })
       }
 

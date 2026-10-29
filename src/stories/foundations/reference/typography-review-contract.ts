@@ -1,0 +1,116 @@
+import { v1SemanticRoles as roles } from '@/components/design-system-v1/semantic-roles'
+import {
+  v1Typography,
+  v1TypographyUsage,
+  v1TypographyVariants,
+} from '@/components/design-system-v1/typography'
+
+export const TYPOGRAPHY_REVIEW_ROLES = [
+  {
+    id: 'display',
+    role: 'Display',
+    spec: '40 / 46 phone · 48 / 54 otherwise · 300',
+    className: `${v1Typography.display} ${roles.text.landingHeadline}`,
+    sample: 'Build a durable portfolio',
+    use: v1TypographyUsage.display,
+  },
+  {
+    id: 'page-title',
+    role: 'Page title',
+    spec: '32 / 38 · 300',
+    className: `${v1Typography.pageTitle} ${roles.text.pageHeadline}`,
+    sample: 'Index DTF overview',
+    use: v1TypographyUsage.pageTitle,
+  },
+  {
+    id: 'section-title',
+    role: 'Section title',
+    spec: '24 / 30 · 300',
+    className: v1Typography.sectionTitle,
+    sample: 'Portfolio exposure',
+    use: v1TypographyUsage.sectionTitle,
+  },
+  {
+    id: 'lead',
+    role: 'Lead',
+    spec: '20 / 28 · 300',
+    className: v1Typography.lead,
+    sample: 'Diversified exposure through transparent onchain portfolios.',
+    use: v1TypographyUsage.lead,
+  },
+  {
+    id: 'panel-title',
+    role: 'Panel title',
+    spec: '20 / 26 · 500',
+    className: v1Typography.panelTitle,
+    sample: 'Governance activity',
+    use: v1TypographyUsage.panelTitle,
+  },
+  {
+    id: 'item-title',
+    role: 'Item title',
+    spec: '16 / 24 · 500',
+    className: v1Typography.itemTitle,
+    sample: 'Update the DTF basket',
+    use: v1TypographyUsage.itemTitle,
+  },
+  {
+    id: 'body',
+    role: 'Body and ordinary value',
+    spec: '16 / 24 · 300',
+    className: v1Typography.body,
+    sample: 'The basket follows transparent rules that governance can update.',
+    use: v1TypographyUsage.body,
+  },
+  {
+    id: 'label',
+    role: 'Label and action',
+    spec: '14 / 20 · 500',
+    className: v1Typography.label,
+    sample: 'Voting period',
+    use: v1TypographyUsage.label,
+  },
+  {
+    id: 'supporting',
+    role: 'Supporting',
+    spec: '14 / 20 · 300',
+    className: v1Typography.supporting,
+    sample: 'Changes take effect after the proposal executes.',
+    use: v1TypographyUsage.supporting,
+  },
+  {
+    id: 'auxiliary',
+    role: 'Auxiliary · limited use',
+    spec: '12 / 16 · 300',
+    className: v1Typography.auxiliary,
+    sample: 'Chart label · 14:23 UTC',
+    use: v1TypographyUsage.auxiliary,
+  },
+] as const
+
+export const TYPOGRAPHY_REVIEW_VARIANTS = [
+  {
+    id: 'compact-item-title',
+    role: 'Compact item title',
+    spec: '16 / 20 · 500',
+    className: v1TypographyVariants.compactItemTitle,
+    sample: 'Wrapped liquid staked Ether',
+    use: 'Table and list names stacked above a supporting line, such as EntityIdentity with compact name leading.',
+  },
+  {
+    id: 'light-panel-title',
+    role: 'Light panel title',
+    spec: '20 / 26 · 300',
+    className: v1TypographyVariants.lightPanelTitle,
+    sample: 'PHOTON',
+    use: 'Panel titles in compact chart sources where a 500 title would compete with the data.',
+  },
+  {
+    id: 'responsive-page-title',
+    role: 'Responsive page title',
+    spec: '24 / 30 phone · 32 / 38 from 640px · 300',
+    className: `${v1TypographyVariants.responsivePageTitle} ${roles.text.pageHeadline}`,
+    sample: '$12,480.32',
+    use: 'Page identities and hero values that must fit a phone width, such as the chart source name and Portfolio total.',
+  },
+] as const

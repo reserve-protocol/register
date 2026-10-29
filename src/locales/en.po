@@ -137,13 +137,13 @@ msgstr ""
 
 #. placeholder {0}: formatCurrency(Number(amount))
 #. placeholder {1}: indexDTF.token.symbol
-#: src/views/index-dtf/issuance/manual/components/index-manual-issuance.tsx:139
+#: src/views/index-dtf/issuance/manual/components/index-manual-issuance.tsx:138
 msgid "{0} {1} minted!"
 msgstr ""
 
 #. placeholder {0}: formatCurrency(Number(amount))
 #. placeholder {1}: indexDTF.token.symbol
-#: src/views/index-dtf/issuance/manual/components/index-manual-issuance.tsx:178
+#: src/views/index-dtf/issuance/manual/components/index-manual-issuance.tsx:177
 msgid "{0} {1} redeemed!"
 msgstr ""
 
@@ -227,8 +227,8 @@ msgid "{0} explainer"
 msgstr ""
 
 #. placeholder {0}: selectedVersion.symbol
-#: src/views/home/components/highlighted-dtfs/transcript-preview.tsx:63
-#: src/views/home/components/highlighted-dtfs/transcript-preview.tsx:64
+#: src/views/home/components/highlighted-dtfs/transcript-preview.tsx:66
+#: src/views/home/components/highlighted-dtfs/transcript-preview.tsx:67
 msgid "{0} Explainer"
 msgstr ""
 
@@ -614,7 +614,7 @@ msgstr ""
 msgid "<0>Note:</0> Some wallets, like MetaMask, need smart accounts enabled."
 msgstr ""
 
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v5-upgrade.tsx:192
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v5-upgrade.tsx:190
 msgid "<0>Release 5.0.0</0> introduces improved rebalancing with per-token auction size limits and the ability to disable bids for individual tokens. <1/>See the <2>changelog</2> for more details."
 msgstr ""
 
@@ -622,11 +622,11 @@ msgstr ""
 #~ msgid "<0>Reserve Optimistic Governor upgrade</0> introduces a new governor system TBD COPY HERE!. <1/>See the <2>changelog</2> for more details."
 #~ msgstr ""
 
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:325
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:323
 msgid "<0>Reserve Optimistic Governor upgrade</0> moves this DTF to optimistic governance, voted with a new vote-lock vault. After it executes, voters lock their tokens in the new vault to keep governing this DTF."
 msgstr ""
 
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:318
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:316
 msgid "<0>Reserve Optimistic Governor upgrade</0> moves this DTF to optimistic governance, voted with the shared vlRSR vote-lock vault. After it executes, voters lock RSR in the new vault to keep governing this DTF."
 msgstr ""
 
@@ -1458,7 +1458,7 @@ msgstr ""
 msgid "As RToken"
 msgstr ""
 
-#: src/components/dtf-chat/index.tsx:166
+#: src/components/dtf-chat/index.tsx:165
 #: src/views/index-dtf/overview/components/ask-reserve-ai.tsx:61
 #: src/views/index-dtf/overview/components/ask-reserve-ai.tsx:98
 #: src/views/index-dtf/overview/components/index-ctas-overview-mobile.tsx:176
@@ -2118,6 +2118,7 @@ msgstr ""
 msgid "Buy {0}"
 msgstr ""
 
+#: src/components/design-system-v1/product-navigation-messages.ts:4
 #: src/views/index-dtf/overview/components/index-ctas-overview-mobile.tsx:148
 msgid "Buy / Sell"
 msgstr ""
@@ -2334,7 +2335,7 @@ msgstr ""
 msgid "Change diversity factor"
 msgstr ""
 
-#: src/views/yield-dtf/governance/views/proposal/components/PreviewBox.tsx:38
+#: src/views/yield-dtf/governance/views/proposal/components/PreviewBox.tsx:40
 msgid "Change in:"
 msgstr ""
 
@@ -2725,7 +2726,7 @@ msgid "Confirming transaction"
 msgstr ""
 
 #: src/components/vote-lock/migration/migration-modal.tsx:107
-#: src/views/index-dtf/issuance/manual/components/index-manual-issuance.tsx:202
+#: src/views/index-dtf/issuance/manual/components/index-manual-issuance.tsx:201
 msgid "Confirming transaction..."
 msgstr ""
 
@@ -2852,6 +2853,8 @@ msgstr ""
 msgid "Converting basket tokens held in your wallet to {0}."
 msgstr ""
 
+#: src/components/design-system-v1/copyable-value.tsx:102
+#: src/components/design-system-v1/copyable-value.tsx:177
 #: src/components/ui/copy-value.tsx:59
 #: src/components/ui/copy.tsx:23
 #: src/views/index-dtf/governance/components/governance-account-info.tsx:72
@@ -2867,6 +2870,10 @@ msgstr ""
 #: src/views/yield-dtf/issuance/components/zapV2/minters-modal/SocialMediaInput.tsx:199
 msgid "Copy"
 msgstr ""
+
+#: src/components/design-system-v1/copyable-value.tsx:115
+msgid "Copy {copyValue} to clipboard"
+msgstr "Copy {copyValue} to clipboard"
 
 #: src/views/index-dtf/components/navigation/index.tsx:316
 #: src/views/index-dtf/overview/components/index-token-address.tsx:135
@@ -2886,6 +2893,8 @@ msgstr ""
 msgid "Copy swap params to share with engineering team"
 msgstr ""
 
+#: src/components/design-system-v1/copyable-value.tsx:148
+#: src/components/design-system-v1/copyable-value.tsx:180
 #: src/components/ui/copy-value.tsx:60
 #: src/components/ui/copy.tsx:23
 #: src/views/index-dtf/governance/components/governance-account-info.tsx:72
@@ -2918,15 +2927,15 @@ msgstr ""
 msgid "CoW routes"
 msgstr ""
 
-#: src/views/index-dtf/auctions/views/rebalance/components/cowbot/use-cowbot-query.ts:93
+#: src/views/index-dtf/auctions/views/rebalance/components/cowbot/use-cowbot-query.ts:94
 msgid "CowBot encountered errors"
 msgstr ""
 
-#: src/views/index-dtf/auctions/views/rebalance/components/cowbot/use-cowbot-query.ts:115
+#: src/views/index-dtf/auctions/views/rebalance/components/cowbot/use-cowbot-query.ts:117
 msgid "CowBot submitted {newOrdersCount} new order"
 msgstr ""
 
-#: src/views/index-dtf/auctions/views/rebalance/components/cowbot/use-cowbot-query.ts:116
+#: src/views/index-dtf/auctions/views/rebalance/components/cowbot/use-cowbot-query.ts:118
 msgid "CowBot submitted {newOrdersCount} new orders"
 msgstr ""
 
@@ -3668,8 +3677,8 @@ msgstr ""
 msgid "DTF cover"
 msgstr ""
 
-#: src/views/home/components/highlighted-dtfs/performance-chart-launch-marker.tsx:37
-#: src/views/index-dtf/overview/components/charts/price-chart-launch-marker.tsx:41
+#: src/views/home/components/highlighted-dtfs/performance-chart-launch-marker.tsx:49
+#: src/views/index-dtf/overview/components/charts/price-chart-launch-marker.tsx:47
 msgid "DTF Created"
 msgstr ""
 
@@ -3708,8 +3717,8 @@ msgstr ""
 msgid "DTF Inactive"
 msgstr ""
 
-#: src/views/home/components/highlighted-dtfs/performance-chart-launch-marker.tsx:37
-#: src/views/index-dtf/overview/components/charts/price-chart-launch-marker.tsx:41
+#: src/views/home/components/highlighted-dtfs/performance-chart-launch-marker.tsx:49
+#: src/views/index-dtf/overview/components/charts/price-chart-launch-marker.tsx:47
 msgid "DTF Launch"
 msgstr ""
 
@@ -3717,7 +3726,7 @@ msgstr ""
 msgid "DTF pages"
 msgstr ""
 
-#: src/views/home/components/highlighted-dtfs/performance-chart-launch-marker.tsx:41
+#: src/views/home/components/highlighted-dtfs/performance-chart-launch-marker.tsx:53
 msgid "DTF price data"
 msgstr ""
 
@@ -3743,12 +3752,12 @@ msgid "DTF updated successfully"
 msgstr ""
 
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v4-upgrade.tsx:133
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v4-upgrade.tsx:141
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v4-upgrade.tsx:140
 msgid "DTF V4.0.0 upgrade proposal created"
 msgstr ""
 
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v5-upgrade.tsx:155
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v5-upgrade.tsx:163
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v5-upgrade.tsx:162
 msgid "DTF V5.0.0 upgrade proposal created"
 msgstr ""
 
@@ -3860,8 +3869,6 @@ msgstr ""
 #: src/views/yield-dtf/governance/views/proposal/components/revenue-destinations-proposal.tsx:166
 msgid "Each holder's eUSD balance × multiplier sets its recipient's share of the router's revenue. Multipliers are not percentages; 1 means 1×. Only add holders whose balances third parties cannot inflate. Changed or removed destinations are removed first, then new values are added, in one proposal."
 msgstr ""
-
-#: src/views/yield-dtf/governance/views/proposal/components/revenue-destinations-proposal.tsx:152
 
 #: src/components/rtoken-setup/basket/BackupBasket.tsx:39
 msgid "Each target unit of your primary basket will have defined emergency collateral to replace with in case of default."
@@ -4122,12 +4129,12 @@ msgstr ""
 msgid "Est. APY:"
 msgstr ""
 
-#: src/views/home/components/highlighted-dtfs/performance-chart-launch-marker.tsx:39
+#: src/views/home/components/highlighted-dtfs/performance-chart-launch-marker.tsx:51
 msgid "Est. Hist. Price ✱"
 msgstr ""
 
-#: src/views/home/components/highlighted-dtfs/performance-chart-launch-marker.tsx:38
-#: src/views/index-dtf/overview/components/charts/price-chart-launch-marker.tsx:43
+#: src/views/home/components/highlighted-dtfs/performance-chart-launch-marker.tsx:50
+#: src/views/index-dtf/overview/components/charts/price-chart-launch-marker.tsx:49
 msgid "Est. Historical Price ✱"
 msgstr ""
 
@@ -4135,7 +4142,7 @@ msgstr ""
 msgid "Est. Partner Revenue"
 msgstr ""
 
-#: src/views/home/components/highlighted-dtfs/performance-chart-launch-marker.tsx:40
+#: src/views/home/components/highlighted-dtfs/performance-chart-launch-marker.tsx:52
 msgid "Est. Price ✱"
 msgstr ""
 
@@ -4952,7 +4959,7 @@ msgstr ""
 msgid "Have RSR on another chain? Bridge to BSC"
 msgstr ""
 
-#: src/views/index-dtf/issuance/manual/components/index-manual-issuance.tsx:253
+#: src/views/index-dtf/issuance/manual/components/index-manual-issuance.tsx:252
 msgid "Having issues minting?"
 msgstr ""
 
@@ -5192,7 +5199,7 @@ msgstr ""
 #: src/components/inactive-badge.tsx:18
 #: src/views/home/components/discover-index-dtf/index-dtf-table-columns.tsx:197
 #: src/views/home/components/discover-yield-dtf/yield-dtf-card.tsx:95
-#: src/views/home/components/highlighted-dtfs/feature-card-header.tsx:130
+#: src/views/home/components/highlighted-dtfs/feature-card-header.tsx:133
 msgid "Inactive"
 msgstr ""
 
@@ -5953,7 +5960,7 @@ msgstr ""
 msgid "Market cap:"
 msgstr ""
 
-#: src/views/home/components/discover-index-dtf/index.tsx:15
+#: src/views/home/components/discover-index-dtf/discover-index-dtf-card.tsx:12
 msgid "Market Cap:"
 msgstr ""
 
@@ -6144,7 +6151,7 @@ msgstr ""
 #: src/views/home/components/discover-yield-dtf/token-actions.tsx:42
 #: src/views/index-dtf/issuance/async-mint/steps/configure-mint.tsx:151
 #: src/views/index-dtf/issuance/async-mint/steps/success.tsx:149
-#: src/views/index-dtf/issuance/manual/components/index-manual-issuance.tsx:195
+#: src/views/index-dtf/issuance/manual/components/index-manual-issuance.tsx:194
 #: src/views/index-dtf/overview/components/index-transaction-table-with-swaps/columns.tsx:23
 #: src/views/index-dtf/overview/components/index-transaction-table.tsx:24
 #: src/views/yield-dtf/issuance/components/issue/Issue.tsx:97
@@ -6504,9 +6511,9 @@ msgstr ""
 msgid "New units"
 msgstr ""
 
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:314
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v4-upgrade.tsx:167
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v5-upgrade.tsx:189
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:312
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v4-upgrade.tsx:165
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v5-upgrade.tsx:187
 msgid "New version available"
 msgstr ""
 
@@ -6591,7 +6598,7 @@ msgstr ""
 
 #: src/components/charts/area/AreaChart.tsx:131
 #: src/views/home/components/discover-index-dtf/index-dtf-table-columns.tsx:109
-#: src/views/home/components/highlighted-dtfs/feature-card-header.tsx:160
+#: src/views/home/components/highlighted-dtfs/feature-card-header.tsx:166
 #: src/views/index-dtf/overview/components/charts/percentage-change.tsx:32
 #: src/views/top100/components/top100-table.tsx:35
 #: src/views/top100/components/top100-table.tsx:43
@@ -6686,7 +6693,7 @@ msgstr ""
 msgid "No results found."
 msgstr ""
 
-#: src/components/ui/data-table.tsx:349
+#: src/components/ui/data-table.tsx:378
 msgid "No results."
 msgstr ""
 
@@ -7245,10 +7252,10 @@ msgstr ""
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-folio-governance-upgrade.tsx:154
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-governance-spell-31-03-2025.tsx:304
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-governance-spell-31-03-2025.tsx:430
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:344
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:342
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-retire-vote-lock.tsx:139
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v4-upgrade.tsx:188
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v5-upgrade.tsx:217
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v4-upgrade.tsx:186
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v5-upgrade.tsx:215
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-vote-lock-upgrade.tsx:215
 #: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/components/submit-proposal-button.tsx:186
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/submit-proposal-button.tsx:184
@@ -7409,7 +7416,7 @@ msgstr ""
 msgid "Please select an asset to claim"
 msgstr ""
 
-#: src/views/index-dtf/issuance/manual/components/index-manual-issuance.tsx:200
+#: src/views/index-dtf/issuance/manual/components/index-manual-issuance.tsx:199
 msgid "Please sign in wallet..."
 msgstr ""
 
@@ -7703,12 +7710,12 @@ msgstr ""
 
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-folio-governance-upgrade.tsx:58
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:276
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:284
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:283
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-retire-vote-lock.tsx:69
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v4-upgrade.tsx:132
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v4-upgrade.tsx:140
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v4-upgrade.tsx:139
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v5-upgrade.tsx:154
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v5-upgrade.tsx:162
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v5-upgrade.tsx:161
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-vote-lock-upgrade.tsx:125
 msgid "Proposal created!"
 msgstr ""
@@ -7819,9 +7826,9 @@ msgstr ""
 msgid "Propose new basket"
 msgstr ""
 
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:346
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v4-upgrade.tsx:190
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v5-upgrade.tsx:219
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:344
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v4-upgrade.tsx:188
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v5-upgrade.tsx:217
 msgid "Propose upgrade"
 msgstr ""
 
@@ -8132,7 +8139,7 @@ msgstr ""
 #: src/views/explorer/components/transactions/useTransactionColumns.tsx:31
 #: src/views/index-dtf/issuance/async-mint/steps/configure-mint.tsx:154
 #: src/views/index-dtf/issuance/async-mint/steps/success.tsx:152
-#: src/views/index-dtf/issuance/manual/components/index-manual-issuance.tsx:195
+#: src/views/index-dtf/issuance/manual/components/index-manual-issuance.tsx:194
 #: src/views/index-dtf/overview/components/index-transaction-table-with-swaps/columns.tsx:24
 #: src/views/index-dtf/overview/components/index-transaction-table.tsx:25
 #: src/views/yield-dtf/issuance/components/redeem/RedeemInput.tsx:16
@@ -8331,7 +8338,7 @@ msgstr ""
 msgid "Related Contracts"
 msgstr ""
 
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v4-upgrade.tsx:170
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v4-upgrade.tsx:168
 msgid "Release 4.0.0 improves the the way in which DTFs are rebalanced. At a high level, the new rebalance mechanism is able to consider the entire basket at once instead of requiring individual 2-token auctions to be proposed in advance and performed in isolation. See docs.reserve.org for more details."
 msgstr ""
 
@@ -8505,7 +8512,7 @@ msgid "Reserve logo"
 msgstr ""
 
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:277
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:285
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:284
 msgid "Reserve Optimistic Governor Upgrade proposal created"
 msgstr ""
 
@@ -9289,7 +9296,7 @@ msgstr ""
 msgid "Showing {startItem} to {endItem} of {totalCount} DTFs"
 msgstr ""
 
-#: src/components/ui/data-table-pagination.tsx:88
+#: src/components/ui/data-table-pagination.tsx:54
 msgid "Showing {visibleRowCount} out of {filteredRowCount}"
 msgstr ""
 
@@ -9888,11 +9895,11 @@ msgstr ""
 msgid "Switch to manual redemption"
 msgstr ""
 
-#: src/views/index-dtf/issuance/manual/components/index-manual-issuance.tsx:261
+#: src/views/index-dtf/issuance/manual/components/index-manual-issuance.tsx:260
 msgid "Switch to zap minting"
 msgstr ""
 
-#: src/views/index-dtf/issuance/manual/components/index-manual-issuance.tsx:263
+#: src/views/index-dtf/issuance/manual/components/index-manual-issuance.tsx:262
 msgid "Switch to zap redeeming"
 msgstr ""
 
@@ -10726,6 +10733,10 @@ msgstr ""
 msgid "Tracking since {0}"
 msgstr ""
 
+#: src/components/design-system-v1/product-navigation-messages.ts:5
+msgid "Trade"
+msgstr "Trade"
+
 #. placeholder {0}: inputToken.symbol
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1005
 msgid "Trade {0} into collateral"
@@ -10839,7 +10850,7 @@ msgid "Transaction confirmed"
 msgstr ""
 
 #: src/components/transaction-modal/index.tsx:145
-#: src/views/index-dtf/issuance/manual/components/index-manual-issuance.tsx:228
+#: src/views/index-dtf/issuance/manual/components/index-manual-issuance.tsx:227
 msgid "Transaction failed"
 msgstr ""
 
@@ -11420,8 +11431,6 @@ msgstr ""
 #: src/components/rtoken-setup/governance/GovernanceSetup.tsx:49
 msgid "Use the Alexios governor format?"
 msgstr ""
-
-#: src/views/yield-dtf/governance/views/proposal/components/revenue-destinations-proposal.tsx:140
 
 #: src/views/index-dtf/overview/components/yield-index/yield-index-composition-tabs.tsx:15
 msgid "Used in"
@@ -12069,10 +12078,10 @@ msgstr ""
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-folio-governance-upgrade.tsx:155
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-governance-spell-31-03-2025.tsx:305
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-governance-spell-31-03-2025.tsx:431
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:345
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:343
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-retire-vote-lock.tsx:140
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v4-upgrade.tsx:189
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v5-upgrade.tsx:218
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v4-upgrade.tsx:187
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v5-upgrade.tsx:216
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-vote-lock-upgrade.tsx:216
 #: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/components/submit-proposal-button.tsx:188
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/submit-proposal-button.tsx:186
@@ -12125,7 +12134,7 @@ msgid "Warning: High price impact"
 msgstr ""
 
 #. placeholder {0}: selectedVersion.symbol
-#: src/views/home/components/highlighted-dtfs/transcript-preview.tsx:83
+#: src/views/home/components/highlighted-dtfs/transcript-preview.tsx:86
 msgid "Watch {0} explainer"
 msgstr ""
 
@@ -12141,7 +12150,7 @@ msgstr ""
 msgid "Watch Explainer"
 msgstr ""
 
-#: src/views/home/components/highlighted-dtfs/transcript-preview.tsx:86
+#: src/views/home/components/highlighted-dtfs/transcript-preview.tsx:89
 msgid "Watch Video"
 msgstr ""
 

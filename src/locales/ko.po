@@ -137,13 +137,13 @@ msgstr "{0} {1} + 기존 담보"
 
 #. placeholder {0}: formatCurrency(Number(amount))
 #. placeholder {1}: indexDTF.token.symbol
-#: src/views/index-dtf/issuance/manual/components/index-manual-issuance.tsx:139
+#: src/views/index-dtf/issuance/manual/components/index-manual-issuance.tsx:138
 msgid "{0} {1} minted!"
 msgstr "{0} {1} Mint 완료!"
 
 #. placeholder {0}: formatCurrency(Number(amount))
 #. placeholder {1}: indexDTF.token.symbol
-#: src/views/index-dtf/issuance/manual/components/index-manual-issuance.tsx:178
+#: src/views/index-dtf/issuance/manual/components/index-manual-issuance.tsx:177
 msgid "{0} {1} redeemed!"
 msgstr "{0} {1} Redeem 완료!"
 
@@ -227,8 +227,8 @@ msgid "{0} explainer"
 msgstr "{0} 설명"
 
 #. placeholder {0}: selectedVersion.symbol
-#: src/views/home/components/highlighted-dtfs/transcript-preview.tsx:63
-#: src/views/home/components/highlighted-dtfs/transcript-preview.tsx:64
+#: src/views/home/components/highlighted-dtfs/transcript-preview.tsx:66
+#: src/views/home/components/highlighted-dtfs/transcript-preview.tsx:67
 msgid "{0} Explainer"
 msgstr "{0} 설명"
 
@@ -614,7 +614,7 @@ msgstr "+${0} 잔여 담보"
 msgid "<0>Note:</0> Some wallets, like MetaMask, need smart accounts enabled."
 msgstr "<0>참고:</0> MetaMask와 같은 일부 Wallet은 스마트 계정을 활성화해야 합니다."
 
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v5-upgrade.tsx:192
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v5-upgrade.tsx:190
 msgid "<0>Release 5.0.0</0> introduces improved rebalancing with per-token auction size limits and the ability to disable bids for individual tokens. <1/>See the <2>changelog</2> for more details."
 msgstr "<0>릴리스 5.0.0</0>은 토큰별 경매 규모 제한과 개별 토큰에 대한 입찰 비활성화 기능을 통해 개선된 리밸런싱을 도입합니다. <1/>자세한 내용은 <2>변경 내역</2>을 참조하세요."
 
@@ -622,11 +622,11 @@ msgstr "<0>릴리스 5.0.0</0>은 토큰별 경매 규모 제한과 개별 토�
 #~ msgid "<0>Reserve Optimistic Governor upgrade</0> introduces a new governor system TBD COPY HERE!. <1/>See the <2>changelog</2> for more details."
 #~ msgstr "<0>Reserve Optimistic Governor 업그레이드</0>는 새로운 거버너 시스템을 도입합니다 TBD COPY HERE!. <1/>자세한 내용은 <2>변경 로그</2>를 참조하세요."
 
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:325
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:323
 msgid "<0>Reserve Optimistic Governor upgrade</0> moves this DTF to optimistic governance, voted with a new vote-lock vault. After it executes, voters lock their tokens in the new vault to keep governing this DTF."
 msgstr "<0>Reserve Optimistic Governor 업그레이드</0>는 이 DTF를 새로운 vote-lock 볼트로 투표하는 옵티미스틱 거버넌스로 전환합니다. 실행 후 투표자는 이 DTF의 거버넌스를 계속하려면 새 볼트에 토큰을 잠가야 합니다."
 
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:318
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:316
 msgid "<0>Reserve Optimistic Governor upgrade</0> moves this DTF to optimistic governance, voted with the shared vlRSR vote-lock vault. After it executes, voters lock RSR in the new vault to keep governing this DTF."
 msgstr "<0>Reserve Optimistic Governor 업그레이드</0>는 이 DTF를 공유 vlRSR vote-lock 볼트로 투표하는 옵티미스틱 거버넌스로 전환합니다. 실행 후 투표자는 이 DTF의 거버넌스를 계속하려면 새 볼트에 RSR을 잠가야 합니다."
 
@@ -1458,7 +1458,7 @@ msgstr "RSR로"
 msgid "As RToken"
 msgstr "RToken으로"
 
-#: src/components/dtf-chat/index.tsx:166
+#: src/components/dtf-chat/index.tsx:165
 #: src/views/index-dtf/overview/components/ask-reserve-ai.tsx:61
 #: src/views/index-dtf/overview/components/ask-reserve-ai.tsx:98
 #: src/views/index-dtf/overview/components/index-ctas-overview-mobile.tsx:176
@@ -2118,6 +2118,7 @@ msgstr "매수"
 msgid "Buy {0}"
 msgstr "{0} 매수"
 
+#: src/components/design-system-v1/product-navigation-messages.ts:4
 #: src/views/index-dtf/overview/components/index-ctas-overview-mobile.tsx:148
 msgid "Buy / Sell"
 msgstr "매수 / 매도"
@@ -2334,7 +2335,7 @@ msgstr "분배 변경"
 msgid "Change diversity factor"
 msgstr "다양성 계수 변경"
 
-#: src/views/yield-dtf/governance/views/proposal/components/PreviewBox.tsx:38
+#: src/views/yield-dtf/governance/views/proposal/components/PreviewBox.tsx:40
 msgid "Change in:"
 msgstr "변경 내용:"
 
@@ -2725,7 +2726,7 @@ msgid "Confirming transaction"
 msgstr "트랜잭션 확인 중"
 
 #: src/components/vote-lock/migration/migration-modal.tsx:107
-#: src/views/index-dtf/issuance/manual/components/index-manual-issuance.tsx:202
+#: src/views/index-dtf/issuance/manual/components/index-manual-issuance.tsx:201
 msgid "Confirming transaction..."
 msgstr "트랜잭션 확인 중..."
 
@@ -2852,6 +2853,8 @@ msgstr "{0}(으)로 전환됨 — 세부 내역 보기"
 msgid "Converting basket tokens held in your wallet to {0}."
 msgstr "Wallet에 보유한 바스켓 토큰을 {0}(으)로 전환합니다."
 
+#: src/components/design-system-v1/copyable-value.tsx:102
+#: src/components/design-system-v1/copyable-value.tsx:177
 #: src/components/ui/copy-value.tsx:59
 #: src/components/ui/copy.tsx:23
 #: src/views/index-dtf/governance/components/governance-account-info.tsx:72
@@ -2867,6 +2870,10 @@ msgstr "복사됨!"
 #: src/views/yield-dtf/issuance/components/zapV2/minters-modal/SocialMediaInput.tsx:199
 msgid "Copy"
 msgstr "복사"
+
+#: src/components/design-system-v1/copyable-value.tsx:115
+msgid "Copy {copyValue} to clipboard"
+msgstr "{copyValue}을(를) 클립보드에 복사"
 
 #: src/views/index-dtf/components/navigation/index.tsx:316
 #: src/views/index-dtf/overview/components/index-token-address.tsx:135
@@ -2886,6 +2893,8 @@ msgstr "엔지니어링 팀과 공유할 페이로드 복사"
 msgid "Copy swap params to share with engineering team"
 msgstr "엔지니어링 팀과 공유할 스왑 파라미터 복사"
 
+#: src/components/design-system-v1/copyable-value.tsx:148
+#: src/components/design-system-v1/copyable-value.tsx:180
 #: src/components/ui/copy-value.tsx:60
 #: src/components/ui/copy.tsx:23
 #: src/views/index-dtf/governance/components/governance-account-info.tsx:72
@@ -2918,15 +2927,15 @@ msgstr "cow"
 msgid "CoW routes"
 msgstr "CoW 경로"
 
-#: src/views/index-dtf/auctions/views/rebalance/components/cowbot/use-cowbot-query.ts:93
+#: src/views/index-dtf/auctions/views/rebalance/components/cowbot/use-cowbot-query.ts:94
 msgid "CowBot encountered errors"
 msgstr "CowBot에서 오류가 발생했습니다"
 
-#: src/views/index-dtf/auctions/views/rebalance/components/cowbot/use-cowbot-query.ts:115
+#: src/views/index-dtf/auctions/views/rebalance/components/cowbot/use-cowbot-query.ts:117
 msgid "CowBot submitted {newOrdersCount} new order"
 msgstr "CowBot이 새 주문 {newOrdersCount}건을 제출했습니다"
 
-#: src/views/index-dtf/auctions/views/rebalance/components/cowbot/use-cowbot-query.ts:116
+#: src/views/index-dtf/auctions/views/rebalance/components/cowbot/use-cowbot-query.ts:118
 msgid "CowBot submitted {newOrdersCount} new orders"
 msgstr "CowBot이 새 주문 {newOrdersCount}건을 제출했습니다"
 
@@ -3668,8 +3677,8 @@ msgstr "DTF 카테고리 태그"
 msgid "DTF cover"
 msgstr "DTF 커버"
 
-#: src/views/home/components/highlighted-dtfs/performance-chart-launch-marker.tsx:37
-#: src/views/index-dtf/overview/components/charts/price-chart-launch-marker.tsx:41
+#: src/views/home/components/highlighted-dtfs/performance-chart-launch-marker.tsx:49
+#: src/views/index-dtf/overview/components/charts/price-chart-launch-marker.tsx:47
 msgid "DTF Created"
 msgstr "DTF 생성됨"
 
@@ -3708,8 +3717,8 @@ msgstr "DTF 아이콘"
 msgid "DTF Inactive"
 msgstr "DTF 비활성"
 
-#: src/views/home/components/highlighted-dtfs/performance-chart-launch-marker.tsx:37
-#: src/views/index-dtf/overview/components/charts/price-chart-launch-marker.tsx:41
+#: src/views/home/components/highlighted-dtfs/performance-chart-launch-marker.tsx:49
+#: src/views/index-dtf/overview/components/charts/price-chart-launch-marker.tsx:47
 msgid "DTF Launch"
 msgstr "DTF 출시"
 
@@ -3717,7 +3726,7 @@ msgstr "DTF 출시"
 msgid "DTF pages"
 msgstr "DTF 페이지"
 
-#: src/views/home/components/highlighted-dtfs/performance-chart-launch-marker.tsx:41
+#: src/views/home/components/highlighted-dtfs/performance-chart-launch-marker.tsx:53
 msgid "DTF price data"
 msgstr "DTF 가격 데이터"
 
@@ -3743,12 +3752,12 @@ msgid "DTF updated successfully"
 msgstr "DTF가 성공적으로 업데이트되었습니다"
 
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v4-upgrade.tsx:133
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v4-upgrade.tsx:141
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v4-upgrade.tsx:140
 msgid "DTF V4.0.0 upgrade proposal created"
 msgstr "DTF V4.0.0 업그레이드 제안이 생성되었습니다"
 
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v5-upgrade.tsx:155
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v5-upgrade.tsx:163
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v5-upgrade.tsx:162
 msgid "DTF V5.0.0 upgrade proposal created"
 msgstr "DTF V5.0.0 업그레이드 제안이 생성되었습니다"
 
@@ -3860,8 +3869,6 @@ msgstr "예: 포함될 토큰, 전략, 방법론"
 #: src/views/yield-dtf/governance/views/proposal/components/revenue-destinations-proposal.tsx:166
 msgid "Each holder's eUSD balance × multiplier sets its recipient's share of the router's revenue. Multipliers are not percentages; 1 means 1×. Only add holders whose balances third parties cannot inflate. Changed or removed destinations are removed first, then new values are added, in one proposal."
 msgstr "각 holder의 eUSD 잔액 × 배수가 해당 수령인이 받는 라우터 수익의 몫을 결정합니다. 배수는 백분율이 아니며 1은 1×를 의미합니다. 제3자가 잔액을 부풀릴 수 없는 holder만 추가하세요. 변경되거나 삭제된 대상은 먼저 제거된 후 새 값이 추가되며, 모두 하나의 제안으로 처리됩니다."
-
-#: src/views/yield-dtf/governance/views/proposal/components/revenue-destinations-proposal.tsx:152
 
 #: src/components/rtoken-setup/basket/BackupBasket.tsx:39
 msgid "Each target unit of your primary basket will have defined emergency collateral to replace with in case of default."
@@ -4122,12 +4129,12 @@ msgstr "예상 APY"
 msgid "Est. APY:"
 msgstr "예상 APY:"
 
-#: src/views/home/components/highlighted-dtfs/performance-chart-launch-marker.tsx:39
+#: src/views/home/components/highlighted-dtfs/performance-chart-launch-marker.tsx:51
 msgid "Est. Hist. Price ✱"
 msgstr "추정 과거가격 ✱"
 
-#: src/views/home/components/highlighted-dtfs/performance-chart-launch-marker.tsx:38
-#: src/views/index-dtf/overview/components/charts/price-chart-launch-marker.tsx:43
+#: src/views/home/components/highlighted-dtfs/performance-chart-launch-marker.tsx:50
+#: src/views/index-dtf/overview/components/charts/price-chart-launch-marker.tsx:49
 msgid "Est. Historical Price ✱"
 msgstr "추정 과거 가격 ✱"
 
@@ -4135,7 +4142,7 @@ msgstr "추정 과거 가격 ✱"
 msgid "Est. Partner Revenue"
 msgstr "예상 파트너 수익"
 
-#: src/views/home/components/highlighted-dtfs/performance-chart-launch-marker.tsx:40
+#: src/views/home/components/highlighted-dtfs/performance-chart-launch-marker.tsx:52
 msgid "Est. Price ✱"
 msgstr "추정 가격 ✱"
 
@@ -4952,7 +4959,7 @@ msgstr "해시"
 msgid "Have RSR on another chain? Bridge to BSC"
 msgstr "다른 체인에 RSR이 있나요? BSC로 브리지하세요"
 
-#: src/views/index-dtf/issuance/manual/components/index-manual-issuance.tsx:253
+#: src/views/index-dtf/issuance/manual/components/index-manual-issuance.tsx:252
 msgid "Having issues minting?"
 msgstr "Mint에 문제가 있나요?"
 
@@ -5192,7 +5199,7 @@ msgstr "출금 진행 중"
 #: src/components/inactive-badge.tsx:18
 #: src/views/home/components/discover-index-dtf/index-dtf-table-columns.tsx:197
 #: src/views/home/components/discover-yield-dtf/yield-dtf-card.tsx:95
-#: src/views/home/components/highlighted-dtfs/feature-card-header.tsx:130
+#: src/views/home/components/highlighted-dtfs/feature-card-header.tsx:133
 msgid "Inactive"
 msgstr "비활성"
 
@@ -5953,7 +5960,7 @@ msgstr "시가총액"
 msgid "Market cap:"
 msgstr "시가총액:"
 
-#: src/views/home/components/discover-index-dtf/index.tsx:15
+#: src/views/home/components/discover-index-dtf/discover-index-dtf-card.tsx:12
 msgid "Market Cap:"
 msgstr "시가총액:"
 
@@ -6144,7 +6151,7 @@ msgstr "경미한 텍스트 수정"
 #: src/views/home/components/discover-yield-dtf/token-actions.tsx:42
 #: src/views/index-dtf/issuance/async-mint/steps/configure-mint.tsx:151
 #: src/views/index-dtf/issuance/async-mint/steps/success.tsx:149
-#: src/views/index-dtf/issuance/manual/components/index-manual-issuance.tsx:195
+#: src/views/index-dtf/issuance/manual/components/index-manual-issuance.tsx:194
 #: src/views/index-dtf/overview/components/index-transaction-table-with-swaps/columns.tsx:23
 #: src/views/index-dtf/overview/components/index-transaction-table.tsx:24
 #: src/views/yield-dtf/issuance/components/issue/Issue.tsx:97
@@ -6504,9 +6511,9 @@ msgstr "새 TVL 수수료:"
 msgid "New units"
 msgstr "신규 단위"
 
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:314
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v4-upgrade.tsx:167
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v5-upgrade.tsx:189
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:312
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v4-upgrade.tsx:165
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v5-upgrade.tsx:187
 msgid "New version available"
 msgstr "새 버전 사용 가능"
 
@@ -6591,7 +6598,7 @@ msgstr "이 Redeem에는 담보 Swap이 필요하지 않았습니다."
 
 #: src/components/charts/area/AreaChart.tsx:131
 #: src/views/home/components/discover-index-dtf/index-dtf-table-columns.tsx:109
-#: src/views/home/components/highlighted-dtfs/feature-card-header.tsx:160
+#: src/views/home/components/highlighted-dtfs/feature-card-header.tsx:166
 #: src/views/index-dtf/overview/components/charts/percentage-change.tsx:32
 #: src/views/top100/components/top100-table.tsx:35
 #: src/views/top100/components/top100-table.tsx:43
@@ -6686,7 +6693,7 @@ msgstr "이 지갑에서 Reserve 활동을 찾을 수 없습니다"
 msgid "No results found."
 msgstr "결과를 찾을 수 없습니다."
 
-#: src/components/ui/data-table.tsx:349
+#: src/components/ui/data-table.tsx:378
 msgid "No results."
 msgstr "결과 없음."
 
@@ -7245,10 +7252,10 @@ msgstr "대기 중, Wallet에서 서명하세요"
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-folio-governance-upgrade.tsx:154
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-governance-spell-31-03-2025.tsx:304
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-governance-spell-31-03-2025.tsx:430
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:344
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:342
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-retire-vote-lock.tsx:139
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v4-upgrade.tsx:188
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v5-upgrade.tsx:217
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v4-upgrade.tsx:186
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v5-upgrade.tsx:215
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-vote-lock-upgrade.tsx:215
 #: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/components/submit-proposal-button.tsx:186
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/submit-proposal-button.tsx:184
@@ -7409,7 +7416,7 @@ msgstr "여기를 참조하세요."
 msgid "Please select an asset to claim"
 msgstr "청구할 자산을 선택하세요"
 
-#: src/views/index-dtf/issuance/manual/components/index-manual-issuance.tsx:200
+#: src/views/index-dtf/issuance/manual/components/index-manual-issuance.tsx:199
 msgid "Please sign in wallet..."
 msgstr "Wallet에서 서명해 주세요..."
 
@@ -7703,12 +7710,12 @@ msgstr "제안 생성됨"
 
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-folio-governance-upgrade.tsx:58
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:276
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:284
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:283
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-retire-vote-lock.tsx:69
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v4-upgrade.tsx:132
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v4-upgrade.tsx:140
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v4-upgrade.tsx:139
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v5-upgrade.tsx:154
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v5-upgrade.tsx:162
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v5-upgrade.tsx:161
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-vote-lock-upgrade.tsx:125
 msgid "Proposal created!"
 msgstr "제안이 생성되었습니다!"
@@ -7819,9 +7826,9 @@ msgstr "새 백업 구성 제안"
 msgid "Propose new basket"
 msgstr "새 바스켓 제안"
 
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:346
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v4-upgrade.tsx:190
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v5-upgrade.tsx:219
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:344
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v4-upgrade.tsx:188
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v5-upgrade.tsx:217
 msgid "Propose upgrade"
 msgstr "업그레이드 제안하기"
 
@@ -8132,7 +8139,7 @@ msgstr "레코드 제한"
 #: src/views/explorer/components/transactions/useTransactionColumns.tsx:31
 #: src/views/index-dtf/issuance/async-mint/steps/configure-mint.tsx:154
 #: src/views/index-dtf/issuance/async-mint/steps/success.tsx:152
-#: src/views/index-dtf/issuance/manual/components/index-manual-issuance.tsx:195
+#: src/views/index-dtf/issuance/manual/components/index-manual-issuance.tsx:194
 #: src/views/index-dtf/overview/components/index-transaction-table-with-swaps/columns.tsx:24
 #: src/views/index-dtf/overview/components/index-transaction-table.tsx:25
 #: src/views/yield-dtf/issuance/components/redeem/RedeemInput.tsx:16
@@ -8331,7 +8338,7 @@ msgstr "Safe에서 거부했나요? 다시 서명하기"
 msgid "Related Contracts"
 msgstr "관련 컨트랙트"
 
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v4-upgrade.tsx:170
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v4-upgrade.tsx:168
 msgid "Release 4.0.0 improves the the way in which DTFs are rebalanced. At a high level, the new rebalance mechanism is able to consider the entire basket at once instead of requiring individual 2-token auctions to be proposed in advance and performed in isolation. See docs.reserve.org for more details."
 msgstr "4.0.0 릴리스는 DTF가 리밸런싱되는 방식을 개선합니다. 큰 틀에서, 새로운 리밸런싱 메커니즘은 개별 2-토큰 경매를 미리 제안하고 개별적으로 수행할 필요 없이 전체 바스켓을 한 번에 고려할 수 있습니다. 자세한 내용은 docs.reserve.org를 참조하세요."
 
@@ -8505,7 +8512,7 @@ msgid "Reserve logo"
 msgstr ""
 
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:277
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:285
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:284
 msgid "Reserve Optimistic Governor Upgrade proposal created"
 msgstr "Reserve Optimistic Governor 업그레이드 제안이 생성됨"
 
@@ -9289,7 +9296,7 @@ msgstr "제한 관할권 보기"
 msgid "Showing {startItem} to {endItem} of {totalCount} DTFs"
 msgstr "{totalCount}개 DTF 중 {startItem}~{endItem} 표시 중"
 
-#: src/components/ui/data-table-pagination.tsx:88
+#: src/components/ui/data-table-pagination.tsx:54
 msgid "Showing {visibleRowCount} out of {filteredRowCount}"
 msgstr "{filteredRowCount}개 중 {visibleRowCount}개 표시"
 
@@ -9888,11 +9895,11 @@ msgstr "수동 Redeem으로 전환"
 msgid "Switch to manual redemption"
 msgstr "수동 Redeem으로 전환"
 
-#: src/views/index-dtf/issuance/manual/components/index-manual-issuance.tsx:261
+#: src/views/index-dtf/issuance/manual/components/index-manual-issuance.tsx:260
 msgid "Switch to zap minting"
 msgstr "Zap Mint로 전환하기"
 
-#: src/views/index-dtf/issuance/manual/components/index-manual-issuance.tsx:263
+#: src/views/index-dtf/issuance/manual/components/index-manual-issuance.tsx:262
 msgid "Switch to zap redeeming"
 msgstr "Zap Redeem으로 전환하기"
 
@@ -10737,6 +10744,10 @@ msgstr "Reserve 활동을 추적해 보세요"
 msgid "Tracking since {0}"
 msgstr ""
 
+#: src/components/design-system-v1/product-navigation-messages.ts:5
+msgid "Trade"
+msgstr "거래"
+
 #. placeholder {0}: inputToken.symbol
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1005
 msgid "Trade {0} into collateral"
@@ -10850,7 +10861,7 @@ msgid "Transaction confirmed"
 msgstr "트랜잭션이 확인되었습니다"
 
 #: src/components/transaction-modal/index.tsx:145
-#: src/views/index-dtf/issuance/manual/components/index-manual-issuance.tsx:228
+#: src/views/index-dtf/issuance/manual/components/index-manual-issuance.tsx:227
 msgid "Transaction failed"
 msgstr "트랜잭션 실패"
 
@@ -11431,8 +11442,6 @@ msgstr "확보된 담보를 사용하여 DTF를 Mint합니다."
 #: src/components/rtoken-setup/governance/GovernanceSetup.tsx:49
 msgid "Use the Alexios governor format?"
 msgstr "Alexios 거버너 형식을 사용하시겠습니까?"
-
-#: src/views/yield-dtf/governance/views/proposal/components/revenue-destinations-proposal.tsx:140
 
 #: src/views/index-dtf/overview/components/yield-index/yield-index-composition-tabs.tsx:15
 msgid "Used in"
@@ -12080,10 +12089,10 @@ msgstr "담보 대기 중"
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-folio-governance-upgrade.tsx:155
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-governance-spell-31-03-2025.tsx:305
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-governance-spell-31-03-2025.tsx:431
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:345
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:343
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-retire-vote-lock.tsx:140
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v4-upgrade.tsx:189
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v5-upgrade.tsx:218
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v4-upgrade.tsx:187
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v5-upgrade.tsx:216
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-vote-lock-upgrade.tsx:216
 #: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/components/submit-proposal-button.tsx:188
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/submit-proposal-button.tsx:186
@@ -12136,7 +12145,7 @@ msgid "Warning: High price impact"
 msgstr "경고: 높은 가격 영향"
 
 #. placeholder {0}: selectedVersion.symbol
-#: src/views/home/components/highlighted-dtfs/transcript-preview.tsx:83
+#: src/views/home/components/highlighted-dtfs/transcript-preview.tsx:86
 msgid "Watch {0} explainer"
 msgstr "{0} 설명 영상 보기"
 
@@ -12152,7 +12161,7 @@ msgstr "설명 영상 보기"
 msgid "Watch Explainer"
 msgstr "설명 영상 보기"
 
-#: src/views/home/components/highlighted-dtfs/transcript-preview.tsx:86
+#: src/views/home/components/highlighted-dtfs/transcript-preview.tsx:89
 msgid "Watch Video"
 msgstr "영상 보기"
 

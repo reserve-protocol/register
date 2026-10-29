@@ -1,6 +1,6 @@
 ---
 title: Zapper Prompt
-updated: 2026-09-16
+updated: 2026-09-21
 type: domain
 sources:
   - src/views/index-dtf/components/zapper/**
@@ -12,7 +12,8 @@ Side-card next to the instant zapper (`ZapperWrapper` → `LargeMintPrompt`) tha
 raises the strongest applicable **Ondo-market** concern about the current
 trade. Despite the legacy file names it is purely informational since
 react-zapper 2.7.0: the zapper itself quotes RFQ/intent sources (CoW Swap
-`cowswap`, PancakeSwap X `pcsx`) alongside the aggregators, so every
+`cowswap`, Velora, and BSC-only PancakeSwap X `pcsx`) alongside its other
+available routes. The Register host disables Enso globally. Therefore every
 redirect-for-price variant (`better-price`, `impact`, `large`, `error`) and the
 external CTA were removed — there is no better venue to send the user to.
 Renders in both mounts: inline on the issuance route, and portal-attached to
@@ -91,3 +92,11 @@ countdown, using the API's next opening or the US-market schedule fallback.
 - Mixpanel: `mint_prompt_shown` / `mint_prompt_dismiss` (props: variant, tab),
   one impression per surfaced variant. The `swap_redirect` CTA event is gone
   with the CTA.
+- `ZapperWrapper` keeps one mounted package element across connected and
+  disconnected wallet states; changing the element type remounts an in-flight
+  transaction. Its current package evidence is versioned product input, not
+  authority to change the accepted design-system presentation.
+- Deep-liquidity search and force-mint settings are locked off only for the
+  explicit featured BSC DTF allowlist in `locked-zap-settings.ts`; that product
+  constraint must stay explicit in product tests and relevant examples, rather
+  than becoming the assumed default for every Zapper.
