@@ -289,7 +289,7 @@ const SubmitButton = () => {
         throw new Error(body.message)
       }
       track('submit_successful')
-      toast.success(t`DTF updated successfully`, { position: 'bottom-right' })
+      toast.success(t`DTF updated successfully`)
       updateBrandData(payload as IndexDTFBrand)
       // The brand atom is fed from the SDK's full index DTF query — refresh
       // that one query so a stale cache doesn't clobber the saved data.
@@ -305,7 +305,7 @@ const SubmitButton = () => {
       setState('idle')
     } catch (e: any) {
       console.error('Error submitting form:', e)
-      toast.error(t`Failed to update DTF`, { position: 'bottom-right' })
+      toast.error(t`Failed to update DTF`)
       setError(e?.message ?? t`Unexpected error`)
       setState('idle')
     }

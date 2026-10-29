@@ -7,12 +7,6 @@ import Header from './header'
 // Lazy so visitors who never open it don't pay for the chat bundle.
 const DtfChat = lazy(() => import('@/components/dtf-chat'))
 
-/**
- * Application Layout
- *
- * @param children - required
- * @returns {JSX.Element}
- */
 const Layout = ({ children }: { children: ReactNode }) => {
   const { pathname } = useLocation()
   const isIndexDtfOverview =

@@ -1,8 +1,5 @@
 import { btcPriceAtom } from '@/state/chain/atoms/chainAtoms'
-import {
-  indexDTFAtom,
-  performanceTimeRangeAtom,
-} from '@/state/dtf/atoms'
+import { indexDTFAtom, performanceTimeRangeAtom } from '@/state/dtf/atoms'
 import { useAtomValue } from 'jotai'
 import { useMemo } from 'react'
 import useBTCPriceHistory from '../../hooks/use-btc-price-history'
@@ -122,8 +119,7 @@ export function usePriceChartData({ isBTCMode }: { isBTCMode: boolean }) {
   return {
     history,
     btcHistory,
-    rangeAvailabilityHistory:
-      range === '1y' ? history : oneYearHistory,
+    rangeAvailabilityHistory: range === '1y' ? history : oneYearHistory,
     timeseries,
     fullTimeseries,
     xDomain:
@@ -139,33 +135,4 @@ export function usePriceChartData({ isBTCMode }: { isBTCMode: boolean }) {
   }
 }
 
-export function useXAxisTicks(
-  chartData: { timestamp: number }[],
-  isMobile: boolean,
-  xDomain?: readonly [number, number]
-) {
-  return useMemo(() => {
-    if (xDomain) {
-      const [start, end] = xDomain
-      if (start >= end) return []
-
-      const positions = isMobile
-        ? [0.15, 0.38, 0.62, 0.85]
-        : [0.05, 0.23, 0.41, 0.59, 0.77, 0.95]
-
-      return positions.map((position) =>
-        Math.round(start + (end - start) * position)
-      )
-    }
-
-    if (chartData.length === 0) return []
-
-    const mobilePositions = [0.15, 0.38, 0.62, 0.85]
-    const desktopPositions = [0.05, 0.23, 0.41, 0.59, 0.77, 0.95]
-    const positions = isMobile ? mobilePositions : desktopPositions
-
-    return positions
-      .map((i) => chartData[Math.floor(chartData.length * i)]?.timestamp)
-      .filter(Boolean)
-  }, [chartData, isMobile, xDomain])
-}
+export { useXAxisTicks } from './use-x-axis-ticks'

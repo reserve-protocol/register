@@ -1,6 +1,6 @@
 ---
 title: Decisions
-updated: 2026-07-08
+updated: 2026-10-29
 type: decision
 ---
 
@@ -30,7 +30,7 @@ The vote-lock (staking-vault deposit) flow deliberately has no geo/compliance re
 
 ## 2026-07-03 — Ondo cap is weighted per asset; unavailable minting gets its own prompt variants
 
-Supersedes the min-cap semantics recorded as "the confirmed product ask" in cowswap-prompt-rework: the Ondo per-transaction limits are per *asset*, and each asset only absorbs its basket-weight fraction of a DTF mint, so the binding DTF cap is `min(capacityUsd / weight)` — e.g. a $200k cap on an 18.68% weight binds at ~$1.07M of DTF, not $200k. Displayed and compared floored to $10k steps ($1k under $10k) so the trigger matches the label. Confirmed by the product owner (Jorge), who also set the rest of the model: the capacity card stays pre-quote but only fires while minting is *available* (market open, every reported cap > 0); while minting is *unavailable* (market closed or an asset paused at cap 0) quotes defer to un-arbitrageable secondary pools, so a resolved non-enso quote above the existing 1% `truePriceImpact` threshold (deliberately not the widget's 5% alert) shows `closed-impact` and a quote failure shows `closed-error` — both say when to come back (exact `market.nextOpen` when closed; next tradable session otherwise, missing session buckets falling back to the regular cap like the API's `sessionCapacity`) and never show a CoW CTA, since CoW liquidity is equally stale while arbitrage is blocked. Limits are per transaction, so the capacity copy invites splitting large orders.
+Supersedes the min-cap semantics recorded as "the confirmed product ask" in cowswap-prompt-rework: the Ondo per-transaction limits are per _asset_, and each asset only absorbs its basket-weight fraction of a DTF mint, so the binding DTF cap is `min(capacityUsd / weight)` — e.g. a $200k cap on an 18.68% weight binds at ~$1.07M of DTF, not $200k. Displayed and compared floored to $10k steps ($1k under $10k) so the trigger matches the label. Confirmed by the product owner (Jorge), who also set the rest of the model: the capacity card stays pre-quote but only fires while minting is _available_ (market open, every reported cap > 0); while minting is _unavailable_ (market closed or an asset paused at cap 0) quotes defer to un-arbitrageable secondary pools, so a resolved non-enso quote above the existing 1% `truePriceImpact` threshold (deliberately not the widget's 5% alert) shows `closed-impact` and a quote failure shows `closed-error` — both say when to come back (exact `market.nextOpen` when closed; next tradable session otherwise, missing session buckets falling back to the regular cap like the API's `sessionCapacity`) and never show a CoW CTA, since CoW liquidity is equally stale while arbitrage is blocked. Limits are per transaction, so the capacity copy invites splitting large orders.
 
 ## 2026-07-06 — Chart granularity: fetch what the API has, bucket client-side for display density
 
@@ -43,3 +43,845 @@ The "choppy charts" task was solved by granularity policy, not by smoothing: the
 ## 2026-07-08 — Workflow process calibrated on two axes: radius × size
 
 Every prompt was paying full-stage cost. Audit showed the mechanical gate is ~32s total (kept as the floor); the real cost was spawned reviewer pairs, double gate runs, visual evidence, and wiki ingest applied to diffs of any size. `skills/workflow.md` § Calibrate: Radius × Size now separates two independent questions: **blast radius** (how far can it break — buys checks and review) and **work size** (how much work — buys ceremony). Four profiles: **touch-up** (trivial+isolated: scoped verify + self-review), **low** (contained slice — button, visual change, in-domain fix: + self-review through fired lenses, eyeball if rendered output changed), **medium** (wide radius, modest size — the shared-machinery bugfix: one stage with spawned reviewers, full gate, one row, ingest only stale pages; no plan/phases), **high** (multi-phase or cross-package: plan → stages, whole-feature review at the end). The axes are the point: collapsing them into one ladder over-processes small risky fixes and under-reviews big "simple" ones. A fired lens names what to check, not who checks it — reviewer pairs spawn at medium/high only. `scope.mjs` prints per-axis mechanical signals (risk lenses → radius, >5 files → size) plus a profile hint, and `gate-equivalent: yes` when a scoped run covered every gate command (it then counts as the closeout gate). When debating two profiles, take the heavier one; the ledger-drift lint is the backstop against profile abuse. Kit and register stay byte-identical on kit-owned files. Follow-up guardrails (same day): ledger rows are pointers, not narratives — wiki-lint caps them at `wiki.ledgerRowMaxChars` (700); downgrades below a fired radius signal must be stated with a reason; profile boundaries change only on misfires recorded in [[log]].
+
+## 2026-08-13 — Modal widths follow content roles; workflows do not resize between states
+
+Design-system v1 starts with a 432px substantial-task role and a 384px compact-confirmation role. Zapper establishes the substantial role and stays 432px through quote, pending, error, and completion. Its real package-owned success view includes received and used values, transaction details, expandable content, and optional contact or scheduling panels, so treating it as a tiny completion message was misleading. The compact role is reserved for a short acknowledgement with one consequence and one action; forms, warnings, transaction detail, or multiple decisions use 432px. A wide role remains open only for structurally wider content. Long financial values are formatted for reading within the role—grouped and intentionally rounded—while exact precision remains available in details or copy affordances.
+
+## 2026-08-13 — Auctions is the V1 layout migration; Governance is deferred
+
+Auctions will replace its separate centered list and detail islands with a persistent browse-and-inspect composition. This improves the task enough to justify structural work during V1, but the opened auction must be recomposed for the wider workspace rather than stretching its current narrow card. Exact list width, responsive routing, and detail composition are decided against real auction states when that migration begins. Governance keeps its current composition during the compressed V1 schedule; foundations and components can improve it without making a proposal-summary redesign a prerequisite. Its browse-and-summary direction remains later work, where a selected panel must clearly be a complete summary linking to the dedicated full proposal route.
+
+## 2026-08-13 — V1 candidates share semantic roles and combinable state axes
+
+Component-family work consumes a lab-only semantic role map instead of choosing legacy color tokens case by case. It aliases reviewed content, substrate, neutral control, selected, line, focus, disabled, and feedback roles while exact values and production token migration remain open. Intent, selection, focus, validation, disabled, and async lifecycle may combine, so the lab shows important pairings rather than one exclusive state list. Default entered/selected values use 16px/300, compact values use 14px/300, and action labels use 14px/500. Atomic one-row controls—including ordinary inputs, search, and select triggers—use full radius; multiline fields, menus, popovers, and thumbnails use the restrained 8px role. The composite-amount clause originally recorded here was superseded by the 2026-08-31 square transaction-amount decision, which was itself superseded by the 2026-09-04 restrained-radius decision below. Earlier 8px one-row input/select experiments are superseded.
+
+## 2026-08-14 — Rendered output, reusable implementation, and adoption are separate
+
+A lab proposal does not prove that a reusable component exists. Component metadata records rendered-output status, implementation status (`none`, `specimen`, or `canonical-candidate`), and product adoption independently. Once a component is called canonical, its active state sheet and dependent canonical lab compositions import the real candidate rather than maintaining visual replicas. The first enforced boundary is Button: the accepted V1 action contract now lives in `src/components/button/`, while the legacy production Button and product consumers remain unchanged until an explicit adoption slice.
+
+## 2026-08-14 — Design-system verification follows the current blast radius
+
+Bounded component iterations verify the current component seam and affected rendered behavior; coherent canonicalization checkpoints verify the reconciled design-system batch; full repository gates are reserved for production adoption, shared/global changes, release work, or another genuine integration boundary. An accumulated dirty design-system diff is not rerun as a full repository gate after every small visual change. The running lab may be reused for iterative visual checks, while canonical Playwright checkpoints retain their controlled `VITE_E2E` server and must not compete with another suite on port 3005.
+
+## 2026-08-14 — Button width belongs to the action-group composition
+
+V1 Buttons remain intrinsic/content-width by default. Compact actions are primarily horizontal or inline controls and should not routinely stretch to fill a parent. When actions must stack vertically in a narrow surface, use equal widths—normally full-width default 44px actions—rather than vertically stacking different intrinsic widths. This is parent-layout guidance, not a new Button size or width variant.
+
+## 2026-08-14 — Canonical composition review requires canonical or retained dependencies
+
+A rendered composition is ready for canonical V1 review only when every visually meaningful dependency is either a real reusable V1 candidate or an explicitly retained domain/behavior primitive. Otherwise the lab labels it provisional, blocked, or exploration-only and states the narrow scope that may be judged. This prevents a canonical child inside copied framing from making the entire specimen appear canonical. The first dependency-complete composition is the real eligibility dialog: canonical Button, 20px square binary Checkbox, compact named IconButton, and minimal Radix-backed Dialog shell, with Radix Collapsible and inline legal links explicitly retained. Unresolved Checkbox/IconButton variants, final dialog elevation, outcomes, illustration, constrained-screen behavior, Table/DataRow, and production adoption remain outside this promotion.
+
+## 2026-08-18 — Rich records share foundations, not a universal Row
+
+Governance proposals and Auction rebalance selectors remain distinct reviewed
+compositions. Both use square structural records, a 24px outer inset, 16px
+between internal regions, 8px between related rows, 4px for tight icon/text
+pairs, 16px/500 titles, and reusable lifecycle and Metric seams. This shared
+grammar does not promote Table/DataRow to canonical V1. Lifecycle Status was
+subsequently promoted after this pressure test established its reusable
+contract; the rich-record compositions themselves remain separate and
+provisional.
+
+On 2026-09-24, the governance record's status, progress strip, and decision
+evidence were kept in that order for the provisional specimen. The progress
+strip now has 12px on either side so its related information reads as one
+group; the title remains separated by the 16px internal-region gap. This does
+not change the production governance list or promote the specimen.
+
+Auction selector items show the current auction state and only the timing needed
+to decide what happens next. Current-auction bid count and value traded remain
+in the selected/full view. Operational and historical selector evidence reuses
+inline Metric anatomy with consistent 16px/500 value emphasis; provenance reads
+as one left-aligned sentence. At constrained widths, status wraps below the
+title rather than squeezing it. Neutral lifecycle surfaces and borders are
+opaque semantic colors so their appearance does not depend on the parent
+surface.
+
+## 2026-08-18 — Lifecycle Status is canonical; other compact labels are not
+
+The reviewed 24px Lifecycle Status component is a canonical V1 candidate after
+pressure testing across Governance proposals and Auction rebalance selectors.
+It owns waiting, active, actionable, processing, success, unsuccessful, and
+closed roles; standardized unframed indicators; opaque semantic tones; a
+separate subtle countdown pill; and motion only for short indeterminate
+processing. The pill remains intrinsically sized to its contents even when it
+is placed directly in a stretching grid or flex context. This promotion does
+not generalize category labels, counts,
+qualifiers, removable chips, proposal progress, or outcome-detail composition,
+and it does not imply production adoption.
+
+On 2026-09-03, exact compact geometry was reopened for human review after
+Lifecycle Status needed to sit beside the canonical 28px micro action in dense
+automated-mint order metadata. The lab now trials a 28px intrinsic height with
+10px leading and 12px trailing inset when an indicator is present, and 12px on
+both sides without one. The accepted roles, tones, indicators, motion rules,
+and 12px label remain unchanged. This trial does not replace the reviewed 24px
+decision until human visual review accepts it.
+
+## 2026-08-18 — Structural content regions and interactive Cards are separate jobs
+
+Square white page regions, the ordinary 24px content axis, layout-owned
+substrate-reveal corners, and the absence of a default nested-card treatment are
+already foundation decisions. They do not require a universal Card component.
+
+Repeated interactive objects remain a component-level job. The Home feature
+card is authoritative existing design rather than an unresolved alternative.
+Its V1 review is delta-based: judge only the accepted square outer structure,
+4px shell inset with square inner media (September 14 refinement below), 24px primary and supporting-row content
+axes, 16px internal-region gap, and 8px directly related content gap. The title
+flows without a hidden fixed-height reservation: both Home and Discover measure
+16px from the complete top row to the name and 8px from the name to its market
+row; Discover's taller chart therefore creates the appropriate additional
+distance from its smaller logo without a separate spacing rule. Full chart
+density and launch treatment, identity and
+market context, exposure ticker, transcript/video, chain variants, and
+whole-card interaction form a preservation contract and cannot be removed just
+because a static lab moment does not expose them. The compact Discover treatment
+is supporting adaptation evidence. The legacy shared Card default remains
+evidence only: it is not a migration target, and this review does not change
+production adoption or define non-media card families.
+
+## 2026-09-14 — Highlighted-card framing stays separate from chart geometry
+
+The user accepted, for now, a square outer shell and square inner media with a
+4px card-colored surround, replacing the earlier 8px inset/rounded-media delta.
+The beige-to-card gradient begins immediately inside that surround. Identity
+content stays 24px from the outer edge; the plot spans the gradient width.
+The gradient and thin frame distinguish highlighted cards without a rounded
+cutout whose contrast disappears into the fade. These are highlighted-card
+context rules, not chart-owned padding or a universal Card API. The chart lab
+shows the revised excerpt; the earlier full-card study is historical framing
+evidence until explicitly refreshed. Production adoption remains separate.
+
+## 2026-08-19 — V1 work is canonical-first and feedback updates its owner
+
+Design-system work now begins by synthesizing the strongest complete candidate
+from existing audits, accepted foundations, reusable components and recipes,
+and strong product evidence. Decision lanes apply only to the meaningful
+judgment left after that synthesis and self-review; they are not a question-first
+runway. Current Review therefore contains a nearly complete candidate at the
+boundary of what Codex can confidently resolve, not every unfinished slot.
+
+After meaningful feedback, classify it as local, component,
+pattern/composition, foundation, or reusable heuristic and update the most
+reusable justified owner immediately. Unrelated consumers, documentation,
+baselines, and broad verification may be reconciled at the next synchronization
+boundary. A `canonical-candidate` is a reusable implementation, while a
+`current-baseline` is the human-reviewed visual contract that new work inherits;
+implementation alone cannot make a dependency authoritative. Studies remains
+reserved for genuine alternatives, high-impact ambiguity, and active pressure
+tests.
+
+## 2026-08-19 — Current baselines compound without becoming permanent
+
+Design authority is independent from rendered output, reusable implementation,
+and production adoption. A `current-baseline` is the authoritative answer that
+new work inherits today; realistic composition or later design feedback may
+still revise its owning foundation, component, or recipe. Exploratory work does
+not become authoritative merely because it renders, and a reusable candidate
+does not become authoritative merely because code exists.
+
+When downstream work needs a dependency, resolve an undefined prerequisite,
+promote an existing but non-consumable baseline into the smallest justified
+reusable component or recipe, or consume the existing reusable source directly.
+Do not reconstruct an accepted treatment locally. The contained-selection
+visual language is the first explicit recipe boundary: its compact/default
+geometry and states live in
+`src/components/design-system-v1/contained-selection.ts` and are consumed by
+SingleChoice. Its 2px track inset is also the 2px gap between items so adjacent
+hovered and selected shapes remain optically distinct. The default layout is
+intrinsic: the track wraps its items and each item wraps its content. An
+explicit full-width layout makes the track fill its parent and all peer items
+grow equally while their accepted geometry fits. Below that readable minimum,
+the full-width track preserves intrinsic peer geometry, scrolls horizontally,
+and reveals the selected option rather than compressing or wrapping labels. The
+contained Tabs presentation is bound to
+`src/components/design-system-v1/tab-presentation.ts`. Text-only Tabs were
+subsequently removed from the Tabs baseline once their strongest assumed uses
+were correctly classified and transferred to Segmented Control behavior.
+
+SingleChoice exposes only the default 44px size for now. Compact or micro
+versions should be added only when a real product use requires them rather than
+preemptively expanding the component API.
+
+## 2026-08-20 — Segmented Control presentations accepted
+
+Segmented Control is the current V1 baseline for immediate selection among a
+small set of peer modes. It owns the reviewed unframed text-only compact/default
+treatment and the shared contained compact/default treatment without inheriting
+Tabs panel semantics or SingleChoice form-value semantics. Intrinsic is the
+ordinary text-only layout; the compact DTF overview chart range is the evidenced
+full-width mobile case and distributes its peers across the available width.
+Icons, counts, tiny sizing, routes, panels, and production adoption remain
+outside the accepted contract.
+
+## 2026-08-19 — SingleChoice default presentation accepted
+
+The one-row submitted-value SingleChoice control is a current V1 baseline. It
+uses the default 44px contained-selection geometry, 14px/500 labels, 20px item
+padding, full radius, a 2px track inset and peer gap, and the shared intrinsic
+versus equal-growth full-width rule. A full-width group falls back to intrinsic
+horizontal overflow and keeps its selected option visible when its peers cannot
+fit without breaking that geometry. Only this pill-style form-value job is
+accepted; standard radio rows, rich choice cards, compact/micro sizes, and
+production adoption remain open until real usage requires them.
+
+## 2026-08-19 — Repeated preset-or-custom form composition accepted
+
+The repeated governance-parameter composition is an accepted V1 pattern. It
+uses the 24px contained-form inset and complete-group rhythm without nested
+tinted cards or divider-dependent grouping. `PresetOrCustomField` composes the
+accepted SingleChoice and TextInput controls as two mutually exclusive sources
+for one value: typing selects an explicit Custom option, choosing a preset
+clears custom entry, and Custom owns custom validation. At constrained widths
+the controls stack at full width; SingleChoice preserves its 44px geometry and
+uses selected-option-aware horizontal overflow when its peers cannot fit.
+Business validation and governance semantics remain feature-owned, and no
+production consumer is adopted by this decision.
+
+## 2026-08-19 — Read-only fields stay context-neutral
+
+The shared Field/TextInput candidate does not add a lock icon automatically for
+`readOnly`. Read-only behavior and the quiet non-editable surface belong to the
+component; a lock or permission explanation belongs to the composition only
+when the reason is important or surprising. A summary/review display should use
+an information or key/value row rather than a read-only input. Disabled fields
+preserve visible values and use the shared disabled treatment; form submission
+progress remains owned by the action or form lifecycle rather than becoming a
+generic field state.
+
+## 2026-08-19 — Field and TextInput baseline accepted
+
+The ordinary short-value Field/TextInput anatomy is a current V1 baseline:
+visible 14px/500 labels; 16px/300 entered values; 14px/300 supporting and error
+copy; an 8px label/control/help relationship; a 44px fully rounded control;
+20px ordinary horizontal inset; and semantic invalid, read-only, and disabled
+states. Labels and supporting text align to the control's outer edge rather
+than its internal value text so forms retain one stable content axis. Leading
+and trailing adornments are supported without becoming required decoration.
+Multiline inputs, repeated parameter compositions, business validation, and
+production adoption remain separate.
+
+## 2026-08-20 — Textarea baseline accepted
+
+Textarea extends the accepted Field anatomy rather than creating another field
+family. It uses the restrained 8px contained-object radius, the shared 20px
+ordinary horizontal field inset, a 16px multiline vertical inset, 16px/300
+content, vertical resize, and the inherited invalid, read-only, and disabled
+states. Character count, rich text, surrounding form composition, and
+production adoption remain outside the accepted contract.
+
+## 2026-08-20 — Switch and disabled structure baseline accepted
+
+Switch is the current V1 baseline for an immediate boolean setting. The track
+is 36×20px with a 16px thumb and a consistent 2px inset; a labeled row owns the
+44px interaction target and 8px switch-to-label relationship. Enabled on uses
+the active primary fill while enabled off remains neutral.
+
+Disabled controls preserve their stored on/off value through position and an
+inverse neutral treatment rather than active color, blanket opacity, a border,
+hover, or elevation. The accepted opaque `disabled-structure` role is a 60/40
+mix between the supporting neutral and quiet disabled surface, owned by the
+semantic disabled recipe rather than Switch-local styling. Async recovery,
+settings-row composition, and production adoption remain outside this
+baseline.
+
+## 2026-08-20 — Pagination baseline accepted
+
+Pagination is the current table-independent V1 baseline. It uses 1-based
+callbacks, optional page-size selection, a seven-item desktop and five-item
+mobile page window, and one 32px compact control height across page actions and
+the compact Select. Previous and Next remain fixed-width edge actions rather
+than stretched mobile surfaces. Available navigation uses quiet actions, the
+current page is a non-clickable neutral selection, and unavailable quiet
+actions are bare and muted rather than inheriting the bordered disabled-control
+treatment.
+
+Pagination owns only row geometry and peer relationships; its host owns the
+surrounding inset. The lab uses the accepted equal 24px ordinary-content inset,
+while the existing DataTable footer retains its production composition until a
+deliberate adoption pass. Shared 44px mobile hit-target expansion is
+intentionally deferred to the accessibility pass rather than implemented as a
+local Pagination exception. Loading, filter-reset behavior, DataTable adoption,
+and production migration remain outside this baseline.
+
+## 2026-08-19 — ActionGroup composition baseline accepted
+
+ActionGroup is a current V1 baseline for ordinary related actions. Horizontal
+groups remain intrinsic-width and do not wrap into ragged partial stacks.
+When a narrow composition deliberately switches to vertical actions, every
+action takes the same full width. Both directions use the accepted 8px peer
+gap. Button continues to own hierarchy, size, tone, and state; transaction
+lifecycle and persistent or floating action wrappers remain outside this
+recipe. Production adoption has not started.
+
+The state-sheet action labels are relationship evidence, not an accepted
+completion-state design. Action choice, order, copy, and icon use remain owned
+by the real composition and must be reviewed there when that flow is addressed.
+
+## 2026-08-19 — Explanatory HelpTooltip baseline accepted
+
+Explanatory help uses a bare 16px help glyph beside the owning field or metric
+label, with a 4px visible relationship and an approximately 44px invisible
+interaction target. The Radix-backed floating surface supports hover, focus,
+and explicit click or touch persistence. Essential instructions remain visible;
+accessible action names and transient action feedback stay with their owning
+components rather than becoming HelpTooltip variants.
+
+The surface uses bounded dynamic width rather than a fixed or minimum width:
+short explanations size naturally, while longer explanations wrap at the
+smaller of a 340px maximum or Radix's available collision-aware viewport width.
+Normal wrapping is retained because balancing lines inside a shrink-to-fit
+popover can leave the surface substantially wider than its rendered text. Other
+tooltip jobs, long educational content, responsive drawer substitution, and
+production adoption remain outside this baseline.
+
+## 2026-08-19 — Stacked identity separators preserve artwork size and axis
+
+Chain and token stacks share one canonical frame model. The requested size
+describes the identity artwork itself; a 2px surface-colored separator wraps
+outside that artwork rather than shrinking it. The stack optically compensates
+for the first separator so its first artwork aligns with a singular identity on
+the same content axis. Chain frames retain proportional rounded-square geometry
+and token frames remain circular. Overlap stays component-owned and can vary by
+stack size or composition. Existing legacy product consumers are not migrated
+by this decision.
+
+## 2026-08-19 — Bounded-value Select baseline accepted
+
+Bounded-value Select uses the accepted 44px default Field geometry and an
+evidenced 32px compact utility size. The popup sits 8px from its trigger with an
+8px outer radius and 4px nested option radius; 40px options use the shared
+subtle interaction surface, retain a persistent right-side selected check, and
+support canonical leading identity without redefining identity geometry.
+
+Width and labeling remain composition-owned. Form fields may use an external
+label; self-describing filters may use a standalone trigger with a stable
+accessible name. A context label inside the trigger is permitted only when a
+real ambiguous-value composition warrants it and does not create another Select
+variant. Compact bounded utilities reserve enough width for their widest known
+option instead of resizing when selection changes. Searchable choices,
+multi-value selection, action menus, native-select policy, mobile substitution,
+and production adoption remain separate.
+
+## 2026-08-20 — SearchField baseline accepted
+
+SearchField is a current V1 baseline for standalone query entry. It composes the
+accepted 44px TextInput and IconButton sources, owns a 16px leading search mark,
+an optional clear action that returns focus, and a non-interactive loading
+indicator while retaining the editable query. One size covers the product use
+currently evidenced; a compact size waits for a real dense-toolbar requirement.
+Result lists, grouping, empty-result recovery, navigation Command, multi-select,
+Asset picker behavior, responsive substitution, and production adoption remain
+owned by their surrounding compositions.
+
+## 2026-08-20 — Contained Tabs baseline accepted
+
+Tabs use the contained-selection language for genuine content-panel switching,
+with compact 32px and default 44px sizes plus intrinsic and equal-growth
+full-width layout settings. The reusable component retains Radix tab, panel,
+and keyboard behavior. Active labels use foreground rather than primary blue.
+
+Text-only Tabs are not part of the current V1 contract. Their strongest prior
+evidence—chart ranges and adjacent immediate choices—belongs to Segmented
+Control, where the reviewed unframed compact/default visual treatment remains
+available under the correct semantics. Current real panel evidence supports
+contained Tabs. Quiet text-only panel navigation, tiny Tabs sizing, counts,
+routes, deep links, and new overflow behavior may be added only when a real
+composition requires them. Production adoption remains unchanged.
+
+## 2026-08-21 — Navigation Link baseline accepted
+
+Link is the current V1 baseline for navigation to routes, resources, and content
+locations. Inline links inherit their reading typography and remain underlined;
+standalone resource links use the 14px/500 compact-structure role with a 4px
+relationship between the label and an optional destination icon. The evidenced
+named-return treatment is unframed, uses the 14px/300 supporting role with the
+same 4px leading-arrow relationship, and promotes to primary with an underline
+on hover or focus. It is not a universal Back default: compact headers whose
+parent is already obvious use the canonical framed IconButton instead.
+
+Ordinary routes omit icons by default. ArrowRight may add forward emphasis,
+ArrowLeft identifies return navigation, ArrowUpRight signals a new-tab or
+external destination unless its outcome has a more specific icon, and Download
+is reserved for real file or resource outcomes. Native and Router anchors retain
+their semantics. External resources merge secure rel tokens and require
+caller-owned localized new-window announcement copy. Button-shaped navigation
+composes canonical Button through `asChild`; it does not create a parallel Link
+appearance. Current and visited state, unavailable destinations, recurring
+Product Navigation, Tabs, breadcrumbs, analytics policy, and production
+adoption remain outside this baseline.
+
+## 2026-08-21 — Informational Accordion baseline accepted
+
+Accordion is the current V1 baseline for coordinated informational FAQ and
+product-detail sets. It owns the divider-free 48px trigger cadence, 16px
+row/content axis, 8px title-to-body relationship, 20px body-to-next-title
+rhythm, 16px/500 item title, 14px/20px supporting content, trailing unframed
+chevron, semantic states, and 180ms disclosure motion. Card framing and hosted
+content remain composition-owned; task progress, validation, editing, and
+actions are not Accordion variants.
+
+Callers choose `single` or `multiple` explicitly. Multiple is the ordinary
+informational recommendation because independently useful answers remain open
+for comparison. Single is reserved for mutually substitutive or unusually long
+regions where simultaneous expansion harms navigation. One independent region
+uses Collapsible rather than an Accordion containing one item. This acceptance
+does not migrate production consumers.
+
+## 2026-08-21 — Independent Collapsible baseline accepted
+
+Collapsible is the current V1 baseline for one independently controlled
+disclosure. It consumes the accepted Accordion trigger, content, chevron,
+focus, and 180ms motion presentation without inheriting coordinated-set
+semantics. Trigger copy names the hidden subject. An optional caller-owned
+closed/open cue may clarify the action, stays muted at rest, becomes primary on
+hover or keyboard focus, and hides below the small breakpoint where the nearby
+chevron and clear subject label carry the affordance.
+
+The primitive owns no product-copy defaults, surrounding frame, or revealed
+content anatomy. Native `details`, bespoke composition triggers, auction
+fields, bid lists, executable code, diagnostics, and production adoption remain
+outside this acceptance.
+
+## 2026-08-25 — Global and Product navigation baselines accepted
+
+Global navigation and Index DTF Product navigation are separate current V1
+baselines. They were judged together because both appear in the application
+shell, but neither component owns or inherits the other's hierarchy. Global
+navigation owns the non-wrapping desktop destination row, grouped overflow,
+application-control separation, and constrained-screen global menu. Product
+navigation owns DTF identity and switching, the expandable desktop rail,
+public row-specific activity, compact 30-day switcher performance, and the
+detached mobile DTF switching and page-navigation entry points.
+
+The accepted mobile presentations consume the canonical Drawer behavior and
+keep navigation landmarks limited to destinations; copyable token contracts
+remain supplementary actions. At constrained widths, the Reserve wordmark
+compresses before account identity, and public activity appears only on its
+specific opened destination row rather than on the closed page-navigation
+trigger. Route taxonomy, live DTF inventory and ranking, domain-event sourcing,
+analytics, account-menu behavior, navigation-specific geometry promotion, and
+production adoption remain outside this acceptance.
+
+## 2026-08-27 — Canonical-first ownership resolves by semantic specificity
+
+Canonical-first does not mean that the broadest generic canonical component
+always owns a more specific composition. Use the narrowest established owner
+whose semantics, anatomy, and geometry match the job. If consuming a generic
+component requires locally negating its defining defaults, preserve the generic
+owner and give the specific composition an explicit local owner instead of
+turning the override into an unnamed variant.
+
+Vote Lock exposed the boundary: `DialogSurface` contributes the shared 8px
+outer inset and ordinary `DialogHeader` contributes 16px internally for the
+ordinary 24px dialog axis, while the established compact Zapper transaction
+composition uses 8px internally for a 16px total axis. Vote Lock may use an
+explicit local compact transaction-header owner where that more specific
+composition is the relevant evidence. Two transaction examples do not yet
+promote a universal transaction-header component or recipe.
+
+## 2026-08-31 — Transaction amount regions use square structural geometry
+
+Transaction amount input/output regions are structural financial objects, not
+ordinary atomic fields or generic contained panels. They use 0px radius across
+editable, read-only, submitted, and replacement states. A loading animation or
+other state layer that replaces an amount region preserves the same square
+boundary so lifecycle changes do not change the object’s geometry.
+
+This supersedes only the composite-amount clause in the 2026-08-13 radius
+decision. Ordinary one-row Fields—including Delegation address inputs—remain
+fully rounded; multiline fields and floating contained objects retain the 8px
+role. Asset selectors, status pills, and other controls inside an amount region
+retain their own component-owned radii. This decision changes the unadopted V1
+transaction candidate and lab compositions, not production transaction flows.
+
+## 2026-09-04 — Transaction amount regions use restrained 8px geometry
+
+Human review reversed the square transaction-amount experiment. Transaction
+amount input/output regions use the restrained 8px contained-object radius
+across editable, read-only, submitted, and replacement states. A loading
+animation or other state layer that replaces an amount region preserves the
+same 8px boundary so lifecycle changes do not change the object’s geometry.
+
+This supersedes the 2026-08-31 square transaction-amount decision. Ordinary
+one-row Fields—including Delegation address inputs—remain fully rounded;
+structural page sections remain square unless their owner says otherwise.
+Asset selectors, status pills, and controls inside an amount region retain
+their component-owned radii. This changes the unadopted V1 candidate and lab,
+not production transaction flows.
+
+An empty editable amount keeps `0` as the primary-value placeholder and shows
+the corresponding zero-valued financial estimate in its supporting row—for
+example, `$0.00` for USD. The supporting value must not disappear merely
+because the input is empty. The flow's value formatter owns this truth because
+the generic amount object also supports non-currency explanations and errors.
+
+## 2026-09-04 — Transaction metrics resolve meaning before color
+
+Transaction compositions must not infer color from a displayed plus or minus
+sign. Production contracts use different sign conventions, and a setting,
+estimate, warning threshold, and realized result do not carry the same meaning.
+Slippage settings, limits, and routine projected impact remain neutral.
+Elevated preflight risk uses warning; critical risk uses danger together with
+explicit explanatory or consequential UI rather than relying on color alone.
+Projected favorable impact normally remains neutral so an estimate is not
+endorsed as a gain.
+
+Meaningful realized favorable or adverse movement uses the existing financial
+performance palette, which remains separate from success and error feedback.
+Negligible routine variance may remain neutral. When an actual value replaces
+an estimate, the superseded quote becomes supporting and struck through while
+the actual value becomes dominant. Thresholds and materiality remain
+flow-owned. The transaction lab expresses this through a local semantic value
+recipe whose callers provide `neutral`, `realized-favorable`,
+`realized-adverse`, `caution`, `critical`, or `superseded`; the recipe never
+derives meaning from the raw number. This is an unadopted composition rule and
+does not restyle production consumers or change shared component defaults.
+
+## 2026-08-31 — Copyable Value supports an integrated dense-row treatment
+
+The accepted Copyable Value keeps its existing separated treatment as the
+default: formatted value plus canonical micro copy control. Dense aligned facts
+may opt into an integrated treatment when a separate icon button would enlarge
+or visually unbalance an otherwise 20px row. That treatment is one semantic
+20px action containing the 14px monospace value and a 14px copy/check icon at an
+8px relationship gap. The whole action owns hover, focus, click, the expanded
+interaction target, and the existing transient Tooltip/live-region feedback.
+Copy success replaces the icon at the same size so row geometry does not move.
+
+The full normalized value remains the copied and accessible value; deliberate
+visible shortening remains unchanged. This does not turn a whole fact row into
+a copy target, replace the default treatment, authorize copy changes, or make
+Copyable Value own a parent list/grid. Delegation outcomes provide the second
+dense aligned composition after DTF token-address pressure, but production
+adoption remains separate.
+
+## 2026-09-01 — Subtle substrate is an opaque attached-surface role
+
+`substrate-subtle` is the accepted opaque surface for shallow regions that are
+visually attached beneath or behind a card-colored task surface. It creates
+quiet depth without inheriting the color of whatever happens to sit below it.
+It is not the ordinary grouping fill, a replacement card color, an interaction
+state, or a softer alias for `secondary`; beige `secondary` retains its stronger
+structural role for major section separation and revealed page depth.
+
+The initial value is the opaque midpoint between the active theme's card and
+secondary colors. The semantic role, not that derivation, is the durable
+contract. New use requires the same attached-surface relationship rather than
+mere preference for a near-white beige.
+
+## 2026-09-01 — Transaction progress and action-slot ownership
+
+Once an ordered transaction sequence is underway, the action slot remains
+stable when a later step will require another user click. While the current
+transaction processes, that slot uses a loading Button retaining the initiated
+action's hierarchy; once ready, it becomes the next actionable control. Human
+review on 2026-09-08 supersedes the earlier subdued-approval treatment: active
+primary approvals and final transactions both retain primary color, while
+spinner, busy semantics and blocked repeat clicks communicate waiting. Upcoming
+actions blocked by prerequisites stay disabled and neutral. This is composition
+guidance, not a change to shared Button defaults. The progress region still owns the sequence and
+lifecycle truth. It replaces inactive action chrome when remaining steps
+continue automatically, avoiding a duplicate loading Button where no later
+manual action is expected.
+
+Sequential progress and pre-submit advisories may share attached-region frame,
+surface, and depth geometry while retaining separate semantic owners and
+content anatomy. Transaction outcomes share a no-shrink minimum frame so a
+result does not contract below the preceding task. The organic brand surface is
+an immediate-result treatment; delayed initiation uses the same stable shell
+with explicit pending/countdown semantics rather than borrowing immediate
+completion motion. Vote Lock's 448px address-heavy width and the compact bare
+advisory dismiss treatment remain local pending more evidence.
+
+## 2026-09-01 — Inline Message supports full and compact-summary presentations
+
+Inline Message is an accepted, unadopted component with two presentations. The
+full presentation keeps material explanation, instructions, recovery, and
+lifecycle truth visible. The opt-in compact summary places one concise state or
+qualification on a single row and may move only supporting explanation into an
+adjacent Help Tooltip. A tooltip must never hide information needed to decide,
+act, recover, or understand the transaction's state.
+
+The component continues to own feedback anatomy and tone, not product copy,
+acknowledgement policy, dismissal, recovery behavior, or transaction
+orchestration. Production adoption remains explicit and product-owned.
+
+The summary presentation may opt into a contained leading icon when a semantic
+symbol balances a trailing compact action. The contained treatment uses a 32px
+tone-colored circle, a 16px glyph, and 8px outer inset. Plain remains the
+default, and full messages retain their existing icon anatomy.
+
+## 2026-09-14 — Current table work approved for now
+
+The user approved the current table lab to move on to charts. Accept the retained
+Portfolio/withdrawal, Holdings, Discover, Earn/DeFi/owned-position and governance
+record presentations, plus the near-term current/history auction tables, in their
+current reviewed scope. This includes the accepted warm content hover and recent
+governance status/timing refinement. It is a revisitable visual baseline, not a
+claim that every production state or surrounding screen was reviewed.
+
+Do not promote the unfinished current-auction workspace or older auction record
+alternatives. Initial auction-table migration still retains the existing detail
+and transaction flow; source identity, permission, timing, math and action gates
+remain engineer-owned. Dated lab detail references are not a working adapter.
+Do not infer a universal Table/Row API, new shared defaults, global pill geometry
+approval, chart acceptance or production adoption. Missing/failed data integration,
+real pagination/recovery and the central engineering register remain separate.
+
+The original table studies remain available at commit `2bfca0d1c`; later
+corrections may reopen a bounded part of their visual baseline.
+
+## 2026-09-16 — Current chart work approved for now
+
+The user approved the current chart lab as the revisitable visual baseline. The
+accepted scope is the source-based Overview line and candlestick presentations,
+Home and Discover chart contexts, the Yield metric family, Portfolio total and
+composition, and the final responsive, spacing, timestamp and CSV treatments.
+Freeze the current evidence as the record of that baseline; later corrections
+may reopen a bounded part without reopening the whole chart review.
+
+This is lab-only design authority, not production adoption. It does not approve
+financial calculations, data semantics, source selection, freshness claims,
+sampling policy, shared component defaults, or a global chart/categorical
+palette. Provisional source, palette, stress-fixture and opt-in dependencies
+remain adoption constraints. Engineer review stays deferred to project closeout
+or a separately authorized production-adoption slice.
+
+The original chart studies remain available at commit `2bfca0d1c`. The Storybook
+cleanup preserves these design decisions without retaining every study as an
+active application.
+
+## 2026-09-18 — Storybook replaces the bespoke design-system lab
+
+The user authorized removing the lab's excess infrastructure and moving component
+review into Storybook. Real canonical components, accepted visual decisions and
+useful behavioral checks remain; catalogs, review/status dashboards, parallel
+transaction simulators and the in-product demonstration route are removed.
+Storybook uses local examples with theme/viewport controls and a small Playwright
+suite. It is the only active demonstration host, so changes do not need duplicate
+lab and Storybook implementations. Product primitives keep their existing APIs
+until callers are explicitly migrated.
+
+Earlier decisions refer to the lab as the context in which visual choices
+were accepted. Those choices remain valid; the old host, catalogs, source paths
+and review machinery are historical evidence at commit `2bfca0d1c`, not current
+usage instructions. [[design-system]] owns current commands and source locations.
+
+## 2026-10-17 — V1 filters and navigation use one canonical appearance
+
+MultiSelectFilter uses PopupFieldTrigger's 44px field geometry, 16px/300 text,
+20/18px text/chevron insets and input boundary by default. This restores the
+original accepted selection geometry, which accidentally inherited later
+action-specific Button changes. The temporary preservation branch and presentation
+switch are removed; that drift was not an intentional alternative design. All V1 examples and pilots use the same owner; selection drafts,
+Apply/Clear and popover behavior are unchanged. This user-authorized shared-default
+correction replaces the interim opt-in from the pilot compliance repair.
+
+Closed outer desktop and mobile global headers do not draw a gray bottom border
+or pseudo-element separator. The parent composition owns the structural seam and
+its surface relationship; desktop uses the major beige seam. Interior menu and
+overlay dividers keep their own roles. Navigation destinations
+use their surface hover treatment without underlining labels, with visible keyboard
+focus. Ordinary content Link treatments remain distinct. These are settled visual
+rules, not options to reconsider at adoption. Rendered regression checks cover
+border/separator and hover behavior in both themes. Engineer review before production
+integration checks the implementation of shared defaults, not the design direction.
+
+## 2026-10-19 — Storybook visual authority precedes generic and legacy styling
+
+The user confirmed the accepted Storybook design system as the V1 visual source
+of truth. [[design-system]] § Design authority owns the resolution order and
+scoped owner-correction rule. Generic kit style recipes, legacy application
+components and historical studies cannot supersede that contract. Cursor and UI
+review entry points route to the same authority instead of maintaining separate
+visual rules. Production behavior, adoption and Engineer review remain separate.
+This instruction cleanup preserves the current visual design and accepted20px
+mobile insets; it does not promote previews or migrate production components.
+
+## 2026-10-27 — Dialog header composition follows its content
+
+The user approved title-and-quiet-close as the simple task header, with a
+meaningful topic icon opposite a quiet close action when it aids recognition.
+That icon row leaves 16px before the title. Transaction headers retain their
+contained controls and matching bordered close action. Avoid a close-only row
+with an empty leading side immediately above the title; icons should not be
+added just to fill it. Dialog Docs supplies allowed and clearly labelled Avoid
+illustrations plus working title-row/topic-icon examples of the real liquidity
+task. These presentation rules do not authorize changes to transaction behavior,
+shared defaults or production adoption. Eligibility remains non-dismissible.
+
+Later the same day the user confirmed that two close styles stay: the close action
+matches its row. It is quiet beside a title or topic icon and bordered beside the
+contained controls of a transaction header. A single bordered style everywhere was
+rejected because it makes topic-icon headers right-heavy.
+
+## 2026-10-27 — No desktop Drawers; Dialog becomes a bottom sheet on phones
+
+Reaffirms the 2026-08-25 product direction, which was lost when the lab was
+replaced by Storybook. V1 has no desktop Drawer or slide-out panel. A modal task
+uses Dialog: centered on desktop, attached to the bottom edge on phones. Drawer
+is limited to the accepted mobile navigation panels (global menu, DTF switcher,
+page navigation), which close at the desktop breakpoint. Existing production
+right-side drawers (stake, vote lock, token selection, deploy) are migration
+surfaces, each to be tested against Dialog. Only a concrete flow that cannot
+migrate without meaningful loss may reopen Drawer as a decision. The shared
+V1 Drawer's right-side panel from 640px is removed. The pilot menus close only at
+1024px, so on tablets they follow Dialog's own rule: a bottom sheet below 640px,
+a centered 432px modal from 640px, capped at 640px tall so long menus scroll
+under the navigation overflow fade (as in the whitepaper dialog). A capped bottom sheet was tried first and
+rejected; it looked like a dialog stuck to the bottom edge. The V1 Drawer has no production consumers;
+adoption still needs Engineer review. No production flow is migrated by this record.
+
+## 2026-10-28 — Non-transaction dialog family accepted
+
+The user accepted the non-transaction Dialog examples as the current V1 baseline:
+the liquidity-simulation task with its title-row and topic-icon headers, header
+guidance, eligibility (standard and expanded jurisdictions), CFB whitepapers, and
+NVIDIA/Ondo and BTCB/Bitcoin asset information. The same acceptance covers the
+mobile navigation Drawer: a bottom sheet on phones, and from 640px a centered
+432px modal capped at 640px tall, with a quiet close. Their in-progress tags are
+removed. Acceptance covers presentation only. Product copy, eligibility policy,
+source snapshots, production adoption and the shared Drawer and navigation
+changes still need separate scope and Engineer review. Three details are parked,
+not accepted defects: the height change between the asset dialog's Overview and
+Risks tabs, the product copy's "Tokenized Asset" capitalisation, and the external
+link arrow staying on the first line when a long name wraps at 320px.
+
+## 2026-10-28 — Loading and Empty state accepted
+
+After two review rounds the user accepted Loading (Skeleton, Spinner) and
+EmptyState as V1 baselines.
+
+- **Skeleton:** a single-line value fills its line box. Stacked lines, or a bar
+  sharing a line with text, take the text size centered in the line. Table loading
+  reuses the table's own cells, aligned in one row.
+- **EmptyState:** covers true absence, filtered-to-zero (with Clear filters) and
+  no search match. Tables pass it through the optional DataTable `noResults` slot.
+  `size="page"` adds a section-title heading and phone-stacked actions for a page
+  whose sections all hide.
+- **Unavailable and errors:** use Inline message, for example "Holdings
+  unavailable" with Try again.
+
+The production DataTable default ("No results.") is unchanged. Adopting the
+slot, EmptyState and the conformed skeletons in production needs separate scope
+and Engineer review. Table and pilot empty wording is example wording, except the
+Portfolio prompt copied from the product.
+
+## 2026-10-28 — Actions group accepted
+
+After one fix round the user accepted Button, IconButton, Menu, Popover and
+Checkbox as V1 baselines.
+
+- **Contrast:** destructive Menu items use the danger feedback foreground
+  (≥4.5:1). Unchecked Checkbox borders use muted-foreground (≥3:1). Both reach
+  production consumers.
+- **IconButton:** owns square icon actions (Pagination uses it). Close actions
+  match their row.
+- **Single-choice menus:** start-align to their field and mark the selection with
+  a trailing check.
+- **Popover:** has no padding of its own; callers name it and use the 16px
+  content or 8px list inset.
+- **Checkbox labels:** sit 12px from the target and align to the first line when
+  they wrap.
+- **Button loading:** keeps tone and height; width follows its label.
+
+The dark focus ring (2.46:1) stays with the deferred contrast findings.
+IconButton `asChild` and the menu row treatments (compact Menu rows versus the
+navigation menu's pill rows) remain open decisions. Production adoption of the
+shared changes needs Engineer review.
+
+## 2026-10-28 — Data display group accepted; Information row retired
+
+After one fix round the user accepted EntityIdentity, Metric and PerformanceValue
+as V1 baselines.
+
+- **EntityIdentity:** never grows past its container; long names truncate unless
+  `wrapName` is set. 32px marks use the xl size with a 12px gap, and table rows
+  use compact name leading.
+- **Metric:** loading uses a Skeleton. `MetricValue` is the shared numeric seam.
+- **PerformanceValue:** uses `performance-*` text tokens. The light positive tone
+  deepens to #0e7a57, so text clears 4.5:1 on every light content surface. It
+  speaks through hidden text, and table cells set it to body size.
+
+Information row is retired as a duplicate of the accepted Holdings table. The
+negative tone on the beige secondary surface (4.43:1) is a known contrast gap.
+The token change reaches production charts and tables; production adoption of the
+shared changes needs Engineer review.
+
+## 2026-10-28 — Remaining open items settled provisionally (agent, pending user review)
+
+The user asked the agent to finish the known remaining work without per-step
+approval. These calls are the agent's and await the user's review; each lists its
+confidence.
+
+- **Menu rows (high):** navigation destinations keep the navigation item
+  treatment wherever they appear (rail, drawers, the desktop More menu), so a
+  destination looks the same everywhere. Commands and single choices use Menu rows
+  (40px, 4px radius, 14px light). Both stay; neither replaces the other.
+- **IconButton `asChild` (high, deferred):** not added. Link-shaped icon actions are
+  an API change for Engineer review; until then use Link with a visible label.
+- **640px Dialog default (medium):** not made a default. Eligibility and the
+  liquidity task were accepted at natural height. Long informational content (the
+  whitepaper change log) and tablet navigation menus cap locally at 640px.
+- **Light negative performance text (medium):** deepened from #c24130 to #bc3f2f so
+  it clears 4.5:1 on beige too, matching the user-approved green change. Dark and
+  chart values are unchanged.
+- **Parked dialog details (high):**
+  - The asset dialog's Overview/Risks height change stays by design: active tabs
+    size naturally and hidden panels reserve no space.
+  - "Tokenized Asset" stays as product copy.
+  - The external-link arrow can sit on the first line when a name wraps at 320px.
+    It stays deferred, because fixing it changes the accepted Link layout
+    everywhere.
+- **Contrast (deferred, unchanged):**
+  - The dark focus ring (2.46:1) stays deferred per the user.
+  - The dark display headline (3.01:1) passes the large-text floor narrowly and is
+    deferred.
+  - Physical-device checks were not run.
+- **Explorations (high):** the transaction studies, the auction detail workspace and
+  the historical foundation/layout studies stay as explorations outside the handoff
+  contract. The Zapper bounded dialog stays a proposal with the transaction family.
+- **Overview layout proposal (low):** left as a proposal. The pilots apply its
+  recommended settings, but the region geometry has never been explicitly accepted.
+
+## 2026-10-28 — Audit cleanup calls (agent, pending user review)
+
+A pre-acceptance audit of the design system and Storybook fixed clear defects.
+These are the calls that changed accepted presentation; each lists its confidence.
+
+- **Inset focus ring in contained tracks (high):** Tabs had no V1 focus ring, and
+  the contained Segmented control and Single choice rings were clipped by their
+  scrolling track. All three now use an inset 2px ring.
+- **Copy success check (high):** the Copyable value check used the 2.5:1 success
+  fill; it now uses the feedback success text colour, matching the earlier
+  contrast fixes.
+- **Disclosure and tooltip motion (high):** Accordion, Collapsible and tooltips
+  now stop animating under reduced motion; tooltips use 180ms and disclosure hover
+  120ms, matching the motion scale.
+- **Accordion story (high):** leads with `multiple`, the recorded recommendation,
+  with `single` as a second story.
+- **Overview chart stories (high):** the two blank empty-chart stories are
+  removed, because the product never renders a chart body without data; empty and
+  unavailable states stay in Source states.
+
+## 2026-10-29 — Dashboard chart proposals (agent calls, pending user review)
+
+For the eUSD activity dashboard, data colours are six ordered `series` tokens rather than retuned `--chart-*`, so the existing palette and charts are untouched. Slot 1 is the brand blue; the rest follow the dataviz reference order and pass its colour-vision, lightness and normal-vision checks on the real card surface in both themes. Three light slots sit below 3:1 on white, relieved by the always-visible legend values. Bars keep square ends (the system's square language) instead of the reference's rounded caps. The chart keeps the Market idiom of header and legend readouts instead of a floating tooltip. The partial current day is lighter until selected and its caption says "so far". The panel owns insets but no surface, so a dashboard can still choose cards or flat regions. Withdrawal presentation and time ranges are open; both layouts and four ranges are shown. On a dashboard, one period control sits above the panels and scopes them all, and panels use the 20px panel headline so the page title stays the single largest heading (proposal; the user owns the header-size call).
+
+## 2026-10-29 — Slider and Progress indicator accepted
+
+The user accepted Slider and Progress indicator as V1 baselines and moved them
+out of Explorations. Slider sits under Components / Fields and selection: one
+value, a 6px muted track, a blue thumb with a 2px surface gap, and optional exact
+entry through the 44px TextInput with native validation below the control.
+Progress indicator sits under Components / Feedback and overlays: 4px square
+rails, the threshold meter, the counted bar and Spinner for unknown duration, with
+tones from `design-system-v1/progress-presentation.ts`. The Index proposal voting
+card is accepted as its lead example: the Current/Final votes heading sits inside
+the first group, and For, Against and Abstain share one grid (three across from a
+32rem card, two equal columns below). Acceptance covers presentation. Production
+adoption, the shared Slider and Progress changes, and the vote fixtures (display
+values, not SDK calculations) still need Engineer review.

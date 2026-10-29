@@ -24,7 +24,10 @@ export const TranscriptPreview = ({
   const { t } = useLingui()
 
   return (
-    <div className="flex flex-col items-start gap-2 px-5 py-4 pt-3">
+    <div
+      className="flex flex-col items-start gap-2 px-5 py-4 pt-3"
+      data-feature-card-supporting-row
+    >
       <div
         className="w-full min-w-0 shrink-0 overflow-hidden"
         style={{ height: TRANSCRIPT_LINE_HEIGHT * 2 }}

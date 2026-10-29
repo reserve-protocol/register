@@ -1,0 +1,45 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title="Dashboard (unreviewed)/Overview" />
+
+# Dashboard (unreviewed)
+
+Pieces for activity dashboards, starting with the eUSD activity landing page. Nothing in this section has been design-reviewed yet. The chart is built and tested; the layout is a first composition to copy from, not an approved design.
+
+## What is here
+
+- **[Activity chart](?path=/docs/dashboard-unreviewed-activity-chart--docs)**: a chart panel (heading, total, period control slot, legend, loading, empty and unavailable states) with a daily bar chart stacked by category. Pointer, tap or arrow keys show a single day. Covers volume and count, and withdrawals stacked or drawn below the baseline.
+- **[eUSD activity layout](?path=/docs/dashboard-unreviewed-eusd-activity-layout--docs)**: one way to arrange the page: a heading, one period control for every chart, volume and count side by side on desktop and stacked on phones, and a space for the map.
+- **Data series colours**: six ordered chart colours for categories, documented under [Foundations / Color](?path=/story/foundations-color--color).
+
+## Using the chart with real data
+
+```tsx
+import { CategoryBarChart } from '@/components/design-system-v1/category-bar-chart'
+import {
+  bucketsForPeriod,
+  formatCompactValue,
+  summarizeBuckets,
+} from '@/components/design-system-v1/category-bar-chart-data'
+import {
+  ChartLegend,
+  ChartPanel,
+  useChartInspection,
+} from '@/components/design-system-v1/chart-panel'
+```
+
+- Pass one bucket per UTC day: `{ start, values, partial }`, where `start` is unix seconds, `values` holds one number per category key and `partial` marks today.
+- `bucketsForPeriod(days, 30)` returns the last 30 days; periods over 90 days become weeks ending today.
+- Give each category a colour slot (1–6) in a fixed order and keep it when filters change.
+- The chart panel shows whatever values you format; `formatCompactValue` gives $13.6M or 12.4K.
+- The Activity chart example source (Code tab) shows a complete wiring, including the selected-day header and legend.
+
+## Not built yet
+
+- **Countries map.** The layout reserves its space.
+
+## Open decisions
+
+- Withdrawals stacked with the other categories, or drawn below the baseline.
+- Which time ranges to offer.
+- Whether panels sit in cards or flat regions, and the headline size inside dashboard panels.

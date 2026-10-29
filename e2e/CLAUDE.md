@@ -23,8 +23,8 @@ there, and EVERY page is tested across THREE dimensions:
    - **L2 partial** — each data island resolves independently; resolving one must
      not shift another. Layout-shift budget: 0 unexpected reflows.
    - **L3 full** — all islands resolved → the actual behavior/value assertions.
-   Delay per-island boundary responses (`overrides` holds a response) to freeze
-   each phase; add attribute-only `<area>-skeleton` testids where missing.
+     Delay per-island boundary responses (`overrides` holds a response) to freeze
+     each phase; add attribute-only `<area>-skeleton` testids where missing.
 3. **Mobile** — the same L0–L3 at a phone viewport (`@mobile` project), plus
    mobile chrome (bottom nav, portal menu, mobile CTA bar, table→card, dialogs).
 
@@ -43,6 +43,13 @@ work and when touching an existing spec.
 - New user-visible behavior in a covered area → extend that area's spec.
   New surface → new spec; check the domain CLAUDE.md first.
 - Copy or styling-only diffs → no e2e change (selectors never use copy).
+
+For design-system components and shared-foundation changes, use Storybook and
+`pnpm storybook:test`; see [the coverage map](TEST_MAP.md). Inspect affected
+rendered states when styling changes. The Storybook suite owns its own server;
+never stop a developer preview to acquire its port. Its internal English-only
+examples may use accessible-name queries. Product specs below remain localized
+and keep their existing selector and mock contracts.
 
 ## Ground rules
 
@@ -209,7 +216,9 @@ your change; the domain guides' diff→test tables say which spec.
 Do NOT run two suites at once (e.g. smoke + full, or two agents): the webServer
 never reuses an existing :3005 (a foreign server would void the pinned env /
 validation contract), so a second run fails on the occupied port — and if it
-didn't, contention would produce false flakes. Run one suite at a time; free a
-stray server with `lsof -ti :3005 | xargs kill`. A "failure" that vanishes when
+didn't, contention would produce false flakes. Run one suite at a time; never
+kill a listener just because it uses 3005. Identify ownership and stop only a
+test process you started. The design-system configuration defaults to its own
+3022 port; `DESIGN_SYSTEM_PORT` selects another unused port. A "failure" that vanishes when
 re-run in isolation is contention, not a real regression — check before
 touching timeouts.

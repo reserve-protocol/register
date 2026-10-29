@@ -1,5 +1,11 @@
 # E2E Test Map
 
+`e2e/storybook/pilot-accessibility.spec.ts` covers chart naming/keyboard output,
+200% root-font navigation at 320/390px, utility bounds, short-screen drawer focus,
+content focus clearance above/below fixed controls, reduced-viewport search and
+Safari opener-focus return. It runs in Chromium and mobile WebKit; it does not
+stand in for physical-device, software-keyboard or VoiceOver acceptance.
+
 Route/state coverage matrix for the e2e suite. Regenerate the ground truth
 before editing this file:
 
@@ -23,16 +29,118 @@ which also runs on mobile because the wallet modal is a mobile-first surface).
 
 ## General (top-level routes)
 
-| Area | Spec file(s) | States covered | Lifecycle | Mobile | Gaps |
-|---|---|---|---|---|---|
-| Bridge | [general/bridge/render](tests/general/bridge/render.spec.ts) | static page render | none (static) | yes | — |
-| Wallet connection | [flows/wallet-connect](tests/flows/wallet-connect.spec.ts) | Legal footer; default email/social and fund/swap/send/activity controls; iframe-only Safe option absent outside Safe; connect → account → persistent disconnect; plain address (never clipped) and short/long ENS labels with header/navigation bounds at 360/412/1280px | none | yes | Live dashboard settings, email/social authentication, payments, WalletConnect handoff and Safe iframe/relay sessions remain manual |
-| Discover | [general/discover/lifecycle](tests/general/discover/lifecycle.spec.ts), [flows/home-discover](tests/flows/home-discover.spec.ts) | skeleton→rows; search narrow/restore; tab switch; row→overview nav; home hero+featured render | partial | no | — |
-| Earn | [general/earn/render](tests/general/earn/render.spec.ts), [general/earn/tabs](tests/general/earn/tabs.spec.ts) | DeFi tab empty-state render; index-dtf vote-lock tab render; yield-dtf staking tab render (disconnected empty-state) | none | yes | sort, non-empty list, error state |
-| Explorer | [general/explorer/render](tests/general/explorer/render.spec.ts) | transactions tab (default) render; governance tab proposals render; one chain returning malformed transactions body doesn't blank the page | none | no | filters, pagination, tokens/collaterals/revenue tabs |
-| Portfolio | [general/portfolio/state-space](tests/general/portfolio/state-space.spec.ts), [general/portfolio/partial-response](tests/general/portfolio/partial-response.spec.ts) | disconnected shows connect prompt; malformed proposal row survives, healthy row still renders | none | partial (state-space only) | connected-with-holdings render, empty-vs-past-activity-only |
-| Tokens | [general/tokens/unlisted-partial](tests/general/tokens/unlisted-partial.spec.ts) | one chain returning an rtokens-less bucket doesn't crash the table | none | no | plain listed-table render, sort |
-| Create (Index/Yield deploy) | — | — | — | — | entirely uncovered |
+Component examples have a separate suite under `e2e/storybook/`, run with
+`pnpm storybook:test`. Its interaction and isolation checks do not certify
+production transaction behavior. The former design-system lab/capture suite has
+been removed; product coverage below refers only to retained product specs.
+
+Screen pilots use `storybook/overview-pilot.spec.ts` and
+`storybook/earn-pilot.spec.ts`: full-screen/Docs continuity, responsive navigation,
+table interactions, phone category/chain dropdowns, intersecting search/DTF/chain filters and empty recovery,
+compact sort-menu fields/direction, focus/resize continuity, loading/missing
+fixtures, mobile/desktop drawer dismissal with visible focus transfer,
+native 44px translated action-label fit and resize recovery,
+stable hero/filter boundaries across category changes at phone through
+desktop widths, theme and runtime isolation. These
+checks cover local reference compositions, not live product data or execution.
+
+`storybook/control-geometry.spec.ts` checks canonical study size/padding/type,
+mobile/desktop/nested inset specimens with equal four-sided padding and no overflow,
+Button/IconButton loading and disabled dimensions, pagination and identity
+triggers, and opened mobile utilities across all five preview hosts. Both themes
+and short phone viewports cover panel containment, last-language-option hit
+visibility, Escape focus return and restored compact height.
+
+| Area                        | Spec file(s)                                                                                                                                                         | States covered                                                                                                                                                                                                                                                           | Lifecycle     | Mobile  | Gaps                                                                                                                               |
+| --------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------- | ------- | ---------------------------------------------------------------------------------------------------------------------------------- |
+| Bridge                      | [general/bridge/render](tests/general/bridge/render.spec.ts)                                                                                                         | static page render                                                                                                                                                                                                                                                       | none (static) | yes     | —                                                                                                                                  |
+| Wallet connection           | [flows/wallet-connect](tests/flows/wallet-connect.spec.ts)                                                                                                           | Legal footer; default email/social and fund/swap/send/activity controls; iframe-only Safe option absent outside Safe; connect → account → persistent disconnect; plain address (never clipped) and short/long ENS labels with header/navigation bounds at 360/412/1280px | none          | yes     | Live dashboard settings, email/social authentication, payments, WalletConnect handoff and Safe iframe/relay sessions remain manual |
+| Discover                    | [general/discover/lifecycle](tests/general/discover/lifecycle.spec.ts), [flows/home-discover](tests/flows/home-discover.spec.ts)                                     | skeleton→rows; search narrow/restore; tab switch; row→overview nav; home hero+featured render                                                                                                                                                                            | partial       | no      | —                                                                                                                                  |
+| Earn                        | [general/earn/render](tests/general/earn/render.spec.ts), [general/earn/tabs](tests/general/earn/tabs.spec.ts)                                                       | DeFi tab empty-state render; index-dtf vote-lock tab render; yield-dtf staking tab render (disconnected empty-state)                                                                                                                                                     | none          | yes     | sort, non-empty list, error state                                                                                                  |
+| Explorer                    | [general/explorer/render](tests/general/explorer/render.spec.ts)                                                                                                     | transactions tab (default) render; governance tab proposals render; one chain returning malformed transactions body doesn't blank the page                                                                                                                               | none          | no      | filters, pagination, tokens/collaterals/revenue tabs                                                                               |
+| Portfolio                   | [general/portfolio/state-space](tests/general/portfolio/state-space.spec.ts), [general/portfolio/partial-response](tests/general/portfolio/partial-response.spec.ts) | disconnected prompt; malformed proposal isolation; synthetic owned stake/vote-lock values; held/zero/decode-failed underlying read                                                                                                                                       | none          | partial | account switching and Modify execution; rewards/voting-power/activity interactions; empty-vs-past-activity-only                    |
+| Tokens                      | [general/tokens/unlisted-partial](tests/general/tokens/unlisted-partial.spec.ts)                                                                                     | one chain returning an rtokens-less bucket doesn't crash the table                                                                                                                                                                                                       | none          | no      | plain listed-table render, sort                                                                                                    |
+| Create (Index/Yield deploy) | —                                                                                                                                                                    | —                                                                                                                                                                                                                                                                        | —             | —       | entirely uncovered                                                                                                                 |
+
+`e2e/storybook/pilot-compliance.spec.ts` verifies 44px pilot field geometry,
+title/value separation with the value beside its chevron, Menu focus return,
+Holdings active-panel names/associations across responsive projections and hosts,
+and standard 44px geometry across default filter state examples.
+
+`storybook/proposal-patterns.spec.ts` checks the accepted Slider, the bounded Zapper
+proposal and the accepted eligibility Dialog in Chromium and mobile WebKit. Slider checks cover default/5/decimal
+increments, native validity, mode reset, disabled state, embedded Docs pointer
+geometry, Controls synchronization, example isolation and non-disruptive feedback.
+Dialog checks cover inline expansion/collapse, natural multi-entry wrapping,
+semicolon grouping, all 15 entries, preserved checkbox values and disclosure
+focus, unchanged external link, desktop expansion height, and one body scroller
+with stationary header/actions on short light/dark desktop/mobile views. Zapper checks
+cover nested settings, expanded-action visibility, short-screen outcome/recovery/
+attachment containment and opener restoration.
+
+`storybook/dialog-information.spec.ts` covers canonical CFB whitepaper disclosure,
+nine real changes, PDF/new-tab destinations and captured BTCB/BSC Bridge copy/
+links/tabs. `storybook/dialog-information-layout.spec.ts` checks NVIDIA/Ondo,
+BTCB and expanded whitepapers (final change entry)
+at 320/390px and desktop widths on short light/dark screens, with one body scroller,
+reachable final content/header on both tabs, no empty scroll tail and opener focus.
+`storybook/dialog-tokenized-asset.spec.ts` covers the same NVIDIA content as the
+product reference: native exchange/ticker, held token/chain badge/address, full provider
+explanation, native copy, three actual destinations, five risks, tab focus/reset
+and inactive content exclusion. Clipboard read-back runs in Chromium, completed-
+write feedback in WebKit. Both specs run in Chromium/mobile WebKit. External pages
+are mocked only at navigation boundaries; their contents are not validated.
+
+`storybook/storybook.spec.ts` also checks that Earn and Portfolio empty stories
+render EmptyState instead of the generic "No results.", and that Holdings
+unavailable uses Inline message. It checks that the page-level Portfolio empty
+state has a heading with full-width stacked phone actions, and that every
+placeholder in a Holdings loading row shares one vertical alignment.
+It also pins accessible contrast for destructive Menu text and field error messages
+(4.5:1) and unchecked Checkbox borders (3:1) in both themes.
+It checks that EntityIdentity truncates long names within a 390px container and
+that positive PerformanceValue text clears 4.5:1 on the light row hover.
+It checks that Menu, Popover and Dialog animate at 180/180/240ms and do not
+animate under reduced motion.
+Accordion content and HelpTooltip animate at 180ms and stop under reduced
+motion, and keyboard focus on Tabs and contained Segmented control items shows an
+inset ring that the scrolling track cannot clip.
+The Activity chart proposal is checked for arrow-key inspection driving the header,
+legend and live text and resetting on blur, a lighter partial current day that
+turns solid when selected, and withdrawals above the baseline when stacked and
+below it in the diverging layout, plus the empty and unavailable headers. The eUSD
+activity dashboard check confirms one period control re-scopes both panels.
+`chart-panel.test.tsx` covers inspection keys and reset, states, category totals,
+axis fitting, weekly grouping, period selection and compact values.
+`storybook/earn-pilot.spec.ts` checks that filtered-to-zero Clear filters restores
+every row.
+
+`storybook/dialog-simulation.spec.ts` exercises the real liquidity form: default,
+exact integer/coarse slider synchronization, apply/reopen, dismiss/discard, bounds
+and empty drafts, keyboard submission, field geometry and pointer adjustment.
+Both title-row and topic-icon headers receive the same narrow/short/both-theme
+geometry checks. Docs checks distinguish allowed header guidance from the Avoid
+illustration and verify topic-row spacing and close/focus return.
+Both themes at narrow/short/desktop widths and Docs width/state preservation run
+in Chromium and mobile WebKit. The manager toolbar closes both non-dismissible
+eligibility previews by pointer or keyboard and restores their opener, without
+adding a dialog close action or enabling Escape. The generic dismissal/focus test
+uses the dismissible liquidity task. No simulation engine or product state is mounted.
+
+`storybook/progress-indicator.spec.ts` checks For-based majority readings, explicit
+ties, shared generic/contextual quorum tones and neutral zero challenges. Generic
+threshold/count/waiting semantics, 4px square rails and reduced motion are covered.
+`storybook/proposal-progress.spec.ts` checks stacked quorum/majority/tallies,
+zero/abstain-only versus unknown/loading, over-target totals, independent Docs
+phase Controls, explicit unavailable targets with known amounts, and optimistic-only anatomy. `storybook/proposal-progress-layout.spec.ts`
+checks every snapshot at 320/390/desktop in both themes with 20px mobile insets,
+plus Current/Final reading preservation with the heading inside the card. Abstain
+shares the vote totals grid with For and Against. A synchronized criterion-header check
+verifies stacked left alignment on narrow cards and inline layout immediately
+below/at/above the shared container-query transition. Boundary fixtures include
+1%/99% quorum,
+51% majority, unanimous opposition and zero challenge. All progress specs run in
+Chromium and mobile WebKit. These local fixtures do not execute transactions.
 
 ## Index DTF (`/:chain/index-dtf/:tokenId/*`)
 
@@ -95,8 +203,6 @@ additional state coverage: [boot](tests/smoke/boot.spec.ts) (home shell),
 - Explorer: only 3 of the tab surfaces render-tested (transactions, governance,
   malformed-body edge); tokens/collaterals/revenue tabs, filters, and
   pagination are untested.
-- Portfolio: no connected-with-holdings render test; only disconnected and a
-  malformed-row edge case exist.
 - Mobile: only tagged in `general/`, `index-dtf/`, and `yield-dtf/` render/
   lifecycle specs. The entire `flows/` directory (30 specs — all governance/
   auction/issuance write and edge-case behavior) and all of `smoke/` have zero

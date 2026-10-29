@@ -1,6 +1,6 @@
 ---
 title: Project
-updated: 2026-09-16
+updated: 2026-10-19
 type: context
 ---
 
@@ -11,7 +11,7 @@ Register — the web interface for Reserve Protocol: **Index DTFs** (current foc
 ## Product
 
 - Index DTFs: on-chain token portfolios (ETF-like); governance via vote-locking; permissionless mint/redeem. Yield DTFs (legacy RTokens): asset-backed yield-bearing stablecoins secured by RSR stakers.
-- Index DTF code is current best practice — when unsure, copy the nearest existing Index feature. **Never reuse Yield DTF helpers/state for Index or vice versa.**
+- Index DTF code is the reference for product mechanics and SDK integration; V1 visual authority lives in [[design-system]]. **Never reuse Yield DTF helpers/state for Index or vice versa.**
 - Chains: Ethereum, Base, BSC. **Arbitrum is deprecated for Index DTFs — never add it.**
 - Vote-lock ≠ stRSR; standard vs optimistic governance are separate — never merge their voting powers or delegation.
 
@@ -50,10 +50,10 @@ Register — the web interface for Reserve Protocol: **Index DTFs** (current foc
 - **Index DTF data → the SDK first.** Never hand-roll hooks, updaters, or derivation for Index DTF reads, governance, builders, or tx calls — see [[sdk]].
 - **Live state → RPC, not subgraph.** Basket balances, live proposal state, live rebalance/auction state come from RPC. Subgraph = metadata/history only.
 - **Money is `Amount`/`bigint`.** Never `Number` for on-chain math; convert only at display leaves. Keep SDK `Amount` objects intact through atoms and logic.
-- **Feature isolation.** One feature = one folder under `views/<domain>/<feature>/` owning its `components/`, `hooks/`, `atoms.ts`, `utils.ts`. Shared code never imports from a feature; features never reach into each other's internals. Fix local bugs locally — never via shared containers, providers, routing shells, or component defaults.
+- **Feature isolation.** One feature = one folder under `views/<domain>/<feature>/` owning its `components/`, `hooks/`, `atoms.ts`, `utils.ts`. Shared code never imports from a feature; features never reach into each other's internals. Feature-only fixes stay local rather than changing shared containers, providers, routing shells or component defaults.
 - Do not patch third-party dependencies; keep compatibility changes in application code.
 - **Automatic DTF chain switching is focus-owned.** Only the focused, visible document may synchronize the wallet to its route chain; background tabs stay passive. The route/provider identity is the target — never a lagging global chain atom.
-- **Shared components keep their defaults** (`DataTable`, legacy `Table`, …) — behavior via opt-in props only.
+- **Preserve unrelated shared defaults** (`DataTable`, legacy `Table`, …). Feature changes use opt-in behavior; explicitly scoped V1 owner corrections follow [[design-system]] § Design authority and retain the required integration review.
 - **Design tokens only** — no hardcoded hex/hsl anywhere; see [[design-system]].
 - **e2e suite health is part of every stage.** Register work is agent-driven and the offline suite ([[e2e]]) is the contract that makes that safe. Stages touching covered surfaces update mocks/snapshots as part of the stage (fail-loud misses are work, not noise), never leave a new `test.fixme` without a tracked owner, and keep re-capture cheap. A red or routed-around e2e is a blocker.
 - **Git: never commit or push unless told. Never push to main/master. No Co-Authored-By lines. PR descriptions: clean human summary, no AI attribution.**
@@ -62,8 +62,10 @@ Register — the web interface for Reserve Protocol: **Index DTFs** (current foc
 ## UI Register
 
 - Professional DeFi product. **UI parity is sacred in refactors**: spacing, copy, hover/focus states, animation timing, responsive behavior, and accessibility preserved unless the task explicitly changes them.
+- **Visual geometry claims are bound to the exact reviewed surface.** Before interpreting a human/agent visual disagreement as an implementation failure, establish that both are inspecting the same current mounted client/build, route/specimen, state, viewport, and theme. Then verify the resulting relationship between the relevant visual landmarks. Source classes, passing tests, isolated component bounds, or measurements from another—even fresh—client cannot resolve what a stale review client is displaying.
+- **Agents have no authority to change product copy.** Preserve all visible wording, labels, placeholders, accessibility names, and lifecycle/status language verbatim from the evidenced source—including in lab specimens—unless the user explicitly approves that specific copy change. Report concerns and proposed alternatives separately; never silently implement them, including apparent typo or clarity fixes. If a new UI requires wording with no evidenced owner, stop and request the copy rather than inventing it.
 - Wrap new user-facing strings with Lingui (`<Trans>` or `t`) **and fill es/ko/zh in the same change** — the agent generates all translations, following the glossary in `docs/i18n.md`. Don't wrap user-authored/external placeholder content unless asked.
-- Reuse `src/components/ui` primitives (incl. blockchain-aware `TransactionButton`, `Transaction`, `Swap`, `CopyValue`); never rebuild dialogs/tables. Tailwind utilities + `cn()`; no custom CSS files, no inline `style`; arbitrary values only for measured/chart geometry.
+- V1 UI imports the canonical owner used by its accepted Storybook example, following [[design-system]]. Production behavior retains its existing owners (including blockchain-aware `TransactionButton`, `Transaction`, `Swap`, `CopyValue`) until a scoped adoption change; a design task does not authorize replacing them. Tailwind utilities + `cn()`; no custom CSS files, no inline `style`; arbitrary values only for measured/chart geometry. Consume existing accepted token/geometry recipes.
 
 ## Active Risks
 
@@ -73,9 +75,14 @@ Register — the web interface for Reserve Protocol: **Index DTFs** (current foc
 
 ## Overrides (vs kit skills)
 
+- **Project visual authority precedes generic skills.** [[design-system]] § Design authority owns the hierarchy for V1 work, accepted pilot feedback and production adoption. Generic design/taste recipes and legacy app styling cannot override that contract.
 - `console.log` / `any` are lint **warnings, not blockers** here — fine while staging, don't ship them as permanent. Kit red-flags console.log; register is deliberately softer.
 - Tests are colocated per feature (`src/**/tests/**`), not a top-level `tests/` dir — same spirit (feature owns its tests), different location.
 - Review pairs run as **Dark (hostile: hallucinated APIs, instruction violations, bugs, scope creep) + Light (constructive: solves the ask? reuses patterns? simpler way?)** background subagents — a presentation style over the kit's lens taxonomy; reconcile in one pass, don't re-litigate. Pairs spawn at **medium/high profiles only** (wide radius); touch-up and low self-review through the fired lenses (`skills/workflow.md` § Calibrate: Radius × Size).
 - Size gates: component < 200 lines, file < 300, > 500 auto engineer-review, > 1000 is cleanup work — register's stricter numbers win.
 - Feature-level agent docs (e.g. `src/views/index-dtf/issuance/async-mint/CLAUDE.md`) add local context only and never weaken root rules.
+- **Structural surfaces override the kit house card.** Do not default Register UI to a bordered, shadowed `bg-surface` card. The accepted V1 language uses flat semantic surfaces, square structural content regions, substrate reveals and explicit separators; borders or elevation appear only when the owning component/role calls for them. This does not prohibit canonical bordered controls, overlays, or deliberately framed interactive objects.
+- **Human-readable financial typography overrides generic mono-number guidance.** Ordinary prices, balances, amounts, percentages, and metrics use Lausanne with tabular numerals and the accepted financial hierarchy. Monospace is reserved for machine identifiers and code-like values such as hashes or addresses. Do not switch financial UI to monospace merely to align digits.
+- **Design-system verification follows blast radius.** A bounded story/component iteration runs focused behavior and rendered checks; a coherent checkpoint adds typecheck and the Storybook build/browser suite. A full repository gate is reserved for production adoption, shared/global defaults or tokens, release/PR work, or another genuine integration boundary. English-only Storybook examples are excluded from production translation extraction.
+- **Explicitly authorized V1 design work may change visual composition.** The UI-parity rule remains binding for refactors, bug fixes, and migrations that do not authorize redesign. Scoped V1 work follows [[design-system]] § Design authority while preserving product mechanics, truth, copy and accessibility. Its authorization covers only the named surface and any explicitly included canonical owner, not sibling flows, unrelated shared defaults, tokens or production adoption.
 - **Comment budget is enforced, not advisory.** `skills/code-standards.md` § Comments (one-line WHY only) plus: three or more consecutive comment lines in `src/` fire the `comment-block` red flag in `scope.mjs`, and the Dark review lens treats narrated intent, layout rationale, or "why this change is correct" as a finding to delete — the paragraph belongs in the commit message or the area guide. Agents tend to over-explain their own choices; a comment earns its line only when a human would otherwise "fix" the code. (Review feedback, PR #1095.)

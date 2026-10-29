@@ -10,6 +10,7 @@ import {
   getSortedRowModel,
   Column,
   PaginationState,
+  type Table as TableInstance,
 } from '@tanstack/react-table'
 
 import {
@@ -37,6 +38,7 @@ interface DataTableProps<TData, TValue> {
   onRowClick?(data: TData, event: React.MouseEvent, row?: Row<TData>): void
   renderSubComponent?(props: { row: Row<TData> }): React.ReactElement
   className?: string
+  ariaLabel?: string
   subComponentClassName?: string
   noResultsClassName?: string
   stickyHeader?: boolean // Enable sticky table header
@@ -83,7 +85,11 @@ interface DataTableComponentProps<TData, TValue> extends DataTableProps<
   initialSorting?: SortingState
   loading?: boolean
   loadingSkeleton?: React.ReactNode
+  noResults?: React.ReactNode
   getRowClassName?: (row: Row<TData>) => string | undefined
+  renderToolbar?: (table: TableInstance<TData>) => React.ReactNode
+  renderAlternative?: (table: TableInstance<TData>) => React.ReactNode
+  rowLimit?: number
 }
 
 const CustomTableRow = ({
@@ -146,6 +152,7 @@ function DataTable<TData, TValue>({
   columns,
   data,
   className,
+  ariaLabel,
   expandable = true,
   allowMultipleExpand = true,
   pagination,
@@ -159,7 +166,11 @@ function DataTable<TData, TValue>({
   initialSorting = [],
   loading = false,
   loadingSkeleton,
+  noResults,
   getRowClassName,
+  renderToolbar,
+  renderAlternative,
+  rowLimit,
 }: DataTableComponentProps<TData, TValue>) {
   const [sorting, setSorting] = React.useState<SortingState>(initialSorting)
   const propPageSize =
@@ -185,8 +196,7 @@ function DataTable<TData, TValue>({
     [data.length]
   )
 
-  // Tanstack row models are create-once: a conditional getPaginationRowModel
-  // latches on permanently once truthy, so pagination is toggled via state.
+  // Tanstack latches getPaginationRowModel once truthy, so pagination toggles via state.
   const table = useReactTable({
     data,
     columns,
@@ -232,80 +242,98 @@ function DataTable<TData, TValue>({
 
   return (
     <div className={cn('w-full overflow-x-auto', className)}>
-      <Table className="text-sm md:text-base">
-        <TableHeader className="text-sm">
-          {table.getHeaderGroups().map((headerGroup) => (
-            <TableRow
-              key={headerGroup.id}
-              className={cn(
-                'hover:bg-transparent h-16 text-legend',
-                stickyHeader && 'sticky top-0 bg-card z-10'
-              )}
-            >
-              {headerGroup.headers.map((header) => {
-                return (
-                  <TableHead
-                    key={header.id}
-                    className={cn(
-                      header.column.columnDef.meta?.className,
-                      'font-light'
-                    )}
-                  >
-                    {header.isPlaceholder
-                      ? null
-                      : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext()
-                        )}
-                  </TableHead>
-                )
-              })}
-            </TableRow>
-          ))}
-        </TableHeader>
-        <TableBody className="bg-card">
-          {table.getRowModel().rows?.length ? (
-            table.getRowModel().rows.map((row, index) => (
-              <Fragment key={row.id}>
-                <CustomTableRow
-                  row={row}
-                  handleRowClick={handleRowClick}
-                  renderSubComponent={renderSubComponent}
-                  expandable={expandable}
-                  onRowClick={onRowClick}
-                  expandedRows={expandedRows}
-                  index={index}
-                  hoverRowComponent={hoverRowComponent}
-                  getRowClassName={getRowClassName}
-                />
-                {!!renderSubComponent && row.getIsExpanded() && (
-                  <tr
-                    className={cn(
-                      'bg-card w-full !py-0 rounded-bl-lg rounded-br-lg',
-                      subComponentClassName
-                    )}
-                  >
-                    {/* 2nd row is a custom 1 cell row */}
-                    <td
-                      colSpan={row.getVisibleCells().length}
-                      className="w-full border-b border-l border-r border-border rounded-bl-lg rounded-br-lg"
-                    >
-                      <div>{renderSubComponent({ row })}</div>
-                    </td>
-                  </tr>
+      {renderToolbar?.(table)}
+      {renderAlternative ? (
+        renderAlternative(table)
+      ) : (
+        <Table className="text-sm md:text-base" aria-label={ariaLabel}>
+          <TableHeader className="text-sm">
+            {table.getHeaderGroups().map((headerGroup) => (
+              <TableRow
+                key={headerGroup.id}
+                className={cn(
+                  'hover:bg-transparent h-16 text-legend',
+                  stickyHeader && 'sticky top-0 bg-card z-10'
                 )}
-              </Fragment>
-            ))
-          ) : loading ? (
-            loadingSkeleton || <LoadingSkeleton columns={columns} />
-          ) : (
-            <NoResultsRow
-              columns={columns}
-              noResultsClassName={noResultsClassName}
-            />
-          )}
-        </TableBody>
-      </Table>
+              >
+                {headerGroup.headers.map((header) => {
+                  return (
+                    <TableHead
+                      key={header.id}
+                      aria-sort={
+                        ariaLabel && header.column.getCanSort()
+                          ? header.column.getIsSorted() === 'asc'
+                            ? 'ascending'
+                            : header.column.getIsSorted() === 'desc'
+                              ? 'descending'
+                              : 'none'
+                          : undefined
+                      }
+                      className={cn(
+                        header.column.columnDef.meta?.className,
+                        'font-light'
+                      )}
+                    >
+                      {header.isPlaceholder
+                        ? null
+                        : flexRender(
+                            header.column.columnDef.header,
+                            header.getContext()
+                          )}
+                    </TableHead>
+                  )
+                })}
+              </TableRow>
+            ))}
+          </TableHeader>
+          <TableBody className="bg-card">
+            {table.getRowModel().rows?.length ? (
+              table
+                .getRowModel()
+                .rows.slice(0, rowLimit)
+                .map((row, index) => (
+                  <Fragment key={row.id}>
+                    <CustomTableRow
+                      row={row}
+                      handleRowClick={handleRowClick}
+                      renderSubComponent={renderSubComponent}
+                      expandable={expandable}
+                      onRowClick={onRowClick}
+                      expandedRows={expandedRows}
+                      index={index}
+                      hoverRowComponent={hoverRowComponent}
+                      getRowClassName={getRowClassName}
+                    />
+                    {!!renderSubComponent && row.getIsExpanded() && (
+                      <tr
+                        className={cn(
+                          'bg-card w-full !py-0 rounded-bl-lg rounded-br-lg',
+                          subComponentClassName
+                        )}
+                      >
+                        <td
+                          colSpan={row.getVisibleCells().length}
+                          className="w-full border-b border-l border-r border-border rounded-bl-lg rounded-br-lg"
+                        >
+                          <div>{renderSubComponent({ row })}</div>
+                        </td>
+                      </tr>
+                    )}
+                  </Fragment>
+                ))
+            ) : loading ? (
+              loadingSkeleton || <LoadingSkeleton columns={columns} />
+            ) : (
+              <NoResultsRow
+                columns={columns}
+                noResultsClassName={noResultsClassName}
+              >
+                {noResults}
+              </NoResultsRow>
+            )}
+          </TableBody>
+        </Table>
+      )}
       {pagination && (
         <DataTablePagination
           table={table}
@@ -333,9 +361,11 @@ function LoadingSkeleton<TData, TValue>({
 }
 
 function NoResultsRow<TData, TValue>({
+  children,
   columns,
   noResultsClassName,
 }: {
+  children?: React.ReactNode
   columns: ColumnDef<TData, TValue>[]
   noResultsClassName?: string
 }) {
@@ -345,9 +375,7 @@ function NoResultsRow<TData, TValue>({
         colSpan={columns.length}
         className={cn('h-24 text-center', noResultsClassName)}
       >
-        <div className="my-auto">
-          <Trans>No results.</Trans>
-        </div>
+        <div className="my-auto">{children ?? <Trans>No results.</Trans>}</div>
       </TableCell>
     </TableRow>
   )

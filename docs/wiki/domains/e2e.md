@@ -1,12 +1,14 @@
 ---
 title: E2E Suite
-updated: 2026-10-26
+updated: 2026-10-28
 type: domain
 sources:
   - e2e/**
   - playwright.config.ts
   - playwright.fork.config.ts
+  - playwright.storybook.config.ts
   - .github/workflows/playwright.yml
+  - .github/workflows/design-system.yml
 ---
 
 # E2E Suite (Playwright)
@@ -56,6 +58,14 @@ lifecycle depth, and gaps live in `e2e/TEST_MAP.md`. `e2e/CLAUDE.md`
 - The webServer boots its own :3005 every run (`reuseExistingServer: false`) —
   a foreign server can't bypass the pinned env (`VITE_E2E` keeps production
   form validation ON, so zod bounds ARE assertable in specs).
+- SDK proposal decoding models Etherscan ABI/source lookups as unverified
+  contracts; unsupported module/action combinations fail loud.
+- The current zapper can query 1inch Fusion RFQ as well as native quotes. Its
+  provider route returns a deterministic error while native quotes use pinned
+  fixtures; provider fallback is not live RFQ execution evidence.
+- Cloudflare Turnstile is blocked in the offline fixture. Bot-checked forms
+  have no token, so eligibility rendering/compliance coverage does not prove
+  form submission. A submission test needs an explicit modeled token boundary.
 
 ## Transactions and time
 
@@ -103,6 +113,17 @@ Snapshots are parse-cached per worker. Prefer the narrowest tier for a
 change (the domain guides' diff→test tables name the spec). An unmocked-call
 failure names the function + the helper to model it in (`e2e/CLAUDE.md` has the
 boundary map + new-test recipe).
+
+The component library uses `e2e/storybook/` and `playwright.storybook.config.ts`.
+`pnpm storybook:test` runs against the static Storybook build with an owned local
+server. It verifies component interactions and runtime isolation, independently
+of product-route acceptance. The path-filtered design-system workflow builds
+Storybook and runs this suite. Beyond interactions it pins measured design-system
+contracts: contrast floors, reduced-motion behaviour, overlay timing, placeholder
+alignment and the empty/unavailable owners. Every new regression check there is
+red-verified by reverting its fix. `e2e/TEST_MAP.md` lists them. See
+[[design-system]] for component usage.
+The product configuration retains its existing port and mocks.
 
 ## Maintenance rules
 
