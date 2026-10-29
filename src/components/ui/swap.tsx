@@ -32,14 +32,6 @@ import { Trans, useLingui } from '@lingui/react/macro'
 import { msg } from '@lingui/core/macro'
 import type { MessageDescriptor } from '@lingui/core'
 import GaugeIcon from '../icons/GaugeIcon'
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from './accordion'
-import Help from './help'
-import { Separator } from './separator'
 import { Skeleton } from './skeleton'
 import { ToggleGroup, ToggleGroupItem } from './toggle-group'
 
@@ -540,58 +532,6 @@ export const SlippageSelector = ({
         </div>
       </div>
     </div>
-  )
-}
-
-type SwapDetailItem = {
-  left: ReactNode
-  right?: ReactNode
-  help?: ReactNode
-}
-
-const SwapDetailItem = ({ left, right, help }: SwapDetailItem) => {
-  return (
-    <div className="flex gap-1 items-center justify-between flex-1 px-1">
-      <div className="flex gap-1 items-center">
-        <div>{left}</div>
-        {!!help && <Help content={help} className="text-muted-foreground" />}
-      </div>
-      {!!right && <div className="animate-fade-in">{right}</div>}
-    </div>
-  )
-}
-
-type SwapDetailsProps = {
-  visible: SwapDetailItem
-  details: SwapDetailItem[]
-}
-
-export const SwapDetails = ({ visible, details }: SwapDetailsProps) => {
-  const [open, setOpen] = useState(false)
-  return (
-    <Accordion
-      type="single"
-      collapsible
-      value={String(open)}
-      onValueChange={(value) => setOpen(Boolean(value))}
-    >
-      <AccordionItem value="true" className="border-b-0">
-        <AccordionTrigger className="px-3 py-2 font-light">
-          <SwapDetailItem
-            left={visible.left}
-            right={open ? undefined : visible.right}
-          />
-        </AccordionTrigger>
-        <AccordionContent>
-          <Separator className="mt-2" />
-          <div className="px-3 pt-4 pb-2 flex flex-col gap-2">
-            {details.map((detail, index) => (
-              <SwapDetailItem {...detail} key={`swap-detail-${index}`} />
-            ))}
-          </div>
-        </AccordionContent>
-      </AccordionItem>
-    </Accordion>
   )
 }
 

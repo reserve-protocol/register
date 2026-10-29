@@ -1,6 +1,6 @@
 ---
 title: Ecosystem
-updated: 2026-07-03
+updated: 2026-10-29
 type: context
 ---
 
@@ -25,7 +25,7 @@ Register is one node in a multi-repo system. Work touching a boundary usually me
 ## Where Register wires them (repo-relative paths)
 
 - Subgraph URLs + GraphQL clients (both families): `src/state/chain/atoms/chainAtoms.ts`. Yield hooks go through `src/hooks/use-query.ts`; index through `src/hooks/useIndexDTFSugbraph.ts` (sic).
-- `RESERVE_API` / `ZAPPER_API`: `src/utils/constants.ts` — **currently hard-pinned to staging** ("USE PROD BEFORE RELEASING" TODO).
+- `RESERVE_API` / `ZAPPER_API`: `src/utils/constants.ts` — `api.reserve.org`, or the staging API on staging hosts / `VITE_USE_STAGING`. `ZAPPER_API api/zapper/*` is reserve-api's proxy to the Rust zapper (see [[zapper]]).
 - RPC urls shared by wagmi and the SDK: `src/utils/rpc-urls.ts` → `DtfSdkProvider` in `src/state/chain/index.tsx` (mainnet/base/bsc only — no Arbitrum).
 - Zapper mounts: `src/views/index-dtf/components/zapper/zapper-wrapper.tsx` (see [[zapper]] for the one-instance rule).
 - Vendored ABIs: `src/abis/` — register does NOT source ABIs from the SDK. Index Folio ABIs are per-version files (`dtf-index-abi-v1/v2/v4` + current); **a new Folio protocol release requires dropping a new `dtf-index-abi-vN.ts` here** and selecting by `folio.version()`.

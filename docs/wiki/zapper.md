@@ -1,6 +1,6 @@
 ---
 title: Zapper
-updated: 2026-07-08
+updated: 2026-10-29
 type: context
 ---
 
@@ -27,8 +27,17 @@ CoW-Swap-backed mint/redeem at `src/views/index-dtf/issuance/async-mint/**` (`us
 
 ## 3. Legacy zap v2 — Yield DTF only
 
-`src/views/yield-dtf/issuance/components/zapV2/**` hitting `ZAPPER_API api/zapper/{chain}/*` and `RESERVE_API enso/swap` directly (`api/quote-providers.ts`). Predates the react-zapper package; maintenance only — never extend it for Index work.
+`src/views/yield-dtf/issuance/components/zapV2/**` hitting `ZAPPER_API api/zapper/{chain}/swap` (the Rust zapper, labelled "Zap") and `RESERVE_API enso/swap` directly (`api/quote-providers.ts`). Predates the react-zapper package; maintenance only — never extend it for Index work.
+
+- Non-2xx answers surface the JSON `error` (`readZapError`); 4xx quotes are not retried.
+- Arbitrum: the Rust zapper doesn't serve 42161, so every quote source falls back to Enso there.
+
+## Index deploy (direct calls)
+
+- **Simple deploy** (`hooks/useZapDeployQuery.ts`) POSTs `ZAPPER_API api/zapper/{chain}/deploy[-ungoverned]` and shows the zapper's `error` text. Baskets with fewer than 2 assets are blocked client-side (the zapper rejects them with a 400).
+- **Basket liquidity badges** (`deploy/steps/basket/hooks/use-liquidity-check.ts`) use reserve-api `POST /rebalance/liquidity`: one `buy` per token at the simulation amount, `nativePrice: 0` so the server sizes it in the chain's native token. Levels come from the server (`error` = no route; `unknown`/`ondo` = not simulated).
+- No "unsupported token" check: the Rust `/tokens` list is a static snapshot, so it would flag every newer token. Missing routes show up as the per-token `error` level instead.
 
 ## Shared backend
 
-Both `RESERVE_API` and `ZAPPER_API` come from `src/utils/constants.ts` (staging-pinned, release TODO). Zapper healthcheck: `use-zap-healthcheck.ts` → `{ZAPPER_API}health`.
+Both `RESERVE_API` and `ZAPPER_API` come from `src/utils/constants.ts`: `api.reserve.org`, or the staging API when the hostname contains `staging` (or `VITE_USE_STAGING`) and `VITE_STAGING_API` is set. `ZAPPER_API api/zapper/*` is reserve-api's proxy to the Rust zapper (`/api/zapper2/*` is a synonym).

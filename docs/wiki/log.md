@@ -1,6 +1,6 @@
 ---
 title: Log
-updated: 2026-10-26
+updated: 2026-10-29
 type: log
 ---
 
@@ -217,3 +217,8 @@ PR #1094 merged on 2026-08-28. The following records the original stage evidence
 - Subgraph/SDK check: nothing belongs there. `react-sdk` is Index-DTF only; current destinations must come from RPC. Indexing the router events in the yield subgraph is optional history work.
 - Dark/Light review. Dark (Important, confirmed/fixed): non-strict `isAddress` let a bad mixed-case checksum through, and viem's encoder then threw inside the derived atom, crashing the proposal page. Now strict `isAddress` + `getAddress`, with a unit regression and an e2e bad-checksum case. Light (Important, confirmed/fixed): one generic validation message for up to 100 rows → per-field errors with `aria-invalid`, shown only once the field has text; Remove buttons get row `aria-label`s; help copy no longer names contract functions. Deferred (Minor): grouping a changed holder as one "Update" in the preview, per-change Revert, `key={index}` focus after mid-list removal.
 
+## 2026-10-29
+
+- The TS zapper (`zapper.reserve-api.com`) is gone; reserve-api `/api/zapper` now proxies the Rust zapper (zrs-router prod, zrsx-1 staging) and `/api/zapper2` is a synonym. Register keeps `{ZAPPER_API}api/zapper/*` (see [[zapper]]).
+- Deploy liquidity badges moved off the `deploy-ungoverned` debug payload: Rust never fills `debug.priceImpactStats`, so every token would have read 0% impact ("high", a false positive). They now reuse reserve-api `/rebalance/liquidity` with `nativePrice: 0` so the server sizes buys in the chain's own native token.
+- `fetchZapperTokens` read `data.tokens`, which neither zapper ever returned, so the "unsupported token" flag never fired. It was removed rather than fixed: the Rust `/tokens` list is a static snapshot and would flag every newer token.

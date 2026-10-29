@@ -11,7 +11,6 @@ export type ZapPayload = {
   slippage: number
   signer: Address
   trade?: boolean
-  bypassCache?: boolean
 }
 
 export type ZapResult = {
@@ -52,6 +51,20 @@ export type ZapResponse = {
 
 export const fetcher = (url: string) => fetch(url).then((res) => res.json())
 
+// Rust zapper failures are a non-2xx JSON envelope, or plain text for rejected request shapes
+export const readZapError = async (
+  response: Response
+): Promise<string | undefined> => {
+  const body = await response.text().catch(() => '')
+  try {
+    return JSON.parse(body).error
+  } catch {
+    return response.headers.get('content-type')?.startsWith('text/plain')
+      ? body
+      : undefined
+  }
+}
+
 const zapper = {
   oldZap: ({
     chainId,
@@ -63,18 +76,6 @@ const zapper = {
     trade = true,
   }: ZapPayload) =>
     `${getBaseZapApiUrl(chainId)}/swap?chainId=${chainId}&signer=${signer}&tokenIn=${tokenIn}&amountIn=${amountIn}&tokenOut=${tokenOut}&slippage=${slippage}&trade=${trade}`,
-  zap: ({
-    chainId,
-    tokenIn,
-    tokenOut,
-    amountIn,
-    slippage,
-    signer,
-    trade = true,
-    bypassCache = false,
-  }: ZapPayload) =>
-    `${getBaseZapApiUrl(chainId)}/swap?chainId=${chainId}&signer=${signer}&tokenIn=${tokenIn}&amountIn=${amountIn}&tokenOut=${tokenOut}&slippage=${slippage}&trade=${trade}&bypassCache=${bypassCache}`,
-
   zapDeploy: (chainId: number) =>
     `${getBaseZapApiUrl(chainId)}/deploy?chainId=${chainId}`,
 

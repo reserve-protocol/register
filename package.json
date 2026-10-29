@@ -19,7 +19,6 @@
     "@lingui/core": "^5.9.5",
     "@lingui/macro": "^5.9.5",
     "@lingui/react": "^5.9.5",
-    "@lucide/lab": "^0.1.2",
     "@popperjs/core": "^2.11.8",
     "@radix-ui/react-accordion": "^1.2.12",
     "@radix-ui/react-avatar": "^1.1.11",

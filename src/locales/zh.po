@@ -91,7 +91,7 @@ msgid "{0, plural, one {Add # token} other {Add # tokens}}"
 msgstr "{0, plural, one {添加 # 个代币} other {添加 # 个代币}}"
 
 #. placeholder {0}: highImpactTokens.length
-#: src/views/index-dtf/governance/views/propose/basket/components/proposal-liquidity-checker.tsx:315
+#: src/views/index-dtf/governance/views/propose/basket/components/proposal-liquidity-checker.tsx:259
 msgid "{0, plural, one {has >5% simulated price impact.} other {have >5% simulated price impact.}}"
 msgstr "{0, plural, one {模拟价格影响 >5%。} other {模拟价格影响 >5%。}}"
 
@@ -112,7 +112,7 @@ msgstr "{0}"
 
 #. placeholder {0}: ondoProblems.map((token) => token.tokenSymbol).join(', ')
 #: src/views/index-dtf/auctions/views/rebalance/components/rebalance-liquidity-checker.tsx:270
-#: src/views/index-dtf/governance/views/propose/basket/components/proposal-liquidity-checker.tsx:339
+#: src/views/index-dtf/governance/views/propose/basket/components/proposal-liquidity-checker.tsx:278
 msgid "{0} — outside trading hours or larger than the max single Ondo trade. Oversized legs fill as multiple sequential trades."
 msgstr "{0} — 处于非交易时段或超过 Ondo 单笔最大交易额。超额部分将分多笔连续交易成交。"
 
@@ -300,7 +300,7 @@ msgstr "{0} 将从篮子中移除"
 #. placeholder {1}: formatCurrency(token.usdSize)
 #. placeholder {2}: token.tokenSymbol
 #. placeholder {3}: token.counterpart
-#: src/views/index-dtf/governance/views/propose/basket/components/proposal-liquidity-checker.tsx:90
+#: src/views/index-dtf/governance/views/propose/basket/components/proposal-liquidity-checker.tsx:86
 msgid "{0}% price impact buying ${1} of {2} with {3}"
 msgstr "用 {3} 买入价值 ${1} 的 {2} 时价格影响为 {0}%"
 
@@ -308,7 +308,7 @@ msgstr "用 {3} 买入价值 ${1} 的 {2} 时价格影响为 {0}%"
 #. placeholder {1}: formatCurrency(token.usdSize)
 #. placeholder {2}: token.tokenSymbol
 #. placeholder {3}: token.counterpart
-#: src/views/index-dtf/governance/views/propose/basket/components/proposal-liquidity-checker.tsx:89
+#: src/views/index-dtf/governance/views/propose/basket/components/proposal-liquidity-checker.tsx:85
 msgid "{0}% price impact selling ${1} of {2} for {3}"
 msgstr "卖出价值 ${1} 的 {2} 换取 {3} 时价格影响为 {0}%"
 
@@ -424,8 +424,8 @@ msgid "{impact}% price impact selling ${usdSize} of {0} for {1}"
 msgstr "以 ${usdSize} 卖出 {0} 换取 {1} 的价格影响为 {impact}%"
 
 #: src/views/index-dtf/overview/components/zap-mint/submit-zap.tsx:144
-msgid "{inputAmount} {inputSymbol} for {outputAmount} {outputSymbol}"
-msgstr "{inputAmount} {inputSymbol} 兑换 {outputAmount} {outputSymbol}"
+#~ msgid "{inputAmount} {inputSymbol} for {outputAmount} {outputSymbol}"
+#~ msgstr "{inputAmount} {inputSymbol} 兑换 {outputAmount} {outputSymbol}"
 
 #: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:488
 msgid "{lengthInMinutes, plural, one {# minute} other {# minutes}}"
@@ -474,7 +474,7 @@ msgstr "{periodInDays, plural, one {# 天} other {# 天}}"
 msgid "{periodInHours, plural, one {# hour} other {# hours}}"
 msgstr "{periodInHours, plural, one {# 小时} other {# 小时}}"
 
-#: src/views/index-dtf/deploy/steps/basket/components/liquidity-badge.tsx:38
+#: src/views/index-dtf/deploy/steps/basket/components/liquidity-badge.tsx:45
 msgid "{priceImpactLabel}% price impact swapping {amountLabel} {inputTokenSymbol} for {tokenSymbol}"
 msgstr "将 {amountLabel} {inputTokenSymbol} 兑换为 {tokenSymbol} 的价格影响为 {priceImpactLabel}%"
 
@@ -797,8 +797,8 @@ msgid "A one-time fee deducted from the tokens a user receives when they mint th
 msgstr "用户 Mint DTF 时从其收到的代币中扣除的一次性费用。平台将保留此费用收入的 50%。（最低：0.15%，最高：5%）"
 
 #: src/views/index-dtf/overview/components/zap-mint/zap-details.tsx:114
-msgid "A one-time fee deduction from the tokens you are using to create a share of the DTF. This fee is set by the Governors of the DTF."
-msgstr "从你用于创建 DTF 份额的代币中一次性扣除的费用。此费用由该 DTF 的治理者设定。"
+#~ msgid "A one-time fee deduction from the tokens you are using to create a share of the DTF. This fee is set by the Governors of the DTF."
+#~ msgstr "从你用于创建 DTF 份额的代币中一次性扣除的费用。此费用由该 DTF 的治理者设定。"
 
 #: src/views/index-dtf/deploy/steps/revenue/index.tsx:73
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-dtf-revenue.tsx:75
@@ -1264,11 +1264,11 @@ msgstr "金额："
 msgid "An Index DTF is a tokenized basket of assets. Please add the tokens that will compose your index DTF basket at launch. The basket can be changed by governance in the future."
 msgstr "Index DTF 是代币化的资产篮子。请添加在启动时构成你的 Index DTF 篮子的代币。篮子日后可由治理变更。"
 
-#: src/views/yield-dtf/issuance/components/zapV2/context/ZapContext.tsx:541
+#: src/views/yield-dtf/issuance/components/zapV2/context/ZapContext.tsx:542
 msgid "An unknown error occurred"
 msgstr "发生未知错误"
 
-#: src/views/index-dtf/governance/views/propose/basket/components/proposal-liquidity-checker.tsx:304
+#: src/views/index-dtf/governance/views/propose/basket/components/proposal-liquidity-checker.tsx:248
 msgid "Analyzing liquidity..."
 msgstr "正在分析流动性……"
 
@@ -1388,8 +1388,8 @@ msgid "Approve use of {0}"
 msgstr "授权使用 {0}"
 
 #: src/views/index-dtf/overview/components/zap-mint/submit-zap.tsx:236
-msgid "Approve use of {inputSymbol}"
-msgstr "授权使用 {inputSymbol}"
+#~ msgid "Approve use of {inputSymbol}"
+#~ msgstr "授权使用 {inputSymbol}"
 
 #: src/views/yield-dtf/staking/components/stake/confirm-stake-button.tsx:57
 msgid "Approve use of RSR"
@@ -1466,7 +1466,7 @@ msgstr "以 RToken 形式"
 msgid "Ask Reserve AI"
 msgstr "询问 Reserve AI"
 
-#: src/components/ui/swap.tsx:279
+#: src/components/ui/swap.tsx:271
 msgid "Assembling different routes"
 msgstr "正在组合不同路由"
 
@@ -1766,7 +1766,7 @@ msgstr "备用配置会跟踪主篮子的变化以更新其数值。这在某个
 msgid "Backups"
 msgstr "备用项"
 
-#: src/components/ui/swap.tsx:226
+#: src/components/ui/swap.tsx:218
 #: src/views/index-dtf/issuance/async-mint/steps/configure-mint.tsx:218
 #: src/views/portfolio-page/components/available-rewards.tsx:122
 #: src/views/portfolio-page/components/dtf-positions.tsx:134
@@ -2109,12 +2109,10 @@ msgctxt "DTF card"
 msgid "Buy"
 msgstr "一键买入"
 
-#. placeholder {0}: indexDTF.token.symbol
 #. placeholder {0}: trade.token.symbol
 #: src/views/index-dtf/governance/components/proposal-preview/rebalance-preview/legacy-basket-proposal-preview.tsx:164
 #: src/views/index-dtf/governance/views/propose/basket/components/legacy-proposal-auction-price-ranges.tsx:161
 #: src/views/index-dtf/governance/views/propose/basket/components/proposal-basket-preview.tsx:247
-#: src/views/index-dtf/overview/components/zap-mint/buy/index.tsx:156
 msgid "Buy {0}"
 msgstr "购买 {0}"
 
@@ -2131,7 +2129,7 @@ msgstr "买入/卖出代币，以更接近提案权重。"
 #: src/views/index-dtf/governance/components/proposal-preview/rebalance-preview/legacy-basket-proposal-preview.tsx:260
 #: src/views/index-dtf/governance/views/propose/basket/components/legacy-proposal-auction-price-ranges.tsx:261
 #: src/views/index-dtf/governance/views/propose/basket/components/proposal-basket-preview.tsx:343
-#: src/views/index-dtf/governance/views/propose/basket/components/proposal-liquidity-checker.tsx:348
+#: src/views/index-dtf/governance/views/propose/basket/components/proposal-liquidity-checker.tsx:287
 #: src/views/yield-dtf/auctions/components/useColumns.tsx:36
 msgid "Buying"
 msgstr "买入中"
@@ -2334,7 +2332,7 @@ msgstr "更改分配"
 msgid "Change diversity factor"
 msgstr "更改多样性因子"
 
-#: src/views/yield-dtf/governance/views/proposal/components/PreviewBox.tsx:38
+#: src/views/yield-dtf/governance/views/proposal/components/PreviewBox.tsx:40
 msgid "Change in:"
 msgstr "变更于："
 
@@ -2556,7 +2554,6 @@ msgstr "抵押品"
 msgid "Collect dust"
 msgstr "收集零散余额"
 
-#: src/views/index-dtf/overview/components/zap-mint/zap-settings.tsx:31
 #: src/views/yield-dtf/issuance/components/zapV2/settings/ZapSettingsModal.tsx:54
 msgid "Collect dust?"
 msgstr "收集碎屑？"
@@ -2735,7 +2732,6 @@ msgstr "确认交易中……"
 #: src/components/vote-lock/components/submit-unlock-button.tsx:124
 #: src/views/index-dtf/deploy/steps/confirm-deploy/manual/components/confirm-manual-deploy-button.tsx:298
 #: src/views/index-dtf/deploy/steps/confirm-deploy/simple/simple-deploy-button.tsx:133
-#: src/views/index-dtf/overview/components/zap-mint/submit-zap.tsx:215
 msgid "Confirming tx..."
 msgstr "确认交易中..."
 
@@ -2878,13 +2874,13 @@ msgstr "复制地址"
 msgid "Copy link"
 msgstr "复制链接"
 
-#: src/views/index-dtf/deploy/steps/confirm-deploy/simple/index.tsx:35
+#: src/views/index-dtf/deploy/steps/confirm-deploy/simple/index.tsx:36
 msgid "Copy payload to share with engineering team"
 msgstr "复制 payload 以与工程团队分享"
 
 #: src/views/index-dtf/overview/components/zap-mint/zap-error-msg.tsx:27
-msgid "Copy swap params to share with engineering team"
-msgstr "复制 swap 参数以分享给工程团队"
+#~ msgid "Copy swap params to share with engineering team"
+#~ msgstr "复制 swap 参数以分享给工程团队"
 
 #: src/components/ui/copy-value.tsx:60
 #: src/components/ui/copy.tsx:23
@@ -3199,7 +3195,7 @@ msgstr "当前已配置：{0} / {MAX_REVENUE_DESTINATIONS}"
 msgid "Custodial Risks: Ondo Tokenized Stocks represent claims on SPVs and other structures that hold underlying equity positions through custodians. DTF exposure therefore depends on the operational integrity and solvency of third parties. Any failure, suspension, error, insolvency, fraud, cyber incident, or transfer restriction affecting these parties could result in delayed settlement, blocked transfers, impaired redemptions, forced liquidation, or partial or total loss of value for the DTF’s holdings."
 msgstr "托管风险：Ondo Tokenized Stocks 代表对通过托管人持有基础股票头寸的 SPV 及其他结构的求偿权。因此，DTF 的敞口取决于第三方的运营完整性和偿付能力。影响这些主体的任何故障、暂停、错误、破产、欺诈、网络事件或转账限制，都可能导致结算延迟、转账受阻、赎回受损、强制清算，或 DTF 持仓价值的部分或全部损失。"
 
-#: src/components/ui/swap.tsx:514
+#: src/components/ui/swap.tsx:506
 #: src/views/index-dtf/deploy/components/toggle-group-preset.tsx:31
 #: src/views/yield-dtf/issuance/components/zapV2/settings/ZapSettingsCustomSlippage.tsx:24
 msgid "Custom"
@@ -3411,7 +3407,7 @@ msgstr "Delta"
 msgid "Delta from 30d avg"
 msgstr "与 30 天平均值的差值"
 
-#: src/views/index-dtf/deploy/steps/confirm-deploy/simple/index.tsx:155
+#: src/views/index-dtf/deploy/steps/confirm-deploy/simple/index.tsx:161
 msgid "Deploy"
 msgstr "部署"
 
@@ -3825,14 +3821,13 @@ msgid "Duration in Seconds"
 msgstr "时长（秒）"
 
 #: src/views/index-dtf/overview/components/zap-mint/low-liquidity-warning.tsx:42
-msgid "During periods of high volatility it can take multiple attempts to find a route with good pricing."
-msgstr "在高波动期间，可能需要多次尝试才能找到定价合理的路径。"
+#~ msgid "During periods of high volatility it can take multiple attempts to find a route with good pricing."
+#~ msgstr "在高波动期间，可能需要多次尝试才能找到定价合理的路径。"
 
 #: src/views/yield-dtf/issuance/components/zapV2/output/ZapOutputUSD.tsx:32
 msgid "Dust is the leftover amount of tokens that cannot be exchanged or included in the RToken mint, due to the zapper route. It will be sent back to your wallet."
 msgstr "Dust 是由于 zapper 路由而无法兑换或纳入 RToken Mint 的剩余代币。它将被退回到你的 Wallet。"
 
-#: src/views/index-dtf/overview/components/zap-mint/zap-settings.tsx:32
 #: src/views/yield-dtf/issuance/components/zapV2/settings/ZapSettingsModal.tsx:57
 msgid "Dust is the leftover amount of tokens that cannot be exchanged. If you choose to collect dust, it will be sent back to your wallet. Sending dust back to the wallet will increase transaction fee."
 msgstr "碎屑是指无法兑换的剩余代币。如果你选择收集碎屑，它将被退回到你的 Wallet。将碎屑退回 Wallet 会增加交易费用。"
@@ -3860,8 +3855,6 @@ msgstr "例如：将纳入的代币、策略、方法论"
 #: src/views/yield-dtf/governance/views/proposal/components/revenue-destinations-proposal.tsx:166
 msgid "Each holder's eUSD balance × multiplier sets its recipient's share of the router's revenue. Multipliers are not percentages; 1 means 1×. Only add holders whose balances third parties cannot inflate. Changed or removed destinations are removed first, then new values are added, in one proposal."
 msgstr "每个 holder 的 eUSD 余额 × 乘数决定其接收方获得的路由器收入份额。乘数不是百分比；1 表示 1×。只添加第三方无法抬高余额的 holder。已修改或删除的目标会先被移除，然后添加新值，全部在同一提案中完成。"
-
-#: src/views/yield-dtf/governance/views/proposal/components/revenue-destinations-proposal.tsx:152
 
 #: src/components/rtoken-setup/basket/BackupBasket.tsx:39
 msgid "Each target unit of your primary basket will have defined emergency collateral to replace with in case of default."
@@ -4098,7 +4091,7 @@ msgstr "创建 DAO 代币时出错。"
 msgid "Error fetching price"
 msgstr "获取价格时出错"
 
-#: src/views/yield-dtf/issuance/components/zapV2/context/ZapContext.tsx:558
+#: src/views/yield-dtf/issuance/components/zapV2/context/ZapContext.tsx:559
 msgid "Error occurred, try again"
 msgstr "发生错误，请重试"
 
@@ -4175,7 +4168,7 @@ msgstr "预计 gas 费用："
 
 #. placeholder {0}: formatCurrency(totalSlippageDollars)
 #: src/views/index-dtf/auctions/views/rebalance/components/rebalance-liquidity-checker.tsx:257
-#: src/views/index-dtf/governance/views/propose/basket/components/proposal-liquidity-checker.tsx:321
+#: src/views/index-dtf/governance/views/propose/basket/components/proposal-liquidity-checker.tsx:265
 msgid "Estimated loss: ~${0}"
 msgstr "预计损失：~${0}"
 
@@ -4184,7 +4177,7 @@ msgid "Estimated output"
 msgstr "预计产出"
 
 #: src/views/index-dtf/auctions/views/rebalance/components/rebalance-liquidity-checker.tsx:290
-#: src/views/index-dtf/governance/views/propose/basket/components/proposal-liquidity-checker.tsx:359
+#: src/views/index-dtf/governance/views/propose/basket/components/proposal-liquidity-checker.tsx:298
 msgid "Estimated total impact"
 msgstr "预计总影响"
 
@@ -4197,7 +4190,7 @@ msgstr "ETH 地址"
 msgid "eUSD revenue router destinations"
 msgstr "eUSD 收入路由器目标"
 
-#: src/components/ui/swap.tsx:280
+#: src/components/ui/swap.tsx:272
 msgid "Evaluating slippage"
 msgstr "正在评估滑点"
 
@@ -4416,7 +4409,7 @@ msgstr "已失败"
 msgid "Failed to connect wallet"
 msgstr "连接 Wallet 失败"
 
-#: src/views/yield-dtf/issuance/components/zapV2/context/ZapContext.tsx:538
+#: src/views/yield-dtf/issuance/components/zapV2/context/ZapContext.tsx:539
 msgid "Failed to find a route"
 msgstr "未能找到路由"
 
@@ -4470,8 +4463,8 @@ msgid "Featured RTokens"
 msgstr "精选 RTokens"
 
 #: src/views/index-dtf/overview/components/zap-mint/zap-details.tsx:91
-msgid "Fee"
-msgstr "费用"
+#~ msgid "Fee"
+#~ msgstr "费用"
 
 #: src/views/yield-dtf/overview/components/backing/underlying-fees.tsx:164
 msgid "Fee data for this period is not available right now."
@@ -4669,12 +4662,12 @@ msgid "For vlRSR, rewards are converted to RSR and added to the vault’s backin
 msgstr ""
 
 #: src/views/index-dtf/overview/components/zap-mint/zap-settings.tsx:62
-msgid "Force DTF mint?"
-msgstr "强制 Mint DTF？"
+#~ msgid "Force DTF mint?"
+#~ msgstr "强制 Mint DTF？"
 
 #: src/views/index-dtf/overview/components/zap-mint/zap-settings.tsx:69
-msgid "Force minting DTF"
-msgstr "强制 Mint DTF"
+#~ msgid "Force minting DTF"
+#~ msgstr "强制 Mint DTF"
 
 #: src/views/yield-dtf/issuance/components/zapV2/settings/ZapSettingsOnlyMint.tsx:14
 #: src/views/yield-dtf/issuance/components/zapV2/settings/ZapSettingsOnlyMint.tsx:18
@@ -4957,8 +4950,8 @@ msgid "Having issues minting?"
 msgstr "Mint 时遇到问题？"
 
 #: src/views/index-dtf/overview/components/zap-mint/zap-error-msg.tsx:44
-msgid "Having issues minting? (Zaps are in beta)"
-msgstr "Mint 遇到问题？（Zap 处于测试阶段）"
+#~ msgid "Having issues minting? (Zaps are in beta)"
+#~ msgstr "Mint 遇到问题？（Zap 处于测试阶段）"
 
 #: src/views/yield-dtf/issuance/components/zapV2/ZapToggleBottom.tsx:20
 msgid "Having issues minting? Zaps are in beta"
@@ -4988,14 +4981,13 @@ msgstr "高流动性"
 
 #: src/views/index-dtf/auctions/views/rebalance/components/rebalance-liquidity-checker.tsx:244
 #: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:30
-#: src/views/index-dtf/governance/views/propose/basket/components/proposal-liquidity-checker.tsx:311
+#: src/views/index-dtf/governance/views/propose/basket/components/proposal-liquidity-checker.tsx:255
 msgid "High price impact"
 msgstr "价格影响过高"
 
-#. placeholder {0}: formatPercentage(Math.abs(priceImpact))
 #: src/views/index-dtf/overview/components/zap-mint/zap-warning-checkbox.tsx:34
-msgid "High price impact: {0}"
-msgstr "价格影响较高：{0}"
+#~ msgid "High price impact: {0}"
+#~ msgstr "价格影响较高：{0}"
 
 #: src/views/home/components/highlighted-dtfs/chain-tabs.tsx:29
 msgid "Highlighted card chain"
@@ -5103,7 +5095,7 @@ msgid "How much {0} is needed to hit the 30d avg"
 msgstr "需要多少 {0} 才能达到 30 天平均值"
 
 #: src/views/index-dtf/deploy/steps/confirm-deploy/manual/index.tsx:38
-#: src/views/index-dtf/deploy/steps/confirm-deploy/simple/index.tsx:110
+#: src/views/index-dtf/deploy/steps/confirm-deploy/simple/index.tsx:114
 msgid "How much do you want to mint?"
 msgstr "您想要 Mint 多少？"
 
@@ -5175,8 +5167,6 @@ msgstr "{0} 后"
 msgid "in Daily Payouts"
 msgstr "每日派发"
 
-#: src/views/index-dtf/overview/components/zap-mint/buy/index.tsx:139
-#: src/views/index-dtf/overview/components/zap-mint/sell/index.tsx:131
 #: src/views/yield-dtf/issuance/components/zapV2/output/ZapOutputUSD.tsx:28
 msgid "in dust"
 msgstr "的碎屑"
@@ -5362,13 +5352,12 @@ msgstr "查看"
 msgid "Insufficient asset balance"
 msgstr "资产余额不足"
 
-#: src/views/index-dtf/deploy/steps/confirm-deploy/simple/index.tsx:154
+#: src/views/index-dtf/deploy/steps/confirm-deploy/simple/index.tsx:160
 #: src/views/index-dtf/issuance/manual/components/index-manual-issuance.tsx:45
-#: src/views/index-dtf/overview/components/zap-mint/submit-zap.tsx:46
 msgid "Insufficient balance"
 msgstr "余额不足"
 
-#: src/views/yield-dtf/issuance/components/zapV2/context/ZapContext.tsx:582
+#: src/views/yield-dtf/issuance/components/zapV2/context/ZapContext.tsx:583
 msgid "Insufficient funds"
 msgstr "资金不足"
 
@@ -5655,7 +5644,7 @@ msgid "Links to files holders can download from the DTF overview page, like a te
 msgstr "持有者可从 DTF 概览页面下载的文件链接，例如简报或方法论文档。"
 
 #: src/views/index-dtf/auctions/views/rebalance/components/rebalance-liquidity-checker.tsx:222
-#: src/views/index-dtf/governance/views/propose/basket/components/proposal-liquidity-checker.tsx:284
+#: src/views/index-dtf/governance/views/propose/basket/components/proposal-liquidity-checker.tsx:228
 msgid "Liquidity"
 msgstr "流动性"
 
@@ -5683,7 +5672,7 @@ msgstr "正在加载当前允许的操作..."
 msgid "Loading current destinations…"
 msgstr "正在加载当前目标…"
 
-#: src/components/ui/swap.tsx:282
+#: src/components/ui/swap.tsx:274
 msgid "Loading DTF"
 msgstr "正在加载 DTF"
 
@@ -5734,7 +5723,7 @@ msgstr "正在加载你的投资组合数据..."
 
 #: src/components/stake-drawer/components/submit-stake-button.tsx:164
 #: src/views/explorer/components/revenue/index.tsx:547
-#: src/views/index-dtf/deploy/steps/confirm-deploy/simple/index.tsx:152
+#: src/views/index-dtf/deploy/steps/confirm-deploy/simple/index.tsx:158
 #: src/views/index-dtf/governance/components/proposal-preview/token-reward-preview.tsx:66
 #: src/views/index-dtf/governance/components/proposal-preview/token-reward-preview.tsx:66
 #: src/views/index-dtf/governance/views/proposal/components/proposal-header.tsx:58
@@ -5743,7 +5732,6 @@ msgstr "正在加载你的投资组合数据..."
 #: src/views/index-dtf/governance/views/proposal/components/vote-modal.tsx:140
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/sections/propose-revenue-tokens.tsx:63
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/vault-proposal-form.tsx:65
-#: src/views/index-dtf/overview/components/zap-mint/submit-zap.tsx:44
 #: src/views/index-dtf/settings/components/distribute-fees.tsx:83
 #: src/views/yield-dtf/governance/components/GovernanceOverview.tsx:169
 #: src/views/yield-dtf/governance/views/proposal-detail/components/VoteModal.tsx:91
@@ -5961,7 +5949,7 @@ msgstr "市值："
 msgid "Market closed"
 msgstr "市场休市"
 
-#: src/components/ui/swap.tsx:236
+#: src/components/ui/swap.tsx:228
 #: src/views/index-dtf/issuance/async-mint/steps/configure-mint.tsx:232
 #: src/views/yield-dtf/issuance/components/zapV2/input/ZapInputMaxButton.tsx:39
 #: src/views/yield-dtf/staking/components/stake/stake-input.tsx:67
@@ -5978,7 +5966,7 @@ msgstr "每个代币的最大拍卖规模"
 msgid "Max precision is 0.01%"
 msgstr "最大精度为 0.01%"
 
-#: src/components/ui/swap.tsx:487
+#: src/components/ui/swap.tsx:479
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1284
 msgid "Max slippage"
 msgstr "最大滑点"
@@ -6010,7 +5998,6 @@ msgstr "上限："
 msgid "Max: {0}"
 msgstr "最大：{0}"
 
-#: src/views/index-dtf/overview/components/zap-mint/zap-settings.tsx:50
 #: src/views/yield-dtf/issuance/components/zapV2/settings/ZapSettingsModal.tsx:76
 msgid "Max. mint slippage"
 msgstr "最大 Mint 滑点"
@@ -6102,8 +6089,8 @@ msgid "Migration needed"
 msgstr "需要迁移"
 
 #: src/views/index-dtf/overview/components/zap-mint/zap-details.tsx:132
-msgid "Min Amount Out"
-msgstr "最小输出数量"
+#~ msgid "Min Amount Out"
+#~ msgstr "最小输出数量"
 
 #: src/views/yield-dtf/issuance/components/zapV2/overview/ZapDetails.tsx:48
 msgid "Min. amount out"
@@ -6187,7 +6174,7 @@ msgstr "Mint + Redeem"
 msgid "Mint amount"
 msgstr "Mint 数量"
 
-#: src/views/yield-dtf/issuance/components/zapV2/context/ZapContext.tsx:311
+#: src/views/yield-dtf/issuance/components/zapV2/context/ZapContext.tsx:312
 msgid "Mint amount above Global Max Mint"
 msgstr "Mint 数量超过全局最大 Mint 量"
 
@@ -6216,7 +6203,6 @@ msgstr "Mint 费用"
 #: src/views/index-dtf/deploy/steps/revenue/index.tsx:91
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/changes/revenue-changes.tsx:451
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-dtf-revenue.tsx:90
-#: src/views/index-dtf/overview/components/zap-mint/zap-details.tsx:103
 msgid "Mint Fee"
 msgstr "Mint 费用"
 
@@ -6904,7 +6890,7 @@ msgid "on {0}"
 msgstr "在 {0} 上"
 
 #: src/views/index-dtf/auctions/views/rebalance/components/rebalance-liquidity-checker.tsx:267
-#: src/views/index-dtf/governance/views/propose/basket/components/proposal-liquidity-checker.tsx:336
+#: src/views/index-dtf/governance/views/propose/basket/components/proposal-liquidity-checker.tsx:275
 msgid "Ondo limits"
 msgstr "Ondo 限制"
 
@@ -7233,7 +7219,6 @@ msgstr "待处理的提取"
 #: src/components/vote-lock/components/submit-unlock-button.tsx:125
 #: src/views/index-dtf/deploy/steps/confirm-deploy/manual/components/confirm-manual-deploy-button.tsx:298
 #: src/views/index-dtf/deploy/steps/confirm-deploy/simple/simple-deploy-button.tsx:134
-#: src/views/index-dtf/overview/components/zap-mint/submit-zap.tsx:216
 #: src/views/yield-dtf/deploy/components/DeployOverview.tsx:25
 #: src/views/yield-dtf/deploy/components/GovernanceOverview.tsx:25
 #: src/views/yield-dtf/governance/views/proposal/components/ConfirmProposalOverview.tsx:59
@@ -7439,13 +7424,13 @@ msgstr "请重试"
 msgid "Please try again later"
 msgstr "请稍后重试"
 
-#: src/views/yield-dtf/issuance/components/zapV2/context/ZapContext.tsx:543
+#: src/views/yield-dtf/issuance/components/zapV2/context/ZapContext.tsx:544
 msgid "Please try again. If the problem persists, please <0>contact support.</0>"
 msgstr "请重试。如果问题仍然存在，请<0>联系支持团队。</0>"
 
 #: src/views/index-dtf/overview/components/zap-mint/zap-healthcheck.tsx:29
-msgid "Please try refreshing, or switch to manual minting."
-msgstr "请尝试刷新，或切换到手动 Mint。"
+#~ msgid "Please try refreshing, or switch to manual minting."
+#~ msgstr "请尝试刷新，或切换到手动 Mint。"
 
 #: src/views/index-dtf/deploy/steps/basket/basket-csv-setup.tsx:57
 #: src/views/index-dtf/governance/views/propose/basket/components/proposal-basket-setup/basket-csv-setup.tsx:143
@@ -7598,7 +7583,6 @@ msgid "Price impact"
 msgstr "价格影响"
 
 #: src/views/index-dtf/auctions/views/rebalance/components/rebalance-price-impact.tsx:42
-#: src/views/index-dtf/overview/components/zap-mint/zap-details.tsx:121
 #: src/views/yield-dtf/issuance/components/zapV2/overview/ZapDetails.tsx:22
 msgid "Price Impact"
 msgstr "价格影响"
@@ -8174,7 +8158,7 @@ msgstr "Redeem 你在旧金库中的全部份额。{symbol} 会在此交易中�
 msgid "Redeem amount"
 msgstr "Redeem 数量"
 
-#: src/views/yield-dtf/issuance/components/zapV2/context/ZapContext.tsx:312
+#: src/views/yield-dtf/issuance/components/zapV2/context/ZapContext.tsx:313
 msgid "Redeem amount above Global Max Redeem"
 msgstr "Redeem 数量超过全局最大 Redeem 量"
 
@@ -8266,15 +8250,15 @@ msgstr "Redemption 限流比率 (%)"
 msgid "Reduce"
 msgstr "减少"
 
-#: src/components/ui/swap.tsx:281
+#: src/components/ui/swap.tsx:273
 msgid "Reducing potential dust"
 msgstr "正在减少潜在尘埃"
 
 #: src/views/index-dtf/overview/components/zap-mint/refresh-quote.tsx:41
-msgid "Refresh"
-msgstr "刷新"
+#~ msgid "Refresh"
+#~ msgstr "刷新"
 
-#: src/views/index-dtf/deploy/steps/confirm-deploy/simple/index.tsx:56
+#: src/views/index-dtf/deploy/steps/confirm-deploy/simple/index.tsx:57
 msgid "Refresh quote"
 msgstr "刷新报价"
 
@@ -8340,7 +8324,7 @@ msgid "Rely solely on the Auction Launcher to provide accurate pricing informati
 msgstr "在交换资产时完全依赖拍卖发起者提供准确的定价信息。此选项会加大因错误或恶意拍卖发起者所造成的损害程度。"
 
 #: src/components/index-basket-setup/basket-table.tsx:149
-#: src/views/index-dtf/deploy/steps/basket/basket-preview.tsx:200
+#: src/views/index-dtf/deploy/steps/basket/basket-preview.tsx:201
 #: src/views/index-dtf/deploy/steps/revenue/revenue-distribution-settings.tsx:97
 #: src/views/index-dtf/governance/views/propose/basket/components/proposal-basket-setup/setup-native-dtf-basket.tsx:82
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-revenue-distribution.tsx:160
@@ -8950,7 +8934,7 @@ msgstr "以以下身份运行拍卖："
 msgid "Save"
 msgstr "保存"
 
-#: src/views/index-dtf/auctions/views/rebalance/components/manage-weights/manage-weights-content.tsx:240
+#: src/views/index-dtf/auctions/views/rebalance/components/manage-weights/manage-weights-content.tsx:174
 msgid "Save Weights {editedRows}/{totalRows} edited"
 msgstr "保存权重 已编辑 {editedRows}/{totalRows}"
 
@@ -9007,7 +8991,7 @@ msgstr "搜索治理代币或 DTF"
 msgid "Search pool"
 msgstr "搜索 pool"
 
-#: src/components/ui/swap.tsx:278
+#: src/components/ui/swap.tsx:270
 msgid "Searching DEX Liquidity"
 msgstr "正在搜索 DEX 流动性"
 
@@ -9073,10 +9057,9 @@ msgstr "当你 Vote-lock {0} 时会自动进行自我委托。Vote-lock 后请�
 msgid "Sell"
 msgstr "卖出"
 
-#. placeholder {0}: indexDTF.token.symbol
 #: src/views/index-dtf/overview/components/zap-mint/sell/index.tsx:150
-msgid "Sell {0}"
-msgstr "卖出 {0}"
+#~ msgid "Sell {0}"
+#~ msgstr "卖出 {0}"
 
 #. placeholder {0}: sell.token.symbol
 #: src/views/index-dtf/governance/components/proposal-preview/rebalance-preview/legacy-basket-proposal-preview.tsx:199
@@ -9094,7 +9077,7 @@ msgstr "出售抵押品"
 #: src/views/index-dtf/governance/components/proposal-preview/rebalance-preview/legacy-basket-proposal-preview.tsx:256
 #: src/views/index-dtf/governance/views/propose/basket/components/legacy-proposal-auction-price-ranges.tsx:257
 #: src/views/index-dtf/governance/views/propose/basket/components/proposal-basket-preview.tsx:339
-#: src/views/index-dtf/governance/views/propose/basket/components/proposal-liquidity-checker.tsx:347
+#: src/views/index-dtf/governance/views/propose/basket/components/proposal-liquidity-checker.tsx:286
 #: src/views/yield-dtf/auctions/components/useColumns.tsx:32
 #: src/views/yield-dtf/auctions/dutch/components/DutchAuction.tsx:28
 msgid "Selling"
@@ -9109,7 +9092,6 @@ msgstr "出售 {0}"
 msgid "Selling:"
 msgstr "卖出："
 
-#: src/views/index-dtf/overview/components/zap-mint/zap-settings.tsx:42
 #: src/views/yield-dtf/issuance/components/zapV2/settings/ZapSettingsCollectDust.tsx:14
 msgid "Send dust back to wallet"
 msgstr "将碎屑退回 Wallet"
@@ -9204,7 +9186,7 @@ msgid "Setup Governance"
 msgstr "设置治理"
 
 #: src/components/index-basket-setup/basket-table.tsx:109
-#: src/views/index-dtf/deploy/steps/basket/basket-preview.tsx:234
+#: src/views/index-dtf/deploy/steps/basket/basket-preview.tsx:235
 #: src/views/index-dtf/governance/views/propose/basket/components/proposal-basket-setup/proposal-basket-table.tsx:78
 msgid "Share"
 msgstr "份额"
@@ -9345,6 +9327,10 @@ msgstr "签名中…"
 msgid "Simple deploy"
 msgstr "简易部署"
 
+#: src/views/index-dtf/deploy/steps/confirm-deploy/simple/index.tsx:165
+msgid "Simple deploy needs at least 2 tokens in the basket. Use Manual deploy instead."
+msgstr "简易部署要求篮子中至少有 2 个代币。请改用手动部署。"
+
 #: src/views/index-dtf/deploy/steps/basket/components/liquidity-config-modal.tsx:130
 msgid "Simulate"
 msgstr "模拟"
@@ -9375,7 +9361,7 @@ msgid "Simulated route. Actual auction path may differ."
 msgstr "模拟路径。实际拍卖路径可能有所不同。"
 
 #: src/views/index-dtf/auctions/views/rebalance/components/rebalance-liquidity-checker.tsx:236
-#: src/views/index-dtf/governance/views/propose/basket/components/proposal-liquidity-checker.tsx:298
+#: src/views/index-dtf/governance/views/propose/basket/components/proposal-liquidity-checker.tsx:242
 msgid "Simulates swaps against the native token via the Zapper API to estimate price impact. Trades under $1 are simulated at $1 for reliable results. Summary badge is weighted by trade size."
 msgstr "通过 Zapper API 模拟与原生代币的兑换以估算价格影响。低于 $1 的交易按 $1 模拟以获得可靠结果。摘要标记按交易规模加权。"
 
@@ -9416,7 +9402,7 @@ msgstr "模拟失败 ✘"
 msgid "Slashing Risk"
 msgstr "Slashing 风险"
 
-#: src/components/ui/swap.tsx:484
+#: src/components/ui/swap.tsx:476
 msgid "Slippage"
 msgstr "滑点"
 
@@ -9467,22 +9453,22 @@ msgid "Something went wrong. Please try again."
 msgstr "出现错误，请重试。"
 
 #: src/views/index-dtf/overview/components/zap-mint/zap-error-msg.tsx:19
-msgid "Sorry, the market is volatile right now. Please increase slippage in your settings."
-msgstr "抱歉，当前市场波动较大。请在设置中提高滑点。"
+#~ msgid "Sorry, the market is volatile right now. Please increase slippage in your settings."
+#~ msgstr "抱歉，当前市场波动较大。请在设置中提高滑点。"
 
 #: src/views/index-dtf/overview/components/zap-mint/zap-error-msg.tsx:13
-msgid "Sorry, we’re having a hard time finding a route that makes sense for you. Please try again in a bit."
-msgstr "抱歉，我们暂时难以为你找到合适的路径。请稍后重试。"
+#~ msgid "Sorry, we’re having a hard time finding a route that makes sense for you. Please try again in a bit."
+#~ msgstr "抱歉，我们暂时难以为你找到合适的路径。请稍后重试。"
 
 #. placeholder {0}: rToken?.symbol
 #. placeholder {1}: tokenIn.symbol
-#: src/views/yield-dtf/issuance/components/zapV2/context/ZapContext.tsx:315
+#: src/views/yield-dtf/issuance/components/zapV2/context/ZapContext.tsx:316
 msgid "Sorry, your request exceeds the Global Max Mint limit. The Global Max Mint is set at {maxFormatted} {0}. You can only zap a maximum of {maxZap} {1}."
 msgstr "抱歉，你的请求超过了 Global Max Mint 限额。Global Max Mint 限额设为 {maxFormatted} {0}。你最多只能 zap {maxZap} {1}。"
 
 #. placeholder {0}: rToken?.symbol
 #. placeholder {1}: tokenIn.symbol
-#: src/views/yield-dtf/issuance/components/zapV2/context/ZapContext.tsx:316
+#: src/views/yield-dtf/issuance/components/zapV2/context/ZapContext.tsx:317
 msgid "Sorry, your request exceeds the Global Max Redeem limit. The Global Max Redeem is set at {maxFormatted} {0}. You can only zap a maximum of {maxZap} {1}."
 msgstr "抱歉，你的请求超过了 Global Max Redeem 限额。Global Max Redeem 限额设为 {maxFormatted} {0}。你最多只能 zap {maxZap} {1}。"
 
@@ -9715,12 +9701,12 @@ msgid "Step {0} of {1}"
 msgstr "第 {0} 步，共 {1} 步"
 
 #: src/views/index-dtf/overview/components/zap-mint/submit-zap.tsx:235
-msgid "Step 1. Approve use of {inputSymbol}"
-msgstr "步骤 1. 授权使用 {inputSymbol}"
+#~ msgid "Step 1. Approve use of {inputSymbol}"
+#~ msgstr "步骤 1. 授权使用 {inputSymbol}"
 
 #: src/views/index-dtf/overview/components/zap-mint/submit-zap.tsx:232
-msgid "Step 2. {buttonLabel}"
-msgstr "步骤 2. {buttonLabel}"
+#~ msgid "Step 2. {buttonLabel}"
+#~ msgstr "步骤 2. {buttonLabel}"
 
 #. placeholder {0}: pending.map(({ symbol }) => symbol).join(', ')
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-retire-vote-lock.tsx:122
@@ -9845,12 +9831,12 @@ msgid "Swap"
 msgstr "交易"
 
 #: src/views/index-dtf/overview/components/zap-mint/submit-zap.tsx:143
-msgid "Swapped"
-msgstr "已兑换"
+#~ msgid "Swapped"
+#~ msgstr "已兑换"
 
 #: src/views/index-dtf/overview/components/zap-mint/submit-zap.tsx:141
-msgid "Swapped {inputSymbol} for {outputSymbol}"
-msgstr "已将 {inputSymbol} 兑换为 {outputSymbol}"
+#~ msgid "Swapped {inputSymbol} for {outputSymbol}"
+#~ msgstr "已将 {inputSymbol} 兑换为 {outputSymbol}"
 
 #: src/views/index-dtf/issuance/async-mint/steps/success.tsx:255
 msgid "Swaps leave a small residue in your wallet."
@@ -9877,8 +9863,8 @@ msgid "Switch to manual minting"
 msgstr "切换到手动 Mint"
 
 #: src/views/index-dtf/overview/components/zap-mint/zap-error-msg.tsx:57
-msgid "switch to manual redeeming"
-msgstr "切换到手动 Redeem"
+#~ msgid "switch to manual redeeming"
+#~ msgstr "切换到手动 Redeem"
 
 #: src/views/index-dtf/issuance/async-mint/components/switch-to-manual-link.tsx:37
 msgid "Switch to manual redeeming"
@@ -10031,8 +10017,8 @@ msgid "The guardian has the ability to reject proposals even if they pass. Shoul
 msgstr "守护者有权拒绝提案，即使提案已通过。应将其分配给可信任的、可作为最后防线的多签或 EOA。即使其行动相对缓慢也是可以接受的。只应定义一个守护者地址。"
 
 #: src/views/index-dtf/overview/components/zap-mint/zap-details.tsx:125
-msgid "The impact your trade has on the market price."
-msgstr "你的交易对市场价格的影响。"
+#~ msgid "The impact your trade has on the market price."
+#~ msgstr "你的交易对市场价格的影响。"
 
 #: src/views/index-dtf/overview/components/index-disclousure.tsx:373
 msgid "The information provided on the Website comes from on-chain sources. Past performance is not indicative of future results. Although index DTFs are intended to track indexes, their ability to successfully track indexes are dependent on the governance structure of the DTF and the governance’s ability to make appropriate trades. There is no guarantee that such trades will be successful or will track its corresponding index exactly. There are many risks associated with digital assets, including but not limited to security risk, counterparty risk, volatility risk, conflicts of interest, and many more. DTFs are no exception. By using the Website, you agree that your interaction with any DTFs is solely at your own risk and the Website and DTFs come as is, without any warranty or condition of any kind."
@@ -10054,7 +10040,6 @@ msgstr "该宗旨描述了其治理者应努力实现的目标。通过简要说
 msgid "The market reopens {nextOpenLabel}."
 msgstr "市场将于 {nextOpenLabel} 重新开市。"
 
-#: src/views/index-dtf/overview/components/zap-mint/zap-settings.tsx:51
 #: src/views/yield-dtf/issuance/components/zapV2/settings/ZapSettingsModal.tsx:79
 msgid "The maximum amount of slippage you are willing to accept when minting. Higher slippage settings will make the transaction more likely to succeed, but may result in fewer tokens minted."
 msgstr "Mint 时你愿意接受的最大滑点。更高的滑点设置会使交易更有可能成功，但可能导致 Mint 出的代币更少。"
@@ -10064,8 +10049,8 @@ msgid "The minimum amount of time after a proposal passes before it can be execu
 msgstr "提案通过后到可执行之前的最短等待时间。"
 
 #: src/views/index-dtf/overview/components/zap-mint/zap-details.tsx:140
-msgid "The minimum amount of tokens you will receive."
-msgstr "你将收到的最少代币数量。"
+#~ msgid "The minimum amount of tokens you will receive."
+#~ msgstr "你将收到的最少代币数量。"
 
 #: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/components/basket-settings-proposal-section.tsx:65
 #: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/components/sections/propose-basket-governance.tsx:54
@@ -10129,10 +10114,10 @@ msgstr ""
 #~ msgstr ""
 
 #: src/views/index-dtf/overview/components/zap-mint/zap-warning-checkbox.tsx:39
-msgid "The price impact for this trade is very high. You will get significantly less value than expected."
-msgstr "此交易的价格影响非常高。你获得的价值将远低于预期。"
+#~ msgid "The price impact for this trade is very high. You will get significantly less value than expected."
+#~ msgstr "此交易的价格影响非常高。你获得的价值将远低于预期。"
 
-#: src/views/yield-dtf/issuance/components/zapV2/context/ZapContext.tsx:591
+#: src/views/yield-dtf/issuance/components/zapV2/context/ZapContext.tsx:592
 msgid "The price impact of this transaction is too high. Please consider using a smaller amount or a different token."
 msgstr "本次交易的价格影响过高。请考虑使用更小的金额或不同的代币。"
 
@@ -10318,8 +10303,8 @@ msgid "This DTF can only be sold"
 msgstr "此 DTF 仅可卖出"
 
 #: src/views/index-dtf/overview/components/zap-mint/low-liquidity-warning.tsx:37
-msgid "This DTF contains assets with relatively low DEX liquidity"
-msgstr "此 DTF 包含 DEX 流动性相对较低的资产"
+#~ msgid "This DTF contains assets with relatively low DEX liquidity"
+#~ msgstr "此 DTF 包含 DEX 流动性相对较低的资产"
 
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/sections/propose-dao-governance.tsx:110
 msgid "This DTF does not have DAO governance configured."
@@ -10387,8 +10372,8 @@ msgid "This is the target collateral basket at the onset of an RToken that defin
 msgstr "这是 RToken 创建之初的目标抵押品篮子，它定义了发行时需要存入哪些抵押品。主篮子由治理直接设定，且仅通过成功的治理提案才能变更。"
 
 #: src/views/index-dtf/overview/components/zap-mint/zap-settings.tsx:63
-msgid "This is useful if you want to mint the DTF without trading."
-msgstr "如果你想在不进行交易的情况下 Mint 该 DTF，这会很有用。"
+#~ msgid "This is useful if you want to mint the DTF without trading."
+#~ msgstr "如果你想在不进行交易的情况下 Mint 该 DTF，这会很有用。"
 
 #: src/views/yield-dtf/overview/components/backing/risks.tsx:125
 msgid "This list is not intended to be conclusive. <0>You can read more about risk in the Reserve docs.</0>"
@@ -10502,7 +10487,7 @@ msgstr "如需验证资格，请留下您的姓名和邮箱，我们将与您本
 msgid "Today"
 msgstr ""
 
-#: src/components/ui/swap.tsx:503
+#: src/components/ui/swap.tsx:495
 msgid "Toggle {option}"
 msgstr "切换 {option}"
 
@@ -10647,9 +10632,7 @@ msgstr "tokens"
 msgid "Tokens"
 msgstr "代币"
 
-#: src/views/index-dtf/auctions/views/rebalance/components/manage-weights/manage-weights-content.tsx:198
 #: src/views/index-dtf/governance/views/propose/basket/components/proposal-basket-setup/basket-csv-setup.tsx:267
-#: src/views/index-dtf/governance/views/propose/basket/components/proposal-liquidity-checker.tsx:193
 msgid "Tokens not available"
 msgstr "代币不可用"
 
@@ -10712,7 +10695,7 @@ msgid "Total staked:"
 msgstr "Staked 总量："
 
 #: src/views/index-dtf/auctions/views/rebalance/components/rebalance-liquidity-checker.tsx:284
-#: src/views/index-dtf/governance/views/propose/basket/components/proposal-liquidity-checker.tsx:353
+#: src/views/index-dtf/governance/views/propose/basket/components/proposal-liquidity-checker.tsx:292
 msgid "Total trade value"
 msgstr "总交易价值"
 
@@ -11104,7 +11087,7 @@ msgid "Unique Holders"
 msgstr "独立持有者"
 
 #: src/components/index-basket-setup/basket-table.tsx:103
-#: src/views/index-dtf/deploy/steps/basket/basket-preview.tsx:228
+#: src/views/index-dtf/deploy/steps/basket/basket-preview.tsx:229
 #: src/views/index-dtf/governance/views/propose/basket/components/proposal-basket-setup/proposal-basket-table.tsx:72
 msgid "Unit"
 msgstr "单位"
@@ -11431,8 +11414,6 @@ msgstr "使用所获取的抵押品 Mint DTF。"
 #: src/components/rtoken-setup/governance/GovernanceSetup.tsx:49
 msgid "Use the Alexios governor format?"
 msgstr "使用 Alexios governor 格式？"
-
-#: src/views/yield-dtf/governance/views/proposal/components/revenue-destinations-proposal.tsx:140
 
 #: src/views/index-dtf/overview/components/yield-index/yield-index-composition-tabs.tsx:15
 msgid "Used in"
@@ -12052,8 +12033,8 @@ msgid "Wait {delay} days"
 msgstr "等待 {delay} 天"
 
 #: src/views/index-dtf/overview/components/zap-mint/zap-error-msg.tsx:47
-msgid "Wait and try again or"
-msgstr "请稍候后重试，或"
+#~ msgid "Wait and try again or"
+#~ msgstr "请稍候后重试，或"
 
 #: src/views/yield-dtf/staking/components/unstake-delay.tsx:29
 msgid "Wait entire period"
@@ -12131,7 +12112,7 @@ msgstr "预热期 (s)"
 msgid "Warning"
 msgstr "警告"
 
-#: src/views/yield-dtf/issuance/components/zapV2/context/ZapContext.tsx:590
+#: src/views/yield-dtf/issuance/components/zapV2/context/ZapContext.tsx:591
 msgid "Warning: High price impact"
 msgstr "警告：价格影响过高"
 
@@ -12407,7 +12388,7 @@ msgid "Wrap/Unwrap collateral"
 msgstr "Wrap/Unwrap 抵押品"
 
 #: src/views/index-dtf/auctions/views/rebalance/components/rebalance-liquidity-checker.tsx:86
-#: src/views/index-dtf/governance/views/propose/basket/components/proposal-liquidity-checker.tsx:86
+#: src/views/index-dtf/governance/views/propose/basket/components/proposal-liquidity-checker.tsx:82
 msgid "Wrap/unwrap only — no swap needed"
 msgstr "仅 Wrap/unwrap — 无需兑换"
 
@@ -12508,7 +12489,7 @@ msgstr "你已创建 {stTokenSymbol} DAO"
 msgid "You created the {0} DTF"
 msgstr "你已创建 {0} DTF"
 
-#: src/views/yield-dtf/issuance/components/zapV2/context/ZapContext.tsx:583
+#: src/views/yield-dtf/issuance/components/zapV2/context/ZapContext.tsx:584
 msgid "You do not have enough funds to complete this transaction. Please try again with a smaller amount."
 msgstr "你的资金不足以完成本次交易。请使用更小的金额重试。"
 
@@ -12528,7 +12509,7 @@ msgstr "你可能需要使用 L2 合约地址来导入它。"
 msgid "You mint"
 msgstr "你 Mint"
 
-#: src/views/index-dtf/deploy/steps/confirm-deploy/simple/index.tsx:131
+#: src/views/index-dtf/deploy/steps/confirm-deploy/simple/index.tsx:137
 msgid "You mint:"
 msgstr "你 Mint："
 
@@ -12554,7 +12535,7 @@ msgstr "你提供"
 msgid "You receive"
 msgstr "你收到"
 
-#: src/components/ui/swap.tsx:376
+#: src/components/ui/swap.tsx:368
 #: src/views/yield-dtf/issuance/components/zapV2/output/ZapOutputContainer.tsx:15
 #: src/views/yield-dtf/issuance/components/zapV2/submit/ZapSubmitModal.tsx:41
 #: src/views/yield-dtf/staking/components/stake/stake-output.tsx:36
@@ -12585,7 +12566,7 @@ msgstr "你解锁："
 msgid "You unstake:"
 msgstr "你 Unstake："
 
-#: src/components/ui/swap.tsx:251
+#: src/components/ui/swap.tsx:243
 #: src/views/yield-dtf/issuance/components/zapV2/input/ZapInputContainer.tsx:21
 #: src/views/yield-dtf/issuance/components/zapV2/submit/ZapSubmitModal.tsx:29
 #: src/views/yield-dtf/staking/components/stake/stake-modal.tsx:35
@@ -12754,7 +12735,7 @@ msgstr ""
 msgid "Zap Mint"
 msgstr "Zap Mint"
 
-#: src/views/yield-dtf/issuance/components/zapV2/context/ZapContext.tsx:595
+#: src/views/yield-dtf/issuance/components/zapV2/context/ZapContext.tsx:596
 msgid "Zap Mint Anyway"
 msgstr "仍然 Zap Mint"
 
@@ -12766,7 +12747,7 @@ msgstr "Zap Mint 目前处于测试阶段。授权后，你可能会遇到无法
 msgid "Zap Redeem"
 msgstr "Zap Redeem"
 
-#: src/views/yield-dtf/issuance/components/zapV2/context/ZapContext.tsx:595
+#: src/views/yield-dtf/issuance/components/zapV2/context/ZapContext.tsx:596
 msgid "Zap Redeem Anyway"
 msgstr "仍然 Zap Redeem"
 
@@ -12779,5 +12760,5 @@ msgid "Zapper error"
 msgstr "Zapper 错误"
 
 #: src/views/index-dtf/overview/components/zap-mint/zap-healthcheck.tsx:24
-msgid "Zaps are currently experiencing issues"
-msgstr "Zap 当前出现问题"
+#~ msgid "Zaps are currently experiencing issues"
+#~ msgstr "Zap 当前出现问题"
