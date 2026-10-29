@@ -75,13 +75,10 @@ surface unless noted.
 - **Deploy platform fee** — `use-platform-fee.ts` fabricates `?? 50` and divides
   unguarded. Accept: loading/unavailable/value tri-state, `denominator > 0`,
   dependent form/write blocked while unavailable.
-- **USDT-like approvals** — three paths emit one `approve(spender, amount)` on a
-  non-zero insufficient allowance (`use-batch-approval`, `transaction-modal`,
-  `submit-zap`). Accept: shared zero-first sequencing helper + ordered-tx tests
+- **USDT-like approvals** — two paths emit one `approve(spender, amount)` on a
+  non-zero insufficient allowance (`use-batch-approval`, `transaction-modal`).
+  Accept: shared zero-first sequencing helper + ordered-tx tests
   from a seeded non-zero allowance.
-- **Sticky high-impact consent** — zap consent is a global atom not keyed to
-  quote identity. Accept: re-consent required after any amount/token/tab/
-  endpoint change; test proves it.
 - **Stale-signer zap quote** — identity is debounced into the endpoint while the
   old result stays submittable. Accept: input changes invalidate the visible
   result immediately; quote identity matched at the write handler.

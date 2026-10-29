@@ -154,6 +154,7 @@ const TokenPreview = ({
               level={liquidity?.liquidityLevel ?? 'unknown'}
               priceImpact={liquidity?.priceImpact}
               tokenSymbol={symbol}
+              counterpart={liquidity?.counterpart}
               chainId={chainId}
               isLoading={isCheckingLiquidity}
               error={liquidity?.error}

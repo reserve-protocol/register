@@ -91,7 +91,7 @@ msgid "{0, plural, one {Add # token} other {Add # tokens}}"
 msgstr "{0, plural, one {토큰 # 개 추가} other {토큰 # 개 추가}}"
 
 #. placeholder {0}: highImpactTokens.length
-#: src/views/index-dtf/governance/views/propose/basket/components/proposal-liquidity-checker.tsx:315
+#: src/views/index-dtf/governance/views/propose/basket/components/proposal-liquidity-checker.tsx:259
 msgid "{0, plural, one {has >5% simulated price impact.} other {have >5% simulated price impact.}}"
 msgstr "{0, plural, one {시뮬레이션 가격 영향이 5%를 초과합니다.} other {시뮬레이션 가격 영향이 5%를 초과합니다.}}"
 
@@ -112,7 +112,7 @@ msgstr "{0}"
 
 #. placeholder {0}: ondoProblems.map((token) => token.tokenSymbol).join(', ')
 #: src/views/index-dtf/auctions/views/rebalance/components/rebalance-liquidity-checker.tsx:270
-#: src/views/index-dtf/governance/views/propose/basket/components/proposal-liquidity-checker.tsx:339
+#: src/views/index-dtf/governance/views/propose/basket/components/proposal-liquidity-checker.tsx:278
 msgid "{0} — outside trading hours or larger than the max single Ondo trade. Oversized legs fill as multiple sequential trades."
 msgstr "{0} — 거래 시간이 아니거나 Ondo 단일 최대 거래 한도를 초과합니다. 대형 물량은 여러 번의 순차 거래로 체결됩니다."
 
@@ -300,7 +300,7 @@ msgstr "{0}가 바스켓에서 제거됩니다"
 #. placeholder {1}: formatCurrency(token.usdSize)
 #. placeholder {2}: token.tokenSymbol
 #. placeholder {3}: token.counterpart
-#: src/views/index-dtf/governance/views/propose/basket/components/proposal-liquidity-checker.tsx:90
+#: src/views/index-dtf/governance/views/propose/basket/components/proposal-liquidity-checker.tsx:86
 msgid "{0}% price impact buying ${1} of {2} with {3}"
 msgstr "{3}로 {2} ${1}어치를 매수할 때 가격 영향 {0}%"
 
@@ -308,7 +308,7 @@ msgstr "{3}로 {2} ${1}어치를 매수할 때 가격 영향 {0}%"
 #. placeholder {1}: formatCurrency(token.usdSize)
 #. placeholder {2}: token.tokenSymbol
 #. placeholder {3}: token.counterpart
-#: src/views/index-dtf/governance/views/propose/basket/components/proposal-liquidity-checker.tsx:89
+#: src/views/index-dtf/governance/views/propose/basket/components/proposal-liquidity-checker.tsx:85
 msgid "{0}% price impact selling ${1} of {2} for {3}"
 msgstr "{2} ${1}어치를 {3}로 매도할 때 가격 영향 {0}%"
 
@@ -424,8 +424,8 @@ msgid "{impact}% price impact selling ${usdSize} of {0} for {1}"
 msgstr "{0}을(를) ${usdSize}만큼 {1}(으)로 매도 시 가격 영향 {impact}%"
 
 #: src/views/index-dtf/overview/components/zap-mint/submit-zap.tsx:144
-msgid "{inputAmount} {inputSymbol} for {outputAmount} {outputSymbol}"
-msgstr "{inputAmount} {inputSymbol} → {outputAmount} {outputSymbol}"
+#~ msgid "{inputAmount} {inputSymbol} for {outputAmount} {outputSymbol}"
+#~ msgstr "{inputAmount} {inputSymbol} → {outputAmount} {outputSymbol}"
 
 #: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:488
 msgid "{lengthInMinutes, plural, one {# minute} other {# minutes}}"
@@ -474,7 +474,7 @@ msgstr "{periodInDays, plural, one {#일} other {#일}}"
 msgid "{periodInHours, plural, one {# hour} other {# hours}}"
 msgstr "{periodInHours, plural, one {#시간} other {#시간}}"
 
-#: src/views/index-dtf/deploy/steps/basket/components/liquidity-badge.tsx:38
+#: src/views/index-dtf/deploy/steps/basket/components/liquidity-badge.tsx:45
 msgid "{priceImpactLabel}% price impact swapping {amountLabel} {inputTokenSymbol} for {tokenSymbol}"
 msgstr "{amountLabel} {inputTokenSymbol}을(를) {tokenSymbol}(으)로 Swap 시 가격 영향 {priceImpactLabel}%"
 
@@ -797,8 +797,8 @@ msgid "A one-time fee deducted from the tokens a user receives when they mint th
 msgstr "사용자가 DTF를 Mint할 때 받는 토큰에서 차감되는 일회성 수수료입니다. 플랫폼은 이 수수료 수익의 50%를 보유합니다. (최소: 0.15%, 최대: 5%)"
 
 #: src/views/index-dtf/overview/components/zap-mint/zap-details.tsx:114
-msgid "A one-time fee deduction from the tokens you are using to create a share of the DTF. This fee is set by the Governors of the DTF."
-msgstr "DTF의 지분을 생성하는 데 사용하는 토큰에서 일회성으로 차감되는 수수료입니다. 이 수수료는 DTF의 거버너가 설정합니다."
+#~ msgid "A one-time fee deduction from the tokens you are using to create a share of the DTF. This fee is set by the Governors of the DTF."
+#~ msgstr "DTF의 지분을 생성하는 데 사용하는 토큰에서 일회성으로 차감되는 수수료입니다. 이 수수료는 DTF의 거버너가 설정합니다."
 
 #: src/views/index-dtf/deploy/steps/revenue/index.tsx:73
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-dtf-revenue.tsx:75
@@ -1264,11 +1264,11 @@ msgstr "수량:"
 msgid "An Index DTF is a tokenized basket of assets. Please add the tokens that will compose your index DTF basket at launch. The basket can be changed by governance in the future."
 msgstr "Index DTF는 토큰화된 자산 바스켓입니다. 출시 시 Index DTF 바스켓을 구성할 토큰을 추가하세요. 바스켓은 추후 거버넌스를 통해 변경할 수 있습니다."
 
-#: src/views/yield-dtf/issuance/components/zapV2/context/ZapContext.tsx:541
+#: src/views/yield-dtf/issuance/components/zapV2/context/ZapContext.tsx:542
 msgid "An unknown error occurred"
 msgstr "알 수 없는 오류가 발생했습니다"
 
-#: src/views/index-dtf/governance/views/propose/basket/components/proposal-liquidity-checker.tsx:304
+#: src/views/index-dtf/governance/views/propose/basket/components/proposal-liquidity-checker.tsx:248
 msgid "Analyzing liquidity..."
 msgstr "유동성 분석 중..."
 
@@ -1388,8 +1388,8 @@ msgid "Approve use of {0}"
 msgstr "{0} 사용 승인"
 
 #: src/views/index-dtf/overview/components/zap-mint/submit-zap.tsx:236
-msgid "Approve use of {inputSymbol}"
-msgstr "{inputSymbol} 사용 승인"
+#~ msgid "Approve use of {inputSymbol}"
+#~ msgstr "{inputSymbol} 사용 승인"
 
 #: src/views/yield-dtf/staking/components/stake/confirm-stake-button.tsx:57
 msgid "Approve use of RSR"
@@ -1466,7 +1466,7 @@ msgstr "RToken으로"
 msgid "Ask Reserve AI"
 msgstr "Reserve AI에게 질문"
 
-#: src/components/ui/swap.tsx:279
+#: src/components/ui/swap.tsx:271
 msgid "Assembling different routes"
 msgstr "다양한 경로 구성 중"
 
@@ -1766,7 +1766,7 @@ msgstr "백업 구성은 기본 바스켓 변경 사항을 추적하여 값을 �
 msgid "Backups"
 msgstr "백업"
 
-#: src/components/ui/swap.tsx:226
+#: src/components/ui/swap.tsx:218
 #: src/views/index-dtf/issuance/async-mint/steps/configure-mint.tsx:218
 #: src/views/portfolio-page/components/available-rewards.tsx:122
 #: src/views/portfolio-page/components/dtf-positions.tsx:134
@@ -2109,12 +2109,10 @@ msgctxt "DTF card"
 msgid "Buy"
 msgstr "매수"
 
-#. placeholder {0}: indexDTF.token.symbol
 #. placeholder {0}: trade.token.symbol
 #: src/views/index-dtf/governance/components/proposal-preview/rebalance-preview/legacy-basket-proposal-preview.tsx:164
 #: src/views/index-dtf/governance/views/propose/basket/components/legacy-proposal-auction-price-ranges.tsx:161
 #: src/views/index-dtf/governance/views/propose/basket/components/proposal-basket-preview.tsx:247
-#: src/views/index-dtf/overview/components/zap-mint/buy/index.tsx:156
 msgid "Buy {0}"
 msgstr "{0} 매수"
 
@@ -2131,7 +2129,7 @@ msgstr "제안된 가중치에 더 가까워지도록 토큰을 매수/매도합
 #: src/views/index-dtf/governance/components/proposal-preview/rebalance-preview/legacy-basket-proposal-preview.tsx:260
 #: src/views/index-dtf/governance/views/propose/basket/components/legacy-proposal-auction-price-ranges.tsx:261
 #: src/views/index-dtf/governance/views/propose/basket/components/proposal-basket-preview.tsx:343
-#: src/views/index-dtf/governance/views/propose/basket/components/proposal-liquidity-checker.tsx:348
+#: src/views/index-dtf/governance/views/propose/basket/components/proposal-liquidity-checker.tsx:287
 #: src/views/yield-dtf/auctions/components/useColumns.tsx:36
 msgid "Buying"
 msgstr "매수 중"
@@ -2334,7 +2332,7 @@ msgstr "분배 변경"
 msgid "Change diversity factor"
 msgstr "다양성 계수 변경"
 
-#: src/views/yield-dtf/governance/views/proposal/components/PreviewBox.tsx:38
+#: src/views/yield-dtf/governance/views/proposal/components/PreviewBox.tsx:40
 msgid "Change in:"
 msgstr "변경 내용:"
 
@@ -2556,7 +2554,6 @@ msgstr "담보"
 msgid "Collect dust"
 msgstr "잔여 토큰 수거"
 
-#: src/views/index-dtf/overview/components/zap-mint/zap-settings.tsx:31
 #: src/views/yield-dtf/issuance/components/zapV2/settings/ZapSettingsModal.tsx:54
 msgid "Collect dust?"
 msgstr "더스트를 수집할까요?"
@@ -2735,7 +2732,6 @@ msgstr "트랜잭션 확인 중..."
 #: src/components/vote-lock/components/submit-unlock-button.tsx:124
 #: src/views/index-dtf/deploy/steps/confirm-deploy/manual/components/confirm-manual-deploy-button.tsx:298
 #: src/views/index-dtf/deploy/steps/confirm-deploy/simple/simple-deploy-button.tsx:133
-#: src/views/index-dtf/overview/components/zap-mint/submit-zap.tsx:215
 msgid "Confirming tx..."
 msgstr "트랜잭션 확인 중..."
 
@@ -2878,13 +2874,13 @@ msgstr "주소 복사"
 msgid "Copy link"
 msgstr "링크 복사"
 
-#: src/views/index-dtf/deploy/steps/confirm-deploy/simple/index.tsx:35
+#: src/views/index-dtf/deploy/steps/confirm-deploy/simple/index.tsx:36
 msgid "Copy payload to share with engineering team"
 msgstr "엔지니어링 팀과 공유할 페이로드 복사"
 
 #: src/views/index-dtf/overview/components/zap-mint/zap-error-msg.tsx:27
-msgid "Copy swap params to share with engineering team"
-msgstr "엔지니어링 팀과 공유할 스왑 파라미터 복사"
+#~ msgid "Copy swap params to share with engineering team"
+#~ msgstr "엔지니어링 팀과 공유할 스왑 파라미터 복사"
 
 #: src/components/ui/copy-value.tsx:60
 #: src/components/ui/copy.tsx:23
@@ -3199,7 +3195,7 @@ msgstr "현재 구성됨: {0} / {MAX_REVENUE_DESTINATIONS}"
 msgid "Custodial Risks: Ondo Tokenized Stocks represent claims on SPVs and other structures that hold underlying equity positions through custodians. DTF exposure therefore depends on the operational integrity and solvency of third parties. Any failure, suspension, error, insolvency, fraud, cyber incident, or transfer restriction affecting these parties could result in delayed settlement, blocked transfers, impaired redemptions, forced liquidation, or partial or total loss of value for the DTF’s holdings."
 msgstr "수탁 위험: Ondo Tokenized Stocks는 수탁 기관을 통해 기초 주식 포지션을 보유하는 SPV 및 기타 구조에 대한 청구권을 나타냅니다. 따라서 DTF의 익스포저는 제3자의 운영 건전성과 지급 능력에 좌우됩니다. 이러한 당사자에게 영향을 미치는 장애, 중단, 오류, 지급불능, 사기, 사이버 사고 또는 이전 제한은 결제 지연, 이체 차단, 상환 제한, 강제 청산 또는 DTF 보유 자산 가치의 부분적 또는 전체적 손실로 이어질 수 있습니다."
 
-#: src/components/ui/swap.tsx:514
+#: src/components/ui/swap.tsx:506
 #: src/views/index-dtf/deploy/components/toggle-group-preset.tsx:31
 #: src/views/yield-dtf/issuance/components/zapV2/settings/ZapSettingsCustomSlippage.tsx:24
 msgid "Custom"
@@ -3411,7 +3407,7 @@ msgstr "델타"
 msgid "Delta from 30d avg"
 msgstr "30일 평균 대비 변동"
 
-#: src/views/index-dtf/deploy/steps/confirm-deploy/simple/index.tsx:155
+#: src/views/index-dtf/deploy/steps/confirm-deploy/simple/index.tsx:161
 msgid "Deploy"
 msgstr "배포"
 
@@ -3825,14 +3821,13 @@ msgid "Duration in Seconds"
 msgstr "지속 시간(초)"
 
 #: src/views/index-dtf/overview/components/zap-mint/low-liquidity-warning.tsx:42
-msgid "During periods of high volatility it can take multiple attempts to find a route with good pricing."
-msgstr "변동성이 큰 기간에는 좋은 가격의 경로를 찾기 위해 여러 번 시도해야 할 수 있습니다."
+#~ msgid "During periods of high volatility it can take multiple attempts to find a route with good pricing."
+#~ msgstr "변동성이 큰 기간에는 좋은 가격의 경로를 찾기 위해 여러 번 시도해야 할 수 있습니다."
 
 #: src/views/yield-dtf/issuance/components/zapV2/output/ZapOutputUSD.tsx:32
 msgid "Dust is the leftover amount of tokens that cannot be exchanged or included in the RToken mint, due to the zapper route. It will be sent back to your wallet."
 msgstr "더스트는 zapper 경로로 인해 교환되거나 RToken Mint에 포함될 수 없는 토큰의 잔여 수량입니다. Wallet으로 다시 전송됩니다."
 
-#: src/views/index-dtf/overview/components/zap-mint/zap-settings.tsx:32
 #: src/views/yield-dtf/issuance/components/zapV2/settings/ZapSettingsModal.tsx:57
 msgid "Dust is the leftover amount of tokens that cannot be exchanged. If you choose to collect dust, it will be sent back to your wallet. Sending dust back to the wallet will increase transaction fee."
 msgstr "더스트는 교환할 수 없는 남은 토큰 수량입니다. 더스트를 수집하기로 선택하면 Wallet으로 다시 전송됩니다. 더스트를 Wallet으로 돌려보내면 트랜잭션 수수료가 증가합니다."
@@ -3860,8 +3855,6 @@ msgstr "예: 포함될 토큰, 전략, 방법론"
 #: src/views/yield-dtf/governance/views/proposal/components/revenue-destinations-proposal.tsx:166
 msgid "Each holder's eUSD balance × multiplier sets its recipient's share of the router's revenue. Multipliers are not percentages; 1 means 1×. Only add holders whose balances third parties cannot inflate. Changed or removed destinations are removed first, then new values are added, in one proposal."
 msgstr "각 holder의 eUSD 잔액 × 배수가 해당 수령인이 받는 라우터 수익의 몫을 결정합니다. 배수는 백분율이 아니며 1은 1×를 의미합니다. 제3자가 잔액을 부풀릴 수 없는 holder만 추가하세요. 변경되거나 삭제된 대상은 먼저 제거된 후 새 값이 추가되며, 모두 하나의 제안으로 처리됩니다."
-
-#: src/views/yield-dtf/governance/views/proposal/components/revenue-destinations-proposal.tsx:152
 
 #: src/components/rtoken-setup/basket/BackupBasket.tsx:39
 msgid "Each target unit of your primary basket will have defined emergency collateral to replace with in case of default."
@@ -4098,7 +4091,7 @@ msgstr "DAO 토큰 생성 오류입니다."
 msgid "Error fetching price"
 msgstr "가격 조회 오류"
 
-#: src/views/yield-dtf/issuance/components/zapV2/context/ZapContext.tsx:558
+#: src/views/yield-dtf/issuance/components/zapV2/context/ZapContext.tsx:559
 msgid "Error occurred, try again"
 msgstr "오류가 발생했습니다. 다시 시도하세요"
 
@@ -4175,7 +4168,7 @@ msgstr "예상 가스 비용:"
 
 #. placeholder {0}: formatCurrency(totalSlippageDollars)
 #: src/views/index-dtf/auctions/views/rebalance/components/rebalance-liquidity-checker.tsx:257
-#: src/views/index-dtf/governance/views/propose/basket/components/proposal-liquidity-checker.tsx:321
+#: src/views/index-dtf/governance/views/propose/basket/components/proposal-liquidity-checker.tsx:265
 msgid "Estimated loss: ~${0}"
 msgstr "예상 손실: ~${0}"
 
@@ -4184,7 +4177,7 @@ msgid "Estimated output"
 msgstr "예상 수령량"
 
 #: src/views/index-dtf/auctions/views/rebalance/components/rebalance-liquidity-checker.tsx:290
-#: src/views/index-dtf/governance/views/propose/basket/components/proposal-liquidity-checker.tsx:359
+#: src/views/index-dtf/governance/views/propose/basket/components/proposal-liquidity-checker.tsx:298
 msgid "Estimated total impact"
 msgstr "예상 총 영향"
 
@@ -4197,7 +4190,7 @@ msgstr "ETH 주소"
 msgid "eUSD revenue router destinations"
 msgstr "eUSD 수익 라우터 대상"
 
-#: src/components/ui/swap.tsx:280
+#: src/components/ui/swap.tsx:272
 msgid "Evaluating slippage"
 msgstr "슬리피지 평가 중"
 
@@ -4416,7 +4409,7 @@ msgstr "실패"
 msgid "Failed to connect wallet"
 msgstr "Wallet 연결에 실패했습니다"
 
-#: src/views/yield-dtf/issuance/components/zapV2/context/ZapContext.tsx:538
+#: src/views/yield-dtf/issuance/components/zapV2/context/ZapContext.tsx:539
 msgid "Failed to find a route"
 msgstr "경로를 찾지 못했습니다"
 
@@ -4470,8 +4463,8 @@ msgid "Featured RTokens"
 msgstr "추천 RTokens"
 
 #: src/views/index-dtf/overview/components/zap-mint/zap-details.tsx:91
-msgid "Fee"
-msgstr "수수료"
+#~ msgid "Fee"
+#~ msgstr "수수료"
 
 #: src/views/yield-dtf/overview/components/backing/underlying-fees.tsx:164
 msgid "Fee data for this period is not available right now."
@@ -4669,12 +4662,12 @@ msgid "For vlRSR, rewards are converted to RSR and added to the vault’s backin
 msgstr ""
 
 #: src/views/index-dtf/overview/components/zap-mint/zap-settings.tsx:62
-msgid "Force DTF mint?"
-msgstr "DTF Mint를 강제로 진행할까요?"
+#~ msgid "Force DTF mint?"
+#~ msgstr "DTF Mint를 강제로 진행할까요?"
 
 #: src/views/index-dtf/overview/components/zap-mint/zap-settings.tsx:69
-msgid "Force minting DTF"
-msgstr "DTF 강제 Mint"
+#~ msgid "Force minting DTF"
+#~ msgstr "DTF 강제 Mint"
 
 #: src/views/yield-dtf/issuance/components/zapV2/settings/ZapSettingsOnlyMint.tsx:14
 #: src/views/yield-dtf/issuance/components/zapV2/settings/ZapSettingsOnlyMint.tsx:18
@@ -4957,8 +4950,8 @@ msgid "Having issues minting?"
 msgstr "Mint에 문제가 있나요?"
 
 #: src/views/index-dtf/overview/components/zap-mint/zap-error-msg.tsx:44
-msgid "Having issues minting? (Zaps are in beta)"
-msgstr "Mint에 문제가 있나요? (Zap은 베타 단계입니다)"
+#~ msgid "Having issues minting? (Zaps are in beta)"
+#~ msgstr "Mint에 문제가 있나요? (Zap은 베타 단계입니다)"
 
 #: src/views/yield-dtf/issuance/components/zapV2/ZapToggleBottom.tsx:20
 msgid "Having issues minting? Zaps are in beta"
@@ -4988,14 +4981,13 @@ msgstr "높은 유동성"
 
 #: src/views/index-dtf/auctions/views/rebalance/components/rebalance-liquidity-checker.tsx:244
 #: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:30
-#: src/views/index-dtf/governance/views/propose/basket/components/proposal-liquidity-checker.tsx:311
+#: src/views/index-dtf/governance/views/propose/basket/components/proposal-liquidity-checker.tsx:255
 msgid "High price impact"
 msgstr "높은 가격 영향"
 
-#. placeholder {0}: formatPercentage(Math.abs(priceImpact))
 #: src/views/index-dtf/overview/components/zap-mint/zap-warning-checkbox.tsx:34
-msgid "High price impact: {0}"
-msgstr "높은 가격 영향: {0}"
+#~ msgid "High price impact: {0}"
+#~ msgstr "높은 가격 영향: {0}"
 
 #: src/views/home/components/highlighted-dtfs/chain-tabs.tsx:29
 msgid "Highlighted card chain"
@@ -5103,7 +5095,7 @@ msgid "How much {0} is needed to hit the 30d avg"
 msgstr "30일 평균에 도달하는 데 필요한 {0} 수량"
 
 #: src/views/index-dtf/deploy/steps/confirm-deploy/manual/index.tsx:38
-#: src/views/index-dtf/deploy/steps/confirm-deploy/simple/index.tsx:110
+#: src/views/index-dtf/deploy/steps/confirm-deploy/simple/index.tsx:114
 msgid "How much do you want to mint?"
 msgstr "얼마나 Mint 하시겠습니까?"
 
@@ -5175,8 +5167,6 @@ msgstr "{0} 후"
 msgid "in Daily Payouts"
 msgstr "일일 지급액"
 
-#: src/views/index-dtf/overview/components/zap-mint/buy/index.tsx:139
-#: src/views/index-dtf/overview/components/zap-mint/sell/index.tsx:131
 #: src/views/yield-dtf/issuance/components/zapV2/output/ZapOutputUSD.tsx:28
 msgid "in dust"
 msgstr "더스트로"
@@ -5362,13 +5352,12 @@ msgstr "검사"
 msgid "Insufficient asset balance"
 msgstr "자산 잔액이 부족합니다"
 
-#: src/views/index-dtf/deploy/steps/confirm-deploy/simple/index.tsx:154
+#: src/views/index-dtf/deploy/steps/confirm-deploy/simple/index.tsx:160
 #: src/views/index-dtf/issuance/manual/components/index-manual-issuance.tsx:45
-#: src/views/index-dtf/overview/components/zap-mint/submit-zap.tsx:46
 msgid "Insufficient balance"
 msgstr "잔액이 부족합니다"
 
-#: src/views/yield-dtf/issuance/components/zapV2/context/ZapContext.tsx:582
+#: src/views/yield-dtf/issuance/components/zapV2/context/ZapContext.tsx:583
 msgid "Insufficient funds"
 msgstr "잔액 부족"
 
@@ -5655,7 +5644,7 @@ msgid "Links to files holders can download from the DTF overview page, like a te
 msgstr "보유자가 DTF 개요 페이지에서 다운로드할 수 있는 파일 링크입니다. 예: 티어 시트, 방법론 문서."
 
 #: src/views/index-dtf/auctions/views/rebalance/components/rebalance-liquidity-checker.tsx:222
-#: src/views/index-dtf/governance/views/propose/basket/components/proposal-liquidity-checker.tsx:284
+#: src/views/index-dtf/governance/views/propose/basket/components/proposal-liquidity-checker.tsx:228
 msgid "Liquidity"
 msgstr "유동성"
 
@@ -5683,7 +5672,7 @@ msgstr "현재 허용된 액션 불러오는 중..."
 msgid "Loading current destinations…"
 msgstr "현재 대상을 불러오는 중…"
 
-#: src/components/ui/swap.tsx:282
+#: src/components/ui/swap.tsx:274
 msgid "Loading DTF"
 msgstr "DTF 로딩 중"
 
@@ -5734,7 +5723,7 @@ msgstr "포트폴리오 데이터를 불러오는 중..."
 
 #: src/components/stake-drawer/components/submit-stake-button.tsx:164
 #: src/views/explorer/components/revenue/index.tsx:547
-#: src/views/index-dtf/deploy/steps/confirm-deploy/simple/index.tsx:152
+#: src/views/index-dtf/deploy/steps/confirm-deploy/simple/index.tsx:158
 #: src/views/index-dtf/governance/components/proposal-preview/token-reward-preview.tsx:66
 #: src/views/index-dtf/governance/components/proposal-preview/token-reward-preview.tsx:66
 #: src/views/index-dtf/governance/views/proposal/components/proposal-header.tsx:58
@@ -5743,7 +5732,6 @@ msgstr "포트폴리오 데이터를 불러오는 중..."
 #: src/views/index-dtf/governance/views/proposal/components/vote-modal.tsx:140
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/sections/propose-revenue-tokens.tsx:63
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/vault-proposal-form.tsx:65
-#: src/views/index-dtf/overview/components/zap-mint/submit-zap.tsx:44
 #: src/views/index-dtf/settings/components/distribute-fees.tsx:83
 #: src/views/yield-dtf/governance/components/GovernanceOverview.tsx:169
 #: src/views/yield-dtf/governance/views/proposal-detail/components/VoteModal.tsx:91
@@ -5961,7 +5949,7 @@ msgstr "시가총액:"
 msgid "Market closed"
 msgstr "시장 마감"
 
-#: src/components/ui/swap.tsx:236
+#: src/components/ui/swap.tsx:228
 #: src/views/index-dtf/issuance/async-mint/steps/configure-mint.tsx:232
 #: src/views/yield-dtf/issuance/components/zapV2/input/ZapInputMaxButton.tsx:39
 #: src/views/yield-dtf/staking/components/stake/stake-input.tsx:67
@@ -5978,7 +5966,7 @@ msgstr "토큰당 최대 경매 규모"
 msgid "Max precision is 0.01%"
 msgstr "최대 정밀도는 0.01%입니다"
 
-#: src/components/ui/swap.tsx:487
+#: src/components/ui/swap.tsx:479
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1284
 msgid "Max slippage"
 msgstr "최대 슬리피지"
@@ -6010,7 +5998,6 @@ msgstr "최대:"
 msgid "Max: {0}"
 msgstr "최대: {0}"
 
-#: src/views/index-dtf/overview/components/zap-mint/zap-settings.tsx:50
 #: src/views/yield-dtf/issuance/components/zapV2/settings/ZapSettingsModal.tsx:76
 msgid "Max. mint slippage"
 msgstr "최대 Mint 슬리피지"
@@ -6102,8 +6089,8 @@ msgid "Migration needed"
 msgstr "마이그레이션 필요"
 
 #: src/views/index-dtf/overview/components/zap-mint/zap-details.tsx:132
-msgid "Min Amount Out"
-msgstr "최소 수령 수량"
+#~ msgid "Min Amount Out"
+#~ msgstr "최소 수령 수량"
 
 #: src/views/yield-dtf/issuance/components/zapV2/overview/ZapDetails.tsx:48
 msgid "Min. amount out"
@@ -6187,7 +6174,7 @@ msgstr "Mint + Redeem"
 msgid "Mint amount"
 msgstr "Mint 수량"
 
-#: src/views/yield-dtf/issuance/components/zapV2/context/ZapContext.tsx:311
+#: src/views/yield-dtf/issuance/components/zapV2/context/ZapContext.tsx:312
 msgid "Mint amount above Global Max Mint"
 msgstr "Mint 수량이 글로벌 최대 Mint를 초과함"
 
@@ -6216,7 +6203,6 @@ msgstr "Mint 수수료"
 #: src/views/index-dtf/deploy/steps/revenue/index.tsx:91
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/changes/revenue-changes.tsx:451
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-dtf-revenue.tsx:90
-#: src/views/index-dtf/overview/components/zap-mint/zap-details.tsx:103
 msgid "Mint Fee"
 msgstr "Mint 수수료"
 
@@ -6904,7 +6890,7 @@ msgid "on {0}"
 msgstr "{0}에서"
 
 #: src/views/index-dtf/auctions/views/rebalance/components/rebalance-liquidity-checker.tsx:267
-#: src/views/index-dtf/governance/views/propose/basket/components/proposal-liquidity-checker.tsx:336
+#: src/views/index-dtf/governance/views/propose/basket/components/proposal-liquidity-checker.tsx:275
 msgid "Ondo limits"
 msgstr "Ondo 한도"
 
@@ -7233,7 +7219,6 @@ msgstr "대기 중인 출금"
 #: src/components/vote-lock/components/submit-unlock-button.tsx:125
 #: src/views/index-dtf/deploy/steps/confirm-deploy/manual/components/confirm-manual-deploy-button.tsx:298
 #: src/views/index-dtf/deploy/steps/confirm-deploy/simple/simple-deploy-button.tsx:134
-#: src/views/index-dtf/overview/components/zap-mint/submit-zap.tsx:216
 #: src/views/yield-dtf/deploy/components/DeployOverview.tsx:25
 #: src/views/yield-dtf/deploy/components/GovernanceOverview.tsx:25
 #: src/views/yield-dtf/governance/views/proposal/components/ConfirmProposalOverview.tsx:59
@@ -7439,13 +7424,13 @@ msgstr "다시 시도해 주세요"
 msgid "Please try again later"
 msgstr "잠시 후 다시 시도해 주세요"
 
-#: src/views/yield-dtf/issuance/components/zapV2/context/ZapContext.tsx:543
+#: src/views/yield-dtf/issuance/components/zapV2/context/ZapContext.tsx:544
 msgid "Please try again. If the problem persists, please <0>contact support.</0>"
 msgstr "다시 시도해 주세요. 문제가 계속되면 <0>고객 지원에 문의하세요.</0>"
 
 #: src/views/index-dtf/overview/components/zap-mint/zap-healthcheck.tsx:29
-msgid "Please try refreshing, or switch to manual minting."
-msgstr "새로고침하거나 수동 Mint로 전환해 주세요."
+#~ msgid "Please try refreshing, or switch to manual minting."
+#~ msgstr "새로고침하거나 수동 Mint로 전환해 주세요."
 
 #: src/views/index-dtf/deploy/steps/basket/basket-csv-setup.tsx:57
 #: src/views/index-dtf/governance/views/propose/basket/components/proposal-basket-setup/basket-csv-setup.tsx:143
@@ -7598,7 +7583,6 @@ msgid "Price impact"
 msgstr "가격 영향"
 
 #: src/views/index-dtf/auctions/views/rebalance/components/rebalance-price-impact.tsx:42
-#: src/views/index-dtf/overview/components/zap-mint/zap-details.tsx:121
 #: src/views/yield-dtf/issuance/components/zapV2/overview/ZapDetails.tsx:22
 msgid "Price Impact"
 msgstr "가격 영향"
@@ -8174,7 +8158,7 @@ msgstr "기존 볼트 지분을 모두 Redeem합니다. {symbol}은(는) 이 트
 msgid "Redeem amount"
 msgstr "Redeem 수량"
 
-#: src/views/yield-dtf/issuance/components/zapV2/context/ZapContext.tsx:312
+#: src/views/yield-dtf/issuance/components/zapV2/context/ZapContext.tsx:313
 msgid "Redeem amount above Global Max Redeem"
 msgstr "Redeem 수량이 글로벌 최대 Redeem을 초과함"
 
@@ -8266,15 +8250,15 @@ msgstr "Redemption 스로틀 비율 (%)"
 msgid "Reduce"
 msgstr "감소"
 
-#: src/components/ui/swap.tsx:281
+#: src/components/ui/swap.tsx:273
 msgid "Reducing potential dust"
 msgstr "잠재적 더스트 감소 중"
 
 #: src/views/index-dtf/overview/components/zap-mint/refresh-quote.tsx:41
-msgid "Refresh"
-msgstr "새로고침"
+#~ msgid "Refresh"
+#~ msgstr "새로고침"
 
-#: src/views/index-dtf/deploy/steps/confirm-deploy/simple/index.tsx:56
+#: src/views/index-dtf/deploy/steps/confirm-deploy/simple/index.tsx:57
 msgid "Refresh quote"
 msgstr "견적 새로고침"
 
@@ -8340,7 +8324,7 @@ msgid "Rely solely on the Auction Launcher to provide accurate pricing informati
 msgstr "자산을 스왑할 때 정확한 가격 정보를 제공하기 위해 경매 실행자에게만 전적으로 의존합니다. 이 옵션은 실수나 악의적인 경매 실행자로 인한 피해 규모를 증가시킵니다."
 
 #: src/components/index-basket-setup/basket-table.tsx:149
-#: src/views/index-dtf/deploy/steps/basket/basket-preview.tsx:200
+#: src/views/index-dtf/deploy/steps/basket/basket-preview.tsx:201
 #: src/views/index-dtf/deploy/steps/revenue/revenue-distribution-settings.tsx:97
 #: src/views/index-dtf/governance/views/propose/basket/components/proposal-basket-setup/setup-native-dtf-basket.tsx:82
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-revenue-distribution.tsx:160
@@ -8950,7 +8934,7 @@ msgstr "경매 실행 주체:"
 msgid "Save"
 msgstr "저장"
 
-#: src/views/index-dtf/auctions/views/rebalance/components/manage-weights/manage-weights-content.tsx:240
+#: src/views/index-dtf/auctions/views/rebalance/components/manage-weights/manage-weights-content.tsx:174
 msgid "Save Weights {editedRows}/{totalRows} edited"
 msgstr "가중치 저장 {editedRows}/{totalRows} 편집됨"
 
@@ -9007,7 +8991,7 @@ msgstr "거버넌스 토큰 또는 DTF 검색"
 msgid "Search pool"
 msgstr "Pool 검색"
 
-#: src/components/ui/swap.tsx:278
+#: src/components/ui/swap.tsx:270
 msgid "Searching DEX Liquidity"
 msgstr "DEX 유동성 검색 중"
 
@@ -9073,10 +9057,9 @@ msgstr "{0}을(를) Vote-lock하면 자가 위임이 자동으로 이루어집�
 msgid "Sell"
 msgstr "매도"
 
-#. placeholder {0}: indexDTF.token.symbol
 #: src/views/index-dtf/overview/components/zap-mint/sell/index.tsx:150
-msgid "Sell {0}"
-msgstr "{0} 매도"
+#~ msgid "Sell {0}"
+#~ msgstr "{0} 매도"
 
 #. placeholder {0}: sell.token.symbol
 #: src/views/index-dtf/governance/components/proposal-preview/rebalance-preview/legacy-basket-proposal-preview.tsx:199
@@ -9094,7 +9077,7 @@ msgstr "담보 매도"
 #: src/views/index-dtf/governance/components/proposal-preview/rebalance-preview/legacy-basket-proposal-preview.tsx:256
 #: src/views/index-dtf/governance/views/propose/basket/components/legacy-proposal-auction-price-ranges.tsx:257
 #: src/views/index-dtf/governance/views/propose/basket/components/proposal-basket-preview.tsx:339
-#: src/views/index-dtf/governance/views/propose/basket/components/proposal-liquidity-checker.tsx:347
+#: src/views/index-dtf/governance/views/propose/basket/components/proposal-liquidity-checker.tsx:286
 #: src/views/yield-dtf/auctions/components/useColumns.tsx:32
 #: src/views/yield-dtf/auctions/dutch/components/DutchAuction.tsx:28
 msgid "Selling"
@@ -9109,7 +9092,6 @@ msgstr "{0} 매도 중"
 msgid "Selling:"
 msgstr "판매 중:"
 
-#: src/views/index-dtf/overview/components/zap-mint/zap-settings.tsx:42
 #: src/views/yield-dtf/issuance/components/zapV2/settings/ZapSettingsCollectDust.tsx:14
 msgid "Send dust back to wallet"
 msgstr "더스트를 Wallet으로 돌려보내기"
@@ -9204,7 +9186,7 @@ msgid "Setup Governance"
 msgstr "거버넌스 설정"
 
 #: src/components/index-basket-setup/basket-table.tsx:109
-#: src/views/index-dtf/deploy/steps/basket/basket-preview.tsx:234
+#: src/views/index-dtf/deploy/steps/basket/basket-preview.tsx:235
 #: src/views/index-dtf/governance/views/propose/basket/components/proposal-basket-setup/proposal-basket-table.tsx:78
 msgid "Share"
 msgstr "비중"
@@ -9345,6 +9327,10 @@ msgstr "서명 중…"
 msgid "Simple deploy"
 msgstr "간편 배포"
 
+#: src/views/index-dtf/deploy/steps/confirm-deploy/simple/index.tsx:165
+msgid "Simple deploy needs at least 2 tokens in the basket. Use Manual deploy instead."
+msgstr "간편 배포는 바스켓에 토큰이 2개 이상 필요합니다. 대신 수동 배포를 사용하세요."
+
 #: src/views/index-dtf/deploy/steps/basket/components/liquidity-config-modal.tsx:130
 msgid "Simulate"
 msgstr "시뮬레이션"
@@ -9375,7 +9361,7 @@ msgid "Simulated route. Actual auction path may differ."
 msgstr "시뮬레이션된 경로입니다. 실제 경매 경로는 다를 수 있습니다."
 
 #: src/views/index-dtf/auctions/views/rebalance/components/rebalance-liquidity-checker.tsx:236
-#: src/views/index-dtf/governance/views/propose/basket/components/proposal-liquidity-checker.tsx:298
+#: src/views/index-dtf/governance/views/propose/basket/components/proposal-liquidity-checker.tsx:242
 msgid "Simulates swaps against the native token via the Zapper API to estimate price impact. Trades under $1 are simulated at $1 for reliable results. Summary badge is weighted by trade size."
 msgstr "Zapper API를 통해 네이티브 토큰에 대한 Swap을 시뮬레이션하여 가격 영향을 추정합니다. $1 미만의 거래는 신뢰할 수 있는 결과를 위해 $1로 시뮬레이션됩니다. 요약 배지는 거래 규모에 따라 가중치가 적용됩니다."
 
@@ -9416,7 +9402,7 @@ msgstr "시뮬레이션 실패 ✘"
 msgid "Slashing Risk"
 msgstr "슬래싱 리스크"
 
-#: src/components/ui/swap.tsx:484
+#: src/components/ui/swap.tsx:476
 msgid "Slippage"
 msgstr "슬리피지"
 
@@ -9467,22 +9453,22 @@ msgid "Something went wrong. Please try again."
 msgstr "문제가 발생했습니다. 다시 시도해 주세요."
 
 #: src/views/index-dtf/overview/components/zap-mint/zap-error-msg.tsx:19
-msgid "Sorry, the market is volatile right now. Please increase slippage in your settings."
-msgstr "죄송합니다. 현재 시장 변동성이 큽니다. 설정에서 슬리피지를 높여 주세요."
+#~ msgid "Sorry, the market is volatile right now. Please increase slippage in your settings."
+#~ msgstr "죄송합니다. 현재 시장 변동성이 큽니다. 설정에서 슬리피지를 높여 주세요."
 
 #: src/views/index-dtf/overview/components/zap-mint/zap-error-msg.tsx:13
-msgid "Sorry, we’re having a hard time finding a route that makes sense for you. Please try again in a bit."
-msgstr "죄송합니다. 적합한 경로를 찾는 데 어려움을 겪고 있습니다. 잠시 후 다시 시도해 주세요."
+#~ msgid "Sorry, we’re having a hard time finding a route that makes sense for you. Please try again in a bit."
+#~ msgstr "죄송합니다. 적합한 경로를 찾는 데 어려움을 겪고 있습니다. 잠시 후 다시 시도해 주세요."
 
 #. placeholder {0}: rToken?.symbol
 #. placeholder {1}: tokenIn.symbol
-#: src/views/yield-dtf/issuance/components/zapV2/context/ZapContext.tsx:315
+#: src/views/yield-dtf/issuance/components/zapV2/context/ZapContext.tsx:316
 msgid "Sorry, your request exceeds the Global Max Mint limit. The Global Max Mint is set at {maxFormatted} {0}. You can only zap a maximum of {maxZap} {1}."
 msgstr "죄송합니다. 요청이 Global Max Mint 한도를 초과합니다. Global Max Mint는 {maxFormatted} {0}로 설정되어 있습니다. 최대 {maxZap} {1}까지만 Zap 할 수 있습니다."
 
 #. placeholder {0}: rToken?.symbol
 #. placeholder {1}: tokenIn.symbol
-#: src/views/yield-dtf/issuance/components/zapV2/context/ZapContext.tsx:316
+#: src/views/yield-dtf/issuance/components/zapV2/context/ZapContext.tsx:317
 msgid "Sorry, your request exceeds the Global Max Redeem limit. The Global Max Redeem is set at {maxFormatted} {0}. You can only zap a maximum of {maxZap} {1}."
 msgstr "죄송합니다. 요청이 Global Max Redeem 한도를 초과합니다. Global Max Redeem은 {maxFormatted} {0}로 설정되어 있습니다. 최대 {maxZap} {1}까지만 Zap 할 수 있습니다."
 
@@ -9715,12 +9701,12 @@ msgid "Step {0} of {1}"
 msgstr "{0}/{1}단계"
 
 #: src/views/index-dtf/overview/components/zap-mint/submit-zap.tsx:235
-msgid "Step 1. Approve use of {inputSymbol}"
-msgstr "1단계. {inputSymbol} 사용 승인"
+#~ msgid "Step 1. Approve use of {inputSymbol}"
+#~ msgstr "1단계. {inputSymbol} 사용 승인"
 
 #: src/views/index-dtf/overview/components/zap-mint/submit-zap.tsx:232
-msgid "Step 2. {buttonLabel}"
-msgstr "2단계. {buttonLabel}"
+#~ msgid "Step 2. {buttonLabel}"
+#~ msgstr "2단계. {buttonLabel}"
 
 #. placeholder {0}: pending.map(({ symbol }) => symbol).join(', ')
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-retire-vote-lock.tsx:122
@@ -9845,12 +9831,12 @@ msgid "Swap"
 msgstr "Swap"
 
 #: src/views/index-dtf/overview/components/zap-mint/submit-zap.tsx:143
-msgid "Swapped"
-msgstr "교환됨"
+#~ msgid "Swapped"
+#~ msgstr "교환됨"
 
 #: src/views/index-dtf/overview/components/zap-mint/submit-zap.tsx:141
-msgid "Swapped {inputSymbol} for {outputSymbol}"
-msgstr "{inputSymbol}을(를) {outputSymbol}(으)로 교환함"
+#~ msgid "Swapped {inputSymbol} for {outputSymbol}"
+#~ msgstr "{inputSymbol}을(를) {outputSymbol}(으)로 교환함"
 
 #: src/views/index-dtf/issuance/async-mint/steps/success.tsx:255
 msgid "Swaps leave a small residue in your wallet."
@@ -9877,8 +9863,8 @@ msgid "Switch to manual minting"
 msgstr "수동 Mint로 전환"
 
 #: src/views/index-dtf/overview/components/zap-mint/zap-error-msg.tsx:57
-msgid "switch to manual redeeming"
-msgstr "수동 Redeem으로 전환"
+#~ msgid "switch to manual redeeming"
+#~ msgstr "수동 Redeem으로 전환"
 
 #: src/views/index-dtf/issuance/async-mint/components/switch-to-manual-link.tsx:37
 msgid "Switch to manual redeeming"
@@ -10031,8 +10017,8 @@ msgid "The guardian has the ability to reject proposals even if they pass. Shoul
 msgstr "가디언은 제안이 통과되더라도 이를 거부할 수 있는 권한을 가집니다. 백스톱 역할을 맡을 수 있도록 신뢰할 수 있는 멀티시그 또는 EOA에 할당해야 합니다. 비교적 느리게 대응하더라도 무방합니다. 가디언 주소는 하나만 정의해야 합니다."
 
 #: src/views/index-dtf/overview/components/zap-mint/zap-details.tsx:125
-msgid "The impact your trade has on the market price."
-msgstr "거래가 시장 가격에 미치는 영향입니다."
+#~ msgid "The impact your trade has on the market price."
+#~ msgstr "거래가 시장 가격에 미치는 영향입니다."
 
 #: src/views/index-dtf/overview/components/index-disclousure.tsx:373
 msgid "The information provided on the Website comes from on-chain sources. Past performance is not indicative of future results. Although index DTFs are intended to track indexes, their ability to successfully track indexes are dependent on the governance structure of the DTF and the governance’s ability to make appropriate trades. There is no guarantee that such trades will be successful or will track its corresponding index exactly. There are many risks associated with digital assets, including but not limited to security risk, counterparty risk, volatility risk, conflicts of interest, and many more. DTFs are no exception. By using the Website, you agree that your interaction with any DTFs is solely at your own risk and the Website and DTFs come as is, without any warranty or condition of any kind."
@@ -10054,7 +10040,6 @@ msgstr "맨데이트는 거버너가 달성해야 할 목표를 설명합니다.
 msgid "The market reopens {nextOpenLabel}."
 msgstr "시장은 {nextOpenLabel}에 다시 열립니다."
 
-#: src/views/index-dtf/overview/components/zap-mint/zap-settings.tsx:51
 #: src/views/yield-dtf/issuance/components/zapV2/settings/ZapSettingsModal.tsx:79
 msgid "The maximum amount of slippage you are willing to accept when minting. Higher slippage settings will make the transaction more likely to succeed, but may result in fewer tokens minted."
 msgstr "Mint 시 허용할 최대 슬리피지입니다. 슬리피지를 높게 설정하면 트랜잭션 성공 가능성이 커지지만, Mint되는 토큰 수가 줄어들 수 있습니다."
@@ -10064,8 +10049,8 @@ msgid "The minimum amount of time after a proposal passes before it can be execu
 msgstr "제안이 통과된 후 실행되기까지 거쳐야 하는 최소 시간입니다."
 
 #: src/views/index-dtf/overview/components/zap-mint/zap-details.tsx:140
-msgid "The minimum amount of tokens you will receive."
-msgstr "받게 될 최소 토큰 수량입니다."
+#~ msgid "The minimum amount of tokens you will receive."
+#~ msgstr "받게 될 최소 토큰 수량입니다."
 
 #: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/components/basket-settings-proposal-section.tsx:65
 #: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/components/sections/propose-basket-governance.tsx:54
@@ -10129,10 +10114,10 @@ msgstr ""
 #~ msgstr ""
 
 #: src/views/index-dtf/overview/components/zap-mint/zap-warning-checkbox.tsx:39
-msgid "The price impact for this trade is very high. You will get significantly less value than expected."
-msgstr "이 거래의 가격 영향이 매우 높습니다. 예상보다 훨씬 적은 가치를 받게 됩니다."
+#~ msgid "The price impact for this trade is very high. You will get significantly less value than expected."
+#~ msgstr "이 거래의 가격 영향이 매우 높습니다. 예상보다 훨씬 적은 가치를 받게 됩니다."
 
-#: src/views/yield-dtf/issuance/components/zapV2/context/ZapContext.tsx:591
+#: src/views/yield-dtf/issuance/components/zapV2/context/ZapContext.tsx:592
 msgid "The price impact of this transaction is too high. Please consider using a smaller amount or a different token."
 msgstr "이 트랜잭션의 가격 영향이 너무 큽니다. 더 적은 금액 또는 다른 토큰 사용을 고려하세요."
 
@@ -10318,8 +10303,8 @@ msgid "This DTF can only be sold"
 msgstr "이 DTF는 매도만 가능합니다"
 
 #: src/views/index-dtf/overview/components/zap-mint/low-liquidity-warning.tsx:37
-msgid "This DTF contains assets with relatively low DEX liquidity"
-msgstr "이 DTF에는 DEX 유동성이 상대적으로 낮은 자산이 포함되어 있습니다"
+#~ msgid "This DTF contains assets with relatively low DEX liquidity"
+#~ msgstr "이 DTF에는 DEX 유동성이 상대적으로 낮은 자산이 포함되어 있습니다"
 
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/sections/propose-dao-governance.tsx:110
 msgid "This DTF does not have DAO governance configured."
@@ -10387,8 +10372,8 @@ msgid "This is the target collateral basket at the onset of an RToken that defin
 msgstr "이는 RToken 시작 시점의 타깃 담보 바스켓으로, 발행을 위해 어떤 담보를 입금해야 하는지를 정의합니다. 기본 바스켓은 거버넌스가 직접 설정하며, 성공한 거버넌스 제안을 통해서만 변경됩니다."
 
 #: src/views/index-dtf/overview/components/zap-mint/zap-settings.tsx:63
-msgid "This is useful if you want to mint the DTF without trading."
-msgstr "거래 없이 DTF를 Mint하려는 경우에 유용합니다."
+#~ msgid "This is useful if you want to mint the DTF without trading."
+#~ msgstr "거래 없이 DTF를 Mint하려는 경우에 유용합니다."
 
 #: src/views/yield-dtf/overview/components/backing/risks.tsx:125
 msgid "This list is not intended to be conclusive. <0>You can read more about risk in the Reserve docs.</0>"
@@ -10502,7 +10487,7 @@ msgstr "자격 확인을 위해 이름과 이메일을 남겨 주시면 직접 �
 msgid "Today"
 msgstr ""
 
-#: src/components/ui/swap.tsx:503
+#: src/components/ui/swap.tsx:495
 msgid "Toggle {option}"
 msgstr "{option} 토글"
 
@@ -10647,9 +10632,7 @@ msgstr "토큰"
 msgid "Tokens"
 msgstr "토큰"
 
-#: src/views/index-dtf/auctions/views/rebalance/components/manage-weights/manage-weights-content.tsx:198
 #: src/views/index-dtf/governance/views/propose/basket/components/proposal-basket-setup/basket-csv-setup.tsx:267
-#: src/views/index-dtf/governance/views/propose/basket/components/proposal-liquidity-checker.tsx:193
 msgid "Tokens not available"
 msgstr "토큰을 이용할 수 없음"
 
@@ -10712,7 +10695,7 @@ msgid "Total staked:"
 msgstr "총 Staked:"
 
 #: src/views/index-dtf/auctions/views/rebalance/components/rebalance-liquidity-checker.tsx:284
-#: src/views/index-dtf/governance/views/propose/basket/components/proposal-liquidity-checker.tsx:353
+#: src/views/index-dtf/governance/views/propose/basket/components/proposal-liquidity-checker.tsx:292
 msgid "Total trade value"
 msgstr "총 거래 금액"
 
@@ -11104,7 +11087,7 @@ msgid "Unique Holders"
 msgstr "고유 보유자 수"
 
 #: src/components/index-basket-setup/basket-table.tsx:103
-#: src/views/index-dtf/deploy/steps/basket/basket-preview.tsx:228
+#: src/views/index-dtf/deploy/steps/basket/basket-preview.tsx:229
 #: src/views/index-dtf/governance/views/propose/basket/components/proposal-basket-setup/proposal-basket-table.tsx:72
 msgid "Unit"
 msgstr "단위"
@@ -11431,8 +11414,6 @@ msgstr "확보된 담보를 사용하여 DTF를 Mint합니다."
 #: src/components/rtoken-setup/governance/GovernanceSetup.tsx:49
 msgid "Use the Alexios governor format?"
 msgstr "Alexios 거버너 형식을 사용하시겠습니까?"
-
-#: src/views/yield-dtf/governance/views/proposal/components/revenue-destinations-proposal.tsx:140
 
 #: src/views/index-dtf/overview/components/yield-index/yield-index-composition-tabs.tsx:15
 msgid "Used in"
@@ -12052,8 +12033,8 @@ msgid "Wait {delay} days"
 msgstr "{delay}일 대기"
 
 #: src/views/index-dtf/overview/components/zap-mint/zap-error-msg.tsx:47
-msgid "Wait and try again or"
-msgstr "잠시 기다린 후 다시 시도하거나"
+#~ msgid "Wait and try again or"
+#~ msgstr "잠시 기다린 후 다시 시도하거나"
 
 #: src/views/yield-dtf/staking/components/unstake-delay.tsx:29
 msgid "Wait entire period"
@@ -12131,7 +12112,7 @@ msgstr "워밍업 기간 (초)"
 msgid "Warning"
 msgstr "경고"
 
-#: src/views/yield-dtf/issuance/components/zapV2/context/ZapContext.tsx:590
+#: src/views/yield-dtf/issuance/components/zapV2/context/ZapContext.tsx:591
 msgid "Warning: High price impact"
 msgstr "경고: 높은 가격 영향"
 
@@ -12407,7 +12388,7 @@ msgid "Wrap/Unwrap collateral"
 msgstr "담보 Wrap/Unwrap"
 
 #: src/views/index-dtf/auctions/views/rebalance/components/rebalance-liquidity-checker.tsx:86
-#: src/views/index-dtf/governance/views/propose/basket/components/proposal-liquidity-checker.tsx:86
+#: src/views/index-dtf/governance/views/propose/basket/components/proposal-liquidity-checker.tsx:82
 msgid "Wrap/unwrap only — no swap needed"
 msgstr "Wrap/unwrap만 — Swap 불필요"
 
@@ -12508,7 +12489,7 @@ msgstr "{stTokenSymbol} DAO를 생성했습니다"
 msgid "You created the {0} DTF"
 msgstr "{0} DTF를 생성했습니다"
 
-#: src/views/yield-dtf/issuance/components/zapV2/context/ZapContext.tsx:583
+#: src/views/yield-dtf/issuance/components/zapV2/context/ZapContext.tsx:584
 msgid "You do not have enough funds to complete this transaction. Please try again with a smaller amount."
 msgstr "이 트랜잭션을 완료하기에 자금이 충분하지 않습니다. 더 적은 금액으로 다시 시도하세요."
 
@@ -12528,7 +12509,7 @@ msgstr "L2 컨트랙트 주소로 직접 가져와야 할 수 있습니다."
 msgid "You mint"
 msgstr "Mint 수량"
 
-#: src/views/index-dtf/deploy/steps/confirm-deploy/simple/index.tsx:131
+#: src/views/index-dtf/deploy/steps/confirm-deploy/simple/index.tsx:137
 msgid "You mint:"
 msgstr "Mint 수량:"
 
@@ -12554,7 +12535,7 @@ msgstr "제공 금액"
 msgid "You receive"
 msgstr "수령 금액"
 
-#: src/components/ui/swap.tsx:376
+#: src/components/ui/swap.tsx:368
 #: src/views/yield-dtf/issuance/components/zapV2/output/ZapOutputContainer.tsx:15
 #: src/views/yield-dtf/issuance/components/zapV2/submit/ZapSubmitModal.tsx:41
 #: src/views/yield-dtf/staking/components/stake/stake-output.tsx:36
@@ -12585,7 +12566,7 @@ msgstr "잠금 해제 금액:"
 msgid "You unstake:"
 msgstr "Unstake 금액:"
 
-#: src/components/ui/swap.tsx:251
+#: src/components/ui/swap.tsx:243
 #: src/views/yield-dtf/issuance/components/zapV2/input/ZapInputContainer.tsx:21
 #: src/views/yield-dtf/issuance/components/zapV2/submit/ZapSubmitModal.tsx:29
 #: src/views/yield-dtf/staking/components/stake/stake-modal.tsx:35
@@ -12754,7 +12735,7 @@ msgstr ""
 msgid "Zap Mint"
 msgstr "Zap Mint"
 
-#: src/views/yield-dtf/issuance/components/zapV2/context/ZapContext.tsx:595
+#: src/views/yield-dtf/issuance/components/zapV2/context/ZapContext.tsx:596
 msgid "Zap Mint Anyway"
 msgstr "그래도 Zap Mint"
 
@@ -12766,7 +12747,7 @@ msgstr "Zap Mint는 현재 베타 단계입니다. 승인 후, 특히 Base 자�
 msgid "Zap Redeem"
 msgstr "Zap Redeem"
 
-#: src/views/yield-dtf/issuance/components/zapV2/context/ZapContext.tsx:595
+#: src/views/yield-dtf/issuance/components/zapV2/context/ZapContext.tsx:596
 msgid "Zap Redeem Anyway"
 msgstr "그래도 Zap Redeem"
 
@@ -12779,5 +12760,5 @@ msgid "Zapper error"
 msgstr "Zapper 오류"
 
 #: src/views/index-dtf/overview/components/zap-mint/zap-healthcheck.tsx:24
-msgid "Zaps are currently experiencing issues"
-msgstr "현재 Zap에 문제가 발생하고 있습니다"
+#~ msgid "Zaps are currently experiencing issues"
+#~ msgstr "현재 Zap에 문제가 발생하고 있습니다"

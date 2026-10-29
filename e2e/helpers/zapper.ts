@@ -17,7 +17,7 @@ import { loadSnapshot, loadSnapshotRaw, snapshotExists } from './snapshots'
 // through TWO endpoint families on api.reserve.org, both derived from
 // ZAPPER_API/RESERVE_API in src/utils/constants.ts:
 //
-//   native zap:  /api/zapper/{chainId}/swap?chainId&signer&tokenIn&amountIn
+//   native:      /api/zapper/{chainId}/swap?chainId&signer&tokenIn&amountIn
 //                  &tokenOut&slippage&trade&bypassCache&deepLiquidity
 //   aggregators: /{velora|enso}/swap?chainId&tokenIn&tokenOut&amountIn
 //                  &slippage&signer
@@ -27,9 +27,10 @@ import { loadSnapshot, loadSnapshotRaw, snapshotExists } from './snapshots'
 // api.cow.fi/<chain>/api/v1/quote — a third egress host, not on api.reserve.org.
 //
 // In its default "best" mode the widget fires ALL enabled providers in
-// parallel and picks the best quote by minAmountOut (ties prefer zap). We mock
-// the native zap endpoint from captured snapshots and answer every other
-// provider (aggregators + CoW) with a deterministic provider-level error: the
+// parallel and picks the best quote by minAmountOut (ties go to the first
+// candidate, the native Alpha source). We mock the native endpoint from
+// captured snapshots and answer every other provider (aggregators + CoW) with
+// a deterministic provider-level error: the
 // widget then has exactly one successful candidate, which (a) makes "best"
 // mode deterministic and (b) skips the candidate tx-simulation pass (it only
 // runs with >= 2 candidates).
@@ -267,7 +268,7 @@ export async function mockZapperRoutes(
     return dtf && snapshotExists(`${dtf.snapshotDir}/zap-${fixture}.json`)
   }).map((fixture) => loadZapSnapshot(dtfAddress, fixture))
 
-  // Native zap quotes: pinned-input snapshot or fail-loud 500.
+  // Native (Alpha) quotes: pinned-input snapshot or fail-loud 500.
   await page.route('**/api.reserve.org/api/zapper/**', (route) => {
     const url = new URL(route.request().url())
     if (!url.pathname.endsWith('/swap')) {
@@ -315,7 +316,7 @@ export async function mockZapperRoutes(
       body: JSON.stringify({
         errorType: 'UnsupportedToken',
         description:
-          '[E2E] cowswap disabled — native zap is the only mocked provider',
+          '[E2E] cowswap disabled — native Alpha is the only mocked provider',
       }),
     })
   )
@@ -329,7 +330,7 @@ export async function mockZapperRoutes(
         contentType: 'application/json',
         body: JSON.stringify({
           status: 'error',
-          error: `[E2E] ${slug} disabled — native zap is the only mocked provider`,
+          error: `[E2E] ${slug} disabled — native Alpha is the only mocked provider`,
         }),
       })
     )
@@ -342,7 +343,7 @@ export async function mockZapperRoutes(
       contentType: 'application/json',
       body: JSON.stringify({
         status: 'error',
-        error: '[E2E] 1inch disabled — native zap is the only mocked provider',
+        error: '[E2E] 1inch disabled — native Alpha is the only mocked provider',
       }),
     })
   )

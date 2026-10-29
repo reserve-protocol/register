@@ -13,6 +13,7 @@ import { useAtom, useAtomValue } from 'jotai'
 import { RefreshCw } from 'lucide-react'
 import { useEffect } from 'react'
 import { Address, formatEther, parseUnits } from 'viem'
+import { basketAtom } from '../../../atoms'
 import { indexDeployFormDataAtom } from '../atoms'
 import {
   defaultInputTokenAtom,
@@ -70,7 +71,10 @@ const SimpleIndexDeploy = () => {
   const zapDeployPayload = useAtomValue(zapDeployPayloadAtom)
   const tokens = useAtomValue(tokensAtom)
   const [ongoingTx, setOngoingTx] = useAtom(ongoingTxAtom)
+  const basket = useAtomValue(basketAtom)
   const formChainId = form?.chain as number
+  // The zapper rejects deploys of baskets with fewer than 2 assets
+  const isBasketTooSmall = basket.length < 2
 
   const url = form?.governanceWalletAddress
     ? zapper.zapDeployUngoverned(formChainId)
@@ -91,7 +95,7 @@ const SimpleIndexDeploy = () => {
       : false
 
   const { data, isLoading, isFetching, refetch, failureReason } =
-    useZapDeployQuery(url, requestBody, ongoingTx)
+    useZapDeployQuery(url, requestBody, ongoingTx || isBasketTooSmall)
 
   const priceTo = data?.result?.amountOutValue
   const valueTo = data?.result?.amountOut
@@ -111,7 +115,9 @@ const SimpleIndexDeploy = () => {
           </h4>
           <RefreshQuote
             onClick={refetch}
-            disabled={isFetching || ongoingTx || !zapDeployPayload}
+            disabled={
+              isFetching || ongoingTx || !zapDeployPayload || isBasketTooSmall
+            }
           />
         </div>
         <div className="flex flex-col gap-1 px-2">
@@ -154,6 +160,14 @@ const SimpleIndexDeploy = () => {
                     ? t`Insufficient balance`
                     : t`Deploy`}
               </Button>
+              {isBasketTooSmall && (
+                <div className="text-red-500 text-sm text-center mt-2">
+                  <Trans>
+                    Simple deploy needs at least 2 tokens in the basket. Use
+                    Manual deploy instead.
+                  </Trans>
+                </div>
+              )}
               {(data?.error || failureReason?.message) && (
                 <div className="flex flex-col items-center gap-2">
                   <div className="text-red-500 text-sm text-center mt-2">
