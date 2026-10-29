@@ -1,0 +1,40 @@
+diff --git a/dist/index-ulcie7ld.js b/dist/index-ulcie7ld.js
+index 4a547a7939316b10464c6b5763a053e6229c9b55..68e6c695abab349e54ccffc26227696201c0beb1 100644
+--- a/dist/index-ulcie7ld.js
++++ b/dist/index-ulcie7ld.js
+@@ -16525,7 +16525,7 @@ const R3 = (e) => {
+     _: r
+   } = ht(), n = k(Ze), i = k(we), o = k(Pe), [s, a] = Fe(Tn), [c, u] = Fe(xa), l = ye(!0), p = k(Yt), d = k(Xy), h = k(n0), g = k(ga), b = k(Aa), y = k(Ui), E = k(In), I = Q(Pn), [w, T] = Fe(er), x = Q(zi), O = Q(qi), D = Q(Ea), U = Q(Bi), z = Q(qe), B = Pa(i, p.address), v = k(ba), A = (B || 0) * Number(s), P = () => a(d?.balance || "0"), N = (Ne) => {
+     I(Ne);
+-  }, F = !!n && Yi(s, p.decimals) > Yi(d?.balance || "0", p.decimals), {
++  }, F = !!n && (s ? Yi(s, p.decimals) : 0n) > Yi(d?.balance || "0", p.decimals), {
+     data: R,
+     isLoading: L,
+     isFetching: q,
+@@ -16535,7 +16535,7 @@ const R3 = (e) => {
+   } = C0({
+     tokenIn: p.address,
+     tokenOut: o?.id,
+-    amountIn: Yi(s, p.decimals).toString(),
++    amountIn: (s ? Yi(s, p.decimals) : 0n).toString(),
+     slippage: isFinite(Number(b)) ? Number(b) : 1e4,
+     disabled: w,
+     forceMint: y,
+@@ -16692,7 +16692,7 @@ const V3 = {
+     _: n
+   } = ht(), i = k(Ze), o = k(we), s = k(Pe), a = k(ba), [c, u] = Fe(Tn), [l, p] = Fe(xa), d = ye(!0), h = k(Yt), g = k(Zy), b = an(g), y = k(n0), E = k(ga), I = k(Aa), w = k(Ui), T = k(In), x = Q(Pn), [O, D] = Fe(er), U = Q(zi), z = Q(qi), B = Q(Ea), v = Q(Bi), A = Q(qe), P = Pa(o, h.address), N = (a || 0) * Number(c), F = () => u(b), R = (Je) => {
+     x(Je);
+-  }, L = !!i && Xa(c) > g, {
++  }, L = !!i && (c ? Xa(c) : 0n) > g, {
+     data: q,
+     isLoading: K,
+     isFetching: H,
+@@ -16702,7 +16702,7 @@ const V3 = {
+   } = C0({
+     tokenIn: s?.id,
+     tokenOut: h.address,
+-    amountIn: Xa(c).toString(),
++    amountIn: (c ? Xa(c) : 0n).toString(),
+     slippage: Number(I),
+     disabled: O,
+     forceMint: w,

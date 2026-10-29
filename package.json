@@ -93,7 +93,7 @@
     "tailwind-merge": "^2.6.1",
     "tailwindcss-animate": "^1.0.7",
     "vaul": "^1.1.2",
-    "viem": "^2.50.0",
+    "viem": "^2.57.13",
     "wagmi": "^2.19.5",
     "zod": "^4.3.6"
   },
