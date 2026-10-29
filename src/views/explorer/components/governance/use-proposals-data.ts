@@ -62,8 +62,18 @@ const yieldProposalsQuery = gql`
 // --- Index DTF queries ---
 
 const indexProposalsQuery = gql`
-  query getAllIndexProposals($voter: String!) {
-    proposals(orderBy: creationTime, orderDirection: desc, first: 1000) {
+  query getAllIndexProposals(
+    $voter: String!
+    $governanceIds: [String!]!
+    $skip: Int!
+  ) {
+    proposals(
+      where: { governance_in: $governanceIds }
+      orderBy: creationTime
+      orderDirection: desc
+      first: 1000
+      skip: $skip
+    ) {
       id
       description
       creationTime
@@ -97,16 +107,51 @@ const indexDtfGovernanceQuery = gql`
       tradingGovernance {
         id
       }
+      stToken {
+        governance {
+          id
+        }
+        legacyGovernance
+      }
+      legacyTradingGovernances {
+        id
+      }
+      legacyAdminGovernances {
+        id
+      }
     }
   }
 `
 
+type GovernanceReference = { id: string }
+
+type IndexDTFGovernanceRecord = {
+  id: Address
+  ownerGovernance?: GovernanceReference
+  tradingGovernance?: GovernanceReference
+  stToken?: {
+    governance?: GovernanceReference
+    legacyGovernance?: string[]
+  }
+  legacyTradingGovernances?: GovernanceReference[]
+  legacyAdminGovernances?: GovernanceReference[]
+}
+
 type IndexDTFGovernanceResponse = {
-  dtfs: {
-    id: Address
-    ownerGovernance?: { id: string }
-    tradingGovernance?: { id: string }
-  }[]
+  dtfs: IndexDTFGovernanceRecord[]
+}
+
+export const getGovernanceIds = (dtf: IndexDTFGovernanceRecord): string[] => {
+  const governanceIds = [
+    dtf.ownerGovernance?.id,
+    dtf.tradingGovernance?.id,
+    dtf.stToken?.governance?.id,
+    ...(dtf.stToken?.legacyGovernance ?? []),
+    ...(dtf.legacyTradingGovernances ?? []).map(({ id }) => id),
+    ...(dtf.legacyAdminGovernances ?? []).map(({ id }) => id),
+  ].filter((id): id is string => !!id)
+
+  return [...new Set(governanceIds.map((id) => id.toLowerCase()))]
 }
 
 type IndexProposalsResponse = {
@@ -201,18 +246,14 @@ const useIndexDTFProposals = () => {
             }
           }
 
-          // Fetch proposals + governance IDs for whitelisted DTFs in parallel
-          const [proposalsRes, governanceRes] = await Promise.all([
-            client.request<IndexProposalsResponse>(indexProposalsQuery, {
-              voter: account?.toLowerCase() ?? zeroAddress,
-            }),
-            client.request<IndexDTFGovernanceResponse>(
+          // Resolve every governance attached to each listed DTF before fetching
+          // proposals. Proposals can belong to the staking-token governor or to
+          // a legacy governor, not only the current owner/trading governors.
+          const governanceRes =
+            await client.request<IndexDTFGovernanceResponse>(
               indexDtfGovernanceQuery,
-              {
-                ids: addresses,
-              }
-            ),
-          ])
+              { ids: addresses }
+            )
 
           // Build governance ID → DTF info lookup
           const governanceToDTF = new Map<string, DTFInfo>()
@@ -220,17 +261,32 @@ const useIndexDTFProposals = () => {
             const info = dtfInfoMap.get(dtf.id.toLowerCase())
             if (!info) continue
 
-            if (dtf.ownerGovernance?.id) {
-              governanceToDTF.set(dtf.ownerGovernance.id.toLowerCase(), info)
+            for (const governanceId of getGovernanceIds(dtf)) {
+              governanceToDTF.set(governanceId, info)
             }
-            if (dtf.tradingGovernance?.id) {
-              governanceToDTF.set(dtf.tradingGovernance.id.toLowerCase(), info)
-            }
+          }
+
+          const governanceIds = [...governanceToDTF.keys()]
+          const proposals: IndexProposalsResponse['proposals'] = []
+
+          // Filter at the subgraph and paginate so unrelated DTF history cannot
+          // consume the endpoint's first-page limit.
+          for (let skip = 0; governanceIds.length; skip += 1000) {
+            const proposalsRes = await client.request<IndexProposalsResponse>(
+              indexProposalsQuery,
+              {
+                voter: account?.toLowerCase() ?? zeroAddress,
+                governanceIds,
+                skip,
+              }
+            )
+            proposals.push(...proposalsRes.proposals)
+            if (proposalsRes.proposals.length < 1000) break
           }
 
           return {
             chainId,
-            proposals: proposalsRes.proposals,
+            proposals,
             governanceToDTF,
           }
         })
