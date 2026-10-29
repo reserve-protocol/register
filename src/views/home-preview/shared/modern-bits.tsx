@@ -40,9 +40,11 @@ export const StageFrame = ({
 export const BalanceGlassTooltip = ({
   active,
   payload,
+  field = 'balance',
 }: {
   active?: boolean
   payload?: { payload: DayPoint }[]
+  field?: 'balance' | 'texturedBalance'
 }) => {
   if (!active || !payload?.length) return null
   const p = payload[0].payload
@@ -55,7 +57,7 @@ export const BalanceGlassTooltip = ({
         <div className="flex justify-between gap-6">
           <span className="text-legend">eUSD held</span>
           <span className="font-semibold text-primary tabular-nums">
-            {usd(p.balance)}
+            {usd(p[field])}
           </span>
         </div>
         <div className="flex justify-between gap-6">

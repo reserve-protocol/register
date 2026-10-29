@@ -18,6 +18,7 @@ export type DayPoint = {
   totalVolume: number
   totalCount: number
   balance: number
+  texturedBalance: number
   cumulativeVolume: number
   cumulativeCount: number
 }
@@ -48,6 +49,7 @@ function build(): DayPoint[] {
   let cumulativeVolume = 0
   let cumulativeCount = 0
   let drift = 0
+  const texture = mulberry32(777)
 
   for (let i = 0; i < days; i++) {
     const ts = start + i * DAY
@@ -59,7 +61,7 @@ function build(): DayPoint[] {
     )
     const waves = 1 + 0.07 * Math.sin(i / 19) + 0.05 * Math.sin(i / 53 + 1.3)
     const trend =
-      (18_000 + 1_430_000 * Math.pow(progress, 2.1)) * waves * (1 + drift)
+      (18_000 + 1_389_000 * Math.pow(progress, 2.1)) * waves * (1 + drift)
     const weekday = d.getUTCDay()
     const weekly = weekday === 0 ? 0.72 : weekday === 6 ? 0.84 : 1
     const dom = d.getUTCDate()
@@ -72,7 +74,13 @@ function build(): DayPoint[] {
     for (const c of CATEGORIES) {
       const noise = 0.82 + rand() * 0.36
       const spike =
-        c.key === 'savings' ? payday : c.key === 'card' && payday > 1 ? 1.25 : 1
+        c.key === 'savings'
+          ? payday
+          : payday > 1 && c.key === 'deposits'
+            ? 1.9
+            : payday > 1 && c.key === 'card'
+              ? 1.3
+              : 1
       let v = trend * c.share * weekly * noise * spike
       if (c.key === 'deposits' && d.toISOString().slice(0, 10) === OUTLIER_DATE)
         v += OUTLIER_AMOUNT
@@ -94,6 +102,12 @@ function build(): DayPoint[] {
         drift * 0.8) *
       (0.99 + rand() * 0.02)
 
+    const sincePayday = dom >= 15 ? dom - 15 : dom - 1
+    const textured =
+      balance *
+      (1 + 0.04 * (1 - sincePayday / 15) - 0.02) *
+      (0.985 + texture() * 0.03)
+
     points.push({
       date: d.toISOString().slice(0, 10),
       ts,
@@ -102,6 +116,7 @@ function build(): DayPoint[] {
       totalVolume,
       totalCount,
       balance: i === days - 1 ? 17_300_000 : Math.round(balance),
+      texturedBalance: i === days - 1 ? 17_300_000 : Math.round(textured),
       cumulativeVolume,
       cumulativeCount,
     })

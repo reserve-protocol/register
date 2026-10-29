@@ -38,6 +38,26 @@ export const VARIANTS = [
     name: 'Flow into eUSD',
     component: lazy(() => import('./variants/v7-flow')),
   },
+  {
+    id: 'v8',
+    name: 'Flow + volume under the hero',
+    component: lazy(() => import('./variants/v8-subplot')),
+  },
+  {
+    id: 'v9',
+    name: 'Flow + payday calendar',
+    component: lazy(() => import('./variants/v9-calendar')),
+  },
+  {
+    id: 'v10',
+    name: 'Flow + type watchlist',
+    component: lazy(() => import('./variants/v10-ledger')),
+  },
+  {
+    id: 'v11',
+    name: 'Flow + share of a dollar',
+    component: lazy(() => import('./variants/v11-share')),
+  },
 ] as const
 
 const Gallery = () => (
