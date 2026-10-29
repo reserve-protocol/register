@@ -45,6 +45,14 @@ describe('useZapDeployQuery', () => {
     expect(message).toBe('basket must have at least 2 assets')
   })
 
+  it('falls back to the status when the JSON error is not a string', async () => {
+    const message = await errorFor(
+      Response.json({ status: 'error', error: { code: 42 } }, { status: 500 })
+    )
+
+    expect(message).toBe('Error: 500')
+  })
+
   it('falls back to the status for an HTML error page', async () => {
     const message = await errorFor(
       new Response('<html>origin unreachable</html>', {

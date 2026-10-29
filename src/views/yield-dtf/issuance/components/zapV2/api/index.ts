@@ -56,13 +56,16 @@ export const readZapError = async (
   response: Response
 ): Promise<string | undefined> => {
   const body = await response.text().catch(() => '')
+  let parsed: unknown
   try {
-    return JSON.parse(body).error
+    parsed = JSON.parse(body)
   } catch {
     return response.headers.get('content-type')?.startsWith('text/plain')
       ? body
       : undefined
   }
+  const error = (parsed as { error?: unknown } | null)?.error
+  return typeof error === 'string' ? error : undefined
 }
 
 const zapper = {

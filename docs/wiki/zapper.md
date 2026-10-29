@@ -40,4 +40,4 @@ CoW-Swap-backed mint/redeem at `src/views/index-dtf/issuance/async-mint/**` (`us
 
 ## Shared backend
 
-Both `RESERVE_API` and `ZAPPER_API` come from `src/utils/constants.ts`: `api.reserve.org`, or the staging API when the hostname contains `staging` (or `VITE_USE_STAGING`) and `VITE_STAGING_API` is set. `ZAPPER_API api/zapper/*` is reserve-api's proxy to the Rust zapper (`/api/zapper2/*` is a synonym).
+Both `RESERVE_API` and `ZAPPER_API` come from `src/utils/constants.ts` and default to `api.reserve.org`. When the hostname contains `staging` (or `VITE_USE_STAGING`) and `VITE_STAGING_API` is set, `RESERVE_API` uses `VITE_STAGING_API` and `ZAPPER_API` uses the fixed `https://api-staging.reserve.org/`. `ZAPPER_API api/zapper/*` is reserve-api's proxy to the Rust zapper (`/api/zapper2/*` is a synonym).
