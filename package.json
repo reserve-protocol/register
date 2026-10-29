@@ -51,7 +51,7 @@
     "@reserve-protocol/react-sdk": "0.7.0",
     "@reserve-protocol/react-zapper": "2.14.3",
     "@reserve-protocol/rtokens": "^1.1.23",
-    "@reserve-protocol/trusted-fillers-sdk": "^0.3.0",
+    "@reserve-protocol/trusted-fillers-sdk": "^0.10.0",
     "@sentry/react": "^9.47.1",
     "@sentry/vite-plugin": "^3.6.1",
     "@tanstack/react-query": "^5.99.0",
@@ -93,7 +93,7 @@
     "tailwind-merge": "^2.6.1",
     "tailwindcss-animate": "^1.0.7",
     "vaul": "^1.1.2",
-    "viem": "^2.50.0",
+    "viem": "^2.57.13",
     "wagmi": "^2.19.5",
     "zod": "^4.3.6"
   },
