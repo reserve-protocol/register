@@ -8,7 +8,7 @@ import {
   progressTones as tones,
   quorumTone,
   type ProgressTone,
-} from './progress-indicator-presentation'
+} from '@/components/design-system-v1/progress-presentation'
 
 export const VoteMark = ({
   icon: Icon,

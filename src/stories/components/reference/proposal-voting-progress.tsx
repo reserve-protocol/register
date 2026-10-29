@@ -21,7 +21,7 @@ import {
   ProposalThreshold,
   ProposalMajority,
 } from './proposal-voting-progress-rows'
-import type { ProgressTone } from './progress-indicator-presentation'
+import type { ProgressTone } from '@/components/design-system-v1/progress-presentation'
 
 type VoteKind = 'for' | 'against' | 'abstain'
 

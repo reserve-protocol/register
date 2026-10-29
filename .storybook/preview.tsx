@@ -94,6 +94,7 @@ const preview: Preview = {
               'Single choice',
               'Multi select filter',
               'Preset or custom',
+              'Slider',
             ],
             'Navigation and disclosure',
             [
@@ -112,6 +113,7 @@ const preview: Preview = {
               'Help tooltip',
               'Empty state',
               'Loading',
+              'Progress indicator',
               'Toast',
             ],
             'Data display',
@@ -129,7 +131,6 @@ const preview: Preview = {
           ['Overview', 'Activity chart', 'eUSD activity layout', '*'],
           'Explorations',
           [
-            'Component proposals',
             'Screen layouts',
             'Screen pilots',
             'Auctions',

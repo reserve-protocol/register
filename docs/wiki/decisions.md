@@ -870,3 +870,18 @@ These are the calls that changed accepted presentation; each lists its confidenc
 ## 2026-10-29 — Dashboard chart proposals (agent calls, pending user review)
 
 For the eUSD activity dashboard, data colours are six ordered `series` tokens rather than retuned `--chart-*`, so the existing palette and charts are untouched. Slot 1 is the brand blue; the rest follow the dataviz reference order and pass its colour-vision, lightness and normal-vision checks on the real card surface in both themes. Three light slots sit below 3:1 on white, relieved by the always-visible legend values. Bars keep square ends (the system's square language) instead of the reference's rounded caps. The chart keeps the Market idiom of header and legend readouts instead of a floating tooltip. The partial current day is lighter until selected and its caption says "so far". The panel owns insets but no surface, so a dashboard can still choose cards or flat regions. Withdrawal presentation and time ranges are open; both layouts and four ranges are shown. On a dashboard, one period control sits above the panels and scopes them all, and panels use the 20px panel headline so the page title stays the single largest heading (proposal; the user owns the header-size call).
+
+## 2026-10-29 — Slider and Progress indicator accepted
+
+The user accepted Slider and Progress indicator as V1 baselines and moved them
+out of Explorations. Slider sits under Components / Fields and selection: one
+value, a 6px muted track, a blue thumb with a 2px surface gap, and optional exact
+entry through the 44px TextInput with native validation below the control.
+Progress indicator sits under Components / Feedback and overlays: 4px square
+rails, the threshold meter, the counted bar and Spinner for unknown duration, with
+tones from `design-system-v1/progress-presentation.ts`. The Index proposal voting
+card is accepted as its lead example: the Current/Final votes heading sits inside
+the first group, and For, Against and Abstain share one grid (three across from a
+32rem card, two equal columns below). Acceptance covers presentation. Production
+adoption, the shared Slider and Progress changes, and the vote fixtures (display
+values, not SDK calculations) still need Engineer review.

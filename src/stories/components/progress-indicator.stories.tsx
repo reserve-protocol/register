@@ -5,14 +5,17 @@ import { v1SemanticRoles } from '@/components/design-system-v1/semantic-roles'
 import { Progress } from '@/components/ui/progress'
 import { Spinner } from '@/components/design-system-v1/loading'
 import { cn } from '@/lib/utils'
-import { PlaygroundDocs } from '../../shared/playground-docs'
-import { centeredStoryDecorator } from '../../shared/story-surface'
-import { ProposalVotingProgress } from './proposal-voting-progress'
-import { progressTones, quorumTone } from './progress-indicator-presentation'
+import { PlaygroundDocs } from '../shared/playground-docs'
+import { centeredStoryDecorator } from '../shared/story-surface'
+import { ProposalVotingProgress } from './reference/proposal-voting-progress'
+import {
+  progressTones,
+  quorumTone,
+} from '@/components/design-system-v1/progress-presentation'
 import {
   proposalVoteSnapshots,
   type ProposalVoteScenario,
-} from './proposal-voting-progress-fixtures'
+} from './reference/proposal-voting-progress-fixtures'
 
 type ProgressExampleProps = {
   value: number
@@ -95,8 +98,7 @@ const ProgressExample = ({
 }
 
 const meta = {
-  title: 'Explorations/Component proposals/Progress indicator',
-  id: 'explorations-components-progress-indicator',
+  title: 'Components/Feedback and overlays/Progress indicator',
   component: ProgressExample,
   tags: ['autodocs'],
   args: {
@@ -169,7 +171,7 @@ const meta = {
       page: () => <PlaygroundDocs interactive={Playground} />,
       description: {
         component:
-          '**Proposal for review.** The default example follows the Index DTF proposal-details card: quorum, majority support, For/Against and Abstain. Choose a scenario and switch Current votes/Final votes independently. Quorum fill caps at 100% while actual totals remain visible. Majority fill and its visible percentage always show For votes among directional votes. Tied votes have an explicit neutral Tied reading; a tie does not meet majority support. No directional votes shows a dash, unavailable targets retain the current amount with explicit Target unavailable wording and no fabricated percentage, and loading uses the canonical Skeleton. Optimistic proposals use a separate challenge-only card: zero challenges is neutral and positive challenge progress is adverse. These are preformatted display fixtures, not SDK calculations or overall proposal outcomes.\n\nDecision criteria and vote totals form two white groups with a single beige seam, and the Current/Final votes heading sits inside the first group on its content inset; For, Against and Abstain share one row when the card is wide enough and two equal columns otherwise, with no vertical divider.\n\nThe kind control also exposes the generic threshold meter, measured progress and waiting Spinner. Quorum is threshold attainment, not elapsed time. Final unmet thresholds retain their actual reading. Known work uses an explicit count; unknown duration uses Loading balances without a percentage. Zapper quote loading and transaction steps retain their dedicated compositions. The governance proposal-list lifecycle keeps its specialized ProposalStatusBar unchanged. No production consumer is migrated by these examples.\n\nRails use a 4px square recipe on the shared Progress (`h-1 rounded-none bg-muted motion-reduce:transition-none`); its production default stays unchanged until an adoption pass. Value text uses feedback foregrounds so it clears 4.5:1; fills keep the approved tones. The waiting Spinner example stays exploratory: unresolved content loads with Skeleton.',
+          'The default example follows the Index DTF proposal-details card: quorum, majority support, For/Against and Abstain. Choose a scenario and switch Current votes/Final votes independently. Quorum fill caps at 100% while actual totals remain visible. Majority fill and its visible percentage always show For votes among directional votes. Tied votes have an explicit neutral Tied reading; a tie does not meet majority support. No directional votes shows a dash, unavailable targets retain the current amount with explicit Target unavailable wording and no fabricated percentage, and loading uses the canonical Skeleton. Optimistic proposals use a separate challenge-only card: zero challenges is neutral and positive challenge progress is adverse. These are preformatted display fixtures, not SDK calculations or overall proposal outcomes.\n\nDecision criteria and vote totals form two white groups with a single beige seam, and the Current/Final votes heading sits inside the first group on its content inset; For, Against and Abstain share one row when the card is wide enough and two equal columns otherwise, with no vertical divider.\n\nThe kind control also exposes the generic threshold meter, measured progress and waiting Spinner. Quorum is threshold attainment, not elapsed time. Final unmet thresholds retain their actual reading. Known work uses an explicit count; unknown duration uses Loading balances without a percentage. Zapper quote loading and transaction steps retain their dedicated compositions. The governance proposal-list lifecycle keeps its specialized ProposalStatusBar unchanged. No production consumer is migrated by these examples.\n\nRails use a 4px square recipe on the shared Progress (`h-1 rounded-none bg-muted motion-reduce:transition-none`); its production default stays unchanged until an adoption pass. Value text uses feedback foregrounds so it clears 4.5:1; fills keep the approved tones. Use the waiting Spinner only for unknown duration; unresolved content loads with Skeleton.',
       },
     },
   },

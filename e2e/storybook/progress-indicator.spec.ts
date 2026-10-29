@@ -14,7 +14,7 @@ test('majority readings always represent For votes and identify ties', async ({
   ] as const) {
     await page.goto(
       story(
-        'explorations-components-progress-indicator--playground',
+        'components-feedback-and-overlays-progress-indicator--playground',
         `scenario:${scenario}`
       )
     )
@@ -40,7 +40,7 @@ test('quorum presentations share status colors and zero challenge stays neutral'
     ] as const) {
       await page.goto(
         story(
-          'explorations-components-progress-indicator--playground',
+          'components-feedback-and-overlays-progress-indicator--playground',
           `scenario:${scenario};phase:${phase}`
         ) + `&globals=theme:${theme}`
       )
@@ -56,7 +56,7 @@ test('quorum presentations share status colors and zero challenge stays neutral'
         .evaluate((el) => getComputedStyle(el).color)
       await page.goto(
         story(
-          'explorations-components-progress-indicator--playground',
+          'components-feedback-and-overlays-progress-indicator--playground',
           `kind:threshold;value:${value};closed:${closed}`
         ) + `&globals=theme:${theme}`
       )
@@ -73,7 +73,7 @@ test('quorum presentations share status colors and zero challenge stays neutral'
     }
     await page.goto(
       story(
-        'explorations-components-progress-indicator--playground',
+        'components-feedback-and-overlays-progress-indicator--playground',
         'scenario:optimistic-target-unavailable'
       ) + `&globals=theme:${theme}`
     )
@@ -84,7 +84,7 @@ test('quorum presentations share status colors and zero challenge stays neutral'
       .evaluate((el) => getComputedStyle(el).color)
     await page.goto(
       story(
-        'explorations-components-progress-indicator--playground',
+        'components-feedback-and-overlays-progress-indicator--playground',
         'scenario:optimistic-no-challenges'
       ) + `&globals=theme:${theme}`
     )
@@ -116,8 +116,10 @@ test('progress rail geometry and readings remain consistent at their boundaries'
       ['kind:measured;completed:4', 'progressbar', 'Orders filled', '100'],
     ] as const) {
       await page.goto(
-        story('explorations-components-progress-indicator--playground', args) +
-          `&globals=theme:${theme}`
+        story(
+          'components-feedback-and-overlays-progress-indicator--playground',
+          args
+        ) + `&globals=theme:${theme}`
       )
       const rail = page.getByRole(role, { name: label })
       await expect(rail).toHaveAttribute('aria-valuenow', value)
@@ -147,7 +149,7 @@ test('progress proposals distinguish threshold, known fraction and waiting', asy
   await page.setViewportSize({ width: 390, height: 640 })
   await page.goto(
     story(
-      'explorations-components-progress-indicator--playground',
+      'components-feedback-and-overlays-progress-indicator--playground',
       'kind:threshold'
     )
   )
@@ -158,7 +160,7 @@ test('progress proposals distinguish threshold, known fraction and waiting', asy
   await expect(page.getByRole('progressbar')).toHaveCount(0)
   await page.goto(
     story(
-      'explorations-components-progress-indicator--measured-completion',
+      'components-feedback-and-overlays-progress-indicator--measured-completion',
       'completed:3'
     )
   )
@@ -170,7 +172,9 @@ test('progress proposals distinguish threshold, known fraction and waiting', asy
     animations: 'disabled',
     path: test.info().outputPath('measured-progress.png'),
   })
-  await page.goto(story('explorations-components-progress-indicator--waiting'))
+  await page.goto(
+    story('components-feedback-and-overlays-progress-indicator--waiting')
+  )
   await expect(
     page.getByRole('status', { name: 'Loading balances' })
   ).toBeVisible()

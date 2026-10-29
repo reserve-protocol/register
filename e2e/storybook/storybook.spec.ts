@@ -353,10 +353,10 @@ test('focused market controls follow the selected chart and auction layout', asy
   await expect(page.getByRole('switch', { name: 'yieldWallet' })).toHaveCount(0)
 })
 
-test('exploratory slider updates with the keyboard and respects disabled', async ({
+test('slider updates with the keyboard and respects disabled', async ({
   page,
 }) => {
-  await openStory(page, 'explorations-components-slider--playground')
+  await openStory(page, 'components-fields-and-selection-slider--playground')
   const slider = page.getByRole('slider', { name: 'Rebalance Percent' })
   await expect(slider).toHaveAttribute('aria-valuenow', '50')
   await slider.focus()
@@ -374,23 +374,24 @@ test('exploratory slider updates with the keyboard and respects disabled', async
     .toBeGreaterThan(65)
 
   await page.goto(
-    `${storyUrl('explorations-components-slider--playground')}&args=disabled:true`
+    `${storyUrl('components-fields-and-selection-slider--playground')}&args=disabled:true`
   )
   await expect(
     page.getByRole('slider', { name: 'Rebalance Percent' })
   ).toBeDisabled()
 })
 
-test('exploratory progress exposes the numeric reading and outcome', async ({
-  page,
-}) => {
-  await openStory(page, 'explorations-components-progress-indicator--threshold')
+test('progress exposes the numeric reading and outcome', async ({ page }) => {
+  await openStory(
+    page,
+    'components-feedback-and-overlays-progress-indicator--threshold'
+  )
   const progress = page.getByRole('meter', { name: 'Quorum' })
   await expect(progress).toHaveAttribute('aria-valuenow', '64')
   await expect(page.getByText('64%')).toBeVisible()
 
   await page.goto(
-    `${storyUrl('explorations-components-progress-indicator--playground')}&args=kind:threshold;value:100`
+    `${storyUrl('components-feedback-and-overlays-progress-indicator--playground')}&args=kind:threshold;value:100`
   )
   await expect(page.getByRole('meter', { name: 'Quorum' })).toHaveAttribute(
     'aria-valuenow',
@@ -399,7 +400,7 @@ test('exploratory progress exposes the numeric reading and outcome', async ({
   await expect(page.getByText('100%')).toBeVisible()
 
   await page.goto(
-    `${storyUrl('explorations-components-progress-indicator--playground')}&args=kind:threshold;closed:true;value:37`
+    `${storyUrl('components-feedback-and-overlays-progress-indicator--playground')}&args=kind:threshold;closed:true;value:37`
   )
   await expect(page.getByRole('meter', { name: 'Quorum' })).toHaveAttribute(
     'aria-valuenow',
@@ -413,12 +414,12 @@ test('paired progress and slider readings use one text size and line height', as
 }) => {
   for (const { id, label, value } of [
     {
-      id: 'explorations-components-progress-indicator--threshold',
+      id: 'components-feedback-and-overlays-progress-indicator--threshold',
       label: 'Quorum',
       value: '64%',
     },
     {
-      id: 'explorations-components-slider--playground',
+      id: 'components-fields-and-selection-slider--playground',
       label: 'Rebalance Percent',
       value: '50%',
     },

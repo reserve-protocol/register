@@ -31,7 +31,7 @@ test('proposal detail cards retain mobile insets and contain every row in both t
       ]) {
         await page.goto(
           story(
-            'explorations-components-progress-indicator--playground',
+            'components-feedback-and-overlays-progress-indicator--playground',
             `scenario:${scenario}`
           ) + `&globals=theme:${theme}`
         )
@@ -110,7 +110,7 @@ test('every proposal snapshot retains its readings when voting becomes final', a
   ]) {
     await page.goto(
       story(
-        'explorations-components-progress-indicator--playground',
+        'components-feedback-and-overlays-progress-indicator--playground',
         `scenario:${scenario}`
       ) + '&globals=theme:dark'
     )
@@ -132,7 +132,7 @@ test('every proposal snapshot retains its readings when voting becomes final', a
     )
     await page.goto(
       story(
-        'explorations-components-progress-indicator--playground',
+        'components-feedback-and-overlays-progress-indicator--playground',
         `scenario:${scenario};phase:final`
       ) + '&globals=theme:dark'
     )
@@ -171,7 +171,7 @@ test('proposal criteria switch together between inline and left-aligned stacked 
   ] as const) {
     await page.setViewportSize({ width, height: 844 })
     await page.goto(
-      story('explorations-components-progress-indicator--playground')
+      story('components-feedback-and-overlays-progress-indicator--playground')
     )
     for (const label of ['Quorum', 'Majority support']) {
       const header = page.getByText(label, { exact: true }).locator('..')

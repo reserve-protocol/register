@@ -8,10 +8,10 @@ test('Docs exact-entry example moves its thumb with the displayed value', async 
 }) => {
   await page.setViewportSize({ width: 1440, height: 1000 })
   await page.goto(
-    '/iframe.html?id=explorations-components-slider--docs&viewMode=docs'
+    '/iframe.html?id=components-fields-and-selection-slider--docs&viewMode=docs'
   )
   const example = page.locator(
-    '#story--explorations-components-slider--exact-entry-inner'
+    '#story--components-fields-and-selection-slider--exact-entry-inner'
   )
   const input = example.getByRole('spinbutton', { name: 'Rebalance Percent' })
   const slider = example.getByRole('slider', { name: 'Rebalance Percent' })
@@ -58,7 +58,7 @@ test('Docs exact-entry example moves its thumb with the displayed value', async 
   await expect(slider).toHaveAttribute('aria-valuenow', '69')
   await expect(
     page
-      .locator('#story--explorations-components-slider--disabled-inner')
+      .locator('#story--components-fields-and-selection-slider--disabled-inner')
       .getByRole('spinbutton', { name: 'Rebalance Percent' })
   ).toHaveValue('50')
   await slider.scrollIntoViewIfNeeded()
@@ -72,7 +72,7 @@ test('slider exact entry shares its value, validity and disabled state', async (
   page,
 }) => {
   await page.setViewportSize({ width: 390, height: 640 })
-  await page.goto(story('explorations-components-slider--exact-entry'))
+  await page.goto(story('components-fields-and-selection-slider--exact-entry'))
   const input = page.getByRole('spinbutton', { name: 'Rebalance Percent' })
   const slider = page.getByRole('slider', { name: 'Rebalance Percent' })
   await input.fill('65')
@@ -94,13 +94,16 @@ test('slider exact entry shares its value, validity and disabled state', async (
     path: test.info().outputPath('slider-exact-entry.png'),
   })
   await page.goto(
-    story('explorations-components-slider--exact-entry', 'disabled:true')
+    story(
+      'components-fields-and-selection-slider--exact-entry',
+      'disabled:true'
+    )
   )
   await expect(input).toBeDisabled()
   await expect(slider).toBeDisabled()
   await page.setViewportSize({ width: 1440, height: 1000 })
   await page.goto(
-    '/iframe.html?id=explorations-components-slider--docs&viewMode=docs'
+    '/iframe.html?id=components-fields-and-selection-slider--docs&viewMode=docs'
   )
   const interactive = page.locator('.storybook-docs-interactive').first()
   const exactMode = interactive.getByRole('radio', {
@@ -132,7 +135,7 @@ test('slider shares configurable integer and decimal increments with exact entry
   await page.setViewportSize({ width: 390, height: 640 })
   const input = page.getByRole('spinbutton', { name: 'Rebalance Percent' })
   const slider = page.getByRole('slider', { name: 'Rebalance Percent' })
-  await page.goto(story('explorations-components-slider--exact-entry'))
+  await page.goto(story('components-fields-and-selection-slider--exact-entry'))
   await input.fill('13')
   await expect(slider).toHaveAttribute('aria-valuenow', '13')
   await slider.press('ArrowRight')
@@ -158,7 +161,7 @@ test('slider shares configurable integer and decimal increments with exact entry
     path: test.info().outputPath('slider-validation.png'),
   })
   await page.goto(
-    story('explorations-components-slider--exact-entry', 'step:5')
+    story('components-fields-and-selection-slider--exact-entry', 'step:5')
   )
   await slider.press('ArrowRight')
   await expect(input).toHaveValue('55')
@@ -168,7 +171,7 @@ test('slider shares configurable integer and decimal increments with exact entry
   await input.fill('65')
   await expect(slider).toHaveAttribute('aria-valuenow', '65')
   await page.goto(
-    story('explorations-components-slider--exact-entry', 'step:0.1')
+    story('components-fields-and-selection-slider--exact-entry', 'step:0.1')
   )
   await input.fill('13.2')
   await expect(input).not.toHaveAttribute('aria-invalid', 'true')
@@ -182,10 +185,10 @@ test('slider Docs present validation without moving focus or scrolling the page'
 }) => {
   await page.setViewportSize({ width: 390, height: 640 })
   await page.goto(
-    '/iframe.html?id=explorations-components-slider--docs&viewMode=docs'
+    '/iframe.html?id=components-fields-and-selection-slider--docs&viewMode=docs'
   )
   const invalid = page.locator(
-    '#story--explorations-components-slider--invalid-entry-inner'
+    '#story--components-fields-and-selection-slider--invalid-entry-inner'
   )
   const input = invalid.getByRole('spinbutton', { name: 'Rebalance Percent' })
   await expect(input).toHaveValue('101')

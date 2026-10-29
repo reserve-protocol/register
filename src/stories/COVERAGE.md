@@ -38,9 +38,9 @@ stacked and diverging layouts, volume and count, 7 days to one year (weekly) and
 loading, empty and unavailable states. Foundations / Principles / Color lists the
 proposed data series slots. Dashboard (unreviewed) / eUSD activity layout
 composes volume and count panels under one period control with a map placeholder.
-Slider and Progress indicator remain under Explorations / Component proposals;
-their stories reuse canonical primitives without approving a V1 contract or
-changing product defaults. Slider proposes optional exact entry with native
+Slider (Components / Fields and selection) and Progress indicator (Components /
+Feedback and overlays) are accepted; their stories reuse canonical primitives
+without changing product defaults. Slider offers optional exact entry with native
 validation; Progress leads with a stacked Index proposal-details
 voting card, including standard/optimistic snapshots and independent current/final
 phase controls, 4px square rails and zero/1%/99%/51%/opposition boundaries.

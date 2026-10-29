@@ -1,6 +1,6 @@
 ---
 title: Design System Reference
-updated: 2026-10-28
+updated: 2026-10-29
 type: domain
 sources:
   - docs/wiki/decisions.md

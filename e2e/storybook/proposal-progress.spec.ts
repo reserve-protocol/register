@@ -7,7 +7,7 @@ test('proposal detail progress stacks quorum, majority and vote totals', async (
   page,
 }) => {
   await page.goto(
-    story('explorations-components-progress-indicator--playground')
+    story('components-feedback-and-overlays-progress-indicator--playground')
   )
   await expect(
     page.getByRole('heading', { name: 'Current votes' })
@@ -25,7 +25,7 @@ test('proposal detail progress stacks quorum, majority and vote totals', async (
   await expect(page.getByText('Abstain', { exact: true })).toBeVisible()
   await page.goto(
     story(
-      'explorations-components-progress-indicator--playground',
+      'components-feedback-and-overlays-progress-indicator--playground',
       'phase:final'
     )
   )
@@ -49,7 +49,7 @@ test('proposal detail scenarios preserve truthful voting and challenge readings'
   ]) {
     await page.goto(
       story(
-        'explorations-components-progress-indicator--playground',
+        'components-feedback-and-overlays-progress-indicator--playground',
         `scenario:${scenario}`
       )
     )
@@ -71,7 +71,7 @@ test('proposal detail scenarios preserve truthful voting and challenge readings'
   ]) {
     await page.goto(
       story(
-        'explorations-components-progress-indicator--playground',
+        'components-feedback-and-overlays-progress-indicator--playground',
         `scenario:${scenario}`
       )
     )
@@ -97,7 +97,7 @@ test('proposal detail scenarios preserve truthful voting and challenge readings'
   ]) {
     await page.goto(
       story(
-        'explorations-components-progress-indicator--playground',
+        'components-feedback-and-overlays-progress-indicator--playground',
         `scenario:${scenario}`
       )
     )
@@ -122,7 +122,7 @@ test('proposal detail scenarios preserve truthful voting and challenge readings'
   ]) {
     await page.goto(
       story(
-        'explorations-components-progress-indicator--playground',
+        'components-feedback-and-overlays-progress-indicator--playground',
         `scenario:${scenario}`
       )
     )
@@ -136,7 +136,7 @@ test('proposal detail scenarios preserve truthful voting and challenge readings'
   }
   await page.goto(
     story(
-      'explorations-components-progress-indicator--playground',
+      'components-feedback-and-overlays-progress-indicator--playground',
       'scenario:loading'
     )
   )
@@ -152,7 +152,7 @@ test('proposal detail Docs controls preserve tallies when finalizing a snapshot'
 }) => {
   await page.setViewportSize({ width: 1440, height: 1000 })
   await page.goto(
-    '/iframe.html?id=explorations-components-progress-indicator--docs&viewMode=docs'
+    '/iframe.html?id=components-feedback-and-overlays-progress-indicator--docs&viewMode=docs'
   )
   const interactive = page.locator('.storybook-docs-interactive').first()
   await interactive

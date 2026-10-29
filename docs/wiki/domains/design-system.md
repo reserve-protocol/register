@@ -1,6 +1,6 @@
 ---
 title: Design System
-updated: 2026-10-28
+updated: 2026-10-29
 type: domain
 sources:
   - .storybook/**
@@ -310,7 +310,7 @@ designer reviews the proposal. A partial screen pilot now tries the recommended
 settings without approving them. Exact column widths and seams are illustrated;
 section heights are not a chart or page-height contract.
 
-## Toast and pending component explorations
+## Toast, dashboard pieces, Slider and Progress
 
 Toast is accepted under Components / Feedback and overlays. Its Storybook
 example calls the same `src/components/ui/sonner.tsx` host as the app. The
@@ -349,17 +349,17 @@ panels, content regions on the structural substrate's 2px seams as in the screen
 pilots, and a map placeholder. Open decisions: withdrawals stacked or below the
 baseline, time ranges, cards or flat regions, and the countries map.
 
-Slider and Progress indicator remain under Explorations / Component proposals
-for review, separate from accepted Components. Their examples reuse canonical
-Slider, TextInput, Progress and Spinner owners with product wording already in
-use; new proposal work does not change those shared owners. The shared Slider uses a neutral muted 6px
+Slider (Components / Fields and selection) and Progress indicator (Components /
+Feedback and overlays) were accepted on 2026-10-29 ([[decisions]]). Their examples
+reuse canonical Slider, TextInput, Progress and Spinner owners with product wording
+already in use; `progressTones` and `quorumTone` live in
+`design-system-v1/progress-presentation.ts`. The shared Slider uses a neutral muted 6px
 track and a blue circular thumb separated from the filled rail by a 2px
 card-surface gap. Its hover shadow remains subtle, and its disabled state dims
 the control. The Progress specimen uses the same track color inside its white
 example surface. The shared Progress primitive retains its existing default.
-Neither exploration is an accepted V1 component contract.
 
-Slider now proposes optional exact entry using the canonical 44px TextInput.
+Slider offers optional exact entry using the canonical 44px TextInput.
 Both controls share the example's 0–100 bounds and configurable positive step,
 defaulting to 1. The Stepped example opts into 5; fractional increments are also
 supported. These bounds and percent units are fixture context, not restrictions
@@ -373,14 +373,14 @@ in its child; changing a number must also move the actual thumb. Range selection
 marks and arbitrary financial precision are excluded. The local percentage is
 not on-chain math. Slider Docs uses numeric value/step controls, hides callback
 rows, and shows an invalid-entry fixture without taking focus or scrolling.
-Progress proposes a meter for quorum, a counted progress bar
+Progress offers a meter for quorum, a counted progress bar
 for measured work, and Spinner for unknown duration. A closed threshold preserves
 its supplied value; the illustrative Orders filled fixture declares four total
 orders. Failures require inline feedback and the last known reading, not a reset
 or fabricated percentage. Signing/confirmation remain transaction-owned steps.
-Progress Docs now leads with a story-local Index proposal-details voting card:
+Progress Docs leads with a story-local Index proposal-details voting card:
 quorum, majority support, For/Against and Abstain, composed from canonical
-Progress, Skeleton, V1 typography and semantic colors. Proposed bar tracks and
+Progress, Skeleton, V1 typography and semantic colors. Bar tracks and
 fills, including unavailable/loading rails, are 4px with square ends; transitions
 honor reduced motion. The composition uses flat
 white groups with one substrate seam between criteria and vote totals (the
@@ -393,7 +393,7 @@ statistics, without a vertical divider. Spacing separates
 rows inside each group; loading mirrors this grouping. Criterion headers use a
 shared 24rem card-width boundary: below it both labels sit above left-aligned
 readings; at/above it labels and readings share one line. Loading follows the
-same transition. This is local proposal geometry, not a global breakpoint. Decorative vote icons are omitted when the
+same transition. This is local card geometry, not a global breakpoint. Decorative vote icons are omitted when the
 composition is narrower than 22rem so labels, values and 20px insets remain intact.
 Scenario fixtures cover
 no votes, partial/reached/over-target quorum, opposition, ties, abstain-only,
@@ -412,8 +412,8 @@ informational, reached is success, final unmet is danger.
 Optimistic proposals have separate challenge-only snapshots: known zero is
 neutral, positive challenge is adverse, and unknown targets stay distinct. Static preformatted display fixtures
 do not calculate SDK state or imply an overall proposal outcome. Mobile groups
-retain equal 20px padding. This is a review proposal, not production adoption. The rejected title/description page example
-was removed; review stays focused on the voting card and its states. Surrounding
+retain equal 20px padding. Acceptance covers presentation, not production adoption. The rejected title/description page example
+was removed; the examples stay focused on the voting card and its states. Surrounding
 page layouts require their own accepted design-system composition.
 The generic Progress proposal does not replace governance proposal-list lifecycle
 indicators. ProposalStatusBar remains their owner in production and the governance
@@ -425,7 +425,7 @@ Unknown waiting reuses the Loading story’s Spinner and Loading balances wordin
 It is a generic specimen, not the Zapper quote-loading UI. The Zapper reference
 keeps its animation, stage pill and timer; production uses the packaged Zapper
 widget. Specialized transaction/rebalance progress remains owned by its pattern. There is no blanket progress-indicator migration.
-These are proposals, not accepted component contracts. A browser check found that the shared Progress wrapper
+A browser check found that the shared Progress wrapper
 had omitted the value it received from the accessible Radix root; the wrapper
 now passes it through. The shared Slider forwards its accessible name to the
 focusable thumb.

@@ -3,9 +3,12 @@ import type { Meta, StoryObj } from '@storybook/react-vite'
 import { useEffect, useState } from 'react'
 import { fireEvent, within } from 'storybook/test'
 
-import { PlaygroundDocs } from '../../shared/playground-docs'
-import { centeredStoryDecorator } from '../../shared/story-surface'
-import { SliderExample, type SliderExampleProps } from './slider-example'
+import { PlaygroundDocs } from '../shared/playground-docs'
+import { centeredStoryDecorator } from '../shared/story-surface'
+import {
+  SliderExample,
+  type SliderExampleProps,
+} from './reference/slider-example'
 
 function InteractiveSliderExample({
   onValueChange,
@@ -27,8 +30,7 @@ function InteractiveSliderExample({
 }
 
 const meta = {
-  title: 'Explorations/Component proposals/Slider',
-  id: 'explorations-components-slider',
+  title: 'Components/Fields and selection/Slider',
   component: SliderExample,
   tags: ['autodocs'],
   args: { value: 50, disabled: false, exactEntry: false, step: 1 },
@@ -61,7 +63,7 @@ const meta = {
       page: () => <PlaygroundDocs interactive={Playground} />,
       description: {
         component:
-          '**Proposal for review.**\n\n- Use the slider for approximate adjustment; enable exact entry when a precise value matters.\n- Step defaults to 1. Set a positive step for another increment; the slider and input share the same bounds and step.\n- Invalid drafts retain the last valid value, with connected feedback below the control. A task where any in-range value is acceptable may instead clamp to the bounds on blur without a message, as the liquidity Dialog does.\n- The visible label names the number field and the slider; do not repeat it with `aria-label`.\n\nThe 0–100% bounds, label and white surface are example context.',
+          '- Use the slider for approximate adjustment; enable exact entry when a precise value matters.\n- Step defaults to 1. Set a positive step for another increment; the slider and input share the same bounds and step.\n- Invalid drafts retain the last valid value, with connected feedback below the control. A task where any in-range value is acceptable may instead clamp to the bounds on blur without a message, as the liquidity Dialog does.\n- The visible label names the number field and the slider; do not repeat it with `aria-label`.\n\nThe 0–100% bounds, label and white surface are example context.',
       },
     },
   },

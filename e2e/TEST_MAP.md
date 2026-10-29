@@ -67,8 +67,8 @@ title/value separation with the value beside its chevron, Menu focus return,
 Holdings active-panel names/associations across responsive projections and hosts,
 and standard 44px geometry across default filter state examples.
 
-`storybook/proposal-patterns.spec.ts` checks the Slider and bounded Zapper
-proposals and the accepted eligibility Dialog in Chromium and mobile WebKit. Slider checks cover default/5/decimal
+`storybook/proposal-patterns.spec.ts` checks the accepted Slider, the bounded Zapper
+proposal and the accepted eligibility Dialog in Chromium and mobile WebKit. Slider checks cover default/5/decimal
 increments, native validity, mode reset, disabled state, embedded Docs pointer
 geometry, Controls synchronization, example isolation and non-disruptive feedback.
 Dialog checks cover inline expansion/collapse, natural multi-entry wrapping,
@@ -134,7 +134,8 @@ threshold/count/waiting semantics, 4px square rails and reduced motion are cover
 zero/abstain-only versus unknown/loading, over-target totals, independent Docs
 phase Controls, explicit unavailable targets with known amounts, and optimistic-only anatomy. `storybook/proposal-progress-layout.spec.ts`
 checks every snapshot at 320/390/desktop in both themes with 20px mobile insets,
-plus Current/Final reading preservation. A synchronized criterion-header check
+plus Current/Final reading preservation with the heading inside the card. Abstain
+shares the vote totals grid with For and Against. A synchronized criterion-header check
 verifies stacked left alignment on narrow cards and inline layout immediately
 below/at/above the shared container-query transition. Boundary fixtures include
 1%/99% quorum,
