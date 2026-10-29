@@ -13,7 +13,7 @@ Register is one node in a multi-repo system. Work touching a boundary usually me
 | [dtf-interface](https://github.com/reserve-protocol/dtf-interface) | `@reserve-protocol/react-sdk` + `sdk` (0.3.x, version-linked), `dtf-catalog` | Index DTF reads/governance/builders — see [[sdk]] |
 | [dtf-index-subgraph](https://github.com/reserve-protocol/dtf-index-subgraph) | — (Goldsky `dtf-index-*`) | Index DTF metadata/history/governance indexing — see [[subgraphs]] |
 | [reserve-subgraph](https://github.com/reserve-protocol/reserve-subgraph) | — (Goldsky `dtf-yield-*`) | Yield DTF (RToken) indexing — see [[subgraphs]] |
-| [react-zapper](https://github.com/reserve-protocol/react-zapper) | `@reserve-protocol/react-zapper` (2.3.x) | Zap mint/redeem widget — see [[zapper]] |
+| [react-zapper](https://github.com/reserve-protocol/react-zapper) | `@reserve-protocol/react-zapper` (2.15.x) | Zap mint/redeem widget — see [[zapper]] |
 | [reserve-index-dtf](https://github.com/reserve-protocol/reserve-index-dtf) | — (Solidity, Folio) | Index DTF protocol contracts — see [[index-protocol]] |
 | [protocol](https://github.com/reserve-protocol/protocol) | — (Solidity, RToken) | Yield DTF protocol contracts — see [[yield-protocol]] |
 | [trusted-fillers](https://github.com/reserve-protocol/trusted-fillers) | `@reserve-protocol/trusted-fillers-sdk` | Async CoW fills for Folio auctions — see [[index-protocol]] |
