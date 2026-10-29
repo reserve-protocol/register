@@ -383,11 +383,13 @@ quorum, majority support, For/Against and Abstain, composed from canonical
 Progress, Skeleton, V1 typography and semantic colors. Proposed bar tracks and
 fills, including unavailable/loading rails, are 4px with square ends; transitions
 honor reduced motion. The composition uses flat
-white groups with one substrate seam between criteria and vote totals, and plain
+white groups with one substrate seam between criteria and vote totals (the
+Current/Final votes heading sits inside the first group on the content inset), and plain
 16px/1.5-stroke Lucide icons, following
 the accepted icon treatment; legacy icon tiles and rounded outer borders are
-excluded. For and Against stay side by side with each label/value pair on one
-line, matching the other statistics, without a vertical divider. Spacing separates
+excluded. For, Against and Abstain share one row from a 32rem card width and two
+equal columns below it, each label/value pair on one line, matching the other
+statistics, without a vertical divider. Spacing separates
 rows inside each group; loading mirrors this grouping. Criterion headers use a
 shared 24rem card-width boundary: below it both labels sit above left-aligned
 readings; at/above it labels and readings share one line. Loading follows the

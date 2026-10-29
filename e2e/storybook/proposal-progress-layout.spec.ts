@@ -119,7 +119,10 @@ test('every proposal snapshot retains its readings when voting becomes final', a
       exact: true,
     })
     await expect(current).toBeVisible()
-    const readings = await current.locator('> div').innerText()
+    const readings = (await current.locator('> div').innerText()).replace(
+      'Current votes',
+      ''
+    )
     const values = await current.getByRole('meter').evaluateAll((meters) =>
       meters.map((meter) => ({
         name: meter.getAttribute('aria-label'),
@@ -135,9 +138,9 @@ test('every proposal snapshot retains its readings when voting becomes final', a
     )
     const final = page.getByRole('region', { name: 'Final votes', exact: true })
     await expect(final).toBeVisible()
-    await expect(final.locator('> div')).toHaveText(readings, {
-      useInnerText: true,
-    })
+    expect(
+      (await final.locator('> div').innerText()).replace('Final votes', '')
+    ).toBe(readings)
     expect(
       await final.getByRole('meter').evaluateAll((meters) =>
         meters.map((meter) => ({

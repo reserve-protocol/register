@@ -1,5 +1,10 @@
 import { useId } from 'react'
-import { CircleSlash, ThumbsDown, ThumbsUp } from 'lucide-react'
+import {
+  CircleSlash,
+  ThumbsDown,
+  ThumbsUp,
+  type LucideIcon,
+} from 'lucide-react'
 
 import { Skeleton } from '@/components/design-system-v1/loading'
 import { v1SemanticRoles as roles } from '@/components/design-system-v1/semantic-roles'
@@ -16,70 +21,65 @@ import {
   ProposalThreshold,
   ProposalMajority,
 } from './proposal-voting-progress-rows'
+import type { ProgressTone } from './progress-indicator-presentation'
 
-const VoteCell = ({
-  label,
-  value,
-  against = false,
-}: {
-  label: string
-  value: string
-  against?: boolean
-}) => (
-  <div className="flex min-w-0 items-center gap-2">
-    <span className="hidden [@container(min-width:22rem)]:block">
-      <VoteMark
-        icon={against ? ThumbsDown : ThumbsUp}
-        tone={against ? 'danger' : 'information'}
-      />
-    </span>
-    <div
-      className={cn(
-        'flex min-w-0 flex-1 items-center justify-between gap-2',
-        v1Typography.body
-      )}
-    >
-      <span>{label}</span>
-      <span
+type VoteKind = 'for' | 'against' | 'abstain'
+
+const voteCells = {
+  for: { label: 'For', icon: ThumbsUp, tone: 'information', value: '' },
+  against: {
+    label: 'Against',
+    icon: ThumbsDown,
+    tone: 'danger',
+    value: roles.feedback.danger.foreground,
+  },
+  abstain: {
+    label: 'Abstain',
+    icon: CircleSlash,
+    tone: 'neutral',
+    value: 'text-supporting-foreground',
+  },
+} satisfies Record<
+  VoteKind,
+  { label: string; icon: LucideIcon; tone: ProgressTone; value: string }
+>
+
+const voteGrid =
+  'grid grid-cols-2 gap-6 [@container(min-width:32rem)]:grid-cols-3'
+
+const VoteCell = ({ kind, value }: { kind: VoteKind; value: string }) => {
+  const cell = voteCells[kind]
+  return (
+    <div className="flex min-w-0 items-center gap-2">
+      <span className="hidden [@container(min-width:22rem)]:block">
+        <VoteMark icon={cell.icon} tone={cell.tone} />
+      </span>
+      <div
         className={cn(
-          'font-medium tabular-nums',
-          against && roles.feedback.danger.foreground
+          'flex min-w-0 flex-1 items-center justify-between gap-2',
+          v1Typography.body
         )}
       >
-        {value}
-      </span>
-    </div>
-  </div>
-)
-
-const LoadingVotes = () => (
-  <div
-    aria-label="Loading record"
-    role="status"
-    className={cn(
-      'grid grid-cols-1 bg-secondary',
-      v1LayoutRecipes.seam.subsection
-    )}
-  >
-    <div className="space-y-6 bg-card p-5 sm:p-6">
-      {[0, 1].map((row) => (
-        <div key={row} className="space-y-3">
-          <div className="flex flex-col items-start gap-2 [@container(min-width:24rem)]:flex-row [@container(min-width:24rem)]:justify-between [@container(min-width:24rem)]:gap-4">
-            <Skeleton className="h-6 w-36 rounded" />
-            <Skeleton className="h-6 w-24 rounded" />
-          </div>
-          <Skeleton className="h-1" />
-        </div>
-      ))}
-    </div>
-    <div className="space-y-6 bg-card p-5 sm:p-6">
-      <div className="grid grid-cols-2 gap-6">
-        {[0, 1].map((cell) => (
-          <Skeleton key={cell} className="h-6 rounded" />
-        ))}
+        <span>{cell.label}</span>
+        <span className={cn('font-medium tabular-nums', cell.value)}>
+          {value}
+        </span>
       </div>
-      <Skeleton className="h-6 rounded" />
     </div>
+  )
+}
+
+const LoadingCriteria = () => (
+  <div aria-label="Loading record" role="status" className="space-y-6">
+    {[0, 1].map((row) => (
+      <div key={row} className="space-y-3">
+        <div className="flex flex-col items-start gap-2 [@container(min-width:24rem)]:flex-row [@container(min-width:24rem)]:justify-between [@container(min-width:24rem)]:gap-4">
+          <Skeleton className="h-6 w-36 rounded" />
+          <Skeleton className="h-6 w-24 rounded" />
+        </div>
+        <Skeleton className="h-1" />
+      </div>
+    ))}
   </div>
 )
 
@@ -98,20 +98,20 @@ export const ProposalVotingProgress = ({
       aria-busy={snapshot.kind === 'loading'}
       className="mx-auto w-full max-w-xl text-foreground [container-type:inline-size]"
     >
-      <h2 id={headingId} className={cn('mb-4', v1Typography.panelTitle)}>
-        {phase === 'final' ? 'Final votes' : 'Current votes'}
-      </h2>
       <div
         className={cn(
           'grid grid-cols-1 bg-secondary',
           v1LayoutRecipes.seam.subsection
         )}
       >
-        {snapshot.kind === 'loading' ? (
-          <LoadingVotes />
-        ) : (
-          <>
-            <div className="space-y-6 bg-card p-5 sm:p-6">
+        <div className="space-y-6 bg-card p-5 sm:p-6">
+          <h2 id={headingId} className={v1Typography.panelTitle}>
+            {phase === 'final' ? 'Final votes' : 'Current votes'}
+          </h2>
+          {snapshot.kind === 'loading' ? (
+            <LoadingCriteria />
+          ) : (
+            <>
               <ProposalThreshold
                 snapshot={snapshot}
                 final={phase === 'final'}
@@ -119,29 +119,23 @@ export const ProposalVotingProgress = ({
               {snapshot.kind === 'standard' && (
                 <ProposalMajority majority={snapshot.majority} />
               )}
+            </>
+          )}
+        </div>
+        {snapshot.kind === 'loading' ? (
+          <div className={cn(voteGrid, 'bg-card p-5 sm:p-6')}>
+            {[0, 1, 2].map((cell) => (
+              <Skeleton key={cell} className="h-6 rounded" />
+            ))}
+          </div>
+        ) : (
+          snapshot.kind === 'standard' && (
+            <div className={cn(voteGrid, 'bg-card p-5 sm:p-6')}>
+              <VoteCell kind="for" value={snapshot.votes.for} />
+              <VoteCell kind="against" value={snapshot.votes.against} />
+              <VoteCell kind="abstain" value={snapshot.votes.abstain} />
             </div>
-            {snapshot.kind === 'standard' && (
-              <div className="space-y-6 bg-card p-5 sm:p-6">
-                <div className="grid grid-cols-2 gap-6">
-                  <VoteCell label="For" value={snapshot.votes.for} />
-                  <VoteCell
-                    label="Against"
-                    value={snapshot.votes.against}
-                    against
-                  />
-                </div>
-                <div
-                  className={cn('flex items-center gap-2', v1Typography.body)}
-                >
-                  <VoteMark icon={CircleSlash} />
-                  <span>Abstain</span>
-                  <span className="ml-auto font-medium tabular-nums text-supporting-foreground">
-                    {snapshot.votes.abstain}
-                  </span>
-                </div>
-              </div>
-            )}
-          </>
+          )
         )}
       </div>
     </section>
