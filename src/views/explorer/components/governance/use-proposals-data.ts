@@ -154,6 +154,25 @@ export const getGovernanceIds = (dtf: IndexDTFGovernanceRecord): string[] => {
   return [...new Set(governanceIds.map((id) => id.toLowerCase()))]
 }
 
+// A staking-token governance can be shared by several listed DTFs.
+export const getGovernanceToDTFs = (
+  dtfs: IndexDTFGovernanceRecord[],
+  dtfInfoMap: Map<string, DTFInfo>
+): Map<string, DTFInfo[]> => {
+  const governanceToDTFs = new Map<string, DTFInfo[]>()
+  for (const dtf of dtfs) {
+    const info = dtfInfoMap.get(dtf.id.toLowerCase())
+    if (!info) continue
+
+    for (const governanceId of getGovernanceIds(dtf)) {
+      const infos = governanceToDTFs.get(governanceId) ?? []
+      infos.push(info)
+      governanceToDTFs.set(governanceId, infos)
+    }
+  }
+  return governanceToDTFs
+}
+
 type IndexProposalsResponse = {
   proposals: {
     id: string
@@ -242,7 +261,7 @@ const useIndexDTFProposals = () => {
             return {
               chainId,
               proposals: [],
-              governanceToDTF: new Map<string, DTFInfo>(),
+              governanceToDTFs: new Map<string, DTFInfo[]>(),
             }
           }
 
@@ -255,18 +274,11 @@ const useIndexDTFProposals = () => {
               { ids: addresses }
             )
 
-          // Build governance ID → DTF info lookup
-          const governanceToDTF = new Map<string, DTFInfo>()
-          for (const dtf of governanceRes.dtfs ?? []) {
-            const info = dtfInfoMap.get(dtf.id.toLowerCase())
-            if (!info) continue
-
-            for (const governanceId of getGovernanceIds(dtf)) {
-              governanceToDTF.set(governanceId, info)
-            }
-          }
-
-          const governanceIds = [...governanceToDTF.keys()]
+          const governanceToDTFs = getGovernanceToDTFs(
+            governanceRes.dtfs ?? [],
+            dtfInfoMap
+          )
+          const governanceIds = [...governanceToDTFs.keys()]
           const proposals: IndexProposalsResponse['proposals'] = []
 
           // Filter at the subgraph and paginate so unrelated DTF history cannot
@@ -287,7 +299,7 @@ const useIndexDTFProposals = () => {
           return {
             chainId,
             proposals,
-            governanceToDTF,
+            governanceToDTFs,
           }
         })
       )
@@ -357,10 +369,10 @@ const useProposalsData = () => {
       for (const result of indexData) {
         for (const entry of result.proposals ?? []) {
           const govId = entry.governance.id.toLowerCase()
-          const dtfInfo = result.governanceToDTF.get(govId)
+          const dtfInfos = result.governanceToDTFs.get(govId)
 
           // Skip proposals not belonging to a whitelisted DTF
-          if (!dtfInfo) continue
+          if (!dtfInfos) continue
 
           const normalized = {
             id: entry.id,
@@ -384,24 +396,26 @@ const useProposalsData = () => {
           // optimistic RPC context here; exact optimistic state lives on detail.
           const state = getIndexProposalState(normalized)
 
-          proposals.push({
-            id: entry.id,
-            description: entry.description,
-            creationTime: entry.creationTime,
-            userVote: entry.votes?.[0]?.choice ?? null,
-            governance: govId,
-            forWeightedVotes: entry.forWeightedVotes,
-            againstWeightedVotes: entry.againstWeightedVotes,
-            quorumVotes: entry.quorumVotes,
-            status: state.state,
-            votingEndsIn: +entry.voteEnd - timestamp,
-            votingState: state,
-            chain: result.chainId,
-            tokenAddress: dtfInfo.address,
-            tokenSymbol: dtfInfo.symbol,
-            tokenLogo: dtfInfo.logo,
-            type: 'index',
-          })
+          for (const dtfInfo of dtfInfos) {
+            proposals.push({
+              id: entry.id,
+              description: entry.description,
+              creationTime: entry.creationTime,
+              userVote: entry.votes?.[0]?.choice ?? null,
+              governance: govId,
+              forWeightedVotes: entry.forWeightedVotes,
+              againstWeightedVotes: entry.againstWeightedVotes,
+              quorumVotes: entry.quorumVotes,
+              status: state.state,
+              votingEndsIn: +entry.voteEnd - timestamp,
+              votingState: state,
+              chain: result.chainId,
+              tokenAddress: dtfInfo.address,
+              tokenSymbol: dtfInfo.symbol,
+              tokenLogo: dtfInfo.logo,
+              type: 'index',
+            })
+          }
         }
       }
     }
