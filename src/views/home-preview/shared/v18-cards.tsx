@@ -20,6 +20,7 @@ import {
 import uglycashCard from '../assets/uglycash-card.png'
 import {
   CATEGORIES,
+  CategoryKey,
   DayPoint,
   GLOBAL_COUNTRIES,
   GLOBAL_COUNTRY_COUNT,
@@ -27,6 +28,7 @@ import {
   MonthPoint,
   SERIES,
   monthly,
+  weekly,
 } from '../mock/ugly-cash-series'
 import ActiveMap from './active-map'
 import { CATEGORY_COLORS } from './category-colors'
@@ -125,23 +127,30 @@ const PortalTip = ({
   )
 }
 
+type PeriodPoint = MonthPoint & { label?: string }
+
 const MonthBody = ({
   m,
   metric,
+  order,
 }: {
-  m: MonthPoint
+  m: PeriodPoint
   metric: 'volume' | 'count'
+  order?: CategoryKey[]
 }) => {
+  const rows = order
+    ? order.map((key) => CATEGORIES.find((c) => c.key === key)!)
+    : [...CATEGORIES].reverse()
   const fmt = (v: number) =>
     metric === 'volume' ? usd(v) : v.toLocaleString('en-US')
   return (
     <div className={cn(glassClass, 'text-sm')}>
       <div className="border-b border-border px-4 py-3">
-        {monthYear(`${m.month}-01`)}
+        {m.label ?? monthYear(`${m.month}-01`)}
         {m.partial && <span className="text-legend"> (to date)</span>}
       </div>
       <div className="flex flex-col gap-1 px-4 py-3">
-        {[...CATEGORIES].reverse().map((c) => (
+        {rows.map((c) => (
           <div key={c.key} className="flex justify-between gap-6">
             <span className="flex items-center gap-2 text-legend">
               <span
@@ -170,10 +179,15 @@ const MonthTip = (props: {
   payload?: { payload: MonthPoint }[]
   anchor: RefObject<HTMLElement>
   metric: 'volume' | 'count'
+  order?: CategoryKey[]
 }) => (
   <PortalTip {...props}>
     {props.payload?.[0] && (
-      <MonthBody m={props.payload[0].payload} metric={props.metric} />
+      <MonthBody
+        m={props.payload[0].payload}
+        metric={props.metric}
+        order={props.order}
+      />
     )}
   </PortalTip>
 )
@@ -272,15 +286,61 @@ const months = monthly()
 const lastFull = months[months.length - 2]
 const monthName = monthYear(`${lastFull.month}-01`).split(' ')[0]
 
-export const VolumeCardV18 = () => {
+const weeks: PeriodPoint[] = weekly(SERIES).map((w) => ({
+  month: w.date,
+  volume: w.volume,
+  count: w.count,
+  totalVolume: w.totalVolume,
+  totalCount: w.totalCount,
+  partial: false,
+  label: `Week of ${shortDate(w.date)}`,
+}))
+
+type Scale = 'month' | 'week'
+
+// Tooltip rows follow the latest period's ranking, so the order stays the same on every hover.
+const latestOrder = (last: PeriodPoint, metric: 'volume' | 'count') =>
+  [...CATEGORIES]
+    .sort((a, b) => last[metric][b.key] - last[metric][a.key])
+    .map((c) => c.key)
+
+const PERIODS: Record<
+  Scale,
+  { rows: PeriodPoint[]; last: PeriodPoint; suffix: string; noun: string }
+> = {
+  month: {
+    rows: months,
+    last: lastFull,
+    suffix: `in ${monthName}`,
+    noun: 'Monthly',
+  },
+  week: {
+    rows: weeks,
+    last: weeks[weeks.length - 1],
+    suffix: 'last week',
+    noun: 'Weekly',
+  },
+}
+
+export const VolumeCardV18 = ({
+  scale = 'month',
+  sortTooltip = false,
+}: {
+  scale?: Scale
+  sortTooltip?: boolean
+}) => {
   const anchor = useRef<HTMLDivElement>(null)
   const reduced = useReducedMotion()
-  const rows = useMemo(() => months.map((m) => ({ ...m, ...m.volume })), [])
+  const { rows: periodRows, last, suffix, noun } = PERIODS[scale]
+  const rows = useMemo(
+    () => periodRows.map((m) => ({ ...m, ...m.volume })),
+    [periodRows]
+  )
   return (
     <HomeCard
       icon={<EusdIcon />}
       title="eUSD volume in UGLYCASH"
-      value={`${usd(lastFull.totalVolume)} in ${monthName}`}
+      value={`${usd(last.totalVolume)} ${suffix}`}
       media={
         <div ref={anchor} className="h-full px-4 pb-1">
           <ResponsiveContainer width="100%" height="100%">
@@ -292,7 +352,15 @@ export const VolumeCardV18 = () => {
               <XAxis dataKey="month" hide />
               <YAxis hide />
               <Tooltip
-                content={<MonthTip anchor={anchor} metric="volume" />}
+                content={
+                  <MonthTip
+                    anchor={anchor}
+                    metric="volume"
+                    order={
+                      sortTooltip ? latestOrder(last, 'volume') : undefined
+                    }
+                  />
+                }
                 cursor={{ fill: 'hsl(var(--primary))', fillOpacity: 0.06 }}
               />
               {CATEGORIES.map((c, i) => (
@@ -315,27 +383,34 @@ export const VolumeCardV18 = () => {
           items={CATEGORIES.map((c) => ({
             key: c.key,
             label: c.label,
-            value: usdCompact(lastFull.volume[c.key]),
+            value: usdCompact(last.volume[c.key]),
             color: CATEGORY_COLORS[c.key],
           }))}
         />
       }
-      description={`Monthly volume since launch: ${usdCompact(HEADLINE.cumulativeVolume)} so far. Hover a month for the split by type.`}
+      description={`${noun} volume since launch: ${usdCompact(HEADLINE.cumulativeVolume)} so far. Hover a ${scale} for the split by type.`}
     />
   )
 }
 
-export const TransactionsCardV18 = () => {
+export const TransactionsCardV18 = ({
+  scale = 'month',
+  sortTooltip = false,
+}: {
+  scale?: Scale
+  sortTooltip?: boolean
+}) => {
   const anchor = useRef<HTMLDivElement>(null)
+  const { rows: periodRows, last, suffix, noun } = PERIODS[scale]
   const rows = useMemo(
-    () => months.map((m) => ({ ...m, date: m.month, total: m.totalCount })),
-    []
+    () => periodRows.map((m) => ({ ...m, date: m.month, total: m.totalCount })),
+    [periodRows]
   )
   return (
     <HomeCard
       icon={<EusdIcon />}
       title="eUSD transactions in UGLYCASH"
-      value={`${lastFull.totalCount.toLocaleString('en-US')} in ${monthName}`}
+      value={`${last.totalCount.toLocaleString('en-US')} ${suffix}`}
       media={
         <div ref={anchor} className="h-full">
           <ModernArea
@@ -343,7 +418,13 @@ export const TransactionsCardV18 = () => {
             dataKey="total"
             curve="linear"
             strokeWidth={2}
-            tooltip={<MonthTip anchor={anchor} metric="count" />}
+            tooltip={
+              <MonthTip
+                anchor={anchor}
+                metric="count"
+                order={sortTooltip ? latestOrder(last, 'count') : undefined}
+              />
+            }
           />
         </div>
       }
@@ -352,12 +433,12 @@ export const TransactionsCardV18 = () => {
           items={CATEGORIES.map((c) => ({
             key: c.key,
             label: c.label,
-            value: countCompact(lastFull.count[c.key]),
+            value: countCompact(last.count[c.key]),
             color: CATEGORY_COLORS[c.key],
           }))}
         />
       }
-      description={`Monthly transactions since launch: ${countCompact(HEADLINE.cumulativeCount, 2)} so far.`}
+      description={`${noun} transactions since launch: ${countCompact(HEADLINE.cumulativeCount, 2)} so far.`}
     />
   )
 }

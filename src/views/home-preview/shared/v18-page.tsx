@@ -14,9 +14,13 @@ import {
 const V18Page = ({
   left,
   cardShadow = true,
+  scale = 'month',
+  sortTooltips = false,
 }: {
   left: React.ReactNode
   cardShadow?: boolean
+  scale?: 'month' | 'week'
+  sortTooltips?: boolean
 }) => (
   <div className="container">
     <TickerStyles />
@@ -25,8 +29,8 @@ const V18Page = ({
       cards={
         <>
           <HeldCardV18 />
-          <VolumeCardV18 />
-          <TransactionsCardV18 />
+          <VolumeCardV18 scale={scale} sortTooltip={sortTooltips} />
+          <TransactionsCardV18 scale={scale} sortTooltip={sortTooltips} />
           <CountriesCardV18 />
           <UglyCashCardV18 shadow={cardShadow} />
           <FintechCardV18 />

@@ -113,6 +113,11 @@ export const VARIANTS = [
     name: 'Home · eUSD streams',
     component: lazy(() => import('./variants/v22-streams')),
   },
+  {
+    id: 'v23',
+    name: 'Home · v19 with weekly charts',
+    component: lazy(() => import('./variants/v23-weekly')),
+  },
 ] as const
 
 const Gallery = () => (
