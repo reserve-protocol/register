@@ -13,24 +13,9 @@ import { CowbotConfig, CowbotStatus } from './types'
 
 const SUPPORTED_CHAINS: SupportedChainId[] = [1, 8453, 56]
 
-/**
- * Generate a unique key for an order based on its properties.
- * Uses orderUid if available, otherwise falls back to token pair + amounts.
- */
-const getOrderKey = (order: SubmittedOrder): string => {
-  // If the order has a unique ID from CoWSwap, use that
-  if ('orderUid' in order && order.orderUid) {
-    return order.orderUid as string
-  }
-
-  // Fallback: create key from token pair and amounts
-  const sellToken = 'sellToken' in order ? String(order.sellToken) : ''
-  const buyToken = 'buyToken' in order ? String(order.buyToken) : ''
-  const sellAmount = 'sellAmount' in order ? String(order.sellAmount) : ''
-  const buyAmount = 'buyAmount' in order ? String(order.buyAmount) : ''
-
-  return `${sellToken}-${buyToken}-${sellAmount}-${buyAmount}`
-}
+const getOrderKey = ({ order, submission }: SubmittedOrder): string =>
+  submission.orderId ??
+  `${submission.cowswapDeploymentId}-${order.sellToken}-${order.buyToken}-${order.sellAmount}-${order.buyAmount}`
 
 interface UseCowbotQueryProps {
   config: CowbotConfig
@@ -87,6 +72,13 @@ export const useCowbotQuery = ({ config, client }: UseCowbotQueryProps) => {
 
       console.log('cowbot result', result)
 
+      if (result.status === 'skipped') {
+        if (result.reason === 'unsupported_version') {
+          console.warn(`CowBot does not support Folio ${result.folioVersion}`)
+        }
+        return result
+      }
+
       // Handle SDK-level errors (per-order errors, not fatal)
       if (result.errors.length > 0) {
         console.error('CowBot errors:', result.errors)
@@ -121,7 +113,11 @@ export const useCowbotQuery = ({ config, client }: UseCowbotQueryProps) => {
       return result
     },
     enabled: shouldRun,
-    refetchInterval: pollingInterval,
+    refetchInterval: ({ state }) =>
+      state.data?.status === 'skipped' &&
+      state.data.reason === 'unsupported_version'
+        ? false
+        : pollingInterval,
     retry: 3,
     retryDelay: (attempt) => Math.min(1000 * 2 ** attempt, 10000),
   })
@@ -132,6 +128,11 @@ export const useCowbotQuery = ({ config, client }: UseCowbotQueryProps) => {
     if (!shouldRun) return 'idle'
     if (query.isLoading) return 'initializing'
     if (query.isError) return 'error'
+    if (
+      query.data?.status === 'skipped' &&
+      query.data.reason === 'unsupported_version'
+    )
+      return 'unsupported'
     return 'running'
   }
 

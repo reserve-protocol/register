@@ -6,13 +6,13 @@ import { useChainlinkPrice } from '@/hooks/useChainlinkPrice'
 import useDebounce from '@/hooks/useDebounce'
 import { useZapDeployQuery } from '@/hooks/useZapDeployQuery'
 import { chainIdAtom } from '@/state/atoms'
-import { formatCurrency } from '@/utils'
+import { formatCurrency, safeParseEther } from '@/utils'
 import zapper from '@/views/yield-dtf/issuance/components/zapV2/api'
 import { Trans, useLingui } from '@lingui/react/macro'
 import { useAtom, useAtomValue } from 'jotai'
 import { RefreshCw } from 'lucide-react'
 import { useEffect } from 'react'
-import { Address, formatEther, parseUnits } from 'viem'
+import { Address, formatEther } from 'viem'
 import { basketAtom } from '../../../atoms'
 import { indexDeployFormDataAtom } from '../atoms'
 import {
@@ -91,7 +91,7 @@ const SimpleIndexDeploy = () => {
 
   const insufficientBalance =
     !ongoingTx && inputBalance?.value
-      ? parseUnits(inputAmount, tokenIn.decimals) > inputBalance?.value
+      ? safeParseEther(inputAmount, tokenIn.decimals) > inputBalance?.value
       : false
 
   const { data, isLoading, isFetching, refetch, failureReason } =
