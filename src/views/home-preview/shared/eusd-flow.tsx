@@ -46,7 +46,7 @@ const FlowStyles = () => (
 )
 
 export const EusdFlow = () => (
-  <div className="relative flex h-[300px] w-full items-center justify-center">
+  <div className="relative flex h-[var(--flow-h,300px)] w-full items-center justify-center">
     <FlowStyles />
     {CHIPS.map(({ label, Icon, x, y, delay }) => (
       <span
@@ -55,8 +55,8 @@ export const EusdFlow = () => (
         className="hp-chip absolute flex items-center gap-2 rounded-full border-2 border-card bg-card/80 px-3 py-1.5 text-sm shadow-[0_10px_30px_rgba(0,0,0,0.08)] backdrop-blur"
         style={
           {
-            '--fx': x,
-            '--fy': y,
+            '--fx': `calc(${x} * var(--flow-k, 1))`,
+            '--fy': `calc(${y} * var(--flow-k, 1))`,
             animationDelay: `${delay}s`,
           } as React.CSSProperties
         }

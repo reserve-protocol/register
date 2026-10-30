@@ -86,12 +86,28 @@ export const FlowChartLeft = () => (
 )
 
 export const AnimLeft = ({ anim }: { anim: React.ReactNode }) => (
-  <div className="flex w-full max-w-[600px] flex-col items-center text-center">
+  <div className="flex w-full max-w-[520px] flex-col items-center text-center">
     <div className="mb-4 w-full">{anim}</div>
-    <h1 className="mb-3 text-balance text-[32px] font-normal leading-[1.25] text-primary md:text-4xl">
+    <h1 className="mb-3 text-balance text-[28px] font-normal leading-[1.25] text-primary md:text-[32px]">
       {COPY}
     </h1>
-    <p className="flex flex-col gap-0.5 text-xl leading-[1.25]">
+    <p className="flex flex-col gap-0.5 text-lg leading-[1.25] md:text-xl">
+      <span>UGLYCASH is the car.</span>
+      <span className="font-medium">eUSD is the battery.</span>
+    </p>
+  </div>
+)
+
+// From V19 on: the flow also plays on phones (scaled to fit) and the tagline is a step smaller.
+export const FlowLeftV19 = () => (
+  <div className="flex w-full max-w-[520px] flex-col items-center text-center">
+    <div className="w-full [--flow-h:220px] [--flow-k:0.58] sm:[--flow-h:300px] sm:[--flow-k:1]">
+      <EusdFlow />
+    </div>
+    <h1 className="mb-3 text-balance text-[28px] font-normal leading-[1.25] text-primary md:text-[32px]">
+      {COPY}
+    </h1>
+    <p className="flex flex-col gap-0.5 text-lg leading-[1.25] md:text-xl">
       <span>UGLYCASH is the car.</span>
       <span className="font-medium">eUSD is the battery.</span>
     </p>

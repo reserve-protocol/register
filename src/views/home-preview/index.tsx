@@ -118,6 +118,11 @@ export const VARIANTS = [
     name: 'Home · v19 with weekly charts',
     component: lazy(() => import('./variants/v23-weekly')),
   },
+  {
+    id: 'v24',
+    name: 'Home · globe with weekly charts',
+    component: lazy(() => import('./variants/v24-globe-weekly')),
+  },
 ] as const
 
 const Gallery = () => (
