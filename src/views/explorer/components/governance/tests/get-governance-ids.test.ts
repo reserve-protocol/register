@@ -97,6 +97,29 @@ describe('getGovernanceIds', () => {
       201
     )
 
-    expect(state.state).toBe('SUCCEEDED')
+    expect(state?.state).toBe('SUCCEEDED')
+  })
+
+  it('drops optimistic summaries without veto context', () => {
+    expect(
+      getIndexProposalState(
+        {
+          id: '2',
+          description: '',
+          creationTime: '1',
+          state: 'ACTIVE',
+          isOptimistic: true,
+          forWeightedVotes: '0',
+          againstWeightedVotes: '500',
+          abstainWeightedVotes: '0',
+          quorumVotes: '0',
+          voteStart: '100',
+          voteEnd: '200',
+          governance: { id: '0x0000000000000000000000000000000000000001' },
+          votes: [],
+        },
+        201
+      )
+    ).toBeUndefined()
   })
 })

@@ -207,6 +207,8 @@ const amountFromRaw = (value: string): Amount => {
 const isIntegerString = (value: string | null | undefined): value is string =>
   typeof value === 'string' && /^\d+$/.test(value)
 
+const MAX_UINT256 = (1n << 256n) - 1n
+
 const getOptimisticContext = (
   proposal: IndexProposalsResponse['proposals'][number]
 ) => {
@@ -234,6 +236,13 @@ export const getIndexProposalState = (
   timestamp = getCurrentTime()
 ) => {
   const optimistic = getOptimisticContext(proposal)
+  const transitioned =
+    isIntegerString(proposal.vetoThreshold) &&
+    BigInt(proposal.vetoThreshold) === MAX_UINT256
+
+  // Do not let an incomplete optimistic row fall through to the SDK's
+  // context-less fallback; it cannot determine the veto outcome safely.
+  if (proposal.isOptimistic && !optimistic && !transitioned) return undefined
 
   return getSdkProposalState(
     {
@@ -432,6 +441,7 @@ const useProposalsData = () => {
           if (!dtfInfos) continue
 
           const state = getIndexProposalState(entry)
+          if (!state) continue
 
           // Shared governance renders once, under the filtered DTF when there is one.
           const dtfInfo =
