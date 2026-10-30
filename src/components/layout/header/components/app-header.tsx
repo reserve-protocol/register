@@ -33,7 +33,9 @@ const useLocationParams = () => {
   const { pathname } = useLocation()
   const scrolled = useAppContainerScrolled()
 
-  const isHome = pathname === '/'
+  // Homepage previews from v19 on mirror the live home header.
+  const isHome =
+    pathname === '/' || /^\/home-preview\/v(19|[2-9]\d)/.test(pathname)
   const isIndexDtfOverview =
     pathname.includes('/index-dtf/') && pathname.endsWith('/overview')
   const shouldHaveBorder =
