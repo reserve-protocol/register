@@ -62,8 +62,18 @@ const yieldProposalsQuery = gql`
 // --- Index DTF queries ---
 
 const indexProposalsQuery = gql`
-  query getAllIndexProposals($voter: String!) {
-    proposals(orderBy: creationTime, orderDirection: desc, first: 1000) {
+  query getAllIndexProposals(
+    $voter: String!
+    $governanceIds: [String!]!
+    $skip: Int!
+  ) {
+    proposals(
+      where: { governance_in: $governanceIds }
+      orderBy: creationTime
+      orderDirection: desc
+      first: 1000
+      skip: $skip
+    ) {
       id
       description
       creationTime
@@ -97,16 +107,70 @@ const indexDtfGovernanceQuery = gql`
       tradingGovernance {
         id
       }
+      stToken {
+        governance {
+          id
+        }
+        legacyGovernance
+      }
+      legacyTradingGovernances {
+        id
+      }
+      legacyAdminGovernances {
+        id
+      }
     }
   }
 `
 
+type GovernanceReference = { id: string }
+
+type IndexDTFGovernanceRecord = {
+  id: Address
+  ownerGovernance?: GovernanceReference
+  tradingGovernance?: GovernanceReference
+  stToken?: {
+    governance?: GovernanceReference
+    legacyGovernance?: string[]
+  }
+  legacyTradingGovernances?: GovernanceReference[]
+  legacyAdminGovernances?: GovernanceReference[]
+}
+
 type IndexDTFGovernanceResponse = {
-  dtfs: {
-    id: Address
-    ownerGovernance?: { id: string }
-    tradingGovernance?: { id: string }
-  }[]
+  dtfs: IndexDTFGovernanceRecord[]
+}
+
+export const getGovernanceIds = (dtf: IndexDTFGovernanceRecord): string[] => {
+  const governanceIds = [
+    dtf.ownerGovernance?.id,
+    dtf.tradingGovernance?.id,
+    dtf.stToken?.governance?.id,
+    ...(dtf.stToken?.legacyGovernance ?? []),
+    ...(dtf.legacyTradingGovernances ?? []).map(({ id }) => id),
+    ...(dtf.legacyAdminGovernances ?? []).map(({ id }) => id),
+  ].filter((id): id is string => !!id)
+
+  return [...new Set(governanceIds.map((id) => id.toLowerCase()))]
+}
+
+// A staking-token governance can be shared by several listed DTFs.
+export const getGovernanceToDTFs = (
+  dtfs: IndexDTFGovernanceRecord[],
+  dtfInfoMap: Map<string, DTFInfo>
+): Map<string, DTFInfo[]> => {
+  const governanceToDTFs = new Map<string, DTFInfo[]>()
+  for (const dtf of dtfs) {
+    const info = dtfInfoMap.get(dtf.id.toLowerCase())
+    if (!info) continue
+
+    for (const governanceId of getGovernanceIds(dtf)) {
+      const infos = governanceToDTFs.get(governanceId) ?? []
+      infos.push(info)
+      governanceToDTFs.set(governanceId, infos)
+    }
+  }
+  return governanceToDTFs
 }
 
 type IndexProposalsResponse = {
@@ -197,41 +261,45 @@ const useIndexDTFProposals = () => {
             return {
               chainId,
               proposals: [],
-              governanceToDTF: new Map<string, DTFInfo>(),
+              governanceToDTFs: new Map<string, DTFInfo[]>(),
             }
           }
 
-          // Fetch proposals + governance IDs for whitelisted DTFs in parallel
-          const [proposalsRes, governanceRes] = await Promise.all([
-            client.request<IndexProposalsResponse>(indexProposalsQuery, {
-              voter: account?.toLowerCase() ?? zeroAddress,
-            }),
-            client.request<IndexDTFGovernanceResponse>(
+          // Resolve every governance attached to each listed DTF before fetching
+          // proposals. Proposals can belong to the staking-token governor or to
+          // a legacy governor, not only the current owner/trading governors.
+          const governanceRes =
+            await client.request<IndexDTFGovernanceResponse>(
               indexDtfGovernanceQuery,
+              { ids: addresses }
+            )
+
+          const governanceToDTFs = getGovernanceToDTFs(
+            governanceRes.dtfs ?? [],
+            dtfInfoMap
+          )
+          const governanceIds = [...governanceToDTFs.keys()]
+          const proposals: IndexProposalsResponse['proposals'] = []
+
+          // Filter at the subgraph and paginate so unrelated DTF history cannot
+          // consume the endpoint's first-page limit.
+          for (let skip = 0; governanceIds.length; skip += 1000) {
+            const proposalsRes = await client.request<IndexProposalsResponse>(
+              indexProposalsQuery,
               {
-                ids: addresses,
+                voter: account?.toLowerCase() ?? zeroAddress,
+                governanceIds,
+                skip,
               }
-            ),
-          ])
-
-          // Build governance ID → DTF info lookup
-          const governanceToDTF = new Map<string, DTFInfo>()
-          for (const dtf of governanceRes.dtfs ?? []) {
-            const info = dtfInfoMap.get(dtf.id.toLowerCase())
-            if (!info) continue
-
-            if (dtf.ownerGovernance?.id) {
-              governanceToDTF.set(dtf.ownerGovernance.id.toLowerCase(), info)
-            }
-            if (dtf.tradingGovernance?.id) {
-              governanceToDTF.set(dtf.tradingGovernance.id.toLowerCase(), info)
-            }
+            )
+            proposals.push(...proposalsRes.proposals)
+            if (proposalsRes.proposals.length < 1000) break
           }
 
           return {
             chainId,
-            proposals: proposalsRes.proposals,
-            governanceToDTF,
+            proposals,
+            governanceToDTFs,
           }
         })
       )
@@ -301,10 +369,10 @@ const useProposalsData = () => {
       for (const result of indexData) {
         for (const entry of result.proposals ?? []) {
           const govId = entry.governance.id.toLowerCase()
-          const dtfInfo = result.governanceToDTF.get(govId)
+          const dtfInfos = result.governanceToDTFs.get(govId)
 
           // Skip proposals not belonging to a whitelisted DTF
-          if (!dtfInfo) continue
+          if (!dtfInfos) continue
 
           const normalized = {
             id: entry.id,
@@ -327,6 +395,12 @@ const useProposalsData = () => {
           // WHY: Explorer is an aggregate list. Do not hydrate per-row
           // optimistic RPC context here; exact optimistic state lives on detail.
           const state = getIndexProposalState(normalized)
+
+          // Shared governance renders once, under the filtered DTF when there is one.
+          const dtfInfo =
+            dtfInfos.find((info) =>
+              filters.tokens.includes(info.address.toLowerCase())
+            ) ?? dtfInfos[0]
 
           proposals.push({
             id: entry.id,
