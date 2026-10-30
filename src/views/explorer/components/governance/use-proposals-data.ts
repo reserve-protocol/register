@@ -396,26 +396,30 @@ const useProposalsData = () => {
           // optimistic RPC context here; exact optimistic state lives on detail.
           const state = getIndexProposalState(normalized)
 
-          for (const dtfInfo of dtfInfos) {
-            proposals.push({
-              id: entry.id,
-              description: entry.description,
-              creationTime: entry.creationTime,
-              userVote: entry.votes?.[0]?.choice ?? null,
-              governance: govId,
-              forWeightedVotes: entry.forWeightedVotes,
-              againstWeightedVotes: entry.againstWeightedVotes,
-              quorumVotes: entry.quorumVotes,
-              status: state.state,
-              votingEndsIn: +entry.voteEnd - timestamp,
-              votingState: state,
-              chain: result.chainId,
-              tokenAddress: dtfInfo.address,
-              tokenSymbol: dtfInfo.symbol,
-              tokenLogo: dtfInfo.logo,
-              type: 'index',
-            })
-          }
+          // Shared governance renders once, under the filtered DTF when there is one.
+          const dtfInfo =
+            dtfInfos.find((info) =>
+              filters.tokens.includes(info.address.toLowerCase())
+            ) ?? dtfInfos[0]
+
+          proposals.push({
+            id: entry.id,
+            description: entry.description,
+            creationTime: entry.creationTime,
+            userVote: entry.votes?.[0]?.choice ?? null,
+            governance: govId,
+            forWeightedVotes: entry.forWeightedVotes,
+            againstWeightedVotes: entry.againstWeightedVotes,
+            quorumVotes: entry.quorumVotes,
+            status: state.state,
+            votingEndsIn: +entry.voteEnd - timestamp,
+            votingState: state,
+            chain: result.chainId,
+            tokenAddress: dtfInfo.address,
+            tokenSymbol: dtfInfo.symbol,
+            tokenLogo: dtfInfo.logo,
+            type: 'index',
+          })
         }
       }
     }
