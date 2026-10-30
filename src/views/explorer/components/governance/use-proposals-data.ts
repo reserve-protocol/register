@@ -2,7 +2,7 @@ import useIndexDTFList from '@/hooks/useIndexDTFList'
 import { INDEX_GRAPH_CLIENTS } from '@/state/chain/atoms/chainAtoms'
 import { getProposalState as getYieldProposalState } from '@/views/yield-dtf/governance/views/proposal-detail/atom'
 import {
-  getProposalState as getIndexProposalState,
+  getProposalState as getSdkProposalState,
   type Amount,
 } from '@reserve-protocol/react-sdk'
 import { useQuery } from '@tanstack/react-query'
@@ -79,6 +79,9 @@ const indexProposalsQuery = gql`
       creationTime
       state
       isOptimistic
+      vetoThreshold
+      vetoThresholdVotes
+      optimisticSnapshotSupply
       forWeightedVotes
       againstWeightedVotes
       abstainWeightedVotes
@@ -180,6 +183,9 @@ type IndexProposalsResponse = {
     creationTime: string
     state: string
     isOptimistic?: boolean
+    vetoThreshold?: string | null
+    vetoThresholdVotes?: string | null
+    optimisticSnapshotSupply?: string | null
     forWeightedVotes: string
     againstWeightedVotes: string
     abstainWeightedVotes: string
@@ -196,6 +202,57 @@ const amountFromRaw = (value: string): Amount => {
   const raw = BigInt(value)
 
   return { raw, formatted: formatEther(raw) }
+}
+
+const isIntegerString = (value: string | null | undefined): value is string =>
+  typeof value === 'string' && /^\d+$/.test(value)
+
+const getOptimisticContext = (
+  proposal: IndexProposalsResponse['proposals'][number]
+) => {
+  if (!proposal.isOptimistic) return undefined
+
+  const { vetoThreshold, vetoThresholdVotes, optimisticSnapshotSupply } =
+    proposal
+  if (
+    !isIntegerString(vetoThreshold) ||
+    !isIntegerString(vetoThresholdVotes) ||
+    !isIntegerString(optimisticSnapshotSupply)
+  ) {
+    return undefined
+  }
+
+  return {
+    snapshotSupply: amountFromRaw(optimisticSnapshotSupply),
+    vetoThreshold: BigInt(vetoThreshold),
+    vetoThresholdVotes: amountFromRaw(vetoThresholdVotes),
+  }
+}
+
+export const getIndexProposalState = (
+  proposal: IndexProposalsResponse['proposals'][number],
+  timestamp = getCurrentTime()
+) => {
+  const optimistic = getOptimisticContext(proposal)
+
+  return getSdkProposalState(
+    {
+      state: proposal.state,
+      isOptimistic: proposal.isOptimistic,
+      voteStart: +proposal.voteStart,
+      voteEnd: +proposal.voteEnd,
+      forWeightedVotes: amountFromRaw(proposal.forWeightedVotes),
+      againstWeightedVotes: amountFromRaw(proposal.againstWeightedVotes),
+      abstainWeightedVotes: amountFromRaw(proposal.abstainWeightedVotes),
+      quorumVotes: amountFromRaw(proposal.quorumVotes),
+      executionETA: proposal.executionETA ? +proposal.executionETA : undefined,
+      ...(proposal.vetoThreshold && isIntegerString(proposal.vetoThreshold)
+        ? { vetoThreshold: BigInt(proposal.vetoThreshold) }
+        : {}),
+      ...(optimistic ? { optimistic } : {}),
+    },
+    timestamp
+  )
 }
 
 const useBlockChains = () => {
@@ -374,27 +431,7 @@ const useProposalsData = () => {
           // Skip proposals not belonging to a whitelisted DTF
           if (!dtfInfos) continue
 
-          const normalized = {
-            id: entry.id,
-            timelockId: '',
-            description: entry.description,
-            state: entry.state,
-            isOptimistic: entry.isOptimistic,
-            creationTime: +entry.creationTime,
-            creationBlock: 0,
-            voteStart: +entry.voteStart,
-            voteEnd: +entry.voteEnd,
-            forWeightedVotes: amountFromRaw(entry.forWeightedVotes),
-            againstWeightedVotes: amountFromRaw(entry.againstWeightedVotes),
-            abstainWeightedVotes: amountFromRaw(entry.abstainWeightedVotes),
-            quorumVotes: amountFromRaw(entry.quorumVotes),
-            executionETA: entry.executionETA ? +entry.executionETA : undefined,
-            proposer: { address: zeroAddress },
-          }
-
-          // WHY: Explorer is an aggregate list. Do not hydrate per-row
-          // optimistic RPC context here; exact optimistic state lives on detail.
-          const state = getIndexProposalState(normalized)
+          const state = getIndexProposalState(entry)
 
           // Shared governance renders once, under the filtered DTF when there is one.
           const dtfInfo =

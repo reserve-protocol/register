@@ -1,6 +1,10 @@
 import { describe, expect, it } from 'vitest'
 import { getAddress } from 'viem'
-import { getGovernanceIds, getGovernanceToDTFs } from '../use-proposals-data'
+import {
+  getGovernanceIds,
+  getGovernanceToDTFs,
+  getIndexProposalState,
+} from '../use-proposals-data'
 
 describe('getGovernanceIds', () => {
   it('includes current, staking-token, and legacy governance sources', () => {
@@ -68,5 +72,31 @@ describe('getGovernanceIds', () => {
       dtfA,
       dtfB,
     ])
+  })
+
+  it('uses optimistic veto context when deriving a terminal summary state', () => {
+    const state = getIndexProposalState(
+      {
+        id: '1',
+        description: '',
+        creationTime: '1',
+        state: 'ACTIVE',
+        isOptimistic: true,
+        forWeightedVotes: '0',
+        againstWeightedVotes: '500',
+        abstainWeightedVotes: '0',
+        quorumVotes: '0',
+        voteStart: '100',
+        voteEnd: '200',
+        vetoThreshold: '100000000000000000',
+        vetoThresholdVotes: '1000',
+        optimisticSnapshotSupply: '10000',
+        governance: { id: '0x0000000000000000000000000000000000000001' },
+        votes: [],
+      },
+      201
+    )
+
+    expect(state.state).toBe('SUCCEEDED')
   })
 })
