@@ -48,7 +48,7 @@
     "@reserve-protocol/dtf-catalog": "0.2.0",
     "@reserve-protocol/dtf-chat": "^0.0.7",
     "@reserve-protocol/dtf-rebalance-lib": "^3.3.1",
-    "@reserve-protocol/react-sdk": "0.7.0",
+    "@reserve-protocol/react-sdk": "0.8.0",
     "@reserve-protocol/react-zapper": "2.14.3",
     "@reserve-protocol/rtokens": "^1.1.23",
     "@reserve-protocol/trusted-fillers-sdk": "^0.10.0",

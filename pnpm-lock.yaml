@@ -125,8 +125,8 @@ importers:
         specifier: ^3.3.1
         version: 3.3.2(decimal.js-light@2.5.1)
       '@reserve-protocol/react-sdk':
-        specifier: 0.7.0
-        version: 0.7.0(@tanstack/react-query@5.104.4(@types/react@18.3.28)(react@18.3.1))(bufferutil@4.1.0)(react@18.3.1)(typescript@5.9.3)(utf-8-validate@5.0.10)(viem@2.52.0(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@5.0.10)(zod@4.3.6))
+        specifier: 0.8.0
+        version: 0.8.0(@tanstack/react-query@5.104.4(@types/react@18.3.28)(react@18.3.1))(bufferutil@4.1.0)(react@18.3.1)(typescript@5.9.3)(utf-8-validate@5.0.10)(viem@2.52.0(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@5.0.10)(zod@4.3.6))
       '@reserve-protocol/react-zapper':
         specifier: 2.14.3
         version: 2.14.3(@babel/core@7.29.0)(@babel/template@7.28.6)(@tanstack/react-query@5.104.4(@types/react@18.3.28)(react@18.3.1))(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(ajv@8.18.0)(multiformats@14.0.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(viem@2.52.0(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@5.0.10)(zod@4.3.6))(wagmi@2.19.5(@tanstack/query-core@5.104.4)(@tanstack/react-query@5.104.4(@types/react@18.3.28)(react@18.3.1))(@types/react@18.3.28)(bufferutil@4.1.0)(react@18.3.1)(typescript@5.9.3)(utf-8-validate@5.0.10)(viem@2.52.0(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@5.0.10)(zod@4.3.6))(zod@4.3.6))
@@ -3078,8 +3078,8 @@ packages:
     peerDependencies:
       decimal.js-light: ^2.5.1
 
-  '@reserve-protocol/react-sdk@0.7.0':
-    resolution: {integrity: sha512-m2WKjhc/vTmFP1+rOgb2Qh5sfv1ZX2clDFS1KY2ILEnGBMANKVz6WO0H9XwPdCU/B7eF1cM/S2C4tLq6opfWMA==}
+  '@reserve-protocol/react-sdk@0.8.0':
+    resolution: {integrity: sha512-HVcpEKKy+HxRYQR/8O6QdwYgX4fvnQTG6YVOLYHN6z3Fw/la85OsyiE9TYbyVMfNVe8oinuIiUQP94Hl7570Vg==}
     engines: {node: '>=24'}
     peerDependencies:
       '@tanstack/react-query': ^5.102.7
@@ -3098,8 +3098,8 @@ packages:
   '@reserve-protocol/rtokens@1.1.23':
     resolution: {integrity: sha512-VYP0BNhULhFzAGpzaqe1pkuMpCvLmuNYsYHE0xkKgiqaMZdztSlnCNK2BRlsDbFD/HQZwcoAoYjFpEHQbq2GoA==}
 
-  '@reserve-protocol/sdk@0.7.0':
-    resolution: {integrity: sha512-pmEjpo8gPC+FIvhlWA1peb+s2ia1NdcIKCPUPJeiijI8dcKlch4HNIGHw0VefPzrcyB7V+6rORtimGQSYcR52g==}
+  '@reserve-protocol/sdk@0.8.0':
+    resolution: {integrity: sha512-VGr+wE3+mni9zaaNd4hpqdp7nv5oLiyxjHAeV9R+iH167Db1du8ymNkRpP7yow6/vAWOw+0xJRiHFiPXEnE1bQ==}
     engines: {node: '>=24'}
 
   '@reserve-protocol/trusted-fillers-sdk@0.10.0':
@@ -11406,9 +11406,9 @@ snapshots:
     dependencies:
       decimal.js-light: 2.5.1
 
-  '@reserve-protocol/react-sdk@0.7.0(@tanstack/react-query@5.104.4(@types/react@18.3.28)(react@18.3.1))(bufferutil@4.1.0)(react@18.3.1)(typescript@5.9.3)(utf-8-validate@5.0.10)(viem@2.52.0(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@5.0.10)(zod@4.3.6))':
+  '@reserve-protocol/react-sdk@0.8.0(@tanstack/react-query@5.104.4(@types/react@18.3.28)(react@18.3.1))(bufferutil@4.1.0)(react@18.3.1)(typescript@5.9.3)(utf-8-validate@5.0.10)(viem@2.52.0(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@5.0.10)(zod@4.3.6))':
     dependencies:
-      '@reserve-protocol/sdk': 0.7.0(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@5.0.10)
+      '@reserve-protocol/sdk': 0.8.0(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@5.0.10)
       '@tanstack/react-query': 5.104.4(@types/react@18.3.28)(react@18.3.1)
       react: 18.3.1
       viem: 2.52.0(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@5.0.10)(zod@4.3.6)
@@ -11456,7 +11456,7 @@ snapshots:
 
   '@reserve-protocol/rtokens@1.1.23': {}
 
-  '@reserve-protocol/sdk@0.7.0(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@5.0.10)':
+  '@reserve-protocol/sdk@0.8.0(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@5.0.10)':
     dependencies:
       '@graphql-typed-document-node/core': 3.2.0(graphql@16.13.2)
       '@reserve-protocol/dtf-catalog': 0.2.0
