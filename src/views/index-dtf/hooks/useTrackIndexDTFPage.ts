@@ -50,37 +50,4 @@ export const useTrackIndexDTFClick = (page: string, subpage?: string) => {
   return { trackClick: track }
 }
 
-export const useTrackIndexDTFZap = (
-  event: string,
-  page: string,
-  subpage?: string
-) => {
-  const indexDTF = useAtomValue(indexDTFAtom)
-
-  const track = (
-    ctaLabel: string,
-    inputSymbol: string,
-    outputSymbol: string
-  ) => {
-    if (!indexDTF) return
-    mixpanel.track(event, {
-      page,
-      subpage,
-      cta: ctaLabel,
-      ca: indexDTF.id,
-      ticker: indexDTF.token.symbol,
-      chain: indexDTF.chainId,
-      input: inputSymbol,
-      output: outputSymbol,
-    })
-  }
-
-  return { track }
-}
-
-export const useTrackIndexDTFZapClick = (page: string, subpage?: string) => {
-  const { track } = useTrackIndexDTFZap('tap', page, subpage)
-  return { trackClick: track }
-}
-
 export default useTrackIndexDTFPage

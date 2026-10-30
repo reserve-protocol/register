@@ -53,9 +53,12 @@ Quick loop: `pnpm exec playwright test e2e/tests/smoke/auctions.spec.ts`
   `rebalances.json` automatically; rows match proposals by `executionBlock ===
   blockNumber` (`proposalIdFor` resolves detail routes the same way).
 - **Detail-only API fills**: `overrides.api({ pathname: '/zapper/tokens' }, [])`
-  (volatility hook; the shared generic `/zapper` branch returns the healthcheck
-  OBJECT and `tokens.map` crashes the view) and `overrides.api({ method:
-  'POST', pathname: '/rebalance/liquidity' }, {...})`.
+  (volatility hook; the shared mock also answers it with `[]` ahead of its
+  generic `/zapper` branch, whose object would crash `tokens.map`) and
+  `overrides.api({ method: 'POST', pathname: '/rebalance/liquidity' }, {...})`.
+  Manage weights has no unsupported-token check (the Rust zapper's `/tokens`
+  list is a static snapshot); a token without a route shows the
+  `/rebalance/liquidity` `error` level.
 - **Settle**: data resolves in TWO react-query flush rounds under a frozen clock
   (`settleListData`: pump GetIndexDTF → dependent queries enable → pump
   rebalances + proposals). Per-row metrics fire a third pump after rows mount.
