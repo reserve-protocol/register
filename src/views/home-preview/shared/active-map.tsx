@@ -1,10 +1,22 @@
 import { cn } from '@/lib/utils'
 import { useEffect, useRef, useState } from 'react'
-import world from '../mock/world-map.json'
+import worldLatam from '../mock/world-map.json'
+import worldGlobal from '../mock/world-map-global.json'
 import { useIsMobile } from '@/hooks/use-media-query'
 import { useReducedMotion } from './use-reduced-motion'
 
 type Centroids = Record<string, [number, number]>
+
+const GLOBAL_ROUTES: [string, string][] = [
+  ['United States of America', 'Mexico'],
+  ['United States of America', 'Philippines'],
+  ['United States of America', 'Nigeria'],
+  ['Saudi Arabia', 'Pakistan'],
+  ['Kenya', 'India'],
+  ['Colombia', 'Argentina'],
+  ['Ghana', 'Tanzania'],
+  ['Vietnam', 'New Zealand'],
+]
 
 const ROUTES: [string, string][] = [
   ['Mexico', 'Colombia'],
@@ -29,16 +41,20 @@ const arc = ([x1, y1]: number[], [x2, y2]: number[]) => {
 
 const ActiveMap = ({
   crop: cropProp = 'world',
+  dataset = 'latam',
   highlight,
   className,
 }: {
   crop?: keyof typeof VIEWBOX
+  dataset?: 'latam' | 'global'
   highlight?: string | null
   className?: string
 }) => {
   const reduced = useReducedMotion()
   const isMobile = useIsMobile()
-  const crop = isMobile ? 'americas' : cropProp
+  const world = dataset === 'global' ? worldGlobal : worldLatam
+  const routes = dataset === 'global' ? GLOBAL_ROUTES : ROUTES
+  const crop = isMobile && dataset === 'latam' ? 'americas' : cropProp
   const ref = useRef<SVGSVGElement>(null)
   const [visible, setVisible] = useState(false)
 
@@ -87,7 +103,10 @@ const ActiveMap = ({
             style={
               a && animate
                 ? {
-                    animationDelay: `${200 + (y - 160) * (crop === 'world' ? 6 : 4) + (x - 200) * 2}ms`,
+                    animationDelay:
+                      dataset === 'global'
+                        ? `${150 + x * 1.6 + y * 0.6}ms`
+                        : `${200 + (y - 160) * (crop === 'world' ? 6 : 4) + (x - 200) * 2}ms`,
                   }
                 : undefined
             }
@@ -105,7 +124,7 @@ const ActiveMap = ({
         />
       )}
       {animate &&
-        ROUTES.map(([a, b], i) => {
+        routes.map(([a, b], i) => {
           const d = arc(centroids[a], centroids[b])
           return (
             <g key={a + b}>

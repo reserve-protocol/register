@@ -58,6 +58,26 @@ export const VARIANTS = [
     name: 'Flow + share of a dollar',
     component: lazy(() => import('./variants/v11-share')),
   },
+  {
+    id: 'v12',
+    name: 'Grid · flow + cards',
+    component: lazy(() => import('./variants/v12-grid-flow')),
+  },
+  {
+    id: 'v13',
+    name: 'Grid · hero chart + cards',
+    component: lazy(() => import('./variants/v13-grid-chart')),
+  },
+  {
+    id: 'v14',
+    name: 'Grid · flow over chart + cards',
+    component: lazy(() => import('./variants/v14-grid-flow-chart')),
+  },
+  {
+    id: 'v15',
+    name: 'Grid · flow + featured wide card',
+    component: lazy(() => import('./variants/v15-grid-featured')),
+  },
 ] as const
 
 const Gallery = () => (

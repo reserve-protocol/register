@@ -19,6 +19,7 @@ const ModernArea = ({
   from = 'hsl(212 90% 62%)',
   to = 'hsl(212 99% 35%)',
   animationDuration = 1600,
+  curve = 'monotone',
 }: {
   data: Record<string, unknown>[]
   dataKey: string
@@ -28,6 +29,7 @@ const ModernArea = ({
   from?: string
   to?: string
   animationDuration?: number
+  curve?: 'monotone' | 'linear'
 }) => {
   const reduced = useReducedMotion()
   const id = useId().replace(/:/g, '')
@@ -74,7 +76,7 @@ const ModernArea = ({
           />
         )}
         <Area
-          type="monotone"
+          type={curve}
           dataKey={dataKey}
           stroke="none"
           fill={`url(#${id}-dots)`}
@@ -83,7 +85,7 @@ const ModernArea = ({
           animationDuration={animationDuration}
         />
         <Area
-          type="monotone"
+          type={curve}
           dataKey={dataKey}
           stroke={`url(#${id}-stroke)`}
           strokeWidth={strokeWidth}
