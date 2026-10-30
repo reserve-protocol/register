@@ -48,17 +48,15 @@ const Buy = () => {
   const inputPrice = (selectedTokenPrice || 0) * Number(inputAmount)
   const onMax = () => setInputAmount(selectedTokenBalance?.balance || '0')
 
-  const inputAmountUnits = inputAmount
-    ? parseUnits(inputAmount, selectedToken.decimals)
-    : 0n
   const insufficientBalance =
-    inputAmountUnits > (selectedTokenBalance?.value || 0n)
+    parseUnits(inputAmount, selectedToken.decimals) >
+    (selectedTokenBalance?.value || 0n)
 
   const { data, isLoading, isFetching, refetch, failureReason } =
     useZapSwapQuery({
       tokenIn: selectedToken.address,
       tokenOut: indexDTF?.id,
-      amountIn: inputAmountUnits.toString(),
+      amountIn: parseUnits(inputAmount, selectedToken.decimals).toString(),
       slippage: isFinite(Number(slippage)) ? Number(slippage) : 10000,
       disabled: ongoingTx,
       forceMint,

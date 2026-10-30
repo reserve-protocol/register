@@ -50,14 +50,13 @@ const Sell = () => {
   const inputPrice = (indexDTFPrice || 0) * Number(inputAmount)
   const onMax = () => setInputAmount(indxDTFParsedBalance)
 
-  const inputAmountWei = inputAmount ? parseEther(inputAmount) : 0n
-  const insufficientBalance = inputAmountWei > indexDTFBalance
+  const insufficientBalance = parseEther(inputAmount) > indexDTFBalance
 
   const { data, isLoading, isFetching, refetch, failureReason } =
     useZapSwapQuery({
       tokenIn: indexDTF?.id,
       tokenOut: selectedToken.address,
-      amountIn: inputAmountWei.toString(),
+      amountIn: parseEther(inputAmount).toString(),
       slippage: Number(slippage),
       disabled: ongoingTx,
       forceMint,

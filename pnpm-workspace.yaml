@@ -22,10 +22,7 @@ minimumReleaseAgeExclude:
   - '@reserve-protocol/dtf-catalog'
   - '@reserve-protocol/async-zap-sdk'
   - '@reserve-protocol/dtf-chat'
-  - '@reserve-protocol/trusted-fillers-sdk'
 overrides:
   axios: ^1.15.0
   react: 'catalog:'
   react-dom: 'catalog:'
-patchedDependencies:
-  '@reserve-protocol/react-zapper@2.14.3': patches/@reserve-protocol__react-zapper@2.14.3.patch
