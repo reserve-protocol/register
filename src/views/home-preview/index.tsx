@@ -78,6 +78,41 @@ export const VARIANTS = [
     name: 'Grid · flow + featured wide card',
     component: lazy(() => import('./variants/v15-grid-featured')),
   },
+  {
+    id: 'v16',
+    name: 'Home · monthly lines',
+    component: lazy(() => import('./variants/v16-home')),
+  },
+  {
+    id: 'v17',
+    name: 'Home · monthly bars',
+    component: lazy(() => import('./variants/v17-home-bars')),
+  },
+  {
+    id: 'v18',
+    name: 'Home · refined',
+    component: lazy(() => import('./variants/v18-home')),
+  },
+  {
+    id: 'v19',
+    name: 'Home · v18 + clean card',
+    component: lazy(() => import('./variants/v19-home')),
+  },
+  {
+    id: 'v20',
+    name: 'Home · eUSD vortex',
+    component: lazy(() => import('./variants/v20-vortex')),
+  },
+  {
+    id: 'v21',
+    name: 'Home · eUSD globe',
+    component: lazy(() => import('./variants/v21-globe')),
+  },
+  {
+    id: 'v22',
+    name: 'Home · eUSD streams',
+    component: lazy(() => import('./variants/v22-streams')),
+  },
 ] as const
 
 const Gallery = () => (

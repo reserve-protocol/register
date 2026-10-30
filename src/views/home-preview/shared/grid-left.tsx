@@ -84,3 +84,16 @@ export const FlowChartLeft = () => (
     </div>
   </div>
 )
+
+export const AnimLeft = ({ anim }: { anim: React.ReactNode }) => (
+  <div className="flex w-full max-w-[600px] flex-col items-center text-center">
+    <div className="mb-4 w-full">{anim}</div>
+    <h1 className="mb-3 text-balance text-[32px] font-normal leading-[1.25] text-primary md:text-4xl">
+      {COPY}
+    </h1>
+    <p className="flex flex-col gap-0.5 text-xl leading-[1.25]">
+      <span>UGLYCASH is the car.</span>
+      <span className="font-medium">eUSD is the battery.</span>
+    </p>
+  </div>
+)

@@ -30,6 +30,7 @@ const ROUTES: [string, string][] = [
 const VIEWBOX = {
   world: '0 20 1000 430',
   americas: '150 120 280 320',
+  focus: '120 40 820 410',
 }
 
 const arc = ([x1, y1]: number[], [x2, y2]: number[]) => {
@@ -75,8 +76,8 @@ const ActiveMap = ({
 
   const centroids = world.centroids as unknown as Centroids
   const animate = visible && !reduced
-  const dotR = crop === 'world' ? 3.1 : 1.7
-  const dots = (crop === 'world' ? world.dots : world.dotsFine) as number[][]
+  const dotR = crop === 'americas' ? 1.7 : 3.1
+  const dots = (crop === 'americas' ? world.dotsFine : world.dots) as number[][]
 
   return (
     <svg
@@ -106,7 +107,7 @@ const ActiveMap = ({
                     animationDelay:
                       dataset === 'global'
                         ? `${150 + x * 1.6 + y * 0.6}ms`
-                        : `${200 + (y - 160) * (crop === 'world' ? 6 : 4) + (x - 200) * 2}ms`,
+                        : `${200 + (y - 160) * (crop === 'americas' ? 4 : 6) + (x - 200) * 2}ms`,
                   }
                 : undefined
             }

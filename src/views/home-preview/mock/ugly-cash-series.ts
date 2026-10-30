@@ -283,3 +283,46 @@ export const GLOBAL_COUNTRIES: Record<string, string[]> = {
 
 export const GLOBAL_COUNTRY_COUNT =
   Object.values(GLOBAL_COUNTRIES).flat().length
+
+export type MonthPoint = {
+  month: string
+  volume: Record<CategoryKey, number>
+  count: Record<CategoryKey, number>
+  totalVolume: number
+  totalCount: number
+  partial: boolean
+}
+
+export function monthly(points: DayPoint[] = SERIES): MonthPoint[] {
+  const byMonth = new Map<string, MonthPoint>()
+  for (const p of points) {
+    const key = p.date.slice(0, 7)
+    let m = byMonth.get(key)
+    if (!m) {
+      m = {
+        month: key,
+        volume: Object.fromEntries(CATEGORIES.map((c) => [c.key, 0])) as Record<
+          CategoryKey,
+          number
+        >,
+        count: Object.fromEntries(CATEGORIES.map((c) => [c.key, 0])) as Record<
+          CategoryKey,
+          number
+        >,
+        totalVolume: 0,
+        totalCount: 0,
+        partial: false,
+      }
+      byMonth.set(key, m)
+    }
+    for (const c of CATEGORIES) {
+      m.volume[c.key] += p.volume[c.key]
+      m.count[c.key] += p.count[c.key]
+    }
+    m.totalVolume += p.totalVolume
+    m.totalCount += p.totalCount
+  }
+  const out = [...byMonth.values()]
+  out[out.length - 1].partial = true
+  return out
+}
