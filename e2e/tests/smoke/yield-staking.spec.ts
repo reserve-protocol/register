@@ -20,8 +20,17 @@ for (const dtf of YIELD_REGISTRY) {
     await page.goto(rtokenPath(dtf, 'staking'))
 
     // The stake container renders regardless of wallet — a structural anchor
-    // that the staking route mounted for this fixture.
-    await expect(page.getByText(symbol, { exact: false }).first()).toBeVisible({ timeout: 15_000 })
+    // that the staking route mounted for this fixture. Pump the clock: viem's
+    // batched multicall dispatches on a setTimeout that the paused clock holds.
+    await expect
+      .poll(
+        async () => {
+          await advanceTime(page, 1_000)
+          return page.getByText(symbol, { exact: false }).first().isVisible()
+        },
+        { timeout: 15_000 }
+      )
+      .toBe(true)
 
     for (let i = 0; i < 5; i++) await advanceTime(page, 4_000)
 

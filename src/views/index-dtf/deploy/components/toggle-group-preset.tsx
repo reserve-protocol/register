@@ -48,26 +48,26 @@ const makeFields = (section: 'basket' | 'governance') => {
 const presetValues = ['slow', 'fast', 'very-fast', 'custom'] as const
 type Preset = (typeof presetValues)[number]
 
-const presets = {
+export const presets = {
   basket: {
     slow: {
       VotingDelay: 48,
       VotingPeriod: 72,
-      VotingThreshold: 0.01,
+      VotingThreshold: 2,
       VotingQuorum: 10,
       ExecutionDelay: 48,
     },
     fast: {
       VotingDelay: 1,
       VotingPeriod: 23,
-      VotingThreshold: 0.1,
+      VotingThreshold: 2,
       VotingQuorum: 10,
       ExecutionDelay: 24,
     },
     'very-fast': {
       VotingDelay: 1,
       VotingPeriod: 1,
-      VotingThreshold: 1,
+      VotingThreshold: 2,
       VotingQuorum: 20,
       ExecutionDelay: 0.25,
     },
@@ -76,21 +76,21 @@ const presets = {
     slow: {
       VotingDelay: 2,
       VotingPeriod: 3,
-      VotingThreshold: 0.01,
+      VotingThreshold: 2,
       VotingQuorum: 10,
       ExecutionDelay: 2,
     },
     fast: {
       VotingDelay: 1,
       VotingPeriod: 1,
-      VotingThreshold: 0.1,
+      VotingThreshold: 2,
       VotingQuorum: 10,
       ExecutionDelay: 1,
     },
     'very-fast': {
       VotingDelay: 1,
       VotingPeriod: 1,
-      VotingThreshold: 1,
+      VotingThreshold: 2,
       VotingQuorum: 20,
       ExecutionDelay: 1,
     },

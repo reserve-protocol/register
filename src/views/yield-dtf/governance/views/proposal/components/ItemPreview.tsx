@@ -115,7 +115,7 @@ export const ParameterPreview = ({
   return (
     <ParameterChangePreview
       title={t`Change`}
-      subtitle={field}
+      subtitle={field === 'mandate' ? t`Mandate` : field}
       current={current}
       proposed={proposed}
       onRevert={handleRevert}

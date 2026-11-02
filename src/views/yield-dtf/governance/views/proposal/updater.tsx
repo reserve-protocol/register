@@ -33,6 +33,8 @@ import {
   spell4_2_0UpgradeAtom,
   unregisterAssetsAtom,
 } from './atoms'
+import RevenueRouterUpdater from './revenue-router-updater'
+import { revenueRouterChangesAtom } from './revenue-router-atoms'
 import useBackupChanges from './hooks/useBackupChanges'
 import useBasketChanges from './hooks/useBasketChanges'
 import useParametersChanges from './hooks/useParametersChanges'
@@ -113,6 +115,7 @@ export const ChangesUpdater = () => {
   const spell3_4_0Upgrade = useAtomValue(spell3_4_0UpgradeAtom)
   const spell4_2_0Upgrade = useAtomValue(spell4_2_0UpgradeAtom)
   const pauseIssuance = useAtomValue(pauseIssuanceAtom)
+  const routerChanges = useAtomValue(revenueRouterChangesAtom)
 
   const hasUpgrades = !!Object.keys(contractUpgrades).length
   const hasSpell = spell3_4_0Upgrade !== 'none' || spell4_2_0Upgrade !== 'none'
@@ -123,7 +126,9 @@ export const ChangesUpdater = () => {
   const isRevenueSplitValid = useAtomValue(isRevenueValidAtom)
   const isValidExternalMap = useAtomValue(isValidExternalMapAtom)
   const {
-    formState: { isValid },
+    formState: {
+      errors: { mandate: mandateError },
+    },
   } = useFormContext()
   // Setters
   const setBackupChanges = useSetAtom(backupChangesAtom)
@@ -170,12 +175,15 @@ export const ChangesUpdater = () => {
       !isNewBasket &&
       !hasUpgrades &&
       !hasSpell &&
-      !hasPauseIssuance
+      !hasPauseIssuance &&
+      !routerChanges.calls.length
     ) {
       setValidState(false)
     } else {
       setValidState(
-        (!isNewBasket || isBasketValid) &&
+        !mandateError &&
+          routerChanges.valid &&
+          (!isNewBasket || isBasketValid) &&
           isRevenueSplitValid &&
           isValidExternalMap
       )
@@ -192,7 +200,8 @@ export const ChangesUpdater = () => {
     hasUpgrades,
     hasSpell,
     hasPauseIssuance,
-    isValid,
+    mandateError,
+    routerChanges,
   ])
 
   return null
@@ -200,6 +209,7 @@ export const ChangesUpdater = () => {
 
 export default () => (
   <>
+    <RevenueRouterUpdater />
     <RTokenDataUpdater />
     <ChangesUpdater />
   </>

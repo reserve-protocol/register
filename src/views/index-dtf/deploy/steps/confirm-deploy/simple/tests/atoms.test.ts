@@ -247,7 +247,7 @@ describe('zapDeployPayloadAtom', () => {
           votingDelay: String(2 * 86400),
           votingPeriod: String(3 * 86400),
           voteExtension: String(2 * 86400),
-          proposalThreshold: parseEther('0.0001').toString(),
+          proposalThreshold: parseEther('0.02').toString(),
           quorumNumerator: parseEther('0.1').toString(),
         },
         optimisticSelectors: [],

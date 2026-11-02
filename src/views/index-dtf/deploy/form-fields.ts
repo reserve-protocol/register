@@ -552,7 +552,7 @@ export const dtfDeployDefaultValues: DeployInputs = {
   governanceVotingDelay: 2,
   governanceVotingPeriod: 3,
   governanceVoteExtension: 2,
-  governanceVotingThreshold: 0.01,
+  governanceVotingThreshold: 2,
   governanceVotingQuorum: 10,
   governanceExecutionDelay: 2,
   optimisticVetoDelay: 4,

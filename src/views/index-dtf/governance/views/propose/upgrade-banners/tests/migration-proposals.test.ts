@@ -11,7 +11,7 @@ import {
 
 const VAULT = getAddress('0x45a96cd0e4d89a41eebf3cc4204b00b1cf1582fa')
 const GOVERNOR = getAddress('0x2dee428bd8131faa4288750d707de6f3901afe3c')
-const SPELL = getAddress('0x5771d976696AA180Fed276FB6571fE2f41D0b849')
+const SPELL = getAddress('0x24a4B37F9c40fB0E80ec436Df2e9989FBAFa8bB7')
 
 const proposal = (description: string, state: string) =>
   ({ description, votingState: { state } }) as never

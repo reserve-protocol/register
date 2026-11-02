@@ -1,7 +1,11 @@
 import { atom, useAtomValue } from 'jotai'
 import { useMemo } from 'react'
 import { useFormContext, useWatch } from 'react-hook-form'
-import { rTokenConfigurationAtom, rTokenGovernanceAtom } from 'state/atoms'
+import {
+  rTokenAtom,
+  rTokenConfigurationAtom,
+  rTokenGovernanceAtom,
+} from 'state/atoms'
 import { StringMap } from 'types'
 import { isTimeunitGovernance } from '../../../utils'
 
@@ -13,15 +17,17 @@ export interface ParameterChange {
 
 const currentParamsAtom = atom((get) => {
   const config = get(rTokenConfigurationAtom)
+  const rToken = get(rTokenAtom)
   const governance = get(rTokenGovernanceAtom)
   const isTimeunit = isTimeunitGovernance(governance.name)
 
-  if (!config || !governance.executionDelay) {
+  if (!config || !rToken || !governance.executionDelay) {
     return {} as StringMap
   }
 
   return {
     ...config,
+    mandate: rToken.mandate,
     votingDelay: Number(governance.votingDelay || 0) / (isTimeunit ? 3600 : 1),
     votingPeriod: Number(governance.votingPeriod || 0) / (isTimeunit ? 3600 : 1),
     minDelay: +governance.executionDelay / 60 / 60,

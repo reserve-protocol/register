@@ -46,6 +46,8 @@ export const getBasketPortion = (
 ): [number, bigint] => {
   // D27{USD/share} = {USD/wholeShare} * D27 / {share/wholeShare}
   const sharePrice = bn(new Decimal(_sharePrice).mul(D9d))
+  // The API reports a 0 share price for DTFs it cannot price (e.g. unpriced basket tokens)
+  if (sharePrice === 0n) return [0, 0n]
 
   // D27{USD/tok} = {USD/wholeTok} * D27 / {tok/wholeTok}
   const price = bn(

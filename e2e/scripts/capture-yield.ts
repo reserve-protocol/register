@@ -280,7 +280,7 @@ async function captureDtf(dtf: YieldDTF) {
   // consistent snapshot. Reads accumulate into the shared maps (keys are
   // deduped); account-parameterized reads (balanceOf/allowance) don't fire
   // because no wallet is connected — those are served by handlers at test time.
-  const views = ['overview', 'issuance', 'staking'] as const
+  const views = ['overview', 'issuance', 'staking', 'governance/proposal'] as const
   for (const view of views) {
     await page.goto(`${BASE_URL}${rtokenPath(dtf, view)}`)
     await page.waitForTimeout(SETTLE_MS)

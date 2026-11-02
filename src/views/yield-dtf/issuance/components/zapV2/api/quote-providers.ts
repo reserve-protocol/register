@@ -1,6 +1,7 @@
+import { ChainId } from '@/utils/chains'
 import { RESERVE_API } from '@/utils/constants'
 import { Address } from 'viem'
-import { ZapResponse } from '.'
+import { readZapError, ZapResponse } from '.'
 
 export type ZapQuoteSource = 'best' | 'zap' | 'enso'
 export type ZapQuoteProvider = 'reserve' | 'enso'
@@ -44,6 +45,20 @@ const buildEnsoEndpoint = ({
   return `${RESERVE_API}enso/swap?${params.toString()}`
 }
 
+class ProviderHttpError extends Error {
+  constructor(
+    message: string,
+    readonly status: number
+  ) {
+    super(message)
+  }
+}
+
+export const isClientError = (error: unknown) =>
+  error instanceof ProviderHttpError &&
+  error.status >= 400 &&
+  error.status < 500
+
 const parseBigIntOrZero = (value: unknown): bigint => {
   try {
     if (typeof value === 'bigint') return value
@@ -82,7 +97,10 @@ const fetchProviderQuote = async ({
 }): Promise<ProviderQuote> => {
   const response = await fetch(url)
   if (!response.ok) {
-    throw new Error(`${provider} HTTP ${response.status}`)
+    throw new ProviderHttpError(
+      (await readZapError(response)) || `${provider} HTTP ${response.status}`,
+      response.status
+    )
   }
 
   const raw = await response.json()
@@ -120,12 +138,13 @@ export const fetchZapQuote = async (
       url: buildEnsoEndpoint(params),
     })
 
-  if (quoteSource === 'zap') {
-    return { selected: await reserveQuote(), attempted: ['reserve'] }
+  // The Rust zapper doesn't serve Arbitrum
+  if (quoteSource === 'enso' || params.chainId === ChainId.Arbitrum) {
+    return { selected: await ensoQuote(), attempted: ['enso'] }
   }
 
-  if (quoteSource === 'enso') {
-    return { selected: await ensoQuote(), attempted: ['enso'] }
+  if (quoteSource === 'zap') {
+    return { selected: await reserveQuote(), attempted: ['reserve'] }
   }
 
   const settled = await Promise.allSettled([reserveQuote(), ensoQuote()])
@@ -134,10 +153,15 @@ export const fetchZapQuote = async (
   )
 
   if (!successful.length) {
-    const firstRejection = settled.find(
-      (result): result is PromiseRejectedResult => result.status === 'rejected'
+    const rejections = settled.flatMap((result) =>
+      result.status === 'rejected' ? [result.reason] : []
     )
-    throw firstRejection?.reason ?? new Error('Unable to fetch quote')
+    // A 4xx only stops retries when every provider answered with one
+    throw (
+      rejections.find((reason) => !isClientError(reason)) ??
+      rejections[0] ??
+      new Error('Unable to fetch quote')
+    )
   }
 
   return {

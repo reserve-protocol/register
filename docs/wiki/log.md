@@ -1,6 +1,7 @@
 ---
 title: Log
 updated: 2026-09-30
+updated: 2026-10-29
 type: log
 ---
 
@@ -238,3 +239,19 @@ PR #1094 merged on 2026-08-28. The following records the original stage evidence
 - Release review fixes on `feat/index-dtf-v6` after merging master (conflicts only in `package.json`/lockfile: kept `link:` react-sdk + rebalance-lib ^3.3.1, took react-zapper 2.13.0). Folio 6.0 `startRebalance` proposals now decode (nonce first, deadline last) instead of an endless skeleton; settings writes are gated for 6.0/pending/unknown versions because the local encoders emit setters 6.0 does not have; every place that sizes a v6 auction (launch, metrics, Ondo cap) reads the RPC `maxAuctionLength` through one hook and treats "not loaded" as unavailable — the Ondo cap had silently collapsed to 1%.
 - Launch readiness no longer survives an RPC error after a cached success: both buttons close on any live read error and re-read the live rebalance and latest auction right before sending (nonce, window, and for community Folio's 120 s unrestricted buffer). The community window comes from the RPC read — Folio extends `restrictedUntil` on each launcher `openAuction` and the indexer never sees it. Deploy buttons accept `FolioDeployed`/`GovernedFolioDeployed` only from the deployer called (manual) or the chain's Reserve deployers (zap). Each fix had a test that was RED on the unfixed tree.
 
+## 2026-10-26
+
+- Yield mandate proposals reuse the parameter-change pipeline and the RToken component's 4.2+ capability boundary. Check only mandate validation here, rather than newly imposing whole-form validity on unrelated legacy proposals. The committed browser regression rejects blank/whitespace text and checks edit/discard/decoded calls on desktop and mobile; removing the validation guard made it fail as expected.
+- Extended eUSD's replay with three real reads at its existing block 26191271; future yield capture also visits the proposal route. Local Ethereum fork block 26278898 verified governor-authorized scheduling, timelock execution, and exact mandate readback; no live-chain writes. Node 26 needs `NODE_OPTIONS=--no-experimental-webstorage` for this repo's jsdom storage tests; CI uses Node 24.
+
+## 2026-10-27
+
+- PR #1146 (eUSD revenue router destinations) review pass. The router changes only through a 3-day timelock and a stale delta reverts safely (`UnknownHolder`/`DuplicateHolder`), so the 12s polling, confirm-time blocking and the metadata lift in shared `ConfirmProposal*` were removed. The router is read once and the delta targets the draft's baseline. The hyUSD snapshot hand-supplement and its non-eUSD e2e case were dropped; non-eUSD gating stays unit-tested.
+- Subgraph/SDK check: nothing belongs there. `react-sdk` is Index-DTF only; current destinations must come from RPC. Indexing the router events in the yield subgraph is optional history work.
+- Dark/Light review. Dark (Important, confirmed/fixed): non-strict `isAddress` let a bad mixed-case checksum through, and viem's encoder then threw inside the derived atom, crashing the proposal page. Now strict `isAddress` + `getAddress`, with a unit regression and an e2e bad-checksum case. Light (Important, confirmed/fixed): one generic validation message for up to 100 rows → per-field errors with `aria-invalid`, shown only once the field has text; Remove buttons get row `aria-label`s; help copy no longer names contract functions. Deferred (Minor): grouping a changed holder as one "Update" in the preview, per-change Revert, `key={index}` focus after mid-list removal.
+
+## 2026-10-29
+
+- The TS zapper (`zapper.reserve-api.com`) is gone; reserve-api `/api/zapper` now proxies the Rust zapper (zrs-router prod, zrsx-1 staging) and `/api/zapper2` is a synonym. Register keeps `{ZAPPER_API}api/zapper/*` (see [[zapper]]).
+- Deploy liquidity badges moved off the `deploy-ungoverned` debug payload: Rust never fills `debug.priceImpactStats`, so every token would have read 0% impact ("high", a false positive). They now reuse reserve-api `/rebalance/liquidity` with `nativePrice: 0` so the server sizes buys in the chain's own native token.
+- `fetchZapperTokens` read `data.tokens`, which neither zapper ever returned, so the "unsupported token" flag never fired. It was removed rather than fixed: the Rust `/tokens` list is a static snapshot and would flag every newer token.

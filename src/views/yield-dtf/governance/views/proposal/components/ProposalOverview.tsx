@@ -34,6 +34,7 @@ const ProposalOverview = ({ className }: Props) => {
             </Trans>
           </p>
           <Button
+            data-testid="yield-proposal-prepare"
             onClick={handleProposal}
             disabled={!isValid}
             className="mt-6 w-full"

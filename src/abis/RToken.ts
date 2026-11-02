@@ -956,6 +956,19 @@ export default [
   {
     inputs: [
       {
+        internalType: 'string',
+        name: 'mandate_',
+        type: 'string',
+      },
+    ],
+    name: 'setMandate',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
         components: [
           {
             internalType: 'uint256',

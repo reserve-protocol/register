@@ -6,14 +6,14 @@ import { useChainlinkPrice } from '@/hooks/useChainlinkPrice'
 import useDebounce from '@/hooks/useDebounce'
 import { useZapDeployQuery } from '@/hooks/useZapDeployQuery'
 import { chainIdAtom } from '@/state/atoms'
-import { formatCurrency } from '@/utils'
+import { formatCurrency, safeParseEther } from '@/utils'
 import zapper from '@/views/yield-dtf/issuance/components/zapV2/api'
 import { Trans, useLingui } from '@lingui/react/macro'
 import { useAtom, useAtomValue } from 'jotai'
 import { RefreshCw } from 'lucide-react'
 import { useEffect } from 'react'
 import { Address, formatEther, parseUnits } from 'viem'
-import { daoTokenAddressAtom } from '../../../atoms'
+import { basketAtom, daoTokenAddressAtom } from '../../../atoms'
 import { indexDeployFormDataAtom } from '../atoms'
 import {
   defaultInputTokenAtom,
@@ -73,8 +73,11 @@ const SimpleIndexDeploy = () => {
   const buildError = useAtomValue(zapDeployBuildErrorAtom)
   const tokens = useAtomValue(tokensAtom)
   const [ongoingTx, setOngoingTx] = useAtom(ongoingTxAtom)
+  const basket = useAtomValue(basketAtom)
   const formChainId = form?.chain as number
   const stToken = useAtomValue(daoTokenAddressAtom)
+  // The zapper rejects deploys of baskets with fewer than 2 assets
+  const isBasketTooSmall = basket.length < 2
 
   const url = stToken
     ? zapper.zapDeploy(formChainId)
@@ -91,11 +94,11 @@ const SimpleIndexDeploy = () => {
 
   const insufficientBalance =
     !ongoingTx && inputBalance?.value
-      ? parseUnits(inputAmount, tokenIn.decimals) > inputBalance?.value
+      ? safeParseEther(inputAmount, tokenIn.decimals) > inputBalance?.value
       : false
 
   const { data, isLoading, isFetching, refetch, failureReason } =
-    useZapDeployQuery(url, requestBody, ongoingTx)
+    useZapDeployQuery(url, requestBody, ongoingTx || isBasketTooSmall)
 
   const priceTo = data?.result?.amountOutValue
   const valueTo = data?.result?.amountOut
@@ -115,7 +118,9 @@ const SimpleIndexDeploy = () => {
           </h4>
           <RefreshQuote
             onClick={refetch}
-            disabled={isFetching || ongoingTx || !zapDeployPayload}
+            disabled={
+              isFetching || ongoingTx || !zapDeployPayload || isBasketTooSmall
+            }
           />
         </div>
         <div className="flex flex-col gap-1 px-2">
@@ -158,6 +163,14 @@ const SimpleIndexDeploy = () => {
                     ? t`Insufficient balance`
                     : t`Deploy`}
               </Button>
+              {isBasketTooSmall && (
+                <div className="text-red-500 text-sm text-center mt-2">
+                  <Trans>
+                    Simple deploy needs at least 2 tokens in the basket. Use
+                    Manual deploy instead.
+                  </Trans>
+                </div>
+              )}
               {(buildError || data?.error || failureReason?.message) && (
                 <div className="flex flex-col items-center gap-2">
                   <div

@@ -37,6 +37,7 @@ import {
   ZapQuoteProvider,
   ZapQuoteSource,
   fetchZapQuote,
+  isClientError,
 } from '../api/quote-providers'
 import {
   PRICE_IMPACT_THRESHOLD,
@@ -424,7 +425,7 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
       return selected.response
     },
     enabled: !!endpoint,
-    retry: 10,
+    retry: (failureCount, error) => failureCount < 10 && !isClientError(error),
     retryDelay: 500,
     refetchInterval: openSubmitModal ? false : REFRESH_INTERVAL,
   })

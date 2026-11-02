@@ -1,6 +1,6 @@
 ---
 title: Improvements
-updated: 2026-07-03
+updated: 2026-10-29
 type: context
 ---
 
@@ -26,7 +26,7 @@ Synthesized from a 7-dimension architecture audit (2026-07-03: structure, state,
 1. **Staging pins ship staging data to prod.** `src/utils/constants.ts` `RESERVE_API = true ? VITE_STAGING_API : …` (38 importers) **plus** hardcoded staging URLs in `src/hooks/useIndexDTFList.ts:5` and `src/views/home/hooks/use-featured-dtfs.ts:7`, **plus** `src/hooks/use-dtf-status.ts:4` re-defining `RESERVE_API` as prod (two environments served in one session). Fix: restore the `isStaging` ternary, replace both literals with `${RESERVE_API}…`, delete the shadow constant. Quick win. *Status: acknowledged (Luis 2026-07-03) — deliberate while staging-testing the release; MUST flip at the release cut. All three sites, not just constants.ts.*
 2. **Vitest never runs in CI.** No workflow runs `pnpm test:run` — 45 test files of pinned money-math can't fail a PR. Fix: add a test job to `.github/workflows/lint.yml` (reuse its pnpm/node setup); also bump playwright.yml node 18→24 and add `release/**` triggers. Quick win.
 3. **Highest-blast-radius calldata is untested.** Pin in this order: (a) `governance/views/propose/shared/utils/governance.ts` encoders (`encodeQuorum`, `encodeProposalThreshold` — pure, round-trippable); (b) `auctions/views/rebalance/utils/transforms.ts` `transformV4/V5Rebalance` RPC tuple decoders; (c) `src/lib/index-rebalance/numbers.ts` then `get-auctions.ts`; (d) extract `args` assembly from `confirm-manual-deploy-button.tsx` into a pure `build-deploy-params.ts`, then pin it.
-4. **Float round-trips in deploy money paths.** `deploy-assets-approvals.tsx:134` `parseUnits((amount * 2).toString(), decimals)` (throws on scientific notation for large balances — approvals break); `use-liquidity-check.ts:66` similar. Fix: stay in bigint (`data * 2n`). Quick win.
+4. **Float round-trips in deploy money paths.** `deploy-assets-approvals.tsx:134` `parseUnits((amount * 2).toString(), decimals)` (throws on scientific notation for large balances — approvals break). Fix: stay in bigint (`data * 2n`). Quick win.
 
 ## P1 — high-leverage correctness & performance
 

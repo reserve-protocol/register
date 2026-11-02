@@ -2,7 +2,11 @@ import { atom, useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { useResetAtom } from 'jotai/utils'
 import { useEffect, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
-import { rTokenConfigurationAtom, rTokenGovernanceAtom } from 'state/atoms'
+import {
+  rTokenAtom,
+  rTokenConfigurationAtom,
+  rTokenGovernanceAtom,
+} from 'state/atoms'
 import {
   isAssistedUpgradeAtom,
   isNewBasketProposedAtom,
@@ -20,15 +24,17 @@ import { isTimeunitGovernance } from '../../utils'
 
 const paramsAtom = atom((get) => {
   const config = get(rTokenConfigurationAtom)
+  const rToken = get(rTokenAtom)
   const governance = get(rTokenGovernanceAtom)
   const isTimeunit = isTimeunitGovernance(governance.name)
 
-  if (!config || !governance.executionDelay) {
+  if (!config || !rToken || !governance.executionDelay) {
     return null
   }
 
   return {
     ...config,
+    mandate: rToken.mandate,
     votingDelay: Number(governance.votingDelay || 0) / (isTimeunit ? 3600 : 1),
     votingPeriod: Number(governance.votingPeriod || 0) / (isTimeunit ? 3600 : 1),
     minDelay: +governance.executionDelay / 60 / 60,
@@ -38,6 +44,7 @@ const paramsAtom = atom((get) => {
 })
 
 const GovernanceProposal = () => {
+  const rToken = useAtomValue(rTokenAtom)
   const tokenParameters = useAtomValue(paramsAtom)
   const isAssistedUpgrade = useAtomValue(isAssistedUpgradeAtom)
   const [isEditing, setEditing] = useAtom(isProposalEditingAtom)
@@ -68,14 +75,14 @@ const GovernanceProposal = () => {
   }, [])
 
   useEffect(() => {
-    const tokenParametersHash = keccak256(
+    const tokenParametersHash = `${rToken?.address}:${keccak256(
       stringToBytes(JSON.stringify(tokenParameters))
-    )
+    )}`
     if (tokenParameters && lastTokenParametersHash !== tokenParametersHash) {
       setLastTokenParametersHash(tokenParametersHash)
       form.reset(tokenParameters)
     }
-  }, [tokenParameters])
+  }, [tokenParameters, rToken?.address])
 
   return (
     <div className="container">

@@ -1,3 +1,4 @@
+import ProposedRevenueDestinationsPreview from './proposed-revenue-destinations-preview'
 import { cn } from '@/lib/utils'
 import ContractUpgradesPreview from './ContractUpgradesPreview'
 import ProposedBackupPreview from './ProposedBackupPreview'
@@ -20,6 +21,7 @@ const ProposalPreview = ({ className }: Props) => (
     <ProposedBasketPreview className="mt-6" />
     <ProposedBackupPreview className="mt-6" />
     <ProposedRevenueSplitPreview className="mt-6" />
+    <ProposedRevenueDestinationsPreview className="mt-6" />
     <ProposedParametersPreview className="mt-6" />
     <ProposedRolesPreview className="mt-6" />
     <PauseIssuancePreview className="mt-6" />

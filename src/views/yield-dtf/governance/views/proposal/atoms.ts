@@ -78,6 +78,7 @@ export const isProposalEditingAtom = atom(true)
 export const proposalDescriptionAtom = atom('')
 
 export type ParamName =
+  | 'mandate'
   | 'tradingDelay'
   | 'withdrawalLeak'
   | 'backingBuffer'
@@ -107,6 +108,13 @@ export const parameterContractMapAtom = atom((get) => {
   const legacy = get(isModuleLegacyAtom)
 
   return {
+    mandate: [
+      {
+        address: contracts?.token.address ?? '',
+        functionName: 'setMandate' as const,
+        abi: RToken,
+      },
+    ],
     tradingDelay: [
       {
         address: contracts?.backingManager.address ?? '',
