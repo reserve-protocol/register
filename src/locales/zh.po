@@ -2764,7 +2764,7 @@ msgstr "连接以检查"
 
 #: src/components/stake-drawer/components/submit-stake-button.tsx:160
 #: src/components/stake-drawer/components/submit-unstake-button.tsx:72
-#: src/views/explorer/components/governance/index.tsx:190
+#: src/views/explorer/components/governance/index.tsx:192
 #: src/views/portfolio-page/components/portfolio-connect-button.tsx:20
 msgid "Connect wallet"
 msgstr "连接 Wallet"
@@ -3027,7 +3027,7 @@ msgstr "已创建"
 msgid "Created {stTokenSymbol} DAO"
 msgstr "已创建 {stTokenSymbol} DAO"
 
-#: src/views/explorer/components/governance/index.tsx:147
+#: src/views/explorer/components/governance/index.tsx:149
 msgid "Created At"
 msgstr "创建时间"
 
@@ -3456,7 +3456,7 @@ msgid "DEPRECATED"
 msgstr "已弃用"
 
 #: src/components/governance/proposal-description-form.tsx:64
-#: src/views/explorer/components/governance/index.tsx:130
+#: src/views/explorer/components/governance/index.tsx:132
 #: src/views/index-dtf/governance/views/proposal/components/proposal-detail-content.tsx:15
 #: src/views/index-dtf/governance/views/proposal/components/proposal-detail-content.tsx:41
 #: src/views/portfolio-page/components/transactions.tsx:114
@@ -3968,7 +3968,7 @@ msgid "Enabled"
 msgstr "已启用"
 
 #: src/hooks/use-time-remaining.ts:23
-#: src/views/explorer/components/governance/index.tsx:161
+#: src/views/explorer/components/governance/index.tsx:163
 msgid "Ended"
 msgstr "已结束"
 
@@ -6838,7 +6838,7 @@ msgstr "未冻结"
 msgid "Not ready to set up governance?"
 msgstr "还没准备好设置治理？"
 
-#: src/views/explorer/components/governance/index.tsx:193
+#: src/views/explorer/components/governance/index.tsx:195
 msgid "Not voted"
 msgstr "未投票"
 
@@ -7767,7 +7767,7 @@ msgstr "提案已取消"
 msgid "Proposal was defeated"
 msgstr "提案未通过"
 
-#: src/views/explorer/components/governance/index.tsx:205
+#: src/views/explorer/components/governance/index.tsx:207
 #: src/views/index-dtf/governance/components/governance-stats.tsx:78
 #: src/views/yield-dtf/governance/components/GovernanceOverview.tsx:124
 msgid "Proposals"
@@ -9199,7 +9199,7 @@ msgstr "份额 %"
 msgid "Shared externally"
 msgstr "对外分享"
 
-#: src/views/explorer/components/governance/index.tsx:79
+#: src/views/explorer/components/governance/index.tsx:81
 msgid "Shared governance"
 msgstr "共享治理"
 
@@ -9676,7 +9676,7 @@ msgid "Starts the next {0} reward period once the current one ends. Disabled unt
 msgstr "在当前周期结束后启动下一个 {0} 奖励周期。在此之前禁用。"
 
 #: src/views/explorer/components/governance/filters.tsx:41
-#: src/views/explorer/components/governance/index.tsx:172
+#: src/views/explorer/components/governance/index.tsx:174
 #: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:349
 #: src/views/portfolio-page/components/active-proposals.tsx:136
 #: src/views/yield-dtf/governance/views/proposal-detail/components/proposal-timeline/index.tsx:16
@@ -10501,7 +10501,7 @@ msgstr "切换主题"
 
 #: src/components/index-basket-setup/basket-table.tsx:62
 #: src/components/tables/ListedTokensTable.tsx:28
-#: src/views/explorer/components/governance/index.tsx:112
+#: src/views/explorer/components/governance/index.tsx:114
 #: src/views/explorer/components/tokens/index.tsx:142
 #: src/views/explorer/components/transactions/useTransactionColumns.tsx:51
 #: src/views/index-dtf/governance/components/proposal-preview/rebalance-preview/rebalance-basket-preview.tsx:71
@@ -11931,7 +11931,7 @@ msgstr "投票延迟开始"
 msgid "Voting delay is required"
 msgstr "投票延迟为必填项"
 
-#: src/views/explorer/components/governance/index.tsx:154
+#: src/views/explorer/components/governance/index.tsx:156
 msgid "Voting Ends"
 msgstr "投票结束"
 
@@ -12718,7 +12718,7 @@ msgstr "你在所有 chains 上可领取的参与奖励总额"
 msgid "Your transaction was submitted. Check its status before taking another action."
 msgstr "你的交易已提交。请先查看其状态，再进行其他操作。"
 
-#: src/views/explorer/components/governance/index.tsx:185
+#: src/views/explorer/components/governance/index.tsx:187
 msgid "Your Vote"
 msgstr "你的投票"
 

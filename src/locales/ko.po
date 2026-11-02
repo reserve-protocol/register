@@ -2764,7 +2764,7 @@ msgstr "연결하여 확인"
 
 #: src/components/stake-drawer/components/submit-stake-button.tsx:160
 #: src/components/stake-drawer/components/submit-unstake-button.tsx:72
-#: src/views/explorer/components/governance/index.tsx:190
+#: src/views/explorer/components/governance/index.tsx:192
 #: src/views/portfolio-page/components/portfolio-connect-button.tsx:20
 msgid "Connect wallet"
 msgstr "Wallet 연결"
@@ -3027,7 +3027,7 @@ msgstr "생성일"
 msgid "Created {stTokenSymbol} DAO"
 msgstr "{stTokenSymbol} DAO 생성됨"
 
-#: src/views/explorer/components/governance/index.tsx:147
+#: src/views/explorer/components/governance/index.tsx:149
 msgid "Created At"
 msgstr "생성 시각"
 
@@ -3456,7 +3456,7 @@ msgid "DEPRECATED"
 msgstr "DEPRECATED"
 
 #: src/components/governance/proposal-description-form.tsx:64
-#: src/views/explorer/components/governance/index.tsx:130
+#: src/views/explorer/components/governance/index.tsx:132
 #: src/views/index-dtf/governance/views/proposal/components/proposal-detail-content.tsx:15
 #: src/views/index-dtf/governance/views/proposal/components/proposal-detail-content.tsx:41
 #: src/views/portfolio-page/components/transactions.tsx:114
@@ -3968,7 +3968,7 @@ msgid "Enabled"
 msgstr "활성화됨"
 
 #: src/hooks/use-time-remaining.ts:23
-#: src/views/explorer/components/governance/index.tsx:161
+#: src/views/explorer/components/governance/index.tsx:163
 msgid "Ended"
 msgstr "종료됨"
 
@@ -6838,7 +6838,7 @@ msgstr "동결되지 않음"
 msgid "Not ready to set up governance?"
 msgstr "거버넌스를 설정할 준비가 되지 않으셨나요?"
 
-#: src/views/explorer/components/governance/index.tsx:193
+#: src/views/explorer/components/governance/index.tsx:195
 msgid "Not voted"
 msgstr "미투표"
 
@@ -7767,7 +7767,7 @@ msgstr "제안이 취소되었습니다"
 msgid "Proposal was defeated"
 msgstr "제안이 부결되었습니다"
 
-#: src/views/explorer/components/governance/index.tsx:205
+#: src/views/explorer/components/governance/index.tsx:207
 #: src/views/index-dtf/governance/components/governance-stats.tsx:78
 #: src/views/yield-dtf/governance/components/GovernanceOverview.tsx:124
 msgid "Proposals"
@@ -9199,7 +9199,7 @@ msgstr "비중 %"
 msgid "Shared externally"
 msgstr "외부로 공유"
 
-#: src/views/explorer/components/governance/index.tsx:79
+#: src/views/explorer/components/governance/index.tsx:81
 msgid "Shared governance"
 msgstr "공유 거버넌스"
 
@@ -9676,7 +9676,7 @@ msgid "Starts the next {0} reward period once the current one ends. Disabled unt
 msgstr "현재 기간이 종료되면 다음 {0} 보상 기간을 시작합니다. 그때까지는 비활성화됩니다."
 
 #: src/views/explorer/components/governance/filters.tsx:41
-#: src/views/explorer/components/governance/index.tsx:172
+#: src/views/explorer/components/governance/index.tsx:174
 #: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:349
 #: src/views/portfolio-page/components/active-proposals.tsx:136
 #: src/views/yield-dtf/governance/views/proposal-detail/components/proposal-timeline/index.tsx:16
@@ -10501,7 +10501,7 @@ msgstr "테마 전환"
 
 #: src/components/index-basket-setup/basket-table.tsx:62
 #: src/components/tables/ListedTokensTable.tsx:28
-#: src/views/explorer/components/governance/index.tsx:112
+#: src/views/explorer/components/governance/index.tsx:114
 #: src/views/explorer/components/tokens/index.tsx:142
 #: src/views/explorer/components/transactions/useTransactionColumns.tsx:51
 #: src/views/index-dtf/governance/components/proposal-preview/rebalance-preview/rebalance-basket-preview.tsx:71
@@ -11931,7 +11931,7 @@ msgstr "투표 지연 시작"
 msgid "Voting delay is required"
 msgstr "투표 지연은 필수입니다"
 
-#: src/views/explorer/components/governance/index.tsx:154
+#: src/views/explorer/components/governance/index.tsx:156
 msgid "Voting Ends"
 msgstr "투표 종료"
 
@@ -12718,7 +12718,7 @@ msgstr "모든 Chain에서 받을 수 있는 총 참여 보상"
 msgid "Your transaction was submitted. Check its status before taking another action."
 msgstr "트랜잭션이 제출되었습니다. 다른 작업을 하기 전에 상태를 확인하세요."
 
-#: src/views/explorer/components/governance/index.tsx:185
+#: src/views/explorer/components/governance/index.tsx:187
 msgid "Your Vote"
 msgstr "내 투표"
 

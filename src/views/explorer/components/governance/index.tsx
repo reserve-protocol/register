@@ -7,14 +7,14 @@ import { Table } from '@/components/ui/legacy-table'
 import TokenItem from 'components/token-item'
 import StackTokenLogo from '@/components/token-logo/stack-token-logo'
 import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from '@/components/ui/tooltip'
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+} from '@/components/ui/hover-card'
 import dayjs from 'dayjs'
 import useRTokenLogo from 'hooks/useRTokenLogo'
 import { useAtomValue } from 'jotai'
-import { useMemo } from 'react'
+import { useMemo, useState } from 'react'
 import { walletAtom } from 'state/atoms'
 import {
   getFolioRoute,
@@ -58,23 +58,25 @@ const getProposalRoute = (proposal: ProposalRecord) => {
 }
 
 const SharedProposalTokens = ({ tokens }: { tokens: ProposalToken[] }) => {
+  const [open, setOpen] = useState(false)
   const [primary, ...others] = tokens
 
   return (
-    <Tooltip>
-      <TooltipTrigger asChild>
-        <span
-          tabIndex={0}
-          className="flex w-fit items-center gap-1.5 cursor-help"
+    <HoverCard open={open} onOpenChange={setOpen} openDelay={0}>
+      <HoverCardTrigger asChild>
+        <button
+          type="button"
+          onClick={() => setOpen(!open)}
+          className="flex w-fit items-center gap-1.5"
         >
           <StackTokenLogo tokens={tokens.slice(0, 3)} size={24} />
           <span>{primary.symbol}</span>
           <span className="rounded-full bg-muted px-1.5 py-0.5 text-xs font-medium text-muted-foreground">
             +{others.length}
           </span>
-        </span>
-      </TooltipTrigger>
-      <TooltipContent className="flex flex-col gap-2 p-3">
+        </button>
+      </HoverCardTrigger>
+      <HoverCardContent align="start" className="flex w-auto flex-col gap-2 p-3">
         <span className="text-xs text-muted-foreground">
           <Trans>Shared governance</Trans>
         </span>
@@ -86,8 +88,8 @@ const SharedProposalTokens = ({ tokens }: { tokens: ProposalToken[] }) => {
             width={20}
           />
         ))}
-      </TooltipContent>
-    </Tooltip>
+      </HoverCardContent>
+    </HoverCard>
   )
 }
 

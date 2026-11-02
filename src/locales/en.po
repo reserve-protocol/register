@@ -2764,7 +2764,7 @@ msgstr ""
 
 #: src/components/stake-drawer/components/submit-stake-button.tsx:160
 #: src/components/stake-drawer/components/submit-unstake-button.tsx:72
-#: src/views/explorer/components/governance/index.tsx:190
+#: src/views/explorer/components/governance/index.tsx:192
 #: src/views/portfolio-page/components/portfolio-connect-button.tsx:20
 msgid "Connect wallet"
 msgstr ""
@@ -3027,7 +3027,7 @@ msgstr ""
 msgid "Created {stTokenSymbol} DAO"
 msgstr ""
 
-#: src/views/explorer/components/governance/index.tsx:147
+#: src/views/explorer/components/governance/index.tsx:149
 msgid "Created At"
 msgstr ""
 
@@ -3456,7 +3456,7 @@ msgid "DEPRECATED"
 msgstr ""
 
 #: src/components/governance/proposal-description-form.tsx:64
-#: src/views/explorer/components/governance/index.tsx:130
+#: src/views/explorer/components/governance/index.tsx:132
 #: src/views/index-dtf/governance/views/proposal/components/proposal-detail-content.tsx:15
 #: src/views/index-dtf/governance/views/proposal/components/proposal-detail-content.tsx:41
 #: src/views/portfolio-page/components/transactions.tsx:114
@@ -3968,7 +3968,7 @@ msgid "Enabled"
 msgstr ""
 
 #: src/hooks/use-time-remaining.ts:23
-#: src/views/explorer/components/governance/index.tsx:161
+#: src/views/explorer/components/governance/index.tsx:163
 msgid "Ended"
 msgstr ""
 
@@ -6838,7 +6838,7 @@ msgstr ""
 msgid "Not ready to set up governance?"
 msgstr ""
 
-#: src/views/explorer/components/governance/index.tsx:193
+#: src/views/explorer/components/governance/index.tsx:195
 msgid "Not voted"
 msgstr ""
 
@@ -7767,7 +7767,7 @@ msgstr ""
 msgid "Proposal was defeated"
 msgstr ""
 
-#: src/views/explorer/components/governance/index.tsx:205
+#: src/views/explorer/components/governance/index.tsx:207
 #: src/views/index-dtf/governance/components/governance-stats.tsx:78
 #: src/views/yield-dtf/governance/components/GovernanceOverview.tsx:124
 msgid "Proposals"
@@ -9199,7 +9199,7 @@ msgstr ""
 msgid "Shared externally"
 msgstr ""
 
-#: src/views/explorer/components/governance/index.tsx:79
+#: src/views/explorer/components/governance/index.tsx:81
 msgid "Shared governance"
 msgstr ""
 
@@ -9676,7 +9676,7 @@ msgid "Starts the next {0} reward period once the current one ends. Disabled unt
 msgstr ""
 
 #: src/views/explorer/components/governance/filters.tsx:41
-#: src/views/explorer/components/governance/index.tsx:172
+#: src/views/explorer/components/governance/index.tsx:174
 #: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:349
 #: src/views/portfolio-page/components/active-proposals.tsx:136
 #: src/views/yield-dtf/governance/views/proposal-detail/components/proposal-timeline/index.tsx:16
@@ -10490,7 +10490,7 @@ msgstr ""
 
 #: src/components/index-basket-setup/basket-table.tsx:62
 #: src/components/tables/ListedTokensTable.tsx:28
-#: src/views/explorer/components/governance/index.tsx:112
+#: src/views/explorer/components/governance/index.tsx:114
 #: src/views/explorer/components/tokens/index.tsx:142
 #: src/views/explorer/components/transactions/useTransactionColumns.tsx:51
 #: src/views/index-dtf/governance/components/proposal-preview/rebalance-preview/rebalance-basket-preview.tsx:71
@@ -11920,7 +11920,7 @@ msgstr ""
 msgid "Voting delay is required"
 msgstr ""
 
-#: src/views/explorer/components/governance/index.tsx:154
+#: src/views/explorer/components/governance/index.tsx:156
 msgid "Voting Ends"
 msgstr ""
 
@@ -12707,7 +12707,7 @@ msgstr ""
 msgid "Your transaction was submitted. Check its status before taking another action."
 msgstr ""
 
-#: src/views/explorer/components/governance/index.tsx:185
+#: src/views/explorer/components/governance/index.tsx:187
 msgid "Your Vote"
 msgstr ""
 
