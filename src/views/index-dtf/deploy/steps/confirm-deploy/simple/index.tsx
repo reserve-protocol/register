@@ -12,7 +12,7 @@ import { Trans, useLingui } from '@lingui/react/macro'
 import { useAtom, useAtomValue } from 'jotai'
 import { RefreshCw } from 'lucide-react'
 import { useEffect } from 'react'
-import { Address, formatEther, parseUnits } from 'viem'
+import { Address, formatEther } from 'viem'
 import { basketAtom, daoTokenAddressAtom } from '../../../atoms'
 import { indexDeployFormDataAtom } from '../atoms'
 import {
