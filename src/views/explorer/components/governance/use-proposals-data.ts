@@ -424,6 +424,7 @@ const useProposalsData = () => {
             chain,
             tokenAddress: getAddress(rToken.id),
             tokenSymbol: rToken.token?.symbol || 'Unknown',
+            tokens: [],
             type: 'yield',
           })
         }
@@ -465,6 +466,7 @@ const useProposalsData = () => {
             tokenAddress: dtfInfo.address,
             tokenSymbol: dtfInfo.symbol,
             tokenLogo: dtfInfo.logo,
+            tokens: [dtfInfo, ...dtfInfos.filter((info) => info !== dtfInfo)],
             type: 'index',
           })
         }

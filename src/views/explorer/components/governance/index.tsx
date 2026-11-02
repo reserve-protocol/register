@@ -5,6 +5,12 @@ import { createColumnHelper } from '@tanstack/react-table'
 import GovernanceIcon from 'components/icons/GovernanceIcon'
 import { Table } from '@/components/ui/legacy-table'
 import TokenItem from 'components/token-item'
+import StackTokenLogo from '@/components/token-logo/stack-token-logo'
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from '@/components/ui/tooltip'
 import dayjs from 'dayjs'
 import useRTokenLogo from 'hooks/useRTokenLogo'
 import { useAtomValue } from 'jotai'
@@ -18,6 +24,7 @@ import {
 } from 'utils'
 import { PROPOSAL_STATES, ROUTES, formatConstant } from 'utils/constants'
 import useProposalsData, { type ProposalRecord } from './use-proposals-data'
+import { type ProposalToken } from './atoms'
 import Filters from './filters'
 
 const BADGE_VARIANT: Record<string, string> = {
@@ -50,6 +57,40 @@ const getProposalRoute = (proposal: ProposalRecord) => {
   return getTokenRoute(proposal.tokenAddress, proposal.chain, route)
 }
 
+const SharedProposalTokens = ({ tokens }: { tokens: ProposalToken[] }) => {
+  const [primary, ...others] = tokens
+
+  return (
+    <Tooltip>
+      <TooltipTrigger asChild>
+        <span
+          tabIndex={0}
+          className="flex w-fit items-center gap-1.5 cursor-help"
+        >
+          <StackTokenLogo tokens={tokens.slice(0, 3)} size={24} />
+          <span>{primary.symbol}</span>
+          <span className="rounded-full bg-muted px-1.5 py-0.5 text-xs font-medium text-muted-foreground">
+            +{others.length}
+          </span>
+        </span>
+      </TooltipTrigger>
+      <TooltipContent className="flex flex-col gap-2 p-3">
+        <span className="text-xs text-muted-foreground">
+          <Trans>Shared governance</Trans>
+        </span>
+        {tokens.map((token) => (
+          <TokenItem
+            key={token.address}
+            symbol={token.symbol}
+            logo={token.logo}
+            width={20}
+          />
+        ))}
+      </TooltipContent>
+    </Tooltip>
+  )
+}
+
 const columnHelper = createColumnHelper<ProposalRecord>()
 
 const formatVoteChoice = (choice: string | null) => {
@@ -71,6 +112,11 @@ const ExploreGovernance = () => {
         header: t`Token`,
         cell: (data) => {
           const proposal = data.row.original
+
+          if (proposal.tokens.length > 1) {
+            return <SharedProposalTokens tokens={proposal.tokens} />
+          }
+
           // Yield DTFs use rtokens package logos, Index DTFs carry their logo from the API
           const logo =
             proposal.type === 'index'
