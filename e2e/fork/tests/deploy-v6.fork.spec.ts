@@ -225,6 +225,57 @@ test('a Folio 6.0.0 governed by vlRSR deploys from the wizard (manual route)', a
   ).toBe(2 * 86_400)
 })
 
+test('a Folio 6.0.0 governed by vlRSR deploys through the local zapper (simple route)', async ({ page }) => {
+  test.skip(!process.env.ZAPPER_LOCAL_URL, 'needs a local zapper-api (ZAPPER_LOCAL_URL)')
+  test.setTimeout(420_000)
+  mkdirSync(evidenceDir, { recursive: true })
+  const wallet = await fundWallet(3)
+  await installForkWallet(page, { address: wallet, chainId: 8453, rpcUrl })
+
+  await fillCommonSteps(page, 'Fork Zap Gov', 'FZAPG')
+  const governance = section(page, 'governance')
+  await governance.getByTestId('deploy-governance-option-governanceVoteLock').click()
+  await governance.locator('input[name="governanceVoteLock"]').fill(VLRSR)
+  await confirm(page, 'governance')
+  await fillFees(page, true)
+  await confirm(page, 'revenue-distribution')
+  await fillRolesAuctionsAndGovernance(page, wallet, false)
+
+  await openDrawer(page, 'deploy-simple')
+  const drawer = page.getByTestId('deploy-simple')
+  // The default input on Base is ETH.
+  await drawer.locator('input').first().fill('0.01')
+  const submit = page.getByTestId('deploy-zap-submit')
+  await expect(submit).toBeEnabled({ timeout: 180_000 })
+  const fromBlock = await client.getBlockNumber()
+  await submit.click()
+  await expect
+    .poll(async () => {
+      if (await page.getByTestId('deploy-success').count()) return true
+      // The zap route waits for 3 confirmations on Base; Anvil only mines on new transactions.
+      await rpc('anvil_mine', ['0x3'])
+      if (await submit.isEnabled().catch(() => false)) await submit.click().catch(() => {})
+      return false
+    }, { timeout: 240_000, intervals: [5_000] })
+    .toBe(true)
+
+  const logs = await client.getLogs({ address: V6, fromBlock })
+  const [event] = parseEventLogs({ abi: folioDeployerV6Abi, logs, eventName: 'GovernedFolioDeployed' })
+  const { folio, ownerGovernor } = event.args
+  const read = <T>(functionName: string, args: unknown[] = []) =>
+    client.readContract({ address: folio, abi: folioAbi, functionName: functionName as never, args: args as never }) as Promise<T>
+  const tokenJar = await client.readContract({ address: VLRSR, abi: vaultAbi, functionName: 'tokenJar' })
+
+  expect(await read<string>('version')).toBe('6.0.0')
+  expect(await read<bigint>('balanceOf', [wallet])).toBeGreaterThan(0n)
+  const rows = [await read<readonly [Address, bigint]>('feeRecipients', [0n]), await read<readonly [Address, bigint]>('feeRecipients', [1n])]
+  expect(rows.map(([recipient]) => recipient)).toContain(tokenJar)
+  expect((await read<readonly [Address, bigint]>('immutableFeeRecipients', [0n]))[0]).toBe(PERMANENT)
+  expect(
+    await client.readContract({ address: ownerGovernor, abi: governorAbi, functionName: 'optimisticParams' })
+  ).toEqual([4 * 3_600, 20 * 3_600, parseEther('0.01')])
+})
+
 test('an ungoverned Folio 6.0.0 deploys through the local zapper (simple route)', async ({ page }) => {
   test.skip(!process.env.ZAPPER_LOCAL_URL, 'needs a local zapper-api (ZAPPER_LOCAL_URL)')
   test.setTimeout(420_000)

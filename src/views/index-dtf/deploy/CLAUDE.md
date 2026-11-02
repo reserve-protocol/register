@@ -43,7 +43,7 @@ events only).
 | Zap body | `steps/confirm-deploy/simple/tests/atoms.test.ts` |
 | Receipt reading | `utils/tests/deployed-folio.test.ts` |
 | Anything that reaches the contracts | `FORK_RPC_URL_8453=http://127.0.0.1:8546 pnpm vitest run src/views/index-dtf/deploy/utils/tests/v6-deploy.fork.test.ts` |
-| The wizard UI end to end | `FORK_CHAIN_ID=8453 pnpm exec playwright test -c playwright.fork.config.ts e2e/fork/tests/deploy-v6.fork.spec.ts` (add `ZAPPER_LOCAL_URL=http://127.0.0.1:7778 VITE_ZAPPER_DEPLOY_API=/zapper-local/` for the zap test, `CAPTURE=1` for design screenshots) |
+| The wizard UI end to end | `FORK_CHAIN_ID=8453 pnpm exec playwright test -c playwright.fork.config.ts e2e/fork/tests/deploy-v6.fork.spec.ts` (add `ZAPPER_LOCAL_URL=<zapper> VITE_ZAPPER_DEPLOY_API=/zapper-local/` for the two zap tests; `<zapper>` can be a local zapper, `https://api-staging.reserve.org` or `https://api.reserve.org`; `CAPTURE=1` for design screenshots) |
 
 There is no offline (mocked) deploy spec yet; the fork lane is the coverage.
 
@@ -51,3 +51,5 @@ There is no offline (mocked) deploy spec yet; the fork lane is the coverage.
 
 - The zapper has no CORS: use the dev proxy (`ZAPPER_LOCAL_URL`) with `VITE_ZAPPER_DEPLOY_API=/zapper-local/`; the
   override is ignored outside dev builds.
+- The first wizard run on a freshly started Anvil fork can time out before the drawer opens (cold fork reads); re-run
+  on the same fork before reading it as a failure.
