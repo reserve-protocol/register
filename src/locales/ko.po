@@ -996,6 +996,10 @@ msgstr "바스켓에 추가"
 msgid "Add to primary basket"
 msgstr "기본 바스켓에 추가"
 
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/optimistic.ts:175
+msgid "Add to trade allowlist"
+msgstr "거래 허용 목록에 추가"
+
 #: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:591
 msgid "Add to Trade Allowlist"
 msgstr "거래 허용 목록에 추가"
@@ -1173,43 +1177,59 @@ msgstr "모든 유형"
 msgid "All unlisted RTokens"
 msgstr "모든 미등록 RTokens"
 
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/optimistic.ts:108
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/optimistic.ts:176
+msgid "Allow optimistic proposals to add tokens to the trade allowlist."
+msgstr "Optimistic 제안이 거래 허용 목록에 토큰을 추가할 수 있도록 허용합니다."
+
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/optimistic.ts:112
 msgid "Allow optimistic proposals to change auction duration."
 msgstr "Optimistic 제안이 경매 기간을 변경할 수 있도록 허용합니다."
 
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/optimistic.ts:120
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/optimistic.ts:124
 msgid "Allow optimistic proposals to change fee distribution."
 msgstr "Optimistic 제안이 수수료 분배를 변경할 수 있도록 허용합니다."
 
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/optimistic.ts:144
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/optimistic.ts:148
 msgid "Allow optimistic proposals to change rebalance control mode."
 msgstr "Optimistic 제안이 리밸런스 제어 모드를 변경할 수 있도록 허용합니다."
 
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/optimistic.ts:114
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/optimistic.ts:170
+msgid "Allow optimistic proposals to change the share of fees kept for holders."
+msgstr "Optimistic 제안이 보유자에게 남는 수수료 비율을 변경할 수 있도록 허용합니다."
+
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/optimistic.ts:118
 msgid "Allow optimistic proposals to enable or disable direct bids."
 msgstr "Optimistic 제안이 직접 입찰을 활성화하거나 비활성화할 수 있도록 허용합니다."
 
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/optimistic.ts:138
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/optimistic.ts:182
+msgid "Allow optimistic proposals to remove tokens from the trade allowlist."
+msgstr "Optimistic 제안이 거래 허용 목록에서 토큰을 제거할 수 있도록 허용합니다."
+
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/optimistic.ts:142
 msgid "Allow optimistic proposals to rename the DTF token."
 msgstr "Optimistic 제안이 DTF 토큰의 이름을 변경할 수 있도록 허용합니다."
 
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/optimistic.ts:102
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/optimistic.ts:106
 msgid "Allow optimistic proposals to start basket rebalances."
 msgstr "Optimistic 제안이 바스켓 리밸런스를 시작할 수 있도록 허용합니다."
 
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/optimistic.ts:150
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/optimistic.ts:188
+msgid "Allow optimistic proposals to turn trade allowlist enforcement on or off."
+msgstr "Optimistic 제안이 거래 허용 목록 적용을 켜거나 끌 수 있도록 허용합니다."
+
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/optimistic.ts:154
 msgid "Allow optimistic proposals to update the annualized TVL fee."
 msgstr "Optimistic 제안이 연환산 TVL 수수료를 업데이트할 수 있도록 허용합니다."
 
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/optimistic.ts:126
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/optimistic.ts:130
 msgid "Allow optimistic proposals to update the DTF mandate."
 msgstr "Optimistic 제안이 DTF 위임 사항을 업데이트할 수 있도록 허용합니다."
 
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/optimistic.ts:132
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/optimistic.ts:136
 msgid "Allow optimistic proposals to update the mint fee."
 msgstr "Optimistic 제안이 Mint 수수료를 업데이트할 수 있도록 허용합니다."
 
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/optimistic.ts:156
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/optimistic.ts:160
 msgid "Allow optimistic proposals to update the trusted filler registry."
 msgstr "Optimistic 제안이 신뢰할 수 있는 Filler 레지스트리를 업데이트할 수 있도록 허용합니다."
 
@@ -1558,7 +1578,7 @@ msgstr "경매 실행자"
 
 #: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:37
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-auction-settings.tsx:50
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/optimistic.ts:107
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/optimistic.ts:111
 msgid "Auction length"
 msgstr "경매 길이"
 
@@ -4525,7 +4545,7 @@ msgid "Fee Distribution"
 msgstr "수수료 분배"
 
 #: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:40
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/optimistic.ts:119
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/optimistic.ts:123
 msgid "Fee recipients"
 msgstr "수수료 수령인"
 
@@ -5059,6 +5079,7 @@ msgstr "Holder"
 
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/changes/v6-settings-changes.tsx:47
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-dtf-revenue.tsx:76
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/optimistic.ts:169
 msgid "Holder share"
 msgstr "보유자 지분"
 
@@ -5959,7 +5980,7 @@ msgstr ""
 #: src/views/index-dtf/deploy/steps/metadata/form-basic-metadata.tsx:17
 #: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:45
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-metadata.tsx:50
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/optimistic.ts:125
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/optimistic.ts:129
 #: src/views/index-dtf/settings/components/index-settings-basic.tsx:109
 #: src/views/yield-dtf/deploy/components/TokenForm.tsx:50
 #: src/views/yield-dtf/governance/views/proposal/components/ItemPreview.tsx:118
@@ -6302,7 +6323,7 @@ msgid "Mint disabled"
 msgstr "Mint 비활성화됨"
 
 #: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:46
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/optimistic.ts:131
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/optimistic.ts:135
 msgid "Mint fee"
 msgstr "Mint 수수료"
 
@@ -7433,7 +7454,7 @@ msgid "Permanent recipients (governance can never remove these)"
 msgstr "영구 수령인 (거버넌스가 절대 제거할 수 없음)"
 
 #: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:38
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/optimistic.ts:113
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/optimistic.ts:117
 msgid "Permissionless bids"
 msgstr "무허가 입찰"
 
@@ -8208,7 +8229,7 @@ msgid "Rebalance accuracy"
 msgstr "리밸런싱 정확도"
 
 #: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:49
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/optimistic.ts:143
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/optimistic.ts:147
 msgid "Rebalance control"
 msgstr "리밸런스 제어"
 
@@ -8542,6 +8563,10 @@ msgstr "대상 {0} 제거"
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/dtf-settings-proposal-sections.tsx:182
 msgid "Remove Dust Tokens"
 msgstr "더스트 토큰 제거"
+
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/optimistic.ts:181
+msgid "Remove from trade allowlist"
+msgstr "거래 허용 목록에서 제거"
 
 #: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:592
 msgid "Remove from Trade Allowlist"
@@ -9855,7 +9880,7 @@ msgid "Start over"
 msgstr "처음부터 다시"
 
 #: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:35
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/optimistic.ts:101
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/optimistic.ts:105
 msgid "Start rebalance"
 msgstr "리밸런스 시작"
 
@@ -10749,7 +10774,7 @@ msgstr "토큰 노출"
 
 #: src/components/rtoken-setup/token/TokenForm.tsx:21
 #: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:47
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/optimistic.ts:137
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/optimistic.ts:141
 #: src/views/yield-dtf/deploy/components/TokenForm.tsx:21
 msgid "Token name"
 msgstr "토큰 이름"
@@ -10935,6 +10960,10 @@ msgstr "거래 허용 목록"
 #: src/views/index-dtf/settings/components/index-settings-basic.tsx:51
 msgid "Trade Allowlist"
 msgstr "거래 허용 목록"
+
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/optimistic.ts:187
+msgid "Trade allowlist enforcement"
+msgstr "거래 허용 목록 적용"
 
 #: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:589
 msgid "Trade Allowlist Enforcement"
@@ -11149,7 +11178,7 @@ msgid "Trigger Unstake"
 msgstr "Unstake 실행"
 
 #: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:52
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/optimistic.ts:155
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/optimistic.ts:159
 msgid "Trusted fillers"
 msgstr "신뢰할 수 있는 Filler"
 
@@ -11187,7 +11216,7 @@ msgid "TVL"
 msgstr "TVL"
 
 #: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:50
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/optimistic.ts:149
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/optimistic.ts:153
 msgid "TVL fee"
 msgstr "TVL 수수료"
 

@@ -996,6 +996,10 @@ msgstr ""
 msgid "Add to primary basket"
 msgstr ""
 
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/optimistic.ts:175
+msgid "Add to trade allowlist"
+msgstr ""
+
 #: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:591
 msgid "Add to Trade Allowlist"
 msgstr ""
@@ -1173,43 +1177,59 @@ msgstr ""
 msgid "All unlisted RTokens"
 msgstr ""
 
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/optimistic.ts:108
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/optimistic.ts:176
+msgid "Allow optimistic proposals to add tokens to the trade allowlist."
+msgstr ""
+
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/optimistic.ts:112
 msgid "Allow optimistic proposals to change auction duration."
 msgstr ""
 
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/optimistic.ts:120
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/optimistic.ts:124
 msgid "Allow optimistic proposals to change fee distribution."
 msgstr ""
 
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/optimistic.ts:144
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/optimistic.ts:148
 msgid "Allow optimistic proposals to change rebalance control mode."
 msgstr ""
 
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/optimistic.ts:114
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/optimistic.ts:170
+msgid "Allow optimistic proposals to change the share of fees kept for holders."
+msgstr ""
+
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/optimistic.ts:118
 msgid "Allow optimistic proposals to enable or disable direct bids."
 msgstr ""
 
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/optimistic.ts:138
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/optimistic.ts:182
+msgid "Allow optimistic proposals to remove tokens from the trade allowlist."
+msgstr ""
+
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/optimistic.ts:142
 msgid "Allow optimistic proposals to rename the DTF token."
 msgstr ""
 
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/optimistic.ts:102
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/optimistic.ts:106
 msgid "Allow optimistic proposals to start basket rebalances."
 msgstr ""
 
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/optimistic.ts:150
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/optimistic.ts:188
+msgid "Allow optimistic proposals to turn trade allowlist enforcement on or off."
+msgstr ""
+
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/optimistic.ts:154
 msgid "Allow optimistic proposals to update the annualized TVL fee."
 msgstr ""
 
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/optimistic.ts:126
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/optimistic.ts:130
 msgid "Allow optimistic proposals to update the DTF mandate."
 msgstr ""
 
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/optimistic.ts:132
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/optimistic.ts:136
 msgid "Allow optimistic proposals to update the mint fee."
 msgstr ""
 
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/optimistic.ts:156
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/optimistic.ts:160
 msgid "Allow optimistic proposals to update the trusted filler registry."
 msgstr ""
 
@@ -1558,7 +1578,7 @@ msgstr ""
 
 #: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:37
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-auction-settings.tsx:50
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/optimistic.ts:107
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/optimistic.ts:111
 msgid "Auction length"
 msgstr ""
 
@@ -4525,7 +4545,7 @@ msgid "Fee Distribution"
 msgstr ""
 
 #: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:40
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/optimistic.ts:119
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/optimistic.ts:123
 msgid "Fee recipients"
 msgstr ""
 
@@ -5059,6 +5079,7 @@ msgstr ""
 
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/changes/v6-settings-changes.tsx:47
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-dtf-revenue.tsx:76
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/optimistic.ts:169
 msgid "Holder share"
 msgstr ""
 
@@ -5959,7 +5980,7 @@ msgstr ""
 #: src/views/index-dtf/deploy/steps/metadata/form-basic-metadata.tsx:17
 #: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:45
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-metadata.tsx:50
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/optimistic.ts:125
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/optimistic.ts:129
 #: src/views/index-dtf/settings/components/index-settings-basic.tsx:109
 #: src/views/yield-dtf/deploy/components/TokenForm.tsx:50
 #: src/views/yield-dtf/governance/views/proposal/components/ItemPreview.tsx:118
@@ -6302,7 +6323,7 @@ msgid "Mint disabled"
 msgstr ""
 
 #: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:46
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/optimistic.ts:131
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/optimistic.ts:135
 msgid "Mint fee"
 msgstr ""
 
@@ -7433,7 +7454,7 @@ msgid "Permanent recipients (governance can never remove these)"
 msgstr ""
 
 #: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:38
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/optimistic.ts:113
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/optimistic.ts:117
 msgid "Permissionless bids"
 msgstr ""
 
@@ -8208,7 +8229,7 @@ msgid "Rebalance accuracy"
 msgstr ""
 
 #: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:49
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/optimistic.ts:143
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/optimistic.ts:147
 msgid "Rebalance control"
 msgstr ""
 
@@ -8541,6 +8562,10 @@ msgstr ""
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/changes/removed-tokens-changes.tsx:26
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/dtf-settings-proposal-sections.tsx:182
 msgid "Remove Dust Tokens"
+msgstr ""
+
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/optimistic.ts:181
+msgid "Remove from trade allowlist"
 msgstr ""
 
 #: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:592
@@ -9855,7 +9880,7 @@ msgid "Start over"
 msgstr ""
 
 #: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:35
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/optimistic.ts:101
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/optimistic.ts:105
 msgid "Start rebalance"
 msgstr ""
 
@@ -10738,7 +10763,7 @@ msgstr ""
 
 #: src/components/rtoken-setup/token/TokenForm.tsx:21
 #: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:47
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/optimistic.ts:137
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/optimistic.ts:141
 #: src/views/yield-dtf/deploy/components/TokenForm.tsx:21
 msgid "Token name"
 msgstr ""
@@ -10923,6 +10948,10 @@ msgstr ""
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/dtf-settings-proposal-sections.tsx:173
 #: src/views/index-dtf/settings/components/index-settings-basic.tsx:51
 msgid "Trade Allowlist"
+msgstr ""
+
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/optimistic.ts:187
+msgid "Trade allowlist enforcement"
 msgstr ""
 
 #: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:589
@@ -11138,7 +11167,7 @@ msgid "Trigger Unstake"
 msgstr ""
 
 #: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:52
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/optimistic.ts:155
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/optimistic.ts:159
 msgid "Trusted fillers"
 msgstr ""
 
@@ -11176,7 +11205,7 @@ msgid "TVL"
 msgstr ""
 
 #: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:50
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/optimistic.ts:149
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/optimistic.ts:153
 msgid "TVL fee"
 msgstr ""
 

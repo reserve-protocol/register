@@ -1,6 +1,7 @@
 import { createStore } from 'jotai'
 import {
   decodeFunctionData,
+  getAbiItem,
   parseAbi,
   parseEther,
   toFunctionSelector,
@@ -217,11 +218,26 @@ describe('optimisticActionsAtom', () => {
     expect(selectors.setMandate).toBe(toFunctionSelector('setMandate(string)'))
   })
 
-  it('keeps the Folio 5.0 selectors', () => {
+  it('offers the setters only Folio 6.0 has, with the selectors of its ABI', () => {
     const selectors = Object.fromEntries(
-      makeStore('5.0.0').get(optimisticActionsAtom).map((action) => [action.id, action.selector])
+      makeStore().get(optimisticActionsAtom).map((action) => [action.id, action.selector])
     )
+    for (const name of [
+      'setFolioSelfFee',
+      'addToAllowlist',
+      'removeFromAllowlist',
+      'setTradeAllowlistEnabled',
+    ] as const) {
+      expect(selectors[name]).toBe(toFunctionSelector(getAbiItem({ abi: folioV6Abi, name })))
+    }
+  })
+
+  it('keeps the Folio 5.0 selectors', () => {
+    const actions = makeStore('5.0.0').get(optimisticActionsAtom)
+    const selectors = Object.fromEntries(actions.map((action) => [action.id, action.selector]))
     expect(selectors.startRebalance).toBe(INDEX_DTF_START_REBALANCE_SELECTOR['5.0.0'])
     expect(selectors.setAuctionLength).toBe(toFunctionSelector('setAuctionLength(uint256)'))
+    expect(actions.map((action) => action.id)).not.toContain('setFolioSelfFee')
+    expect(actions.map((action) => action.id)).not.toContain('addToAllowlist')
   })
 })

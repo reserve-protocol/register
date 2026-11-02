@@ -126,7 +126,7 @@ mapper dereferences — serve proposals ONLY through it or the list breaks).
   keep the local encoders so v4/v5 bytes don't move. `setFeeRecipients` on 6.0
   must hand back the RPC-read immutable table unchanged; the mutable shares are
   scaled into what it leaves, and the form shows them relative to that share.
-  Optimistic actions come from `optimisticActionsAtom` (6.0 selectors on 6.0).
+  Optimistic actions come from `optimisticActionsAtom` (6.0 selectors on 6.0, plus the 6.0-only holder share and trade allowlist setters; the deploy wizard uses the same list).
 - Folio 6.0 basket proposals: `startRebalance` carries `getRebalanceNonce()+1`
   and a deadline anchored at confirmation (`rebalance-deadline.ts`: trading
   governor lifecycle, plus the veto window on optimistic governors because a
