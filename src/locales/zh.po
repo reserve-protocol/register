@@ -503,11 +503,11 @@ msgstr "{swapCount} 个 Orders"
 msgid "{symbol} governance 1.1.0 available"
 msgstr "{symbol} 治理 1.1.0 已可用"
 
-#: src/components/vote-lock/migration/migration-modal.tsx:258
+#: src/components/vote-lock/migration/migration-modal.tsx:260
 msgid "{symbol} to approve"
 msgstr "待授权的 {symbol}"
 
-#: src/components/vote-lock/migration/migration-modal.tsx:259
+#: src/components/vote-lock/migration/migration-modal.tsx:261
 msgid "{symbol} to lock"
 msgstr "待锁定的 {symbol}"
 
@@ -1280,7 +1280,7 @@ msgstr ""
 msgid "Amount"
 msgstr "数量"
 
-#: src/components/vote-lock/migration/migration-modal.tsx:230
+#: src/components/vote-lock/migration/migration-modal.tsx:232
 msgid "Amount locked"
 msgstr "已锁定数量"
 
@@ -2477,7 +2477,7 @@ msgid "Click retry or use individual approve buttons below."
 msgstr "点击重试或使用下方的单独授权按钮。"
 
 #: src/components/video-modal/index.tsx:58
-#: src/components/vote-lock/migration/migration-modal.tsx:290
+#: src/components/vote-lock/migration/migration-modal.tsx:292
 #: src/views/index-dtf/overview/components/charts/candlestick-tooltip.tsx:36
 #: src/views/index-dtf/overview/components/video-library/series-modal.tsx:129
 msgid "Close"
@@ -2487,7 +2487,7 @@ msgstr "关闭"
 msgid "Close DTF pages"
 msgstr "关闭 DTF 页面"
 
-#: src/components/vote-lock/migration/migration-modal.tsx:152
+#: src/components/vote-lock/migration/migration-modal.tsx:154
 msgid "Close migration"
 msgstr "关闭迁移"
 
@@ -2937,6 +2937,10 @@ msgstr "无法确认发起结果 — 重试前请检查你的 Wallet"
 #: src/views/index-dtf/governance/views/propose/basket/components/submit-proposal-button.tsx:116
 msgid "Couldn't read this DTF's trade allowlist. Try again later."
 msgstr "无法读取此 DTF 的交易允许列表，请稍后再试。"
+
+#: src/components/vote-lock/migration/migration-modal.tsx:115
+msgid "Couldn't send the transaction · Retry"
+msgstr "无法发送交易 · 重试"
 
 #: src/views/yield-dtf/issuance/components/zapV2/minters-modal/SocialMediaInput.tsx:208
 msgid "Count me in"
@@ -3654,7 +3658,7 @@ msgid "Don’t see your token?"
 msgstr "没看到你的代币？"
 
 #: src/components/vote-lock/migration/migration-card.tsx:131
-#: src/components/vote-lock/migration/migration-modal.tsx:246
+#: src/components/vote-lock/migration/migration-modal.tsx:248
 msgid "Done"
 msgstr "完成"
 
@@ -4695,7 +4699,7 @@ msgid "Finding route..."
 msgstr "正在查找路由…"
 
 #: src/components/vote-lock/migration/migration-card.tsx:148
-#: src/components/vote-lock/migration/migration-modal.tsx:128
+#: src/components/vote-lock/migration/migration-modal.tsx:130
 msgid "Finish re-locking your {symbol}"
 msgstr "完成重新锁定你的 {symbol}"
 
@@ -6207,7 +6211,7 @@ msgstr "元数据"
 msgid "Migrate"
 msgstr "迁移"
 
-#: src/components/vote-lock/migration/migration-modal.tsx:126
+#: src/components/vote-lock/migration/migration-modal.tsx:128
 msgid "Migration complete"
 msgstr "迁移完成"
 
@@ -6672,7 +6676,7 @@ msgstr ""
 msgid "No"
 msgstr "否"
 
-#: src/components/vote-lock/migration/migration-modal.tsx:273
+#: src/components/vote-lock/migration/migration-modal.tsx:275
 msgid "No {symbol} left in your wallet to lock."
 msgstr "你的 Wallet 中没有可锁定的 {symbol}。"
 
@@ -6996,7 +7000,7 @@ msgstr "CFB LCAP 代币官方文档"
 msgid "Old units"
 msgstr "旧单位"
 
-#: src/components/vote-lock/migration/migration-modal.tsx:256
+#: src/components/vote-lock/migration/migration-modal.tsx:258
 msgid "Old vote-lock shares"
 msgstr "旧 vote-lock 份额"
 
@@ -8164,7 +8168,7 @@ msgstr "评级："
 msgid "Raw"
 msgstr "原始数据"
 
-#: src/components/vote-lock/migration/migration-modal.tsx:129
+#: src/components/vote-lock/migration/migration-modal.tsx:131
 msgid "Re-lock your {symbol}"
 msgstr "重新锁定你的 {symbol}"
 
@@ -8268,7 +8272,7 @@ msgstr "从你的旧 vote-lock 中取回 {symbol}。"
 msgid "Received"
 msgstr "已收到"
 
-#: src/components/vote-lock/migration/migration-modal.tsx:274
+#: src/components/vote-lock/migration/migration-modal.tsx:276
 msgid "Received from your old-vault redemption"
 msgstr "来自旧金库 Redeem 的数量"
 
@@ -8380,19 +8384,19 @@ msgstr "Redeem 已完成"
 msgid "Redeem using"
 msgstr "使用以下方式 Redeem"
 
-#: src/components/vote-lock/migration/migration-modal.tsx:146
+#: src/components/vote-lock/migration/migration-modal.tsx:148
 msgid "Redeem your old vote-lock, approve the {symbol}, then lock it in the {vault} vault."
 msgstr "Redeem 你的旧 vote-lock，授权 {symbol}，然后将其锁定到 {vault} 金库。"
 
-#: src/components/vote-lock/migration/migration-modal.tsx:139
+#: src/components/vote-lock/migration/migration-modal.tsx:141
 msgid "Redeem your old vote-lock, approve the RSR, then lock it in the shared vlRSR vault."
 msgstr "Redeem 你的旧 vote-lock，授权 RSR，然后将其锁定到共享的 vlRSR 金库。"
 
-#: src/components/vote-lock/migration/migration-modal.tsx:147
+#: src/components/vote-lock/migration/migration-modal.tsx:149
 msgid "Redeem your old vote-lock, then lock the {symbol} in the {vault} vault."
 msgstr "Redeem 你的旧 vote-lock，然后将 {symbol} 锁定到 {vault} 金库。"
 
-#: src/components/vote-lock/migration/migration-modal.tsx:140
+#: src/components/vote-lock/migration/migration-modal.tsx:142
 msgid "Redeem your old vote-lock, then lock the RSR in the shared vlRSR vault."
 msgstr "Redeem 你的旧 vote-lock，然后将 RSR 锁定到共享的 vlRSR 金库。"
 
@@ -8501,7 +8505,7 @@ msgstr "常规 Minting "
 msgid "Regulatory and Compliance Risk: Tokenized equities and related on-chain transfer mechanisms may be subject to evolving regulatory interpretations and enforcement actions. Ondo Tokenized Stocks may also be subject to contractual eligibility requirements, permissioning, whitelisting, jurisdictional limitations, sanctions screening, or other compliance gating that can be changed or applied with little notice. If regulations or compliance requirements change, the DTF may be forced to restrict access, halt mints/redemptions, rebalance away from affected components, or wind down positions under adverse market conditions, potentially causing tracking error, reduced liquidity, and losses."
 msgstr "监管与合规风险：代币化股票及相关链上转移机制可能面临不断变化的监管解释和执法行动。Ondo Tokenized Stocks 还可能受到合约资格要求、许可、白名单、司法管辖区限制、制裁筛查或其他合规限制的约束，且这些限制可能在几乎没有通知的情况下被更改或实施。如果监管或合规要求发生变化，DTF 可能被迫限制访问、暂停 Mint/Redeem、调仓移出受影响的成分，或在不利的市场条件下平仓，这可能导致跟踪误差、流动性下降和损失。"
 
-#: src/components/vote-lock/migration/migration-modal.tsx:314
+#: src/components/vote-lock/migration/migration-modal.tsx:316
 msgid "Rejected it in your Safe? Sign again"
 msgstr "在 Safe 中拒绝了？重新签署"
 
@@ -9917,8 +9921,8 @@ msgstr "通过长文保持最新动态"
 
 #. placeholder {0}: index + 1
 #. placeholder {1}: stages.length
-#: src/components/vote-lock/migration/migration-modal.tsx:181
-#: src/components/vote-lock/migration/migration-modal.tsx:196
+#: src/components/vote-lock/migration/migration-modal.tsx:183
+#: src/components/vote-lock/migration/migration-modal.tsx:198
 msgid "Step {0} of {1}"
 msgstr "第 {0} 步，共 {1} 步"
 
@@ -11836,7 +11840,7 @@ msgid "View {0} on block explorer"
 msgstr "在区块浏览器上查看 {0}"
 
 #. placeholder {0}: titles[stage]
-#: src/components/vote-lock/migration/migration-modal.tsx:204
+#: src/components/vote-lock/migration/migration-modal.tsx:206
 msgid "View {0} transaction on explorer"
 msgstr "在浏览器中查看 {0} 交易"
 
@@ -12868,7 +12872,7 @@ msgstr "你的 {0} 已被 Redeem。"
 msgid "Your {symbol} is locked in {vault}"
 msgstr "你的 {symbol} 已锁定在 {vault}"
 
-#: src/components/vote-lock/migration/migration-modal.tsx:142
+#: src/components/vote-lock/migration/migration-modal.tsx:144
 msgid "Your {symbol} is locked in the {vault} vault."
 msgstr "你的 {symbol} 已锁定在 {vault} 金库中。"
 
@@ -12893,12 +12897,12 @@ msgstr "你的 Decentralized Token Fund 投资。"
 msgid "Your DTF has been minted."
 msgstr "你的 DTF 已被 Mint。"
 
-#: src/components/vote-lock/migration/migration-modal.tsx:271
+#: src/components/vote-lock/migration/migration-modal.tsx:273
 msgid "Your full old-vault position"
 msgstr "你在旧金库中的全部仓位"
 
 #. placeholder {0}: formatAmount(flow.estimate)
-#: src/components/vote-lock/migration/migration-modal.tsx:270
+#: src/components/vote-lock/migration/migration-modal.tsx:272
 msgid "Your full old-vault position · about {0} {symbol}"
 msgstr "你在旧金库中的全部仓位 · 约 {0} {symbol}"
 
@@ -12938,15 +12942,15 @@ msgstr "你近期的链上活动。"
 msgid "Your redeemable"
 msgstr "您的可赎回金额"
 
-#: src/components/vote-lock/migration/migration-modal.tsx:144
+#: src/components/vote-lock/migration/migration-modal.tsx:146
 msgid "Your redeemed {symbol} is in your wallet."
 msgstr "你 Redeem 的 {symbol} 已在你的 Wallet 中。"
 
-#: src/components/vote-lock/migration/migration-modal.tsx:137
+#: src/components/vote-lock/migration/migration-modal.tsx:139
 msgid "Your redeemed RSR is in your wallet."
 msgstr "你 Redeem 的 RSR 已在你的 Wallet 中。"
 
-#: src/components/vote-lock/migration/migration-modal.tsx:135
+#: src/components/vote-lock/migration/migration-modal.tsx:137
 msgid "Your RSR is locked in the shared vlRSR vault."
 msgstr "你的 RSR 已锁定在共享的 vlRSR 金库中。"
 

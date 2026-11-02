@@ -503,11 +503,11 @@ msgstr "{swapCount}건 주문"
 msgid "{symbol} governance 1.1.0 available"
 msgstr "{symbol} 거버넌스 1.1.0 사용 가능"
 
-#: src/components/vote-lock/migration/migration-modal.tsx:258
+#: src/components/vote-lock/migration/migration-modal.tsx:260
 msgid "{symbol} to approve"
 msgstr "승인할 {symbol}"
 
-#: src/components/vote-lock/migration/migration-modal.tsx:259
+#: src/components/vote-lock/migration/migration-modal.tsx:261
 msgid "{symbol} to lock"
 msgstr "잠글 {symbol}"
 
@@ -1280,7 +1280,7 @@ msgstr ""
 msgid "Amount"
 msgstr "금액"
 
-#: src/components/vote-lock/migration/migration-modal.tsx:230
+#: src/components/vote-lock/migration/migration-modal.tsx:232
 msgid "Amount locked"
 msgstr "잠긴 수량"
 
@@ -2477,7 +2477,7 @@ msgid "Click retry or use individual approve buttons below."
 msgstr "재시도를 클릭하거나 아래의 개별 승인 버튼을 사용하세요."
 
 #: src/components/video-modal/index.tsx:58
-#: src/components/vote-lock/migration/migration-modal.tsx:290
+#: src/components/vote-lock/migration/migration-modal.tsx:292
 #: src/views/index-dtf/overview/components/charts/candlestick-tooltip.tsx:36
 #: src/views/index-dtf/overview/components/video-library/series-modal.tsx:129
 msgid "Close"
@@ -2487,7 +2487,7 @@ msgstr "닫기"
 msgid "Close DTF pages"
 msgstr "DTF 페이지 닫기"
 
-#: src/components/vote-lock/migration/migration-modal.tsx:152
+#: src/components/vote-lock/migration/migration-modal.tsx:154
 msgid "Close migration"
 msgstr "마이그레이션 닫기"
 
@@ -2937,6 +2937,10 @@ msgstr "실행을 확인할 수 없습니다 — 다시 시도하기 전에 Wall
 #: src/views/index-dtf/governance/views/propose/basket/components/submit-proposal-button.tsx:116
 msgid "Couldn't read this DTF's trade allowlist. Try again later."
 msgstr "이 DTF의 거래 허용 목록을 읽을 수 없습니다. 나중에 다시 시도하세요."
+
+#: src/components/vote-lock/migration/migration-modal.tsx:115
+msgid "Couldn't send the transaction · Retry"
+msgstr "트랜잭션을 보낼 수 없음 · 재시도"
 
 #: src/views/yield-dtf/issuance/components/zapV2/minters-modal/SocialMediaInput.tsx:208
 msgid "Count me in"
@@ -3654,7 +3658,7 @@ msgid "Don’t see your token?"
 msgstr "토큰이 보이지 않나요?"
 
 #: src/components/vote-lock/migration/migration-card.tsx:131
-#: src/components/vote-lock/migration/migration-modal.tsx:246
+#: src/components/vote-lock/migration/migration-modal.tsx:248
 msgid "Done"
 msgstr "완료"
 
@@ -4695,7 +4699,7 @@ msgid "Finding route..."
 msgstr "경로 찾는 중..."
 
 #: src/components/vote-lock/migration/migration-card.tsx:148
-#: src/components/vote-lock/migration/migration-modal.tsx:128
+#: src/components/vote-lock/migration/migration-modal.tsx:130
 msgid "Finish re-locking your {symbol}"
 msgstr "{symbol} 재잠금 완료하기"
 
@@ -6207,7 +6211,7 @@ msgstr "메타데이터"
 msgid "Migrate"
 msgstr "마이그레이션"
 
-#: src/components/vote-lock/migration/migration-modal.tsx:126
+#: src/components/vote-lock/migration/migration-modal.tsx:128
 msgid "Migration complete"
 msgstr "마이그레이션 완료"
 
@@ -6672,7 +6676,7 @@ msgstr ""
 msgid "No"
 msgstr "아니요"
 
-#: src/components/vote-lock/migration/migration-modal.tsx:273
+#: src/components/vote-lock/migration/migration-modal.tsx:275
 msgid "No {symbol} left in your wallet to lock."
 msgstr "Wallet에 잠글 {symbol}이(가) 남아 있지 않습니다."
 
@@ -6996,7 +7000,7 @@ msgstr "CFB LCAP 토큰 공식 문서"
 msgid "Old units"
 msgstr "이전 단위"
 
-#: src/components/vote-lock/migration/migration-modal.tsx:256
+#: src/components/vote-lock/migration/migration-modal.tsx:258
 msgid "Old vote-lock shares"
 msgstr "기존 vote-lock 지분"
 
@@ -8164,7 +8168,7 @@ msgstr "등급:"
 msgid "Raw"
 msgstr "원본"
 
-#: src/components/vote-lock/migration/migration-modal.tsx:129
+#: src/components/vote-lock/migration/migration-modal.tsx:131
 msgid "Re-lock your {symbol}"
 msgstr "{symbol} 다시 잠그기"
 
@@ -8268,7 +8272,7 @@ msgstr "기존 vote-lock에서 {symbol}을(를) 받습니다."
 msgid "Received"
 msgstr "수령됨"
 
-#: src/components/vote-lock/migration/migration-modal.tsx:274
+#: src/components/vote-lock/migration/migration-modal.tsx:276
 msgid "Received from your old-vault redemption"
 msgstr "기존 볼트 Redeem으로 받은 수량"
 
@@ -8380,19 +8384,19 @@ msgstr "Redeem 완료됨"
 msgid "Redeem using"
 msgstr "Redeem에 사용할 토큰"
 
-#: src/components/vote-lock/migration/migration-modal.tsx:146
+#: src/components/vote-lock/migration/migration-modal.tsx:148
 msgid "Redeem your old vote-lock, approve the {symbol}, then lock it in the {vault} vault."
 msgstr "기존 vote-lock을 Redeem하고 {symbol}을(를) 승인한 뒤 {vault} 볼트에 잠그세요."
 
-#: src/components/vote-lock/migration/migration-modal.tsx:139
+#: src/components/vote-lock/migration/migration-modal.tsx:141
 msgid "Redeem your old vote-lock, approve the RSR, then lock it in the shared vlRSR vault."
 msgstr "기존 vote-lock을 Redeem하고 RSR을 승인한 뒤 공유 vlRSR 볼트에 잠그세요."
 
-#: src/components/vote-lock/migration/migration-modal.tsx:147
+#: src/components/vote-lock/migration/migration-modal.tsx:149
 msgid "Redeem your old vote-lock, then lock the {symbol} in the {vault} vault."
 msgstr "기존 vote-lock을 Redeem한 뒤 {symbol}을(를) {vault} 볼트에 잠그세요."
 
-#: src/components/vote-lock/migration/migration-modal.tsx:140
+#: src/components/vote-lock/migration/migration-modal.tsx:142
 msgid "Redeem your old vote-lock, then lock the RSR in the shared vlRSR vault."
 msgstr "기존 vote-lock을 Redeem한 뒤 RSR을 공유 vlRSR 볼트에 잠그세요."
 
@@ -8501,7 +8505,7 @@ msgstr "일반 Mint "
 msgid "Regulatory and Compliance Risk: Tokenized equities and related on-chain transfer mechanisms may be subject to evolving regulatory interpretations and enforcement actions. Ondo Tokenized Stocks may also be subject to contractual eligibility requirements, permissioning, whitelisting, jurisdictional limitations, sanctions screening, or other compliance gating that can be changed or applied with little notice. If regulations or compliance requirements change, the DTF may be forced to restrict access, halt mints/redemptions, rebalance away from affected components, or wind down positions under adverse market conditions, potentially causing tracking error, reduced liquidity, and losses."
 msgstr "규제 및 컴플라이언스 위험: 토큰화 주식 및 관련 온체인 이전 메커니즘은 변화하는 규제 해석과 집행 조치의 대상이 될 수 있습니다. Ondo Tokenized Stocks는 또한 계약상의 적격성 요건, 허가, 화이트리스트, 관할권 제한, 제재 심사 또는 기타 컴플라이언스 게이트의 적용을 받을 수 있으며, 이는 예고 없이 변경되거나 적용될 수 있습니다. 규제 또는 컴플라이언스 요건이 변경되면 DTF는 접근 제한, Mint/Redeem 중단, 영향을 받는 구성 요소에서의 리밸런싱 또는 불리한 시장 상황에서의 포지션 청산을 강요받을 수 있으며, 이는 추적 오차, 유동성 감소 및 손실을 초래할 수 있습니다."
 
-#: src/components/vote-lock/migration/migration-modal.tsx:314
+#: src/components/vote-lock/migration/migration-modal.tsx:316
 msgid "Rejected it in your Safe? Sign again"
 msgstr "Safe에서 거부했나요? 다시 서명하기"
 
@@ -9917,8 +9921,8 @@ msgstr "장문으로 최신 소식 받기"
 
 #. placeholder {0}: index + 1
 #. placeholder {1}: stages.length
-#: src/components/vote-lock/migration/migration-modal.tsx:181
-#: src/components/vote-lock/migration/migration-modal.tsx:196
+#: src/components/vote-lock/migration/migration-modal.tsx:183
+#: src/components/vote-lock/migration/migration-modal.tsx:198
 msgid "Step {0} of {1}"
 msgstr "{0}/{1}단계"
 
@@ -11836,7 +11840,7 @@ msgid "View {0} on block explorer"
 msgstr "블록 탐색기에서 {0} 보기"
 
 #. placeholder {0}: titles[stage]
-#: src/components/vote-lock/migration/migration-modal.tsx:204
+#: src/components/vote-lock/migration/migration-modal.tsx:206
 msgid "View {0} transaction on explorer"
 msgstr "익스플로러에서 {0} 트랜잭션 보기"
 
@@ -12868,7 +12872,7 @@ msgstr "{0}이(가) Redeem되었습니다."
 msgid "Your {symbol} is locked in {vault}"
 msgstr "{symbol}이(가) {vault}에 잠겼습니다"
 
-#: src/components/vote-lock/migration/migration-modal.tsx:142
+#: src/components/vote-lock/migration/migration-modal.tsx:144
 msgid "Your {symbol} is locked in the {vault} vault."
 msgstr "{symbol}이(가) {vault} 볼트에 잠겼습니다."
 
@@ -12893,12 +12897,12 @@ msgstr "보유 중인 Decentralized Token Fund 투자."
 msgid "Your DTF has been minted."
 msgstr "DTF가 Mint되었습니다."
 
-#: src/components/vote-lock/migration/migration-modal.tsx:271
+#: src/components/vote-lock/migration/migration-modal.tsx:273
 msgid "Your full old-vault position"
 msgstr "기존 볼트의 전체 포지션"
 
 #. placeholder {0}: formatAmount(flow.estimate)
-#: src/components/vote-lock/migration/migration-modal.tsx:270
+#: src/components/vote-lock/migration/migration-modal.tsx:272
 msgid "Your full old-vault position · about {0} {symbol}"
 msgstr "기존 볼트의 전체 포지션 · 약 {0} {symbol}"
 
@@ -12938,15 +12942,15 @@ msgstr "최근 온체인 활동."
 msgid "Your redeemable"
 msgstr "상환 가능 금액"
 
-#: src/components/vote-lock/migration/migration-modal.tsx:144
+#: src/components/vote-lock/migration/migration-modal.tsx:146
 msgid "Your redeemed {symbol} is in your wallet."
 msgstr "Redeem한 {symbol}이(가) Wallet에 있습니다."
 
-#: src/components/vote-lock/migration/migration-modal.tsx:137
+#: src/components/vote-lock/migration/migration-modal.tsx:139
 msgid "Your redeemed RSR is in your wallet."
 msgstr "Redeem한 RSR이 Wallet에 있습니다."
 
-#: src/components/vote-lock/migration/migration-modal.tsx:135
+#: src/components/vote-lock/migration/migration-modal.tsx:137
 msgid "Your RSR is locked in the shared vlRSR vault."
 msgstr "RSR이 공유 vlRSR 볼트에 잠겼습니다."
 

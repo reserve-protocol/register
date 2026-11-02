@@ -503,11 +503,11 @@ msgstr ""
 msgid "{symbol} governance 1.1.0 available"
 msgstr ""
 
-#: src/components/vote-lock/migration/migration-modal.tsx:258
+#: src/components/vote-lock/migration/migration-modal.tsx:260
 msgid "{symbol} to approve"
 msgstr ""
 
-#: src/components/vote-lock/migration/migration-modal.tsx:259
+#: src/components/vote-lock/migration/migration-modal.tsx:261
 msgid "{symbol} to lock"
 msgstr ""
 
@@ -1280,7 +1280,7 @@ msgstr ""
 msgid "Amount"
 msgstr ""
 
-#: src/components/vote-lock/migration/migration-modal.tsx:230
+#: src/components/vote-lock/migration/migration-modal.tsx:232
 msgid "Amount locked"
 msgstr ""
 
@@ -2477,7 +2477,7 @@ msgid "Click retry or use individual approve buttons below."
 msgstr ""
 
 #: src/components/video-modal/index.tsx:58
-#: src/components/vote-lock/migration/migration-modal.tsx:290
+#: src/components/vote-lock/migration/migration-modal.tsx:292
 #: src/views/index-dtf/overview/components/charts/candlestick-tooltip.tsx:36
 #: src/views/index-dtf/overview/components/video-library/series-modal.tsx:129
 msgid "Close"
@@ -2487,7 +2487,7 @@ msgstr ""
 msgid "Close DTF pages"
 msgstr ""
 
-#: src/components/vote-lock/migration/migration-modal.tsx:152
+#: src/components/vote-lock/migration/migration-modal.tsx:154
 msgid "Close migration"
 msgstr ""
 
@@ -2936,6 +2936,10 @@ msgstr ""
 
 #: src/views/index-dtf/governance/views/propose/basket/components/submit-proposal-button.tsx:116
 msgid "Couldn't read this DTF's trade allowlist. Try again later."
+msgstr ""
+
+#: src/components/vote-lock/migration/migration-modal.tsx:115
+msgid "Couldn't send the transaction · Retry"
 msgstr ""
 
 #: src/views/yield-dtf/issuance/components/zapV2/minters-modal/SocialMediaInput.tsx:208
@@ -3654,7 +3658,7 @@ msgid "Don’t see your token?"
 msgstr ""
 
 #: src/components/vote-lock/migration/migration-card.tsx:131
-#: src/components/vote-lock/migration/migration-modal.tsx:246
+#: src/components/vote-lock/migration/migration-modal.tsx:248
 msgid "Done"
 msgstr ""
 
@@ -4695,7 +4699,7 @@ msgid "Finding route..."
 msgstr ""
 
 #: src/components/vote-lock/migration/migration-card.tsx:148
-#: src/components/vote-lock/migration/migration-modal.tsx:128
+#: src/components/vote-lock/migration/migration-modal.tsx:130
 msgid "Finish re-locking your {symbol}"
 msgstr ""
 
@@ -6207,7 +6211,7 @@ msgstr ""
 msgid "Migrate"
 msgstr ""
 
-#: src/components/vote-lock/migration/migration-modal.tsx:126
+#: src/components/vote-lock/migration/migration-modal.tsx:128
 msgid "Migration complete"
 msgstr ""
 
@@ -6672,7 +6676,7 @@ msgstr ""
 msgid "No"
 msgstr ""
 
-#: src/components/vote-lock/migration/migration-modal.tsx:273
+#: src/components/vote-lock/migration/migration-modal.tsx:275
 msgid "No {symbol} left in your wallet to lock."
 msgstr ""
 
@@ -6996,7 +7000,7 @@ msgstr ""
 msgid "Old units"
 msgstr ""
 
-#: src/components/vote-lock/migration/migration-modal.tsx:256
+#: src/components/vote-lock/migration/migration-modal.tsx:258
 msgid "Old vote-lock shares"
 msgstr ""
 
@@ -8164,7 +8168,7 @@ msgstr ""
 msgid "Raw"
 msgstr ""
 
-#: src/components/vote-lock/migration/migration-modal.tsx:129
+#: src/components/vote-lock/migration/migration-modal.tsx:131
 msgid "Re-lock your {symbol}"
 msgstr ""
 
@@ -8268,7 +8272,7 @@ msgstr ""
 msgid "Received"
 msgstr ""
 
-#: src/components/vote-lock/migration/migration-modal.tsx:274
+#: src/components/vote-lock/migration/migration-modal.tsx:276
 msgid "Received from your old-vault redemption"
 msgstr ""
 
@@ -8380,19 +8384,19 @@ msgstr ""
 msgid "Redeem using"
 msgstr ""
 
-#: src/components/vote-lock/migration/migration-modal.tsx:146
+#: src/components/vote-lock/migration/migration-modal.tsx:148
 msgid "Redeem your old vote-lock, approve the {symbol}, then lock it in the {vault} vault."
 msgstr ""
 
-#: src/components/vote-lock/migration/migration-modal.tsx:139
+#: src/components/vote-lock/migration/migration-modal.tsx:141
 msgid "Redeem your old vote-lock, approve the RSR, then lock it in the shared vlRSR vault."
 msgstr ""
 
-#: src/components/vote-lock/migration/migration-modal.tsx:147
+#: src/components/vote-lock/migration/migration-modal.tsx:149
 msgid "Redeem your old vote-lock, then lock the {symbol} in the {vault} vault."
 msgstr ""
 
-#: src/components/vote-lock/migration/migration-modal.tsx:140
+#: src/components/vote-lock/migration/migration-modal.tsx:142
 msgid "Redeem your old vote-lock, then lock the RSR in the shared vlRSR vault."
 msgstr ""
 
@@ -8501,7 +8505,7 @@ msgstr ""
 msgid "Regulatory and Compliance Risk: Tokenized equities and related on-chain transfer mechanisms may be subject to evolving regulatory interpretations and enforcement actions. Ondo Tokenized Stocks may also be subject to contractual eligibility requirements, permissioning, whitelisting, jurisdictional limitations, sanctions screening, or other compliance gating that can be changed or applied with little notice. If regulations or compliance requirements change, the DTF may be forced to restrict access, halt mints/redemptions, rebalance away from affected components, or wind down positions under adverse market conditions, potentially causing tracking error, reduced liquidity, and losses."
 msgstr ""
 
-#: src/components/vote-lock/migration/migration-modal.tsx:314
+#: src/components/vote-lock/migration/migration-modal.tsx:316
 msgid "Rejected it in your Safe? Sign again"
 msgstr ""
 
@@ -9917,8 +9921,8 @@ msgstr ""
 
 #. placeholder {0}: index + 1
 #. placeholder {1}: stages.length
-#: src/components/vote-lock/migration/migration-modal.tsx:181
-#: src/components/vote-lock/migration/migration-modal.tsx:196
+#: src/components/vote-lock/migration/migration-modal.tsx:183
+#: src/components/vote-lock/migration/migration-modal.tsx:198
 msgid "Step {0} of {1}"
 msgstr ""
 
@@ -11825,7 +11829,7 @@ msgid "View {0} on block explorer"
 msgstr ""
 
 #. placeholder {0}: titles[stage]
-#: src/components/vote-lock/migration/migration-modal.tsx:204
+#: src/components/vote-lock/migration/migration-modal.tsx:206
 msgid "View {0} transaction on explorer"
 msgstr ""
 
@@ -12857,7 +12861,7 @@ msgstr ""
 msgid "Your {symbol} is locked in {vault}"
 msgstr ""
 
-#: src/components/vote-lock/migration/migration-modal.tsx:142
+#: src/components/vote-lock/migration/migration-modal.tsx:144
 msgid "Your {symbol} is locked in the {vault} vault."
 msgstr ""
 
@@ -12882,12 +12886,12 @@ msgstr ""
 msgid "Your DTF has been minted."
 msgstr ""
 
-#: src/components/vote-lock/migration/migration-modal.tsx:271
+#: src/components/vote-lock/migration/migration-modal.tsx:273
 msgid "Your full old-vault position"
 msgstr ""
 
 #. placeholder {0}: formatAmount(flow.estimate)
-#: src/components/vote-lock/migration/migration-modal.tsx:270
+#: src/components/vote-lock/migration/migration-modal.tsx:272
 msgid "Your full old-vault position · about {0} {symbol}"
 msgstr ""
 
@@ -12927,15 +12931,15 @@ msgstr ""
 msgid "Your redeemable"
 msgstr ""
 
-#: src/components/vote-lock/migration/migration-modal.tsx:144
+#: src/components/vote-lock/migration/migration-modal.tsx:146
 msgid "Your redeemed {symbol} is in your wallet."
 msgstr ""
 
-#: src/components/vote-lock/migration/migration-modal.tsx:137
+#: src/components/vote-lock/migration/migration-modal.tsx:139
 msgid "Your redeemed RSR is in your wallet."
 msgstr ""
 
-#: src/components/vote-lock/migration/migration-modal.tsx:135
+#: src/components/vote-lock/migration/migration-modal.tsx:137
 msgid "Your RSR is locked in the shared vlRSR vault."
 msgstr ""
 
