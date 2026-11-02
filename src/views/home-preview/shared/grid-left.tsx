@@ -4,7 +4,7 @@ import { EusdFlow } from './eusd-flow'
 import { usd, usdCompact } from './format'
 import SharpHeroChart, { HeroChartStyle } from './sharp-hero-chart'
 
-const COPY = 'Every deposit, card swipe and transfer in UGLYCASH runs on eUSD'
+import { HERO_COPY as COPY } from './copy'
 
 export const FlowLeft = () => (
   <div className="flex w-full max-w-[560px] flex-col items-center text-center">

@@ -1,13 +1,7 @@
+import { Skeleton } from '@/components/ui/skeleton'
 import { cn } from '@/lib/utils'
-import { FEATURE_CARD_ASSET_TICKER_CLASS_NAME } from '@/views/home/components/highlighted-dtfs/constants'
-import { ArrowRight, Globe2 } from 'lucide-react'
-import {
-  type RefObject,
-  useLayoutEffect,
-  useMemo,
-  useRef,
-  useState,
-} from 'react'
+import { Globe2 } from 'lucide-react'
+import { type RefObject, useMemo, useRef } from 'react'
 import { createPortal } from 'react-dom'
 import {
   Bar,
@@ -17,83 +11,24 @@ import {
   XAxis,
   YAxis,
 } from 'recharts'
-import uglycashCard from '../assets/uglycash-card.png'
 import {
   CATEGORIES,
   CategoryKey,
   DayPoint,
   GLOBAL_COUNTRIES,
   GLOBAL_COUNTRY_COUNT,
-  HEADLINE,
-  MonthPoint,
-  SERIES,
-  monthly,
-  weekly,
 } from '../mock/ugly-cash-series'
 import ActiveMap from './active-map'
 import { CATEGORY_COLORS } from './category-colors'
 import { countCompact, monthYear, shortDate, usd, usdCompact } from './format'
-import { EUSD_ROUTE, HomeCard } from './home-cards'
+import { AutoTicker, EUSD_ROUTE, HomeCard } from './card-shell'
+import { FintechCardV18, UglyCashCardV18 } from './static-cards'
+
+export { AutoTicker, FintechCardV18, UglyCashCardV18 }
 import ModernArea from './modern-area'
 import { glassClass } from './modern-bits'
-import { UglyCashLogo } from './page-bits'
+import { PeriodPoint, UglycashData, useUglycashData } from './uglycash-data'
 import { useReducedMotion } from './use-reduced-motion'
-
-const TICKER_PX_PER_SECOND = 48
-
-type TickerItem = { key: string; label: string; value?: string; color?: string }
-
-// Always moving at one shared speed: duration follows the measured width of each list.
-export const AutoTicker = ({ items }: { items: TickerItem[] }) => {
-  const trackRef = useRef<HTMLDivElement>(null)
-  const [duration, setDuration] = useState(20)
-
-  useLayoutEffect(() => {
-    const el = trackRef.current
-    if (!el) return
-    setDuration(Math.max(8, el.scrollWidth / 2 / TICKER_PX_PER_SECOND))
-  }, [items])
-
-  return (
-    <div className={FEATURE_CARD_ASSET_TICKER_CLASS_NAME}>
-      <div className="pointer-events-none absolute inset-y-0 -right-px z-10 w-20 bg-gradient-to-l from-card via-card to-transparent" />
-      <div className="flex overflow-hidden pl-2 pr-12">
-        <div
-          ref={trackRef}
-          className="flex w-max gap-0 motion-reduce:[animation:none!important]"
-          style={{
-            animation: `collateral-assets-scroll ${duration}s linear infinite`,
-          }}
-        >
-          {[...items, ...items].map((item, i) => (
-            <div
-              key={`${item.key}-${i}`}
-              className="flex shrink-0 items-center gap-1 rounded-full px-1.5 py-1"
-            >
-              {item.color && (
-                <span
-                  className="ml-1 h-2 w-2 rounded-full"
-                  style={{ background: item.color }}
-                  aria-hidden="true"
-                />
-              )}
-              <span className="ml-1 text-sm text-foreground">{item.label}</span>
-              {item.value && (
-                <span className="text-sm text-legend">{item.value}</span>
-              )}
-            </div>
-          ))}
-        </div>
-      </div>
-      <span
-        className="absolute right-2 top-1/2 z-20 inline-flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded-full bg-muted text-foreground lg:bg-card lg:group-hover:bg-muted"
-        aria-hidden="true"
-      >
-        <ArrowRight size={16} />
-      </span>
-    </div>
-  )
-}
 
 // Cards clip their media, so tooltips render in a portal positioned over the page instead.
 const PortalTip = ({
@@ -127,20 +62,20 @@ const PortalTip = ({
   )
 }
 
-type PeriodPoint = MonthPoint & { label?: string }
-
 const MonthBody = ({
   m,
   metric,
   order,
+  categories,
 }: {
   m: PeriodPoint
   metric: 'volume' | 'count'
   order?: CategoryKey[]
+  categories: UglycashData['categories']
 }) => {
   const rows = order
     ? order.map((key) => CATEGORIES.find((c) => c.key === key)!)
-    : [...CATEGORIES].reverse()
+    : [...categories].reverse()
   const fmt = (v: number) =>
     metric === 'volume' ? usd(v) : v.toLocaleString('en-US')
   return (
@@ -176,10 +111,11 @@ const MonthBody = ({
 const MonthTip = (props: {
   active?: boolean
   coordinate?: { x: number; y: number }
-  payload?: { payload: MonthPoint }[]
+  payload?: { payload: PeriodPoint }[]
   anchor: RefObject<HTMLElement>
   metric: 'volume' | 'count'
   order?: CategoryKey[]
+  categories: UglycashData['categories']
 }) => (
   <PortalTip {...props}>
     {props.payload?.[0] && (
@@ -187,6 +123,7 @@ const MonthTip = (props: {
         m={props.payload[0].payload}
         metric={props.metric}
         order={props.order}
+        categories={props.categories}
       />
     )}
   </PortalTip>
@@ -238,8 +175,10 @@ const EusdIcon = () => (
 
 export const HeldCardV18 = () => {
   const anchor = useRef<HTMLDivElement>(null)
+  const { daily, headline: HEADLINE, status } = useUglycashData()
   return (
     <HomeCard
+      revealed={status && status === 'ready'}
       href={EUSD_ROUTE}
       icon={<EusdIcon />}
       title="eUSD held in UGLYCASH"
@@ -247,7 +186,7 @@ export const HeldCardV18 = () => {
       media={
         <div ref={anchor} className="h-full">
           <ModernArea
-            data={SERIES}
+            data={daily}
             dataKey="texturedBalance"
             curve="linear"
             strokeWidth={2}
@@ -282,44 +221,33 @@ export const HeldCardV18 = () => {
   )
 }
 
-const months = monthly()
-const lastFull = months[months.length - 2]
-const monthName = monthYear(`${lastFull.month}-01`).split(' ')[0]
-
-const weeks: PeriodPoint[] = weekly(SERIES).map((w) => ({
-  month: w.date,
-  volume: w.volume,
-  count: w.count,
-  totalVolume: w.totalVolume,
-  totalCount: w.totalCount,
-  partial: false,
-  label: `Week of ${shortDate(w.date)}`,
-}))
-
 type Scale = 'month' | 'week'
 
 // Tooltip rows follow the latest period's ranking, so the order stays the same on every hover.
-const latestOrder = (last: PeriodPoint, metric: 'volume' | 'count') =>
-  [...CATEGORIES]
+const latestOrder = (
+  last: PeriodPoint,
+  metric: 'volume' | 'count',
+  categories: UglycashData['categories']
+) =>
+  [...categories]
     .sort((a, b) => last[metric][b.key] - last[metric][a.key])
     .map((c) => c.key)
 
-const PERIODS: Record<
-  Scale,
-  { rows: PeriodPoint[]; last: PeriodPoint; suffix: string; noun: string }
-> = {
-  month: {
-    rows: months,
-    last: lastFull,
-    suffix: `in ${monthName}`,
-    noun: 'Monthly',
-  },
-  week: {
-    rows: weeks,
-    last: weeks[weeks.length - 1],
-    suffix: 'last week',
-    noun: 'Weekly',
-  },
+const usePeriods = (scale: Scale, metric: 'volume' | 'count') => {
+  const data = useUglycashData()
+  const all = scale === 'month' ? data.monthly : data.weekly
+  const complete = all.filter((p) => !p.partial)
+  const last = complete[complete.length - 1]
+  const monthName = monthYear(`${last.month}-01`).split(' ')[0]
+  return {
+    rows: data.hidePartialPeriods ? complete : all,
+    last,
+    suffix: scale === 'month' ? `in ${monthName}` : 'last week',
+    noun: scale === 'month' ? 'Monthly' : 'Weekly',
+    categories: data.categoriesByMetric[metric],
+    headline: data.headline,
+    revealed: data.status && data.status === 'ready',
+  }
 }
 
 export const VolumeCardV18 = ({
@@ -331,7 +259,15 @@ export const VolumeCardV18 = ({
 }) => {
   const anchor = useRef<HTMLDivElement>(null)
   const reduced = useReducedMotion()
-  const { rows: periodRows, last, suffix, noun } = PERIODS[scale]
+  const {
+    rows: periodRows,
+    last,
+    suffix,
+    noun,
+    categories,
+    headline: HEADLINE,
+    revealed,
+  } = usePeriods(scale, 'volume')
   const rows = useMemo(
     () => periodRows.map((m) => ({ ...m, ...m.volume })),
     [periodRows]
@@ -339,6 +275,7 @@ export const VolumeCardV18 = ({
   return (
     <HomeCard
       icon={<EusdIcon />}
+      revealed={revealed}
       title="eUSD volume in UGLYCASH"
       value={`${usd(last.totalVolume)} ${suffix}`}
       media={
@@ -356,20 +293,23 @@ export const VolumeCardV18 = ({
                   <MonthTip
                     anchor={anchor}
                     metric="volume"
+                    categories={categories}
                     order={
-                      sortTooltip ? latestOrder(last, 'volume') : undefined
+                      sortTooltip
+                        ? latestOrder(last, 'volume', categories)
+                        : undefined
                     }
                   />
                 }
                 cursor={{ fill: 'hsl(var(--primary))', fillOpacity: 0.06 }}
               />
-              {CATEGORIES.map((c, i) => (
+              {categories.map((c, i) => (
                 <Bar
                   key={c.key}
                   dataKey={c.key}
                   stackId="m"
                   fill={CATEGORY_COLORS[c.key]}
-                  radius={i === CATEGORIES.length - 1 ? [3, 3, 0, 0] : 0}
+                  radius={i === categories.length - 1 ? [3, 3, 0, 0] : 0}
                   isAnimationActive={!reduced}
                   animationDuration={800}
                 />
@@ -380,7 +320,7 @@ export const VolumeCardV18 = ({
       }
       tickerSlot={
         <AutoTicker
-          items={CATEGORIES.map((c) => ({
+          items={categories.map((c) => ({
             key: c.key,
             label: c.label,
             value: usdCompact(last.volume[c.key]),
@@ -401,7 +341,15 @@ export const TransactionsCardV18 = ({
   sortTooltip?: boolean
 }) => {
   const anchor = useRef<HTMLDivElement>(null)
-  const { rows: periodRows, last, suffix, noun } = PERIODS[scale]
+  const {
+    rows: periodRows,
+    last,
+    suffix,
+    noun,
+    categories,
+    headline: HEADLINE,
+    revealed,
+  } = usePeriods(scale, 'count')
   const rows = useMemo(
     () => periodRows.map((m) => ({ ...m, date: m.month, total: m.totalCount })),
     [periodRows]
@@ -409,6 +357,7 @@ export const TransactionsCardV18 = ({
   return (
     <HomeCard
       icon={<EusdIcon />}
+      revealed={revealed}
       title="eUSD transactions in UGLYCASH"
       value={`${last.totalCount.toLocaleString('en-US')} ${suffix}`}
       media={
@@ -422,7 +371,12 @@ export const TransactionsCardV18 = ({
               <MonthTip
                 anchor={anchor}
                 metric="count"
-                order={sortTooltip ? latestOrder(last, 'count') : undefined}
+                categories={categories}
+                order={
+                  sortTooltip
+                    ? latestOrder(last, 'count', categories)
+                    : undefined
+                }
               />
             }
           />
@@ -430,7 +384,7 @@ export const TransactionsCardV18 = ({
       }
       tickerSlot={
         <AutoTicker
-          items={CATEGORIES.map((c) => ({
+          items={categories.map((c) => ({
             key: c.key,
             label: c.label,
             value: countCompact(last.count[c.key]),
@@ -474,109 +428,30 @@ export const CountriesCardV18 = () => (
   />
 )
 
-export const UglyCashCardV18 = ({ shadow = true }: { shadow?: boolean }) => (
+// Holds the slot of a data card while UGLYCASH metrics load, or says plainly that they are unavailable.
+export const DataCardPlaceholder = ({
+  title,
+  state,
+}: {
+  title: string
+  state: 'loading' | 'error'
+}) => (
   <HomeCard
-    href="https://ugly.cash"
-    external
-    icon={<UglyCashLogo className="h-5 self-start" />}
-    title="Meet UGLYCASH"
-    value="Get paid, send, save and spend in dollars"
+    icon={<EusdIcon />}
+    title={title}
+    value={state === 'error' ? 'Data unavailable right now' : undefined}
     media={
-      <div className="flex h-full items-center justify-center">
-        <img
-          src={uglycashCard}
-          alt="The UGLYCASH Visa card"
-          width={500}
-          height={315}
-          className={cn(
-            'w-[62%] max-w-[300px] -rotate-6 rounded-xl transition-transform duration-500 group-hover:rotate-0',
-            shadow && 'shadow-[0_20px_40px_rgba(0,0,0,0.2)]'
-          )}
-        />
-      </div>
+      state === 'loading' ? (
+        <div className="flex h-full flex-col justify-end gap-3 px-5 pb-4">
+          <Skeleton className="h-7 w-40" />
+          <Skeleton className="h-full w-full rounded-xl" />
+        </div>
+      ) : (
+        <div className="flex h-full items-center justify-center px-6 text-center text-sm text-legend">
+          UGLYCASH metrics could not be loaded. The rest of the page still
+          works.
+        </div>
+      )
     }
-    tickerSlot={
-      <AutoTicker
-        items={[
-          { key: 'card', label: 'Visa card' },
-          { key: 'account', label: 'Dollar account' },
-          { key: 'transfers', label: 'Global transfers' },
-          { key: 'savings', label: 'Savings' },
-        ]}
-      />
-    }
-    description="A dollar account and Visa card for people around the world. UGLYCASH is the car. eUSD is the battery."
   />
-)
-
-const ORBIT = ['Your app', 'UGLYCASH', 'Your card', 'Your wallet']
-
-// Apps orbit one eUSD core: many fintechs can run on the same dollar (different from the hero's inflow).
-const EusdOrbit = () => (
-  <div className="relative mx-auto h-[220px] w-[220px]" aria-hidden="true">
-    <style>{`
-      @keyframes hp-orbit { to { transform: rotate(360deg); } }
-      @keyframes hp-orbit-counter { to { transform: rotate(-360deg); } }
-      @keyframes hp-ring { 0% { transform: scale(0.6); opacity: 0.5; } 100% { transform: scale(1.6); opacity: 0; } }
-      .hp-orbit { animation: hp-orbit 22s linear infinite; }
-      .hp-orbit-label { animation: hp-orbit-counter 22s linear infinite; }
-      .hp-ring { animation: hp-ring 3s ease-out infinite; }
-      @media (prefers-reduced-motion: reduce) { .hp-orbit, .hp-orbit-label, .hp-ring { animation: none; } }
-    `}</style>
-    <span className="hp-ring absolute inset-[70px] rounded-full border-2 border-white/50" />
-    <span
-      className="hp-ring absolute inset-[70px] rounded-full border-2 border-white/40"
-      style={{ animationDelay: '1.5s' }}
-    />
-    <span className="absolute inset-[10px] rounded-full border border-dashed border-white/30" />
-    <div className="hp-orbit absolute inset-0">
-      {ORBIT.map((label, i) => {
-        const angle = (i / ORBIT.length) * 2 * Math.PI
-        const x = 110 + 100 * Math.cos(angle)
-        const y = 110 + 100 * Math.sin(angle)
-        return (
-          <span
-            key={label}
-            className="absolute -translate-x-1/2 -translate-y-1/2"
-            style={{ left: x, top: y }}
-          >
-            <span
-              className={cn(
-                'hp-orbit-label block whitespace-nowrap rounded-full px-3 py-1 text-xs shadow-[0_8px_20px_rgba(0,0,0,0.15)]',
-                label === 'UGLYCASH'
-                  ? 'bg-foreground text-background'
-                  : 'bg-card text-primary'
-              )}
-            >
-              {label}
-            </span>
-          </span>
-        )
-      })}
-    </div>
-    <div className="absolute left-1/2 top-1/2 flex h-16 w-16 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-card shadow-[0_10px_30px_rgba(0,0,0,0.2)]">
-      <img src="/svgs/eusd.svg" alt="" className="h-12 w-12" />
-    </div>
-  </div>
-)
-
-export const FintechCardV18 = () => (
-  <a
-    href="mailto:partners@reserve.org"
-    className="group relative flex min-h-[460px] w-full flex-col justify-between overflow-hidden rounded-3xl bg-primary p-6 text-primary-foreground"
-  >
-    <div className="pt-4">
-      <EusdOrbit />
-    </div>
-    <div className="relative flex flex-col gap-3">
-      <p className="text-3xl leading-tight">Building a fintech?</p>
-      <p className="max-w-[40ch] text-primary-foreground/80">
-        Launch your own dollar app on eUSD, the way UGLYCASH did. Run it
-        yourself, or we can help.
-      </p>
-      <span className="mt-2 inline-flex h-11 items-center gap-2 self-start rounded-full bg-card px-5 text-primary transition-transform group-hover:translate-x-1">
-        Talk to us <ArrowRight size={16} aria-hidden="true" />
-      </span>
-    </div>
-  </a>
 )

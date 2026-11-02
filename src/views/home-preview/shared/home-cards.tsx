@@ -1,17 +1,7 @@
 import { cn } from '@/lib/utils'
-import { ChainId } from '@/utils/chains'
-import { EUSD_ADDRESS } from '@/utils/addresses'
-import { getTokenRoute } from '@/utils'
-import {
-  FEATURE_CARD_ASSET_TICKER_CLASS_NAME,
-  FEATURE_CARD_CLASS_NAME,
-  FEATURE_CARD_HEADER_CLASS_NAME,
-  FEATURE_CARD_MEDIA_CLASS_NAME,
-} from '@/views/home/components/highlighted-dtfs/constants'
 import { CollateralAssetAnimationStyles } from '@/views/home/components/highlighted-dtfs/collateral-asset-animation-styles'
 import { ArrowRight, Globe2, Play } from 'lucide-react'
 import { useMemo } from 'react'
-import { Link } from 'react-router-dom'
 import {
   Bar,
   BarChart,
@@ -37,155 +27,9 @@ import { countCompact, monthYear, usd, usdCompact } from './format'
 import ModernArea from './modern-area'
 import { BalanceGlassTooltip, glassClass } from './modern-bits'
 import { UglyCashLogo } from './page-bits'
+import { EUSD_ROUTE, HomeCard, HomeTicker } from './card-shell'
 
-export const EUSD_ROUTE = getTokenRoute(
-  EUSD_ADDRESS[ChainId.Mainnet],
-  ChainId.Mainnet
-)
-
-type TickerItem = { key: string; label: string; value?: string; color?: string }
-
-// Mirrors FeatureCardAssetTicker: scrolls on hover on desktop, always on touch screens.
-export const HomeTicker = ({ items }: { items: TickerItem[] }) => (
-  <div className={FEATURE_CARD_ASSET_TICKER_CLASS_NAME}>
-    <div
-      className={cn(
-        'pointer-events-none absolute inset-y-0 -right-px z-10 w-20 bg-gradient-to-l from-card via-card to-transparent opacity-100 transition-opacity duration-150',
-        'lg:opacity-65 lg:group-hover:opacity-100 lg:group-focus-within:opacity-100'
-      )}
-    />
-    <div className="flex overflow-hidden pl-2 pr-12">
-      <div
-        className={cn(
-          'flex w-max gap-0 motion-reduce:animate-none',
-          '[animation:collateral-assets-scroll_18s_linear_infinite]',
-          'lg:[animation:none] lg:group-hover:[animation:collateral-assets-scroll_18s_linear_infinite]'
-        )}
-      >
-        {[...items, ...items].map((item, i) => (
-          <div
-            key={`${item.key}-${i}`}
-            className="flex shrink-0 items-center gap-1 rounded-full px-1.5 py-1"
-          >
-            {item.color && (
-              <span
-                className="ml-1 h-2 w-2 rounded-full"
-                style={{ background: item.color }}
-                aria-hidden="true"
-              />
-            )}
-            <span className="ml-1 text-sm text-foreground">{item.label}</span>
-            {item.value && (
-              <span className="text-sm text-legend">{item.value}</span>
-            )}
-          </div>
-        ))}
-      </div>
-    </div>
-    <span
-      className={cn(
-        'absolute right-2 top-1/2 z-20 inline-flex h-8 w-8 -translate-y-1/2 shrink-0 items-center justify-center rounded-full bg-muted text-foreground opacity-100 transition-colors duration-150',
-        'lg:bg-card lg:opacity-0 lg:group-hover:bg-muted lg:group-hover:opacity-100 lg:group-focus-within:opacity-100'
-      )}
-      aria-hidden="true"
-    >
-      <ArrowRight size={16} />
-    </span>
-  </div>
-)
-
-const CardRoot = ({
-  href,
-  external,
-  className,
-  children,
-}: {
-  href?: string
-  external?: boolean
-  className?: string
-  children: React.ReactNode
-}) => {
-  const cls = cn(FEATURE_CARD_CLASS_NAME, 'select-none', className)
-  if (!href) return <article className={cls}>{children}</article>
-  if (external || href.startsWith('mailto:'))
-    return (
-      <a
-        href={href}
-        target={external ? '_blank' : undefined}
-        rel="noreferrer"
-        className={cls}
-      >
-        {children}
-      </a>
-    )
-  return (
-    <Link to={href} className={cls}>
-      {children}
-    </Link>
-  )
-}
-
-export const HomeCard = ({
-  href,
-  external,
-  icon,
-  title,
-  value,
-  note,
-  media,
-  mediaClassName,
-  ticker,
-  tickerSlot,
-  description,
-  action,
-  className,
-}: {
-  href?: string
-  external?: boolean
-  icon?: React.ReactNode
-  title: string
-  value?: string
-  note?: string
-  media: React.ReactNode
-  mediaClassName?: string
-  ticker?: TickerItem[]
-  tickerSlot?: React.ReactNode
-  description?: React.ReactNode
-  action?: React.ReactNode
-  className?: string
-}) => (
-  <CardRoot href={href} external={external} className={className}>
-    <div className={FEATURE_CARD_MEDIA_CLASS_NAME}>
-      <div className={FEATURE_CARD_HEADER_CLASS_NAME}>
-        {icon}
-        <h2 className="mt-3 text-xl leading-tight">{title}</h2>
-        {value && (
-          <p className="flex flex-wrap items-baseline gap-x-3 text-lg">
-            <span className="tabular-nums">{value}</span>
-            {note && (
-              <span
-                className={cn(
-                  'tabular-nums',
-                  /^[+-]/.test(note) ? 'text-success' : 'text-legend'
-                )}
-              >
-                {note}
-              </span>
-            )}
-          </p>
-        )}
-      </div>
-      <div className={cn('relative h-[180px]', mediaClassName)}>{media}</div>
-    </div>
-    {tickerSlot ?? (ticker && <HomeTicker items={ticker} />)}
-    {(description || action) && (
-      <div className="flex flex-col gap-2 px-4 pb-4 pt-2 text-sm">
-        {description && <p className="text-legend">{description}</p>}
-        {action}
-      </div>
-    )}
-  </CardRoot>
-)
+export { EUSD_ROUTE, HomeCard, HomeTicker }
 
 const EusdIcon = () => (
   <img src="/svgs/eusd.svg" alt="" aria-hidden="true" className="h-8 w-8" />

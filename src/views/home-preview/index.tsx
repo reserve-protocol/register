@@ -1,6 +1,8 @@
-import Spinner from '@/components/ui/spinner'
 import { lazy, Suspense } from 'react'
 import { Link, useParams } from 'react-router-dom'
+import PreviewFallback from './fallback'
+// Loaded with the page, so the globe and map paint on the first render and only data cards wait.
+import V25Live from './variants/v25-live'
 
 export const VARIANTS = [
   {
@@ -123,6 +125,11 @@ export const VARIANTS = [
     name: 'Home · globe with weekly charts',
     component: lazy(() => import('./variants/v24-globe-weekly')),
   },
+  {
+    id: 'v25',
+    name: 'Home · globe with live UGLYCASH data',
+    component: V25Live,
+  },
 ] as const
 
 const Gallery = () => (
@@ -146,7 +153,7 @@ const HomePreview = () => {
   if (!match) return <Gallery />
   const Variant = match.component
   return (
-    <Suspense fallback={<Spinner />}>
+    <Suspense fallback={<PreviewFallback />}>
       <Variant />
     </Suspense>
   )

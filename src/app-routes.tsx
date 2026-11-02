@@ -52,8 +52,7 @@ import EarnYieldDTF from './views/earn/views/yield-dtf'
 import EarnDefi from './views/earn/views/defi'
 import Home from './views/home'
 import Discover from './views/home/discover'
-
-const HomePreview = lazy(() => import('./views/home-preview'))
+import HomePreview from './views/home-preview'
 
 const AsyncMintWizard = lazy(
   () => import('./views/index-dtf/issuance/async-mint')
@@ -64,14 +63,7 @@ const AppRoutes = () => (
   <Routes>
     <Route path={ROUTES.HOME} element={<Home />} />
     <Route path={ROUTES.DISCOVER} element={<Discover />} />
-    <Route
-      path="/home-preview/:variant?"
-      element={
-        <Suspense fallback={<Spinner />}>
-          <HomePreview />
-        </Suspense>
-      }
-    />
+    <Route path="/home-preview/:variant?" element={<HomePreview />} />
     {/* Internal routes */}
     <Route path="/internal/dtf-list" element={<InternalDTFList />} />
     <Route path="/internal/dtf-listed" element={<InternalDTFListed />} />
