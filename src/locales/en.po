@@ -539,8 +539,8 @@ msgstr ""
 msgid "{ticker} token addresses"
 msgstr ""
 
-#: src/views/index-dtf/auctions/views/rebalance/components/cowbot/cowbot-card.tsx:52
-#: src/views/index-dtf/auctions/views/rebalance/components/cowbot/cowbot-card.tsx:88
+#: src/views/index-dtf/auctions/views/rebalance/components/cowbot/cowbot-card.tsx:53
+#: src/views/index-dtf/auctions/views/rebalance/components/cowbot/cowbot-card.tsx:89
 msgid "{totalOrders, plural, one {# order submitted} other {# orders submitted}}"
 msgstr ""
 
@@ -2764,7 +2764,7 @@ msgstr ""
 
 #: src/components/stake-drawer/components/submit-stake-button.tsx:160
 #: src/components/stake-drawer/components/submit-unstake-button.tsx:72
-#: src/views/explorer/components/governance/index.tsx:144
+#: src/views/explorer/components/governance/index.tsx:192
 #: src/views/portfolio-page/components/portfolio-connect-button.tsx:20
 msgid "Connect wallet"
 msgstr ""
@@ -2914,27 +2914,27 @@ msgstr ""
 msgid "CoW routes"
 msgstr ""
 
-#: src/views/index-dtf/auctions/views/rebalance/components/cowbot/use-cowbot-query.ts:93
+#: src/views/index-dtf/auctions/views/rebalance/components/cowbot/use-cowbot-query.ts:85
 msgid "CowBot encountered errors"
 msgstr ""
 
-#: src/views/index-dtf/auctions/views/rebalance/components/cowbot/use-cowbot-query.ts:115
+#: src/views/index-dtf/auctions/views/rebalance/components/cowbot/use-cowbot-query.ts:107
 msgid "CowBot submitted {newOrdersCount} new order"
 msgstr ""
 
-#: src/views/index-dtf/auctions/views/rebalance/components/cowbot/use-cowbot-query.ts:116
+#: src/views/index-dtf/auctions/views/rebalance/components/cowbot/use-cowbot-query.ts:108
 msgid "CowBot submitted {newOrdersCount} new orders"
 msgstr ""
 
-#: src/views/index-dtf/auctions/views/rebalance/components/cowbot/cowbot-card.tsx:84
+#: src/views/index-dtf/auctions/views/rebalance/components/cowbot/cowbot-card.tsx:85
 msgid "CowSwap Auction Filler running..."
 msgstr ""
 
-#: src/views/index-dtf/auctions/views/rebalance/components/cowbot/cowbot-card.tsx:82
+#: src/views/index-dtf/auctions/views/rebalance/components/cowbot/cowbot-card.tsx:83
 msgid "CowSwap Auction Filler starting..."
 msgstr ""
 
-#: src/views/index-dtf/auctions/views/rebalance/components/cowbot/cowbot-card.tsx:49
+#: src/views/index-dtf/auctions/views/rebalance/components/cowbot/cowbot-card.tsx:50
 msgid "CowSwap Auction Filler stopped"
 msgstr ""
 
@@ -3027,7 +3027,7 @@ msgstr ""
 msgid "Created {stTokenSymbol} DAO"
 msgstr ""
 
-#: src/views/explorer/components/governance/index.tsx:101
+#: src/views/explorer/components/governance/index.tsx:149
 msgid "Created At"
 msgstr ""
 
@@ -3456,7 +3456,7 @@ msgid "DEPRECATED"
 msgstr ""
 
 #: src/components/governance/proposal-description-form.tsx:64
-#: src/views/explorer/components/governance/index.tsx:84
+#: src/views/explorer/components/governance/index.tsx:132
 #: src/views/index-dtf/governance/views/proposal/components/proposal-detail-content.tsx:15
 #: src/views/index-dtf/governance/views/proposal/components/proposal-detail-content.tsx:41
 #: src/views/portfolio-page/components/transactions.tsx:114
@@ -3968,7 +3968,7 @@ msgid "Enabled"
 msgstr ""
 
 #: src/hooks/use-time-remaining.ts:23
-#: src/views/explorer/components/governance/index.tsx:115
+#: src/views/explorer/components/governance/index.tsx:163
 msgid "Ended"
 msgstr ""
 
@@ -6838,7 +6838,7 @@ msgstr ""
 msgid "Not ready to set up governance?"
 msgstr ""
 
-#: src/views/explorer/components/governance/index.tsx:147
+#: src/views/explorer/components/governance/index.tsx:195
 msgid "Not voted"
 msgstr ""
 
@@ -7767,7 +7767,7 @@ msgstr ""
 msgid "Proposal was defeated"
 msgstr ""
 
-#: src/views/explorer/components/governance/index.tsx:159
+#: src/views/explorer/components/governance/index.tsx:207
 #: src/views/index-dtf/governance/components/governance-stats.tsx:78
 #: src/views/yield-dtf/governance/components/GovernanceOverview.tsx:124
 msgid "Proposals"
@@ -9199,6 +9199,10 @@ msgstr ""
 msgid "Shared externally"
 msgstr ""
 
+#: src/views/explorer/components/governance/index.tsx:81
+msgid "Shared governance"
+msgstr ""
+
 #: src/views/yield-dtf/overview/components/backing/revenue-split-overview.tsx:36
 msgid "Shared with RSR Stakers"
 msgstr ""
@@ -9626,7 +9630,7 @@ msgstr ""
 msgid "Standard Governance"
 msgstr ""
 
-#: src/views/index-dtf/auctions/views/rebalance/components/cowbot/cowbot-card.tsx:63
+#: src/views/index-dtf/auctions/views/rebalance/components/cowbot/cowbot-card.tsx:64
 msgid "Start"
 msgstr ""
 
@@ -9672,7 +9676,7 @@ msgid "Starts the next {0} reward period once the current one ends. Disabled unt
 msgstr ""
 
 #: src/views/explorer/components/governance/filters.tsx:41
-#: src/views/explorer/components/governance/index.tsx:126
+#: src/views/explorer/components/governance/index.tsx:174
 #: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:349
 #: src/views/portfolio-page/components/active-proposals.tsx:136
 #: src/views/yield-dtf/governance/views/proposal-detail/components/proposal-timeline/index.tsx:16
@@ -9717,7 +9721,7 @@ msgstr ""
 msgid "Still have questions? Come talk to us in the Reserve Telegram chat. We’d be happy to help! You can also"
 msgstr ""
 
-#: src/views/index-dtf/auctions/views/rebalance/components/cowbot/cowbot-card.tsx:105
+#: src/views/index-dtf/auctions/views/rebalance/components/cowbot/cowbot-card.tsx:106
 msgid "Stop"
 msgstr ""
 
@@ -10486,7 +10490,7 @@ msgstr ""
 
 #: src/components/index-basket-setup/basket-table.tsx:62
 #: src/components/tables/ListedTokensTable.tsx:28
-#: src/views/explorer/components/governance/index.tsx:71
+#: src/views/explorer/components/governance/index.tsx:114
 #: src/views/explorer/components/tokens/index.tsx:142
 #: src/views/explorer/components/transactions/useTransactionColumns.tsx:51
 #: src/views/index-dtf/governance/components/proposal-preview/rebalance-preview/rebalance-basket-preview.tsx:71
@@ -11916,7 +11920,7 @@ msgstr ""
 msgid "Voting delay is required"
 msgstr ""
 
-#: src/views/explorer/components/governance/index.tsx:108
+#: src/views/explorer/components/governance/index.tsx:156
 msgid "Voting Ends"
 msgstr ""
 
@@ -12703,7 +12707,7 @@ msgstr ""
 msgid "Your transaction was submitted. Check its status before taking another action."
 msgstr ""
 
-#: src/views/explorer/components/governance/index.tsx:139
+#: src/views/explorer/components/governance/index.tsx:187
 msgid "Your Vote"
 msgstr ""
 

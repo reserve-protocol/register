@@ -5,10 +5,16 @@ import { createColumnHelper } from '@tanstack/react-table'
 import GovernanceIcon from 'components/icons/GovernanceIcon'
 import { Table } from '@/components/ui/legacy-table'
 import TokenItem from 'components/token-item'
+import StackTokenLogo from '@/components/token-logo/stack-token-logo'
+import {
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+} from '@/components/ui/hover-card'
 import dayjs from 'dayjs'
 import useRTokenLogo from 'hooks/useRTokenLogo'
 import { useAtomValue } from 'jotai'
-import { useMemo } from 'react'
+import { useMemo, useState } from 'react'
 import { walletAtom } from 'state/atoms'
 import {
   getFolioRoute,
@@ -18,6 +24,7 @@ import {
 } from 'utils'
 import { PROPOSAL_STATES, ROUTES, formatConstant } from 'utils/constants'
 import useProposalsData, { type ProposalRecord } from './use-proposals-data'
+import { type ProposalToken } from './atoms'
 import Filters from './filters'
 
 const BADGE_VARIANT: Record<string, string> = {
@@ -50,6 +57,42 @@ const getProposalRoute = (proposal: ProposalRecord) => {
   return getTokenRoute(proposal.tokenAddress, proposal.chain, route)
 }
 
+const SharedProposalTokens = ({ tokens }: { tokens: ProposalToken[] }) => {
+  const [open, setOpen] = useState(false)
+  const [primary, ...others] = tokens
+
+  return (
+    <HoverCard open={open} onOpenChange={setOpen} openDelay={0}>
+      <HoverCardTrigger asChild>
+        <button
+          type="button"
+          onClick={() => setOpen(!open)}
+          className="flex w-fit items-center gap-1.5"
+        >
+          <StackTokenLogo tokens={tokens.slice(0, 3)} size={24} />
+          <span>{primary.symbol}</span>
+          <span className="rounded-full bg-muted px-1.5 py-0.5 text-xs font-medium text-muted-foreground">
+            +{others.length}
+          </span>
+        </button>
+      </HoverCardTrigger>
+      <HoverCardContent align="start" className="flex w-auto flex-col gap-2 p-3">
+        <span className="text-xs text-muted-foreground">
+          <Trans>Shared governance</Trans>
+        </span>
+        {tokens.map((token) => (
+          <TokenItem
+            key={token.address}
+            symbol={token.symbol}
+            logo={token.logo}
+            width={20}
+          />
+        ))}
+      </HoverCardContent>
+    </HoverCard>
+  )
+}
+
 const columnHelper = createColumnHelper<ProposalRecord>()
 
 const formatVoteChoice = (choice: string | null) => {
@@ -71,6 +114,11 @@ const ExploreGovernance = () => {
         header: t`Token`,
         cell: (data) => {
           const proposal = data.row.original
+
+          if (proposal.tokens.length > 1) {
+            return <SharedProposalTokens tokens={proposal.tokens} />
+          }
+
           // Yield DTFs use rtokens package logos, Index DTFs carry their logo from the API
           const logo =
             proposal.type === 'index'
