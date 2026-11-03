@@ -85,16 +85,30 @@ export const FlowChartLeft = () => (
   </div>
 )
 
-export const AnimLeft = ({ anim }: { anim: React.ReactNode }) => (
+export const AnimLeft = ({
+  anim,
+  copy = COPY,
+  subcopy = (
+    <>
+      <span>UGLYCASH is the car.</span>
+      <span className="font-medium">eUSD is the battery.</span>
+    </>
+  ),
+}: {
+  anim: React.ReactNode
+  copy?: React.ReactNode
+  subcopy?: React.ReactNode
+}) => (
   <div className="flex w-full max-w-[520px] flex-col items-center text-center">
     <div className="mb-4 w-full">{anim}</div>
     <h1 className="mb-3 text-balance text-[28px] font-normal leading-[1.25] text-primary md:text-[32px]">
-      {COPY}
+      {copy}
     </h1>
-    <p className="flex flex-col gap-0.5 text-lg leading-[1.25] md:text-xl">
-      <span>UGLYCASH is the car.</span>
-      <span className="font-medium">eUSD is the battery.</span>
-    </p>
+    {subcopy && (
+      <p className="flex flex-col gap-0.5 text-lg leading-[1.25] md:text-xl">
+        {subcopy}
+      </p>
+    )}
   </div>
 )
 

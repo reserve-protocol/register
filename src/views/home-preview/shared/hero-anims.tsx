@@ -1,4 +1,5 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useMemo, useRef } from 'react'
+import { Trans } from '@lingui/react/macro'
 import uglycashCard from '../assets/uglycash-card.png'
 import globe from '../mock/globe-dots.json'
 import { CATEGORIES } from '../mock/ugly-cash-series'
@@ -219,12 +220,53 @@ const slerp = (a: number[], b: number[], t: number) => {
   return [a[0] * k1 + b[0] * k2, a[1] * k1 + b[1] * k2, a[2] * k1 + b[2] * k2]
 }
 
+type GlobeCountryGroups = {
+  custodial: readonly string[]
+  selfCustody: readonly string[]
+}
+
+const globeCountryKey = (name: string) =>
+  name
+    .toLowerCase()
+    .replace(/\.|\s+/g, (match) => (match === '.' ? '' : ' '))
+    .replace('united states', 'united states of america')
+    .replace('solomon islands', 'solomon is')
+    .replace('dominican republic', 'dominican rep')
+    .trim()
+
+const globeCountryGroup = (name: string, groups?: GlobeCountryGroups) => {
+  if (!groups) return 'custodial'
+  const key = globeCountryKey(name)
+  if (groups.selfCustody.some((country) => globeCountryKey(country) === key))
+    return 'selfCustody'
+  return 'custodial'
+}
+
 // V21: a slowly turning dotted globe; active countries in blue, eUSD hopping between them.
-export const EusdGlobe = () => {
+export const EusdGlobe = ({ countryGroups }: { countryGroups?: GlobeCountryGroups } = {}) => {
   const state = useRef({ rot: -60, arcs: [] as Arc[], next: 0 })
   const pts = globe.pts as number[][]
   const vecs = useRef(pts.map((p) => toVec(p)))
   const actives = Object.values(globe.centroids as Record<string, number[]>)
+  const pointColors = useMemo(() => {
+    if (!countryGroups) return pts.map(() => cssColor('--primary', 1))
+    const centroids = Object.entries(globe.centroids as Record<string, number[]>)
+    return pts.map(([lon, lat, active]) => {
+      if (!active) return cssColor('--border-secondary', 1)
+      let nearest = ''
+      let distance = Infinity
+      for (const [name, [cx, cy]] of centroids) {
+        const next = (lon - cx) ** 2 + (lat - cy) ** 2
+        if (next < distance) {
+          distance = next
+          nearest = name
+        }
+      }
+      return globeCountryGroup(nearest, countryGroups) === 'selfCustody'
+        ? 'hsl(160 35% 52%)'
+        : cssColor('--primary', 1)
+    })
+  }, [countryGroups, pts])
 
   const canvasRef = useCanvasLoop((ctx, w, h, dt, t) => {
     const s = state.current
@@ -258,7 +300,7 @@ export const EusdGlobe = () => {
       const p = project(vecs.current[i])
       if (p.z <= 0) continue
       ctx.globalAlpha = 0.35 + 0.65 * p.z
-      ctx.fillStyle = pts[i][2] ? blue : sand
+      ctx.fillStyle = pts[i][2] ? pointColors[i] : sand
       ctx.beginPath()
       ctx.arc(
         p.x,
@@ -325,7 +367,7 @@ export const EusdGlobe = () => {
       <div className="absolute bottom-1 left-1/2 flex -translate-x-1/2 items-center gap-3 rounded-full border-2 border-primary bg-card py-1.5 pl-1.5 pr-5 shadow-[0_10px_30px_rgba(0,0,0,0.08)]">
         <img src="/svgs/eusd.svg" alt="" className="h-9 w-9" />
         <span className="flex flex-col text-left leading-tight">
-          <span className="text-primary">eUSD</span>
+          <span className="text-primary"><Trans>eUSD within UGLYCASH</Trans></span>
           <span className="text-xs text-legend">
             moving across 56 countries
           </span>

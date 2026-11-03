@@ -833,10 +833,12 @@ msgstr "실행 전에 모든 바스켓 제안을 거부할 수 있는 신뢰할 
 msgid "A trusted actor that can veto any proposal prior to execution."
 msgstr "실행 전에 모든 제안을 거부할 수 있는 신뢰할 수 있는 주체입니다."
 
+#: src/views/home-preview/shared/home-footer.tsx:61
 #: src/views/home/components/register-about.tsx:129
 msgid "ABC Labs requires additional information beyond what is available on the blockchain to give users relevant data to make informed decisions. As a user, please evaluate any new DTF carefully before holding, staking RSR, or vote locking tokens on them."
 msgstr "ABC Labs는 사용자가 충분한 정보를 바탕으로 의사결정을 내릴 수 있도록, 블록체인에서 제공되는 정보 외에 추가 정보를 제공합니다. 사용자는 DTF를 보유하거나, RSR을 Stake하거나, 토큰을 투표 잠금하기 전에 새로운 DTF를 신중히 평가하시기 바랍니다."
 
+#: src/views/home-preview/shared/home-footer.tsx:74
 #: src/views/home/components/register-about.tsx:142
 msgid "ABC Labs uses industry standard anonymized analytics tools to understand usage and improve the user experience. ABC Labs does not collect any information about users or their financial activity."
 msgstr "ABC Labs는 사용 현황을 파악하고 사용자 경험을 개선하기 위해 업계 표준의 익명화된 분석 도구를 사용합니다. ABC Labs는 사용자 또는 사용자의 금융 활동에 관한 어떠한 정보도 수집하지 않습니다."
@@ -2334,7 +2336,7 @@ msgstr "분배 변경"
 msgid "Change diversity factor"
 msgstr "다양성 계수 변경"
 
-#: src/views/yield-dtf/governance/views/proposal/components/PreviewBox.tsx:38
+#: src/views/yield-dtf/governance/views/proposal/components/PreviewBox.tsx:40
 msgid "Change in:"
 msgstr "변경 내용:"
 
@@ -3526,6 +3528,10 @@ msgstr "모든 제품 둘러보기"
 msgid "Discover DTFs"
 msgstr "DTF 둘러보기"
 
+#: src/views/home-preview/shared/v26-cards.tsx:117
+msgid "Discover more DTFs"
+msgstr "더 많은 DTF 알아보기"
+
 #: src/components/layout/header/components/app-navigation.tsx:188
 #: src/components/layout/header/components/mobile-navigation-drawer.tsx:194
 msgid "Discussions of ecosystem ideas"
@@ -3861,8 +3867,6 @@ msgstr "예: 포함될 토큰, 전략, 방법론"
 msgid "Each holder's eUSD balance × multiplier sets its recipient's share of the router's revenue. Multipliers are not percentages; 1 means 1×. Only add holders whose balances third parties cannot inflate. Changed or removed destinations are removed first, then new values are added, in one proposal."
 msgstr "각 holder의 eUSD 잔액 × 배수가 해당 수령인이 받는 라우터 수익의 몫을 결정합니다. 배수는 백분율이 아니며 1은 1×를 의미합니다. 제3자가 잔액을 부풀릴 수 없는 holder만 추가하세요. 변경되거나 삭제된 대상은 먼저 제거된 후 새 값이 추가되며, 모두 하나의 제안으로 처리됩니다."
 
-#: src/views/yield-dtf/governance/views/proposal/components/revenue-destinations-proposal.tsx:152
-
 #: src/components/rtoken-setup/basket/BackupBasket.tsx:39
 msgid "Each target unit of your primary basket will have defined emergency collateral to replace with in case of default."
 msgstr "기본 바스켓의 각 타깃 유닛에는 디폴트 발생 시 교체할 비상 담보가 정의됩니다."
@@ -4192,10 +4196,18 @@ msgstr "예상 총 영향"
 msgid "ETH address"
 msgstr "ETH 주소"
 
+#: src/views/home-preview/shared/page-bits.tsx:75
+msgid "eUSD on UGLYCASH is held in custody by Best Friend Finance, so these transactions happen primarily offchain."
+msgstr "UGLYCASH의 eUSD는 Best Friend Finance가 보관하므로, 이러한 거래는 주로 오프체인에서 이루어집니다."
+
 #: src/views/yield-dtf/governance/views/proposal/components/proposed-revenue-destinations-preview.tsx:19
 #: src/views/yield-dtf/governance/views/proposal/components/revenue-destinations-proposal.tsx:55
 msgid "eUSD revenue router destinations"
 msgstr "eUSD 수익 라우터 대상"
+
+#: src/views/home-preview/shared/hero-anims.tsx:370
+msgid "eUSD within UGLYCASH"
+msgstr "UGLYCASH 내 eUSD"
 
 #: src/components/ui/swap.tsx:280
 msgid "Evaluating slippage"
@@ -4368,6 +4380,10 @@ msgstr "DTF 둘러보기"
 #: src/views/home/components/highlighted-dtfs/end-card.tsx:87
 msgid "Explore DTFs across broad crypto, ecosystems, yield strategies and more."
 msgstr "광범위한 크립토, 생태계, 수익 전략 등 다양한 DTF를 둘러보세요."
+
+#: src/views/home-preview/shared/v26-cards.tsx:125
+msgid "Explore more index and yield DTFs in one list."
+msgstr "인덱스 및 수익형 DTF를 한 목록에서 더 살펴보세요."
 
 #: src/views/home/components/register-about.tsx:86
 msgid "explore the Reserve Documentation for more details."
@@ -4720,6 +4736,14 @@ msgstr "{0}에서 {1}(으)로"
 #: src/views/yield-dtf/settings/components/freeze-manager.tsx:103
 msgid "Frozen"
 msgstr "동결됨"
+
+#: src/views/home-preview/shared/v26-cards.tsx:94
+msgid "Full custodial service ({custodialCount})"
+msgstr "완전 수탁 서비스 ({custodialCount})"
+
+#: src/views/home-preview/shared/v26-cards.tsx:104
+msgid "Full custodial service is available in {custodialCount} countries; the self-custody investment layer reaches {selfCustodyCount} more."
+msgstr "완전 수탁 서비스는 {custodialCount}개 국가에서 제공되며, 자기 보관 투자 레이어는 {selfCustodyCount}개 국가에서 추가로 이용할 수 있습니다."
 
 #: src/views/yield-dtf/overview/components/collateral-pie-chart-wrapper.tsx:71
 msgid "Full exposure view"
@@ -5140,6 +5164,7 @@ msgstr "{delay}일의 Unstake 지연을 인지하고 있습니다"
 msgid "ID"
 msgstr "ID"
 
+#: src/views/home-preview/shared/home-footer.tsx:54
 #: src/views/home/components/register-about.tsx:122
 msgid "If a DTF is listed on this app, it doesn't mean that ABC Labs endorses the safety or risk levels of the DTF or that ABC Labs was involved in the creation of or is in anyway responsible for the DTF."
 msgstr "DTF가 이 앱에 등록되어 있다고 해서 ABC Labs가 해당 DTF의 안전성이나 위험 수준을 보증하거나, 해당 DTF의 생성에 관여했거나 어떤 식으로든 책임이 있다는 것을 의미하지는 않습니다."
@@ -5223,6 +5248,10 @@ msgstr "증가"
 #: src/views/explorer/components/governance/filters.tsx:57
 msgid "Index"
 msgstr "Index"
+
+#: src/views/home-preview/shared/v26-cards.tsx:122
+msgid "Index and yield DTFs, all in one place."
+msgstr "인덱스 및 수익형 DTF를 한곳에서 확인하세요."
 
 #: src/views/index-dtf/deploy/steps/revenue/index.tsx:13
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-dtf-revenue.tsx:41
@@ -5593,6 +5622,7 @@ msgstr "자격 요건에 대해 자세히 알아보기."
 msgid "Learn more about how to earn APY"
 msgstr "APY를 얻는 방법 자세히 보기"
 
+#: src/views/home-preview/shared/home-footer.tsx:40
 #: src/views/home/components/register-about.tsx:108
 msgid "Learn more about Reserve on their website."
 msgstr "Reserve에 대한 자세한 내용은 웹사이트에서 확인하세요."
@@ -5670,6 +5700,10 @@ msgstr "유동성 시뮬레이션 금액"
 #: src/views/internal/dtf-listed/index.tsx:12
 msgid "Listed DTFs"
 msgstr "등록된 DTF"
+
+#: src/views/home-preview/shared/v26-cards.tsx:81
+msgid "Live in {V26_COUNTRY_COUNT} countries"
+msgstr "{V26_COUNTRY_COUNT}개 국가에서 이용 가능"
 
 #: src/views/index-dtf/auctions/views/rebalance/components/rebalance-auctions.tsx:106
 msgid "Live rebalance auction"
@@ -5836,6 +5870,7 @@ msgstr "낮음"
 msgid "Low liquidity"
 msgstr "낮은 유동성"
 
+#: src/views/home-preview/shared/home-footer.tsx:103
 #: src/views/home/components/register-about.tsx:179
 msgid "Made by ABC Labs"
 msgstr "ABC Labs 제작"
@@ -7385,6 +7420,7 @@ msgstr "<0/>를 관리할 Wallet 또는 컨트랙트의 주소를 입력해 주�
 msgid "Please grant collateral allowance"
 msgstr "담보 승인을 허용해 주세요"
 
+#: src/views/home-preview/shared/home-footer.tsx:81
 #: src/views/home/components/register-about.tsx:149
 msgid "Please keep in mind that interactions with the Ethereum or Base blockchains are pseudonymous and publicly available."
 msgstr "Ethereum 또는 Base 블록체인과의 상호작용은 가명으로 이루어지며 공개적으로 열람 가능하다는 점에 유의하시기 바랍니다."
@@ -8484,6 +8520,7 @@ msgstr "필수 설정:"
 msgid "Required:"
 msgstr "필수:"
 
+#: src/views/home-preview/shared/home-footer.tsx:33
 #: src/views/home/components/register-about.tsx:101
 msgid "Reserve aims to help people around the world maintain their spending power by allowing anyone to create asset-backed currencies with tokenized assets on the Ethereum blockchain in customizable and novel ways."
 msgstr "Reserve는 누구나 Ethereum 블록체인에서 토큰화된 자산을 활용해 맞춤형의 새로운 방식으로 자산 기반 통화를 만들 수 있도록 함으로써, 전 세계 사람들이 구매력을 유지할 수 있도록 돕는 것을 목표로 합니다."
@@ -9059,6 +9096,10 @@ msgstr "셀렉터 레지스트리"
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-optimistic-parameters.tsx:51
 msgid "Selector registry is not available for this optimistic governor."
 msgstr "이 Optimistic Governor에는 셀렉터 레지스트리를 사용할 수 없습니다."
+
+#: src/views/home-preview/shared/v26-cards.tsx:97
+msgid "Self-custody investment layer ({selfCustodyCount})"
+msgstr "자기 보관 투자 레이어 ({selfCustodyCount})"
 
 #. placeholder {0}: stToken?.underlying.symbol ?? t`tokens`
 #: src/components/vote-lock/components/delegate.tsx:104
@@ -10170,6 +10211,7 @@ msgstr "Reserve Index Protocol은 DTF 보유자와 거버너의 안전성과 경
 msgid "The Reserve Index Protocol uses dutch auctions any time when modifying token weights in the basket. A dutch auction is a type of auction where the token on sale starts at a high price, with the price lowering gradually until buyers place enough bids to fill the lot."
 msgstr "Reserve Index Protocol은 바스켓의 토큰 가중치를 수정할 때마다 더치 경매를 사용합니다. 더치 경매는 판매 토큰이 높은 가격에서 시작하여, 구매자가 해당 물량을 채울 만큼 충분히 입찰할 때까지 가격이 점진적으로 낮아지는 경매 방식입니다."
 
+#: src/views/home-preview/shared/home-footer.tsx:30
 #: src/views/home/components/register-about.tsx:98
 msgid "The Reserve Project"
 msgstr "The Reserve Project"
@@ -10292,10 +10334,12 @@ msgstr "시스템을 동일한 상태로 전환하되 기간이 다른 두 가�
 msgid "This address already holds this role"
 msgstr "이 주소는 이미 이 역할을 보유하고 있습니다"
 
+#: src/views/home-preview/shared/home-footer.tsx:44
 #: src/views/home/components/register-about.tsx:112
 msgid "This App"
 msgstr "이 앱"
 
+#: src/views/home-preview/shared/home-footer.tsx:47
 #: src/views/home/components/register-about.tsx:115
 msgid "This app is an open source project developed and maintained by ABC Labs to interact with the Reserve Protocol and various DTFs deployed with the protocol."
 msgstr "이 앱은 Reserve Protocol 및 프로토콜로 배포된 다양한 DTF와 상호작용하기 위해 ABC Labs가 개발하고 유지 관리하는 오픈 소스 프로젝트입니다."
@@ -11043,6 +11087,15 @@ msgstr "Txs"
 msgid "Type"
 msgstr "유형"
 
+#: src/views/home-preview/shared/page-bits.tsx:80
+msgid "UGLYCASH figures are reported by UGLYCASH as daily aggregates. UGLYCASH is an off-chain app, so these numbers are not read from the blockchain."
+msgstr "UGLYCASH 수치는 UGLYCASH가 일일 집계로 보고한 것입니다. UGLYCASH는 오프체인 앱이므로 이 수치는 블록체인에서 읽은 것이 아닙니다."
+
+#: src/views/home-preview/variants/v26-home.tsx:25
+#: src/views/home-preview/variants/v26-home.tsx:37
+msgid "UGLYCASH is the Reserve App, and it’s on track to fuel huge growth in eUSD"
+msgstr "UGLYCASH는 Reserve 앱이며, eUSD의 큰 성장을 이끌어 갈 예정입니다"
+
 #: src/views/index-dtf/components/navigation/index.tsx:289
 msgid "Unable to copy address"
 msgstr "주소를 복사할 수 없습니다"
@@ -11432,8 +11485,6 @@ msgstr "확보된 담보를 사용하여 DTF를 Mint합니다."
 msgid "Use the Alexios governor format?"
 msgstr "Alexios 거버너 형식을 사용하시겠습니까?"
 
-#: src/views/yield-dtf/governance/views/proposal/components/revenue-destinations-proposal.tsx:140
-
 #: src/views/index-dtf/overview/components/yield-index/yield-index-composition-tabs.tsx:15
 msgid "Used in"
 msgstr "사용처"
@@ -11446,6 +11497,7 @@ msgstr "필요한 자산을 확보하는 데 사용됩니다."
 msgid "Used to redeem and sell collateral."
 msgstr "담보를 Redeem하고 매도하는 데 사용됩니다."
 
+#: src/views/home-preview/shared/home-footer.tsx:71
 #: src/views/home/components/register-about.tsx:139
 msgid "User Tracking"
 msgstr "사용자 추적"
@@ -11522,6 +11574,7 @@ msgid "Version 2.0.0 is now available. <0>View changelog</0>"
 msgstr "버전 2.0.0을 이제 사용할 수 있습니다. <0>변경 로그 보기</0>"
 
 #. placeholder {0}: import.meta.env.VITE_GIT_SHA?.slice(0, 7) || 'development'
+#: src/views/home-preview/shared/home-footer.tsx:107
 #: src/views/home/components/register-about.tsx:183
 msgid "Version: {0}"
 msgstr "버전: {0}"

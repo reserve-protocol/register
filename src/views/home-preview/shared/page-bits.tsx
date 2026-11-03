@@ -1,5 +1,6 @@
 import { cn } from '@/lib/utils'
 import ProtocolMetrics from '@/views/home/components/protocol-metrics'
+import { Trans } from '@lingui/react/macro'
 import { ArrowUpRight } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import uglycashLogo from '../assets/uglycash-logo.svg'
@@ -62,10 +63,25 @@ export const FloatingStats = ({ hideAfter }: { hideAfter?: number }) => {
   )
 }
 
-export const DataNote = ({ className }: { className?: string }) => (
+export const DataNote = ({
+  className,
+  v26 = false,
+}: {
+  className?: string
+  v26?: boolean
+}) => (
   <p className={cn('text-sm text-legend', className)}>
-    UGLYCASH figures are reported by UGLYCASH as daily aggregates. UGLYCASH is
-    an off-chain app, so these numbers are not read from the blockchain.
+    {v26 ? (
+      <Trans>
+        eUSD on UGLYCASH is held in custody by Best Friend Finance, so these
+        transactions happen primarily offchain.
+      </Trans>
+    ) : (
+      <Trans>
+        UGLYCASH figures are reported by UGLYCASH as daily aggregates. UGLYCASH
+        is an off-chain app, so these numbers are not read from the blockchain.
+      </Trans>
+    )}
   </p>
 )
 

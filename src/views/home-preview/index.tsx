@@ -3,6 +3,7 @@ import { Link, useParams } from 'react-router-dom'
 import PreviewFallback from './fallback'
 // Loaded with the page, so the globe and map paint on the first render and only data cards wait.
 import V25Live from './variants/v25-live'
+import V26Live from './variants/v26-live'
 
 export const VARIANTS = [
   {
@@ -129,6 +130,11 @@ export const VARIANTS = [
     id: 'v25',
     name: 'Home · globe with live UGLYCASH data',
     component: V25Live,
+  },
+  {
+    id: 'v26',
+    name: 'Home · live UGLYCASH data refinements',
+    component: V26Live,
   },
 ] as const
 

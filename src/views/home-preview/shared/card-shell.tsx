@@ -182,7 +182,7 @@ export const HomeCard = ({
   href?: string
   external?: boolean
   icon?: React.ReactNode
-  title: string
+  title: React.ReactNode
   value?: string
   note?: string
   media: React.ReactNode
@@ -272,32 +272,45 @@ export const HomeCard = ({
 
 const TICKER_PX_PER_SECOND = 48
 
-// Always moving at one shared speed: duration follows the measured width of each list.
-export const AutoTicker = ({ items }: { items: TickerItem[] }) => {
+// A duplicated track with an exact -50% loop avoids a visible seam on v26.
+export const AutoTicker = ({
+  items,
+  smooth = false,
+}: {
+  items: TickerItem[]
+  smooth?: boolean
+}) => {
   const trackRef = useRef<HTMLDivElement>(null)
+  const smoothTrackRef = useRef<HTMLDivElement>(null)
   const [duration, setDuration] = useState(20)
 
   useLayoutEffect(() => {
-    const el = trackRef.current
+    const el = smooth ? smoothTrackRef.current : trackRef.current
     if (!el) return
     setDuration(Math.max(8, el.scrollWidth / 2 / TICKER_PX_PER_SECOND))
-  }, [items])
+  }, [items, smooth])
 
   return (
     <div className={FEATURE_CARD_ASSET_TICKER_CLASS_NAME}>
+      {smooth && (
+        <style>{`@keyframes hp-ticker-smooth { to { transform: translate3d(-50%, 0, 0); } }`}</style>
+      )}
       <div className="pointer-events-none absolute inset-y-0 -right-px z-10 w-20 bg-gradient-to-l from-card via-card to-transparent" />
       <div className="flex overflow-hidden pl-2 pr-12">
         <div
-          ref={trackRef}
+          ref={smooth ? smoothTrackRef : trackRef}
           className="flex w-max gap-0 motion-reduce:[animation:none!important]"
           style={{
-            animation: `collateral-assets-scroll ${duration}s linear infinite`,
+            animation: smooth
+              ? `hp-ticker-smooth ${duration}s linear infinite`
+              : `collateral-assets-scroll ${duration}s linear infinite`,
           }}
         >
           {[...items, ...items].map((item, i) => (
             <div
               key={`${item.key}-${i}`}
               className="flex shrink-0 items-center gap-1 rounded-full px-1.5 py-1"
+              aria-hidden={i >= items.length || undefined}
             >
               {item.color && (
                 <span

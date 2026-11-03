@@ -4,7 +4,15 @@ import uglycashCard from '../assets/uglycash-card.png'
 import { AutoTicker, HomeCard } from './card-shell'
 import { UglyCashLogo } from './page-bits'
 
-export const UglyCashCardV18 = ({ shadow = true }: { shadow?: boolean }) => (
+export const UglyCashCardV18 = ({
+  shadow = true,
+  smoothTicker = false,
+  description = 'A dollar account and Visa card for people around the world. UGLYCASH is the car. eUSD is the battery.',
+}: {
+  shadow?: boolean
+  smoothTicker?: boolean
+  description?: React.ReactNode
+}) => (
   <HomeCard
     href="https://ugly.cash"
     external
@@ -27,6 +35,7 @@ export const UglyCashCardV18 = ({ shadow = true }: { shadow?: boolean }) => (
     }
     tickerSlot={
       <AutoTicker
+        smooth={smoothTicker}
         items={[
           { key: 'card', label: 'Visa card' },
           { key: 'account', label: 'Dollar account' },
@@ -35,7 +44,7 @@ export const UglyCashCardV18 = ({ shadow = true }: { shadow?: boolean }) => (
         ]}
       />
     }
-    description="A dollar account and Visa card for people around the world. UGLYCASH is the car. eUSD is the battery."
+    description={description}
   />
 )
 
@@ -90,9 +99,13 @@ const EusdOrbit = () => (
   </div>
 )
 
-export const FintechCardV18 = () => (
+export const FintechCardV18 = ({
+  contactEmail = 'partners@reserve.org',
+}: {
+  contactEmail?: string
+}) => (
   <a
-    href="mailto:partners@reserve.org"
+    href={`mailto:${contactEmail}`}
     className="group relative flex min-h-[460px] w-full flex-col justify-between overflow-hidden rounded-3xl bg-primary p-6 text-primary-foreground"
   >
     <div className="pt-4">

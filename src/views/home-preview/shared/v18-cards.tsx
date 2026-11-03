@@ -173,7 +173,7 @@ const EusdIcon = () => (
   <img src="/svgs/eusd.svg" alt="" aria-hidden="true" className="h-8 w-8" />
 )
 
-export const HeldCardV18 = () => {
+export const HeldCardV18 = ({ smoothTicker = false }: { smoothTicker?: boolean }) => {
   const anchor = useRef<HTMLDivElement>(null)
   const { daily, headline: HEADLINE, status } = useUglycashData()
   return (

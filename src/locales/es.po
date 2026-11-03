@@ -833,10 +833,12 @@ msgstr "Un actor de confianza que puede vetar cualquier propuesta de cesta antes
 msgid "A trusted actor that can veto any proposal prior to execution."
 msgstr "Un actor de confianza que puede vetar cualquier propuesta antes de su ejecución."
 
+#: src/views/home-preview/shared/home-footer.tsx:61
 #: src/views/home/components/register-about.tsx:129
 msgid "ABC Labs requires additional information beyond what is available on the blockchain to give users relevant data to make informed decisions. As a user, please evaluate any new DTF carefully before holding, staking RSR, or vote locking tokens on them."
 msgstr "ABC Labs requiere información adicional más allá de la disponible en el blockchain para brindar a los usuarios datos relevantes que les permitan tomar decisiones informadas. Como usuario, evalúa cuidadosamente cualquier DTF nuevo antes de mantenerlo, hacer Stake de RSR o bloquear votos en él."
 
+#: src/views/home-preview/shared/home-footer.tsx:74
 #: src/views/home/components/register-about.tsx:142
 msgid "ABC Labs uses industry standard anonymized analytics tools to understand usage and improve the user experience. ABC Labs does not collect any information about users or their financial activity."
 msgstr "ABC Labs utiliza herramientas de analítica anonimizada con estándares de la industria para comprender el uso y mejorar la experiencia del usuario. ABC Labs no recopila ninguna información sobre los usuarios ni su actividad financiera."
@@ -2334,7 +2336,7 @@ msgstr "Cambiar distribución"
 msgid "Change diversity factor"
 msgstr "Cambiar factor de diversidad"
 
-#: src/views/yield-dtf/governance/views/proposal/components/PreviewBox.tsx:38
+#: src/views/yield-dtf/governance/views/proposal/components/PreviewBox.tsx:40
 msgid "Change in:"
 msgstr "Cambio en:"
 
@@ -3526,6 +3528,10 @@ msgstr "Descubre todos nuestros productos"
 msgid "Discover DTFs"
 msgstr "Descubrir DTFs"
 
+#: src/views/home-preview/shared/v26-cards.tsx:117
+msgid "Discover more DTFs"
+msgstr "Descubre más DTFs"
+
 #: src/components/layout/header/components/app-navigation.tsx:188
 #: src/components/layout/header/components/mobile-navigation-drawer.tsx:194
 msgid "Discussions of ecosystem ideas"
@@ -3861,8 +3867,6 @@ msgstr "p. ej. tokens a incluir, estrategia, metodología"
 msgid "Each holder's eUSD balance × multiplier sets its recipient's share of the router's revenue. Multipliers are not percentages; 1 means 1×. Only add holders whose balances third parties cannot inflate. Changed or removed destinations are removed first, then new values are added, in one proposal."
 msgstr "El balance de eUSD de cada holder × multiplicador define la parte de los ingresos del router que recibe su destinatario. Los multiplicadores no son porcentajes; 1 significa 1×. Agrega solo holders cuyos balances no puedan ser inflados por terceros. Los destinos modificados o eliminados se quitan primero y luego se agregan los nuevos valores, en una sola propuesta."
 
-#: src/views/yield-dtf/governance/views/proposal/components/revenue-destinations-proposal.tsx:152
-
 #: src/components/rtoken-setup/basket/BackupBasket.tsx:39
 msgid "Each target unit of your primary basket will have defined emergency collateral to replace with in case of default."
 msgstr "Cada target unit de tu cesta principal tendrá un colateral de emergencia definido para reemplazarlo en caso de impago."
@@ -4192,10 +4196,18 @@ msgstr "Impacto total estimado"
 msgid "ETH address"
 msgstr "Dirección ETH"
 
+#: src/views/home-preview/shared/page-bits.tsx:75
+msgid "eUSD on UGLYCASH is held in custody by Best Friend Finance, so these transactions happen primarily offchain."
+msgstr "eUSD en UGLYCASH está bajo custodia de Best Friend Finance, por lo que estas transacciones ocurren principalmente fuera de la cadena."
+
 #: src/views/yield-dtf/governance/views/proposal/components/proposed-revenue-destinations-preview.tsx:19
 #: src/views/yield-dtf/governance/views/proposal/components/revenue-destinations-proposal.tsx:55
 msgid "eUSD revenue router destinations"
 msgstr "Destinos del revenue router de eUSD"
+
+#: src/views/home-preview/shared/hero-anims.tsx:370
+msgid "eUSD within UGLYCASH"
+msgstr "eUSD dentro de UGLYCASH"
 
 #: src/components/ui/swap.tsx:280
 msgid "Evaluating slippage"
@@ -4368,6 +4380,10 @@ msgstr "Explorar DTFs"
 #: src/views/home/components/highlighted-dtfs/end-card.tsx:87
 msgid "Explore DTFs across broad crypto, ecosystems, yield strategies and more."
 msgstr "Explora DTFs en cripto amplio, ecosistemas, estrategias de rendimiento y más."
+
+#: src/views/home-preview/shared/v26-cards.tsx:125
+msgid "Explore more index and yield DTFs in one list."
+msgstr "Explora más DTFs de índice y de rendimiento en una sola lista."
 
 #: src/views/home/components/register-about.tsx:86
 msgid "explore the Reserve Documentation for more details."
@@ -4720,6 +4736,14 @@ msgstr "De {0} a {1}"
 #: src/views/yield-dtf/settings/components/freeze-manager.tsx:103
 msgid "Frozen"
 msgstr "Congelado"
+
+#: src/views/home-preview/shared/v26-cards.tsx:94
+msgid "Full custodial service ({custodialCount})"
+msgstr "Servicio de custodia completo ({custodialCount})"
+
+#: src/views/home-preview/shared/v26-cards.tsx:104
+msgid "Full custodial service is available in {custodialCount} countries; the self-custody investment layer reaches {selfCustodyCount} more."
+msgstr "El servicio de custodia completo está disponible en {custodialCount} países; la capa de inversión autocustodiada llega a {selfCustodyCount} países más."
 
 #: src/views/yield-dtf/overview/components/collateral-pie-chart-wrapper.tsx:71
 msgid "Full exposure view"
@@ -5140,6 +5164,7 @@ msgstr "Estoy al tanto del retraso de Unstake de {delay} días"
 msgid "ID"
 msgstr "ID"
 
+#: src/views/home-preview/shared/home-footer.tsx:54
 #: src/views/home/components/register-about.tsx:122
 msgid "If a DTF is listed on this app, it doesn't mean that ABC Labs endorses the safety or risk levels of the DTF or that ABC Labs was involved in the creation of or is in anyway responsible for the DTF."
 msgstr "Que un DTF aparezca en esta app no significa que ABC Labs respalde la seguridad o los niveles de riesgo del DTF, ni que ABC Labs haya estado involucrado en su creación o sea de algún modo responsable de él."
@@ -5223,6 +5248,10 @@ msgstr "Aumentar"
 #: src/views/explorer/components/governance/filters.tsx:57
 msgid "Index"
 msgstr "Index"
+
+#: src/views/home-preview/shared/v26-cards.tsx:122
+msgid "Index and yield DTFs, all in one place."
+msgstr "DTFs de índice y de rendimiento, todos en un mismo lugar."
 
 #: src/views/index-dtf/deploy/steps/revenue/index.tsx:13
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-dtf-revenue.tsx:41
@@ -5593,6 +5622,7 @@ msgstr "Más información sobre los requisitos de elegibilidad."
 msgid "Learn more about how to earn APY"
 msgstr "Más información sobre cómo ganar APY"
 
+#: src/views/home-preview/shared/home-footer.tsx:40
 #: src/views/home/components/register-about.tsx:108
 msgid "Learn more about Reserve on their website."
 msgstr "Conoce más sobre Reserve en su sitio web."
@@ -5670,6 +5700,10 @@ msgstr "Monto de simulación de liquidez"
 #: src/views/internal/dtf-listed/index.tsx:12
 msgid "Listed DTFs"
 msgstr "DTFs listados"
+
+#: src/views/home-preview/shared/v26-cards.tsx:81
+msgid "Live in {V26_COUNTRY_COUNT} countries"
+msgstr "Disponible en {V26_COUNTRY_COUNT} países"
 
 #: src/views/index-dtf/auctions/views/rebalance/components/rebalance-auctions.tsx:106
 msgid "Live rebalance auction"
@@ -5836,6 +5870,7 @@ msgstr "Baja"
 msgid "Low liquidity"
 msgstr "Liquidez baja"
 
+#: src/views/home-preview/shared/home-footer.tsx:103
 #: src/views/home/components/register-about.tsx:179
 msgid "Made by ABC Labs"
 msgstr "Hecho por ABC Labs"
@@ -7385,6 +7420,7 @@ msgstr "Ingresa la dirección de la Wallet o contrato que gobernará <0/>. El Re
 msgid "Please grant collateral allowance"
 msgstr "Otorga la autorización del colateral"
 
+#: src/views/home-preview/shared/home-footer.tsx:81
 #: src/views/home/components/register-about.tsx:149
 msgid "Please keep in mind that interactions with the Ethereum or Base blockchains are pseudonymous and publicly available."
 msgstr "Ten en cuenta que las interacciones con los blockchains de Ethereum o Base son seudónimas y están disponibles públicamente."
@@ -8484,6 +8520,7 @@ msgstr "Configuración requerida:"
 msgid "Required:"
 msgstr "Requerido:"
 
+#: src/views/home-preview/shared/home-footer.tsx:33
 #: src/views/home/components/register-about.tsx:101
 msgid "Reserve aims to help people around the world maintain their spending power by allowing anyone to create asset-backed currencies with tokenized assets on the Ethereum blockchain in customizable and novel ways."
 msgstr "Reserve busca ayudar a las personas de todo el mundo a mantener su poder adquisitivo, permitiendo que cualquiera cree monedas respaldadas por activos con activos tokenizados en el blockchain de Ethereum, de formas personalizables y novedosas."
@@ -9059,6 +9096,10 @@ msgstr "Registro de selectores"
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-optimistic-parameters.tsx:51
 msgid "Selector registry is not available for this optimistic governor."
 msgstr "El registro de selectores no está disponible para este governor optimista."
+
+#: src/views/home-preview/shared/v26-cards.tsx:97
+msgid "Self-custody investment layer ({selfCustodyCount})"
+msgstr "Capa de inversión autocustodiada ({selfCustodyCount})"
 
 #. placeholder {0}: stToken?.underlying.symbol ?? t`tokens`
 #: src/components/vote-lock/components/delegate.tsx:104
@@ -10170,6 +10211,7 @@ msgstr "El Reserve Index Protocol ofrece varios roles que pueden mejorar la segu
 msgid "The Reserve Index Protocol uses dutch auctions any time when modifying token weights in the basket. A dutch auction is a type of auction where the token on sale starts at a high price, with the price lowering gradually until buyers place enough bids to fill the lot."
 msgstr "El Reserve Index Protocol utiliza subastas holandesas cada vez que se modifican los pesos de los tokens en la cesta. Una subasta holandesa es un tipo de subasta en la que el token a la venta comienza a un precio alto, y el precio baja gradualmente hasta que los compradores presentan suficientes ofertas para completar el lote."
 
+#: src/views/home-preview/shared/home-footer.tsx:30
 #: src/views/home/components/register-about.tsx:98
 msgid "The Reserve Project"
 msgstr "El proyecto Reserve"
@@ -10292,10 +10334,12 @@ msgstr "Hay dos roles de congelamiento que ponen el sistema en el mismo estado p
 msgid "This address already holds this role"
 msgstr "Esta dirección ya tiene este rol"
 
+#: src/views/home-preview/shared/home-footer.tsx:44
 #: src/views/home/components/register-about.tsx:112
 msgid "This App"
 msgstr "Esta app"
 
+#: src/views/home-preview/shared/home-footer.tsx:47
 #: src/views/home/components/register-about.tsx:115
 msgid "This app is an open source project developed and maintained by ABC Labs to interact with the Reserve Protocol and various DTFs deployed with the protocol."
 msgstr "Esta app es un proyecto de código abierto desarrollado y mantenido por ABC Labs para interactuar con el Reserve Protocol y los distintos DTF desplegados con el protocolo."
@@ -11043,6 +11087,15 @@ msgstr "Txs"
 msgid "Type"
 msgstr "Tipo"
 
+#: src/views/home-preview/shared/page-bits.tsx:80
+msgid "UGLYCASH figures are reported by UGLYCASH as daily aggregates. UGLYCASH is an off-chain app, so these numbers are not read from the blockchain."
+msgstr "UGLYCASH informa sus cifras como agregados diarios. UGLYCASH es una aplicación fuera de la cadena, por lo que estos números no se leen de la blockchain."
+
+#: src/views/home-preview/variants/v26-home.tsx:25
+#: src/views/home-preview/variants/v26-home.tsx:37
+msgid "UGLYCASH is the Reserve App, and it’s on track to fuel huge growth in eUSD"
+msgstr "UGLYCASH es la aplicación de Reserve y va camino de impulsar un gran crecimiento de eUSD"
+
 #: src/views/index-dtf/components/navigation/index.tsx:289
 msgid "Unable to copy address"
 msgstr "No se pudo copiar la dirección"
@@ -11432,8 +11485,6 @@ msgstr "Usa el colateral adquirido para hacer Mint del DTF."
 msgid "Use the Alexios governor format?"
 msgstr "¿Usar el formato de gobernador Alexios?"
 
-#: src/views/yield-dtf/governance/views/proposal/components/revenue-destinations-proposal.tsx:140
-
 #: src/views/index-dtf/overview/components/yield-index/yield-index-composition-tabs.tsx:15
 msgid "Used in"
 msgstr "Usado en"
@@ -11446,6 +11497,7 @@ msgstr "Se usa para adquirir los activos requeridos."
 msgid "Used to redeem and sell collateral."
 msgstr "Se usa para hacer Redeem y vender el colateral."
 
+#: src/views/home-preview/shared/home-footer.tsx:71
 #: src/views/home/components/register-about.tsx:139
 msgid "User Tracking"
 msgstr "Seguimiento de usuarios"
@@ -11522,6 +11574,7 @@ msgid "Version 2.0.0 is now available. <0>View changelog</0>"
 msgstr "La versión 2.0.0 ya está disponible. <0>Ver changelog</0>"
 
 #. placeholder {0}: import.meta.env.VITE_GIT_SHA?.slice(0, 7) || 'development'
+#: src/views/home-preview/shared/home-footer.tsx:107
 #: src/views/home/components/register-about.tsx:183
 msgid "Version: {0}"
 msgstr "Versión: {0}"
