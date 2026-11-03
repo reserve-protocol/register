@@ -18,7 +18,7 @@ const rTokenOverviewAtom = atom((get) => {
 
   return {
     supply: state.tokenSupply * rTokenPrice,
-    staked: state.stTokenSupply * rsrPrice,
+    staked: state.stTokenSupply * state.exchangeRate * rsrPrice,
     pegData,
   }
 })
