@@ -40,7 +40,7 @@ const DISCOVER_DTFS = [
 ]
 
 const DiscoverVisual = () => (
-  <div className="grid h-full grid-cols-2 content-center gap-3 px-7 sm:grid-cols-3">
+  <div className="grid h-full grid-cols-2 content-center gap-3 px-7 sm:grid-cols-3 lg:grid-cols-6">
     {DISCOVER_DTFS.map((dtf) => (
       <div key={dtf.label} className="flex items-center gap-2 rounded-full bg-card px-2 py-2">
         <img src={dtf.src} alt="" aria-hidden="true" className="h-7 w-7 rounded-full" />
@@ -112,6 +112,7 @@ export const CountriesCardV26 = () => {
 export const DiscoverDtfsCardV26 = () => (
   <HomeCard
     href={ROUTES.DISCOVER}
+    className="md:col-span-2"
     icon={<span className="flex h-8 w-8 items-center justify-center rounded-full bg-primary text-primary-foreground" aria-hidden="true"><ArrowRight size={18} /></span>}
     title={<Trans>Discover more DTFs</Trans>}
     value="CMC20 · PHOTON · MAG7 · OPEN · ETH+ · USD3"
