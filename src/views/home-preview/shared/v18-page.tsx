@@ -1,3 +1,4 @@
+import { Trans } from '@lingui/react/macro'
 import { Skeleton } from '@/components/ui/skeleton'
 import GridStage from './grid-stage'
 import { TickerStyles } from './home-cards'
@@ -7,6 +8,7 @@ import { useUglycashData } from './uglycash-data'
 import { Reveal } from './card-shell'
 import { DATA_CARD_TITLES } from './home-skeletons'
 import { DataCardPlaceholder } from './v18-cards'
+import { CountriesCardV26, DiscoverDtfsCardV26 } from './v26-cards'
 import {
   CountriesCardV18,
   FintechCardV18,
@@ -48,12 +50,14 @@ const V18Page = ({
   scale = 'month',
   sortTooltips = false,
   dataState = 'ready',
+  v26 = false,
 }: {
   left: React.ReactNode
   cardShadow?: boolean
   scale?: 'month' | 'week'
   sortTooltips?: boolean
   dataState?: 'ready' | 'error'
+  v26?: boolean
 }) => (
   <div className="container">
     <TickerStyles />
@@ -63,22 +67,33 @@ const V18Page = ({
         <>
           {dataState === 'ready' ? (
             <>
-              <HeldCardV18 />
-              <VolumeCardV18 scale={scale} sortTooltip={sortTooltips} />
-              <TransactionsCardV18 scale={scale} sortTooltip={sortTooltips} />
+              <HeldCardV18 smoothTicker={v26} />
+              <VolumeCardV18 scale={scale} sortTooltip={sortTooltips} smoothTicker={v26} />
+              <TransactionsCardV18 scale={scale} sortTooltip={sortTooltips} smoothTicker={v26} />
             </>
           ) : (
             DATA_CARD_TITLES.map((title) => (
               <DataCardPlaceholder key={title} title={title} state="error" />
             ))
           )}
-          <CountriesCardV18 />
-          <UglyCashCardV18 shadow={cardShadow} />
-          <FintechCardV18 />
+          {v26 ? <CountriesCardV26 /> : <CountriesCardV18 />}
+          <UglyCashCardV18
+            shadow={cardShadow}
+            smoothTicker={v26}
+            description={
+              v26 ? (
+                <Trans>
+                  UGLYCASH is the Reserve App, and it’s on track to fuel huge growth in eUSD
+                </Trans>
+              ) : undefined
+            }
+          />
+          <FintechCardV18 contactEmail={v26 ? 'gabo@reserve.org' : undefined} />
+          {v26 && <DiscoverDtfsCardV26 />}
         </>
       }
     />
-    <DataNote className="mt-6 px-4 md:px-8" />
+    <DataNote v26={v26} className="mt-6 px-4 md:px-8" />
     <LastUpdated />
     <HomeFooter />
   </div>

@@ -196,6 +196,7 @@ export const HeldCardV18 = ({ smoothTicker = false }: { smoothTicker?: boolean }
       }
       tickerSlot={
         <AutoTicker
+          smooth={smoothTicker}
           items={[
             { key: 'days', label: `${HEADLINE.daysLive} days`, value: 'live' },
             {
@@ -253,9 +254,11 @@ const usePeriods = (scale: Scale, metric: 'volume' | 'count') => {
 export const VolumeCardV18 = ({
   scale = 'month',
   sortTooltip = false,
+  smoothTicker = false,
 }: {
   scale?: Scale
   sortTooltip?: boolean
+  smoothTicker?: boolean
 }) => {
   const anchor = useRef<HTMLDivElement>(null)
   const reduced = useReducedMotion()
@@ -320,6 +323,7 @@ export const VolumeCardV18 = ({
       }
       tickerSlot={
         <AutoTicker
+          smooth={smoothTicker}
           items={categories.map((c) => ({
             key: c.key,
             label: c.label,
@@ -336,9 +340,11 @@ export const VolumeCardV18 = ({
 export const TransactionsCardV18 = ({
   scale = 'month',
   sortTooltip = false,
+  smoothTicker = false,
 }: {
   scale?: Scale
   sortTooltip?: boolean
+  smoothTicker?: boolean
 }) => {
   const anchor = useRef<HTMLDivElement>(null)
   const {
@@ -384,6 +390,7 @@ export const TransactionsCardV18 = ({
       }
       tickerSlot={
         <AutoTicker
+          smooth={smoothTicker}
           items={categories.map((c) => ({
             key: c.key,
             label: c.label,
