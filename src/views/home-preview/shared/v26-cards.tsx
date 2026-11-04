@@ -4,8 +4,7 @@ import { ROUTES } from '@/utils/constants'
 import { HomeCard, AutoTicker } from './card-shell'
 import ActiveMap from '../shared/active-map'
 import { V26_COUNTRY_COLORS, V26_COUNTRY_COUNT, V26_COUNTRY_GROUPS } from '../mock/v26-countries'
-import { cn } from '@/lib/utils'
-import { FEATURE_CARD_ASSET_TICKER_CLASS_NAME } from '@/views/home/components/highlighted-dtfs/constants'
+import { FEATURED_DTFS } from '@/views/home/components/highlighted-dtfs/featured-dtfs'
 import { ArrowRight } from 'lucide-react'
 import type { ReactNode } from 'react'
 
@@ -37,13 +36,17 @@ const DISCOVER_DTFS = [
   },
   { label: 'ETH+', src: 'https://app.reserve.org/svgs/ethplus.svg' },
   { label: 'USD3', src: 'https://app.reserve.org/svgs/usd3.svg' },
+  ...['BUILDOUT', 'POWER', 'ROBOTS', 'NEOCLOUD'].map((symbol) => {
+    const dtf = FEATURED_DTFS.find((dtf) => dtf.symbol === symbol)!
+    return { label: dtf.symbol, src: dtf.logo }
+  }),
 ]
 
 const DiscoverVisual = () => (
-  <div className="grid h-full grid-cols-2 content-center gap-3 px-7 sm:grid-cols-3 lg:grid-cols-6">
+  <div className="grid h-full grid-cols-2 content-center gap-3 px-5 sm:grid-cols-3">
     {DISCOVER_DTFS.map((dtf) => (
-      <div key={dtf.label} className="flex items-center gap-2 rounded-full bg-card px-2 py-2">
-        <img src={dtf.src} alt="" aria-hidden="true" className="h-7 w-7 rounded-full" />
+      <div key={dtf.label} className="flex min-w-0 items-center gap-2 rounded-full bg-card px-2 py-2">
+        <img src={dtf.src} alt="" aria-hidden="true" className="h-7 w-7 shrink-0 rounded-full" />
         <span className="text-sm text-foreground">{dtf.label}</span>
       </div>
     ))}
@@ -115,13 +118,7 @@ export const DiscoverDtfsCardV26 = () => (
     className="md:col-span-2"
     icon={<span className="flex h-8 w-8 items-center justify-center rounded-full bg-primary text-primary-foreground" aria-hidden="true"><ArrowRight size={18} /></span>}
     title={<Trans>Discover more DTFs</Trans>}
-    value="CMC20 · PHOTON · MAG7 · OPEN · ETH+ · USD3"
+    mediaClassName="h-[300px] sm:h-[240px]"
     media={<DiscoverVisual />}
-    tickerSlot={
-      <div className={cn(FEATURE_CARD_ASSET_TICKER_CLASS_NAME, 'px-3 py-3')}>
-        <p className="text-sm text-legend"><Trans>Index and yield DTFs, all in one place.</Trans></p>
-      </div>
-    }
-    description={<Trans>Explore more index and yield DTFs in one list.</Trans>}
   />
 )
