@@ -346,3 +346,78 @@ test('Folio 6.0: TVL fee and trade allowlist changes submit as 6.0 setters', asy
     decodeFunctionData({ abi: SET_TRADE_ALLOWLIST_ABI, data: calldatas[1] as Hex }).args
   ).toEqual([true])
 })
+
+// Folio 6.0 with a 20% permanent recipient: the mutable table (40% vault, 40% deployer
+// of the whole table) shows as shares of what the permanent part leaves (with a 20%
+// platform fee: 40% / 40%), and a new split is scaled back into the remaining 80%
+// while the permanent table goes back unchanged.
+const SET_FEE_RECIPIENTS_V6_ABI = parseAbi([
+  'function setFeeRecipients((address recipient, uint96 portion)[] _newRecipients, (address recipient, uint96 portion)[] _immutableRecipients)',
+])
+
+test('Folio 6.0: the split is shown and encoded relative to the permanent recipients', async ({
+  page,
+  txLog,
+  overrides,
+}) => {
+  const snapshot = structuredClone(loadDtf()) as DtfSnapshot['dtf'] & { deployer: string }
+  snapshot.feeRecipients = [
+    `${snapshot.stToken.id}:${parseEther('0.4')}`,
+    `${snapshot.deployer}:${parseEther('0.4')}`,
+  ].join(',')
+  overrides.subgraph({ operationName: 'GetIndexDTF' }, { dtf: snapshot })
+  seedFolioV6(overrides, dtf, {
+    immutableRecipients: [{ recipient: PERMANENT, portion: parseEther('0.2') }],
+  })
+  await bootProposeFees(page, overrides)
+
+  const governance = page.locator('#propose-section-fees input[name="governanceShare"]')
+  const deployer = page.locator('#propose-section-fees input[name="deployerShare"]')
+  await expect(page.getByTestId('settings-immutable-recipients')).toContainText('20%')
+  await expect(page.getByTestId('settings-immutable-recipients')).toContainText('80%')
+  for (let i = 0; i < 12 && (await governance.inputValue()) !== '40'; i++) {
+    await advanceTime(page, 1_000)
+  }
+  await expect(governance).toHaveValue('40')
+  await expect(deployer).toHaveValue('40')
+  await expect(page.getByTestId('remaining-allocation')).toContainText('0%')
+
+  await governance.fill('50')
+  await deployer.fill('30')
+  await advanceTime(page, 1_000)
+  await expect(page.getByTestId('remaining-allocation')).toContainText('0%')
+
+  await confirmButton(page).click()
+  await advanceTime(page, 2_000)
+  await page.locator('#title').fill('Folio 6.0 split')
+  await advanceTime(page, 1_000)
+  await submitButton(page).click()
+  await advanceTime(page, 10_000)
+
+  expect(txLog).toHaveLength(1)
+  const [targets, , calldatas] = decodeFunctionData({
+    abi: PROPOSE_ABI,
+    data: txLog[0].data as Hex,
+  }).args
+  expect(targets.map((target) => target.toLowerCase())).toEqual([DTF_ADDRESS.toLowerCase()])
+  const { functionName, args } = decodeFunctionData({
+    abi: SET_FEE_RECIPIENTS_V6_ABI,
+    data: calldatas[0] as Hex,
+  })
+  expect(functionName).toBe('setFeeRecipients')
+  const [mutable, immutable] = args
+  expect(immutable).toEqual([{ recipient: PERMANENT, portion: parseEther('0.2') }])
+  const portionOf = (address: string) =>
+    mutable.find((r) => r.recipient.toLowerCase() === address.toLowerCase())?.portion
+  // The shares go through float math; the last row absorbs the wei-level residual.
+  const offBy = (actual: bigint | undefined, expected: bigint) => {
+    const diff = (actual ?? 0n) - expected
+    return diff < 0n ? -diff : diff
+  }
+  expect(offBy(portionOf(snapshot.stToken.id), parseEther('0.5'))).toBeLessThanOrEqual(1_000n)
+  expect(offBy(portionOf(snapshot.deployer), parseEther('0.3'))).toBeLessThanOrEqual(1_000n)
+  expect(mutable).toHaveLength(2)
+  expect([...mutable, ...immutable].reduce((sum, r) => sum + r.portion, 0n)).toBe(
+    parseEther('1')
+  )
+})

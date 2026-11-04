@@ -56,7 +56,7 @@ import {
   selectorRegistryAbi,
 } from './optimistic'
 import type { OptimisticActionId } from './optimistic'
-import { getAddress, isAddress, type Address } from 'viem'
+import { getAddress, isAddress, zeroAddress, type Address } from 'viem'
 
 const resetAtom = atom(null, (get, set) => {
   set(removedBasketTokensAtom, [])
@@ -289,7 +289,10 @@ const Updater = () => {
   }, [currentOptimisticAllowedActions, setCurrentOptimisticAllowedActions])
 
   useEffect(() => {
-    setTokenJar(tokenJar as Address | undefined)
+    // A vault that reports a zero jar has none; a zero recipient would make the SDK reject the fee table.
+    setTokenJar(
+      tokenJar && tokenJar !== zeroAddress ? (tokenJar as Address) : undefined
+    )
   }, [tokenJar, setTokenJar])
 
   useEffect(() => {
