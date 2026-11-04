@@ -1,7 +1,6 @@
 ---
 title: Progress
-updated: 2026-10-22
-updated: 2026-10-29
+updated: 2026-11-04
 type: ledger
 ---
 
@@ -11,6 +10,7 @@ Stage ledger. One row per stage; keep entries short. Verifier = exact fresh comm
 
 | Stage | Status | Verifier | Review | Next |
 |---|---|---|---|---|
+| index-dtf-v6 follow-ups: proposal title `#`, detail skeletons, 6.0 permanent split + zero `tokenJar()` fix, allowlist editor + seeding race, migration lane third-party delegates | done (7bfa4ca4e, 0ba94fdb1, 65a3d9366) | tsc · unit 1212 · smoke 61/61 · flow `governance-propose-dtf-settings` 7/7 · RED verified (title, skeletons, zero jar, allowlist seeding) · fork: `folio-governance-upgrade` POWER on live BSC state, `optimistic-governance-upgrade` LCAP default/`other`/`other-fresh` | self + RED runs; desktop+mobile screenshots | Engineer review: zero `tokenJar()` falls back to the vault in settings while deploy blocks it |
 | index-dtf-v6 master sync: master merged, CowBot on trusted-fillers 0.10.0 (6.0.0 support), v6 banner dedupes live spell casts, settings summary decodes 6.0 setters, launch labels read `maxAuctionLength` | human-review-required (PR #1130; fillers #39 merged, 0.10.0) | typecheck · lint · unit 1164 · helpers 85 · smoke 60 · flows 20 · launch 12 (2 load flakes pass alone) · Base fork: MIDAS → 6.0.0, launcher openAuction, fillers dry run processed 1 order | self-review | zapper check blocked (530, 2026-10-22) |
 | index-dtf-v6-deploy ([plan](../plans/index-dtf-v6-deploy.md)) | human-review-required (SDK 0.7.0 published) | tsc · lint · unit 1069 · helpers 82 · smoke 59+flake (passes alone) · fork unit 3/3 (ungoverned, vlRSR, new vault) · Base fork UI 2/2 (manual vlRSR, zap via local zapper) | Dark+Light: fixed silent zap errors, reverted receipts, zero jar, copy, even split; found ungoverned residual → permanent recipient | Engineer review (tokenJar fees, fee math); design approved by Erik; `/deploy-index` removed |
 | rust-zapper-migration: deploy liquidity badges on `/rebalance/liquidity`, Simple deploy JSON errors + 2-asset guard, yield zap JSON errors / no 4xx retry / Enso-only on Arbitrum, unsupported-token flag and dead TS-era zap code removed | human-review-required (base bfe87b9c6, uncommitted, branch chore/rust-zapper-migration) | scope.mjs: lint · typecheck · unit 1100 (6 new) · e2e tsc · helpers 81 · smoke 57 + vote-lock drawer flake (2/2 isolated) · flows auctions + governance-propose-basket + zap-buy-sell green; failures-zap reject-recovers and zap-edge quote-error fail the same on origin/master | self-review | Engineer review (deploy/zap behavior); react-zapper 2.15.0 bump is separate |

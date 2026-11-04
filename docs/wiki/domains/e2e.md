@@ -137,6 +137,9 @@ First case: `launch-cmc20.fork.spec.ts` (auction 29, nonce 12, 2026-09-17).
   pre-upgrade card, proposes and executes `upgradeFolio`, retires the old vault and
   migrates a holder. `FORK_SAFE=1` gives the holder contract code and puts the fork
   wallet in Safe mode (sends return a hash that is never mined).
+  `FORK_MIGRATION_DELEGATE=other|other-fresh` gives the holder a third-party delegate
+  on the old vault (with and without an existing vlRSR delegation) and checks the
+  modal's delegate line and both vlRSR delegations after the lock.
 - DTF governance 1.1.0 upgrade (AI DTFs, MAG7): `prepare-folio-governance-upgrade.mjs`
   upgrades the chain's vlRSR singleton to 1.1.0 and writes
   `.state/<chainId>/folio-governance-upgrade-<scenario>.json`;
@@ -220,8 +223,7 @@ Related: [[project]], [[sdk]], [[yield-protocol]], [[subgraphs]].
 ### Base governance lanes
 
 Plain Anvil on :8546 (Alchemy fork with `--fork-header "Origin: https://app.reserve.org"`, the key is
-origin-allowlisted) plus the subgraph proxy on :18310 against the `1.11.2-test` deployment, because the v6 SDK
-queries fields `prod` lacks. `optimistic-governance-upgrade.fork.spec.ts` (LCAP) drives the governance migration
+origin-allowlisted) plus the subgraph proxy on :18310 against `prod` (1.11.4 has every field the v6 SDK queries). `optimistic-governance-upgrade.fork.spec.ts` (LCAP) drives the governance migration
 from the UI: upgrade banner → execute → retire banner → execute → overview migration modal with a real holder.
 `upgrade-v6.fork.spec.ts` drives the Folio 6.0.0 upgrade for MIDAS (optimistic) and ABX (legacy). Both prepare
 scripts replay protocol prerequisites by labelled impersonation (version registrations, vault upgrade) and pick

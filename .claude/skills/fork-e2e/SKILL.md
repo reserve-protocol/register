@@ -102,17 +102,20 @@ Register's write path and the RPC-first refresh, not governance coverage.
 
 ## The Register governance-upgrade lane (Base, LCAP)
 
-Plain Anvil on :8546 (no Docker stack) plus the subgraph proxy on :18310. The v6 SDK needs the
-1.11.x Index subgraph fields, so the proxy upstream is the `1.11.2-test` deployment until `prod`
-is promoted. `prepare-optimistic-governance.mjs` replays the protocol prerequisites by labelled
-impersonation (VersionRegistry `registerVersion` of the 1.1.0 deployer, vlRSR singleton upgrade
-to 1.1.0) and picks a real LCAP voter that clears threshold and quorum.
+Plain Anvil on :8546 (no Docker stack) plus the subgraph proxy on :18310 against `prod`.
+`prepare-optimistic-governance.mjs` replays the protocol prerequisites by labelled impersonation
+only when the fork predates them (VersionRegistry `registerVersion` of the 1.1.0 deployer, vlRSR
+singleton upgrade to 1.1.0, both live since 2026-11-04) and picks a real LCAP voter that clears
+threshold and quorum. `FORK_MIGRATION_DELEGATE=other` points the holder's old vault at a third
+party before the migration (their existing vlRSR delegation must win); `other-fresh` also clears
+the vlRSR delegations (the third party must carry over to both). The spec mutates the fork:
+restart Anvil and re-run the prepare script between runs.
 
 ```bash
 anvil --port 8546 --chain-id 8453 --fork-url https://base-mainnet.g.alchemy.com/v2/<key> &
 FORK_RPC_URL_8453=http://127.0.0.1:8546 node e2e/fork/scripts/prepare-optimistic-governance.mjs
 PORT=18310 FORK_BLOCK=$(jq -r .forkBlock e2e/fork/.state/8453/optimistic-governance-scenario.json) \
-  UPSTREAM=https://api.goldsky.com/api/public/project_cmgzim3e100095np2gjnbh6ry/subgraphs/dtf-index-base/1.11.2-test/gn \
+  UPSTREAM=https://api.goldsky.com/api/public/project_cmgzim3e100095np2gjnbh6ry/subgraphs/dtf-index-base/prod/gn \
   node e2e/fork/scripts/subgraph-proxy.mjs &
 FORK_CHAIN_ID=8453 pnpm exec playwright test -c playwright.fork.config.ts e2e/fork/tests/optimistic-governance-upgrade.fork.spec.ts
 ```
@@ -133,7 +136,7 @@ executable on Anvil, so `totalAssets()` reverts and the DTF never loads.
 
 ```bash
 FORK_RPC_URL_8453=http://127.0.0.1:8546 node e2e/fork/scripts/prepare-v6-upgrade.mjs
-PORT=18310 FORK_BLOCK=$(jq -r .forkBlock e2e/fork/.state/8453/v6-upgrade-scenario.json) UPSTREAM=<1.11.2-test base> node e2e/fork/scripts/subgraph-proxy.mjs &
+PORT=18310 FORK_BLOCK=$(jq -r .forkBlock e2e/fork/.state/8453/v6-upgrade-scenario.json) UPSTREAM=<prod base> node e2e/fork/scripts/subgraph-proxy.mjs &
 FORK_CHAIN_ID=8453 pnpm exec playwright test -c playwright.fork.config.ts e2e/fork/tests/upgrade-v6.fork.spec.ts
 ```
 
