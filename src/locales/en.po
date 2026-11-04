@@ -12755,3 +12755,11 @@ msgstr ""
 #: src/views/index-dtf/overview/components/zap-mint/zap-healthcheck.tsx:24
 #~ msgid "Zaps are currently experiencing issues"
 #~ msgstr ""
+
+#: src/views/index-dtf/governance/views/proposal/components/proposal-proposer-cancel.tsx:94
+msgid "Canceling this proposal is permanent. It will no longer be eligible for voting or execution."
+msgstr "Canceling this proposal is permanent. It will no longer be eligible for voting or execution."
+
+#: src/views/index-dtf/governance/views/proposal/components/proposal-proposer-cancel.tsx:127
+msgid "Keep proposal"
+msgstr "Keep proposal"

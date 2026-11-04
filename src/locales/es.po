@@ -12766,3 +12766,11 @@ msgstr "Error de Zapper"
 #: src/views/index-dtf/overview/components/zap-mint/zap-healthcheck.tsx:24
 #~ msgid "Zaps are currently experiencing issues"
 #~ msgstr "Los Zaps están presentando problemas actualmente"
+
+#: src/views/index-dtf/governance/views/proposal/components/proposal-proposer-cancel.tsx:94
+msgid "Canceling this proposal is permanent. It will no longer be eligible for voting or execution."
+msgstr "Cancelar esta propuesta es permanente. Ya no se podrá votar ni ejecutar."
+
+#: src/views/index-dtf/governance/views/proposal/components/proposal-proposer-cancel.tsx:127
+msgid "Keep proposal"
+msgstr "Mantener propuesta"

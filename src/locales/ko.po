@@ -12766,3 +12766,11 @@ msgstr "Zapper 오류"
 #: src/views/index-dtf/overview/components/zap-mint/zap-healthcheck.tsx:24
 #~ msgid "Zaps are currently experiencing issues"
 #~ msgstr "현재 Zap에 문제가 발생하고 있습니다"
+
+#: src/views/index-dtf/governance/views/proposal/components/proposal-proposer-cancel.tsx:94
+msgid "Canceling this proposal is permanent. It will no longer be eligible for voting or execution."
+msgstr "이 제안을 취소하면 되돌릴 수 없습니다. 더 이상 투표하거나 실행할 수 없습니다."
+
+#: src/views/index-dtf/governance/views/proposal/components/proposal-proposer-cancel.tsx:127
+msgid "Keep proposal"
+msgstr "제안 유지"
