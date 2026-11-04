@@ -853,7 +853,7 @@ msgstr ""
 msgid "Above minimum trade volume"
 msgstr ""
 
-#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:298
+#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:299
 #: src/views/index-dtf/governance/views/proposal/components/proposal-detail-votes.tsx:118
 #: src/views/index-dtf/governance/views/proposal/components/vote-modal.tsx:79
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalDetailStats.tsx:236
@@ -940,6 +940,15 @@ msgstr ""
 msgid "Add additional recipients"
 msgstr ""
 
+#. placeholder {0}: missingBasket.length
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-trade-allowlist.tsx:233
+msgid "Add basket tokens ({0})"
+msgstr ""
+
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-trade-allowlist.tsx:242
+msgid "Add by address"
+msgstr ""
+
 #: src/views/yield-dtf/governance/views/proposal/components/revenue-destinations-proposal.tsx:149
 msgid "Add destination"
 msgstr ""
@@ -1005,8 +1014,11 @@ msgid "Add to Trade Allowlist"
 msgstr ""
 
 #: src/views/index-dtf/deploy/steps/basket/token-selector.tsx:68
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-trade-allowlist.tsx:59
 msgid "Add token"
+msgstr ""
+
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-trade-allowlist.tsx:215
+msgid "Add tokens"
 msgstr ""
 
 #: src/components/index-basket-setup/basket-table.tsx:196
@@ -1086,7 +1098,7 @@ msgstr ""
 msgid "Advanced Controls"
 msgstr ""
 
-#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:277
+#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:278
 #: src/views/index-dtf/governance/views/proposal/components/vote-modal.tsx:78
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalDetailStats.tsx:216
 #: src/views/yield-dtf/governance/views/proposal-detail/components/VoteModal.tsx:55
@@ -1254,7 +1266,7 @@ msgstr ""
 msgid "Allowing the weight control will allow the rebalance to adjust the weights of the tokens in the basket, turning this off is recommended for tracking DTFs."
 msgstr ""
 
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-trade-allowlist.tsx:50
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-trade-allowlist.tsx:326
 msgid "Allowlisted tokens"
 msgstr ""
 
@@ -2180,7 +2192,7 @@ msgstr ""
 msgid "By using"
 msgstr ""
 
-#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:117
+#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:118
 #: src/views/yield-dtf/governance/views/proposal-detail/components/proposal-timeline/TimelineItem.tsx:82
 msgid "By:"
 msgstr ""
@@ -2244,7 +2256,7 @@ msgstr ""
 
 #: src/views/explorer/components/governance/filters.tsx:21
 #: src/views/index-dtf/governance/views/proposal/components/proposal-deadline-alert.tsx:41
-#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:291
+#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:292
 #: src/views/yield-dtf/governance/views/proposal-detail/components/proposal-timeline/TimelineItem.tsx:258
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalAlert.tsx:62
 msgid "Canceled"
@@ -2311,8 +2323,8 @@ msgstr ""
 msgid "Chain: {chainId}"
 msgstr ""
 
-#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:102
-#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:217
+#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:103
+#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:218
 #: src/views/index-dtf/governance/views/proposal/components/vote-modal.tsx:84
 msgid "Challenge"
 msgstr ""
@@ -3221,7 +3233,7 @@ msgstr ""
 msgid "Current Version (v2)"
 msgstr ""
 
-#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:335
+#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:359
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalDetailStats.tsx:104
 msgid "Current votes"
 msgstr ""
@@ -4029,7 +4041,7 @@ msgstr ""
 msgid "Energy Consumption"
 msgstr ""
 
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-trade-allowlist.tsx:25
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-trade-allowlist.tsx:301
 msgid "Enforce trade allowlist"
 msgstr ""
 
@@ -4317,8 +4329,8 @@ msgstr ""
 msgid "Executable until {deadlineDate}"
 msgstr ""
 
-#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:288
 #: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:289
+#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:290
 #: src/views/index-dtf/governance/views/proposal/components/proposal-execute-button.tsx:94
 #: src/views/yield-dtf/governance/views/proposal-detail/components/proposal-timeline/TimelineItem.tsx:256
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalExecute.tsx:31
@@ -4329,7 +4341,7 @@ msgstr ""
 #: src/views/explorer/components/governance/filters.tsx:19
 #: src/views/index-dtf/governance/components/proposal-list-item.tsx:101
 #: src/views/index-dtf/governance/views/proposal/components/proposal-deadline-alert.tsx:23
-#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:290
+#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:291
 #: src/views/yield-dtf/governance/views/proposal-detail/components/proposal-timeline/TimelineItem.tsx:257
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalAlert.tsx:44
 msgid "Executed"
@@ -4676,7 +4688,7 @@ msgstr ""
 msgid "Final price in:"
 msgstr ""
 
-#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:337
+#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:361
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalDetailStats.tsx:105
 msgid "Final votes"
 msgstr ""
@@ -4719,7 +4731,7 @@ msgstr ""
 msgid "Folio 6.0.0 upgrade proposal created"
 msgstr ""
 
-#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:261
+#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:262
 #: src/views/index-dtf/governance/views/proposal/components/vote-modal.tsx:77
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalDetailStats.tsx:203
 #: src/views/yield-dtf/governance/views/proposal-detail/components/VoteModal.tsx:54
@@ -5266,7 +5278,7 @@ msgid "Immediate"
 msgstr ""
 
 #. placeholder {0}: parseDuration(elapsed)
-#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:187
+#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:188
 #: src/views/yield-dtf/governance/views/proposal-detail/components/proposal-timeline/TimelineItem.tsx:158
 msgid "in {0}"
 msgstr ""
@@ -5955,7 +5967,7 @@ msgstr ""
 msgid "Main"
 msgstr ""
 
-#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:163
+#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:164
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalDetailStats.tsx:156
 msgid "Majority support"
 msgstr ""
@@ -6669,7 +6681,7 @@ msgid "Next video"
 msgstr ""
 
 #: src/views/index-dtf/auctions/views/rebalance/components/rebalance-overview.tsx:74
-#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:170
+#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:171
 #: src/views/portfolio-page/components/active-proposals.tsx:97
 #: src/views/yield-dtf/governance/components/ProposalList.tsx:119
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalDetailStats.tsx:166
@@ -6841,6 +6853,10 @@ msgstr ""
 msgid "No tags"
 msgstr ""
 
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-trade-allowlist.tsx:262
+msgid "No tokens allowlisted. Add the tokens a rebalance may trade."
+msgstr ""
+
 #: src/components/token-selector-drawer/index.tsx:224
 #: src/views/index-dtf/deploy/steps/basket/token-selector.tsx:377
 msgid "No tokens found"
@@ -6987,8 +7003,8 @@ msgstr ""
 msgid "Nudge"
 msgstr ""
 
-#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:113
-#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:221
+#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:114
+#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:222
 msgid "of"
 msgstr ""
 
@@ -7847,7 +7863,7 @@ msgstr ""
 msgid "Projects recent reward activity forward."
 msgstr ""
 
-#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:209
+#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:210
 msgid "Proposal canceled"
 msgstr ""
 
@@ -7855,7 +7871,7 @@ msgstr ""
 msgid "Proposal cannot be executed while another auction is currently running"
 msgstr ""
 
-#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:109
+#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:110
 #: src/views/yield-dtf/governance/views/proposal-detail/components/proposal-timeline/TimelineItem.tsx:77
 msgid "Proposal created"
 msgstr ""
@@ -7873,7 +7889,7 @@ msgstr ""
 msgid "Proposal created!"
 msgstr ""
 
-#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:203
+#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:204
 #: src/views/yield-dtf/governance/views/proposal-detail/components/proposal-timeline/TimelineItem.tsx:174
 msgid "Proposal defeated"
 msgstr ""
@@ -7883,7 +7899,7 @@ msgid "Proposal execution delay (hours)"
 msgstr ""
 
 #: src/views/index-dtf/governance/components/proposal-list-item.tsx:104
-#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:205
+#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:206
 #: src/views/yield-dtf/governance/views/proposal-detail/components/proposal-timeline/TimelineItem.tsx:176
 msgid "Proposal expired"
 msgstr ""
@@ -7896,9 +7912,9 @@ msgstr ""
 msgid "Proposal Simulation"
 msgstr ""
 
-#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:206
 #: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:207
 #: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:208
+#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:209
 #: src/views/yield-dtf/governance/views/proposal-detail/components/proposal-timeline/TimelineItem.tsx:177
 #: src/views/yield-dtf/governance/views/proposal-detail/components/proposal-timeline/TimelineItem.tsx:178
 #: src/views/yield-dtf/governance/views/proposal-detail/components/proposal-timeline/TimelineItem.tsx:179
@@ -8077,12 +8093,12 @@ msgid "Queue proposal"
 msgstr ""
 
 #: src/views/explorer/components/governance/filters.tsx:23
-#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:269
+#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:270
 #: src/views/yield-dtf/governance/views/proposal-detail/components/proposal-timeline/TimelineItem.tsx:241
 msgid "Queued"
 msgstr ""
 
-#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:102
+#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:103
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalDetailStats.tsx:113
 #: src/views/yield-dtf/settings/components/governance-info.tsx:65
 msgid "Quorum"
@@ -8095,7 +8111,7 @@ msgstr ""
 #: src/views/explorer/components/governance/filters.tsx:20
 #: src/views/index-dtf/governance/components/proposal-list-item.tsx:105
 #: src/views/index-dtf/governance/views/proposal/components/proposal-deadline-alert.tsx:47
-#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:204
+#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:205
 #: src/views/yield-dtf/governance/views/proposal-detail/components/proposal-timeline/TimelineItem.tsx:175
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalAlert.tsx:68
 msgid "Quorum not reached"
@@ -8586,6 +8602,7 @@ msgstr ""
 
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/sections/propose-revenue-tokens.tsx:146
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/vault-proposal-form.tsx:147
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-trade-allowlist.tsx:81
 msgid "Remove token"
 msgstr ""
 
@@ -8723,7 +8740,7 @@ msgstr ""
 msgid "Resources"
 msgstr ""
 
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-trade-allowlist.tsx:28
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-trade-allowlist.tsx:304
 msgid "Restrict rebalances to the tokens below."
 msgstr ""
 
@@ -9899,7 +9916,7 @@ msgstr ""
 
 #: src/views/explorer/components/governance/filters.tsx:41
 #: src/views/explorer/components/governance/index.tsx:126
-#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:349
+#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:366
 #: src/views/portfolio-page/components/active-proposals.tsx:136
 #: src/views/yield-dtf/governance/views/proposal-detail/components/proposal-timeline/index.tsx:16
 msgid "Status"
@@ -10731,7 +10748,7 @@ msgstr ""
 #: src/views/index-dtf/components/navigation/index.tsx:302
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/sections/propose-revenue-tokens.tsx:137
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/vault-proposal-form.tsx:138
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-trade-allowlist.tsx:60
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-trade-allowlist.tsx:149
 msgid "Token address"
 msgstr ""
 
@@ -10744,7 +10761,7 @@ msgstr ""
 msgid "Token already exists in the list"
 msgstr ""
 
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-trade-allowlist.tsx:53
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-trade-allowlist.tsx:329
 msgid "Token contracts a rebalance may trade."
 msgstr ""
 
@@ -11274,8 +11291,8 @@ msgstr ""
 msgid "Unable to parse contract data"
 msgstr ""
 
-#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:119
-#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:228
+#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:120
+#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:229
 #: src/views/index-dtf/settings/components/index-settings-fees.tsx:229
 msgid "Unavailable"
 msgstr ""
@@ -11353,6 +11370,10 @@ msgstr ""
 #: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:150
 #: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:199
 msgid "Unknown Role"
+msgstr ""
+
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-trade-allowlist.tsx:121
+msgid "Unknown token"
 msgstr ""
 
 #: src/views/index-dtf/issuance/manual/components/asset-list.tsx:309
@@ -12149,7 +12170,7 @@ msgstr ""
 msgid "Voting begins in"
 msgstr ""
 
-#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:144
+#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:145
 #: src/views/yield-dtf/governance/views/proposal-detail/components/proposal-timeline/TimelineItem.tsx:106
 msgid "Voting delay"
 msgstr ""
@@ -12191,7 +12212,7 @@ msgid "Voting on the RToken you are staked on requires you to delegate your vote
 msgstr ""
 
 #: src/views/index-dtf/deploy/steps/governance-settings/voting-presets.tsx:25
-#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:165
+#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:166
 #: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/atoms.ts:193
 #: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/components/basket-settings-proposal-section.tsx:46
 #: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/components/sections/propose-basket-governance.tsx:35
@@ -12213,7 +12234,7 @@ msgstr ""
 msgid "Voting period (hours)"
 msgstr ""
 
-#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:185
+#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:186
 #: src/views/yield-dtf/governance/views/proposal-detail/components/proposal-timeline/TimelineItem.tsx:156
 msgid "Voting Period Ends"
 msgstr ""
@@ -12511,7 +12532,7 @@ msgstr ""
 msgid "What's in the basket?"
 msgstr ""
 
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-trade-allowlist.tsx:14
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-trade-allowlist.tsx:290
 msgid "When enforced, a rebalance can only include allowlisted tokens. Proposals with other tokens revert when executed."
 msgstr ""
 
@@ -12669,7 +12690,7 @@ msgstr ""
 
 #: src/views/index-dtf/auctions/views/rebalance/components/rebalance-overview.tsx:60
 #: src/views/index-dtf/auctions/views/rebalance/components/rebalance-overview.tsx:74
-#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:170
+#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:171
 #: src/views/portfolio-page/components/active-proposals.tsx:97
 #: src/views/yield-dtf/governance/components/ProposalList.tsx:119
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalDetailStats.tsx:166

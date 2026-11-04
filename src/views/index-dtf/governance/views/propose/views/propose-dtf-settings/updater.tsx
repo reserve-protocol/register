@@ -213,6 +213,7 @@ const Updater = () => {
   )
   const currentQuorumPercentage = useAtomValue(currentQuorumPercentageAtom)
   const isResettingForm = useRef(false)
+  const seededTradeAllowlist = useRef<typeof currentTradeAllowlist>(undefined)
 
   // Set atoms for changes
   const setTokenNameChange = useSetAtom(tokenNameChangeAtom)
@@ -426,6 +427,7 @@ const Updater = () => {
           ...(tradeAllowlistChanges.add ?? []),
         ],
       })
+      seededTradeAllowlist.current = currentTradeAllowlist
 
       // Reset the flag after form reset
       setTimeout(() => {
@@ -650,7 +652,14 @@ const Updater = () => {
 
   // Watch for trade allowlist changes (v6)
   useEffect(() => {
-    if (!currentTradeAllowlist) return
+    // Until the form holds this allowlist, diffing its empty list would propose removing every token.
+    if (
+      !currentTradeAllowlist ||
+      seededTradeAllowlist.current !== currentTradeAllowlist ||
+      isResettingForm.current
+    ) {
+      return
+    }
     const current = new Set(currentTradeAllowlist.tokens.map(toAllowlistKey))
     // Lowercase first: a mixed-case address with a bad checksum would make the SDK encoder throw.
     const proposed = ((tradeAllowlistTokens ?? []) as string[])

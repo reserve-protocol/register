@@ -853,7 +853,7 @@ msgstr "이 DTF 소개"
 msgid "Above minimum trade volume"
 msgstr "최소 거래량 이상"
 
-#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:298
+#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:299
 #: src/views/index-dtf/governance/views/proposal/components/proposal-detail-votes.tsx:118
 #: src/views/index-dtf/governance/views/proposal/components/vote-modal.tsx:79
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalDetailStats.tsx:236
@@ -940,6 +940,15 @@ msgstr "Optimistic 제안자 추가"
 msgid "Add additional recipients"
 msgstr "수령인 추가"
 
+#. placeholder {0}: missingBasket.length
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-trade-allowlist.tsx:233
+msgid "Add basket tokens ({0})"
+msgstr "바스켓 토큰 추가 ({0})"
+
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-trade-allowlist.tsx:242
+msgid "Add by address"
+msgstr "주소로 추가"
+
 #: src/views/yield-dtf/governance/views/proposal/components/revenue-destinations-proposal.tsx:149
 msgid "Add destination"
 msgstr "대상 추가"
@@ -1005,8 +1014,11 @@ msgid "Add to Trade Allowlist"
 msgstr "거래 허용 목록에 추가"
 
 #: src/views/index-dtf/deploy/steps/basket/token-selector.tsx:68
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-trade-allowlist.tsx:59
 msgid "Add token"
+msgstr "토큰 추가"
+
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-trade-allowlist.tsx:215
+msgid "Add tokens"
 msgstr "토큰 추가"
 
 #: src/components/index-basket-setup/basket-table.tsx:196
@@ -1086,7 +1098,7 @@ msgstr "고급 설정:"
 msgid "Advanced Controls"
 msgstr "고급 제어"
 
-#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:277
+#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:278
 #: src/views/index-dtf/governance/views/proposal/components/vote-modal.tsx:78
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalDetailStats.tsx:216
 #: src/views/yield-dtf/governance/views/proposal-detail/components/VoteModal.tsx:55
@@ -1254,7 +1266,7 @@ msgstr "{symbol} 사용 허용"
 msgid "Allowing the weight control will allow the rebalance to adjust the weights of the tokens in the basket, turning this off is recommended for tracking DTFs."
 msgstr "가중치 제어를 허용하면 리밸런싱 시 바스켓 내 토큰의 가중치를 조정할 수 있습니다. tracking DTF의 경우 이 기능을 끄는 것을 권장합니다."
 
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-trade-allowlist.tsx:50
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-trade-allowlist.tsx:326
 msgid "Allowlisted tokens"
 msgstr "허용된 토큰"
 
@@ -2180,7 +2192,7 @@ msgstr "이 옵션을 활성화하면 zapper가 RToken을 거래하는 대신 Mi
 msgid "By using"
 msgstr "귀하는"
 
-#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:117
+#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:118
 #: src/views/yield-dtf/governance/views/proposal-detail/components/proposal-timeline/TimelineItem.tsx:82
 msgid "By:"
 msgstr "제안자:"
@@ -2244,7 +2256,7 @@ msgstr "Unstake 취소"
 
 #: src/views/explorer/components/governance/filters.tsx:21
 #: src/views/index-dtf/governance/views/proposal/components/proposal-deadline-alert.tsx:41
-#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:291
+#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:292
 #: src/views/yield-dtf/governance/views/proposal-detail/components/proposal-timeline/TimelineItem.tsx:258
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalAlert.tsx:62
 msgid "Canceled"
@@ -2311,8 +2323,8 @@ msgstr "Chain은 Mainnet, Base 또는 Binance Smart Chain 중 하나여야 합�
 msgid "Chain: {chainId}"
 msgstr "Chain: {chainId}"
 
-#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:102
-#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:217
+#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:103
+#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:218
 #: src/views/index-dtf/governance/views/proposal/components/vote-modal.tsx:84
 msgid "Challenge"
 msgstr "이의 제기"
@@ -3221,7 +3233,7 @@ msgstr "버퍼의 현재 가치:"
 msgid "Current Version (v2)"
 msgstr "현재 버전 (v2)"
 
-#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:335
+#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:359
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalDetailStats.tsx:104
 msgid "Current votes"
 msgstr "현재 투표"
@@ -4029,7 +4041,7 @@ msgstr "종료 시점"
 msgid "Energy Consumption"
 msgstr "에너지 소비"
 
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-trade-allowlist.tsx:25
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-trade-allowlist.tsx:301
 msgid "Enforce trade allowlist"
 msgstr "거래 허용 목록 적용"
 
@@ -4317,8 +4329,8 @@ msgstr "실행 가능한 코드"
 msgid "Executable until {deadlineDate}"
 msgstr "{deadlineDate}까지 실행 가능"
 
-#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:288
 #: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:289
+#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:290
 #: src/views/index-dtf/governance/views/proposal/components/proposal-execute-button.tsx:94
 #: src/views/yield-dtf/governance/views/proposal-detail/components/proposal-timeline/TimelineItem.tsx:256
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalExecute.tsx:31
@@ -4329,7 +4341,7 @@ msgstr "제안 실행"
 #: src/views/explorer/components/governance/filters.tsx:19
 #: src/views/index-dtf/governance/components/proposal-list-item.tsx:101
 #: src/views/index-dtf/governance/views/proposal/components/proposal-deadline-alert.tsx:23
-#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:290
+#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:291
 #: src/views/yield-dtf/governance/views/proposal-detail/components/proposal-timeline/TimelineItem.tsx:257
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalAlert.tsx:44
 msgid "Executed"
@@ -4676,7 +4688,7 @@ msgstr "최종 가격"
 msgid "Final price in:"
 msgstr "최종 가격까지:"
 
-#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:337
+#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:361
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalDetailStats.tsx:105
 msgid "Final votes"
 msgstr "최종 투표"
@@ -4719,7 +4731,7 @@ msgstr "Folio 6.0.0 사용 가능"
 msgid "Folio 6.0.0 upgrade proposal created"
 msgstr "Folio 6.0.0 업그레이드 제안이 생성되었습니다"
 
-#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:261
+#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:262
 #: src/views/index-dtf/governance/views/proposal/components/vote-modal.tsx:77
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalDetailStats.tsx:203
 #: src/views/yield-dtf/governance/views/proposal-detail/components/VoteModal.tsx:54
@@ -5266,7 +5278,7 @@ msgid "Immediate"
 msgstr "즉시"
 
 #. placeholder {0}: parseDuration(elapsed)
-#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:187
+#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:188
 #: src/views/yield-dtf/governance/views/proposal-detail/components/proposal-timeline/TimelineItem.tsx:158
 msgid "in {0}"
 msgstr "{0} 후"
@@ -5955,7 +5967,7 @@ msgstr "직접 담보를 만드셨나요?"
 msgid "Main"
 msgstr "Main"
 
-#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:163
+#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:164
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalDetailStats.tsx:156
 msgid "Majority support"
 msgstr "과반수 찬성"
@@ -6669,7 +6681,7 @@ msgid "Next video"
 msgstr ""
 
 #: src/views/index-dtf/auctions/views/rebalance/components/rebalance-overview.tsx:74
-#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:170
+#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:171
 #: src/views/portfolio-page/components/active-proposals.tsx:97
 #: src/views/yield-dtf/governance/components/ProposalList.tsx:119
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalDetailStats.tsx:166
@@ -6841,6 +6853,10 @@ msgstr "Swap 불필요"
 msgid "No tags"
 msgstr "태그 없음"
 
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-trade-allowlist.tsx:262
+msgid "No tokens allowlisted. Add the tokens a rebalance may trade."
+msgstr "허용 목록에 토큰이 없습니다. 리밸런싱에서 거래할 수 있는 토큰을 추가하세요."
+
 #: src/components/token-selector-drawer/index.tsx:224
 #: src/views/index-dtf/deploy/steps/basket/token-selector.tsx:377
 msgid "No tokens found"
@@ -6987,8 +7003,8 @@ msgstr "생성자의 노트"
 msgid "Nudge"
 msgstr "넛지"
 
-#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:113
-#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:221
+#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:114
+#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:222
 msgid "of"
 msgstr "/"
 
@@ -7847,7 +7863,7 @@ msgstr "프로젝트"
 msgid "Projects recent reward activity forward."
 msgstr ""
 
-#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:209
+#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:210
 msgid "Proposal canceled"
 msgstr "제안이 취소됨"
 
@@ -7855,7 +7871,7 @@ msgstr "제안이 취소됨"
 msgid "Proposal cannot be executed while another auction is currently running"
 msgstr "다른 경매가 진행 중인 동안에는 제안을 실행할 수 없습니다"
 
-#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:109
+#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:110
 #: src/views/yield-dtf/governance/views/proposal-detail/components/proposal-timeline/TimelineItem.tsx:77
 msgid "Proposal created"
 msgstr "제안 생성됨"
@@ -7873,7 +7889,7 @@ msgstr "제안 생성됨"
 msgid "Proposal created!"
 msgstr "제안이 생성되었습니다!"
 
-#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:203
+#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:204
 #: src/views/yield-dtf/governance/views/proposal-detail/components/proposal-timeline/TimelineItem.tsx:174
 msgid "Proposal defeated"
 msgstr "제안이 부결됨"
@@ -7883,7 +7899,7 @@ msgid "Proposal execution delay (hours)"
 msgstr "제안 실행 지연(시간)"
 
 #: src/views/index-dtf/governance/components/proposal-list-item.tsx:104
-#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:205
+#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:206
 #: src/views/yield-dtf/governance/views/proposal-detail/components/proposal-timeline/TimelineItem.tsx:176
 msgid "Proposal expired"
 msgstr "제안이 만료됨"
@@ -7896,9 +7912,9 @@ msgstr "제안 시뮬레이션 완료"
 msgid "Proposal Simulation"
 msgstr "제안 시뮬레이션"
 
-#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:206
 #: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:207
 #: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:208
+#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:209
 #: src/views/yield-dtf/governance/views/proposal-detail/components/proposal-timeline/TimelineItem.tsx:177
 #: src/views/yield-dtf/governance/views/proposal-detail/components/proposal-timeline/TimelineItem.tsx:178
 #: src/views/yield-dtf/governance/views/proposal-detail/components/proposal-timeline/TimelineItem.tsx:179
@@ -8077,12 +8093,12 @@ msgid "Queue proposal"
 msgstr "제안 큐에 등록"
 
 #: src/views/explorer/components/governance/filters.tsx:23
-#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:269
+#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:270
 #: src/views/yield-dtf/governance/views/proposal-detail/components/proposal-timeline/TimelineItem.tsx:241
 msgid "Queued"
 msgstr "큐 등록됨"
 
-#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:102
+#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:103
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalDetailStats.tsx:113
 #: src/views/yield-dtf/settings/components/governance-info.tsx:65
 msgid "Quorum"
@@ -8095,7 +8111,7 @@ msgstr "정족수 (%)"
 #: src/views/explorer/components/governance/filters.tsx:20
 #: src/views/index-dtf/governance/components/proposal-list-item.tsx:105
 #: src/views/index-dtf/governance/views/proposal/components/proposal-deadline-alert.tsx:47
-#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:204
+#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:205
 #: src/views/yield-dtf/governance/views/proposal-detail/components/proposal-timeline/TimelineItem.tsx:175
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalAlert.tsx:68
 msgid "Quorum not reached"
@@ -8586,6 +8602,7 @@ msgstr "리소스 제거"
 
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/sections/propose-revenue-tokens.tsx:146
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/vault-proposal-form.tsx:147
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-trade-allowlist.tsx:81
 msgid "Remove token"
 msgstr "토큰 제거"
 
@@ -8723,7 +8740,7 @@ msgstr "실패한 주문 해결"
 msgid "Resources"
 msgstr "리소스"
 
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-trade-allowlist.tsx:28
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-trade-allowlist.tsx:304
 msgid "Restrict rebalances to the tokens below."
 msgstr "리밸런싱을 아래 토큰으로 제한합니다."
 
@@ -9899,7 +9916,7 @@ msgstr "현재 기간이 종료되면 다음 {0} 보상 기간을 시작합니�
 
 #: src/views/explorer/components/governance/filters.tsx:41
 #: src/views/explorer/components/governance/index.tsx:126
-#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:349
+#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:366
 #: src/views/portfolio-page/components/active-proposals.tsx:136
 #: src/views/yield-dtf/governance/views/proposal-detail/components/proposal-timeline/index.tsx:16
 msgid "Status"
@@ -10742,7 +10759,7 @@ msgstr "토큰 \"{symbol}\"이(가) 범위를 벗어났습니다. 리밸런싱�
 #: src/views/index-dtf/components/navigation/index.tsx:302
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/sections/propose-revenue-tokens.tsx:137
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/vault-proposal-form.tsx:138
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-trade-allowlist.tsx:60
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-trade-allowlist.tsx:149
 msgid "Token address"
 msgstr "토큰 주소"
 
@@ -10755,7 +10772,7 @@ msgstr "토큰 주소"
 msgid "Token already exists in the list"
 msgstr "토큰이 이미 목록에 있습니다"
 
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-trade-allowlist.tsx:53
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-trade-allowlist.tsx:329
 msgid "Token contracts a rebalance may trade."
 msgstr "리밸런싱이 거래할 수 있는 토큰 컨트랙트입니다."
 
@@ -11285,8 +11302,8 @@ msgstr "현재 대상을 불러올 수 없습니다."
 msgid "Unable to parse contract data"
 msgstr "컨트랙트 데이터를 파싱할 수 없습니다"
 
-#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:119
-#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:228
+#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:120
+#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:229
 #: src/views/index-dtf/settings/components/index-settings-fees.tsx:229
 msgid "Unavailable"
 msgstr "사용 불가"
@@ -11365,6 +11382,10 @@ msgstr "알 수 없는 유동성"
 #: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:199
 msgid "Unknown Role"
 msgstr "알 수 없는 역할"
+
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-trade-allowlist.tsx:121
+msgid "Unknown token"
+msgstr "알 수 없는 토큰"
 
 #: src/views/index-dtf/issuance/manual/components/asset-list.tsx:309
 msgid "Unlimited"
@@ -12160,7 +12181,7 @@ msgstr "투표 주소"
 msgid "Voting begins in"
 msgstr "투표 시작까지"
 
-#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:144
+#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:145
 #: src/views/yield-dtf/governance/views/proposal-detail/components/proposal-timeline/TimelineItem.tsx:106
 msgid "Voting delay"
 msgstr "투표 지연"
@@ -12202,7 +12223,7 @@ msgid "Voting on the RToken you are staked on requires you to delegate your vote
 msgstr "Stake한 RToken에 대해 투표하려면 자신 또는 다른 Eth 주소에 투표권을 위임해야 합니다."
 
 #: src/views/index-dtf/deploy/steps/governance-settings/voting-presets.tsx:25
-#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:165
+#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:166
 #: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/atoms.ts:193
 #: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/components/basket-settings-proposal-section.tsx:46
 #: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/components/sections/propose-basket-governance.tsx:35
@@ -12224,7 +12245,7 @@ msgstr "투표 기간 (블록)"
 msgid "Voting period (hours)"
 msgstr "투표 기간 (시간)"
 
-#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:185
+#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:186
 #: src/views/yield-dtf/governance/views/proposal-detail/components/proposal-timeline/TimelineItem.tsx:156
 msgid "Voting Period Ends"
 msgstr "투표 기간 종료"
@@ -12522,7 +12543,7 @@ msgstr ""
 msgid "What's in the basket?"
 msgstr ""
 
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-trade-allowlist.tsx:14
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-trade-allowlist.tsx:290
 msgid "When enforced, a rebalance can only include allowlisted tokens. Proposals with other tokens revert when executed."
 msgstr "적용되면 리밸런싱에는 허용된 토큰만 포함될 수 있습니다. 다른 토큰이 포함된 제안은 실행 시 되돌려집니다."
 
@@ -12680,7 +12701,7 @@ msgstr "연초 대비"
 
 #: src/views/index-dtf/auctions/views/rebalance/components/rebalance-overview.tsx:60
 #: src/views/index-dtf/auctions/views/rebalance/components/rebalance-overview.tsx:74
-#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:170
+#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:171
 #: src/views/portfolio-page/components/active-proposals.tsx:97
 #: src/views/yield-dtf/governance/components/ProposalList.tsx:119
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalDetailStats.tsx:166

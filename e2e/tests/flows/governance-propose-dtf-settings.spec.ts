@@ -6,6 +6,8 @@ import { loadSnapshot } from '../../helpers/snapshots'
 import {
   decodeFunctionData,
   encodeAbiParameters,
+  encodeFunctionData,
+  getAddress,
   parseAbi,
   parseEther,
   type Address,
@@ -419,5 +421,81 @@ test('Folio 6.0: the split is shown and encoded relative to the permanent recipi
   expect(mutable).toHaveLength(2)
   expect([...mutable, ...immutable].reduce((sum, r) => sum + r.portion, 0n)).toBe(
     parseEther('1')
+  )
+})
+
+// Folio 6.0 allowlist editor: tokens show as rows (basket names, or the on-chain
+// symbol for anything else); adding the basket, removing a token and adding one by
+// address land as removeFromAllowlist + addToAllowlist.
+const ALLOWLIST_ABI = parseAbi([
+  'function addToAllowlist(address[] _tokens)',
+  'function removeFromAllowlist(address[] _tokens)',
+])
+const ERC20_META_ABI = parseAbi([
+  'function symbol() view returns (string)',
+  'function name() view returns (string)',
+])
+const OFF_LIST_TOKEN = '0x7777777777777777777777777777777777777777' as Address
+
+test('Folio 6.0: the allowlist editor adds the basket, removes and adds by address', async ({
+  page,
+  txLog,
+  overrides,
+}) => {
+  const { totalAssets } = loadSnapshot<{ totalAssets: { tokens: Address[] } }>(
+    `${dtf.snapshotDir}/chain-state.json`
+  )
+  const basket = totalAssets.tokens.map((token) => getAddress(token))
+  seedFolioV6(overrides, dtf, { allowlist: { enabled: true, tokens: [basket[0]] } })
+  for (const [functionName, value] of [
+    ['symbol', 'XYZ'],
+    ['name', 'Off-list Token'],
+  ] as const) {
+    overrides.ethCall(
+      OFF_LIST_TOKEN,
+      encodeFunctionData({ abi: ERC20_META_ABI, functionName }),
+      encodeAbiParameters([{ type: 'string' }], [value])
+    )
+  }
+  await bootProposeFees(page, overrides)
+  await page.locator('#propose-section-allowlist').getByRole('button').first().click()
+  await advanceTime(page, 1_000)
+
+  const rows = page.getByTestId('settings-allowlist-row')
+  await expect(rows).toHaveCount(1)
+  await page.getByTestId('settings-allowlist-add-basket').click()
+  await advanceTime(page, 1_000)
+  await expect(rows).toHaveCount(basket.length)
+  await expect(page.getByTestId('settings-allowlist-add-basket')).toHaveCount(0)
+
+  await rows.first().getByTestId('settings-allowlist-remove').click()
+  await page.getByTestId('settings-allowlist-add-address').click()
+  await advanceTime(page, 1_000)
+  await page.locator('input[name="tradeAllowlistTokens[7]"]').fill(OFF_LIST_TOKEN)
+  await advanceTime(page, 2_000)
+  await expect(rows).toHaveCount(basket.length)
+  await expect(rows.last()).toContainText('XYZ')
+
+  await confirmButton(page).click()
+  await advanceTime(page, 2_000)
+  await page.locator('#title').fill('Folio 6.0 allowlist')
+  await advanceTime(page, 1_000)
+  await submitButton(page).click()
+  await advanceTime(page, 10_000)
+
+  expect(txLog).toHaveLength(1)
+  const [, , calldatas] = decodeFunctionData({
+    abi: PROPOSE_ABI,
+    data: txLog[0].data as Hex,
+  }).args
+  const calls = Object.fromEntries(
+    calldatas.map((data) => {
+      const call = decodeFunctionData({ abi: ALLOWLIST_ABI, data: data as Hex })
+      return [call.functionName, call.args[0].map((token) => getAddress(token))]
+    })
+  )
+  expect(calls.removeFromAllowlist).toEqual([basket[0]])
+  expect([...calls.addToAllowlist].sort()).toEqual(
+    [...basket.slice(1), getAddress(OFF_LIST_TOKEN)].sort()
   )
 })
