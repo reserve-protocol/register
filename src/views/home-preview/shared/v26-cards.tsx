@@ -104,8 +104,7 @@ export const CountriesCardV26 = () => {
       tickerSlot={<AutoTicker items={tickerItems} smooth />}
       description={
         <Trans>
-          Full custodial service is available in {custodialCount} countries; the
-          self-custody investment layer reaches {selfCustodyCount} more.
+          UGLYCASH offers full service in {custodialCount} countries and self-custody investing in the US.
         </Trans>
       }
     />

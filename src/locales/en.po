@@ -3528,7 +3528,7 @@ msgstr ""
 msgid "Discover DTFs"
 msgstr ""
 
-#: src/views/home-preview/shared/v26-cards.tsx:117
+#: src/views/home-preview/shared/v26-cards.tsx:119
 msgid "Discover more DTFs"
 msgstr ""
 
@@ -4205,7 +4205,7 @@ msgstr ""
 msgid "eUSD revenue router destinations"
 msgstr ""
 
-#: src/views/home-preview/shared/hero-anims.tsx:370
+#: src/views/home-preview/shared/hero-anims.tsx:344
 msgid "eUSD within UGLYCASH"
 msgstr ""
 
@@ -4382,8 +4382,8 @@ msgid "Explore DTFs across broad crypto, ecosystems, yield strategies and more."
 msgstr ""
 
 #: src/views/home-preview/shared/v26-cards.tsx:125
-msgid "Explore more index and yield DTFs in one list."
-msgstr ""
+#~ msgid "Explore more index and yield DTFs in one list."
+#~ msgstr ""
 
 #: src/views/home/components/register-about.tsx:86
 msgid "explore the Reserve Documentation for more details."
@@ -4737,13 +4737,13 @@ msgstr ""
 msgid "Frozen"
 msgstr ""
 
-#: src/views/home-preview/shared/v26-cards.tsx:94
+#: src/views/home-preview/shared/v26-cards.tsx:96
 msgid "Full custodial service ({custodialCount})"
 msgstr ""
 
 #: src/views/home-preview/shared/v26-cards.tsx:104
-msgid "Full custodial service is available in {custodialCount} countries; the self-custody investment layer reaches {selfCustodyCount} more."
-msgstr ""
+#~ msgid "Full custodial service is available in {custodialCount} countries; the self-custody investment layer reaches {selfCustodyCount} more."
+#~ msgstr ""
 
 #: src/views/yield-dtf/overview/components/collateral-pie-chart-wrapper.tsx:71
 msgid "Full exposure view"
@@ -5250,8 +5250,8 @@ msgid "Index"
 msgstr ""
 
 #: src/views/home-preview/shared/v26-cards.tsx:122
-msgid "Index and yield DTFs, all in one place."
-msgstr ""
+#~ msgid "Index and yield DTFs, all in one place."
+#~ msgstr ""
 
 #: src/views/index-dtf/deploy/steps/revenue/index.tsx:13
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-dtf-revenue.tsx:41
@@ -5701,7 +5701,7 @@ msgstr ""
 msgid "Listed DTFs"
 msgstr ""
 
-#: src/views/home-preview/shared/v26-cards.tsx:81
+#: src/views/home-preview/shared/v26-cards.tsx:83
 msgid "Live in {V26_COUNTRY_COUNT} countries"
 msgstr ""
 
@@ -6372,6 +6372,10 @@ msgstr ""
 
 #: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:158
 msgid "Most users should use Swap"
+msgstr ""
+
+#: src/views/home-preview/shared/hero-anims.tsx:346
+msgid "moving across {countryCount} countries"
 msgstr ""
 
 #: src/views/yield-dtf/governance/views/proposal/components/proposed-revenue-destinations-preview.tsx:38
@@ -9097,7 +9101,7 @@ msgstr ""
 msgid "Selector registry is not available for this optimistic governor."
 msgstr ""
 
-#: src/views/home-preview/shared/v26-cards.tsx:97
+#: src/views/home-preview/shared/v26-cards.tsx:99
 msgid "Self-custody investment layer ({selfCustodyCount})"
 msgstr ""
 
@@ -11080,9 +11084,15 @@ msgstr ""
 msgid "UGLYCASH figures are reported by UGLYCASH as daily aggregates. UGLYCASH is an off-chain app, so these numbers are not read from the blockchain."
 msgstr ""
 
+#: src/views/home-preview/shared/v18-page.tsx:85
 #: src/views/home-preview/variants/v26-home.tsx:25
 #: src/views/home-preview/variants/v26-home.tsx:37
+#: src/views/home-preview/variants/v26-live.tsx:24
 msgid "UGLYCASH is the Reserve App, and it’s on track to fuel huge growth in eUSD"
+msgstr ""
+
+#: src/views/home-preview/shared/v26-cards.tsx:106
+msgid "UGLYCASH offers full service in {custodialCount} countries and self-custody investing in the US."
 msgstr ""
 
 #: src/views/index-dtf/components/navigation/index.tsx:289

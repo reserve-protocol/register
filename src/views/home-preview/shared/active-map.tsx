@@ -2,30 +2,13 @@ import { cn } from '@/lib/utils'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import worldLatam from '../mock/world-map.json'
 import worldGlobal from '../mock/world-map-global.json'
+import geography from '../mock/v26-geography.json'
 import { useIsMobile } from '@/hooks/use-media-query'
 import { useReducedMotion } from './use-reduced-motion'
 
 type Centroids = Record<string, [number, number]>
 type CountryGroups = { custodial: readonly string[]; selfCustody: readonly string[] }
 
-const countryKey = (name: string) =>
-  name
-    .toLowerCase()
-    .replace(/\.|\s+/g, (match) => (match === '.' ? '' : ' '))
-    .replace('united states', 'united states of america')
-    .replace('solomon islands', 'solomon is')
-    .replace('dominican republic', 'dominican rep')
-    .trim()
-
-const countryGroup = (name: string, groups?: CountryGroups) => {
-  if (!groups) return 'custodial'
-  const key = countryKey(name)
-  if (groups.selfCustody.some((country) => countryKey(country) === key))
-    return 'selfCustody'
-  return groups.custodial.some((country) => countryKey(country) === key)
-    ? 'custodial'
-    : undefined
-}
 
 const GLOBAL_ROUTES: [string, string][] = [
   ['United States of America', 'Mexico'],
@@ -104,50 +87,48 @@ const ActiveMap = ({
   const centroids = world.centroids as unknown as Centroids
   const animate = visible && !reduced
   const dotR = crop === 'americas' ? 1.7 : 3.1
-  const dots = (crop === 'americas' ? world.dotsFine : world.dots) as number[][]
-  const dotColors = useMemo(() => {
-    if (!countryGroups || dataset !== 'global') return dots.map(() => countryColors.custodial)
-    return dots.map(([x, y, active]) => {
-      if (!active) return countryColors.custodial
-      let nearest: string | undefined
-      let distance = Infinity
-      for (const [name, [cx, cy]] of Object.entries(centroids)) {
-        const next = (x - cx) ** 2 + (y - cy) ** 2
-        if (next < distance) {
-          distance = next
-          nearest = name
-        }
-      }
-      return countryGroup(nearest ?? '', countryGroups) === 'selfCustody'
-        ? countryColors.selfCustody
-        : countryColors.custodial
-    })
-  }, [centroids, countryColors, countryGroups, dataset, dots])
+  const dots = useMemo(() => {
+    if (countryGroups && dataset === 'global') {
+      return (geography.mapDots as [number, number, string][]).map(([x, y, name]) => {
+        const selfCustody = countryGroups.selfCustody.includes(name)
+        const active = selfCustody || countryGroups.custodial.includes(name)
+        return { x, y, active, name, color: selfCustody ? countryColors.selfCustody : countryColors.custodial }
+      })
+    }
+    return (crop === 'americas' ? world.dotsFine : world.dots).map(([x, y, active]) => ({
+      x, y, active: !!active, name: undefined, color: countryColors.custodial,
+    }))
+  }, [countryColors, countryGroups, crop, dataset, world])
+  const countryCount = countryGroups
+    ? countryGroups.custodial.length + countryGroups.selfCustody.length
+    : world.active.length
 
   return (
     <svg
       ref={ref}
       viewBox={VIEWBOX[crop]}
       role="img"
-      aria-label={`Map with the ${world.active.length} countries where UGLYCASH is active highlighted`}
+      aria-label={`Map with the ${countryCount} countries where UGLYCASH is active highlighted`}
       className={cn('h-auto w-full', className)}
     >
       <style>{`
         @keyframes hp-dot-on { from { fill: hsl(var(--border-secondary)); } to { fill: var(--hp-dot-color, hsl(var(--tvl))); } }
-        .hp-dot-active { fill: hsl(var(--tvl)); }
+        .hp-dot-active { fill: var(--hp-dot-color, hsl(var(--tvl))); }
         .hp-animate .hp-dot-active { fill: hsl(var(--border-secondary)); animation: hp-dot-on 420ms ease-out forwards; }
       `}</style>
       <g className={animate ? 'hp-animate' : undefined}>
-        {dots.map(([x, y, a], i) => (
+        {dots.map(({ x, y, active: a, color, name }) => (
           <circle
             key={`${x}-${y}`}
             cx={x}
             cy={y}
             r={dotR}
+            data-country={name}
+            data-service={a && countryGroups ? (countryGroups.selfCustody.includes(name ?? '') ? 'self-custody' : 'full-service') : undefined}
             className={a ? 'hp-dot-active' : undefined}
             fill={a ? undefined : 'hsl(var(--border-secondary))'}
             style={{
-              ...(a ? { '--hp-dot-color': dotColors[i] } : {}),
+              ...(a ? { '--hp-dot-color': color } : {}),
               ...(a && animate
                 ? {
                     animationDelay:

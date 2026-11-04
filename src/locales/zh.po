@@ -3528,7 +3528,7 @@ msgstr "探索我们的全部产品"
 msgid "Discover DTFs"
 msgstr "探索 DTF"
 
-#: src/views/home-preview/shared/v26-cards.tsx:117
+#: src/views/home-preview/shared/v26-cards.tsx:119
 msgid "Discover more DTFs"
 msgstr "探索更多 DTF"
 
@@ -4205,7 +4205,7 @@ msgstr "UGLYCASH 上的 eUSD 由 Best Friend Finance 托管，因此这些交易
 msgid "eUSD revenue router destinations"
 msgstr "eUSD 收入路由器目标"
 
-#: src/views/home-preview/shared/hero-anims.tsx:370
+#: src/views/home-preview/shared/hero-anims.tsx:344
 msgid "eUSD within UGLYCASH"
 msgstr "UGLYCASH 中的 eUSD"
 
@@ -4382,8 +4382,8 @@ msgid "Explore DTFs across broad crypto, ecosystems, yield strategies and more."
 msgstr "探索涵盖广泛加密资产、生态系统、收益策略等的 DTFs。"
 
 #: src/views/home-preview/shared/v26-cards.tsx:125
-msgid "Explore more index and yield DTFs in one list."
-msgstr "在同一个列表中探索更多指数型和收益型 DTF。"
+#~ msgid "Explore more index and yield DTFs in one list."
+#~ msgstr "在同一个列表中探索更多指数型和收益型 DTF。"
 
 #: src/views/home/components/register-about.tsx:86
 msgid "explore the Reserve Documentation for more details."
@@ -4737,13 +4737,13 @@ msgstr "从 {0} 到 {1}"
 msgid "Frozen"
 msgstr "已冻结"
 
-#: src/views/home-preview/shared/v26-cards.tsx:94
+#: src/views/home-preview/shared/v26-cards.tsx:96
 msgid "Full custodial service ({custodialCount})"
 msgstr "完整托管服务 ({custodialCount})"
 
 #: src/views/home-preview/shared/v26-cards.tsx:104
-msgid "Full custodial service is available in {custodialCount} countries; the self-custody investment layer reaches {selfCustodyCount} more."
-msgstr "完整托管服务覆盖 {custodialCount} 个国家；自托管投资层还覆盖另外 {selfCustodyCount} 个国家。"
+#~ msgid "Full custodial service is available in {custodialCount} countries; the self-custody investment layer reaches {selfCustodyCount} more."
+#~ msgstr "完整托管服务覆盖 {custodialCount} 个国家；自托管投资层还覆盖另外 {selfCustodyCount} 个国家。"
 
 #: src/views/yield-dtf/overview/components/collateral-pie-chart-wrapper.tsx:71
 msgid "Full exposure view"
@@ -5250,8 +5250,8 @@ msgid "Index"
 msgstr "Index"
 
 #: src/views/home-preview/shared/v26-cards.tsx:122
-msgid "Index and yield DTFs, all in one place."
-msgstr "指数型和收益型 DTF，尽在一处。"
+#~ msgid "Index and yield DTFs, all in one place."
+#~ msgstr "指数型和收益型 DTF，尽在一处。"
 
 #: src/views/index-dtf/deploy/steps/revenue/index.tsx:13
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-dtf-revenue.tsx:41
@@ -5701,7 +5701,7 @@ msgstr "流动性模拟金额"
 msgid "Listed DTFs"
 msgstr "已列出的 DTF"
 
-#: src/views/home-preview/shared/v26-cards.tsx:81
+#: src/views/home-preview/shared/v26-cards.tsx:83
 msgid "Live in {V26_COUNTRY_COUNT} countries"
 msgstr "覆盖 {V26_COUNTRY_COUNT} 个国家"
 
@@ -6373,6 +6373,10 @@ msgstr ""
 #: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:158
 msgid "Most users should use Swap"
 msgstr "大多数用户应使用 Swap"
+
+#: src/views/home-preview/shared/hero-anims.tsx:346
+msgid "moving across {countryCount} countries"
+msgstr "流转于 {countryCount} 个国家"
 
 #: src/views/yield-dtf/governance/views/proposal/components/proposed-revenue-destinations-preview.tsx:38
 msgid "Multiplier"
@@ -9097,7 +9101,7 @@ msgstr "选择器注册表"
 msgid "Selector registry is not available for this optimistic governor."
 msgstr "此 Optimistic governor 的函数选择器注册表不可用。"
 
-#: src/views/home-preview/shared/v26-cards.tsx:97
+#: src/views/home-preview/shared/v26-cards.tsx:99
 msgid "Self-custody investment layer ({selfCustodyCount})"
 msgstr "自托管投资层 ({selfCustodyCount})"
 
@@ -11091,10 +11095,16 @@ msgstr "类型"
 msgid "UGLYCASH figures are reported by UGLYCASH as daily aggregates. UGLYCASH is an off-chain app, so these numbers are not read from the blockchain."
 msgstr "UGLYCASH 数字由 UGLYCASH 以每日汇总形式报告。UGLYCASH 是链下应用，因此这些数字不是从区块链读取的。"
 
+#: src/views/home-preview/shared/v18-page.tsx:85
 #: src/views/home-preview/variants/v26-home.tsx:25
 #: src/views/home-preview/variants/v26-home.tsx:37
+#: src/views/home-preview/variants/v26-live.tsx:24
 msgid "UGLYCASH is the Reserve App, and it’s on track to fuel huge growth in eUSD"
 msgstr "UGLYCASH 是 Reserve App，正朝着推动 eUSD 大幅增长的方向发展"
+
+#: src/views/home-preview/shared/v26-cards.tsx:106
+msgid "UGLYCASH offers full service in {custodialCount} countries and self-custody investing in the US."
+msgstr "UGLYCASH 在 {custodialCount} 个国家提供完整服务，并在美国提供自托管投资服务。"
 
 #: src/views/index-dtf/components/navigation/index.tsx:289
 msgid "Unable to copy address"

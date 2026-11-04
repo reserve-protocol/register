@@ -3528,7 +3528,7 @@ msgstr "Descubre todos nuestros productos"
 msgid "Discover DTFs"
 msgstr "Descubrir DTFs"
 
-#: src/views/home-preview/shared/v26-cards.tsx:117
+#: src/views/home-preview/shared/v26-cards.tsx:119
 msgid "Discover more DTFs"
 msgstr "Descubre más DTFs"
 
@@ -4205,7 +4205,7 @@ msgstr "eUSD en UGLYCASH está bajo custodia de Best Friend Finance, por lo que 
 msgid "eUSD revenue router destinations"
 msgstr "Destinos del revenue router de eUSD"
 
-#: src/views/home-preview/shared/hero-anims.tsx:370
+#: src/views/home-preview/shared/hero-anims.tsx:344
 msgid "eUSD within UGLYCASH"
 msgstr "eUSD dentro de UGLYCASH"
 
@@ -4382,8 +4382,8 @@ msgid "Explore DTFs across broad crypto, ecosystems, yield strategies and more."
 msgstr "Explora DTFs en cripto amplio, ecosistemas, estrategias de rendimiento y más."
 
 #: src/views/home-preview/shared/v26-cards.tsx:125
-msgid "Explore more index and yield DTFs in one list."
-msgstr "Explora más DTFs de índice y de rendimiento en una sola lista."
+#~ msgid "Explore more index and yield DTFs in one list."
+#~ msgstr "Explora más DTFs de índice y de rendimiento en una sola lista."
 
 #: src/views/home/components/register-about.tsx:86
 msgid "explore the Reserve Documentation for more details."
@@ -4737,13 +4737,13 @@ msgstr "De {0} a {1}"
 msgid "Frozen"
 msgstr "Congelado"
 
-#: src/views/home-preview/shared/v26-cards.tsx:94
+#: src/views/home-preview/shared/v26-cards.tsx:96
 msgid "Full custodial service ({custodialCount})"
 msgstr "Servicio de custodia completo ({custodialCount})"
 
 #: src/views/home-preview/shared/v26-cards.tsx:104
-msgid "Full custodial service is available in {custodialCount} countries; the self-custody investment layer reaches {selfCustodyCount} more."
-msgstr "El servicio de custodia completo está disponible en {custodialCount} países; la capa de inversión autocustodiada llega a {selfCustodyCount} países más."
+#~ msgid "Full custodial service is available in {custodialCount} countries; the self-custody investment layer reaches {selfCustodyCount} more."
+#~ msgstr "El servicio de custodia completo está disponible en {custodialCount} países; la capa de inversión autocustodiada llega a {selfCustodyCount} países más."
 
 #: src/views/yield-dtf/overview/components/collateral-pie-chart-wrapper.tsx:71
 msgid "Full exposure view"
@@ -5250,8 +5250,8 @@ msgid "Index"
 msgstr "Index"
 
 #: src/views/home-preview/shared/v26-cards.tsx:122
-msgid "Index and yield DTFs, all in one place."
-msgstr "DTFs de índice y de rendimiento, todos en un mismo lugar."
+#~ msgid "Index and yield DTFs, all in one place."
+#~ msgstr "DTFs de índice y de rendimiento, todos en un mismo lugar."
 
 #: src/views/index-dtf/deploy/steps/revenue/index.tsx:13
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-dtf-revenue.tsx:41
@@ -5701,7 +5701,7 @@ msgstr "Monto de simulación de liquidez"
 msgid "Listed DTFs"
 msgstr "DTFs listados"
 
-#: src/views/home-preview/shared/v26-cards.tsx:81
+#: src/views/home-preview/shared/v26-cards.tsx:83
 msgid "Live in {V26_COUNTRY_COUNT} countries"
 msgstr "Disponible en {V26_COUNTRY_COUNT} países"
 
@@ -6373,6 +6373,10 @@ msgstr ""
 #: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:158
 msgid "Most users should use Swap"
 msgstr "La mayoría de los usuarios debería usar Swap"
+
+#: src/views/home-preview/shared/hero-anims.tsx:346
+msgid "moving across {countryCount} countries"
+msgstr "en movimiento por {countryCount} países"
 
 #: src/views/yield-dtf/governance/views/proposal/components/proposed-revenue-destinations-preview.tsx:38
 msgid "Multiplier"
@@ -9097,7 +9101,7 @@ msgstr "Registro de selectores"
 msgid "Selector registry is not available for this optimistic governor."
 msgstr "El registro de selectores no está disponible para este governor optimista."
 
-#: src/views/home-preview/shared/v26-cards.tsx:97
+#: src/views/home-preview/shared/v26-cards.tsx:99
 msgid "Self-custody investment layer ({selfCustodyCount})"
 msgstr "Capa de inversión autocustodiada ({selfCustodyCount})"
 
@@ -11091,10 +11095,16 @@ msgstr "Tipo"
 msgid "UGLYCASH figures are reported by UGLYCASH as daily aggregates. UGLYCASH is an off-chain app, so these numbers are not read from the blockchain."
 msgstr "UGLYCASH informa sus cifras como agregados diarios. UGLYCASH es una aplicación fuera de la cadena, por lo que estos números no se leen de la blockchain."
 
+#: src/views/home-preview/shared/v18-page.tsx:85
 #: src/views/home-preview/variants/v26-home.tsx:25
 #: src/views/home-preview/variants/v26-home.tsx:37
+#: src/views/home-preview/variants/v26-live.tsx:24
 msgid "UGLYCASH is the Reserve App, and it’s on track to fuel huge growth in eUSD"
 msgstr "UGLYCASH es la aplicación de Reserve y va camino de impulsar un gran crecimiento de eUSD"
+
+#: src/views/home-preview/shared/v26-cards.tsx:106
+msgid "UGLYCASH offers full service in {custodialCount} countries and self-custody investing in the US."
+msgstr "UGLYCASH ofrece el servicio completo en {custodialCount} países e inversiones con autocustodia en Estados Unidos."
 
 #: src/views/index-dtf/components/navigation/index.tsx:289
 msgid "Unable to copy address"

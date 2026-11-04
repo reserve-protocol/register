@@ -3528,7 +3528,7 @@ msgstr "모든 제품 둘러보기"
 msgid "Discover DTFs"
 msgstr "DTF 둘러보기"
 
-#: src/views/home-preview/shared/v26-cards.tsx:117
+#: src/views/home-preview/shared/v26-cards.tsx:119
 msgid "Discover more DTFs"
 msgstr "더 많은 DTF 알아보기"
 
@@ -4205,7 +4205,7 @@ msgstr "UGLYCASH의 eUSD는 Best Friend Finance가 보관하므로, 이러한 �
 msgid "eUSD revenue router destinations"
 msgstr "eUSD 수익 라우터 대상"
 
-#: src/views/home-preview/shared/hero-anims.tsx:370
+#: src/views/home-preview/shared/hero-anims.tsx:344
 msgid "eUSD within UGLYCASH"
 msgstr "UGLYCASH 내 eUSD"
 
@@ -4382,8 +4382,8 @@ msgid "Explore DTFs across broad crypto, ecosystems, yield strategies and more."
 msgstr "광범위한 크립토, 생태계, 수익 전략 등 다양한 DTF를 둘러보세요."
 
 #: src/views/home-preview/shared/v26-cards.tsx:125
-msgid "Explore more index and yield DTFs in one list."
-msgstr "인덱스 및 수익형 DTF를 한 목록에서 더 살펴보세요."
+#~ msgid "Explore more index and yield DTFs in one list."
+#~ msgstr "인덱스 및 수익형 DTF를 한 목록에서 더 살펴보세요."
 
 #: src/views/home/components/register-about.tsx:86
 msgid "explore the Reserve Documentation for more details."
@@ -4737,13 +4737,13 @@ msgstr "{0}에서 {1}(으)로"
 msgid "Frozen"
 msgstr "동결됨"
 
-#: src/views/home-preview/shared/v26-cards.tsx:94
+#: src/views/home-preview/shared/v26-cards.tsx:96
 msgid "Full custodial service ({custodialCount})"
 msgstr "완전 수탁 서비스 ({custodialCount})"
 
 #: src/views/home-preview/shared/v26-cards.tsx:104
-msgid "Full custodial service is available in {custodialCount} countries; the self-custody investment layer reaches {selfCustodyCount} more."
-msgstr "완전 수탁 서비스는 {custodialCount}개 국가에서 제공되며, 자기 보관 투자 레이어는 {selfCustodyCount}개 국가에서 추가로 이용할 수 있습니다."
+#~ msgid "Full custodial service is available in {custodialCount} countries; the self-custody investment layer reaches {selfCustodyCount} more."
+#~ msgstr "완전 수탁 서비스는 {custodialCount}개 국가에서 제공되며, 자기 보관 투자 레이어는 {selfCustodyCount}개 국가에서 추가로 이용할 수 있습니다."
 
 #: src/views/yield-dtf/overview/components/collateral-pie-chart-wrapper.tsx:71
 msgid "Full exposure view"
@@ -5250,8 +5250,8 @@ msgid "Index"
 msgstr "Index"
 
 #: src/views/home-preview/shared/v26-cards.tsx:122
-msgid "Index and yield DTFs, all in one place."
-msgstr "인덱스 및 수익형 DTF를 한곳에서 확인하세요."
+#~ msgid "Index and yield DTFs, all in one place."
+#~ msgstr "인덱스 및 수익형 DTF를 한곳에서 확인하세요."
 
 #: src/views/index-dtf/deploy/steps/revenue/index.tsx:13
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-dtf-revenue.tsx:41
@@ -5701,7 +5701,7 @@ msgstr "유동성 시뮬레이션 금액"
 msgid "Listed DTFs"
 msgstr "등록된 DTF"
 
-#: src/views/home-preview/shared/v26-cards.tsx:81
+#: src/views/home-preview/shared/v26-cards.tsx:83
 msgid "Live in {V26_COUNTRY_COUNT} countries"
 msgstr "{V26_COUNTRY_COUNT}개 국가에서 이용 가능"
 
@@ -6373,6 +6373,10 @@ msgstr ""
 #: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:158
 msgid "Most users should use Swap"
 msgstr "대부분의 사용자는 Swap을 사용해야 합니다"
+
+#: src/views/home-preview/shared/hero-anims.tsx:346
+msgid "moving across {countryCount} countries"
+msgstr "{countryCount}개 국가를 연결합니다"
 
 #: src/views/yield-dtf/governance/views/proposal/components/proposed-revenue-destinations-preview.tsx:38
 msgid "Multiplier"
@@ -9097,7 +9101,7 @@ msgstr "셀렉터 레지스트리"
 msgid "Selector registry is not available for this optimistic governor."
 msgstr "이 Optimistic Governor에는 셀렉터 레지스트리를 사용할 수 없습니다."
 
-#: src/views/home-preview/shared/v26-cards.tsx:97
+#: src/views/home-preview/shared/v26-cards.tsx:99
 msgid "Self-custody investment layer ({selfCustodyCount})"
 msgstr "자기 보관 투자 레이어 ({selfCustodyCount})"
 
@@ -11091,10 +11095,16 @@ msgstr "유형"
 msgid "UGLYCASH figures are reported by UGLYCASH as daily aggregates. UGLYCASH is an off-chain app, so these numbers are not read from the blockchain."
 msgstr "UGLYCASH 수치는 UGLYCASH가 일일 집계로 보고한 것입니다. UGLYCASH는 오프체인 앱이므로 이 수치는 블록체인에서 읽은 것이 아닙니다."
 
+#: src/views/home-preview/shared/v18-page.tsx:85
 #: src/views/home-preview/variants/v26-home.tsx:25
 #: src/views/home-preview/variants/v26-home.tsx:37
+#: src/views/home-preview/variants/v26-live.tsx:24
 msgid "UGLYCASH is the Reserve App, and it’s on track to fuel huge growth in eUSD"
 msgstr "UGLYCASH는 Reserve 앱이며, eUSD의 큰 성장을 이끌어 갈 예정입니다"
+
+#: src/views/home-preview/shared/v26-cards.tsx:106
+msgid "UGLYCASH offers full service in {custodialCount} countries and self-custody investing in the US."
+msgstr "UGLYCASH는 {custodialCount}개 국가에서 전체 서비스를 제공하며, 미국에서는 자기 보관 방식의 투자 서비스를 제공합니다."
 
 #: src/views/index-dtf/components/navigation/index.tsx:289
 msgid "Unable to copy address"
