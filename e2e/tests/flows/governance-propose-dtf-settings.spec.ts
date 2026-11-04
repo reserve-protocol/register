@@ -352,7 +352,10 @@ test('Folio 6.0: TVL fee and trade allowlist changes submit as 6.0 setters', asy
 // Folio 6.0 with a 20% permanent recipient: the mutable table (40% vault, 40% deployer
 // of the whole table) shows as shares of what the permanent part leaves (with a 20%
 // platform fee: 40% / 40%), and a new split is scaled back into the remaining 80%
-// while the permanent table goes back unchanged.
+// while the permanent table goes back unchanged. The governance share goes to the
+// vault's token jar.
+const TOKEN_JAR = getAddress('0x5555555555555555555555555555555555555555')
+const TOKEN_JAR_SELECTOR = '0x490c98f5' // tokenJar()
 const SET_FEE_RECIPIENTS_V6_ABI = parseAbi([
   'function setFeeRecipients((address recipient, uint96 portion)[] _newRecipients, (address recipient, uint96 portion)[] _immutableRecipients)',
 ])
@@ -371,7 +374,13 @@ test('Folio 6.0: the split is shown and encoded relative to the permanent recipi
   seedFolioV6(overrides, dtf, {
     immutableRecipients: [{ recipient: PERMANENT, portion: parseEther('0.2') }],
   })
+  overrides.ethCall(
+    snapshot.stToken.id,
+    TOKEN_JAR_SELECTOR,
+    encodeAbiParameters([{ type: 'address' }], [TOKEN_JAR])
+  )
   await bootProposeFees(page, overrides)
+  await expect(page.getByTestId('settings-missing-token-jar')).toHaveCount(0)
 
   const governance = page.locator('#propose-section-fees input[name="governanceShare"]')
   const deployer = page.locator('#propose-section-fees input[name="deployerShare"]')
@@ -416,7 +425,7 @@ test('Folio 6.0: the split is shown and encoded relative to the permanent recipi
     const diff = (actual ?? 0n) - expected
     return diff < 0n ? -diff : diff
   }
-  expect(offBy(portionOf(snapshot.stToken.id), parseEther('0.5'))).toBeLessThanOrEqual(1_000n)
+  expect(offBy(portionOf(TOKEN_JAR), parseEther('0.5'))).toBeLessThanOrEqual(1_000n)
   expect(offBy(portionOf(snapshot.deployer), parseEther('0.3'))).toBeLessThanOrEqual(1_000n)
   expect(mutable).toHaveLength(2)
   expect([...mutable, ...immutable].reduce((sum, r) => sum + r.portion, 0n)).toBe(
@@ -498,4 +507,36 @@ test('Folio 6.0: the allowlist editor adds the basket, removes and adds by addre
   expect([...calls.addToAllowlist].sort()).toEqual(
     [...basket.slice(1), getAddress(OFF_LIST_TOKEN)].sort()
   )
+})
+
+// A 1.x vault that reports a zero token jar (the central mock's default) can't take
+// the governance share: the fees section says so and no proposal is built.
+test('Folio 6.0: a vault with a zero token jar blocks a governance share change', async ({
+  page,
+  txLog,
+  overrides,
+}) => {
+  seedFolioV6(overrides, dtf)
+  await bootProposeFees(page, overrides)
+
+  await expect(page.getByTestId('settings-missing-token-jar')).toBeVisible()
+  const governance = page.locator('#propose-section-fees input[name="governanceShare"]')
+  const deployer = page.locator('#propose-section-fees input[name="deployerShare"]')
+  await expect.poll(async () => Number(await governance.inputValue())).toBeGreaterThan(0)
+  const [currentGovernance, currentDeployer] = [
+    Number(await governance.inputValue()),
+    Number(await deployer.inputValue()),
+  ]
+  // Move one point from governance to the creator: the share stays above 0 and the total at 100%.
+  await governance.fill(String(currentGovernance - 1))
+  await deployer.fill(String(currentDeployer + 1))
+  await advanceTime(page, 1_000)
+  await expect(page.getByTestId('remaining-allocation')).toContainText('0%')
+
+  await confirmButton(page).click()
+  await advanceTime(page, 2_000)
+  await page.locator('#title').fill('Zero jar')
+  await advanceTime(page, 1_000)
+  await expect(submitButton(page)).toBeDisabled()
+  expect(txLog).toHaveLength(0)
 })

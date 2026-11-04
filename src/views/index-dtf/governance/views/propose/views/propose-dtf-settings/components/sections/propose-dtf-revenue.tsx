@@ -9,6 +9,7 @@ import {
   immutableFeeRecipientsAtom,
   isFolioV6Atom,
   mutableFeeFractionAtom,
+  vaultWithoutTokenJarAtom,
 } from '../../atoms'
 import { useFormContext } from 'react-hook-form'
 import ProposeRevenueDistribution from './propose-revenue-distribution'
@@ -120,6 +121,24 @@ const ImmutableRecipientsNote = () => {
   )
 }
 
+const MissingTokenJarNote = () => {
+  const vaultWithoutTokenJar = useAtomValue(vaultWithoutTokenJarAtom)
+
+  if (!vaultWithoutTokenJar) return null
+
+  return (
+    <div
+      className="mx-2 mb-2 rounded-xl bg-destructive/10 p-4 text-sm text-destructive"
+      data-testid="settings-missing-token-jar"
+    >
+      <Trans>
+        This vault has no token jar to receive governance fees. A fee
+        distribution with a governance share can't be proposed until it has one.
+      </Trans>
+    </div>
+  )
+}
+
 const RecipientPoolNote = () => {
   const isV6 = useAtomValue(isFolioV6Atom)
 
@@ -188,6 +207,7 @@ const ProposeDTFRevenue = () => {
       <FeeDistributionDescription />
       <RecipientPoolNote />
       <ImmutableRecipientsNote />
+      <MissingTokenJarNote />
       <ProposeRevenueDistribution />
     </div>
   )

@@ -784,12 +784,12 @@ msgid "A measure of how closely the new basket rebalanced compared to the propos
 msgstr "衡量再平衡后的新篮子与提案篮子的接近程度"
 
 #: src/views/index-dtf/deploy/steps/revenue/index.tsx:92
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-dtf-revenue.tsx:169
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-dtf-revenue.tsx:188
 msgid "A one-time fee deducted from the tokens a user receives when they mint the DTF. The platform will keep 50% of revenue from this fee. (Min: 0.15%, Max: 5%)"
 msgstr "用户 Mint DTF 时从其收到的代币中扣除的一次性费用。平台将保留此费用收入的 50%。（最低：0.15%，最高：5%）"
 
 #: src/views/index-dtf/deploy/steps/revenue/index.tsx:73
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-dtf-revenue.tsx:153
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-dtf-revenue.tsx:172
 msgid "A percentage-based fee charged by the DTF based on the total value of the tokens held in the contract. The platform will keep 50% of revenue from this fee. (Min: 0.15%, Max: 10%)"
 msgstr "DTF 根据合约中持有代币的总价值收取的百分比费用。平台将保留此费用收入的 50%。（最低：0.15%，最高：10%）"
 
@@ -1352,7 +1352,7 @@ msgstr "分配给 DTF 上 RSR stakers 和投票锁定者，或用于销毁 RSR �
 
 #: src/views/index-dtf/deploy/steps/revenue/index.tsx:72
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/changes/revenue-changes.tsx:460
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-dtf-revenue.tsx:152
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-dtf-revenue.tsx:171
 #: src/views/index-dtf/overview/components/fees-stats.tsx:30
 #: src/views/index-dtf/settings/components/index-settings-fees.tsx:205
 msgid "Annualized TVL Fee"
@@ -3000,7 +3000,7 @@ msgstr "CowSwap Auction Filler 已停止"
 msgid "Create {0}"
 msgstr "创建 {0}"
 
-#: src/views/index-dtf/deploy/steps/create-dao/index.tsx:137
+#: src/views/index-dtf/deploy/steps/create-dao/index.tsx:136
 msgid "Create {vlSymbol} vault"
 msgstr "创建 {vlSymbol} 金库"
 
@@ -3058,7 +3058,7 @@ msgstr "创建创世代币"
 msgid "Create update proposal"
 msgstr "创建更新提案"
 
-#: src/views/index-dtf/deploy/steps/create-dao/index.tsx:138
+#: src/views/index-dtf/deploy/steps/create-dao/index.tsx:137
 msgid "Create vault"
 msgstr "创建金库"
 
@@ -3091,7 +3091,7 @@ msgstr "创建者"
 msgid "Created by:"
 msgstr "创建者："
 
-#: src/views/index-dtf/deploy/steps/create-dao/index.tsx:135
+#: src/views/index-dtf/deploy/steps/create-dao/index.tsx:134
 msgid "Creating..."
 msgstr "创建中..."
 
@@ -3362,7 +3362,7 @@ msgid "DeFi yield opportunities for DTFs in Aerodrome, Convex, Beefy, Yearn & Ot
 msgstr "在 Aerodrome、Convex、Beefy、Yearn 及其他协议中为 DTFs 提供的 DeFi 收益机会"
 
 #: src/views/index-dtf/deploy/steps/revenue/index.tsx:35
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-dtf-revenue.tsx:39
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-dtf-revenue.tsx:40
 msgid "Define what portion of the revenue goes to the DTF's creator, the vote-lock DAO, or any arbitrary address (wallet or smart contract)."
 msgstr "定义收入中有多少分配给 DTF 的创建者、投票锁定 DAO 或任意地址（Wallet 或智能合约）。"
 
@@ -4171,7 +4171,7 @@ msgstr "请输入有效数量"
 msgid "ERC20 address"
 msgstr "ERC20 地址"
 
-#: src/views/index-dtf/deploy/steps/create-dao/index.tsx:143
+#: src/views/index-dtf/deploy/steps/create-dao/index.tsx:142
 msgid "Error creating the vote-lock vault."
 msgstr "创建 vote-lock 金库时出错。"
 
@@ -4358,7 +4358,7 @@ msgstr "可执行时间："
 #: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/components/sections/propose-basket-governance.tsx:82
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/atoms.ts:186
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/sections/propose-dao-governance.tsx:93
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/atoms.ts:1066
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/atoms.ts:1068
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-governance-settings.tsx:91
 #: src/views/index-dtf/settings/components/index-settings-governance.tsx:143
 #: src/views/yield-dtf/settings/components/governance-info.tsx:57
@@ -4556,7 +4556,7 @@ msgid "Fee data for this period is not available right now."
 msgstr ""
 
 #: src/views/index-dtf/deploy/steps/revenue/index.tsx:119
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-dtf-revenue.tsx:186
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-dtf-revenue.tsx:205
 msgid "Fee Distribution"
 msgstr "费用分配"
 
@@ -5094,7 +5094,7 @@ msgid "Holder"
 msgstr "Holder"
 
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/changes/v6-settings-changes.tsx:47
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-dtf-revenue.tsx:76
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-dtf-revenue.tsx:77
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/optimistic.ts:169
 msgid "Holder share"
 msgstr "持有者份额"
@@ -5335,7 +5335,7 @@ msgid "Index"
 msgstr "Index"
 
 #: src/views/index-dtf/deploy/steps/revenue/index.tsx:13
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-dtf-revenue.tsx:48
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-dtf-revenue.tsx:49
 msgid "Index DTF generate revenue by charging fees for minting and holding the DTF. Revenue generated from fees can be sent to the DTF's creator, the vote-lock DAO, or any arbitrary address (wallet or smart contract). A portion of this revenue will automatically be sent to the protocol based on the TVL of the DTF. You can see a complete list of the platform fee schedule <0>here</0>."
 msgstr "Index DTF 通过对 DTF 的 Mint 和持有收取费用来产生收入。费用产生的收入可发送给 DTF 的创建者、投票锁定 DAO 或任意地址（Wallet 或智能合约）。其中一部分收入将根据 DTF 的 TVL 自动发送给协议。您可以在<0>此处</0>查看完整的平台费用明细表。"
 
@@ -6345,7 +6345,7 @@ msgstr "Mint 费用"
 
 #: src/views/index-dtf/deploy/steps/revenue/index.tsx:91
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/changes/revenue-changes.tsx:451
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-dtf-revenue.tsx:168
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-dtf-revenue.tsx:187
 msgid "Mint Fee"
 msgstr "Mint 费用"
 
@@ -7037,7 +7037,7 @@ msgstr "旧权重 / 新权重"
 msgid "on {0}"
 msgstr "在 {0} 上"
 
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-dtf-revenue.tsx:130
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-dtf-revenue.tsx:149
 msgid "On this DTF the shares below split the recipient pool: the holder share is kept first, and permanent recipients take their fixed part of what remains."
 msgstr "在此 DTF 中，以下份额分配接收方资金池：先保留持有者份额，永久接收方从剩余部分中获得其固定份额。"
 
@@ -7465,7 +7465,7 @@ msgid "Permanent recipient {0}"
 msgstr "永久接收方 {0}"
 
 #: src/views/index-dtf/deploy/steps/revenue/revenue-distribution-settings.tsx:254
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-dtf-revenue.tsx:105
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-dtf-revenue.tsx:106
 msgid "Permanent recipients"
 msgstr "永久接收方"
 
@@ -7652,7 +7652,7 @@ msgstr "我的资产"
 msgid "Portfolio Breakdown"
 msgstr "投资组合明细"
 
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-dtf-revenue.tsx:77
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-dtf-revenue.tsx:78
 msgid "Portion of the non-platform fees kept inside the DTF for its holders, taken before the recipients below are paid."
 msgstr "非平台费用中为持有者保留在 DTF 内的部分，在向以下接收方支付之前扣除。"
 
@@ -7929,7 +7929,7 @@ msgstr "提案已通过"
 #: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/components/sections/propose-basket-governance.tsx:48
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/atoms.ts:167
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/sections/propose-dao-governance.tsx:60
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/atoms.ts:1047
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/atoms.ts:1049
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-governance-settings.tsx:58
 #: src/views/index-dtf/settings/components/index-settings-governance.tsx:95
 #: src/views/yield-dtf/settings/components/governance-info.tsx:61
@@ -9331,7 +9331,7 @@ msgstr "将碎屑退回 Wallet"
 msgid "Separate rewards"
 msgstr ""
 
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-dtf-revenue.tsx:114
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-dtf-revenue.tsx:115
 msgid "Set at deployment and can't be changed. The split below applies to the remaining {remaining} of recipient fees."
 msgstr "在部署时设置，无法更改。以下分配适用于接收方费用中剩余的 {remaining}。"
 
@@ -10503,7 +10503,7 @@ msgid "There could be the case of a dust token balance remaining in the basket, 
 msgstr "篮子中可能会残留少量的零散代币余额,你可以在此处将其移除。"
 
 #: src/views/index-dtf/deploy/steps/revenue/index.tsx:53
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-dtf-revenue.tsx:28
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-dtf-revenue.tsx:29
 msgid "There is a minimum platform fee of 0.15%. This means that 0.15% of the fee set above will go to the platform and only {diff}% of the fee will be split amongst other recipients."
 msgstr "平台费用最低为 0.15%。这意味着上方设置的费用中将有 0.15% 归平台所有，只有 {diff}% 的费用会在其他接收方之间分配。"
 
@@ -10647,6 +10647,10 @@ msgstr "此升级 spell 将修复管理此 DTF 的 Admin 和 Basket FolioGoverno
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-governance-spell-31-03-2025.tsx:412
 msgid "This upgrade spell fixes the proposal-threshold on the FolioGovernor contract that administers the DAO (StakingVault) relevant to this DTF. Once this spell is approved and executed, the proposal-threshold will be the correct % that was initially intended at deployment."
 msgstr "此升级 spell 将修复管理与此 DTF 相关的 DAO(StakingVault)的 FolioGovernor 合约上的提案阈值。该 spell 一经批准并执行,提案阈值将变为部署时最初设定的正确百分比。"
+
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-dtf-revenue.tsx:134
+msgid "This vault has no token jar to receive governance fees. A fee distribution with a governance share can't be proposed until it has one."
+msgstr "该金库没有用于接收治理费用的 token jar。在设置 token jar 之前，无法提议包含治理份额的费用分配。"
 
 #: src/views/index-dtf/deploy/form-fields.ts:110
 msgid "This vote-lock can't govern a 6.0 DTF. Use a vault created with the current governance deployer, like vlRSR, or create a new one."
@@ -12192,7 +12196,7 @@ msgstr "投票延迟"
 #: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/components/sections/propose-basket-governance.tsx:22
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/atoms.ts:149
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/sections/propose-dao-governance.tsx:34
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/atoms.ts:1029
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/atoms.ts:1031
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-governance-settings.tsx:32
 #: src/views/index-dtf/settings/components/index-settings-governance.tsx:83
 msgid "Voting Delay"
@@ -12229,7 +12233,7 @@ msgstr "在你所 Stake 的 RToken 上投票，需要你将投票权委托给自
 #: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/components/sections/propose-basket-governance.tsx:35
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/atoms.ts:158
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/sections/propose-dao-governance.tsx:47
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/atoms.ts:1038
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/atoms.ts:1040
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-governance-settings.tsx:45
 #: src/views/index-dtf/settings/components/index-settings-governance.tsx:89
 #: src/views/yield-dtf/governance/views/proposal-detail/components/proposal-timeline/TimelineItem.tsx:131
@@ -12283,7 +12287,7 @@ msgstr "投票权委托"
 #: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/components/sections/propose-basket-governance.tsx:59
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/atoms.ts:177
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/sections/propose-dao-governance.tsx:71
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/atoms.ts:1057
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/atoms.ts:1059
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-governance-settings.tsx:69
 #: src/views/index-dtf/settings/components/index-settings-governance.tsx:107
 msgid "Voting Quorum"

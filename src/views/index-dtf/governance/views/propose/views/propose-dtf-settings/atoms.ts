@@ -778,6 +778,8 @@ export const dtfSettingsProposalDataAtom = atom<ProposalData | undefined>(
       // must not be directed to the StakingVault directly); fall back to the
       // stToken for vaults without a tokenJar.
       const tokenJar = get(tokenJarAtom)
+      if (governanceShare > 0 && indexDTF.stToken && get(vaultWithoutTokenJarAtom))
+        return undefined
       if (governanceShare > 0 && indexDTF.stToken) {
         tempRecipients.push({
           recipient: (tokenJar ?? indexDTF.stToken.id) as Address,
@@ -1085,6 +1087,9 @@ export const dtfSettingsProposalCalldatasAtom = atom<Hex[] | undefined>(
 // The new StakingVault routes the governance share to its tokenJar instead of the
 // stToken. Populated on-chain by the propose-dtf-settings Updater.
 export const tokenJarAtom = atom<Address | undefined>(undefined)
+
+// A 1.x vault that reports a zero jar can't take governance fees: the deploy wizard refuses it, and so does a settings fee change.
+export const vaultWithoutTokenJarAtom = atom(false)
 
 export const feeRecipientsAtom = atom((get) => {
   const indexDTF = get(indexDTFAtom)

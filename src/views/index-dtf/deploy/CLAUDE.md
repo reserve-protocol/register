@@ -23,7 +23,7 @@ events only).
 | Option | Path | Notes |
 |---|---|---|
 | Existing vault | `governanceVoteLock` | Must be an optimistic 1.x vault (`isOptimisticVault`: `getOptimisticVotes` + timestamp clock). Legacy vote-locks are rejected. |
-| New vault | `governanceERC20address` → Create DAO | `prepareIndexDtfDeployStakingVault` (governance deployer 1.1.0 `deployWithNewStakingVault`), then a governed deploy on the new vault. |
+| New vault | `governanceERC20address` → Create DAO | `prepareIndexDtfDeployStakingVault` (governance deployer 1.1.0 `deployWithNewStakingVault`), then a governed deploy on the new vault. The vault's DAO gets `buildV6VaultGovernance`: the form's settings and guardians, no optimistic selectors or proposers (like the vlRSR DAO). |
 | Wallet | `governanceWalletAddress` | Ungoverned `deployFolio`; selecting it resets the governance share to 0. |
 
 ## Units and money (Engineer review required when touched)

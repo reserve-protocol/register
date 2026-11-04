@@ -25,7 +25,9 @@ import {
   revenueDistributionChangesAtom,
   selfFeeChangeAtom,
   settingsWriteBlockAtom,
+  tokenJarAtom,
   tradeAllowlistChangesAtom,
+  vaultWithoutTokenJarAtom,
 } from '../atoms'
 
 const DTF = '0x4da9a0f397db1397902070f93a4d6ddbc0e0e6e8' as Address
@@ -187,6 +189,41 @@ describe('Folio 6.0 settings proposal', () => {
 
     expect(() => store.get(dtfSettingsProposalDataAtom)).not.toThrow()
     expect(store.get(dtfSettingsProposalDataAtom)).toBeUndefined()
+  })
+
+  describe('governance share recipient', () => {
+    const JAR = '0x5555555555555555555555555555555555555555' as Address
+    const governanceRecipient = (store: ReturnType<typeof makeStore>) => {
+      const [call] = store.get(dtfSettingsProposalDataAtom)!.calldatas.map(decode)
+      const [mutable] = call.args as unknown as [{ recipient: Address }[]]
+      return mutable.find((entry) => entry.recipient !== DEPLOYER)?.recipient
+    }
+    const withShares = (configure: (store: ReturnType<typeof makeStore>) => void) => {
+      const store = makeStore()
+      store.set(immutableFeeRecipientsAtom, [])
+      store.set(revenueDistributionChangesAtom, { governanceShare: 30, deployerShare: 20 })
+      configure(store)
+      return store
+    }
+
+    it('goes to the vault token jar', () => {
+      expect(governanceRecipient(withShares((store) => store.set(tokenJarAtom, JAR)))).toBe(JAR)
+    })
+
+    it('goes to a legacy vault that has no token jar', () => {
+      expect(governanceRecipient(withShares(() => {}))).toBe(VAULT)
+    })
+
+    it('blocks the proposal when a 1.x vault reports a zero token jar', () => {
+      const store = withShares((store) => store.set(vaultWithoutTokenJarAtom, true))
+      expect(store.get(dtfSettingsProposalDataAtom)).toBeUndefined()
+    })
+
+    it('does not block a change without a governance share', () => {
+      const store = withShares((store) => store.set(vaultWithoutTokenJarAtom, true))
+      store.set(revenueDistributionChangesAtom, { governanceShare: 0, deployerShare: 50 })
+      expect(store.get(dtfSettingsProposalDataAtom)?.calldatas).toHaveLength(1)
+    })
   })
 
   it('keeps Folio 5.0 fee recipients on the one-table setter', () => {

@@ -24,7 +24,7 @@ import {
   formReadyForSubmitAtom,
 } from '../../atoms'
 import type { DeployInputs } from '../../form-fields'
-import { buildV6Governance } from '../../utils/v6-deploy-params'
+import { buildV6VaultGovernance } from '../../utils/v6-deploy-params'
 
 const CreateDAO = () => {
   const { t } = useLingui()
@@ -64,9 +64,8 @@ const CreateDAO = () => {
     const formData = getValues() as DeployInputs
     setBuildError(undefined)
     try {
-      // The vault's own DAO has no Folio yet, so it takes no optimistic selectors.
-      const { optimisticSelectors: _, ...vaultGovernance } =
-        buildV6Governance(formData)
+      // Like the vlRSR DAO: no Folio yet means no optimistic selectors, so no optimistic proposers either.
+      const vaultGovernance = buildV6VaultGovernance(formData)
       writeContract(
         getWriteContractParams(
           prepareIndexDtfDeployStakingVault({

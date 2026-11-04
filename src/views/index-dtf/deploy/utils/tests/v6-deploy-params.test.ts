@@ -4,6 +4,7 @@ import { INDEX_DTF_START_REBALANCE_SELECTOR } from '@reserve-protocol/react-sdk'
 import { dtfDeployDefaultValues, type DeployInputs } from '../../form-fields'
 import {
   buildV6DeployParams,
+  buildV6VaultGovernance,
   resolveGovernanceRecipient,
 } from '../v6-deploy-params'
 
@@ -177,6 +178,28 @@ describe('buildV6DeployParams governance', () => {
       rebalanceControl: { weightControl: true, priceControl: 1 },
       bidsEnabled: false,
     })
+  })
+})
+
+describe('buildV6VaultGovernance', () => {
+  it('keeps the guardians and settings but gives the vault DAO no optimistic selectors or proposers', () => {
+    const form = inputs({
+      guardians: [GUARDIAN],
+      optimisticProposers: [PROPOSER],
+      optimisticActions: ['startRebalance'],
+    })
+    const { optimisticSelectors: _, ...folioGovernance } = build({
+      governanceShare: 50,
+      guardians: [GUARDIAN],
+      optimisticProposers: [PROPOSER],
+      optimisticActions: ['startRebalance'],
+    }).governance
+    const vaultGovernance = buildV6VaultGovernance(form)
+
+    expect(vaultGovernance).not.toHaveProperty('optimisticSelectors')
+    expect(vaultGovernance.optimisticProposers).toEqual([])
+    expect(vaultGovernance.additionalGuardians).toEqual([GUARDIAN])
+    expect({ ...vaultGovernance, optimisticProposers: [PROPOSER] }).toEqual(folioGovernance)
   })
 })
 

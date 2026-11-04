@@ -784,12 +784,12 @@ msgid "A measure of how closely the new basket rebalanced compared to the propos
 msgstr ""
 
 #: src/views/index-dtf/deploy/steps/revenue/index.tsx:92
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-dtf-revenue.tsx:169
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-dtf-revenue.tsx:188
 msgid "A one-time fee deducted from the tokens a user receives when they mint the DTF. The platform will keep 50% of revenue from this fee. (Min: 0.15%, Max: 5%)"
 msgstr ""
 
 #: src/views/index-dtf/deploy/steps/revenue/index.tsx:73
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-dtf-revenue.tsx:153
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-dtf-revenue.tsx:172
 msgid "A percentage-based fee charged by the DTF based on the total value of the tokens held in the contract. The platform will keep 50% of revenue from this fee. (Min: 0.15%, Max: 10%)"
 msgstr ""
 
@@ -1352,7 +1352,7 @@ msgstr ""
 
 #: src/views/index-dtf/deploy/steps/revenue/index.tsx:72
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/changes/revenue-changes.tsx:460
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-dtf-revenue.tsx:152
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-dtf-revenue.tsx:171
 #: src/views/index-dtf/overview/components/fees-stats.tsx:30
 #: src/views/index-dtf/settings/components/index-settings-fees.tsx:205
 msgid "Annualized TVL Fee"
@@ -3000,7 +3000,7 @@ msgstr ""
 msgid "Create {0}"
 msgstr ""
 
-#: src/views/index-dtf/deploy/steps/create-dao/index.tsx:137
+#: src/views/index-dtf/deploy/steps/create-dao/index.tsx:136
 msgid "Create {vlSymbol} vault"
 msgstr ""
 
@@ -3058,7 +3058,7 @@ msgstr ""
 msgid "Create update proposal"
 msgstr ""
 
-#: src/views/index-dtf/deploy/steps/create-dao/index.tsx:138
+#: src/views/index-dtf/deploy/steps/create-dao/index.tsx:137
 msgid "Create vault"
 msgstr ""
 
@@ -3091,7 +3091,7 @@ msgstr ""
 msgid "Created by:"
 msgstr ""
 
-#: src/views/index-dtf/deploy/steps/create-dao/index.tsx:135
+#: src/views/index-dtf/deploy/steps/create-dao/index.tsx:134
 msgid "Creating..."
 msgstr ""
 
@@ -3362,7 +3362,7 @@ msgid "DeFi yield opportunities for DTFs in Aerodrome, Convex, Beefy, Yearn & Ot
 msgstr ""
 
 #: src/views/index-dtf/deploy/steps/revenue/index.tsx:35
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-dtf-revenue.tsx:39
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-dtf-revenue.tsx:40
 msgid "Define what portion of the revenue goes to the DTF's creator, the vote-lock DAO, or any arbitrary address (wallet or smart contract)."
 msgstr ""
 
@@ -4171,7 +4171,7 @@ msgstr ""
 msgid "ERC20 address"
 msgstr ""
 
-#: src/views/index-dtf/deploy/steps/create-dao/index.tsx:143
+#: src/views/index-dtf/deploy/steps/create-dao/index.tsx:142
 msgid "Error creating the vote-lock vault."
 msgstr ""
 
@@ -4358,7 +4358,7 @@ msgstr ""
 #: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/components/sections/propose-basket-governance.tsx:82
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/atoms.ts:186
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/sections/propose-dao-governance.tsx:93
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/atoms.ts:1066
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/atoms.ts:1068
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-governance-settings.tsx:91
 #: src/views/index-dtf/settings/components/index-settings-governance.tsx:143
 #: src/views/yield-dtf/settings/components/governance-info.tsx:57
@@ -4556,7 +4556,7 @@ msgid "Fee data for this period is not available right now."
 msgstr ""
 
 #: src/views/index-dtf/deploy/steps/revenue/index.tsx:119
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-dtf-revenue.tsx:186
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-dtf-revenue.tsx:205
 msgid "Fee Distribution"
 msgstr ""
 
@@ -5094,7 +5094,7 @@ msgid "Holder"
 msgstr ""
 
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/changes/v6-settings-changes.tsx:47
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-dtf-revenue.tsx:76
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-dtf-revenue.tsx:77
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/optimistic.ts:169
 msgid "Holder share"
 msgstr ""
@@ -5335,7 +5335,7 @@ msgid "Index"
 msgstr ""
 
 #: src/views/index-dtf/deploy/steps/revenue/index.tsx:13
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-dtf-revenue.tsx:48
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-dtf-revenue.tsx:49
 msgid "Index DTF generate revenue by charging fees for minting and holding the DTF. Revenue generated from fees can be sent to the DTF's creator, the vote-lock DAO, or any arbitrary address (wallet or smart contract). A portion of this revenue will automatically be sent to the protocol based on the TVL of the DTF. You can see a complete list of the platform fee schedule <0>here</0>."
 msgstr ""
 
@@ -6345,7 +6345,7 @@ msgstr ""
 
 #: src/views/index-dtf/deploy/steps/revenue/index.tsx:91
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/changes/revenue-changes.tsx:451
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-dtf-revenue.tsx:168
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-dtf-revenue.tsx:187
 msgid "Mint Fee"
 msgstr ""
 
@@ -7037,7 +7037,7 @@ msgstr ""
 msgid "on {0}"
 msgstr ""
 
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-dtf-revenue.tsx:130
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-dtf-revenue.tsx:149
 msgid "On this DTF the shares below split the recipient pool: the holder share is kept first, and permanent recipients take their fixed part of what remains."
 msgstr ""
 
@@ -7465,7 +7465,7 @@ msgid "Permanent recipient {0}"
 msgstr ""
 
 #: src/views/index-dtf/deploy/steps/revenue/revenue-distribution-settings.tsx:254
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-dtf-revenue.tsx:105
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-dtf-revenue.tsx:106
 msgid "Permanent recipients"
 msgstr ""
 
@@ -7652,7 +7652,7 @@ msgstr ""
 msgid "Portfolio Breakdown"
 msgstr ""
 
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-dtf-revenue.tsx:77
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-dtf-revenue.tsx:78
 msgid "Portion of the non-platform fees kept inside the DTF for its holders, taken before the recipients below are paid."
 msgstr ""
 
@@ -7929,7 +7929,7 @@ msgstr ""
 #: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/components/sections/propose-basket-governance.tsx:48
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/atoms.ts:167
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/sections/propose-dao-governance.tsx:60
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/atoms.ts:1047
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/atoms.ts:1049
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-governance-settings.tsx:58
 #: src/views/index-dtf/settings/components/index-settings-governance.tsx:95
 #: src/views/yield-dtf/settings/components/governance-info.tsx:61
@@ -9331,7 +9331,7 @@ msgstr ""
 msgid "Separate rewards"
 msgstr ""
 
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-dtf-revenue.tsx:114
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-dtf-revenue.tsx:115
 msgid "Set at deployment and can't be changed. The split below applies to the remaining {remaining} of recipient fees."
 msgstr ""
 
@@ -10492,7 +10492,7 @@ msgid "There could be the case of a dust token balance remaining in the basket, 
 msgstr ""
 
 #: src/views/index-dtf/deploy/steps/revenue/index.tsx:53
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-dtf-revenue.tsx:28
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-dtf-revenue.tsx:29
 msgid "There is a minimum platform fee of 0.15%. This means that 0.15% of the fee set above will go to the platform and only {diff}% of the fee will be split amongst other recipients."
 msgstr ""
 
@@ -10635,6 +10635,10 @@ msgstr ""
 
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-governance-spell-31-03-2025.tsx:412
 msgid "This upgrade spell fixes the proposal-threshold on the FolioGovernor contract that administers the DAO (StakingVault) relevant to this DTF. Once this spell is approved and executed, the proposal-threshold will be the correct % that was initially intended at deployment."
+msgstr ""
+
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-dtf-revenue.tsx:134
+msgid "This vault has no token jar to receive governance fees. A fee distribution with a governance share can't be proposed until it has one."
 msgstr ""
 
 #: src/views/index-dtf/deploy/form-fields.ts:110
@@ -12181,7 +12185,7 @@ msgstr ""
 #: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/components/sections/propose-basket-governance.tsx:22
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/atoms.ts:149
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/sections/propose-dao-governance.tsx:34
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/atoms.ts:1029
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/atoms.ts:1031
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-governance-settings.tsx:32
 #: src/views/index-dtf/settings/components/index-settings-governance.tsx:83
 msgid "Voting Delay"
@@ -12218,7 +12222,7 @@ msgstr ""
 #: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/components/sections/propose-basket-governance.tsx:35
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/atoms.ts:158
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/sections/propose-dao-governance.tsx:47
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/atoms.ts:1038
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/atoms.ts:1040
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-governance-settings.tsx:45
 #: src/views/index-dtf/settings/components/index-settings-governance.tsx:89
 #: src/views/yield-dtf/governance/views/proposal-detail/components/proposal-timeline/TimelineItem.tsx:131
@@ -12272,7 +12276,7 @@ msgstr ""
 #: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/components/sections/propose-basket-governance.tsx:59
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/atoms.ts:177
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/sections/propose-dao-governance.tsx:71
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/atoms.ts:1057
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/atoms.ts:1059
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-governance-settings.tsx:69
 #: src/views/index-dtf/settings/components/index-settings-governance.tsx:107
 msgid "Voting Quorum"

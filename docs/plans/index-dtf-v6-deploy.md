@@ -25,9 +25,9 @@ Register deploys Folio 6.0.0 DTFs only, on both routes (manual = FolioDeployer f
 - Governance options: existing optimistic vault (validated on chain), new vault via `deployWithNewStakingVault` (creates the vault and its own DAO, as the legacy Create DAO did) then `deployGovernedFolio`, or a wallet (ungoverned) (user, 2026-10-08).
 - UI built functionally from existing deploy and v6 settings components; Erik approved the screens (2026-10-08).
 - Zap target: dev-only `VITE_ZAPPER_DEPLOY_API` override plus a Vite proxy (`ZAPPER_LOCAL_URL`) to the local zapper (no CORS on the zapper). Local zapper per Jorge: `ZAPPER_SEARCH_OPTIMIZER_URL=http://192.168.100.155:7780 ZAPPER_PRICING_URL=http://192.168.100.159:7791 pnpm run cli zapper service --chains eth --chains base --chains bsc --hostname 127.0.0.1 --port 7778 --request-timeout 120000` (Tailscale on; no pricing keys needed).
-- Governance fee share goes to the vault's `tokenJar()` (swaps fees into the vault asset), not the vault itself as in 5.0.0; a zero or unreadable jar blocks the deploy. **Engineer review required** (fee routing).
+- Governance fee share goes to the vault's `tokenJar()` (swaps fees into the vault asset), not the vault itself as in 5.0.0; a zero or unreadable jar blocks the deploy. It is the same routing the governance migration spell already sets live (2026-11-04). Settings follow it: a legacy vault without `tokenJar()` keeps the share, a 1.x vault with a zero jar blocks a fee change with a governance share.
 - A governance share without a vault, or shares that don't fill the pool, throw in the builder instead of landing on the last (possibly permanent) recipient.
-- The new vault's own DAO reuses the form's governance params, guardians and optimistic proposers, with no optimistic selectors.
+- The new vault's own DAO is configured like the vlRSR DAO (2026-11-04): the form's governance params and guardians (the deployer adds the protocol guardian), no optimistic selectors and no optimistic proposers (`buildV6VaultGovernance`). Fork-tested on the Base governance deployer.
 
 ## Acceptance evidence
 
@@ -52,5 +52,4 @@ SDK builders/extractors (pure, unit); Register form schema and payload atoms (jo
 
 ## Unresolved decisions
 
-- Subgraph `proposalThreshold` units: creation stores `proposalThreshold()` = ratio × vote supply (tokens), updates store the D18 ratio, and the SDK maps it as a D18 percentage. A 6.0.0 DTF on an existing vault with supply (vlRSR) would show a wrong threshold until the first update. Live MAG7 governors show 1e15 (0.1%) today. Fix in the subgraph (read `proposalThreshold` ratio via storage-free path or derive from supply) — pending owner.
-- Release order: zapper-api `feat/folio-6` must deploy before Register's zap route (production zapper still expects the 5.0.0 body).
+None. The subgraph threshold units were fixed in Index subgraph 1.11.3, and the production zapper takes the 6.0.0 deploy body.

@@ -22,12 +22,13 @@ import {
   parseEventLogs,
   toHex,
   type Address,
+  type Hex,
   zeroAddress,
 } from 'viem'
 import { base } from 'viem/chains'
 import { describe, expect, it } from 'vitest'
 import { dtfDeployDefaultValues, type DeployInputs } from '../../form-fields'
-import { buildV6DeployParams, buildV6Governance } from '../v6-deploy-params'
+import { buildV6DeployParams, buildV6VaultGovernance } from '../v6-deploy-params'
 
 // Opt-in: FORK_RPC_URL_8453=http://127.0.0.1:8546 pnpm vitest run src/views/index-dtf/deploy/utils/tests/v6-deploy.fork.test.ts
 const rpcUrl = process.env.FORK_RPC_URL_8453
@@ -59,6 +60,16 @@ const governorAbi = parseAbi([
   'function optimisticParams() view returns (uint48 vetoDelay, uint32 vetoPeriod, uint256 vetoThreshold)',
   'function timelock() view returns (address)',
 ])
+const roleAbi = parseAbi([
+  'function getRoleMember(bytes32 role, uint256 index) view returns (address)',
+  'function hasRole(bytes32 role, address account) view returns (bool)',
+])
+const DEFAULT_ADMIN_ROLE = `0x${'0'.repeat(64)}` as Hex
+const CANCELLER_ROLE = '0xfd643c72710c63c0180259aba6b2d05451e3591a24e58b62239378085726f783' as Hex
+const OPTIMISTIC_PROPOSER_ROLE = '0x26f49d08685d9cdd4951a7470bc8fbe9dd0f00419c1a44c1b89f845867ae12e0' as Hex
+const PROTOCOL_GUARDIAN = getAddress('0xb432b0cf55df8d8f367d965a23198ccdaacc4b1f')
+const VAULT_GUARDIAN = getAddress('0x5155000000000000000000000000000000000001')
+const VAULT_PROPOSER = getAddress('0x5155000000000000000000000000000000000002')
 const vaultAbi = parseAbi([
   'function tokenJar() view returns (address)',
   'function asset() view returns (address)',
@@ -235,8 +246,14 @@ describe.skipIf(!rpcUrl)('Folio 6.0.0 deploy on a Base fork', () => {
   it(
     'creates a new vlRSR-style vault with its own DAO, then deploys a Folio governed by it',
     async () => {
-      const form = inputs({ governanceERC20address: RSR, vaultUnstakingDelay: 3, vaultRewardHalfLife: 2 })
-      const { optimisticSelectors: _, ...vaultGovernance } = buildV6Governance(form)
+      const form = inputs({
+        governanceERC20address: RSR,
+        vaultUnstakingDelay: 3,
+        vaultRewardHalfLife: 2,
+        guardians: [VAULT_GUARDIAN],
+        optimisticProposers: [VAULT_PROPOSER],
+      })
+      const vaultGovernance = buildV6VaultGovernance(form)
       const vaultReceipt = await send(
         prepareIndexDtfDeployStakingVault({
           chainId: 8453,
@@ -254,6 +271,19 @@ describe.skipIf(!rpcUrl)('Folio 6.0.0 deploy on a Base fork', () => {
       expect(await vault<bigint>('unstakingDelay')).toBe(3n * 86_400n)
       const tokenJar = await vault<Address>('tokenJar')
       expect(tokenJar).not.toBe(zeroAddress)
+
+      // Like the vlRSR DAO: the form's guardian plus the protocol guardian can cancel, nobody proposes optimistically.
+      const vaultTimelock = await client.readContract({
+        address: stakingVault,
+        abi: roleAbi,
+        functionName: 'getRoleMember',
+        args: [DEFAULT_ADMIN_ROLE, 0n],
+      })
+      const hasRole = (role: Hex, account: Address) =>
+        client.readContract({ address: vaultTimelock, abi: roleAbi, functionName: 'hasRole', args: [role, account] })
+      expect(await hasRole(CANCELLER_ROLE, VAULT_GUARDIAN)).toBe(true)
+      expect(await hasRole(CANCELLER_ROLE, PROTOCOL_GUARDIAN)).toBe(true)
+      expect(await hasRole(OPTIMISTIC_PROPOSER_ROLE, VAULT_PROPOSER)).toBe(false)
 
       const params = buildV6DeployParams(form, { deployer: DEPLOYER, governanceRecipient: tokenJar })
       const receipt = await send(

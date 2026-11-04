@@ -129,6 +129,12 @@ export const buildV6Governance = (
   proposalThrottleCapacity: BigInt(inputs.proposalThrottleCapacity),
 })
 
+// The vault's own DAO (Create DAO) keeps the form's guardians and governance settings.
+export const buildV6VaultGovernance = (inputs: DeployInputs) => {
+  const { optimisticSelectors: _, ...governance } = buildV6Governance(inputs)
+  return { ...governance, optimisticProposers: [] as Address[] }
+}
+
 export const buildV6DeployParams = (
   inputs: DeployInputs,
   {

@@ -36,6 +36,7 @@ import {
   currentOptimisticAllowedActionsAtom,
   currentQuorumPercentageAtom,
   tokenJarAtom,
+  vaultWithoutTokenJarAtom,
   immutableFeeRecipientsAtom,
   currentSelfFeeAtom,
   currentTradeAllowlistAtom,
@@ -75,6 +76,7 @@ const resetAtom = atom(null, (get, set) => {
   set(optimisticGovernanceChangesAtom, {})
   set(currentOptimisticAllowedActionsAtom, undefined)
   set(tokenJarAtom, undefined)
+  set(vaultWithoutTokenJarAtom, false)
   set(selfFeeChangeAtom, undefined)
   set(tradeAllowlistChangesAtom, {})
   set(immutableFeeRecipientsAtom, undefined)
@@ -195,6 +197,7 @@ const Updater = () => {
     },
   })
   const setTokenJar = useSetAtom(tokenJarAtom)
+  const setVaultWithoutTokenJar = useSetAtom(vaultWithoutTokenJarAtom)
   const reset = useSetAtom(resetAtom)
   const { reset: resetForm, watch, control } = useFormContext()
   const governanceChanges = useAtomValue(governanceChangesAtom)
@@ -290,11 +293,12 @@ const Updater = () => {
   }, [currentOptimisticAllowedActions, setCurrentOptimisticAllowedActions])
 
   useEffect(() => {
-    // A vault that reports a zero jar has none; a zero recipient would make the SDK reject the fee table.
+    // A legacy vault has no tokenJar() (the read reverts) and keeps taking the share itself.
     setTokenJar(
       tokenJar && tokenJar !== zeroAddress ? (tokenJar as Address) : undefined
     )
-  }, [tokenJar, setTokenJar])
+    setVaultWithoutTokenJar(tokenJar === zeroAddress)
+  }, [tokenJar, setTokenJar, setVaultWithoutTokenJar])
 
   useEffect(() => {
     if (indexDTF && indexDTF.ownerGovernance && feeRecipients) {
