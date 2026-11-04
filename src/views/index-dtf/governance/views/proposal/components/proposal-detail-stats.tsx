@@ -1,4 +1,5 @@
 import { Separator } from '@/components/ui/separator'
+import { Skeleton } from '@/components/ui/skeleton'
 import { cn } from '@/lib/utils'
 import { formatCurrency, formatPercentage, formatTokenAmount } from '@/utils'
 import { PROPOSAL_STATES } from '@/utils/constants'
@@ -309,7 +310,28 @@ const VoteDistributionStat = ({
   )
 }
 
+const ProposalDetailStatsSkeleton = () => (
+  <div
+    data-testid="proposal-stats-skeleton"
+    className="bg-background rounded-3xl p-2"
+  >
+    <Skeleton className="h-7 w-32 m-4" />
+    <div className="flex flex-col bg-card rounded-3xl border">
+      {[0, 1, 2].map((i) => (
+        <div key={i}>
+          {!!i && <Separator />}
+          <div className="flex flex-col gap-3 p-4">
+            <Skeleton className="h-7" />
+            <Skeleton className="h-1" />
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+)
+
 const ProposalDetailStats = () => {
+  const proposal = useAtomValue(proposalDetailAtom)
   const state = useAtomValue(proposalStateAtom) ?? ''
   const {
     quorumWeight,
@@ -327,6 +349,8 @@ const ProposalDetailStats = () => {
   const isVotingLive = [PROPOSAL_STATES.ACTIVE, PROPOSAL_STATES.PENDING].includes(
     state
   )
+
+  if (!proposal) return <ProposalDetailStatsSkeleton />
 
   return (
     <div className="bg-background rounded-3xl p-2">
