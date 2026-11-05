@@ -57,6 +57,9 @@ const BasketUpdater = () => {
           prices.push(tokenMap[address].price || 0)
         }
 
+        // An unfilled basket has no value to split yet; the share math would divide by zero.
+        if (bals.every((bal, index) => bal === 0n || !prices[index])) return undefined
+
         const targetBasket = getCurrentBasket(bals, decimals, prices)
 
         return basketConfiguration.reduce(
