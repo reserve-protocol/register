@@ -7,6 +7,7 @@ import { ReactNode, useCallback } from 'react'
 import { useFormContext, useWatch } from 'react-hook-form'
 import { Address } from 'viem'
 import { cn } from '@/lib/utils'
+import { formatPercentage } from '@/utils'
 
 type Recipient = {
   address: Address
@@ -274,7 +275,7 @@ const ProposeRevenueDistribution = () => {
             </div>
             {disabled ? (
               <div className="flex justify-end items-center gap-1 font-semibold px-[18px] border-lg bg-muted-foreground/5 rounded-lg w-19 h-10 flex-nowrap">
-                {getValues(field)} %
+                {formatPercentage(Number(getValues(field)))}
               </div>
             ) : (
               <BasicInput

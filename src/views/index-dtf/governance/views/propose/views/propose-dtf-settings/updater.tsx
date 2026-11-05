@@ -352,7 +352,10 @@ const Updater = () => {
           revenueDistributionChanges.additionalRecipients !== undefined
             ? revenueDistributionChanges.additionalRecipients
             : feeRecipients.externalRecipients,
-        fixedPlatformFee: isLoaded(platformFee) ? platformFee : 0,
+        // Two decimals like the share inputs, so a 1/3 platform share leaves a total the inputs can reach (66.67).
+        fixedPlatformFee: isLoaded(platformFee)
+          ? Math.round(platformFee * 100) / 100
+          : 0,
         auctionLength:
           auctionLengthChange !== undefined
             ? auctionLengthChange
