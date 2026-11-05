@@ -63,7 +63,7 @@ const ProposalInstructions = () => {
       isCompleted: canProceed,
     },
     {
-      title: t`Finalize basket proposal`,
+      title: t`Finalize settings proposal`,
       children: <ConfirmProposalButton canProceed={canProceed} />,
       isActive: canProceed && !confirmed,
       isCompleted: confirmed,

@@ -7,7 +7,9 @@ import { Asterisk, Bookmark, Check } from 'lucide-react'
 import { ReactNode } from 'react'
 import { Trans, useLingui } from '@lingui/react/macro'
 import { useNavigate } from 'react-router-dom'
-import { useWatchAsset } from 'wagmi'
+import { useReadContract, useWatchAsset } from 'wagmi'
+import { erc20Abi, formatEther } from 'viem'
+import { formatCurrency } from '@/utils'
 import {
   daoCreatedAtom,
   daoTokenAddressAtom,
@@ -41,6 +43,18 @@ const SuccessView = () => {
   const navigate = useNavigate()
   const form = useAtomValue(indexDeployFormDataAtom)
   const initialTokens = useAtomValue(initialTokensAtom)
+  // The zap route mints whatever its quote buys, so the genesis supply is read from the new Folio.
+  const { data: genesisSupply } = useReadContract({
+    address: deployedDTF,
+    abi: erc20Abi,
+    functionName: 'totalSupply',
+    chainId,
+    query: { enabled: !!deployedDTF },
+  })
+  const mintedTokens =
+    genesisSupply !== undefined
+      ? formatCurrency(Number(formatEther(genesisSupply)), 4)
+      : initialTokens
   const stToken = useAtomValue(daoTokenAddressAtom)
   const daoCreated = useAtomValue(daoCreatedAtom)
   const stTokenSymbol = useAtomValue(daoTokenSymbolAtom)
@@ -89,7 +103,7 @@ const SuccessView = () => {
                 <ExplorerAddress address={deployedDTF} chain={chainId} />
               </Item>
             )}
-            <Item title={t`You minted the ${initialTokens} genesis tokens`}>
+            <Item title={t`You minted ${mintedTokens} ${form?.symbol ?? ''}`}>
               <div
                 className="flex items-center gap-1 py-1 px-2 bg-muted rounded-3xl cursor-pointer"
                 role="button"

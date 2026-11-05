@@ -10,8 +10,6 @@ interface ActiveRebalanceItemProps {
   rebalance: RebalanceByProposal
 }
 
-// {!isPermissionless && availableUntil > restrictedUntil && (
-
 const Header = ({
   restrictedUntil,
   availableUntil,
@@ -30,13 +28,24 @@ const Header = ({
         <MousePointerClick className="h-4 w-4" />
       </div>
 
-      {!isPermissionless && (
+      {!isPermissionless && availableUntil > restrictedUntil && (
         <div className="sm:flex items-center gap-1 text-sm  border-r pr-4 hidden">
           <MousePointerClick className="h-4 w-4 text-base" strokeWidth={1.5} />
           <span className="text-legend">
             <Trans>Permissionless in:</Trans>
           </span>
           <span>{permissionlessTimeRemaining}</span>
+        </div>
+      )}
+      {!isPermissionless && availableUntil <= restrictedUntil && (
+        <div
+          className="sm:flex items-center gap-1 text-sm border-r pr-4 hidden"
+          data-testid="auctions-launcher-only"
+        >
+          <MousePointerClick className="h-4 w-4 text-base" strokeWidth={1.5} />
+          <span className="text-legend">
+            <Trans>Launcher only</Trans>
+          </span>
         </div>
       )}
 
