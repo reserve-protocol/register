@@ -105,8 +105,11 @@ const ProposalVoteOverview = () => {
           <span>
             <Trans>Your voting power:</Trans>
           </span>
-          <span className="font-bold">
-            {formatCurrency(votePower ? +votePower : 0)}
+          <span className="font-bold" data-testid="proposal-voting-power">
+            {/* Unknown until the vote snapshot, which a pending proposal has not taken yet. */}
+            {votePower === null || votePower === undefined
+              ? '—'
+              : formatCurrency(+votePower)}
           </span>
         </div>
         {state === PROPOSAL_STATES.PENDING && hasUndelegatedBalance && (
