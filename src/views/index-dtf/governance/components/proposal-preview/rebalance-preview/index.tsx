@@ -108,6 +108,8 @@ const V6RebalanceTerms = ({
   )
 }
 
+const SNAPSHOT_INDEXING_LAG = 2 * 60 * 60
+
 const RebalancePreview = ({
   calldatas,
   timestamp,
@@ -134,18 +136,33 @@ const RebalancePreview = ({
     }, {} as EstimatedBasket)
   }, [rebalanceBasketPreview])
 
-  if (snapshotUnavailable)
+  if (snapshotUnavailable) {
+    // The price history is indexed hourly, so a recent proposal has no snapshot yet rather than a lost one.
+    const isRecent =
+      !!timestamp && getCurrentTime() - timestamp < SNAPSHOT_INDEXING_LAG
     return (
       <div
         className="rounded-3xl border p-6 text-center text-legend"
-        data-testid="rebalance-preview-unavailable"
+        data-testid={
+          isRecent
+            ? 'rebalance-preview-pending'
+            : 'rebalance-preview-unavailable'
+        }
       >
-        <Trans>
-          Basket snapshot unavailable — historical data for this proposal's
-          rebalance window is no longer served.
-        </Trans>
+        {isRecent ? (
+          <Trans>
+            Basket snapshot not available yet. The price history for this
+            proposal is still being indexed; check back in about an hour.
+          </Trans>
+        ) : (
+          <Trans>
+            Basket snapshot unavailable — historical data for this proposal's
+            rebalance window is no longer served.
+          </Trans>
+        )}
       </div>
     )
+  }
 
   if (!dtf || !rebalanceBasketPreview)
     return <GovernanceProposalPreviewSkeleton />

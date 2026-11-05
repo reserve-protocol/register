@@ -3,7 +3,7 @@ import { chainIdAtom } from '@/state/atoms'
 import { indexDTFAtom, indexDTFFeeAtom } from '@/state/dtf/atoms'
 import { DecodedCalldata } from '@/types'
 import EnsName from '@/components/utils/ens-name'
-import { isLoaded, shortenAddress } from '@/utils'
+import { formatPercentage, isLoaded, shortenAddress } from '@/utils'
 import { getFeePercentAdjust, isDisplayablePlatformFee } from '@/utils/fees'
 import { ExplorerDataType, getExplorerLink } from '@/utils/getExplorerLink'
 import type { MessageDescriptor } from '@lingui/core'
@@ -23,6 +23,7 @@ import {
   Wand2,
 } from 'lucide-react'
 import { INDEX_DTF_START_REBALANCE_SELECTOR } from '@reserve-protocol/react-sdk'
+import { getOptimisticActions } from '@/views/index-dtf/governance/views/propose/views/propose-dtf-settings/optimistic'
 import { Link } from 'react-router-dom'
 import { formatEther, toFunctionSelector, zeroHash } from 'viem'
 import type { Address, Hex } from 'viem'
@@ -31,7 +32,11 @@ import { useReadContract } from 'wagmi'
 const OPTIMISTIC_PROPOSER_ROLE =
   '0x26f49d08685d9cdd4951a7470bc8fbe9dd0f00419c1a44c1b89f845867ae12e0'
 
+// Every settable action names its selector; the explicit entries below give the setters 6.0 changed their own name.
 const OPTIMISTIC_SELECTOR_LABELS: Record<string, MessageDescriptor> = {
+  ...Object.fromEntries(
+    getOptimisticActions(6).map((action) => [action.selector, action.label])
+  ),
   [INDEX_DTF_START_REBALANCE_SELECTOR['5.0.0']]: msg`Start rebalance`,
   [INDEX_DTF_START_REBALANCE_SELECTOR['6.0.0']]: msg`Start rebalance (Folio 6.0)`,
   [toFunctionSelector('setAuctionLength(uint256)')]: msg`Auction length`,
@@ -54,8 +59,13 @@ const OPTIMISTIC_SELECTOR_LABELS: Record<string, MessageDescriptor> = {
 
 type Translate = (descriptor: MessageDescriptor) => string
 
+export const getOptimisticSelectorLabel = (
+  selector: Hex
+): MessageDescriptor | undefined =>
+  OPTIMISTIC_SELECTOR_LABELS[selector.toLowerCase()]
+
 const formatSelectorLabel = (selector: Hex, t: Translate) => {
-  const label = OPTIMISTIC_SELECTOR_LABELS[selector.toLowerCase()]
+  const label = getOptimisticSelectorLabel(selector)
 
   return label ? t(label) : selector
 }
@@ -334,7 +344,7 @@ export const SetFeeRecipientsPreview = ({
               <Trans>Platform (Fixed)</Trans>
             </span>
             <div className="flex items-center gap-2">
-              <span className="text-sm">{platformFee}%</span>
+              <span className="text-sm">{formatPercentage(platformFee)}</span>
             </div>
           </div>
         </div>
