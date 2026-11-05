@@ -24,11 +24,21 @@ describe('formatNumberValue finite path unchanged', () => {
     expect(fmt(-42)).toBe('-42')
   })
 
-  it('keeps the sub-1 subscript formatting', () => {
+  it('writes small values plainly until three leading zeros', () => {
     expect(formatNumberValue(0.5, 2, false, false, true)).toBe('0.50')
-    // Pre-existing float artifact of toFixed(27) — locks the finite path as-is.
-    expect(formatNumberValue(0.0012, 2, false, false, true)).toBe(
-      '0.0<sub>2</sub>11'
+    expect(formatNumberValue(0.074, 2, false, false, true)).toBe('0.074')
+    expect(formatNumberValue(0.0012, 2, false, false, true)).toBe('0.0012')
+  })
+
+  it('uses a subscript from three leading zeros, with rounded digits', () => {
+    expect(formatNumberValue(0.0000413, 2, false, false, true)).toBe(
+      '0.0<sub>4</sub>41'
+    )
+    expect(formatNumberValue(0.00012, 2, false, false, true)).toBe(
+      '0.0<sub>3</sub>12'
+    )
+    expect(formatNumberValue(-0.0000413, 2, false, false, true)).toBe(
+      '-0.0<sub>4</sub>41'
     )
   })
 })

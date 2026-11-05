@@ -164,8 +164,13 @@ export function useXAxisTicks(
     const desktopPositions = [0.05, 0.23, 0.41, 0.59, 0.77, 0.95]
     const positions = isMobile ? mobilePositions : desktopPositions
 
-    return positions
-      .map((i) => chartData[Math.floor(chartData.length * i)]?.timestamp)
-      .filter(Boolean)
+    // Few points (a new DTF) map several positions to one timestamp; recharts keys ticks by value.
+    return [
+      ...new Set(
+        positions
+          .map((i) => chartData[Math.floor(chartData.length * i)]?.timestamp)
+          .filter(Boolean)
+      ),
+    ]
   }, [chartData, isMobile, xDomain])
 }
