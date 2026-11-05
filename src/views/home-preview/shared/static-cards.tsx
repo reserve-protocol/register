@@ -7,10 +7,12 @@ import { UglyCashLogo } from './page-bits'
 export const UglyCashCardV18 = ({
   shadow = true,
   smoothTicker = false,
+  value = 'Get paid, send, save and spend in dollars',
   description = 'A dollar account and Visa card for people around the world. UGLYCASH is the car. eUSD is the battery.',
 }: {
   shadow?: boolean
   smoothTicker?: boolean
+  value?: string
   description?: React.ReactNode
 }) => (
   <HomeCard
@@ -18,7 +20,7 @@ export const UglyCashCardV18 = ({
     external
     icon={<UglyCashLogo className="h-5 self-start" />}
     title="Meet UGLYCASH"
-    value="Get paid, send, save and spend in dollars"
+    value={value}
     media={
       <div className="flex h-full items-center justify-center">
         <img
@@ -101,8 +103,10 @@ const EusdOrbit = () => (
 
 export const FintechCardV18 = ({
   contactEmail = 'partners@reserve.org',
+  description = 'Launch your own dollar app on eUSD, the way UGLYCASH did. Run it yourself, or we can help.',
 }: {
   contactEmail?: string
+  description?: React.ReactNode
 }) => (
   <a
     href={`mailto:${contactEmail}`}
@@ -114,8 +118,7 @@ export const FintechCardV18 = ({
     <div className="relative flex flex-col gap-3">
       <p className="text-3xl leading-tight">Building a fintech?</p>
       <p className="max-w-[40ch] text-primary-foreground/80">
-        Launch your own dollar app on eUSD, the way UGLYCASH did. Run it
-        yourself, or we can help.
+        {description}
       </p>
       <span className="mt-2 inline-flex h-11 items-center gap-2 self-start rounded-full bg-card px-5 text-primary transition-transform group-hover:translate-x-1">
         Talk to us <ArrowRight size={16} aria-hidden="true" />

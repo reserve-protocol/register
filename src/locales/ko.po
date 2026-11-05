@@ -8537,6 +8537,10 @@ msgstr ""
 msgid "Reserve has been operating since 2018 with backing from <0><1>Coinbase</1>, <2>Sam Altman</2> and <3>Peter Thiel</3></0>. We exist to help you own your share of the world’s wealth."
 msgstr ""
 
+#: src/views/home-preview/variants/v26-live.tsx:24
+msgid "Reserve is building a better version of money."
+msgstr "Reserve는 더 나은 돈을 만들고 있습니다."
+
 #: src/views/home/components/homepage-hero.tsx:18
 msgid "Reserve lets you buy entire portfolios as a single token"
 msgstr "Reserve를 통해 전체 포트폴리오를 단일 토큰으로 구매할 수 있습니다"
@@ -9712,6 +9716,10 @@ msgstr "Issue 시작"
 msgid "Start migration"
 msgstr "마이그레이션 시작"
 
+#: src/views/home-preview/shared/v18-page.tsx:96
+msgid "Start monetizing your stablecoin balances with eUSD the way UGLYCASH does."
+msgstr "UGLYCASH처럼 eUSD로 스테이블코인 잔액에서 수익을 창출해 보세요."
+
 #: src/views/yield-dtf/auctions/auctions-sidebar/ConfirmAuction.tsx:57
 msgid "Start next recollaterization auction"
 msgstr "다음 재담보화 경매 시작"
@@ -10066,6 +10074,10 @@ msgstr "더치 경매 기간은 가격 하락형 더치 경매가 몇 초 동안
 #: src/views/earn/views/index-dtf/components/faq.tsx:138
 msgid "The estimate is not guaranteed. It changes when rewards, vault deposits and withdrawals, token prices, or the calculation window change."
 msgstr ""
+
+#: src/views/home-preview/shared/v18-page.tsx:85
+msgid "The financial home for people that make money on the internet"
+msgstr "인터넷으로 돈을 버는 사람들을 위한 금융의 보금자리"
 
 #: src/components/rtoken-setup/token/OtherForm.tsx:53
 msgid "The fraction of RSR stake that should be permitted to withdraw without a refresh. When cumulative withdrawals (or a single withdrawal) exceed this fraction, gas must be paid to refresh all assets."
@@ -11095,12 +11107,15 @@ msgstr "유형"
 msgid "UGLYCASH figures are reported by UGLYCASH as daily aggregates. UGLYCASH is an off-chain app, so these numbers are not read from the blockchain."
 msgstr "UGLYCASH 수치는 UGLYCASH가 일일 집계로 보고한 것입니다. UGLYCASH는 오프체인 앱이므로 이 수치는 블록체인에서 읽은 것이 아닙니다."
 
-#: src/views/home-preview/shared/v18-page.tsx:85
+#: src/views/home-preview/shared/v18-page.tsx:88
 #: src/views/home-preview/variants/v26-home.tsx:25
 #: src/views/home-preview/variants/v26-home.tsx:37
-#: src/views/home-preview/variants/v26-live.tsx:24
 msgid "UGLYCASH is the Reserve App, and it’s on track to fuel huge growth in eUSD"
 msgstr "UGLYCASH는 Reserve 앱이며, eUSD의 큰 성장을 이끌어 갈 예정입니다"
+
+#: src/views/home-preview/variants/v26-live.tsx:25
+msgid "UGLYCASH is the Reserve fintech app, and eUSD is its unit of account."
+msgstr "UGLYCASH는 Reserve의 핀테크 앱이며, eUSD는 그 계정 단위입니다."
 
 #: src/views/home-preview/shared/v26-cards.tsx:106
 msgid "UGLYCASH offers full service in {custodialCount} countries and self-custody investing in the US."

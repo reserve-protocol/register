@@ -1,4 +1,4 @@
-import { Trans } from '@lingui/react/macro'
+import { Trans, useLingui } from '@lingui/react/macro'
 import { Skeleton } from '@/components/ui/skeleton'
 import GridStage from './grid-stage'
 import { TickerStyles } from './home-cards'
@@ -58,7 +58,9 @@ const V18Page = ({
   sortTooltips?: boolean
   dataState?: 'ready' | 'error'
   v26?: boolean
-}) => (
+}) => {
+  const { t } = useLingui()
+  return (
   <div className="container">
     <TickerStyles />
     <GridStage
@@ -80,6 +82,7 @@ const V18Page = ({
           <UglyCashCardV18
             shadow={cardShadow}
             smoothTicker={v26}
+            value={v26 ? t`The financial home for people that make money on the internet` : undefined}
             description={
               v26 ? (
                 <Trans>
@@ -88,7 +91,10 @@ const V18Page = ({
               ) : undefined
             }
           />
-          <FintechCardV18 contactEmail={v26 ? 'gabo@reserve.org' : undefined} />
+          <FintechCardV18
+            contactEmail={v26 ? 'gabo@reserve.org' : undefined}
+            description={v26 ? <Trans>Start monetizing your stablecoin balances with eUSD the way UGLYCASH does.</Trans> : undefined}
+          />
           {v26 && <DiscoverDtfsCardV26 />}
         </>
       }
@@ -97,6 +103,7 @@ const V18Page = ({
     <LastUpdated />
     <HomeFooter />
   </div>
-)
+  )
+}
 
 export default V18Page

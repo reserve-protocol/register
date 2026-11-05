@@ -21,8 +21,8 @@ const V26Live = () => {
         left={
           <AnimLeft
             anim={<EusdGlobe countryGroups={V26_COUNTRY_GROUPS} />}
-            copy={<Trans>UGLYCASH is the Reserve App, and it’s on track to fuel huge growth in eUSD</Trans>}
-            subcopy={null}
+            copy={<Trans>Reserve is building a better version of money.</Trans>}
+            subcopy={<Trans>UGLYCASH is the Reserve fintech app, and eUSD is its unit of account.</Trans>}
           />
         }
       />

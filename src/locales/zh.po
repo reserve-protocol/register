@@ -8537,6 +8537,10 @@ msgstr ""
 msgid "Reserve has been operating since 2018 with backing from <0><1>Coinbase</1>, <2>Sam Altman</2> and <3>Peter Thiel</3></0>. We exist to help you own your share of the world’s wealth."
 msgstr ""
 
+#: src/views/home-preview/variants/v26-live.tsx:24
+msgid "Reserve is building a better version of money."
+msgstr "Reserve 正在打造更好的货币。"
+
 #: src/views/home/components/homepage-hero.tsx:18
 msgid "Reserve lets you buy entire portfolios as a single token"
 msgstr "Reserve 让你以单一 token 买入整个投资组合"
@@ -9712,6 +9716,10 @@ msgstr "开始发行"
 msgid "Start migration"
 msgstr "开始迁移"
 
+#: src/views/home-preview/shared/v18-page.tsx:96
+msgid "Start monetizing your stablecoin balances with eUSD the way UGLYCASH does."
+msgstr "像 UGLYCASH 一样，通过 eUSD 将您的稳定币余额转化为收入。"
+
 #: src/views/yield-dtf/auctions/auctions-sidebar/ConfirmAuction.tsx:57
 msgid "Start next recollaterization auction"
 msgstr "启动下一场再抵押拍卖"
@@ -10066,6 +10074,10 @@ msgstr "荷兰式拍卖时长是指降价荷兰式拍卖应持续的秒数。时
 #: src/views/earn/views/index-dtf/components/faq.tsx:138
 msgid "The estimate is not guaranteed. It changes when rewards, vault deposits and withdrawals, token prices, or the calculation window change."
 msgstr ""
+
+#: src/views/home-preview/shared/v18-page.tsx:85
+msgid "The financial home for people that make money on the internet"
+msgstr "为在互联网上赚钱的人打造的金融之家"
 
 #: src/components/rtoken-setup/token/OtherForm.tsx:53
 msgid "The fraction of RSR stake that should be permitted to withdraw without a refresh. When cumulative withdrawals (or a single withdrawal) exceed this fraction, gas must be paid to refresh all assets."
@@ -11095,12 +11107,15 @@ msgstr "类型"
 msgid "UGLYCASH figures are reported by UGLYCASH as daily aggregates. UGLYCASH is an off-chain app, so these numbers are not read from the blockchain."
 msgstr "UGLYCASH 数字由 UGLYCASH 以每日汇总形式报告。UGLYCASH 是链下应用，因此这些数字不是从区块链读取的。"
 
-#: src/views/home-preview/shared/v18-page.tsx:85
+#: src/views/home-preview/shared/v18-page.tsx:88
 #: src/views/home-preview/variants/v26-home.tsx:25
 #: src/views/home-preview/variants/v26-home.tsx:37
-#: src/views/home-preview/variants/v26-live.tsx:24
 msgid "UGLYCASH is the Reserve App, and it’s on track to fuel huge growth in eUSD"
 msgstr "UGLYCASH 是 Reserve App，正朝着推动 eUSD 大幅增长的方向发展"
+
+#: src/views/home-preview/variants/v26-live.tsx:25
+msgid "UGLYCASH is the Reserve fintech app, and eUSD is its unit of account."
+msgstr "UGLYCASH 是 Reserve 的金融科技应用，eUSD 是其记账单位。"
 
 #: src/views/home-preview/shared/v26-cards.tsx:106
 msgid "UGLYCASH offers full service in {custodialCount} countries and self-custody investing in the US."

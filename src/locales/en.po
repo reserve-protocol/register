@@ -8537,6 +8537,10 @@ msgstr ""
 msgid "Reserve has been operating since 2018 with backing from <0><1>Coinbase</1>, <2>Sam Altman</2> and <3>Peter Thiel</3></0>. We exist to help you own your share of the world’s wealth."
 msgstr ""
 
+#: src/views/home-preview/variants/v26-live.tsx:24
+msgid "Reserve is building a better version of money."
+msgstr ""
+
 #: src/views/home/components/homepage-hero.tsx:18
 msgid "Reserve lets you buy entire portfolios as a single token"
 msgstr ""
@@ -9712,6 +9716,10 @@ msgstr ""
 msgid "Start migration"
 msgstr ""
 
+#: src/views/home-preview/shared/v18-page.tsx:96
+msgid "Start monetizing your stablecoin balances with eUSD the way UGLYCASH does."
+msgstr ""
+
 #: src/views/yield-dtf/auctions/auctions-sidebar/ConfirmAuction.tsx:57
 msgid "Start next recollaterization auction"
 msgstr ""
@@ -10065,6 +10073,10 @@ msgstr ""
 
 #: src/views/earn/views/index-dtf/components/faq.tsx:138
 msgid "The estimate is not guaranteed. It changes when rewards, vault deposits and withdrawals, token prices, or the calculation window change."
+msgstr ""
+
+#: src/views/home-preview/shared/v18-page.tsx:85
+msgid "The financial home for people that make money on the internet"
 msgstr ""
 
 #: src/components/rtoken-setup/token/OtherForm.tsx:53
@@ -11084,11 +11096,14 @@ msgstr ""
 msgid "UGLYCASH figures are reported by UGLYCASH as daily aggregates. UGLYCASH is an off-chain app, so these numbers are not read from the blockchain."
 msgstr ""
 
-#: src/views/home-preview/shared/v18-page.tsx:85
+#: src/views/home-preview/shared/v18-page.tsx:88
 #: src/views/home-preview/variants/v26-home.tsx:25
 #: src/views/home-preview/variants/v26-home.tsx:37
-#: src/views/home-preview/variants/v26-live.tsx:24
 msgid "UGLYCASH is the Reserve App, and it’s on track to fuel huge growth in eUSD"
+msgstr ""
+
+#: src/views/home-preview/variants/v26-live.tsx:25
+msgid "UGLYCASH is the Reserve fintech app, and eUSD is its unit of account."
 msgstr ""
 
 #: src/views/home-preview/shared/v26-cards.tsx:106
