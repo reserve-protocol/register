@@ -64,8 +64,8 @@ msgstr ""
 
 #. placeholder {0}: vetoDelay / 3600
 #. placeholder {0}: vetoPeriod / 3600
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:907
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:928
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:917
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:938
 msgid "{0, plural, one {# hour} other {# hours}}"
 msgstr ""
 
@@ -372,13 +372,13 @@ msgstr ""
 msgid "{delay} Delay"
 msgstr ""
 
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:690
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:863
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:700
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:873
 msgid "{delayInDays, plural, one {# day} other {# days}}"
 msgstr ""
 
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:688
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:861
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:698
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:871
 msgid "{delayInHours, plural, one {# hour} other {# hours}}"
 msgstr ""
 
@@ -423,7 +423,7 @@ msgstr ""
 msgid "{impact}% price impact selling ${usdSize} of {0} for {1}"
 msgstr ""
 
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:533
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:543
 msgid "{lengthInMinutes, plural, one {# minute} other {# minutes}}"
 msgstr ""
 
@@ -462,11 +462,11 @@ msgstr ""
 msgid "{percent} price impact"
 msgstr ""
 
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:730
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:740
 msgid "{periodInDays, plural, one {# day} other {# days}}"
 msgstr ""
 
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:728
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:738
 msgid "{periodInHours, plural, one {# hour} other {# hours}}"
 msgstr ""
 
@@ -644,8 +644,8 @@ msgstr ""
 msgid "$<0/> Traded"
 msgstr ""
 
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:913
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:934
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:923
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:944
 msgid "0 seconds"
 msgstr ""
 
@@ -936,7 +936,7 @@ msgid "Add additional optimistic proposer"
 msgstr ""
 
 #: src/views/index-dtf/deploy/steps/revenue/additional-revenue-recipients.tsx:106
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-revenue-distribution.tsx:33
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-revenue-distribution.tsx:34
 msgid "Add additional recipients"
 msgstr ""
 
@@ -1009,7 +1009,7 @@ msgstr ""
 msgid "Add to trade allowlist"
 msgstr ""
 
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:591
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:601
 msgid "Add to Trade Allowlist"
 msgstr ""
 
@@ -1573,8 +1573,8 @@ msgstr ""
 msgid "Auction launcher"
 msgstr ""
 
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:145
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:194
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:155
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:204
 #: src/views/index-dtf/settings/components/index-settings-roles.tsx:75
 msgid "Auction Launcher"
 msgstr ""
@@ -1588,7 +1588,7 @@ msgstr ""
 msgid "Auction Launchers"
 msgstr ""
 
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:37
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:42
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-auction-settings.tsx:50
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/optimistic.ts:111
 msgid "Auction length"
@@ -1902,7 +1902,11 @@ msgstr ""
 msgid "Basket settings proposal"
 msgstr ""
 
-#: src/views/index-dtf/governance/components/proposal-preview/rebalance-preview/index.tsx:143
+#: src/views/index-dtf/governance/components/proposal-preview/rebalance-preview/index.tsx:153
+msgid "Basket snapshot not available yet. The price history for this proposal is still being indexed; check back in about an hour."
+msgstr ""
+
+#: src/views/index-dtf/governance/components/proposal-preview/rebalance-preview/index.tsx:158
 msgid "Basket snapshot unavailable — historical data for this proposal's rebalance window is no longer served."
 msgstr ""
 
@@ -2054,8 +2058,8 @@ msgid "Bought"
 msgstr ""
 
 #: src/views/index-dtf/deploy/steps/roles/roles-form.tsx:19
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:144
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:193
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:154
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:203
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-dtf-roles.tsx:19
 #: src/views/index-dtf/settings/components/index-settings-roles.tsx:84
 msgid "Brand Manager"
@@ -2329,7 +2333,7 @@ msgstr ""
 msgid "Challenge"
 msgstr ""
 
-#: src/views/index-dtf/governance/views/proposal/components/vote-modal.tsx:194
+#: src/views/index-dtf/governance/views/proposal/components/vote-modal.tsx:193
 msgid "Challenge proposal"
 msgstr ""
 
@@ -2784,7 +2788,7 @@ msgid "Confirming tx..."
 msgstr ""
 
 #: src/views/index-dtf/deploy/steps/confirm-deploy/manual/components/deploy-assets-approvals.tsx:165
-#: src/views/index-dtf/governance/views/proposal/components/vote-modal.tsx:195
+#: src/views/index-dtf/governance/views/proposal/components/vote-modal.tsx:194
 #: src/views/index-dtf/issuance/manual/components/asset-list.tsx:110
 msgid "Confirming..."
 msgstr ""
@@ -2794,7 +2798,7 @@ msgid "Confirming…"
 msgstr ""
 
 #. placeholder {0}: form!.tokenName
-#: src/views/index-dtf/deploy/steps/confirm-deploy/success/index.tsx:78
+#: src/views/index-dtf/deploy/steps/confirm-deploy/success/index.tsx:92
 msgid "Congratulations {0} is now live"
 msgstr ""
 
@@ -2812,7 +2816,7 @@ msgstr ""
 
 #: src/components/stake-drawer/components/submit-stake-button.tsx:160
 #: src/components/stake-drawer/components/submit-unstake-button.tsx:72
-#: src/views/explorer/components/governance/index.tsx:144
+#: src/views/explorer/components/governance/index.tsx:192
 #: src/views/portfolio-page/components/portfolio-connect-button.tsx:20
 msgid "Connect wallet"
 msgstr ""
@@ -2844,7 +2848,7 @@ msgid "Contact us for eligibility"
 msgstr ""
 
 #: src/views/index-dtf/governance/components/contest-badge.tsx:6
-#: src/views/index-dtf/governance/views/proposal/components/proposal-vote.tsx:159
+#: src/views/index-dtf/governance/views/proposal/components/proposal-vote.tsx:162
 msgid "Contested"
 msgstr ""
 
@@ -3079,7 +3083,7 @@ msgstr ""
 msgid "Created {stTokenSymbol} DAO"
 msgstr ""
 
-#: src/views/explorer/components/governance/index.tsx:101
+#: src/views/explorer/components/governance/index.tsx:149
 msgid "Created At"
 msgstr ""
 
@@ -3096,8 +3100,8 @@ msgid "Creating..."
 msgstr ""
 
 #: src/views/index-dtf/deploy/steps/revenue/revenue-distribution-settings.tsx:36
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:363
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-revenue-distribution.tsx:241
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:373
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-revenue-distribution.tsx:242
 #: src/views/index-dtf/manage/components/manage-form.tsx:61
 msgid "Creator"
 msgstr ""
@@ -3328,8 +3332,8 @@ msgstr ""
 msgid "Decimals"
 msgstr ""
 
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:142
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:191
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:152
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:201
 msgid "Default Admin"
 msgstr ""
 
@@ -3395,8 +3399,8 @@ msgid "Delay in Seconds"
 msgstr ""
 
 #: src/components/vote-lock/constants.tsx:18
-#: src/views/index-dtf/governance/views/proposal/components/proposal-vote.tsx:120
-#: src/views/index-dtf/governance/views/proposal/components/proposal-vote.tsx:129
+#: src/views/index-dtf/governance/views/proposal/components/proposal-vote.tsx:123
+#: src/views/index-dtf/governance/views/proposal/components/proposal-vote.tsx:132
 #: src/views/yield-dtf/governance/components/AccountVotes.tsx:71
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalVote.tsx:141
 msgid "Delegate"
@@ -3511,7 +3515,7 @@ msgid "DEPRECATED"
 msgstr ""
 
 #: src/components/governance/proposal-description-form.tsx:64
-#: src/views/explorer/components/governance/index.tsx:84
+#: src/views/explorer/components/governance/index.tsx:132
 #: src/views/index-dtf/governance/views/proposal/components/proposal-detail-content.tsx:15
 #: src/views/index-dtf/governance/views/proposal/components/proposal-detail-content.tsx:41
 #: src/views/portfolio-page/components/transactions.tsx:114
@@ -4020,7 +4024,7 @@ msgid "Enabled"
 msgstr ""
 
 #: src/hooks/use-time-remaining.ts:23
-#: src/views/explorer/components/governance/index.tsx:115
+#: src/views/explorer/components/governance/index.tsx:163
 msgid "Ended"
 msgstr ""
 
@@ -4045,7 +4049,7 @@ msgstr ""
 msgid "Enforce trade allowlist"
 msgstr ""
 
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:605
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:615
 msgid "Enforced"
 msgstr ""
 
@@ -4286,7 +4290,7 @@ msgstr ""
 #: src/views/index-dtf/deploy/steps/basket/token-selector.tsx:113
 #: src/views/index-dtf/deploy/steps/revenue/revenue-distribution-settings.tsx:181
 #: src/views/index-dtf/governance/views/propose/basket/components/proposal-basket-setup/setup-native-dtf-basket.tsx:118
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-revenue-distribution.tsx:223
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-revenue-distribution.tsx:224
 msgid "Even distribution"
 msgstr ""
 
@@ -4442,7 +4446,7 @@ msgstr ""
 msgid "Expired:"
 msgstr ""
 
-#: src/views/index-dtf/auctions/views/rebalance-list/components/active-rebalance-item.tsx:46
+#: src/views/index-dtf/auctions/views/rebalance-list/components/active-rebalance-item.tsx:55
 msgid "Expires in:"
 msgstr ""
 
@@ -4539,11 +4543,11 @@ msgstr ""
 msgid "fast delegate"
 msgstr ""
 
-#: src/views/index-dtf/governance/views/propose/components/proposal-type-selector.tsx:124
+#: src/views/index-dtf/governance/views/propose/components/proposal-type-selector.tsx:123
 msgid "Fast Governance"
 msgstr ""
 
-#: src/views/index-dtf/governance/views/proposal/components/proposal-vote.tsx:181
+#: src/views/index-dtf/governance/views/proposal/components/proposal-vote.tsx:184
 msgid "Fast proposal"
 msgstr ""
 
@@ -4560,12 +4564,12 @@ msgstr ""
 msgid "Fee Distribution"
 msgstr ""
 
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:40
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:45
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/optimistic.ts:123
 msgid "Fee recipients"
 msgstr ""
 
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:42
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:47
 msgid "Fee recipients, including permanent ones (Folio 6.0)"
 msgstr ""
 
@@ -4695,12 +4699,15 @@ msgstr ""
 
 #: src/views/index-dtf/governance/views/propose/basket/components/basket-proposal-overview.tsx:82
 #: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/components/basket-settings-proposal-overview.tsx:74
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/dtf-settings-proposal-overview.tsx:66
 msgid "Finalize basket proposal"
 msgstr ""
 
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/dao-settings-proposal-overview.tsx:66
 msgid "Finalize DAO proposal"
+msgstr ""
+
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/dtf-settings-proposal-overview.tsx:66
+msgid "Finalize settings proposal"
 msgstr ""
 
 #: src/views/yield-dtf/issuance/components/zapV2/submit/ZapApprovalButton.tsx:60
@@ -4738,7 +4745,7 @@ msgstr ""
 msgid "For"
 msgstr ""
 
-#: src/views/index-dtf/governance/views/propose/components/proposal-type-selector.tsx:126
+#: src/views/index-dtf/governance/views/propose/components/proposal-type-selector.tsx:125
 msgid "For approved governors to fast-track proposals."
 msgstr ""
 
@@ -4845,13 +4852,17 @@ msgstr ""
 msgid "Get quote"
 msgstr ""
 
-#: src/views/index-dtf/deploy/steps/confirm-deploy/success/index.tsx:107
+#: src/views/index-dtf/deploy/steps/confirm-deploy/success/index.tsx:121
 #: src/views/index-dtf/overview/components/index-ctas-overview-mobile.tsx:218
 msgid "Go to DTF overview"
 msgstr ""
 
 #: src/components/yield-dtf-deploy-hero.tsx:50
 msgid "Go to the RToken Deployer"
+msgstr ""
+
+#: src/views/index-dtf/governance/views/propose/components/proposal-type-selector.tsx:114
+msgid "Goes to a vote of all governors, then waits the execution delay."
 msgstr ""
 
 #: src/views/internal/dtf-list/components/dtf-table.tsx:195
@@ -4883,11 +4894,11 @@ msgstr ""
 #: src/views/explorer/index.tsx:43
 #: src/views/index-dtf/components/navigation/index.tsx:227
 #: src/views/index-dtf/deploy/steps/revenue/revenue-distribution-settings.tsx:42
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:347
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:357
 #: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/components/basket-settings-proposal-sections.tsx:55
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/dao-settings-proposal-sections.tsx:64
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/dtf-settings-proposal-sections.tsx:189
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-revenue-distribution.tsx:247
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-revenue-distribution.tsx:248
 #: src/views/index-dtf/overview/components/index-governance-overview.tsx:39
 #: src/views/yield-dtf/deploy/components/NavigationSidebar.tsx:28
 #: src/views/yield-dtf/governance/views/proposal/components/ProposalNavigation.tsx:18
@@ -4972,10 +4983,6 @@ msgstr ""
 msgid "Governance upgrade to {VOTE_LOCK_UPGRADE_TO}"
 msgstr ""
 
-#: src/views/index-dtf/governance/views/propose/components/proposal-type-selector.tsx:114
-msgid "Governance with an execution delay greater than 1 week unstaking delay"
-msgstr ""
-
 #: src/views/earn/views/index-dtf/components/vote-lock-positions.tsx:207
 msgid "Governed DTFs"
 msgstr ""
@@ -4999,14 +5006,14 @@ msgstr ""
 msgid "Governs"
 msgstr ""
 
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:157
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:167
 msgid "Grant Role"
 msgstr ""
 
 #: src/views/index-dtf/deploy/steps/roles/roles-form.tsx:10
 #: src/views/index-dtf/governance/components/governance-roles.tsx:157
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:143
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:192
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:153
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:202
 #: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/components/sections/propose-basket-roles.tsx:19
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/sections/propose-dao-roles.tsx:19
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-dtf-roles.tsx:10
@@ -5039,12 +5046,16 @@ msgstr ""
 msgid "Have RSR on another chain? Bridge to BSC"
 msgstr ""
 
-#: src/views/index-dtf/issuance/manual/components/index-manual-issuance.tsx:253
+#: src/views/index-dtf/issuance/manual/components/index-manual-issuance.tsx:254
 msgid "Having issues minting?"
 msgstr ""
 
 #: src/views/yield-dtf/issuance/components/zapV2/ZapToggleBottom.tsx:20
 msgid "Having issues minting? Zaps are in beta"
+msgstr ""
+
+#: src/views/index-dtf/issuance/manual/components/index-manual-issuance.tsx:256
+msgid "Having issues redeeming?"
 msgstr ""
 
 #: src/views/index-dtf/deploy/steps/governance/form-existing-erc20.tsx:37
@@ -5682,6 +5693,10 @@ msgstr ""
 msgid "Launch your own Index DTF"
 msgstr ""
 
+#: src/views/index-dtf/auctions/views/rebalance-list/components/active-rebalance-item.tsx:47
+msgid "Launcher only"
+msgstr ""
+
 #: src/views/index-dtf/auctions/views/rebalance/components/community-launch-auctions-button.tsx:237
 #: src/views/index-dtf/auctions/views/rebalance/components/launch-auctions-button.tsx:288
 msgid "Launching..."
@@ -5994,7 +6009,7 @@ msgstr ""
 
 #: src/components/rtoken-setup/token/TokenForm.tsx:39
 #: src/views/index-dtf/deploy/steps/metadata/form-basic-metadata.tsx:17
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:45
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:50
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-metadata.tsx:50
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/optimistic.ts:129
 #: src/views/index-dtf/settings/components/index-settings-basic.tsx:109
@@ -6096,7 +6111,7 @@ msgstr ""
 msgid "Max Auction Length"
 msgstr ""
 
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:44
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:49
 msgid "Max auction length (Folio 6.0)"
 msgstr ""
 
@@ -6338,7 +6353,7 @@ msgstr ""
 msgid "Mint disabled"
 msgstr ""
 
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:46
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:51
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/optimistic.ts:135
 msgid "Mint fee"
 msgstr ""
@@ -6577,7 +6592,7 @@ msgstr ""
 msgid "New %"
 msgstr ""
 
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:528
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:538
 msgid "New auction duration:"
 msgstr ""
 
@@ -6589,11 +6604,11 @@ msgstr ""
 msgid "New backup configuration"
 msgstr ""
 
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:855
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:865
 msgid "New execution delay:"
 msgstr ""
 
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:566
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:576
 msgid "New holder share:"
 msgstr ""
 
@@ -6611,7 +6626,7 @@ msgstr ""
 msgid "New mint"
 msgstr ""
 
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:459
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:469
 msgid "New mint fee:"
 msgstr ""
 
@@ -6619,7 +6634,7 @@ msgstr ""
 msgid "New primary basket"
 msgstr ""
 
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:762
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:772
 msgid "New proposal threshold:"
 msgstr ""
 
@@ -6628,7 +6643,7 @@ msgstr ""
 msgid "New redeem"
 msgstr ""
 
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:494
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:504
 msgid "New TVL fee:"
 msgstr ""
 
@@ -6648,15 +6663,15 @@ msgstr ""
 msgid "New vote-lock vault"
 msgstr ""
 
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:682
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:692
 msgid "New voting delay:"
 msgstr ""
 
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:722
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:732
 msgid "New voting period:"
 msgstr ""
 
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:819
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:829
 msgid "New voting quorum:"
 msgstr ""
 
@@ -6958,7 +6973,7 @@ msgstr ""
 msgid "Not delegated"
 msgstr ""
 
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:605
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:615
 #: src/views/index-dtf/settings/components/index-settings-basic.tsx:58
 msgid "Not enforced"
 msgstr ""
@@ -6986,7 +7001,7 @@ msgstr ""
 msgid "Not ready to set up governance?"
 msgstr ""
 
-#: src/views/explorer/components/governance/index.tsx:147
+#: src/views/explorer/components/governance/index.tsx:195
 msgid "Not voted"
 msgstr ""
 
@@ -7168,8 +7183,8 @@ msgstr ""
 msgid "Optimistic proposer"
 msgstr ""
 
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:147
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:196
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:157
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:206
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-optimistic-parameters.tsx:164
 msgid "Optimistic Proposer"
 msgstr ""
@@ -7419,17 +7434,17 @@ msgid "Percentage of fee revenue kept inside the DTF for its holders."
 msgstr ""
 
 #: src/views/index-dtf/deploy/steps/revenue/revenue-distribution-settings.tsx:37
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-revenue-distribution.tsx:242
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-revenue-distribution.tsx:243
 msgid "Percentage of fee revenue sent to the creator of the DTF."
 msgstr ""
 
 #: src/views/index-dtf/deploy/steps/revenue/revenue-distribution-settings.tsx:24
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-revenue-distribution.tsx:235
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-revenue-distribution.tsx:236
 msgid "Percentage of fee revenue sent to the protocol; cannot be changed by governance."
 msgstr ""
 
 #: src/views/index-dtf/deploy/steps/revenue/revenue-distribution-settings.tsx:44
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-revenue-distribution.tsx:249
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-revenue-distribution.tsx:250
 msgid "Percentage of fee revenue sent to the vote-lock DAO governing the DTF."
 msgstr ""
 
@@ -7469,11 +7484,11 @@ msgstr ""
 msgid "Permanent recipients"
 msgstr ""
 
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:403
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:413
 msgid "Permanent recipients (governance can never remove these)"
 msgstr ""
 
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:38
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:43
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/optimistic.ts:117
 msgid "Permissionless bids"
 msgstr ""
@@ -7485,7 +7500,7 @@ msgstr ""
 msgid "Permissionless Bids"
 msgstr ""
 
-#: src/views/index-dtf/auctions/views/rebalance-list/components/active-rebalance-item.tsx:37
+#: src/views/index-dtf/auctions/views/rebalance-list/components/active-rebalance-item.tsx:35
 msgid "Permissionless in:"
 msgstr ""
 
@@ -7507,11 +7522,11 @@ msgstr ""
 #: src/components/transactions/table/index.tsx:92
 #: src/views/explorer/components/transactions/useTransactionColumns.tsx:142
 #: src/views/index-dtf/deploy/steps/revenue/revenue-distribution-settings.tsx:23
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-revenue-distribution.tsx:234
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-revenue-distribution.tsx:235
 msgid "Platform"
 msgstr ""
 
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:334
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:344
 msgid "Platform (Fixed)"
 msgstr ""
 
@@ -7964,7 +7979,7 @@ msgstr ""
 msgid "proposals"
 msgstr ""
 
-#: src/views/explorer/components/governance/index.tsx:159
+#: src/views/explorer/components/governance/index.tsx:207
 #: src/views/index-dtf/governance/components/governance-stats.tsx:78
 #: src/views/yield-dtf/governance/components/GovernanceOverview.tsx:124
 msgid "Proposals"
@@ -8248,7 +8263,7 @@ msgstr ""
 msgid "Rebalance accuracy"
 msgstr ""
 
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:49
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:54
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/optimistic.ts:147
 msgid "Rebalance control"
 msgstr ""
@@ -8261,8 +8276,8 @@ msgstr ""
 msgid "Rebalance Finished"
 msgstr ""
 
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:146
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:195
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:156
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:205
 msgid "Rebalance Manager"
 msgstr ""
 
@@ -8315,7 +8330,7 @@ msgstr ""
 msgid "Recipient {0} address"
 msgstr ""
 
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-revenue-distribution.tsx:68
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-revenue-distribution.tsx:69
 msgid "Recipient {recipientNumber} address"
 msgstr ""
 
@@ -8497,7 +8512,7 @@ msgstr ""
 msgid "Register Listing"
 msgstr ""
 
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:982
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:992
 msgid "Register Optimistic Actions"
 msgstr ""
 
@@ -8541,7 +8556,7 @@ msgstr ""
 #: src/views/index-dtf/deploy/steps/basket/basket-preview.tsx:201
 #: src/views/index-dtf/deploy/steps/revenue/revenue-distribution-settings.tsx:107
 #: src/views/index-dtf/governance/views/propose/basket/components/proposal-basket-setup/setup-native-dtf-basket.tsx:82
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-revenue-distribution.tsx:160
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-revenue-distribution.tsx:161
 msgid "Remaining allocation:"
 msgstr ""
 
@@ -8588,7 +8603,7 @@ msgstr ""
 msgid "Remove from trade allowlist"
 msgstr ""
 
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:592
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:602
 msgid "Remove from Trade Allowlist"
 msgstr ""
 
@@ -8606,7 +8621,7 @@ msgstr ""
 msgid "Remove token"
 msgstr ""
 
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:102
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:112
 msgid "Remove Token from Basket"
 msgstr ""
 
@@ -8809,7 +8824,7 @@ msgstr ""
 msgid "Revenue distribution backing buffer"
 msgstr ""
 
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:273
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:283
 msgid "Revenue distribution unavailable"
 msgstr ""
 
@@ -8907,7 +8922,7 @@ msgstr ""
 msgid "Revoke in wallet"
 msgstr ""
 
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:206
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:216
 msgid "Revoke Role"
 msgstr ""
 
@@ -9343,7 +9358,7 @@ msgstr ""
 msgid "Set basket composition"
 msgstr ""
 
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:639
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:649
 msgid "Set Dust Amount (Pre-requisite)"
 msgstr ""
 
@@ -9392,7 +9407,7 @@ msgstr ""
 msgid "Sets the old vault's unstaking delay to zero so voters can move to the new vote-lock vault right away."
 msgstr ""
 
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:644
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:654
 msgid "Setting dust amount for token removal"
 msgstr ""
 
@@ -9440,6 +9455,10 @@ msgstr ""
 
 #: src/views/yield-dtf/overview/components/backing/revenue-split-overview.tsx:41
 msgid "Shared externally"
+msgstr ""
+
+#: src/views/explorer/components/governance/index.tsx:81
+msgid "Shared governance"
 msgstr ""
 
 #: src/views/yield-dtf/overview/components/backing/revenue-split-overview.tsx:36
@@ -9900,12 +9919,12 @@ msgstr ""
 msgid "Start over"
 msgstr ""
 
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:35
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:40
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/optimistic.ts:105
 msgid "Start rebalance"
 msgstr ""
 
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:36
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:41
 msgid "Start rebalance (Folio 6.0)"
 msgstr ""
 
@@ -9915,7 +9934,7 @@ msgid "Starts the next {0} reward period once the current one ends. Disabled unt
 msgstr ""
 
 #: src/views/explorer/components/governance/filters.tsx:41
-#: src/views/explorer/components/governance/index.tsx:126
+#: src/views/explorer/components/governance/index.tsx:174
 #: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:366
 #: src/views/portfolio-page/components/active-proposals.tsx:136
 #: src/views/yield-dtf/governance/views/proposal-detail/components/proposal-timeline/index.tsx:16
@@ -10093,11 +10112,11 @@ msgstr ""
 msgid "Switch to manual redemption"
 msgstr ""
 
-#: src/views/index-dtf/issuance/manual/components/index-manual-issuance.tsx:261
+#: src/views/index-dtf/issuance/manual/components/index-manual-issuance.tsx:265
 msgid "Switch to zap minting"
 msgstr ""
 
-#: src/views/index-dtf/issuance/manual/components/index-manual-issuance.tsx:263
+#: src/views/index-dtf/issuance/manual/components/index-manual-issuance.tsx:267
 msgid "Switch to zap redeeming"
 msgstr ""
 
@@ -10121,7 +10140,7 @@ msgid "Target"
 msgstr ""
 
 #: src/components/rtoken-setup/basket/PluginItem.tsx:105
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:996
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:1006
 msgid "Target:"
 msgstr ""
 
@@ -10607,7 +10626,7 @@ msgstr ""
 msgid "This product isn't available in your region due to local restrictions."
 msgstr ""
 
-#: src/views/index-dtf/governance/views/proposal/components/proposal-vote.tsx:183
+#: src/views/index-dtf/governance/views/proposal/components/proposal-vote.tsx:186
 msgid "This proposal will automatically pass if it is not challenged by governance. If it is challenged, it will be resubmitted as a standard proposal."
 msgstr ""
 
@@ -10662,7 +10681,7 @@ msgstr ""
 msgid "This wallet still holds an old vote-lock for this DTF. You can't vote or earn rewards with it anymore. Redeem its shares, then lock the {symbol} you receive in {vault}."
 msgstr ""
 
-#: src/views/index-dtf/governance/views/proposal/components/proposal-vote.tsx:161
+#: src/views/index-dtf/governance/views/proposal/components/proposal-vote.tsx:164
 msgid "This was originally a fast proposal that did not pass governance. Please review the details of this contested proposal closely."
 msgstr ""
 
@@ -10732,7 +10751,7 @@ msgstr ""
 
 #: src/components/index-basket-setup/basket-table.tsx:62
 #: src/components/tables/ListedTokensTable.tsx:28
-#: src/views/explorer/components/governance/index.tsx:71
+#: src/views/explorer/components/governance/index.tsx:114
 #: src/views/explorer/components/tokens/index.tsx:142
 #: src/views/explorer/components/transactions/useTransactionColumns.tsx:51
 #: src/views/index-dtf/governance/components/proposal-preview/rebalance-preview/rebalance-basket-preview.tsx:71
@@ -10787,7 +10806,7 @@ msgid "Token exposure"
 msgstr ""
 
 #: src/components/rtoken-setup/token/TokenForm.tsx:21
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:47
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:52
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/optimistic.ts:141
 #: src/views/yield-dtf/deploy/components/TokenForm.tsx:21
 msgid "Token name"
@@ -10854,7 +10873,7 @@ msgstr ""
 msgid "Token ticker is required"
 msgstr ""
 
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:108
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:118
 msgid "Token:"
 msgstr ""
 
@@ -10979,7 +10998,7 @@ msgstr ""
 msgid "Trade allowlist enforcement"
 msgstr ""
 
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:589
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:599
 msgid "Trade Allowlist Enforcement"
 msgstr ""
 
@@ -11191,7 +11210,7 @@ msgstr ""
 msgid "Trigger Unstake"
 msgstr ""
 
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:52
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:57
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/optimistic.ts:159
 msgid "Trusted fillers"
 msgstr ""
@@ -11229,7 +11248,7 @@ msgstr ""
 msgid "TVL"
 msgstr ""
 
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:50
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:55
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/optimistic.ts:153
 msgid "TVL fee"
 msgstr ""
@@ -11371,8 +11390,8 @@ msgstr ""
 msgid "Unknown liquidity"
 msgstr ""
 
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:150
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:199
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:160
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:209
 msgid "Unknown Role"
 msgstr ""
 
@@ -11417,7 +11436,7 @@ msgstr ""
 msgid "Unregister Assets"
 msgstr ""
 
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:984
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:994
 msgid "Unregister Optimistic Actions"
 msgstr ""
 
@@ -11512,11 +11531,11 @@ msgstr ""
 msgid "Update"
 msgstr ""
 
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:488
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:498
 msgid "Update Annualized TVL Fee"
 msgstr ""
 
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:522
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:532
 msgid "Update Auction Length"
 msgstr ""
 
@@ -11524,44 +11543,44 @@ msgstr ""
 msgid "Update available"
 msgstr ""
 
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:849
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:859
 msgid "Update Execution Delay"
 msgstr ""
 
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:560
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:570
 msgid "Update Holder Share"
 msgstr ""
 
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:77
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:87
 msgid "Update Mandate"
 msgstr ""
 
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:453
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:463
 msgid "Update Mint Fee"
 msgstr ""
 
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:894
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:904
 msgid "Update Optimistic Parameters"
 msgstr ""
 
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:756
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:766
 msgid "Update Proposal Threshold"
 msgstr ""
 
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:265
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:326
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:275
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:336
 msgid "Update Revenue Distribution"
 msgstr ""
 
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:676
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:686
 msgid "Update Voting Delay"
 msgstr ""
 
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:716
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:726
 msgid "Update Voting Period"
 msgstr ""
 
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:813
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:823
 msgid "Update Voting Quorum"
 msgstr ""
 
@@ -11777,7 +11796,7 @@ msgstr ""
 msgid "Very Fast"
 msgstr ""
 
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:901
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:911
 msgid "Veto delay"
 msgstr ""
 
@@ -11792,7 +11811,7 @@ msgstr ""
 msgid "Veto delay must be at least 1 second"
 msgstr ""
 
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:922
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:932
 msgid "Veto period"
 msgstr ""
 
@@ -11806,7 +11825,7 @@ msgstr ""
 msgid "Veto period must be at least 5 minutes"
 msgstr ""
 
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:943
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:953
 msgid "Veto threshold"
 msgstr ""
 
@@ -12008,7 +12027,7 @@ msgid "Volume (last 7d)"
 msgstr ""
 
 #: src/views/index-dtf/governance/views/proposal/components/vote-modal.tsx:84
-#: src/views/index-dtf/governance/views/proposal/components/vote-modal.tsx:194
+#: src/views/index-dtf/governance/views/proposal/components/vote-modal.tsx:193
 #: src/views/yield-dtf/governance/views/proposal-detail/components/VoteModal.tsx:129
 msgid "Vote"
 msgstr ""
@@ -12202,7 +12221,7 @@ msgstr ""
 msgid "Voting delay is required"
 msgstr ""
 
-#: src/views/explorer/components/governance/index.tsx:108
+#: src/views/explorer/components/governance/index.tsx:156
 msgid "Voting Ends"
 msgstr ""
 
@@ -12754,12 +12773,12 @@ msgstr ""
 msgid "You can sell up to {maxAmountLabel} per transaction during {sessionLabel} hours in the US."
 msgstr ""
 
-#: src/views/index-dtf/deploy/steps/confirm-deploy/success/index.tsx:83
+#: src/views/index-dtf/deploy/steps/confirm-deploy/success/index.tsx:97
 msgid "You created {stTokenSymbol} DAO"
 msgstr ""
 
 #. placeholder {0}: form!.tokenName
-#: src/views/index-dtf/deploy/steps/confirm-deploy/success/index.tsx:88
+#: src/views/index-dtf/deploy/steps/confirm-deploy/success/index.tsx:102
 msgid "You created the {0} DTF"
 msgstr ""
 
@@ -12787,8 +12806,9 @@ msgstr ""
 msgid "You mint:"
 msgstr ""
 
-#: src/views/index-dtf/deploy/steps/confirm-deploy/success/index.tsx:92
-msgid "You minted the {initialTokens} genesis tokens"
+#. placeholder {0}: form?.symbol ?? ''
+#: src/views/index-dtf/deploy/steps/confirm-deploy/success/index.tsx:106
+msgid "You minted {mintedTokens} {0}"
 msgstr ""
 
 #: src/views/index-dtf/auctions/views/rebalance/components/manage-weights/manage-weights-hero.tsx:20
@@ -12988,7 +13008,7 @@ msgstr ""
 msgid "Your transaction was submitted. Check its status before taking another action."
 msgstr ""
 
-#: src/views/explorer/components/governance/index.tsx:139
+#: src/views/explorer/components/governance/index.tsx:187
 msgid "Your Vote"
 msgstr ""
 
