@@ -5,7 +5,7 @@ import { formatPercentage, formatTokenAmount } from '@/utils'
 import { PROPOSAL_STATES } from '@/utils/constants'
 import { Trans } from '@lingui/react/macro'
 import { useAtomValue } from 'jotai'
-import { Check, CircleSlash, ThumbsDown, ThumbsUp, X } from 'lucide-react'
+import { Check, CircleSlash, Clock, ThumbsDown, ThumbsUp, X } from 'lucide-react'
 import { useMemo } from 'react'
 import { proposalDetailAtom, proposalStateAtom } from '../atom'
 
@@ -46,6 +46,10 @@ const useProposalDetailStats = () => {
   const quorumNeeded = Number(threshold?.targetVotes?.formatted ?? 0)
   const quorumReached = threshold?.reached ?? false
   const hasQuorumTarget = threshold?.hasTarget ?? false
+  // The quorum target is read at the vote snapshot, which a pending proposal does not have yet.
+  const awaitingSnapshot =
+    !hasQuorumTarget &&
+    proposal?.votingState.state === PROPOSAL_STATES.PENDING
 
   const [majorityWeight, majoritySupport] = useMemo(() => {
     const totalVotes = +forVotes + +againstVotes
@@ -68,6 +72,7 @@ const useProposalDetailStats = () => {
     quorumNeeded,
     quorumReached,
     hasQuorumTarget,
+    awaitingSnapshot,
     majorityWeight,
     majoritySupport,
   }
@@ -80,6 +85,7 @@ const QuorumStat = ({
   quorumNeeded,
   quorumReached,
   hasQuorumTarget,
+  awaitingSnapshot,
 }: {
   isOptimistic?: boolean
   quorumWeight: number
@@ -87,25 +93,43 @@ const QuorumStat = ({
   quorumNeeded: number
   quorumReached: boolean
   hasQuorumTarget: boolean
+  awaitingSnapshot: boolean
 }) => {
   const isGood = hasQuorumTarget && (isOptimistic ? !quorumReached : quorumReached)
 
   return (
-    <div className="flex flex-col gap-3 p-4">
+    <div
+      className="flex flex-col gap-3 p-4"
+      data-testid="proposal-quorum"
+      data-state={awaitingSnapshot ? 'pending' : isGood ? 'reached' : 'missing'}
+    >
       <div className="flex flex-wrap items-center justify-between gap-2">
         <div className="flex items-center gap-3">
-          <BooleanIcon
-            value={isGood}
-            colorSuccess="green-500"
-            colorFailure="red-500"
-          />
+          {awaitingSnapshot ? (
+            <div className="flex items-center p-0.5 bg-muted rounded text-legend">
+              <Clock size={18} strokeWidth={1.5} />
+            </div>
+          ) : (
+            <BooleanIcon
+              value={isGood}
+              colorSuccess="green-500"
+              colorFailure="red-500"
+            />
+          )}
           <span>
             {isOptimistic ? <Trans>Challenge</Trans> : <Trans>Quorum</Trans>}
           </span>
         </div>
         <div className="flex items-center gap-2 text-base sm:text-lg">
           <span
-            className={`font-bold ${isGood ? 'text-green-500' : 'text-red-500'}`}
+            className={cn(
+              'font-bold',
+              awaitingSnapshot
+                ? 'text-legend'
+                : isGood
+                  ? 'text-green-500'
+                  : 'text-red-500'
+            )}
           >
             {formatPercentage(Math.min(quorumWeight * 100, 100))}
           </span>
@@ -114,7 +138,13 @@ const QuorumStat = ({
             {formatTokenAmount(currentQuorum)} <Trans>of</Trans>{' '}
             {/* WHY: keyed spans so browser translation can't break the target swap */}
             {hasQuorumTarget ? (
-              <span key="target">{formatTokenAmount(quorumNeeded)}</span>
+              <span key="target" data-testid="proposal-quorum-target">
+                {formatTokenAmount(quorumNeeded)}
+              </span>
+            ) : awaitingSnapshot ? (
+              <span key="pending" data-testid="proposal-quorum-target">
+                —
+              </span>
             ) : (
               <span key="unavailable">
                 <Trans>Unavailable</Trans>
@@ -125,7 +155,10 @@ const QuorumStat = ({
       </div>
       <div className=" relative h-1 bg-gray-200 rounded-full">
         <div
-          className={`h-full rounded-full ${isGood ? 'bg-green-500' : 'bg-red-500'}`}
+          className={cn(
+            'h-full rounded-full',
+            isGood ? 'bg-green-500' : 'bg-red-500'
+          )}
           style={{
             width: `${Math.min(quorumWeight * 100, 100)}%`,
           }}
@@ -199,11 +232,13 @@ const ChallengeStat = ({
   currentQuorum,
   quorumNeeded,
   hasQuorumTarget,
+  awaitingSnapshot,
 }: {
   quorumWeight: number
   currentQuorum: number
   quorumNeeded: number
   hasQuorumTarget: boolean
+  awaitingSnapshot: boolean
 }) => {
   const challengeProgress = Math.min(quorumWeight * 100, 100)
 
@@ -224,6 +259,8 @@ const ChallengeStat = ({
             <span key="target">
               {`${formatTokenAmount(quorumNeeded)} (${formatPercentage(challengeProgress)})`}
             </span>
+          ) : awaitingSnapshot ? (
+            <span key="pending">—</span>
           ) : (
             <span key="unavailable">
               <Trans>Unavailable</Trans>
@@ -331,6 +368,7 @@ const ProposalDetailStats = () => {
     quorumReached,
     hasQuorumTarget,
     isOptimistic,
+    awaitingSnapshot,
     majorityWeight,
     majoritySupport,
     againstVotes,
@@ -359,6 +397,7 @@ const ProposalDetailStats = () => {
             currentQuorum={currentQuorum}
             quorumNeeded={quorumNeeded}
             hasQuorumTarget={hasQuorumTarget}
+            awaitingSnapshot={awaitingSnapshot}
           />
         ) : (
           <>
@@ -369,6 +408,7 @@ const ProposalDetailStats = () => {
               quorumNeeded={quorumNeeded}
               quorumReached={quorumReached}
               hasQuorumTarget={hasQuorumTarget}
+              awaitingSnapshot={awaitingSnapshot}
             />
             <Separator />
             <MajoritySupportStat
