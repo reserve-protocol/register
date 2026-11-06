@@ -332,6 +332,7 @@ const SELECTOR = {
   symbol: '0x95d89b41',
   owner: '0x8da5cb5b',
   asset: '0x38d52e0f',
+  token: '0xfc0c546a',
   timelock: '0xd33219b4',
   versionRegistry: '0x60893515',
 } as const
@@ -558,6 +559,16 @@ function seedChainState() {
       if (daoGovernor && daoTimelock) {
         callOverrides[`${daoGovernor.toLowerCase()}:${SELECTOR.timelock}`] =
           encodeAbiParameters([{ type: 'address' }], [daoTimelock as `0x${string}`])
+      }
+      // Governors vote with the vault; the SDK reads token() to format votes in its decimals.
+      for (const governor of [
+        metadata.ownerGovernance?.id,
+        metadata.tradingGovernance?.id,
+        daoGovernor,
+      ]) {
+        if (!governor) continue
+        callOverrides[`${governor.toLowerCase()}:${SELECTOR.token}`] =
+          encodeAbiParameters([{ type: 'address' }], [vault as `0x${string}`])
       }
       if (metadata.stToken.underlying) {
         callOverrides[`${vault}:${SELECTOR.asset}`] = encodeAbiParameters(

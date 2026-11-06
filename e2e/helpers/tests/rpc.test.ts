@@ -530,3 +530,24 @@ describe('Folio version registry reads for the 6.0.0 upgrade banner', () => {
     expect(ctx.log).toHaveBeenCalledWith('unmocked eth_call', expect.anything())
   })
 })
+
+describe('governor vote token', () => {
+  // The SDK reads the vote token through governor.token(), then its decimals().
+  it('answers token() on the owner governor with its vote-lock vault', () => {
+    const lcap = findDtfByAddress('0x4dA9A0f397dB1397902070f93a4D6ddBC0E0E6e8')!
+    const { dtf } = loadSnapshot<{
+      dtf: { ownerGovernance: { id: string }; stToken: { id: string } }
+    }>(`${lcap.snapshotDir}/dtf.json`)
+    const ctx = context()
+    const answer = handleRpcMethod(
+      'eth_call',
+      [{ to: dtf.ownerGovernance.id, data: '0xfc0c546a' }],
+      ctx
+    ) as `0x${string}`
+
+    expect(ctx.log).not.toHaveBeenCalled()
+    expect(decodeAbiParameters([{ type: 'address' }], answer)[0].toLowerCase()).toBe(
+      dtf.stToken.id.toLowerCase()
+    )
+  })
+})

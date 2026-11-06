@@ -146,7 +146,7 @@ describe('buildV6DeployParams governance', () => {
         votingDelay: 172_800n,
         votingPeriod: 259_200n,
         voteExtension: 172_800n,
-        proposalThreshold: parseEther('0.02'),
+        proposalThreshold: parseEther('0.01'),
         quorumNumerator: parseEther('0.1'),
       },
       optimisticSelectors: [
