@@ -24,7 +24,7 @@ const SCENARIOS = {
     chainId: 8453,
     symbol: 'LCAP',
     dtf: '0x4dA9A0f397dB1397902070f93a4D6ddBC0E0E6e8',
-    spell: '0x24a4B37F9c40fB0E80ec436Df2e9989FBAFa8bB7',
+    spell: '0x971c890ACb9EeB084f292996Be667bB9A2889AE9',
     newVault: '0x2F0D6538807a77d4AdDCd4b4DAf214Ea2E818E3D',
     feeRecipient: TOKEN_JAR_BASE,
     upgradesSharedVault: true,
