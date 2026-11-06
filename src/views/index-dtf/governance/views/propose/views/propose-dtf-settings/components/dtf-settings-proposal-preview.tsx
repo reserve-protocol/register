@@ -180,7 +180,7 @@ const OverviewPreview = ({ data }: { data: DecodedCalldata[] }) => {
       {data.map((call) => {
         const Component = dtfSettingsPreviewComponents[call.signature]
         return Component ? (
-          <Component key={call.callData} decodedCalldata={call} />
+          <Component key={call.callData} decodedCalldata={call} calls={data} />
         ) : (
           <UnknownPreview key={call.callData} signature={call.signature} />
         )

@@ -64,8 +64,8 @@ msgstr "{0, plural, one {Chain #개} other {Chain #개}}"
 
 #. placeholder {0}: vetoDelay / 3600
 #. placeholder {0}: vetoPeriod / 3600
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:917
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:938
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:965
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:986
 msgid "{0, plural, one {# hour} other {# hours}}"
 msgstr "{0, plural, one {# 시간} other {# 시간}}"
 
@@ -372,13 +372,13 @@ msgstr "{delay} 쿨다운 시작됨"
 msgid "{delay} Delay"
 msgstr "{delay} 지연"
 
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:700
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:873
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:748
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:921
 msgid "{delayInDays, plural, one {# day} other {# days}}"
 msgstr "{delayInDays, plural, one {#일} other {#일}}"
 
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:698
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:871
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:746
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:919
 msgid "{delayInHours, plural, one {# hour} other {# hours}}"
 msgstr "{delayInHours, plural, one {#시간} other {#시간}}"
 
@@ -423,7 +423,7 @@ msgstr "{1}(으)로 {0}을(를) ${usdSize}만큼 매수 시 가격 영향 {impac
 msgid "{impact}% price impact selling ${usdSize} of {0} for {1}"
 msgstr "{0}을(를) ${usdSize}만큼 {1}(으)로 매도 시 가격 영향 {impact}%"
 
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:543
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:591
 msgid "{lengthInMinutes, plural, one {# minute} other {# minutes}}"
 msgstr "{lengthInMinutes, plural, one {#분} other {#분}}"
 
@@ -462,11 +462,11 @@ msgstr ""
 msgid "{percent} price impact"
 msgstr "{percent} 가격 영향"
 
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:740
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:788
 msgid "{periodInDays, plural, one {# day} other {# days}}"
 msgstr "{periodInDays, plural, one {#일} other {#일}}"
 
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:738
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:786
 msgid "{periodInHours, plural, one {# hour} other {# hours}}"
 msgstr "{periodInHours, plural, one {#시간} other {#시간}}"
 
@@ -644,8 +644,8 @@ msgstr "${0}은(는) ${1} 토큰으로 거버넌스가 이루어집니다. ${3}�
 msgid "$<0/> Traded"
 msgstr "$<0/> 거래됨"
 
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:923
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:944
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:971
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:992
 msgid "0 seconds"
 msgstr "0초"
 
@@ -1009,7 +1009,7 @@ msgstr "기본 바스켓에 추가"
 msgid "Add to trade allowlist"
 msgstr "거래 허용 목록에 추가"
 
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:601
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:649
 msgid "Add to Trade Allowlist"
 msgstr "거래 허용 목록에 추가"
 
@@ -1354,7 +1354,7 @@ msgstr "DTF의 RSR 스테이커와 투표 잠금 참여자에게 분배되거나
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/changes/revenue-changes.tsx:460
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-dtf-revenue.tsx:172
 #: src/views/index-dtf/overview/components/fees-stats.tsx:30
-#: src/views/index-dtf/settings/components/index-settings-fees.tsx:205
+#: src/views/index-dtf/settings/components/index-settings-fees.tsx:208
 msgid "Annualized TVL Fee"
 msgstr "연간 TVL 수수료"
 
@@ -1573,8 +1573,8 @@ msgstr "경매가 성공적으로 시작되었습니다"
 msgid "Auction launcher"
 msgstr "경매 실행자"
 
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:155
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:204
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:163
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:212
 #: src/views/index-dtf/settings/components/index-settings-roles.tsx:75
 msgid "Auction Launcher"
 msgstr "경매 실행자"
@@ -1588,7 +1588,7 @@ msgstr "경매 실행자 + 커뮤니티"
 msgid "Auction Launchers"
 msgstr "경매 실행자"
 
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:42
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:50
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-auction-settings.tsx:50
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/optimistic.ts:111
 msgid "Auction length"
@@ -2058,8 +2058,8 @@ msgid "Bought"
 msgstr "매수됨"
 
 #: src/views/index-dtf/deploy/steps/roles/roles-form.tsx:19
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:154
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:203
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:162
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:211
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-dtf-roles.tsx:19
 #: src/views/index-dtf/settings/components/index-settings-roles.tsx:84
 msgid "Brand Manager"
@@ -3101,7 +3101,7 @@ msgid "Creating..."
 msgstr "생성 중..."
 
 #: src/views/index-dtf/deploy/steps/revenue/revenue-distribution-settings.tsx:36
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:373
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:421
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-revenue-distribution.tsx:242
 #: src/views/index-dtf/manage/components/manage-form.tsx:61
 msgid "Creator"
@@ -3333,8 +3333,8 @@ msgstr "Decentralized Token Funds"
 msgid "Decimals"
 msgstr "소수점 자릿수"
 
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:152
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:201
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:160
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:209
 msgid "Default Admin"
 msgstr "Default Admin"
 
@@ -3496,7 +3496,7 @@ msgstr "{0} 배포 및 Mint 완료"
 msgid "Deployer"
 msgstr "배포자"
 
-#: src/views/index-dtf/settings/components/index-settings-fees.tsx:70
+#: src/views/index-dtf/settings/components/index-settings-fees.tsx:74
 msgid "Deployer Share"
 msgstr "배포자 지분"
 
@@ -4050,7 +4050,7 @@ msgstr "에너지 소비"
 msgid "Enforce trade allowlist"
 msgstr "거래 허용 목록 적용"
 
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:615
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:663
 msgid "Enforced"
 msgstr "적용됨"
 
@@ -4565,12 +4565,12 @@ msgstr ""
 msgid "Fee Distribution"
 msgstr "수수료 분배"
 
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:45
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:53
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/optimistic.ts:123
 msgid "Fee recipients"
 msgstr "수수료 수령인"
 
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:47
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:55
 msgid "Fee recipients, including permanent ones (Folio 6.0)"
 msgstr "영구 수령인을 포함한 수수료 수령인 (Folio 6.0)"
 
@@ -4593,7 +4593,7 @@ msgstr "수수료"
 msgid "Fees & Distribution"
 msgstr "수수료 및 분배"
 
-#: src/views/index-dtf/settings/components/index-settings-fees.tsx:196
+#: src/views/index-dtf/settings/components/index-settings-fees.tsx:199
 msgid "Fees & Revenue Distribution"
 msgstr "수수료 및 수익 분배"
 
@@ -4727,7 +4727,7 @@ msgstr "{symbol} 재잠금 완료하기"
 msgid "First-loss capital is the pool of RSR staked by users to absorb losses before DTF holders are affected. If the underlying collateral in a Yield DTF devalues or defaults, staked RSR is sold to cover the shortfall. This protects regular users and aligns stakers with the long-term health of the DTF."
 msgstr "퍼스트 로스 캐피탈은 DTF 보유자가 영향을 받기 전에 손실을 흡수하기 위해 사용자가 Stake한 RSR 풀입니다. Yield DTF의 기초 담보가 가치를 잃거나 디폴트되면 Stake된 RSR이 매각되어 부족분을 보전합니다. 이는 일반 사용자를 보호하고 stakers를 DTF의 장기적 건전성과 일치시킵니다."
 
-#: src/views/index-dtf/settings/components/index-settings-fees.tsx:64
+#: src/views/index-dtf/settings/components/index-settings-fees.tsx:68
 msgid "Fixed Platform Share"
 msgstr "고정 플랫폼 지분"
 
@@ -4895,7 +4895,7 @@ msgstr "거버넌스에 참여하고, Stake하고, 수익 기회를 찾아보세
 #: src/views/explorer/index.tsx:43
 #: src/views/index-dtf/components/navigation/index.tsx:227
 #: src/views/index-dtf/deploy/steps/revenue/revenue-distribution-settings.tsx:42
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:357
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:405
 #: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/components/basket-settings-proposal-sections.tsx:55
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/dao-settings-proposal-sections.tsx:64
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/dtf-settings-proposal-sections.tsx:189
@@ -4970,7 +4970,7 @@ msgid "Governance Settings"
 msgstr "거버넌스 설정"
 
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/changes/revenue-changes.tsx:102
-#: src/views/index-dtf/settings/components/index-settings-fees.tsx:77
+#: src/views/index-dtf/settings/components/index-settings-fees.tsx:81
 msgid "Governance Share"
 msgstr "거버넌스 지분"
 
@@ -5011,14 +5011,14 @@ msgstr "Governor 위임 사항"
 msgid "Governs"
 msgstr "거버넌스 대상"
 
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:167
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:175
 msgid "Grant Role"
 msgstr "역할 부여"
 
 #: src/views/index-dtf/deploy/steps/roles/roles-form.tsx:10
 #: src/views/index-dtf/governance/components/governance-roles.tsx:157
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:153
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:202
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:161
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:210
 #: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/components/sections/propose-basket-roles.tsx:19
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/sections/propose-dao-roles.tsx:19
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-dtf-roles.tsx:10
@@ -5115,11 +5115,12 @@ msgstr "Holder"
 msgid "Holder share"
 msgstr "보유자 지분"
 
-#: src/views/index-dtf/settings/components/index-settings-fees.tsx:118
+#: src/views/index-dtf/settings/components/index-settings-fees.tsx:121
 msgid "Holder Share"
 msgstr "보유자 지분"
 
 #: src/views/index-dtf/deploy/steps/revenue/revenue-distribution-settings.tsx:30
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:388
 #: src/views/top100/components/top100-table-placeholder.tsx:21
 #: src/views/top100/components/top100-table.tsx:204
 msgid "Holders"
@@ -6014,7 +6015,7 @@ msgstr ""
 
 #: src/components/rtoken-setup/token/TokenForm.tsx:39
 #: src/views/index-dtf/deploy/steps/metadata/form-basic-metadata.tsx:17
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:50
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:58
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-metadata.tsx:50
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/optimistic.ts:129
 #: src/views/index-dtf/settings/components/index-settings-basic.tsx:109
@@ -6116,7 +6117,7 @@ msgstr "최대 경매 길이"
 msgid "Max Auction Length"
 msgstr "최대 경매 길이"
 
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:49
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:57
 msgid "Max auction length (Folio 6.0)"
 msgstr "최대 경매 길이 (Folio 6.0)"
 
@@ -6358,7 +6359,7 @@ msgstr "Mint 완료됨"
 msgid "Mint disabled"
 msgstr "Mint 비활성화됨"
 
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:51
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:59
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/optimistic.ts:135
 msgid "Mint fee"
 msgstr "Mint 수수료"
@@ -6408,7 +6409,7 @@ msgid "Minting {symbol} is currently unavailable and we couldn't find another ro
 msgstr "현재 {symbol} Mint를 이용할 수 없으며 매수할 다른 경로를 찾지 못했습니다."
 
 #: src/views/index-dtf/overview/components/fees-stats.tsx:47
-#: src/views/index-dtf/settings/components/index-settings-fees.tsx:217
+#: src/views/index-dtf/settings/components/index-settings-fees.tsx:220
 msgid "Minting Fee"
 msgstr "Mint 수수료"
 
@@ -6597,7 +6598,7 @@ msgstr "Networks"
 msgid "New %"
 msgstr "신규 %"
 
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:538
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:586
 msgid "New auction duration:"
 msgstr "새 경매 기간:"
 
@@ -6609,11 +6610,11 @@ msgstr "새 경매는 거버넌스 승인 즉시 여기에 표시됩니다"
 msgid "New backup configuration"
 msgstr "새 백업 구성"
 
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:865
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:913
 msgid "New execution delay:"
 msgstr "새 실행 지연:"
 
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:576
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:624
 msgid "New holder share:"
 msgstr "새 보유자 지분:"
 
@@ -6631,7 +6632,7 @@ msgstr "새 권한:"
 msgid "New mint"
 msgstr "새 Mint"
 
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:469
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:517
 msgid "New mint fee:"
 msgstr "새 Mint 수수료:"
 
@@ -6639,7 +6640,7 @@ msgstr "새 Mint 수수료:"
 msgid "New primary basket"
 msgstr "새 기본 바스켓"
 
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:772
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:820
 msgid "New proposal threshold:"
 msgstr "새 제안 임계값:"
 
@@ -6648,7 +6649,7 @@ msgstr "새 제안 임계값:"
 msgid "New redeem"
 msgstr "새 Redeem"
 
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:504
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:552
 msgid "New TVL fee:"
 msgstr "새 TVL 수수료:"
 
@@ -6668,15 +6669,15 @@ msgstr "새 버전 사용 가능"
 msgid "New vote-lock vault"
 msgstr "새 vote-lock 볼트"
 
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:692
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:740
 msgid "New voting delay:"
 msgstr "새 투표 지연:"
 
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:732
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:780
 msgid "New voting period:"
 msgstr "새 투표 기간:"
 
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:829
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:877
 msgid "New voting quorum:"
 msgstr "새 투표 정족수:"
 
@@ -6978,7 +6979,7 @@ msgstr "해당 지역에서 이용할 수 없음"
 msgid "Not delegated"
 msgstr "위임되지 않음"
 
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:615
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:663
 #: src/views/index-dtf/settings/components/index-settings-basic.tsx:58
 msgid "Not enforced"
 msgstr "적용 안 됨"
@@ -7188,8 +7189,8 @@ msgstr "옵티미스틱 제안"
 msgid "Optimistic proposer"
 msgstr "Optimistic 제안자"
 
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:157
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:206
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:165
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:214
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-optimistic-parameters.tsx:164
 msgid "Optimistic Proposer"
 msgstr "Optimistic 제안자"
@@ -7266,7 +7267,7 @@ msgid "Other Parameters"
 msgstr "기타 파라미터"
 
 #. placeholder {0}: externalRecipients.length + 1
-#: src/views/index-dtf/settings/components/index-settings-fees.tsx:104
+#: src/views/index-dtf/settings/components/index-settings-fees.tsx:107
 msgid "Other recipient {0}"
 msgstr "기타 수령인 {0}"
 
@@ -7480,7 +7481,7 @@ msgid "Period in seconds"
 msgstr "기간(초)"
 
 #. placeholder {0}: index + 1
-#: src/views/index-dtf/settings/components/index-settings-fees.tsx:125
+#: src/views/index-dtf/settings/components/index-settings-fees.tsx:128
 msgid "Permanent recipient {0}"
 msgstr "영구 수령인 {0}"
 
@@ -7489,11 +7490,11 @@ msgstr "영구 수령인 {0}"
 msgid "Permanent recipients"
 msgstr "영구 수령인"
 
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:413
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:461
 msgid "Permanent recipients (governance can never remove these)"
 msgstr "영구 수령인 (거버넌스가 절대 제거할 수 없음)"
 
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:43
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:51
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/optimistic.ts:117
 msgid "Permissionless bids"
 msgstr "무허가 입찰"
@@ -7531,7 +7532,7 @@ msgstr "PHOTON은 여러 담보 자산을 하나의 DTF 토큰으로 묶습니�
 msgid "Platform"
 msgstr "플랫폼"
 
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:344
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:373
 msgid "Platform (Fixed)"
 msgstr "플랫폼 (고정)"
 
@@ -8195,7 +8196,7 @@ msgstr ""
 msgid "Rating:"
 msgstr "등급:"
 
-#: src/views/index-dtf/governance/components/proposal-preview/contract-proposal-changes.tsx:117
+#: src/views/index-dtf/governance/components/proposal-preview/contract-proposal-changes.tsx:118
 #: src/views/index-dtf/governance/components/proposal-preview/rebalance-preview/index.tsx:60
 #: src/views/index-dtf/governance/components/proposal-preview/rebalance-preview/legacy-basket-proposal-preview.tsx:137
 #: src/views/index-dtf/governance/views/propose/basket/components/proposal-basket-preview.tsx:142
@@ -8268,7 +8269,7 @@ msgstr "리밸런싱 #{0}"
 msgid "Rebalance accuracy"
 msgstr "리밸런싱 정확도"
 
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:54
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:62
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/optimistic.ts:147
 msgid "Rebalance control"
 msgstr "리밸런스 제어"
@@ -8281,8 +8282,8 @@ msgstr "리밸런싱 오류"
 msgid "Rebalance Finished"
 msgstr "리밸런싱 완료"
 
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:156
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:205
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:164
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:213
 msgid "Rebalance Manager"
 msgstr "리밸런싱 관리자"
 
@@ -8517,7 +8518,7 @@ msgstr "Register에 등록된 RTokens"
 msgid "Register Listing"
 msgstr "Register 리스팅"
 
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:992
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:1040
 msgid "Register Optimistic Actions"
 msgstr "Optimistic 액션 등록"
 
@@ -8608,7 +8609,7 @@ msgstr "더스트 토큰 제거"
 msgid "Remove from trade allowlist"
 msgstr "거래 허용 목록에서 제거"
 
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:602
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:650
 msgid "Remove from Trade Allowlist"
 msgstr "거래 허용 목록에서 제거"
 
@@ -8626,7 +8627,7 @@ msgstr "리소스 제거"
 msgid "Remove token"
 msgstr "토큰 제거"
 
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:112
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:120
 msgid "Remove Token from Basket"
 msgstr "바스켓에서 토큰 제거"
 
@@ -8820,7 +8821,7 @@ msgstr "수익 분배"
 
 #: src/components/rtoken-setup/token/RevenueSplit.tsx:109
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/changes/revenue-changes.tsx:92
-#: src/views/index-dtf/settings/components/index-settings-fees.tsx:228
+#: src/views/index-dtf/settings/components/index-settings-fees.tsx:231
 #: src/views/yield-dtf/settings/components/revenue-split-info.tsx:15
 msgid "Revenue Distribution"
 msgstr "수익 분배"
@@ -8829,7 +8830,7 @@ msgstr "수익 분배"
 msgid "Revenue distribution backing buffer"
 msgstr "수익 분배 백킹 버퍼"
 
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:283
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:311
 msgid "Revenue distribution unavailable"
 msgstr "수익 분배 정보 없음"
 
@@ -8927,7 +8928,7 @@ msgstr "기존 {0} 승인 취소"
 msgid "Revoke in wallet"
 msgstr "Wallet에서 취소"
 
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:216
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:224
 msgid "Revoke Role"
 msgstr "역할 취소"
 
@@ -9363,7 +9364,7 @@ msgstr "배포 시 설정됩니다. 거버넌스는 이를 제거하거나 수�
 msgid "Set basket composition"
 msgstr "바스켓 구성 설정"
 
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:649
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:697
 msgid "Set Dust Amount (Pre-requisite)"
 msgstr "더스트 금액 설정 (사전 요건)"
 
@@ -9412,7 +9413,7 @@ msgstr "기존 볼트의 언스테이킹 지연을 0으로 설정하여 투표�
 msgid "Sets the old vault's unstaking delay to zero so voters can move to the new vote-lock vault right away."
 msgstr "기존 볼트의 언스테이킹 지연을 0으로 설정하여 투표자가 즉시 새 vote-lock 볼트로 옮길 수 있게 합니다."
 
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:654
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:702
 msgid "Setting dust amount for token removal"
 msgstr "토큰 제거를 위한 더스트 금액 설정"
 
@@ -9924,12 +9925,12 @@ msgstr "다음 재담보화 경매 시작"
 msgid "Start over"
 msgstr "처음부터 다시"
 
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:40
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:48
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/optimistic.ts:105
 msgid "Start rebalance"
 msgstr "리밸런스 시작"
 
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:41
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:49
 msgid "Start rebalance (Folio 6.0)"
 msgstr "리밸런스 시작 (Folio 6.0)"
 
@@ -10053,7 +10054,7 @@ msgstr "Reserve 스마트 컨트랙트에 보유된 모든 자산의 합계입�
 msgid "Sum of all mints of Index and Yield DTFs since inception."
 msgstr "출시 이후 Index 및 Yield DTF의 모든 Mint 합계입니다."
 
-#: src/views/index-dtf/governance/components/proposal-preview/contract-proposal-changes.tsx:113
+#: src/views/index-dtf/governance/components/proposal-preview/contract-proposal-changes.tsx:114
 #: src/views/index-dtf/governance/components/proposal-preview/rebalance-preview/index.tsx:56
 #: src/views/index-dtf/governance/components/proposal-preview/rebalance-preview/legacy-basket-proposal-preview.tsx:131
 #: src/views/index-dtf/governance/views/propose/basket/components/proposal-basket-preview.tsx:136
@@ -10145,7 +10146,7 @@ msgid "Target"
 msgstr "목표"
 
 #: src/components/rtoken-setup/basket/PluginItem.tsx:105
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:1006
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:1054
 msgid "Target:"
 msgstr "타깃:"
 
@@ -10822,7 +10823,7 @@ msgid "Token exposure"
 msgstr "토큰 노출"
 
 #: src/components/rtoken-setup/token/TokenForm.tsx:21
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:52
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:60
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/optimistic.ts:141
 #: src/views/yield-dtf/deploy/components/TokenForm.tsx:21
 msgid "Token name"
@@ -10889,7 +10890,7 @@ msgstr "토큰 심볼은 12자 이하여야 합니다"
 msgid "Token ticker is required"
 msgstr "토큰 티커가 필요합니다"
 
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:118
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:126
 msgid "Token:"
 msgstr "토큰:"
 
@@ -11014,7 +11015,7 @@ msgstr "거래 허용 목록"
 msgid "Trade allowlist enforcement"
 msgstr "거래 허용 목록 적용"
 
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:599
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:647
 msgid "Trade Allowlist Enforcement"
 msgstr "거래 허용 목록 적용"
 
@@ -11226,7 +11227,7 @@ msgstr "멜트 트리거"
 msgid "Trigger Unstake"
 msgstr "Unstake 실행"
 
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:57
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:65
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/optimistic.ts:159
 msgid "Trusted fillers"
 msgstr "신뢰할 수 있는 Filler"
@@ -11264,7 +11265,7 @@ msgstr "튜토리얼 동영상"
 msgid "TVL"
 msgstr "TVL"
 
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:55
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:63
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/optimistic.ts:153
 msgid "TVL fee"
 msgstr "TVL 수수료"
@@ -11332,7 +11333,7 @@ msgstr "컨트랙트 데이터를 파싱할 수 없습니다"
 
 #: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:150
 #: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:266
-#: src/views/index-dtf/settings/components/index-settings-fees.tsx:229
+#: src/views/index-dtf/settings/components/index-settings-fees.tsx:232
 msgid "Unavailable"
 msgstr "사용 불가"
 
@@ -11406,8 +11407,8 @@ msgstr "알 수 없는 컨트랙트"
 msgid "Unknown liquidity"
 msgstr "알 수 없는 유동성"
 
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:160
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:209
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:168
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:217
 msgid "Unknown Role"
 msgstr "알 수 없는 역할"
 
@@ -11452,7 +11453,7 @@ msgstr "등록 해제"
 msgid "Unregister Assets"
 msgstr "자산 등록 해제"
 
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:994
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:1042
 msgid "Unregister Optimistic Actions"
 msgstr "Optimistic 액션 등록 해제"
 
@@ -11547,11 +11548,11 @@ msgstr "담보 Unwrap"
 msgid "Update"
 msgstr "업데이트"
 
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:498
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:546
 msgid "Update Annualized TVL Fee"
 msgstr "연간 환산 TVL 수수료 업데이트"
 
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:532
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:580
 msgid "Update Auction Length"
 msgstr "경매 기간 업데이트"
 
@@ -11559,44 +11560,44 @@ msgstr "경매 기간 업데이트"
 msgid "Update available"
 msgstr "업데이트 사용 가능"
 
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:859
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:907
 msgid "Update Execution Delay"
 msgstr "실행 지연 업데이트"
 
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:570
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:618
 msgid "Update Holder Share"
 msgstr "보유자 지분 업데이트"
 
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:87
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:95
 msgid "Update Mandate"
 msgstr "Mandate 업데이트"
 
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:463
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:511
 msgid "Update Mint Fee"
 msgstr "Mint 수수료 업데이트"
 
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:904
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:952
 msgid "Update Optimistic Parameters"
 msgstr "Optimistic 파라미터 업데이트"
 
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:766
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:814
 msgid "Update Proposal Threshold"
 msgstr "제안 임계값 업데이트"
 
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:275
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:336
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:303
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:365
 msgid "Update Revenue Distribution"
 msgstr "수익 분배 업데이트"
 
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:686
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:734
 msgid "Update Voting Delay"
 msgstr "투표 지연 업데이트"
 
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:726
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:774
 msgid "Update Voting Period"
 msgstr "투표 기간 업데이트"
 
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:823
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:871
 msgid "Update Voting Quorum"
 msgstr "투표 정족수 업데이트"
 
@@ -11812,7 +11813,7 @@ msgstr "버전: {0}"
 msgid "Very Fast"
 msgstr "매우 빠름"
 
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:911
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:959
 msgid "Veto delay"
 msgstr "Veto 지연"
 
@@ -11831,7 +11832,7 @@ msgstr "Veto 지연 시작"
 msgid "Veto delay must be at least 1 second"
 msgstr "거부 지연은 최소 1초여야 합니다"
 
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:932
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:980
 msgid "Veto period"
 msgstr "Veto 기간"
 
@@ -11845,7 +11846,7 @@ msgstr "Veto 기간"
 msgid "Veto period must be at least 5 minutes"
 msgstr "거부 기간은 최소 5분이어야 합니다"
 
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:953
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:1001
 msgid "Veto threshold"
 msgstr "Veto 임계값"
 

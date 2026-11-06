@@ -4,7 +4,11 @@ import { indexDTFAtom, indexDTFFeeAtom } from '@/state/dtf/atoms'
 import { DecodedCalldata } from '@/types'
 import EnsName from '@/components/utils/ens-name'
 import { formatPercentage, isLoaded, shortenAddress } from '@/utils'
-import { getFeePercentAdjust, isDisplayablePlatformFee } from '@/utils/fees'
+import {
+  getHolderSharePercent,
+  getRecipientPercentAdjust,
+  isDisplayablePlatformFee,
+} from '@/utils/fees'
 import { ExplorerDataType, getExplorerLink } from '@/utils/getExplorerLink'
 import type { MessageDescriptor } from '@lingui/core'
 import { msg } from '@lingui/core/macro'
@@ -22,7 +26,11 @@ import {
   Users,
   Wand2,
 } from 'lucide-react'
-import { INDEX_DTF_START_REBALANCE_SELECTOR } from '@reserve-protocol/react-sdk'
+import {
+  INDEX_DTF_START_REBALANCE_SELECTOR,
+  useIndexDtfIdentity,
+  useIndexDtfSelfFee,
+} from '@reserve-protocol/react-sdk'
 import { getOptimisticActions } from '@/views/index-dtf/governance/views/propose/views/propose-dtf-settings/optimistic'
 import { Link } from 'react-router-dom'
 import { formatEther, toFunctionSelector, zeroHash } from 'viem'
@@ -238,12 +246,32 @@ export const RevokeRolePreview = ({
 // Preview component for setFeeRecipients function
 export const SetFeeRecipientsPreview = ({
   decodedCalldata,
+  calls,
 }: {
   decodedCalldata: DecodedCalldata
   targetAddress?: Address
+  calls?: DecodedCalldata[]
 }) => {
   const indexDTF = useAtomValue(indexDTFAtom)
   const platformFee = useAtomValue(indexDTFFeeAtom)
+  const identity = useIndexDtfIdentity()
+  // Only Folio 6.0 takes two recipient tables, and only 6.0 has a holder share.
+  const isV6Table = decodedCalldata.data.length > 1
+  const proposedSelfFee = calls?.find(
+    (call) => call.signature === 'setFolioSelfFee'
+  )?.data[0] as bigint | undefined
+  const { data: currentSelfFee } = useIndexDtfSelfFee(
+    isV6Table && proposedSelfFee === undefined && identity.address
+      ? identity
+      : undefined
+  )
+  const selfFee = !isV6Table
+    ? 0
+    : proposedSelfFee !== undefined
+      ? Number(formatEther(proposedSelfFee))
+      : currentSelfFee
+        ? Number(currentSelfFee.formatted)
+        : undefined
   const { data: tokenJar } = useReadContract({
     abi: dtfStakingVaultAbi,
     address: indexDTF?.stToken?.id,
@@ -263,7 +291,7 @@ export const SetFeeRecipientsPreview = ({
     portion: bigint
   }>
 
-  if (!indexDTF || !isLoaded(platformFee)) return null
+  if (!indexDTF || !isLoaded(platformFee) || selfFee === undefined) return null
 
   // A fee outside [0, 100) has no real share-of-total split — surface "Unavailable", never fabricate.
   if (!isDisplayablePlatformFee(platformFee)) {
@@ -315,8 +343,9 @@ export const SetFeeRecipientsPreview = ({
     }
   })
 
-  // Calldata percentages exclude the platform fee — divide by PERCENT_ADJUST for share of total revenue.
-  const PERCENT_ADJUST = getFeePercentAdjust(platformFee)
+  // Calldata percentages exclude the platform fee and the holder share — divide by PERCENT_ADJUST for share of total revenue, as Details shows it.
+  const PERCENT_ADJUST = getRecipientPercentAdjust(platformFee, selfFee)
+  const holderShare = getHolderSharePercent(platformFee, selfFee)
   const adjustedDeployerShare = deployerShare / PERCENT_ADJUST
   const adjustedGovernanceShare = governanceShare / PERCENT_ADJUST
   const adjustedExternalRecipients = externalRecipients.map((r) => ({
@@ -349,9 +378,28 @@ export const SetFeeRecipientsPreview = ({
           </div>
         </div>
 
+        {holderShare > 0 && (
+          <div
+            className="p-3 rounded-xl bg-background/80 border"
+            data-testid="settings-preview-holder-share"
+          >
+            <div className="flex items-center justify-between">
+              <span className="text-sm text-muted-foreground">
+                <Trans>Holders</Trans>
+              </span>
+              <span className="text-sm text-primary">
+                {holderShare.toFixed(2)}%
+              </span>
+            </div>
+          </div>
+        )}
+
         {/* Governance Share */}
         {adjustedGovernanceShare > 0 && (
-          <div className="p-3 rounded-xl bg-background/80 border">
+          <div
+            className="p-3 rounded-xl bg-background/80 border"
+            data-testid="settings-preview-governance-share"
+          >
             <div className="flex items-center justify-between">
               <span className="text-sm text-muted-foreground">
                 <Trans>Governance</Trans>

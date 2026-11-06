@@ -11,6 +11,13 @@ vi.mock('wagmi', async (importOriginal) => ({
   useReadContract: () => ({ data: undefined }),
 }))
 
+const sdk = vi.hoisted(() => ({ selfFee: undefined as undefined | { formatted: string } }))
+vi.mock('@reserve-protocol/react-sdk', async (importOriginal) => ({
+  ...(await importOriginal<typeof import('@reserve-protocol/react-sdk')>()),
+  useIndexDtfIdentity: () => ({ chainId: 8453, address: '0x4444444444444444444444444444444444444444' }),
+  useIndexDtfSelfFee: (params: unknown) => ({ data: params ? sdk.selfFee : undefined }),
+}))
+
 import { SetFeeRecipientsPreview } from '../dtf-settings-preview'
 
 const decodedCalldata = {
@@ -57,6 +64,7 @@ describe('SetFeeRecipientsPreview on Folio 6.0 (two recipient tables)', () => {
   const IMMUTABLE = '0x3333333333333333333333333333333333333333'
 
   it('lists every immutable recipient, which governance can never remove', () => {
+    sdk.selfFee = { formatted: '0' }
     const store = createStore()
     store.set(indexDTFAtom, {
       chainId: 8453,
@@ -87,5 +95,54 @@ describe('SetFeeRecipientsPreview on Folio 6.0 (two recipient tables)', () => {
     expect(rows).toHaveLength(1)
     expect(rows[0].textContent).toContain('0x3333')
     expect(rows[0].textContent).toContain('15.00%')
+  })
+})
+
+describe('SetFeeRecipientsPreview shares of total fees (same basis as Details)', () => {
+  const GOVERNANCE = '0x2222222222222222222222222222222222222222'
+  const IMMUTABLE = '0x3333333333333333333333333333333333333333'
+  const twoTables = {
+    data: [
+      [{ recipient: GOVERNANCE, portion: 7n * 10n ** 17n }],
+      [{ recipient: IMMUTABLE, portion: 3n * 10n ** 17n }],
+    ],
+  } as any
+
+  const renderWithCalls = (calls?: any[]) => {
+    const store = createStore()
+    store.set(indexDTFAtom, {
+      chainId: 8453,
+      deployer: '0x1111111111111111111111111111111111111111',
+      stToken: { id: GOVERNANCE },
+    } as any)
+    store.set(indexDTFFeeAtom, 50)
+    const wrapper = ({ children }: { children: ReactNode }) => (
+      <MemoryRouter>
+        <Provider store={store}>{children}</Provider>
+      </MemoryRouter>
+    )
+    return render(<SetFeeRecipientsPreview decodedCalldata={twoTables} calls={calls} />, {
+      wrapper,
+    })
+  }
+
+  it('takes the holder share proposed in the same proposal', () => {
+    sdk.selfFee = { formatted: '0' }
+    const { getByTestId, getAllByTestId } = renderWithCalls([
+      { signature: 'setFolioSelfFee', data: [2n * 10n ** 17n] },
+      { signature: 'setFeeRecipients', data: twoTables.data },
+    ])
+
+    expect(getByTestId('settings-preview-holder-share').textContent).toContain('10.00%')
+    expect(getByTestId('settings-preview-governance-share').textContent).toContain('28.00%')
+    expect(getAllByTestId('settings-preview-immutable-recipient')[0].textContent).toContain('12.00%')
+  })
+
+  it('uses the current holder share when the proposal does not change it', () => {
+    sdk.selfFee = { formatted: '0.2' }
+    const { getByTestId } = renderWithCalls([{ signature: 'setFeeRecipients', data: twoTables.data }])
+
+    expect(getByTestId('settings-preview-holder-share').textContent).toContain('10.00%')
+    expect(getByTestId('settings-preview-governance-share').textContent).toContain('28.00%')
   })
 })

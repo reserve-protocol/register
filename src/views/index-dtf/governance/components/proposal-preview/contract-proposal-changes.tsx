@@ -37,6 +37,7 @@ const ChangesOverviewComponentMap: Record<
   React.ComponentType<{
     decodedCalldata: DecodedCalldata
     targetAddress?: Address
+    calls?: DecodedCalldata[]
   }>
 > = {
   removeRewardToken: TokenRewardPreview,
@@ -148,6 +149,7 @@ const ContractProposalChanges = ({
               <Component
                 decodedCalldata={decodedCalldata}
                 targetAddress={address}
+                calls={decodedCalldatas}
               />
             </div>
           )

@@ -6,7 +6,11 @@ import {
 } from '@/state/dtf/atoms'
 import { IndexDTF } from '@/types'
 import { formatPercentage, isLoaded } from '@/utils'
-import { getFeePercentAdjust, isDisplayablePlatformFee } from '@/utils/fees'
+import {
+  getHolderSharePercent,
+  getRecipientPercentAdjust,
+  isDisplayablePlatformFee,
+} from '@/utils/fees'
 import { msg } from '@lingui/core/macro'
 import type { MessageDescriptor } from '@lingui/core'
 import { useLingui } from '@lingui/react/macro'
@@ -80,8 +84,7 @@ export const getFeeRecipients = (
     testId: 'settings-fee-governance',
   }
   const externalRecipients: Recipient[] = []
-  const recipientFraction = 1 - (v6?.selfFee ?? 0)
-  const PERCENT_ADJUST = getFeePercentAdjust(platformFee) / recipientFraction
+  const PERCENT_ADJUST = getRecipientPercentAdjust(platformFee, v6?.selfFee ?? 0)
 
   const deployer = indexDTF.deployer.toLowerCase()
   const governanceRecipients = new Set(
@@ -116,7 +119,7 @@ export const getFeeRecipients = (
 
   const holderShare: Recipient = {
     label: msg`Holder Share`,
-    value: formatPercentage((100 - platformFee) * v6.selfFee),
+    value: formatPercentage(getHolderSharePercent(platformFee, v6.selfFee)),
     icon: <IconWrapper Component={Coins} />,
     testId: 'settings-fee-holders',
   }
