@@ -23,6 +23,7 @@ import { blockTimestampAtom, chainIdAtom } from 'state/atoms'
 import { colors } from 'theme'
 import { formatDate, getCurrentTime, parseDuration } from 'utils'
 import { PROPOSAL_STATES } from 'utils/constants'
+import { isVotingClosedEarly } from '@/views/index-dtf/governance/utils/challenged-proposal'
 import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
 import {
   canExecuteProposal,
@@ -158,7 +159,12 @@ export const TimelineItemVotingPeriod = () => {
   const duration = (endTime || 0) - (startTime || 0)
   const elapsed = currentTime - (startTime || 0)
   const enabled = currentTime > (startTime || 0)
-  const inProgress = currentTime < (endTime || 0)
+  const inProgress =
+    currentTime < (endTime || 0) &&
+    !isVotingClosedEarly(
+      { state: proposal?.votingState.state ?? '', voteEnd: endTime || 0 },
+      currentTime
+    )
 
   return (
     <TimelineItem
@@ -177,7 +183,12 @@ export const TimelineItemVotingPeriodEnds = () => {
   const startTime = proposal?.voteStart
   const endTime = proposal?.voteEnd
   const currentTime = getCurrentTime()
-  const enabled = currentTime > (endTime || 0)
+  const enabled =
+    currentTime > (endTime || 0) ||
+    isVotingClosedEarly(
+      { state: proposal?.votingState.state ?? '', voteEnd: endTime || 0 },
+      currentTime
+    )
   const elapsed = Math.max(currentTime, startTime || 0) - (endTime || 0)
 
   return (

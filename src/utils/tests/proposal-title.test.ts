@@ -14,6 +14,12 @@ describe('getProposalTitle', () => {
     )
   })
 
+  it('drops the heading marks after the governor confirmation prefix', () => {
+    expect(
+      getProposalTitle('Confirmation For: # Rebalance to 100% WETH\nbody')
+    ).toBe('Confirmation For: Rebalance to 100% WETH')
+  })
+
   it('reads the first line of an escaped description', () => {
     expect(getProposalTitle('## Rebalance #2\\nbody')).toBe('Rebalance #2')
   })

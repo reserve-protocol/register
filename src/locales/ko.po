@@ -854,7 +854,7 @@ msgid "Above minimum trade volume"
 msgstr "최소 거래량 이상"
 
 #: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:299
-#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-votes.tsx:118
+#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-votes.tsx:115
 #: src/views/index-dtf/governance/views/proposal/components/vote-modal.tsx:79
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalDetailStats.tsx:236
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalVotes.tsx:90
@@ -2196,7 +2196,7 @@ msgstr "이 옵션을 활성화하면 zapper가 RToken을 거래하는 대신 Mi
 msgid "By using"
 msgstr "귀하는"
 
-#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:118
+#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:119
 #: src/views/yield-dtf/governance/views/proposal-detail/components/proposal-timeline/TimelineItem.tsx:82
 msgid "By:"
 msgstr "제안자:"
@@ -2260,7 +2260,7 @@ msgstr "Unstake 취소"
 
 #: src/views/explorer/components/governance/filters.tsx:21
 #: src/views/index-dtf/governance/views/proposal/components/proposal-deadline-alert.tsx:41
-#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:292
+#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:303
 #: src/views/yield-dtf/governance/views/proposal-detail/components/proposal-timeline/TimelineItem.tsx:258
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalAlert.tsx:62
 msgid "Canceled"
@@ -2338,10 +2338,11 @@ msgid "Challenge proposal"
 msgstr "제안에 이의 제기"
 
 #: src/views/index-dtf/governance/views/proposal/components/proposal-vote-button.tsx:51
+#: src/views/index-dtf/governance/views/proposal/components/proposal-vote.tsx:228
 msgid "Challenged"
 msgstr "이의 제기됨"
 
-#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-votes.tsx:99
+#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-votes.tsx:96
 msgid "Challenged votes"
 msgstr "이의 제기 투표"
 
@@ -2848,7 +2849,7 @@ msgid "Contact us for eligibility"
 msgstr "자격 확인 문의"
 
 #: src/views/index-dtf/governance/components/contest-badge.tsx:6
-#: src/views/index-dtf/governance/views/proposal/components/proposal-vote.tsx:162
+#: src/views/index-dtf/governance/views/proposal/components/proposal-vote.tsx:198
 msgid "Contested"
 msgstr "논쟁 중"
 
@@ -3399,8 +3400,8 @@ msgid "Delay in Seconds"
 msgstr "지연 시간(초)"
 
 #: src/components/vote-lock/constants.tsx:18
-#: src/views/index-dtf/governance/views/proposal/components/proposal-vote.tsx:123
-#: src/views/index-dtf/governance/views/proposal/components/proposal-vote.tsx:132
+#: src/views/index-dtf/governance/views/proposal/components/proposal-vote.tsx:127
+#: src/views/index-dtf/governance/views/proposal/components/proposal-vote.tsx:136
 #: src/views/yield-dtf/governance/components/AccountVotes.tsx:71
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalVote.tsx:141
 msgid "Delegate"
@@ -4333,8 +4334,8 @@ msgstr "실행 가능한 코드"
 msgid "Executable until {deadlineDate}"
 msgstr "{deadlineDate}까지 실행 가능"
 
-#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:289
-#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:290
+#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:300
+#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:301
 #: src/views/index-dtf/governance/views/proposal/components/proposal-execute-button.tsx:94
 #: src/views/yield-dtf/governance/views/proposal-detail/components/proposal-timeline/TimelineItem.tsx:256
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalExecute.tsx:31
@@ -4345,7 +4346,7 @@ msgstr "제안 실행"
 #: src/views/explorer/components/governance/filters.tsx:19
 #: src/views/index-dtf/governance/components/proposal-list-item.tsx:101
 #: src/views/index-dtf/governance/views/proposal/components/proposal-deadline-alert.tsx:23
-#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:291
+#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:302
 #: src/views/yield-dtf/governance/views/proposal-detail/components/proposal-timeline/TimelineItem.tsx:257
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalAlert.tsx:44
 msgid "Executed"
@@ -4547,7 +4548,7 @@ msgstr "Fast 위임자"
 msgid "Fast Governance"
 msgstr "Fast 거버넌스"
 
-#: src/views/index-dtf/governance/views/proposal/components/proposal-vote.tsx:184
+#: src/views/index-dtf/governance/views/proposal/components/proposal-vote.tsx:261
 msgid "Fast proposal"
 msgstr "Fast 제안"
 
@@ -4915,6 +4916,10 @@ msgstr "거버넌스 1.1.0 업그레이드 제안이 생성됨"
 #: src/views/index-dtf/deploy/components/deploy-accordion.tsx:79
 msgid "Governance Body"
 msgstr "거버넌스 주체"
+
+#: src/views/index-dtf/governance/views/proposal/components/proposal-vote.tsx:230
+msgid "Governance challenged this fast proposal, so it was resubmitted as a standard proposal."
+msgstr "거버넌스가 이 Fast 제안에 이의를 제기하여 표준 제안으로 다시 제출되었습니다."
 
 #: src/views/index-dtf/deploy/components/right-panel.tsx:50
 msgid "Governance DAO created"
@@ -5289,7 +5294,7 @@ msgid "Immediate"
 msgstr "즉시"
 
 #. placeholder {0}: parseDuration(elapsed)
-#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:188
+#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:199
 #: src/views/yield-dtf/governance/views/proposal-detail/components/proposal-timeline/TimelineItem.tsx:158
 msgid "in {0}"
 msgstr "{0} 후"
@@ -7878,7 +7883,7 @@ msgstr "프로젝트"
 msgid "Projects recent reward activity forward."
 msgstr ""
 
-#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:210
+#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:221
 msgid "Proposal canceled"
 msgstr "제안이 취소됨"
 
@@ -7886,7 +7891,7 @@ msgstr "제안이 취소됨"
 msgid "Proposal cannot be executed while another auction is currently running"
 msgstr "다른 경매가 진행 중인 동안에는 제안을 실행할 수 없습니다"
 
-#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:110
+#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:111
 #: src/views/yield-dtf/governance/views/proposal-detail/components/proposal-timeline/TimelineItem.tsx:77
 msgid "Proposal created"
 msgstr "제안 생성됨"
@@ -7904,7 +7909,7 @@ msgstr "제안 생성됨"
 msgid "Proposal created!"
 msgstr "제안이 생성되었습니다!"
 
-#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:204
+#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:215
 #: src/views/yield-dtf/governance/views/proposal-detail/components/proposal-timeline/TimelineItem.tsx:174
 msgid "Proposal defeated"
 msgstr "제안이 부결됨"
@@ -7914,7 +7919,7 @@ msgid "Proposal execution delay (hours)"
 msgstr "제안 실행 지연(시간)"
 
 #: src/views/index-dtf/governance/components/proposal-list-item.tsx:104
-#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:206
+#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:217
 #: src/views/yield-dtf/governance/views/proposal-detail/components/proposal-timeline/TimelineItem.tsx:176
 msgid "Proposal expired"
 msgstr "제안이 만료됨"
@@ -7927,9 +7932,9 @@ msgstr "제안 시뮬레이션 완료"
 msgid "Proposal Simulation"
 msgstr "제안 시뮬레이션"
 
-#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:207
-#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:208
-#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:209
+#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:218
+#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:219
+#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:220
 #: src/views/yield-dtf/governance/views/proposal-detail/components/proposal-timeline/TimelineItem.tsx:177
 #: src/views/yield-dtf/governance/views/proposal-detail/components/proposal-timeline/TimelineItem.tsx:178
 #: src/views/yield-dtf/governance/views/proposal-detail/components/proposal-timeline/TimelineItem.tsx:179
@@ -8108,7 +8113,7 @@ msgid "Queue proposal"
 msgstr "제안 큐에 등록"
 
 #: src/views/explorer/components/governance/filters.tsx:23
-#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:270
+#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:281
 #: src/views/yield-dtf/governance/views/proposal-detail/components/proposal-timeline/TimelineItem.tsx:241
 msgid "Queued"
 msgstr "큐 등록됨"
@@ -8126,7 +8131,7 @@ msgstr "정족수 (%)"
 #: src/views/explorer/components/governance/filters.tsx:20
 #: src/views/index-dtf/governance/components/proposal-list-item.tsx:105
 #: src/views/index-dtf/governance/views/proposal/components/proposal-deadline-alert.tsx:47
-#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:205
+#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:216
 #: src/views/yield-dtf/governance/views/proposal-detail/components/proposal-timeline/TimelineItem.tsx:175
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalAlert.tsx:68
 msgid "Quorum not reached"
@@ -9935,7 +9940,7 @@ msgstr "현재 기간이 종료되면 다음 {0} 보상 기간을 시작합니�
 
 #: src/views/explorer/components/governance/filters.tsx:41
 #: src/views/explorer/components/governance/index.tsx:174
-#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:366
+#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:377
 #: src/views/portfolio-page/components/active-proposals.tsx:136
 #: src/views/yield-dtf/governance/views/proposal-detail/components/proposal-timeline/index.tsx:16
 msgid "Status"
@@ -10637,7 +10642,7 @@ msgstr "현지 규정에 따라 이 상품은 고객님의 지역에서 적격 �
 msgid "This product isn't available in your region due to local restrictions."
 msgstr "이 제품은 현지 규제로 인해 해당 지역에서 이용할 수 없습니다."
 
-#: src/views/index-dtf/governance/views/proposal/components/proposal-vote.tsx:186
+#: src/views/index-dtf/governance/views/proposal/components/proposal-vote.tsx:263
 msgid "This proposal will automatically pass if it is not challenged by governance. If it is challenged, it will be resubmitted as a standard proposal."
 msgstr "이 제안은 거버넌스가 이의를 제기하지 않으면 자동으로 통과됩니다. 이의가 제기되면 표준 제안으로 재제출됩니다."
 
@@ -10692,7 +10697,7 @@ msgstr "이 Wallet에는 아직 기존 {0} vote-lock이 있습니다. 더 이상
 msgid "This wallet still holds an old vote-lock for this DTF. You can't vote or earn rewards with it anymore. Redeem its shares, then lock the {symbol} you receive in {vault}."
 msgstr "이 Wallet에는 아직 이 DTF의 기존 vote-lock이 있습니다. 더 이상 투표하거나 보상을 받을 수 없습니다. 지분을 Redeem한 뒤 받은 {symbol}을(를) {vault}에 잠그세요."
 
-#: src/views/index-dtf/governance/views/proposal/components/proposal-vote.tsx:164
+#: src/views/index-dtf/governance/views/proposal/components/proposal-vote.tsx:200
 msgid "This was originally a fast proposal that did not pass governance. Please review the details of this contested proposal closely."
 msgstr "이 제안은 원래 거버넌스를 통과하지 못한 Fast 제안이었습니다. 이의가 제기된 이 제안의 세부 사항을 면밀히 검토하세요."
 
@@ -11909,7 +11914,7 @@ msgstr "DTF 보기"
 msgid "View entire basket"
 msgstr "전체 바스켓 보기"
 
-#: src/views/index-dtf/governance/views/proposal/components/proposal-vote.tsx:49
+#: src/views/index-dtf/governance/views/proposal/components/proposal-vote.tsx:53
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalVote.tsx:50
 msgid "View execute tx"
 msgstr "실행 트랜잭션 보기"
@@ -12007,6 +12012,14 @@ msgstr "보상 토큰 보기"
 #: src/views/yield-dtf/auctions/components/useColumns.tsx:68
 msgid "View settle tx"
 msgstr "정산 트랜잭션 보기"
+
+#: src/views/index-dtf/governance/views/proposal/components/proposal-vote.tsx:204
+msgid "View the original fast proposal"
+msgstr "원래 Fast 제안 보기"
+
+#: src/views/index-dtf/governance/views/proposal/components/proposal-vote.tsx:235
+msgid "View the standard proposal"
+msgstr "표준 제안 보기"
 
 #: src/views/index-dtf/overview/components/index-transaction-table-with-swaps/columns.tsx:105
 #: src/views/index-dtf/overview/components/index-transaction-table.tsx:104
@@ -12171,12 +12184,12 @@ msgstr ""
 msgid "Votes"
 msgstr "투표"
 
-#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-votes.tsx:115
+#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-votes.tsx:112
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalVotes.tsx:79
 msgid "Votes against"
 msgstr "반대 투표"
 
-#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-votes.tsx:112
+#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-votes.tsx:109
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalVotes.tsx:68
 msgid "Votes for"
 msgstr "찬성 투표"
@@ -12204,7 +12217,7 @@ msgstr "투표 주소"
 msgid "Voting begins in"
 msgstr "투표 시작까지"
 
-#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:145
+#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:146
 #: src/views/yield-dtf/governance/views/proposal-detail/components/proposal-timeline/TimelineItem.tsx:106
 msgid "Voting delay"
 msgstr "투표 지연"
@@ -12246,7 +12259,7 @@ msgid "Voting on the RToken you are staked on requires you to delegate your vote
 msgstr "Stake한 RToken에 대해 투표하려면 자신 또는 다른 Eth 주소에 투표권을 위임해야 합니다."
 
 #: src/views/index-dtf/deploy/steps/governance-settings/voting-presets.tsx:25
-#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:166
+#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:172
 #: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/atoms.ts:193
 #: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/components/basket-settings-proposal-section.tsx:46
 #: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/components/sections/propose-basket-governance.tsx:35
@@ -12268,7 +12281,7 @@ msgstr "투표 기간 (블록)"
 msgid "Voting period (hours)"
 msgstr "투표 기간 (시간)"
 
-#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:186
+#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:197
 #: src/views/yield-dtf/governance/views/proposal-detail/components/proposal-timeline/TimelineItem.tsx:156
 msgid "Voting Period Ends"
 msgstr "투표 기간 종료"
@@ -13023,7 +13036,7 @@ msgstr "트랜잭션이 제출되었습니다. 다른 작업을 하기 전에 �
 msgid "Your Vote"
 msgstr "내 투표"
 
-#: src/views/index-dtf/governance/views/proposal/components/proposal-vote.tsx:106
+#: src/views/index-dtf/governance/views/proposal/components/proposal-vote.tsx:110
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalVote.tsx:124
 msgid "Your voting power:"
 msgstr "내 투표권:"

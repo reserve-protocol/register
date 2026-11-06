@@ -1,7 +1,7 @@
 import { Skeleton } from '@/components/ui/skeleton'
 import { cn } from '@/lib/utils'
 import { indexDTFAtom } from '@/state/dtf/atoms'
-import { formatCurrency, formatPercentage } from '@/utils'
+import { formatCurrency, formatPercentage, formatTokenAmount } from '@/utils'
 import { Trans } from '@lingui/react/macro'
 import { useAtomValue } from 'jotai'
 import { Coins, FileText, Gauge, Users } from 'lucide-react'
@@ -106,7 +106,7 @@ const GovernanceStats = () => {
         text={
           totalSupply === undefined
             ? undefined
-            : `${formatCurrency(totalSupply, 0)} ${dtf?.stToken?.token.symbol}`
+            : `${totalSupply < 1 ? formatTokenAmount(totalSupply) : formatCurrency(totalSupply, 0)} ${dtf?.stToken?.token.symbol}`
         }
       />
       <InfoItem
