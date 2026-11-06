@@ -1,7 +1,7 @@
 import { Separator } from '@/components/ui/separator'
 import { Skeleton } from '@/components/ui/skeleton'
 import { cn } from '@/lib/utils'
-import { formatCurrency, formatPercentage, formatTokenAmount } from '@/utils'
+import { formatPercentage, formatTokenAmount } from '@/utils'
 import { PROPOSAL_STATES } from '@/utils/constants'
 import { Trans } from '@lingui/react/macro'
 import { useAtomValue } from 'jotai'
@@ -265,10 +265,7 @@ const VoteDistributionStat = ({
               data-testid="proposal-for-votes"
               className="font-bold text-accent-inverted"
             >
-              {formatCurrency(+forVotes, 0, {
-                notation: 'compact',
-                compactDisplay: 'short',
-              })}
+              {formatTokenAmount(+forVotes)}
             </span>
           </div>
         </div>
@@ -278,10 +275,7 @@ const VoteDistributionStat = ({
               <Trans>Against</Trans>
             </span>
             <span className="font-bold text-destructive">
-              {formatCurrency(+againstVotes, 0, {
-                notation: 'compact',
-                compactDisplay: 'short',
-              })}
+              {formatTokenAmount(+againstVotes)}
             </span>
           </div>
           <div className="flex items-center justify-center w-7 h-7 text-destructive bg-muted rounded">
@@ -300,10 +294,7 @@ const VoteDistributionStat = ({
           </span>
         </div>
         <span className="font-bold text-gray-500">
-          {formatCurrency(+abstainVotes, 0, {
-            notation: 'compact',
-            compactDisplay: 'short',
-          })}
+          {formatTokenAmount(+abstainVotes)}
         </span>
       </div>
     </>
