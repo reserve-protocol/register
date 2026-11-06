@@ -3,6 +3,8 @@ import { chainIdAtom } from '@/state/atoms'
 import { indexDTFAtom, indexDTFFeeAtom } from '@/state/dtf/atoms'
 import { DecodedCalldata } from '@/types'
 import EnsName from '@/components/utils/ens-name'
+import TokenLogo from '@/components/token-logo'
+import useTokenMeta from '@/views/index-dtf/governance/hooks/use-token-meta'
 import { formatPercentage, isLoaded, shortenAddress } from '@/utils'
 import {
   getHolderSharePercent,
@@ -642,6 +644,8 @@ export const TradeAllowlistPreview = ({
   const { t } = useLingui()
   const chainId = useAtomValue(chainIdAtom)
   const [arg] = decodedCalldata.data as unknown as [boolean | Address[]]
+  const tokens = typeof arg === 'boolean' ? [] : arg
+  const tokenMeta = useTokenMeta(tokens)
   const title =
     decodedCalldata.signature === 'setTradeAllowlistEnabled'
       ? t`Trade Allowlist Enforcement`
@@ -662,17 +666,34 @@ export const TradeAllowlistPreview = ({
         {typeof arg === 'boolean' ? (
           <span className="text-primary">{arg ? t`Enforced` : t`Not enforced`}</span>
         ) : (
-          arg.map((token) => (
-            <Link
-              key={token}
-              to={getExplorerLink(token, chainId, ExplorerDataType.TOKEN)}
-              target="_blank"
-              className="flex items-center gap-1 text-primary"
-            >
-              {shortenAddress(token)}
-              <ArrowUpRight size={14} />
-            </Link>
-          ))
+          tokens.map((token) => {
+            const meta = tokenMeta(token)
+
+            return (
+              <Link
+                key={token}
+                to={getExplorerLink(token, chainId, ExplorerDataType.TOKEN)}
+                target="_blank"
+                className="flex items-center gap-2 text-primary"
+                data-testid="settings-preview-allowlist-token"
+              >
+                <TokenLogo
+                  src={meta?.logoURI}
+                  symbol={meta?.symbol}
+                  address={token}
+                  chain={chainId}
+                  size="sm"
+                />
+                <span className="font-medium">
+                  {meta?.symbol ?? <Trans>Unknown token</Trans>}
+                </span>
+                <span className="text-muted-foreground">
+                  {shortenAddress(token)}
+                </span>
+                <ArrowUpRight size={14} />
+              </Link>
+            )
+          })
         )}
       </div>
     </div>
