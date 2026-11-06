@@ -262,7 +262,7 @@ export const SetFeeRecipientsPreview = ({
   const proposedSelfFee = calls?.find(
     (call) => call.signature === 'setFolioSelfFee'
   )?.data[0] as bigint | undefined
-  const { data: currentSelfFee } = useIndexDtfSelfFee(
+  const { data: currentSelfFee, isError: selfFeeError } = useIndexDtfSelfFee(
     isV6Table && proposedSelfFee === undefined && identity.address
       ? identity
       : undefined
@@ -293,10 +293,11 @@ export const SetFeeRecipientsPreview = ({
     portion: bigint
   }>
 
-  if (!indexDTF || !isLoaded(platformFee) || selfFee === undefined) return null
+  if (!indexDTF || !isLoaded(platformFee)) return null
+  if (selfFee === undefined && !selfFeeError) return null
 
-  // A fee outside [0, 100) has no real share-of-total split — surface "Unavailable", never fabricate.
-  if (!isDisplayablePlatformFee(platformFee)) {
+  // A fee outside [0, 100), or a holder share that can't be read, has no real share-of-total split — surface "Unavailable", never fabricate.
+  if (!isDisplayablePlatformFee(platformFee) || selfFee === undefined) {
     return (
       <div className="rounded-2xl border bg-muted/70 p-2 space-y-3">
         <div className="flex items-center gap-2 ml-2 pt-2">

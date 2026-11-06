@@ -145,22 +145,45 @@ export const getFeeRecipients = (
   ]
 }
 
-const useFolioV6Fees = (): { v6?: FolioV6Fees; isLoading: boolean } => {
+type FolioV6FeesState = { v6?: FolioV6Fees; isLoading: boolean; isError: boolean }
+
+// Without the holder share or the permanent table the split would be wrong, so a failed read reads as unavailable.
+export const getFolioV6FeesState = ({
+  isV6,
+  selfFee,
+  immutableRecipients,
+  isError,
+}: {
+  isV6: boolean
+  selfFee?: { formatted: string }
+  immutableRecipients?: FolioV6Fees['immutableRecipients']
+  isError: boolean
+}): FolioV6FeesState => {
+  if (!isV6) return { isLoading: false, isError: false }
+  if (isError) return { isLoading: false, isError: true }
+  if (!selfFee || !immutableRecipients) return { isLoading: true, isError: false }
+  return {
+    isLoading: false,
+    isError: false,
+    v6: { selfFee: Number(selfFee.formatted), immutableRecipients },
+  }
+}
+
+const useFolioV6Fees = (): FolioV6FeesState => {
   const versionState = useAtomValue(folioVersionAtom)
   const identity = useIndexDtfIdentity()
   const isV6 = versionState.status === 'ready' && versionState.major === 6
   const params = isV6 && identity.address ? identity : undefined
-  const { data: selfFee } = useIndexDtfSelfFee(params)
-  const { data: immutableRecipients } =
+  const { data: selfFee, isError: selfFeeError } = useIndexDtfSelfFee(params)
+  const { data: immutableRecipients, isError: immutableError } =
     useIndexDtfImmutableFeeRecipients(params)
 
-  if (!isV6) return { isLoading: false }
-  if (!selfFee || !immutableRecipients) return { isLoading: true }
-
-  return {
-    isLoading: false,
-    v6: { selfFee: Number(selfFee.formatted), immutableRecipients },
-  }
+  return getFolioV6FeesState({
+    isV6,
+    selfFee,
+    immutableRecipients,
+    isError: selfFeeError || immutableError,
+  })
 }
 
 // TODO: Share distribution pending subgraph work!
@@ -179,7 +202,7 @@ const FeesInfo = () => {
     },
   })
 
-  const { v6, isLoading: isV6Loading } = useFolioV6Fees()
+  const { v6, isLoading: isV6Loading, isError: isV6Error } = useFolioV6Fees()
 
   const feeRecipients = useMemo(
     () =>
@@ -226,6 +249,7 @@ const FeesInfo = () => {
       </div>
       <div className="bg-card rounded-3xl mt-1">
         {platformFee === 'unavailable' ||
+        isV6Error ||
         (isLoaded(platformFee) && !isDisplayablePlatformFee(platformFee)) ? (
           <InfoCardItem
             label={t`Revenue Distribution`}

@@ -73,7 +73,8 @@ export default function ProposeV6Upgrade() {
         : [],
     combine: (results) => ({
       data: results.flatMap(({ data }) => (data ? [data] : [])),
-      isPending: results.some(({ isPending }) => isPending),
+      // A proposal whose calls could not be read may already cast the spell: stay hidden rather than allow a duplicate.
+      isUnresolved: results.some(({ isPending, isError }) => isPending || isError),
     }),
   })
   const { writeContract, data: hash, isPending } = useWriteContract()
@@ -127,7 +128,7 @@ export default function ProposeV6Upgrade() {
   })
   if (
     eligibility.status === 'hidden' ||
-    castProposals.isPending ||
+    castProposals.isUnresolved ||
     hasLiveV6Upgrade(proposals, governor, castProposals.data, dtf.id, spell)
   ) {
     return null

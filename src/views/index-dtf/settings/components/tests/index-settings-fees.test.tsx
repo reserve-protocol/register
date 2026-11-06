@@ -2,7 +2,7 @@ import { IndexDTF } from '@/types'
 import { formatPercentage } from '@/utils'
 import { Address, parseEther } from 'viem'
 import { describe, expect, it } from 'vitest'
-import { getFeeRecipients } from '../index-settings-fees'
+import { getFeeRecipients, getFolioV6FeesState } from '../index-settings-fees'
 
 const DEPLOYER = '0x1111111111111111111111111111111111111111' as Address
 const STTOKEN = '0x2222222222222222222222222222222222222222' as Address
@@ -153,5 +153,16 @@ describe('getFeeRecipients', () => {
     const permanent = result?.find((r) => r.address === PERMANENT)
     expect(permanent?.value).toBe(formatPercentage(9))
     expect(permanent?.testId).toBe('settings-fee-permanent-1')
+  })
+})
+
+describe('getFolioV6FeesState', () => {
+  it('reads as unavailable, not loading forever, when a 6.0 fee read fails', () => {
+    expect(getFolioV6FeesState({ isV6: true, isError: true })).toEqual({ isLoading: false, isError: true })
+  })
+
+  it('loads while the reads are pending and ignores them before 6.0', () => {
+    expect(getFolioV6FeesState({ isV6: true, isError: false }).isLoading).toBe(true)
+    expect(getFolioV6FeesState({ isV6: false, isError: true })).toEqual({ isLoading: false, isError: false })
   })
 })

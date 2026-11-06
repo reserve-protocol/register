@@ -11,11 +11,11 @@ vi.mock('wagmi', async (importOriginal) => ({
   useReadContract: () => ({ data: undefined }),
 }))
 
-const sdk = vi.hoisted(() => ({ selfFee: undefined as undefined | { formatted: string } }))
+const sdk = vi.hoisted(() => ({ selfFee: undefined as undefined | { formatted: string }, selfFeeError: false }))
 vi.mock('@reserve-protocol/react-sdk', async (importOriginal) => ({
   ...(await importOriginal<typeof import('@reserve-protocol/react-sdk')>()),
   useIndexDtfIdentity: () => ({ chainId: 8453, address: '0x4444444444444444444444444444444444444444' }),
-  useIndexDtfSelfFee: (params: unknown) => ({ data: params ? sdk.selfFee : undefined }),
+  useIndexDtfSelfFee: (params: unknown) => ({ data: params ? sdk.selfFee : undefined, isError: sdk.selfFeeError }),
 }))
 
 import { SetFeeRecipientsPreview } from '../dtf-settings-preview'
@@ -144,5 +144,14 @@ describe('SetFeeRecipientsPreview shares of total fees (same basis as Details)',
 
     expect(getByTestId('settings-preview-holder-share').textContent).toContain('10.00%')
     expect(getByTestId('settings-preview-governance-share').textContent).toContain('28.00%')
+  })
+
+  it('says the split is unavailable when the current holder share cannot be read', () => {
+    sdk.selfFee = undefined
+    sdk.selfFeeError = true
+    const { getByTestId } = renderWithCalls([{ signature: 'setFeeRecipients', data: twoTables.data }])
+
+    expect(getByTestId('settings-preview-fee-unavailable')).toBeTruthy()
+    sdk.selfFeeError = false
   })
 })
