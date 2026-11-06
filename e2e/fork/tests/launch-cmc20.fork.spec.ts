@@ -3,6 +3,7 @@ import { existsSync, readFileSync, mkdirSync, writeFileSync } from 'node:fs'
 import { resolve } from 'node:path'
 import { createPublicClient, decodeEventLog, http, parseAbi } from 'viem'
 import { installForkWallet } from '../helpers/fork-wallet'
+import { redactSecrets } from '../helpers/redact'
 
 // Real launch on the BSC fork: the impersonated CMC20 auction launcher opens an
 // auction from the Register UI; state is verified on the fork with viem, not
@@ -55,7 +56,7 @@ test('cmc20 launcher opens an auction on the BSC fork from the UI', async ({
   const failedUrls: string[] = []
   const forkCalls: string[] = []
   page.on('console', (msg) => {
-    if (msg.type() === 'error') consoleErrors.push(msg.text().slice(0, 300))
+    if (msg.type() === 'error') consoleErrors.push(redactSecrets(msg.text()).slice(0, 300))
   })
   page.on('requestfailed', (req) =>
     failedUrls.push(`${req.failure()?.errorText} ${new URL(req.url()).host}`)
@@ -83,7 +84,7 @@ test('cmc20 launcher opens an auction on the BSC fork from the UI', async ({
   page.on('response', async (res) => {
     if (res.status() >= 400)
       failedUrls.push(
-        `${res.status()} ${new URL(res.url()).host}${new URL(res.url()).pathname.slice(0, 40)}`
+        redactSecrets(`${res.status()} ${new URL(res.url()).host}${new URL(res.url()).pathname}`).slice(0, 80)
       )
     if (!res.url().startsWith(rpcUrl)) return
     try {

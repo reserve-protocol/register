@@ -47,8 +47,9 @@ test('settings: the pending amount reads again after distributeFees() succeeds',
   await harness.chain.advance(5_000)
   await harness.chain.advance(5_000)
 
-  const pending = page.getByTestId('settings-pending-fees')
-  await expect(pending).toContainText('2.50', { timeout: 15_000 })
+  // The share amount alone: the USD figure next to it can read 0.00 too.
+  const pending = page.getByTestId('settings-pending-fees-amount')
+  await expect(pending).toHaveText(/^2\.50 \$/, { timeout: 15_000 })
 
   overrides.ethCall(base.address, GET_PENDING_FEE_SHARES, pendingShares(0n))
   harness.tx.confirm()
@@ -59,5 +60,5 @@ test('settings: the pending amount reads again after distributeFees() succeeds',
   await harness.chain.advance(10_000)
   await harness.chain.advance(5_000)
 
-  await expect(pending).toContainText('0.00', { timeout: 15_000 })
+  await expect(pending).toHaveText(/^0\.00 \$/, { timeout: 15_000 })
 })

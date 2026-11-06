@@ -9,6 +9,7 @@ import {
   parseAbi,
 } from 'viem'
 import { installForkWallet } from '../helpers/fork-wallet'
+import { redactSecrets } from '../helpers/redact'
 
 // Stack lane on the protocol sandbox (chain 1): the native 6.0.0 folio's launcher
 // opens a second auction from the Register UI. The write goes Register → SDK →
@@ -84,12 +85,12 @@ test('native 6.0.0 launcher opens a second auction from the UI and the stack rea
   const consoleErrors: string[] = []
   const failedUrls: string[] = []
   page.on('console', (msg) => {
-    if (msg.type() === 'error') consoleErrors.push(msg.text().slice(0, 300))
+    if (msg.type() === 'error') consoleErrors.push(redactSecrets(msg.text()).slice(0, 300))
   })
   page.on('response', (res) => {
     if (res.status() >= 400)
       failedUrls.push(
-        `${res.status()} ${new URL(res.url()).host}${new URL(res.url()).pathname.slice(0, 60)}`
+        redactSecrets(`${res.status()} ${new URL(res.url()).host}${new URL(res.url()).pathname}`).slice(0, 100)
       )
   })
   const dumpDiagnostics = async () => {

@@ -483,7 +483,8 @@ test('Folio 6.0: the allowlist editor adds the basket, removes and adds by addre
   await rows.first().getByTestId('settings-allowlist-remove').click()
   await page.getByTestId('settings-allowlist-add-address').click()
   await advanceTime(page, 1_000)
-  await page.locator('input[name="tradeAllowlistTokens[7]"]').fill(OFF_LIST_TOKEN)
+  // The basket minus the removed row, then the new address input.
+  await page.locator(`input[name="tradeAllowlistTokens[${basket.length - 1}]"]`).fill(OFF_LIST_TOKEN)
   await advanceTime(page, 2_000)
   await expect(rows).toHaveCount(basket.length)
   await expect(rows.last()).toContainText('XYZ')

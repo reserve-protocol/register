@@ -47,7 +47,7 @@ if (
   !/127\.0\.0\.1|localhost/.test(rpcUrl)
 ) {
   throw new Error(
-    `refusing: rpc ${rpcUrl} chainId ${chainId} client ${clientVersion}`
+    `refusing: rpc ${rpcUrl.replace(/(\/v[23]\/)[A-Za-z0-9_-]{8,}/g, '$1***')} chainId ${chainId} client ${clientVersion}`
   )
 }
 const read = (functionName, args = []) =>

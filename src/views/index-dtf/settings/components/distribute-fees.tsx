@@ -64,7 +64,7 @@ const DistributeFees = () => {
             <Skeleton className="h-4 w-20" />
           ) : (
             <div data-testid="settings-pending-fees">
-              <span className="mr-1">
+              <span className="mr-1" data-testid="settings-pending-fees-amount">
                 {formatCurrency(formattedPendingFees)} ${indexDTF.token.symbol}
               </span>
               <span className="text-legend text-sm">

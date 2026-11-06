@@ -77,6 +77,8 @@ export default defineConfig({
       VITE_INFURA: '',
       VITE_ALCHEMY: '',
       VITE_ANKR: '',
+      // The deploy wizard's dev proxy to a real zapper (/zapper-local) must stay off offline.
+      VITE_ZAPPER_DEPLOY_API: '',
     },
   },
 })

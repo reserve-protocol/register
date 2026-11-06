@@ -16,7 +16,7 @@ for (const name of required) if (!process.env[name]) throw new Error(`set ${name
 const client = createPublicClient({ transport: http(rpcUrl, { timeout: 120_000 }) })
 const clientVersion = await client.request({ method: 'web3_clientVersion' })
 if (!String(clientVersion).startsWith('anvil') || !/127\.0\.0\.1|localhost/.test(rpcUrl)) {
-  throw new Error(`refusing: rpc ${rpcUrl} client ${clientVersion}`)
+  throw new Error(`refusing: rpc ${rpcUrl.replace(/(\/v[23]\/)[A-Za-z0-9_-]{8,}/g, '$1***')} client ${clientVersion}`)
 }
 
 const abi = parseAbi([
