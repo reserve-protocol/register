@@ -173,3 +173,42 @@ describe('getMaxSafeRebalancePercent when sizing is unavailable', () => {
     expect(getMaxSafeRebalancePercent(sizes, limits)).toBeUndefined()
   })
 })
+
+describe('getMaxSafeRebalancePercent boundary', () => {
+  const sized = (usdPerPercent: number) => (percent: number) => ({ [A]: percent * usdPerPercent })
+  const open = (capacityUsd: number) => ({ [A]: { capacityUsd, tradingOpen: true } })
+
+  it('returns the highest percent whose leg is within the buffered cap, and the next one is not', () => {
+    // $10 per percent against a $500 cap → $475 buffered → 47% ($470) fits, 48% ($480) does not.
+    const sizes = sized(10)
+    const result = getMaxSafeRebalancePercent(sizes, open(500))
+
+    expect(result).toBe(47)
+    expect(sizes(47)[A]).toBeLessThanOrEqual(500 * ONDO_LIMIT_BUFFER)
+    expect(sizes(48)[A]).toBeGreaterThan(500 * ONDO_LIMIT_BUFFER)
+  })
+
+  it('lets a leg exactly at the buffered cap fit', () => {
+    // $5 per percent against a $500 cap → 95% is exactly $475.
+    expect(getMaxSafeRebalancePercent(sized(5), open(500))).toBe(95)
+  })
+
+  it('holds the boundary for every leg size and cap', () => {
+    for (const usdPerPercent of [1, 3, 7.5, 12, 40, 250]) {
+      for (const capacityUsd of [100, 333, 1_000, 9_999]) {
+        const sizes = sized(usdPerPercent)
+        const cap = capacityUsd * ONDO_LIMIT_BUFFER
+        const result = getMaxSafeRebalancePercent(sizes, open(capacityUsd))!
+
+        if (result === 100) {
+          expect(sizes(100)[A]).toBeLessThanOrEqual(cap)
+        } else if (sizes(1)[A] > cap) {
+          expect(result).toBe(1)
+        } else {
+          expect(sizes(result)[A]).toBeLessThanOrEqual(cap)
+          expect(sizes(result + 1)[A]).toBeGreaterThan(cap)
+        }
+      }
+    }
+  })
+})
