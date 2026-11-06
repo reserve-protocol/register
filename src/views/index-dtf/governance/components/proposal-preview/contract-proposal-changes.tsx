@@ -93,6 +93,8 @@ const ContractProposalChanges = ({
     <Tabs
       defaultValue={TABS.SUMMARY}
       className="flex flex-col rounded-3xl bg-background m-1"
+      data-testid="proposal-contract-changes"
+      data-contract={address.toLowerCase()}
     >
       <div className="mx-4 py-4 flex items-center flex-wrap gap-2 border-b">
         <h1 className="text-xl font-semibold text-primary">{alias}</h1>

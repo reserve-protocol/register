@@ -1049,7 +1049,11 @@ export const SelectorRegistryPreview = ({
   const isRegister = decodedCalldata.signature === 'registerSelectors'
 
   return (
-    <div className="rounded-2xl border bg-muted/70 p-2 space-y-3">
+    <div
+      className="rounded-2xl border bg-muted/70 p-2 space-y-3"
+      data-testid="proposal-selector-registry-call"
+      data-action={decodedCalldata.signature}
+    >
       <div className="flex items-center gap-2 ml-2 mt-2">
         {isRegister ? (
           <PlusCircle size={16} className="text-success" />
@@ -1095,6 +1099,7 @@ export const SelectorRegistryPreview = ({
                 <span
                   key={selector}
                   className="rounded-full bg-primary/10 text-primary px-2 py-1 text-xs"
+                  data-selector={selector.toLowerCase()}
                 >
                   {formatSelectorLabel(selector, t)}
                 </span>
