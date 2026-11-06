@@ -1,6 +1,6 @@
 ---
 title: Log
-updated: 2026-10-29
+updated: 2026-11-04
 type: log
 ---
 
@@ -254,3 +254,8 @@ PR #1094 merged on 2026-08-28. The following records the original stage evidence
 - The TS zapper (`zapper.reserve-api.com`) is gone; reserve-api `/api/zapper` now proxies the Rust zapper (zrs-router prod, zrsx-1 staging) and `/api/zapper2` is a synonym. Register keeps `{ZAPPER_API}api/zapper/*` (see [[zapper]]).
 - Deploy liquidity badges moved off the `deploy-ungoverned` debug payload: Rust never fills `debug.priceImpactStats`, so every token would have read 0% impact ("high", a false positive). They now reuse reserve-api `/rebalance/liquidity` with `nativePrice: 0` so the server sizes buys in the chain's own native token.
 - `fetchZapperTokens` read `data.tokens`, which neither zapper ever returned, so the "unsupported token" flag never fired. It was removed rather than fixed: the Rust `/tokens` list is a static snapshot and would flag every newer token.
+
+## 2026-11-04
+
+- Proposer cancellation uses the already-exported SDK governor builder, not the existing guardian-only timelock hook. The new confirmation is proposer-only (case-insensitive), standard PENDING or optimistic PENDING/ACTIVE/SUCCEEDED, and preserves the queued guardian action. Simulation remains the deployed-capability check.
+- RED: route test could not find the missing proposer CTA. GREEN: 30 desktop/mobile cancellation cases; exact governor calldata, confirmation/dismissal, lifecycle states, unauthorized/disconnected, rejection/revert. Screenshots inspected. Scoped lint/types/1113 units pass with Node 26 webstorage disabled; 81 helper units and production build pass. Smoke + surrounding governance returned 56 pass/1 zero-power failure; that same failure was reproduced on clean base 194abb5f0 and is outside this change. Independent combined Intent/Engineering Risk review found no blockers; account-switch/navigation-during-mining remains inspection-only. Engineer review is required before merge; no live-chain writes.

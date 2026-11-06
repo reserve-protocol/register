@@ -26,6 +26,7 @@ import useDelegateState from '../hooks/use-delegate-state'
 import ProposalCancel from './proposal-cancel-button'
 import ProposalDeadlineAlert from './proposal-deadline-alert'
 import ProposalExecute from './proposal-execute-button'
+import ProposalProposerCancel from './proposal-proposer-cancel'
 import ProposalQueue from './proposal-queue-button'
 import ProposalVoteButton from './proposal-vote-button'
 
@@ -275,6 +276,7 @@ const ProposalVote = () => (
       <FastProposalHelp />
       <ChallengedProposalHelp />
       <ProposalActionButtons />
+      <ProposalProposerCancel />
     </div>
   </>
 )

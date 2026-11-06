@@ -57,6 +57,10 @@ lifecycle depth, and gaps live in `e2e/TEST_MAP.md`. `e2e/CLAUDE.md`
   a foreign server can't bypass the pinned env (`VITE_E2E` keeps production
   form validation ON, so zod bounds ARE assertable in specs).
 
+## Proposer cancellation
+
+`index-dtf/governance/proposer-cancel.spec.ts` covers the new governor cancel confirmation on desktop and mobile: exact calldata, pending disable, proposer-only access, standard/optimistic cancellation windows, dismissal, rejection and revert. Existing guardian timelock cancellation stays in `flows/governance-permissions.spec.ts`. The settled-state suite does not prove account switching or SPA navigation during mining. Optimistic proposals omit the standard For-votes statistic; use the proposal title’s `data-state` as the shared loaded-state oracle.
+
 ## Transactions and time
 
 The injected EIP-6963/EIP-1193 provider records every send in the per-test

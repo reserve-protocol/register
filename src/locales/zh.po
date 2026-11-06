@@ -64,8 +64,8 @@ msgstr "{0, plural, one {# 个 Chain} other {# 个 Chain}}"
 
 #. placeholder {0}: vetoDelay / 3600
 #. placeholder {0}: vetoPeriod / 3600
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:965
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:986
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:987
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:1008
 msgid "{0, plural, one {# hour} other {# hours}}"
 msgstr "{0, plural, one {# 小时} other {# 小时}}"
 
@@ -372,13 +372,13 @@ msgstr "{delay} 冷却已开始"
 msgid "{delay} Delay"
 msgstr "{delay} 延迟"
 
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:748
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:921
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:770
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:943
 msgid "{delayInDays, plural, one {# day} other {# days}}"
 msgstr "{delayInDays, plural, one {# 天} other {# 天}}"
 
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:746
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:919
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:768
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:941
 msgid "{delayInHours, plural, one {# hour} other {# hours}}"
 msgstr "{delayInHours, plural, one {# 小时} other {# 小时}}"
 
@@ -423,7 +423,7 @@ msgstr "用 {1} 以 ${usdSize} 买入 {0} 的价格影响为 {impact}%"
 msgid "{impact}% price impact selling ${usdSize} of {0} for {1}"
 msgstr "以 ${usdSize} 卖出 {0} 换取 {1} 的价格影响为 {impact}%"
 
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:591
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:594
 msgid "{lengthInMinutes, plural, one {# minute} other {# minutes}}"
 msgstr "{lengthInMinutes, plural, one {# 分钟} other {# 分钟}}"
 
@@ -462,11 +462,11 @@ msgstr ""
 msgid "{percent} price impact"
 msgstr "{percent} 价格影响"
 
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:788
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:810
 msgid "{periodInDays, plural, one {# day} other {# days}}"
 msgstr "{periodInDays, plural, one {# 天} other {# 天}}"
 
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:786
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:808
 msgid "{periodInHours, plural, one {# hour} other {# hours}}"
 msgstr "{periodInHours, plural, one {# 小时} other {# 小时}}"
 
@@ -650,8 +650,8 @@ msgstr "${0} 由 ${1} 代币治理。${2} 持有者必须对其代币进行 vote
 msgid "$<0/> Traded"
 msgstr "已交易 $<0/>"
 
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:971
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:992
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:993
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:1014
 msgid "0 seconds"
 msgstr "0 秒"
 
@@ -947,11 +947,11 @@ msgid "Add additional recipients"
 msgstr "添加额外接收者"
 
 #. placeholder {0}: missingBasket.length
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-trade-allowlist.tsx:233
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-trade-allowlist.tsx:195
 msgid "Add basket tokens ({0})"
 msgstr "添加篮子代币（{0}）"
 
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-trade-allowlist.tsx:242
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-trade-allowlist.tsx:204
 msgid "Add by address"
 msgstr "按地址添加"
 
@@ -1015,7 +1015,7 @@ msgstr "添加到主篮子"
 msgid "Add to trade allowlist"
 msgstr "添加到交易允许列表"
 
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:649
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:654
 msgid "Add to Trade Allowlist"
 msgstr "添加到交易允许列表"
 
@@ -1023,7 +1023,7 @@ msgstr "添加到交易允许列表"
 msgid "Add token"
 msgstr "添加代币"
 
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-trade-allowlist.tsx:215
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-trade-allowlist.tsx:177
 msgid "Add tokens"
 msgstr "添加代币"
 
@@ -1272,7 +1272,7 @@ msgstr "允许使用 {symbol}"
 msgid "Allowing the weight control will allow the rebalance to adjust the weights of the tokens in the basket, turning this off is recommended for tracking DTFs."
 msgstr "启用权重控制后，再平衡可以调整篮子中代币的权重；对于 tracking DTF，建议关闭此选项。"
 
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-trade-allowlist.tsx:326
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-trade-allowlist.tsx:288
 msgid "Allowlisted tokens"
 msgstr "允许的代币"
 
@@ -1360,7 +1360,7 @@ msgstr "分配给 DTF 上 RSR stakers 和投票锁定者，或用于销毁 RSR �
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/changes/revenue-changes.tsx:460
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-dtf-revenue.tsx:207
 #: src/views/index-dtf/overview/components/fees-stats.tsx:30
-#: src/views/index-dtf/settings/components/index-settings-fees.tsx:208
+#: src/views/index-dtf/settings/components/index-settings-fees.tsx:231
 msgid "Annualized TVL Fee"
 msgstr "年化 TVL 费用"
 
@@ -1579,8 +1579,8 @@ msgstr "拍卖发起成功"
 msgid "Auction launcher"
 msgstr "拍卖发起者"
 
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:163
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:212
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:165
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:214
 #: src/views/index-dtf/settings/components/index-settings-roles.tsx:75
 msgid "Auction Launcher"
 msgstr "拍卖发起者"
@@ -1594,7 +1594,7 @@ msgstr "拍卖发起者 + 社区"
 msgid "Auction Launchers"
 msgstr "拍卖发起者"
 
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:50
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:52
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-auction-settings.tsx:50
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/optimistic.ts:111
 msgid "Auction length"
@@ -2064,8 +2064,8 @@ msgid "Bought"
 msgstr "已买入"
 
 #: src/views/index-dtf/deploy/steps/roles/roles-form.tsx:19
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:162
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:211
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:164
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:213
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-dtf-roles.tsx:19
 #: src/views/index-dtf/settings/components/index-settings-roles.tsx:84
 msgid "Brand Manager"
@@ -2236,7 +2236,7 @@ msgstr "我可以随时 Unstake 我的 RSR 吗？"
 msgid "Can you describe the DTF you want to create? *"
 msgstr "你能描述一下你想创建的 DTF 吗？*"
 
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v6-upgrade.tsx:194
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v6-upgrade.tsx:195
 msgid "Can't build this upgrade: the optimistic governor's selector registry couldn't be resolved."
 msgstr "无法构建此升级：无法解析乐观治理合约的选择器注册表。"
 
@@ -2256,6 +2256,9 @@ msgid "Cancel Issue"
 msgstr "取消发行"
 
 #: src/views/index-dtf/governance/views/proposal/components/proposal-cancel-button.tsx:98
+#: src/views/index-dtf/governance/views/proposal/components/proposal-proposer-cancel.tsx:87
+#: src/views/index-dtf/governance/views/proposal/components/proposal-proposer-cancel.tsx:96
+#: src/views/index-dtf/governance/views/proposal/components/proposal-proposer-cancel.tsx:113
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalCancel.tsx:51
 msgid "Cancel proposal"
 msgstr "取消提案"
@@ -2271,6 +2274,10 @@ msgstr "取消 Unstake"
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalAlert.tsx:62
 msgid "Canceled"
 msgstr "已取消"
+
+#: src/views/index-dtf/governance/views/proposal/components/proposal-proposer-cancel.tsx:99
+msgid "Canceling this proposal is permanent. It will no longer be eligible for voting or execution."
+msgstr "取消此提案后无法恢复。该提案将无法再进行投票或执行。"
 
 #: src/views/index-dtf/issuance/async-mint/components/leg-row.tsx:76
 msgid "Cancelled"
@@ -2344,7 +2351,7 @@ msgid "Challenge proposal"
 msgstr "质疑提案"
 
 #: src/views/index-dtf/governance/views/proposal/components/proposal-vote-button.tsx:51
-#: src/views/index-dtf/governance/views/proposal/components/proposal-vote.tsx:228
+#: src/views/index-dtf/governance/views/proposal/components/proposal-vote.tsx:229
 msgid "Challenged"
 msgstr "已质疑"
 
@@ -2855,7 +2862,7 @@ msgid "Contact us for eligibility"
 msgstr "联系我们验证资格"
 
 #: src/views/index-dtf/governance/components/contest-badge.tsx:6
-#: src/views/index-dtf/governance/views/proposal/components/proposal-vote.tsx:198
+#: src/views/index-dtf/governance/views/proposal/components/proposal-vote.tsx:199
 msgid "Contested"
 msgstr "有争议"
 
@@ -3019,7 +3026,7 @@ msgstr "创建 {vlSymbol} 金库"
 msgid "Create & tools"
 msgstr "创建与工具"
 
-#: src/views/index-dtf/deploy/steps/confirm-deploy/index.tsx:103
+#: src/views/index-dtf/deploy/steps/confirm-deploy/index.tsx:110
 msgid "Create <0/>"
 msgstr "创建 <0/>"
 
@@ -3061,7 +3068,7 @@ msgstr "创建提案"
 msgid "Create Spell Proposal"
 msgstr "创建 Spell 提案"
 
-#: src/views/index-dtf/deploy/steps/confirm-deploy/index.tsx:38
+#: src/views/index-dtf/deploy/steps/confirm-deploy/index.tsx:40
 msgid "Create the genesis token"
 msgstr "创建创世代币"
 
@@ -3107,7 +3114,7 @@ msgid "Creating..."
 msgstr "创建中..."
 
 #: src/views/index-dtf/deploy/steps/revenue/revenue-distribution-settings.tsx:36
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:421
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:424
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-revenue-distribution.tsx:278
 #: src/views/index-dtf/manage/components/manage-form.tsx:61
 msgid "Creator"
@@ -3339,8 +3346,8 @@ msgstr "去中心化代币组合（DTF）"
 msgid "Decimals"
 msgstr "小数位数"
 
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:160
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:209
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:162
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:211
 msgid "Default Admin"
 msgstr "Default Admin"
 
@@ -3406,8 +3413,8 @@ msgid "Delay in Seconds"
 msgstr "延迟（秒）"
 
 #: src/components/vote-lock/constants.tsx:18
-#: src/views/index-dtf/governance/views/proposal/components/proposal-vote.tsx:127
-#: src/views/index-dtf/governance/views/proposal/components/proposal-vote.tsx:136
+#: src/views/index-dtf/governance/views/proposal/components/proposal-vote.tsx:128
+#: src/views/index-dtf/governance/views/proposal/components/proposal-vote.tsx:137
 #: src/views/yield-dtf/governance/components/AccountVotes.tsx:71
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalVote.tsx:141
 msgid "Delegate"
@@ -4052,11 +4059,11 @@ msgstr "结束于"
 msgid "Energy Consumption"
 msgstr "能源消耗"
 
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-trade-allowlist.tsx:301
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-trade-allowlist.tsx:263
 msgid "Enforce trade allowlist"
 msgstr "启用交易允许列表"
 
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:663
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:668
 msgid "Enforced"
 msgstr "已启用"
 
@@ -4328,7 +4335,7 @@ msgstr "独家 alpha 与洞察"
 msgid "Exclusive Auction Launcher Window"
 msgstr "专属拍卖发起者窗口"
 
-#: src/views/index-dtf/governance/components/proposal-preview/raw-call-preview.tsx:44
+#: src/views/index-dtf/governance/components/proposal-preview/raw-call-preview.tsx:48
 #: src/views/index-dtf/governance/components/proposal-preview/rebalance-preview/legacy-basket-proposal-preview.tsx:317
 #: src/views/index-dtf/governance/components/proposal-preview/unknown-contract-preview.tsx:75
 #: src/views/index-dtf/governance/views/propose/basket/components/proposal-basket-preview.tsx:400
@@ -4393,7 +4400,7 @@ msgstr "执行失败"
 msgid "Execution progress"
 msgstr "执行进度"
 
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v6-upgrade.tsx:178
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v6-upgrade.tsx:179
 msgid "Execution reverts if a rebalance, auction or state change is active at that moment, or if the auction length is under 2 minutes."
 msgstr "如果执行时有再平衡、拍卖或状态变更正在进行，或拍卖时长少于 2 分钟，执行将回滚。"
 
@@ -4554,7 +4561,7 @@ msgstr "快速委托人"
 msgid "Fast Governance"
 msgstr "快速治理"
 
-#: src/views/index-dtf/governance/views/proposal/components/proposal-vote.tsx:261
+#: src/views/index-dtf/governance/views/proposal/components/proposal-vote.tsx:262
 msgid "Fast proposal"
 msgstr "快速提案"
 
@@ -4571,12 +4578,12 @@ msgstr ""
 msgid "Fee Distribution"
 msgstr "费用分配"
 
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:53
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:55
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/optimistic.ts:123
 msgid "Fee recipients"
 msgstr "费用接收方"
 
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:55
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:57
 msgid "Fee recipients, including permanent ones (Folio 6.0)"
 msgstr "费用接收方，包括永久接收方（Folio 6.0）"
 
@@ -4599,7 +4606,7 @@ msgstr "费用"
 msgid "Fees & Distribution"
 msgstr "费用与分配"
 
-#: src/views/index-dtf/settings/components/index-settings-fees.tsx:199
+#: src/views/index-dtf/settings/components/index-settings-fees.tsx:222
 msgid "Fees & Revenue Distribution"
 msgstr "费用与收入分配"
 
@@ -4737,11 +4744,11 @@ msgstr "首损资本是由用户 staked 的 RSR 池，用于在 DTF 持有者受
 msgid "Fixed Platform Share"
 msgstr "固定平台份额"
 
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v6-upgrade.tsx:163
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v6-upgrade.tsx:164
 msgid "Folio 6.0.0 available"
 msgstr "Folio 6.0.0 可用"
 
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v6-upgrade.tsx:96
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v6-upgrade.tsx:97
 msgid "Folio 6.0.0 upgrade proposal created"
 msgstr "已创建 Folio 6.0.0 升级提案"
 
@@ -4901,7 +4908,7 @@ msgstr "参与治理、Stake 并发现收益机会"
 #: src/views/explorer/index.tsx:43
 #: src/views/index-dtf/components/navigation/index.tsx:227
 #: src/views/index-dtf/deploy/steps/revenue/revenue-distribution-settings.tsx:42
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:405
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:408
 #: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/components/basket-settings-proposal-sections.tsx:55
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/dao-settings-proposal-sections.tsx:64
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/dtf-settings-proposal-sections.tsx:189
@@ -4923,7 +4930,7 @@ msgstr "治理 1.1.0 升级提案已创建"
 msgid "Governance Body"
 msgstr "治理机构"
 
-#: src/views/index-dtf/governance/views/proposal/components/proposal-vote.tsx:230
+#: src/views/index-dtf/governance/views/proposal/components/proposal-vote.tsx:231
 msgid "Governance challenged this fast proposal, so it was resubmitted as a standard proposal."
 msgstr "治理方对此快速提案提出了质疑，因此它已作为标准提案重新提交。"
 
@@ -5017,14 +5024,14 @@ msgstr "Governor 授权声明"
 msgid "Governs"
 msgstr "治理"
 
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:175
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:177
 msgid "Grant Role"
 msgstr "授予角色"
 
 #: src/views/index-dtf/deploy/steps/roles/roles-form.tsx:10
 #: src/views/index-dtf/governance/components/governance-roles.tsx:157
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:161
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:210
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:163
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:212
 #: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/components/sections/propose-basket-roles.tsx:19
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/sections/propose-dao-roles.tsx:19
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-dtf-roles.tsx:10
@@ -5126,7 +5133,7 @@ msgid "Holder Share"
 msgstr "持有者份额"
 
 #: src/views/index-dtf/deploy/steps/revenue/revenue-distribution-settings.tsx:30
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:388
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:391
 #: src/views/top100/components/top100-table-placeholder.tsx:21
 #: src/views/top100/components/top100-table.tsx:204
 msgid "Holders"
@@ -5266,7 +5273,7 @@ msgstr "我已知晓 {delay} 天解锁延迟"
 msgid "I'm aware of the {delay}-day unstake delay"
 msgstr "我已了解 {delay} 天的 unstake 延迟"
 
-#: src/views/index-dtf/governance/views/proposal/components/proposal-header.tsx:117
+#: src/views/index-dtf/governance/views/proposal/components/proposal-header.tsx:123
 #: src/views/yield-dtf/governance/views/proposal-detail/ProposalHeader.tsx:118
 msgid "ID"
 msgstr "ID"
@@ -5662,6 +5669,10 @@ msgstr "基于司法管辖区的禁止事项："
 msgid "just now"
 msgstr "刚刚"
 
+#: src/views/index-dtf/governance/views/proposal/components/proposal-proposer-cancel.tsx:132
+msgid "Keep proposal"
+msgstr "保留提案"
+
 #: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:99
 msgid "Known supported wallets"
 msgstr "已知支持的 Wallets"
@@ -5884,8 +5895,8 @@ msgstr "正在加载你的投资组合数据..."
 #: src/views/index-dtf/governance/components/proposal-preview/token-reward-preview.tsx:66
 #: src/views/index-dtf/governance/components/proposal-preview/token-reward-preview.tsx:66
 #: src/views/index-dtf/governance/views/proposal/components/proposal-header.tsx:58
-#: src/views/index-dtf/governance/views/proposal/components/proposal-header.tsx:99
-#: src/views/index-dtf/governance/views/proposal/components/proposal-header.tsx:122
+#: src/views/index-dtf/governance/views/proposal/components/proposal-header.tsx:105
+#: src/views/index-dtf/governance/views/proposal/components/proposal-header.tsx:128
 #: src/views/index-dtf/governance/views/proposal/components/vote-modal.tsx:140
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/sections/propose-revenue-tokens.tsx:63
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/vault-proposal-form.tsx:65
@@ -6021,7 +6032,7 @@ msgstr ""
 
 #: src/components/rtoken-setup/token/TokenForm.tsx:39
 #: src/views/index-dtf/deploy/steps/metadata/form-basic-metadata.tsx:17
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:58
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:60
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-metadata.tsx:50
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/optimistic.ts:129
 #: src/views/index-dtf/settings/components/index-settings-basic.tsx:109
@@ -6052,7 +6063,7 @@ msgstr "使命更新"
 msgid "Manual"
 msgstr "手动"
 
-#: src/views/index-dtf/deploy/steps/confirm-deploy/index.tsx:139
+#: src/views/index-dtf/deploy/steps/confirm-deploy/index.tsx:146
 msgid "Manual deploy"
 msgstr "手动部署"
 
@@ -6123,7 +6134,7 @@ msgstr "最长拍卖时长"
 msgid "Max Auction Length"
 msgstr "最长拍卖时长"
 
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:57
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:59
 msgid "Max auction length (Folio 6.0)"
 msgstr "最长拍卖时长（Folio 6.0）"
 
@@ -6365,7 +6376,7 @@ msgstr "Mint 已完成"
 msgid "Mint disabled"
 msgstr "Mint 已禁用"
 
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:59
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:61
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/optimistic.ts:135
 msgid "Mint fee"
 msgstr "Mint 费用"
@@ -6415,7 +6426,7 @@ msgid "Minting {symbol} is currently unavailable and we couldn't find another ro
 msgstr "{symbol} 的 Mint 当前不可用，且我们未能找到其他买入路径。"
 
 #: src/views/index-dtf/overview/components/fees-stats.tsx:47
-#: src/views/index-dtf/settings/components/index-settings-fees.tsx:220
+#: src/views/index-dtf/settings/components/index-settings-fees.tsx:243
 msgid "Minting Fee"
 msgstr "Mint 费用"
 
@@ -6604,7 +6615,7 @@ msgstr "Networks"
 msgid "New %"
 msgstr "新 %"
 
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:586
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:589
 msgid "New auction duration:"
 msgstr "新拍卖时长："
 
@@ -6616,11 +6627,11 @@ msgstr "新拍卖一经治理批准便会显示在此处"
 msgid "New backup configuration"
 msgstr "新的备用配置"
 
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:913
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:935
 msgid "New execution delay:"
 msgstr "新执行延迟："
 
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:624
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:627
 msgid "New holder share:"
 msgstr "新的持有者份额："
 
@@ -6638,7 +6649,7 @@ msgstr "新使命："
 msgid "New mint"
 msgstr "新建 Mint"
 
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:517
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:520
 msgid "New mint fee:"
 msgstr "新 Mint 费用："
 
@@ -6646,7 +6657,7 @@ msgstr "新 Mint 费用："
 msgid "New primary basket"
 msgstr "新的主篮子"
 
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:820
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:842
 msgid "New proposal threshold:"
 msgstr "新提案阈值："
 
@@ -6655,7 +6666,7 @@ msgstr "新提案阈值："
 msgid "New redeem"
 msgstr "新建 Redeem"
 
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:552
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:555
 msgid "New TVL fee:"
 msgstr "新 TVL 费用："
 
@@ -6675,15 +6686,15 @@ msgstr "有可用的新版本"
 msgid "New vote-lock vault"
 msgstr "新的 vote-lock 金库"
 
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:740
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:762
 msgid "New voting delay:"
 msgstr "新投票延迟："
 
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:780
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:802
 msgid "New voting period:"
 msgstr "新投票期："
 
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:877
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:899
 msgid "New voting quorum:"
 msgstr "新投票法定人数："
 
@@ -6880,7 +6891,7 @@ msgstr "无需 Swaps"
 msgid "No tags"
 msgstr "无标签"
 
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-trade-allowlist.tsx:262
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-trade-allowlist.tsx:224
 msgid "No tokens allowlisted. Add the tokens a rebalance may trade."
 msgstr "允许列表中没有代币。请添加再平衡可交易的代币。"
 
@@ -6985,7 +6996,7 @@ msgstr "你所在的地区不可用"
 msgid "Not delegated"
 msgstr "未委托"
 
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:663
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:668
 #: src/views/index-dtf/settings/components/index-settings-basic.tsx:58
 msgid "Not enforced"
 msgstr "未启用"
@@ -7195,8 +7206,8 @@ msgstr "乐观提案"
 msgid "Optimistic proposer"
 msgstr "Optimistic 提案人"
 
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:165
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:214
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:167
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:216
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-optimistic-parameters.tsx:164
 msgid "Optimistic Proposer"
 msgstr "Optimistic 提案人"
@@ -7209,7 +7220,7 @@ msgstr "乐观提案人"
 msgid "Optimistic Proposers"
 msgstr "Optimistic 提案人"
 
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v6-upgrade.tsx:171
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v6-upgrade.tsx:172
 msgid "Optimistic rebalance permissions switch to the 6.0.0 rebalance call in the same proposal."
 msgstr "乐观再平衡权限在同一提案中切换为 6.0.0 的再平衡调用。"
 
@@ -7313,7 +7324,7 @@ msgstr "Owners"
 msgid "Paid in period"
 msgstr ""
 
-#: src/views/index-dtf/governance/components/proposal-preview/raw-call-preview.tsx:28
+#: src/views/index-dtf/governance/components/proposal-preview/raw-call-preview.tsx:32
 #: src/views/index-dtf/governance/components/proposal-preview/rebalance-preview/legacy-basket-proposal-preview.tsx:305
 #: src/views/index-dtf/governance/views/propose/basket/components/proposal-basket-preview.tsx:388
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ContractProposalDetails.tsx:120
@@ -7433,7 +7444,7 @@ msgstr "待处理，请在 Wallet 中签名"
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-retire-vote-lock.tsx:139
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v4-upgrade.tsx:188
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v5-upgrade.tsx:217
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v6-upgrade.tsx:230
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v6-upgrade.tsx:231
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-vote-lock-upgrade.tsx:215
 #: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/components/submit-proposal-button.tsx:186
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/submit-proposal-button.tsx:184
@@ -7496,11 +7507,11 @@ msgstr "永久接收方 {0}"
 msgid "Permanent recipients"
 msgstr "永久接收方"
 
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:461
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:464
 msgid "Permanent recipients (governance can never remove these)"
 msgstr "永久接收方（治理永远无法移除）"
 
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:51
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:53
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/optimistic.ts:117
 msgid "Permissionless bids"
 msgstr "无许可竞价"
@@ -7538,7 +7549,7 @@ msgstr "PHOTON 将多种抵押资产打包为一个 DTF token"
 msgid "Platform"
 msgstr "平台"
 
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:373
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:376
 msgid "Platform (Fixed)"
 msgstr "平台（固定）"
 
@@ -7911,7 +7922,7 @@ msgstr "提案已创建"
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v4-upgrade.tsx:140
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v5-upgrade.tsx:154
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v5-upgrade.tsx:162
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v6-upgrade.tsx:95
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v6-upgrade.tsx:96
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-vote-lock-upgrade.tsx:125
 msgid "Proposal created!"
 msgstr "提案已创建！"
@@ -8014,7 +8025,7 @@ msgstr "已投票提案"
 msgid "Propose {symbol} upgrade"
 msgstr "提议升级 {symbol}"
 
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v6-upgrade.tsx:232
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v6-upgrade.tsx:233
 msgid "Propose 6.0.0 upgrade"
 msgstr "提议升级到 6.0.0"
 
@@ -8055,7 +8066,7 @@ msgstr "提议停用金库"
 msgid "Proposed"
 msgstr "已提议"
 
-#: src/views/index-dtf/governance/views/proposal/components/proposal-header.tsx:103
+#: src/views/index-dtf/governance/views/proposal/components/proposal-header.tsx:109
 #: src/views/index-dtf/governance/views/proposal/components/vote-modal.tsx:145
 #: src/views/yield-dtf/governance/views/proposal-detail/components/VoteModal.tsx:95
 #: src/views/yield-dtf/governance/views/proposal-detail/ProposalHeader.tsx:107
@@ -8074,7 +8085,7 @@ msgstr "提议者："
 msgid "Proposed changes"
 msgstr "提议的变更"
 
-#: src/views/index-dtf/governance/views/proposal/components/proposal-header.tsx:93
+#: src/views/index-dtf/governance/views/proposal/components/proposal-header.tsx:99
 #: src/views/yield-dtf/governance/views/proposal-detail/ProposalHeader.tsx:100
 msgid "Proposed on"
 msgstr "提议于"
@@ -8202,7 +8213,7 @@ msgstr ""
 msgid "Rating:"
 msgstr "评级："
 
-#: src/views/index-dtf/governance/components/proposal-preview/contract-proposal-changes.tsx:118
+#: src/views/index-dtf/governance/components/proposal-preview/contract-proposal-changes.tsx:120
 #: src/views/index-dtf/governance/components/proposal-preview/rebalance-preview/index.tsx:60
 #: src/views/index-dtf/governance/components/proposal-preview/rebalance-preview/legacy-basket-proposal-preview.tsx:137
 #: src/views/index-dtf/governance/views/propose/basket/components/proposal-basket-preview.tsx:142
@@ -8275,7 +8286,7 @@ msgstr "再平衡 #{0}"
 msgid "Rebalance accuracy"
 msgstr "再平衡精度"
 
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:62
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:64
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/optimistic.ts:147
 msgid "Rebalance control"
 msgstr "再平衡控制"
@@ -8288,8 +8299,8 @@ msgstr "再平衡错误"
 msgid "Rebalance Finished"
 msgstr "再平衡已完成"
 
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:164
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:213
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:166
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:215
 msgid "Rebalance Manager"
 msgstr "再平衡管理员"
 
@@ -8524,7 +8535,7 @@ msgstr "Register 已收录的 RTokens"
 msgid "Register Listing"
 msgstr "Register 上架信息"
 
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:1040
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:1066
 msgid "Register Optimistic Actions"
 msgstr "注册 Optimistic 操作"
 
@@ -8615,7 +8626,7 @@ msgstr "移除粉尘代币"
 msgid "Remove from trade allowlist"
 msgstr "从交易允许列表中移除"
 
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:650
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:655
 msgid "Remove from Trade Allowlist"
 msgstr "从交易允许列表中移除"
 
@@ -8629,11 +8640,11 @@ msgstr "移除资源"
 
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/sections/propose-revenue-tokens.tsx:146
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/vault-proposal-form.tsx:147
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-trade-allowlist.tsx:81
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-trade-allowlist.tsx:43
 msgid "Remove token"
 msgstr "移除代币"
 
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:120
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:122
 msgid "Remove Token from Basket"
 msgstr "从篮子中移除代币"
 
@@ -8767,7 +8778,7 @@ msgstr "处理失败的 Orders"
 msgid "Resources"
 msgstr "资源"
 
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-trade-allowlist.tsx:304
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-trade-allowlist.tsx:266
 msgid "Restrict rebalances to the tokens below."
 msgstr "将再平衡限制为以下代币。"
 
@@ -8827,7 +8838,7 @@ msgstr "收入分配"
 
 #: src/components/rtoken-setup/token/RevenueSplit.tsx:109
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/changes/revenue-changes.tsx:92
-#: src/views/index-dtf/settings/components/index-settings-fees.tsx:231
+#: src/views/index-dtf/settings/components/index-settings-fees.tsx:255
 #: src/views/yield-dtf/settings/components/revenue-split-info.tsx:15
 msgid "Revenue Distribution"
 msgstr "收入分配"
@@ -8836,7 +8847,7 @@ msgstr "收入分配"
 msgid "Revenue distribution backing buffer"
 msgstr "收入分配支撑缓冲"
 
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:311
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:314
 msgid "Revenue distribution unavailable"
 msgstr "收益分配不可用"
 
@@ -8934,7 +8945,7 @@ msgstr "撤销现有的 {0} 授权"
 msgid "Revoke in wallet"
 msgstr "在 Wallet 中撤销"
 
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:224
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:226
 msgid "Revoke Role"
 msgstr "撤销角色"
 
@@ -9370,7 +9381,7 @@ msgstr "在部署时设置。治理无法移除它们，也无法降低它们在
 msgid "Set basket composition"
 msgstr "设置篮子组成"
 
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:697
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:719
 msgid "Set Dust Amount (Pre-requisite)"
 msgstr "设置粉尘数量（前提条件）"
 
@@ -9419,7 +9430,7 @@ msgstr "将旧金库的解除质押延迟设为零，使投票者可以立即将
 msgid "Sets the old vault's unstaking delay to zero so voters can move to the new vote-lock vault right away."
 msgstr "将旧金库的解除质押延迟设为零，使投票者可以立即转入新的 vote-lock 金库。"
 
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:702
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:724
 msgid "Setting dust amount for token removal"
 msgstr "为代币移除设置粉尘数量"
 
@@ -9573,7 +9584,7 @@ msgstr "签名 Mint…"
 msgid "Sign tx to create governance DAO"
 msgstr "签署交易以创建治理 DAO"
 
-#: src/views/index-dtf/governance/components/proposal-preview/raw-call-preview.tsx:20
+#: src/views/index-dtf/governance/components/proposal-preview/raw-call-preview.tsx:24
 #: src/views/index-dtf/governance/components/proposal-preview/rebalance-preview/legacy-basket-proposal-preview.tsx:295
 #: src/views/index-dtf/governance/views/propose/basket/components/proposal-basket-preview.tsx:378
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ContractProposalDetails.tsx:112
@@ -9597,7 +9608,7 @@ msgstr "签署中…"
 msgid "Signing…"
 msgstr "签名中…"
 
-#: src/views/index-dtf/deploy/steps/confirm-deploy/index.tsx:131
+#: src/views/index-dtf/deploy/steps/confirm-deploy/index.tsx:138
 msgid "Simple deploy"
 msgstr "简易部署"
 
@@ -9931,12 +9942,12 @@ msgstr "启动下一场再抵押拍卖"
 msgid "Start over"
 msgstr "重新开始"
 
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:48
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:50
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/optimistic.ts:105
 msgid "Start rebalance"
 msgstr "开始再平衡"
 
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:49
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:51
 msgid "Start rebalance (Folio 6.0)"
 msgstr "开始再平衡（Folio 6.0）"
 
@@ -10060,7 +10071,7 @@ msgstr "Reserve 智能合约中持有的所有资产总和。"
 msgid "Sum of all mints of Index and Yield DTFs since inception."
 msgstr "自创立以来 Index DTF 和 Yield DTF 的所有 mints 总和。"
 
-#: src/views/index-dtf/governance/components/proposal-preview/contract-proposal-changes.tsx:114
+#: src/views/index-dtf/governance/components/proposal-preview/contract-proposal-changes.tsx:116
 #: src/views/index-dtf/governance/components/proposal-preview/rebalance-preview/index.tsx:56
 #: src/views/index-dtf/governance/components/proposal-preview/rebalance-preview/legacy-basket-proposal-preview.tsx:131
 #: src/views/index-dtf/governance/views/propose/basket/components/proposal-basket-preview.tsx:136
@@ -10152,7 +10163,7 @@ msgid "Target"
 msgstr "目标"
 
 #: src/components/rtoken-setup/basket/PluginItem.tsx:105
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:1054
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:1080
 msgid "Target:"
 msgstr "目标："
 
@@ -10214,7 +10225,7 @@ msgstr "DTF 创建时 1 单位 <0/> 的大致价值。由于市场波动和预�
 msgid "The auction launcher still has priority — community launch is not open yet"
 msgstr "拍卖发起者仍享有优先权 — 社区发起尚未开放"
 
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v6-upgrade.tsx:209
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v6-upgrade.tsx:210
 msgid "The auction length is under 2 minutes, so this upgrade would revert. Raise it before proposing."
 msgstr "拍卖时长少于 2 分钟，此升级将回滚。请在提议前将其调高。"
 
@@ -10649,7 +10660,7 @@ msgstr "根据当地法规，本产品仅向您所在地区的合格投资者提
 msgid "This product isn't available in your region due to local restrictions."
 msgstr "由于当地限制，本产品在你所在的地区不可用。"
 
-#: src/views/index-dtf/governance/views/proposal/components/proposal-vote.tsx:263
+#: src/views/index-dtf/governance/views/proposal/components/proposal-vote.tsx:264
 msgid "This proposal will automatically pass if it is not challenged by governance. If it is challenged, it will be resubmitted as a standard proposal."
 msgstr "如果治理未对此提案发起质疑，它将自动通过。如果被质疑，它将作为标准提案重新提交。"
 
@@ -10704,7 +10715,7 @@ msgstr "此 Wallet 仍持有旧的 {0} vote-lock，已无法用它投票或赚�
 msgid "This wallet still holds an old vote-lock for this DTF. You can't vote or earn rewards with it anymore. Redeem its shares, then lock the {symbol} you receive in {vault}."
 msgstr "此 Wallet 仍持有此 DTF 的旧 vote-lock，已无法用它投票或赚取奖励。请 Redeem 其份额，然后将收到的 {symbol} 锁定到 {vault}。"
 
-#: src/views/index-dtf/governance/views/proposal/components/proposal-vote.tsx:200
+#: src/views/index-dtf/governance/views/proposal/components/proposal-vote.tsx:201
 msgid "This was originally a fast proposal that did not pass governance. Please review the details of this contested proposal closely."
 msgstr "这原本是一个未通过治理的快速提案。请仔细审阅这个有争议提案的细节。"
 
@@ -10794,7 +10805,7 @@ msgstr "代币 \"{symbol}\" 超出范围。必须关闭再平衡。"
 #: src/views/index-dtf/components/navigation/index.tsx:302
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/sections/propose-revenue-tokens.tsx:137
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/vault-proposal-form.tsx:138
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-trade-allowlist.tsx:149
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-trade-allowlist.tsx:111
 msgid "Token address"
 msgstr "代币地址"
 
@@ -10807,7 +10818,7 @@ msgstr "代币地址"
 msgid "Token already exists in the list"
 msgstr "代币已存在于列表中"
 
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-trade-allowlist.tsx:329
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-trade-allowlist.tsx:291
 msgid "Token contracts a rebalance may trade."
 msgstr "再平衡可以交易的代币合约。"
 
@@ -10829,7 +10840,7 @@ msgid "Token exposure"
 msgstr "代币敞口"
 
 #: src/components/rtoken-setup/token/TokenForm.tsx:21
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:60
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:62
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/optimistic.ts:141
 #: src/views/yield-dtf/deploy/components/TokenForm.tsx:21
 msgid "Token name"
@@ -10896,7 +10907,7 @@ msgstr "代币代号必须为 12 个字符或更少"
 msgid "Token ticker is required"
 msgstr "代币代码为必填项"
 
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:126
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:128
 msgid "Token:"
 msgstr "代币:"
 
@@ -11021,7 +11032,7 @@ msgstr "交易允许列表"
 msgid "Trade allowlist enforcement"
 msgstr "交易允许列表启用状态"
 
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:647
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:652
 msgid "Trade Allowlist Enforcement"
 msgstr "交易允许列表启用状态"
 
@@ -11233,7 +11244,7 @@ msgstr "触发 melt"
 msgid "Trigger Unstake"
 msgstr "触发 Unstake"
 
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:65
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:67
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/optimistic.ts:159
 msgid "Trusted fillers"
 msgstr "受信任 Filler"
@@ -11271,7 +11282,7 @@ msgstr "教程视频"
 msgid "TVL"
 msgstr "TVL"
 
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:63
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:65
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/optimistic.ts:153
 msgid "TVL fee"
 msgstr "TVL 费用"
@@ -11339,7 +11350,7 @@ msgstr "无法解析合约数据"
 
 #: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:150
 #: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:266
-#: src/views/index-dtf/settings/components/index-settings-fees.tsx:232
+#: src/views/index-dtf/settings/components/index-settings-fees.tsx:256
 msgid "Unavailable"
 msgstr "不可用"
 
@@ -11413,12 +11424,13 @@ msgstr "未知合约"
 msgid "Unknown liquidity"
 msgstr "流动性未知"
 
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:168
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:217
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:170
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:219
 msgid "Unknown Role"
 msgstr "未知角色"
 
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-trade-allowlist.tsx:121
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:689
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-trade-allowlist.tsx:83
 msgid "Unknown token"
 msgstr "未知代币"
 
@@ -11459,7 +11471,7 @@ msgstr "取消注册"
 msgid "Unregister Assets"
 msgstr "取消注册资产"
 
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:1042
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:1068
 msgid "Unregister Optimistic Actions"
 msgstr "取消注册 Optimistic 操作"
 
@@ -11554,11 +11566,11 @@ msgstr "Unwrap 抵押品"
 msgid "Update"
 msgstr "更新"
 
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:546
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:549
 msgid "Update Annualized TVL Fee"
 msgstr "更新年化 TVL 费用"
 
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:580
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:583
 msgid "Update Auction Length"
 msgstr "更新拍卖时长"
 
@@ -11566,44 +11578,44 @@ msgstr "更新拍卖时长"
 msgid "Update available"
 msgstr "有可用更新"
 
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:907
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:929
 msgid "Update Execution Delay"
 msgstr "更新执行延迟"
 
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:618
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:621
 msgid "Update Holder Share"
 msgstr "更新持有者份额"
 
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:95
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:97
 msgid "Update Mandate"
 msgstr "更新职责说明"
 
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:511
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:514
 msgid "Update Mint Fee"
 msgstr "更新 Mint 费用"
 
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:952
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:974
 msgid "Update Optimistic Parameters"
 msgstr "更新 Optimistic 参数"
 
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:814
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:836
 msgid "Update Proposal Threshold"
 msgstr "更新提案阈值"
 
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:303
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:365
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:306
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:368
 msgid "Update Revenue Distribution"
 msgstr "更新收入分配"
 
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:734
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:756
 msgid "Update Voting Delay"
 msgstr "更新投票延迟"
 
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:774
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:796
 msgid "Update Voting Period"
 msgstr "更新投票期"
 
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:871
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:893
 msgid "Update Voting Quorum"
 msgstr "更新投票法定人数"
 
@@ -11658,7 +11670,7 @@ msgstr "将 {symbol} 的 governor 和 timelock 升级到 1.1.0 版本，新增�
 msgid "Upgrades the {symbol} vault, its governor and timelock to release 1.1.0. The proposal goes to the {symbol} DAO. See the <0>changelog</0> for details."
 msgstr "将 {symbol} 金库及其 governor 和 timelock 升级到 1.1.0 版本。该提案提交给 {symbol} DAO。详情请参阅<0>changelog</0>。"
 
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v6-upgrade.tsx:166
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v6-upgrade.tsx:167
 msgid "Upgrades this DTF's contract implementation to 6.0.0. Governance, roles and fees stay as they are."
 msgstr "将此 DTF 的合约实现升级到 6.0.0。治理、角色和费用保持不变。"
 
@@ -11819,7 +11831,7 @@ msgstr "版本：{0}"
 msgid "Very Fast"
 msgstr "极快"
 
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:959
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:981
 msgid "Veto delay"
 msgstr "否决延迟"
 
@@ -11838,7 +11850,7 @@ msgstr "否决延迟开始"
 msgid "Veto delay must be at least 1 second"
 msgstr "否决延迟至少为 1 秒"
 
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:980
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:1002
 msgid "Veto period"
 msgstr "否决期"
 
@@ -11852,7 +11864,7 @@ msgstr "否决期"
 msgid "Veto period must be at least 5 minutes"
 msgstr "否决期至少为 5 分钟"
 
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:1001
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:1023
 msgid "Veto threshold"
 msgstr "否决阈值"
 
@@ -11925,7 +11937,7 @@ msgstr "查看 DTF"
 msgid "View entire basket"
 msgstr "查看完整篮子"
 
-#: src/views/index-dtf/governance/views/proposal/components/proposal-vote.tsx:53
+#: src/views/index-dtf/governance/views/proposal/components/proposal-vote.tsx:54
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalVote.tsx:50
 msgid "View execute tx"
 msgstr "查看执行交易"
@@ -12024,11 +12036,11 @@ msgstr "查看奖励代币"
 msgid "View settle tx"
 msgstr "查看结算交易"
 
-#: src/views/index-dtf/governance/views/proposal/components/proposal-vote.tsx:204
+#: src/views/index-dtf/governance/views/proposal/components/proposal-vote.tsx:205
 msgid "View the original fast proposal"
 msgstr "查看原始快速提案"
 
-#: src/views/index-dtf/governance/views/proposal/components/proposal-vote.tsx:235
+#: src/views/index-dtf/governance/views/proposal/components/proposal-vote.tsx:236
 msgid "View the standard proposal"
 msgstr "查看标准提案"
 
@@ -12389,7 +12401,7 @@ msgstr "等待抵押品"
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-retire-vote-lock.tsx:140
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v4-upgrade.tsx:189
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v5-upgrade.tsx:218
-#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v6-upgrade.tsx:231
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v6-upgrade.tsx:232
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-vote-lock-upgrade.tsx:216
 #: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/components/submit-proposal-button.tsx:188
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/submit-proposal-button.tsx:186
@@ -12587,7 +12599,7 @@ msgstr ""
 msgid "What's in the basket?"
 msgstr ""
 
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-trade-allowlist.tsx:290
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-trade-allowlist.tsx:252
 msgid "When enforced, a rebalance can only include allowlisted tokens. Proposals with other tokens revert when executed."
 msgstr "启用后，再平衡只能包含允许列表中的代币。包含其他代币的提案在执行时将回滚。"
 
@@ -12848,7 +12860,7 @@ msgid "You need to confirm desired weights before running rebalance auctions."
 msgstr "在运行再平衡拍卖前，你需要确认期望的权重。"
 
 #. placeholder {0}: form?.symbol
-#: src/views/index-dtf/deploy/steps/confirm-deploy/index.tsx:41
+#: src/views/index-dtf/deploy/steps/confirm-deploy/index.tsx:43
 msgid "You need to mint at least $1 worth of {0} in order to create your new Index DTF."
 msgstr "你需要 Mint 价值至少 $1 的 {0}，才能创建你的新 Index DTF。"
 
@@ -13044,7 +13056,7 @@ msgstr "你的交易已提交。请先查看其状态，再进行其他操作。
 msgid "Your Vote"
 msgstr "你的投票"
 
-#: src/views/index-dtf/governance/views/proposal/components/proposal-vote.tsx:110
+#: src/views/index-dtf/governance/views/proposal/components/proposal-vote.tsx:111
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalVote.tsx:124
 msgid "Your voting power:"
 msgstr "你的投票权："
