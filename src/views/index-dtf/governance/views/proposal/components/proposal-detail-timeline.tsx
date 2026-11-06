@@ -1,4 +1,5 @@
 import { Progress } from '@/components/ui/progress'
+import { Skeleton } from '@/components/ui/skeleton'
 import ExplorerAddress from '@/components/utils/explorer-address'
 import type { MessageDescriptor } from '@lingui/core'
 import { msg } from '@lingui/core/macro'
@@ -22,6 +23,7 @@ import { blockTimestampAtom, chainIdAtom } from 'state/atoms'
 import { colors } from 'theme'
 import { formatDate, getCurrentTime, parseDuration } from 'utils'
 import { PROPOSAL_STATES } from 'utils/constants'
+import { isVotingClosedEarly } from '@/views/index-dtf/governance/utils/challenged-proposal'
 import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
 import {
   canExecuteProposal,
@@ -157,7 +159,12 @@ export const TimelineItemVotingPeriod = () => {
   const duration = (endTime || 0) - (startTime || 0)
   const elapsed = currentTime - (startTime || 0)
   const enabled = currentTime > (startTime || 0)
-  const inProgress = currentTime < (endTime || 0)
+  const inProgress =
+    currentTime < (endTime || 0) &&
+    !isVotingClosedEarly(
+      { state: proposal?.votingState.state ?? '', voteEnd: endTime || 0 },
+      currentTime
+    )
 
   return (
     <TimelineItem
@@ -176,7 +183,12 @@ export const TimelineItemVotingPeriodEnds = () => {
   const startTime = proposal?.voteStart
   const endTime = proposal?.voteEnd
   const currentTime = getCurrentTime()
-  const enabled = currentTime > (endTime || 0)
+  const enabled =
+    currentTime > (endTime || 0) ||
+    isVotingClosedEarly(
+      { state: proposal?.votingState.state ?? '', voteEnd: endTime || 0 },
+      currentTime
+    )
   const elapsed = Math.max(currentTime, startTime || 0) - (endTime || 0)
 
   return (
@@ -342,24 +354,46 @@ export const TimelineItemEnd = () => {
   )
 }
 
+const ProposalDetailTimelineSkeleton = () => (
+  <div data-testid="proposal-timeline-skeleton">
+    {[0, 1, 2].map((i) => (
+      <div key={i} className="flex items-center gap-3 px-4 py-2">
+        <Skeleton className="w-7 h-7 rounded-lg" />
+        <div className="flex flex-col gap-1">
+          <Skeleton className="h-4 w-24" />
+          <Skeleton className="h-5 w-40" />
+        </div>
+      </div>
+    ))}
+  </div>
+)
+
 const ProposalDetailTimeline = () => {
+  const proposal = useAtomValue(proposalDetailAtom)
+
   return (
     <div className="bg-background rounded-3xl p-2">
       <h4 className="font-bold text-xl p-4">
         <Trans>Status</Trans>
       </h4>
-      <div className="bg-card rounded-3xl border relative">
-        <div className="absolute border-l border-borderSecondary top-[40px] left-[29px] h-[calc(100%-64px)] " />
-        <div>
-          <TimelineItemCreated />
-          <TimelineItemVotingDelay />
-          <TimelineItemVotingPeriod />
-          <TimelineItemVotingPeriodEnds />
-          <TimelineItemVotingResult />
-          <TimelineItemQueued />
-          <TimelineItemEnd />
+      {!proposal ? (
+        <div className="bg-card rounded-3xl border">
+          <ProposalDetailTimelineSkeleton />
         </div>
-      </div>
+      ) : (
+        <div className="bg-card rounded-3xl border relative">
+          <div className="absolute border-l border-borderSecondary top-[40px] left-[29px] h-[calc(100%-64px)] " />
+          <div>
+            <TimelineItemCreated />
+            <TimelineItemVotingDelay />
+            <TimelineItemVotingPeriod />
+            <TimelineItemVotingPeriodEnds />
+            <TimelineItemVotingResult />
+            <TimelineItemQueued />
+            <TimelineItemEnd />
+          </div>
+        </div>
+      )}
     </div>
   )
 }

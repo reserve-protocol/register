@@ -18,6 +18,7 @@ import SimulateProposalCard from '@/views/index-dtf/governance/components/simula
 import { chainIdAtom } from '@/state/atoms'
 import { Address } from 'viem'
 import ProposalLiquidityChecker from './proposal-liquidity-checker'
+import { useProposalStartStep } from '@/views/index-dtf/governance/views/propose/shared'
 
 // TODO: get governance route to navigate back to governance
 const Header = () => {
@@ -72,6 +73,8 @@ const ProposalInstructions = () => {
   const isValid = useAtomValue(isBasketProposalValidAtom)
   const confirmed = useAtomValue(isProposalConfirmedAtom)
 
+  const startStep = useProposalStartStep()
+
   const timelineItems = [
     {
       title: t`Configure proposal`,
@@ -90,7 +93,7 @@ const ProposalInstructions = () => {
       isActive: confirmed,
     },
     {
-      title: t`Voting delay begins`,
+      title: startStep,
     },
   ]
 

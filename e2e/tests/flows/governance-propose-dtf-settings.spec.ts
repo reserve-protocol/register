@@ -6,6 +6,8 @@ import { loadSnapshot } from '../../helpers/snapshots'
 import {
   decodeFunctionData,
   encodeAbiParameters,
+  encodeFunctionData,
+  getAddress,
   parseAbi,
   parseEther,
   type Address,
@@ -13,7 +15,7 @@ import {
 } from 'viem'
 import type { MockOverrides } from '../../helpers/overrides'
 import type { Page } from '@playwright/test'
-import { seedFeeRegistry } from '../../harness/seed'
+import { seedFeeRegistry, seedFolioV6 } from '../../harness/seed'
 
 // DTF-settings (fees) propose flow — money-critical. Pure on-snapshot data
 // (no price/liquidity API), so we drive the fee form, submit, and decode the
@@ -288,5 +290,257 @@ test('no change keeps confirm disabled and never submits', async ({
   await advanceTime(page, 1_000)
   await expect(confirmButton(page)).toBeDisabled()
 
+  expect(txLog).toHaveLength(0)
+})
+
+// Folio 6.0: the same proxy reported as 6.0.0 with a 20% permanent recipient. The
+// settings proposal is writable; the permanent table is shown and an allowlist toggle
+// lands as the 6.0 setter.
+const PERMANENT = '0x9999999999999999999999999999999999999999' as Address
+const SET_TRADE_ALLOWLIST_ABI = parseAbi([
+  'function setTradeAllowlistEnabled(bool _enabled)',
+])
+
+test('Folio 6.0: TVL fee and trade allowlist changes submit as 6.0 setters', async ({
+  page,
+  txLog,
+  overrides,
+}) => {
+  seedFolioV6(overrides, dtf, {
+    immutableRecipients: [{ recipient: PERMANENT, portion: parseEther('0.2') }],
+  })
+  await bootProposeFees(page, overrides)
+
+  const input = tvlFeeInput(page)
+  const currentTvl = await readSeededFee(page, input)
+  await expect(page.getByTestId('settings-immutable-recipients')).toContainText('20%')
+  const newTvl = currentTvl + 1 > 10 ? currentTvl - 1 : currentTvl + 1
+  await input.fill(String(newTvl))
+  await advanceTime(page, 1_000)
+
+  await page.locator('#propose-section-allowlist').getByRole('button').first().click()
+  await advanceTime(page, 1_000)
+  await page.getByTestId('settings-trade-allowlist-enabled').click()
+  await advanceTime(page, 1_000)
+  await expect(page.getByTestId('settings-trade-allowlist-changes')).toBeVisible()
+
+  await confirmButton(page).click()
+  await advanceTime(page, 2_000)
+  await page.locator('#title').fill('Folio 6.0 settings')
+  await advanceTime(page, 1_000)
+  await submitButton(page).click()
+  await advanceTime(page, 10_000)
+
+  expect(txLog).toHaveLength(1)
+  const [targets, values, calldatas] = decodeFunctionData({
+    abi: PROPOSE_ABI,
+    data: txLog[0].data as Hex,
+  }).args
+  expect(values).toEqual([0n, 0n])
+  expect(targets.map((target) => target.toLowerCase())).toEqual([
+    DTF_ADDRESS.toLowerCase(),
+    DTF_ADDRESS.toLowerCase(),
+  ])
+  expect(
+    decodeFunctionData({ abi: SET_TVL_FEE_ABI, data: calldatas[0] as Hex }).args[0]
+  ).toBe(parseEther((newTvl / 100).toString()))
+  expect(
+    decodeFunctionData({ abi: SET_TRADE_ALLOWLIST_ABI, data: calldatas[1] as Hex }).args
+  ).toEqual([true])
+})
+
+// Folio 6.0 with a 20% permanent recipient: the mutable table (40% vault, 40% deployer
+// of the whole table) shows as shares of what the permanent part leaves (with a 20%
+// platform fee: 40% / 40%), and a new split is scaled back into the remaining 80%
+// while the permanent table goes back unchanged. The governance share goes to the
+// vault's token jar.
+const TOKEN_JAR = getAddress('0x5555555555555555555555555555555555555555')
+const TOKEN_JAR_SELECTOR = '0x490c98f5' // tokenJar()
+const SET_FEE_RECIPIENTS_V6_ABI = parseAbi([
+  'function setFeeRecipients((address recipient, uint96 portion)[] _newRecipients, (address recipient, uint96 portion)[] _immutableRecipients)',
+])
+
+test('Folio 6.0: the split is shown and encoded relative to the permanent recipients', async ({
+  page,
+  txLog,
+  overrides,
+}) => {
+  const snapshot = structuredClone(loadDtf()) as DtfSnapshot['dtf'] & { deployer: string }
+  snapshot.feeRecipients = [
+    `${snapshot.stToken.id}:${parseEther('0.4')}`,
+    `${snapshot.deployer}:${parseEther('0.4')}`,
+  ].join(',')
+  overrides.subgraph({ operationName: 'GetIndexDTF' }, { dtf: snapshot })
+  seedFolioV6(overrides, dtf, {
+    immutableRecipients: [{ recipient: PERMANENT, portion: parseEther('0.2') }],
+  })
+  overrides.ethCall(
+    snapshot.stToken.id,
+    TOKEN_JAR_SELECTOR,
+    encodeAbiParameters([{ type: 'address' }], [TOKEN_JAR])
+  )
+  await bootProposeFees(page, overrides)
+  await expect(page.getByTestId('settings-missing-token-jar')).toHaveCount(0)
+
+  const governance = page.locator('#propose-section-fees input[name="governanceShare"]')
+  const deployer = page.locator('#propose-section-fees input[name="deployerShare"]')
+  await expect(page.getByTestId('settings-immutable-recipients')).toContainText('20%')
+  await expect(page.getByTestId('settings-immutable-recipients')).toContainText('80%')
+  for (let i = 0; i < 12 && (await governance.inputValue()) !== '40'; i++) {
+    await advanceTime(page, 1_000)
+  }
+  await expect(governance).toHaveValue('40')
+  await expect(deployer).toHaveValue('40')
+  await expect(page.getByTestId('remaining-allocation')).toContainText('0%')
+
+  await governance.fill('50')
+  await deployer.fill('30')
+  await advanceTime(page, 1_000)
+  await expect(page.getByTestId('remaining-allocation')).toContainText('0%')
+  // Each form share also reads as its share of all fees, like Details: the permanent 20% and no holder share leave 80%.
+  await expect(page.getByTestId('settings-share-of-all-fees-governanceShare')).toContainText('40%')
+  await expect(page.getByTestId('settings-share-of-all-fees-deployerShare')).toContainText('24%')
+
+  await confirmButton(page).click()
+  await advanceTime(page, 2_000)
+  await page.locator('#title').fill('Folio 6.0 split')
+  await advanceTime(page, 1_000)
+  await submitButton(page).click()
+  await advanceTime(page, 10_000)
+
+  expect(txLog).toHaveLength(1)
+  const [targets, , calldatas] = decodeFunctionData({
+    abi: PROPOSE_ABI,
+    data: txLog[0].data as Hex,
+  }).args
+  expect(targets.map((target) => target.toLowerCase())).toEqual([DTF_ADDRESS.toLowerCase()])
+  const { functionName, args } = decodeFunctionData({
+    abi: SET_FEE_RECIPIENTS_V6_ABI,
+    data: calldatas[0] as Hex,
+  })
+  expect(functionName).toBe('setFeeRecipients')
+  const [mutable, immutable] = args
+  expect(immutable).toEqual([{ recipient: PERMANENT, portion: parseEther('0.2') }])
+  const portionOf = (address: string) =>
+    mutable.find((r) => r.recipient.toLowerCase() === address.toLowerCase())?.portion
+  // The shares go through float math; the last row absorbs the wei-level residual.
+  const offBy = (actual: bigint | undefined, expected: bigint) => {
+    const diff = (actual ?? 0n) - expected
+    return diff < 0n ? -diff : diff
+  }
+  expect(offBy(portionOf(TOKEN_JAR), parseEther('0.5'))).toBeLessThanOrEqual(1_000n)
+  expect(offBy(portionOf(snapshot.deployer), parseEther('0.3'))).toBeLessThanOrEqual(1_000n)
+  expect(mutable).toHaveLength(2)
+  expect([...mutable, ...immutable].reduce((sum, r) => sum + r.portion, 0n)).toBe(
+    parseEther('1')
+  )
+})
+
+// Folio 6.0 allowlist editor: tokens show as rows (basket names, or the on-chain
+// symbol for anything else); adding the basket, removing a token and adding one by
+// address land as removeFromAllowlist + addToAllowlist.
+const ALLOWLIST_ABI = parseAbi([
+  'function addToAllowlist(address[] _tokens)',
+  'function removeFromAllowlist(address[] _tokens)',
+])
+const ERC20_META_ABI = parseAbi([
+  'function symbol() view returns (string)',
+  'function name() view returns (string)',
+])
+const OFF_LIST_TOKEN = '0x7777777777777777777777777777777777777777' as Address
+
+test('Folio 6.0: the allowlist editor adds the basket, removes and adds by address', async ({
+  page,
+  txLog,
+  overrides,
+}) => {
+  const { totalAssets } = loadSnapshot<{ totalAssets: { tokens: Address[] } }>(
+    `${dtf.snapshotDir}/chain-state.json`
+  )
+  const basket = totalAssets.tokens.map((token) => getAddress(token))
+  seedFolioV6(overrides, dtf, { allowlist: { enabled: true, tokens: [basket[0]] } })
+  for (const [functionName, value] of [
+    ['symbol', 'XYZ'],
+    ['name', 'Off-list Token'],
+  ] as const) {
+    overrides.ethCall(
+      OFF_LIST_TOKEN,
+      encodeFunctionData({ abi: ERC20_META_ABI, functionName }),
+      encodeAbiParameters([{ type: 'string' }], [value])
+    )
+  }
+  await bootProposeFees(page, overrides)
+  await page.locator('#propose-section-allowlist').getByRole('button').first().click()
+  await advanceTime(page, 1_000)
+
+  const rows = page.getByTestId('settings-allowlist-row')
+  await expect(rows).toHaveCount(1)
+  await page.getByTestId('settings-allowlist-add-basket').click()
+  await advanceTime(page, 1_000)
+  await expect(rows).toHaveCount(basket.length)
+  await expect(page.getByTestId('settings-allowlist-add-basket')).toHaveCount(0)
+
+  await rows.first().getByTestId('settings-allowlist-remove').click()
+  await page.getByTestId('settings-allowlist-add-address').click()
+  await advanceTime(page, 1_000)
+  // The basket minus the removed row, then the new address input.
+  await page.locator(`input[name="tradeAllowlistTokens[${basket.length - 1}]"]`).fill(OFF_LIST_TOKEN)
+  await advanceTime(page, 2_000)
+  await expect(rows).toHaveCount(basket.length)
+  await expect(rows.last()).toContainText('XYZ')
+
+  await confirmButton(page).click()
+  await advanceTime(page, 2_000)
+  await page.locator('#title').fill('Folio 6.0 allowlist')
+  await advanceTime(page, 1_000)
+  await submitButton(page).click()
+  await advanceTime(page, 10_000)
+
+  expect(txLog).toHaveLength(1)
+  const [, , calldatas] = decodeFunctionData({
+    abi: PROPOSE_ABI,
+    data: txLog[0].data as Hex,
+  }).args
+  const calls = Object.fromEntries(
+    calldatas.map((data) => {
+      const call = decodeFunctionData({ abi: ALLOWLIST_ABI, data: data as Hex })
+      return [call.functionName, call.args[0].map((token) => getAddress(token))]
+    })
+  )
+  expect(calls.removeFromAllowlist).toEqual([basket[0]])
+  expect([...calls.addToAllowlist].sort()).toEqual(
+    [...basket.slice(1), getAddress(OFF_LIST_TOKEN)].sort()
+  )
+})
+
+// A 1.x vault that reports a zero token jar (the central mock's default) can't take
+// the governance share: the fees section says so and no proposal is built.
+test('Folio 6.0: a vault with a zero token jar blocks a governance share change', async ({
+  page,
+  txLog,
+  overrides,
+}) => {
+  seedFolioV6(overrides, dtf)
+  await bootProposeFees(page, overrides)
+
+  await expect(page.getByTestId('settings-missing-token-jar')).toBeVisible()
+  const governance = page.locator('#propose-section-fees input[name="governanceShare"]')
+  const deployer = page.locator('#propose-section-fees input[name="deployerShare"]')
+  await expect.poll(async () => Number(await governance.inputValue())).toBeGreaterThan(0)
+  const [currentGovernance, currentDeployer] = [
+    Number(await governance.inputValue()),
+    Number(await deployer.inputValue()),
+  ]
+  // Move one point from governance to the creator: the share stays above 0 and the total at 100%.
+  await governance.fill(String(currentGovernance - 1))
+  await deployer.fill(String(currentDeployer + 1))
+  await advanceTime(page, 1_000)
+  await expect(page.getByTestId('remaining-allocation')).toContainText('0%')
+
+  await confirmButton(page).click()
+  await advanceTime(page, 2_000)
+  await page.locator('#title').fill('Zero jar')
+  await advanceTime(page, 1_000)
+  await expect(submitButton(page)).toBeDisabled()
   expect(txLog).toHaveLength(0)
 })

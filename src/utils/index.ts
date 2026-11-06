@@ -324,7 +324,7 @@ export const normalizeDescription = (description: string) =>
 export const getProposalTitle = (description: string) => {
   return normalizeDescription(description)
     .split(/\r?\n/)[0]
-    .replaceAll('#', '')
+    .replace(/^(\s*Confirmation For:\s*)?#+\s*/, '$1')
     .trim()
 }
 

@@ -23,6 +23,7 @@ const messages = {
   duplicatedAuctionLaunchers: msg`Duplicated auction launchers`,
   duplicatedAdditionalRecipients: msg`Duplicated additional recipients`,
   duplicatedOptimisticProposers: msg`Duplicated optimistic proposers`,
+  duplicatedAllowlistTokens: msg`Duplicated tokens`,
 }
 
 type Translate = (descriptor: MessageDescriptor) => string
@@ -100,6 +101,23 @@ export const buildProposeSettingsSchema = (
         .max(1440, t(messages.auctionLengthMax)),
       weightControl: z.boolean(),
       bidsEnabled: z.boolean(),
+      selfFee: z.coerce
+        .number()
+        .multipleOf(0.01, t(messages.maxPrecision))
+        .min(0)
+        .max(100)
+        .optional(),
+      tradeAllowlistEnabled: z.boolean().optional(),
+      tradeAllowlistTokens: z
+        .array(
+          z
+            .string()
+            .refine((value) => !value || isAddressNotStrict(value), {
+              message: t(messages.invalidAddress),
+            })
+            .optional()
+        )
+        .default([]),
       governanceVotingDelay: z.coerce.number().min(0).optional(),
       governanceVotingPeriod: z.coerce.number().min(0).optional(),
       governanceVotingQuorum: z.coerce
@@ -191,6 +209,19 @@ export const buildProposeSettingsSchema = (
       {
         message: t(messages.duplicatedOptimisticProposers),
         path: ['optimistic'],
+      }
+    )
+    .refine(
+      (data) => {
+        const tokens = data.tradeAllowlistTokens.filter(Boolean) as string[]
+        return (
+          new Set(tokens.map((item) => item.toLowerCase())).size ===
+          tokens.length
+        )
+      },
+      {
+        message: t(messages.duplicatedAllowlistTokens),
+        path: ['trade-allowlist'],
       }
     )
     .superRefine((data, ctx) => {

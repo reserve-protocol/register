@@ -12,6 +12,8 @@ import {
   hasBidsEnabledChangeAtom,
   hasGovernanceChangesAtom,
   hasOptimisticGovernanceChangesAtom,
+  hasSelfFeeChangeAtom,
+  hasTradeAllowlistChangesAtom,
 } from '../atoms'
 import RemovedTokensChanges from './changes/removed-tokens-changes'
 import BasicsChanges from './changes/basics-changes'
@@ -20,6 +22,7 @@ import RevenueChanges from './changes/revenue-changes'
 import AuctionSettingsChanges from './changes/auction-settings-changes'
 import GovernanceChanges from './changes/governance-changes'
 import OptimisticGovernanceChanges from './changes/optimistic-governance-changes'
+import V6SettingsChanges from './changes/v6-settings-changes'
 
 const DTFSettingsProposalChanges = () => {
   const removedBasketTokens = useAtomValue(removedBasketTokensAtom)
@@ -37,6 +40,8 @@ const DTFSettingsProposalChanges = () => {
   const hasOptimisticGovernanceChanges = useAtomValue(
     hasOptimisticGovernanceChangesAtom
   )
+  const hasSelfFeeChange = useAtomValue(hasSelfFeeChangeAtom)
+  const hasTradeAllowlistChanges = useAtomValue(hasTradeAllowlistChangesAtom)
 
   const hasAnyChanges =
     removedBasketTokens.length > 0 ||
@@ -49,7 +54,9 @@ const DTFSettingsProposalChanges = () => {
     hasWeightControlChange ||
     hasBidsEnabledChange ||
     hasGovernanceChanges ||
-    hasOptimisticGovernanceChanges
+    hasOptimisticGovernanceChanges ||
+    hasSelfFeeChange ||
+    hasTradeAllowlistChanges
 
   if (!hasAnyChanges) {
     return (
@@ -65,6 +72,7 @@ const DTFSettingsProposalChanges = () => {
       <RoleChanges />
       <RevenueChanges />
       <AuctionSettingsChanges />
+      <V6SettingsChanges />
       <GovernanceChanges />
       <OptimisticGovernanceChanges />
       <RemovedTokensChanges />

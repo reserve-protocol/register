@@ -250,7 +250,11 @@ const IndexManualIssuance = () => {
       </div>
       <div className="mt-4 rounded-3xl border p-4 flex items-center justify-between gap-2">
         <p className="text-sm text-muted-foreground">
-          <Trans>Having issues minting?</Trans>
+          {mode === 'buy' ? (
+            <Trans>Having issues minting?</Trans>
+          ) : (
+            <Trans>Having issues redeeming?</Trans>
+          )}
         </p>
         <Link
           to={`../${ROUTES.ISSUANCE}`}

@@ -63,7 +63,7 @@ function idleTime(dtf: RegistryDTF): number {
 }
 
 // List data resolves in two frozen-clock flush rounds: pump GetIndexDTF (which
-// enables the dependent getRebalances + proposal-list queries), then pump those
+// enables the dependent GetIndexDtfRebalances + proposal-list queries), then pump those
 // responses into React so rows can bucket. Same pump as auctions.spec.
 async function settleListData(
   page: import('@playwright/test').Page,
@@ -76,7 +76,7 @@ async function settleListData(
         boundaryRequests.filter(
           (request) =>
             request.boundary === 'subgraph' &&
-            ['getRebalances', 'GetIndexDtfProposals'].includes(
+            ['GetIndexDtfRebalances', 'GetIndexDtfProposals'].includes(
               request.operationName
             )
         ).length

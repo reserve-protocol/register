@@ -6,6 +6,7 @@ import { indexDTFAtom, indexDTFPriceAtom } from '@/state/dtf/atoms'
 import { formatCurrency } from '@/utils'
 import { Trans, useLingui } from '@lingui/react/macro'
 import { useAtomValue } from 'jotai'
+import { useEffect } from 'react'
 import { formatEther } from 'viem'
 import {
   useReadContract,
@@ -19,7 +20,7 @@ const DistributeFees = () => {
   const indexDTF = useAtomValue(indexDTFAtom)
   const price = useAtomValue(indexDTFPriceAtom)
   const { data: hash, writeContract, isPending } = useWriteContract()
-  const { data: pendingFees } = useReadContract({
+  const { data: pendingFees, refetch: refetchPendingFees } = useReadContract({
     abi: dtfIndexAbi,
     address: indexDTF?.id,
     functionName: 'getPendingFeeShares',
@@ -30,6 +31,10 @@ const DistributeFees = () => {
     hash,
     chainId: indexDTF?.chainId,
   })
+
+  useEffect(() => {
+    if (receipt?.status === 'success') refetchPendingFees()
+  }, [receipt?.status, refetchPendingFees])
 
   if (!indexDTF) return null
 
@@ -59,7 +64,7 @@ const DistributeFees = () => {
             <Skeleton className="h-4 w-20" />
           ) : (
             <div data-testid="settings-pending-fees">
-              <span className="mr-1">
+              <span className="mr-1" data-testid="settings-pending-fees-amount">
                 {formatCurrency(formattedPendingFees)} ${indexDTF.token.symbol}
               </span>
               <span className="text-legend text-sm">

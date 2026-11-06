@@ -8,8 +8,9 @@ import {
 } from '@reserve-protocol/dtf-rebalance-lib'
 import { Rebalance as RebalanceV4 } from '@reserve-protocol/dtf-rebalance-lib/dist/4.0.0/types'
 import { Rebalance as RebalanceV5 } from '@reserve-protocol/dtf-rebalance-lib/dist/types'
+import { prepareIndexDtfOpenAuctionArgs } from '@reserve-protocol/react-sdk'
 import { AUCTION_PRICE_VOLATILITY } from '../atoms'
-import { getRebalanceTokens } from './transforms'
+import { getRebalanceTokens, toIndexDtfWriteVersion } from './transforms'
 
 export type OpenAuctionArrays = {
   decimals: bigint[]
@@ -156,7 +157,9 @@ function getRebalanceOpenAuction(
   isTrackingDTF: boolean,
   tokenPriceVolatility: Record<string, Volatility>,
   rebalancePercent = 90,
-  isHybridDTF = false
+  isHybridDTF = false,
+  // Folio 6.0 only: the per-auction length the calldata will carry (RPC maxAuctionLength).
+  auctionLength?: bigint
 ) {
   const built = buildRebalanceOpenAuctionArrays(
     version,
@@ -186,9 +189,36 @@ function getRebalanceOpenAuction(
     weights,
   } = built.arrays
 
+  // v5/v6 math and args are SDK-owned; Register keeps the price pre-check and the
+  // volatility preset mapping above. v4 stays on the local library by decision.
+  const writeVersion = toIndexDtfWriteVersion(version)
+  if (writeVersion) {
+    const rebalanceTokens = getRebalanceTokens(rebalance, version)
+    const { args, metrics } = prepareIndexDtfOpenAuctionArgs({
+      version: writeVersion,
+      auctionLength,
+      rebalance: rebalance as RebalanceV5,
+      tokens,
+      supply,
+      initialSupply,
+      currentAssets,
+      initialAssets,
+      initialPrices,
+      initialWeights,
+      prices,
+      tokenPriceVolatility: Object.fromEntries(
+        rebalanceTokens.map((token, i) => [token.toLowerCase(), priceError[i]])
+      ),
+      rebalancePercent,
+      isTrackingDtf: isTrackingDTF,
+      isHybridDtf: isHybridDTF,
+    })
+
+    return [args, metrics] as const
+  }
+
   const targetBasket = getTargetBasket(weights, targetBasketPrices, decimals)
 
-  // Pass version to the library function
   return getOpenAuction(
     version,
     rebalance,

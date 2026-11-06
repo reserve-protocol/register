@@ -3,8 +3,14 @@ import { chainIdAtom } from '@/state/atoms'
 import { indexDTFAtom, indexDTFFeeAtom } from '@/state/dtf/atoms'
 import { DecodedCalldata } from '@/types'
 import EnsName from '@/components/utils/ens-name'
-import { isLoaded, shortenAddress } from '@/utils'
-import { getFeePercentAdjust, isDisplayablePlatformFee } from '@/utils/fees'
+import TokenLogo from '@/components/token-logo'
+import useTokenMeta from '@/views/index-dtf/governance/hooks/use-token-meta'
+import { formatPercentage, isLoaded, shortenAddress } from '@/utils'
+import {
+  getHolderSharePercent,
+  getRecipientPercentAdjust,
+  isDisplayablePlatformFee,
+} from '@/utils/fees'
 import { ExplorerDataType, getExplorerLink } from '@/utils/getExplorerLink'
 import type { MessageDescriptor } from '@lingui/core'
 import { msg } from '@lingui/core/macro'
@@ -22,6 +28,12 @@ import {
   Users,
   Wand2,
 } from 'lucide-react'
+import {
+  INDEX_DTF_START_REBALANCE_SELECTOR,
+  useIndexDtfIdentity,
+  useIndexDtfSelfFee,
+} from '@reserve-protocol/react-sdk'
+import { getOptimisticActions } from '@/views/index-dtf/governance/views/propose/views/propose-dtf-settings/optimistic'
 import { Link } from 'react-router-dom'
 import { formatEther, toFunctionSelector, zeroHash } from 'viem'
 import type { Address, Hex } from 'viem'
@@ -30,14 +42,21 @@ import { useReadContract } from 'wagmi'
 const OPTIMISTIC_PROPOSER_ROLE =
   '0x26f49d08685d9cdd4951a7470bc8fbe9dd0f00419c1a44c1b89f845867ae12e0'
 
+// Every settable action names its selector; the explicit entries below give the setters 6.0 changed their own name.
 const OPTIMISTIC_SELECTOR_LABELS: Record<string, MessageDescriptor> = {
-  [toFunctionSelector(
-    'startRebalance((address,(uint256,uint256,uint256),(uint256,uint256),uint256,bool)[],(uint256,uint256,uint256),uint256,uint256)'
-  )]: msg`Start rebalance`,
+  ...Object.fromEntries(
+    getOptimisticActions(6).map((action) => [action.selector, action.label])
+  ),
+  [INDEX_DTF_START_REBALANCE_SELECTOR['5.0.0']]: msg`Start rebalance`,
+  [INDEX_DTF_START_REBALANCE_SELECTOR['6.0.0']]: msg`Start rebalance (Folio 6.0)`,
   [toFunctionSelector('setAuctionLength(uint256)')]: msg`Auction length`,
   [toFunctionSelector('setBidsEnabled(bool)')]: msg`Permissionless bids`,
   [toFunctionSelector('setFeeRecipients((address,uint96)[])')]:
     msg`Fee recipients`,
+  [toFunctionSelector('setFeeRecipients((address,uint96)[],(address,uint96)[])')]:
+    msg`Fee recipients, including permanent ones (Folio 6.0)`,
+  [toFunctionSelector('setMaxAuctionLength(uint256)')]:
+    msg`Max auction length (Folio 6.0)`,
   [toFunctionSelector('setMandate(string)')]: msg`Mandate`,
   [toFunctionSelector('setMintFee(uint256)')]: msg`Mint fee`,
   [toFunctionSelector('setName(string)')]: msg`Token name`,
@@ -50,8 +69,13 @@ const OPTIMISTIC_SELECTOR_LABELS: Record<string, MessageDescriptor> = {
 
 type Translate = (descriptor: MessageDescriptor) => string
 
+export const getOptimisticSelectorLabel = (
+  selector: Hex
+): MessageDescriptor | undefined =>
+  OPTIMISTIC_SELECTOR_LABELS[selector.toLowerCase()]
+
 const formatSelectorLabel = (selector: Hex, t: Translate) => {
-  const label = OPTIMISTIC_SELECTOR_LABELS[selector.toLowerCase()]
+  const label = getOptimisticSelectorLabel(selector)
 
   return label ? t(label) : selector
 }
@@ -224,12 +248,32 @@ export const RevokeRolePreview = ({
 // Preview component for setFeeRecipients function
 export const SetFeeRecipientsPreview = ({
   decodedCalldata,
+  calls,
 }: {
   decodedCalldata: DecodedCalldata
   targetAddress?: Address
+  calls?: DecodedCalldata[]
 }) => {
   const indexDTF = useAtomValue(indexDTFAtom)
   const platformFee = useAtomValue(indexDTFFeeAtom)
+  const identity = useIndexDtfIdentity()
+  // Only Folio 6.0 takes two recipient tables, and only 6.0 has a holder share.
+  const isV6Table = decodedCalldata.data.length > 1
+  const proposedSelfFee = calls?.find(
+    (call) => call.signature === 'setFolioSelfFee'
+  )?.data[0] as bigint | undefined
+  const { data: currentSelfFee, isError: selfFeeError } = useIndexDtfSelfFee(
+    isV6Table && proposedSelfFee === undefined && identity.address
+      ? identity
+      : undefined
+  )
+  const selfFee = !isV6Table
+    ? 0
+    : proposedSelfFee !== undefined
+      ? Number(formatEther(proposedSelfFee))
+      : currentSelfFee
+        ? Number(currentSelfFee.formatted)
+        : undefined
   const { data: tokenJar } = useReadContract({
     abi: dtfStakingVaultAbi,
     address: indexDTF?.stToken?.id,
@@ -243,11 +287,17 @@ export const SetFeeRecipientsPreview = ({
     recipient: string
     portion: bigint
   }>
+  // Folio 6.0 takes a second table of recipients that governance can never remove or reduce.
+  const immutableRecipients = (decodedCalldata.data[1] ?? []) as Array<{
+    recipient: string
+    portion: bigint
+  }>
 
   if (!indexDTF || !isLoaded(platformFee)) return null
+  if (selfFee === undefined && !selfFeeError) return null
 
-  // A fee outside [0, 100) has no real share-of-total split — surface "Unavailable", never fabricate.
-  if (!isDisplayablePlatformFee(platformFee)) {
+  // A fee outside [0, 100), or a holder share that can't be read, has no real share-of-total split — surface "Unavailable", never fabricate.
+  if (!isDisplayablePlatformFee(platformFee) || selfFee === undefined) {
     return (
       <div className="rounded-2xl border bg-muted/70 p-2 space-y-3">
         <div className="flex items-center gap-2 ml-2 pt-2">
@@ -296,13 +346,18 @@ export const SetFeeRecipientsPreview = ({
     }
   })
 
-  // Calldata percentages exclude the platform fee — divide by PERCENT_ADJUST for share of total revenue.
-  const PERCENT_ADJUST = getFeePercentAdjust(platformFee)
+  // Calldata percentages exclude the platform fee and the holder share — divide by PERCENT_ADJUST for share of total revenue, as Details shows it.
+  const PERCENT_ADJUST = getRecipientPercentAdjust(platformFee, selfFee)
+  const holderShare = getHolderSharePercent(platformFee, selfFee)
   const adjustedDeployerShare = deployerShare / PERCENT_ADJUST
   const adjustedGovernanceShare = governanceShare / PERCENT_ADJUST
   const adjustedExternalRecipients = externalRecipients.map((r) => ({
     ...r,
     percentage: r.percentage / PERCENT_ADJUST,
+  }))
+  const adjustedImmutableRecipients = immutableRecipients.map((r) => ({
+    address: r.recipient,
+    percentage: (Number(r.portion) / 1e18) * 100 / PERCENT_ADJUST,
   }))
 
   return (
@@ -321,14 +376,33 @@ export const SetFeeRecipientsPreview = ({
               <Trans>Platform (Fixed)</Trans>
             </span>
             <div className="flex items-center gap-2">
-              <span className="text-sm">{platformFee}%</span>
+              <span className="text-sm">{formatPercentage(platformFee)}</span>
             </div>
           </div>
         </div>
 
+        {holderShare > 0 && (
+          <div
+            className="p-3 rounded-xl bg-background/80 border"
+            data-testid="settings-preview-holder-share"
+          >
+            <div className="flex items-center justify-between">
+              <span className="text-sm text-muted-foreground">
+                <Trans>Holders</Trans>
+              </span>
+              <span className="text-sm text-primary">
+                {holderShare.toFixed(2)}%
+              </span>
+            </div>
+          </div>
+        )}
+
         {/* Governance Share */}
         {adjustedGovernanceShare > 0 && (
-          <div className="p-3 rounded-xl bg-background/80 border">
+          <div
+            className="p-3 rounded-xl bg-background/80 border"
+            data-testid="settings-preview-governance-share"
+          >
             <div className="flex items-center justify-between">
               <span className="text-sm text-muted-foreground">
                 <Trans>Governance</Trans>
@@ -383,6 +457,38 @@ export const SetFeeRecipientsPreview = ({
             </div>
           </div>
         ))}
+
+        {adjustedImmutableRecipients.length > 0 && (
+          <div className="p-3 rounded-xl border border-warning/40 bg-warning/10 space-y-2">
+            <div className="text-sm font-medium text-warning">
+              <Trans>Permanent recipients (governance can never remove these)</Trans>
+            </div>
+            {adjustedImmutableRecipients.map((recipient, idx) => (
+              <div
+                key={idx}
+                data-testid="settings-preview-immutable-recipient"
+                className="flex items-center justify-between"
+              >
+                <Link
+                  to={getExplorerLink(
+                    recipient.address,
+                    indexDTF.chainId,
+                    ExplorerDataType.ADDRESS
+                  )}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-sm text-muted-foreground hover:text-primary flex items-center gap-1"
+                >
+                  {shortenAddress(recipient.address)}
+                  <ArrowUpRight size={12} />
+                </Link>
+                <span className="text-sm text-primary">
+                  {recipient.percentage.toFixed(2)}%
+                </span>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   )
@@ -493,6 +599,103 @@ export const SetAuctionLengthPreview = ({
             </span>
           </div>
         </div>
+      </div>
+    </div>
+  )
+}
+
+// Folio 6.0 setFolioSelfFee: D18 fraction of non-platform fees kept for holders
+export const SetSelfFeePreview = ({
+  decodedCalldata,
+}: {
+  decodedCalldata: DecodedCalldata
+  targetAddress?: Address
+}) => {
+  const percentage = Number(formatEther(decodedCalldata.data[0] as unknown as bigint)) * 100
+
+  return (
+    <div className="rounded-2xl border bg-muted/70 p-2 space-y-3">
+      <div className="flex items-center gap-2 ml-2 pt-2">
+        <Edit2 size={16} className="text-primary" />
+        <div className="text-sm font-medium">
+          <Trans>Update Holder Share</Trans>
+        </div>
+      </div>
+      <div className="p-3 rounded-xl bg-primary/5 border border-primary/20">
+        <div className="flex items-center justify-between">
+          <span className="text-sm text-muted-foreground">
+            <Trans>New holder share:</Trans>
+          </span>
+          <span className="text-sm text-primary">
+            {percentage.toFixed(2)}%
+          </span>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+// Folio 6.0 trade allowlist: setTradeAllowlistEnabled, addToAllowlist, removeFromAllowlist
+export const TradeAllowlistPreview = ({
+  decodedCalldata,
+}: {
+  decodedCalldata: DecodedCalldata
+  targetAddress?: Address
+}) => {
+  const { t } = useLingui()
+  const chainId = useAtomValue(chainIdAtom)
+  const [arg] = decodedCalldata.data as unknown as [boolean | Address[]]
+  const tokens = typeof arg === 'boolean' ? [] : arg
+  const tokenMeta = useTokenMeta(tokens)
+  const title =
+    decodedCalldata.signature === 'setTradeAllowlistEnabled'
+      ? t`Trade Allowlist Enforcement`
+      : decodedCalldata.signature === 'addToAllowlist'
+        ? t`Add to Trade Allowlist`
+        : t`Remove from Trade Allowlist`
+
+  return (
+    <div
+      className="rounded-2xl border bg-muted/70 p-2 space-y-3"
+      data-testid="settings-preview-trade-allowlist"
+    >
+      <div className="flex items-center gap-2 ml-2 pt-2">
+        <Edit2 size={16} className="text-primary" />
+        <div className="text-sm font-medium">{title}</div>
+      </div>
+      <div className="p-3 rounded-xl bg-primary/5 border border-primary/20 text-sm space-y-1">
+        {typeof arg === 'boolean' ? (
+          <span className="text-primary">{arg ? t`Enforced` : t`Not enforced`}</span>
+        ) : (
+          tokens.map((token) => {
+            const meta = tokenMeta(token)
+
+            return (
+              <Link
+                key={token}
+                to={getExplorerLink(token, chainId, ExplorerDataType.TOKEN)}
+                target="_blank"
+                className="flex items-center gap-2 text-primary"
+                data-testid="settings-preview-allowlist-token"
+              >
+                <TokenLogo
+                  src={meta?.logoURI}
+                  symbol={meta?.symbol}
+                  address={token}
+                  chain={chainId}
+                  size="sm"
+                />
+                <span className="font-medium">
+                  {meta?.symbol ?? <Trans>Unknown token</Trans>}
+                </span>
+                <span className="text-muted-foreground">
+                  {shortenAddress(token)}
+                </span>
+                <ArrowUpRight size={14} />
+              </Link>
+            )
+          })
+        )}
       </div>
     </div>
   )
@@ -847,7 +1050,11 @@ export const SelectorRegistryPreview = ({
   const isRegister = decodedCalldata.signature === 'registerSelectors'
 
   return (
-    <div className="rounded-2xl border bg-muted/70 p-2 space-y-3">
+    <div
+      className="rounded-2xl border bg-muted/70 p-2 space-y-3"
+      data-testid="proposal-selector-registry-call"
+      data-action={decodedCalldata.signature}
+    >
       <div className="flex items-center gap-2 ml-2 mt-2">
         {isRegister ? (
           <PlusCircle size={16} className="text-success" />
@@ -893,6 +1100,7 @@ export const SelectorRegistryPreview = ({
                 <span
                   key={selector}
                   className="rounded-full bg-primary/10 text-primary px-2 py-1 text-xs"
+                  data-selector={selector.toLowerCase()}
                 >
                   {formatSelectorLabel(selector, t)}
                 </span>

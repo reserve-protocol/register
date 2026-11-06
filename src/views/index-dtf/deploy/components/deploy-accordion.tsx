@@ -21,7 +21,6 @@ import {
   Edit2,
   Landmark,
   PencilRuler,
-  ReplaceAll,
 } from 'lucide-react'
 import { ReactNode, useEffect } from 'react'
 import { useFormContext } from 'react-hook-form'
@@ -35,7 +34,6 @@ import {
   daoTokenAddressAtom,
   deployedDTFAtom,
   deployStepAtom,
-  readonlyStepsAtom,
   searchTokenAtom,
   selectedTokensAtom,
   validatedSectionsAtom,
@@ -43,11 +41,10 @@ import {
 import { DeployStepId } from '../form-fields'
 import Auctions from '../steps/auctions'
 import FTokenBasket from '../steps/basket'
-import BasketChanges from '../steps/basket-changes'
 import { indexDeployFormDataAtom } from '../steps/confirm-deploy/atoms'
 import Governance from '../steps/governance'
 import MetadataAndChain from '../steps/metadata'
-import OtherChanges from '../steps/other-changes'
+import GovernanceSettings from '../steps/governance-settings'
 import RevenueDistribution from '../steps/revenue'
 import Roles from '../steps/roles'
 import { scrollToSection } from '../utils'
@@ -104,18 +101,11 @@ export const DEPLOY_STEPS: DeployStep[] = [
     content: <Auctions />,
   },
   {
-    id: 'basket-changes',
-    icon: <ReplaceAll size={14} strokeWidth={1.5} />,
-    title: msg`Basket Governance Settings`,
-    titleSecondary: msg`Basket Governance Settings`,
-    content: <BasketChanges />,
-  },
-  {
-    id: 'other-changes',
+    id: 'governance-settings',
     icon: <PencilRuler size={14} strokeWidth={1.5} />,
-    title: msg`Non-Basket Governance Settings`,
-    titleSecondary: msg`Non-Basket Governance Settings`,
-    content: <OtherChanges />,
+    title: msg`Governance Settings`,
+    titleSecondary: msg`Governance Settings`,
+    content: <GovernanceSettings />,
   },
 ]
 
@@ -184,8 +174,6 @@ const DeployAccordion = () => {
   const setChainId = useSetAtom(chainIdAtom)
   const formChain = watch('chain')
   const validatedSections = useAtomValue(validatedSectionsAtom)
-  const setValidatedSections = useSetAtom(validatedSectionsAtom)
-  const readonlySteps = useAtomValue(readonlyStepsAtom)
   const resetBasket = useResetAtom(basketAtom)
   const resetDaoCreated = useResetAtom(daoCreatedAtom)
   const resetValidatedSections = useResetAtom(validatedSectionsAtom)
@@ -199,15 +187,6 @@ const DeployAccordion = () => {
   useEffect(() => {
     if (formChain) setChainId(formChain)
   }, [formChain, setChainId])
-
-  // Auto-validate readonly steps so formReadyForSubmit only depends on editable steps
-  // Separate effect because readonlyStepsAtom is set after mount by PermissionlessUpdater
-  useEffect(() => {
-    if (readonlySteps.size === 0) return
-    const validated: Partial<Record<DeployStepId, boolean>> = {}
-    for (const stepId of readonlySteps) validated[stepId] = true
-    setValidatedSections((prev) => ({ ...prev, ...validated }))
-  }, [readonlySteps, setValidatedSections])
 
   useEffect(() => {
     setSection(DEPLOY_STEPS[0].id)
@@ -238,7 +217,7 @@ const DeployAccordion = () => {
         }
       }}
     >
-      {DEPLOY_STEPS.filter((step) => !readonlySteps.has(step.id)).map(({ id, icon, title, titleSecondary, content }) => (
+      {DEPLOY_STEPS.map(({ id, icon, title, titleSecondary, content }) => (
         <AccordionItem
           key={id}
           value={id}

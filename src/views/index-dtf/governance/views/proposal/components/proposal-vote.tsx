@@ -2,9 +2,12 @@ import DelegateIcon from '@/components/icons/DelegateIcon'
 import { Button } from '@/components/ui/button'
 import { CurrentDtfVoteLock } from '@/components/vote-lock'
 import { chainIdAtom } from '@/state/atoms'
-import { formatCurrency } from '@/utils'
-import { PROPOSAL_STATES } from '@/utils/constants'
+import { indexDTFAtom } from '@/state/dtf/atoms'
+import { formatCurrency, getFolioRoute } from '@/utils'
+import { PROPOSAL_STATES, ROUTES } from '@/utils/constants'
 import { ExplorerDataType, getExplorerLink } from '@/utils/getExplorerLink'
+import { governanceProposalsAtom } from '@/views/index-dtf/governance/atoms'
+import { getConfirmationProposalId } from '@/views/index-dtf/governance/utils/challenged-proposal'
 import {
   isOptimisticReadyToExecute,
   shouldQueueProposal,
@@ -12,6 +15,7 @@ import {
 import { Trans } from '@lingui/react/macro'
 import { useAtomValue } from 'jotai'
 import { ArrowUpRight, AsteriskIcon, HandFist, Rocket } from 'lucide-react'
+import { type ReactNode } from 'react'
 import { Link } from 'react-router-dom'
 import {
   accountVotesAtom,
@@ -106,8 +110,11 @@ const ProposalVoteOverview = () => {
           <span>
             <Trans>Your voting power:</Trans>
           </span>
-          <span className="font-bold">
-            {formatCurrency(votePower ? +votePower : 0)}
+          <span className="font-bold" data-testid="proposal-voting-power">
+            {/* Unknown until the vote snapshot, which a pending proposal has not taken yet. */}
+            {votePower === null || votePower === undefined
+              ? '—'
+              : formatCurrency(+votePower)}
           </span>
         </div>
         {state === PROPOSAL_STATES.PENDING && hasUndelegatedBalance && (
@@ -145,8 +152,40 @@ const ProposalSummary = () => (
   </div>
 )
 
+const useProposalRoute = (proposalId: string | undefined) => {
+  const dtf = useAtomValue(indexDTFAtom)
+  const chainId = useAtomValue(chainIdAtom)
+
+  if (!dtf || !proposalId) return undefined
+
+  return getFolioRoute(
+    dtf.id,
+    chainId,
+    `${ROUTES.GOVERNANCE_PROPOSAL}/${proposalId}`
+  )
+}
+
+const ProposalHelpLink = ({
+  to,
+  children,
+}: {
+  to: string | undefined
+  children: ReactNode
+}) =>
+  to ? (
+    <Link
+      to={to}
+      className="mt-1 flex items-center gap-1 font-semibold underline"
+      data-testid="proposal-related-link"
+    >
+      {children}
+      <ArrowUpRight size={14} />
+    </Link>
+  ) : null
+
 const ChallengedProposalHelp = () => {
   const proposal = useAtomValue(proposalDetailAtom)
+  const originalRoute = useProposalRoute(proposal?.challengedProposalId)
 
   if (!proposal || !proposal.wasChallenged) return null
 
@@ -162,6 +201,40 @@ const ChallengedProposalHelp = () => {
         <Trans>
           This was originally a fast proposal that did not pass governance. Please review the details of this contested proposal closely.
         </Trans>
+        <ProposalHelpLink to={originalRoute}>
+          <Trans>View the original fast proposal</Trans>
+        </ProposalHelpLink>
+      </span>
+    </div>
+  )
+}
+
+const VetoedFastProposalHelp = ({
+  confirmationId,
+}: {
+  confirmationId: string | undefined
+}) => {
+  const confirmationRoute = useProposalRoute(confirmationId)
+
+  return (
+    <div
+      className="flex items-center rounded-xl bg-warning/10 p-2 gap-2"
+      data-testid="proposal-challenged-fast"
+    >
+      <div className="flex items-center justify-center p-2 text-warning bg-warning/10 rounded-full">
+        <HandFist size={16} />
+      </div>
+      <span className="text-xs">
+        <h4 className="font-semibold text-warning">
+          <Trans>Challenged</Trans>
+        </h4>
+        <Trans>
+          Governance challenged this fast proposal, so it was resubmitted as a
+          standard proposal.
+        </Trans>
+        <ProposalHelpLink to={confirmationRoute}>
+          <Trans>View the standard proposal</Trans>
+        </ProposalHelpLink>
       </span>
     </div>
   )
@@ -169,8 +242,15 @@ const ChallengedProposalHelp = () => {
 
 const FastProposalHelp = () => {
   const proposal = useAtomValue(proposalDetailAtom)
+  const proposals = useAtomValue(governanceProposalsAtom)
 
   if (!proposal || !proposal.isOptimistic) return null
+
+  const confirmationId = getConfirmationProposalId(proposal.id, proposals)
+
+  if (confirmationId || proposal.votingState.vetoReached) {
+    return <VetoedFastProposalHelp confirmationId={confirmationId} />
+  }
 
   return (
     <div className="flex items-center rounded-xl bg-primary/10 p-2 gap-2">

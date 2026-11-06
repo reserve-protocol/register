@@ -4,6 +4,7 @@ import { formatUnits } from 'viem'
 import { connectWallet, expect, test } from '../../fixtures/wallet'
 import { dtfPath, findDtfByAddress, TEST_ADDRESS } from '../../helpers/registry'
 import {
+  zapSubmit,
   fillAmountAwaitQuote,
   formatZapOutput,
   loadZapSnapshot,
@@ -156,7 +157,7 @@ test('high price impact: insufficient-balance masks the warning; no submit, empt
   await expect(widgetOf(page).locator('button[role="checkbox"]')).toHaveCount(0)
 
   // Not submittable, and nothing was ever sent.
-  await expect(panel.locator('button').last()).toBeDisabled()
+  await expect(zapSubmit(panel)).toBeDisabled()
   expect(txLog).toEqual([])
   expect(unmockedCalls).toEqual([])
 })
@@ -187,7 +188,7 @@ test('high price impact: checkbox gate blocks submit until acknowledged', async 
   await expect(gate).toBeVisible({ timeout: 45_000 })
 
   // Unacknowledged -> not submittable, nothing sent.
-  const submit = panel.locator('button').last()
+  const submit = zapSubmit(panel)
   await expect(submit).toBeDisabled()
   expect(txLog).toEqual([])
 
@@ -220,14 +221,14 @@ test('quote error: no tx possible while sourcing, recovers on the happy-path amo
   // The error fixture is pinned to amountIn=1 wei (0.000000000000000001 ETH);
   // the API returns {status:'error'}, every other provider is mocked to fail,
   // so the round settles with no quote. The widget does NOT surface an error:
-  // the amount-out slot never mounts its read-only input and the submit stays
-  // disabled. fill + expect retried as one unit: a hydration wipe of the typed
+  // the amount-out slot shows no quote (react-zapper >= 2.14 mounts it at 0 while
+  // sourcing) and the submit stays disabled. fill + expect retried as one unit: a hydration wipe of the typed
   // amount refills instead of waiting on a dead state.
   await expect(async () => {
     await amountIn(panel).fill(buyAmount('error'))
     await expect(amountIn(panel)).toHaveValue(buyAmount('error'))
-    await expect(amountOut(panel)).toHaveCount(0)
-    await expect(panel.locator('button').last()).toBeDisabled()
+    await expect(amountOut(panel)).toHaveValue(/^0?$/)
+    await expect(zapSubmit(panel)).toBeDisabled()
   }).toPass({ timeout: 75_000 })
   await expect(widgetOf(page).locator('.text-red-500')).toHaveCount(0)
   expect(txLog).toEqual([])
@@ -239,7 +240,7 @@ test('quote error: no tx possible while sourcing, recovers on the happy-path amo
   const expectedOut = formatZapOutput(buy.amountOut)
   await fillAmountAwaitQuote(panel, buyAmount('buy'), expectedOut)
   await expect(widgetOf(page).locator('.text-red-500')).toHaveCount(0)
-  await expect(panel.locator('button').last()).toBeEnabled({ timeout: 45_000 })
+  await expect(zapSubmit(panel)).toBeEnabled({ timeout: 45_000 })
 
   expect(txLog).toEqual([])
   expect(unmockedCalls).toEqual([])
@@ -273,7 +274,7 @@ test('insufficient funds: quote resolves but client balance math gates the submi
   // No impact checkbox (impact < 5%), and the submit is disabled purely because
   // 200 ETH > the mocked 100 ETH balance (client-side insufficientBalance).
   await expect(widgetOf(page).locator('button[role="checkbox"]')).toHaveCount(0)
-  await expect(panel.locator('button').last()).toBeDisabled()
+  await expect(zapSubmit(panel)).toBeDisabled()
   expect(txLog).toEqual([])
   expect(unmockedCalls).toEqual([])
 })

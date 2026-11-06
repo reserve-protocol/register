@@ -138,7 +138,35 @@ export const indexDTFPriceAtom = atom((get) => {
   return basketPrices[dtf.token.id.toLowerCase()]
 })
 
-export const indexDTFVersionAtom = atom('4.0.0')
+// Undefined until the SDK resolves folio.version(); consumers that select an
+// ABI or build calldata gate on folioVersionAtom instead of guessing.
+export const indexDTFVersionAtom = atom<string | undefined>(undefined)
+
+export type FolioMajor = 1 | 2 | 4 | 5 | 6
+
+export type FolioVersionState =
+  | { status: 'pending' }
+  | { status: 'ready'; major: FolioMajor; version: string }
+  | { status: 'unsupported'; version: string }
+
+// Exact deployed versions only (inventory 2026-09-16); a prefix match would
+// admit unknown releases into write paths.
+const FOLIO_MAJOR_BY_VERSION: Record<string, FolioMajor> = {
+  '1.0.0': 1,
+  '2.0.0': 2,
+  '4.0.0': 4,
+  '4.0.1': 4,
+  '5.0.0': 5,
+  '6.0.0': 6,
+}
+
+export const folioVersionAtom = atom<FolioVersionState>((get) => {
+  const version = get(indexDTFVersionAtom)
+  if (version === undefined) return { status: 'pending' }
+  const major = FOLIO_MAJOR_BY_VERSION[version]
+  if (major === undefined) return { status: 'unsupported', version }
+  return { status: 'ready', major, version }
+})
 
 export const indexDTFExposureDataAtom = atom<ExposureGroup[] | null>(null)
 
@@ -222,6 +250,8 @@ export const indexDTFStatusAtom = atom<'active' | 'deprecated' | 'unsupported'>(
 
 export const isSingletonRebalanceAtom = atom((get) => {
   const version = get(indexDTFVersionAtom)
+  // UI-shape only (calldata gates separately); pending renders the modern layout.
+  if (version === undefined) return true
 
   return checkVersion('4.0.0', version)
 })

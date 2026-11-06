@@ -106,3 +106,19 @@ for (const { option, support } of SUPPORT_VARIANTS) {
     expect(decoded.args).toEqual([BigInt(PROPOSAL_ID), support])
   })
 }
+
+// The whole option row selects it, not only the checkbox.
+test('clicking an option row selects that vote', async ({ page }) => {
+  const proposal = loadProposal()
+  await freezeTime(page, proposalTime(proposal, 'active'))
+  await page.goto(dtfPath(dtf, `governance/proposal/${PROPOSAL_ID}`))
+  await connectWallet(page)
+  await advanceTime(page, 5_000)
+
+  await page.getByTestId('proposal-vote-btn').click()
+  const against = page.getByTestId('vote-option-against')
+  // The row is the nearest ancestor holding the option's icon; click the icon, away from the checkbox.
+  const row = against.locator('xpath=ancestor::*[./*[local-name()="svg"]][1]')
+  await row.click({ position: { x: 6, y: 8 } })
+  await expect(against).toHaveAttribute('data-state', 'checked')
+})

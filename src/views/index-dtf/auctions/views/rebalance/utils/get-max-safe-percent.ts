@@ -52,7 +52,7 @@ export const getMaxSafeRebalancePercent = (
   computeSizes: (percent: number) => SizesByAddress | null,
   ondoLimits: Record<string, OndoLimit>,
   minPercent = MIN_PERCENT
-): number => {
+): number | undefined => {
   // Halted assets are skipped — we can't size against a closed market, and the
   // scope is "warn, don't cap" for those.
   const constrained = Object.entries(ondoLimits).filter(
@@ -60,9 +60,13 @@ export const getMaxSafeRebalancePercent = (
   )
   if (constrained.length === 0) return 100
 
+  let hasUnsizedProbe = false
   const fits = (percent: number): boolean => {
     const sizes = computeSizes(percent)
-    if (!sizes) return false
+    if (!sizes) {
+      hasUnsizedProbe = true
+      return false
+    }
     return constrained.every(
       ([address, l]) =>
         (sizes[address] ?? 0) <= (l.capacityUsd as number) * ONDO_LIMIT_BUFFER
@@ -73,10 +77,10 @@ export const getMaxSafeRebalancePercent = (
 
   // Above minPercent leg size is monotonic in percent, so binary-search the
   // highest integer percent that fits. If none fits (an asset is over its cap
-  // even at the minimum), best stays at minPercent — the cap is soft.
+  // even at the minimum), the cap falls back to minPercent — it is soft.
   let lo = minPercent
   let hi = 100
-  let best = minPercent
+  let best: number | undefined
   while (lo <= hi) {
     const mid = Math.floor((lo + hi) / 2)
     if (fits(mid)) {
@@ -86,7 +90,9 @@ export const getMaxSafeRebalancePercent = (
       hi = mid - 1
     }
   }
-  return best
+  if (best !== undefined) return best
+  // "Nothing fits" is only a real (minimum) cap when every probe was sized.
+  return hasUnsizedProbe ? undefined : minPercent
 }
 
 export type ExceededOndoLeg = {

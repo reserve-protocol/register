@@ -9,7 +9,7 @@ import {
   daoGovernanceChangesDisplayAtom,
 } from '../../atoms'
 import { ChangeSection, RevertButton } from './shared'
-import { secondsToDays, proposalThresholdToPercentage } from '../../../../shared'
+import { secondsToDays, getCurrentProposalThreshold } from '../../../../shared'
 
 const iconMap = {
   'votingDelay': <Pause size={16} />,
@@ -45,7 +45,7 @@ const DaoGovernanceChanges = () => {
         setValue('daoVotingPeriod', secondsToDays(Number(governance.votingPeriod)))
         break
       case 'proposalThreshold':
-        setValue('daoVotingThreshold', proposalThresholdToPercentage(governance.proposalThreshold))
+        setValue('daoVotingThreshold', getCurrentProposalThreshold(governance))
         break
       case 'quorumPercent':
         setValue('daoVotingQuorum', Number(governance.quorumNumerator))

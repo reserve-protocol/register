@@ -11,34 +11,51 @@ type Recipient = {
   share: number
 }
 
-const AddRecipientButton = () => {
+export type RecipientsField =
+  | 'additionalRevenueRecipients'
+  | 'permanentRevenueRecipients'
+
+const AddRecipientButton = ({
+  field,
+  label,
+}: {
+  field: RecipientsField
+  label: ReactNode
+}) => {
   const { watch, setValue } = useFormContext()
 
   const onAdd = () => {
-    setValue('additionalRevenueRecipients', [
-      ...watch('additionalRevenueRecipients'),
-      { address: '', share: 0 },
-    ])
+    setValue(field, [...(watch(field) ?? []), { address: '', share: 0 }])
   }
 
   return (
     <Button
+      data-testid={`deploy-add-${field}`}
       variant="accent"
       className="flex gap-2 text-base pl-3 pr-4 py-7 rounded-xl bg-muted/80 w-full"
       onClick={onAdd}
     >
       <PlusIcon size={16} />
-      <Trans>Add additional recipients</Trans>
+      {label}
     </Button>
   )
 }
 
-const RemoveRecipientButton = ({ index }: { index: number }) => {
+const RemoveRecipientButton = ({
+  field,
+  index,
+}: {
+  field: RecipientsField
+  index: number
+}) => {
   const { watch, setValue } = useFormContext()
 
   const onRemove = () => {
-    const recipients = watch('additionalRevenueRecipients')
-    setValue('additionalRevenueRecipients', recipients.filter((_: unknown, i: number) => i !== index))
+    const recipients = watch(field)
+    setValue(
+      field,
+      recipients.filter((_: unknown, i: number) => i !== index)
+    )
   }
 
   return (
@@ -52,46 +69,60 @@ const RemoveRecipientButton = ({ index }: { index: number }) => {
   )
 }
 
-const AdditionalRevenueRecipient = ({ index }: { index: number }) => {
+const AdditionalRevenueRecipient = ({
+  field,
+  index,
+}: {
+  field: RecipientsField
+  index: number
+}) => {
   const { t } = useLingui()
   return (
     <div className="w-full rounded-xl flex items-center gap-2 justify-between px-4 py-3 bg-muted/70">
-      <div className="w-full flex items-top gap-2">
+      <div className="w-full flex flex-col sm:flex-row items-top gap-2">
         <BasicInput
           className="w-full"
-          fieldName={`additionalRevenueRecipients[${index}].address`}
+          fieldName={`${field}[${index}].address`}
           label={t`Recipient ${index + 1} address`}
           placeholder="0x..."
         />
         <BasicInput
-          className="max-w-32"
-          fieldName={`additionalRevenueRecipients[${index}].share`}
+          className="sm:max-w-32"
+          fieldName={`${field}[${index}].share`}
           label="%"
           placeholder="0"
           defaultValue={0}
           decimalPlaces={2}
         />
       </div>
-      <RemoveRecipientButton index={index} />
+      <RemoveRecipientButton field={field} index={index} />
     </div>
   )
 }
 
-const AdditionalRevenueRecipients = ({ children }: { children: ReactNode }) => {
+const AdditionalRevenueRecipients = ({
+  children,
+  field = 'additionalRevenueRecipients',
+  addLabel = <Trans>Add additional recipients</Trans>,
+}: {
+  children?: ReactNode
+  field?: RecipientsField
+  addLabel?: ReactNode
+}) => {
   const { watch } = useFormContext()
 
-  const recipients = watch('additionalRevenueRecipients') as Recipient[]
+  const recipients = (watch(field) ?? []) as Recipient[]
 
   return (
     <div className="flex flex-col gap-2">
       {recipients.map(({ address, share }, index) => (
         <div className="flex flex-col gap-2" key={`${index}${address}${share}`}>
-          <AdditionalRevenueRecipient index={index} />
+          <AdditionalRevenueRecipient field={field} index={index} />
         </div>
       ))}
-      <div className="flex items-center gap-2 mr-2">
+      <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:mr-2">
         <div className="flex-1">
-          <AddRecipientButton />
+          <AddRecipientButton field={field} label={addLabel} />
         </div>
         {children}
       </div>

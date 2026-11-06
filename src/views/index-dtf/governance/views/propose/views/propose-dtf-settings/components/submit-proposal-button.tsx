@@ -9,7 +9,14 @@ import { Loader2 } from 'lucide-react'
 import { memo, useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useWaitForTransactionReceipt, useWriteContract } from 'wagmi'
-import { dtfSettingsProposalDataAtom, proposalDescriptionAtom } from '../atoms'
+import {
+  dtfSettingsProposalDataAtom,
+  proposalDescriptionAtom,
+  settingsWriteBlockAtom,
+  type SettingsWriteBlock,
+} from '../atoms'
+import type { MessageDescriptor } from '@lingui/core'
+import { msg } from '@lingui/core/macro'
 import { useIsProposeAllowed } from '@/views/index-dtf/governance/hooks/use-is-propose-allowed'
 import useRecentProposalReceipt from '@/views/index-dtf/governance/hooks/use-recent-proposal-receipt'
 import {
@@ -168,6 +175,7 @@ const SubmitProposalButton = () => {
   return (
     <TransactionButtonContainer chain={chainId}>
       <Button
+        data-testid="settings-propose-submit"
         disabled={
           !isReady || isPending || isSubmitted || !dtf?.ownerGovernance?.id
         }
@@ -186,4 +194,37 @@ const SubmitProposalButton = () => {
   )
 }
 
-export default ProposeGatekeeper
+const WRITE_BLOCK_GATES: Record<
+  SettingsWriteBlock,
+  { testId: string; label: MessageDescriptor }
+> = {
+  unsupported: {
+    testId: 'settings-propose-version-unsupported',
+    label: msg`Settings proposals are not available for this DTF version`,
+  },
+  pending: {
+    testId: 'settings-propose-version-pending',
+    label: msg`Checking DTF version...`,
+  },
+}
+
+const VersionGate = () => {
+  const { t } = useLingui()
+  const writeBlock = useAtomValue(settingsWriteBlockAtom)
+
+  if (!writeBlock) return <ProposeGatekeeper />
+
+  const gate = WRITE_BLOCK_GATES[writeBlock]
+  return (
+    <Button
+      disabled
+      className="w-full h-auto min-h-10 whitespace-normal"
+      variant="default"
+      data-testid={gate.testId}
+    >
+      {t(gate.label)}
+    </Button>
+  )
+}
+
+export default VersionGate

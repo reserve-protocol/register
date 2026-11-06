@@ -38,7 +38,7 @@ describe('getMaxSafeRebalancePercent', () => {
       [A]: { capacityUsd: 200_000, tradingOpen: true },
       [B]: { capacityUsd: 800_000, tradingOpen: true },
     }
-    const pct = getMaxSafeRebalancePercent(linearSizes, limits)
+    const pct = getMaxSafeRebalancePercent(linearSizes, limits)!
 
     expect(pct).toBe(19) // 19% -> A leg = $190k = 200k * 0.95
     expect(linearSizes(pct)[A]).toBeLessThanOrEqual(200_000 * ONDO_LIMIT_BUFFER)
@@ -154,5 +154,61 @@ describe('getExceededOndoLegs', () => {
       [A]: { capacityUsd: 1_000, tradingOpen: false, symbol: 'Aon' },
     }
     expect(getExceededOndoLegs({ [A]: 500_000 }, halted)).toEqual([])
+  })
+})
+
+describe('getMaxSafeRebalancePercent when sizing is unavailable', () => {
+  it('reports unavailable (undefined) instead of a 1% cap when no probe can be sized', () => {
+    const limits: Record<string, OndoLimit> = {
+      [A]: { capacityUsd: 200_000, tradingOpen: true },
+    }
+    expect(getMaxSafeRebalancePercent(() => null, limits)).toBeUndefined()
+  })
+
+  it('reports unavailable when only the 100% probe sizes and nothing below it can be sized', () => {
+    const limits: Record<string, OndoLimit> = {
+      [A]: { capacityUsd: 200_000, tradingOpen: true },
+    }
+    const sizes = (percent: number) => (percent === 100 ? linearSizes(100) : null)
+    expect(getMaxSafeRebalancePercent(sizes, limits)).toBeUndefined()
+  })
+})
+
+describe('getMaxSafeRebalancePercent boundary', () => {
+  const sized = (usdPerPercent: number) => (percent: number) => ({ [A]: percent * usdPerPercent })
+  const open = (capacityUsd: number) => ({ [A]: { capacityUsd, tradingOpen: true } })
+
+  it('returns the highest percent whose leg is within the buffered cap, and the next one is not', () => {
+    // $10 per percent against a $500 cap → $475 buffered → 47% ($470) fits, 48% ($480) does not.
+    const sizes = sized(10)
+    const result = getMaxSafeRebalancePercent(sizes, open(500))
+
+    expect(result).toBe(47)
+    expect(sizes(47)[A]).toBeLessThanOrEqual(500 * ONDO_LIMIT_BUFFER)
+    expect(sizes(48)[A]).toBeGreaterThan(500 * ONDO_LIMIT_BUFFER)
+  })
+
+  it('lets a leg exactly at the buffered cap fit', () => {
+    // $5 per percent against a $500 cap → 95% is exactly $475.
+    expect(getMaxSafeRebalancePercent(sized(5), open(500))).toBe(95)
+  })
+
+  it('holds the boundary for every leg size and cap', () => {
+    for (const usdPerPercent of [1, 3, 7.5, 12, 40, 250]) {
+      for (const capacityUsd of [100, 333, 1_000, 9_999]) {
+        const sizes = sized(usdPerPercent)
+        const cap = capacityUsd * ONDO_LIMIT_BUFFER
+        const result = getMaxSafeRebalancePercent(sizes, open(capacityUsd))!
+
+        if (result === 100) {
+          expect(sizes(100)[A]).toBeLessThanOrEqual(cap)
+        } else if (sizes(1)[A] > cap) {
+          expect(result).toBe(1)
+        } else {
+          expect(sizes(result)[A]).toBeLessThanOrEqual(cap)
+          expect(sizes(result + 1)[A]).toBeGreaterThan(cap)
+        }
+      }
+    }
   })
 })
