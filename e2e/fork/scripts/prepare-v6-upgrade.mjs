@@ -3,19 +3,24 @@
 // that clears threshold and quorum on its owner governor. MIDAS covers optimistic governance, ABX legacy.
 //
 //   FORK_RPC_URL_8453=http://127.0.0.1:8546 node e2e/fork/scripts/prepare-v6-upgrade.mjs
+//
+// V6_TARGETS overrides the DTFs (JSON list of { symbol, dtf, topology, governor? }). A `governor` set
+// there wins over the subgraph, for a DTF whose governance was migrated on this fork (see governance-overlay.mjs).
 import { createPublicClient, encodeFunctionData, getAddress, http, keccak256, parseAbi, toHex } from 'viem'
 import { mkdirSync, writeFileSync } from 'node:fs'
 import { resolve } from 'node:path'
 
 const rpcUrl = process.env.FORK_RPC_URL_8453 ?? 'http://127.0.0.1:8546'
 const SUBGRAPH =
-  'https://api.goldsky.com/api/public/project_cmgzim3e100095np2gjnbh6ry/subgraphs/dtf-index-base/1.11.2-test/gn'
+  'https://api.goldsky.com/api/public/project_cmgzim3e100095np2gjnbh6ry/subgraphs/dtf-index-base/prod/gn'
 const VERSION_REGISTRY = '0xA665b273997F70b647B66fa7Ed021287544849dB'
 const V6_DEPLOYER = '0x4c891fCa6319d492866672E3D2AfdAAA5bDcfF67'
-const TARGETS = [
-  { symbol: 'MIDAS', dtf: '0x055adf5d33c9187a93df898e3830e7fbde7bfb17', topology: 'optimistic' },
-  { symbol: 'ABX', dtf: '0xebcda5b80f62dd4dd2a96357b42bb6facbf30267', topology: 'legacy' },
-]
+const TARGETS = process.env.V6_TARGETS
+  ? JSON.parse(process.env.V6_TARGETS)
+  : [
+      { symbol: 'MIDAS', dtf: '0x055adf5d33c9187a93df898e3830e7fbde7bfb17', topology: 'optimistic' },
+      { symbol: 'ABX', dtf: '0xebcda5b80f62dd4dd2a96357b42bb6facbf30267', topology: 'legacy' },
+    ]
 const ZERO_ROLE = `0x${'0'.repeat(64)}`
 
 const abi = parseAbi([
@@ -64,8 +69,8 @@ const block = await client.getBlock()
 const targets = []
 for (const target of TARGETS) {
   if ((await read(target.dtf, 'version')) !== '5.0.0') throw new Error(`${target.symbol} is not on 5.0.0`)
-  const { dtf } = await query(`{ dtf(id: "${target.dtf}") { proxyAdmin ownerGovernance { id } } }`)
-  const governor = getAddress(dtf.ownerGovernance.id)
+  const { dtf } = await query(`{ dtf(id: "${target.dtf.toLowerCase()}") { proxyAdmin ownerGovernance { id } } }`)
+  const governor = getAddress(target.governor ?? dtf.ownerGovernance.id)
   const vault = (await read(governor, 'token')).toLowerCase()
   const { delegates } = await query(
     `{ delegates(first: 5, orderBy: delegatedVotesRaw, orderDirection: desc, where: { token: "${vault}" }) { address } }`

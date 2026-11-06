@@ -154,6 +154,12 @@ for (const target of manifest?.targets ?? []) {
       expect(await read<boolean>(registry, 'isAllowed', [target.dtf, START_REBALANCE_V5])).toBe(false)
     }
 
+    // Details reads the version on-chain: after the upgrade it shows the 6.0.0 fee fields.
+    await syncBrowserClock(page)
+    await page.goto(`/base/index-dtf/${target.dtf}/settings`)
+    await expect(page.getByTestId('settings-fee-holders')).toBeVisible({ timeout: 120_000 })
+    await page.screenshot({ path: `${evidenceDir}/${target.symbol}-after-upgrade.png`, fullPage: true })
+
     writeFileSync(
       `${evidenceDir}/${target.symbol}.json`,
       JSON.stringify(
