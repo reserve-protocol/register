@@ -1,6 +1,6 @@
 ---
 title: E2E Suite
-updated: 2026-11-02
+updated: 2026-11-06
 type: domain
 sources:
   - e2e/**
@@ -234,6 +234,12 @@ estimates like a real wallet: Anvil fills the exact estimate and nested calls ru
 run: a manual deploy governed by vlRSR (read back on chain) and, with `ZAPPER_LOCAL_URL` +
 `VITE_ZAPPER_DEPLOY_API=/zapper-local/`, an ungoverned zap deploy through a local zapper-api (the spec mines blocks
 because the zap route waits for 3 confirmations on Base). `CAPTURE=1` writes desktop and phone shots per section.
+
+The full sequence on one DTF (LCAP: legacy 5.0.0 → governance migration → 6.0.0) runs both specs on one Anvil.
+The subgraph never indexes the fork's new governor, so `governance-overlay.mjs` reads it from the fork and the
+proxy's `OVERLAY` splices it in (shape from real entities: MIDAS for the optimistic governor, MAG7 for the vlRSR
+vault; ids, parameters, guardians, version and fee tables from the fork); `V6_TARGETS` points the 6.0.0 prepare at
+the migrated governor. Commands: `.claude/skills/fork-e2e/SKILL.md`.
 
 ### Stack lane
 
