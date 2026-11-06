@@ -19,6 +19,7 @@ import { Address } from 'viem'
 import { shouldBypassFormValidation } from '@/utils/form-validation'
 import { useFormContext } from 'react-hook-form'
 import { useHasRelevantFormErrors } from '../hooks/use-has-relevant-form-errors'
+import { useProposalStartStep } from '@/views/index-dtf/governance/views/propose/shared'
 
 const ConfirmProposalButton = ({ canProceed }: { canProceed: boolean }) => {
   const { t } = useLingui()
@@ -56,6 +57,8 @@ const ProposalInstructions = () => {
 
   const canProceed = isValid && (!hasRelevantFormErrors || bypassFormValidation)
 
+  const startStep = useProposalStartStep()
+
   const timelineItems = [
     {
       title: t`Configure proposal`,
@@ -74,7 +77,7 @@ const ProposalInstructions = () => {
       isActive: confirmed,
     },
     {
-      title: t`Voting delay begins`,
+      title: startStep,
     },
   ]
 

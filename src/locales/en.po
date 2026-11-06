@@ -853,7 +853,7 @@ msgstr ""
 msgid "Above minimum trade volume"
 msgstr ""
 
-#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:299
+#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:293
 #: src/views/index-dtf/governance/views/proposal/components/proposal-detail-votes.tsx:115
 #: src/views/index-dtf/governance/views/proposal/components/vote-modal.tsx:79
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalDetailStats.tsx:236
@@ -1098,7 +1098,7 @@ msgstr ""
 msgid "Advanced Controls"
 msgstr ""
 
-#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:278
+#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:275
 #: src/views/index-dtf/governance/views/proposal/components/vote-modal.tsx:78
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalDetailStats.tsx:216
 #: src/views/yield-dtf/governance/views/proposal-detail/components/VoteModal.tsx:55
@@ -2234,10 +2234,10 @@ msgstr ""
 msgid "Can't build this upgrade: the optimistic governor's selector registry couldn't be resolved."
 msgstr ""
 
-#: src/views/index-dtf/governance/views/propose/basket/components/basket-proposal-overview.tsx:37
-#: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/components/basket-settings-proposal-overview.tsx:110
-#: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/dao-settings-proposal-overview.tsx:102
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/dtf-settings-proposal-overview.tsx:102
+#: src/views/index-dtf/governance/views/propose/basket/components/basket-proposal-overview.tsx:38
+#: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/components/basket-settings-proposal-overview.tsx:113
+#: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/dao-settings-proposal-overview.tsx:105
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/dtf-settings-proposal-overview.tsx:105
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1243
 #: src/views/yield-dtf/staking/components/stake/edit-delegate.tsx:40
 msgid "Cancel"
@@ -2394,7 +2394,7 @@ msgid "Checking DTF version..."
 msgstr ""
 
 #: src/components/liquidity-badge.tsx:219
-#: src/views/index-dtf/governance/views/propose/basket/components/basket-proposal-overview.tsx:62
+#: src/views/index-dtf/governance/views/propose/basket/components/basket-proposal-overview.tsx:63
 msgid "Checking liquidity..."
 msgstr ""
 
@@ -2669,10 +2669,10 @@ msgstr ""
 msgid "Configure optimistic proposal parameters, trusted optimistic proposers, and which DTF settings they can propose through the veto flow."
 msgstr ""
 
-#: src/views/index-dtf/governance/views/propose/basket/components/basket-proposal-overview.tsx:77
-#: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/components/basket-settings-proposal-overview.tsx:69
-#: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/dao-settings-proposal-overview.tsx:61
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/dtf-settings-proposal-overview.tsx:61
+#: src/views/index-dtf/governance/views/propose/basket/components/basket-proposal-overview.tsx:80
+#: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/components/basket-settings-proposal-overview.tsx:72
+#: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/dao-settings-proposal-overview.tsx:64
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/dtf-settings-proposal-overview.tsx:64
 msgid "Configure proposal"
 msgstr ""
 
@@ -2703,10 +2703,10 @@ msgstr ""
 msgid "Confirm"
 msgstr ""
 
-#: src/views/index-dtf/governance/views/propose/basket/components/basket-proposal-overview.tsx:65
-#: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/components/basket-settings-proposal-overview.tsx:53
-#: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/dao-settings-proposal-overview.tsx:45
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/dtf-settings-proposal-overview.tsx:42
+#: src/views/index-dtf/governance/views/propose/basket/components/basket-proposal-overview.tsx:66
+#: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/components/basket-settings-proposal-overview.tsx:54
+#: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/dao-settings-proposal-overview.tsx:46
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/dtf-settings-proposal-overview.tsx:43
 #: src/views/yield-dtf/governance/views/proposal/components/ProposalOverview.tsx:42
 msgid "Confirm & prepare proposal"
 msgstr ""
@@ -3238,7 +3238,7 @@ msgstr ""
 msgid "Current Version (v2)"
 msgstr ""
 
-#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:359
+#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:350
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalDetailStats.tsx:104
 msgid "Current votes"
 msgstr ""
@@ -3969,10 +3969,10 @@ msgstr ""
 msgid "Edit page"
 msgstr ""
 
-#: src/views/index-dtf/governance/views/propose/basket/components/basket-proposal-overview.tsx:64
-#: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/components/basket-settings-proposal-overview.tsx:51
-#: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/dao-settings-proposal-overview.tsx:43
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/dtf-settings-proposal-overview.tsx:42
+#: src/views/index-dtf/governance/views/propose/basket/components/basket-proposal-overview.tsx:65
+#: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/components/basket-settings-proposal-overview.tsx:52
+#: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/dao-settings-proposal-overview.tsx:44
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/dtf-settings-proposal-overview.tsx:43
 msgid "Edit proposal"
 msgstr ""
 
@@ -4693,21 +4693,21 @@ msgstr ""
 msgid "Final price in:"
 msgstr ""
 
-#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:361
+#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:352
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalDetailStats.tsx:105
 msgid "Final votes"
 msgstr ""
 
-#: src/views/index-dtf/governance/views/propose/basket/components/basket-proposal-overview.tsx:82
-#: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/components/basket-settings-proposal-overview.tsx:74
+#: src/views/index-dtf/governance/views/propose/basket/components/basket-proposal-overview.tsx:85
+#: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/components/basket-settings-proposal-overview.tsx:77
 msgid "Finalize basket proposal"
 msgstr ""
 
-#: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/dao-settings-proposal-overview.tsx:66
+#: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/dao-settings-proposal-overview.tsx:69
 msgid "Finalize DAO proposal"
 msgstr ""
 
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/dtf-settings-proposal-overview.tsx:66
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/dtf-settings-proposal-overview.tsx:69
 msgid "Finalize settings proposal"
 msgstr ""
 
@@ -8060,9 +8060,9 @@ msgstr ""
 msgid "Proposed by:"
 msgstr ""
 
-#: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/components/basket-settings-proposal-overview.tsx:126
-#: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/dao-settings-proposal-overview.tsx:117
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/dtf-settings-proposal-overview.tsx:117
+#: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/components/basket-settings-proposal-overview.tsx:129
+#: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/dao-settings-proposal-overview.tsx:120
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/dtf-settings-proposal-overview.tsx:120
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalDetailContent.tsx:56
 msgid "Proposed changes"
 msgstr ""
@@ -8889,10 +8889,10 @@ msgstr ""
 msgid "Review {0} Whitepaper"
 msgstr ""
 
-#: src/views/index-dtf/governance/views/propose/basket/components/basket-proposal-overview.tsx:88
-#: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/components/basket-settings-proposal-overview.tsx:80
-#: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/dao-settings-proposal-overview.tsx:72
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/dtf-settings-proposal-overview.tsx:72
+#: src/views/index-dtf/governance/views/propose/basket/components/basket-proposal-overview.tsx:91
+#: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/components/basket-settings-proposal-overview.tsx:83
+#: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/dao-settings-proposal-overview.tsx:75
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/dtf-settings-proposal-overview.tsx:75
 msgid "Review & describe your proposal"
 msgstr ""
 
@@ -11812,6 +11812,10 @@ msgstr ""
 msgid "Veto Delay"
 msgstr ""
 
+#: src/views/index-dtf/governance/views/propose/shared/hooks/use-proposal-start-step.ts:10
+msgid "Veto delay begins"
+msgstr ""
+
 #: src/views/index-dtf/deploy/form-fields.ts:100
 msgid "Veto delay must be at least 1 second"
 msgstr ""
@@ -12223,10 +12227,7 @@ msgstr ""
 msgid "Voting Delay"
 msgstr ""
 
-#: src/views/index-dtf/governance/views/propose/basket/components/basket-proposal-overview.tsx:93
-#: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/components/basket-settings-proposal-overview.tsx:85
-#: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/dao-settings-proposal-overview.tsx:77
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/dtf-settings-proposal-overview.tsx:77
+#: src/views/index-dtf/governance/views/propose/shared/hooks/use-proposal-start-step.ts:11
 msgid "Voting delay begins"
 msgstr ""
 

@@ -853,7 +853,7 @@ msgstr "关于此 DTF"
 msgid "Above minimum trade volume"
 msgstr "高于最低交易量"
 
-#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:299
+#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:293
 #: src/views/index-dtf/governance/views/proposal/components/proposal-detail-votes.tsx:115
 #: src/views/index-dtf/governance/views/proposal/components/vote-modal.tsx:79
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalDetailStats.tsx:236
@@ -1098,7 +1098,7 @@ msgstr "高级配置："
 msgid "Advanced Controls"
 msgstr "高级控制"
 
-#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:278
+#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:275
 #: src/views/index-dtf/governance/views/proposal/components/vote-modal.tsx:78
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalDetailStats.tsx:216
 #: src/views/yield-dtf/governance/views/proposal-detail/components/VoteModal.tsx:55
@@ -2234,10 +2234,10 @@ msgstr "你能描述一下你想创建的 DTF 吗？*"
 msgid "Can't build this upgrade: the optimistic governor's selector registry couldn't be resolved."
 msgstr "无法构建此升级：无法解析乐观治理合约的选择器注册表。"
 
-#: src/views/index-dtf/governance/views/propose/basket/components/basket-proposal-overview.tsx:37
-#: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/components/basket-settings-proposal-overview.tsx:110
-#: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/dao-settings-proposal-overview.tsx:102
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/dtf-settings-proposal-overview.tsx:102
+#: src/views/index-dtf/governance/views/propose/basket/components/basket-proposal-overview.tsx:38
+#: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/components/basket-settings-proposal-overview.tsx:113
+#: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/dao-settings-proposal-overview.tsx:105
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/dtf-settings-proposal-overview.tsx:105
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1243
 #: src/views/yield-dtf/staking/components/stake/edit-delegate.tsx:40
 msgid "Cancel"
@@ -2394,7 +2394,7 @@ msgid "Checking DTF version..."
 msgstr "正在检查 DTF 版本..."
 
 #: src/components/liquidity-badge.tsx:219
-#: src/views/index-dtf/governance/views/propose/basket/components/basket-proposal-overview.tsx:62
+#: src/views/index-dtf/governance/views/propose/basket/components/basket-proposal-overview.tsx:63
 msgid "Checking liquidity..."
 msgstr "正在检查流动性…"
 
@@ -2669,10 +2669,10 @@ msgstr "构成"
 msgid "Configure optimistic proposal parameters, trusted optimistic proposers, and which DTF settings they can propose through the veto flow."
 msgstr "配置 Optimistic 提案参数、受信任的 Optimistic 提案人，以及他们可通过否决流程提议的 DTF 设置。"
 
-#: src/views/index-dtf/governance/views/propose/basket/components/basket-proposal-overview.tsx:77
-#: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/components/basket-settings-proposal-overview.tsx:69
-#: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/dao-settings-proposal-overview.tsx:61
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/dtf-settings-proposal-overview.tsx:61
+#: src/views/index-dtf/governance/views/propose/basket/components/basket-proposal-overview.tsx:80
+#: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/components/basket-settings-proposal-overview.tsx:72
+#: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/dao-settings-proposal-overview.tsx:64
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/dtf-settings-proposal-overview.tsx:64
 msgid "Configure proposal"
 msgstr "配置提案"
 
@@ -2703,10 +2703,10 @@ msgstr "配置你的投票"
 msgid "Confirm"
 msgstr "确认"
 
-#: src/views/index-dtf/governance/views/propose/basket/components/basket-proposal-overview.tsx:65
-#: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/components/basket-settings-proposal-overview.tsx:53
-#: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/dao-settings-proposal-overview.tsx:45
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/dtf-settings-proposal-overview.tsx:42
+#: src/views/index-dtf/governance/views/propose/basket/components/basket-proposal-overview.tsx:66
+#: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/components/basket-settings-proposal-overview.tsx:54
+#: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/dao-settings-proposal-overview.tsx:46
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/dtf-settings-proposal-overview.tsx:43
 #: src/views/yield-dtf/governance/views/proposal/components/ProposalOverview.tsx:42
 msgid "Confirm & prepare proposal"
 msgstr "确认并准备提案"
@@ -3238,7 +3238,7 @@ msgstr "缓冲中的当前价值："
 msgid "Current Version (v2)"
 msgstr "当前版本（v2）"
 
-#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:359
+#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:350
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalDetailStats.tsx:104
 msgid "Current votes"
 msgstr "当前投票"
@@ -3969,10 +3969,10 @@ msgstr "编辑概览内容"
 msgid "Edit page"
 msgstr "编辑页面"
 
-#: src/views/index-dtf/governance/views/propose/basket/components/basket-proposal-overview.tsx:64
-#: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/components/basket-settings-proposal-overview.tsx:51
-#: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/dao-settings-proposal-overview.tsx:43
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/dtf-settings-proposal-overview.tsx:42
+#: src/views/index-dtf/governance/views/propose/basket/components/basket-proposal-overview.tsx:65
+#: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/components/basket-settings-proposal-overview.tsx:52
+#: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/dao-settings-proposal-overview.tsx:44
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/dtf-settings-proposal-overview.tsx:43
 msgid "Edit proposal"
 msgstr "编辑提案"
 
@@ -4693,21 +4693,21 @@ msgstr "最终价格"
 msgid "Final price in:"
 msgstr "最终价格倒计时："
 
-#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:361
+#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:352
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalDetailStats.tsx:105
 msgid "Final votes"
 msgstr "最终投票"
 
-#: src/views/index-dtf/governance/views/propose/basket/components/basket-proposal-overview.tsx:82
-#: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/components/basket-settings-proposal-overview.tsx:74
+#: src/views/index-dtf/governance/views/propose/basket/components/basket-proposal-overview.tsx:85
+#: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/components/basket-settings-proposal-overview.tsx:77
 msgid "Finalize basket proposal"
 msgstr "完成篮子提案"
 
-#: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/dao-settings-proposal-overview.tsx:66
+#: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/dao-settings-proposal-overview.tsx:69
 msgid "Finalize DAO proposal"
 msgstr "完成 DAO 提案"
 
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/dtf-settings-proposal-overview.tsx:66
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/dtf-settings-proposal-overview.tsx:69
 msgid "Finalize settings proposal"
 msgstr "完成设置提案"
 
@@ -8060,9 +8060,9 @@ msgstr "提案人"
 msgid "Proposed by:"
 msgstr "提议者："
 
-#: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/components/basket-settings-proposal-overview.tsx:126
-#: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/dao-settings-proposal-overview.tsx:117
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/dtf-settings-proposal-overview.tsx:117
+#: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/components/basket-settings-proposal-overview.tsx:129
+#: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/dao-settings-proposal-overview.tsx:120
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/dtf-settings-proposal-overview.tsx:120
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalDetailContent.tsx:56
 msgid "Proposed changes"
 msgstr "提议的变更"
@@ -8889,10 +8889,10 @@ msgstr "全部还原"
 msgid "Review {0} Whitepaper"
 msgstr "查看 {0} 白皮书"
 
-#: src/views/index-dtf/governance/views/propose/basket/components/basket-proposal-overview.tsx:88
-#: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/components/basket-settings-proposal-overview.tsx:80
-#: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/dao-settings-proposal-overview.tsx:72
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/dtf-settings-proposal-overview.tsx:72
+#: src/views/index-dtf/governance/views/propose/basket/components/basket-proposal-overview.tsx:91
+#: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/components/basket-settings-proposal-overview.tsx:83
+#: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/dao-settings-proposal-overview.tsx:75
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/dtf-settings-proposal-overview.tsx:75
 msgid "Review & describe your proposal"
 msgstr "审阅并描述你的提案"
 
@@ -11823,6 +11823,10 @@ msgstr "否决延迟"
 msgid "Veto Delay"
 msgstr "否决延迟"
 
+#: src/views/index-dtf/governance/views/propose/shared/hooks/use-proposal-start-step.ts:10
+msgid "Veto delay begins"
+msgstr "否决延迟开始"
+
 #: src/views/index-dtf/deploy/form-fields.ts:100
 msgid "Veto delay must be at least 1 second"
 msgstr "否决延迟至少为 1 秒"
@@ -12234,10 +12238,7 @@ msgstr "投票延迟"
 msgid "Voting Delay"
 msgstr "投票延迟"
 
-#: src/views/index-dtf/governance/views/propose/basket/components/basket-proposal-overview.tsx:93
-#: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/components/basket-settings-proposal-overview.tsx:85
-#: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/dao-settings-proposal-overview.tsx:77
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/dtf-settings-proposal-overview.tsx:77
+#: src/views/index-dtf/governance/views/propose/shared/hooks/use-proposal-start-step.ts:11
 msgid "Voting delay begins"
 msgstr "投票延迟开始"
 
