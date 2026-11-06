@@ -65,6 +65,16 @@ const buildFees = (
     })),
   ].filter((share) => share.cents > 0n)
 
+  // The creator wallet and the vault's token jar are recipients too, which the form can't see.
+  const seen = new Set<string>()
+  for (const { recipient } of shares) {
+    if (seen.has(recipient.toLowerCase()))
+      throw new Error(
+        `${recipient} is listed twice as a fee recipient (the creator wallet and the vote-lock vault's token jar count as recipients).`
+      )
+    seen.add(recipient.toLowerCase())
+  }
+
   if (!governanceRecipient && toCents(inputs.governanceShare) > 0n)
     throw new Error('A governance share needs a vote-lock vault to receive it.')
   // The last row absorbs only rounding; a gap here would silently land on it, possibly a permanent recipient.

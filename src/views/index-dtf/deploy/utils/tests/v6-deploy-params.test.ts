@@ -247,3 +247,25 @@ describe('getDeployStakingVault', () => {
     expect(getDeployStakingVault('governanceERC20address', undefined, CREATED)).toBe(CREATED)
   })
 })
+
+describe('buildV6DeployParams duplicate recipients', () => {
+  it('refuses the creator wallet listed again as another recipient', () => {
+    expect(() =>
+      build({
+        governanceShare: 20,
+        deployerShare: 20,
+        additionalRevenueRecipients: [{ address: DEPLOYER, share: 10 }],
+      })
+    ).toThrow(/listed twice/)
+  })
+
+  it('refuses the token jar listed again as a permanent recipient', () => {
+    expect(() =>
+      build({
+        governanceShare: 30,
+        deployerShare: 10,
+        permanentRevenueRecipients: [{ address: JAR, share: 10 }],
+      })
+    ).toThrow(/listed twice/)
+  })
+})
