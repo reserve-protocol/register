@@ -68,7 +68,13 @@ const ProposalTitle = () => {
 
   return (
     <div className="flex flex-col border-b border-border pb-2 md:pb-4 gap-2">
-      <h2 className="text-lg md:text-2xl font-semibold">{title}</h2>
+      <h2
+        data-testid="proposal-title"
+        data-state={proposal?.votingState.state}
+        className="text-lg md:text-2xl font-semibold"
+      >
+        {title}
+      </h2>
       {!!rfcLink && (
         <Link to={rfcLink} target="_blank" className="flex items-center gap-1">
           <span className="text-foreground overflow-ellipsis underline font-semibold">

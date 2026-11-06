@@ -1,6 +1,6 @@
 ---
 title: Progress
-updated: 2026-10-29
+updated: 2026-11-04
 type: ledger
 ---
 
@@ -10,6 +10,7 @@ Stage ledger. One row per stage; keep entries short. Verifier = exact fresh comm
 
 | Stage | Status | Verifier | Review | Next |
 |---|---|---|---|---|
+| Proposer-only proposal cancellation | human-review-required (base 194abb5f0) | RED missing CTA; proposer-cancel desktop/mobile 30/30; scope gate lint/types/unit 1113 (Node 26: --no-experimental-webstorage); helpers 81; build:no-seo; smoke + governance 56 pass/1 zero-power failure reproduced on clean base; screenshots inspected | Independent Intent + Engineering Risk: no blockers; guardian flow unchanged | Draft PR; Engineer review before merge; no live-chain writes |
 | rust-zapper-migration: deploy liquidity badges on `/rebalance/liquidity`, Simple deploy JSON errors + 2-asset guard, yield zap JSON errors / no 4xx retry / Enso-only on Arbitrum, unsupported-token flag and dead TS-era zap code removed | human-review-required (base bfe87b9c6, uncommitted, branch chore/rust-zapper-migration) | scope.mjs: lint · typecheck · unit 1100 (6 new) · e2e tsc · helpers 81 · smoke 57 + vote-lock drawer flake (2/2 isolated) · flows auctions + governance-propose-basket + zap-buy-sell green; failures-zap reject-recovers and zap-edge quote-error fail the same on origin/master | self-review | Engineer review (deploy/zap behavior); react-zapper 2.15.0 bump is separate |
 | eUSD revenue router destinations (PR #1146 review pass): simplify to a one-time router read with the delta against the draft baseline; revert shared ConfirmProposal changes and the hand-edited hyUSD snapshot; full router ABI; locales; docs | human-review-required (base 2bd0b1130) | typecheck; unit full; governance unit 30/30; yield governance e2e desktop/mobile 11/11; gate via scope.mjs | Dark: checksum crash → fixed; Light: per-field errors + a11y → fixed; Minor deferred. Router verified on mainnet: no setDestinations selector, eUSD timelock 0xd979 holds OWNER, destinations empty, Distributor share 0/0 | Engineer review done; Distributor share for the router is a separate proposal |
 | Yield governance mandate setter: expose RToken 4.2+ `setMandate` through the existing proposal pipeline; no protocol/Index changes | human-review-required (base cfe4702e8) | gate: lint/types/unit 1084; helpers 81; smoke 59/1 skip; mandate desktop/mobile 4/4; validation RED: blank left prepare enabled without guard; eUSD fork 26278898: governor schedule → timelock execute → mandate readback | Independent review: no blockers; legacy-parameter enablement checked; capability matched live version and Sourcify ABI | Draft PR; Engineer review before merge; no live-chain writes |

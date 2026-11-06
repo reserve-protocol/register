@@ -2214,6 +2214,9 @@ msgid "Cancel Issue"
 msgstr "取消发行"
 
 #: src/views/index-dtf/governance/views/proposal/components/proposal-cancel-button.tsx:98
+#: src/views/index-dtf/governance/views/proposal/components/proposal-proposer-cancel.tsx:87
+#: src/views/index-dtf/governance/views/proposal/components/proposal-proposer-cancel.tsx:96
+#: src/views/index-dtf/governance/views/proposal/components/proposal-proposer-cancel.tsx:113
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalCancel.tsx:51
 msgid "Cancel proposal"
 msgstr "取消提案"
@@ -2229,6 +2232,10 @@ msgstr "取消 Unstake"
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalAlert.tsx:62
 msgid "Canceled"
 msgstr "已取消"
+
+#: src/views/index-dtf/governance/views/proposal/components/proposal-proposer-cancel.tsx:99
+msgid "Canceling this proposal is permanent. It will no longer be eligible for voting or execution."
+msgstr "取消此提案后无法恢复。该提案将无法再进行投票或执行。"
 
 #: src/views/index-dtf/issuance/async-mint/components/leg-row.tsx:76
 msgid "Cancelled"
@@ -2796,7 +2803,7 @@ msgid "Contact us for eligibility"
 msgstr "联系我们验证资格"
 
 #: src/views/index-dtf/governance/components/contest-badge.tsx:6
-#: src/views/index-dtf/governance/views/proposal/components/proposal-vote.tsx:159
+#: src/views/index-dtf/governance/views/proposal/components/proposal-vote.tsx:160
 msgid "Contested"
 msgstr "有争议"
 
@@ -3340,8 +3347,8 @@ msgid "Delay in Seconds"
 msgstr "延迟（秒）"
 
 #: src/components/vote-lock/constants.tsx:18
-#: src/views/index-dtf/governance/views/proposal/components/proposal-vote.tsx:120
-#: src/views/index-dtf/governance/views/proposal/components/proposal-vote.tsx:129
+#: src/views/index-dtf/governance/views/proposal/components/proposal-vote.tsx:121
+#: src/views/index-dtf/governance/views/proposal/components/proposal-vote.tsx:130
 #: src/views/yield-dtf/governance/components/AccountVotes.tsx:71
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalVote.tsx:141
 msgid "Delegate"
@@ -4454,7 +4461,7 @@ msgstr "快速委托人"
 msgid "Fast Governance"
 msgstr "快速治理"
 
-#: src/views/index-dtf/governance/views/proposal/components/proposal-vote.tsx:181
+#: src/views/index-dtf/governance/views/proposal/components/proposal-vote.tsx:182
 msgid "Fast proposal"
 msgstr "快速提案"
 
@@ -5127,7 +5134,7 @@ msgstr "我已知晓 {delay} 天解锁延迟"
 msgid "I'm aware of the {delay}-day unstake delay"
 msgstr "我已了解 {delay} 天的 unstake 延迟"
 
-#: src/views/index-dtf/governance/views/proposal/components/proposal-header.tsx:117
+#: src/views/index-dtf/governance/views/proposal/components/proposal-header.tsx:123
 #: src/views/yield-dtf/governance/views/proposal-detail/ProposalHeader.tsx:118
 msgid "ID"
 msgstr "ID"
@@ -5519,6 +5526,10 @@ msgstr "基于司法管辖区的禁止事项："
 msgid "just now"
 msgstr "刚刚"
 
+#: src/views/index-dtf/governance/views/proposal/components/proposal-proposer-cancel.tsx:132
+msgid "Keep proposal"
+msgstr "保留提案"
+
 #: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:99
 msgid "Known supported wallets"
 msgstr "已知支持的 Wallets"
@@ -5727,8 +5738,8 @@ msgstr "正在加载你的投资组合数据..."
 #: src/views/index-dtf/governance/components/proposal-preview/token-reward-preview.tsx:66
 #: src/views/index-dtf/governance/components/proposal-preview/token-reward-preview.tsx:66
 #: src/views/index-dtf/governance/views/proposal/components/proposal-header.tsx:58
-#: src/views/index-dtf/governance/views/proposal/components/proposal-header.tsx:99
-#: src/views/index-dtf/governance/views/proposal/components/proposal-header.tsx:122
+#: src/views/index-dtf/governance/views/proposal/components/proposal-header.tsx:105
+#: src/views/index-dtf/governance/views/proposal/components/proposal-header.tsx:128
 #: src/views/index-dtf/governance/views/proposal/components/vote-modal.tsx:140
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/sections/propose-revenue-tokens.tsx:63
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/vault-proposal-form.tsx:65
@@ -7819,7 +7830,7 @@ msgstr "提议停用金库"
 msgid "Proposed"
 msgstr "已提议"
 
-#: src/views/index-dtf/governance/views/proposal/components/proposal-header.tsx:103
+#: src/views/index-dtf/governance/views/proposal/components/proposal-header.tsx:109
 #: src/views/index-dtf/governance/views/proposal/components/vote-modal.tsx:145
 #: src/views/yield-dtf/governance/views/proposal-detail/components/VoteModal.tsx:95
 #: src/views/yield-dtf/governance/views/proposal-detail/ProposalHeader.tsx:107
@@ -7838,7 +7849,7 @@ msgstr "提议者："
 msgid "Proposed changes"
 msgstr "提议的变更"
 
-#: src/views/index-dtf/governance/views/proposal/components/proposal-header.tsx:93
+#: src/views/index-dtf/governance/views/proposal/components/proposal-header.tsx:99
 #: src/views/yield-dtf/governance/views/proposal-detail/ProposalHeader.tsx:100
 msgid "Proposed on"
 msgstr "提议于"
@@ -10392,7 +10403,7 @@ msgstr "根据当地法规，本产品仅向您所在地区的合格投资者提
 msgid "This product isn't available in your region due to local restrictions."
 msgstr "由于当地限制，本产品在你所在的地区不可用。"
 
-#: src/views/index-dtf/governance/views/proposal/components/proposal-vote.tsx:183
+#: src/views/index-dtf/governance/views/proposal/components/proposal-vote.tsx:184
 msgid "This proposal will automatically pass if it is not challenged by governance. If it is challenged, it will be resubmitted as a standard proposal."
 msgstr "如果治理未对此提案发起质疑，它将自动通过。如果被质疑，它将作为标准提案重新提交。"
 
@@ -10431,7 +10442,7 @@ msgstr "此 Wallet 仍持有旧的 {0} vote-lock，已无法用它投票或赚�
 msgid "This wallet still holds an old vote-lock for this DTF. You can't vote or earn rewards with it anymore. Redeem its shares, then lock the {symbol} you receive in {vault}."
 msgstr "此 Wallet 仍持有此 DTF 的旧 vote-lock，已无法用它投票或赚取奖励。请 Redeem 其份额，然后将收到的 {symbol} 锁定到 {vault}。"
 
-#: src/views/index-dtf/governance/views/proposal/components/proposal-vote.tsx:161
+#: src/views/index-dtf/governance/views/proposal/components/proposal-vote.tsx:162
 msgid "This was originally a fast proposal that did not pass governance. Please review the details of this contested proposal closely."
 msgstr "这原本是一个未通过治理的快速提案。请仔细审阅这个有争议提案的细节。"
 
@@ -11606,7 +11617,7 @@ msgstr "查看 DTF"
 msgid "View entire basket"
 msgstr "查看完整篮子"
 
-#: src/views/index-dtf/governance/views/proposal/components/proposal-vote.tsx:49
+#: src/views/index-dtf/governance/views/proposal/components/proposal-vote.tsx:50
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalVote.tsx:50
 msgid "View execute tx"
 msgstr "查看执行交易"
@@ -12722,7 +12733,7 @@ msgstr "你的交易已提交。请先查看其状态，再进行其他操作。
 msgid "Your Vote"
 msgstr "你的投票"
 
-#: src/views/index-dtf/governance/views/proposal/components/proposal-vote.tsx:106
+#: src/views/index-dtf/governance/views/proposal/components/proposal-vote.tsx:107
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalVote.tsx:124
 msgid "Your voting power:"
 msgstr "你的投票权："
