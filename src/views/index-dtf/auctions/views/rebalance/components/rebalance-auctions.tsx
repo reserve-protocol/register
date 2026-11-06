@@ -131,12 +131,12 @@ const AuctionEndMonitor = ({ endTime }: { endTime: string }) => {
       const auctionEndTime = parseInt(endTime)
 
       if (currentTime > auctionEndTime) {
-        // Increment nonce to trigger data refresh
+        // One refresh at the end is enough; repeating it would refetch the auctions every second.
+        clearInterval(interval)
         setRefreshNonce((prev) => prev + 1)
       }
     }
 
-    // Check every second
     const interval = setInterval(checkAuctionEnd, 1000)
 
     return () => clearInterval(interval)

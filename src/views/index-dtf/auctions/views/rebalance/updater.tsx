@@ -22,6 +22,7 @@ import {
 import { AUCTION_POLL_MS } from './hooks/use-rebalance-current-data'
 import { isRebalanceOngoing } from './utils'
 import useRebalanceAuctions from './hooks/use-rebalance-auctions'
+import { useSyncRebalanceAuctions } from './hooks/use-sync-rebalance-auctions'
 import OndoCapUpdater from './updaters/ondo-cap-updater'
 import RebalanceHistoricalWeightsUpdater from './updaters/rebalance-historical-weights'
 import RebalanceMetricsUpdater from './updaters/rebalance-metrics-updater'
@@ -78,11 +79,7 @@ const Updater = () => {
   const setCurrentProposalId = useSetAtom(currentProposalIdAtom)
   const setRebalanceError = useSetAtom(rebalanceErrorAtom)
 
-  useEffect(() => {
-    if (data) {
-      setRebalanceAuctions(data)
-    }
-  }, [data, setRebalanceAuctions])
+  useSyncRebalanceAuctions(data)
 
   useEffect(() => () => setRebalanceAuctions([]), [setRebalanceAuctions])
 
