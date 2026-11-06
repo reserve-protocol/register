@@ -783,15 +783,15 @@ msgstr "Una buena explicación de cómo funcionan las subastas de Gnosis se pued
 msgid "A measure of how closely the new basket rebalanced compared to the proposed basket"
 msgstr "Una medida de qué tan cerca quedó la nueva cesta reequilibrada respecto a la cesta propuesta"
 
-#: src/views/index-dtf/deploy/steps/revenue/index.tsx:92
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-dtf-revenue.tsx:188
-msgid "A one-time fee deducted from the tokens a user receives when they mint the DTF. The platform will keep 50% of revenue from this fee. (Min: 0.15%, Max: 5%)"
-msgstr "Una comisión única que se deduce de los tokens que recibe un usuario cuando hace Mint del DTF. La plataforma se quedará con el 50% de los ingresos de esta comisión. (Mín: 0.15%, Máx: 5%)"
+#: src/views/index-dtf/deploy/steps/revenue/index.tsx:93
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-dtf-revenue.tsx:189
+msgid "A one-time fee deducted from the tokens a user receives when they mint the DTF. The platform will keep {platformShare} of revenue from this fee. (Min: 0.15%, Max: 5%)"
+msgstr "Una comisión única que se deduce de los tokens que recibe un usuario cuando hace Mint del DTF. La plataforma se quedará con el {platformShare} de los ingresos de esta comisión. (Mín: 0.15%, Máx: 5%)"
 
-#: src/views/index-dtf/deploy/steps/revenue/index.tsx:73
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-dtf-revenue.tsx:172
-msgid "A percentage-based fee charged by the DTF based on the total value of the tokens held in the contract. The platform will keep 50% of revenue from this fee. (Min: 0.15%, Max: 10%)"
-msgstr "Una comisión porcentual que cobra el DTF según el valor total de los tokens que mantiene el contrato. La plataforma se quedará con el 50% de los ingresos de esta comisión. (Mín: 0.15%, Máx: 10%)"
+#: src/views/index-dtf/deploy/steps/revenue/index.tsx:74
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-dtf-revenue.tsx:173
+msgid "A percentage-based fee charged by the DTF based on the total value of the tokens held in the contract. The platform will keep {platformShare} of revenue from this fee. (Min: 0.15%, Max: 10%)"
+msgstr "Una comisión porcentual que cobra el DTF según el valor total de los tokens que mantiene el contrato. La plataforma se quedará con el {platformShare} de los ingresos de esta comisión. (Mín: 0.15%, Máx: 10%)"
 
 #: src/views/yield-dtf/deploy/components/TokenForm.tsx:68
 msgid "A re-weightable RToken can have its basket changed in terms of its target units (USD/ETH/BTC/etc…). This flexibility allows for the addition, removal, and update of target units in the basket via governance actions, and could result in drastic shifts in the $USD value of an RToken. RToken holders of re-weightable RTokens have fewer guarantees than holders of non-re-weightable RTokens. This option should only be used if an RToken must be re-weightable in order to accomplish its core goals."
@@ -853,7 +853,7 @@ msgstr "Acerca de este DTF"
 msgid "Above minimum trade volume"
 msgstr "Por encima del volumen mínimo de operación"
 
-#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:293
+#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:330
 #: src/views/index-dtf/governance/views/proposal/components/proposal-detail-votes.tsx:115
 #: src/views/index-dtf/governance/views/proposal/components/vote-modal.tsx:79
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalDetailStats.tsx:236
@@ -1098,7 +1098,7 @@ msgstr "Configuración avanzada:"
 msgid "Advanced Controls"
 msgstr "Controles avanzados"
 
-#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:275
+#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:312
 #: src/views/index-dtf/governance/views/proposal/components/vote-modal.tsx:78
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalDetailStats.tsx:216
 #: src/views/yield-dtf/governance/views/proposal-detail/components/VoteModal.tsx:55
@@ -1350,9 +1350,9 @@ msgstr "Ingresos anualizados distribuidos a los creadores de DTF, proveedores de
 msgid "Annualized revenue distributed to RSR stakers and vote-lockers on DTFs or used to burn RSR supply. Calculated based on the last 30 days."
 msgstr "Ingresos anualizados distribuidos a los stakers de RSR y a quienes bloquean votos en los DTF, o utilizados para quemar suministro de RSR. Calculado en función de los últimos 30 días."
 
-#: src/views/index-dtf/deploy/steps/revenue/index.tsx:72
+#: src/views/index-dtf/deploy/steps/revenue/index.tsx:73
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/changes/revenue-changes.tsx:460
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-dtf-revenue.tsx:171
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-dtf-revenue.tsx:172
 #: src/views/index-dtf/overview/components/fees-stats.tsx:30
 #: src/views/index-dtf/settings/components/index-settings-fees.tsx:205
 msgid "Annualized TVL Fee"
@@ -2327,8 +2327,8 @@ msgstr "El Chain debe ser Mainnet, Base o Binance Smart Chain"
 msgid "Chain: {chainId}"
 msgstr "Chain: {chainId}"
 
-#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:103
-#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:218
+#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:120
+#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:253
 #: src/views/index-dtf/governance/views/proposal/components/vote-modal.tsx:84
 msgid "Challenge"
 msgstr "Impugnar"
@@ -3238,7 +3238,7 @@ msgstr "Valor actual en el buffer:"
 msgid "Current Version (v2)"
 msgstr "Versión actual (v2)"
 
-#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:350
+#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:388
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalDetailStats.tsx:104
 msgid "Current votes"
 msgstr "Votos actuales"
@@ -3614,12 +3614,12 @@ msgstr ""
 msgid "Distribute"
 msgstr "Distribuir"
 
-#: src/views/index-dtf/settings/components/distribute-fees.tsx:50
+#: src/views/index-dtf/settings/components/distribute-fees.tsx:55
 msgid "Distribute accumulated fees to the recipients. Anyone can trigger this transaction."
 msgstr "Distribuye las comisiones acumuladas a los destinatarios. Cualquiera puede activar esta transacción."
 
-#: src/views/index-dtf/settings/components/distribute-fees.tsx:48
-#: src/views/index-dtf/settings/components/distribute-fees.tsx:86
+#: src/views/index-dtf/settings/components/distribute-fees.tsx:53
+#: src/views/index-dtf/settings/components/distribute-fees.tsx:91
 #: src/views/portfolio-page/components/available-rewards.tsx:79
 msgid "Distribute Fees"
 msgstr "Distribuir comisiones"
@@ -4560,8 +4560,8 @@ msgstr "RTokens destacados"
 msgid "Fee data for this period is not available right now."
 msgstr ""
 
-#: src/views/index-dtf/deploy/steps/revenue/index.tsx:119
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-dtf-revenue.tsx:205
+#: src/views/index-dtf/deploy/steps/revenue/index.tsx:120
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-dtf-revenue.tsx:206
 msgid "Fee Distribution"
 msgstr "Distribución de comisiones"
 
@@ -4605,7 +4605,7 @@ msgstr "Comisiones y estadísticas"
 msgid "Fees charged by the protocols and curators of the collateral. They are already reflected in the collateral yield and are not deducted again from the APY shown."
 msgstr ""
 
-#: src/views/index-dtf/settings/components/distribute-fees.tsx:85
+#: src/views/index-dtf/settings/components/distribute-fees.tsx:90
 #: src/views/portfolio-page/components/available-rewards.tsx:42
 msgid "Fees distributed"
 msgstr "Comisiones distribuidas"
@@ -4693,7 +4693,7 @@ msgstr "Precio final"
 msgid "Final price in:"
 msgstr "Precio final en:"
 
-#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:352
+#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:390
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalDetailStats.tsx:105
 msgid "Final votes"
 msgstr "Votos finales"
@@ -4739,7 +4739,7 @@ msgstr "Folio 6.0.0 disponible"
 msgid "Folio 6.0.0 upgrade proposal created"
 msgstr "Propuesta de actualización a Folio 6.0.0 creada"
 
-#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:262
+#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:299
 #: src/views/index-dtf/governance/views/proposal/components/vote-modal.tsx:77
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalDetailStats.tsx:203
 #: src/views/yield-dtf/governance/views/proposal-detail/components/VoteModal.tsx:54
@@ -5882,7 +5882,7 @@ msgstr "Cargando los datos de tu portafolio..."
 #: src/views/index-dtf/governance/views/proposal/components/vote-modal.tsx:140
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/sections/propose-revenue-tokens.tsx:63
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/vault-proposal-form.tsx:65
-#: src/views/index-dtf/settings/components/distribute-fees.tsx:83
+#: src/views/index-dtf/settings/components/distribute-fees.tsx:88
 #: src/views/yield-dtf/governance/components/GovernanceOverview.tsx:169
 #: src/views/yield-dtf/governance/views/proposal-detail/components/VoteModal.tsx:91
 #: src/views/yield-dtf/governance/views/proposal-detail/ProposalHeader.tsx:64
@@ -5987,7 +5987,7 @@ msgstr "¿Creaste tu propio colateral?"
 msgid "Main"
 msgstr "Main"
 
-#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:164
+#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:197
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalDetailStats.tsx:156
 msgid "Majority support"
 msgstr "Apoyo mayoritario"
@@ -6363,9 +6363,9 @@ msgstr "Mint deshabilitado"
 msgid "Mint fee"
 msgstr "Comisión de Mint"
 
-#: src/views/index-dtf/deploy/steps/revenue/index.tsx:91
+#: src/views/index-dtf/deploy/steps/revenue/index.tsx:92
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/changes/revenue-changes.tsx:451
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-dtf-revenue.tsx:187
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-dtf-revenue.tsx:188
 msgid "Mint Fee"
 msgstr "Comisión de Mint"
 
@@ -6701,7 +6701,7 @@ msgid "Next video"
 msgstr ""
 
 #: src/views/index-dtf/auctions/views/rebalance/components/rebalance-overview.tsx:74
-#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:171
+#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:204
 #: src/views/portfolio-page/components/active-proposals.tsx:97
 #: src/views/yield-dtf/governance/components/ProposalList.tsx:119
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalDetailStats.tsx:166
@@ -7023,8 +7023,8 @@ msgstr "Notas del creador"
 msgid "Nudge"
 msgstr "Impulsar"
 
-#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:114
-#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:222
+#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:138
+#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:257
 msgid "of"
 msgstr "de"
 
@@ -7382,7 +7382,7 @@ msgstr "Autorización pendiente..."
 msgid "Pending auctions to settle"
 msgstr "Subastas pendientes de liquidar"
 
-#: src/views/index-dtf/settings/components/distribute-fees.tsx:56
+#: src/views/index-dtf/settings/components/distribute-fees.tsx:61
 msgid "Pending distribution"
 msgstr "Distribución pendiente"
 
@@ -8118,7 +8118,7 @@ msgstr "Encolar propuesta"
 msgid "Queued"
 msgstr "En cola"
 
-#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:103
+#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:120
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalDetailStats.tsx:113
 #: src/views/yield-dtf/settings/components/governance-info.tsx:65
 msgid "Quorum"
@@ -11330,8 +11330,8 @@ msgstr "No se pudieron cargar los destinos actuales."
 msgid "Unable to parse contract data"
 msgstr "No se pueden analizar los datos del contrato"
 
-#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:120
-#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:229
+#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:150
+#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:266
 #: src/views/index-dtf/settings/components/index-settings-fees.tsx:229
 msgid "Unavailable"
 msgstr "No disponible"
@@ -12738,7 +12738,7 @@ msgstr "en lo que va del año"
 
 #: src/views/index-dtf/auctions/views/rebalance/components/rebalance-overview.tsx:60
 #: src/views/index-dtf/auctions/views/rebalance/components/rebalance-overview.tsx:74
-#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:171
+#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:204
 #: src/views/portfolio-page/components/active-proposals.tsx:97
 #: src/views/yield-dtf/governance/components/ProposalList.tsx:119
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalDetailStats.tsx:166

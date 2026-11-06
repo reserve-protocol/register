@@ -62,6 +62,7 @@ const AnnualizedFeeWarningMessage = ({
 const RevenueDistribution = () => {
   const { t } = useLingui()
   const { watch } = useFormContext()
+  const platformShare = formatPercentage(Number(watch('fixedPlatformFee') ?? 0))
   const folioFee = watch('folioFee')
   const mintFee = watch('mintFee')
   const showWarningFolioFee = Number(folioFee) >= 0.15 && Number(folioFee) < 0.3
@@ -70,7 +71,7 @@ const RevenueDistribution = () => {
   const toggleForms = [
     {
       title: t`Annualized TVL Fee`,
-      description: t`A percentage-based fee charged by the DTF based on the total value of the tokens held in the contract. The platform will keep 50% of revenue from this fee. (Min: 0.15%, Max: 10%)`,
+      description: t`A percentage-based fee charged by the DTF based on the total value of the tokens held in the contract. The platform will keep ${platformShare} of revenue from this fee. (Min: 0.15%, Max: 10%)`,
       icon: <TableColumnsSplit size={14} strokeWidth={1.5} />,
       options: [0.15, 0.3, 0.5, 1, 2],
       optionsFormatter: (option: number) => formatPercentage(option),
@@ -89,7 +90,7 @@ const RevenueDistribution = () => {
 
     {
       title: t`Mint Fee`,
-      description: t`A one-time fee deducted from the tokens a user receives when they mint the DTF. The platform will keep 50% of revenue from this fee. (Min: 0.15%, Max: 5%)`,
+      description: t`A one-time fee deducted from the tokens a user receives when they mint the DTF. The platform will keep ${platformShare} of revenue from this fee. (Min: 0.15%, Max: 5%)`,
       icon: <Eclipse size={14} strokeWidth={1.5} />,
       options: [0.15, 0.3, 0.5, 1, 2],
       optionsFormatter: (option: number) => formatPercentage(option),

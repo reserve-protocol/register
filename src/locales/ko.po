@@ -783,15 +783,15 @@ msgstr "Gnosis 경매의 작동 방식에 대한 좋은 설명은 다음에서 �
 msgid "A measure of how closely the new basket rebalanced compared to the proposed basket"
 msgstr "제안된 바스켓 대비 새 바스켓이 얼마나 근접하게 리밸런싱되었는지를 나타내는 지표"
 
-#: src/views/index-dtf/deploy/steps/revenue/index.tsx:92
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-dtf-revenue.tsx:188
-msgid "A one-time fee deducted from the tokens a user receives when they mint the DTF. The platform will keep 50% of revenue from this fee. (Min: 0.15%, Max: 5%)"
-msgstr "사용자가 DTF를 Mint할 때 받는 토큰에서 차감되는 일회성 수수료입니다. 플랫폼은 이 수수료 수익의 50%를 보유합니다. (최소: 0.15%, 최대: 5%)"
+#: src/views/index-dtf/deploy/steps/revenue/index.tsx:93
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-dtf-revenue.tsx:189
+msgid "A one-time fee deducted from the tokens a user receives when they mint the DTF. The platform will keep {platformShare} of revenue from this fee. (Min: 0.15%, Max: 5%)"
+msgstr "사용자가 DTF를 Mint할 때 받는 토큰에서 차감되는 일회성 수수료입니다. 플랫폼은 이 수수료 수익의 {platformShare}를 보유합니다. (최소: 0.15%, 최대: 5%)"
 
-#: src/views/index-dtf/deploy/steps/revenue/index.tsx:73
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-dtf-revenue.tsx:172
-msgid "A percentage-based fee charged by the DTF based on the total value of the tokens held in the contract. The platform will keep 50% of revenue from this fee. (Min: 0.15%, Max: 10%)"
-msgstr "컨트랙트에 보유된 토큰의 총 가치를 기준으로 DTF가 부과하는 비율 기반 수수료입니다. 플랫폼은 이 수수료 수익의 50%를 보유합니다. (최소: 0.15%, 최대: 10%)"
+#: src/views/index-dtf/deploy/steps/revenue/index.tsx:74
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-dtf-revenue.tsx:173
+msgid "A percentage-based fee charged by the DTF based on the total value of the tokens held in the contract. The platform will keep {platformShare} of revenue from this fee. (Min: 0.15%, Max: 10%)"
+msgstr "컨트랙트에 보유된 토큰의 총 가치를 기준으로 DTF가 부과하는 비율 기반 수수료입니다. 플랫폼은 이 수수료 수익의 {platformShare}를 보유합니다. (최소: 0.15%, 최대: 10%)"
 
 #: src/views/yield-dtf/deploy/components/TokenForm.tsx:68
 msgid "A re-weightable RToken can have its basket changed in terms of its target units (USD/ETH/BTC/etc…). This flexibility allows for the addition, removal, and update of target units in the basket via governance actions, and could result in drastic shifts in the $USD value of an RToken. RToken holders of re-weightable RTokens have fewer guarantees than holders of non-re-weightable RTokens. This option should only be used if an RToken must be re-weightable in order to accomplish its core goals."
@@ -853,7 +853,7 @@ msgstr "이 DTF 소개"
 msgid "Above minimum trade volume"
 msgstr "최소 거래량 이상"
 
-#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:293
+#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:330
 #: src/views/index-dtf/governance/views/proposal/components/proposal-detail-votes.tsx:115
 #: src/views/index-dtf/governance/views/proposal/components/vote-modal.tsx:79
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalDetailStats.tsx:236
@@ -1098,7 +1098,7 @@ msgstr "고급 설정:"
 msgid "Advanced Controls"
 msgstr "고급 제어"
 
-#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:275
+#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:312
 #: src/views/index-dtf/governance/views/proposal/components/vote-modal.tsx:78
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalDetailStats.tsx:216
 #: src/views/yield-dtf/governance/views/proposal-detail/components/VoteModal.tsx:55
@@ -1350,9 +1350,9 @@ msgstr "DTF 생성자, 인덱스 제공자 및 기타 모든 생태계 파트너
 msgid "Annualized revenue distributed to RSR stakers and vote-lockers on DTFs or used to burn RSR supply. Calculated based on the last 30 days."
 msgstr "DTF의 RSR 스테이커와 투표 잠금 참여자에게 분배되거나 RSR 공급량을 소각하는 데 사용되는 연환산 수익입니다. 지난 30일을 기준으로 산출됩니다."
 
-#: src/views/index-dtf/deploy/steps/revenue/index.tsx:72
+#: src/views/index-dtf/deploy/steps/revenue/index.tsx:73
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/changes/revenue-changes.tsx:460
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-dtf-revenue.tsx:171
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-dtf-revenue.tsx:172
 #: src/views/index-dtf/overview/components/fees-stats.tsx:30
 #: src/views/index-dtf/settings/components/index-settings-fees.tsx:205
 msgid "Annualized TVL Fee"
@@ -2327,8 +2327,8 @@ msgstr "Chain은 Mainnet, Base 또는 Binance Smart Chain 중 하나여야 합�
 msgid "Chain: {chainId}"
 msgstr "Chain: {chainId}"
 
-#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:103
-#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:218
+#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:120
+#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:253
 #: src/views/index-dtf/governance/views/proposal/components/vote-modal.tsx:84
 msgid "Challenge"
 msgstr "이의 제기"
@@ -3238,7 +3238,7 @@ msgstr "버퍼의 현재 가치:"
 msgid "Current Version (v2)"
 msgstr "현재 버전 (v2)"
 
-#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:350
+#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:388
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalDetailStats.tsx:104
 msgid "Current votes"
 msgstr "현재 투표"
@@ -3614,12 +3614,12 @@ msgstr ""
 msgid "Distribute"
 msgstr "분배"
 
-#: src/views/index-dtf/settings/components/distribute-fees.tsx:50
+#: src/views/index-dtf/settings/components/distribute-fees.tsx:55
 msgid "Distribute accumulated fees to the recipients. Anyone can trigger this transaction."
 msgstr "누적된 수수료를 수령인에게 분배합니다. 누구나 이 트랜잭션을 실행할 수 있습니다."
 
-#: src/views/index-dtf/settings/components/distribute-fees.tsx:48
-#: src/views/index-dtf/settings/components/distribute-fees.tsx:86
+#: src/views/index-dtf/settings/components/distribute-fees.tsx:53
+#: src/views/index-dtf/settings/components/distribute-fees.tsx:91
 #: src/views/portfolio-page/components/available-rewards.tsx:79
 msgid "Distribute Fees"
 msgstr "수수료 분배"
@@ -4560,8 +4560,8 @@ msgstr "추천 RTokens"
 msgid "Fee data for this period is not available right now."
 msgstr ""
 
-#: src/views/index-dtf/deploy/steps/revenue/index.tsx:119
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-dtf-revenue.tsx:205
+#: src/views/index-dtf/deploy/steps/revenue/index.tsx:120
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-dtf-revenue.tsx:206
 msgid "Fee Distribution"
 msgstr "수수료 분배"
 
@@ -4605,7 +4605,7 @@ msgstr "수수료 및 통계"
 msgid "Fees charged by the protocols and curators of the collateral. They are already reflected in the collateral yield and are not deducted again from the APY shown."
 msgstr ""
 
-#: src/views/index-dtf/settings/components/distribute-fees.tsx:85
+#: src/views/index-dtf/settings/components/distribute-fees.tsx:90
 #: src/views/portfolio-page/components/available-rewards.tsx:42
 msgid "Fees distributed"
 msgstr "수수료 분배됨"
@@ -4693,7 +4693,7 @@ msgstr "최종 가격"
 msgid "Final price in:"
 msgstr "최종 가격까지:"
 
-#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:352
+#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:390
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalDetailStats.tsx:105
 msgid "Final votes"
 msgstr "최종 투표"
@@ -4739,7 +4739,7 @@ msgstr "Folio 6.0.0 사용 가능"
 msgid "Folio 6.0.0 upgrade proposal created"
 msgstr "Folio 6.0.0 업그레이드 제안이 생성되었습니다"
 
-#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:262
+#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:299
 #: src/views/index-dtf/governance/views/proposal/components/vote-modal.tsx:77
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalDetailStats.tsx:203
 #: src/views/yield-dtf/governance/views/proposal-detail/components/VoteModal.tsx:54
@@ -5882,7 +5882,7 @@ msgstr "포트폴리오 데이터를 불러오는 중..."
 #: src/views/index-dtf/governance/views/proposal/components/vote-modal.tsx:140
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/sections/propose-revenue-tokens.tsx:63
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/vault-proposal-form.tsx:65
-#: src/views/index-dtf/settings/components/distribute-fees.tsx:83
+#: src/views/index-dtf/settings/components/distribute-fees.tsx:88
 #: src/views/yield-dtf/governance/components/GovernanceOverview.tsx:169
 #: src/views/yield-dtf/governance/views/proposal-detail/components/VoteModal.tsx:91
 #: src/views/yield-dtf/governance/views/proposal-detail/ProposalHeader.tsx:64
@@ -5987,7 +5987,7 @@ msgstr "직접 담보를 만드셨나요?"
 msgid "Main"
 msgstr "Main"
 
-#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:164
+#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:197
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalDetailStats.tsx:156
 msgid "Majority support"
 msgstr "과반수 찬성"
@@ -6363,9 +6363,9 @@ msgstr "Mint 비활성화됨"
 msgid "Mint fee"
 msgstr "Mint 수수료"
 
-#: src/views/index-dtf/deploy/steps/revenue/index.tsx:91
+#: src/views/index-dtf/deploy/steps/revenue/index.tsx:92
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/changes/revenue-changes.tsx:451
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-dtf-revenue.tsx:187
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-dtf-revenue.tsx:188
 msgid "Mint Fee"
 msgstr "Mint 수수료"
 
@@ -6701,7 +6701,7 @@ msgid "Next video"
 msgstr ""
 
 #: src/views/index-dtf/auctions/views/rebalance/components/rebalance-overview.tsx:74
-#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:171
+#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:204
 #: src/views/portfolio-page/components/active-proposals.tsx:97
 #: src/views/yield-dtf/governance/components/ProposalList.tsx:119
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalDetailStats.tsx:166
@@ -7023,8 +7023,8 @@ msgstr "생성자의 노트"
 msgid "Nudge"
 msgstr "넛지"
 
-#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:114
-#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:222
+#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:138
+#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:257
 msgid "of"
 msgstr "/"
 
@@ -7382,7 +7382,7 @@ msgstr "승인 대기 중..."
 msgid "Pending auctions to settle"
 msgstr "정산 대기 중인 경매"
 
-#: src/views/index-dtf/settings/components/distribute-fees.tsx:56
+#: src/views/index-dtf/settings/components/distribute-fees.tsx:61
 msgid "Pending distribution"
 msgstr "분배 대기 중"
 
@@ -8118,7 +8118,7 @@ msgstr "제안 큐에 등록"
 msgid "Queued"
 msgstr "큐 등록됨"
 
-#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:103
+#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:120
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalDetailStats.tsx:113
 #: src/views/yield-dtf/settings/components/governance-info.tsx:65
 msgid "Quorum"
@@ -11330,8 +11330,8 @@ msgstr "현재 대상을 불러올 수 없습니다."
 msgid "Unable to parse contract data"
 msgstr "컨트랙트 데이터를 파싱할 수 없습니다"
 
-#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:120
-#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:229
+#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:150
+#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:266
 #: src/views/index-dtf/settings/components/index-settings-fees.tsx:229
 msgid "Unavailable"
 msgstr "사용 불가"
@@ -12738,7 +12738,7 @@ msgstr "연초 대비"
 
 #: src/views/index-dtf/auctions/views/rebalance/components/rebalance-overview.tsx:60
 #: src/views/index-dtf/auctions/views/rebalance/components/rebalance-overview.tsx:74
-#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:171
+#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:204
 #: src/views/portfolio-page/components/active-proposals.tsx:97
 #: src/views/yield-dtf/governance/components/ProposalList.tsx:119
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalDetailStats.tsx:166

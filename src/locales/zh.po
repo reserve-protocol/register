@@ -783,15 +783,15 @@ msgstr "关于 Gnosis 拍卖运作方式的详细说明，请见"
 msgid "A measure of how closely the new basket rebalanced compared to the proposed basket"
 msgstr "衡量再平衡后的新篮子与提案篮子的接近程度"
 
-#: src/views/index-dtf/deploy/steps/revenue/index.tsx:92
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-dtf-revenue.tsx:188
-msgid "A one-time fee deducted from the tokens a user receives when they mint the DTF. The platform will keep 50% of revenue from this fee. (Min: 0.15%, Max: 5%)"
-msgstr "用户 Mint DTF 时从其收到的代币中扣除的一次性费用。平台将保留此费用收入的 50%。（最低：0.15%，最高：5%）"
+#: src/views/index-dtf/deploy/steps/revenue/index.tsx:93
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-dtf-revenue.tsx:189
+msgid "A one-time fee deducted from the tokens a user receives when they mint the DTF. The platform will keep {platformShare} of revenue from this fee. (Min: 0.15%, Max: 5%)"
+msgstr "用户 Mint DTF 时从其收到的代币中扣除的一次性费用。平台将保留此费用收入的 {platformShare}。（最低：0.15%，最高：5%）"
 
-#: src/views/index-dtf/deploy/steps/revenue/index.tsx:73
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-dtf-revenue.tsx:172
-msgid "A percentage-based fee charged by the DTF based on the total value of the tokens held in the contract. The platform will keep 50% of revenue from this fee. (Min: 0.15%, Max: 10%)"
-msgstr "DTF 根据合约中持有代币的总价值收取的百分比费用。平台将保留此费用收入的 50%。（最低：0.15%，最高：10%）"
+#: src/views/index-dtf/deploy/steps/revenue/index.tsx:74
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-dtf-revenue.tsx:173
+msgid "A percentage-based fee charged by the DTF based on the total value of the tokens held in the contract. The platform will keep {platformShare} of revenue from this fee. (Min: 0.15%, Max: 10%)"
+msgstr "DTF 根据合约中持有代币的总价值收取的百分比费用。平台将保留此费用收入的 {platformShare}。（最低：0.15%，最高：10%）"
 
 #: src/views/yield-dtf/deploy/components/TokenForm.tsx:68
 msgid "A re-weightable RToken can have its basket changed in terms of its target units (USD/ETH/BTC/etc…). This flexibility allows for the addition, removal, and update of target units in the basket via governance actions, and could result in drastic shifts in the $USD value of an RToken. RToken holders of re-weightable RTokens have fewer guarantees than holders of non-re-weightable RTokens. This option should only be used if an RToken must be re-weightable in order to accomplish its core goals."
@@ -853,7 +853,7 @@ msgstr "关于此 DTF"
 msgid "Above minimum trade volume"
 msgstr "高于最低交易量"
 
-#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:293
+#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:330
 #: src/views/index-dtf/governance/views/proposal/components/proposal-detail-votes.tsx:115
 #: src/views/index-dtf/governance/views/proposal/components/vote-modal.tsx:79
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalDetailStats.tsx:236
@@ -1098,7 +1098,7 @@ msgstr "高级配置："
 msgid "Advanced Controls"
 msgstr "高级控制"
 
-#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:275
+#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:312
 #: src/views/index-dtf/governance/views/proposal/components/vote-modal.tsx:78
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalDetailStats.tsx:216
 #: src/views/yield-dtf/governance/views/proposal-detail/components/VoteModal.tsx:55
@@ -1350,9 +1350,9 @@ msgstr "分配给 DTF 创建者、指数提供方及所有其他生态系统合�
 msgid "Annualized revenue distributed to RSR stakers and vote-lockers on DTFs or used to burn RSR supply. Calculated based on the last 30 days."
 msgstr "分配给 DTF 上 RSR stakers 和投票锁定者，或用于销毁 RSR 供应量的年化收入。根据过去 30 天计算得出。"
 
-#: src/views/index-dtf/deploy/steps/revenue/index.tsx:72
+#: src/views/index-dtf/deploy/steps/revenue/index.tsx:73
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/changes/revenue-changes.tsx:460
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-dtf-revenue.tsx:171
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-dtf-revenue.tsx:172
 #: src/views/index-dtf/overview/components/fees-stats.tsx:30
 #: src/views/index-dtf/settings/components/index-settings-fees.tsx:205
 msgid "Annualized TVL Fee"
@@ -2327,8 +2327,8 @@ msgstr "Chain 必须是 Mainnet、Base 或 Binance Smart Chain"
 msgid "Chain: {chainId}"
 msgstr "Chain: {chainId}"
 
-#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:103
-#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:218
+#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:120
+#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:253
 #: src/views/index-dtf/governance/views/proposal/components/vote-modal.tsx:84
 msgid "Challenge"
 msgstr "质疑"
@@ -3238,7 +3238,7 @@ msgstr "缓冲中的当前价值："
 msgid "Current Version (v2)"
 msgstr "当前版本（v2）"
 
-#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:350
+#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:388
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalDetailStats.tsx:104
 msgid "Current votes"
 msgstr "当前投票"
@@ -3614,12 +3614,12 @@ msgstr ""
 msgid "Distribute"
 msgstr "分配"
 
-#: src/views/index-dtf/settings/components/distribute-fees.tsx:50
+#: src/views/index-dtf/settings/components/distribute-fees.tsx:55
 msgid "Distribute accumulated fees to the recipients. Anyone can trigger this transaction."
 msgstr "将累积的费用分配给接收者。任何人都可以触发此交易。"
 
-#: src/views/index-dtf/settings/components/distribute-fees.tsx:48
-#: src/views/index-dtf/settings/components/distribute-fees.tsx:86
+#: src/views/index-dtf/settings/components/distribute-fees.tsx:53
+#: src/views/index-dtf/settings/components/distribute-fees.tsx:91
 #: src/views/portfolio-page/components/available-rewards.tsx:79
 msgid "Distribute Fees"
 msgstr "分配费用"
@@ -4560,8 +4560,8 @@ msgstr "精选 RTokens"
 msgid "Fee data for this period is not available right now."
 msgstr ""
 
-#: src/views/index-dtf/deploy/steps/revenue/index.tsx:119
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-dtf-revenue.tsx:205
+#: src/views/index-dtf/deploy/steps/revenue/index.tsx:120
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-dtf-revenue.tsx:206
 msgid "Fee Distribution"
 msgstr "费用分配"
 
@@ -4605,7 +4605,7 @@ msgstr "费用与统计"
 msgid "Fees charged by the protocols and curators of the collateral. They are already reflected in the collateral yield and are not deducted again from the APY shown."
 msgstr ""
 
-#: src/views/index-dtf/settings/components/distribute-fees.tsx:85
+#: src/views/index-dtf/settings/components/distribute-fees.tsx:90
 #: src/views/portfolio-page/components/available-rewards.tsx:42
 msgid "Fees distributed"
 msgstr "费用已分配"
@@ -4693,7 +4693,7 @@ msgstr "最终价格"
 msgid "Final price in:"
 msgstr "最终价格倒计时："
 
-#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:352
+#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:390
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalDetailStats.tsx:105
 msgid "Final votes"
 msgstr "最终投票"
@@ -4739,7 +4739,7 @@ msgstr "Folio 6.0.0 可用"
 msgid "Folio 6.0.0 upgrade proposal created"
 msgstr "已创建 Folio 6.0.0 升级提案"
 
-#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:262
+#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:299
 #: src/views/index-dtf/governance/views/proposal/components/vote-modal.tsx:77
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalDetailStats.tsx:203
 #: src/views/yield-dtf/governance/views/proposal-detail/components/VoteModal.tsx:54
@@ -5882,7 +5882,7 @@ msgstr "正在加载你的投资组合数据..."
 #: src/views/index-dtf/governance/views/proposal/components/vote-modal.tsx:140
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/sections/propose-revenue-tokens.tsx:63
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/vault-proposal-form.tsx:65
-#: src/views/index-dtf/settings/components/distribute-fees.tsx:83
+#: src/views/index-dtf/settings/components/distribute-fees.tsx:88
 #: src/views/yield-dtf/governance/components/GovernanceOverview.tsx:169
 #: src/views/yield-dtf/governance/views/proposal-detail/components/VoteModal.tsx:91
 #: src/views/yield-dtf/governance/views/proposal-detail/ProposalHeader.tsx:64
@@ -5987,7 +5987,7 @@ msgstr "自行创建了抵押品？"
 msgid "Main"
 msgstr "Main"
 
-#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:164
+#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:197
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalDetailStats.tsx:156
 msgid "Majority support"
 msgstr "多数支持"
@@ -6363,9 +6363,9 @@ msgstr "Mint 已禁用"
 msgid "Mint fee"
 msgstr "Mint 费用"
 
-#: src/views/index-dtf/deploy/steps/revenue/index.tsx:91
+#: src/views/index-dtf/deploy/steps/revenue/index.tsx:92
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/changes/revenue-changes.tsx:451
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-dtf-revenue.tsx:187
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-dtf-revenue.tsx:188
 msgid "Mint Fee"
 msgstr "Mint 费用"
 
@@ -6701,7 +6701,7 @@ msgid "Next video"
 msgstr ""
 
 #: src/views/index-dtf/auctions/views/rebalance/components/rebalance-overview.tsx:74
-#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:171
+#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:204
 #: src/views/portfolio-page/components/active-proposals.tsx:97
 #: src/views/yield-dtf/governance/components/ProposalList.tsx:119
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalDetailStats.tsx:166
@@ -7023,8 +7023,8 @@ msgstr "来自创建者的备注"
 msgid "Nudge"
 msgstr "Nudge"
 
-#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:114
-#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:222
+#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:138
+#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:257
 msgid "of"
 msgstr "/"
 
@@ -7382,7 +7382,7 @@ msgstr "授权待处理……"
 msgid "Pending auctions to settle"
 msgstr "待结算的拍卖"
 
-#: src/views/index-dtf/settings/components/distribute-fees.tsx:56
+#: src/views/index-dtf/settings/components/distribute-fees.tsx:61
 msgid "Pending distribution"
 msgstr "待分配"
 
@@ -8118,7 +8118,7 @@ msgstr "将提案加入队列"
 msgid "Queued"
 msgstr "已入队"
 
-#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:103
+#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:120
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalDetailStats.tsx:113
 #: src/views/yield-dtf/settings/components/governance-info.tsx:65
 msgid "Quorum"
@@ -11330,8 +11330,8 @@ msgstr "无法加载当前目标。"
 msgid "Unable to parse contract data"
 msgstr "无法解析合约数据"
 
-#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:120
-#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:229
+#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:150
+#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:266
 #: src/views/index-dtf/settings/components/index-settings-fees.tsx:229
 msgid "Unavailable"
 msgstr "不可用"
@@ -12738,7 +12738,7 @@ msgstr "年初至今"
 
 #: src/views/index-dtf/auctions/views/rebalance/components/rebalance-overview.tsx:60
 #: src/views/index-dtf/auctions/views/rebalance/components/rebalance-overview.tsx:74
-#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:171
+#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:204
 #: src/views/portfolio-page/components/active-proposals.tsx:97
 #: src/views/yield-dtf/governance/components/ProposalList.tsx:119
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalDetailStats.tsx:166
