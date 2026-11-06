@@ -2411,18 +2411,18 @@ msgstr "DTF 버전 확인 중..."
 msgid "Checking liquidity..."
 msgstr "유동성 확인 중..."
 
-#: src/views/index-dtf/governance/views/propose/basket/components/submit-proposal-button.tsx:140
+#: src/views/index-dtf/governance/views/propose/basket/components/submit-proposal-button.tsx:155
 #: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/components/submit-proposal-button.tsx:59
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/submit-proposal-button.tsx:56
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/submit-proposal-button.tsx:61
 msgid "Checking proposal type..."
 msgstr "제안 유형 확인 중..."
 
-#: src/views/index-dtf/governance/views/propose/basket/components/submit-proposal-button.tsx:103
+#: src/views/index-dtf/governance/views/propose/basket/components/submit-proposal-button.tsx:118
 msgid "Checking trade allowlist..."
 msgstr "거래 허용 목록 확인 중..."
 
-#: src/views/index-dtf/governance/views/propose/basket/components/submit-proposal-button.tsx:152
+#: src/views/index-dtf/governance/views/propose/basket/components/submit-proposal-button.tsx:167
 #: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/components/submit-proposal-button.tsx:73
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/submit-proposal-button.tsx:70
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/submit-proposal-button.tsx:75
@@ -2964,7 +2964,11 @@ msgstr ""
 msgid "Couldn't confirm the launch — check your wallet before retrying"
 msgstr "실행을 확인할 수 없습니다 — 다시 시도하기 전에 Wallet을 확인하세요"
 
-#: src/views/index-dtf/governance/views/propose/basket/components/submit-proposal-button.tsx:116
+#: src/views/index-dtf/governance/views/propose/basket/components/submit-proposal-button.tsx:110
+msgid "Couldn't read this DTF's rebalance nonce or governance timing. Try again later."
+msgstr "이 DTF의 리밸런스 nonce 또는 거버넌스 일정을 읽을 수 없습니다. 나중에 다시 시도하세요."
+
+#: src/views/index-dtf/governance/views/propose/basket/components/submit-proposal-button.tsx:131
 msgid "Couldn't read this DTF's trade allowlist. Try again later."
 msgstr "이 DTF의 거래 허용 목록을 읽을 수 없습니다. 나중에 다시 시도하세요."
 
@@ -7005,7 +7009,7 @@ msgstr "적용 안 됨"
 msgid "Not enough balance to bid"
 msgstr "입찰할 잔액이 부족합니다"
 
-#: src/views/index-dtf/governance/views/propose/basket/components/submit-proposal-button.tsx:160
+#: src/views/index-dtf/governance/views/propose/basket/components/submit-proposal-button.tsx:175
 #: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/components/submit-proposal-button.tsx:83
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/submit-proposal-button.tsx:80
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/submit-proposal-button.tsx:85
@@ -7016,7 +7020,7 @@ msgstr "투표권이 부족합니다"
 msgid "Not frozen"
 msgstr "동결되지 않음"
 
-#: src/views/index-dtf/governance/views/propose/basket/components/submit-proposal-button.tsx:130
+#: src/views/index-dtf/governance/views/propose/basket/components/submit-proposal-button.tsx:145
 msgid "Not in this DTF's trade allowlist: {symbols}"
 msgstr "이 DTF의 거래 허용 목록에 없음: {symbols}"
 
@@ -7435,7 +7439,7 @@ msgstr "대기 중인 출금"
 msgid "Pending, sign in wallet"
 msgstr "대기 중, Wallet에서 서명하세요"
 
-#: src/views/index-dtf/governance/views/propose/basket/components/submit-proposal-button.tsx:269
+#: src/views/index-dtf/governance/views/propose/basket/components/submit-proposal-button.tsx:284
 #: src/views/index-dtf/governance/views/propose/components/propose-index-upgrade.tsx:120
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-folio-governance-upgrade.tsx:154
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-governance-spell-31-03-2025.tsx:304
@@ -10030,7 +10034,7 @@ msgstr "모든 변경사항 제출"
 msgid "Submit proposal on-chain"
 msgstr "온체인으로 제안 제출"
 
-#: src/views/index-dtf/governance/views/propose/basket/components/submit-proposal-button.tsx:271
+#: src/views/index-dtf/governance/views/propose/basket/components/submit-proposal-button.tsx:286
 #: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/components/submit-proposal-button.tsx:190
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/submit-proposal-button.tsx:188
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/submit-proposal-button.tsx:191
@@ -12392,7 +12396,7 @@ msgstr "승인 대기 중..."
 msgid "Waiting for collateral"
 msgstr "담보 대기 중"
 
-#: src/views/index-dtf/governance/views/propose/basket/components/submit-proposal-button.tsx:270
+#: src/views/index-dtf/governance/views/propose/basket/components/submit-proposal-button.tsx:285
 #: src/views/index-dtf/governance/views/propose/components/propose-index-upgrade.tsx:121
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-folio-governance-upgrade.tsx:155
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-governance-spell-31-03-2025.tsx:305

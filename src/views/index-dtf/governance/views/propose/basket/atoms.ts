@@ -497,6 +497,8 @@ export type V6RebalanceContext = {
 export const v6RebalanceContextAtom = atom<V6RebalanceContext | undefined>(
   undefined
 )
+// The nonce or governor timing read failed: the proposal can't be built, and the submit button says so.
+export const v6RebalanceContextErrorAtom = atom(false)
 
 export const v6RebalanceTermsAtom = atom((get) => {
   const context = get(v6RebalanceContextAtom)

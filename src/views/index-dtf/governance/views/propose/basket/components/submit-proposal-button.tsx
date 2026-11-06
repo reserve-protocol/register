@@ -17,6 +17,7 @@ import {
   proposalDescriptionAtom,
   basketProposalCalldatasAtom,
   proposedIndexBasketAtom,
+  v6RebalanceContextErrorAtom,
 } from '../atoms'
 import { useIsProposeAllowed } from '@/views/index-dtf/governance/hooks/use-is-propose-allowed'
 import { indexDTFRefreshFnAtom } from '@/views/index-dtf/index-dtf-container'
@@ -96,6 +97,20 @@ const ProposeGatekeeper = memo(() => {
     })
   const isOptimisticProposal = proposalType === 'optimistic'
   const outsideAllowlist = useTokensOutsideTradeAllowlist()
+  const contextError = useAtomValue(v6RebalanceContextErrorAtom)
+
+  if (contextError) {
+    return (
+      <Button
+        disabled
+        className="w-full h-auto min-h-10 whitespace-normal"
+        variant="default"
+        data-testid="basket-propose-context-unavailable"
+      >
+        <Trans>Couldn't read this DTF's rebalance nonce or governance timing. Try again later.</Trans>
+      </Button>
+    )
+  }
 
   if (outsideAllowlist.isLoading) {
     return (

@@ -39,6 +39,7 @@ import {
   tokenPriceVolatilityAtom,
   proposalConfirmedAtAtom,
   v6RebalanceContextAtom,
+  v6RebalanceContextErrorAtom,
 } from './atoms'
 import { resetMaxAuctionSizesAtom } from '@/state/max-auction-sizes'
 import { PermissionOptionId } from './components/proposal-rebalance-launch-settings'
@@ -318,17 +319,18 @@ const V6RebalanceContextUpdater = () => {
   const identity = useIndexDtfIdentity()
   const isConfirmed = useAtomValue(isProposalConfirmedAtom)
   const setContext = useSetAtom(v6RebalanceContextAtom)
+  const setContextError = useSetAtom(v6RebalanceContextErrorAtom)
   const setConfirmedAt = useSetAtom(proposalConfirmedAtAtom)
   const isV6 = versionState.status === 'ready' && versionState.major === 6
   const governor = governance?.id
   const timelock = governance?.timelock?.id
   const isOptimistic = !!governance?.isOptimistic
 
-  const { data: nonce } = useIndexDtfRebalanceNonce(
+  const { data: nonce, isError: nonceError } = useIndexDtfRebalanceNonce(
     isV6 && identity.address ? identity : undefined,
     { refetchInterval: V6_NONCE_POLL_MS }
   )
-  const { data: timing } = useReadContracts({
+  const { data: timing, isError: timingError } = useReadContracts({
     contracts: [
       {
         address: governor,
@@ -362,6 +364,10 @@ const V6RebalanceContextUpdater = () => {
     allowFailure: false,
     query: { enabled: isV6 && !!governor && !!timelock },
   })
+
+  useEffect(() => {
+    setContextError(isV6 && (nonceError || timingError))
+  }, [isV6, nonceError, timingError, setContextError])
 
   useEffect(() => {
     if (!isV6 || nonce === undefined || !timing) {

@@ -2411,18 +2411,18 @@ msgstr "Verificando la versión del DTF..."
 msgid "Checking liquidity..."
 msgstr "Verificando liquidez..."
 
-#: src/views/index-dtf/governance/views/propose/basket/components/submit-proposal-button.tsx:140
+#: src/views/index-dtf/governance/views/propose/basket/components/submit-proposal-button.tsx:155
 #: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/components/submit-proposal-button.tsx:59
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/submit-proposal-button.tsx:56
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/submit-proposal-button.tsx:61
 msgid "Checking proposal type..."
 msgstr "Verificando el tipo de propuesta..."
 
-#: src/views/index-dtf/governance/views/propose/basket/components/submit-proposal-button.tsx:103
+#: src/views/index-dtf/governance/views/propose/basket/components/submit-proposal-button.tsx:118
 msgid "Checking trade allowlist..."
 msgstr "Verificando la lista de tokens permitidos..."
 
-#: src/views/index-dtf/governance/views/propose/basket/components/submit-proposal-button.tsx:152
+#: src/views/index-dtf/governance/views/propose/basket/components/submit-proposal-button.tsx:167
 #: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/components/submit-proposal-button.tsx:73
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/submit-proposal-button.tsx:70
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/submit-proposal-button.tsx:75
@@ -2964,7 +2964,11 @@ msgstr ""
 msgid "Couldn't confirm the launch — check your wallet before retrying"
 msgstr "No se pudo confirmar el lanzamiento — revisa tu Wallet antes de reintentar"
 
-#: src/views/index-dtf/governance/views/propose/basket/components/submit-proposal-button.tsx:116
+#: src/views/index-dtf/governance/views/propose/basket/components/submit-proposal-button.tsx:110
+msgid "Couldn't read this DTF's rebalance nonce or governance timing. Try again later."
+msgstr "No se pudo leer el nonce de rebalanceo o los tiempos de governance de este DTF. Inténtalo más tarde."
+
+#: src/views/index-dtf/governance/views/propose/basket/components/submit-proposal-button.tsx:131
 msgid "Couldn't read this DTF's trade allowlist. Try again later."
 msgstr "No se pudo leer la lista de tokens permitidos de este DTF. Inténtalo más tarde."
 
@@ -7005,7 +7009,7 @@ msgstr "Sin aplicar"
 msgid "Not enough balance to bid"
 msgstr "Saldo insuficiente para ofertar"
 
-#: src/views/index-dtf/governance/views/propose/basket/components/submit-proposal-button.tsx:160
+#: src/views/index-dtf/governance/views/propose/basket/components/submit-proposal-button.tsx:175
 #: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/components/submit-proposal-button.tsx:83
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/submit-proposal-button.tsx:80
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/submit-proposal-button.tsx:85
@@ -7016,7 +7020,7 @@ msgstr "Poder de voto insuficiente"
 msgid "Not frozen"
 msgstr "Sin congelar"
 
-#: src/views/index-dtf/governance/views/propose/basket/components/submit-proposal-button.tsx:130
+#: src/views/index-dtf/governance/views/propose/basket/components/submit-proposal-button.tsx:145
 msgid "Not in this DTF's trade allowlist: {symbols}"
 msgstr "No están en la lista de tokens permitidos de este DTF: {symbols}"
 
@@ -7435,7 +7439,7 @@ msgstr "Retiros pendientes"
 msgid "Pending, sign in wallet"
 msgstr "Pendiente, firma en la Wallet"
 
-#: src/views/index-dtf/governance/views/propose/basket/components/submit-proposal-button.tsx:269
+#: src/views/index-dtf/governance/views/propose/basket/components/submit-proposal-button.tsx:284
 #: src/views/index-dtf/governance/views/propose/components/propose-index-upgrade.tsx:120
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-folio-governance-upgrade.tsx:154
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-governance-spell-31-03-2025.tsx:304
@@ -10030,7 +10034,7 @@ msgstr "Enviar todos los cambios"
 msgid "Submit proposal on-chain"
 msgstr "Enviar propuesta on-chain"
 
-#: src/views/index-dtf/governance/views/propose/basket/components/submit-proposal-button.tsx:271
+#: src/views/index-dtf/governance/views/propose/basket/components/submit-proposal-button.tsx:286
 #: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/components/submit-proposal-button.tsx:190
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/submit-proposal-button.tsx:188
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/submit-proposal-button.tsx:191
@@ -12392,7 +12396,7 @@ msgstr "Esperando la autorización..."
 msgid "Waiting for collateral"
 msgstr "Esperando el colateral"
 
-#: src/views/index-dtf/governance/views/propose/basket/components/submit-proposal-button.tsx:270
+#: src/views/index-dtf/governance/views/propose/basket/components/submit-proposal-button.tsx:285
 #: src/views/index-dtf/governance/views/propose/components/propose-index-upgrade.tsx:121
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-folio-governance-upgrade.tsx:155
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-governance-spell-31-03-2025.tsx:305

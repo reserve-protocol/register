@@ -2411,18 +2411,18 @@ msgstr "正在检查 DTF 版本..."
 msgid "Checking liquidity..."
 msgstr "正在检查流动性…"
 
-#: src/views/index-dtf/governance/views/propose/basket/components/submit-proposal-button.tsx:140
+#: src/views/index-dtf/governance/views/propose/basket/components/submit-proposal-button.tsx:155
 #: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/components/submit-proposal-button.tsx:59
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/submit-proposal-button.tsx:56
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/submit-proposal-button.tsx:61
 msgid "Checking proposal type..."
 msgstr "正在检查提案类型..."
 
-#: src/views/index-dtf/governance/views/propose/basket/components/submit-proposal-button.tsx:103
+#: src/views/index-dtf/governance/views/propose/basket/components/submit-proposal-button.tsx:118
 msgid "Checking trade allowlist..."
 msgstr "正在检查交易允许列表..."
 
-#: src/views/index-dtf/governance/views/propose/basket/components/submit-proposal-button.tsx:152
+#: src/views/index-dtf/governance/views/propose/basket/components/submit-proposal-button.tsx:167
 #: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/components/submit-proposal-button.tsx:73
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/submit-proposal-button.tsx:70
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/submit-proposal-button.tsx:75
@@ -2964,7 +2964,11 @@ msgstr ""
 msgid "Couldn't confirm the launch — check your wallet before retrying"
 msgstr "无法确认发起结果 — 重试前请检查你的 Wallet"
 
-#: src/views/index-dtf/governance/views/propose/basket/components/submit-proposal-button.tsx:116
+#: src/views/index-dtf/governance/views/propose/basket/components/submit-proposal-button.tsx:110
+msgid "Couldn't read this DTF's rebalance nonce or governance timing. Try again later."
+msgstr "无法读取此 DTF 的再平衡 nonce 或治理时间。请稍后再试。"
+
+#: src/views/index-dtf/governance/views/propose/basket/components/submit-proposal-button.tsx:131
 msgid "Couldn't read this DTF's trade allowlist. Try again later."
 msgstr "无法读取此 DTF 的交易允许列表，请稍后再试。"
 
@@ -7005,7 +7009,7 @@ msgstr "未启用"
 msgid "Not enough balance to bid"
 msgstr "余额不足以出价"
 
-#: src/views/index-dtf/governance/views/propose/basket/components/submit-proposal-button.tsx:160
+#: src/views/index-dtf/governance/views/propose/basket/components/submit-proposal-button.tsx:175
 #: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/components/submit-proposal-button.tsx:83
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/submit-proposal-button.tsx:80
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/submit-proposal-button.tsx:85
@@ -7016,7 +7020,7 @@ msgstr "投票权不足"
 msgid "Not frozen"
 msgstr "未冻结"
 
-#: src/views/index-dtf/governance/views/propose/basket/components/submit-proposal-button.tsx:130
+#: src/views/index-dtf/governance/views/propose/basket/components/submit-proposal-button.tsx:145
 msgid "Not in this DTF's trade allowlist: {symbols}"
 msgstr "不在此 DTF 的交易允许列表中：{symbols}"
 
@@ -7435,7 +7439,7 @@ msgstr "待处理的提取"
 msgid "Pending, sign in wallet"
 msgstr "待处理，请在 Wallet 中签名"
 
-#: src/views/index-dtf/governance/views/propose/basket/components/submit-proposal-button.tsx:269
+#: src/views/index-dtf/governance/views/propose/basket/components/submit-proposal-button.tsx:284
 #: src/views/index-dtf/governance/views/propose/components/propose-index-upgrade.tsx:120
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-folio-governance-upgrade.tsx:154
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-governance-spell-31-03-2025.tsx:304
@@ -10030,7 +10034,7 @@ msgstr "提交所有更改"
 msgid "Submit proposal on-chain"
 msgstr "在链上提交提案"
 
-#: src/views/index-dtf/governance/views/propose/basket/components/submit-proposal-button.tsx:271
+#: src/views/index-dtf/governance/views/propose/basket/components/submit-proposal-button.tsx:286
 #: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/components/submit-proposal-button.tsx:190
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/submit-proposal-button.tsx:188
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/submit-proposal-button.tsx:191
@@ -12392,7 +12396,7 @@ msgstr "等待授权……"
 msgid "Waiting for collateral"
 msgstr "等待抵押品"
 
-#: src/views/index-dtf/governance/views/propose/basket/components/submit-proposal-button.tsx:270
+#: src/views/index-dtf/governance/views/propose/basket/components/submit-proposal-button.tsx:285
 #: src/views/index-dtf/governance/views/propose/components/propose-index-upgrade.tsx:121
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-folio-governance-upgrade.tsx:155
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-governance-spell-31-03-2025.tsx:305
