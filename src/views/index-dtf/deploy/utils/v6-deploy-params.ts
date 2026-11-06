@@ -181,3 +181,15 @@ export const resolveGovernanceRecipient = (
     return { ready: false, error: 'This vault has no token jar to receive governance fees.' }
   return { ready: true, recipient: recipient.tokenJar }
 }
+
+// The vault the deploy is governed by. Create DAO stores the vault it deployed; switching to another
+// option must not carry it, or a wallet-governed deploy would come out vault-governed.
+export const getDeployStakingVault = (
+  option: 'governanceERC20address' | 'governanceVoteLock' | 'governanceWalletAddress',
+  formVault: Address | undefined,
+  createdVault: Address | undefined
+): Address | undefined => {
+  if (option === 'governanceVoteLock') return formVault
+  if (option === 'governanceERC20address') return createdVault
+  return undefined
+}

@@ -5,6 +5,7 @@ import { dtfDeployDefaultValues, type DeployInputs } from '../../form-fields'
 import {
   buildV6DeployParams,
   buildV6VaultGovernance,
+  getDeployStakingVault,
   resolveGovernanceRecipient,
 } from '../v6-deploy-params'
 
@@ -227,5 +228,22 @@ describe('resolveGovernanceRecipient', () => {
     expect(resolveGovernanceRecipient(VAULT, { stToken: VAULT, error: 'reverted' }).error).toBe(
       'reverted'
     )
+  })
+})
+
+describe('getDeployStakingVault', () => {
+  const VAULT = '0x1111111111111111111111111111111111111111' as Address
+  const CREATED = '0x2222222222222222222222222222222222222222' as Address
+
+  it('drops a vault left over from an earlier option when the wallet governs', () => {
+    expect(getDeployStakingVault('governanceWalletAddress', undefined, CREATED)).toBeUndefined()
+  })
+
+  it('takes the existing vault from the form', () => {
+    expect(getDeployStakingVault('governanceVoteLock', VAULT, CREATED)).toBe(VAULT)
+  })
+
+  it('keeps the vault Create DAO deployed', () => {
+    expect(getDeployStakingVault('governanceERC20address', undefined, CREATED)).toBe(CREATED)
   })
 })

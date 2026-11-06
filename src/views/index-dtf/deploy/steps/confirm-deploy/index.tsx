@@ -6,7 +6,7 @@ import {
   DrawerTrigger,
 } from '@/components/ui/drawer'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { useAtomValue, useSetAtom } from 'jotai'
+import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { useResetAtom } from 'jotai/utils'
 import { useState } from 'react'
 import { SubmitHandler, useFormContext } from 'react-hook-form'
@@ -15,7 +15,9 @@ import {
   basketInputTypeAtom,
   daoTokenAddressAtom,
   deployedDTFAtom,
+  selectedGovernanceOptionAtom,
 } from '../../atoms'
+import { getDeployStakingVault } from '../../utils/v6-deploy-params'
 import { DeployInputs } from '../../form-fields'
 import { indexDeployFormDataAtom } from './atoms'
 import ManualIndexDeploy from './manual'
@@ -51,7 +53,8 @@ const ConfirmIndexDeploy = ({ isActive }: { isActive: boolean }) => {
   const { handleSubmit, watch } = useFormContext<DeployInputs>()
   const deployedDTF = useAtomValue(deployedDTFAtom)
   const setFormData = useSetAtom(indexDeployFormDataAtom)
-  const setStTokenAddress = useSetAtom(daoTokenAddressAtom)
+  const [stTokenAddress, setStTokenAddress] = useAtom(daoTokenAddressAtom)
+  const governanceOption = useAtomValue(selectedGovernanceOptionAtom)
   const resetInitialTokens = useResetAtom(initialTokensAtom)
   const resetInput = useResetAtom(inputAmountAtom)
   const formChainId = watch('chain')
@@ -76,9 +79,13 @@ const ConfirmIndexDeploy = ({ isActive }: { isActive: boolean }) => {
 
     setFormData(processedData)
 
-    if (data.governanceVoteLock) {
-      setStTokenAddress(data.governanceVoteLock)
-    }
+    setStTokenAddress(
+      getDeployStakingVault(
+        governanceOption,
+        data.governanceVoteLock as Address | undefined,
+        stTokenAddress
+      )
+    )
   }
 
   const submitForm = () => {
