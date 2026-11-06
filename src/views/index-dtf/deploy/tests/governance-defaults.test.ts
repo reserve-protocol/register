@@ -6,14 +6,14 @@ const sections = ['basket', 'governance'] as const
 
 describe('deploy governance defaults', () => {
   // Folio 6.0.0 deploys one governor, so only the governance section seeds the form.
-  it('defaults the governor to a 2% proposal threshold', () => {
-    expect(dtfDeployDefaultValues.governanceVotingThreshold).toBe(2)
+  it('defaults the governor to a 1% proposal threshold', () => {
+    expect(dtfDeployDefaultValues.governanceVotingThreshold).toBe(1)
   })
 
-  it('keeps a 2% proposal threshold on every speed preset', () => {
+  it('keeps a 1% proposal threshold on every speed preset', () => {
     for (const section of sections) {
       for (const preset of Object.values(presets[section])) {
-        expect(preset.VotingThreshold).toBe(2)
+        expect(preset.VotingThreshold).toBe(1)
       }
     }
   })

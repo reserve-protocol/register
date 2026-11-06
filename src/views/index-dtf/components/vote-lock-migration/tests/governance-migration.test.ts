@@ -42,7 +42,7 @@ const SQUILL = '0x7ebAB7190d3d574ce82D29F2FA1422f18E29969C'
 const VL_SQUILL = '0x60e71dd36Fa5Bf92bcd9320e85cF0040ffe437Bc'
 const OPEN_SPELL = '0xaf029ad44Cc44fB2AefFF84029dd0c29D5Ea8D87'
 const OPEN_OLD_VAULT = getAddress('0x2aea77c4757d897aae2710b8a60280777f504e8c')
-const SHARED_BASE_SPELL = '0x24a4B37F9c40fB0E80ec436Df2e9989FBAFa8bB7'
+const ABX_SPELL = '0x24a4B37F9c40fB0E80ec436Df2e9989FBAFa8bB7'
 const ALTT = getAddress('0x1b5ce2a593a840e3ad3549a34d7b3dec697c114d')
 const VL_ALTT = getAddress('0xcb99d380302220E9896776d559AC98D552357a00')
 const ABX_OLD_VAULT = getAddress('0x6f1fe54c2275dc64ce1ce9cbf2007ef7bd53c117')
@@ -71,16 +71,16 @@ describe('getGovernanceUpgradeTarget', () => {
 
   it('uses the shared spell, vlRSR singleton and token jar for everyone else', () => {
     expect(getGovernanceUpgradeTarget(ChainId.Base, LCAP)).toEqual({
-      spell: '0x24a4B37F9c40fB0E80ec436Df2e9989FBAFa8bB7',
+      spell: '0x971c890ACb9EeB084f292996Be667bB9A2889AE9',
       stakingVault: '0x2F0D6538807a77d4AdDCd4b4DAf214Ea2E818E3D',
       stakingVaultUnderlying: RSR_ADDRESS[ChainId.Base],
       feeRecipient: TOKEN_JAR,
     })
   })
 
-  it('routes ABX through the shared spell into vlALTT, which also takes the fee share', () => {
+  it('routes ABX through its executed 2% spell into vlALTT, which also takes the fee share', () => {
     expect(getGovernanceUpgradeTarget(ChainId.Base, ABX)).toMatchObject({
-      spell: SHARED_BASE_SPELL,
+      spell: ABX_SPELL,
       stakingVault: VL_ALTT,
       stakingVaultUnderlying: ALTT,
       feeRecipient: zeroAddress,
