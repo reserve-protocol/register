@@ -486,6 +486,12 @@ msgstr "Swap 견적 {readySwapCount}건 준비됨"
 msgid "{seconds}s"
 msgstr "{seconds}초"
 
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-dtf-revenue.tsx:100
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-dtf-revenue.tsx:143
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-revenue-distribution.tsx:42
+msgid "{share} of all fees"
+msgstr "전체 수수료의 {share}"
+
 #: src/views/index-dtf/overview/components/yield-index/yield-index-exposure-summary.tsx:80
 msgid "{strategyCount, plural, one {# Strategy} other {# Strategies}}"
 msgstr "{strategyCount, plural, one {# 전략} other {# 전략}}"
@@ -784,12 +790,12 @@ msgid "A measure of how closely the new basket rebalanced compared to the propos
 msgstr "제안된 바스켓 대비 새 바스켓이 얼마나 근접하게 리밸런싱되었는지를 나타내는 지표"
 
 #: src/views/index-dtf/deploy/steps/revenue/index.tsx:93
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-dtf-revenue.tsx:189
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-dtf-revenue.tsx:224
 msgid "A one-time fee deducted from the tokens a user receives when they mint the DTF. The platform will keep {platformShare} of revenue from this fee. (Min: 0.15%, Max: 5%)"
 msgstr "사용자가 DTF를 Mint할 때 받는 토큰에서 차감되는 일회성 수수료입니다. 플랫폼은 이 수수료 수익의 {platformShare}를 보유합니다. (최소: 0.15%, 최대: 5%)"
 
 #: src/views/index-dtf/deploy/steps/revenue/index.tsx:74
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-dtf-revenue.tsx:173
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-dtf-revenue.tsx:208
 msgid "A percentage-based fee charged by the DTF based on the total value of the tokens held in the contract. The platform will keep {platformShare} of revenue from this fee. (Min: 0.15%, Max: 10%)"
 msgstr "컨트랙트에 보유된 토큰의 총 가치를 기준으로 DTF가 부과하는 비율 기반 수수료입니다. 플랫폼은 이 수수료 수익의 {platformShare}를 보유합니다. (최소: 0.15%, 최대: 10%)"
 
@@ -936,7 +942,7 @@ msgid "Add additional optimistic proposer"
 msgstr "Optimistic 제안자 추가"
 
 #: src/views/index-dtf/deploy/steps/revenue/additional-revenue-recipients.tsx:106
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-revenue-distribution.tsx:34
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-revenue-distribution.tsx:64
 msgid "Add additional recipients"
 msgstr "수령인 추가"
 
@@ -1352,7 +1358,7 @@ msgstr "DTF의 RSR 스테이커와 투표 잠금 참여자에게 분배되거나
 
 #: src/views/index-dtf/deploy/steps/revenue/index.tsx:73
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/changes/revenue-changes.tsx:460
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-dtf-revenue.tsx:172
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-dtf-revenue.tsx:207
 #: src/views/index-dtf/overview/components/fees-stats.tsx:30
 #: src/views/index-dtf/settings/components/index-settings-fees.tsx:208
 msgid "Annualized TVL Fee"
@@ -3102,7 +3108,7 @@ msgstr "생성 중..."
 
 #: src/views/index-dtf/deploy/steps/revenue/revenue-distribution-settings.tsx:36
 #: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:421
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-revenue-distribution.tsx:242
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-revenue-distribution.tsx:278
 #: src/views/index-dtf/manage/components/manage-form.tsx:61
 msgid "Creator"
 msgstr "생성자"
@@ -3367,7 +3373,7 @@ msgid "DeFi yield opportunities for DTFs in Aerodrome, Convex, Beefy, Yearn & Ot
 msgstr "Aerodrome, Convex, Beefy, Yearn 등에서 DTF를 위한 DeFi 수익 기회"
 
 #: src/views/index-dtf/deploy/steps/revenue/index.tsx:35
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-dtf-revenue.tsx:40
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-dtf-revenue.tsx:41
 msgid "Define what portion of the revenue goes to the DTF's creator, the vote-lock DAO, or any arbitrary address (wallet or smart contract)."
 msgstr "수익 중 DTF 생성자, vote-lock DAO 또는 임의의 주소(Wallet 또는 스마트 컨트랙트)에 분배되는 비율을 정의합니다."
 
@@ -4291,7 +4297,7 @@ msgstr "슬리피지 평가 중"
 #: src/views/index-dtf/deploy/steps/basket/token-selector.tsx:113
 #: src/views/index-dtf/deploy/steps/revenue/revenue-distribution-settings.tsx:181
 #: src/views/index-dtf/governance/views/propose/basket/components/proposal-basket-setup/setup-native-dtf-basket.tsx:118
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-revenue-distribution.tsx:224
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-revenue-distribution.tsx:260
 msgid "Even distribution"
 msgstr "균등 분배"
 
@@ -4561,7 +4567,7 @@ msgid "Fee data for this period is not available right now."
 msgstr ""
 
 #: src/views/index-dtf/deploy/steps/revenue/index.tsx:120
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-dtf-revenue.tsx:206
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-dtf-revenue.tsx:241
 msgid "Fee Distribution"
 msgstr "수수료 분배"
 
@@ -4899,7 +4905,7 @@ msgstr "거버넌스에 참여하고, Stake하고, 수익 기회를 찾아보세
 #: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/components/basket-settings-proposal-sections.tsx:55
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/dao-settings-proposal-sections.tsx:64
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/dtf-settings-proposal-sections.tsx:189
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-revenue-distribution.tsx:248
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-revenue-distribution.tsx:284
 #: src/views/index-dtf/overview/components/index-governance-overview.tsx:39
 #: src/views/yield-dtf/deploy/components/NavigationSidebar.tsx:28
 #: src/views/yield-dtf/governance/views/proposal/components/ProposalNavigation.tsx:18
@@ -5110,7 +5116,7 @@ msgid "Holder"
 msgstr "Holder"
 
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/changes/v6-settings-changes.tsx:47
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-dtf-revenue.tsx:77
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-dtf-revenue.tsx:86
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/optimistic.ts:169
 msgid "Holder share"
 msgstr "보유자 지분"
@@ -5352,7 +5358,7 @@ msgid "Index"
 msgstr "Index"
 
 #: src/views/index-dtf/deploy/steps/revenue/index.tsx:13
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-dtf-revenue.tsx:49
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-dtf-revenue.tsx:50
 msgid "Index DTF generate revenue by charging fees for minting and holding the DTF. Revenue generated from fees can be sent to the DTF's creator, the vote-lock DAO, or any arbitrary address (wallet or smart contract). A portion of this revenue will automatically be sent to the protocol based on the TVL of the DTF. You can see a complete list of the platform fee schedule <0>here</0>."
 msgstr "Index DTF는 DTF의 Mint 및 보유에 대해 수수료를 부과하여 수익을 창출합니다. 수수료로 발생한 수익은 DTF 생성자, 투표 잠금 DAO, 또는 임의의 주소(Wallet 또는 스마트 컨트랙트)로 전송될 수 있습니다. 이 수익의 일부는 DTF의 TVL에 따라 프로토콜로 자동 전송됩니다. 플랫폼 수수료 일정의 전체 목록은 <0>여기</0>에서 확인할 수 있습니다."
 
@@ -6366,7 +6372,7 @@ msgstr "Mint 수수료"
 
 #: src/views/index-dtf/deploy/steps/revenue/index.tsx:92
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/changes/revenue-changes.tsx:451
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-dtf-revenue.tsx:188
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-dtf-revenue.tsx:223
 msgid "Mint Fee"
 msgstr "Mint 수수료"
 
@@ -7058,7 +7064,7 @@ msgstr "이전 가중치 / 새 가중치"
 msgid "on {0}"
 msgstr "{0}에서"
 
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-dtf-revenue.tsx:149
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-dtf-revenue.tsx:184
 msgid "On this DTF the shares below split the recipient pool: the holder share is kept first, and permanent recipients take their fixed part of what remains."
 msgstr "이 DTF에서는 아래 지분이 수령인 풀을 나눕니다: 보유자 지분이 먼저 유지되고, 영구 수령인은 나머지에서 고정된 몫을 가져갑니다."
 
@@ -7440,17 +7446,17 @@ msgid "Percentage of fee revenue kept inside the DTF for its holders."
 msgstr "보유자를 위해 DTF 내부에 유지되는 수수료 수익 비율입니다."
 
 #: src/views/index-dtf/deploy/steps/revenue/revenue-distribution-settings.tsx:37
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-revenue-distribution.tsx:243
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-revenue-distribution.tsx:279
 msgid "Percentage of fee revenue sent to the creator of the DTF."
 msgstr "DTF 생성자에게 전송되는 수수료 수익의 비율입니다."
 
 #: src/views/index-dtf/deploy/steps/revenue/revenue-distribution-settings.tsx:24
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-revenue-distribution.tsx:236
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-revenue-distribution.tsx:272
 msgid "Percentage of fee revenue sent to the protocol; cannot be changed by governance."
 msgstr "프로토콜로 전송되는 수수료 수익의 비율이며, 거버넌스로 변경할 수 없습니다."
 
 #: src/views/index-dtf/deploy/steps/revenue/revenue-distribution-settings.tsx:44
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-revenue-distribution.tsx:250
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-revenue-distribution.tsx:286
 msgid "Percentage of fee revenue sent to the vote-lock DAO governing the DTF."
 msgstr "DTF를 관리하는 투표 잠금 DAO로 전송되는 수수료 수익의 비율입니다."
 
@@ -7486,7 +7492,7 @@ msgid "Permanent recipient {0}"
 msgstr "영구 수령인 {0}"
 
 #: src/views/index-dtf/deploy/steps/revenue/revenue-distribution-settings.tsx:254
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-dtf-revenue.tsx:106
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-dtf-revenue.tsx:125
 msgid "Permanent recipients"
 msgstr "영구 수령인"
 
@@ -7528,7 +7534,7 @@ msgstr "PHOTON은 여러 담보 자산을 하나의 DTF 토큰으로 묶습니�
 #: src/components/transactions/table/index.tsx:92
 #: src/views/explorer/components/transactions/useTransactionColumns.tsx:142
 #: src/views/index-dtf/deploy/steps/revenue/revenue-distribution-settings.tsx:23
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-revenue-distribution.tsx:235
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-revenue-distribution.tsx:271
 msgid "Platform"
 msgstr "플랫폼"
 
@@ -7673,7 +7679,7 @@ msgstr "포트폴리오"
 msgid "Portfolio Breakdown"
 msgstr "포트폴리오 구성"
 
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-dtf-revenue.tsx:78
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-dtf-revenue.tsx:87
 msgid "Portion of the non-platform fees kept inside the DTF for its holders, taken before the recipients below are paid."
 msgstr "플랫폼 외 수수료 중 보유자를 위해 DTF 내부에 유지되는 부분으로, 아래 수령인에게 지급되기 전에 공제됩니다."
 
@@ -8336,7 +8342,7 @@ msgstr "수령인"
 msgid "Recipient {0} address"
 msgstr "수신자 {0} 주소"
 
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-revenue-distribution.tsx:69
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-revenue-distribution.tsx:99
 msgid "Recipient {recipientNumber} address"
 msgstr "수령인 {recipientNumber} 주소"
 
@@ -8562,7 +8568,7 @@ msgstr "자산을 스왑할 때 정확한 가격 정보를 제공하기 위해 �
 #: src/views/index-dtf/deploy/steps/basket/basket-preview.tsx:201
 #: src/views/index-dtf/deploy/steps/revenue/revenue-distribution-settings.tsx:107
 #: src/views/index-dtf/governance/views/propose/basket/components/proposal-basket-setup/setup-native-dtf-basket.tsx:82
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-revenue-distribution.tsx:161
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-revenue-distribution.tsx:197
 msgid "Remaining allocation:"
 msgstr "남은 할당량:"
 
@@ -9352,7 +9358,7 @@ msgstr "더스트를 Wallet으로 돌려보내기"
 msgid "Separate rewards"
 msgstr ""
 
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-dtf-revenue.tsx:115
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-dtf-revenue.tsx:150
 msgid "Set at deployment and can't be changed. The split below applies to the remaining {remaining} of recipient fees."
 msgstr "배포 시 설정되며 변경할 수 없습니다. 아래 분배는 수령인 수수료의 나머지 {remaining}에 적용됩니다."
 
@@ -10528,7 +10534,7 @@ msgid "There could be the case of a dust token balance remaining in the basket, 
 msgstr "바스켓에 dust 토큰 잔액이 남아 있는 경우가 있을 수 있으며, 여기에서 제거할 수 있습니다."
 
 #: src/views/index-dtf/deploy/steps/revenue/index.tsx:53
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-dtf-revenue.tsx:29
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-dtf-revenue.tsx:30
 msgid "There is a minimum platform fee of 0.15%. This means that 0.15% of the fee set above will go to the platform and only {diff}% of the fee will be split amongst other recipients."
 msgstr "최소 플랫폼 수수료는 0.15%입니다. 즉, 위에서 설정한 수수료 중 0.15%는 플랫폼에 귀속되며, 수수료의 {diff}%만 다른 수령자들에게 분배됩니다."
 
@@ -10673,7 +10679,7 @@ msgstr "이 업그레이드 spell은 이 DTF를 관리하는 Admin 및 Basket Fo
 msgid "This upgrade spell fixes the proposal-threshold on the FolioGovernor contract that administers the DAO (StakingVault) relevant to this DTF. Once this spell is approved and executed, the proposal-threshold will be the correct % that was initially intended at deployment."
 msgstr "이 업그레이드 spell은 이 DTF와 관련된 DAO(StakingVault)를 관리하는 FolioGovernor 컨트랙트의 proposal-threshold를 수정합니다. 이 spell이 승인되고 실행되면 proposal-threshold는 배포 시 처음 의도했던 올바른 %가 됩니다."
 
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-dtf-revenue.tsx:134
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-dtf-revenue.tsx:169
 msgid "This vault has no token jar to receive governance fees. A fee distribution with a governance share can't be proposed until it has one."
 msgstr "이 볼트에는 거버넌스 수수료를 받을 토큰 저장소(token jar)가 없습니다. 토큰 저장소가 생기기 전까지는 거버넌스 몫이 포함된 수수료 분배를 제안할 수 없습니다."
 

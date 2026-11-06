@@ -397,6 +397,9 @@ test('Folio 6.0: the split is shown and encoded relative to the permanent recipi
   await deployer.fill('30')
   await advanceTime(page, 1_000)
   await expect(page.getByTestId('remaining-allocation')).toContainText('0%')
+  // Each form share also reads as its share of all fees, like Details: the permanent 20% and no holder share leave 80%.
+  await expect(page.getByTestId('settings-share-of-all-fees-governanceShare')).toContainText('40%')
+  await expect(page.getByTestId('settings-share-of-all-fees-deployerShare')).toContainText('24%')
 
   await confirmButton(page).click()
   await advanceTime(page, 2_000)

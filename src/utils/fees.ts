@@ -12,3 +12,10 @@ export const getRecipientPercentAdjust = (platformFee: number, selfFee: number):
 
 export const getHolderSharePercent = (platformFee: number, selfFee: number): number =>
   (100 - platformFee) * selfFee
+
+// A settings form share (% of the non-platform fees) as a share of all fees, the basis Details shows.
+export const getShareOfAllFees = (
+  formShare: number,
+  mutableFraction: number,
+  selfFeePercent: number
+): number => formShare * mutableFraction * (1 - selfFeePercent / 100)

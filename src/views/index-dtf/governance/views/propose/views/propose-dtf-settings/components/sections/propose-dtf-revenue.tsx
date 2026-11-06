@@ -1,4 +1,5 @@
 import { formatPercentage, shortenAddress } from '@/utils'
+import { getHolderSharePercent, getShareOfAllFees } from '@/utils/fees'
 import ToggleGroupWithCustom from '@/views/index-dtf/deploy/components/toggle-group-with-custom'
 import { Decimal } from '@/views/index-dtf/deploy/utils/decimals'
 import { Trans, useLingui } from '@lingui/react/macro'
@@ -69,21 +70,36 @@ const Description = () => (
 const ProposeSelfFee = () => {
   const { t } = useLingui()
   const isV6 = useAtomValue(isFolioV6Atom)
+  const { watch } = useFormContext()
+  const share = formatPercentage(
+    getHolderSharePercent(
+      Number(watch('fixedPlatformFee') || 0),
+      Number(watch('selfFee') || 0) / 100
+    )
+  )
 
   if (!isV6) return null
 
   return (
-    <ToggleGroupWithCustom
-      title={t`Holder share`}
-      description={t`Portion of the non-platform fees kept inside the DTF for its holders, taken before the recipients below are paid.`}
-      icon={<Coins size={14} strokeWidth={1.5} />}
-      options={[0, 10, 25, 50]}
-      optionsFormatter={(option: number) => formatPercentage(option)}
-      fieldName="selfFee"
-      customLabel="%"
-      customPlaceholder="0.00"
-      inputProps={{ step: 1, min: 0, max: 100 }}
-    />
+    <>
+      <ToggleGroupWithCustom
+        title={t`Holder share`}
+        description={t`Portion of the non-platform fees kept inside the DTF for its holders, taken before the recipients below are paid.`}
+        icon={<Coins size={14} strokeWidth={1.5} />}
+        options={[0, 10, 25, 50]}
+        optionsFormatter={(option: number) => formatPercentage(option)}
+        fieldName="selfFee"
+        customLabel="%"
+        customPlaceholder="0.00"
+        inputProps={{ step: 1, min: 0, max: 100 }}
+      />
+      <span
+        className="px-4 -mt-1 text-xs text-legend text-right"
+        data-testid="settings-share-of-all-fees-holders"
+      >
+        <Trans>{share} of all fees</Trans>
+      </span>
+    </>
   )
 }
 
@@ -91,6 +107,9 @@ const ProposeSelfFee = () => {
 const ImmutableRecipientsNote = () => {
   const recipients = useAtomValue(immutableFeeRecipientsAtom)
   const mutableFraction = useAtomValue(mutableFeeFractionAtom)
+  const { watch } = useFormContext()
+  const platformFee = Number(watch('fixedPlatformFee') || 0)
+  const selfFee = Number(watch('selfFee') || 0)
 
   if (!recipients?.length || mutableFraction === undefined) return null
 
@@ -105,12 +124,28 @@ const ImmutableRecipientsNote = () => {
         <Lock size={14} />
         <Trans>Permanent recipients</Trans>
       </div>
-      {recipients.map(({ recipient, portion }) => (
-        <div key={recipient} className="flex justify-between">
-          <span>{shortenAddress(recipient)}</span>
-          <span>{formatPercentage(Number(formatEther(portion)) * 100)}</span>
-        </div>
-      ))}
+      {recipients.map(({ recipient, portion }) => {
+        const tableShare = Number(formatEther(portion)) * 100
+        const share = formatPercentage(
+          getShareOfAllFees(
+            (tableShare * (100 - platformFee)) / 100,
+            1,
+            selfFee
+          )
+        )
+
+        return (
+          <div key={recipient} className="flex justify-between">
+            <span>{shortenAddress(recipient)}</span>
+            <span data-testid="settings-immutable-recipient-share">
+              {formatPercentage(tableShare)}{' '}
+              <span className="text-legend">
+                (<Trans>{share} of all fees</Trans>)
+              </span>
+            </span>
+          </div>
+        )
+      })}
       <span className="text-legend">
         <Trans>
           Set at deployment and can't be changed. The split below applies to

@@ -3,6 +3,7 @@ import {
   getFeePercentAdjust,
   getHolderSharePercent,
   getRecipientPercentAdjust,
+  getShareOfAllFees,
   isDisplayablePlatformFee,
 } from '../fees'
 
@@ -48,5 +49,16 @@ describe('Folio 6.0 shares of total fees', () => {
 
   it('matches the platform-only adjust when holders keep nothing', () => {
     expect(getRecipientPercentAdjust(33.33, 0)).toBe(getFeePercentAdjust(33.33))
+  })
+})
+
+describe('getShareOfAllFees', () => {
+  it('turns a settings form share into its share of all fees (QASIX: 0.8246 mutable, 20% holders)', () => {
+    expect(getShareOfAllFees(20, 0.8246, 20)).toBeCloseTo(13.19, 2)
+    expect(getShareOfAllFees(46.67, 0.8246, 20)).toBeCloseTo(30.78, 1)
+  })
+
+  it('is the form share itself without permanent recipients or holder share', () => {
+    expect(getShareOfAllFees(40, 1, 0)).toBe(40)
   })
 })

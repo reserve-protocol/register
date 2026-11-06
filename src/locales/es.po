@@ -486,6 +486,12 @@ msgstr "{readySwapCount} cotizaciones de swap listas"
 msgid "{seconds}s"
 msgstr "{seconds}s"
 
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-dtf-revenue.tsx:100
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-dtf-revenue.tsx:143
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-revenue-distribution.tsx:42
+msgid "{share} of all fees"
+msgstr "{share} del total de comisiones"
+
 #: src/views/index-dtf/overview/components/yield-index/yield-index-exposure-summary.tsx:80
 msgid "{strategyCount, plural, one {# Strategy} other {# Strategies}}"
 msgstr "{strategyCount, plural, one {# estrategia} other {# estrategias}}"
@@ -784,12 +790,12 @@ msgid "A measure of how closely the new basket rebalanced compared to the propos
 msgstr "Una medida de qué tan cerca quedó la nueva cesta reequilibrada respecto a la cesta propuesta"
 
 #: src/views/index-dtf/deploy/steps/revenue/index.tsx:93
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-dtf-revenue.tsx:189
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-dtf-revenue.tsx:224
 msgid "A one-time fee deducted from the tokens a user receives when they mint the DTF. The platform will keep {platformShare} of revenue from this fee. (Min: 0.15%, Max: 5%)"
 msgstr "Una comisión única que se deduce de los tokens que recibe un usuario cuando hace Mint del DTF. La plataforma se quedará con el {platformShare} de los ingresos de esta comisión. (Mín: 0.15%, Máx: 5%)"
 
 #: src/views/index-dtf/deploy/steps/revenue/index.tsx:74
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-dtf-revenue.tsx:173
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-dtf-revenue.tsx:208
 msgid "A percentage-based fee charged by the DTF based on the total value of the tokens held in the contract. The platform will keep {platformShare} of revenue from this fee. (Min: 0.15%, Max: 10%)"
 msgstr "Una comisión porcentual que cobra el DTF según el valor total de los tokens que mantiene el contrato. La plataforma se quedará con el {platformShare} de los ingresos de esta comisión. (Mín: 0.15%, Máx: 10%)"
 
@@ -936,7 +942,7 @@ msgid "Add additional optimistic proposer"
 msgstr "Agregar otro proposer optimista"
 
 #: src/views/index-dtf/deploy/steps/revenue/additional-revenue-recipients.tsx:106
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-revenue-distribution.tsx:34
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-revenue-distribution.tsx:64
 msgid "Add additional recipients"
 msgstr "Agregar destinatarios adicionales"
 
@@ -1352,7 +1358,7 @@ msgstr "Ingresos anualizados distribuidos a los stakers de RSR y a quienes bloqu
 
 #: src/views/index-dtf/deploy/steps/revenue/index.tsx:73
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/changes/revenue-changes.tsx:460
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-dtf-revenue.tsx:172
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-dtf-revenue.tsx:207
 #: src/views/index-dtf/overview/components/fees-stats.tsx:30
 #: src/views/index-dtf/settings/components/index-settings-fees.tsx:208
 msgid "Annualized TVL Fee"
@@ -3102,7 +3108,7 @@ msgstr "Creando..."
 
 #: src/views/index-dtf/deploy/steps/revenue/revenue-distribution-settings.tsx:36
 #: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:421
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-revenue-distribution.tsx:242
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-revenue-distribution.tsx:278
 #: src/views/index-dtf/manage/components/manage-form.tsx:61
 msgid "Creator"
 msgstr "Creador"
@@ -3367,7 +3373,7 @@ msgid "DeFi yield opportunities for DTFs in Aerodrome, Convex, Beefy, Yearn & Ot
 msgstr "Oportunidades de rendimiento DeFi para DTFs en Aerodrome, Convex, Beefy, Yearn y otros"
 
 #: src/views/index-dtf/deploy/steps/revenue/index.tsx:35
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-dtf-revenue.tsx:40
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-dtf-revenue.tsx:41
 msgid "Define what portion of the revenue goes to the DTF's creator, the vote-lock DAO, or any arbitrary address (wallet or smart contract)."
 msgstr "Define qué porción de los ingresos va al creador del DTF, a la vote-lock DAO o a cualquier dirección arbitraria (Wallet o smart contract)."
 
@@ -4291,7 +4297,7 @@ msgstr "Evaluando slippage"
 #: src/views/index-dtf/deploy/steps/basket/token-selector.tsx:113
 #: src/views/index-dtf/deploy/steps/revenue/revenue-distribution-settings.tsx:181
 #: src/views/index-dtf/governance/views/propose/basket/components/proposal-basket-setup/setup-native-dtf-basket.tsx:118
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-revenue-distribution.tsx:224
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-revenue-distribution.tsx:260
 msgid "Even distribution"
 msgstr "Distribución uniforme"
 
@@ -4561,7 +4567,7 @@ msgid "Fee data for this period is not available right now."
 msgstr ""
 
 #: src/views/index-dtf/deploy/steps/revenue/index.tsx:120
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-dtf-revenue.tsx:206
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-dtf-revenue.tsx:241
 msgid "Fee Distribution"
 msgstr "Distribución de comisiones"
 
@@ -4899,7 +4905,7 @@ msgstr "Gobierna, haz Stake y encuentra oportunidades de rendimiento"
 #: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/components/basket-settings-proposal-sections.tsx:55
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/dao-settings-proposal-sections.tsx:64
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/dtf-settings-proposal-sections.tsx:189
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-revenue-distribution.tsx:248
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-revenue-distribution.tsx:284
 #: src/views/index-dtf/overview/components/index-governance-overview.tsx:39
 #: src/views/yield-dtf/deploy/components/NavigationSidebar.tsx:28
 #: src/views/yield-dtf/governance/views/proposal/components/ProposalNavigation.tsx:18
@@ -5110,7 +5116,7 @@ msgid "Holder"
 msgstr "Holder"
 
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/changes/v6-settings-changes.tsx:47
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-dtf-revenue.tsx:77
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-dtf-revenue.tsx:86
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/optimistic.ts:169
 msgid "Holder share"
 msgstr "Participación de los holders"
@@ -5352,7 +5358,7 @@ msgid "Index"
 msgstr "Index"
 
 #: src/views/index-dtf/deploy/steps/revenue/index.tsx:13
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-dtf-revenue.tsx:49
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-dtf-revenue.tsx:50
 msgid "Index DTF generate revenue by charging fees for minting and holding the DTF. Revenue generated from fees can be sent to the DTF's creator, the vote-lock DAO, or any arbitrary address (wallet or smart contract). A portion of this revenue will automatically be sent to the protocol based on the TVL of the DTF. You can see a complete list of the platform fee schedule <0>here</0>."
 msgstr "Los Index DTF generan ingresos al cobrar comisiones por el Minting y la tenencia del DTF. Los ingresos generados por las comisiones pueden enviarse al creador del DTF, al vote-lock DAO o a cualquier dirección arbitraria (Wallet o contrato inteligente). Una parte de estos ingresos se enviará automáticamente al protocolo según el TVL del DTF. Puedes ver la lista completa del esquema de comisiones de la plataforma <0>aquí</0>."
 
@@ -6366,7 +6372,7 @@ msgstr "Comisión de Mint"
 
 #: src/views/index-dtf/deploy/steps/revenue/index.tsx:92
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/changes/revenue-changes.tsx:451
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-dtf-revenue.tsx:188
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-dtf-revenue.tsx:223
 msgid "Mint Fee"
 msgstr "Comisión de Mint"
 
@@ -7058,7 +7064,7 @@ msgstr "Peso anterior / Peso nuevo"
 msgid "on {0}"
 msgstr "en {0}"
 
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-dtf-revenue.tsx:149
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-dtf-revenue.tsx:184
 msgid "On this DTF the shares below split the recipient pool: the holder share is kept first, and permanent recipients take their fixed part of what remains."
 msgstr "En este DTF, las participaciones de abajo dividen el pool de destinatarios: primero se reserva la participación de los holders y los destinatarios permanentes toman su parte fija de lo que queda."
 
@@ -7440,17 +7446,17 @@ msgid "Percentage of fee revenue kept inside the DTF for its holders."
 msgstr "Porcentaje de los ingresos por comisiones que se queda dentro del DTF para sus holders."
 
 #: src/views/index-dtf/deploy/steps/revenue/revenue-distribution-settings.tsx:37
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-revenue-distribution.tsx:243
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-revenue-distribution.tsx:279
 msgid "Percentage of fee revenue sent to the creator of the DTF."
 msgstr "Porcentaje de los ingresos por comisiones enviado al creador del DTF."
 
 #: src/views/index-dtf/deploy/steps/revenue/revenue-distribution-settings.tsx:24
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-revenue-distribution.tsx:236
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-revenue-distribution.tsx:272
 msgid "Percentage of fee revenue sent to the protocol; cannot be changed by governance."
 msgstr "Porcentaje de los ingresos por comisiones enviado al protocolo; no puede modificarse por gobernanza."
 
 #: src/views/index-dtf/deploy/steps/revenue/revenue-distribution-settings.tsx:44
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-revenue-distribution.tsx:250
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-revenue-distribution.tsx:286
 msgid "Percentage of fee revenue sent to the vote-lock DAO governing the DTF."
 msgstr "Porcentaje de los ingresos por comisiones enviado al vote-lock DAO que gobierna el DTF."
 
@@ -7486,7 +7492,7 @@ msgid "Permanent recipient {0}"
 msgstr "Destinatario permanente {0}"
 
 #: src/views/index-dtf/deploy/steps/revenue/revenue-distribution-settings.tsx:254
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-dtf-revenue.tsx:106
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-dtf-revenue.tsx:125
 msgid "Permanent recipients"
 msgstr "Destinatarios permanentes"
 
@@ -7528,7 +7534,7 @@ msgstr "PHOTON agrupa múltiples activos de colateral en un solo token DTF"
 #: src/components/transactions/table/index.tsx:92
 #: src/views/explorer/components/transactions/useTransactionColumns.tsx:142
 #: src/views/index-dtf/deploy/steps/revenue/revenue-distribution-settings.tsx:23
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-revenue-distribution.tsx:235
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-revenue-distribution.tsx:271
 msgid "Platform"
 msgstr "Plataforma"
 
@@ -7673,7 +7679,7 @@ msgstr "Portafolio"
 msgid "Portfolio Breakdown"
 msgstr "Desglose del portafolio"
 
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-dtf-revenue.tsx:78
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-dtf-revenue.tsx:87
 msgid "Portion of the non-platform fees kept inside the DTF for its holders, taken before the recipients below are paid."
 msgstr "Parte de las comisiones que no son de la plataforma que se queda dentro del DTF para sus holders, antes de pagar a los destinatarios de abajo."
 
@@ -8336,7 +8342,7 @@ msgstr "Destinatario"
 msgid "Recipient {0} address"
 msgstr "Dirección del destinatario {0}"
 
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-revenue-distribution.tsx:69
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-revenue-distribution.tsx:99
 msgid "Recipient {recipientNumber} address"
 msgstr "Dirección del destinatario {recipientNumber}"
 
@@ -8562,7 +8568,7 @@ msgstr "Confiar únicamente en el Auction Launcher para proporcionar informació
 #: src/views/index-dtf/deploy/steps/basket/basket-preview.tsx:201
 #: src/views/index-dtf/deploy/steps/revenue/revenue-distribution-settings.tsx:107
 #: src/views/index-dtf/governance/views/propose/basket/components/proposal-basket-setup/setup-native-dtf-basket.tsx:82
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-revenue-distribution.tsx:161
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-revenue-distribution.tsx:197
 msgid "Remaining allocation:"
 msgstr "Asignación restante:"
 
@@ -9352,7 +9358,7 @@ msgstr "Enviar el dust de vuelta a la Wallet"
 msgid "Separate rewards"
 msgstr ""
 
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-dtf-revenue.tsx:115
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-dtf-revenue.tsx:150
 msgid "Set at deployment and can't be changed. The split below applies to the remaining {remaining} of recipient fees."
 msgstr "Se define en el deploy y no se puede cambiar. La división de abajo se aplica al {remaining} restante de las comisiones de los destinatarios."
 
@@ -10528,7 +10534,7 @@ msgid "There could be the case of a dust token balance remaining in the basket, 
 msgstr "Podría darse el caso de que quede un saldo de tokens residual en la cesta; puedes eliminarlo aquí."
 
 #: src/views/index-dtf/deploy/steps/revenue/index.tsx:53
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-dtf-revenue.tsx:29
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-dtf-revenue.tsx:30
 msgid "There is a minimum platform fee of 0.15%. This means that 0.15% of the fee set above will go to the platform and only {diff}% of the fee will be split amongst other recipients."
 msgstr "Existe una comisión mínima de plataforma del 0,15%. Esto significa que el 0,15% de la comisión definida arriba se destinará a la plataforma y solo el {diff}% de la comisión se repartirá entre los demás destinatarios."
 
@@ -10673,7 +10679,7 @@ msgstr "Este spell de actualización corrige el umbral de propuesta en los contr
 msgid "This upgrade spell fixes the proposal-threshold on the FolioGovernor contract that administers the DAO (StakingVault) relevant to this DTF. Once this spell is approved and executed, the proposal-threshold will be the correct % that was initially intended at deployment."
 msgstr "Este spell de actualización corrige el umbral de propuesta en el contrato FolioGovernor que administra el DAO (StakingVault) relevante para este DTF. Una vez aprobado y ejecutado este spell, el umbral de propuesta será el % correcto que se pretendía inicialmente en el despliegue."
 
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-dtf-revenue.tsx:134
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-dtf-revenue.tsx:169
 msgid "This vault has no token jar to receive governance fees. A fee distribution with a governance share can't be proposed until it has one."
 msgstr "Este vault no tiene un token jar para recibir las fees de governance. No se puede proponer una distribución de fees con share de governance hasta que tenga uno."
 
