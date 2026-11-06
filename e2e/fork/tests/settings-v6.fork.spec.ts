@@ -9,6 +9,7 @@ import {
   http,
   parseAbi,
   parseEther,
+  zeroAddress,
 } from 'viem'
 import { folioV6Abi } from '@reserve-protocol/react-sdk'
 import { installForkWallet } from '../helpers/fork-wallet'
@@ -33,6 +34,7 @@ const readAbi = parseAbi([
   'function tradeAllowlistEnabled() view returns (bool)',
   'function getTokenAllowlist() view returns (address[])',
   'function feeRecipients(uint256) view returns (address recipient, uint96 portion)',
+  'function immutableFeeRecipients(uint256) view returns (address recipient, uint96 portion)',
 ])
 
 type Manifest = {
@@ -68,6 +70,29 @@ test('MIDAS on Folio 6.0 changes its settings through governance from the Regist
     await read<boolean>('tradeAllowlistEnabled'),
     'the allowlist is already enforced on this fork: restart Anvil and re-run the upgrade lane'
   )
+  // Folio 6.0 keeps both recipient tables as public arrays; read each until it runs out.
+  const readTable = async (functionName: 'feeRecipients' | 'immutableFeeRecipients') => {
+    const rows: { recipient: Address; portion: bigint }[] = []
+    for (let i = 0n; ; i++) {
+      const row = await read<[Address, bigint]>(functionName, [i]).catch(() => undefined)
+      if (!row) return rows
+      rows.push({ recipient: getAddress(row[0]), portion: row[1] })
+    }
+  }
+  const immutableBefore = await readTable('immutableFeeRecipients')
+  const vault = await client.readContract({
+    address: target.governor,
+    abi: parseAbi(['function token() view returns (address)']),
+    functionName: 'token',
+  })
+  const tokenJar = await client
+    .readContract({
+      address: vault,
+      abi: parseAbi(['function tokenJar() view returns (address)']),
+      functionName: 'tokenJar',
+    })
+    .catch(() => zeroAddress)
+  const governanceRecipient = getAddress(tokenJar === zeroAddress ? vault : tokenJar)
   const maxBefore = await read<bigint>('maxAuctionLength')
   const newMinutes = maxBefore === 30n * 60n ? 45 : 30
 
@@ -111,9 +136,11 @@ test('MIDAS on Folio 6.0 changes its settings through governance from the Regist
 
   await openSection(page, 'allowlist')
   await page.getByTestId('settings-trade-allowlist-enabled').click()
+  await page.getByTestId('settings-allowlist-add-address').click()
   await page.locator('input[name="tradeAllowlistTokens[0]"]').fill(USDC)
-  await page.getByRole('button', { name: 'Add token' }).click()
+  await page.getByTestId('settings-allowlist-add-address').click()
   await page.locator('input[name="tradeAllowlistTokens[1]"]').fill(WETH)
+  await expect(page.getByTestId('settings-allowlist-row')).toHaveCount(2)
 
   await expect(page.getByTestId('settings-trade-allowlist-changes')).toBeVisible()
   await page.screenshot({ path: `${evidenceDir}/changes.png`, fullPage: true })
@@ -149,18 +176,22 @@ test('MIDAS on Folio 6.0 changes its settings through governance from the Regist
   )
   const feeCall = calls.find((call) => call.functionName === 'setFeeRecipients')!
   const [mutable] = feeCall.args as unknown as [{ recipient: Address; portion: bigint }[]]
-  for (const [index, entry] of mutable.entries()) {
-    const [recipient, portion] = await read<[Address, bigint]>('feeRecipients', [BigInt(index)])
-    expect(getAddress(recipient)).toBe(getAddress(entry.recipient))
-    expect(portion).toBe(entry.portion)
-  }
+  // The whole recipient pool left by the permanent table goes to governance; the permanent table is untouched.
+  const immutableAfter = await readTable('immutableFeeRecipients')
+  const mutableAfter = await readTable('feeRecipients')
+  expect(immutableAfter).toEqual(immutableBefore)
+  const immutableTotal = immutableAfter.reduce((sum, r) => sum + r.portion, 0n)
+  expect(mutableAfter).toEqual([{ recipient: governanceRecipient, portion: parseEther('1') - immutableTotal }])
+  expect(mutableAfter.map((r) => ({ recipient: r.recipient, portion: r.portion }))).toEqual(
+    mutable.map((r) => ({ recipient: getAddress(r.recipient), portion: r.portion }))
+  )
 
   // The settings page reads the 6.0 values from RPC; the subgraph proxy stays at the fork block.
   await page.goto(`/base/index-dtf/${target.dtf}/settings`)
   await expect(page.getByTestId('settings-max-auction-length')).toContainText(`${newMinutes}m`, {
     timeout: 120_000,
   })
-  await expect(page.getByTestId('settings-trade-allowlist')).toContainText('2')
+  await expect(page.getByTestId('settings-trade-allowlist')).toContainText('(2 tokens)')
   await expect(page.getByTestId('settings-fee-holders')).toBeVisible()
   await page.screenshot({ path: `${evidenceDir}/settings-page.png`, fullPage: true })
 

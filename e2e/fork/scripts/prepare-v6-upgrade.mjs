@@ -19,7 +19,8 @@ const TARGETS = process.env.V6_TARGETS
   ? JSON.parse(process.env.V6_TARGETS)
   : [
       { symbol: 'MIDAS', dtf: '0x055adf5d33c9187a93df898e3830e7fbde7bfb17', topology: 'optimistic' },
-      { symbol: 'ABX', dtf: '0xebcda5b80f62dd4dd2a96357b42bb6facbf30267', topology: 'legacy' },
+      // A legacy DTF with a governance migration target must migrate first: the 6.0.0 banner stays hidden.
+      { symbol: 'ABX', dtf: '0xebcda5b80f62dd4dd2a96357b42bb6facbf30267', topology: 'legacy', migrationFirst: true },
     ]
 const ZERO_ROLE = `0x${'0'.repeat(64)}`
 
@@ -40,7 +41,7 @@ const abi = parseAbi([
 const client = createPublicClient({ transport: http(rpcUrl, { timeout: 120_000 }) })
 const chainId = await client.getChainId()
 const clientVersion = await client.request({ method: 'web3_clientVersion' })
-if (chainId !== 8453 || !String(clientVersion).startsWith('anvil') || !/127\.0\.0\.1|localhost/.test(rpcUrl)) {
+if (chainId !== 8453 || !String(clientVersion).startsWith('anvil') || !['127.0.0.1', 'localhost'].includes(new URL(rpcUrl).hostname)) {
   throw new Error(`refusing: rpc ${rpcUrl.replace(/(\/v[23]\/)[A-Za-z0-9_-]{8,}/g, '$1***')} chainId ${chainId} client ${clientVersion}`)
 }
 

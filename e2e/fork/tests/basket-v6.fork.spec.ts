@@ -180,8 +180,8 @@ test('MIDAS on Folio 6.0 blocks a basket proposal with a token outside its enfor
   )
 
   await openBasketProposal(page, client, target, `USDC,${USDC},50\ncbBTC,${CBBTC},50`)
-  await page.getByTestId('basket-confirm-btn').click()
-  await page.locator('#title').fill('Not allowlisted')
+  // The allowlist blocks the basket before it can be confirmed.
+  await expect(page.getByTestId('basket-confirm-btn')).toBeDisabled()
   const blocked = page.getByTestId('basket-propose-not-allowlisted')
   await expect(blocked).toBeVisible({ timeout: 60_000 })
   await expect(blocked).toBeDisabled()

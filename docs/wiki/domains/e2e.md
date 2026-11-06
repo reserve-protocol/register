@@ -229,7 +229,7 @@ Related: [[project]], [[sdk]], [[yield-protocol]], [[subgraphs]].
 Plain Anvil on :8546 (Alchemy fork with `--fork-header "Origin: https://app.reserve.org"`, the key is
 origin-allowlisted) plus the subgraph proxy on :18310 against `prod` (1.11.4 has every field the v6 SDK queries). `optimistic-governance-upgrade.fork.spec.ts` (LCAP) drives the governance migration
 from the UI: upgrade banner → execute → retire banner → execute → overview migration modal with a real holder.
-`upgrade-v6.fork.spec.ts` drives the Folio 6.0.0 upgrade for MIDAS (optimistic) and ABX (legacy). Both prepare
+`upgrade-v6.fork.spec.ts` drives the Folio 6.0.0 upgrade for MIDAS (optimistic); ABX (legacy, governance migration pending) checks that the 6.0.0 banner stays hidden until the DTF migrates. Both prepare
 scripts replay protocol prerequisites by labelled impersonation (version registrations, vault upgrade) and pick
 real voters; `e2e/fork/helpers/governance.ts` votes, queues and executes by time travel. Register navigates to a
 new proposal's (unindexed) detail page, so specs re-navigate instead of reloading. `fork-wallet.ts` pads gas

@@ -129,6 +129,10 @@ Foundry `anvil`; an older one earlier on `PATH` rejects current `cast`/viem tran
 
 ## The Register 6.0.0 upgrade lane (Base, MIDAS + ABX)
 
+ABX is a legacy DTF with a governance migration target, so its case only checks that the 6.0.0 banner stays
+hidden until it migrates (`migrationFirst`); the legacy cast path is covered by the unit and offline preview tests
+and by the full LCAP sequence below.
+
 `prepare-v6-upgrade.mjs` registers 6.0.0 in the Folio version registry by labelled impersonation of the
 RoleRegistry owner and picks a real voter per DTF; `upgrade-v6.fork.spec.ts` proposes from the banner and
 executes on the fork. MAG7 can't serve as the optimistic case: its basket tokens' code (`0xef`) is not

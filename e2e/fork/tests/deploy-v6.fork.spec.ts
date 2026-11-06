@@ -47,8 +47,16 @@ const client = createPublicClient({ transport: http(rpcUrl, { timeout: 120_000 }
 const rpc = (method: string, params: unknown[]) =>
   client.request({ method: method as never, params: params as never })
 
+// Refuse anything but a local Anvil before any anvil_* call or send.
+const assertLocalAnvil = async () => {
+  const clientVersion = String(await rpc('web3_clientVersion', []))
+  if (!clientVersion.startsWith('anvil') || !['127.0.0.1', 'localhost'].includes(new URL(rpcUrl).hostname))
+    throw new Error(`refusing a non-local or non-Anvil RPC (${clientVersion})`)
+}
+
 // A fresh wallet per run (so approvals always run), funded with ETH, USDC (FiatToken balances live in slot 9) and WETH.
 const fundWallet = async (seed: number) => {
+  await assertLocalAnvil()
   const wallet = getAddress(pad(toHex(BigInt(Date.now()) * 16n + BigInt(seed)), { size: 20 }))
   await rpc('anvil_impersonateAccount', [wallet])
   await rpc('anvil_setBalance', [wallet, toHex(parseEther('100'))])

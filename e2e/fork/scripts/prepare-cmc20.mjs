@@ -28,7 +28,7 @@ const abi = parseAbi([
 const client = createPublicClient({ transport: http(rpcUrl, { timeout: 120_000 }) })
 const chainId = await client.getChainId()
 const clientVersion = await client.request({ method: 'web3_clientVersion' })
-if (chainId !== 56 || !String(clientVersion).startsWith('anvil') || !/127\.0\.0\.1|localhost/.test(rpcUrl)) {
+if (chainId !== 56 || !String(clientVersion).startsWith('anvil') || !['127.0.0.1', 'localhost'].includes(new URL(rpcUrl).hostname)) {
   throw new Error(`refusing: rpc ${rpcUrl.replace(/(\/v[23]\/)[A-Za-z0-9_-]{8,}/g, '$1***')} chainId ${chainId} client ${clientVersion}`)
 }
 

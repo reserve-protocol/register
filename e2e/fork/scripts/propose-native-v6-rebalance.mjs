@@ -51,7 +51,7 @@ const clientVersion = await publicClient.request({
 if (
   (await publicClient.getChainId()) !== 1 ||
   !String(clientVersion).startsWith('anvil') ||
-  !/127\.0\.0\.1|localhost/.test(rpcUrl)
+  !['127.0.0.1', 'localhost'].includes(new URL(rpcUrl).hostname)
 ) {
   throw new Error(`refusing: ${rpcUrl} is not a loopback anvil mainnet fork`)
 }

@@ -29,6 +29,7 @@ type Target = {
   symbol: string
   dtf: Address
   topology: 'optimistic' | 'legacy'
+  migrationFirst?: boolean
   proxyAdmin: Address
   governor: Address
   voter: Address
@@ -111,6 +112,14 @@ for (const target of manifest?.targets ?? []) {
       await page.getByTestId('header-connect-btn').click()
       await page.getByRole('button', { name: 'Fork Wallet' }).click()
       await expect(wallet).toBeVisible()
+    }
+    if (target.migrationFirst) {
+      // The 6.0.0 banner waits until the DTF has migrated (the migration banner itself may be hidden by a live
+      // migration proposal). The banner's chain reads settle after the page; give them time before asserting absence.
+      await page.waitForTimeout(15_000)
+      await expect(page.getByTestId('governance-v6-upgrade')).toHaveCount(0)
+      await page.screenshot({ path: `${evidenceDir}/${target.symbol}-migration-first.png` })
+      return
     }
     await expect(page.getByTestId('governance-v6-upgrade')).toBeVisible({
       timeout: 120_000,
