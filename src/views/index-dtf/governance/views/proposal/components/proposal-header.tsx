@@ -125,9 +125,7 @@ const ProposalParams = () => {
           icon={<Fingerprint size={16} strokeWidth={1.5} />}
         >
           <div className="flex items-center gap-1">
-            <span>
-              {proposal?.id ? shortenString(proposal.id) : t`Loading...`}
-            </span>
+            <span>{proposal?.id ? shortenString(proposal.id) : t`Loading...`}</span>
             {!!proposal?.id && (
               <CopyValue text={proposal.id} value={proposal.id} />
             )}

@@ -2214,6 +2214,9 @@ msgid "Cancel Issue"
 msgstr ""
 
 #: src/views/index-dtf/governance/views/proposal/components/proposal-cancel-button.tsx:98
+#: src/views/index-dtf/governance/views/proposal/components/proposal-proposer-cancel.tsx:87
+#: src/views/index-dtf/governance/views/proposal/components/proposal-proposer-cancel.tsx:96
+#: src/views/index-dtf/governance/views/proposal/components/proposal-proposer-cancel.tsx:113
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalCancel.tsx:51
 msgid "Cancel proposal"
 msgstr ""
@@ -2229,6 +2232,10 @@ msgstr ""
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalAlert.tsx:62
 msgid "Canceled"
 msgstr ""
+
+#: src/views/index-dtf/governance/views/proposal/components/proposal-proposer-cancel.tsx:99
+msgid "Canceling this proposal is permanent. It will no longer be eligible for voting or execution."
+msgstr "Canceling this proposal is permanent. It will no longer be eligible for voting or execution."
 
 #: src/views/index-dtf/issuance/async-mint/components/leg-row.tsx:76
 msgid "Cancelled"
@@ -2796,7 +2803,7 @@ msgid "Contact us for eligibility"
 msgstr ""
 
 #: src/views/index-dtf/governance/components/contest-badge.tsx:6
-#: src/views/index-dtf/governance/views/proposal/components/proposal-vote.tsx:159
+#: src/views/index-dtf/governance/views/proposal/components/proposal-vote.tsx:160
 msgid "Contested"
 msgstr ""
 
@@ -3340,8 +3347,8 @@ msgid "Delay in Seconds"
 msgstr ""
 
 #: src/components/vote-lock/constants.tsx:18
-#: src/views/index-dtf/governance/views/proposal/components/proposal-vote.tsx:120
-#: src/views/index-dtf/governance/views/proposal/components/proposal-vote.tsx:129
+#: src/views/index-dtf/governance/views/proposal/components/proposal-vote.tsx:121
+#: src/views/index-dtf/governance/views/proposal/components/proposal-vote.tsx:130
 #: src/views/yield-dtf/governance/components/AccountVotes.tsx:71
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalVote.tsx:141
 msgid "Delegate"
@@ -4454,7 +4461,7 @@ msgstr ""
 msgid "Fast Governance"
 msgstr ""
 
-#: src/views/index-dtf/governance/views/proposal/components/proposal-vote.tsx:181
+#: src/views/index-dtf/governance/views/proposal/components/proposal-vote.tsx:182
 msgid "Fast proposal"
 msgstr ""
 
@@ -5127,7 +5134,7 @@ msgstr ""
 msgid "I'm aware of the {delay}-day unstake delay"
 msgstr ""
 
-#: src/views/index-dtf/governance/views/proposal/components/proposal-header.tsx:117
+#: src/views/index-dtf/governance/views/proposal/components/proposal-header.tsx:123
 #: src/views/yield-dtf/governance/views/proposal-detail/ProposalHeader.tsx:118
 msgid "ID"
 msgstr ""
@@ -5519,6 +5526,10 @@ msgstr ""
 msgid "just now"
 msgstr ""
 
+#: src/views/index-dtf/governance/views/proposal/components/proposal-proposer-cancel.tsx:132
+msgid "Keep proposal"
+msgstr "Keep proposal"
+
 #: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:99
 msgid "Known supported wallets"
 msgstr ""
@@ -5727,8 +5738,8 @@ msgstr ""
 #: src/views/index-dtf/governance/components/proposal-preview/token-reward-preview.tsx:66
 #: src/views/index-dtf/governance/components/proposal-preview/token-reward-preview.tsx:66
 #: src/views/index-dtf/governance/views/proposal/components/proposal-header.tsx:58
-#: src/views/index-dtf/governance/views/proposal/components/proposal-header.tsx:99
-#: src/views/index-dtf/governance/views/proposal/components/proposal-header.tsx:122
+#: src/views/index-dtf/governance/views/proposal/components/proposal-header.tsx:105
+#: src/views/index-dtf/governance/views/proposal/components/proposal-header.tsx:128
 #: src/views/index-dtf/governance/views/proposal/components/vote-modal.tsx:140
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/sections/propose-revenue-tokens.tsx:63
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/vault-proposal-form.tsx:65
@@ -7819,7 +7830,7 @@ msgstr ""
 msgid "Proposed"
 msgstr ""
 
-#: src/views/index-dtf/governance/views/proposal/components/proposal-header.tsx:103
+#: src/views/index-dtf/governance/views/proposal/components/proposal-header.tsx:109
 #: src/views/index-dtf/governance/views/proposal/components/vote-modal.tsx:145
 #: src/views/yield-dtf/governance/views/proposal-detail/components/VoteModal.tsx:95
 #: src/views/yield-dtf/governance/views/proposal-detail/ProposalHeader.tsx:107
@@ -7838,7 +7849,7 @@ msgstr ""
 msgid "Proposed changes"
 msgstr ""
 
-#: src/views/index-dtf/governance/views/proposal/components/proposal-header.tsx:93
+#: src/views/index-dtf/governance/views/proposal/components/proposal-header.tsx:99
 #: src/views/yield-dtf/governance/views/proposal-detail/ProposalHeader.tsx:100
 msgid "Proposed on"
 msgstr ""
@@ -10381,7 +10392,7 @@ msgstr ""
 msgid "This product isn't available in your region due to local restrictions."
 msgstr ""
 
-#: src/views/index-dtf/governance/views/proposal/components/proposal-vote.tsx:183
+#: src/views/index-dtf/governance/views/proposal/components/proposal-vote.tsx:184
 msgid "This proposal will automatically pass if it is not challenged by governance. If it is challenged, it will be resubmitted as a standard proposal."
 msgstr ""
 
@@ -10420,7 +10431,7 @@ msgstr ""
 msgid "This wallet still holds an old vote-lock for this DTF. You can't vote or earn rewards with it anymore. Redeem its shares, then lock the {symbol} you receive in {vault}."
 msgstr ""
 
-#: src/views/index-dtf/governance/views/proposal/components/proposal-vote.tsx:161
+#: src/views/index-dtf/governance/views/proposal/components/proposal-vote.tsx:162
 msgid "This was originally a fast proposal that did not pass governance. Please review the details of this contested proposal closely."
 msgstr ""
 
@@ -11595,7 +11606,7 @@ msgstr ""
 msgid "View entire basket"
 msgstr ""
 
-#: src/views/index-dtf/governance/views/proposal/components/proposal-vote.tsx:49
+#: src/views/index-dtf/governance/views/proposal/components/proposal-vote.tsx:50
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalVote.tsx:50
 msgid "View execute tx"
 msgstr ""
@@ -12711,7 +12722,7 @@ msgstr ""
 msgid "Your Vote"
 msgstr ""
 
-#: src/views/index-dtf/governance/views/proposal/components/proposal-vote.tsx:106
+#: src/views/index-dtf/governance/views/proposal/components/proposal-vote.tsx:107
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalVote.tsx:124
 msgid "Your voting power:"
 msgstr ""
@@ -12755,11 +12766,3 @@ msgstr ""
 #: src/views/index-dtf/overview/components/zap-mint/zap-healthcheck.tsx:24
 #~ msgid "Zaps are currently experiencing issues"
 #~ msgstr ""
-
-#: src/views/index-dtf/governance/views/proposal/components/proposal-proposer-cancel.tsx:94
-msgid "Canceling this proposal is permanent. It will no longer be eligible for voting or execution."
-msgstr "Canceling this proposal is permanent. It will no longer be eligible for voting or execution."
-
-#: src/views/index-dtf/governance/views/proposal/components/proposal-proposer-cancel.tsx:127
-msgid "Keep proposal"
-msgstr "Keep proposal"

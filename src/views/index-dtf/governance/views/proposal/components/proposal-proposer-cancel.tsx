@@ -11,12 +11,13 @@ import useContractWrite from '@/hooks/useContractWrite'
 import useWatchTransaction from '@/hooks/useWatchTransaction'
 import type { ProposalDetail } from '@/lib/governance'
 import { walletAtom } from '@/state/atoms'
+import { getProposalTitle } from '@/utils'
 import { PROPOSAL_STATES } from '@/utils/constants'
 import { useTrackIndexDTFClick } from '@/views/index-dtf/hooks/useTrackIndexDTFPage'
 import { Trans, useLingui } from '@lingui/react/macro'
 import { prepareIndexDtfGovernorCancelProposal } from '@reserve-protocol/react-sdk'
 import { useAtomValue, useSetAtom } from 'jotai'
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { proposalDetailAtom } from '../atom'
 import useRefreshProposal from '../hooks/use-refresh-proposal'
 
@@ -26,15 +27,19 @@ const ProposerCancelDialog = ({ proposal }: { proposal: ProposalDetail }) => {
   const setProposal = useSetAtom(proposalDetailAtom)
   const refreshProposal = useRefreshProposal()
   const { trackClick } = useTrackIndexDTFClick('governance', 'proposal')
-  const call = prepareIndexDtfGovernorCancelProposal({
-    chainId: proposal.chainId,
-    proposal: {
-      governance: proposal.governor,
-      targets: proposal.targets,
-      calldatas: proposal.calldatas,
-      description: proposal.description,
-    },
-  })
+  const call = useMemo(
+    () =>
+      prepareIndexDtfGovernorCancelProposal({
+        chainId: proposal.chainId,
+        proposal: {
+          governance: proposal.governor,
+          targets: proposal.targets,
+          calldatas: proposal.calldatas,
+          description: proposal.description,
+        },
+      }),
+    [proposal]
+  )
   const { write, isLoading, hash, isReady, validationError, error } =
     useContractWrite({
       abi: call.contract.abi,
@@ -46,7 +51,7 @@ const ProposerCancelDialog = ({ proposal }: { proposal: ProposalDetail }) => {
     })
   const { isMining, status } = useWatchTransaction({
     hash,
-    label: 'Proposal canceled',
+    label: 'Proposal canceled by proposer',
   })
   const busy = isLoading || isMining
 
@@ -97,7 +102,7 @@ const ProposerCancelDialog = ({ proposal }: { proposal: ProposalDetail }) => {
           </Trans>
         </DialogDescription>
         <div className="text-sm font-medium [overflow-wrap:anywhere]">
-          {proposal.description.split(/\r?\n/)[0].replaceAll('#', '').trim()}
+          {getProposalTitle(proposal.description)}
         </div>
         <div className="flex flex-col gap-2">
           <TransactionButton

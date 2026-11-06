@@ -2214,6 +2214,9 @@ msgid "Cancel Issue"
 msgstr "Issue 취소"
 
 #: src/views/index-dtf/governance/views/proposal/components/proposal-cancel-button.tsx:98
+#: src/views/index-dtf/governance/views/proposal/components/proposal-proposer-cancel.tsx:87
+#: src/views/index-dtf/governance/views/proposal/components/proposal-proposer-cancel.tsx:96
+#: src/views/index-dtf/governance/views/proposal/components/proposal-proposer-cancel.tsx:113
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalCancel.tsx:51
 msgid "Cancel proposal"
 msgstr "제안 취소"
@@ -2229,6 +2232,10 @@ msgstr "Unstake 취소"
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalAlert.tsx:62
 msgid "Canceled"
 msgstr "취소됨"
+
+#: src/views/index-dtf/governance/views/proposal/components/proposal-proposer-cancel.tsx:99
+msgid "Canceling this proposal is permanent. It will no longer be eligible for voting or execution."
+msgstr "이 제안을 취소하면 되돌릴 수 없습니다. 더 이상 투표하거나 실행할 수 없습니다."
 
 #: src/views/index-dtf/issuance/async-mint/components/leg-row.tsx:76
 msgid "Cancelled"
@@ -2796,7 +2803,7 @@ msgid "Contact us for eligibility"
 msgstr "자격 확인 문의"
 
 #: src/views/index-dtf/governance/components/contest-badge.tsx:6
-#: src/views/index-dtf/governance/views/proposal/components/proposal-vote.tsx:159
+#: src/views/index-dtf/governance/views/proposal/components/proposal-vote.tsx:160
 msgid "Contested"
 msgstr "논쟁 중"
 
@@ -3340,8 +3347,8 @@ msgid "Delay in Seconds"
 msgstr "지연 시간(초)"
 
 #: src/components/vote-lock/constants.tsx:18
-#: src/views/index-dtf/governance/views/proposal/components/proposal-vote.tsx:120
-#: src/views/index-dtf/governance/views/proposal/components/proposal-vote.tsx:129
+#: src/views/index-dtf/governance/views/proposal/components/proposal-vote.tsx:121
+#: src/views/index-dtf/governance/views/proposal/components/proposal-vote.tsx:130
 #: src/views/yield-dtf/governance/components/AccountVotes.tsx:71
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalVote.tsx:141
 msgid "Delegate"
@@ -4454,7 +4461,7 @@ msgstr "Fast 위임자"
 msgid "Fast Governance"
 msgstr "Fast 거버넌스"
 
-#: src/views/index-dtf/governance/views/proposal/components/proposal-vote.tsx:181
+#: src/views/index-dtf/governance/views/proposal/components/proposal-vote.tsx:182
 msgid "Fast proposal"
 msgstr "Fast 제안"
 
@@ -5127,7 +5134,7 @@ msgstr "{delay}일 잠금 해제 지연을 인지하고 있습니다"
 msgid "I'm aware of the {delay}-day unstake delay"
 msgstr "{delay}일의 Unstake 지연을 인지하고 있습니다"
 
-#: src/views/index-dtf/governance/views/proposal/components/proposal-header.tsx:117
+#: src/views/index-dtf/governance/views/proposal/components/proposal-header.tsx:123
 #: src/views/yield-dtf/governance/views/proposal-detail/ProposalHeader.tsx:118
 msgid "ID"
 msgstr "ID"
@@ -5519,6 +5526,10 @@ msgstr "관할권 기반 금지 사항:"
 msgid "just now"
 msgstr "방금 전"
 
+#: src/views/index-dtf/governance/views/proposal/components/proposal-proposer-cancel.tsx:132
+msgid "Keep proposal"
+msgstr "제안 유지"
+
 #: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:99
 msgid "Known supported wallets"
 msgstr "알려진 지원 Wallet"
@@ -5727,8 +5738,8 @@ msgstr "포트폴리오 데이터를 불러오는 중..."
 #: src/views/index-dtf/governance/components/proposal-preview/token-reward-preview.tsx:66
 #: src/views/index-dtf/governance/components/proposal-preview/token-reward-preview.tsx:66
 #: src/views/index-dtf/governance/views/proposal/components/proposal-header.tsx:58
-#: src/views/index-dtf/governance/views/proposal/components/proposal-header.tsx:99
-#: src/views/index-dtf/governance/views/proposal/components/proposal-header.tsx:122
+#: src/views/index-dtf/governance/views/proposal/components/proposal-header.tsx:105
+#: src/views/index-dtf/governance/views/proposal/components/proposal-header.tsx:128
 #: src/views/index-dtf/governance/views/proposal/components/vote-modal.tsx:140
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/sections/propose-revenue-tokens.tsx:63
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/vault-proposal-form.tsx:65
@@ -7819,7 +7830,7 @@ msgstr "볼트 종료 제안"
 msgid "Proposed"
 msgstr "제안됨"
 
-#: src/views/index-dtf/governance/views/proposal/components/proposal-header.tsx:103
+#: src/views/index-dtf/governance/views/proposal/components/proposal-header.tsx:109
 #: src/views/index-dtf/governance/views/proposal/components/vote-modal.tsx:145
 #: src/views/yield-dtf/governance/views/proposal-detail/components/VoteModal.tsx:95
 #: src/views/yield-dtf/governance/views/proposal-detail/ProposalHeader.tsx:107
@@ -7838,7 +7849,7 @@ msgstr "제안자:"
 msgid "Proposed changes"
 msgstr "제안된 변경 사항"
 
-#: src/views/index-dtf/governance/views/proposal/components/proposal-header.tsx:93
+#: src/views/index-dtf/governance/views/proposal/components/proposal-header.tsx:99
 #: src/views/yield-dtf/governance/views/proposal-detail/ProposalHeader.tsx:100
 msgid "Proposed on"
 msgstr "제안일"
@@ -10392,7 +10403,7 @@ msgstr "현지 규정에 따라 이 상품은 고객님의 지역에서 적격 �
 msgid "This product isn't available in your region due to local restrictions."
 msgstr "이 제품은 현지 규제로 인해 해당 지역에서 이용할 수 없습니다."
 
-#: src/views/index-dtf/governance/views/proposal/components/proposal-vote.tsx:183
+#: src/views/index-dtf/governance/views/proposal/components/proposal-vote.tsx:184
 msgid "This proposal will automatically pass if it is not challenged by governance. If it is challenged, it will be resubmitted as a standard proposal."
 msgstr "이 제안은 거버넌스가 이의를 제기하지 않으면 자동으로 통과됩니다. 이의가 제기되면 표준 제안으로 재제출됩니다."
 
@@ -10431,7 +10442,7 @@ msgstr "이 Wallet에는 아직 기존 {0} vote-lock이 있습니다. 더 이상
 msgid "This wallet still holds an old vote-lock for this DTF. You can't vote or earn rewards with it anymore. Redeem its shares, then lock the {symbol} you receive in {vault}."
 msgstr "이 Wallet에는 아직 이 DTF의 기존 vote-lock이 있습니다. 더 이상 투표하거나 보상을 받을 수 없습니다. 지분을 Redeem한 뒤 받은 {symbol}을(를) {vault}에 잠그세요."
 
-#: src/views/index-dtf/governance/views/proposal/components/proposal-vote.tsx:161
+#: src/views/index-dtf/governance/views/proposal/components/proposal-vote.tsx:162
 msgid "This was originally a fast proposal that did not pass governance. Please review the details of this contested proposal closely."
 msgstr "이 제안은 원래 거버넌스를 통과하지 못한 Fast 제안이었습니다. 이의가 제기된 이 제안의 세부 사항을 면밀히 검토하세요."
 
@@ -11606,7 +11617,7 @@ msgstr "DTF 보기"
 msgid "View entire basket"
 msgstr "전체 바스켓 보기"
 
-#: src/views/index-dtf/governance/views/proposal/components/proposal-vote.tsx:49
+#: src/views/index-dtf/governance/views/proposal/components/proposal-vote.tsx:50
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalVote.tsx:50
 msgid "View execute tx"
 msgstr "실행 트랜잭션 보기"
@@ -12722,7 +12733,7 @@ msgstr "트랜잭션이 제출되었습니다. 다른 작업을 하기 전에 �
 msgid "Your Vote"
 msgstr "내 투표"
 
-#: src/views/index-dtf/governance/views/proposal/components/proposal-vote.tsx:106
+#: src/views/index-dtf/governance/views/proposal/components/proposal-vote.tsx:107
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalVote.tsx:124
 msgid "Your voting power:"
 msgstr "내 투표권:"
@@ -12766,11 +12777,3 @@ msgstr "Zapper 오류"
 #: src/views/index-dtf/overview/components/zap-mint/zap-healthcheck.tsx:24
 #~ msgid "Zaps are currently experiencing issues"
 #~ msgstr "현재 Zap에 문제가 발생하고 있습니다"
-
-#: src/views/index-dtf/governance/views/proposal/components/proposal-proposer-cancel.tsx:94
-msgid "Canceling this proposal is permanent. It will no longer be eligible for voting or execution."
-msgstr "이 제안을 취소하면 되돌릴 수 없습니다. 더 이상 투표하거나 실행할 수 없습니다."
-
-#: src/views/index-dtf/governance/views/proposal/components/proposal-proposer-cancel.tsx:127
-msgid "Keep proposal"
-msgstr "제안 유지"
