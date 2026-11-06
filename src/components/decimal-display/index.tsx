@@ -60,18 +60,18 @@ export const formatNumberValue = (
       : formatted
     return `${num < 0 ? '-' : ''}${withCommas}`
   } else {
-    // Zeros after the point before the first significant digit; a subscript only pays off from three on.
-    const leadingZeros = Math.floor(-Math.log10(absNum))
+    // Zeros and digits come from one rounded exponential, so a value that rounds up to the next power of ten
+    // (0.0009996 → 1.0e-3) loses a zero with it; slicing toFixed(27) truncated float error (0.0012 → 11).
+    const [mantissa, exponent] = absNum
+      .toExponential(Math.max(decimals - 1, 0))
+      .split('e')
+    const leadingZeros = -Number(exponent) - 1
     const sign = num < 0 ? '-' : ''
+    // A subscript only pays off from three zeros on.
     if (leadingZeros < SUBSCRIPT_MIN_ZEROS) {
       return `${sign}${absNum.toFixed(leadingZeros + decimals)}`
     }
-    // toExponential rounds the significant digits; slicing toFixed(27) truncated float error (0.0012 → 11).
-    const significant = absNum
-      .toExponential(Math.max(decimals - 1, 0))
-      .split('e')[0]
-      .replace('.', '')
-    return `${sign}0.0<sub>${leadingZeros}</sub>${significant}`
+    return `${sign}0.0<sub>${leadingZeros}</sub>${mantissa.replace('.', '')}`
   }
 }
 

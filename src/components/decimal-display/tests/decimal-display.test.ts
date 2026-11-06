@@ -41,4 +41,11 @@ describe('formatNumberValue finite path unchanged', () => {
       '-0.0<sub>4</sub>41'
     )
   })
+
+  it('counts the zeros right at powers of ten and after rounding up', () => {
+    expect(formatNumberValue(0.001, 2, false, false, true)).toBe('0.0010')
+    expect(formatNumberValue(0.0009996, 2, false, false, true)).toBe('0.0010')
+    expect(formatNumberValue(0.0001, 2, false, false, true)).toBe('0.0<sub>3</sub>10')
+    expect(formatNumberValue(0.0000999999, 2, false, false, true)).toBe('0.0<sub>3</sub>10')
+  })
 })
