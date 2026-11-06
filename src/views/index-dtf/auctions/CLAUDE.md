@@ -83,9 +83,10 @@ Quick loop: `pnpm exec playwright test e2e/tests/smoke/auctions.spec.ts`
   the D1 weightControl derivation was reverted, Luis 2026-07-21) — cmc20
   is tracking so it stays non-hybrid; a hybrid (allowlisted native)
   DTF forces a Manage-Weights step before the launch button, so mock
-  `weightControl` to drive that step. ENGINEER REVIEW STILL REQUIRED for the openAuction
-  weight/price MATH (`getRebalanceOpenAuction`) — the spec proves the call fires,
-  not that the args are numerically correct.
+  `weightControl` to drive that step. The spec proves the call fires; the openAuction
+  weight/price math (`getRebalanceOpenAuction`) and the Ondo cap sizing were reviewed with
+  Folio 6.0 (PR #1143) and are pinned by `open-auction-sdk-parity.test.ts` and
+  `get-max-safe-percent.test.ts` (including the cap boundary).
 - **Covered** (`launch-write.spec.ts`, full project): launch GUARDS — a
   failing latest-auction read after a cached success disables the launcher
   (`auctions-live-state-unavailable`); a stale page nonce is refused at click
