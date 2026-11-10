@@ -26,7 +26,7 @@ Releases: 1.0.0 → 2.0.0 → (3.0.0 skipped) → **4.0.0** (rebalance-target mo
 
 ## Trusted fillers ([reserve-fillers-monorepo](https://github.com/reserve-protocol/reserve-fillers-monorepo))
 
-Async CoW Swap fills for Folio auctions (Folio ≥ some 4.x deployments; register consumes via `@reserve-protocol/trusted-fillers-sdk` in the cowbot at `src/views/index-dtf/auctions/views/rebalance/components/cowbot/`).
+Async CoW Swap fills for Folio auctions (Folio ≥ some 4.x deployments; register consumes via `@reserve-protocol/trusted-fillers-sdk` in the cowbot at `src/views/index-dtf/auctions/views/rebalance/components/cowbot/`). Register passes `minTradeValue: 1` (USD per sell order; the SDK default skipped small DTFs) and does not toast `below_min_trade_value` errors, which retry on the next poll.
 
 - `processFolioAuctions` returns a `status` union (0.9.0+): a version outside `SUPPORTED_FOLIO_VERSIONS` comes back `skipped / unsupported_version`, and the cowbot shows nothing for it. 6.0.0 support is [reserve-fillers-monorepo#39](https://github.com/reserve-protocol/reserve-fillers-monorepo/pull/39): 6.0.0 keeps the 5.0.0 `getRebalance`, `auctions` and `getBid`, so it reads through the R500 FolioLens.
 

@@ -9,6 +9,7 @@ import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { useCallback, useRef, useState } from 'react'
 import { toast } from 'sonner'
 import { PublicClient } from 'viem'
+import { getCowbotParams, getReportableCowbotErrors } from './cowbot-params'
 import { CowbotConfig, CowbotStatus } from './types'
 
 const SUPPORTED_CHAINS: SupportedChainId[] = [1, 8453, 56]
@@ -63,12 +64,14 @@ export const useCowbotQuery = ({ config, client }: UseCowbotQueryProps) => {
         throw new Error('Missing params')
       }
 
-      const result = await processFolioAuctions({
-        chainId: chainId as SupportedChainId,
-        client,
-        folioAddress,
-        validityDuration,
-      })
+      const result = await processFolioAuctions(
+        getCowbotParams({
+          chainId: chainId as SupportedChainId,
+          client,
+          folioAddress,
+          validityDuration,
+        })
+      )
 
       console.log('cowbot result', result)
 
@@ -80,10 +83,11 @@ export const useCowbotQuery = ({ config, client }: UseCowbotQueryProps) => {
       }
 
       // Handle SDK-level errors (per-order errors, not fatal)
-      if (result.errors.length > 0) {
-        console.error('CowBot errors:', result.errors)
+      const errors = getReportableCowbotErrors(result.errors)
+      if (errors.length > 0) {
+        console.error('CowBot errors:', errors)
         toast.error(t`CowBot encountered errors`, {
-          description: result.errors[0].message,
+          description: errors[0].message,
         })
       }
 
