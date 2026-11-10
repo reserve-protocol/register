@@ -1,14 +1,19 @@
-import { PERMISSIONLESS_VOTE_LOCK } from '@/views/index-dtf/deploy/permissionless-defaults'
 import { ChainId } from '@/utils/chains'
 import { INDEX_DTF_CHAINS } from '@/utils/constants'
 import { Address, zeroAddress } from 'viem'
 import { gql } from 'graphql-request'
 
+// Vote-lock vaults whose DTFs make up the top100 list, per chain.
+export const TOP100_VOTE_LOCK: Record<number, Address> = {
+  [ChainId.Mainnet]: '0xAFac0054FD8b3233c7b3b0E10E34188f6a7175f0',
+  [ChainId.Base]: '0xeDAB3789D7D2283214d8F65A6E412B00b1cBfB7a',
+  [ChainId.BSC]: zeroAddress,
+}
+
 // Index DTF chains, further narrowed to those with real governance addresses.
 export const ACTIVE_CHAINS = INDEX_DTF_CHAINS.filter(
   (chainId) =>
-    PERMISSIONLESS_VOTE_LOCK[chainId] &&
-    PERMISSIONLESS_VOTE_LOCK[chainId] !== zeroAddress
+    TOP100_VOTE_LOCK[chainId] && TOP100_VOTE_LOCK[chainId] !== zeroAddress
 )
 
 // DTFs hidden from the top100 list, keyed by chainId (lowercase addresses)

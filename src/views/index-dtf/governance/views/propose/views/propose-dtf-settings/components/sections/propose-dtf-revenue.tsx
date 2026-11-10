@@ -1,8 +1,17 @@
-import { formatPercentage } from '@/utils'
+import { formatPercentage, shortenAddress } from '@/utils'
+import { getHolderSharePercent, getShareOfAllFees } from '@/utils/fees'
 import ToggleGroupWithCustom from '@/views/index-dtf/deploy/components/toggle-group-with-custom'
 import { Decimal } from '@/views/index-dtf/deploy/utils/decimals'
 import { Trans, useLingui } from '@lingui/react/macro'
-import { Coins, Eclipse, TableColumnsSplit } from 'lucide-react'
+import { useAtomValue } from 'jotai'
+import { Coins, Eclipse, Lock, TableColumnsSplit } from 'lucide-react'
+import { formatEther } from 'viem'
+import {
+  immutableFeeRecipientsAtom,
+  isFolioV6Atom,
+  mutableFeeFractionAtom,
+  vaultWithoutTokenJarAtom,
+} from '../../atoms'
 import { useFormContext } from 'react-hook-form'
 import ProposeRevenueDistribution from './propose-revenue-distribution'
 import { INDEX_PROTOCOL_DOCS } from '@/utils/constants'
@@ -58,9 +67,133 @@ const Description = () => (
   </div>
 )
 
+const ProposeSelfFee = () => {
+  const { t } = useLingui()
+  const isV6 = useAtomValue(isFolioV6Atom)
+  const { watch } = useFormContext()
+  const share = formatPercentage(
+    getHolderSharePercent(
+      Number(watch('fixedPlatformFee') || 0),
+      Number(watch('selfFee') || 0) / 100
+    )
+  )
+
+  if (!isV6) return null
+
+  return (
+    <>
+      <ToggleGroupWithCustom
+        title={t`Holder share`}
+        description={t`Portion of the non-platform fees kept inside the DTF for its holders, taken before the recipients below are paid.`}
+        icon={<Coins size={14} strokeWidth={1.5} />}
+        options={[0, 10, 25, 50]}
+        optionsFormatter={(option: number) => formatPercentage(option)}
+        fieldName="selfFee"
+        customLabel="%"
+        customPlaceholder="0.00"
+        inputProps={{ step: 1, min: 0, max: 100 }}
+      />
+      <span
+        className="px-4 -mt-1 text-xs text-legend text-right"
+        data-testid="settings-share-of-all-fees-holders"
+      >
+        <Trans>{share} of all fees</Trans>
+      </span>
+    </>
+  )
+}
+
+// Folio 6.0 immutable recipients are fixed at deployment; the editable split covers only what they leave.
+const ImmutableRecipientsNote = () => {
+  const recipients = useAtomValue(immutableFeeRecipientsAtom)
+  const mutableFraction = useAtomValue(mutableFeeFractionAtom)
+  const { watch } = useFormContext()
+  const platformFee = Number(watch('fixedPlatformFee') || 0)
+  const selfFee = Number(watch('selfFee') || 0)
+
+  if (!recipients?.length || mutableFraction === undefined) return null
+
+  const remaining = formatPercentage(mutableFraction * 100)
+
+  return (
+    <div
+      className="mx-2 mb-2 rounded-xl bg-muted/70 p-4 text-sm flex flex-col gap-2"
+      data-testid="settings-immutable-recipients"
+    >
+      <div className="flex items-center gap-2 font-bold">
+        <Lock size={14} />
+        <Trans>Permanent recipients</Trans>
+      </div>
+      {recipients.map(({ recipient, portion }) => {
+        const tableShare = Number(formatEther(portion)) * 100
+        const share = formatPercentage(
+          getShareOfAllFees(
+            (tableShare * (100 - platformFee)) / 100,
+            1,
+            selfFee
+          )
+        )
+
+        return (
+          <div key={recipient} className="flex justify-between">
+            <span>{shortenAddress(recipient)}</span>
+            <span data-testid="settings-immutable-recipient-share">
+              {formatPercentage(tableShare)}{' '}
+              <span className="text-legend">
+                (<Trans>{share} of all fees</Trans>)
+              </span>
+            </span>
+          </div>
+        )
+      })}
+      <span className="text-legend">
+        <Trans>
+          Set at deployment and can't be changed. The split below applies to
+          the remaining {remaining} of recipient fees.
+        </Trans>
+      </span>
+    </div>
+  )
+}
+
+const MissingTokenJarNote = () => {
+  const vaultWithoutTokenJar = useAtomValue(vaultWithoutTokenJarAtom)
+
+  if (!vaultWithoutTokenJar) return null
+
+  return (
+    <div
+      className="mx-2 mb-2 rounded-xl bg-destructive/10 p-4 text-sm text-destructive"
+      data-testid="settings-missing-token-jar"
+    >
+      <Trans>
+        This vault has no token jar to receive governance fees. A fee
+        distribution with a governance share can't be proposed until it has one.
+      </Trans>
+    </div>
+  )
+}
+
+const RecipientPoolNote = () => {
+  const isV6 = useAtomValue(isFolioV6Atom)
+
+  if (!isV6) return null
+
+  return (
+    <div className="px-6 pb-4 text-sm text-legend" data-testid="settings-recipient-pool-note">
+      <Trans>
+        On this DTF the shares below split the recipient pool: the holder share
+        is kept first, and permanent recipients take their fixed part of what
+        remains.
+      </Trans>
+    </div>
+  )
+}
+
 const ProposeDTFRevenue = () => {
   const { t } = useLingui()
   const { watch } = useFormContext()
+  const platformShare = formatPercentage(Number(watch('fixedPlatformFee') ?? 0))
   const folioFee = watch('folioFee')
   const mintFee = watch('mintFee')
   const showWarningFolioFee = Number(folioFee) >= 0.15 && Number(folioFee) < 0.3
@@ -72,7 +205,7 @@ const ProposeDTFRevenue = () => {
       <div className="flex flex-col gap-2 px-2 mb-2">
         <ToggleGroupWithCustom
           title={t`Annualized TVL Fee`}
-          description={t`A percentage-based fee charged by the DTF based on the total value of the tokens held in the contract. The platform will keep 50% of revenue from this fee. (Min: 0.15%, Max: 10%)`}
+          description={t`A percentage-based fee charged by the DTF based on the total value of the tokens held in the contract. The platform will keep ${platformShare} of revenue from this fee. (Min: 0.15%, Max: 10%)`}
           icon={<TableColumnsSplit size={14} strokeWidth={1.5} />}
           options={[0.15, 0.3, 0.5, 1, 2]}
           optionsFormatter={(option: number) => formatPercentage(option)}
@@ -88,7 +221,7 @@ const ProposeDTFRevenue = () => {
         />
         <ToggleGroupWithCustom
           title={t`Mint Fee`}
-          description={t`A one-time fee deducted from the tokens a user receives when they mint the DTF. The platform will keep 50% of revenue from this fee. (Min: 0.15%, Max: 5%)`}
+          description={t`A one-time fee deducted from the tokens a user receives when they mint the DTF. The platform will keep ${platformShare} of revenue from this fee. (Min: 0.15%, Max: 5%)`}
           icon={<Eclipse size={14} strokeWidth={1.5} />}
           options={[0.15, 0.3, 0.5, 1, 2]}
           optionsFormatter={(option: number) => formatPercentage(option)}
@@ -102,11 +235,15 @@ const ProposeDTFRevenue = () => {
           }
           inputProps={{ step: 0.05, min: 0.15, max: 10 }}
         />
+        <ProposeSelfFee />
       </div>
       <h1 className="text-2xl font-bold text-primary my-4 ml-6">
         <Trans>Fee Distribution</Trans>
       </h1>
       <FeeDistributionDescription />
+      <RecipientPoolNote />
+      <ImmutableRecipientsNote />
+      <MissingTokenJarNote />
       <ProposeRevenueDistribution />
     </div>
   )

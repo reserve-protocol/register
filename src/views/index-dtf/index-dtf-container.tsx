@@ -163,11 +163,13 @@ const IndexDtfUpdaters = () => {
     setRebalanceControl,
   ])
 
+  // Keyed on identity too: the layout-effect reset clears the atom, and a cached
+  // same-version destination would otherwise never re-fire this effect.
   useEffect(() => {
     if (version) {
       setIndexDTFVersion(version)
     }
-  }, [version, setIndexDTFVersion])
+  }, [version, identity.address, identity.chainId, setIndexDTFVersion])
 
   useEffect(() => {
     if (fee) {

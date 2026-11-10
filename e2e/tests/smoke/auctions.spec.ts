@@ -6,7 +6,7 @@ import { loadSnapshot } from '../../helpers/snapshots'
 // Smoke: the Index-DTF auctions page (rebalance list, v5 new UI) renders fully
 // offline in its idle / no-active-rebalance state. LIVE rebalance state comes
 // from RPC getRebalance() (answered idle by the shared rpc table at selector
-// 0xaa3b5568), NOT the subgraph — getRebalances is history only. @smoke fails
+// 0xaa3b5568), NOT the subgraph — GetIndexDtfRebalances is history only. @smoke fails
 // on ANY unmocked boundary call.
 
 const DTF_ADDRESS = '0x4dA9A0f397dB1397902070f93a4D6ddBC0E0E6e8' // base/lcap
@@ -42,11 +42,11 @@ test('auctions list renders idle offline @smoke', async ({ page }) => {
   await expect(page.getByTestId('dtf-auctions')).toBeVisible()
 
   // Pump 1 — flush GetIndexDTF: indexDTFAtom hydrates, which ENABLES the
-  // dependent getRebalances + proposal-list queries (they only fire once dtf.id
+  // dependent GetIndexDtfRebalances + proposal-list queries (they only fire once dtf.id
   // exists). A paused clock freezes react-query's notifyManager, so nothing
   // reaches React until time advances.
   await advanceTime(page, 5_000)
-  // Pump 2 — flush getRebalances + proposal list into React so the list can
+  // Pump 2 — flush GetIndexDtfRebalances + proposal list into React so the list can
   // bucket rows (rebalancesAtom × governanceProposalsAtom by executionBlock).
   await advanceTime(page, 5_000)
 

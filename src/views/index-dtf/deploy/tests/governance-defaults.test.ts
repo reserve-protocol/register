@@ -5,8 +5,8 @@ import { dtfDeployDefaultValues } from '../form-fields'
 const sections = ['basket', 'governance'] as const
 
 describe('deploy governance defaults', () => {
-  it('defaults both governors to a 1% proposal threshold', () => {
-    expect(dtfDeployDefaultValues.basketVotingThreshold).toBe(1)
+  // Folio 6.0.0 deploys one governor, so only the governance section seeds the form.
+  it('defaults the governor to a 1% proposal threshold', () => {
     expect(dtfDeployDefaultValues.governanceVotingThreshold).toBe(1)
   })
 
@@ -19,14 +19,12 @@ describe('deploy governance defaults', () => {
   })
 
   it('opens on the slow preset', () => {
-    for (const section of sections) {
-      for (const [field, value] of Object.entries(presets[section].slow)) {
-        expect(
-          dtfDeployDefaultValues[
-            `${section}${field}` as keyof typeof dtfDeployDefaultValues
-          ]
-        ).toBe(value)
-      }
+    for (const [field, value] of Object.entries(presets.governance.slow)) {
+      expect(
+        dtfDeployDefaultValues[
+          `governance${field}` as keyof typeof dtfDeployDefaultValues
+        ]
+      ).toBe(value)
     }
   })
 })

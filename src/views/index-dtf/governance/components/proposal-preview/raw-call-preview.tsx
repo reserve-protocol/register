@@ -13,7 +13,11 @@ import {
 } from 'react-json-view-lite'
 
 const RawCallPreview = ({ call }: { call: DecodedCalldata }) => (
-  <div className="flex flex-col gap-2">
+  <div
+    className="flex flex-col gap-2"
+    data-testid="proposal-raw-call"
+    data-function={call.signature}
+  >
     <div className="flex flex-col gap-2">
       <div>
         <span className="text-legend text-sm block mb-1">

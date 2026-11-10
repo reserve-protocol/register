@@ -85,11 +85,23 @@ export const proposalThresholdToPercentage = (
   return Number(threshold)
 }
 
+// The indexer keeps a placeholder until the governor's vault has the vote supply to read the ratio from.
+export const getCurrentProposalThreshold = (governance: {
+  proposalThreshold: number
+  proposalThresholdExact: boolean
+}): number | undefined =>
+  governance.proposalThresholdExact
+    ? proposalThresholdToPercentage(governance.proposalThreshold)
+    : undefined
+
+export const formatCurrentProposalThreshold = (current: number | undefined) =>
+  current === undefined ? '—' : `${current.toFixed(2)}%`
+
 // The form field is seeded as a percentage — compare on the same basis or every proposal appends a phantom threshold calldata.
 export const isProposalThresholdChanged = (
   formPercentage: number,
-  governanceThreshold: bigint | number
-): boolean => formPercentage !== proposalThresholdToPercentage(governanceThreshold)
+  currentThreshold: number | undefined
+): boolean => formPercentage !== currentThreshold
 
 /**
  * Check if governance changes object has any changes

@@ -28,6 +28,8 @@ import {
   UpdateDelayPreview,
   SetOptimisticParamsPreview,
   SelectorRegistryPreview,
+  SetSelfFeePreview,
+  TradeAllowlistPreview,
 } from './dtf-settings-preview'
 
 const ChangesOverviewComponentMap: Record<
@@ -35,6 +37,7 @@ const ChangesOverviewComponentMap: Record<
   React.ComponentType<{
     decodedCalldata: DecodedCalldata
     targetAddress?: Address
+    calls?: DecodedCalldata[]
   }>
 > = {
   removeRewardToken: TokenRewardPreview,
@@ -48,6 +51,11 @@ const ChangesOverviewComponentMap: Record<
   setMintFee: SetMintFeePreview,
   setTVLFee: SetTVLFeePreview,
   setAuctionLength: SetAuctionLengthPreview,
+  setMaxAuctionLength: SetAuctionLengthPreview,
+  setFolioSelfFee: SetSelfFeePreview,
+  setTradeAllowlistEnabled: TradeAllowlistPreview,
+  addToAllowlist: TradeAllowlistPreview,
+  removeFromAllowlist: TradeAllowlistPreview,
   setDustAmount: SetDustAmountPreview,
   // Governance functions
   setVotingDelay: SetVotingDelayPreview,
@@ -85,6 +93,8 @@ const ContractProposalChanges = ({
     <Tabs
       defaultValue={TABS.SUMMARY}
       className="flex flex-col rounded-3xl bg-background m-1"
+      data-testid="proposal-contract-changes"
+      data-contract={address.toLowerCase()}
     >
       <div className="mx-4 py-4 flex items-center flex-wrap gap-2 border-b">
         <h1 className="text-xl font-semibold text-primary">{alias}</h1>
@@ -141,6 +151,7 @@ const ContractProposalChanges = ({
               <Component
                 decodedCalldata={decodedCalldata}
                 targetAddress={address}
+                calls={decodedCalldatas}
               />
             </div>
           )

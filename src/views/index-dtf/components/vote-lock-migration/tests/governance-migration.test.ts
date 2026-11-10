@@ -8,6 +8,7 @@ import {
 } from '@/components/vote-lock/migration/migration-targets'
 import {
   getOldVoteLocks,
+  isGovernanceMigrationPending,
   isOptimisticGovernanceUpgradeEligible,
 } from '../governance-migration'
 
@@ -268,5 +269,39 @@ describe('getOldVoteLocks', () => {
 
   it('returns nothing on a chain without the spell', () => {
     expect(getOldVoteLocks(dtf({ id: OLD_VAULT, governance: { id: OLD_DAO } }), 42161)).toEqual([])
+  })
+})
+
+describe('isGovernanceMigrationPending', () => {
+  const pending = {
+    chainId: ChainId.Base,
+    dtfAddress: LCAP,
+    ownerGovernor: legacy.ownerGovernor,
+    tradingGovernor: legacy.tradingGovernor,
+    oldVoteLockUnderlying: legacy.oldVoteLockUnderlying,
+  }
+
+  it('flags a legacy RSR-vault DTF that the migration will move', () => {
+    expect(isGovernanceMigrationPending(pending)).toBe(true)
+  })
+
+  it('flags OPEN, which migrates onto vlSQUILL', () => {
+    expect(
+      isGovernanceMigrationPending({
+        ...pending,
+        chainId: ChainId.Mainnet,
+        dtfAddress: OPEN,
+        oldVoteLockUnderlying: SQUILL,
+      })
+    ).toBe(true)
+  })
+
+  it.each([
+    ['an already optimistic DTF (single governor)', { tradingGovernor: legacy.ownerGovernor }],
+    ['a non-RSR vault DTF that never migrates', { oldVoteLockUnderlying: '0x0b3e328455c4059eeb9e3f84b5543f74e24e7e1b' }],
+    ['an excluded DTF', { dtfAddress: ABX }],
+    ['a chain without the governance spell', { chainId: 42161 }],
+  ])('does not flag %s', (_, change) => {
+    expect(isGovernanceMigrationPending({ ...pending, ...change })).toBe(false)
   })
 })

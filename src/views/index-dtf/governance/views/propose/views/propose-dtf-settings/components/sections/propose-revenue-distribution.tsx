@@ -7,10 +7,41 @@ import { ReactNode, useCallback } from 'react'
 import { useFormContext, useWatch } from 'react-hook-form'
 import { Address } from 'viem'
 import { cn } from '@/lib/utils'
+import { formatPercentage } from '@/utils'
+import { getShareOfAllFees } from '@/utils/fees'
+import { useAtomValue } from 'jotai'
+import { isFolioV6Atom, mutableFeeFractionAtom } from '../../atoms'
 
 type Recipient = {
   address: Address
   share: number
+}
+
+// On 6.0 the form shares exclude the permanent recipients and the holder share; show each as a share of all fees, like Details.
+const ShareOfAllFees = ({
+  field,
+  testId,
+}: {
+  field: string
+  testId: string
+}) => {
+  const isV6 = useAtomValue(isFolioV6Atom)
+  const mutableFraction = useAtomValue(mutableFeeFractionAtom)
+  const { watch } = useFormContext()
+  const formShare = Number(watch(field) || 0)
+  const selfFee = Number(watch('selfFee') || 0)
+
+  if (!isV6 || mutableFraction === undefined) return null
+
+  const share = formatPercentage(
+    getShareOfAllFees(formShare, mutableFraction, selfFee)
+  )
+
+  return (
+    <span className="text-xs text-legend text-right" data-testid={testId}>
+      <Trans>{share} of all fees</Trans>
+    </span>
+  )
 }
 
 const AddRecipientButton = () => {
@@ -68,14 +99,20 @@ const AdditionalRevenueRecipient = ({ index }: { index: number }) => {
           label={t`Recipient ${recipientNumber} address`}
           placeholder="0x..."
         />
-        <BasicInput
-          className="max-w-32"
-          fieldName={`additionalRevenueRecipients[${index}].share`}
-          label="%"
-          placeholder="0"
-          defaultValue={0}
-          decimalPlaces={2}
-        />
+        <div className="flex flex-col gap-1 max-w-32">
+          <BasicInput
+            className="max-w-32"
+            fieldName={`additionalRevenueRecipients[${index}].share`}
+            label="%"
+            placeholder="0"
+            defaultValue={0}
+            decimalPlaces={2}
+          />
+          <ShareOfAllFees
+            field={`additionalRevenueRecipients[${index}].share`}
+            testId={`settings-share-of-all-fees-recipient-${index + 1}`}
+          />
+        </div>
       </div>
       <RemoveRecipientButton index={index} />
     </div>
@@ -274,17 +311,23 @@ const ProposeRevenueDistribution = () => {
             </div>
             {disabled ? (
               <div className="flex justify-end items-center gap-1 font-semibold px-[18px] border-lg bg-muted-foreground/5 rounded-lg w-19 h-10 flex-nowrap">
-                {getValues(field)} %
+                {formatPercentage(Number(getValues(field)))}
               </div>
             ) : (
-              <BasicInput
-                className="max-w-32"
-                fieldName={field}
-                label="%"
-                placeholder="0"
-                defaultValue={0}
-                decimalPlaces={2}
-              />
+              <div className="flex flex-col gap-1 max-w-32">
+                <BasicInput
+                  className="max-w-32"
+                  fieldName={field}
+                  label="%"
+                  placeholder="0"
+                  defaultValue={0}
+                  decimalPlaces={2}
+                />
+                <ShareOfAllFees
+                  field={field}
+                  testId={`settings-share-of-all-fees-${field}`}
+                />
+              </div>
             )}
           </div>
         ))}

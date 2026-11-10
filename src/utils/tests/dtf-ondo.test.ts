@@ -317,4 +317,19 @@ describe('getNextUsMarketOpen', () => {
     const next = getNextUsMarketOpen(new Date('2026-07-10T22:00:00Z'))
     expect(etParts(next).weekday).toBe('Mon')
   })
+
+  it.each([
+    // Fri 2:00 PM EDT → Mon 9:30 AM EST, after DST ends on Sun Nov 1.
+    ['2026-10-30T18:00:00Z', '2026-11-02T14:30:00.000Z'],
+    // Fri 5:00 PM EST → Mon 9:30 AM EDT, after DST starts on Sun Mar 14.
+    ['2027-03-12T22:00:00Z', '2027-03-15T13:30:00.000Z'],
+    // Mon before the open, on the first day after the change.
+    ['2026-11-02T12:00:00Z', '2026-11-02T14:30:00.000Z'],
+    // Sat 12:30 AM EDT, the night before DST ends.
+    ['2026-10-31T04:30:00Z', '2026-11-02T14:30:00.000Z'],
+    // Sun 12:30 AM EST, the night DST starts.
+    ['2027-03-14T05:30:00Z', '2027-03-15T13:30:00.000Z'],
+  ])('keeps 9:30 AM Eastern across a DST change (%s)', (from, expected) => {
+    expect(getNextUsMarketOpen(new Date(from)).toISOString()).toBe(expected)
+  })
 })

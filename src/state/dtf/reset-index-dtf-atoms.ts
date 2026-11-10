@@ -14,6 +14,7 @@ import {
   indexDTFRebalanceControlAtom,
   indexDTFStatusAtom,
   indexDTFTransactionsAtom,
+  indexDTFVersionAtom,
   performanceTimeRangeAtom,
 } from '@/state/dtf/atoms'
 import {
@@ -44,9 +45,5 @@ export const resetIndexDTFAtomsAtom = atom(null, (_, set) => {
   set(indexDTFStatusAtom, 'active')
   set(indexDTFTransactionsAtom, [])
   set(indexDTFMarketCapAtom, undefined)
-  // indexDTFVersionAtom is deliberately NOT reset: it initializes to a
-  // concrete '4.0.0' and its consumers select v4/v5 ABIs + calldata with no
-  // pending state, so any reset value fabricates a version during the load
-  // window. Full version-identity gating is an open engineer-review item —
-  // see docs/wiki/progress.md § Backlog.
+  set(indexDTFVersionAtom, undefined)
 })

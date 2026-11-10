@@ -2,11 +2,17 @@ import dtfIndexAbiV5 from '@/abis/dtf-index-abi'
 import { isLoaded } from '@/utils'
 import dtfStakingVaultAbi from '@/abis/dtf-index-staking-vault'
 import {
+  folioVersionAtom,
   indexDTFAtom,
   indexDTFFeeAtom,
   indexDTFRebalanceControlAtom,
-  indexDTFVersionAtom,
 } from '@/state/dtf/atoms'
+import {
+  useIndexDtfIdentity,
+  useIndexDtfImmutableFeeRecipients,
+  useIndexDtfSelfFee,
+  useIndexDtfTradeAllowlist,
+} from '@reserve-protocol/react-sdk'
 import { atom, useAtomValue, useSetAtom } from 'jotai'
 import { useEffect, useMemo, useRef } from 'react'
 import { useFormContext, useWatch } from 'react-hook-form'
@@ -30,22 +36,28 @@ import {
   currentOptimisticAllowedActionsAtom,
   currentQuorumPercentageAtom,
   tokenJarAtom,
+  vaultWithoutTokenJarAtom,
+  immutableFeeRecipientsAtom,
+  currentSelfFeeAtom,
+  currentTradeAllowlistAtom,
+  selfFeeChangeAtom,
+  tradeAllowlistChangesAtom,
+  optimisticActionsAtom,
 } from './atoms'
 import {
   isProposalThresholdChanged,
-  proposalThresholdToPercentage,
+  getCurrentProposalThreshold,
   secondsToDays,
 } from '../../shared'
 import {
   DEFAULT_OPTIMISTIC_VETO_DELAY,
   DEFAULT_OPTIMISTIC_VETO_PERIOD,
   DEFAULT_OPTIMISTIC_VETO_THRESHOLD,
-  OPTIMISTIC_ACTIONS,
   arraysEqualIgnoreCase,
   selectorRegistryAbi,
 } from './optimistic'
 import type { OptimisticActionId } from './optimistic'
-import type { Address } from 'viem'
+import { getAddress, isAddress, zeroAddress, type Address } from 'viem'
 
 const resetAtom = atom(null, (get, set) => {
   set(removedBasketTokensAtom, [])
@@ -64,15 +76,61 @@ const resetAtom = atom(null, (get, set) => {
   set(optimisticGovernanceChangesAtom, {})
   set(currentOptimisticAllowedActionsAtom, undefined)
   set(tokenJarAtom, undefined)
+  set(vaultWithoutTokenJarAtom, false)
+  set(selfFeeChangeAtom, undefined)
+  set(tradeAllowlistChangesAtom, {})
+  set(immutableFeeRecipientsAtom, undefined)
+  set(currentSelfFeeAtom, undefined)
+  set(currentTradeAllowlistAtom, undefined)
 })
+
+const toAllowlistKey = (address: string) => address.toLowerCase()
+
+// Folio 6.0 state the settings proposal edits or must preserve; read from RPC.
+const V6SettingsReads = () => {
+  const versionState = useAtomValue(folioVersionAtom)
+  const identity = useIndexDtfIdentity()
+  const params =
+    versionState.status === 'ready' &&
+    versionState.major === 6 &&
+    identity.address
+      ? identity
+      : undefined
+  const { data: immutable } = useIndexDtfImmutableFeeRecipients(params)
+  const { data: selfFee } = useIndexDtfSelfFee(params)
+  const { data: allowlist } = useIndexDtfTradeAllowlist(params)
+  const setImmutable = useSetAtom(immutableFeeRecipientsAtom)
+  const setSelfFee = useSetAtom(currentSelfFeeAtom)
+  const setAllowlist = useSetAtom(currentTradeAllowlistAtom)
+
+  useEffect(() => setImmutable(immutable), [immutable, setImmutable])
+  useEffect(
+    () =>
+      // D18 fraction → percent at the form's 0.01% precision, without float drift.
+      setSelfFee(
+        selfFee ? Number(selfFee.raw / 10n ** 14n) / 100 : undefined
+      ),
+    [selfFee, setSelfFee]
+  )
+  useEffect(() => setAllowlist(allowlist), [allowlist, setAllowlist])
+
+  return null
+}
 
 const Updater = () => {
   const indexDTF = useAtomValue(indexDTFAtom)
   const feeRecipients = useAtomValue(feeRecipientsAtom)
   const rebalanceControl = useAtomValue(indexDTFRebalanceControlAtom)
-  const version = useAtomValue(indexDTFVersionAtom)
+  const versionState = useAtomValue(folioVersionAtom)
   const platformFee = useAtomValue(indexDTFFeeAtom)
-  const isV5 = version.startsWith('5')
+  const isV5 = versionState.status === 'ready' && versionState.major >= 5
+  const allOptimisticActions = useAtomValue(optimisticActionsAtom)
+  const currentSelfFee = useAtomValue(currentSelfFeeAtom)
+  const currentTradeAllowlist = useAtomValue(currentTradeAllowlistAtom)
+  const selfFeeChange = useAtomValue(selfFeeChangeAtom)
+  const tradeAllowlistChanges = useAtomValue(tradeAllowlistChangesAtom)
+  const setSelfFeeChange = useSetAtom(selfFeeChangeAtom)
+  const setTradeAllowlistChanges = useSetAtom(tradeAllowlistChangesAtom)
   const optimisticGovernance = indexDTF?.ownerGovernance?.optimistic
   const optimisticSelectorRegistry = optimisticGovernance?.selectorRegistry
 
@@ -85,7 +143,7 @@ const Updater = () => {
       return []
     }
 
-    return OPTIMISTIC_ACTIONS.map((action) => ({
+    return allOptimisticActions.map((action) => ({
       abi: selectorRegistryAbi,
       address: optimisticSelectorRegistry,
       functionName: 'isAllowed' as const,
@@ -97,6 +155,7 @@ const Updater = () => {
     indexDTF?.chainId,
     indexDTF?.ownerGovernance?.isOptimistic,
     optimisticSelectorRegistry,
+    allOptimisticActions,
   ])
 
   const { data: optimisticSelectorResults } = useReadContracts({
@@ -110,10 +169,10 @@ const Updater = () => {
   const currentOptimisticAllowedActions = useMemo(() => {
     if (!optimisticSelectorResults) return undefined
 
-    return OPTIMISTIC_ACTIONS.filter(
-      (_, index) => optimisticSelectorResults[index]
-    ).map((action) => action.id)
-  }, [optimisticSelectorResults])
+    return allOptimisticActions
+      .filter((_, index) => optimisticSelectorResults[index])
+      .map((action) => action.id)
+  }, [optimisticSelectorResults, allOptimisticActions])
 
   // Read bidsEnabled from contract (v5+ only)
   const { data: currentBidsEnabled } = useReadContract({
@@ -138,6 +197,7 @@ const Updater = () => {
     },
   })
   const setTokenJar = useSetAtom(tokenJarAtom)
+  const setVaultWithoutTokenJar = useSetAtom(vaultWithoutTokenJarAtom)
   const reset = useSetAtom(resetAtom)
   const { reset: resetForm, watch, control } = useFormContext()
   const governanceChanges = useAtomValue(governanceChangesAtom)
@@ -156,6 +216,7 @@ const Updater = () => {
   )
   const currentQuorumPercentage = useAtomValue(currentQuorumPercentageAtom)
   const isResettingForm = useRef(false)
+  const seededTradeAllowlist = useRef<typeof currentTradeAllowlist>(undefined)
 
   // Set atoms for changes
   const setTokenNameChange = useSetAtom(tokenNameChangeAtom)
@@ -194,6 +255,12 @@ const Updater = () => {
   const optimisticVetoDelay = watch('optimisticVetoDelay')
   const optimisticVetoPeriod = watch('optimisticVetoPeriod')
   const optimisticVetoThreshold = watch('optimisticVetoThreshold')
+  const selfFee = watch('selfFee')
+  const tradeAllowlistEnabled = watch('tradeAllowlistEnabled')
+  const tradeAllowlistTokens = useWatch({
+    name: 'tradeAllowlistTokens',
+    control,
+  })
 
   // Use useWatch for arrays to ensure updates are captured immediately
   const guardians = useWatch({
@@ -226,8 +293,12 @@ const Updater = () => {
   }, [currentOptimisticAllowedActions, setCurrentOptimisticAllowedActions])
 
   useEffect(() => {
-    setTokenJar(tokenJar as Address | undefined)
-  }, [tokenJar, setTokenJar])
+    // A legacy vault has no tokenJar() (the read reverts) and keeps taking the share itself.
+    setTokenJar(
+      tokenJar && tokenJar !== zeroAddress ? (tokenJar as Address) : undefined
+    )
+    setVaultWithoutTokenJar(tokenJar === zeroAddress)
+  }, [tokenJar, setTokenJar, setVaultWithoutTokenJar])
 
   useEffect(() => {
     if (indexDTF && indexDTF.ownerGovernance && feeRecipients) {
@@ -240,9 +311,7 @@ const Updater = () => {
       const currentVotingPeriod = secondsToDays(
         Number(indexDTF.ownerGovernance.votingPeriod)
       )
-      const currentThreshold = proposalThresholdToPercentage(
-        indexDTF.ownerGovernance.proposalThreshold
-      )
+      const currentThreshold = getCurrentProposalThreshold(indexDTF.ownerGovernance)
       const currentExecutionDelay = secondsToDays(
         Number(indexDTF.ownerGovernance.timelock.executionDelay)
       )
@@ -283,7 +352,10 @@ const Updater = () => {
           revenueDistributionChanges.additionalRecipients !== undefined
             ? revenueDistributionChanges.additionalRecipients
             : feeRecipients.externalRecipients,
-        fixedPlatformFee: isLoaded(platformFee) ? platformFee : 0,
+        // Two decimals like the share inputs, so a 1/3 platform share leaves a total the inputs can reach (66.67).
+        fixedPlatformFee: isLoaded(platformFee)
+          ? Math.round(platformFee * 100) / 100
+          : 0,
         auctionLength:
           auctionLengthChange !== undefined
             ? auctionLengthChange
@@ -349,7 +421,20 @@ const Updater = () => {
           optimisticGovernanceChanges.allowedActions !== undefined
             ? optimisticGovernanceChanges.allowedActions
             : currentOptimisticAllowedActions ?? [],
+        selfFee: selfFeeChange ?? currentSelfFee,
+        tradeAllowlistEnabled:
+          tradeAllowlistChanges.enabled ?? currentTradeAllowlist?.enabled,
+        tradeAllowlistTokens: [
+          ...(currentTradeAllowlist?.tokens ?? []).filter(
+            (token) =>
+              !tradeAllowlistChanges.remove?.some(
+                (removed) => toAllowlistKey(removed) === toAllowlistKey(token)
+              )
+          ),
+          ...(tradeAllowlistChanges.add ?? []),
+        ],
       })
+      seededTradeAllowlist.current = currentTradeAllowlist
 
       // Reset the flag after form reset
       setTimeout(() => {
@@ -364,6 +449,8 @@ const Updater = () => {
     feeRecipients?.governanceShare,
     currentBidsEnabled,
     currentOptimisticAllowedActions,
+    currentSelfFee,
+    currentTradeAllowlist,
   ])
 
   // Watch for token name changes (v5+ only)
@@ -561,6 +648,59 @@ const Updater = () => {
     }
   }, [bidsEnabled, currentBidsEnabled, isV5])
 
+  // Watch for self fee changes (v6)
+  useEffect(() => {
+    if (currentSelfFee === undefined || selfFee === undefined) return
+    const next = Number(selfFee)
+    setSelfFeeChange(
+      Number.isFinite(next) && next !== currentSelfFee ? next : undefined
+    )
+  }, [selfFee, currentSelfFee, setSelfFeeChange])
+
+  // Watch for trade allowlist changes (v6)
+  useEffect(() => {
+    // Until the form holds this allowlist, diffing its empty list would propose removing every token.
+    if (
+      !currentTradeAllowlist ||
+      seededTradeAllowlist.current !== currentTradeAllowlist ||
+      isResettingForm.current
+    ) {
+      return
+    }
+    const current = new Set(currentTradeAllowlist.tokens.map(toAllowlistKey))
+    // Lowercase first: a mixed-case address with a bad checksum would make the SDK encoder throw.
+    const proposed = ((tradeAllowlistTokens ?? []) as string[])
+      .filter((token) => token && isAddress(token, { strict: false }))
+      .map((token) => getAddress(token.toLowerCase()))
+    const proposedKeys = new Set(proposed.map(toAllowlistKey))
+    const add = proposed.filter(
+      (token, index) =>
+        !current.has(toAllowlistKey(token)) &&
+        proposed.findIndex(
+          (other) => toAllowlistKey(other) === toAllowlistKey(token)
+        ) === index
+    )
+    const remove = currentTradeAllowlist.tokens.filter(
+      (token) => !proposedKeys.has(toAllowlistKey(token))
+    )
+    const enabled =
+      tradeAllowlistEnabled !== undefined &&
+      tradeAllowlistEnabled !== currentTradeAllowlist.enabled
+        ? (tradeAllowlistEnabled as boolean)
+        : undefined
+
+    setTradeAllowlistChanges({
+      ...(enabled !== undefined ? { enabled } : {}),
+      ...(add.length ? { add } : {}),
+      ...(remove.length ? { remove } : {}),
+    })
+  }, [
+    tradeAllowlistTokens,
+    tradeAllowlistEnabled,
+    currentTradeAllowlist,
+    setTradeAllowlistChanges,
+  ])
+
   // Watch for governance changes
   useEffect(() => {
     if (indexDTF && indexDTF.ownerGovernance) {
@@ -594,7 +734,7 @@ const Updater = () => {
           if (
             isProposalThresholdChanged(
               governanceVotingThreshold,
-              governance.proposalThreshold
+              getCurrentProposalThreshold(governance)
             )
           ) {
             changes.proposalThreshold = governanceVotingThreshold
@@ -724,7 +864,7 @@ const Updater = () => {
     }
   }, [reset])
 
-  return null
+  return <V6SettingsReads />
 }
 
 export default Updater

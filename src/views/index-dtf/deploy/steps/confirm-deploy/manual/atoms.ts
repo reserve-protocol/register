@@ -1,6 +1,6 @@
 import { TokenApprovalState } from '@/hooks/use-batch-approval'
 import { chainIdAtom } from '@/state/atoms'
-import { INDEX_DEPLOYER_ADDRESS } from '@/utils/addresses'
+import { INDEX_V6_DEPLOYER_ADDRESS } from '@/utils/addresses'
 import { atom } from 'jotai'
 import { atomWithReset } from 'jotai/utils'
 import { formatUnits } from 'viem'
@@ -89,7 +89,7 @@ export const basketAllowanceAtom = atom((get) => {
   const chainId = get(chainIdAtom)
   return basket.map((token) => [
     token.address,
-    INDEX_DEPLOYER_ADDRESS[chainId],
+    INDEX_V6_DEPLOYER_ADDRESS[chainId],
   ]) as [string, string][]
 })
 

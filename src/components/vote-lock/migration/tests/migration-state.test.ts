@@ -1,9 +1,11 @@
+import { BaseError, UserRejectedRequestError } from 'viem'
 import { describe, expect, it } from 'vitest'
 import {
   chooseDeposit,
   getLockAmount,
   getMigrationStep,
   getSafeStepOutcome,
+  isUserRejection,
   isRetiredWithBalance,
 } from '../migration-state'
 
@@ -131,5 +133,20 @@ describe('getSafeStepOutcome', () => {
     expect(getSafeStepOutcome({ step: 'deposit', baseline: 7n, newShares: 8n })).toEqual({
       step: 'deposit',
     })
+  })
+})
+
+describe('isUserRejection', () => {
+  const rejection = () => new UserRejectedRequestError(new Error('User denied transaction signature.'))
+
+  it('finds the wallet rejection wherever wagmi wraps it', () => {
+    expect(isUserRejection(rejection())).toBe(true)
+    expect(isUserRejection(new BaseError('Transaction failed', { cause: rejection() }))).toBe(true)
+  })
+
+  it('treats a revert, an RPC error or a plain error as a failed send', () => {
+    expect(isUserRejection(new BaseError('Execution reverted', { cause: new Error('revert') }))).toBe(false)
+    expect(isUserRejection(new Error('HTTP request failed'))).toBe(false)
+    expect(isUserRejection(undefined)).toBe(false)
   })
 })

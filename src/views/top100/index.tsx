@@ -1,9 +1,6 @@
 import useTrackPage from '@/hooks/useTrackPage'
 import { Trans } from '@lingui/react/macro'
-import { Button } from '@/components/ui/button'
 import { Skeleton } from '@/components/ui/skeleton'
-import { Globe } from 'lucide-react'
-import { Link } from 'react-router-dom'
 import { useTop100List } from './hooks/use-top100-list'
 import useTop100Filtered from './hooks/use-top100-filtered'
 import Top100Filters from './components/top100-filters'
@@ -26,11 +23,6 @@ const Top100 = () => {
             <Trans>Community created DTFs</Trans>
           </p>
         </div>
-        <Button asChild variant="outline-primary" className="rounded-xl">
-          <Link to="/deploy-index">
-            <Trans>Create yours</Trans> <Globe className="ml-1 h-4 w-4" />
-          </Link>
-        </Button>
       </div>
       <div className="flex flex-col gap-1 p-1 rounded-4xl bg-secondary">
         <Top100Filters />

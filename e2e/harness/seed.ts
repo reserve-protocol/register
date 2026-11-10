@@ -1,5 +1,6 @@
 import { encodeAbiParameters, encodeFunctionData, parseAbi, type Address, type Hex } from 'viem'
 import type { MockOverrides } from '../helpers/overrides'
+import { YIELD_REVERT_SENTINEL } from '../helpers/rpc'
 import { TEST_ADDRESS, type RegistryDTF } from '../helpers/registry'
 import { loadSnapshot } from '../helpers/snapshots'
 
@@ -35,6 +36,60 @@ export function seedFeeRegistry(
     )
   )
 }
+const FOLIO_V6_READ_ABI = parseAbi([
+  'function version() view returns (string)',
+  'function folioFeeForSelf() view returns (uint256)',
+  'function immutableFeeRecipients(uint256) view returns (address recipient, uint96 portion)',
+  'function tradeAllowlistEnabled() view returns (bool)',
+  'function getTokenAllowlist() view returns (address[])',
+])
+// The SDK probes the whole immutable table in one multicall (Folio 6.0 MAX_FEE_RECIPIENTS).
+const MAX_FEE_RECIPIENTS = 64
+
+// Report the folio as 6.0.0 and answer the v6-only settings reads. The array getter
+// reverts past the end of the immutable table: the sentinel fails it inside the SDK's
+// multicall, and the standalone revert answers the SDK's end-of-table confirmation.
+export function seedFolioV6(
+  overrides: MockOverrides,
+  dtf: RegistryDTF,
+  {
+    selfFee = 0n,
+    immutableRecipients = [],
+    allowlist = { enabled: false, tokens: [] },
+  }: {
+    selfFee?: bigint
+    immutableRecipients?: { recipient: Address; portion: bigint }[]
+    allowlist?: { enabled: boolean; tokens: Address[] }
+  } = {}
+): void {
+  const folio = dtf.address as Address
+  const call = (functionName: string, args: readonly unknown[] = []) =>
+    encodeFunctionData({ abi: FOLIO_V6_READ_ABI, functionName, args } as never)
+  overrides.ethCall(folio, call('version'), encodeAbiParameters([{ type: 'string' }], ['6.0.0']))
+  overrides.ethCall(folio, call('folioFeeForSelf'), encUint(selfFee))
+  overrides.ethCall(folio, call('tradeAllowlistEnabled'), encBool(allowlist.enabled))
+  overrides.ethCall(
+    folio,
+    call('getTokenAllowlist'),
+    encodeAbiParameters([{ type: 'address[]' }], [allowlist.tokens])
+  )
+  for (let index = 0; index < MAX_FEE_RECIPIENTS; index++) {
+    const entry = immutableRecipients[index]
+    const data = call('immutableFeeRecipients', [BigInt(index)])
+    if (!entry) overrides.ethCallRevert(folio, data, '')
+    overrides.ethCall(
+      folio,
+      data,
+      entry
+        ? encodeAbiParameters(
+            [{ type: 'address' }, { type: 'uint96' }],
+            [entry.recipient, entry.portion]
+          )
+        : (YIELD_REVERT_SENTINEL as Hex)
+    )
+  }
+}
+
 const SYMBOL = '0x95d89b41' // symbol() — read on the folio once a wallet connects
 const READ_ABI = parseAbi([
   'function balanceOf(address owner) view returns (uint256)',
