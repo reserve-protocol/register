@@ -50,7 +50,7 @@
     "@reserve-protocol/react-sdk": "0.8.1",
     "@reserve-protocol/react-zapper": "2.15.1",
     "@reserve-protocol/rtokens": "^1.1.23",
-    "@reserve-protocol/trusted-fillers-sdk": "^0.10.0",
+    "@reserve-protocol/trusted-fillers-sdk": "^0.11.1",
     "@sentry/react": "^9.47.1",
     "@sentry/vite-plugin": "^3.6.1",
     "@tanstack/react-query": "^5.99.0",

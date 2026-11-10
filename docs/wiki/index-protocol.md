@@ -26,7 +26,7 @@ Releases: 1.0.0 → 2.0.0 → (3.0.0 skipped) → **4.0.0** (rebalance-target mo
 
 ## Trusted fillers ([trusted-fillers](https://github.com/reserve-protocol/trusted-fillers))
 
-Async CoW Swap fills for Folio auctions (Folio ≥ some 4.x deployments; register consumes via `@reserve-protocol/trusted-fillers-sdk` in the cowbot at `src/views/index-dtf/auctions/views/rebalance/components/cowbot/`).
+Async CoW Swap fills for Folio auctions (Folio ≥ some 4.x deployments; register consumes via `@reserve-protocol/trusted-fillers-sdk` in the cowbot at `src/views/index-dtf/auctions/views/rebalance/components/cowbot/`). Register passes `minTradeValue: 1` (USD per sell order; the SDK default skipped small DTFs) and does not toast `below_min_trade_value` errors, which retry on the next poll.
 
 - Flow: Folio calls `TrustedFillerRegistry.createTrustedFiller(...)` → deterministic EIP-1167 clone of a governance-approved filler implementation (`CowSwapFiller`) → clone holds sell tokens and validates the CoW settlement via EIP-1271 → funds return on close.
 - **Same-block invariant**: a filler is valid only in the block it was initialized — settlement happens pre-hook→settle→post-hook within one block. Don't expect a persistent contract to query; between order placement and solver execution there is nothing on-chain.
