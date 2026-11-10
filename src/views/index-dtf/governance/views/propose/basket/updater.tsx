@@ -364,13 +364,26 @@ const V6RebalanceContextUpdater = () => {
     allowFailure: false,
     query: { enabled: isV6 && !!governor && !!timelock },
   })
+  // Governors without late quorum (version "1") revert here; they never extend a vote.
+  const { data: voteExtension, isError: noVoteExtension } = useReadContract({
+    address: governor,
+    abi: dtfIndexGovernanceAbi,
+    functionName: 'lateQuorumVoteExtension',
+    chainId: identity.chainId,
+    query: { enabled: isV6 && !!governor, retry: 1 },
+  })
 
   useEffect(() => {
     setContextError(isV6 && (nonceError || timingError))
   }, [isV6, nonceError, timingError, setContextError])
 
   useEffect(() => {
-    if (!isV6 || nonce === undefined || !timing) {
+    if (
+      !isV6 ||
+      nonce === undefined ||
+      !timing ||
+      (voteExtension === undefined && !noVoteExtension)
+    ) {
       setContext(undefined)
       return
     }
@@ -386,6 +399,7 @@ const V6RebalanceContextUpdater = () => {
       timing: {
         votingDelay: BigInt(votingDelay),
         votingPeriod: BigInt(votingPeriod),
+        voteExtension: BigInt(voteExtension ?? 0),
         timelockDelay: BigInt(timelockDelay),
         ...(optimistic
           ? {
@@ -397,7 +411,7 @@ const V6RebalanceContextUpdater = () => {
           : {}),
       },
     })
-  }, [isV6, nonce, timing, setContext])
+  }, [isV6, nonce, timing, voteExtension, noVoteExtension, setContext])
 
   useEffect(() => {
     setConfirmedAt(

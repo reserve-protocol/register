@@ -132,8 +132,9 @@ mapper dereferences — serve proposals ONLY through it or the list breaks).
   Optimistic actions come from `optimisticActionsAtom` (6.0 selectors on 6.0, plus the 6.0-only holder share and trade allowlist setters; the deploy wizard uses the same list).
 - Folio 6.0 basket proposals: `startRebalance` carries `getRebalanceNonce()+1`
   and a deadline anchored at confirmation (`rebalance-deadline.ts`: trading
-  governor lifecycle, plus the veto window on optimistic governors because a
-  veto restarts it as a standard vote, plus 3 days). A competing rebalance
+  governor lifecycle, plus the late-quorum extension, plus the veto window on
+  optimistic governors because a veto restarts it as a standard vote, plus 1
+  week). A competing rebalance
   started first makes the proposal revert at execution; don't "repair" nonce or
   deadline after submission.
 - ERC-6372 `clock()` is mocked (timestamp mode); governor deadline math

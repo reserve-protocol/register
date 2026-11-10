@@ -16,7 +16,8 @@ import { forkGovernance } from '../helpers/governance'
 
 // Folio 6.0 basket proposal from the Register UI on the Base fork, after the
 // upgrade lane moved MIDAS to 6.0.0: the proposal carries the next rebalance nonce
-// and a deadline covering the trading governor's lifecycle plus three days; it is
+// and a deadline covering the trading governor's lifecycle, the late-quorum
+// extension and a one-week buffer; it is
 // voted, queued and executed, and the rebalance starts on-chain with that nonce.
 // Requires `upgrade-v6.fork.spec.ts` (MIDAS) on the same Anvil and the subgraph proxy.
 const rpcUrl = process.env.FORK_RPC_URL_8453 ?? 'http://127.0.0.1:8546'
@@ -24,7 +25,7 @@ const subgraphUrl = process.env.FORK_SUBGRAPH_URL_8453 ?? 'http://127.0.0.1:1831
 const manifestPath = resolve('e2e/fork/.state/8453/v6-upgrade-scenario.json')
 const evidenceDir =
   process.env.E2E_EVIDENCE_DIR ?? resolve('temp/evidence/fork-8453-v6-basket')
-const DEADLINE_BUFFER = 3n * 86_400n
+const DEADLINE_BUFFER = 7n * 86_400n
 const USDC = '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913'
 const WETH = '0x4200000000000000000000000000000000000006'
 const CBBTC = '0xcbB7C0000aB88B473b1f5aFd9ef808440eed33Bf'
@@ -35,6 +36,7 @@ const readAbi = parseAbi([
   'function tradeAllowlistEnabled() view returns (bool)',
   'function votingDelay() view returns (uint256)',
   'function votingPeriod() view returns (uint256)',
+  'function lateQuorumVoteExtension() view returns (uint48)',
   'function timelock() view returns (address)',
   'function getMinDelay() view returns (uint256)',
   'function optimisticParams() view returns (uint48 vetoDelay, uint32 vetoPeriod, uint256 vetoThreshold)',
@@ -113,9 +115,10 @@ test('MIDAS on Folio 6.0 proposes, passes and starts a basket rebalance from the
   await expect(page.getByTestId('rebalance-preview-v6-terms')).toBeVisible({ timeout: 60_000 })
 
   const confirmedAt = BigInt(Math.floor((await page.evaluate(() => Date.now())) / 1000))
-  const [votingDelay, votingPeriod, timelock, veto] = await Promise.all([
+  const [votingDelay, votingPeriod, voteExtension, timelock, veto] = await Promise.all([
     read<bigint>(governor, 'votingDelay'),
     read<bigint>(governor, 'votingPeriod'),
+    read<number>(governor, 'lateQuorumVoteExtension'),
     read<Address>(governor, 'timelock'),
     read<readonly [number, number, bigint]>(governor, 'optimisticParams').catch(() => undefined),
   ])
@@ -123,6 +126,7 @@ test('MIDAS on Folio 6.0 proposes, passes and starts a basket rebalance from the
   const lifecycle =
     votingDelay +
     votingPeriod +
+    BigInt(voteExtension) +
     timelockDelay +
     (veto ? BigInt(veto[0]) + BigInt(veto[1]) : 0n) +
     DEADLINE_BUFFER

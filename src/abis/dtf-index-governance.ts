@@ -1091,6 +1091,19 @@ export default [
   },
   {
     type: 'function',
+    name: 'lateQuorumVoteExtension',
+    inputs: [],
+    outputs: [
+      {
+        name: '',
+        type: 'uint48',
+        internalType: 'uint48',
+      },
+    ],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
     name: 'votingPeriod',
     inputs: [],
     outputs: [
