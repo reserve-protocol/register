@@ -6,9 +6,8 @@ import TokenLogo from 'components/icons/TokenLogo'
 import { ListedToken } from 'hooks/useTokenList'
 import { useAtomValue } from 'jotai'
 import { FC, memo, useMemo } from 'react'
-import { rsrPriceAtom } from 'state/atoms'
 import { collateralsMetadataAtom } from 'state/cms/atoms'
-import { formatCurrency } from 'utils'
+import { formatCurrency, formatPercentage } from 'utils'
 
 type ItemProps = {
   name: string
@@ -38,13 +37,9 @@ const CollateralPieChartTooltip: FC<CollateralPieChartTooltipProps> = ({
   token,
 }) => {
   const { t } = useLingui()
-  const rsrPrice = useAtomValue(rsrPriceAtom)
   const metadata = useAtomValue(collateralsMetadataAtom)
 
-  const rsrUSD = useMemo(
-    () => formatCurrency(token.rsrStaked * rsrPrice, 0),
-    [rsrPrice, token]
-  )
+  const rsrUSD = formatCurrency(token.overcollaterizationUsd, 0)
 
   const chartData = useMemo(
     () =>
@@ -198,7 +193,7 @@ const CollateralPieChartTooltip: FC<CollateralPieChartTooltipProps> = ({
               {t`Staked RSR Overcollateralisation`}
             </span>
             <span className="font-medium">
-              {token.overcollaterization.toFixed(0)}%
+              {formatPercentage(token.overcollaterization)}
             </span>
           </div>
         </div>

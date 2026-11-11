@@ -507,6 +507,10 @@ msgstr "{swapCount}건 주문"
 msgid "{symbol} governance 1.1.0 available"
 msgstr "{symbol} 거버넌스 1.1.0 사용 가능"
 
+#: src/views/yield-dtf/staking/components/overview/staking-apy-calculation.tsx:70
+msgid "{symbol} market cap"
+msgstr "{symbol} 시가총액"
+
 #: src/components/vote-lock/migration/migration-modal.tsx:258
 msgid "{symbol} to approve"
 msgstr "승인할 {symbol}"
@@ -1280,6 +1284,14 @@ msgstr "및"
 msgid "and agree to the terms therein. ABC Labs, LLC (\"ABC Labs\") created the Website to help facilitate interaction with the Reserve protocol, including the minting and redeeming of DTFs. However, the Website is only one of several ways in which you can interact with the Reserve protocol. ABC Labs has neither created nor deployed any DTF and your ability to interact with specific DTFs via the Website in no way suggests that a DTF is endorsed by ABC Labs. In fact, ABC Labs assumes no liability for your use of the Website and interaction with the Reserve protocol, as covered in the Terms and Conditions."
 msgstr "및 그에 포함된 조건에 동의합니다. ABC Labs, LLC(\"ABC Labs\")는 DTF의 Mint와 Redeem을 포함하여 Reserve 프로토콜과의 상호작용을 돕기 위해 웹사이트를 만들었습니다. 그러나 웹사이트는 Reserve 프로토콜과 상호작용할 수 있는 여러 방법 중 하나일 뿐입니다. ABC Labs는 어떠한 DTF도 생성하거나 배포하지 않았으며, 웹사이트를 통해 특정 DTF와 상호작용할 수 있다는 것이 해당 DTF가 ABC Labs의 보증을 받았음을 의미하지 않습니다. 실제로 ABC Labs는 이용약관에 명시된 바와 같이 귀하의 웹사이트 사용 및 Reserve 프로토콜과의 상호작용에 대해 어떠한 책임도 지지 않습니다."
 
+#: src/views/yield-dtf/staking/components/overview/staking-apy-calculation.tsx:80
+msgid "Annual collateral yield"
+msgstr "연간 담보 수익"
+
+#: src/views/yield-dtf/staking/components/overview/staking-apy-calculation.tsx:91
+msgid "Annual revenue to RSR stakers"
+msgstr "RSR 스테이커 연간 수익"
+
 #: src/views/earn/hooks/useEarnTableColumns.tsx:189
 msgid "Annualised percentage yield from incentives"
 msgstr "인센티브로 발생하는 연환산 수익률"
@@ -1707,7 +1719,7 @@ msgstr "설정으로 돌아가기"
 #: src/views/home/components/discover-index-dtf/index-dtf-table-placeholder.tsx:18
 #: src/views/top100/components/top100-table-placeholder.tsx:12
 #: src/views/top100/components/top100-table.tsx:78
-#: src/views/yield-dtf/overview/components/backing/backing-overview.tsx:79
+#: src/views/yield-dtf/overview/components/backing/backing-overview.tsx:84
 #: src/views/yield-dtf/overview/components/collateral-pie-chart-wrapper.tsx:86
 msgid "Backing"
 msgstr "백킹"
@@ -1722,7 +1734,7 @@ msgstr "백킹 및 리스크"
 msgid "Backing + Overcollaterization:"
 msgstr "백킹 + 초과 담보:"
 
-#: src/views/yield-dtf/staking/components/overview/staking-stats.tsx:84
+#: src/views/yield-dtf/staking/components/overview/staking-stats.tsx:85
 msgid "Backing + Staked"
 msgstr "백킹 + Staked"
 
@@ -1882,6 +1894,10 @@ msgstr "Wallet에 있는 바스켓 토큰"
 msgid "Basket warmup period"
 msgstr "바스켓 워밍업 기간"
 
+#: src/views/yield-dtf/staking/components/overview/staking-apy-calculation.tsx:75
+msgid "Basket yield"
+msgstr "바스켓 수익률"
+
 #: src/views/yield-dtf/auctions/auctions-sidebar/ConfirmAuction.tsx:90
 msgid "Batch auction"
 msgstr "배치 경매"
@@ -2003,7 +2019,7 @@ msgstr "입찰"
 msgid "Bids ({totalBids})"
 msgstr "입찰 ({totalBids})"
 
-#: src/views/yield-dtf/overview/components/backing/backing-overview.tsx:69
+#: src/views/yield-dtf/overview/components/backing/backing-overview.tsx:74
 msgid "Blended Yield"
 msgstr "혼합 수익"
 
@@ -2168,10 +2184,6 @@ msgstr "제안자:"
 #: src/views/portfolio-page/components/portfolio-chart.tsx:168
 msgid "Calculating performance metrics..."
 msgstr "성과 지표를 계산하는 중..."
-
-#: src/views/yield-dtf/staking/components/overview/stake-apy.tsx:25
-msgid "Calculation:"
-msgstr "계산:"
 
 #: src/views/index-dtf/overview/components/index-campaign-overview.tsx:52
 msgid "Campaign ends:"
@@ -2548,7 +2560,7 @@ msgstr "담보 수익은 백킹 버퍼가 가득 찼을 때 수익으로 분배�
 msgid "Collateral:"
 msgstr "담보:"
 
-#: src/views/yield-dtf/overview/components/collateral-pie-chart-tooltip.tsx:142
+#: src/views/yield-dtf/overview/components/collateral-pie-chart-tooltip.tsx:137
 msgid "Collateral(s)"
 msgstr "담보"
 
@@ -2921,15 +2933,15 @@ msgstr "cow"
 msgid "CoW routes"
 msgstr "CoW 경로"
 
-#: src/views/index-dtf/auctions/views/rebalance/components/cowbot/use-cowbot-query.ts:85
+#: src/views/index-dtf/auctions/views/rebalance/components/cowbot/use-cowbot-query.ts:89
 msgid "CowBot encountered errors"
 msgstr "CowBot에서 오류가 발생했습니다"
 
-#: src/views/index-dtf/auctions/views/rebalance/components/cowbot/use-cowbot-query.ts:107
+#: src/views/index-dtf/auctions/views/rebalance/components/cowbot/use-cowbot-query.ts:111
 msgid "CowBot submitted {newOrdersCount} new order"
 msgstr "CowBot이 새 주문 {newOrdersCount}건을 제출했습니다"
 
-#: src/views/index-dtf/auctions/views/rebalance/components/cowbot/use-cowbot-query.ts:108
+#: src/views/index-dtf/auctions/views/rebalance/components/cowbot/use-cowbot-query.ts:112
 msgid "CowBot submitted {newOrdersCount} new orders"
 msgstr "CowBot이 새 주문 {newOrdersCount}건을 제출했습니다"
 
@@ -3112,9 +3124,9 @@ msgstr "큐레이터 이름"
 #: src/views/yield-dtf/governance/components/GovernanceOverview.tsx:148
 #: src/views/yield-dtf/governance/views/proposal-detail/components/proposal-summary/revenue-distribution-summary.tsx:154
 #: src/views/yield-dtf/governance/views/proposal/components/ItemPreview.tsx:79
-#: src/views/yield-dtf/staking/components/overview/staking-stats.tsx:68
-#: src/views/yield-dtf/staking/components/overview/staking-stats.tsx:78
-#: src/views/yield-dtf/staking/components/overview/staking-stats.tsx:88
+#: src/views/yield-dtf/staking/components/overview/staking-stats.tsx:69
+#: src/views/yield-dtf/staking/components/overview/staking-stats.tsx:79
+#: src/views/yield-dtf/staking/components/overview/staking-stats.tsx:89
 msgid "Current"
 msgstr "현재"
 
@@ -4143,11 +4155,15 @@ msgstr "추정 가격 ✱"
 msgid "Est. RSR Revenue"
 msgstr "예상 RSR 수익"
 
-#: src/views/yield-dtf/staking/components/overview/staking-stats.tsx:62
+#: src/views/yield-dtf/staking/components/overview/staking-stats.tsx:63
 msgid "Est. Staking APY"
 msgstr "예상 Staking APY"
 
-#: src/views/yield-dtf/staking/components/overview/stake-apy.tsx:13
+#: src/views/yield-dtf/staking/components/overview/staking-apy-calculation.tsx:102
+msgid "Est. staking yield"
+msgstr "예상 스테이킹 수익률"
+
+#: src/views/yield-dtf/staking/components/overview/stake-apy.tsx:14
 msgid "Est. Staking Yield:"
 msgstr "예상 Staking 수익:"
 
@@ -5578,6 +5594,10 @@ msgstr "나만의 Index DTF 출시"
 msgid "Launching..."
 msgstr "시작 중..."
 
+#: src/views/yield-dtf/staking/components/overview/staking-apy-calculation.tsx:119
+msgid "Learn more"
+msgstr "자세히 알아보기"
+
 #: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:338
 #: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:369
 #: src/views/index-dtf/overview/components/index-ctas-overview-mobile.tsx:63
@@ -5918,7 +5938,7 @@ msgstr "수동 Mint"
 msgid "Manual Redeem"
 msgstr "수동 Redeem"
 
-#: src/views/yield-dtf/staking/components/overview/stake-apy.tsx:20
+#: src/views/yield-dtf/staking/components/overview/staking-apy-calculation.tsx:64
 msgid "Manually estimated APY calculated from basket averaged yield."
 msgstr "바스켓 평균 수익을 바탕으로 수동 산정한 예상 APY입니다."
 
@@ -7335,7 +7355,7 @@ msgstr "플랫폼"
 msgid "Platform (Fixed)"
 msgstr "플랫폼 (고정)"
 
-#: src/views/yield-dtf/overview/components/collateral-pie-chart-tooltip.tsx:179
+#: src/views/yield-dtf/overview/components/collateral-pie-chart-tooltip.tsx:174
 msgid "Platform exposure"
 msgstr "플랫폼 익스포저"
 
@@ -8607,6 +8627,10 @@ msgstr "수익 설정"
 msgid "Revenue share"
 msgstr "수익 분배"
 
+#: src/views/yield-dtf/staking/components/overview/staking-apy-calculation.tsx:86
+msgid "Revenue share to RSR stakers"
+msgstr "RSR 스테이커 수익 배분"
+
 #: src/views/yield-dtf/governance/views/proposal/components/ProposedRevenueSplitPreview.tsx:109
 msgid "Revenue split"
 msgstr "수익 분배"
@@ -8825,13 +8849,25 @@ msgstr "라운드 {0}"
 msgid "RSR available to withdraw"
 msgstr "출금 가능한 RSR"
 
+#: src/views/yield-dtf/overview/components/backing/backing-overview.tsx:107
+msgid "RSR held by the staking contract (staked and in unstaking cooldown) as a % of {symbol} market cap. This RSR can be seized to cover a collateral default."
+msgstr "스테이킹 컨트랙트가 보유한 RSR(스테이킹 중 및 언스테이킹 대기 중)을 {symbol} 시가총액 대비 %로 나타낸 값입니다. 이 RSR은 담보 디폴트를 보전하기 위해 압류될 수 있습니다."
+
 #: src/views/yield-dtf/staking/components/withdraw/cooldown-unstake.tsx:25
 msgid "RSR in {delay} Cooldown"
 msgstr "{delay} 쿨다운 중인 RSR"
 
+#: src/views/yield-dtf/overview/components/backing/backing-overview.tsx:112
+msgid "RSR staked"
+msgstr "스테이킹된 RSR"
+
 #: src/views/yield-dtf/overview/components/charts/staking-chart.tsx:98
 msgid "RSR Staked"
 msgstr "Staked RSR"
+
+#: src/views/yield-dtf/staking/components/overview/staking-apy-calculation.tsx:97
+msgid "RSR staked (USD)"
+msgstr "스테이킹된 RSR (USD)"
 
 #: src/components/stake-drawer/components/submit-stake-button.tsx:147
 msgid "RSR staked successfully!"
@@ -8845,6 +8881,10 @@ msgstr "RSR Stakers"
 #: src/views/yield-dtf/settings/components/contracts-info.tsx:21
 msgid "RSR Trader"
 msgstr "RSR Trader"
+
+#: src/views/yield-dtf/overview/components/backing/backing-overview.tsx:116
+msgid "RSR unstaking & pending rewards"
+msgstr "언스테이킹 중인 RSR 및 대기 중인 보상"
 
 #: src/views/yield-dtf/settings/components/basic-info.tsx:23
 msgid "RToken Address"
@@ -9551,7 +9591,7 @@ msgstr "Stake"
 msgid "Stake + Unstake"
 msgstr "Stake + Unstake"
 
-#: src/views/yield-dtf/staking/components/overview/staking-stats.tsx:50
+#: src/views/yield-dtf/staking/components/overview/staking-stats.tsx:51
 msgid "Stake pool"
 msgstr "Stake 풀"
 
@@ -9591,13 +9631,13 @@ msgstr "Staked"
 #: src/views/explorer/components/tokens/index.tsx:160
 #: src/views/portfolio-page/components/portfolio-breakdown.tsx:38
 #: src/views/portfolio-page/components/portfolio-chart.tsx:75
-#: src/views/yield-dtf/overview/components/backing/backing-overview.tsx:94
+#: src/views/yield-dtf/overview/components/backing/backing-overview.tsx:99
 #: src/views/yield-dtf/overview/components/collateral-pie-chart-wrapper.tsx:106
 #: src/views/yield-dtf/staking/components/overview/staking-metrics.tsx:28
 msgid "Staked RSR"
 msgstr "Staked RSR"
 
-#: src/views/yield-dtf/overview/components/collateral-pie-chart-tooltip.tsx:198
+#: src/views/yield-dtf/overview/components/collateral-pie-chart-tooltip.tsx:193
 msgid "Staked RSR Overcollateralisation"
 msgstr "Staked RSR 초과 담보"
 
@@ -10182,6 +10222,10 @@ msgstr "Reserve Protocol은 몇 가지 다른 유형의 거래를 수행합니�
 msgid "The Reserve Robotics DTF (ROBOTS) is a weighted basket of public, US-listed robotics and automation companies at the center of the AI buildout. AI is moving off the screen and into the physical world: the same breakthroughs that taught software to reason are now teaching machines to perceive, decide, and act, and to take on physical labor. The ROBOTS DTF gives you direct exposure to the companies building that transition: the humanoids, surgical robots, factory and warehouse automation, lidar, machine vision, and the chips that let machines navigate the real world. The basket is composed of companies with significant and growing exposure to robotics and automation demand, weighted by market capitalization with a 20% cap and a $2B minimum market cap, rebalanced quarterly. The ROBOTS DTF bundles Ondo Global Markets tokenized stocks, each of which represents an actual share held in a regulated US brokerage account."
 msgstr "Reserve Robotics DTF(ROBOTS)는 AI 인프라 구축의 중심에 있는 미국 상장 로보틱스 및 자동화 공개 기업들로 구성된 가중 바스켓입니다. AI는 화면 밖으로 나와 물리적 세계로 이동하고 있습니다. 소프트웨어가 추론하도록 만든 같은 혁신이 이제 기계가 인식하고, 결정하고, 행동하며, 물리적 노동을 맡도록 가르치고 있습니다. ROBOTS DTF는 이러한 전환을 만드는 기업들, 즉 휴머노이드, 수술 로봇, 공장 및 창고 자동화, 라이다, 머신 비전, 기계가 현실 세계를 탐색하게 하는 칩 기업에 직접 노출됩니다. 이 바스켓은 로보틱스 및 자동화 수요에 대한 의미 있고 성장 중인 노출을 가진 기업들로 구성되며, 시가총액 가중 방식에 20% 상한과 $2B 최소 시가총액 조건을 적용하고 분기마다 리밸런싱합니다. ROBOTS DTF는 Ondo Global Markets의 토큰화 주식을 묶으며, 각 토큰화 주식은 규제받는 미국 증권 계좌에 보관된 실제 주식 1주를 나타냅니다."
 
+#: src/views/yield-dtf/staking/components/overview/staking-apy-calculation.tsx:109
+msgid "The RSR stakers' share includes the fintech revenue redirected to eusdRSR stakers under the eUSD Revenue Share Programme."
+msgstr "RSR 스테이커 배분에는 eUSD Revenue Share Programme에 따라 eusdRSR 스테이커에게 재분배되는 핀테크 수익이 포함됩니다."
+
 #: src/components/rtoken-setup/governance/RoleSetup.tsx:25
 msgid "The short freezer has the ability to freeze an RToken's system for a short period of time. The SHORT_FREEZER role should be assigned to an address that might reasonably be expected to be the first to detect a bug in the code and can act quickly, and with some tolerance for false positives, though less than in pausing. It is acceptable to have multiple short freezers. It can be robot-controlled. It can also consist of a 1-of-N multisig for high availability and coverage. If a bug is detected, a short freeze can be triggered which will automatically expire if it is not renewed by LONG_FREEZER."
 msgstr "short freezer는 RToken 시스템을 단기간 동결할 수 있는 권한을 가집니다. SHORT_FREEZER 역할은 코드의 버그를 가장 먼저 감지할 것으로 합리적으로 기대할 수 있고 신속하게 대응할 수 있는 주소에 할당해야 하며, 일시중지보다는 적지만 어느 정도의 오탐(false positive)을 허용할 수 있는 주소여야 합니다. short freezer는 여러 명이어도 무방합니다. 로봇으로 제어할 수도 있습니다. 또한 고가용성과 커버리지를 위해 1-of-N 멀티시그로 구성할 수도 있습니다. 버그가 감지되면 단기 동결을 발동할 수 있으며, LONG_FREEZER가 갱신하지 않으면 자동으로 만료됩니다."
@@ -10557,7 +10601,7 @@ msgstr "토큰 세부 정보"
 msgid "Token distribution must be positive"
 msgstr "토큰 분배는 양수여야 합니다"
 
-#: src/views/yield-dtf/overview/components/collateral-pie-chart-tooltip.tsx:163
+#: src/views/yield-dtf/overview/components/collateral-pie-chart-tooltip.tsx:158
 msgid "Token exposure"
 msgstr "토큰 노출"
 
@@ -10664,6 +10708,7 @@ msgid "Top voting addresses"
 msgstr "상위 투표 주소"
 
 #: src/views/portfolio-page/components/portfolio-chart.tsx:125
+#: src/views/yield-dtf/overview/components/backing/backing-overview.tsx:120
 #: src/views/yield-dtf/overview/components/backing/underlying-fees/fees-table.tsx:225
 msgid "Total"
 msgstr "합계"
@@ -10697,7 +10742,7 @@ msgstr "총 시가총액"
 msgid "Total price impact"
 msgstr "총 가격 영향"
 
-#: src/views/yield-dtf/staking/components/overview/staking-stats.tsx:55
+#: src/views/yield-dtf/staking/components/overview/staking-stats.tsx:56
 msgid "Total RSR staked"
 msgstr "총 Staked RSR"
 
@@ -11213,7 +11258,7 @@ msgid "Unstaking and unlock cooldown periods."
 msgstr "Unstaking 및 잠금 해제 쿨다운 기간."
 
 #: src/views/yield-dtf/settings/components/other-info.tsx:23
-#: src/views/yield-dtf/staking/components/overview/staking-stats.tsx:74
+#: src/views/yield-dtf/staking/components/overview/staking-stats.tsx:75
 msgid "Unstaking Delay"
 msgstr "Unstaking 지연"
 

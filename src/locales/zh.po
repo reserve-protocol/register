@@ -507,6 +507,10 @@ msgstr "{swapCount} 个 Orders"
 msgid "{symbol} governance 1.1.0 available"
 msgstr "{symbol} 治理 1.1.0 已可用"
 
+#: src/views/yield-dtf/staking/components/overview/staking-apy-calculation.tsx:70
+msgid "{symbol} market cap"
+msgstr "{symbol} 市值"
+
 #: src/components/vote-lock/migration/migration-modal.tsx:258
 msgid "{symbol} to approve"
 msgstr "待授权的 {symbol}"
@@ -1280,6 +1284,14 @@ msgstr "和"
 msgid "and agree to the terms therein. ABC Labs, LLC (\"ABC Labs\") created the Website to help facilitate interaction with the Reserve protocol, including the minting and redeeming of DTFs. However, the Website is only one of several ways in which you can interact with the Reserve protocol. ABC Labs has neither created nor deployed any DTF and your ability to interact with specific DTFs via the Website in no way suggests that a DTF is endorsed by ABC Labs. In fact, ABC Labs assumes no liability for your use of the Website and interaction with the Reserve protocol, as covered in the Terms and Conditions."
 msgstr "并同意其中的条款。ABC Labs, LLC（\"ABC Labs\"）创建本网站是为了帮助用户与 Reserve 协议进行交互，包括 DTF 的 Mint 和 Redeem。然而，本网站只是您与 Reserve 协议交互的多种方式之一。ABC Labs 从未创建或部署任何 DTF，您能够通过本网站与特定 DTF 交互并不意味着该 DTF 获得了 ABC Labs 的认可。事实上，如条款与条件所述，ABC Labs 对您使用本网站以及与 Reserve 协议的交互不承担任何责任。"
 
+#: src/views/yield-dtf/staking/components/overview/staking-apy-calculation.tsx:80
+msgid "Annual collateral yield"
+msgstr "年度抵押品收益"
+
+#: src/views/yield-dtf/staking/components/overview/staking-apy-calculation.tsx:91
+msgid "Annual revenue to RSR stakers"
+msgstr "RSR 质押者年度收入"
+
 #: src/views/earn/hooks/useEarnTableColumns.tsx:189
 msgid "Annualised percentage yield from incentives"
 msgstr "来自激励的年化收益率"
@@ -1707,7 +1719,7 @@ msgstr "返回设置"
 #: src/views/home/components/discover-index-dtf/index-dtf-table-placeholder.tsx:18
 #: src/views/top100/components/top100-table-placeholder.tsx:12
 #: src/views/top100/components/top100-table.tsx:78
-#: src/views/yield-dtf/overview/components/backing/backing-overview.tsx:79
+#: src/views/yield-dtf/overview/components/backing/backing-overview.tsx:84
 #: src/views/yield-dtf/overview/components/collateral-pie-chart-wrapper.tsx:86
 msgid "Backing"
 msgstr "支撑"
@@ -1722,7 +1734,7 @@ msgstr "支撑与风险"
 msgid "Backing + Overcollaterization:"
 msgstr "支撑 + 超额抵押："
 
-#: src/views/yield-dtf/staking/components/overview/staking-stats.tsx:84
+#: src/views/yield-dtf/staking/components/overview/staking-stats.tsx:85
 msgid "Backing + Staked"
 msgstr "支撑 + 已 Staked"
 
@@ -1882,6 +1894,10 @@ msgstr "你 Wallet 中的篮子 tokens"
 msgid "Basket warmup period"
 msgstr "篮子预热期"
 
+#: src/views/yield-dtf/staking/components/overview/staking-apy-calculation.tsx:75
+msgid "Basket yield"
+msgstr "篮子收益率"
+
 #: src/views/yield-dtf/auctions/auctions-sidebar/ConfirmAuction.tsx:90
 msgid "Batch auction"
 msgstr "批量拍卖"
@@ -2003,7 +2019,7 @@ msgstr "出价"
 msgid "Bids ({totalBids})"
 msgstr "出价 ({totalBids})"
 
-#: src/views/yield-dtf/overview/components/backing/backing-overview.tsx:69
+#: src/views/yield-dtf/overview/components/backing/backing-overview.tsx:74
 msgid "Blended Yield"
 msgstr "混合收益"
 
@@ -2168,10 +2184,6 @@ msgstr "由："
 #: src/views/portfolio-page/components/portfolio-chart.tsx:168
 msgid "Calculating performance metrics..."
 msgstr "正在计算业绩指标..."
-
-#: src/views/yield-dtf/staking/components/overview/stake-apy.tsx:25
-msgid "Calculation:"
-msgstr "计算方式:"
 
 #: src/views/index-dtf/overview/components/index-campaign-overview.tsx:52
 msgid "Campaign ends:"
@@ -2548,7 +2560,7 @@ msgstr "当支撑缓冲已满时，抵押品收益将作为收入进行分配"
 msgid "Collateral:"
 msgstr "抵押品："
 
-#: src/views/yield-dtf/overview/components/collateral-pie-chart-tooltip.tsx:142
+#: src/views/yield-dtf/overview/components/collateral-pie-chart-tooltip.tsx:137
 msgid "Collateral(s)"
 msgstr "抵押品"
 
@@ -2921,15 +2933,15 @@ msgstr "cow"
 msgid "CoW routes"
 msgstr "CoW 路由"
 
-#: src/views/index-dtf/auctions/views/rebalance/components/cowbot/use-cowbot-query.ts:85
+#: src/views/index-dtf/auctions/views/rebalance/components/cowbot/use-cowbot-query.ts:89
 msgid "CowBot encountered errors"
 msgstr "CowBot 遇到错误"
 
-#: src/views/index-dtf/auctions/views/rebalance/components/cowbot/use-cowbot-query.ts:107
+#: src/views/index-dtf/auctions/views/rebalance/components/cowbot/use-cowbot-query.ts:111
 msgid "CowBot submitted {newOrdersCount} new order"
 msgstr "CowBot 提交了 {newOrdersCount} 个新订单"
 
-#: src/views/index-dtf/auctions/views/rebalance/components/cowbot/use-cowbot-query.ts:108
+#: src/views/index-dtf/auctions/views/rebalance/components/cowbot/use-cowbot-query.ts:112
 msgid "CowBot submitted {newOrdersCount} new orders"
 msgstr "CowBot 提交了 {newOrdersCount} 个新订单"
 
@@ -3112,9 +3124,9 @@ msgstr "策展人名称"
 #: src/views/yield-dtf/governance/components/GovernanceOverview.tsx:148
 #: src/views/yield-dtf/governance/views/proposal-detail/components/proposal-summary/revenue-distribution-summary.tsx:154
 #: src/views/yield-dtf/governance/views/proposal/components/ItemPreview.tsx:79
-#: src/views/yield-dtf/staking/components/overview/staking-stats.tsx:68
-#: src/views/yield-dtf/staking/components/overview/staking-stats.tsx:78
-#: src/views/yield-dtf/staking/components/overview/staking-stats.tsx:88
+#: src/views/yield-dtf/staking/components/overview/staking-stats.tsx:69
+#: src/views/yield-dtf/staking/components/overview/staking-stats.tsx:79
+#: src/views/yield-dtf/staking/components/overview/staking-stats.tsx:89
 msgid "Current"
 msgstr "当前"
 
@@ -4143,11 +4155,15 @@ msgstr "估算价格 ✱"
 msgid "Est. RSR Revenue"
 msgstr "RSR 收益"
 
-#: src/views/yield-dtf/staking/components/overview/staking-stats.tsx:62
+#: src/views/yield-dtf/staking/components/overview/staking-stats.tsx:63
 msgid "Est. Staking APY"
 msgstr "预计 Staking APY"
 
-#: src/views/yield-dtf/staking/components/overview/stake-apy.tsx:13
+#: src/views/yield-dtf/staking/components/overview/staking-apy-calculation.tsx:102
+msgid "Est. staking yield"
+msgstr "预计质押收益率"
+
+#: src/views/yield-dtf/staking/components/overview/stake-apy.tsx:14
 msgid "Est. Staking Yield:"
 msgstr "预计 Staking 收益:"
 
@@ -5578,6 +5594,10 @@ msgstr "启动你自己的 Index DTF"
 msgid "Launching..."
 msgstr "发起中……"
 
+#: src/views/yield-dtf/staking/components/overview/staking-apy-calculation.tsx:119
+msgid "Learn more"
+msgstr "了解更多"
+
 #: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:338
 #: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:369
 #: src/views/index-dtf/overview/components/index-ctas-overview-mobile.tsx:63
@@ -5918,7 +5938,7 @@ msgstr "手动 Mint"
 msgid "Manual Redeem"
 msgstr "手动 Redeem"
 
-#: src/views/yield-dtf/staking/components/overview/stake-apy.tsx:20
+#: src/views/yield-dtf/staking/components/overview/staking-apy-calculation.tsx:64
 msgid "Manually estimated APY calculated from basket averaged yield."
 msgstr "根据篮子平均收益手动估算的 APY。"
 
@@ -7335,7 +7355,7 @@ msgstr "平台"
 msgid "Platform (Fixed)"
 msgstr "平台（固定）"
 
-#: src/views/yield-dtf/overview/components/collateral-pie-chart-tooltip.tsx:179
+#: src/views/yield-dtf/overview/components/collateral-pie-chart-tooltip.tsx:174
 msgid "Platform exposure"
 msgstr "平台敞口"
 
@@ -8607,6 +8627,10 @@ msgstr "收入设置"
 msgid "Revenue share"
 msgstr "收入分成"
 
+#: src/views/yield-dtf/staking/components/overview/staking-apy-calculation.tsx:86
+msgid "Revenue share to RSR stakers"
+msgstr "RSR 质押者收入分成"
+
 #: src/views/yield-dtf/governance/views/proposal/components/ProposedRevenueSplitPreview.tsx:109
 msgid "Revenue split"
 msgstr "收入分成"
@@ -8825,13 +8849,25 @@ msgstr "第 {0} 轮"
 msgid "RSR available to withdraw"
 msgstr "可提取的 RSR"
 
+#: src/views/yield-dtf/overview/components/backing/backing-overview.tsx:107
+msgid "RSR held by the staking contract (staked and in unstaking cooldown) as a % of {symbol} market cap. This RSR can be seized to cover a collateral default."
+msgstr "质押合约持有的 RSR（已质押及处于解除质押冷却期）占 {symbol} 市值的百分比。这些 RSR 可被没收以弥补抵押品违约。"
+
 #: src/views/yield-dtf/staking/components/withdraw/cooldown-unstake.tsx:25
 msgid "RSR in {delay} Cooldown"
 msgstr "处于 {delay} 冷却中的 RSR"
 
+#: src/views/yield-dtf/overview/components/backing/backing-overview.tsx:112
+msgid "RSR staked"
+msgstr "已质押 RSR"
+
 #: src/views/yield-dtf/overview/components/charts/staking-chart.tsx:98
 msgid "RSR Staked"
 msgstr "已 Stake 的 RSR"
+
+#: src/views/yield-dtf/staking/components/overview/staking-apy-calculation.tsx:97
+msgid "RSR staked (USD)"
+msgstr "已质押 RSR（USD）"
 
 #: src/components/stake-drawer/components/submit-stake-button.tsx:147
 msgid "RSR staked successfully!"
@@ -8845,6 +8881,10 @@ msgstr "RSR Stakers"
 #: src/views/yield-dtf/settings/components/contracts-info.tsx:21
 msgid "RSR Trader"
 msgstr "RSR Trader"
+
+#: src/views/yield-dtf/overview/components/backing/backing-overview.tsx:116
+msgid "RSR unstaking & pending rewards"
+msgstr "解除质押中的 RSR 及待分配奖励"
 
 #: src/views/yield-dtf/settings/components/basic-info.tsx:23
 msgid "RToken Address"
@@ -9551,7 +9591,7 @@ msgstr "Stake"
 msgid "Stake + Unstake"
 msgstr "Stake + Unstake"
 
-#: src/views/yield-dtf/staking/components/overview/staking-stats.tsx:50
+#: src/views/yield-dtf/staking/components/overview/staking-stats.tsx:51
 msgid "Stake pool"
 msgstr "Stake 池"
 
@@ -9591,13 +9631,13 @@ msgstr "Staked"
 #: src/views/explorer/components/tokens/index.tsx:160
 #: src/views/portfolio-page/components/portfolio-breakdown.tsx:38
 #: src/views/portfolio-page/components/portfolio-chart.tsx:75
-#: src/views/yield-dtf/overview/components/backing/backing-overview.tsx:94
+#: src/views/yield-dtf/overview/components/backing/backing-overview.tsx:99
 #: src/views/yield-dtf/overview/components/collateral-pie-chart-wrapper.tsx:106
 #: src/views/yield-dtf/staking/components/overview/staking-metrics.tsx:28
 msgid "Staked RSR"
 msgstr "已 Stake 的 RSR"
 
-#: src/views/yield-dtf/overview/components/collateral-pie-chart-tooltip.tsx:198
+#: src/views/yield-dtf/overview/components/collateral-pie-chart-tooltip.tsx:193
 msgid "Staked RSR Overcollateralisation"
 msgstr "已 Stake 的 RSR 超额抵押"
 
@@ -10182,6 +10222,10 @@ msgstr "Reserve Protocol 会进行几种不同类型的交易"
 msgid "The Reserve Robotics DTF (ROBOTS) is a weighted basket of public, US-listed robotics and automation companies at the center of the AI buildout. AI is moving off the screen and into the physical world: the same breakthroughs that taught software to reason are now teaching machines to perceive, decide, and act, and to take on physical labor. The ROBOTS DTF gives you direct exposure to the companies building that transition: the humanoids, surgical robots, factory and warehouse automation, lidar, machine vision, and the chips that let machines navigate the real world. The basket is composed of companies with significant and growing exposure to robotics and automation demand, weighted by market capitalization with a 20% cap and a $2B minimum market cap, rebalanced quarterly. The ROBOTS DTF bundles Ondo Global Markets tokenized stocks, each of which represents an actual share held in a regulated US brokerage account."
 msgstr "Reserve Robotics DTF（ROBOTS）是一个加权篮子，覆盖处于 AI 建设核心位置的美国上市机器人和自动化公司。AI 正从屏幕走向物理世界：那些让软件学会推理的突破，如今正在教会机器感知、决策和行动，并承担实体劳动。ROBOTS DTF 让你直接获得正在构建这一转变的公司的敞口：人形机器人、手术机器人、工厂和仓库自动化、激光雷达、机器视觉，以及让机器在现实世界中导航的芯片。该篮子由对机器人和自动化需求具有重要且持续增长敞口的公司组成，按市值加权，单一权重上限为 20%，最低市值为 $2B，并按季度再平衡。ROBOTS DTF 打包 Ondo Global Markets 的代币化股票，每一只代币化股票都代表存放在受监管美国券商账户中的一股真实股票。"
 
+#: src/views/yield-dtf/staking/components/overview/staking-apy-calculation.tsx:109
+msgid "The RSR stakers' share includes the fintech revenue redirected to eusdRSR stakers under the eUSD Revenue Share Programme."
+msgstr "RSR 质押者分成包含根据 eUSD Revenue Share Programme 重新分配给 eusdRSR 质押者的金融科技收入。"
+
 #: src/components/rtoken-setup/governance/RoleSetup.tsx:25
 msgid "The short freezer has the ability to freeze an RToken's system for a short period of time. The SHORT_FREEZER role should be assigned to an address that might reasonably be expected to be the first to detect a bug in the code and can act quickly, and with some tolerance for false positives, though less than in pausing. It is acceptable to have multiple short freezers. It can be robot-controlled. It can also consist of a 1-of-N multisig for high availability and coverage. If a bug is detected, a short freeze can be triggered which will automatically expire if it is not renewed by LONG_FREEZER."
 msgstr "short freezer 有权将 RToken 系统冻结较短一段时间。SHORT_FREEZER 角色应分配给有理由预期会率先发现代码漏洞、能够快速行动、并对误报有一定容忍度（但低于暂停场景）的地址。可以设置多个 short freezer。它可以由机器人控制，也可以由 1-of-N 多签组成，以实现高可用性和覆盖范围。如果检测到漏洞，可以触发 short freeze，若未由 LONG_FREEZER 续期则会自动过期。"
@@ -10557,7 +10601,7 @@ msgstr "代币详情"
 msgid "Token distribution must be positive"
 msgstr "代币分配必须为正数"
 
-#: src/views/yield-dtf/overview/components/collateral-pie-chart-tooltip.tsx:163
+#: src/views/yield-dtf/overview/components/collateral-pie-chart-tooltip.tsx:158
 msgid "Token exposure"
 msgstr "代币敞口"
 
@@ -10664,6 +10708,7 @@ msgid "Top voting addresses"
 msgstr "投票最多的地址"
 
 #: src/views/portfolio-page/components/portfolio-chart.tsx:125
+#: src/views/yield-dtf/overview/components/backing/backing-overview.tsx:120
 #: src/views/yield-dtf/overview/components/backing/underlying-fees/fees-table.tsx:225
 msgid "Total"
 msgstr "总计"
@@ -10697,7 +10742,7 @@ msgstr "总市值"
 msgid "Total price impact"
 msgstr "总价格影响"
 
-#: src/views/yield-dtf/staking/components/overview/staking-stats.tsx:55
+#: src/views/yield-dtf/staking/components/overview/staking-stats.tsx:56
 msgid "Total RSR staked"
 msgstr "Staked RSR 总量"
 
@@ -11213,7 +11258,7 @@ msgid "Unstaking and unlock cooldown periods."
 msgstr "Unstaking 与解锁冷却期。"
 
 #: src/views/yield-dtf/settings/components/other-info.tsx:23
-#: src/views/yield-dtf/staking/components/overview/staking-stats.tsx:74
+#: src/views/yield-dtf/staking/components/overview/staking-stats.tsx:75
 msgid "Unstaking Delay"
 msgstr "Unstaking 延迟"
 

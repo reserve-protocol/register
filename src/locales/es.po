@@ -507,6 +507,10 @@ msgstr "{swapCount} órdenes"
 msgid "{symbol} governance 1.1.0 available"
 msgstr "Gobernanza 1.1.0 disponible para {symbol}"
 
+#: src/views/yield-dtf/staking/components/overview/staking-apy-calculation.tsx:70
+msgid "{symbol} market cap"
+msgstr "Market cap de {symbol}"
+
 #: src/components/vote-lock/migration/migration-modal.tsx:258
 msgid "{symbol} to approve"
 msgstr "{symbol} a aprobar"
@@ -1280,6 +1284,14 @@ msgstr "y"
 msgid "and agree to the terms therein. ABC Labs, LLC (\"ABC Labs\") created the Website to help facilitate interaction with the Reserve protocol, including the minting and redeeming of DTFs. However, the Website is only one of several ways in which you can interact with the Reserve protocol. ABC Labs has neither created nor deployed any DTF and your ability to interact with specific DTFs via the Website in no way suggests that a DTF is endorsed by ABC Labs. In fact, ABC Labs assumes no liability for your use of the Website and interaction with the Reserve protocol, as covered in the Terms and Conditions."
 msgstr "y aceptas los términos allí establecidos. ABC Labs, LLC (\"ABC Labs\") creó el Sitio Web para facilitar la interacción con el protocolo Reserve, incluyendo el Mint y el Redeem de DTFs. Sin embargo, el Sitio Web es solo una de varias formas de interactuar con el protocolo Reserve. ABC Labs no ha creado ni desplegado ningún DTF, y tu capacidad de interactuar con DTFs específicos a través del Sitio Web no implica en modo alguno que un DTF esté respaldado por ABC Labs. De hecho, ABC Labs no asume ninguna responsabilidad por tu uso del Sitio Web ni por tu interacción con el protocolo Reserve, según se establece en los Términos y Condiciones."
 
+#: src/views/yield-dtf/staking/components/overview/staking-apy-calculation.tsx:80
+msgid "Annual collateral yield"
+msgstr "Rendimiento anual del colateral"
+
+#: src/views/yield-dtf/staking/components/overview/staking-apy-calculation.tsx:91
+msgid "Annual revenue to RSR stakers"
+msgstr "Ingresos anuales para stakers de RSR"
+
 #: src/views/earn/hooks/useEarnTableColumns.tsx:189
 msgid "Annualised percentage yield from incentives"
 msgstr "Rendimiento porcentual anualizado proveniente de incentivos"
@@ -1707,7 +1719,7 @@ msgstr "Volver a configuración"
 #: src/views/home/components/discover-index-dtf/index-dtf-table-placeholder.tsx:18
 #: src/views/top100/components/top100-table-placeholder.tsx:12
 #: src/views/top100/components/top100-table.tsx:78
-#: src/views/yield-dtf/overview/components/backing/backing-overview.tsx:79
+#: src/views/yield-dtf/overview/components/backing/backing-overview.tsx:84
 #: src/views/yield-dtf/overview/components/collateral-pie-chart-wrapper.tsx:86
 msgid "Backing"
 msgstr "Respaldo"
@@ -1722,7 +1734,7 @@ msgstr "Respaldo y riesgo"
 msgid "Backing + Overcollaterization:"
 msgstr "Respaldo + sobrecolateralización:"
 
-#: src/views/yield-dtf/staking/components/overview/staking-stats.tsx:84
+#: src/views/yield-dtf/staking/components/overview/staking-stats.tsx:85
 msgid "Backing + Staked"
 msgstr "Respaldo + Staked"
 
@@ -1882,6 +1894,10 @@ msgstr "Tokens del basket en tu Wallet"
 msgid "Basket warmup period"
 msgstr "Período de calentamiento de la cesta"
 
+#: src/views/yield-dtf/staking/components/overview/staking-apy-calculation.tsx:75
+msgid "Basket yield"
+msgstr "Rendimiento de la canasta"
+
 #: src/views/yield-dtf/auctions/auctions-sidebar/ConfirmAuction.tsx:90
 msgid "Batch auction"
 msgstr "Subasta por lotes"
@@ -2003,7 +2019,7 @@ msgstr "Ofertas"
 msgid "Bids ({totalBids})"
 msgstr "Ofertas ({totalBids})"
 
-#: src/views/yield-dtf/overview/components/backing/backing-overview.tsx:69
+#: src/views/yield-dtf/overview/components/backing/backing-overview.tsx:74
 msgid "Blended Yield"
 msgstr "Rendimiento combinado"
 
@@ -2168,10 +2184,6 @@ msgstr "Por:"
 #: src/views/portfolio-page/components/portfolio-chart.tsx:168
 msgid "Calculating performance metrics..."
 msgstr "Calculando métricas de rendimiento..."
-
-#: src/views/yield-dtf/staking/components/overview/stake-apy.tsx:25
-msgid "Calculation:"
-msgstr "Cálculo:"
 
 #: src/views/index-dtf/overview/components/index-campaign-overview.tsx:52
 msgid "Campaign ends:"
@@ -2548,7 +2560,7 @@ msgstr "El rendimiento del colateral se distribuye como ingresos cuando el backi
 msgid "Collateral:"
 msgstr "Colateral:"
 
-#: src/views/yield-dtf/overview/components/collateral-pie-chart-tooltip.tsx:142
+#: src/views/yield-dtf/overview/components/collateral-pie-chart-tooltip.tsx:137
 msgid "Collateral(s)"
 msgstr "Colateral(es)"
 
@@ -2921,15 +2933,15 @@ msgstr "cow"
 msgid "CoW routes"
 msgstr "Rutas de CoW"
 
-#: src/views/index-dtf/auctions/views/rebalance/components/cowbot/use-cowbot-query.ts:85
+#: src/views/index-dtf/auctions/views/rebalance/components/cowbot/use-cowbot-query.ts:89
 msgid "CowBot encountered errors"
 msgstr "CowBot encontró errores"
 
-#: src/views/index-dtf/auctions/views/rebalance/components/cowbot/use-cowbot-query.ts:107
+#: src/views/index-dtf/auctions/views/rebalance/components/cowbot/use-cowbot-query.ts:111
 msgid "CowBot submitted {newOrdersCount} new order"
 msgstr "CowBot envió {newOrdersCount} nueva orden"
 
-#: src/views/index-dtf/auctions/views/rebalance/components/cowbot/use-cowbot-query.ts:108
+#: src/views/index-dtf/auctions/views/rebalance/components/cowbot/use-cowbot-query.ts:112
 msgid "CowBot submitted {newOrdersCount} new orders"
 msgstr "CowBot envió {newOrdersCount} nuevas órdenes"
 
@@ -3112,9 +3124,9 @@ msgstr "Nombre del curador"
 #: src/views/yield-dtf/governance/components/GovernanceOverview.tsx:148
 #: src/views/yield-dtf/governance/views/proposal-detail/components/proposal-summary/revenue-distribution-summary.tsx:154
 #: src/views/yield-dtf/governance/views/proposal/components/ItemPreview.tsx:79
-#: src/views/yield-dtf/staking/components/overview/staking-stats.tsx:68
-#: src/views/yield-dtf/staking/components/overview/staking-stats.tsx:78
-#: src/views/yield-dtf/staking/components/overview/staking-stats.tsx:88
+#: src/views/yield-dtf/staking/components/overview/staking-stats.tsx:69
+#: src/views/yield-dtf/staking/components/overview/staking-stats.tsx:79
+#: src/views/yield-dtf/staking/components/overview/staking-stats.tsx:89
 msgid "Current"
 msgstr "Actual"
 
@@ -4143,11 +4155,15 @@ msgstr "Precio est. ✱"
 msgid "Est. RSR Revenue"
 msgstr "Ingresos est. de RSR"
 
-#: src/views/yield-dtf/staking/components/overview/staking-stats.tsx:62
+#: src/views/yield-dtf/staking/components/overview/staking-stats.tsx:63
 msgid "Est. Staking APY"
 msgstr "APY estimado de Staking"
 
-#: src/views/yield-dtf/staking/components/overview/stake-apy.tsx:13
+#: src/views/yield-dtf/staking/components/overview/staking-apy-calculation.tsx:102
+msgid "Est. staking yield"
+msgstr "Rendimiento de staking est."
+
+#: src/views/yield-dtf/staking/components/overview/stake-apy.tsx:14
 msgid "Est. Staking Yield:"
 msgstr "Rendimiento estimado de Staking:"
 
@@ -5578,6 +5594,10 @@ msgstr "Lanza tu propio Index DTF"
 msgid "Launching..."
 msgstr "Lanzando..."
 
+#: src/views/yield-dtf/staking/components/overview/staking-apy-calculation.tsx:119
+msgid "Learn more"
+msgstr "Más información"
+
 #: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:338
 #: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:369
 #: src/views/index-dtf/overview/components/index-ctas-overview-mobile.tsx:63
@@ -5918,7 +5938,7 @@ msgstr "Mint manual"
 msgid "Manual Redeem"
 msgstr "Redeem manual"
 
-#: src/views/yield-dtf/staking/components/overview/stake-apy.tsx:20
+#: src/views/yield-dtf/staking/components/overview/staking-apy-calculation.tsx:64
 msgid "Manually estimated APY calculated from basket averaged yield."
 msgstr "APY estimado manualmente, calculado a partir del rendimiento promedio de la cesta."
 
@@ -7335,7 +7355,7 @@ msgstr "Plataforma"
 msgid "Platform (Fixed)"
 msgstr "Plataforma (fija)"
 
-#: src/views/yield-dtf/overview/components/collateral-pie-chart-tooltip.tsx:179
+#: src/views/yield-dtf/overview/components/collateral-pie-chart-tooltip.tsx:174
 msgid "Platform exposure"
 msgstr "Exposición por plataforma"
 
@@ -8607,6 +8627,10 @@ msgstr "Configuración de ingresos"
 msgid "Revenue share"
 msgstr "Reparto de ingresos"
 
+#: src/views/yield-dtf/staking/components/overview/staking-apy-calculation.tsx:86
+msgid "Revenue share to RSR stakers"
+msgstr "Participación de ingresos para stakers de RSR"
+
 #: src/views/yield-dtf/governance/views/proposal/components/ProposedRevenueSplitPreview.tsx:109
 msgid "Revenue split"
 msgstr "División de ingresos"
@@ -8825,13 +8849,25 @@ msgstr "Ronda {0}"
 msgid "RSR available to withdraw"
 msgstr "RSR disponible para retirar"
 
+#: src/views/yield-dtf/overview/components/backing/backing-overview.tsx:107
+msgid "RSR held by the staking contract (staked and in unstaking cooldown) as a % of {symbol} market cap. This RSR can be seized to cover a collateral default."
+msgstr "RSR en el contrato de staking (en staking y en el período de espera de unstaking) como % del market cap de {symbol}. Este RSR puede ser confiscado para cubrir un default de colateral."
+
 #: src/views/yield-dtf/staking/components/withdraw/cooldown-unstake.tsx:25
 msgid "RSR in {delay} Cooldown"
 msgstr "RSR en enfriamiento de {delay}"
 
+#: src/views/yield-dtf/overview/components/backing/backing-overview.tsx:112
+msgid "RSR staked"
+msgstr "RSR en staking"
+
 #: src/views/yield-dtf/overview/components/charts/staking-chart.tsx:98
 msgid "RSR Staked"
 msgstr "RSR en Stake"
+
+#: src/views/yield-dtf/staking/components/overview/staking-apy-calculation.tsx:97
+msgid "RSR staked (USD)"
+msgstr "RSR en staking (USD)"
 
 #: src/components/stake-drawer/components/submit-stake-button.tsx:147
 msgid "RSR staked successfully!"
@@ -8845,6 +8881,10 @@ msgstr "RSR Stakers"
 #: src/views/yield-dtf/settings/components/contracts-info.tsx:21
 msgid "RSR Trader"
 msgstr "RSR Trader"
+
+#: src/views/yield-dtf/overview/components/backing/backing-overview.tsx:116
+msgid "RSR unstaking & pending rewards"
+msgstr "RSR en unstaking y recompensas pendientes"
 
 #: src/views/yield-dtf/settings/components/basic-info.tsx:23
 msgid "RToken Address"
@@ -9551,7 +9591,7 @@ msgstr "Stake"
 msgid "Stake + Unstake"
 msgstr "Stake + Unstake"
 
-#: src/views/yield-dtf/staking/components/overview/staking-stats.tsx:50
+#: src/views/yield-dtf/staking/components/overview/staking-stats.tsx:51
 msgid "Stake pool"
 msgstr "Pool de Stake"
 
@@ -9591,13 +9631,13 @@ msgstr "En Stake"
 #: src/views/explorer/components/tokens/index.tsx:160
 #: src/views/portfolio-page/components/portfolio-breakdown.tsx:38
 #: src/views/portfolio-page/components/portfolio-chart.tsx:75
-#: src/views/yield-dtf/overview/components/backing/backing-overview.tsx:94
+#: src/views/yield-dtf/overview/components/backing/backing-overview.tsx:99
 #: src/views/yield-dtf/overview/components/collateral-pie-chart-wrapper.tsx:106
 #: src/views/yield-dtf/staking/components/overview/staking-metrics.tsx:28
 msgid "Staked RSR"
 msgstr "RSR en stake"
 
-#: src/views/yield-dtf/overview/components/collateral-pie-chart-tooltip.tsx:198
+#: src/views/yield-dtf/overview/components/collateral-pie-chart-tooltip.tsx:193
 msgid "Staked RSR Overcollateralisation"
 msgstr "Sobrecolateralización del RSR en Stake"
 
@@ -10182,6 +10222,10 @@ msgstr "Reserve Protocol realiza varios tipos distintos de intercambios"
 msgid "The Reserve Robotics DTF (ROBOTS) is a weighted basket of public, US-listed robotics and automation companies at the center of the AI buildout. AI is moving off the screen and into the physical world: the same breakthroughs that taught software to reason are now teaching machines to perceive, decide, and act, and to take on physical labor. The ROBOTS DTF gives you direct exposure to the companies building that transition: the humanoids, surgical robots, factory and warehouse automation, lidar, machine vision, and the chips that let machines navigate the real world. The basket is composed of companies with significant and growing exposure to robotics and automation demand, weighted by market capitalization with a 20% cap and a $2B minimum market cap, rebalanced quarterly. The ROBOTS DTF bundles Ondo Global Markets tokenized stocks, each of which represents an actual share held in a regulated US brokerage account."
 msgstr "El DTF Reserve Robotics (ROBOTS) es una canasta ponderada de empresas públicas de robótica y automatización cotizadas en EE. UU. que están en el centro del despliegue de la IA. La IA está saliendo de la pantalla y entrando en el mundo físico: los mismos avances que enseñaron al software a razonar ahora están enseñando a las máquinas a percibir, decidir y actuar, y a asumir trabajo físico. El DTF ROBOTS te da exposición directa a las empresas que construyen esa transición: humanoides, robots quirúrgicos, automatización de fábricas y almacenes, lidar, visión artificial y los chips que permiten a las máquinas navegar por el mundo real. La canasta está compuesta por empresas con exposición significativa y creciente a la demanda de robótica y automatización, ponderadas por capitalización de mercado con un límite del 20% y una capitalización mínima de $2B, con rebalanceo trimestral. El DTF ROBOTS agrupa acciones tokenizadas de Ondo Global Markets, cada una de las cuales representa una acción real mantenida en una cuenta de corretaje regulada en EE. UU."
 
+#: src/views/yield-dtf/staking/components/overview/staking-apy-calculation.tsx:109
+msgid "The RSR stakers' share includes the fintech revenue redirected to eusdRSR stakers under the eUSD Revenue Share Programme."
+msgstr "La participación de los stakers de RSR incluye los ingresos de fintechs redirigidos a los stakers de eusdRSR bajo el eUSD Revenue Share Programme."
+
 #: src/components/rtoken-setup/governance/RoleSetup.tsx:25
 msgid "The short freezer has the ability to freeze an RToken's system for a short period of time. The SHORT_FREEZER role should be assigned to an address that might reasonably be expected to be the first to detect a bug in the code and can act quickly, and with some tolerance for false positives, though less than in pausing. It is acceptable to have multiple short freezers. It can be robot-controlled. It can also consist of a 1-of-N multisig for high availability and coverage. If a bug is detected, a short freeze can be triggered which will automatically expire if it is not renewed by LONG_FREEZER."
 msgstr "El short freezer tiene la capacidad de congelar el sistema de un RToken durante un corto período de tiempo. El rol SHORT_FREEZER debe asignarse a una dirección de la que razonablemente se pueda esperar que sea la primera en detectar un error en el código y pueda actuar con rapidez, con cierta tolerancia a falsos positivos, aunque menor que al pausar. Es aceptable tener múltiples short freezers. Puede estar controlado por un robot. También puede consistir en una multisig 1-de-N para alta disponibilidad y cobertura. Si se detecta un error, se puede activar un congelamiento corto que expirará automáticamente si no es renovado por LONG_FREEZER."
@@ -10557,7 +10601,7 @@ msgstr "Detalles del token"
 msgid "Token distribution must be positive"
 msgstr "La distribución del token debe ser positiva"
 
-#: src/views/yield-dtf/overview/components/collateral-pie-chart-tooltip.tsx:163
+#: src/views/yield-dtf/overview/components/collateral-pie-chart-tooltip.tsx:158
 msgid "Token exposure"
 msgstr "Exposición al token"
 
@@ -10664,6 +10708,7 @@ msgid "Top voting addresses"
 msgstr "Principales direcciones votantes"
 
 #: src/views/portfolio-page/components/portfolio-chart.tsx:125
+#: src/views/yield-dtf/overview/components/backing/backing-overview.tsx:120
 #: src/views/yield-dtf/overview/components/backing/underlying-fees/fees-table.tsx:225
 msgid "Total"
 msgstr "Total"
@@ -10697,7 +10742,7 @@ msgstr "Capitalización de mercado total"
 msgid "Total price impact"
 msgstr "Impacto total en el precio"
 
-#: src/views/yield-dtf/staking/components/overview/staking-stats.tsx:55
+#: src/views/yield-dtf/staking/components/overview/staking-stats.tsx:56
 msgid "Total RSR staked"
 msgstr "Total de RSR en Stake"
 
@@ -11213,7 +11258,7 @@ msgid "Unstaking and unlock cooldown periods."
 msgstr "Períodos de enfriamiento para Unstaking y desbloqueo."
 
 #: src/views/yield-dtf/settings/components/other-info.tsx:23
-#: src/views/yield-dtf/staking/components/overview/staking-stats.tsx:74
+#: src/views/yield-dtf/staking/components/overview/staking-stats.tsx:75
 msgid "Unstaking Delay"
 msgstr "Retraso de Unstaking"
 
