@@ -9,10 +9,10 @@ import {
 } from 'state/atoms'
 import { Collateral } from 'types'
 import { truncateDecimals } from 'utils'
-import { FACADE_ADDRESS } from 'utils/addresses'
+import { FACADE_ADDRESS, RSR_ADDRESS } from 'utils/addresses'
 import { atomWithLoadable } from 'utils/atoms/utils'
 import { TARGET_UNITS } from 'utils/constants'
-import { Address, formatEther, hexToString } from 'viem'
+import { Address, erc20Abi, formatEther, hexToString } from 'viem'
 import { readContracts } from 'wagmi/actions'
 import rTokenAtom from './rTokenAtom'
 import { wagmiConfig } from 'state/chain'
@@ -20,6 +20,7 @@ import { wagmiConfig } from 'state/chain'
 type BackingDistribution = {
   backing: number
   staked: number
+  stRsrBalance: number
   collateralDistribution: {
     [x: Address]: { share: number; targetAmts: string; targetUnit: string }
   }
@@ -33,7 +34,7 @@ const rTokenBackingDistributionAtom = atomWithLoadable(async (get) => {
   const rToken = get(rTokenAtom)
   const chainId = get(chainIdAtom)
 
-  if (!rToken?.main) {
+  if (!rToken?.main || !rToken.stToken) {
     return null
   }
 
@@ -48,6 +49,7 @@ const rTokenBackingDistributionAtom = atomWithLoadable(async (get) => {
     [backing, overCollateralization],
     [_, __, targetAmts],
     [requiredBackingBuffer, actualBackingBuffer],
+    stRsrBalance,
   ] = await readContracts(wagmiConfig, {
     contracts: [
       {
@@ -70,13 +72,21 @@ const rTokenBackingDistributionAtom = atomWithLoadable(async (get) => {
         functionName: 'backingBuffer',
         chainId,
       },
+      {
+        abi: erc20Abi,
+        address: RSR_ADDRESS[chainId],
+        functionName: 'balanceOf',
+        args: [rToken.stToken.address as Address],
+        chainId,
+      },
     ],
     allowFailure: false,
   })
 
   return {
     backing: Math.min(100, Math.ceil(Number(formatEther(backing)) * 100)),
-    staked: Math.ceil(Number(formatEther(overCollateralization)) * 100),
+    staked: Number(formatEther(overCollateralization)) * 100,
+    stRsrBalance: Number(formatEther(stRsrBalance)),
     collateralDistribution: erc20s.reduce(
       (acc, current, index) => ({
         ...acc,
@@ -93,6 +103,23 @@ const rTokenBackingDistributionAtom = atomWithLoadable(async (get) => {
       actual: +formatEther(actualBackingBuffer),
     },
   } as BackingDistribution
+})
+
+export const rTokenOvercollateralizationUsdAtom = atom((get) => {
+  const distribution = get(rTokenBackingDistributionAtom)
+  const { tokenSupply, stTokenSupply, exchangeRate } = get(rTokenStateAtom)
+  const price = get(rTokenPriceAtom)
+
+  if (!distribution || !tokenSupply || !price) return null
+
+  const total = (distribution.staked / 100) * tokenSupply * price
+  // Split at the Facade's implied RSR price so the parts add up to its total
+  const rsrPrice = distribution.stRsrBalance
+    ? total / distribution.stRsrBalance
+    : 0
+  const staked = Math.min(total, stTokenSupply * exchangeRate * rsrPrice)
+
+  return { total, staked, unstaking: total - staked }
 })
 
 export interface CollateralDetail extends Collateral {
