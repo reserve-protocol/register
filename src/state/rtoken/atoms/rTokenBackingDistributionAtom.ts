@@ -1,4 +1,5 @@
 import FacadeRead from 'abis/FacadeRead'
+import StRSR from 'abis/StRSR'
 import { atom } from 'jotai'
 import {
   chainIdAtom,
@@ -20,7 +21,7 @@ import { wagmiConfig } from 'state/chain'
 type BackingDistribution = {
   backing: number
   staked: number
-  stRsrBalance: number
+  stakedRsrShare: number
   collateralDistribution: {
     [x: Address]: { share: number; targetAmts: string; targetUnit: string }
   }
@@ -50,6 +51,8 @@ const rTokenBackingDistributionAtom = atomWithLoadable(async (get) => {
     [_, __, targetAmts],
     [requiredBackingBuffer, actualBackingBuffer],
     stRsrBalance,
+    stTokenSupply,
+    exchangeRate,
   ] = await readContracts(wagmiConfig, {
     contracts: [
       {
@@ -79,6 +82,18 @@ const rTokenBackingDistributionAtom = atomWithLoadable(async (get) => {
         args: [rToken.stToken.address as Address],
         chainId,
       },
+      {
+        abi: erc20Abi,
+        address: rToken.stToken.address as Address,
+        functionName: 'totalSupply',
+        chainId,
+      },
+      {
+        abi: StRSR,
+        address: rToken.stToken.address as Address,
+        functionName: 'exchangeRate',
+        chainId,
+      },
     ],
     allowFailure: false,
   })
@@ -86,7 +101,14 @@ const rTokenBackingDistributionAtom = atomWithLoadable(async (get) => {
   return {
     backing: Math.min(100, Math.ceil(Number(formatEther(backing)) * 100)),
     staked: Number(formatEther(overCollateralization)) * 100,
-    stRsrBalance: Number(formatEther(stRsrBalance)),
+    stakedRsrShare: stRsrBalance
+      ? Math.min(
+          1,
+          (Number(formatEther(stTokenSupply)) *
+            Number(formatEther(exchangeRate))) /
+            Number(formatEther(stRsrBalance))
+        )
+      : 0,
     collateralDistribution: erc20s.reduce(
       (acc, current, index) => ({
         ...acc,
@@ -107,17 +129,13 @@ const rTokenBackingDistributionAtom = atomWithLoadable(async (get) => {
 
 export const rTokenOvercollateralizationUsdAtom = atom((get) => {
   const distribution = get(rTokenBackingDistributionAtom)
-  const { tokenSupply, stTokenSupply, exchangeRate } = get(rTokenStateAtom)
+  const { tokenSupply } = get(rTokenStateAtom)
   const price = get(rTokenPriceAtom)
 
   if (!distribution || !tokenSupply || !price) return null
 
   const total = (distribution.staked / 100) * tokenSupply * price
-  // Split at the Facade's implied RSR price so the parts add up to its total
-  const rsrPrice = distribution.stRsrBalance
-    ? total / distribution.stRsrBalance
-    : 0
-  const staked = Math.min(total, stTokenSupply * exchangeRate * rsrPrice)
+  const staked = total * distribution.stakedRsrShare
 
   return { total, staked, unstaking: total - staked }
 })

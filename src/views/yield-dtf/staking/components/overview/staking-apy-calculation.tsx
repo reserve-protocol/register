@@ -44,7 +44,7 @@ const Row = ({
 const StakingApyCalculation = () => {
   const rToken = useRToken()
   const revenueSplit = useAtomValue(rTokenRevenueSplitAtom)
-  const { basket, stakers } = useAtomValue(estimatedApyAtom)
+  const { basket } = useAtomValue(estimatedApyAtom)
   const { tokenSupply, stTokenSupply, exchangeRate } =
     useAtomValue(rTokenStateAtom)
   const rTokenPrice = useAtomValue(rTokenPriceAtom)
@@ -59,6 +59,8 @@ const StakingApyCalculation = () => {
   const basketShown = Math.round(basket * 100) / 100
   const annualYield = (marketCap * basketShown) / 100
   const stakersRevenue = (annualYield * stakersShare) / 100
+  const stakedUsd = stTokenSupply * exchangeRate * rsrPrice
+  const hasStake = Number.isFinite(stakedUsd) && stakedUsd > 0
 
   return (
     <div className="text-xs text-legend">
@@ -67,45 +69,47 @@ const StakingApyCalculation = () => {
           Manually estimated APY calculated from basket averaged yield.
         </Trans>
       </p>
-      <div className="flex flex-col gap-1">
-        <Row
-          label={<Trans>{symbol} market cap</Trans>}
-          value={`$${formatCurrency(marketCap, 0)}`}
-        />
-        <Row
-          operator="×"
-          label={<Trans>Basket yield</Trans>}
-          value={`${basketShown.toFixed(2)}%`}
-        />
-        <Row
-          operator="="
-          label={<Trans>Annual collateral yield</Trans>}
-          value={`$${formatCurrency(annualYield, 0)}`}
-          result="subtotal"
-        />
-        <Row
-          operator="×"
-          label={<Trans>Revenue share to RSR stakers</Trans>}
-          value={formatPercentage(stakersShare)}
-        />
-        <Row
-          operator="="
-          label={<Trans>Annual revenue to RSR stakers</Trans>}
-          value={`$${formatCurrency(stakersRevenue, 0)}`}
-          result="subtotal"
-        />
-        <Row
-          operator="÷"
-          label={<Trans>RSR staked (USD)</Trans>}
-          value={`$${formatCurrency(stTokenSupply * exchangeRate * rsrPrice, 0)}`}
-        />
-        <Row
-          operator="="
-          label={<Trans>Est. staking yield</Trans>}
-          value={formatPercentage(stakers || 0)}
-          result="total"
-        />
-      </div>
+      {hasStake && (
+        <div className="flex flex-col gap-1">
+          <Row
+            label={<Trans>{symbol} market cap</Trans>}
+            value={`$${formatCurrency(marketCap, 0)}`}
+          />
+          <Row
+            operator="×"
+            label={<Trans>Basket yield</Trans>}
+            value={`${basketShown.toFixed(2)}%`}
+          />
+          <Row
+            operator="="
+            label={<Trans>Annual collateral yield</Trans>}
+            value={`$${formatCurrency(annualYield, 0)}`}
+            result="subtotal"
+          />
+          <Row
+            operator="×"
+            label={<Trans>Revenue share to RSR stakers</Trans>}
+            value={formatPercentage(stakersShare)}
+          />
+          <Row
+            operator="="
+            label={<Trans>Annual revenue to RSR stakers</Trans>}
+            value={`$${formatCurrency(stakersRevenue, 0)}`}
+            result="subtotal"
+          />
+          <Row
+            operator="÷"
+            label={<Trans>RSR staked (USD)</Trans>}
+            value={`$${formatCurrency(stakedUsd, 0)}`}
+          />
+          <Row
+            operator="="
+            label={<Trans>Est. staking yield</Trans>}
+            value={formatPercentage((stakersRevenue / stakedUsd) * 100)}
+            result="total"
+          />
+        </div>
+      )}
       {isEusd && (
         <p className="mt-2">
           <Trans>
