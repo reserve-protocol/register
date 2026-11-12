@@ -1,4 +1,3 @@
-import { useQuery } from '@tanstack/react-query'
 import rtokens from '@reserve-protocol/rtokens'
 import { useAtom } from 'jotai'
 import { useEffect } from 'react'
@@ -20,6 +19,7 @@ import {
 } from '../utils/constants'
 import { EarnPool, getEarnPools } from '@/lib/meta'
 import useIndexDTFList from '@/hooks/useIndexDTFList'
+import useReserveYieldPools from '@/hooks/use-reserve-yield-pools'
 
 import { DefiLlamaPool } from '@/types/defillama'
 
@@ -228,11 +228,7 @@ const mapPools = (
 }
 
 const useRTokenPools = () => {
-  const { data, isLoading } = useQuery({
-    queryKey: ['llama-pools'],
-    queryFn: () => fetch('https://yields.llama.fi/pools').then((res) => res.json()),
-    staleTime: 1000 * 60 * 60, // 1 hour - mimics useSWRImmutable behavior
-  })
+  const { data, isLoading } = useReserveYieldPools()
   const earnPools = getEarnPools()
   const { data: indexDTFs } = useIndexDTFList()
 
@@ -266,11 +262,7 @@ const useRTokenPools = () => {
         }
       })
 
-      const pools = mapPools(
-        data.data as DefillamaPool[],
-        earnPools,
-        indexDTFsMap
-      )
+      const pools = mapPools(data, earnPools, indexDTFsMap)
       setPools(pools)
     }
   }, [data, earnPools, indexDTFs, setPools])

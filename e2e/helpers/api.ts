@@ -510,6 +510,20 @@ export async function mockApiRoutes(page: Page, options: ApiMockOptions) {
       return json(route, {})
     }
 
+    // Yield DTF APYs (the former yields.reserve.org) — before '/yields/', which it also contains.
+    if (path.includes('/yield-dtf/yields')) {
+      return json(route, {
+        collaterals: {},
+        rtokens: {},
+        rtokensBasketAPY: {},
+        defiTVL: {},
+      })
+    }
+    // DefiLlama pools and charts proxied by reserve-api — empty by default.
+    if (path.includes('/yields/')) {
+      return json(route, { data: [] })
+    }
+
     // Rebalance metrics (historical MetricsRow) — empty by default; auctions
     // specs overlay real payloads per-test via overrides.api.
     if (path.includes('/dtf/rebalance')) {

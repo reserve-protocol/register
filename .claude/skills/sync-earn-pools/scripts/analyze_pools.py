@@ -9,6 +9,7 @@ Sync earn pools: compare DefiLlama data with local earn-pools.json.
 """
 
 import json
+import os
 import sys
 import urllib.request
 import urllib.error
@@ -245,25 +246,41 @@ def generate_convex_url(lp_token_address):
 # MAIN FUNCTIONS
 # ============================================================================
 
+RESERVE_API_URL = os.environ.get("RESERVE_API_URL", "https://api.reserve.org/")
+_pool_old_cache = None
+
+
 def fetch_defillama_pools():
-    """Fetch all pools from DefiLlama API."""
-    url = "https://yields.llama.fi/pools"
+    """Fetch the Reserve-related DefiLlama pools served by reserve-api.
+
+    The free DefiLlama yield endpoints shut down on 2026-11-13; reserve-api
+    holds the paid key and serves every pool with a Reserve token plus the
+    llamaIds listed in its src/config/defillamaYieldPools.ts.
+    """
+    url = f"{RESERVE_API_URL.rstrip('/')}/v1/yields/pools"
     with urllib.request.urlopen(url, timeout=30) as response:
         data = json.loads(response.read().decode())
         return data.get("data", [])
 
 
 def fetch_defillama_pool_enriched(pool_id):
-    """Fetch enriched data for a specific pool (includes pool_old address)."""
-    url = f"https://yields.llama.fi/poolsEnriched?pool={pool_id}"
-    try:
-        with urllib.request.urlopen(url, timeout=10) as response:
-            data = json.loads(response.read().decode())
-            if data.get("data"):
-                return data["data"][0]
-    except Exception:
-        pass
-    return None
+    """Return the pool's pool_old (LP token address) from the DefiLlama API
+    plan /yields/v1/pools. Needs DEFILLAMA_API_KEY; without it new pools get
+    no generated URL."""
+    global _pool_old_cache
+    api_key = os.environ.get("DEFILLAMA_API_KEY")
+    if not api_key:
+        return None
+    if _pool_old_cache is None:
+        _pool_old_cache = {}
+        url = f"https://pro-api.llama.fi/{api_key}/yields/v1/pools"
+        try:
+            with urllib.request.urlopen(url, timeout=60) as response:
+                data = json.loads(response.read().decode())
+                _pool_old_cache = {p["pool"]: p for p in data.get("data", [])}
+        except Exception:
+            print("   ⚠️  DefiLlama pools request failed; URLs for new pools are not generated")
+    return _pool_old_cache.get(pool_id)
 
 
 def load_earn_pools(path):

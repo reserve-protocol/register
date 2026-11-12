@@ -164,9 +164,7 @@ export const test = base.extend<BaseFixtures>({
       )
 
       // Yield/reward aggregators the overview polls.
-      await page.route('**yields.llama.fi**', (r) => fulfillEmpty(r, { status: 'success', data: [] }))
       await page.route('**api.llama.fi**', (r) => fulfillEmpty(r, { status: 'success', data: [] }))
-      await page.route('**yields.reserve.org**', (r) => fulfillEmpty(r, { status: 'success', data: [] }))
       await page.route('**api.merkl.xyz**', (r) => fulfillEmpty(r, []))
 
       // Tenderly simulation stays DEFAULT-DENIED (audit P1): a blanket fulfill
