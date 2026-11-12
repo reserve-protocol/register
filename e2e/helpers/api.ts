@@ -221,6 +221,22 @@ export function etherscanResponse(
   return undefined
 }
 
+const YIELD_PATHS: Array<[RegExp, unknown]> = [
+  [/^(\/v[12])?\/yields\/pools$/, { data: [] }],
+  [/^(\/v[12])?\/yields\/chart\/[0-9a-f]{8}(-[0-9a-f]{4}){3}-[0-9a-f]{12}$/, { data: [] }],
+  [
+    /^(\/v[12])?\/yield-dtf\/yields\/?$/,
+    { collaterals: {}, rtokens: {}, rtokensBasketAPY: {}, defiTVL: {} },
+  ],
+  [/^(\/v[12])?\/yield-dtf\/yields\/pools$/, {}],
+]
+
+// DefiLlama data served by reserve-api: empty by default. Exact paths only, and a chart id must
+// be a DefiLlama pool id, so `/yields/chart/undefined` or a typo fails loud as unmocked.
+export function yieldsResponse(path: string): unknown | undefined {
+  return YIELD_PATHS.find(([pattern]) => pattern.test(path))?.[1]
+}
+
 export async function mockApiRoutes(page: Page, options: ApiMockOptions) {
   const { log, geolocation, overrides, requests } = options
 
@@ -508,6 +524,11 @@ export async function mockApiRoutes(page: Page, options: ApiMockOptions) {
     // Yield APY updater polls this for index DTFs — empty keeps it quiet.
     if (path.includes('/dtf/apy')) {
       return json(route, {})
+    }
+
+    const yields = yieldsResponse(path)
+    if (yields !== undefined) {
+      return json(route, yields)
     }
 
     // Rebalance metrics (historical MetricsRow) — empty by default; auctions

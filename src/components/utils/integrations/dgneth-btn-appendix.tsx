@@ -2,6 +2,7 @@ import { useQuery } from '@tanstack/react-query'
 import { Plus } from 'lucide-react'
 import { FC, PropsWithChildren, memo, useMemo } from 'react'
 import { cn } from '@/lib/utils'
+import { RESERVE_API } from '@/utils/constants'
 import { ChainId } from 'utils/chains'
 import { erc20Abi, formatUnits } from 'viem'
 import { useReadContracts } from 'wagmi'
@@ -43,7 +44,8 @@ const DgnETHButtonAppendix: FC<Props> = ({
 
   const { data: yieldsAPIData } = useQuery({
     queryKey: ['yields-pools'],
-    queryFn: () => fetch('https://yields.reserve.org/pools').then((res) => res.json()),
+    queryFn: () =>
+      fetch(`${RESERVE_API}v1/yield-dtf/yields`).then((res) => res.json()),
   })
 
   const _basketAPY = useMemo(() => {

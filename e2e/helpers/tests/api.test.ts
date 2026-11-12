@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { etherscanResponse, knownPriceResponse } from '../api'
+import { etherscanResponse, knownPriceResponse, yieldsResponse } from '../api'
 import { MockOverrides } from '../overrides'
 import { REGISTRY } from '../registry'
 import { loadSnapshot } from '../snapshots'
@@ -86,5 +86,33 @@ describe('etherscanResponse', () => {
   it('leaves every other action unmodeled so it fails loud', () => {
     expect(etherscanResponse(url('module=contract&action=getcontractcreation&address=0x1'))).toBeUndefined()
     expect(etherscanResponse(url('module=account&action=balance&address=0x1'))).toBeUndefined()
+  })
+})
+
+describe('yieldsResponse', () => {
+  const POOL = 'a349fea4-d780-4e16-973e-70ca9b606db2'
+
+  it('answers the reserve-api yield endpoints empty', () => {
+    expect(yieldsResponse('/v1/yields/pools')).toEqual({ data: [] })
+    expect(yieldsResponse(`/v1/yields/chart/${POOL}`)).toEqual({ data: [] })
+    expect(yieldsResponse('/v1/yield-dtf/yields')).toEqual({
+      collaterals: {},
+      rtokens: {},
+      rtokensBasketAPY: {},
+      defiTVL: {},
+    })
+    expect(yieldsResponse('/v1/yield-dtf/yields/pools')).toEqual({})
+  })
+
+  it('leaves a chart request without a DefiLlama pool id unmodeled so it fails loud', () => {
+    expect(yieldsResponse('/v1/yields/chart/undefined')).toBeUndefined()
+    expect(yieldsResponse('/v1/yields/chart/')).toBeUndefined()
+    expect(yieldsResponse(`/v1/yields/chart/${POOL}/extra`)).toBeUndefined()
+  })
+
+  it('leaves unknown yield paths unmodeled so they fail loud', () => {
+    expect(yieldsResponse('/v1/yields/typo')).toBeUndefined()
+    expect(yieldsResponse('/v1/yields/pools/extra')).toBeUndefined()
+    expect(yieldsResponse('/v1/yield-dtf/yields/typo')).toBeUndefined()
   })
 })
