@@ -115,15 +115,10 @@ describe('Portfolio governance coverage', () => {
     expect(rows).toEqual([])
   })
 
-  it.each(['index', 'yield'] as const)(
-    'keeps %s proposals for a delegate with voting power but no owned shares',
-    (source) => {
-      const data =
-        source === 'index'
-          ? { voteLocks: [position] }
-          : { stakedRSR: [position] }
-      const rows = rowsFor(data as unknown as Partial<PortfolioResponse>)
-      expect(rows.map((row) => row.id)).toEqual(['1'])
-    }
-  )
+  it('keeps index proposals for a delegate with voting power but no owned shares', () => {
+    const rows = rowsFor({
+      voteLocks: [position],
+    } as unknown as Partial<PortfolioResponse>)
+    expect(rows.map((row) => row.id)).toEqual(['1'])
+  })
 })

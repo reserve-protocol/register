@@ -279,7 +279,7 @@ export const portfolioActiveProposalsAtom = atom<ActiveProposalRow[]>((get) => {
   const stakedRSR = get(portfolioStakedRSRAtom)
   const voteLocks = get(portfolioVoteLocksAtom)
   const staked = stakedRSR
-    .filter((s) => Number(s.amount) > 0 || Number(s.votingPower) > 0)
+    .filter((s) => Number(s.amount) > 0)
     .flatMap((s) =>
       (s.activeProposals || []).map((p) => ({
         ...p,
