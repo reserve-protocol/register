@@ -291,18 +291,27 @@ export const portfolioActiveProposalsAtom = atom<ActiveProposalRow[]>((get) => {
       }))
     )
   const locked = voteLocks
-    .filter((v) => Number(v.amount) > 0)
-    .flatMap((v) => {
-      if (!v.dtfs?.length) return []
-      return (v.activeProposals || []).map((p) => ({
-        ...p,
-        dtfName: v.dtfs[0].name,
-        dtfSymbol: v.dtfs[0].symbol,
-        dtfAddress: v.dtfs[0].address,
-        chainId: v.chainId,
-        isIndexDTF: true,
-      }))
-    })
+    .filter((v) => Number(v.amount) > 0 || Number(v.votingPower) > 0)
+    .flatMap((v) =>
+      (v.activeProposals || []).flatMap((p) => {
+        const dtf = p.dtfAddress
+          ? v.dtfs.find(
+              (d) => d.address.toLowerCase() === p.dtfAddress?.toLowerCase()
+            )
+          : v.dtfs[0]
+        if (!dtf) return []
+        return [
+          {
+            ...p,
+            dtfName: dtf.name,
+            dtfSymbol: dtf.symbol,
+            dtfAddress: dtf.address,
+            chainId: v.chainId,
+            isIndexDTF: true,
+          },
+        ]
+      })
+    )
   return [...staked, ...locked]
     .map((p) => ({
       ...p,
