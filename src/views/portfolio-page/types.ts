@@ -96,6 +96,12 @@ export interface PortfolioVoteLock {
 
 // Raw proposal from API (nested in stakedRSR / voteLocks)
 export interface PortfolioStakedProposal {
+  // Index proposals retain the DTF they belong to when a vault governs several.
+  // Optional for compatibility with older API responses and Yield DTFs.
+  dtfAddress?: Address
+  dtfName?: string
+  dtfSymbol?: string
+  governor?: Address
   id: string
   description: string
   state: string
