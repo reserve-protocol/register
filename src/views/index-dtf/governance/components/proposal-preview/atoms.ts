@@ -24,13 +24,20 @@ export const dtfContractAliasAtom = atom((get) => {
     [dtf.proxyAdmin.toLowerCase()]: 'ProxyAdmin',
   }
 
+  const hasSharedGovernance =
+    !!dtf.ownerGovernance &&
+    !!dtf.tradingGovernance &&
+    dtf.ownerGovernance.id.toLowerCase() ===
+      dtf.tradingGovernance.id.toLowerCase()
+
   if (dtf.ownerGovernance) {
-    aliasMapping[dtf.ownerGovernance.id.toLowerCase()] = 'Owner Governance'
+    const label = hasSharedGovernance ? 'DTF Governance' : 'Owner Governance'
+    aliasMapping[dtf.ownerGovernance.id.toLowerCase()] = label
     aliasMapping[dtf.ownerGovernance.timelock.id.toLowerCase()] =
-      'Owner Governance Timelock'
+      `${label} Timelock`
   }
 
-  if (dtf.tradingGovernance) {
+  if (dtf.tradingGovernance && !hasSharedGovernance) {
     aliasMapping[dtf.tradingGovernance.id.toLowerCase()] = 'Basket Governance'
     aliasMapping[dtf.tradingGovernance.timelock.id.toLowerCase()] =
       'Basket Governance Timelock'
