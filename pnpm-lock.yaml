@@ -131,8 +131,8 @@ importers:
         specifier: ^1.1.23
         version: 1.1.23
       '@reserve-protocol/trusted-fillers-sdk':
-        specifier: ^0.11.1
-        version: 0.11.1(ajv@8.18.0)(cross-fetch@4.1.0)(multiformats@14.0.0)(viem@2.57.13(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@5.0.10)(zod@4.3.6))
+        specifier: ^0.11.2
+        version: 0.11.2(ajv@8.18.0)(cross-fetch@4.1.0)(multiformats@14.0.0)(viem@2.57.13(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@5.0.10)(zod@4.3.6))
       '@sentry/react':
         specifier: ^9.47.1
         version: 9.47.1(react@18.3.1)
@@ -3104,8 +3104,8 @@ packages:
     resolution: {integrity: sha512-ITITdQbVBoU42ZVMKizmWHhpKXzPLF+ZmD1L2WOcv05kBc7z55J51IEEXEd1Pzxw+yynrzyvW9AFZeyohOP2wQ==}
     engines: {node: '>=24'}
 
-  '@reserve-protocol/trusted-fillers-sdk@0.11.1':
-    resolution: {integrity: sha512-KuCxSlh7KwxCr1kyItFjnVT0VcWagDEKhTiEPW5iYjEsNC62bpDU4zM4ybryRhxZmAN7zIy4cFjEElPUW4YdpA==}
+  '@reserve-protocol/trusted-fillers-sdk@0.11.2':
+    resolution: {integrity: sha512-/JJjinOW84oIGL7t6oZmC+BL0Y3OGMx5b5TjNtOxp88QeYGZ1Es0cHfL8A5cSTkg1frDaoPQrEf2QM/kMsAffg==}
     peerDependencies:
       viem: ^2.57.3
 
@@ -11425,7 +11425,7 @@ snapshots:
       - typescript
       - utf-8-validate
 
-  '@reserve-protocol/trusted-fillers-sdk@0.11.1(ajv@8.18.0)(cross-fetch@4.1.0)(multiformats@14.0.0)(viem@2.57.13(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@5.0.10)(zod@4.3.6))':
+  '@reserve-protocol/trusted-fillers-sdk@0.11.2(ajv@8.18.0)(cross-fetch@4.1.0)(multiformats@14.0.0)(viem@2.57.13(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@5.0.10)(zod@4.3.6))':
     dependencies:
       '@cowprotocol/cow-sdk': 9.3.3(ajv@8.18.0)(cross-fetch@4.1.0)(multiformats@14.0.0)
       '@cowprotocol/sdk-viem-adapter': 0.3.39(viem@2.57.13(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@5.0.10)(zod@4.3.6))
