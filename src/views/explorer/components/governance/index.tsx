@@ -1,3 +1,4 @@
+import { sortProposals } from '@/lib/proposal-sort'
 import { cn } from '@/lib/utils'
 import { ProposalVotingState } from '@/views/yield-dtf/governance/components/ProposalList'
 import { Trans, useLingui } from '@lingui/react/macro'
@@ -24,7 +25,7 @@ import {
 } from 'utils'
 import { PROPOSAL_STATES, ROUTES, formatConstant } from 'utils/constants'
 import useProposalsData, { type ProposalRecord } from './use-proposals-data'
-import { type ProposalToken } from './atoms'
+import { type ProposalToken, proposalSortAtom } from './atoms'
 import Filters from './filters'
 
 const BADGE_VARIANT: Record<string, string> = {
@@ -105,7 +106,12 @@ const formatVotingDuration = (seconds: number) =>
 
 const ExploreGovernance = () => {
   const { t } = useLingui()
-  const data = useProposalsData()
+  const proposals = useProposalsData()
+  const sort = useAtomValue(proposalSortAtom)
+  const data = useMemo(
+    () => sortProposals(proposals, sort, (proposal) => proposal.status),
+    [proposals, sort]
+  )
   const wallet = useAtomValue(walletAtom)
 
   const columns = useMemo(
@@ -209,8 +215,6 @@ const ExploreGovernance = () => {
         <Filters />
       </div>
       <Table
-        sorting
-        sortBy={[{ id: 'creationTime', desc: true }]}
         data={data}
         pagination={{ pageSize: 50 }}
         showPageSizeSelector

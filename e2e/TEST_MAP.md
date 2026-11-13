@@ -30,7 +30,7 @@ which also runs on mobile because the wallet modal is a mobile-first surface).
 | Discover | [general/discover/lifecycle](tests/general/discover/lifecycle.spec.ts), [flows/home-discover](tests/flows/home-discover.spec.ts) | skeleton→rows; search narrow/restore; tab switch; row→overview nav; home hero+featured render | partial | no | — |
 | Earn | [general/earn/render](tests/general/earn/render.spec.ts), [general/earn/tabs](tests/general/earn/tabs.spec.ts) | DeFi tab empty-state render; index-dtf vote-lock tab render; yield-dtf staking tab render (disconnected empty-state) | none | yes | sort, non-empty list, error state |
 | Explorer | [general/explorer/render](tests/general/explorer/render.spec.ts) | transactions tab (default) render; governance tab proposals render; one chain returning malformed transactions body doesn't blank the page | none | no | filters, pagination, tokens/collaterals/revenue tabs |
-| Portfolio | [general/portfolio/state-space](tests/general/portfolio/state-space.spec.ts), [general/portfolio/partial-response](tests/general/portfolio/partial-response.spec.ts) | disconnected shows connect prompt; malformed proposal row survives, healthy row still renders | none | partial (state-space only) | connected-with-holdings render, empty-vs-past-activity-only |
+| Portfolio | [general/portfolio/state-space](tests/general/portfolio/state-space.spec.ts), [general/portfolio/partial-response](tests/general/portfolio/partial-response.spec.ts), [general/portfolio/proposal-coverage](tests/general/portfolio/proposal-coverage.spec.ts), [general/portfolio/proposal-sort](tests/general/portfolio/proposal-sort.spec.ts) | disconnected shows connect prompt; malformed proposal row survives, healthy row still renders; delegated-only shared-vault proposals render and open the owning DTF; active proposals sort ahead of newer pending ones, Status/Newest toggle | none | partial | connected-with-holdings render, empty-vs-past-activity-only, explorer governance sort (unit-tested only) |
 | Tokens | [general/tokens/unlisted-partial](tests/general/tokens/unlisted-partial.spec.ts) | one chain returning an rtokens-less bucket doesn't crash the table | none | no | plain listed-table render, sort |
 | Create (Index/Yield deploy) | — | — | — | — | entirely uncovered |
 
@@ -96,8 +96,8 @@ additional state coverage: [boot](tests/smoke/boot.spec.ts) (home shell),
 - Explorer: only 3 of the tab surfaces render-tested (transactions, governance,
   malformed-body edge); tokens/collaterals/revenue tabs, filters, and
   pagination are untested.
-- Portfolio: no connected-with-holdings render test; only disconnected and a
-  malformed-row edge case exist.
+- Portfolio: no connected-with-holdings render test; disconnected, malformed-row,
+  proposal-coverage and proposal-sort cases exist (all with delegated-only vaults).
 - Mobile: only tagged in `general/`, `index-dtf/`, and `yield-dtf/` render/
   lifecycle specs. The entire `flows/` directory (30 specs — all governance/
   auction/issuance write and edge-case behavior) and all of `smoke/` have zero

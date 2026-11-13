@@ -1,4 +1,5 @@
 import { type VotingState } from '@/lib/governance'
+import { type ProposalSort } from '@/lib/proposal-sort'
 import { atom } from 'jotai'
 
 export type DTFType = 'all' | 'yield' | 'index'
@@ -40,3 +41,5 @@ export const filtersAtom = atom<IFilters>({
   status: [],
   type: 'all',
 })
+
+export const proposalSortAtom = atom<ProposalSort>('status')

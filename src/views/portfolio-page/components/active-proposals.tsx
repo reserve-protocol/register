@@ -1,5 +1,7 @@
+import ProposalSortMenu from '@/components/proposal-sort-menu'
 import TokenLogoWithChain from '@/components/token-logo/TokenLogoWithChain'
 import DataTable from '@/components/ui/data-table'
+import { type ProposalSort, sortProposals } from '@/lib/proposal-sort'
 import { cn } from '@/lib/utils'
 import {
   formatCurrency,
@@ -14,6 +16,7 @@ import { Trans } from '@lingui/react/macro'
 import dayjs from 'dayjs'
 import { useAtomValue } from 'jotai'
 import { ScrollText } from 'lucide-react'
+import { useMemo, useState } from 'react'
 import { ActiveProposalRow, portfolioActiveProposalsAtom } from '../atoms'
 import { ExpandToggle, useExpandable } from './expand-toggle'
 import SectionHeader from './section-header'
@@ -153,9 +156,14 @@ const columns: ColumnDef<ActiveProposalRow, any>[] = [
 
 const ActiveProposals = () => {
   const proposals = useAtomValue(portfolioActiveProposalsAtom)
+  const [sort, setSort] = useState<ProposalSort>('status')
+  const sorted = useMemo(
+    () => sortProposals(proposals, sort, (proposal) => proposal.voting.state),
+    [proposals, sort]
+  )
 
   const { displayData, expanded, toggle, hasMore, total } =
-    useExpandable(proposals)
+    useExpandable(sorted)
 
   if (!proposals.length) return null
 
@@ -172,6 +180,7 @@ const ActiveProposals = () => {
             View proposals from different DTFs you have vote-locked.
           </Trans>
         }
+        right={<ProposalSortMenu small value={sort} onChange={setSort} />}
       />
       <div className="bg-card rounded-[20px] border border-border overflow-hidden">
         <DataTable
