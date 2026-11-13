@@ -271,7 +271,7 @@ msgstr "Rendimiento de {0}"
 #: src/components/ui/multiselect-dropdown.tsx:170
 #: src/views/explorer/components/filters/token-filter.tsx:75
 #: src/views/explorer/components/filters/TransactionTypeFilter.tsx:44
-#: src/views/explorer/components/governance/filters.tsx:46
+#: src/views/explorer/components/governance/filters.tsx:47
 msgid "{0} selected"
 msgstr "{0} seleccionados"
 
@@ -507,7 +507,7 @@ msgstr "{swapCount} órdenes"
 msgid "{symbol} governance 1.1.0 available"
 msgstr "Gobernanza 1.1.0 disponible para {symbol}"
 
-#: src/views/yield-dtf/staking/components/overview/staking-apy-calculation.tsx:70
+#: src/views/yield-dtf/staking/components/overview/staking-apy-calculation.tsx:75
 msgid "{symbol} market cap"
 msgstr "Market cap de {symbol}"
 
@@ -897,11 +897,11 @@ msgstr "Acción"
 msgid "Action needed"
 msgstr "Acción necesaria"
 
-#: src/views/explorer/components/governance/filters.tsx:17
+#: src/views/explorer/components/governance/filters.tsx:18
 msgid "Active"
 msgstr "Activa"
 
-#: src/views/portfolio-page/components/active-proposals.tsx:169
+#: src/views/portfolio-page/components/active-proposals.tsx:177
 msgid "Active Proposals"
 msgstr "Propuestas activas"
 
@@ -1093,7 +1093,7 @@ msgstr "Alexios es la votación estándar por token adoptada de Compound Governo
 
 #: src/components/token-selector-drawer/index.tsx:142
 #: src/views/earn/components/table-filters.tsx:33
-#: src/views/explorer/components/governance/filters.tsx:55
+#: src/views/explorer/components/governance/filters.tsx:56
 #: src/views/explorer/components/tokens/index.tsx:44
 #: src/views/index-dtf/deploy/steps/basket/token-selector.tsx:241
 #: src/views/index-dtf/factsheet/components/chart-overlay.tsx:85
@@ -1137,7 +1137,7 @@ msgstr "Todos los DTFs"
 msgid "All options"
 msgstr "Todas las opciones"
 
-#: src/views/explorer/components/governance/filters.tsx:47
+#: src/views/explorer/components/governance/filters.tsx:48
 msgid "All statuses"
 msgstr "Todos los estados"
 
@@ -1284,11 +1284,11 @@ msgstr "y"
 msgid "and agree to the terms therein. ABC Labs, LLC (\"ABC Labs\") created the Website to help facilitate interaction with the Reserve protocol, including the minting and redeeming of DTFs. However, the Website is only one of several ways in which you can interact with the Reserve protocol. ABC Labs has neither created nor deployed any DTF and your ability to interact with specific DTFs via the Website in no way suggests that a DTF is endorsed by ABC Labs. In fact, ABC Labs assumes no liability for your use of the Website and interaction with the Reserve protocol, as covered in the Terms and Conditions."
 msgstr "y aceptas los términos allí establecidos. ABC Labs, LLC (\"ABC Labs\") creó el Sitio Web para facilitar la interacción con el protocolo Reserve, incluyendo el Mint y el Redeem de DTFs. Sin embargo, el Sitio Web es solo una de varias formas de interactuar con el protocolo Reserve. ABC Labs no ha creado ni desplegado ningún DTF, y tu capacidad de interactuar con DTFs específicos a través del Sitio Web no implica en modo alguno que un DTF esté respaldado por ABC Labs. De hecho, ABC Labs no asume ninguna responsabilidad por tu uso del Sitio Web ni por tu interacción con el protocolo Reserve, según se establece en los Términos y Condiciones."
 
-#: src/views/yield-dtf/staking/components/overview/staking-apy-calculation.tsx:80
+#: src/views/yield-dtf/staking/components/overview/staking-apy-calculation.tsx:85
 msgid "Annual collateral yield"
 msgstr "Rendimiento anual del colateral"
 
-#: src/views/yield-dtf/staking/components/overview/staking-apy-calculation.tsx:91
+#: src/views/yield-dtf/staking/components/overview/staking-apy-calculation.tsx:96
 msgid "Annual revenue to RSR stakers"
 msgstr "Ingresos anuales para stakers de RSR"
 
@@ -1894,7 +1894,7 @@ msgstr "Tokens del basket en tu Wallet"
 msgid "Basket warmup period"
 msgstr "Período de calentamiento de la cesta"
 
-#: src/views/yield-dtf/staking/components/overview/staking-apy-calculation.tsx:75
+#: src/views/yield-dtf/staking/components/overview/staking-apy-calculation.tsx:80
 msgid "Basket yield"
 msgstr "Rendimiento de la canasta"
 
@@ -2237,7 +2237,7 @@ msgstr "Cancelar propuesta"
 msgid "Cancel unstake"
 msgstr "Cancelar Unstake"
 
-#: src/views/explorer/components/governance/filters.tsx:21
+#: src/views/explorer/components/governance/filters.tsx:22
 #: src/views/index-dtf/governance/views/proposal/components/proposal-deadline-alert.tsx:41
 #: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:291
 #: src/views/yield-dtf/governance/views/proposal-detail/components/proposal-timeline/TimelineItem.tsx:258
@@ -2783,7 +2783,7 @@ msgstr "Conecta para verificar"
 
 #: src/components/stake-drawer/components/submit-stake-button.tsx:160
 #: src/components/stake-drawer/components/submit-unstake-button.tsx:72
-#: src/views/explorer/components/governance/index.tsx:192
+#: src/views/explorer/components/governance/index.tsx:198
 #: src/views/portfolio-page/components/portfolio-connect-button.tsx:20
 msgid "Connect wallet"
 msgstr "Conectar Wallet"
@@ -3046,7 +3046,7 @@ msgstr "Creado"
 msgid "Created {stTokenSymbol} DAO"
 msgstr "DAO de {stTokenSymbol} creada"
 
-#: src/views/explorer/components/governance/index.tsx:149
+#: src/views/explorer/components/governance/index.tsx:155
 msgid "Created At"
 msgstr "Creada el"
 
@@ -3256,7 +3256,7 @@ msgstr "Oscuro"
 msgid "Date"
 msgstr "Fecha"
 
-#: src/views/portfolio-page/components/active-proposals.tsx:121
+#: src/views/portfolio-page/components/active-proposals.tsx:124
 msgid "Date Proposed"
 msgstr "Fecha de propuesta"
 
@@ -3302,7 +3302,7 @@ msgstr "Admin predeterminado"
 msgid "Default delay"
 msgstr "Retraso predeterminado"
 
-#: src/views/explorer/components/governance/filters.tsx:18
+#: src/views/explorer/components/governance/filters.tsx:19
 #: src/views/index-dtf/governance/views/proposal/components/proposal-deadline-alert.tsx:29
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalAlert.tsx:50
 msgid "Defeated"
@@ -3475,7 +3475,7 @@ msgid "DEPRECATED"
 msgstr "OBSOLETO"
 
 #: src/components/governance/proposal-description-form.tsx:64
-#: src/views/explorer/components/governance/index.tsx:132
+#: src/views/explorer/components/governance/index.tsx:138
 #: src/views/index-dtf/governance/views/proposal/components/proposal-detail-content.tsx:15
 #: src/views/index-dtf/governance/views/proposal/components/proposal-detail-content.tsx:41
 #: src/views/portfolio-page/components/transactions.tsx:114
@@ -3710,7 +3710,7 @@ msgstr "Ficha técnica del DTF"
 msgid "DTF Governance"
 msgstr "Gobernanza del DTF"
 
-#: src/views/portfolio-page/components/active-proposals.tsx:36
+#: src/views/portfolio-page/components/active-proposals.tsx:39
 #: src/views/portfolio-page/components/voting-power.tsx:23
 msgid "DTF Governed"
 msgstr "DTF gobernado"
@@ -3987,7 +3987,7 @@ msgid "Enabled"
 msgstr "Habilitado"
 
 #: src/hooks/use-time-remaining.ts:23
-#: src/views/explorer/components/governance/index.tsx:163
+#: src/views/explorer/components/governance/index.tsx:169
 msgid "Ended"
 msgstr "Finalizado"
 
@@ -4159,7 +4159,7 @@ msgstr "Ingresos est. de RSR"
 msgid "Est. Staking APY"
 msgstr "APY estimado de Staking"
 
-#: src/views/yield-dtf/staking/components/overview/staking-apy-calculation.tsx:102
+#: src/views/yield-dtf/staking/components/overview/staking-apy-calculation.tsx:107
 msgid "Est. staking yield"
 msgstr "Rendimiento de staking est."
 
@@ -4269,7 +4269,7 @@ msgstr "Código ejecutable"
 msgid "Execute proposal"
 msgstr "Ejecutar propuesta"
 
-#: src/views/explorer/components/governance/filters.tsx:19
+#: src/views/explorer/components/governance/filters.tsx:20
 #: src/views/index-dtf/governance/components/proposal-list-item.tsx:101
 #: src/views/index-dtf/governance/views/proposal/components/proposal-deadline-alert.tsx:23
 #: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:290
@@ -4357,7 +4357,7 @@ msgstr "Esperado"
 msgid "Expected volatility"
 msgstr "Volatilidad esperada"
 
-#: src/views/explorer/components/governance/filters.tsx:24
+#: src/views/explorer/components/governance/filters.tsx:25
 #: src/views/index-dtf/governance/views/proposal/components/proposal-deadline-alert.tsx:35
 #: src/views/index-dtf/issuance/async-mint/components/leg-row.tsx:74
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalAlert.tsx:56
@@ -5233,7 +5233,7 @@ msgstr "Wallet incompatible"
 msgid "Increase"
 msgstr "Aumentar"
 
-#: src/views/explorer/components/governance/filters.tsx:57
+#: src/views/explorer/components/governance/filters.tsx:58
 msgid "Index"
 msgstr "Index"
 
@@ -5594,7 +5594,7 @@ msgstr "Lanza tu propio Index DTF"
 msgid "Launching..."
 msgstr "Lanzando..."
 
-#: src/views/yield-dtf/staking/components/overview/staking-apy-calculation.tsx:119
+#: src/views/yield-dtf/staking/components/overview/staking-apy-calculation.tsx:125
 msgid "Learn more"
 msgstr "Más información"
 
@@ -5938,7 +5938,7 @@ msgstr "Mint manual"
 msgid "Manual Redeem"
 msgstr "Redeem manual"
 
-#: src/views/yield-dtf/staking/components/overview/staking-apy-calculation.tsx:64
+#: src/views/yield-dtf/staking/components/overview/staking-apy-calculation.tsx:68
 msgid "Manually estimated APY calculated from basket averaged yield."
 msgstr "APY estimado manualmente, calculado a partir del rendimiento promedio de la cesta."
 
@@ -6543,6 +6543,10 @@ msgstr "Nuevo período de votación:"
 msgid "New voting quorum:"
 msgstr "Nuevo quórum de votación:"
 
+#: src/components/proposal-sort-menu.tsx:21
+msgid "Newest"
+msgstr "Más recientes"
+
 #: src/views/index-dtf/auctions/views/rebalance/components/rebalance-progress.tsx:23
 msgid "Next auction target"
 msgstr "Objetivo de la próxima subasta"
@@ -6565,7 +6569,7 @@ msgstr ""
 
 #: src/views/index-dtf/auctions/views/rebalance/components/rebalance-overview.tsx:74
 #: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:170
-#: src/views/portfolio-page/components/active-proposals.tsx:97
+#: src/views/portfolio-page/components/active-proposals.tsx:100
 #: src/views/yield-dtf/governance/components/ProposalList.tsx:119
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalDetailStats.tsx:166
 msgid "No"
@@ -6869,7 +6873,7 @@ msgstr "Sin congelar"
 msgid "Not ready to set up governance?"
 msgstr "¿No estás listo para configurar la gobernanza?"
 
-#: src/views/explorer/components/governance/index.tsx:195
+#: src/views/explorer/components/governance/index.tsx:201
 msgid "Not voted"
 msgstr "Sin votar"
 
@@ -7207,7 +7211,7 @@ msgstr "Pagos en RSR"
 msgid "Peg:"
 msgstr "Paridad:"
 
-#: src/views/explorer/components/governance/filters.tsx:16
+#: src/views/explorer/components/governance/filters.tsx:17
 #: src/views/index-dtf/issuance/async-mint/components/leg-row.tsx:80
 #: src/views/yield-dtf/issuance/components/issue/CollateralApprovals.tsx:109
 msgid "Pending"
@@ -7798,7 +7802,7 @@ msgstr "La propuesta fue cancelada"
 msgid "Proposal was defeated"
 msgstr "La propuesta fue rechazada"
 
-#: src/views/explorer/components/governance/index.tsx:207
+#: src/views/explorer/components/governance/index.tsx:213
 #: src/views/index-dtf/governance/components/governance-stats.tsx:78
 #: src/views/yield-dtf/governance/components/GovernanceOverview.tsx:124
 msgid "Proposals"
@@ -7914,7 +7918,7 @@ msgstr "Publicado: {0}"
 msgid "Queue proposal"
 msgstr "Encolar propuesta"
 
-#: src/views/explorer/components/governance/filters.tsx:23
+#: src/views/explorer/components/governance/filters.tsx:24
 #: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:269
 #: src/views/yield-dtf/governance/views/proposal-detail/components/proposal-timeline/TimelineItem.tsx:241
 msgid "Queued"
@@ -7930,7 +7934,7 @@ msgstr "Quórum"
 msgid "Quorum (%)"
 msgstr "Quórum (%)"
 
-#: src/views/explorer/components/governance/filters.tsx:20
+#: src/views/explorer/components/governance/filters.tsx:21
 #: src/views/index-dtf/governance/components/proposal-list-item.tsx:105
 #: src/views/index-dtf/governance/views/proposal/components/proposal-deadline-alert.tsx:47
 #: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:204
@@ -7939,7 +7943,7 @@ msgstr "Quórum (%)"
 msgid "Quorum not reached"
 msgstr "Quórum no alcanzado"
 
-#: src/views/portfolio-page/components/active-proposals.tsx:84
+#: src/views/portfolio-page/components/active-proposals.tsx:87
 msgid "Quorum?"
 msgstr "¿Quórum?"
 
@@ -8627,7 +8631,7 @@ msgstr "Configuración de ingresos"
 msgid "Revenue share"
 msgstr "Reparto de ingresos"
 
-#: src/views/yield-dtf/staking/components/overview/staking-apy-calculation.tsx:86
+#: src/views/yield-dtf/staking/components/overview/staking-apy-calculation.tsx:91
 msgid "Revenue share to RSR stakers"
 msgstr "Participación de ingresos para stakers de RSR"
 
@@ -8865,7 +8869,7 @@ msgstr "RSR en staking"
 msgid "RSR Staked"
 msgstr "RSR en Stake"
 
-#: src/views/yield-dtf/staking/components/overview/staking-apy-calculation.tsx:97
+#: src/views/yield-dtf/staking/components/overview/staking-apy-calculation.tsx:102
 msgid "RSR staked (USD)"
 msgstr "RSR en staking (USD)"
 
@@ -9250,7 +9254,7 @@ msgstr "% de participación"
 msgid "Shared externally"
 msgstr "Compartido externamente"
 
-#: src/views/explorer/components/governance/index.tsx:81
+#: src/views/explorer/components/governance/index.tsx:82
 msgid "Shared governance"
 msgstr "Gobernanza compartida"
 
@@ -9527,6 +9531,10 @@ msgstr "Lo sentimos, tu solicitud supera el límite Global Max Mint. El Global M
 msgid "Sorry, your request exceeds the Global Max Redeem limit. The Global Max Redeem is set at {maxFormatted} {0}. You can only zap a maximum of {maxZap} {1}."
 msgstr "Lo sentimos, tu solicitud supera el límite Global Max Redeem. El Global Max Redeem está fijado en {maxFormatted} {0}. Solo puedes hacer Zap de un máximo de {maxZap} {1}."
 
+#: src/views/explorer/components/governance/filters.tsx:94
+msgid "Sort by"
+msgstr "Ordenar por"
+
 #: src/views/portfolio-page/components/pending-withdrawals.tsx:332
 msgid "Source"
 msgstr "Origen"
@@ -9726,10 +9734,11 @@ msgstr "Iniciar rebalanceo"
 msgid "Starts the next {0} reward period once the current one ends. Disabled until then."
 msgstr "Inicia el próximo período de recompensas de {0} una vez que finalice el actual. Deshabilitado hasta entonces."
 
-#: src/views/explorer/components/governance/filters.tsx:41
-#: src/views/explorer/components/governance/index.tsx:174
+#: src/components/proposal-sort-menu.tsx:20
+#: src/views/explorer/components/governance/filters.tsx:42
+#: src/views/explorer/components/governance/index.tsx:180
 #: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:349
-#: src/views/portfolio-page/components/active-proposals.tsx:136
+#: src/views/portfolio-page/components/active-proposals.tsx:139
 #: src/views/yield-dtf/governance/views/proposal-detail/components/proposal-timeline/index.tsx:16
 msgid "Status"
 msgstr "Estado"
@@ -9829,7 +9838,7 @@ msgstr "¡Enviada!"
 msgid "Submitting..."
 msgstr "Enviando..."
 
-#: src/views/explorer/components/governance/filters.tsx:22
+#: src/views/explorer/components/governance/filters.tsx:23
 #: src/views/index-dtf/governance/views/proposal/components/proposal-deadline-alert.tsx:53
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalAlert.tsx:74
 msgid "Succeeded"
@@ -10222,7 +10231,7 @@ msgstr "Reserve Protocol realiza varios tipos distintos de intercambios"
 msgid "The Reserve Robotics DTF (ROBOTS) is a weighted basket of public, US-listed robotics and automation companies at the center of the AI buildout. AI is moving off the screen and into the physical world: the same breakthroughs that taught software to reason are now teaching machines to perceive, decide, and act, and to take on physical labor. The ROBOTS DTF gives you direct exposure to the companies building that transition: the humanoids, surgical robots, factory and warehouse automation, lidar, machine vision, and the chips that let machines navigate the real world. The basket is composed of companies with significant and growing exposure to robotics and automation demand, weighted by market capitalization with a 20% cap and a $2B minimum market cap, rebalanced quarterly. The ROBOTS DTF bundles Ondo Global Markets tokenized stocks, each of which represents an actual share held in a regulated US brokerage account."
 msgstr "El DTF Reserve Robotics (ROBOTS) es una canasta ponderada de empresas públicas de robótica y automatización cotizadas en EE. UU. que están en el centro del despliegue de la IA. La IA está saliendo de la pantalla y entrando en el mundo físico: los mismos avances que enseñaron al software a razonar ahora están enseñando a las máquinas a percibir, decidir y actuar, y a asumir trabajo físico. El DTF ROBOTS te da exposición directa a las empresas que construyen esa transición: humanoides, robots quirúrgicos, automatización de fábricas y almacenes, lidar, visión artificial y los chips que permiten a las máquinas navegar por el mundo real. La canasta está compuesta por empresas con exposición significativa y creciente a la demanda de robótica y automatización, ponderadas por capitalización de mercado con un límite del 20% y una capitalización mínima de $2B, con rebalanceo trimestral. El DTF ROBOTS agrupa acciones tokenizadas de Ondo Global Markets, cada una de las cuales representa una acción real mantenida en una cuenta de corretaje regulada en EE. UU."
 
-#: src/views/yield-dtf/staking/components/overview/staking-apy-calculation.tsx:109
+#: src/views/yield-dtf/staking/components/overview/staking-apy-calculation.tsx:115
 msgid "The RSR stakers' share includes the fintech revenue redirected to eusdRSR stakers under the eUSD Revenue Share Programme."
 msgstr "La participación de los stakers de RSR incluye los ingresos de fintechs redirigidos a los stakers de eusdRSR bajo el eUSD Revenue Share Programme."
 
@@ -10526,7 +10535,7 @@ msgstr "Dirección del Timelock"
 msgid "Timelock Address"
 msgstr "Dirección del Timelock"
 
-#: src/views/portfolio-page/components/active-proposals.tsx:50
+#: src/views/portfolio-page/components/active-proposals.tsx:53
 msgid "Title"
 msgstr "Título"
 
@@ -10556,7 +10565,7 @@ msgstr "Cambiar tema"
 
 #: src/components/index-basket-setup/basket-table.tsx:62
 #: src/components/tables/ListedTokensTable.tsx:28
-#: src/views/explorer/components/governance/index.tsx:114
+#: src/views/explorer/components/governance/index.tsx:120
 #: src/views/explorer/components/tokens/index.tsx:142
 #: src/views/explorer/components/transactions/useTransactionColumns.tsx:51
 #: src/views/index-dtf/governance/components/proposal-preview/rebalance-preview/rebalance-basket-preview.tsx:71
@@ -11604,7 +11613,7 @@ msgstr "Umbral de veto"
 msgid "Veto Window"
 msgstr "Ventana de veto"
 
-#: src/views/portfolio-page/components/active-proposals.tsx:84
+#: src/views/portfolio-page/components/active-proposals.tsx:87
 msgid "Veto?"
 msgstr "¿Vetar?"
 
@@ -11745,7 +11754,7 @@ msgstr "Ver progreso"
 msgid "View proposal"
 msgstr "Ver propuesta"
 
-#: src/views/portfolio-page/components/active-proposals.tsx:171
+#: src/views/portfolio-page/components/active-proposals.tsx:179
 msgid "View proposals from different DTFs you have vote-locked."
 msgstr "Consulta propuestas de los distintos DTFs en los que hiciste bloqueo de votos."
 
@@ -11937,7 +11946,7 @@ msgstr "Votos en contra"
 msgid "Votes for"
 msgstr "Votos a favor"
 
-#: src/views/portfolio-page/components/active-proposals.tsx:102
+#: src/views/portfolio-page/components/active-proposals.tsx:105
 #: src/views/yield-dtf/governance/components/ProposalList.tsx:125
 msgid "Votes:"
 msgstr "Votos:"
@@ -11987,7 +11996,7 @@ msgstr "Comienza el retraso de votación"
 msgid "Voting delay is required"
 msgstr "El retraso de votación es obligatorio"
 
-#: src/views/explorer/components/governance/index.tsx:156
+#: src/views/explorer/components/governance/index.tsx:162
 msgid "Voting Ends"
 msgstr "Fin de la votación"
 
@@ -12070,7 +12079,7 @@ msgid "Voting quorum is required"
 msgstr "El quórum de votación es obligatorio"
 
 #: src/views/index-dtf/governance/components/proposal-list-item.tsx:49
-#: src/views/portfolio-page/components/active-proposals.tsx:61
+#: src/views/portfolio-page/components/active-proposals.tsx:64
 #: src/views/yield-dtf/governance/components/ProposalList.tsx:102
 msgid "Voting starts in:"
 msgstr "La votación comienza en:"
@@ -12481,13 +12490,13 @@ msgstr "en lo que va del año"
 #: src/views/index-dtf/auctions/views/rebalance/components/rebalance-overview.tsx:60
 #: src/views/index-dtf/auctions/views/rebalance/components/rebalance-overview.tsx:74
 #: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:170
-#: src/views/portfolio-page/components/active-proposals.tsx:97
+#: src/views/portfolio-page/components/active-proposals.tsx:100
 #: src/views/yield-dtf/governance/components/ProposalList.tsx:119
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalDetailStats.tsx:166
 msgid "Yes"
 msgstr "Sí"
 
-#: src/views/explorer/components/governance/filters.tsx:56
+#: src/views/explorer/components/governance/filters.tsx:57
 #: src/views/index-dtf/overview/components/charts/data-type-selector.tsx:19
 #: src/views/yield-dtf/overview/components/backing/collateral-exposure.tsx:248
 msgid "Yield"
@@ -12774,7 +12783,7 @@ msgstr "Tus recompensas totales por participación disponibles en todos los Chai
 msgid "Your transaction was submitted. Check its status before taking another action."
 msgstr "Tu transacción fue enviada. Revisa su estado antes de hacer otra acción."
 
-#: src/views/explorer/components/governance/index.tsx:187
+#: src/views/explorer/components/governance/index.tsx:193
 msgid "Your Vote"
 msgstr "Tu voto"
 

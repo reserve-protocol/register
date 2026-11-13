@@ -271,7 +271,7 @@ msgstr "{0} 表现"
 #: src/components/ui/multiselect-dropdown.tsx:170
 #: src/views/explorer/components/filters/token-filter.tsx:75
 #: src/views/explorer/components/filters/TransactionTypeFilter.tsx:44
-#: src/views/explorer/components/governance/filters.tsx:46
+#: src/views/explorer/components/governance/filters.tsx:47
 msgid "{0} selected"
 msgstr "已选择 {0} 项"
 
@@ -507,7 +507,7 @@ msgstr "{swapCount} 个 Orders"
 msgid "{symbol} governance 1.1.0 available"
 msgstr "{symbol} 治理 1.1.0 已可用"
 
-#: src/views/yield-dtf/staking/components/overview/staking-apy-calculation.tsx:70
+#: src/views/yield-dtf/staking/components/overview/staking-apy-calculation.tsx:75
 msgid "{symbol} market cap"
 msgstr "{symbol} 市值"
 
@@ -897,11 +897,11 @@ msgstr "操作"
 msgid "Action needed"
 msgstr "需要操作"
 
-#: src/views/explorer/components/governance/filters.tsx:17
+#: src/views/explorer/components/governance/filters.tsx:18
 msgid "Active"
 msgstr "进行中"
 
-#: src/views/portfolio-page/components/active-proposals.tsx:169
+#: src/views/portfolio-page/components/active-proposals.tsx:177
 msgid "Active Proposals"
 msgstr "活跃提案"
 
@@ -1093,7 +1093,7 @@ msgstr "Alexios 是采用自 Compound Governor Bravo 的标准代币投票机制
 
 #: src/components/token-selector-drawer/index.tsx:142
 #: src/views/earn/components/table-filters.tsx:33
-#: src/views/explorer/components/governance/filters.tsx:55
+#: src/views/explorer/components/governance/filters.tsx:56
 #: src/views/explorer/components/tokens/index.tsx:44
 #: src/views/index-dtf/deploy/steps/basket/token-selector.tsx:241
 #: src/views/index-dtf/factsheet/components/chart-overlay.tsx:85
@@ -1137,7 +1137,7 @@ msgstr "所有 DTFs"
 msgid "All options"
 msgstr "所有选项"
 
-#: src/views/explorer/components/governance/filters.tsx:47
+#: src/views/explorer/components/governance/filters.tsx:48
 msgid "All statuses"
 msgstr "所有状态"
 
@@ -1284,11 +1284,11 @@ msgstr "和"
 msgid "and agree to the terms therein. ABC Labs, LLC (\"ABC Labs\") created the Website to help facilitate interaction with the Reserve protocol, including the minting and redeeming of DTFs. However, the Website is only one of several ways in which you can interact with the Reserve protocol. ABC Labs has neither created nor deployed any DTF and your ability to interact with specific DTFs via the Website in no way suggests that a DTF is endorsed by ABC Labs. In fact, ABC Labs assumes no liability for your use of the Website and interaction with the Reserve protocol, as covered in the Terms and Conditions."
 msgstr "并同意其中的条款。ABC Labs, LLC（\"ABC Labs\"）创建本网站是为了帮助用户与 Reserve 协议进行交互，包括 DTF 的 Mint 和 Redeem。然而，本网站只是您与 Reserve 协议交互的多种方式之一。ABC Labs 从未创建或部署任何 DTF，您能够通过本网站与特定 DTF 交互并不意味着该 DTF 获得了 ABC Labs 的认可。事实上，如条款与条件所述，ABC Labs 对您使用本网站以及与 Reserve 协议的交互不承担任何责任。"
 
-#: src/views/yield-dtf/staking/components/overview/staking-apy-calculation.tsx:80
+#: src/views/yield-dtf/staking/components/overview/staking-apy-calculation.tsx:85
 msgid "Annual collateral yield"
 msgstr "年度抵押品收益"
 
-#: src/views/yield-dtf/staking/components/overview/staking-apy-calculation.tsx:91
+#: src/views/yield-dtf/staking/components/overview/staking-apy-calculation.tsx:96
 msgid "Annual revenue to RSR stakers"
 msgstr "RSR 质押者年度收入"
 
@@ -1894,7 +1894,7 @@ msgstr "你 Wallet 中的篮子 tokens"
 msgid "Basket warmup period"
 msgstr "篮子预热期"
 
-#: src/views/yield-dtf/staking/components/overview/staking-apy-calculation.tsx:75
+#: src/views/yield-dtf/staking/components/overview/staking-apy-calculation.tsx:80
 msgid "Basket yield"
 msgstr "篮子收益率"
 
@@ -2237,7 +2237,7 @@ msgstr "取消提案"
 msgid "Cancel unstake"
 msgstr "取消 Unstake"
 
-#: src/views/explorer/components/governance/filters.tsx:21
+#: src/views/explorer/components/governance/filters.tsx:22
 #: src/views/index-dtf/governance/views/proposal/components/proposal-deadline-alert.tsx:41
 #: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:291
 #: src/views/yield-dtf/governance/views/proposal-detail/components/proposal-timeline/TimelineItem.tsx:258
@@ -2783,7 +2783,7 @@ msgstr "连接以检查"
 
 #: src/components/stake-drawer/components/submit-stake-button.tsx:160
 #: src/components/stake-drawer/components/submit-unstake-button.tsx:72
-#: src/views/explorer/components/governance/index.tsx:192
+#: src/views/explorer/components/governance/index.tsx:198
 #: src/views/portfolio-page/components/portfolio-connect-button.tsx:20
 msgid "Connect wallet"
 msgstr "连接 Wallet"
@@ -3046,7 +3046,7 @@ msgstr "已创建"
 msgid "Created {stTokenSymbol} DAO"
 msgstr "已创建 {stTokenSymbol} DAO"
 
-#: src/views/explorer/components/governance/index.tsx:149
+#: src/views/explorer/components/governance/index.tsx:155
 msgid "Created At"
 msgstr "创建时间"
 
@@ -3256,7 +3256,7 @@ msgstr "深色"
 msgid "Date"
 msgstr "日期"
 
-#: src/views/portfolio-page/components/active-proposals.tsx:121
+#: src/views/portfolio-page/components/active-proposals.tsx:124
 msgid "Date Proposed"
 msgstr "提案日期"
 
@@ -3302,7 +3302,7 @@ msgstr "Default Admin"
 msgid "Default delay"
 msgstr "默认延迟"
 
-#: src/views/explorer/components/governance/filters.tsx:18
+#: src/views/explorer/components/governance/filters.tsx:19
 #: src/views/index-dtf/governance/views/proposal/components/proposal-deadline-alert.tsx:29
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalAlert.tsx:50
 msgid "Defeated"
@@ -3475,7 +3475,7 @@ msgid "DEPRECATED"
 msgstr "已弃用"
 
 #: src/components/governance/proposal-description-form.tsx:64
-#: src/views/explorer/components/governance/index.tsx:132
+#: src/views/explorer/components/governance/index.tsx:138
 #: src/views/index-dtf/governance/views/proposal/components/proposal-detail-content.tsx:15
 #: src/views/index-dtf/governance/views/proposal/components/proposal-detail-content.tsx:41
 #: src/views/portfolio-page/components/transactions.tsx:114
@@ -3710,7 +3710,7 @@ msgstr "DTF 概况说明"
 msgid "DTF Governance"
 msgstr "DTF 治理"
 
-#: src/views/portfolio-page/components/active-proposals.tsx:36
+#: src/views/portfolio-page/components/active-proposals.tsx:39
 #: src/views/portfolio-page/components/voting-power.tsx:23
 msgid "DTF Governed"
 msgstr "所治理的 DTF"
@@ -3987,7 +3987,7 @@ msgid "Enabled"
 msgstr "已启用"
 
 #: src/hooks/use-time-remaining.ts:23
-#: src/views/explorer/components/governance/index.tsx:163
+#: src/views/explorer/components/governance/index.tsx:169
 msgid "Ended"
 msgstr "已结束"
 
@@ -4159,7 +4159,7 @@ msgstr "RSR 收益"
 msgid "Est. Staking APY"
 msgstr "预计 Staking APY"
 
-#: src/views/yield-dtf/staking/components/overview/staking-apy-calculation.tsx:102
+#: src/views/yield-dtf/staking/components/overview/staking-apy-calculation.tsx:107
 msgid "Est. staking yield"
 msgstr "预计质押收益率"
 
@@ -4269,7 +4269,7 @@ msgstr "可执行代码"
 msgid "Execute proposal"
 msgstr "执行提案"
 
-#: src/views/explorer/components/governance/filters.tsx:19
+#: src/views/explorer/components/governance/filters.tsx:20
 #: src/views/index-dtf/governance/components/proposal-list-item.tsx:101
 #: src/views/index-dtf/governance/views/proposal/components/proposal-deadline-alert.tsx:23
 #: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:290
@@ -4357,7 +4357,7 @@ msgstr "预期"
 msgid "Expected volatility"
 msgstr "预期波动率"
 
-#: src/views/explorer/components/governance/filters.tsx:24
+#: src/views/explorer/components/governance/filters.tsx:25
 #: src/views/index-dtf/governance/views/proposal/components/proposal-deadline-alert.tsx:35
 #: src/views/index-dtf/issuance/async-mint/components/leg-row.tsx:74
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalAlert.tsx:56
@@ -5233,7 +5233,7 @@ msgstr "不兼容的 Wallet"
 msgid "Increase"
 msgstr "增加"
 
-#: src/views/explorer/components/governance/filters.tsx:57
+#: src/views/explorer/components/governance/filters.tsx:58
 msgid "Index"
 msgstr "Index"
 
@@ -5594,7 +5594,7 @@ msgstr "启动你自己的 Index DTF"
 msgid "Launching..."
 msgstr "发起中……"
 
-#: src/views/yield-dtf/staking/components/overview/staking-apy-calculation.tsx:119
+#: src/views/yield-dtf/staking/components/overview/staking-apy-calculation.tsx:125
 msgid "Learn more"
 msgstr "了解更多"
 
@@ -5938,7 +5938,7 @@ msgstr "手动 Mint"
 msgid "Manual Redeem"
 msgstr "手动 Redeem"
 
-#: src/views/yield-dtf/staking/components/overview/staking-apy-calculation.tsx:64
+#: src/views/yield-dtf/staking/components/overview/staking-apy-calculation.tsx:68
 msgid "Manually estimated APY calculated from basket averaged yield."
 msgstr "根据篮子平均收益手动估算的 APY。"
 
@@ -6543,6 +6543,10 @@ msgstr "新投票期："
 msgid "New voting quorum:"
 msgstr "新投票法定人数："
 
+#: src/components/proposal-sort-menu.tsx:21
+msgid "Newest"
+msgstr "最新"
+
 #: src/views/index-dtf/auctions/views/rebalance/components/rebalance-progress.tsx:23
 msgid "Next auction target"
 msgstr "下次拍卖目标"
@@ -6565,7 +6569,7 @@ msgstr ""
 
 #: src/views/index-dtf/auctions/views/rebalance/components/rebalance-overview.tsx:74
 #: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:170
-#: src/views/portfolio-page/components/active-proposals.tsx:97
+#: src/views/portfolio-page/components/active-proposals.tsx:100
 #: src/views/yield-dtf/governance/components/ProposalList.tsx:119
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalDetailStats.tsx:166
 msgid "No"
@@ -6869,7 +6873,7 @@ msgstr "未冻结"
 msgid "Not ready to set up governance?"
 msgstr "还没准备好设置治理？"
 
-#: src/views/explorer/components/governance/index.tsx:195
+#: src/views/explorer/components/governance/index.tsx:201
 msgid "Not voted"
 msgstr "未投票"
 
@@ -7207,7 +7211,7 @@ msgstr "以 RSR 支付"
 msgid "Peg:"
 msgstr "锚定："
 
-#: src/views/explorer/components/governance/filters.tsx:16
+#: src/views/explorer/components/governance/filters.tsx:17
 #: src/views/index-dtf/issuance/async-mint/components/leg-row.tsx:80
 #: src/views/yield-dtf/issuance/components/issue/CollateralApprovals.tsx:109
 msgid "Pending"
@@ -7798,7 +7802,7 @@ msgstr "提案已取消"
 msgid "Proposal was defeated"
 msgstr "提案未通过"
 
-#: src/views/explorer/components/governance/index.tsx:207
+#: src/views/explorer/components/governance/index.tsx:213
 #: src/views/index-dtf/governance/components/governance-stats.tsx:78
 #: src/views/yield-dtf/governance/components/GovernanceOverview.tsx:124
 msgid "Proposals"
@@ -7914,7 +7918,7 @@ msgstr "发布于：{0}"
 msgid "Queue proposal"
 msgstr "将提案加入队列"
 
-#: src/views/explorer/components/governance/filters.tsx:23
+#: src/views/explorer/components/governance/filters.tsx:24
 #: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:269
 #: src/views/yield-dtf/governance/views/proposal-detail/components/proposal-timeline/TimelineItem.tsx:241
 msgid "Queued"
@@ -7930,7 +7934,7 @@ msgstr "法定人数"
 msgid "Quorum (%)"
 msgstr "法定人数 (%)"
 
-#: src/views/explorer/components/governance/filters.tsx:20
+#: src/views/explorer/components/governance/filters.tsx:21
 #: src/views/index-dtf/governance/components/proposal-list-item.tsx:105
 #: src/views/index-dtf/governance/views/proposal/components/proposal-deadline-alert.tsx:47
 #: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:204
@@ -7939,7 +7943,7 @@ msgstr "法定人数 (%)"
 msgid "Quorum not reached"
 msgstr "未达到法定人数"
 
-#: src/views/portfolio-page/components/active-proposals.tsx:84
+#: src/views/portfolio-page/components/active-proposals.tsx:87
 msgid "Quorum?"
 msgstr "达到法定人数?"
 
@@ -8627,7 +8631,7 @@ msgstr "收入设置"
 msgid "Revenue share"
 msgstr "收入分成"
 
-#: src/views/yield-dtf/staking/components/overview/staking-apy-calculation.tsx:86
+#: src/views/yield-dtf/staking/components/overview/staking-apy-calculation.tsx:91
 msgid "Revenue share to RSR stakers"
 msgstr "RSR 质押者收入分成"
 
@@ -8865,7 +8869,7 @@ msgstr "已质押 RSR"
 msgid "RSR Staked"
 msgstr "已 Stake 的 RSR"
 
-#: src/views/yield-dtf/staking/components/overview/staking-apy-calculation.tsx:97
+#: src/views/yield-dtf/staking/components/overview/staking-apy-calculation.tsx:102
 msgid "RSR staked (USD)"
 msgstr "已质押 RSR（USD）"
 
@@ -9250,7 +9254,7 @@ msgstr "份额 %"
 msgid "Shared externally"
 msgstr "对外分享"
 
-#: src/views/explorer/components/governance/index.tsx:81
+#: src/views/explorer/components/governance/index.tsx:82
 msgid "Shared governance"
 msgstr "共享治理"
 
@@ -9527,6 +9531,10 @@ msgstr "抱歉，你的请求超过了 Global Max Mint 限额。Global Max Mint 
 msgid "Sorry, your request exceeds the Global Max Redeem limit. The Global Max Redeem is set at {maxFormatted} {0}. You can only zap a maximum of {maxZap} {1}."
 msgstr "抱歉，你的请求超过了 Global Max Redeem 限额。Global Max Redeem 限额设为 {maxFormatted} {0}。你最多只能 zap {maxZap} {1}。"
 
+#: src/views/explorer/components/governance/filters.tsx:94
+msgid "Sort by"
+msgstr "排序方式"
+
 #: src/views/portfolio-page/components/pending-withdrawals.tsx:332
 msgid "Source"
 msgstr "来源"
@@ -9726,10 +9734,11 @@ msgstr "开始再平衡"
 msgid "Starts the next {0} reward period once the current one ends. Disabled until then."
 msgstr "在当前周期结束后启动下一个 {0} 奖励周期。在此之前禁用。"
 
-#: src/views/explorer/components/governance/filters.tsx:41
-#: src/views/explorer/components/governance/index.tsx:174
+#: src/components/proposal-sort-menu.tsx:20
+#: src/views/explorer/components/governance/filters.tsx:42
+#: src/views/explorer/components/governance/index.tsx:180
 #: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:349
-#: src/views/portfolio-page/components/active-proposals.tsx:136
+#: src/views/portfolio-page/components/active-proposals.tsx:139
 #: src/views/yield-dtf/governance/views/proposal-detail/components/proposal-timeline/index.tsx:16
 msgid "Status"
 msgstr "状态"
@@ -9829,7 +9838,7 @@ msgstr "已提交！"
 msgid "Submitting..."
 msgstr "提交中…"
 
-#: src/views/explorer/components/governance/filters.tsx:22
+#: src/views/explorer/components/governance/filters.tsx:23
 #: src/views/index-dtf/governance/views/proposal/components/proposal-deadline-alert.tsx:53
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalAlert.tsx:74
 msgid "Succeeded"
@@ -10222,7 +10231,7 @@ msgstr "Reserve Protocol 会进行几种不同类型的交易"
 msgid "The Reserve Robotics DTF (ROBOTS) is a weighted basket of public, US-listed robotics and automation companies at the center of the AI buildout. AI is moving off the screen and into the physical world: the same breakthroughs that taught software to reason are now teaching machines to perceive, decide, and act, and to take on physical labor. The ROBOTS DTF gives you direct exposure to the companies building that transition: the humanoids, surgical robots, factory and warehouse automation, lidar, machine vision, and the chips that let machines navigate the real world. The basket is composed of companies with significant and growing exposure to robotics and automation demand, weighted by market capitalization with a 20% cap and a $2B minimum market cap, rebalanced quarterly. The ROBOTS DTF bundles Ondo Global Markets tokenized stocks, each of which represents an actual share held in a regulated US brokerage account."
 msgstr "Reserve Robotics DTF（ROBOTS）是一个加权篮子，覆盖处于 AI 建设核心位置的美国上市机器人和自动化公司。AI 正从屏幕走向物理世界：那些让软件学会推理的突破，如今正在教会机器感知、决策和行动，并承担实体劳动。ROBOTS DTF 让你直接获得正在构建这一转变的公司的敞口：人形机器人、手术机器人、工厂和仓库自动化、激光雷达、机器视觉，以及让机器在现实世界中导航的芯片。该篮子由对机器人和自动化需求具有重要且持续增长敞口的公司组成，按市值加权，单一权重上限为 20%，最低市值为 $2B，并按季度再平衡。ROBOTS DTF 打包 Ondo Global Markets 的代币化股票，每一只代币化股票都代表存放在受监管美国券商账户中的一股真实股票。"
 
-#: src/views/yield-dtf/staking/components/overview/staking-apy-calculation.tsx:109
+#: src/views/yield-dtf/staking/components/overview/staking-apy-calculation.tsx:115
 msgid "The RSR stakers' share includes the fintech revenue redirected to eusdRSR stakers under the eUSD Revenue Share Programme."
 msgstr "RSR 质押者分成包含根据 eUSD Revenue Share Programme 重新分配给 eusdRSR 质押者的金融科技收入。"
 
@@ -10526,7 +10535,7 @@ msgstr "Timelock 地址"
 msgid "Timelock Address"
 msgstr "Timelock 地址"
 
-#: src/views/portfolio-page/components/active-proposals.tsx:50
+#: src/views/portfolio-page/components/active-proposals.tsx:53
 msgid "Title"
 msgstr "标题"
 
@@ -10556,7 +10565,7 @@ msgstr "切换主题"
 
 #: src/components/index-basket-setup/basket-table.tsx:62
 #: src/components/tables/ListedTokensTable.tsx:28
-#: src/views/explorer/components/governance/index.tsx:114
+#: src/views/explorer/components/governance/index.tsx:120
 #: src/views/explorer/components/tokens/index.tsx:142
 #: src/views/explorer/components/transactions/useTransactionColumns.tsx:51
 #: src/views/index-dtf/governance/components/proposal-preview/rebalance-preview/rebalance-basket-preview.tsx:71
@@ -11604,7 +11613,7 @@ msgstr "否决阈值"
 msgid "Veto Window"
 msgstr "否决窗口"
 
-#: src/views/portfolio-page/components/active-proposals.tsx:84
+#: src/views/portfolio-page/components/active-proposals.tsx:87
 msgid "Veto?"
 msgstr "否决？"
 
@@ -11745,7 +11754,7 @@ msgstr "查看进度"
 msgid "View proposal"
 msgstr "查看提案"
 
-#: src/views/portfolio-page/components/active-proposals.tsx:171
+#: src/views/portfolio-page/components/active-proposals.tsx:179
 msgid "View proposals from different DTFs you have vote-locked."
 msgstr "查看你已 vote-lock 的不同 DTF 的提案。"
 
@@ -11937,7 +11946,7 @@ msgstr "反对票"
 msgid "Votes for"
 msgstr "赞成票"
 
-#: src/views/portfolio-page/components/active-proposals.tsx:102
+#: src/views/portfolio-page/components/active-proposals.tsx:105
 #: src/views/yield-dtf/governance/components/ProposalList.tsx:125
 msgid "Votes:"
 msgstr "票数:"
@@ -11987,7 +11996,7 @@ msgstr "投票延迟开始"
 msgid "Voting delay is required"
 msgstr "投票延迟为必填项"
 
-#: src/views/explorer/components/governance/index.tsx:156
+#: src/views/explorer/components/governance/index.tsx:162
 msgid "Voting Ends"
 msgstr "投票结束"
 
@@ -12070,7 +12079,7 @@ msgid "Voting quorum is required"
 msgstr "投票法定人数为必填项"
 
 #: src/views/index-dtf/governance/components/proposal-list-item.tsx:49
-#: src/views/portfolio-page/components/active-proposals.tsx:61
+#: src/views/portfolio-page/components/active-proposals.tsx:64
 #: src/views/yield-dtf/governance/components/ProposalList.tsx:102
 msgid "Voting starts in:"
 msgstr "投票开始于："
@@ -12481,13 +12490,13 @@ msgstr "年初至今"
 #: src/views/index-dtf/auctions/views/rebalance/components/rebalance-overview.tsx:60
 #: src/views/index-dtf/auctions/views/rebalance/components/rebalance-overview.tsx:74
 #: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:170
-#: src/views/portfolio-page/components/active-proposals.tsx:97
+#: src/views/portfolio-page/components/active-proposals.tsx:100
 #: src/views/yield-dtf/governance/components/ProposalList.tsx:119
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalDetailStats.tsx:166
 msgid "Yes"
 msgstr "是"
 
-#: src/views/explorer/components/governance/filters.tsx:56
+#: src/views/explorer/components/governance/filters.tsx:57
 #: src/views/index-dtf/overview/components/charts/data-type-selector.tsx:19
 #: src/views/yield-dtf/overview/components/backing/collateral-exposure.tsx:248
 msgid "Yield"
@@ -12774,7 +12783,7 @@ msgstr "你在所有 chains 上可领取的参与奖励总额"
 msgid "Your transaction was submitted. Check its status before taking another action."
 msgstr "你的交易已提交。请先查看其状态，再进行其他操作。"
 
-#: src/views/explorer/components/governance/index.tsx:187
+#: src/views/explorer/components/governance/index.tsx:193
 msgid "Your Vote"
 msgstr "你的投票"
 

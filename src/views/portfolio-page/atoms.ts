@@ -321,7 +321,6 @@ export const portfolioActiveProposalsAtom = atom<ActiveProposalRow[]>((get) => {
       (p): p is ActiveProposalRow =>
         p.voting !== null && ACTIVE_STATES.has(p.voting.state)
     )
-    .sort((a, b) => Number(b.creationTime) - Number(a.creationTime))
 })
 
 export type PendingWithdrawalRow =
