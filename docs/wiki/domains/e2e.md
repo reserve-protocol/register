@@ -1,6 +1,6 @@
 ---
 title: E2E Suite
-updated: 2026-11-04
+updated: 2026-11-13
 type: domain
 sources:
   - e2e/**
@@ -60,6 +60,10 @@ lifecycle depth, and gaps live in `e2e/TEST_MAP.md`. `e2e/CLAUDE.md`
 ## Proposer cancellation
 
 `index-dtf/governance/proposer-cancel.spec.ts` covers the new governor cancel confirmation on desktop and mobile: exact calldata, pending disable, proposer-only access, standard/optimistic cancellation windows, dismissal, rejection and revert. Existing guardian timelock cancellation stays in `flows/governance-permissions.spec.ts`. The settled-state suite does not prove account switching or SPA navigation during mining. Optimistic proposals omit the standard For-votes statistic; use the proposal title’s `data-state` as the shared loaded-state oracle.
+
+## Portfolio proposals
+
+`general/portfolio/proposal-coverage.spec.ts` and `proposal-sort.spec.ts` drive the Active Proposals section from a per-test `/v1/portfolio` override: shared-vault DTF attribution and row navigation, then status-first ordering with the Status/Newest toggle. Their vote-lock rows are delegated-only (`amount: '0'`) because an owned balance on Base fires vault-migration reads no central mock answers (tracked in `docs/wiki/progress.md` § E2E coverage debt). Proposal timestamps are anchored to the test's start, since the page derives state from the browser clock.
 
 ## Transactions and time
 
