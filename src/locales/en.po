@@ -271,7 +271,7 @@ msgstr ""
 #: src/components/ui/multiselect-dropdown.tsx:170
 #: src/views/explorer/components/filters/token-filter.tsx:75
 #: src/views/explorer/components/filters/TransactionTypeFilter.tsx:44
-#: src/views/explorer/components/governance/filters.tsx:46
+#: src/views/explorer/components/governance/filters.tsx:47
 msgid "{0} selected"
 msgstr ""
 
@@ -423,6 +423,10 @@ msgstr ""
 msgid "{impact}% price impact selling ${usdSize} of {0} for {1}"
 msgstr ""
 
+#: src/views/index-dtf/overview/components/zap-mint/submit-zap.tsx:144
+#~ msgid "{inputAmount} {inputSymbol} for {outputAmount} {outputSymbol}"
+#~ msgstr ""
+
 #: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:594
 msgid "{lengthInMinutes, plural, one {# minute} other {# minutes}}"
 msgstr ""
@@ -507,6 +511,10 @@ msgstr ""
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-folio-governance-upgrade.tsx:125
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-vote-lock-upgrade.tsx:187
 msgid "{symbol} governance 1.1.0 available"
+msgstr ""
+
+#: src/views/yield-dtf/staking/components/overview/staking-apy-calculation.tsx:75
+msgid "{symbol} market cap"
 msgstr ""
 
 #: src/components/vote-lock/migration/migration-modal.tsx:260
@@ -619,6 +627,10 @@ msgstr ""
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v5-upgrade.tsx:192
 msgid "<0>Release 5.0.0</0> introduces improved rebalancing with per-token auction size limits and the ability to disable bids for individual tokens. <1/>See the <2>changelog</2> for more details."
 msgstr ""
+
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v5-optimistic-upgrade.tsx:339
+#~ msgid "<0>Reserve Optimistic Governor upgrade</0> introduces a new governor system TBD COPY HERE!. <1/>See the <2>changelog</2> for more details."
+#~ msgstr ""
 
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:325
 msgid "<0>Reserve Optimistic Governor upgrade</0> moves this DTF to optimistic governance, voted with a new vote-lock vault. After it executes, voters lock their tokens in the new vault to keep governing this DTF."
@@ -794,10 +806,24 @@ msgstr ""
 msgid "A one-time fee deducted from the tokens a user receives when they mint the DTF. The platform will keep {platformShare} of revenue from this fee. (Min: 0.15%, Max: 5%)"
 msgstr ""
 
+#: src/views/index-dtf/deploy/steps/revenue/index.tsx:92
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-dtf-revenue.tsx:91
+#~ msgid "A one-time fee deducted from the tokens a user receives when they mint the DTF. The platform will keep 50% of revenue from this fee. (Min: 0.15%, Max: 5%)"
+#~ msgstr ""
+
+#: src/views/index-dtf/overview/components/zap-mint/zap-details.tsx:114
+#~ msgid "A one-time fee deduction from the tokens you are using to create a share of the DTF. This fee is set by the Governors of the DTF."
+#~ msgstr ""
+
 #: src/views/index-dtf/deploy/steps/revenue/index.tsx:74
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-dtf-revenue.tsx:208
 msgid "A percentage-based fee charged by the DTF based on the total value of the tokens held in the contract. The platform will keep {platformShare} of revenue from this fee. (Min: 0.15%, Max: 10%)"
 msgstr ""
+
+#: src/views/index-dtf/deploy/steps/revenue/index.tsx:73
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-dtf-revenue.tsx:75
+#~ msgid "A percentage-based fee charged by the DTF based on the total value of the tokens held in the contract. The platform will keep 50% of revenue from this fee. (Min: 0.15%, Max: 10%)"
+#~ msgstr ""
 
 #: src/views/yield-dtf/deploy/components/TokenForm.tsx:68
 msgid "A re-weightable RToken can have its basket changed in terms of its target units (USD/ETH/BTC/etc…). This flexibility allows for the addition, removal, and update of target units in the basket via governance actions, and could result in drastic shifts in the $USD value of an RToken. RToken holders of re-weightable RTokens have fewer guarantees than holders of non-re-weightable RTokens. This option should only be used if an RToken must be re-weightable in order to accomplish its core goals."
@@ -891,11 +917,11 @@ msgstr ""
 msgid "Action needed"
 msgstr ""
 
-#: src/views/explorer/components/governance/filters.tsx:17
+#: src/views/explorer/components/governance/filters.tsx:18
 msgid "Active"
 msgstr ""
 
-#: src/views/portfolio-page/components/active-proposals.tsx:169
+#: src/views/portfolio-page/components/active-proposals.tsx:177
 msgid "Active Proposals"
 msgstr ""
 
@@ -1117,7 +1143,7 @@ msgstr ""
 
 #: src/components/token-selector-drawer/index.tsx:142
 #: src/views/earn/components/table-filters.tsx:33
-#: src/views/explorer/components/governance/filters.tsx:55
+#: src/views/explorer/components/governance/filters.tsx:56
 #: src/views/explorer/components/tokens/index.tsx:44
 #: src/views/index-dtf/deploy/steps/basket/token-selector.tsx:244
 #: src/views/index-dtf/factsheet/components/chart-overlay.tsx:85
@@ -1161,7 +1187,7 @@ msgstr ""
 msgid "All options"
 msgstr ""
 
-#: src/views/explorer/components/governance/filters.tsx:47
+#: src/views/explorer/components/governance/filters.tsx:48
 msgid "All statuses"
 msgstr ""
 
@@ -1332,6 +1358,14 @@ msgstr ""
 msgid "and agree to the terms therein. ABC Labs, LLC (\"ABC Labs\") created the Website to help facilitate interaction with the Reserve protocol, including the minting and redeeming of DTFs. However, the Website is only one of several ways in which you can interact with the Reserve protocol. ABC Labs has neither created nor deployed any DTF and your ability to interact with specific DTFs via the Website in no way suggests that a DTF is endorsed by ABC Labs. In fact, ABC Labs assumes no liability for your use of the Website and interaction with the Reserve protocol, as covered in the Terms and Conditions."
 msgstr ""
 
+#: src/views/yield-dtf/staking/components/overview/staking-apy-calculation.tsx:85
+msgid "Annual collateral yield"
+msgstr ""
+
+#: src/views/yield-dtf/staking/components/overview/staking-apy-calculation.tsx:96
+msgid "Annual revenue to RSR stakers"
+msgstr ""
+
 #: src/views/earn/hooks/useEarnTableColumns.tsx:189
 msgid "Annualised percentage yield from incentives"
 msgstr ""
@@ -1438,6 +1472,10 @@ msgstr ""
 #: src/views/yield-dtf/issuance/components/zapV2/submit/ZapApprovalButton.tsx:61
 msgid "Approve use of {0}"
 msgstr ""
+
+#: src/views/index-dtf/overview/components/zap-mint/submit-zap.tsx:236
+#~ msgid "Approve use of {inputSymbol}"
+#~ msgstr ""
 
 #: src/views/yield-dtf/staking/components/stake/confirm-stake-button.tsx:57
 msgid "Approve use of RSR"
@@ -1612,6 +1650,10 @@ msgstr ""
 msgid "Auction length must not exceed 1440 minutes (24 hours)"
 msgstr ""
 
+#: src/views/index-dtf/deploy/form-fields.ts:95
+#~ msgid "Auction length must not exceed 45 minutes"
+#~ msgstr ""
+
 #: src/views/index-dtf/governance/views/propose/basket/components/proposal-basket-price-settings.tsx:118
 msgid "Auction Price Volatility"
 msgstr ""
@@ -1750,7 +1792,7 @@ msgstr ""
 #: src/views/home/components/discover-index-dtf/index-dtf-table-placeholder.tsx:18
 #: src/views/top100/components/top100-table-placeholder.tsx:12
 #: src/views/top100/components/top100-table.tsx:78
-#: src/views/yield-dtf/overview/components/backing/backing-overview.tsx:79
+#: src/views/yield-dtf/overview/components/backing/backing-overview.tsx:84
 #: src/views/yield-dtf/overview/components/collateral-pie-chart-wrapper.tsx:86
 msgid "Backing"
 msgstr ""
@@ -1765,7 +1807,7 @@ msgstr ""
 msgid "Backing + Overcollaterization:"
 msgstr ""
 
-#: src/views/yield-dtf/staking/components/overview/staking-stats.tsx:84
+#: src/views/yield-dtf/staking/components/overview/staking-stats.tsx:85
 msgid "Backing + Staked"
 msgstr ""
 
@@ -1888,6 +1930,11 @@ msgstr ""
 msgid "Basket governance settings"
 msgstr ""
 
+#: src/views/index-dtf/deploy/components/deploy-accordion.tsx:109
+#: src/views/index-dtf/deploy/components/deploy-accordion.tsx:110
+#~ msgid "Basket Governance Settings"
+#~ msgstr ""
+
 #: src/views/yield-dtf/settings/components/contracts-info.tsx:19
 msgid "Basket Handler"
 msgstr ""
@@ -1922,6 +1969,10 @@ msgstr ""
 
 #: src/views/yield-dtf/settings/components/backing-info.tsx:20
 msgid "Basket warmup period"
+msgstr ""
+
+#: src/views/yield-dtf/staking/components/overview/staking-apy-calculation.tsx:80
+msgid "Basket yield"
 msgstr ""
 
 #: src/views/yield-dtf/auctions/auctions-sidebar/ConfirmAuction.tsx:90
@@ -2045,7 +2096,7 @@ msgstr ""
 msgid "Bids ({totalBids})"
 msgstr ""
 
-#: src/views/yield-dtf/overview/components/backing/backing-overview.tsx:69
+#: src/views/yield-dtf/overview/components/backing/backing-overview.tsx:74
 msgid "Blended Yield"
 msgstr ""
 
@@ -2211,10 +2262,6 @@ msgstr ""
 msgid "Calculating performance metrics..."
 msgstr ""
 
-#: src/views/yield-dtf/staking/components/overview/stake-apy.tsx:25
-msgid "Calculation:"
-msgstr ""
-
 #: src/views/index-dtf/overview/components/index-campaign-overview.tsx:52
 msgid "Campaign ends:"
 msgstr ""
@@ -2223,6 +2270,10 @@ msgstr ""
 #: src/views/index-dtf/overview/components/ask-reserve-ai.tsx:29
 msgid "Can I sell whenever I want?"
 msgstr ""
+
+#: src/views/earn/views/index-dtf/index.tsx:50
+#~ msgid "Can I unlock my tokens anytime?"
+#~ msgstr ""
 
 #: src/views/earn/views/index-dtf/components/faq.tsx:199
 msgid "Can I unlock my tokens at any time?"
@@ -2267,7 +2318,7 @@ msgstr ""
 msgid "Cancel unstake"
 msgstr ""
 
-#: src/views/explorer/components/governance/filters.tsx:21
+#: src/views/explorer/components/governance/filters.tsx:22
 #: src/views/index-dtf/governance/views/proposal/components/proposal-deadline-alert.tsx:41
 #: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:303
 #: src/views/yield-dtf/governance/views/proposal-detail/components/proposal-timeline/TimelineItem.tsx:258
@@ -2277,7 +2328,7 @@ msgstr ""
 
 #: src/views/index-dtf/governance/views/proposal/components/proposal-proposer-cancel.tsx:99
 msgid "Canceling this proposal is permanent. It will no longer be eligible for voting or execution."
-msgstr ""
+msgstr "Canceling this proposal is permanent. It will no longer be eligible for voting or execution."
 
 #: src/views/index-dtf/issuance/async-mint/components/leg-row.tsx:76
 msgid "Cancelled"
@@ -2603,7 +2654,7 @@ msgstr ""
 msgid "Collateral:"
 msgstr ""
 
-#: src/views/yield-dtf/overview/components/collateral-pie-chart-tooltip.tsx:142
+#: src/views/yield-dtf/overview/components/collateral-pie-chart-tooltip.tsx:137
 msgid "Collateral(s)"
 msgstr ""
 
@@ -2830,7 +2881,7 @@ msgstr ""
 
 #: src/components/stake-drawer/components/submit-stake-button.tsx:160
 #: src/components/stake-drawer/components/submit-unstake-button.tsx:72
-#: src/views/explorer/components/governance/index.tsx:192
+#: src/views/explorer/components/governance/index.tsx:198
 #: src/views/portfolio-page/components/portfolio-connect-button.tsx:20
 msgid "Connect wallet"
 msgstr ""
@@ -2944,6 +2995,10 @@ msgstr ""
 msgid "Copy payload to share with engineering team"
 msgstr ""
 
+#: src/views/index-dtf/overview/components/zap-mint/zap-error-msg.tsx:27
+#~ msgid "Copy swap params to share with engineering team"
+#~ msgstr ""
+
 #: src/components/ui/copy-value.tsx:60
 #: src/components/ui/copy.tsx:23
 #: src/views/index-dtf/governance/components/governance-account-info.tsx:72
@@ -2993,15 +3048,15 @@ msgstr ""
 msgid "CoW routes"
 msgstr ""
 
-#: src/views/index-dtf/auctions/views/rebalance/components/cowbot/use-cowbot-query.ts:85
+#: src/views/index-dtf/auctions/views/rebalance/components/cowbot/use-cowbot-query.ts:89
 msgid "CowBot encountered errors"
 msgstr ""
 
-#: src/views/index-dtf/auctions/views/rebalance/components/cowbot/use-cowbot-query.ts:107
+#: src/views/index-dtf/auctions/views/rebalance/components/cowbot/use-cowbot-query.ts:111
 msgid "CowBot submitted {newOrdersCount} new order"
 msgstr ""
 
-#: src/views/index-dtf/auctions/views/rebalance/components/cowbot/use-cowbot-query.ts:108
+#: src/views/index-dtf/auctions/views/rebalance/components/cowbot/use-cowbot-query.ts:112
 msgid "CowBot submitted {newOrdersCount} new orders"
 msgstr ""
 
@@ -3021,6 +3076,10 @@ msgstr ""
 #: src/views/index-dtf/deploy/steps/confirm-deploy/simple/simple-deploy-button.tsx:152
 msgid "Create {0}"
 msgstr ""
+
+#: src/views/index-dtf/deploy/steps/create-dao/index.tsx:151
+#~ msgid "Create {vlSymbol} DAO"
+#~ msgstr ""
 
 #: src/views/index-dtf/deploy/steps/create-dao/index.tsx:136
 msgid "Create {vlSymbol} vault"
@@ -3046,6 +3105,10 @@ msgstr ""
 #: src/views/yield-dtf/deploy/components/Intro.tsx:17
 msgid "Create a new Yield DTF"
 msgstr ""
+
+#: src/views/index-dtf/deploy/steps/create-dao/index.tsx:152
+#~ msgid "Create DAO"
+#~ msgstr ""
 
 #: src/components/layout/header/components/app-navigation.tsx:89
 #: src/components/layout/header/components/app-navigation.tsx:96
@@ -3089,6 +3152,10 @@ msgstr ""
 msgid "Create Yield DTF"
 msgstr ""
 
+#: src/views/top100/index.tsx:31
+#~ msgid "Create yours"
+#~ msgstr ""
+
 #: src/views/index-dtf/overview/components/fees-stats.tsx:105
 #: src/views/internal/dtf-list/components/dtf-date-chain-filters.tsx:67
 #: src/views/internal/dtf-list/components/dtf-table.tsx:198
@@ -3101,7 +3168,7 @@ msgstr ""
 msgid "Created {stTokenSymbol} DAO"
 msgstr ""
 
-#: src/views/explorer/components/governance/index.tsx:149
+#: src/views/explorer/components/governance/index.tsx:155
 msgid "Created At"
 msgstr ""
 
@@ -3179,9 +3246,9 @@ msgstr ""
 #: src/views/yield-dtf/governance/components/GovernanceOverview.tsx:148
 #: src/views/yield-dtf/governance/views/proposal-detail/components/proposal-summary/revenue-distribution-summary.tsx:154
 #: src/views/yield-dtf/governance/views/proposal/components/ItemPreview.tsx:79
-#: src/views/yield-dtf/staking/components/overview/staking-stats.tsx:68
-#: src/views/yield-dtf/staking/components/overview/staking-stats.tsx:78
-#: src/views/yield-dtf/staking/components/overview/staking-stats.tsx:88
+#: src/views/yield-dtf/staking/components/overview/staking-stats.tsx:69
+#: src/views/yield-dtf/staking/components/overview/staking-stats.tsx:79
+#: src/views/yield-dtf/staking/components/overview/staking-stats.tsx:89
 msgid "Current"
 msgstr ""
 
@@ -3311,7 +3378,7 @@ msgstr ""
 msgid "Date"
 msgstr ""
 
-#: src/views/portfolio-page/components/active-proposals.tsx:121
+#: src/views/portfolio-page/components/active-proposals.tsx:124
 msgid "Date Proposed"
 msgstr ""
 
@@ -3360,7 +3427,7 @@ msgstr ""
 msgid "Default delay"
 msgstr ""
 
-#: src/views/explorer/components/governance/filters.tsx:18
+#: src/views/explorer/components/governance/filters.tsx:19
 #: src/views/index-dtf/governance/views/proposal/components/proposal-deadline-alert.tsx:29
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalAlert.tsx:50
 msgid "Defeated"
@@ -3533,7 +3600,7 @@ msgid "DEPRECATED"
 msgstr ""
 
 #: src/components/governance/proposal-description-form.tsx:64
-#: src/views/explorer/components/governance/index.tsx:132
+#: src/views/explorer/components/governance/index.tsx:138
 #: src/views/index-dtf/governance/views/proposal/components/proposal-detail-content.tsx:15
 #: src/views/index-dtf/governance/views/proposal/components/proposal-detail-content.tsx:41
 #: src/views/portfolio-page/components/transactions.tsx:114
@@ -3768,7 +3835,7 @@ msgstr ""
 msgid "DTF Governance"
 msgstr ""
 
-#: src/views/portfolio-page/components/active-proposals.tsx:36
+#: src/views/portfolio-page/components/active-proposals.tsx:39
 #: src/views/portfolio-page/components/voting-power.tsx:23
 msgid "DTF Governed"
 msgstr ""
@@ -3853,6 +3920,10 @@ msgstr ""
 msgid "Due to how USDT approvals are managed, we need to reset your current allowance to zero before updating it to a new value. This step is necessary for completing your transaction."
 msgstr ""
 
+#: src/views/yield-dtf/issuance/components/warnings/index.tsx:90
+#~ msgid "Due to limited liquidity on Aave related to the Kelp DAO exploit, Zaps will swap for RTokens in DEX pools. Please pay attention to price impact before redeeming."
+#~ msgstr ""
+
 #: src/views/home/components/discover-yield-dtf/yield-dtf-card.tsx:45
 msgid "Due to low usage, the Reserve DApp is discontinuing mints on Arbitrum. You can still redeem your tokens at any time, as they remain fully backed by their underlying assets."
 msgstr ""
@@ -3897,6 +3968,10 @@ msgstr ""
 #: src/components/rtoken-setup/token/BackingForm.tsx:75
 msgid "Duration in Seconds"
 msgstr ""
+
+#: src/views/index-dtf/overview/components/zap-mint/low-liquidity-warning.tsx:42
+#~ msgid "During periods of high volatility it can take multiple attempts to find a route with good pricing."
+#~ msgstr ""
 
 #: src/views/yield-dtf/issuance/components/zapV2/output/ZapOutputUSD.tsx:32
 msgid "Dust is the leftover amount of tokens that cannot be exchanged or included in the RToken mint, due to the zapper route. It will be sent back to your wallet."
@@ -4042,7 +4117,7 @@ msgid "Enabled"
 msgstr ""
 
 #: src/hooks/use-time-remaining.ts:23
-#: src/views/explorer/components/governance/index.tsx:163
+#: src/views/explorer/components/governance/index.tsx:169
 msgid "Ended"
 msgstr ""
 
@@ -4163,6 +4238,10 @@ msgstr ""
 msgid "Enter the contract address of an ERC-20 that can be vote-locked to govern <0/>."
 msgstr ""
 
+#: src/views/index-dtf/deploy/steps/governance/governance-options.tsx:44
+#~ msgid "Enter the contract address of an existing vote-lock DAO to govern <0/>. This DAO must have been created by the Reserve Index Protocol, and the contract must implement <1>IVotes.sol</1>."
+#~ msgstr ""
+
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/sections/propose-revenue-tokens.tsx:214
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/vault-proposal-form.tsx:281
 msgid "Enter the contract address of the token(s) the <0>{vlToken} DAO</0> will accept as revenue. A token must be added to this list before it can be distributed to and claimed by vote-lockers."
@@ -4192,6 +4271,10 @@ msgstr ""
 #: src/views/index-dtf/deploy/steps/governance/form-existing-erc20.tsx:78
 msgid "ERC20 address"
 msgstr ""
+
+#: src/views/index-dtf/deploy/steps/create-dao/index.tsx:157
+#~ msgid "Error creating DAO token."
+#~ msgstr ""
 
 #: src/views/index-dtf/deploy/steps/create-dao/index.tsx:142
 msgid "Error creating the vote-lock vault."
@@ -4246,11 +4329,15 @@ msgstr ""
 msgid "Est. RSR Revenue"
 msgstr ""
 
-#: src/views/yield-dtf/staking/components/overview/staking-stats.tsx:62
+#: src/views/yield-dtf/staking/components/overview/staking-stats.tsx:63
 msgid "Est. Staking APY"
 msgstr ""
 
-#: src/views/yield-dtf/staking/components/overview/stake-apy.tsx:13
+#: src/views/yield-dtf/staking/components/overview/staking-apy-calculation.tsx:107
+msgid "Est. staking yield"
+msgstr ""
+
+#: src/views/yield-dtf/staking/components/overview/stake-apy.tsx:14
 msgid "Est. Staking Yield:"
 msgstr ""
 
@@ -4360,7 +4447,7 @@ msgstr ""
 msgid "Execute proposal"
 msgstr ""
 
-#: src/views/explorer/components/governance/filters.tsx:19
+#: src/views/explorer/components/governance/filters.tsx:20
 #: src/views/index-dtf/governance/components/proposal-list-item.tsx:101
 #: src/views/index-dtf/governance/views/proposal/components/proposal-deadline-alert.tsx:23
 #: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:302
@@ -4453,7 +4540,7 @@ msgstr ""
 msgid "Expected volatility"
 msgstr ""
 
-#: src/views/explorer/components/governance/filters.tsx:24
+#: src/views/explorer/components/governance/filters.tsx:25
 #: src/views/index-dtf/governance/views/proposal/components/proposal-deadline-alert.tsx:35
 #: src/views/index-dtf/issuance/async-mint/components/leg-row.tsx:74
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalAlert.tsx:56
@@ -4507,6 +4594,14 @@ msgstr ""
 #: src/views/yield-dtf/governance/views/proposal-detail/components/proposal-summary/revenue-distribution-summary.tsx:39
 msgid "External"
 msgstr ""
+
+#: src/views/index-dtf/overview/components/landing-mint/index.tsx:75
+#~ msgid "External markets"
+#~ msgstr ""
+
+#: src/views/index-dtf/overview/components/landing-mint/index.tsx:73
+#~ msgid "External trading venues"
+#~ msgstr ""
 
 #: src/components/rtoken-setup/token/BackingForm.tsx:89
 msgid "Extra collateral to keep"
@@ -4572,6 +4667,10 @@ msgstr ""
 #: src/views/explorer/components/tokens/index.tsx:194
 msgid "Featured RTokens"
 msgstr ""
+
+#: src/views/index-dtf/overview/components/zap-mint/zap-details.tsx:91
+#~ msgid "Fee"
+#~ msgstr ""
 
 #: src/views/yield-dtf/overview/components/backing/underlying-fees.tsx:164
 msgid "Fee data for this period is not available right now."
@@ -4782,6 +4881,14 @@ msgstr ""
 #: src/views/earn/views/index-dtf/components/faq.tsx:63
 msgid "For vlRSR, rewards are converted to RSR and added to the vault’s backing, increasing how much RSR each share can redeem. Other vaults may pay separate reward tokens that you claim manually."
 msgstr ""
+
+#: src/views/index-dtf/overview/components/zap-mint/zap-settings.tsx:62
+#~ msgid "Force DTF mint?"
+#~ msgstr ""
+
+#: src/views/index-dtf/overview/components/zap-mint/zap-settings.tsx:69
+#~ msgid "Force minting DTF"
+#~ msgstr ""
 
 #: src/views/yield-dtf/issuance/components/zapV2/settings/ZapSettingsOnlyMint.tsx:14
 #: src/views/yield-dtf/issuance/components/zapV2/settings/ZapSettingsOnlyMint.tsx:18
@@ -5005,6 +5112,10 @@ msgstr ""
 msgid "Governance upgrade to {VOTE_LOCK_UPGRADE_TO}"
 msgstr ""
 
+#: src/views/index-dtf/governance/views/propose/components/proposal-type-selector.tsx:114
+#~ msgid "Governance with an execution delay greater than 1 week unstaking delay"
+#~ msgstr ""
+
 #: src/views/earn/views/index-dtf/components/vote-lock-positions.tsx:207
 msgid "Governed DTFs"
 msgstr ""
@@ -5072,6 +5183,10 @@ msgstr ""
 msgid "Having issues minting?"
 msgstr ""
 
+#: src/views/index-dtf/overview/components/zap-mint/zap-error-msg.tsx:44
+#~ msgid "Having issues minting? (Zaps are in beta)"
+#~ msgstr ""
+
 #: src/views/yield-dtf/issuance/components/zapV2/ZapToggleBottom.tsx:20
 msgid "Having issues minting? Zaps are in beta"
 msgstr ""
@@ -5107,6 +5222,10 @@ msgstr ""
 #: src/views/index-dtf/governance/views/propose/basket/components/proposal-liquidity-checker.tsx:255
 msgid "High price impact"
 msgstr ""
+
+#: src/views/index-dtf/overview/components/zap-mint/zap-warning-checkbox.tsx:34
+#~ msgid "High price impact: {0}"
+#~ msgstr ""
 
 #: src/views/home/components/highlighted-dtfs/chain-tabs.tsx:29
 msgid "Highlighted card chain"
@@ -5211,6 +5330,10 @@ msgstr ""
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-auction-settings.tsx:53
 msgid "How long dutch auctions will run when swapping tokens out of the basket. Shorter auction lengths benefit from less market volatility affecting the price during the auction. Longer auctions benefit from having more time for discovering the best price when swapping two tokens."
 msgstr ""
+
+#: src/views/index-dtf/deploy/steps/basket-changes/basket-changes-form.tsx:83
+#~ msgid "How long governors have to cast their votes on a basket change after the voting delay."
+#~ msgstr ""
 
 #: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/components/basket-settings-proposal-section.tsx:53
 #: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/components/sections/propose-basket-governance.tsx:42
@@ -5364,7 +5487,7 @@ msgstr ""
 msgid "Increase"
 msgstr ""
 
-#: src/views/explorer/components/governance/filters.tsx:57
+#: src/views/explorer/components/governance/filters.tsx:58
 msgid "Index"
 msgstr ""
 
@@ -5675,7 +5798,7 @@ msgstr ""
 
 #: src/views/index-dtf/governance/views/proposal/components/proposal-proposer-cancel.tsx:132
 msgid "Keep proposal"
-msgstr ""
+msgstr "Keep proposal"
 
 #: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:99
 msgid "Known supported wallets"
@@ -5727,6 +5850,10 @@ msgstr ""
 #: src/views/index-dtf/auctions/views/rebalance/components/community-launch-auctions-button.tsx:237
 #: src/views/index-dtf/auctions/views/rebalance/components/launch-auctions-button.tsx:288
 msgid "Launching..."
+msgstr ""
+
+#: src/views/yield-dtf/staking/components/overview/staking-apy-calculation.tsx:125
+msgid "Learn more"
 msgstr ""
 
 #: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:338
@@ -6079,7 +6206,7 @@ msgstr ""
 msgid "Manual Redeem"
 msgstr ""
 
-#: src/views/yield-dtf/staking/components/overview/stake-apy.tsx:20
+#: src/views/yield-dtf/staking/components/overview/staking-apy-calculation.tsx:68
 msgid "Manually estimated APY calculated from basket averaged yield."
 msgstr ""
 
@@ -6241,6 +6368,10 @@ msgstr ""
 msgid "Meet {ticker}"
 msgstr ""
 
+#: src/views/index-dtf/overview/stocks/video-chapters.ts:41
+#~ msgid "Meet $BUILDOUT"
+#~ msgstr ""
+
 #: src/components/transactions/table/index.tsx:49
 #: src/views/explorer/components/filters/TransactionTypeFilter.tsx:14
 #: src/views/explorer/components/transactions/useTransactionColumns.tsx:33
@@ -6276,6 +6407,10 @@ msgstr ""
 #: src/views/portfolio-page/components/vote-locked-positions.tsx:165
 msgid "Migration needed"
 msgstr ""
+
+#: src/views/index-dtf/overview/components/zap-mint/zap-details.tsx:132
+#~ msgid "Min Amount Out"
+#~ msgstr ""
 
 #: src/views/yield-dtf/issuance/components/zapV2/overview/ZapDetails.tsx:48
 msgid "Min. amount out"
@@ -6433,6 +6568,10 @@ msgstr ""
 #: src/views/index-dtf/settings/components/index-settings-fees.tsx:243
 msgid "Minting Fee"
 msgstr ""
+
+#: src/views/yield-dtf/issuance/components/warnings/index.tsx:57
+#~ msgid "Minting has been temporarily paused due to an abundance of caution related to the Kelp DAO exploit."
+#~ msgstr ""
 
 #: src/views/yield-dtf/issuance/components/warnings/index.tsx:82
 msgid "Minting is paused for this DTF, so Zaps will buy RTokens in DEX pools instead of minting. Please pay attention to price impact before confirming."
@@ -6702,6 +6841,10 @@ msgstr ""
 msgid "New voting quorum:"
 msgstr ""
 
+#: src/components/proposal-sort-menu.tsx:21
+msgid "Newest"
+msgstr ""
+
 #: src/views/index-dtf/auctions/views/rebalance/components/rebalance-progress.tsx:23
 msgid "Next auction target"
 msgstr ""
@@ -6724,7 +6867,7 @@ msgstr ""
 
 #: src/views/index-dtf/auctions/views/rebalance/components/rebalance-overview.tsx:74
 #: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:204
-#: src/views/portfolio-page/components/active-proposals.tsx:97
+#: src/views/portfolio-page/components/active-proposals.tsx:100
 #: src/views/yield-dtf/governance/components/ProposalList.tsx:119
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalDetailStats.tsx:166
 msgid "No"
@@ -6941,6 +7084,10 @@ msgstr ""
 msgid "No yield opportunities found"
 msgstr ""
 
+#: src/views/earn/views/index-dtf/index.tsx:51
+#~ msgid "No. Locked RSR follows the DTF’s timelock rules, which are set when the DTF is created. You should always check the lock duration before committing, as early unlocks are not allowed. This prevents short-term manipulation and keeps governance aligned with long-term holders."
+#~ msgstr ""
+
 #: src/views/earn/views/yield-dtf/index.tsx:23
 msgid "No. Stakers earn rewards as long as their RSR is actively staked, even if they don’t vote on proposals. Voting is optional, but participating helps shape how the Yield DTF is governed."
 msgstr ""
@@ -6953,9 +7100,18 @@ msgstr ""
 msgid "No. When you unstake, your RSR enters an unstaking cooldown period defined by the Yield DTF’s parameters. During this time, the tokens remain locked and cannot be withdrawn. Once the cooldown ends, you can fully withdraw your RSR."
 msgstr ""
 
+#: src/views/earn/views/index-dtf/index.tsx:47
+#~ msgid "No. You earn rewards as long as your ERC2O tokens are vote-locked, even if you don’t participate in every proposal. Voting is encouraged, but it’s not required to receive your share of rewards."
+#~ msgstr ""
+
 #: src/views/earn/views/index-dtf/components/faq.tsx:195
 msgid "No. You earn your share of rewards while your tokens are vote-locked, even if you don’t participate in every proposal. Voting is encouraged because vote lockers are responsible for the DTFs they govern."
 msgstr ""
+
+#: src/views/index-dtf/deploy/components/deploy-accordion.tsx:116
+#: src/views/index-dtf/deploy/components/deploy-accordion.tsx:117
+#~ msgid "Non-Basket Governance Settings"
+#~ msgstr ""
 
 #: src/views/earn/components/position-balance.tsx:81
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ContractProposalDetails.tsx:103
@@ -7028,7 +7184,7 @@ msgstr ""
 msgid "Not ready to set up governance?"
 msgstr ""
 
-#: src/views/explorer/components/governance/index.tsx:195
+#: src/views/explorer/components/governance/index.tsx:201
 msgid "Not voted"
 msgstr ""
 
@@ -7390,7 +7546,7 @@ msgstr ""
 msgid "Peg:"
 msgstr ""
 
-#: src/views/explorer/components/governance/filters.tsx:16
+#: src/views/explorer/components/governance/filters.tsx:17
 #: src/views/index-dtf/issuance/async-mint/components/leg-row.tsx:80
 #: src/views/yield-dtf/issuance/components/issue/CollateralApprovals.tsx:109
 msgid "Pending"
@@ -7557,7 +7713,7 @@ msgstr ""
 msgid "Platform (Fixed)"
 msgstr ""
 
-#: src/views/yield-dtf/overview/components/collateral-pie-chart-tooltip.tsx:179
+#: src/views/yield-dtf/overview/components/collateral-pie-chart-tooltip.tsx:174
 msgid "Platform exposure"
 msgstr ""
 
@@ -7660,6 +7816,10 @@ msgstr ""
 #: src/views/yield-dtf/issuance/components/zapV2/context/ZapContext.tsx:544
 msgid "Please try again. If the problem persists, please <0>contact support.</0>"
 msgstr ""
+
+#: src/views/index-dtf/overview/components/zap-mint/zap-healthcheck.tsx:29
+#~ msgid "Please try refreshing, or switch to manual minting."
+#~ msgstr ""
 
 #: src/views/index-dtf/deploy/steps/basket/basket-csv-setup.tsx:57
 #: src/views/index-dtf/governance/views/propose/basket/components/proposal-basket-setup/basket-csv-setup.tsx:143
@@ -8006,7 +8166,7 @@ msgstr ""
 msgid "proposals"
 msgstr ""
 
-#: src/views/explorer/components/governance/index.tsx:207
+#: src/views/explorer/components/governance/index.tsx:213
 #: src/views/index-dtf/governance/components/governance-stats.tsx:78
 #: src/views/yield-dtf/governance/components/GovernanceOverview.tsx:124
 msgid "Proposals"
@@ -8134,7 +8294,7 @@ msgstr ""
 msgid "Queue proposal"
 msgstr ""
 
-#: src/views/explorer/components/governance/filters.tsx:23
+#: src/views/explorer/components/governance/filters.tsx:24
 #: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:281
 #: src/views/yield-dtf/governance/views/proposal-detail/components/proposal-timeline/TimelineItem.tsx:241
 msgid "Queued"
@@ -8150,7 +8310,7 @@ msgstr ""
 msgid "Quorum (%)"
 msgstr ""
 
-#: src/views/explorer/components/governance/filters.tsx:20
+#: src/views/explorer/components/governance/filters.tsx:21
 #: src/views/index-dtf/governance/components/proposal-list-item.tsx:105
 #: src/views/index-dtf/governance/views/proposal/components/proposal-deadline-alert.tsx:47
 #: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:216
@@ -8159,7 +8319,7 @@ msgstr ""
 msgid "Quorum not reached"
 msgstr ""
 
-#: src/views/portfolio-page/components/active-proposals.tsx:84
+#: src/views/portfolio-page/components/active-proposals.tsx:87
 msgid "Quorum?"
 msgstr ""
 
@@ -8514,6 +8674,10 @@ msgstr ""
 msgid "Reducing potential dust"
 msgstr ""
 
+#: src/views/index-dtf/overview/components/zap-mint/refresh-quote.tsx:41
+#~ msgid "Refresh"
+#~ msgstr ""
+
 #: src/views/index-dtf/deploy/steps/confirm-deploy/simple/index.tsx:58
 msgid "Refresh quote"
 msgstr ""
@@ -8865,6 +9029,10 @@ msgstr ""
 msgid "Revenue share"
 msgstr ""
 
+#: src/views/yield-dtf/staking/components/overview/staking-apy-calculation.tsx:91
+msgid "Revenue share to RSR stakers"
+msgstr ""
+
 #: src/views/yield-dtf/governance/views/proposal/components/ProposedRevenueSplitPreview.tsx:109
 msgid "Revenue split"
 msgstr ""
@@ -9091,12 +9259,24 @@ msgstr ""
 msgid "RSR available to withdraw"
 msgstr ""
 
+#: src/views/yield-dtf/overview/components/backing/backing-overview.tsx:107
+msgid "RSR held by the staking contract (staked and in unstaking cooldown) as a % of {symbol} market cap. This RSR can be seized to cover a collateral default."
+msgstr ""
+
 #: src/views/yield-dtf/staking/components/withdraw/cooldown-unstake.tsx:25
 msgid "RSR in {delay} Cooldown"
 msgstr ""
 
+#: src/views/yield-dtf/overview/components/backing/backing-overview.tsx:112
+msgid "RSR staked"
+msgstr ""
+
 #: src/views/yield-dtf/overview/components/charts/staking-chart.tsx:98
 msgid "RSR Staked"
+msgstr ""
+
+#: src/views/yield-dtf/staking/components/overview/staking-apy-calculation.tsx:102
+msgid "RSR staked (USD)"
 msgstr ""
 
 #: src/components/stake-drawer/components/submit-stake-button.tsx:147
@@ -9110,6 +9290,10 @@ msgstr ""
 
 #: src/views/yield-dtf/settings/components/contracts-info.tsx:21
 msgid "RSR Trader"
+msgstr ""
+
+#: src/views/yield-dtf/overview/components/backing/backing-overview.tsx:116
+msgid "RSR unstaking & pending rewards"
 msgstr ""
 
 #: src/views/yield-dtf/settings/components/basic-info.tsx:23
@@ -9334,6 +9518,10 @@ msgstr ""
 msgid "Sell"
 msgstr ""
 
+#: src/views/index-dtf/overview/components/zap-mint/sell/index.tsx:150
+#~ msgid "Sell {0}"
+#~ msgstr ""
+
 #. placeholder {0}: sell.token.symbol
 #: src/views/index-dtf/governance/components/proposal-preview/rebalance-preview/legacy-basket-proposal-preview.tsx:199
 #: src/views/index-dtf/governance/views/propose/basket/components/legacy-proposal-auction-price-ranges.tsx:196
@@ -9484,7 +9672,7 @@ msgstr ""
 msgid "Shared externally"
 msgstr ""
 
-#: src/views/explorer/components/governance/index.tsx:81
+#: src/views/explorer/components/governance/index.tsx:82
 msgid "Shared governance"
 msgstr ""
 
@@ -9741,6 +9929,14 @@ msgstr ""
 msgid "Something went wrong. Please try again."
 msgstr ""
 
+#: src/views/index-dtf/overview/components/zap-mint/zap-error-msg.tsx:19
+#~ msgid "Sorry, the market is volatile right now. Please increase slippage in your settings."
+#~ msgstr ""
+
+#: src/views/index-dtf/overview/components/zap-mint/zap-error-msg.tsx:13
+#~ msgid "Sorry, we’re having a hard time finding a route that makes sense for you. Please try again in a bit."
+#~ msgstr ""
+
 #. placeholder {0}: rToken?.symbol
 #. placeholder {1}: tokenIn.symbol
 #: src/views/yield-dtf/issuance/components/zapV2/context/ZapContext.tsx:316
@@ -9751,6 +9947,10 @@ msgstr ""
 #. placeholder {1}: tokenIn.symbol
 #: src/views/yield-dtf/issuance/components/zapV2/context/ZapContext.tsx:317
 msgid "Sorry, your request exceeds the Global Max Redeem limit. The Global Max Redeem is set at {maxFormatted} {0}. You can only zap a maximum of {maxZap} {1}."
+msgstr ""
+
+#: src/views/explorer/components/governance/filters.tsx:94
+msgid "Sort by"
 msgstr ""
 
 #: src/views/portfolio-page/components/pending-withdrawals.tsx:332
@@ -9817,7 +10017,7 @@ msgstr ""
 msgid "Stake + Unstake"
 msgstr ""
 
-#: src/views/yield-dtf/staking/components/overview/staking-stats.tsx:50
+#: src/views/yield-dtf/staking/components/overview/staking-stats.tsx:51
 msgid "Stake pool"
 msgstr ""
 
@@ -9857,13 +10057,13 @@ msgstr ""
 #: src/views/explorer/components/tokens/index.tsx:160
 #: src/views/portfolio-page/components/portfolio-breakdown.tsx:38
 #: src/views/portfolio-page/components/portfolio-chart.tsx:75
-#: src/views/yield-dtf/overview/components/backing/backing-overview.tsx:94
+#: src/views/yield-dtf/overview/components/backing/backing-overview.tsx:99
 #: src/views/yield-dtf/overview/components/collateral-pie-chart-wrapper.tsx:106
 #: src/views/yield-dtf/staking/components/overview/staking-metrics.tsx:28
 msgid "Staked RSR"
 msgstr ""
 
-#: src/views/yield-dtf/overview/components/collateral-pie-chart-tooltip.tsx:198
+#: src/views/yield-dtf/overview/components/collateral-pie-chart-tooltip.tsx:193
 msgid "Staked RSR Overcollateralisation"
 msgstr ""
 
@@ -9960,10 +10160,11 @@ msgstr ""
 msgid "Starts the next {0} reward period once the current one ends. Disabled until then."
 msgstr ""
 
-#: src/views/explorer/components/governance/filters.tsx:41
-#: src/views/explorer/components/governance/index.tsx:174
+#: src/components/proposal-sort-menu.tsx:20
+#: src/views/explorer/components/governance/filters.tsx:42
+#: src/views/explorer/components/governance/index.tsx:180
 #: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:377
-#: src/views/portfolio-page/components/active-proposals.tsx:136
+#: src/views/portfolio-page/components/active-proposals.tsx:139
 #: src/views/yield-dtf/governance/views/proposal-detail/components/proposal-timeline/index.tsx:16
 msgid "Status"
 msgstr ""
@@ -9988,6 +10189,14 @@ msgstr ""
 #: src/components/vote-lock/migration/migration-modal.tsx:198
 msgid "Step {0} of {1}"
 msgstr ""
+
+#: src/views/index-dtf/overview/components/zap-mint/submit-zap.tsx:235
+#~ msgid "Step 1. Approve use of {inputSymbol}"
+#~ msgstr ""
+
+#: src/views/index-dtf/overview/components/zap-mint/submit-zap.tsx:232
+#~ msgid "Step 2. {buttonLabel}"
+#~ msgstr ""
 
 #. placeholder {0}: pending.map(({ symbol }) => symbol).join(', ')
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-retire-vote-lock.tsx:122
@@ -10055,7 +10264,7 @@ msgstr ""
 msgid "Submitting..."
 msgstr ""
 
-#: src/views/explorer/components/governance/filters.tsx:22
+#: src/views/explorer/components/governance/filters.tsx:23
 #: src/views/index-dtf/governance/views/proposal/components/proposal-deadline-alert.tsx:53
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalAlert.tsx:74
 msgid "Succeeded"
@@ -10066,6 +10275,10 @@ msgstr ""
 #: src/views/yield-dtf/auctions/auctions-sidebar/SettleableAuctions.tsx:82
 msgid "Success!"
 msgstr ""
+
+#: src/views/index-dtf/deploy/steps/create-dao/index.tsx:125
+#~ msgid "suffix"
+#~ msgstr ""
 
 #: src/views/home/components/protocol-metrics.tsx:58
 msgid "Sum of all assets held in Reserve smart contracts."
@@ -10107,6 +10320,14 @@ msgstr ""
 msgid "Swap"
 msgstr ""
 
+#: src/views/index-dtf/overview/components/zap-mint/submit-zap.tsx:143
+#~ msgid "Swapped"
+#~ msgstr ""
+
+#: src/views/index-dtf/overview/components/zap-mint/submit-zap.tsx:141
+#~ msgid "Swapped {inputSymbol} for {outputSymbol}"
+#~ msgstr ""
+
 #: src/views/index-dtf/issuance/async-mint/steps/success.tsx:255
 msgid "Swaps leave a small residue in your wallet."
 msgstr ""
@@ -10130,6 +10351,10 @@ msgstr ""
 #: src/views/yield-dtf/issuance/components/zapV2/ZapToggleBottom.tsx:34
 msgid "Switch to manual minting"
 msgstr ""
+
+#: src/views/index-dtf/overview/components/zap-mint/zap-error-msg.tsx:57
+#~ msgid "switch to manual redeeming"
+#~ msgstr ""
 
 #: src/views/index-dtf/issuance/async-mint/components/switch-to-manual-link.tsx:37
 msgid "Switch to manual redeeming"
@@ -10294,6 +10519,10 @@ msgstr ""
 msgid "The guardian has the ability to reject proposals even if they pass. Should be assigned to a multisig or EOA that can be trusted to act as a backstop. It is acceptable if it is relatively slow to act. Only one guardian address should be defined."
 msgstr ""
 
+#: src/views/index-dtf/overview/components/zap-mint/zap-details.tsx:125
+#~ msgid "The impact your trade has on the market price."
+#~ msgstr ""
+
 #: src/views/index-dtf/overview/components/index-disclousure.tsx:373
 msgid "The information provided on the Website comes from on-chain sources. Past performance is not indicative of future results. Although index DTFs are intended to track indexes, their ability to successfully track indexes are dependent on the governance structure of the DTF and the governance’s ability to make appropriate trades. There is no guarantee that such trades will be successful or will track its corresponding index exactly. There are many risks associated with digital assets, including but not limited to security risk, counterparty risk, volatility risk, conflicts of interest, and many more. DTFs are no exception. By using the Website, you agree that your interaction with any DTFs is solely at your own risk and the Website and DTFs come as is, without any warranty or condition of any kind."
 msgstr ""
@@ -10329,6 +10558,10 @@ msgstr ""
 #: src/components/rtoken-setup/governance/GovernanceParameters.tsx:90
 msgid "The minimum amount of time after a proposal passes before it can be executed."
 msgstr ""
+
+#: src/views/index-dtf/overview/components/zap-mint/zap-details.tsx:140
+#~ msgid "The minimum amount of tokens you will receive."
+#~ msgstr ""
 
 #: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/components/basket-settings-proposal-section.tsx:65
 #: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/components/sections/propose-basket-governance.tsx:54
@@ -10383,6 +10616,18 @@ msgstr ""
 #: src/views/index-dtf/overview/components/video-library/chapters.ts:75
 msgid "The platform and team behind DTFs."
 msgstr ""
+
+#: src/views/index-dtf/overview/stocks/video-chapters.ts:53
+#~ msgid "The platform behind DTFs, and the team."
+#~ msgstr ""
+
+#: src/views/index-dtf/overview/stocks/video-chapters.ts:46
+#~ msgid "The power companies behind the AI buildout."
+#~ msgstr ""
+
+#: src/views/index-dtf/overview/components/zap-mint/zap-warning-checkbox.tsx:39
+#~ msgid "The price impact for this trade is very high. You will get significantly less value than expected."
+#~ msgstr ""
 
 #: src/views/yield-dtf/issuance/components/zapV2/context/ZapContext.tsx:592
 msgid "The price impact of this transaction is too high. Please consider using a smaller amount or a different token."
@@ -10442,6 +10687,10 @@ msgstr ""
 msgid "The Reserve Robotics DTF (ROBOTS) is a weighted basket of public, US-listed robotics and automation companies at the center of the AI buildout. AI is moving off the screen and into the physical world: the same breakthroughs that taught software to reason are now teaching machines to perceive, decide, and act, and to take on physical labor. The ROBOTS DTF gives you direct exposure to the companies building that transition: the humanoids, surgical robots, factory and warehouse automation, lidar, machine vision, and the chips that let machines navigate the real world. The basket is composed of companies with significant and growing exposure to robotics and automation demand, weighted by market capitalization with a 20% cap and a $2B minimum market cap, rebalanced quarterly. The ROBOTS DTF bundles Ondo Global Markets tokenized stocks, each of which represents an actual share held in a regulated US brokerage account."
 msgstr ""
 
+#: src/views/yield-dtf/staking/components/overview/staking-apy-calculation.tsx:115
+msgid "The RSR stakers' share includes the fintech revenue redirected to eusdRSR stakers under the eUSD Revenue Share Programme."
+msgstr ""
+
 #: src/views/index-dtf/deploy/steps/governance-settings/optimistic-form.tsx:107
 msgid "The share of governance power that must veto an optimistic proposal to send it to a full vote."
 msgstr ""
@@ -10474,6 +10723,10 @@ msgstr ""
 msgid "The sum of the tokens distribution must be 100% ({displayDifference}% missing)."
 msgstr ""
 
+#: src/views/index-dtf/deploy/steps/basket-changes/basket-changes-form.tsx:78
+#~ msgid "The time between a basket change proposal being submitted and when governors can cast their votes."
+#~ msgstr ""
+
 #: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/components/basket-settings-proposal-section.tsx:40
 #: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/components/sections/propose-basket-governance.tsx:29
 msgid "The time between a basket proposal being submitted and when governors can cast their votes."
@@ -10491,6 +10744,10 @@ msgstr ""
 #: src/views/index-dtf/deploy/steps/governance-settings/optimistic-form.tsx:87
 msgid "The time between an optimistic proposal being submitted and when holders can start vetoing it."
 msgstr ""
+
+#: src/views/index-dtf/deploy/steps/basket-changes/basket-changes-form.tsx:96
+#~ msgid "The time period between when a basket change proposal is considered successful and when the auction can be formally approved."
+#~ msgstr ""
 
 #: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/components/basket-settings-proposal-section.tsx:100
 #: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/components/sections/propose-basket-governance.tsx:89
@@ -10575,6 +10832,10 @@ msgstr ""
 msgid "This DTF can only be sold"
 msgstr ""
 
+#: src/views/index-dtf/overview/components/zap-mint/low-liquidity-warning.tsx:37
+#~ msgid "This DTF contains assets with relatively low DEX liquidity"
+#~ msgstr ""
+
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/sections/propose-dao-governance.tsx:110
 msgid "This DTF does not have DAO governance configured."
 msgstr ""
@@ -10639,6 +10900,10 @@ msgstr ""
 #: src/components/rtoken-setup/basket/PrimaryBasket.tsx:57
 msgid "This is the target collateral basket at the onset of an RToken that defines which collateral needs to be deposited for issuances. The prime basket is directly set by governance, and only changes through successful governance proposals."
 msgstr ""
+
+#: src/views/index-dtf/overview/components/zap-mint/zap-settings.tsx:63
+#~ msgid "This is useful if you want to mint the DTF without trading."
+#~ msgstr ""
 
 #: src/views/yield-dtf/overview/components/backing/risks.tsx:125
 msgid "This list is not intended to be conclusive. <0>You can read more about risk in the Reserve docs.</0>"
@@ -10748,7 +11013,7 @@ msgstr ""
 msgid "Timelock Address"
 msgstr ""
 
-#: src/views/portfolio-page/components/active-proposals.tsx:50
+#: src/views/portfolio-page/components/active-proposals.tsx:53
 msgid "Title"
 msgstr ""
 
@@ -10778,7 +11043,7 @@ msgstr ""
 
 #: src/components/index-basket-setup/basket-table.tsx:62
 #: src/components/tables/ListedTokensTable.tsx:28
-#: src/views/explorer/components/governance/index.tsx:114
+#: src/views/explorer/components/governance/index.tsx:120
 #: src/views/explorer/components/tokens/index.tsx:142
 #: src/views/explorer/components/transactions/useTransactionColumns.tsx:51
 #: src/views/index-dtf/governance/components/proposal-preview/rebalance-preview/rebalance-basket-preview.tsx:71
@@ -10828,7 +11093,7 @@ msgstr ""
 msgid "Token distribution must be positive"
 msgstr ""
 
-#: src/views/yield-dtf/overview/components/collateral-pie-chart-tooltip.tsx:163
+#: src/views/yield-dtf/overview/components/collateral-pie-chart-tooltip.tsx:158
 msgid "Token exposure"
 msgstr ""
 
@@ -10935,6 +11200,7 @@ msgid "Top voting addresses"
 msgstr ""
 
 #: src/views/portfolio-page/components/portfolio-chart.tsx:125
+#: src/views/yield-dtf/overview/components/backing/backing-overview.tsx:120
 #: src/views/yield-dtf/overview/components/backing/underlying-fees/fees-table.tsx:225
 msgid "Total"
 msgstr ""
@@ -10968,7 +11234,7 @@ msgstr ""
 msgid "Total price impact"
 msgstr ""
 
-#: src/views/yield-dtf/staking/components/overview/staking-stats.tsx:55
+#: src/views/yield-dtf/staking/components/overview/staking-stats.tsx:56
 msgid "Total RSR staked"
 msgstr ""
 
@@ -11089,6 +11355,10 @@ msgstr ""
 #: src/components/ondo-badge.tsx:167
 msgid "Trading halted"
 msgstr ""
+
+#: src/views/yield-dtf/staking/components/trading-paused-banner.tsx:21
+#~ msgid "Trading has been temporarily paused due to an abundance of caution related to the Kelp DAO exploit, the protocol keeps staked RSR available as a safety measure in case recollateralization is needed — this means withdrawals are blocked until trading resumes."
+#~ msgstr ""
 
 #: src/views/yield-dtf/staking/components/trading-paused-banner.tsx:21
 msgid "Trading is paused for this DTF. While it is paused, the protocol keeps staked RSR available as a safety measure in case recollateralization is needed — this means withdrawals are blocked until trading resumes."
@@ -11507,7 +11777,7 @@ msgstr ""
 
 #: src/views/index-dtf/deploy/steps/governance-settings/optimistic-form.tsx:146
 #: src/views/yield-dtf/settings/components/other-info.tsx:23
-#: src/views/yield-dtf/staking/components/overview/staking-stats.tsx:74
+#: src/views/yield-dtf/staking/components/overview/staking-stats.tsx:75
 msgid "Unstaking Delay"
 msgstr ""
 
@@ -11624,6 +11894,14 @@ msgstr ""
 #: src/views/index-dtf/overview/components/index-disclousure.tsx:61
 msgid "Updated whitepaper documentation"
 msgstr ""
+
+#: src/views/index-dtf/deploy/steps/basket-changes/index.tsx:8
+#~ msgid "Updates to the basket of an Index DTF can be configured to happen at a different speed from all other governance, in case you want to move quickly for basket changes, or take extra time for basket changes. You’ll set these same parameters for all other governance in the next section."
+#~ msgstr ""
+
+#: src/views/index-dtf/deploy/steps/other-changes/index.tsx:8
+#~ msgid "Updates to the fees, roles, voting parameters, and anything other than basket changes can be configured to happen at a different speed from basket changes, in case you want to apply more care for fully-general governance, or allow parameter changes more easily than basket changes."
+#~ msgstr ""
 
 #. placeholder {0}: currentCall.label
 #: src/components/vote-lock/components/submit-delegate-button.tsx:178
@@ -11872,7 +12150,7 @@ msgstr ""
 msgid "Veto Window"
 msgstr ""
 
-#: src/views/portfolio-page/components/active-proposals.tsx:84
+#: src/views/portfolio-page/components/active-proposals.tsx:87
 msgid "Veto?"
 msgstr ""
 
@@ -12013,7 +12291,7 @@ msgstr ""
 msgid "View proposal"
 msgstr ""
 
-#: src/views/portfolio-page/components/active-proposals.tsx:171
+#: src/views/portfolio-page/components/active-proposals.tsx:179
 msgid "View proposals from different DTFs you have vote-locked."
 msgstr ""
 
@@ -12102,9 +12380,17 @@ msgstr ""
 msgid "Vote locked"
 msgstr ""
 
+#: src/views/earn/views/index-dtf/index.tsx:34
+#~ msgid "Vote lockers earn rewards from the DTF’s fees. A portion of the TVL fees and mint fees collected by the Index DTF are distributed to vote-locked token holders. The more tokens locked, the larger the share of rewards an individual vote-locked token holder will receive."
+#~ msgstr ""
+
 #: src/views/earn/views/index-dtf/components/faq.tsx:33
 msgid "Vote lockers govern the key parameters of an Index DTF, including which assets are in the basket, their weights, fees, and contract upgrades."
 msgstr ""
+
+#: src/views/earn/views/index-dtf/index.tsx:19
+#~ msgid "Vote locking is the process of locking an ERC20 token for a set period to gain governance power of an Index DTF and earn rewards. While locked, the RSR cannot be transferred or sold until the lock period ends."
+#~ msgstr ""
 
 #: src/views/index-dtf/governance/views/proposal/components/proposal-vote-button.tsx:59
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalVote.tsx:177
@@ -12210,7 +12496,7 @@ msgstr ""
 msgid "Votes for"
 msgstr ""
 
-#: src/views/portfolio-page/components/active-proposals.tsx:102
+#: src/views/portfolio-page/components/active-proposals.tsx:105
 #: src/views/yield-dtf/governance/components/ProposalList.tsx:125
 msgid "Votes:"
 msgstr ""
@@ -12258,7 +12544,7 @@ msgstr ""
 msgid "Voting delay is required"
 msgstr ""
 
-#: src/views/explorer/components/governance/index.tsx:156
+#: src/views/explorer/components/governance/index.tsx:162
 msgid "Voting Ends"
 msgstr ""
 
@@ -12343,7 +12629,7 @@ msgid "Voting quorum is required"
 msgstr ""
 
 #: src/views/index-dtf/governance/components/proposal-list-item.tsx:49
-#: src/views/portfolio-page/components/active-proposals.tsx:61
+#: src/views/portfolio-page/components/active-proposals.tsx:64
 #: src/views/yield-dtf/governance/components/ProposalList.tsx:102
 msgid "Voting starts in:"
 msgstr ""
@@ -12364,6 +12650,10 @@ msgstr ""
 #: src/components/vote-lock/components/drawer-footer.tsx:73
 msgid "Wait {delay} days"
 msgstr ""
+
+#: src/views/index-dtf/overview/components/zap-mint/zap-error-msg.tsx:47
+#~ msgid "Wait and try again or"
+#~ msgstr ""
 
 #: src/views/yield-dtf/staking/components/unstake-delay.tsx:29
 msgid "Wait entire period"
@@ -12628,6 +12918,10 @@ msgstr ""
 msgid "Who can buy {ticker}?"
 msgstr ""
 
+#: src/views/index-dtf/overview/stocks/video-chapters.ts:55
+#~ msgid "Who can buy $BUILDOUT?"
+#~ msgstr ""
+
 #: src/views/index-dtf/governance/views/propose/basket/components/proposal-rebalance-launch-settings.tsx:311
 msgid "Who will be able to launch auctions and how long will they have before the auctions expire."
 msgstr ""
@@ -12751,13 +13045,13 @@ msgstr ""
 #: src/views/index-dtf/auctions/views/rebalance/components/rebalance-overview.tsx:60
 #: src/views/index-dtf/auctions/views/rebalance/components/rebalance-overview.tsx:74
 #: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:204
-#: src/views/portfolio-page/components/active-proposals.tsx:97
+#: src/views/portfolio-page/components/active-proposals.tsx:100
 #: src/views/yield-dtf/governance/components/ProposalList.tsx:119
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalDetailStats.tsx:166
 msgid "Yes"
 msgstr ""
 
-#: src/views/explorer/components/governance/filters.tsx:56
+#: src/views/explorer/components/governance/filters.tsx:57
 #: src/views/index-dtf/overview/components/charts/data-type-selector.tsx:19
 #: src/views/yield-dtf/overview/components/backing/collateral-exposure.tsx:248
 msgid "Yield"
@@ -12847,6 +13141,10 @@ msgstr ""
 #: src/views/index-dtf/deploy/steps/confirm-deploy/success/index.tsx:106
 msgid "You minted {mintedTokens} {0}"
 msgstr ""
+
+#: src/views/index-dtf/deploy/steps/confirm-deploy/success/index.tsx:89
+#~ msgid "You minted the {initialTokens} genesis tokens"
+#~ msgstr ""
 
 #: src/views/index-dtf/auctions/views/rebalance/components/manage-weights/manage-weights-hero.tsx:20
 msgid "You need to confirm desired weights before running rebalance auctions."
@@ -13045,7 +13343,7 @@ msgstr ""
 msgid "Your transaction was submitted. Check its status before taking another action."
 msgstr ""
 
-#: src/views/explorer/components/governance/index.tsx:187
+#: src/views/explorer/components/governance/index.tsx:193
 msgid "Your Vote"
 msgstr ""
 
@@ -13089,3 +13387,7 @@ msgstr ""
 #: src/components/liquidity-badge.tsx:61
 msgid "Zapper error"
 msgstr ""
+
+#: src/views/index-dtf/overview/components/zap-mint/zap-healthcheck.tsx:24
+#~ msgid "Zaps are currently experiencing issues"
+#~ msgstr ""

@@ -9,6 +9,7 @@ Sync earn pools: compare DefiLlama data with local earn-pools.json.
 """
 
 import json
+import os
 import sys
 import urllib.request
 import urllib.error
@@ -245,25 +246,53 @@ def generate_convex_url(lp_token_address):
 # MAIN FUNCTIONS
 # ============================================================================
 
+RESERVE_API_URL = os.environ.get("RESERVE_API_URL", "https://api.reserve.org/")
+# Cloudflare answers 403 to the default Python-urllib user agent.
+HTTP_HEADERS = {"User-Agent": "reserve-sync-earn-pools/1.0"}
+_full_pools_cache = None
+
+
+def fetch_json(url, timeout):
+    request = urllib.request.Request(url, headers=HTTP_HEADERS)
+    with urllib.request.urlopen(request, timeout=timeout) as response:
+        return json.loads(response.read().decode())
+
+
 def fetch_defillama_pools():
-    """Fetch all pools from DefiLlama API."""
-    url = "https://yields.llama.fi/pools"
-    with urllib.request.urlopen(url, timeout=30) as response:
-        data = json.loads(response.read().decode())
-        return data.get("data", [])
+    """Fetch the Reserve-related DefiLlama pools served by reserve-api.
+
+    The free DefiLlama yield endpoints shut down on 2026-11-13; reserve-api
+    holds the paid key and serves every pool with a Reserve token plus the
+    llamaIds listed in its src/config/defillamaYieldPools.ts.
+    """
+    url = f"{RESERVE_API_URL.rstrip('/')}/v1/yields/pools"
+    return fetch_json(url, timeout=30).get("data", [])
+
+
+def fetch_full_defillama_pools():
+    """Return every DefiLlama pool by id from the API plan /yields/v1/pools,
+    or None without DEFILLAMA_API_KEY or when the request fails. Only this
+    full list can prove that a pool no longer exists."""
+    global _full_pools_cache
+    api_key = os.environ.get("DEFILLAMA_API_KEY")
+    if not api_key:
+        return None
+    if _full_pools_cache is None:
+        url = f"https://pro-api.llama.fi/{api_key}/yields/v1/pools"
+        try:
+            pools = fetch_json(url, timeout=60).get("data") or []
+            _full_pools_cache = {p["pool"]: p for p in pools} if pools else False
+        except Exception:
+            print("   ⚠️  DefiLlama pools request failed")
+            _full_pools_cache = False
+    return _full_pools_cache or None
 
 
 def fetch_defillama_pool_enriched(pool_id):
-    """Fetch enriched data for a specific pool (includes pool_old address)."""
-    url = f"https://yields.llama.fi/poolsEnriched?pool={pool_id}"
-    try:
-        with urllib.request.urlopen(url, timeout=10) as response:
-            data = json.loads(response.read().decode())
-            if data.get("data"):
-                return data["data"][0]
-    except Exception:
-        pass
-    return None
+    """Return the pool's DefiLlama data with pool_old (LP token address).
+    Without DEFILLAMA_API_KEY new pools get no generated URL."""
+    full_pools = fetch_full_defillama_pools()
+    return full_pools.get(pool_id) if full_pools else None
 
 
 def load_earn_pools(path):
@@ -399,11 +428,14 @@ def create_pool_entry(dl_pool):
     }
 
 
-def analyze_and_fix(defillama_pools, earn_pools, validate_urls=False, auto_fix_urls=False):
+def analyze_and_fix(defillama_pools, earn_pools, validate_urls=False, auto_fix_urls=False,
+                    full_pool_ids=None):
     """
     Analyze pools and return categorized results.
     If validate_urls=True, also checks if existing URLs work.
     If auto_fix_urls=True, attempts to fix incorrect Convex URLs.
+    full_pool_ids is every DefiLlama pool id (None when unknown): a pool missing
+    from reserve-api is stale only when it is also missing from this list.
     """
     # Create lookup maps
     earn_by_id = {p["llamaId"]: p for p in earn_pools}
@@ -414,6 +446,7 @@ def analyze_and_fix(defillama_pools, earn_pools, validate_urls=False, auto_fix_u
 
     results = {
         "to_remove": [],      # Pools to remove (no longer in DefiLlama)
+        "allowlist_gaps": [], # Not served by reserve-api, not proven stale: kept
         "to_add": [],         # New pools to add
         "broken_urls": [],    # URLs that don't work
         "generic_urls": [],   # URLs that are generic (not specific pool links)
@@ -422,11 +455,16 @@ def analyze_and_fix(defillama_pools, earn_pools, validate_urls=False, auto_fix_u
         "valid": [],          # Valid pools
     }
 
-    # Find pools to remove (in JSON but not in DefiLlama)
+    # reserve-api serves only allowlisted pools: absence there is not proof
+    # that DefiLlama dropped the pool.
     for ep in earn_pools:
         pool_id = ep["llamaId"]
-        if pool_id not in defillama_by_id:
+        if pool_id in defillama_by_id:
+            continue
+        if full_pool_ids is not None and pool_id not in full_pool_ids:
             results["to_remove"].append(ep)
+        else:
+            results["allowlist_gaps"].append(ep)
 
     # Find new pools to add (in DefiLlama but not in JSON)
     for dl_pool in relevant_defillama:
@@ -499,12 +537,21 @@ def print_report(results, verbose=False):
     print(f"\n📊 SUMMARY")
     print(f"   ✅ Valid pools: {len(results['valid'])}")
     print(f"   🗑️  To remove (stale): {len(results['to_remove'])}")
+    print(f"   🧩 Not served by reserve-api (kept): {len(results['allowlist_gaps'])}")
     print(f"   🆕 To add (new): {len(results['to_add'])}")
     print(f"   ❌ Broken URLs: {len(results['broken_urls'])}")
     print(f"   ⚠️  Generic URLs: {len(results['generic_urls'])}")
     print(f"   🔧 Incorrect URLs: {len(results['incorrect_urls'])}")
     if results["auto_fixed"]:
         print(f"   ✨ Auto-fixed URLs: {len(results['auto_fixed'])}")
+
+    if results["allowlist_gaps"]:
+        print(f"\n🧩 NOT SERVED BY RESERVE-API, KEPT ({len(results['allowlist_gaps'])})")
+        print("-" * 70)
+        print("   Add each llamaId to EARN_POOL_IDS in reserve-api src/config/defillamaYieldPools.ts,")
+        print("   or set DEFILLAMA_API_KEY so the script can check that the pool still exists.")
+        for pool in results["allowlist_gaps"]:
+            print(f"   - {pool.get('description', 'N/A')} ({pool['llamaId']})")
 
     # Pools to remove
     if results["to_remove"]:
@@ -647,7 +694,11 @@ def main():
 
     print("🌐 Fetching pools from DefiLlama...")
     defillama_pools = fetch_defillama_pools()
-    print(f"   Found {len(defillama_pools)} total pools")
+    print(f"   Found {len(defillama_pools)} Reserve pools")
+
+    full_pools = fetch_full_defillama_pools()
+    if full_pools is None:
+        print("   No full DefiLlama list (DEFILLAMA_API_KEY unset or failed): no pool is removed")
 
     # Build Convex pool cache if we're going to fix URLs
     if args.fix:
@@ -659,7 +710,8 @@ def main():
         defillama_pools,
         earn_pools,
         validate_urls=args.validate_urls,
-        auto_fix_urls=args.fix
+        auto_fix_urls=args.fix,
+        full_pool_ids=set(full_pools) if full_pools else None,
     )
 
     issues = print_report(results)

@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query'
+import useReserveYieldPools from '@/hooks/use-reserve-yield-pools'
 import { useAtom } from 'jotai'
 import { useEffect } from 'react'
 import { CollateralYieldByChain, collateralYieldAtom } from 'state/atoms'
@@ -12,6 +12,8 @@ const chainIds: Record<string, number> = {
   BSC: ChainId.BSC,
 }
 
+// reserve-api keeps a copy in src/config/defillamaYieldPools.ts: a pool
+// missing there gets no APY. Keep both in sync.
 const poolsMap: Record<number, Record<string, string>> = {
   [ChainId.Mainnet]: {
     'acee1e4d-a73c-4e20-98f7-e87c13d446e4': 'apxeth',
@@ -120,13 +122,9 @@ export const symbolMap: Record<string, Record<number, string>> = Object.entries(
 
 const CollateralYieldUpdater = () => {
   const [collateralYield, setCollateralYield] = useAtom(collateralYieldAtom)
-  const { data } = useQuery({
-    queryKey: ['collateral-yields'],
-    queryFn: () => fetch('https://yields.llama.fi/pools').then((res) => res.json()),
-    staleTime: 1000 * 60 * 60, // 1 hour - mimics useSWRImmutable behavior
-  })
+  const { data } = useReserveYieldPools()
   useEffect(() => {
-    if (data?.data) {
+    if (data) {
       const yields: CollateralYieldByChain = {
         [ChainId.Mainnet]: {},
         [ChainId.Base]: {},
@@ -135,8 +133,8 @@ const CollateralYieldUpdater = () => {
         },
       }
 
-      for (const pool of data.data) {
-        const chainId = chainIds[pool.chain as string]
+      for (const pool of data) {
+        const chainId = chainIds[pool.chain]
         const poolId = poolsMap[chainId]?.[pool.pool]
 
         if (poolId) {

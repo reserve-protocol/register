@@ -1,4 +1,5 @@
-import { Trans } from '@lingui/react/macro'
+import { Trans, useLingui } from '@lingui/react/macro'
+import Help from 'components/help'
 import CircleIcon from 'components/icons/CircleIcon'
 import CollaterizationIcon from 'components/icons/CollaterizationIcon'
 import EarnIcon from 'components/icons/EarnIcon'
@@ -11,7 +12,8 @@ import {
   rTokenPriceAtom,
   rTokenStateAtom,
 } from 'state/atoms'
-import { formatCurrency } from 'utils'
+import { rTokenOvercollateralizationUsdAtom } from 'state/rtoken/atoms/rTokenBackingDistributionAtom'
+import { formatCurrency, formatPercentage } from 'utils'
 import CollateralsChart from './collaterals-chart'
 import { rTokenTargetPriceAtom } from '@/views/yield-dtf/overview/atoms'
 
@@ -28,6 +30,7 @@ const backingOverviewAtom = atom((get) => {
     symbol: rToken?.symbol ?? '',
     backing: distribution?.backing ?? 0,
     staked: distribution?.staked ?? 0,
+    stakedUsd: get(rTokenOvercollateralizationUsdAtom),
     yield: apys.basket,
     price: price,
     pegData,
@@ -37,6 +40,8 @@ const backingOverviewAtom = atom((get) => {
 
 const BackingOverview = ({ current }: { current: string }) => {
   const data = useAtomValue(backingOverviewAtom)
+  const { t } = useLingui()
+  const symbol = data.symbol
 
   return (
     <div className="mr-1 p-3 sm:p-4  flex flex-col w-full xl:w-[280px] h-fit shrink-0 text-sm sm:text-base bg-card rounded-2xl">
@@ -93,7 +98,36 @@ const BackingOverview = ({ current }: { current: string }) => {
         <span className="ml-2">
           <Trans>Staked RSR</Trans>
         </span>
-        <span className="ml-auto font-semibold">{data.staked.toFixed(0)}%</span>
+        <Help
+          className="ml-1"
+          size={12}
+          content={
+            <>
+              <p>
+                {t`RSR held by the staking contract (staked and in unstaking cooldown) as a % of ${symbol} market cap. This RSR can be seized to cover a collateral default.`}
+              </p>
+              {data.stakedUsd && (
+                <div className="mt-2 flex flex-col gap-0.5">
+                  <div className="flex justify-between gap-4">
+                    <span>{t`RSR staked`}</span>
+                    <span>${formatCurrency(data.stakedUsd.staked, 0)}</span>
+                  </div>
+                  <div className="flex justify-between gap-4">
+                    <span>{t`RSR unstaking & pending rewards`}</span>
+                    <span>${formatCurrency(data.stakedUsd.unstaking, 0)}</span>
+                  </div>
+                  <div className="flex justify-between gap-4 font-semibold">
+                    <span>{t`Total`}</span>
+                    <span>${formatCurrency(data.stakedUsd.total, 0)}</span>
+                  </div>
+                </div>
+              )}
+            </>
+          }
+        />
+        <span className="ml-auto font-semibold">
+          {formatPercentage(data.staked)}
+        </span>
       </div>
     </div>
   )

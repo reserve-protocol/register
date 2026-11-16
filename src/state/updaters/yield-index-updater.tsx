@@ -5,6 +5,7 @@ import {
   indexDTFUnderlyingNamesAtom,
   isYieldIndexDTFAtom,
 } from '@/state/dtf/yield-index-atoms'
+import useReserveYieldPools from '@/hooks/use-reserve-yield-pools'
 import { RESERVE_API } from '@/utils/constants'
 import { COLLATERAL_POOL_MAP } from '@/utils/yield-index'
 import { useQuery } from '@tanstack/react-query'
@@ -72,24 +73,13 @@ const IndexDTFPoolsUpdater = ({ chainId }: { chainId: number }) => {
       .map((t) => COLLATERAL_POOL_MAP[t.address.toLowerCase()])
       .filter(Boolean) ?? []
 
-  const { data: poolsData } = useQuery({
-    queryKey: ['dtf-pools', ...poolIds],
-    queryFn: async () => {
-      const results = await Promise.all(
-        poolIds.map(async (poolId) => {
-          const response = await fetch(
-            `https://yields.llama.fi/poolsEnriched?pool=${poolId}`
-          )
-          if (!response.ok) return null
-          const json = await response.json()
-          return json.data?.[0] ?? null
-        })
-      )
-      return results.filter(Boolean)
-    },
-    enabled: isYieldIndexDTF && poolIds.length > 0,
-    staleTime: 3600000,
-  })
+  const { data: yieldPools } = useReserveYieldPools()
+  const poolIdsKey = poolIds.join(',')
+  const poolsData = useMemo(() => {
+    if (!isYieldIndexDTF || !yieldPools || !poolIdsKey) return undefined
+    const ids = new Set(poolIdsKey.split(','))
+    return yieldPools.filter((pool) => ids.has(pool.pool))
+  }, [isYieldIndexDTF, yieldPools, poolIdsKey])
 
   useEffect(() => {
     if (poolsData) {

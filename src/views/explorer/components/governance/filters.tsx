@@ -10,7 +10,8 @@ import MultiselectDropdrown, {
   IMultiselectDropdrown,
 } from '../MultiselectDropdown'
 import TokenFilter from '../filters/token-filter'
-import { type DTFType, filtersAtom } from './atoms'
+import ProposalSortMenu from '@/components/proposal-sort-menu'
+import { type DTFType, filtersAtom, proposalSortAtom } from './atoms'
 
 export const proposalStatus: Record<string, MessageDescriptor> = {
   [PROPOSAL_STATES.PENDING]: msg`Pending`,
@@ -60,6 +61,7 @@ const TYPE_ITEMS: { key: string; label: MessageDescriptor }[] = [
 const ProposalFilters = () => {
   const { t } = useLingui()
   const [filters, setFilters] = useAtom(filtersAtom)
+  const [sort, setSort] = useAtom(proposalSortAtom)
 
   const handleChange = (key: 'tokens' | 'status', selected: string[]) => {
     setFilters((prev) => ({ ...prev, [key]: selected }))
@@ -88,6 +90,10 @@ const ProposalFilters = () => {
         selected={filters.status}
         onChange={(selected) => handleChange('status', selected)}
       />
+      <div className="flex items-center gap-2">
+        <span className="text-legend">{t`Sort by`}</span>
+        <ProposalSortMenu value={sort} onChange={setSort} />
+      </div>
     </div>
   )
 }

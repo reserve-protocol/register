@@ -1,11 +1,13 @@
 import rtokens from '@reserve-protocol/rtokens'
 import BasketHandler from 'abis/BasketHandler'
+import FacadeRead from 'abis/FacadeRead'
 import { RevenueSplit } from 'components/rtoken-setup/atoms'
 import { gql } from 'graphql-request'
 import { atom, useAtom, useAtomValue } from 'jotai'
 import { useEffect, useMemo } from 'react'
 import { collateralYieldAtom, rsrPriceAtom } from 'state/atoms'
 import { formatDistribution } from 'state/rtoken/atoms/rTokenRevenueSplitAtom'
+import { FACADE_ADDRESS } from 'utils/addresses'
 import { ChainId } from 'utils/chains'
 import {
   LISTED_RTOKEN_ADDRESSES,
@@ -33,6 +35,7 @@ export interface ListedToken {
   tokenApy: number
   backing: number
   overcollaterization: number
+  overcollaterizationUsd: number
   stakingApy: number
   basketApy: number
   chain: number
@@ -156,6 +159,26 @@ const useTokenList = () => {
       allowFailure: false,
     })
 
+  const backingOverviewCalls = useMemo(
+    () =>
+      supportedChainList.flatMap(
+        (chain) =>
+          data?.[chain]?.tokens?.map((token: any) => ({
+            address: FACADE_ADDRESS[chain],
+            abi: FacadeRead,
+            functionName: 'backingOverview',
+            args: [token.id],
+            chainId: chain,
+          })) ?? []
+      ),
+    [data]
+  )
+
+  const { data: backingOverviews } = useWatchReadContracts({
+    contracts: backingOverviewCalls,
+    allowFailure: true,
+  })
+
   useEffect(() => {
     if (data) {
       const tokens: ListedToken[] = []
@@ -211,6 +234,13 @@ const useTokenList = () => {
               +formatEther(token?.rToken?.rsrStaked ?? '0') * rsrPrice
             const lockedUsd =
               +formatEther(token?.rToken?.rsrLocked ?? '0') * rsrPrice
+            const facadeOverview = backingOverviews?.[
+              rTokenAddresses.indexOf(token.id)
+            ]?.result as readonly [bigint, bigint] | undefined
+            // Subgraph estimate (market RSR price) until the Facade read lands
+            const overcollaterizationUsd = facadeOverview
+              ? +formatEther(facadeOverview[1]) * supply
+              : lockedUsd
             const holdersShare = +(revenueSplit.holders || 0) / 100
             const stakersShare = +(revenueSplit.stakers || 0) / 100
 
@@ -238,8 +268,19 @@ const useTokenList = () => {
               targetUnits: token?.rToken?.targetUnits,
               tokenApy,
               basketApy,
-              backing: Number(formatEther(token?.rToken?.backing ?? '1')) * 100,
-              overcollaterization: supply ? (lockedUsd / supply) * 100 : 0,
+              backing: Math.min(
+                100,
+                Number(
+                  formatEther(
+                    facadeOverview?.[0] ??
+                      BigInt(token?.rToken?.backing ?? 10n ** 18n)
+                  )
+                ) * 100
+              ),
+              overcollaterization: supply
+                ? (overcollaterizationUsd / supply) * 100
+                : 0,
+              overcollaterizationUsd,
               stakingApy,
               chain,
               logo: `/svgs/${rtokens[chain][
@@ -272,6 +313,7 @@ const useTokenList = () => {
     collateralYield,
     currentRsrPrice,
     collateralized,
+    backingOverviews,
     rTokenAddresses,
     setList,
   ])

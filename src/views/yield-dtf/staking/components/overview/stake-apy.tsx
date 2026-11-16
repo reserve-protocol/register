@@ -2,6 +2,7 @@ import { Trans } from '@lingui/react/macro'
 import { useAtomValue } from 'jotai'
 import { estimatedApyAtom } from 'state/atoms'
 import { formatPercentage } from 'utils'
+import StakingApyCalculation from './staking-apy-calculation'
 
 const StakeApy = () => {
   const { stakers } = useAtomValue(estimatedApyAtom)
@@ -16,16 +17,7 @@ const StakeApy = () => {
           {formatPercentage(stakers || 0)}
         </span>
       </div>
-      <p className="text-xs text-legend">
-        <Trans>
-          Manually estimated APY calculated from basket averaged yield.
-        </Trans>{' '}
-        <br />
-        <span className="font-medium">
-          <Trans>Calculation:</Trans>
-        </span>{' '}
-        (avgCollateralYield * rTokenMarketCap) / rsrStaked
-      </p>
+      <StakingApyCalculation />
     </div>
   )
 }

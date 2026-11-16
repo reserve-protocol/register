@@ -271,7 +271,7 @@ msgstr "{0} 성과"
 #: src/components/ui/multiselect-dropdown.tsx:170
 #: src/views/explorer/components/filters/token-filter.tsx:75
 #: src/views/explorer/components/filters/TransactionTypeFilter.tsx:44
-#: src/views/explorer/components/governance/filters.tsx:46
+#: src/views/explorer/components/governance/filters.tsx:47
 msgid "{0} selected"
 msgstr "{0}개 선택됨"
 
@@ -423,6 +423,10 @@ msgstr "{1}(으)로 {0}을(를) ${usdSize}만큼 매수 시 가격 영향 {impac
 msgid "{impact}% price impact selling ${usdSize} of {0} for {1}"
 msgstr "{0}을(를) ${usdSize}만큼 {1}(으)로 매도 시 가격 영향 {impact}%"
 
+#: src/views/index-dtf/overview/components/zap-mint/submit-zap.tsx:144
+#~ msgid "{inputAmount} {inputSymbol} for {outputAmount} {outputSymbol}"
+#~ msgstr "{inputAmount} {inputSymbol} → {outputAmount} {outputSymbol}"
+
 #: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:594
 msgid "{lengthInMinutes, plural, one {# minute} other {# minutes}}"
 msgstr "{lengthInMinutes, plural, one {#분} other {#분}}"
@@ -508,6 +512,10 @@ msgstr "{swapCount}건 주문"
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-vote-lock-upgrade.tsx:187
 msgid "{symbol} governance 1.1.0 available"
 msgstr "{symbol} 거버넌스 1.1.0 사용 가능"
+
+#: src/views/yield-dtf/staking/components/overview/staking-apy-calculation.tsx:75
+msgid "{symbol} market cap"
+msgstr "{symbol} 시가총액"
 
 #: src/components/vote-lock/migration/migration-modal.tsx:260
 msgid "{symbol} to approve"
@@ -619,6 +627,10 @@ msgstr "<0>참고:</0> MetaMask와 같은 일부 Wallet은 스마트 계정을 �
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v5-upgrade.tsx:192
 msgid "<0>Release 5.0.0</0> introduces improved rebalancing with per-token auction size limits and the ability to disable bids for individual tokens. <1/>See the <2>changelog</2> for more details."
 msgstr "<0>릴리스 5.0.0</0>은 토큰별 경매 규모 제한과 개별 토큰에 대한 입찰 비활성화 기능을 통해 개선된 리밸런싱을 도입합니다. <1/>자세한 내용은 <2>변경 내역</2>을 참조하세요."
+
+#: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-v5-optimistic-upgrade.tsx:339
+#~ msgid "<0>Reserve Optimistic Governor upgrade</0> introduces a new governor system TBD COPY HERE!. <1/>See the <2>changelog</2> for more details."
+#~ msgstr "<0>Reserve Optimistic Governor 업그레이드</0>는 새로운 거버너 시스템을 도입합니다 TBD COPY HERE!. <1/>자세한 내용은 <2>변경 로그</2>를 참조하세요."
 
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-optimistic-governance-upgrade.tsx:325
 msgid "<0>Reserve Optimistic Governor upgrade</0> moves this DTF to optimistic governance, voted with a new vote-lock vault. After it executes, voters lock their tokens in the new vault to keep governing this DTF."
@@ -794,10 +806,24 @@ msgstr "제안된 바스켓 대비 새 바스켓이 얼마나 근접하게 리�
 msgid "A one-time fee deducted from the tokens a user receives when they mint the DTF. The platform will keep {platformShare} of revenue from this fee. (Min: 0.15%, Max: 5%)"
 msgstr "사용자가 DTF를 Mint할 때 받는 토큰에서 차감되는 일회성 수수료입니다. 플랫폼은 이 수수료 수익의 {platformShare}를 보유합니다. (최소: 0.15%, 최대: 5%)"
 
+#: src/views/index-dtf/deploy/steps/revenue/index.tsx:92
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-dtf-revenue.tsx:91
+#~ msgid "A one-time fee deducted from the tokens a user receives when they mint the DTF. The platform will keep 50% of revenue from this fee. (Min: 0.15%, Max: 5%)"
+#~ msgstr "사용자가 DTF를 Mint할 때 받는 토큰에서 차감되는 일회성 수수료입니다. 플랫폼은 이 수수료 수익의 50%를 보유합니다. (최소: 0.15%, 최대: 5%)"
+
+#: src/views/index-dtf/overview/components/zap-mint/zap-details.tsx:114
+#~ msgid "A one-time fee deduction from the tokens you are using to create a share of the DTF. This fee is set by the Governors of the DTF."
+#~ msgstr "DTF의 지분을 생성하는 데 사용하는 토큰에서 일회성으로 차감되는 수수료입니다. 이 수수료는 DTF의 거버너가 설정합니다."
+
 #: src/views/index-dtf/deploy/steps/revenue/index.tsx:74
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-dtf-revenue.tsx:208
 msgid "A percentage-based fee charged by the DTF based on the total value of the tokens held in the contract. The platform will keep {platformShare} of revenue from this fee. (Min: 0.15%, Max: 10%)"
 msgstr "컨트랙트에 보유된 토큰의 총 가치를 기준으로 DTF가 부과하는 비율 기반 수수료입니다. 플랫폼은 이 수수료 수익의 {platformShare}를 보유합니다. (최소: 0.15%, 최대: 10%)"
+
+#: src/views/index-dtf/deploy/steps/revenue/index.tsx:73
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-dtf-revenue.tsx:75
+#~ msgid "A percentage-based fee charged by the DTF based on the total value of the tokens held in the contract. The platform will keep 50% of revenue from this fee. (Min: 0.15%, Max: 10%)"
+#~ msgstr "컨트랙트에 보유된 토큰의 총 가치를 기준으로 DTF가 부과하는 비율 기반 수수료입니다. 플랫폼은 이 수수료 수익의 50%를 보유합니다. (최소: 0.15%, 최대: 10%)"
 
 #: src/views/yield-dtf/deploy/components/TokenForm.tsx:68
 msgid "A re-weightable RToken can have its basket changed in terms of its target units (USD/ETH/BTC/etc…). This flexibility allows for the addition, removal, and update of target units in the basket via governance actions, and could result in drastic shifts in the $USD value of an RToken. RToken holders of re-weightable RTokens have fewer guarantees than holders of non-re-weightable RTokens. This option should only be used if an RToken must be re-weightable in order to accomplish its core goals."
@@ -891,11 +917,11 @@ msgstr "작업"
 msgid "Action needed"
 msgstr "조치 필요"
 
-#: src/views/explorer/components/governance/filters.tsx:17
+#: src/views/explorer/components/governance/filters.tsx:18
 msgid "Active"
 msgstr "활성"
 
-#: src/views/portfolio-page/components/active-proposals.tsx:169
+#: src/views/portfolio-page/components/active-proposals.tsx:177
 msgid "Active Proposals"
 msgstr "진행 중인 제안"
 
@@ -1117,7 +1143,7 @@ msgstr "Alexios는 Compound Governor Bravo에서 채택한 표준 토큰 투표 
 
 #: src/components/token-selector-drawer/index.tsx:142
 #: src/views/earn/components/table-filters.tsx:33
-#: src/views/explorer/components/governance/filters.tsx:55
+#: src/views/explorer/components/governance/filters.tsx:56
 #: src/views/explorer/components/tokens/index.tsx:44
 #: src/views/index-dtf/deploy/steps/basket/token-selector.tsx:244
 #: src/views/index-dtf/factsheet/components/chart-overlay.tsx:85
@@ -1161,7 +1187,7 @@ msgstr "전체 DTFs"
 msgid "All options"
 msgstr "모든 옵션"
 
-#: src/views/explorer/components/governance/filters.tsx:47
+#: src/views/explorer/components/governance/filters.tsx:48
 msgid "All statuses"
 msgstr "모든 상태"
 
@@ -1332,6 +1358,14 @@ msgstr "및"
 msgid "and agree to the terms therein. ABC Labs, LLC (\"ABC Labs\") created the Website to help facilitate interaction with the Reserve protocol, including the minting and redeeming of DTFs. However, the Website is only one of several ways in which you can interact with the Reserve protocol. ABC Labs has neither created nor deployed any DTF and your ability to interact with specific DTFs via the Website in no way suggests that a DTF is endorsed by ABC Labs. In fact, ABC Labs assumes no liability for your use of the Website and interaction with the Reserve protocol, as covered in the Terms and Conditions."
 msgstr "및 그에 포함된 조건에 동의합니다. ABC Labs, LLC(\"ABC Labs\")는 DTF의 Mint와 Redeem을 포함하여 Reserve 프로토콜과의 상호작용을 돕기 위해 웹사이트를 만들었습니다. 그러나 웹사이트는 Reserve 프로토콜과 상호작용할 수 있는 여러 방법 중 하나일 뿐입니다. ABC Labs는 어떠한 DTF도 생성하거나 배포하지 않았으며, 웹사이트를 통해 특정 DTF와 상호작용할 수 있다는 것이 해당 DTF가 ABC Labs의 보증을 받았음을 의미하지 않습니다. 실제로 ABC Labs는 이용약관에 명시된 바와 같이 귀하의 웹사이트 사용 및 Reserve 프로토콜과의 상호작용에 대해 어떠한 책임도 지지 않습니다."
 
+#: src/views/yield-dtf/staking/components/overview/staking-apy-calculation.tsx:85
+msgid "Annual collateral yield"
+msgstr "연간 담보 수익"
+
+#: src/views/yield-dtf/staking/components/overview/staking-apy-calculation.tsx:96
+msgid "Annual revenue to RSR stakers"
+msgstr "RSR 스테이커 연간 수익"
+
 #: src/views/earn/hooks/useEarnTableColumns.tsx:189
 msgid "Annualised percentage yield from incentives"
 msgstr "인센티브로 발생하는 연환산 수익률"
@@ -1438,6 +1472,10 @@ msgstr "받은 RSR 수량만큼 정확히 공유 vlRSR 볼트에 승인합니다
 #: src/views/yield-dtf/issuance/components/zapV2/submit/ZapApprovalButton.tsx:61
 msgid "Approve use of {0}"
 msgstr "{0} 사용 승인"
+
+#: src/views/index-dtf/overview/components/zap-mint/submit-zap.tsx:236
+#~ msgid "Approve use of {inputSymbol}"
+#~ msgstr "{inputSymbol} 사용 승인"
 
 #: src/views/yield-dtf/staking/components/stake/confirm-stake-button.tsx:57
 msgid "Approve use of RSR"
@@ -1612,6 +1650,10 @@ msgstr "경매 길이는 최소 15분이어야 합니다"
 msgid "Auction length must not exceed 1440 minutes (24 hours)"
 msgstr "경매 길이는 1440분(24시간)을 초과할 수 없습니다"
 
+#: src/views/index-dtf/deploy/form-fields.ts:95
+#~ msgid "Auction length must not exceed 45 minutes"
+#~ msgstr "경매 길이는 45분을 초과할 수 없습니다"
+
 #: src/views/index-dtf/governance/views/propose/basket/components/proposal-basket-price-settings.tsx:118
 msgid "Auction Price Volatility"
 msgstr "경매 가격 변동성"
@@ -1750,7 +1792,7 @@ msgstr "설정으로 돌아가기"
 #: src/views/home/components/discover-index-dtf/index-dtf-table-placeholder.tsx:18
 #: src/views/top100/components/top100-table-placeholder.tsx:12
 #: src/views/top100/components/top100-table.tsx:78
-#: src/views/yield-dtf/overview/components/backing/backing-overview.tsx:79
+#: src/views/yield-dtf/overview/components/backing/backing-overview.tsx:84
 #: src/views/yield-dtf/overview/components/collateral-pie-chart-wrapper.tsx:86
 msgid "Backing"
 msgstr "백킹"
@@ -1765,7 +1807,7 @@ msgstr "백킹 및 리스크"
 msgid "Backing + Overcollaterization:"
 msgstr "백킹 + 초과 담보:"
 
-#: src/views/yield-dtf/staking/components/overview/staking-stats.tsx:84
+#: src/views/yield-dtf/staking/components/overview/staking-stats.tsx:85
 msgid "Backing + Staked"
 msgstr "백킹 + Staked"
 
@@ -1888,6 +1930,11 @@ msgstr "바스켓 거버넌스"
 msgid "Basket governance settings"
 msgstr "바스켓 거버넌스 설정"
 
+#: src/views/index-dtf/deploy/components/deploy-accordion.tsx:109
+#: src/views/index-dtf/deploy/components/deploy-accordion.tsx:110
+#~ msgid "Basket Governance Settings"
+#~ msgstr "바스켓 거버넌스 설정"
+
 #: src/views/yield-dtf/settings/components/contracts-info.tsx:19
 msgid "Basket Handler"
 msgstr "Basket Handler"
@@ -1923,6 +1970,10 @@ msgstr "Wallet에 있는 바스켓 토큰"
 #: src/views/yield-dtf/settings/components/backing-info.tsx:20
 msgid "Basket warmup period"
 msgstr "바스켓 워밍업 기간"
+
+#: src/views/yield-dtf/staking/components/overview/staking-apy-calculation.tsx:80
+msgid "Basket yield"
+msgstr "바스켓 수익률"
 
 #: src/views/yield-dtf/auctions/auctions-sidebar/ConfirmAuction.tsx:90
 msgid "Batch auction"
@@ -2045,7 +2096,7 @@ msgstr "입찰"
 msgid "Bids ({totalBids})"
 msgstr "입찰 ({totalBids})"
 
-#: src/views/yield-dtf/overview/components/backing/backing-overview.tsx:69
+#: src/views/yield-dtf/overview/components/backing/backing-overview.tsx:74
 msgid "Blended Yield"
 msgstr "혼합 수익"
 
@@ -2211,10 +2262,6 @@ msgstr "제안자:"
 msgid "Calculating performance metrics..."
 msgstr "성과 지표를 계산하는 중..."
 
-#: src/views/yield-dtf/staking/components/overview/stake-apy.tsx:25
-msgid "Calculation:"
-msgstr "계산:"
-
 #: src/views/index-dtf/overview/components/index-campaign-overview.tsx:52
 msgid "Campaign ends:"
 msgstr "캠페인 종료:"
@@ -2223,6 +2270,10 @@ msgstr "캠페인 종료:"
 #: src/views/index-dtf/overview/components/ask-reserve-ai.tsx:29
 msgid "Can I sell whenever I want?"
 msgstr ""
+
+#: src/views/earn/views/index-dtf/index.tsx:50
+#~ msgid "Can I unlock my tokens anytime?"
+#~ msgstr "토큰을 언제든지 잠금 해제할 수 있나요?"
 
 #: src/views/earn/views/index-dtf/components/faq.tsx:199
 msgid "Can I unlock my tokens at any time?"
@@ -2267,7 +2318,7 @@ msgstr "제안 취소"
 msgid "Cancel unstake"
 msgstr "Unstake 취소"
 
-#: src/views/explorer/components/governance/filters.tsx:21
+#: src/views/explorer/components/governance/filters.tsx:22
 #: src/views/index-dtf/governance/views/proposal/components/proposal-deadline-alert.tsx:41
 #: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:303
 #: src/views/yield-dtf/governance/views/proposal-detail/components/proposal-timeline/TimelineItem.tsx:258
@@ -2603,7 +2654,7 @@ msgstr "담보 수익은 백킹 버퍼가 가득 찼을 때 수익으로 분배�
 msgid "Collateral:"
 msgstr "담보:"
 
-#: src/views/yield-dtf/overview/components/collateral-pie-chart-tooltip.tsx:142
+#: src/views/yield-dtf/overview/components/collateral-pie-chart-tooltip.tsx:137
 msgid "Collateral(s)"
 msgstr "담보"
 
@@ -2830,7 +2881,7 @@ msgstr "연결하여 확인"
 
 #: src/components/stake-drawer/components/submit-stake-button.tsx:160
 #: src/components/stake-drawer/components/submit-unstake-button.tsx:72
-#: src/views/explorer/components/governance/index.tsx:192
+#: src/views/explorer/components/governance/index.tsx:198
 #: src/views/portfolio-page/components/portfolio-connect-button.tsx:20
 msgid "Connect wallet"
 msgstr "Wallet 연결"
@@ -2944,6 +2995,10 @@ msgstr "링크 복사"
 msgid "Copy payload to share with engineering team"
 msgstr "엔지니어링 팀과 공유할 페이로드 복사"
 
+#: src/views/index-dtf/overview/components/zap-mint/zap-error-msg.tsx:27
+#~ msgid "Copy swap params to share with engineering team"
+#~ msgstr "엔지니어링 팀과 공유할 스왑 파라미터 복사"
+
 #: src/components/ui/copy-value.tsx:60
 #: src/components/ui/copy.tsx:23
 #: src/views/index-dtf/governance/components/governance-account-info.tsx:72
@@ -2993,15 +3048,15 @@ msgstr "cow"
 msgid "CoW routes"
 msgstr "CoW 경로"
 
-#: src/views/index-dtf/auctions/views/rebalance/components/cowbot/use-cowbot-query.ts:85
+#: src/views/index-dtf/auctions/views/rebalance/components/cowbot/use-cowbot-query.ts:89
 msgid "CowBot encountered errors"
 msgstr "CowBot에서 오류가 발생했습니다"
 
-#: src/views/index-dtf/auctions/views/rebalance/components/cowbot/use-cowbot-query.ts:107
+#: src/views/index-dtf/auctions/views/rebalance/components/cowbot/use-cowbot-query.ts:111
 msgid "CowBot submitted {newOrdersCount} new order"
 msgstr "CowBot이 새 주문 {newOrdersCount}건을 제출했습니다"
 
-#: src/views/index-dtf/auctions/views/rebalance/components/cowbot/use-cowbot-query.ts:108
+#: src/views/index-dtf/auctions/views/rebalance/components/cowbot/use-cowbot-query.ts:112
 msgid "CowBot submitted {newOrdersCount} new orders"
 msgstr "CowBot이 새 주문 {newOrdersCount}건을 제출했습니다"
 
@@ -3021,6 +3076,10 @@ msgstr "CowSwap Auction Filler 중지됨"
 #: src/views/index-dtf/deploy/steps/confirm-deploy/simple/simple-deploy-button.tsx:152
 msgid "Create {0}"
 msgstr "{0} 생성"
+
+#: src/views/index-dtf/deploy/steps/create-dao/index.tsx:151
+#~ msgid "Create {vlSymbol} DAO"
+#~ msgstr "{vlSymbol} DAO 생성"
 
 #: src/views/index-dtf/deploy/steps/create-dao/index.tsx:136
 msgid "Create {vlSymbol} vault"
@@ -3046,6 +3105,10 @@ msgstr "새로운 초과 담보 Yield DTF 생성"
 #: src/views/yield-dtf/deploy/components/Intro.tsx:17
 msgid "Create a new Yield DTF"
 msgstr "새 Yield DTF 생성"
+
+#: src/views/index-dtf/deploy/steps/create-dao/index.tsx:152
+#~ msgid "Create DAO"
+#~ msgstr "DAO 생성"
 
 #: src/components/layout/header/components/app-navigation.tsx:89
 #: src/components/layout/header/components/app-navigation.tsx:96
@@ -3089,6 +3152,10 @@ msgstr "볼트 생성"
 msgid "Create Yield DTF"
 msgstr "Yield DTF 생성"
 
+#: src/views/top100/index.tsx:31
+#~ msgid "Create yours"
+#~ msgstr "직접 생성하기"
+
 #: src/views/index-dtf/overview/components/fees-stats.tsx:105
 #: src/views/internal/dtf-list/components/dtf-date-chain-filters.tsx:67
 #: src/views/internal/dtf-list/components/dtf-table.tsx:198
@@ -3101,7 +3168,7 @@ msgstr "생성일"
 msgid "Created {stTokenSymbol} DAO"
 msgstr "{stTokenSymbol} DAO 생성됨"
 
-#: src/views/explorer/components/governance/index.tsx:149
+#: src/views/explorer/components/governance/index.tsx:155
 msgid "Created At"
 msgstr "생성 시각"
 
@@ -3179,9 +3246,9 @@ msgstr "큐레이터 이름"
 #: src/views/yield-dtf/governance/components/GovernanceOverview.tsx:148
 #: src/views/yield-dtf/governance/views/proposal-detail/components/proposal-summary/revenue-distribution-summary.tsx:154
 #: src/views/yield-dtf/governance/views/proposal/components/ItemPreview.tsx:79
-#: src/views/yield-dtf/staking/components/overview/staking-stats.tsx:68
-#: src/views/yield-dtf/staking/components/overview/staking-stats.tsx:78
-#: src/views/yield-dtf/staking/components/overview/staking-stats.tsx:88
+#: src/views/yield-dtf/staking/components/overview/staking-stats.tsx:69
+#: src/views/yield-dtf/staking/components/overview/staking-stats.tsx:79
+#: src/views/yield-dtf/staking/components/overview/staking-stats.tsx:89
 msgid "Current"
 msgstr "현재"
 
@@ -3311,7 +3378,7 @@ msgstr "다크"
 msgid "Date"
 msgstr "날짜"
 
-#: src/views/portfolio-page/components/active-proposals.tsx:121
+#: src/views/portfolio-page/components/active-proposals.tsx:124
 msgid "Date Proposed"
 msgstr "제안 날짜"
 
@@ -3360,7 +3427,7 @@ msgstr "Default Admin"
 msgid "Default delay"
 msgstr "디폴트 지연"
 
-#: src/views/explorer/components/governance/filters.tsx:18
+#: src/views/explorer/components/governance/filters.tsx:19
 #: src/views/index-dtf/governance/views/proposal/components/proposal-deadline-alert.tsx:29
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalAlert.tsx:50
 msgid "Defeated"
@@ -3533,7 +3600,7 @@ msgid "DEPRECATED"
 msgstr "DEPRECATED"
 
 #: src/components/governance/proposal-description-form.tsx:64
-#: src/views/explorer/components/governance/index.tsx:132
+#: src/views/explorer/components/governance/index.tsx:138
 #: src/views/index-dtf/governance/views/proposal/components/proposal-detail-content.tsx:15
 #: src/views/index-dtf/governance/views/proposal/components/proposal-detail-content.tsx:41
 #: src/views/portfolio-page/components/transactions.tsx:114
@@ -3768,7 +3835,7 @@ msgstr "DTF 팩트시트"
 msgid "DTF Governance"
 msgstr "DTF 거버넌스"
 
-#: src/views/portfolio-page/components/active-proposals.tsx:36
+#: src/views/portfolio-page/components/active-proposals.tsx:39
 #: src/views/portfolio-page/components/voting-power.tsx:23
 msgid "DTF Governed"
 msgstr "거버넌스 대상 DTF"
@@ -3853,6 +3920,10 @@ msgstr "내가 가디언인 DTF"
 msgid "Due to how USDT approvals are managed, we need to reset your current allowance to zero before updating it to a new value. This step is necessary for completing your transaction."
 msgstr "USDT 승인 처리 방식으로 인해, 새 값으로 업데이트하기 전에 현재 승인 한도를 0으로 초기화해야 합니다. 이 단계는 트랜잭션을 완료하는 데 필요합니다."
 
+#: src/views/yield-dtf/issuance/components/warnings/index.tsx:90
+#~ msgid "Due to limited liquidity on Aave related to the Kelp DAO exploit, Zaps will swap for RTokens in DEX pools. Please pay attention to price impact before redeeming."
+#~ msgstr "Kelp DAO 익스플로잇과 관련된 Aave의 제한된 유동성으로 인해, Zap은 DEX 풀에서 RTokens로 스왑됩니다. Redeem 전에 가격 영향을 주의 깊게 확인하세요."
+
 #: src/views/home/components/discover-yield-dtf/yield-dtf-card.tsx:45
 msgid "Due to low usage, the Reserve DApp is discontinuing mints on Arbitrum. You can still redeem your tokens at any time, as they remain fully backed by their underlying assets."
 msgstr "사용량이 적어 Reserve DApp은 Arbitrum에서의 Mint를 중단합니다. 보유한 토큰은 여전히 기초 자산으로 완전히 백킹되므로 언제든지 Redeem할 수 있습니다."
@@ -3897,6 +3968,10 @@ msgstr "지속 시간(초)"
 #: src/components/rtoken-setup/token/BackingForm.tsx:75
 msgid "Duration in Seconds"
 msgstr "지속 시간(초)"
+
+#: src/views/index-dtf/overview/components/zap-mint/low-liquidity-warning.tsx:42
+#~ msgid "During periods of high volatility it can take multiple attempts to find a route with good pricing."
+#~ msgstr "변동성이 큰 기간에는 좋은 가격의 경로를 찾기 위해 여러 번 시도해야 할 수 있습니다."
 
 #: src/views/yield-dtf/issuance/components/zapV2/output/ZapOutputUSD.tsx:32
 msgid "Dust is the leftover amount of tokens that cannot be exchanged or included in the RToken mint, due to the zapper route. It will be sent back to your wallet."
@@ -4042,7 +4117,7 @@ msgid "Enabled"
 msgstr "활성화됨"
 
 #: src/hooks/use-time-remaining.ts:23
-#: src/views/explorer/components/governance/index.tsx:163
+#: src/views/explorer/components/governance/index.tsx:169
 msgid "Ended"
 msgstr "종료됨"
 
@@ -4163,6 +4238,10 @@ msgstr "<0/>을(를) 거버넌스할 기존 vote-lock 볼트 주소를 입력하
 msgid "Enter the contract address of an ERC-20 that can be vote-locked to govern <0/>."
 msgstr "<0/>을(를) 통치하기 위해 vote-lock할 수 있는 ERC-20의 컨트랙트 주소를 입력하세요."
 
+#: src/views/index-dtf/deploy/steps/governance/governance-options.tsx:44
+#~ msgid "Enter the contract address of an existing vote-lock DAO to govern <0/>. This DAO must have been created by the Reserve Index Protocol, and the contract must implement <1>IVotes.sol</1>."
+#~ msgstr "<0/>을(를) 통치할 기존 vote-lock DAO의 컨트랙트 주소를 입력하세요. 이 DAO는 Reserve Index Protocol에 의해 생성되어야 하며, 컨트랙트는 <1>IVotes.sol</1>을 구현해야 합니다."
+
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/sections/propose-revenue-tokens.tsx:214
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/vault-proposal-form.tsx:281
 msgid "Enter the contract address of the token(s) the <0>{vlToken} DAO</0> will accept as revenue. A token must be added to this list before it can be distributed to and claimed by vote-lockers."
@@ -4192,6 +4271,10 @@ msgstr "유효한 금액 입력"
 #: src/views/index-dtf/deploy/steps/governance/form-existing-erc20.tsx:78
 msgid "ERC20 address"
 msgstr "ERC20 주소"
+
+#: src/views/index-dtf/deploy/steps/create-dao/index.tsx:157
+#~ msgid "Error creating DAO token."
+#~ msgstr "DAO 토큰 생성 오류입니다."
 
 #: src/views/index-dtf/deploy/steps/create-dao/index.tsx:142
 msgid "Error creating the vote-lock vault."
@@ -4246,11 +4329,15 @@ msgstr "추정 가격 ✱"
 msgid "Est. RSR Revenue"
 msgstr "예상 RSR 수익"
 
-#: src/views/yield-dtf/staking/components/overview/staking-stats.tsx:62
+#: src/views/yield-dtf/staking/components/overview/staking-stats.tsx:63
 msgid "Est. Staking APY"
 msgstr "예상 Staking APY"
 
-#: src/views/yield-dtf/staking/components/overview/stake-apy.tsx:13
+#: src/views/yield-dtf/staking/components/overview/staking-apy-calculation.tsx:107
+msgid "Est. staking yield"
+msgstr "예상 스테이킹 수익률"
+
+#: src/views/yield-dtf/staking/components/overview/stake-apy.tsx:14
 msgid "Est. Staking Yield:"
 msgstr "예상 Staking 수익:"
 
@@ -4360,7 +4447,7 @@ msgstr "{deadlineDate}까지 실행 가능"
 msgid "Execute proposal"
 msgstr "제안 실행"
 
-#: src/views/explorer/components/governance/filters.tsx:19
+#: src/views/explorer/components/governance/filters.tsx:20
 #: src/views/index-dtf/governance/components/proposal-list-item.tsx:101
 #: src/views/index-dtf/governance/views/proposal/components/proposal-deadline-alert.tsx:23
 #: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:302
@@ -4453,7 +4540,7 @@ msgstr "예상"
 msgid "Expected volatility"
 msgstr "예상 변동성"
 
-#: src/views/explorer/components/governance/filters.tsx:24
+#: src/views/explorer/components/governance/filters.tsx:25
 #: src/views/index-dtf/governance/views/proposal/components/proposal-deadline-alert.tsx:35
 #: src/views/index-dtf/issuance/async-mint/components/leg-row.tsx:74
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalAlert.tsx:56
@@ -4507,6 +4594,14 @@ msgstr "노출 비중"
 #: src/views/yield-dtf/governance/views/proposal-detail/components/proposal-summary/revenue-distribution-summary.tsx:39
 msgid "External"
 msgstr "외부"
+
+#: src/views/index-dtf/overview/components/landing-mint/index.tsx:75
+#~ msgid "External markets"
+#~ msgstr "외부 마켓"
+
+#: src/views/index-dtf/overview/components/landing-mint/index.tsx:73
+#~ msgid "External trading venues"
+#~ msgstr "외부 거래 플랫폼"
 
 #: src/components/rtoken-setup/token/BackingForm.tsx:89
 msgid "Extra collateral to keep"
@@ -4572,6 +4667,10 @@ msgstr "Fast 제안"
 #: src/views/explorer/components/tokens/index.tsx:194
 msgid "Featured RTokens"
 msgstr "추천 RTokens"
+
+#: src/views/index-dtf/overview/components/zap-mint/zap-details.tsx:91
+#~ msgid "Fee"
+#~ msgstr "수수료"
 
 #: src/views/yield-dtf/overview/components/backing/underlying-fees.tsx:164
 msgid "Fee data for this period is not available right now."
@@ -4782,6 +4881,14 @@ msgstr "Redemption의 경우, 프로세스가 완료될 때까지 기다려 주�
 #: src/views/earn/views/index-dtf/components/faq.tsx:63
 msgid "For vlRSR, rewards are converted to RSR and added to the vault’s backing, increasing how much RSR each share can redeem. Other vaults may pay separate reward tokens that you claim manually."
 msgstr ""
+
+#: src/views/index-dtf/overview/components/zap-mint/zap-settings.tsx:62
+#~ msgid "Force DTF mint?"
+#~ msgstr "DTF Mint를 강제로 진행할까요?"
+
+#: src/views/index-dtf/overview/components/zap-mint/zap-settings.tsx:69
+#~ msgid "Force minting DTF"
+#~ msgstr "DTF 강제 Mint"
 
 #: src/views/yield-dtf/issuance/components/zapV2/settings/ZapSettingsOnlyMint.tsx:14
 #: src/views/yield-dtf/issuance/components/zapV2/settings/ZapSettingsOnlyMint.tsx:18
@@ -5005,6 +5112,10 @@ msgstr "거버넌스 토큰"
 msgid "Governance upgrade to {VOTE_LOCK_UPGRADE_TO}"
 msgstr "거버넌스 {VOTE_LOCK_UPGRADE_TO} 업그레이드"
 
+#: src/views/index-dtf/governance/views/propose/components/proposal-type-selector.tsx:114
+#~ msgid "Governance with an execution delay greater than 1 week unstaking delay"
+#~ msgstr "Unstaking 지연이 1주를 초과하는 실행 지연이 있는 거버넌스"
+
 #: src/views/earn/views/index-dtf/components/vote-lock-positions.tsx:207
 msgid "Governed DTFs"
 msgstr "거버넌스 중인 DTF"
@@ -5072,6 +5183,10 @@ msgstr "다른 체인에 RSR이 있나요? BSC로 브리지하세요"
 msgid "Having issues minting?"
 msgstr "Mint에 문제가 있나요?"
 
+#: src/views/index-dtf/overview/components/zap-mint/zap-error-msg.tsx:44
+#~ msgid "Having issues minting? (Zaps are in beta)"
+#~ msgstr "Mint에 문제가 있나요? (Zap은 베타 단계입니다)"
+
 #: src/views/yield-dtf/issuance/components/zapV2/ZapToggleBottom.tsx:20
 msgid "Having issues minting? Zaps are in beta"
 msgstr "Mint에 문제가 있나요? Zap은 베타 버전입니다"
@@ -5107,6 +5222,10 @@ msgstr "높은 유동성"
 #: src/views/index-dtf/governance/views/propose/basket/components/proposal-liquidity-checker.tsx:255
 msgid "High price impact"
 msgstr "높은 가격 영향"
+
+#: src/views/index-dtf/overview/components/zap-mint/zap-warning-checkbox.tsx:34
+#~ msgid "High price impact: {0}"
+#~ msgstr "높은 가격 영향: {0}"
 
 #: src/views/home/components/highlighted-dtfs/chain-tabs.tsx:29
 msgid "Highlighted card chain"
@@ -5211,6 +5330,10 @@ msgstr "새 볼트에서 잠금 해제한 후 보유자가 출금하기까지 �
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-auction-settings.tsx:53
 msgid "How long dutch auctions will run when swapping tokens out of the basket. Shorter auction lengths benefit from less market volatility affecting the price during the auction. Longer auctions benefit from having more time for discovering the best price when swapping two tokens."
 msgstr "바스켓에서 토큰을 교체할 때 더치 경매가 진행되는 기간입니다. 경매 기간이 짧을수록 경매 중 가격에 영향을 주는 시장 변동성이 줄어드는 이점이 있습니다. 경매 기간이 길수록 두 토큰을 교체할 때 최적의 가격을 발견할 시간이 더 많아지는 이점이 있습니다."
+
+#: src/views/index-dtf/deploy/steps/basket-changes/basket-changes-form.tsx:83
+#~ msgid "How long governors have to cast their votes on a basket change after the voting delay."
+#~ msgstr "투표 지연 이후 거버너가 바스켓 변경에 대해 투표할 수 있는 기간입니다."
 
 #: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/components/basket-settings-proposal-section.tsx:53
 #: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/components/sections/propose-basket-governance.tsx:42
@@ -5364,7 +5487,7 @@ msgstr "호환되지 않는 Wallet"
 msgid "Increase"
 msgstr "증가"
 
-#: src/views/explorer/components/governance/filters.tsx:57
+#: src/views/explorer/components/governance/filters.tsx:58
 msgid "Index"
 msgstr "Index"
 
@@ -5729,6 +5852,10 @@ msgstr "런처 전용"
 msgid "Launching..."
 msgstr "시작 중..."
 
+#: src/views/yield-dtf/staking/components/overview/staking-apy-calculation.tsx:125
+msgid "Learn more"
+msgstr "자세히 알아보기"
+
 #: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:338
 #: src/views/index-dtf/issuance/async-mint/steps/gnosis-required.tsx:369
 #: src/views/index-dtf/overview/components/index-ctas-overview-mobile.tsx:63
@@ -6079,7 +6206,7 @@ msgstr "수동 Mint"
 msgid "Manual Redeem"
 msgstr "수동 Redeem"
 
-#: src/views/yield-dtf/staking/components/overview/stake-apy.tsx:20
+#: src/views/yield-dtf/staking/components/overview/staking-apy-calculation.tsx:68
 msgid "Manually estimated APY calculated from basket averaged yield."
 msgstr "바스켓 평균 수익을 바탕으로 수동 산정한 예상 APY입니다."
 
@@ -6241,6 +6368,10 @@ msgstr "중간 유동성"
 msgid "Meet {ticker}"
 msgstr ""
 
+#: src/views/index-dtf/overview/stocks/video-chapters.ts:41
+#~ msgid "Meet $BUILDOUT"
+#~ msgstr ""
+
 #: src/components/transactions/table/index.tsx:49
 #: src/views/explorer/components/filters/TransactionTypeFilter.tsx:14
 #: src/views/explorer/components/transactions/useTransactionColumns.tsx:33
@@ -6276,6 +6407,10 @@ msgstr "마이그레이션 진행 중"
 #: src/views/portfolio-page/components/vote-locked-positions.tsx:165
 msgid "Migration needed"
 msgstr "마이그레이션 필요"
+
+#: src/views/index-dtf/overview/components/zap-mint/zap-details.tsx:132
+#~ msgid "Min Amount Out"
+#~ msgstr "최소 수령 수량"
 
 #: src/views/yield-dtf/issuance/components/zapV2/overview/ZapDetails.tsx:48
 msgid "Min. amount out"
@@ -6433,6 +6568,10 @@ msgstr "현재 {symbol} Mint를 이용할 수 없으며 매수할 다른 경로�
 #: src/views/index-dtf/settings/components/index-settings-fees.tsx:243
 msgid "Minting Fee"
 msgstr "Mint 수수료"
+
+#: src/views/yield-dtf/issuance/components/warnings/index.tsx:57
+#~ msgid "Minting has been temporarily paused due to an abundance of caution related to the Kelp DAO exploit."
+#~ msgstr "Kelp DAO 익스플로잇과 관련하여 신중을 기하기 위해 Mint가 일시적으로 중단되었습니다."
 
 #: src/views/yield-dtf/issuance/components/warnings/index.tsx:82
 msgid "Minting is paused for this DTF, so Zaps will buy RTokens in DEX pools instead of minting. Please pay attention to price impact before confirming."
@@ -6702,6 +6841,10 @@ msgstr "새 투표 기간:"
 msgid "New voting quorum:"
 msgstr "새 투표 정족수:"
 
+#: src/components/proposal-sort-menu.tsx:21
+msgid "Newest"
+msgstr "최신순"
+
 #: src/views/index-dtf/auctions/views/rebalance/components/rebalance-progress.tsx:23
 msgid "Next auction target"
 msgstr "다음 경매 목표"
@@ -6724,7 +6867,7 @@ msgstr ""
 
 #: src/views/index-dtf/auctions/views/rebalance/components/rebalance-overview.tsx:74
 #: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:204
-#: src/views/portfolio-page/components/active-proposals.tsx:97
+#: src/views/portfolio-page/components/active-proposals.tsx:100
 #: src/views/yield-dtf/governance/components/ProposalList.tsx:119
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalDetailStats.tsx:166
 msgid "No"
@@ -6941,6 +7084,10 @@ msgstr "투표권 없음"
 msgid "No yield opportunities found"
 msgstr "수익 기회를 찾을 수 없습니다"
 
+#: src/views/earn/views/index-dtf/index.tsx:51
+#~ msgid "No. Locked RSR follows the DTF’s timelock rules, which are set when the DTF is created. You should always check the lock duration before committing, as early unlocks are not allowed. This prevents short-term manipulation and keeps governance aligned with long-term holders."
+#~ msgstr "아니요. 잠긴 RSR은 DTF 생성 시 설정되는 DTF의 Timelock 규칙을 따릅니다. 조기 잠금 해제는 허용되지 않으므로 약정하기 전에 항상 잠금 기간을 확인해야 합니다. 이는 단기 조작을 방지하고 거버넌스를 장기 보유자와 일치시킵니다."
+
 #: src/views/earn/views/yield-dtf/index.tsx:23
 msgid "No. Stakers earn rewards as long as their RSR is actively staked, even if they don’t vote on proposals. Voting is optional, but participating helps shape how the Yield DTF is governed."
 msgstr "아니요. Stakers는 제안에 투표하지 않더라도 RSR이 활발히 Stake되어 있는 한 보상을 받습니다. 투표는 선택 사항이지만, 참여하면 Yield DTF의 거버넌스 방향을 만들어가는 데 도움이 됩니다."
@@ -6953,9 +7100,18 @@ msgstr ""
 msgid "No. When you unstake, your RSR enters an unstaking cooldown period defined by the Yield DTF’s parameters. During this time, the tokens remain locked and cannot be withdrawn. Once the cooldown ends, you can fully withdraw your RSR."
 msgstr "아니요. Unstake하면 RSR은 Yield DTF의 매개변수로 정의된 unstaking 쿨다운 기간에 들어갑니다. 이 기간 동안 토큰은 잠긴 상태로 유지되며 출금할 수 없습니다. 쿨다운이 끝나면 RSR을 전액 출금할 수 있습니다."
 
+#: src/views/earn/views/index-dtf/index.tsx:47
+#~ msgid "No. You earn rewards as long as your ERC2O tokens are vote-locked, even if you don’t participate in every proposal. Voting is encouraged, but it’s not required to receive your share of rewards."
+#~ msgstr "아니요. 모든 제안에 참여하지 않더라도 ERC20 토큰이 투표 잠금되어 있는 한 보상을 받습니다. 투표는 권장되지만, 보상 몫을 받기 위해 필수는 아닙니다."
+
 #: src/views/earn/views/index-dtf/components/faq.tsx:195
 msgid "No. You earn your share of rewards while your tokens are vote-locked, even if you don’t participate in every proposal. Voting is encouraged because vote lockers are responsible for the DTFs they govern."
 msgstr ""
+
+#: src/views/index-dtf/deploy/components/deploy-accordion.tsx:116
+#: src/views/index-dtf/deploy/components/deploy-accordion.tsx:117
+#~ msgid "Non-Basket Governance Settings"
+#~ msgstr "바스켓 외 거버넌스 설정"
 
 #: src/views/earn/components/position-balance.tsx:81
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ContractProposalDetails.tsx:103
@@ -7028,7 +7184,7 @@ msgstr "이 DTF의 거래 허용 목록에 없음: {symbols}"
 msgid "Not ready to set up governance?"
 msgstr "거버넌스를 설정할 준비가 되지 않으셨나요?"
 
-#: src/views/explorer/components/governance/index.tsx:195
+#: src/views/explorer/components/governance/index.tsx:201
 msgid "Not voted"
 msgstr "미투표"
 
@@ -7390,7 +7546,7 @@ msgstr "RSR로 지급"
 msgid "Peg:"
 msgstr "페그:"
 
-#: src/views/explorer/components/governance/filters.tsx:16
+#: src/views/explorer/components/governance/filters.tsx:17
 #: src/views/index-dtf/issuance/async-mint/components/leg-row.tsx:80
 #: src/views/yield-dtf/issuance/components/issue/CollateralApprovals.tsx:109
 msgid "Pending"
@@ -7557,7 +7713,7 @@ msgstr "플랫폼"
 msgid "Platform (Fixed)"
 msgstr "플랫폼 (고정)"
 
-#: src/views/yield-dtf/overview/components/collateral-pie-chart-tooltip.tsx:179
+#: src/views/yield-dtf/overview/components/collateral-pie-chart-tooltip.tsx:174
 msgid "Platform exposure"
 msgstr "플랫폼 익스포저"
 
@@ -7660,6 +7816,10 @@ msgstr "잠시 후 다시 시도해 주세요"
 #: src/views/yield-dtf/issuance/components/zapV2/context/ZapContext.tsx:544
 msgid "Please try again. If the problem persists, please <0>contact support.</0>"
 msgstr "다시 시도해 주세요. 문제가 계속되면 <0>고객 지원에 문의하세요.</0>"
+
+#: src/views/index-dtf/overview/components/zap-mint/zap-healthcheck.tsx:29
+#~ msgid "Please try refreshing, or switch to manual minting."
+#~ msgstr "새로고침하거나 수동 Mint로 전환해 주세요."
 
 #: src/views/index-dtf/deploy/steps/basket/basket-csv-setup.tsx:57
 #: src/views/index-dtf/governance/views/propose/basket/components/proposal-basket-setup/basket-csv-setup.tsx:143
@@ -8006,7 +8166,7 @@ msgstr "제안이 부결되었습니다"
 msgid "proposals"
 msgstr "제안"
 
-#: src/views/explorer/components/governance/index.tsx:207
+#: src/views/explorer/components/governance/index.tsx:213
 #: src/views/index-dtf/governance/components/governance-stats.tsx:78
 #: src/views/yield-dtf/governance/components/GovernanceOverview.tsx:124
 msgid "Proposals"
@@ -8134,7 +8294,7 @@ msgstr "게시일: {0}"
 msgid "Queue proposal"
 msgstr "제안 큐에 등록"
 
-#: src/views/explorer/components/governance/filters.tsx:23
+#: src/views/explorer/components/governance/filters.tsx:24
 #: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:281
 #: src/views/yield-dtf/governance/views/proposal-detail/components/proposal-timeline/TimelineItem.tsx:241
 msgid "Queued"
@@ -8150,7 +8310,7 @@ msgstr "정족수"
 msgid "Quorum (%)"
 msgstr "정족수 (%)"
 
-#: src/views/explorer/components/governance/filters.tsx:20
+#: src/views/explorer/components/governance/filters.tsx:21
 #: src/views/index-dtf/governance/components/proposal-list-item.tsx:105
 #: src/views/index-dtf/governance/views/proposal/components/proposal-deadline-alert.tsx:47
 #: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:216
@@ -8159,7 +8319,7 @@ msgstr "정족수 (%)"
 msgid "Quorum not reached"
 msgstr "정족수 미달"
 
-#: src/views/portfolio-page/components/active-proposals.tsx:84
+#: src/views/portfolio-page/components/active-proposals.tsx:87
 msgid "Quorum?"
 msgstr "정족수 충족?"
 
@@ -8514,6 +8674,10 @@ msgstr "감소"
 msgid "Reducing potential dust"
 msgstr "잠재적 더스트 감소 중"
 
+#: src/views/index-dtf/overview/components/zap-mint/refresh-quote.tsx:41
+#~ msgid "Refresh"
+#~ msgstr "새로고침"
+
 #: src/views/index-dtf/deploy/steps/confirm-deploy/simple/index.tsx:58
 msgid "Refresh quote"
 msgstr "견적 새로고침"
@@ -8865,6 +9029,10 @@ msgstr "수익 설정"
 msgid "Revenue share"
 msgstr "수익 분배"
 
+#: src/views/yield-dtf/staking/components/overview/staking-apy-calculation.tsx:91
+msgid "Revenue share to RSR stakers"
+msgstr "RSR 스테이커 수익 배분"
+
 #: src/views/yield-dtf/governance/views/proposal/components/ProposedRevenueSplitPreview.tsx:109
 msgid "Revenue split"
 msgstr "수익 분배"
@@ -9091,13 +9259,25 @@ msgstr "라운드 {0}"
 msgid "RSR available to withdraw"
 msgstr "출금 가능한 RSR"
 
+#: src/views/yield-dtf/overview/components/backing/backing-overview.tsx:107
+msgid "RSR held by the staking contract (staked and in unstaking cooldown) as a % of {symbol} market cap. This RSR can be seized to cover a collateral default."
+msgstr "스테이킹 컨트랙트가 보유한 RSR(스테이킹 중 및 언스테이킹 대기 중)을 {symbol} 시가총액 대비 %로 나타낸 값입니다. 이 RSR은 담보 디폴트를 보전하기 위해 압류될 수 있습니다."
+
 #: src/views/yield-dtf/staking/components/withdraw/cooldown-unstake.tsx:25
 msgid "RSR in {delay} Cooldown"
 msgstr "{delay} 쿨다운 중인 RSR"
 
+#: src/views/yield-dtf/overview/components/backing/backing-overview.tsx:112
+msgid "RSR staked"
+msgstr "스테이킹된 RSR"
+
 #: src/views/yield-dtf/overview/components/charts/staking-chart.tsx:98
 msgid "RSR Staked"
 msgstr "Staked RSR"
+
+#: src/views/yield-dtf/staking/components/overview/staking-apy-calculation.tsx:102
+msgid "RSR staked (USD)"
+msgstr "스테이킹된 RSR (USD)"
 
 #: src/components/stake-drawer/components/submit-stake-button.tsx:147
 msgid "RSR staked successfully!"
@@ -9111,6 +9291,10 @@ msgstr "RSR Stakers"
 #: src/views/yield-dtf/settings/components/contracts-info.tsx:21
 msgid "RSR Trader"
 msgstr "RSR Trader"
+
+#: src/views/yield-dtf/overview/components/backing/backing-overview.tsx:116
+msgid "RSR unstaking & pending rewards"
+msgstr "언스테이킹 중인 RSR 및 대기 중인 보상"
 
 #: src/views/yield-dtf/settings/components/basic-info.tsx:23
 msgid "RToken Address"
@@ -9334,6 +9518,10 @@ msgstr "{0}을(를) Vote-lock하면 자가 위임이 자동으로 이루어집�
 msgid "Sell"
 msgstr "매도"
 
+#: src/views/index-dtf/overview/components/zap-mint/sell/index.tsx:150
+#~ msgid "Sell {0}"
+#~ msgstr "{0} 매도"
+
 #. placeholder {0}: sell.token.symbol
 #: src/views/index-dtf/governance/components/proposal-preview/rebalance-preview/legacy-basket-proposal-preview.tsx:199
 #: src/views/index-dtf/governance/views/propose/basket/components/legacy-proposal-auction-price-ranges.tsx:196
@@ -9484,7 +9672,7 @@ msgstr "비중 %"
 msgid "Shared externally"
 msgstr "외부로 공유"
 
-#: src/views/explorer/components/governance/index.tsx:81
+#: src/views/explorer/components/governance/index.tsx:82
 msgid "Shared governance"
 msgstr "공유 거버넌스"
 
@@ -9741,6 +9929,14 @@ msgstr "일부 견적을 가져오지 못했습니다."
 msgid "Something went wrong. Please try again."
 msgstr "문제가 발생했습니다. 다시 시도해 주세요."
 
+#: src/views/index-dtf/overview/components/zap-mint/zap-error-msg.tsx:19
+#~ msgid "Sorry, the market is volatile right now. Please increase slippage in your settings."
+#~ msgstr "죄송합니다. 현재 시장 변동성이 큽니다. 설정에서 슬리피지를 높여 주세요."
+
+#: src/views/index-dtf/overview/components/zap-mint/zap-error-msg.tsx:13
+#~ msgid "Sorry, we’re having a hard time finding a route that makes sense for you. Please try again in a bit."
+#~ msgstr "죄송합니다. 적합한 경로를 찾는 데 어려움을 겪고 있습니다. 잠시 후 다시 시도해 주세요."
+
 #. placeholder {0}: rToken?.symbol
 #. placeholder {1}: tokenIn.symbol
 #: src/views/yield-dtf/issuance/components/zapV2/context/ZapContext.tsx:316
@@ -9752,6 +9948,10 @@ msgstr "죄송합니다. 요청이 Global Max Mint 한도를 초과합니다. Gl
 #: src/views/yield-dtf/issuance/components/zapV2/context/ZapContext.tsx:317
 msgid "Sorry, your request exceeds the Global Max Redeem limit. The Global Max Redeem is set at {maxFormatted} {0}. You can only zap a maximum of {maxZap} {1}."
 msgstr "죄송합니다. 요청이 Global Max Redeem 한도를 초과합니다. Global Max Redeem은 {maxFormatted} {0}로 설정되어 있습니다. 최대 {maxZap} {1}까지만 Zap 할 수 있습니다."
+
+#: src/views/explorer/components/governance/filters.tsx:94
+msgid "Sort by"
+msgstr "정렬 기준"
 
 #: src/views/portfolio-page/components/pending-withdrawals.tsx:332
 msgid "Source"
@@ -9817,7 +10017,7 @@ msgstr "Stake"
 msgid "Stake + Unstake"
 msgstr "Stake + Unstake"
 
-#: src/views/yield-dtf/staking/components/overview/staking-stats.tsx:50
+#: src/views/yield-dtf/staking/components/overview/staking-stats.tsx:51
 msgid "Stake pool"
 msgstr "Stake 풀"
 
@@ -9857,13 +10057,13 @@ msgstr "Staked"
 #: src/views/explorer/components/tokens/index.tsx:160
 #: src/views/portfolio-page/components/portfolio-breakdown.tsx:38
 #: src/views/portfolio-page/components/portfolio-chart.tsx:75
-#: src/views/yield-dtf/overview/components/backing/backing-overview.tsx:94
+#: src/views/yield-dtf/overview/components/backing/backing-overview.tsx:99
 #: src/views/yield-dtf/overview/components/collateral-pie-chart-wrapper.tsx:106
 #: src/views/yield-dtf/staking/components/overview/staking-metrics.tsx:28
 msgid "Staked RSR"
 msgstr "Staked RSR"
 
-#: src/views/yield-dtf/overview/components/collateral-pie-chart-tooltip.tsx:198
+#: src/views/yield-dtf/overview/components/collateral-pie-chart-tooltip.tsx:193
 msgid "Staked RSR Overcollateralisation"
 msgstr "Staked RSR 초과 담보"
 
@@ -9960,10 +10160,11 @@ msgstr "리밸런스 시작 (Folio 6.0)"
 msgid "Starts the next {0} reward period once the current one ends. Disabled until then."
 msgstr "현재 기간이 종료되면 다음 {0} 보상 기간을 시작합니다. 그때까지는 비활성화됩니다."
 
-#: src/views/explorer/components/governance/filters.tsx:41
-#: src/views/explorer/components/governance/index.tsx:174
+#: src/components/proposal-sort-menu.tsx:20
+#: src/views/explorer/components/governance/filters.tsx:42
+#: src/views/explorer/components/governance/index.tsx:180
 #: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:377
-#: src/views/portfolio-page/components/active-proposals.tsx:136
+#: src/views/portfolio-page/components/active-proposals.tsx:139
 #: src/views/yield-dtf/governance/views/proposal-detail/components/proposal-timeline/index.tsx:16
 msgid "Status"
 msgstr "상태"
@@ -9988,6 +10189,14 @@ msgstr "장문으로 최신 소식 받기"
 #: src/components/vote-lock/migration/migration-modal.tsx:198
 msgid "Step {0} of {1}"
 msgstr "{0}/{1}단계"
+
+#: src/views/index-dtf/overview/components/zap-mint/submit-zap.tsx:235
+#~ msgid "Step 1. Approve use of {inputSymbol}"
+#~ msgstr "1단계. {inputSymbol} 사용 승인"
+
+#: src/views/index-dtf/overview/components/zap-mint/submit-zap.tsx:232
+#~ msgid "Step 2. {buttonLabel}"
+#~ msgstr "2단계. {buttonLabel}"
 
 #. placeholder {0}: pending.map(({ symbol }) => symbol).join(', ')
 #: src/views/index-dtf/governance/views/propose/upgrade-banners/propose-retire-vote-lock.tsx:122
@@ -10055,7 +10264,7 @@ msgstr "제출됨!"
 msgid "Submitting..."
 msgstr "제출 중..."
 
-#: src/views/explorer/components/governance/filters.tsx:22
+#: src/views/explorer/components/governance/filters.tsx:23
 #: src/views/index-dtf/governance/views/proposal/components/proposal-deadline-alert.tsx:53
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalAlert.tsx:74
 msgid "Succeeded"
@@ -10066,6 +10275,10 @@ msgstr "통과됨"
 #: src/views/yield-dtf/auctions/auctions-sidebar/SettleableAuctions.tsx:82
 msgid "Success!"
 msgstr "성공!"
+
+#: src/views/index-dtf/deploy/steps/create-dao/index.tsx:125
+#~ msgid "suffix"
+#~ msgstr "접미사"
 
 #: src/views/home/components/protocol-metrics.tsx:58
 msgid "Sum of all assets held in Reserve smart contracts."
@@ -10107,6 +10320,14 @@ msgstr "최소 거래 규모 미만의 잉여"
 msgid "Swap"
 msgstr "Swap"
 
+#: src/views/index-dtf/overview/components/zap-mint/submit-zap.tsx:143
+#~ msgid "Swapped"
+#~ msgstr "교환됨"
+
+#: src/views/index-dtf/overview/components/zap-mint/submit-zap.tsx:141
+#~ msgid "Swapped {inputSymbol} for {outputSymbol}"
+#~ msgstr "{inputSymbol}을(를) {outputSymbol}(으)로 교환함"
+
 #: src/views/index-dtf/issuance/async-mint/steps/success.tsx:255
 msgid "Swaps leave a small residue in your wallet."
 msgstr "Swap은 Wallet에 약간의 잔여물을 남깁니다."
@@ -10130,6 +10351,10 @@ msgstr "수동 Mint로 전환"
 #: src/views/yield-dtf/issuance/components/zapV2/ZapToggleBottom.tsx:34
 msgid "Switch to manual minting"
 msgstr "수동 Mint로 전환"
+
+#: src/views/index-dtf/overview/components/zap-mint/zap-error-msg.tsx:57
+#~ msgid "switch to manual redeeming"
+#~ msgstr "수동 Redeem으로 전환"
 
 #: src/views/index-dtf/issuance/async-mint/components/switch-to-manual-link.tsx:37
 msgid "Switch to manual redeeming"
@@ -10294,6 +10519,10 @@ msgstr "리프레시 없이 출금이 허용되어야 하는 RSR Stake의 비율
 msgid "The guardian has the ability to reject proposals even if they pass. Should be assigned to a multisig or EOA that can be trusted to act as a backstop. It is acceptable if it is relatively slow to act. Only one guardian address should be defined."
 msgstr "가디언은 제안이 통과되더라도 이를 거부할 수 있는 권한을 가집니다. 백스톱 역할을 맡을 수 있도록 신뢰할 수 있는 멀티시그 또는 EOA에 할당해야 합니다. 비교적 느리게 대응하더라도 무방합니다. 가디언 주소는 하나만 정의해야 합니다."
 
+#: src/views/index-dtf/overview/components/zap-mint/zap-details.tsx:125
+#~ msgid "The impact your trade has on the market price."
+#~ msgstr "거래가 시장 가격에 미치는 영향입니다."
+
 #: src/views/index-dtf/overview/components/index-disclousure.tsx:373
 msgid "The information provided on the Website comes from on-chain sources. Past performance is not indicative of future results. Although index DTFs are intended to track indexes, their ability to successfully track indexes are dependent on the governance structure of the DTF and the governance’s ability to make appropriate trades. There is no guarantee that such trades will be successful or will track its corresponding index exactly. There are many risks associated with digital assets, including but not limited to security risk, counterparty risk, volatility risk, conflicts of interest, and many more. DTFs are no exception. By using the Website, you agree that your interaction with any DTFs is solely at your own risk and the Website and DTFs come as is, without any warranty or condition of any kind."
 msgstr "웹사이트에서 제공되는 정보는 온체인 소스에서 가져옵니다. 과거의 성과가 미래의 결과를 보장하지 않습니다. 인덱스 DTF는 지수를 추종하도록 설계되었지만, 지수를 성공적으로 추종할 수 있는지는 DTF의 거버넌스 구조와 거버넌스가 적절한 거래를 수행할 수 있는 능력에 달려 있습니다. 그러한 거래가 성공하거나 해당 지수를 정확히 추종한다는 보장은 없습니다. 디지털 자산에는 보안 위험, 거래상대방 위험, 변동성 위험, 이해 상충 등 수많은 위험이 존재합니다. DTF도 예외가 아닙니다. 웹사이트를 사용함으로써 귀하는 DTF와의 모든 상호작용이 전적으로 귀하의 책임이며, 웹사이트와 DTF가 어떠한 종류의 보증이나 조건 없이 있는 그대로 제공된다는 데 동의합니다."
@@ -10329,6 +10558,10 @@ msgstr "Mint 시 허용할 최대 슬리피지입니다. 슬리피지를 높게 
 #: src/components/rtoken-setup/governance/GovernanceParameters.tsx:90
 msgid "The minimum amount of time after a proposal passes before it can be executed."
 msgstr "제안이 통과된 후 실행되기까지 거쳐야 하는 최소 시간입니다."
+
+#: src/views/index-dtf/overview/components/zap-mint/zap-details.tsx:140
+#~ msgid "The minimum amount of tokens you will receive."
+#~ msgstr "받게 될 최소 토큰 수량입니다."
 
 #: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/components/basket-settings-proposal-section.tsx:65
 #: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/components/sections/propose-basket-governance.tsx:54
@@ -10383,6 +10616,18 @@ msgstr "pauser는 RToken을 true 또는 false가 될 수 있는 두 가지 상�
 #: src/views/index-dtf/overview/components/video-library/chapters.ts:75
 msgid "The platform and team behind DTFs."
 msgstr ""
+
+#: src/views/index-dtf/overview/stocks/video-chapters.ts:53
+#~ msgid "The platform behind DTFs, and the team."
+#~ msgstr ""
+
+#: src/views/index-dtf/overview/stocks/video-chapters.ts:46
+#~ msgid "The power companies behind the AI buildout."
+#~ msgstr ""
+
+#: src/views/index-dtf/overview/components/zap-mint/zap-warning-checkbox.tsx:39
+#~ msgid "The price impact for this trade is very high. You will get significantly less value than expected."
+#~ msgstr "이 거래의 가격 영향이 매우 높습니다. 예상보다 훨씬 적은 가치를 받게 됩니다."
 
 #: src/views/yield-dtf/issuance/components/zapV2/context/ZapContext.tsx:592
 msgid "The price impact of this transaction is too high. Please consider using a smaller amount or a different token."
@@ -10442,6 +10687,10 @@ msgstr "Reserve Protocol은 몇 가지 다른 유형의 거래를 수행합니�
 msgid "The Reserve Robotics DTF (ROBOTS) is a weighted basket of public, US-listed robotics and automation companies at the center of the AI buildout. AI is moving off the screen and into the physical world: the same breakthroughs that taught software to reason are now teaching machines to perceive, decide, and act, and to take on physical labor. The ROBOTS DTF gives you direct exposure to the companies building that transition: the humanoids, surgical robots, factory and warehouse automation, lidar, machine vision, and the chips that let machines navigate the real world. The basket is composed of companies with significant and growing exposure to robotics and automation demand, weighted by market capitalization with a 20% cap and a $2B minimum market cap, rebalanced quarterly. The ROBOTS DTF bundles Ondo Global Markets tokenized stocks, each of which represents an actual share held in a regulated US brokerage account."
 msgstr "Reserve Robotics DTF(ROBOTS)는 AI 인프라 구축의 중심에 있는 미국 상장 로보틱스 및 자동화 공개 기업들로 구성된 가중 바스켓입니다. AI는 화면 밖으로 나와 물리적 세계로 이동하고 있습니다. 소프트웨어가 추론하도록 만든 같은 혁신이 이제 기계가 인식하고, 결정하고, 행동하며, 물리적 노동을 맡도록 가르치고 있습니다. ROBOTS DTF는 이러한 전환을 만드는 기업들, 즉 휴머노이드, 수술 로봇, 공장 및 창고 자동화, 라이다, 머신 비전, 기계가 현실 세계를 탐색하게 하는 칩 기업에 직접 노출됩니다. 이 바스켓은 로보틱스 및 자동화 수요에 대한 의미 있고 성장 중인 노출을 가진 기업들로 구성되며, 시가총액 가중 방식에 20% 상한과 $2B 최소 시가총액 조건을 적용하고 분기마다 리밸런싱합니다. ROBOTS DTF는 Ondo Global Markets의 토큰화 주식을 묶으며, 각 토큰화 주식은 규제받는 미국 증권 계좌에 보관된 실제 주식 1주를 나타냅니다."
 
+#: src/views/yield-dtf/staking/components/overview/staking-apy-calculation.tsx:115
+msgid "The RSR stakers' share includes the fintech revenue redirected to eusdRSR stakers under the eUSD Revenue Share Programme."
+msgstr "RSR 스테이커 배분에는 eUSD Revenue Share Programme에 따라 eusdRSR 스테이커에게 재분배되는 핀테크 수익이 포함됩니다."
+
 #: src/views/index-dtf/deploy/steps/governance-settings/optimistic-form.tsx:107
 msgid "The share of governance power that must veto an optimistic proposal to send it to a full vote."
 msgstr "옵티미스틱 제안을 전체 투표로 보내기 위해 거부해야 하는 거버넌스 권한의 비율입니다."
@@ -10474,6 +10723,10 @@ msgstr "토큰 분배의 합계는 100%여야 합니다({displayDifference}% 초
 msgid "The sum of the tokens distribution must be 100% ({displayDifference}% missing)."
 msgstr "토큰 분배의 합계는 100%여야 합니다({displayDifference}% 부족)."
 
+#: src/views/index-dtf/deploy/steps/basket-changes/basket-changes-form.tsx:78
+#~ msgid "The time between a basket change proposal being submitted and when governors can cast their votes."
+#~ msgstr "바스켓 변경 제안이 제출된 시점과 거버너가 투표를 행사할 수 있는 시점 사이의 시간입니다."
+
 #: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/components/basket-settings-proposal-section.tsx:40
 #: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/components/sections/propose-basket-governance.tsx:29
 msgid "The time between a basket proposal being submitted and when governors can cast their votes."
@@ -10491,6 +10744,10 @@ msgstr "표준 제안이 제출된 후 거버너가 투표할 수 있을 때까�
 #: src/views/index-dtf/deploy/steps/governance-settings/optimistic-form.tsx:87
 msgid "The time between an optimistic proposal being submitted and when holders can start vetoing it."
 msgstr "옵티미스틱 제안이 제출된 후 보유자가 거부를 시작할 수 있을 때까지의 시간입니다."
+
+#: src/views/index-dtf/deploy/steps/basket-changes/basket-changes-form.tsx:96
+#~ msgid "The time period between when a basket change proposal is considered successful and when the auction can be formally approved."
+#~ msgstr "바스켓 변경 제안이 통과된 것으로 간주되는 시점과 경매가 공식적으로 승인될 수 있는 시점 사이의 기간입니다."
 
 #: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/components/basket-settings-proposal-section.tsx:100
 #: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/components/sections/propose-basket-governance.tsx:89
@@ -10586,6 +10843,10 @@ msgstr "이 DTF"
 msgid "This DTF can only be sold"
 msgstr "이 DTF는 매도만 가능합니다"
 
+#: src/views/index-dtf/overview/components/zap-mint/low-liquidity-warning.tsx:37
+#~ msgid "This DTF contains assets with relatively low DEX liquidity"
+#~ msgstr "이 DTF에는 DEX 유동성이 상대적으로 낮은 자산이 포함되어 있습니다"
+
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/sections/propose-dao-governance.tsx:110
 msgid "This DTF does not have DAO governance configured."
 msgstr "이 DTF에는 DAO 거버넌스가 구성되어 있지 않습니다."
@@ -10650,6 +10911,10 @@ msgstr "이것은 USDT 토큰이거나 USDT의 포크입니다. 승인하기 전
 #: src/components/rtoken-setup/basket/PrimaryBasket.tsx:57
 msgid "This is the target collateral basket at the onset of an RToken that defines which collateral needs to be deposited for issuances. The prime basket is directly set by governance, and only changes through successful governance proposals."
 msgstr "이는 RToken 시작 시점의 타깃 담보 바스켓으로, 발행을 위해 어떤 담보를 입금해야 하는지를 정의합니다. 기본 바스켓은 거버넌스가 직접 설정하며, 성공한 거버넌스 제안을 통해서만 변경됩니다."
+
+#: src/views/index-dtf/overview/components/zap-mint/zap-settings.tsx:63
+#~ msgid "This is useful if you want to mint the DTF without trading."
+#~ msgstr "거래 없이 DTF를 Mint하려는 경우에 유용합니다."
 
 #: src/views/yield-dtf/overview/components/backing/risks.tsx:125
 msgid "This list is not intended to be conclusive. <0>You can read more about risk in the Reserve docs.</0>"
@@ -10759,7 +11024,7 @@ msgstr "Timelock 주소"
 msgid "Timelock Address"
 msgstr "Timelock 주소"
 
-#: src/views/portfolio-page/components/active-proposals.tsx:50
+#: src/views/portfolio-page/components/active-proposals.tsx:53
 msgid "Title"
 msgstr "제목"
 
@@ -10789,7 +11054,7 @@ msgstr "테마 전환"
 
 #: src/components/index-basket-setup/basket-table.tsx:62
 #: src/components/tables/ListedTokensTable.tsx:28
-#: src/views/explorer/components/governance/index.tsx:114
+#: src/views/explorer/components/governance/index.tsx:120
 #: src/views/explorer/components/tokens/index.tsx:142
 #: src/views/explorer/components/transactions/useTransactionColumns.tsx:51
 #: src/views/index-dtf/governance/components/proposal-preview/rebalance-preview/rebalance-basket-preview.tsx:71
@@ -10839,7 +11104,7 @@ msgstr "토큰 세부 정보"
 msgid "Token distribution must be positive"
 msgstr "토큰 분배는 양수여야 합니다"
 
-#: src/views/yield-dtf/overview/components/collateral-pie-chart-tooltip.tsx:163
+#: src/views/yield-dtf/overview/components/collateral-pie-chart-tooltip.tsx:158
 msgid "Token exposure"
 msgstr "토큰 노출"
 
@@ -10946,6 +11211,7 @@ msgid "Top voting addresses"
 msgstr "상위 투표 주소"
 
 #: src/views/portfolio-page/components/portfolio-chart.tsx:125
+#: src/views/yield-dtf/overview/components/backing/backing-overview.tsx:120
 #: src/views/yield-dtf/overview/components/backing/underlying-fees/fees-table.tsx:225
 msgid "Total"
 msgstr "합계"
@@ -10979,7 +11245,7 @@ msgstr "총 시가총액"
 msgid "Total price impact"
 msgstr "총 가격 영향"
 
-#: src/views/yield-dtf/staking/components/overview/staking-stats.tsx:55
+#: src/views/yield-dtf/staking/components/overview/staking-stats.tsx:56
 msgid "Total RSR staked"
 msgstr "총 Staked RSR"
 
@@ -11100,6 +11366,10 @@ msgstr "Trading Gov"
 #: src/components/ondo-badge.tsx:167
 msgid "Trading halted"
 msgstr "거래 중단"
+
+#: src/views/yield-dtf/staking/components/trading-paused-banner.tsx:21
+#~ msgid "Trading has been temporarily paused due to an abundance of caution related to the Kelp DAO exploit, the protocol keeps staked RSR available as a safety measure in case recollateralization is needed — this means withdrawals are blocked until trading resumes."
+#~ msgstr "Kelp DAO 익스플로잇과 관련하여 신중을 기하기 위해 거래가 일시적으로 일시중지되었습니다. 프로토콜은 재담보가 필요한 경우를 대비한 안전 조치로 Staked RSR을 사용 가능한 상태로 유지합니다. 이는 거래가 재개될 때까지 출금이 차단됨을 의미합니다."
 
 #: src/views/yield-dtf/staking/components/trading-paused-banner.tsx:21
 msgid "Trading is paused for this DTF. While it is paused, the protocol keeps staked RSR available as a safety measure in case recollateralization is needed — this means withdrawals are blocked until trading resumes."
@@ -11518,7 +11788,7 @@ msgstr "Unstaking 및 잠금 해제 쿨다운 기간."
 
 #: src/views/index-dtf/deploy/steps/governance-settings/optimistic-form.tsx:146
 #: src/views/yield-dtf/settings/components/other-info.tsx:23
-#: src/views/yield-dtf/staking/components/overview/staking-stats.tsx:74
+#: src/views/yield-dtf/staking/components/overview/staking-stats.tsx:75
 msgid "Unstaking Delay"
 msgstr "Unstaking 지연"
 
@@ -11635,6 +11905,14 @@ msgstr "토큰이 2025년 9월 24일에 출시되었음을 반영하도록 참�
 #: src/views/index-dtf/overview/components/index-disclousure.tsx:61
 msgid "Updated whitepaper documentation"
 msgstr "업데이트된 백서 문서"
+
+#: src/views/index-dtf/deploy/steps/basket-changes/index.tsx:8
+#~ msgid "Updates to the basket of an Index DTF can be configured to happen at a different speed from all other governance, in case you want to move quickly for basket changes, or take extra time for basket changes. You’ll set these same parameters for all other governance in the next section."
+#~ msgstr "Index DTF의 바스켓 업데이트는 다른 모든 거버넌스와 다른 속도로 진행되도록 구성할 수 있습니다. 바스켓 변경을 신속하게 처리하거나, 바스켓 변경에 추가 시간을 두고 싶은 경우에 유용합니다. 다음 섹션에서 다른 모든 거버넌스에 대해 동일한 매개변수를 설정하게 됩니다."
+
+#: src/views/index-dtf/deploy/steps/other-changes/index.tsx:8
+#~ msgid "Updates to the fees, roles, voting parameters, and anything other than basket changes can be configured to happen at a different speed from basket changes, in case you want to apply more care for fully-general governance, or allow parameter changes more easily than basket changes."
+#~ msgstr "수수료, 역할, 투표 매개변수 및 바스켓 변경 이외의 모든 항목에 대한 업데이트는 바스켓 변경과 다른 속도로 진행되도록 구성할 수 있습니다. 전반적인 거버넌스에 더 신중을 기하거나, 바스켓 변경보다 매개변수 변경을 더 쉽게 허용하고 싶은 경우에 유용합니다."
 
 #. placeholder {0}: currentCall.label
 #: src/components/vote-lock/components/submit-delegate-button.tsx:178
@@ -11883,7 +12161,7 @@ msgstr "Veto 임계값"
 msgid "Veto Window"
 msgstr "Veto 기간"
 
-#: src/views/portfolio-page/components/active-proposals.tsx:84
+#: src/views/portfolio-page/components/active-proposals.tsx:87
 msgid "Veto?"
 msgstr "Veto?"
 
@@ -12024,7 +12302,7 @@ msgstr "진행 상황 보기"
 msgid "View proposal"
 msgstr "제안 보기"
 
-#: src/views/portfolio-page/components/active-proposals.tsx:171
+#: src/views/portfolio-page/components/active-proposals.tsx:179
 msgid "View proposals from different DTFs you have vote-locked."
 msgstr "투표 잠금한 여러 DTF의 제안을 확인하세요."
 
@@ -12113,9 +12391,17 @@ msgstr "투표 잠금 완료"
 msgid "Vote locked"
 msgstr "투표 잠금됨"
 
+#: src/views/earn/views/index-dtf/index.tsx:34
+#~ msgid "Vote lockers earn rewards from the DTF’s fees. A portion of the TVL fees and mint fees collected by the Index DTF are distributed to vote-locked token holders. The more tokens locked, the larger the share of rewards an individual vote-locked token holder will receive."
+#~ msgstr "투표 잠금자는 DTF의 수수료에서 보상을 받습니다. Index DTF가 징수한 TVL 수수료와 mint 수수료의 일부가 투표 잠금된 토큰 보유자에게 분배됩니다. 잠긴 토큰이 많을수록 개별 투표 잠금 토큰 보유자가 받는 보상 몫이 커집니다."
+
 #: src/views/earn/views/index-dtf/components/faq.tsx:33
 msgid "Vote lockers govern the key parameters of an Index DTF, including which assets are in the basket, their weights, fees, and contract upgrades."
 msgstr "투표 잠금자는 바스켓에 포함되는 자산, 그 가중치, 수수료, 컨트랙트 업그레이드 등 Index DTF의 핵심 매개변수를 거버넌스합니다."
+
+#: src/views/earn/views/index-dtf/index.tsx:19
+#~ msgid "Vote locking is the process of locking an ERC20 token for a set period to gain governance power of an Index DTF and earn rewards. While locked, the RSR cannot be transferred or sold until the lock period ends."
+#~ msgstr "투표 잠금은 ERC20 토큰을 일정 기간 잠가 Index DTF의 거버넌스 권한을 얻고 보상을 받는 과정입니다. 잠금 기간 동안 RSR은 잠금 기간이 끝날 때까지 전송하거나 판매할 수 없습니다."
 
 #: src/views/index-dtf/governance/views/proposal/components/proposal-vote-button.tsx:59
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalVote.tsx:177
@@ -12221,7 +12507,7 @@ msgstr "반대 투표"
 msgid "Votes for"
 msgstr "찬성 투표"
 
-#: src/views/portfolio-page/components/active-proposals.tsx:102
+#: src/views/portfolio-page/components/active-proposals.tsx:105
 #: src/views/yield-dtf/governance/components/ProposalList.tsx:125
 msgid "Votes:"
 msgstr "투표:"
@@ -12269,7 +12555,7 @@ msgstr "투표 지연 시작"
 msgid "Voting delay is required"
 msgstr "투표 지연은 필수입니다"
 
-#: src/views/explorer/components/governance/index.tsx:156
+#: src/views/explorer/components/governance/index.tsx:162
 msgid "Voting Ends"
 msgstr "투표 종료"
 
@@ -12354,7 +12640,7 @@ msgid "Voting quorum is required"
 msgstr "투표 정족수는 필수입니다"
 
 #: src/views/index-dtf/governance/components/proposal-list-item.tsx:49
-#: src/views/portfolio-page/components/active-proposals.tsx:61
+#: src/views/portfolio-page/components/active-proposals.tsx:64
 #: src/views/yield-dtf/governance/components/ProposalList.tsx:102
 msgid "Voting starts in:"
 msgstr "투표 시작까지:"
@@ -12375,6 +12661,10 @@ msgstr "{projectLabel}의 {tokensLabel} 보유"
 #: src/components/vote-lock/components/drawer-footer.tsx:73
 msgid "Wait {delay} days"
 msgstr "{delay}일 대기"
+
+#: src/views/index-dtf/overview/components/zap-mint/zap-error-msg.tsx:47
+#~ msgid "Wait and try again or"
+#~ msgstr "잠시 기다린 후 다시 시도하거나"
 
 #: src/views/yield-dtf/staking/components/unstake-delay.tsx:29
 msgid "Wait entire period"
@@ -12639,6 +12929,10 @@ msgstr "거버넌스 주소와 함께 discover 페이지에 표시되는 화이�
 msgid "Who can buy {ticker}?"
 msgstr ""
 
+#: src/views/index-dtf/overview/stocks/video-chapters.ts:55
+#~ msgid "Who can buy $BUILDOUT?"
+#~ msgstr ""
+
 #: src/views/index-dtf/governance/views/propose/basket/components/proposal-rebalance-launch-settings.tsx:311
 msgid "Who will be able to launch auctions and how long will they have before the auctions expire."
 msgstr "누가 경매를 실행할 수 있는지, 그리고 경매가 만료되기까지 얼마의 시간이 주어지는지."
@@ -12762,13 +13056,13 @@ msgstr "연초 대비"
 #: src/views/index-dtf/auctions/views/rebalance/components/rebalance-overview.tsx:60
 #: src/views/index-dtf/auctions/views/rebalance/components/rebalance-overview.tsx:74
 #: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:204
-#: src/views/portfolio-page/components/active-proposals.tsx:97
+#: src/views/portfolio-page/components/active-proposals.tsx:100
 #: src/views/yield-dtf/governance/components/ProposalList.tsx:119
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalDetailStats.tsx:166
 msgid "Yes"
 msgstr "예"
 
-#: src/views/explorer/components/governance/filters.tsx:56
+#: src/views/explorer/components/governance/filters.tsx:57
 #: src/views/index-dtf/overview/components/charts/data-type-selector.tsx:19
 #: src/views/yield-dtf/overview/components/backing/collateral-exposure.tsx:248
 msgid "Yield"
@@ -12858,6 +13152,10 @@ msgstr "Mint 수량:"
 #: src/views/index-dtf/deploy/steps/confirm-deploy/success/index.tsx:106
 msgid "You minted {mintedTokens} {0}"
 msgstr "{mintedTokens} {0}을(를) 민팅했습니다"
+
+#: src/views/index-dtf/deploy/steps/confirm-deploy/success/index.tsx:89
+#~ msgid "You minted the {initialTokens} genesis tokens"
+#~ msgstr "{initialTokens}개의 genesis 토큰을 Mint했습니다"
 
 #: src/views/index-dtf/auctions/views/rebalance/components/manage-weights/manage-weights-hero.tsx:20
 msgid "You need to confirm desired weights before running rebalance auctions."
@@ -13056,7 +13354,7 @@ msgstr "모든 Chain에서 받을 수 있는 총 참여 보상"
 msgid "Your transaction was submitted. Check its status before taking another action."
 msgstr "트랜잭션이 제출되었습니다. 다른 작업을 하기 전에 상태를 확인하세요."
 
-#: src/views/explorer/components/governance/index.tsx:187
+#: src/views/explorer/components/governance/index.tsx:193
 msgid "Your Vote"
 msgstr "내 투표"
 
@@ -13100,3 +13398,7 @@ msgstr "Zap 설정"
 #: src/components/liquidity-badge.tsx:61
 msgid "Zapper error"
 msgstr "Zapper 오류"
+
+#: src/views/index-dtf/overview/components/zap-mint/zap-healthcheck.tsx:24
+#~ msgid "Zaps are currently experiencing issues"
+#~ msgstr "현재 Zap에 문제가 발생하고 있습니다"

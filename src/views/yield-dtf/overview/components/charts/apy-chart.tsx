@@ -3,6 +3,7 @@ import AreaChart from 'components/charts/area/AreaChart'
 import dayjs from 'dayjs'
 import { gql } from 'graphql-request'
 import useQuery, { useMultiFetch } from 'hooks/use-query'
+import { reserveYieldChartUrl } from '@/hooks/use-reserve-yield-pools'
 import useRToken from 'hooks/useRToken'
 import useTimeFrom from 'hooks/useTimeFrom'
 import { useAtomValue } from 'jotai'
@@ -133,13 +134,12 @@ const APYChart = ({ className }: { className?: string }) => {
   )
 
   const { data: historicalAPY } = useMultiFetch(
-    allCollaterals.map(
-      (collateral: any) =>
-        `https://yields.llama.fi/chart/${
-          symbolMap[collateral.toLowerCase()]?.[
-            rToken?.chainId || ChainId.Mainnet
-          ] || symbolMap[collateral.toLowerCase()]?.[ChainId.Mainnet]
-        }`
+    allCollaterals.map((collateral: any) =>
+      reserveYieldChartUrl(
+        symbolMap[collateral.toLowerCase()]?.[
+          rToken?.chainId || ChainId.Mainnet
+        ] || symbolMap[collateral.toLowerCase()]?.[ChainId.Mainnet]
+      )
     )
   )
 
