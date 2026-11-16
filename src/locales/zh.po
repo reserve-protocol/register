@@ -1946,7 +1946,7 @@ msgstr "继续之前，请确认以下内容。"
 msgid "Before using automated minting"
 msgstr "在使用自动 Mint 之前"
 
-#: src/components/vote-lock/components/submit-unlock-button.tsx:132
+#: src/components/vote-lock/components/submit-unlock-button.tsx:166
 msgid "Begin {unlockDelay}-day unlock delay"
 msgstr "开始 {unlockDelay} 天解锁延迟"
 
@@ -1966,7 +1966,7 @@ msgstr "开始 Mint {0} {1}"
 msgid "Begin redemption of {0} {1}"
 msgstr "开始 Redeem {0} {1}"
 
-#: src/components/vote-lock/components/submit-unlock-button.tsx:133
+#: src/components/vote-lock/components/submit-unlock-button.tsx:167
 msgid "Begin unlock delay"
 msgstr "开始解锁延迟"
 
@@ -2748,7 +2748,7 @@ msgstr "确认交易中……"
 #: src/components/stake-drawer/components/submit-stake-button.tsx:217
 #: src/components/stake-drawer/components/submit-unstake-button.tsx:104
 #: src/components/vote-lock/components/submit-lock-button.tsx:211
-#: src/components/vote-lock/components/submit-unlock-button.tsx:124
+#: src/components/vote-lock/components/submit-unlock-button.tsx:158
 #: src/views/index-dtf/deploy/steps/confirm-deploy/manual/components/confirm-manual-deploy-button.tsx:298
 #: src/views/index-dtf/deploy/steps/confirm-deploy/simple/simple-deploy-button.tsx:133
 msgid "Confirming tx..."
@@ -7251,7 +7251,7 @@ msgstr "待处理的提取"
 #: src/components/transaction-modal/index.tsx:159
 #: src/components/vote-lock/components/submit-delegate-button.tsx:179
 #: src/components/vote-lock/components/submit-lock-button.tsx:212
-#: src/components/vote-lock/components/submit-unlock-button.tsx:125
+#: src/components/vote-lock/components/submit-unlock-button.tsx:159
 #: src/views/index-dtf/deploy/steps/confirm-deploy/manual/components/confirm-manual-deploy-button.tsx:298
 #: src/views/index-dtf/deploy/steps/confirm-deploy/simple/simple-deploy-button.tsx:134
 #: src/views/yield-dtf/deploy/components/DeployOverview.tsx:25
@@ -7681,7 +7681,7 @@ msgstr "在 Wallet 中继续"
 #: src/components/stake-drawer/components/submit-stake-button.tsx:215
 #: src/components/stake-drawer/components/submit-unstake-button.tsx:102
 #: src/components/vote-lock/components/submit-lock-button.tsx:209
-#: src/components/vote-lock/components/submit-unlock-button.tsx:122
+#: src/components/vote-lock/components/submit-unlock-button.tsx:156
 msgid "Processing transaction..."
 msgstr "正在处理交易..."
 
@@ -7711,7 +7711,7 @@ msgstr ""
 msgid "Proposal canceled"
 msgstr "提案已取消"
 
-#: src/components/transaction-error/TransactionError.tsx:25
+#: src/components/transaction-error/TransactionError.tsx:56
 msgid "Proposal cannot be executed while another auction is currently running"
 msgstr "在另一场拍卖进行期间，提案无法执行"
 
@@ -10896,7 +10896,7 @@ msgstr "交易 2"
 #: src/components/stake-drawer/components/submit-stake-button.tsx:180
 #: src/components/stake-drawer/components/submit-unstake-button.tsx:80
 #: src/components/vote-lock/components/submit-lock-button.tsx:217
-#: src/components/vote-lock/components/submit-unlock-button.tsx:130
+#: src/components/vote-lock/components/submit-unlock-button.tsx:164
 #: src/hooks/useWatchTransaction.ts:56
 msgid "Transaction confirmed"
 msgstr "交易已确认"
@@ -11196,7 +11196,7 @@ msgstr "无限制"
 msgid "Unlock"
 msgstr "解锁"
 
-#: src/components/vote-lock/components/submit-unlock-button.tsx:95
+#: src/components/vote-lock/components/submit-unlock-button.tsx:129
 msgid "Unlock initiated successfully"
 msgstr "解锁已成功发起"
 
@@ -12791,6 +12791,14 @@ msgstr "你的投票"
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalVote.tsx:124
 msgid "Your voting power:"
 msgstr "你的投票权："
+
+#: src/components/transaction-error/TransactionError.tsx:64
+msgid "Your wallet couldn't send this transaction. Make sure you have enough funds to pay for gas and try again."
+msgstr "您的 Wallet 无法发送此交易。请确认您有足够的资金支付 gas 费用，然后重试。"
+
+#: src/components/transaction-error/TransactionError.tsx:60
+msgid "Your wallet doesn't have enough funds to pay for gas. Add some and try again."
+msgstr "您的 Wallet 没有足够的资金支付 gas 费用。请充值后重试。"
 
 #: src/views/portfolio-page/components/dtf-positions.tsx:218
 msgid "Your yield-bearing stablecoin holdings."

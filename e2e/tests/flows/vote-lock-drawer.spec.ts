@@ -18,7 +18,8 @@ import {
   parseUnits,
   type Hex,
 } from 'viem'
-import { test, expect } from '../../harness'
+import { test, expect, type DtfHarness } from '../../harness'
+import type { MockOverrides } from '../../helpers/overrides'
 import { REGISTRY, TEST_ADDRESS } from '../../helpers/registry'
 import { loadSnapshot } from '../../helpers/snapshots'
 
@@ -75,10 +76,10 @@ function encodeUint(value: bigint): Hex {
 // "Switch network" instead of a submit button.
 test.use({ walletChain: 56 })
 
-test('vote-lock drawer: unlock submits redeem() with share-denominated args @smoke', async ({
-  harness,
-  overrides,
-}) => {
+async function openUnlockReadyToSubmit(
+  harness: DtfHarness,
+  overrides: MockOverrides
+) {
   const page = harness.page
 
   overrides.ethCall(
@@ -154,6 +155,15 @@ test('vote-lock drawer: unlock submits redeem() with share-denominated args @smo
     await expect(submit).toBeEnabled()
   }).toPass({ timeout: 20_000 })
 
+  return submit
+}
+
+test('vote-lock drawer: unlock submits redeem() with share-denominated args @smoke', async ({
+  harness,
+  overrides,
+}) => {
+  const submit = await openUnlockReadyToSubmit(harness, overrides)
+
   harness.tx.confirm()
   await submit.click()
   await harness.chain.advance(10_000)
@@ -227,4 +237,25 @@ test('vote-lock drawer: lock tab shows previewDeposit shares-out quote @smoke', 
       LOCK_SHARES_OUT
     )
   }).toPass({ timeout: 20_000 })
+})
+
+test('vote-lock drawer: a generic wallet failure is not shown as a contract revert @smoke', async ({
+  harness,
+  overrides,
+}) => {
+  const submit = await openUnlockReadyToSubmit(harness, overrides)
+
+  // Some wallets answer an underfunded send with this instead of "insufficient funds".
+  overrides.transaction({ kind: 'reject', code: -32603, message: 'Unexpected error' })
+  await submit.click()
+
+  const error = harness.page.getByTestId('transaction-error')
+  await expect(async () => {
+    await harness.chain.advance(4_000)
+    await expect(error).toBeVisible()
+  }).toPass({ timeout: 20_000 })
+  await expect(error).toHaveAttribute('data-error-kind', 'wallet-error')
+  await expect(error).not.toContainText('ContractFunctionExecutionError')
+  await expect(error).not.toContainText('Unexpected error')
+  expect(harness.tx.log).toHaveLength(0)
 })
