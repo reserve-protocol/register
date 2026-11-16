@@ -254,6 +254,7 @@ test('vote-lock drawer: a generic wallet failure is not shown as a contract reve
     await harness.chain.advance(4_000)
     await expect(error).toBeVisible()
   }).toPass({ timeout: 20_000 })
+  await expect(error).toHaveAttribute('data-error-kind', 'wallet-error')
   await expect(error).not.toContainText('ContractFunctionExecutionError')
   await expect(error).not.toContainText('Unexpected error')
   expect(harness.tx.log).toHaveLength(0)

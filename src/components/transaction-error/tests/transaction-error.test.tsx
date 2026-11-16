@@ -60,6 +60,29 @@ describe('TransactionError', () => {
     expect(screen.getByText(/enough funds to pay for gas/)).toBeTruthy()
   })
 
+  it('explains a generic wallet failure that carries empty data', async () => {
+    const error = await getWriteError({
+      code: -32603,
+      message: 'Unexpected error',
+      data: '0x',
+    })
+
+    render(<TransactionError error={error} />)
+
+    expect(
+      screen.getByText(/Your wallet couldn't send this transaction/)
+    ).toBeTruthy()
+  })
+
+  it('keeps showing an execution-reverted error whose reason does not say revert', async () => {
+    const error = await getWriteError({ code: 3, message: 'Not authorized' })
+
+    const { container } = render(<TransactionError error={error} />)
+
+    expect(container.textContent).toContain('ContractFunctionExecutionError')
+    expect(container.textContent).toContain('Not authorized')
+  })
+
   it('explains insufficient gas funds', async () => {
     const error = await getWriteError({
       code: -32000,

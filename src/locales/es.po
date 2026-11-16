@@ -7711,7 +7711,7 @@ msgstr ""
 msgid "Proposal canceled"
 msgstr "Propuesta cancelada"
 
-#: src/components/transaction-error/TransactionError.tsx:50
+#: src/components/transaction-error/TransactionError.tsx:56
 msgid "Proposal cannot be executed while another auction is currently running"
 msgstr "La propuesta no se puede ejecutar mientras haya otra subasta en curso"
 
@@ -12792,11 +12792,11 @@ msgstr "Tu voto"
 msgid "Your voting power:"
 msgstr "Tu poder de voto:"
 
-#: src/components/transaction-error/TransactionError.tsx:58
+#: src/components/transaction-error/TransactionError.tsx:64
 msgid "Your wallet couldn't send this transaction. Make sure you have enough funds to pay for gas and try again."
 msgstr "Tu wallet no pudo enviar esta transacción. Asegúrate de tener fondos suficientes para pagar el gas e inténtalo de nuevo."
 
-#: src/components/transaction-error/TransactionError.tsx:54
+#: src/components/transaction-error/TransactionError.tsx:60
 msgid "Your wallet doesn't have enough funds to pay for gas. Add some and try again."
 msgstr "Tu wallet no tiene fondos suficientes para pagar el gas. Agrega fondos e inténtalo de nuevo."
 

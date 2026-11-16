@@ -7711,7 +7711,7 @@ msgstr ""
 msgid "Proposal canceled"
 msgstr "提案已取消"
 
-#: src/components/transaction-error/TransactionError.tsx:50
+#: src/components/transaction-error/TransactionError.tsx:56
 msgid "Proposal cannot be executed while another auction is currently running"
 msgstr "在另一场拍卖进行期间，提案无法执行"
 
@@ -12792,11 +12792,11 @@ msgstr "你的投票"
 msgid "Your voting power:"
 msgstr "你的投票权："
 
-#: src/components/transaction-error/TransactionError.tsx:58
+#: src/components/transaction-error/TransactionError.tsx:64
 msgid "Your wallet couldn't send this transaction. Make sure you have enough funds to pay for gas and try again."
 msgstr "您的 Wallet 无法发送此交易。请确认您有足够的资金支付 gas 费用，然后重试。"
 
-#: src/components/transaction-error/TransactionError.tsx:54
+#: src/components/transaction-error/TransactionError.tsx:60
 msgid "Your wallet doesn't have enough funds to pay for gas. Add some and try again."
 msgstr "您的 Wallet 没有足够的资金支付 gas 费用。请充值后重试。"
 

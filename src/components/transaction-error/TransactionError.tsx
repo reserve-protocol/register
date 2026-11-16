@@ -14,6 +14,8 @@ interface Props {
 
 type WalletFailure = 'insufficient-funds' | 'wallet-error'
 
+const EXECUTION_REVERTED_CODE = 3
+
 // viem reports any wallet RPC failure (-32603) as a revert, using the wallet's message as the reason.
 export const getWalletFailure = (error: Error): WalletFailure | undefined => {
   if (!(error instanceof BaseError)) return undefined
@@ -23,8 +25,12 @@ export const getWalletFailure = (error: Error): WalletFailure | undefined => {
 
   const revert = error.walk((e) => e instanceof ContractFunctionRevertedError)
   if (!(revert instanceof ContractFunctionRevertedError)) return undefined
-  if (revert.data || revert.raw || !revert.reason) return undefined
-  if (/revert/i.test(revert.reason)) return undefined
+  if (revert.data || (revert.raw && revert.raw !== '0x')) return undefined
+  if (!revert.reason || /revert/i.test(revert.reason)) return undefined
+  const isExecutionReverted = error.walk(
+    (e) => (e as { code?: unknown }).code === EXECUTION_REVERTED_CODE
+  )
+  if (isExecutionReverted) return undefined
 
   return 'wallet-error'
 }
@@ -59,7 +65,11 @@ const TransactionError = ({ error, withName = true, className }: Props) => {
   }
 
   return (
-    <div className={className} data-testid="transaction-error">
+    <div
+      className={className}
+      data-testid="transaction-error"
+      data-error-kind={walletFailure}
+    >
       <span
         className={cn(
           'text-sm text-destructive whitespace-break-spaces',
