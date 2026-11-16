@@ -1946,7 +1946,7 @@ msgstr "계속하기 전에 다음 사항을 확인해 주세요."
 msgid "Before using automated minting"
 msgstr "자동 Mint를 사용하기 전에"
 
-#: src/components/vote-lock/components/submit-unlock-button.tsx:132
+#: src/components/vote-lock/components/submit-unlock-button.tsx:166
 msgid "Begin {unlockDelay}-day unlock delay"
 msgstr "{unlockDelay}일 잠금 해제 지연 시작"
 
@@ -1966,7 +1966,7 @@ msgstr "{0} {1} Mint 시작"
 msgid "Begin redemption of {0} {1}"
 msgstr "{0} {1} Redemption 시작"
 
-#: src/components/vote-lock/components/submit-unlock-button.tsx:133
+#: src/components/vote-lock/components/submit-unlock-button.tsx:167
 msgid "Begin unlock delay"
 msgstr "잠금 해제 지연 시작"
 
@@ -2748,7 +2748,7 @@ msgstr "트랜잭션 확인 중..."
 #: src/components/stake-drawer/components/submit-stake-button.tsx:217
 #: src/components/stake-drawer/components/submit-unstake-button.tsx:104
 #: src/components/vote-lock/components/submit-lock-button.tsx:211
-#: src/components/vote-lock/components/submit-unlock-button.tsx:124
+#: src/components/vote-lock/components/submit-unlock-button.tsx:158
 #: src/views/index-dtf/deploy/steps/confirm-deploy/manual/components/confirm-manual-deploy-button.tsx:298
 #: src/views/index-dtf/deploy/steps/confirm-deploy/simple/simple-deploy-button.tsx:133
 msgid "Confirming tx..."
@@ -7251,7 +7251,7 @@ msgstr "대기 중인 출금"
 #: src/components/transaction-modal/index.tsx:159
 #: src/components/vote-lock/components/submit-delegate-button.tsx:179
 #: src/components/vote-lock/components/submit-lock-button.tsx:212
-#: src/components/vote-lock/components/submit-unlock-button.tsx:125
+#: src/components/vote-lock/components/submit-unlock-button.tsx:159
 #: src/views/index-dtf/deploy/steps/confirm-deploy/manual/components/confirm-manual-deploy-button.tsx:298
 #: src/views/index-dtf/deploy/steps/confirm-deploy/simple/simple-deploy-button.tsx:134
 #: src/views/yield-dtf/deploy/components/DeployOverview.tsx:25
@@ -7681,7 +7681,7 @@ msgstr "Wallet에서 진행"
 #: src/components/stake-drawer/components/submit-stake-button.tsx:215
 #: src/components/stake-drawer/components/submit-unstake-button.tsx:102
 #: src/components/vote-lock/components/submit-lock-button.tsx:209
-#: src/components/vote-lock/components/submit-unlock-button.tsx:122
+#: src/components/vote-lock/components/submit-unlock-button.tsx:156
 msgid "Processing transaction..."
 msgstr "트랜잭션 처리 중..."
 
@@ -7711,7 +7711,7 @@ msgstr ""
 msgid "Proposal canceled"
 msgstr "제안이 취소됨"
 
-#: src/components/transaction-error/TransactionError.tsx:25
+#: src/components/transaction-error/TransactionError.tsx:50
 msgid "Proposal cannot be executed while another auction is currently running"
 msgstr "다른 경매가 진행 중인 동안에는 제안을 실행할 수 없습니다"
 
@@ -10896,7 +10896,7 @@ msgstr "트랜잭션 2"
 #: src/components/stake-drawer/components/submit-stake-button.tsx:180
 #: src/components/stake-drawer/components/submit-unstake-button.tsx:80
 #: src/components/vote-lock/components/submit-lock-button.tsx:217
-#: src/components/vote-lock/components/submit-unlock-button.tsx:130
+#: src/components/vote-lock/components/submit-unlock-button.tsx:164
 #: src/hooks/useWatchTransaction.ts:56
 msgid "Transaction confirmed"
 msgstr "트랜잭션이 확인되었습니다"
@@ -11196,7 +11196,7 @@ msgstr "무제한"
 msgid "Unlock"
 msgstr "잠금 해제"
 
-#: src/components/vote-lock/components/submit-unlock-button.tsx:95
+#: src/components/vote-lock/components/submit-unlock-button.tsx:129
 msgid "Unlock initiated successfully"
 msgstr "잠금 해제가 성공적으로 시작되었습니다"
 
@@ -12791,6 +12791,14 @@ msgstr "내 투표"
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalVote.tsx:124
 msgid "Your voting power:"
 msgstr "내 투표권:"
+
+#: src/components/transaction-error/TransactionError.tsx:58
+msgid "Your wallet couldn't send this transaction. Make sure you have enough funds to pay for gas and try again."
+msgstr "Wallet에서 이 트랜잭션을 전송하지 못했습니다. 가스비를 지불할 자금이 충분한지 확인한 후 다시 시도하세요."
+
+#: src/components/transaction-error/TransactionError.tsx:54
+msgid "Your wallet doesn't have enough funds to pay for gas. Add some and try again."
+msgstr "Wallet에 가스비를 지불할 자금이 부족합니다. 자금을 추가한 후 다시 시도하세요."
 
 #: src/views/portfolio-page/components/dtf-positions.tsx:218
 msgid "Your yield-bearing stablecoin holdings."

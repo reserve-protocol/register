@@ -1,13 +1,20 @@
 import TransactionButton from '@/components/ui/transaction-button'
+import { getWalletFailure } from '@/components/transaction-error/TransactionError'
+import { trackClick } from '@/hooks/useTrackPage'
 import { walletAtom } from '@/state/atoms'
 import { useLingui } from '@lingui/react/macro'
 import { prepareVoteLockRedeem } from '@reserve-protocol/react-sdk'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { useResetAtom } from 'jotai/utils'
+import mixpanel from 'mixpanel-browser/src/loaders/loader-module-core'
 import { useEffect, useRef, useState } from 'react'
 import { toast } from 'sonner'
-import { parseUnits } from 'viem'
-import { useWaitForTransactionReceipt, useWriteContract } from 'wagmi'
+import { BaseError, parseUnits } from 'viem'
+import {
+  useAccount,
+  useWaitForTransactionReceipt,
+  useWriteContract,
+} from 'wagmi'
 import {
   closeDrawerAtom,
   stakingInputAtom,
@@ -23,6 +30,7 @@ const PROCESSING_DELAY = 10_000
 const SubmitUnlockButton = ({ onSuccess }: { onSuccess?: () => void }) => {
   const { t } = useLingui()
   const account = useAtomValue(walletAtom)
+  const { connector } = useAccount()
   const stToken = useAtomValue(stTokenAtom)
   const input = useAtomValue(stakingInputAtom)
   const balance = useAtomValue(unlockShareBalanceRawAtom)
@@ -70,10 +78,36 @@ const SubmitUnlockButton = ({ onSuccess }: { onSuccess?: () => void }) => {
   })
 
   const write = () => {
-    if (!readyToSubmit || !call) return
+    if (!readyToSubmit || !call || !stToken) return
 
+    trackClick(
+      'vote_lock',
+      'vote_lock_unlock_submit',
+      stToken.dtfAddress ?? stToken.id,
+      stToken.token.symbol,
+      stToken.chainId
+    )
     pendingSupplyDelta.current = -sharesToUnlock
-    writeContract(getWriteContractParams(call))
+    writeContract(getWriteContractParams(call), {
+      onError: (failure) =>
+        mixpanel.track('transaction', {
+          product: 'vote_lock_unlock',
+          action: 'transaction_failed',
+          ca: stToken.dtfAddress ?? stToken.id,
+          ticker: stToken.token.symbol,
+          chain: stToken.chainId,
+          wallet: connector?.name,
+          payload: {
+            stToken: stToken.id,
+            error_name: failure.name,
+            error:
+              failure instanceof BaseError
+                ? failure.shortMessage
+                : failure.message,
+            wallet_failure: getWalletFailure(failure),
+          },
+        }),
+    })
   }
 
   useEffect(() => {
