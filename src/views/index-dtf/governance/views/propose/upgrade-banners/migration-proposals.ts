@@ -1,7 +1,7 @@
 import DTFIndexGovernance from '@/abis/dtf-index-governance'
 import { PROPOSAL_STATES } from '@/utils/constants'
 import type { IndexDtfProposalSummary } from '@reserve-protocol/react-sdk'
-import { encodeFunctionData, parseAbi, type Address } from 'viem'
+import { encodeFunctionData, getAddress, parseAbi, type Address } from 'viem'
 
 export const UPGRADE_FOLIO_MESSAGE = 'Reserve Optimistic Governor upgrade'
 const RETIRE_MESSAGE = 'Retire legacy vote-lock vault'
@@ -19,6 +19,26 @@ export const ownableVaultAbi = parseAbi([
   'function asset() view returns (address)',
   'function transferOwnership(address newOwner)',
 ])
+// MAG7 and the AI DTFs moved to vlRSR; their deploy vaults only hold the deployer's seed stake, so there is nothing to retire.
+const UNUSED_DEPLOY_VAULTS: Record<number, readonly Address[]> = {
+  1: [
+    getAddress('0x6d586c6ece79db0a5a3b7fde1e09d59724037769'), // vlRSR-BUILDOUT
+    getAddress('0x703f8a8b2ecca6fdc75bcbdeb92848d077cc179c'), // vlRSR-PHOTON
+  ],
+  8453: [
+    getAddress('0x9cff81dc5e5de6420e67d4986082158379927f9e'), // vlRSR-MAG7
+    getAddress('0x08ce0b188fa46898b85486cd8341b4b8783fc2ed'), // vlRSR-MAG7
+    getAddress('0xa16770ebb62fc5a77418d1050cfdc3ffcc113ec3'), // vlRSR-MAG7
+  ],
+  56: [
+    getAddress('0x24f3248c9e9fc17577c92ffeed1afd15a5ebc80d'), // vlRSR-BUILDOUT
+    getAddress('0x2575953e4644da528d6a61eff1095b2eb757d71f'), // vlRSR-PHOTON
+  ],
+}
+
+export const isUnusedDeployVault = (chainId: number, vault: Address) =>
+  (UNUSED_DEPLOY_VAULTS[chainId] ?? []).includes(getAddress(vault))
+
 const retireSpellAbi = parseAbi([
   'function retireOldStakingVault(address oldStakingVault)',
 ])
