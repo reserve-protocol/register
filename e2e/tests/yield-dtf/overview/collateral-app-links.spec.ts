@@ -37,10 +37,14 @@ test('eUSD collateral details link to specific protocol markets and keep explore
   setYieldReplay(eusd.chainId)
   await harness.chain.freezeAt(yieldPinnedTimestamp(eusd))
   await harness.gotoYield(eusd, 'overview')
-  for (let i = 0; i < 5; i++) await harness.chain.advance(4_000)
 
   const rows = page.getByTestId('yield-collateral-row')
-  await expect(rows).toHaveCount(destinations.length)
+  await expect
+    .poll(async () => {
+      await harness.chain.advance(4_000)
+      return rows.count()
+    })
+    .toBe(destinations.length)
 
   for (const [address, url] of destinations) {
     const collateral = page.locator(
@@ -77,9 +81,13 @@ test('collaterals without a destination on the current chain keep explorer links
   setYieldReplay(baseHyusd.chainId)
   await harness.chain.freezeAt(yieldPinnedTimestamp(baseHyusd))
   await harness.gotoYield(baseHyusd, 'overview')
-  for (let i = 0; i < 5; i++) await harness.chain.advance(4_000)
   const rows = page.getByTestId('yield-collateral-row')
-  await expect(rows.first()).toBeVisible()
+  await expect
+    .poll(async () => {
+      await harness.chain.advance(4_000)
+      return rows.count()
+    })
+    .toBeGreaterThan(0)
   for (const row of await rows.all()) {
     await row.getByTestId('yield-collateral-toggle').click()
     await expect(row.getByTestId('yield-collateral-app-link')).toHaveCount(0)

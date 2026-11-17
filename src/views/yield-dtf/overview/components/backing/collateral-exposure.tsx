@@ -100,10 +100,14 @@ const ContractButton = ({
   const { t } = useLingui()
   const [copied, setCopied] = useState(false)
 
-  const copy = () => {
-    navigator.clipboard.writeText(address)
-    setCopied(true)
-    setTimeout(() => setCopied(false), 2000)
+  const copy = async () => {
+    try {
+      await navigator.clipboard.writeText(address)
+      setCopied(true)
+      setTimeout(() => setCopied(false), 2000)
+    } catch (error) {
+      console.warn('Failed to copy collateral address', error)
+    }
   }
 
   return (
