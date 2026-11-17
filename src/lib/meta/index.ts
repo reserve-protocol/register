@@ -27,6 +27,7 @@ export type CollateralAssetRaw = {
   id: string
   displaySymbol: string
   addresses: Record<string, any>
+  appUrls?: Record<number, string>
   protocol: string // Just the ID
   color?: string
   llamaId?: string
@@ -41,6 +42,7 @@ export type CollateralAsset = {
   id: string
   displaySymbol: string
   addresses: Record<string, any>
+  appUrls?: Record<number, string>
   protocol: Protocol
   color?: string
   llamaId?: string

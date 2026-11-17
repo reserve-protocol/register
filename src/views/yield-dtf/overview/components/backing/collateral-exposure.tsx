@@ -1,16 +1,27 @@
 import { Trans, useLingui } from '@lingui/react/macro'
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
-import CopyValue from '@/components/ui/copy-value'
-import GoTo from '@/components/ui/go-to'
 import CollaterizationIcon from 'components/icons/CollaterizationIcon'
-import HiperlinkIcon from 'components/icons/HiperlinkIcon'
 import TokenLogo from 'components/icons/TokenLogo'
 import TabMenu from 'components/tab-menu'
 import useRToken from 'hooks/useRToken'
+import { trackClick } from 'hooks/useTrackPage'
 import { atom, useAtom, useAtomValue } from 'jotai'
-import { useMemo, useState } from 'react'
-import { ChevronDown } from 'lucide-react'
+import {
+  type AnchorHTMLAttributes,
+  type ReactNode,
+  useMemo,
+  useState,
+} from 'react'
+import {
+  ArrowUpRight,
+  BookOpen,
+  Check,
+  ChevronDown,
+  Copy,
+  FileCode2,
+  Globe,
+} from 'lucide-react'
 import Skeleton from 'react-loading-skeleton'
 import { chainIdAtom } from 'state/atoms'
 import { collateralsMetadataAtom } from 'state/cms/atoms'
@@ -24,6 +35,7 @@ import { YIELD_PROTOCOL_DOCS } from '@/utils/constants'
 
 interface DetailedCollateralWithMeta extends CollateralDetail {
   website?: string
+  appUrl?: string
   description: string
   addresses: { label: string; address: string }[]
 }
@@ -51,11 +63,85 @@ const backingDetailAtom = atom((get) => {
     return {
       ...c,
       website: token?.website,
+      appUrl: meta?.appUrls?.[chainId],
       description: meta?.description ?? '',
       addresses,
     }
   }) as DetailedCollateralWithMeta[]
 })
+
+const ExternalLinkButton = ({
+  icon,
+  children,
+  ...props
+}: AnchorHTMLAttributes<HTMLAnchorElement> & {
+  icon: ReactNode
+  'data-testid'?: string
+}) => (
+  <Button variant="outline" size="sm" className="h-11 sm:h-9 gap-2" asChild>
+    <a target="_blank" rel="noopener noreferrer" {...props}>
+      {icon}
+      {children}
+      <ArrowUpRight size={14} className="text-legend" />
+    </a>
+  </Button>
+)
+
+const contractActionClass =
+  'flex w-11 sm:w-9 shrink-0 items-center justify-center border-l border-border text-legend transition-colors hover:bg-accent hover:text-foreground'
+
+const ContractButton = ({
+  address,
+  chainId,
+}: {
+  address: string
+  chainId: number
+}) => {
+  const { t } = useLingui()
+  const [copied, setCopied] = useState(false)
+
+  const copy = async () => {
+    try {
+      await navigator.clipboard.writeText(address)
+      setCopied(true)
+      setTimeout(() => setCopied(false), 2000)
+    } catch (error) {
+      console.warn('Failed to copy collateral address', error)
+    }
+  }
+
+  return (
+    <div className="col-span-2 flex h-11 sm:h-9 items-stretch overflow-hidden rounded-md border border-border text-sm">
+      <span className="flex min-w-0 flex-1 items-center gap-2 px-3">
+        <FileCode2 size={14} className="shrink-0" />
+        <span className="flex min-w-0 font-mono sm:hidden">
+          <span className="truncate">{address.slice(0, -4)}</span>
+          <span className="shrink-0">{address.slice(-4)}</span>
+        </span>
+        <span className="hidden font-mono sm:inline">
+          {shortenAddress(address)}
+        </span>
+      </span>
+      <button
+        type="button"
+        aria-label={t`Copy address`}
+        onClick={copy}
+        className={contractActionClass}
+      >
+        {copied ? <Check size={14} /> : <Copy size={14} />}
+      </button>
+      <a
+        href={getExplorerLink(address, chainId, ExplorerDataType.TOKEN)}
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label={t`View on explorer`}
+        className={contractActionClass}
+      >
+        <ArrowUpRight size={14} />
+      </a>
+    </div>
+  )
+}
 
 const CollateralDetails = ({
   collateral,
@@ -65,15 +151,19 @@ const CollateralDetails = ({
   const chainId = useAtomValue(chainIdAtom)
   const [expanded, setExpanded] = useState(false)
   const backingType = useAtomValue(backingTypeAtom)
+  const websiteUrl = collateral.appUrl ?? collateral.website
 
   return (
     <div
+      data-testid="yield-collateral-row"
+      data-collateral={collateral.address.toLowerCase()}
       className={cn(
         'font-semibold relative items-center border-b last:border-b-0',
         expanded ? 'border-input' : 'border-border'
       )}
     >
       <div
+        data-testid="yield-collateral-toggle"
         onClick={() => setExpanded(!expanded)}
         className="grid grid-cols-1 sm:grid-cols-[3fr_1fr_1fr_1fr] cursor-pointer hover:sm:bg-muted p-3 sm:p-4"
       >
@@ -127,53 +217,34 @@ const CollateralDetails = ({
       {!!expanded && (
         <div className="mt-3 font-normal px-3 sm:px-4 pb-3 sm:pb-4">
           <p>{collateral.description}</p>
-          <div className="mt-3 flex items-center flex-wrap">
-            <Button
-              className="mr-3"
-              size="sm"
-              variant="ghost"
-              onClick={(e) => {
-                e.stopPropagation()
-                window.open(YIELD_PROTOCOL_DOCS, '_blank')
-              }}
-            >
-              <div className="flex items-center">
-                <HiperlinkIcon />
-                <span className="ml-2">
-                  <Trans>Docs</Trans>
-                </span>
-              </div>
-            </Button>
-            {!!collateral.website && (
-              <Button
-                className="mr-3 border-2"
-                size="sm"
-                variant="outline"
-                onClick={() => window.open(collateral.website, '_blank')}
+          <div className="mt-3 grid grid-cols-2 gap-2 sm:flex sm:flex-wrap sm:items-center">
+            {!!websiteUrl && (
+              <ExternalLinkButton
+                href={websiteUrl}
+                icon={<Globe size={14} />}
+                data-testid={
+                  collateral.appUrl ? 'yield-collateral-app-link' : undefined
+                }
+                onClick={() =>
+                  trackClick(
+                    'yield_dtf_backing',
+                    'collateral_website',
+                    collateral.address,
+                    collateral.symbol,
+                    chainId
+                  )
+                }
               >
-                <div className="flex items-center">
-                  <HiperlinkIcon />
-                  <span className="ml-2">
-                    <Trans>Website</Trans>
-                  </span>
-                </div>
-              </Button>
+                <Trans>Website</Trans>
+              </ExternalLinkButton>
             )}
-            <div className="hidden sm:block w-px h-6 bg-border mr-3" />
-            <div className="flex items-center basis-full sm:basis-auto mt-3 sm:mt-0">
-              <span className="mr-2 text-legend">
-                {shortenAddress(collateral.address)}
-              </span>
-              <CopyValue mr={1} ml="auto" value={collateral.address} />
-              <GoTo
-                style={{ position: 'relative', top: '2px' }}
-                href={getExplorerLink(
-                  collateral.address,
-                  chainId,
-                  ExplorerDataType.TOKEN
-                )}
-              />
-            </div>
+            <ExternalLinkButton
+              href={YIELD_PROTOCOL_DOCS}
+              icon={<BookOpen size={14} />}
+            >
+              <Trans>Docs</Trans>
+            </ExternalLinkButton>
+            <ContractButton address={collateral.address} chainId={chainId} />
           </div>
         </div>
       )}

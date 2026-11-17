@@ -15,8 +15,8 @@ Playwright runs 3 projects (`playwright.config.ts`): **smoke** (`@smoke`-tagged,
 Desktop Chrome), **full** (everything else, Desktop Chrome), **mobile**
 (`@mobile`-tagged, Pixel 7 viewport — off CI, `pnpm e2e:mobile`).
 
-79 specs across 5 top-level dirs: `general/` (8), `index-dtf/` (19),
-`yield-dtf/` (7), `smoke/` (13), `flows/` (32). `index-dtf/` and `yield-dtf/`
+84 specs across 5 top-level dirs: `general/` (10), `index-dtf/` (20),
+`yield-dtf/` (9), `smoke/` (13), `flows/` (32). `index-dtf/` and `yield-dtf/`
 hold render/lifecycle/mobile specs per route; `flows/` holds deeper
 behavior/write/edge-case specs (desktop only, except `flows/wallet-connect`,
 which also runs on mobile because the wallet modal is a mobile-first surface).
@@ -64,6 +64,7 @@ which also runs on mobile because the wallet modal is a mobile-first surface).
 | Area | Spec file(s) | States covered | Lifecycle | Mobile | Gaps |
 |---|---|---|---|---|---|
 | Overview | [overview/render](tests/yield-dtf/overview/render.spec.ts) | renders offline from captured RPC+subgraph; underlying fees section hidden pre-tracking | none | yes | edge cases (empty/error chart) |
+| Backing & Risk – collateral app links | [overview/collateral-app-links](tests/yield-dtf/overview/collateral-app-links.spec.ts) | all five captured eUSD collaterals have exact vault/market deep links and retained explorer links; Base collaterals without a chain-specific destination omit the app link | settled-state assertions | yes | external app availability is verified separately, not mocked as an app guarantee |
 | Issuance | [issuance/state-space](tests/yield-dtf/issuance/state-space.spec.ts) | active DTF: mint+redeem panels; mint-paused DTF: redeem-only, no mint panel | none | yes | zap variant, write flow |
 | Staking | [staking/render](tests/yield-dtf/staking/render.spec.ts), [staking/history-partial](tests/yield-dtf/staking/history-partial.spec.ts), [staking/stake-write](tests/yield-dtf/staking/stake-write.spec.ts), [staking/unstake-write](tests/yield-dtf/staking/unstake-write.spec.ts) | exchange-rate+APY render; staked-history survives a snapshots-less response; `stake()`/`unstake()` submit to stRSR | none | partial (render + history only) | withdraw, cancel, cooldown-vs-available |
 | Governance – create mandate proposal | [governance/mandate](tests/yield-dtf/governance/mandate.spec.ts) | current value; edit/preview/discard; empty/whitespace blocks prepare; encoded RToken setter in Governor proposal RPC; unsupported token version hides mandate without blocking parameter edits | settled-state assertions | yes | loading islands, other proposal actions, successful wallet submission |
