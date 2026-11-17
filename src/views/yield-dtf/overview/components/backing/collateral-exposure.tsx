@@ -8,6 +8,7 @@ import HiperlinkIcon from 'components/icons/HiperlinkIcon'
 import TokenLogo from 'components/icons/TokenLogo'
 import TabMenu from 'components/tab-menu'
 import useRToken from 'hooks/useRToken'
+import { trackClick } from 'hooks/useTrackPage'
 import { atom, useAtom, useAtomValue } from 'jotai'
 import { useMemo, useState } from 'react'
 import { ChevronDown } from 'lucide-react'
@@ -24,6 +25,7 @@ import { YIELD_PROTOCOL_DOCS } from '@/utils/constants'
 
 interface DetailedCollateralWithMeta extends CollateralDetail {
   website?: string
+  appUrl?: string
   description: string
   addresses: { label: string; address: string }[]
 }
@@ -51,6 +53,7 @@ const backingDetailAtom = atom((get) => {
     return {
       ...c,
       website: token?.website,
+      appUrl: meta?.appUrls?.[chainId],
       description: meta?.description ?? '',
       addresses,
     }
@@ -68,12 +71,15 @@ const CollateralDetails = ({
 
   return (
     <div
+      data-testid="yield-collateral-row"
+      data-collateral={collateral.address.toLowerCase()}
       className={cn(
         'font-semibold relative items-center border-b last:border-b-0',
         expanded ? 'border-input' : 'border-border'
       )}
     >
       <div
+        data-testid="yield-collateral-toggle"
         onClick={() => setExpanded(!expanded)}
         className="grid grid-cols-1 sm:grid-cols-[3fr_1fr_1fr_1fr] cursor-pointer hover:sm:bg-muted p-3 sm:p-4"
       >
@@ -144,6 +150,30 @@ const CollateralDetails = ({
                 </span>
               </div>
             </Button>
+            {!!collateral.appUrl && (
+              <Button className="mr-3 min-h-11" size="sm" variant="outline" asChild>
+                <a
+                  data-testid="yield-collateral-app-link"
+                  href={collateral.appUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={() =>
+                    trackClick(
+                      'yield_dtf_backing',
+                      'collateral_app',
+                      collateral.address,
+                      collateral.symbol,
+                      chainId
+                    )
+                  }
+                >
+                  <HiperlinkIcon />
+                  <span className="ml-2">
+                    <Trans>View in app</Trans>
+                  </span>
+                </a>
+              </Button>
+            )}
             {!!collateral.website && (
               <Button
                 className="mr-3 border-2"

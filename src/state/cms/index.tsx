@@ -34,6 +34,7 @@ const setCollateralsMetadataAtom = atom(
         id: item.id,
         name: item.name,
         displaySymbol: item.displaySymbol,
+        appUrls: item.appUrls,
         llamaId: item.llamaId,
         description: item.description,
         color: item.color ?? stringToHex(item.id),

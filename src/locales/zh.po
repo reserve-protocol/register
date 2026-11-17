@@ -13,6 +13,10 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
+#: src/views/yield-dtf/overview/components/backing/collateral-exposure.tsx
+msgid "View in app"
+msgstr "在应用中查看"
+
 #: src/views/yield-dtf/overview/components/backing/index.tsx:75
 msgid " and "
 msgstr " 和 "
