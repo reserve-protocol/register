@@ -210,6 +210,16 @@ msgstr "시가총액 대비 {0} 버퍼 비율:"
 msgid "{0} cover"
 msgstr "{0} 커버 이미지"
 
+#. placeholder {0}: profile.thisDtf.defeated
+#: src/components/governance/address-hovercard/address-profile-card.tsx:162
+msgid "{0} defeated"
+msgstr "{0}건 부결"
+
+#. placeholder {0}: formatCurrency(profile.delegatedPower, 2, { notation: 'compact' })
+#: src/components/governance/address-hovercard/address-profile-card.tsx:224
+msgid "{0} delegated"
+msgstr "{0} 위임됨"
+
 #. placeholder {0}: selectedDtfs.length
 #: src/views/earn/views/index-dtf/components/table-filters.tsx:54
 msgid "{0} DTFs"
@@ -219,6 +229,11 @@ msgstr "{0} DTFs"
 #: src/views/index-dtf/overview/components/charts/chart-overlay.tsx:80
 msgid "{0} Est. APY"
 msgstr "{0} 예상 APY"
+
+#. placeholder {0}: profile.thisDtf.executed
+#: src/components/governance/address-hovercard/address-profile-card.tsx:159
+msgid "{0} executed"
+msgstr "{0}건 실행"
 
 #. placeholder {0}: dtf.token.symbol
 #: src/views/index-dtf/overview/components/landing-mint/dtf-cover.tsx:103
@@ -266,12 +281,18 @@ msgstr "{1} 중 {0}"
 msgid "{0} Performance"
 msgstr "{0} 성과"
 
+#. placeholder {0}: account.totals.proposals
+#. placeholder {1}: account.totals.votes
+#: src/components/governance/address-hovercard/address-profile-card.tsx:277
+msgid "{0} proposals · {1} votes"
+msgstr "제안 {0}건 · 투표 {1}회"
+
 #. placeholder {0}: props.selected.length
 #. placeholder {0}: selected.length
 #: src/components/ui/multiselect-dropdown.tsx:170
 #: src/views/explorer/components/filters/token-filter.tsx:75
 #: src/views/explorer/components/filters/TransactionTypeFilter.tsx:44
-#: src/views/explorer/components/governance/filters.tsx:47
+#: src/views/explorer/components/governance/filters.tsx:51
 msgid "{0} selected"
 msgstr "{0}개 선택됨"
 
@@ -290,6 +311,11 @@ msgstr "{0} 토큰 백서"
 #: src/views/yield-dtf/overview/components/StargateWarning.tsx:23
 msgid "{0} uses Stargate collateral and has pending STG rewards. As of January 5, 2026 the STG asset will no longer be functional, as Chainlink is deprecating the STG-USD oracle. The Stargate collateral will still function, but STG rewards will no longer be processed, causing a drop in real {1} yield."
 msgstr "{0}는 Stargate 담보를 사용하며 대기 중인 STG 리워드가 있습니다. 2026년 1월 5일부로 Chainlink가 STG-USD 오라클을 폐기함에 따라 STG 자산은 더 이상 작동하지 않습니다. Stargate 담보는 계속 작동하지만 STG 리워드는 더 이상 처리되지 않아 실제 {1} 수익이 감소합니다."
+
+#. placeholder {0}: profile.thisDtf.vetoed
+#: src/components/governance/address-hovercard/address-profile-card.tsx:165
+msgid "{0} vetoed"
+msgstr "{0}건 거부권 행사됨"
 
 #. placeholder {0}: removedAssets.map((a) => a.token.symbol).join(', ')
 #: src/views/index-dtf/governance/components/proposal-preview/rebalance-preview/rebalance-basket-preview.tsx:58
@@ -887,9 +913,11 @@ msgstr "최소 거래량 이상"
 
 #: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:330
 #: src/views/index-dtf/governance/views/proposal/components/proposal-detail-votes.tsx:115
+#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:298
+#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-votes.tsx:121
 #: src/views/index-dtf/governance/views/proposal/components/vote-modal.tsx:79
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalDetailStats.tsx:236
-#: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalVotes.tsx:90
+#: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalVotes.tsx:91
 #: src/views/yield-dtf/governance/views/proposal-detail/components/VoteModal.tsx:56
 msgid "Abstain"
 msgstr "기권"
@@ -906,6 +934,10 @@ msgstr "옵티미스틱 제안을 제출할 수 있는 계정입니다."
 msgid "Acquire assets before minting"
 msgstr "Mint 전에 자산 확보"
 
+#: src/components/governance/address-hovercard/address-profile-card.tsx:275
+msgid "Across Reserve"
+msgstr "Reserve 전체"
+
 #: src/views/internal/dtf-list/components/dtf-table.tsx:201
 #: src/views/portfolio-page/components/pending-withdrawals.tsx:370
 #: src/views/portfolio-page/components/staked-positions.tsx:118
@@ -917,7 +949,7 @@ msgstr "작업"
 msgid "Action needed"
 msgstr "조치 필요"
 
-#: src/views/explorer/components/governance/filters.tsx:18
+#: src/views/explorer/components/governance/filters.tsx:22
 msgid "Active"
 msgstr "활성"
 
@@ -1086,7 +1118,7 @@ msgstr "추가 수령인:"
 #: src/views/index-dtf/deploy/steps/roles/roles-form.tsx:15
 #: src/views/index-dtf/deploy/steps/roles/roles-form.tsx:41
 #: src/views/index-dtf/deploy/steps/roles/roles-form.tsx:50
-#: src/views/index-dtf/governance/components/governance-delegate-list.tsx:61
+#: src/views/index-dtf/governance/components/governance-delegate-list.tsx:57
 #: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/components/sections/propose-basket-roles.tsx:24
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/sections/propose-dao-roles.tsx:24
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-dtf-roles.tsx:15
@@ -1096,7 +1128,7 @@ msgstr "추가 수령인:"
 #: src/views/index-dtf/settings/components/index-settings-basic.tsx:102
 #: src/views/internal/dtf-list/components/dtf-table.tsx:189
 #: src/views/internal/dtf-listed/components/listed-dtf-table.tsx:153
-#: src/views/yield-dtf/governance/components/TopVoters.tsx:90
+#: src/views/yield-dtf/governance/components/TopVoters.tsx:91
 msgid "Address"
 msgstr "주소"
 
@@ -1110,9 +1142,17 @@ msgstr "주소 아바타"
 msgid "Address copied to clipboard"
 msgstr "주소가 클립보드에 복사되었습니다"
 
+#: src/components/governance/address-hovercard/index.tsx:99
+msgid "Address governance profile"
+msgstr "주소 거버넌스 프로필"
+
 #: src/views/internal/dtf-listed/components/listed-dtf-table.tsx:162
 msgid "Admin Gov"
 msgstr "관리자 Gov"
+
+#: src/components/governance/address-hovercard/address-profile-card.tsx:110
+msgid "Admin of this DTF"
+msgstr "이 DTF의 관리자"
 
 #: src/views/internal/dtf-listed/components/listed-dtf-table.tsx:165
 msgid "Admin Timelock"
@@ -1143,7 +1183,7 @@ msgstr "Alexios는 Compound Governor Bravo에서 채택한 표준 토큰 투표 
 
 #: src/components/token-selector-drawer/index.tsx:142
 #: src/views/earn/components/table-filters.tsx:33
-#: src/views/explorer/components/governance/filters.tsx:56
+#: src/views/explorer/components/governance/filters.tsx:60
 #: src/views/explorer/components/tokens/index.tsx:44
 #: src/views/index-dtf/deploy/steps/basket/token-selector.tsx:244
 #: src/views/index-dtf/factsheet/components/chart-overlay.tsx:85
@@ -1187,7 +1227,7 @@ msgstr "전체 DTFs"
 msgid "All options"
 msgstr "모든 옵션"
 
-#: src/views/explorer/components/governance/filters.tsx:48
+#: src/views/explorer/components/governance/filters.tsx:52
 msgid "All statuses"
 msgstr "모든 상태"
 
@@ -1612,6 +1652,7 @@ msgstr "경매 만료까지: <0>{0}</0>"
 msgid "Auction launched successfully"
 msgstr "경매가 성공적으로 시작되었습니다"
 
+#: src/components/governance/address-hovercard/address-profile-card.tsx:113
 #: src/views/index-dtf/deploy/steps/roles/roles-form.tsx:45
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-dtf-roles.tsx:45
 msgid "Auction launcher"
@@ -2114,6 +2155,10 @@ msgstr "경매 실행자와 커뮤니티 구성원 모두 경매를 시작할 �
 msgid "Bought"
 msgstr "매수됨"
 
+#: src/components/governance/address-hovercard/address-profile-card.tsx:114
+msgid "Brand manager"
+msgstr "브랜드 관리자"
+
 #: src/views/index-dtf/deploy/steps/roles/roles-form.tsx:19
 #: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:164
 #: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:213
@@ -2240,6 +2285,11 @@ msgstr "{0} 매수 중"
 msgid "Buying:"
 msgstr "매수 중:"
 
+#: src/views/index-dtf/governance/components/proposal-list-item.tsx:204
+#: src/views/yield-dtf/governance/components/ProposalList.tsx:168
+msgid "by"
+msgstr "제안자"
+
 #. placeholder {0}: a.provider
 #: src/views/index-dtf/overview/components/yield-index/yield-index-composition-mobile.tsx:100
 msgid "by {0}"
@@ -2318,7 +2368,7 @@ msgstr "제안 취소"
 msgid "Cancel unstake"
 msgstr "Unstake 취소"
 
-#: src/views/explorer/components/governance/filters.tsx:22
+#: src/views/explorer/components/governance/filters.tsx:26
 #: src/views/index-dtf/governance/views/proposal/components/proposal-deadline-alert.tsx:41
 #: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:303
 #: src/views/yield-dtf/governance/views/proposal-detail/components/proposal-timeline/TimelineItem.tsx:258
@@ -2407,6 +2457,7 @@ msgid "Challenged"
 msgstr "이의 제기됨"
 
 #: src/views/index-dtf/governance/views/proposal/components/proposal-detail-votes.tsx:96
+#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-votes.tsx:102
 msgid "Challenged votes"
 msgstr "이의 제기 투표"
 
@@ -2553,6 +2604,11 @@ msgid "Clear"
 msgstr "지우기"
 
 #: src/views/index-dtf/deploy/steps/confirm-deploy/manual/components/approve-all-deploy-button.tsx:123
+#: src/views/explorer/components/governance/filters.tsx:122
+msgid "Clear proposer filter"
+msgstr "제안자 필터 지우기"
+
+#: src/views/index-dtf/deploy/steps/confirm-deploy/manual/components/approve-all-deploy-button.tsx:118
 #: src/views/index-dtf/issuance/manual/components/approve-all-button.tsx:111
 msgid "Click retry or use individual approve buttons below."
 msgstr "재시도를 클릭하거나 아래의 개별 승인 버튼을 사용하세요."
@@ -3127,7 +3183,7 @@ msgid "Create New Index DTF"
 msgstr "새 Index DTF 생성"
 
 #: src/views/index-dtf/governance/components/governance-proposal-list.tsx:29
-#: src/views/yield-dtf/governance/components/ProposalList.tsx:196
+#: src/views/yield-dtf/governance/components/ProposalList.tsx:214
 msgid "Create proposal"
 msgstr "제안 생성"
 
@@ -3428,7 +3484,7 @@ msgstr "Default Admin"
 msgid "Default delay"
 msgstr "디폴트 지연"
 
-#: src/views/explorer/components/governance/filters.tsx:19
+#: src/views/explorer/components/governance/filters.tsx:23
 #: src/views/index-dtf/governance/views/proposal/components/proposal-deadline-alert.tsx:29
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalAlert.tsx:50
 msgid "Defeated"
@@ -3529,7 +3585,7 @@ msgstr "본인에게 위임됨"
 msgid "Delegated to: "
 msgstr "위임 대상: "
 
-#: src/views/index-dtf/governance/components/governance-delegate-list.tsx:162
+#: src/views/index-dtf/governance/components/governance-delegate-list.tsx:153
 msgid "Delegates"
 msgstr "위임자"
 
@@ -3540,6 +3596,10 @@ msgstr "위임"
 #: src/components/vote-lock/components/submit-delegate-button.tsx:159
 msgid "Delegation updated"
 msgstr "위임이 업데이트됨"
+
+#: src/components/governance/address-hovercard/address-profile-card.tsx:261
+msgid "Delegators"
+msgstr "위임한 보유자"
 
 #: src/components/index-basket-setup/basket-table.tsx:68
 #: src/views/index-dtf/governance/components/proposal-preview/rebalance-preview/rebalance-basket-preview.tsx:80
@@ -4448,8 +4508,8 @@ msgstr "{deadlineDate}까지 실행 가능"
 msgid "Execute proposal"
 msgstr "제안 실행"
 
-#: src/views/explorer/components/governance/filters.tsx:20
-#: src/views/index-dtf/governance/components/proposal-list-item.tsx:101
+#: src/views/explorer/components/governance/filters.tsx:24
+#: src/views/index-dtf/governance/components/proposal-list-item.tsx:103
 #: src/views/index-dtf/governance/views/proposal/components/proposal-deadline-alert.tsx:23
 #: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:302
 #: src/views/yield-dtf/governance/views/proposal-detail/components/proposal-timeline/TimelineItem.tsx:257
@@ -4457,8 +4517,8 @@ msgstr "제안 실행"
 msgid "Executed"
 msgstr "실행됨"
 
-#: src/views/index-dtf/governance/components/proposal-list-item.tsx:51
-#: src/views/yield-dtf/governance/components/ProposalList.tsx:90
+#: src/views/index-dtf/governance/components/proposal-list-item.tsx:53
+#: src/views/yield-dtf/governance/components/ProposalList.tsx:95
 msgid "Execution available in:"
 msgstr "실행 가능 시점:"
 
@@ -4541,7 +4601,7 @@ msgstr "예상"
 msgid "Expected volatility"
 msgstr "예상 변동성"
 
-#: src/views/explorer/components/governance/filters.tsx:25
+#: src/views/explorer/components/governance/filters.tsx:29
 #: src/views/index-dtf/governance/views/proposal/components/proposal-deadline-alert.tsx:35
 #: src/views/index-dtf/issuance/async-mint/components/leg-row.tsx:74
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalAlert.tsx:56
@@ -4684,6 +4744,12 @@ msgstr "수수료 분배"
 
 #: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:55
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/optimistic.ts:123
+#: src/components/governance/address-hovercard/address-profile-card.tsx:115
+msgid "Fee recipient"
+msgstr "수수료 수령인"
+
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:40
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/optimistic.ts:120
 msgid "Fee recipients"
 msgstr "수수료 수령인"
 
@@ -4840,6 +4906,14 @@ msgstr "경로 찾는 중..."
 msgid "Finish re-locking your {symbol}"
 msgstr "{symbol} 재잠금 완료하기"
 
+#: src/components/governance/address-hovercard/address-profile-card.tsx:286
+msgid "First action"
+msgstr "첫 활동"
+
+#: src/components/governance/address-hovercard/address-profile-card.tsx:240
+msgid "First proposal"
+msgstr "첫 제안"
+
 #: src/views/earn/views/yield-dtf/index.tsx:19
 msgid "First-loss capital is the pool of RSR staked by users to absorb losses before DTF holders are affected. If the underlying collateral in a Yield DTF devalues or defaults, staked RSR is sold to cover the shortfall. This protects regular users and aligns stakers with the long-term health of the DTF."
 msgstr "퍼스트 로스 캐피탈은 DTF 보유자가 영향을 받기 전에 손실을 흡수하기 위해 사용자가 Stake한 RSR 풀입니다. Yield DTF의 기초 담보가 가치를 잃거나 디폴트되면 Stake된 RSR이 매각되어 부족분을 보전합니다. 이는 일반 사용자를 보호하고 stakers를 DTF의 장기적 건전성과 일치시킵니다."
@@ -4908,6 +4982,10 @@ msgstr "포럼"
 #: src/views/yield-dtf/settings/components/freeze-manager.tsx:101
 msgid "Freeze State"
 msgstr "동결 상태"
+
+#: src/components/governance/address-hovercard/address-profile-card.tsx:117
+msgid "Freezer"
+msgstr "Freezer"
 
 #: src/views/yield-dtf/governance/views/proposal/components/RolesProposal.tsx:19
 msgid "Freezers"
@@ -5066,6 +5144,10 @@ msgstr "거버넌스 포럼"
 msgid "Governance gets deployed & your RToken is now usable (if unpaused)"
 msgstr "거버넌스가 배포되고 이제 RToken을 사용할 수 있습니다 (일시중지를 해제한 경우)"
 
+#: src/components/governance/address-hovercard/address-profile-card.tsx:255
+msgid "Governance history is unavailable right now."
+msgstr "지금은 거버넌스 기록을 불러올 수 없습니다."
+
 #: src/components/rtoken-setup/governance/GovernanceParameters.tsx:48
 msgid "Governance parameters"
 msgstr "거버넌스 매개변수"
@@ -5159,6 +5241,10 @@ msgstr "가디언"
 #: src/components/rtoken-setup/governance/GovernanceSetup.tsx:97
 msgid "Guardian address"
 msgstr "가디언 주소"
+
+#: src/components/governance/address-hovercard/address-profile-card.tsx:111
+msgid "Guardian of this DTF"
+msgstr "이 DTF의 가디언"
 
 #: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/components/changes/basket-role-changes.tsx:166
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/changes/dao-role-changes.tsx:166
@@ -5402,7 +5488,7 @@ msgid "I'm aware of the {delay}-day unstake delay"
 msgstr "{delay}일의 Unstake 지연을 인지하고 있습니다"
 
 #: src/views/index-dtf/governance/views/proposal/components/proposal-header.tsx:123
-#: src/views/yield-dtf/governance/views/proposal-detail/ProposalHeader.tsx:118
+#: src/views/yield-dtf/governance/views/proposal-detail/ProposalHeader.tsx:121
 msgid "ID"
 msgstr "ID"
 
@@ -5488,7 +5574,7 @@ msgstr "호환되지 않는 Wallet"
 msgid "Increase"
 msgstr "증가"
 
-#: src/views/explorer/components/governance/filters.tsx:58
+#: src/views/explorer/components/governance/filters.tsx:62
 msgid "Index"
 msgstr "Index"
 
@@ -5830,6 +5916,10 @@ msgstr "최근 30일"
 msgid "Last 7 days"
 msgstr "최근 7일"
 
+#: src/components/governance/address-hovercard/address-profile-card.tsx:293
+msgid "Last action"
+msgstr "최근 활동"
+
 #: src/views/index-dtf/governance/views/propose/basket/components/legacy-advance-controls.tsx:31
 #: src/views/index-dtf/governance/views/propose/basket/components/legacy-advance-controls.tsx:32
 msgid "Launch Settings"
@@ -6027,7 +6117,7 @@ msgstr "포트폴리오 데이터를 불러오는 중..."
 #: src/views/index-dtf/governance/components/proposal-preview/token-reward-preview.tsx:66
 #: src/views/index-dtf/governance/components/proposal-preview/token-reward-preview.tsx:66
 #: src/views/index-dtf/governance/views/proposal/components/proposal-header.tsx:58
-#: src/views/index-dtf/governance/views/proposal/components/proposal-header.tsx:105
+#: src/views/index-dtf/governance/views/proposal/components/proposal-header.tsx:104
 #: src/views/index-dtf/governance/views/proposal/components/proposal-header.tsx:128
 #: src/views/index-dtf/governance/views/proposal/components/vote-modal.tsx:140
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/sections/propose-revenue-tokens.tsx:63
@@ -6035,9 +6125,9 @@ msgstr "포트폴리오 데이터를 불러오는 중..."
 #: src/views/index-dtf/settings/components/distribute-fees.tsx:88
 #: src/views/yield-dtf/governance/components/GovernanceOverview.tsx:169
 #: src/views/yield-dtf/governance/views/proposal-detail/components/VoteModal.tsx:91
-#: src/views/yield-dtf/governance/views/proposal-detail/ProposalHeader.tsx:64
-#: src/views/yield-dtf/governance/views/proposal-detail/ProposalHeader.tsx:104
-#: src/views/yield-dtf/governance/views/proposal-detail/ProposalHeader.tsx:121
+#: src/views/yield-dtf/governance/views/proposal-detail/ProposalHeader.tsx:65
+#: src/views/yield-dtf/governance/views/proposal-detail/ProposalHeader.tsx:105
+#: src/views/yield-dtf/governance/views/proposal-detail/ProposalHeader.tsx:124
 #: src/views/yield-dtf/settings/components/setting-item.tsx:62
 msgid "Loading..."
 msgstr "로딩 중..."
@@ -6100,6 +6190,10 @@ msgstr "장기 동결 기간 - RToken 시스템을 더 긴 기간 동안 동결�
 #: src/components/rtoken-setup/token/OtherForm.tsx:37
 msgid "Long freeze duration (s)"
 msgstr "장기 동결 기간 (초)"
+
+#: src/components/governance/address-hovercard/address-profile-card.tsx:118
+msgid "Long freezer"
+msgstr "Long freezer"
 
 #: src/components/rtoken-setup/governance/RoleSetup.tsx:29
 #: src/views/yield-dtf/governance/views/proposal/components/RolesProposal.tsx:20
@@ -6869,7 +6963,7 @@ msgstr ""
 #: src/views/index-dtf/auctions/views/rebalance/components/rebalance-overview.tsx:74
 #: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:204
 #: src/views/portfolio-page/components/active-proposals.tsx:100
-#: src/views/yield-dtf/governance/components/ProposalList.tsx:119
+#: src/views/yield-dtf/governance/components/ProposalList.tsx:124
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalDetailStats.tsx:166
 msgid "No"
 msgstr "아니요"
@@ -6922,7 +7016,7 @@ msgstr "데이터 없음"
 msgid "No data available"
 msgstr "사용 가능한 데이터가 없습니다"
 
-#: src/views/index-dtf/governance/components/governance-delegate-list.tsx:41
+#: src/views/index-dtf/governance/components/governance-delegate-list.tsx:39
 msgid "No delegates found"
 msgstr "위임자를 찾을 수 없음"
 
@@ -6986,7 +7080,7 @@ msgstr "무허가 실행 허용 안 됨"
 msgid "No plugins available"
 msgstr "사용 가능한 플러그인 없음"
 
-#: src/views/yield-dtf/governance/components/ProposalList.tsx:204
+#: src/views/yield-dtf/governance/components/ProposalList.tsx:222
 msgid "No proposals created..."
 msgstr "생성된 제안이 없습니다..."
 
@@ -7068,12 +7162,12 @@ msgstr "트랜잭션 없음"
 msgid "No valid tokens found in the CSV file."
 msgstr "CSV 파일에서 유효한 토큰을 찾을 수 없습니다."
 
-#: src/views/yield-dtf/governance/components/TopVoters.tsx:149
+#: src/views/yield-dtf/governance/components/TopVoters.tsx:152
 msgid "No voters at this moment..."
 msgstr "현재 투표자가 없습니다..."
 
-#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-votes.tsx:51
-#: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalVotes.tsx:135
+#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-votes.tsx:52
+#: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalVotes.tsx:136
 msgid "No votes"
 msgstr "투표 없음"
 
@@ -7123,7 +7217,7 @@ msgid "None"
 msgstr "없음"
 
 #: src/components/vote-lock/components/delegate.tsx:120
-#: src/views/index-dtf/governance/components/governance-delegate-list.tsx:117
+#: src/views/index-dtf/governance/components/governance-delegate-list.tsx:109
 msgid "Normal"
 msgstr "일반"
 
@@ -7232,13 +7326,16 @@ msgid "Old weight / New weight"
 msgstr "이전 가중치 / 새 가중치"
 
 #. placeholder {0}: new Date(Number(proposal.executionTime) * 1000) .toLocaleString(undefined, { month: '2-digit', day: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit', hour12: true, }) .replace(',', '') .replace(/(\d{2})\/(\d{2})\/(\d{2})/, '$1/$2/$3 at')
-#: src/views/index-dtf/governance/components/proposal-list-item.tsx:114
+#: src/views/index-dtf/governance/components/proposal-list-item.tsx:116
 msgid "on {0}"
 msgstr "{0}에서"
 
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-dtf-revenue.tsx:184
 msgid "On this DTF the shares below split the recipient pool: the holder share is kept first, and permanent recipients take their fixed part of what remains."
 msgstr "이 DTF에서는 아래 지분이 수령인 풀을 나눕니다: 보유자 지분이 먼저 유지되고, 영구 수령인은 나머지에서 고정된 몫을 가져갑니다."
+#: src/components/governance/address-hovercard/index.tsx:102
+msgid "On-chain governance history for this address"
+msgstr "이 주소의 온체인 거버넌스 기록"
 
 #: src/views/index-dtf/auctions/views/rebalance/components/rebalance-liquidity-checker.tsx:267
 #: src/views/index-dtf/governance/views/propose/basket/components/proposal-liquidity-checker.tsx:275
@@ -7337,7 +7434,7 @@ msgstr "탐색 메뉴 열기"
 msgid "Open Safe website"
 msgstr "Safe 웹사이트 열기"
 
-#: src/views/index-dtf/governance/components/governance-delegate-list.tsx:120
+#: src/views/index-dtf/governance/components/governance-delegate-list.tsx:112
 msgid "Optimistic"
 msgstr "Optimistic"
 
@@ -7362,6 +7459,7 @@ msgstr "Optimistic 파라미터"
 msgid "Optimistic proposals"
 msgstr "옵티미스틱 제안"
 
+#: src/components/governance/address-hovercard/address-profile-card.tsx:112
 #: src/views/index-dtf/governance/components/governance-roles.tsx:169
 #: src/views/index-dtf/settings/components/index-settings-roles.tsx:66
 msgid "Optimistic proposer"
@@ -7530,6 +7628,10 @@ msgstr "발행 일시중지"
 msgid "Pause status"
 msgstr "일시중지 상태"
 
+#: src/components/governance/address-hovercard/address-profile-card.tsx:116
+msgid "Pauser"
+msgstr "Pauser"
+
 #: src/components/rtoken-setup/governance/RoleSetup.tsx:19
 #: src/views/yield-dtf/governance/views/proposal/components/RolesProposal.tsx:18
 msgid "Pausers"
@@ -7547,7 +7649,7 @@ msgstr "RSR로 지급"
 msgid "Peg:"
 msgstr "페그:"
 
-#: src/views/explorer/components/governance/filters.tsx:17
+#: src/views/explorer/components/governance/filters.tsx:21
 #: src/views/index-dtf/issuance/async-mint/components/leg-row.tsx:80
 #: src/views/yield-dtf/issuance/components/issue/CollateralApprovals.tsx:109
 msgid "Pending"
@@ -7565,7 +7667,7 @@ msgstr "정산 대기 중인 경매"
 msgid "Pending distribution"
 msgstr "분배 대기 중"
 
-#: src/views/index-dtf/governance/components/proposal-list-item.tsx:100
+#: src/views/index-dtf/governance/components/proposal-list-item.tsx:102
 msgid "Pending execution"
 msgstr "실행 대기 중"
 
@@ -7573,7 +7675,7 @@ msgstr "실행 대기 중"
 msgid "Pending Fees:"
 msgstr "대기 중인 수수료:"
 
-#: src/views/index-dtf/governance/components/proposal-list-item.tsx:98
+#: src/views/index-dtf/governance/components/proposal-list-item.tsx:100
 #: src/views/index-dtf/governance/views/proposal/components/proposal-deadline-alert.tsx:128
 msgid "Pending queue"
 msgstr "대기 큐"
@@ -7845,6 +7947,7 @@ msgstr "플러그인 주소"
 msgid "Pool"
 msgstr "Pool"
 
+#: src/components/governance/address-hovercard/address-profile-card.tsx:317
 #: src/components/layout/header/components/app-navigation.tsx:84
 #: src/components/layout/header/components/mobile-navigation-drawer.tsx:132
 #: src/views/portfolio-page/index.tsx:169
@@ -8103,6 +8206,8 @@ msgstr "제안 실행 지연(시간)"
 
 #: src/views/index-dtf/governance/components/proposal-list-item.tsx:104
 #: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:217
+#: src/views/index-dtf/governance/components/proposal-list-item.tsx:106
+#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:205
 #: src/views/yield-dtf/governance/views/proposal-detail/components/proposal-timeline/TimelineItem.tsx:176
 msgid "Proposal expired"
 msgstr "제안이 만료됨"
@@ -8155,11 +8260,11 @@ msgstr "제안 제목"
 msgid "Proposal Title"
 msgstr "제안 제목"
 
-#: src/views/index-dtf/governance/components/proposal-list-item.tsx:102
+#: src/views/index-dtf/governance/components/proposal-list-item.tsx:104
 msgid "Proposal was canceled"
 msgstr "제안이 취소되었습니다"
 
-#: src/views/index-dtf/governance/components/proposal-list-item.tsx:103
+#: src/views/index-dtf/governance/components/proposal-list-item.tsx:105
 msgid "Proposal was defeated"
 msgstr "제안이 부결되었습니다"
 
@@ -8167,6 +8272,8 @@ msgstr "제안이 부결되었습니다"
 msgid "proposals"
 msgstr "제안"
 
+#: src/components/governance/address-hovercard/address-profile-card.tsx:233
+#: src/components/governance/address-hovercard/address-profile-card.tsx:310
 #: src/views/explorer/components/governance/index.tsx:213
 #: src/views/index-dtf/governance/components/governance-stats.tsx:78
 #: src/views/yield-dtf/governance/components/GovernanceOverview.tsx:124
@@ -8182,6 +8289,7 @@ msgid "Proposals per 12 hours must be between 1 and 12"
 msgstr "12시간당 제안 수는 1에서 12 사이여야 합니다"
 
 #: src/views/yield-dtf/governance/components/TopVoters.tsx:131
+#: src/views/yield-dtf/governance/components/TopVoters.tsx:134
 msgid "Proposals voted"
 msgstr "투표한 제안"
 
@@ -8231,10 +8339,10 @@ msgstr "볼트 종료 제안"
 msgid "Proposed"
 msgstr "제안됨"
 
-#: src/views/index-dtf/governance/views/proposal/components/proposal-header.tsx:109
+#: src/views/index-dtf/governance/views/proposal/components/proposal-header.tsx:108
 #: src/views/index-dtf/governance/views/proposal/components/vote-modal.tsx:145
 #: src/views/yield-dtf/governance/views/proposal-detail/components/VoteModal.tsx:95
-#: src/views/yield-dtf/governance/views/proposal-detail/ProposalHeader.tsx:107
+#: src/views/yield-dtf/governance/views/proposal-detail/ProposalHeader.tsx:108
 msgid "Proposed by"
 msgstr "제안자"
 
@@ -8250,14 +8358,18 @@ msgstr "제안자:"
 msgid "Proposed changes"
 msgstr "제안된 변경 사항"
 
-#: src/views/index-dtf/governance/views/proposal/components/proposal-header.tsx:99
-#: src/views/yield-dtf/governance/views/proposal-detail/ProposalHeader.tsx:100
+#: src/views/index-dtf/governance/views/proposal/components/proposal-header.tsx:98
+#: src/views/yield-dtf/governance/views/proposal-detail/ProposalHeader.tsx:101
 msgid "Proposed on"
 msgstr "제안일"
 
 #: src/views/index-dtf/auctions/views/rebalance-list/components/rebalance-item-footer.tsx:22
 msgid "Proposed:"
 msgstr "제안됨:"
+
+#: src/views/explorer/components/governance/filters.tsx:118
+msgid "Proposer"
+msgstr "제안자"
 
 #: src/views/explorer/components/collaterals/index.tsx:133
 #: src/views/yield-dtf/overview/components/backing/underlying-fees/fees-table.tsx:67
@@ -8297,6 +8409,8 @@ msgstr "제안 큐에 등록"
 
 #: src/views/explorer/components/governance/filters.tsx:24
 #: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:281
+#: src/views/explorer/components/governance/filters.tsx:28
+#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:269
 #: src/views/yield-dtf/governance/views/proposal-detail/components/proposal-timeline/TimelineItem.tsx:241
 msgid "Queued"
 msgstr "큐 등록됨"
@@ -8311,8 +8425,8 @@ msgstr "정족수"
 msgid "Quorum (%)"
 msgstr "정족수 (%)"
 
-#: src/views/explorer/components/governance/filters.tsx:21
-#: src/views/index-dtf/governance/components/proposal-list-item.tsx:105
+#: src/views/explorer/components/governance/filters.tsx:25
+#: src/views/index-dtf/governance/components/proposal-list-item.tsx:107
 #: src/views/index-dtf/governance/views/proposal/components/proposal-deadline-alert.tsx:47
 #: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:216
 #: src/views/yield-dtf/governance/views/proposal-detail/components/proposal-timeline/TimelineItem.tsx:175
@@ -8324,7 +8438,7 @@ msgstr "정족수 미달"
 msgid "Quorum?"
 msgstr "정족수 충족?"
 
-#: src/views/yield-dtf/governance/components/ProposalList.tsx:114
+#: src/views/yield-dtf/governance/components/ProposalList.tsx:119
 msgid "Quorum?:"
 msgstr "정족수?:"
 
@@ -8419,7 +8533,7 @@ msgstr "수익 분배에 대해 자세히 알아보기"
 msgid "Ready"
 msgstr "준비됨"
 
-#: src/views/index-dtf/governance/components/proposal-list-item.tsx:96
+#: src/views/index-dtf/governance/components/proposal-list-item.tsx:98
 #: src/views/index-dtf/governance/views/proposal/components/proposal-deadline-alert.tsx:117
 msgid "Ready to execute"
 msgstr "실행 준비됨"
@@ -8500,7 +8614,7 @@ msgid "Receiving eth address"
 msgstr "수신 eth 주소"
 
 #: src/views/index-dtf/governance/components/governance-proposal-list.tsx:48
-#: src/views/yield-dtf/governance/components/ProposalList.tsx:188
+#: src/views/yield-dtf/governance/components/ProposalList.tsx:206
 msgid "Recent proposals"
 msgstr "최근 제안"
 
@@ -9388,6 +9502,10 @@ msgstr "경매 실행"
 msgid "Run auctions as:"
 msgstr "경매 실행 주체:"
 
+#: src/components/governance/address-hovercard/address-profile-card.tsx:208
+msgid "Safe multisig"
+msgstr "Safe 멀티시그"
+
 #: src/components/rtoken-setup/basket/CustomCollateral.tsx:123
 #: src/components/rtoken-setup/components/RolesEdit.tsx:49
 #: src/views/yield-dtf/governance/views/proposal/components/ContractUpgrades.tsx:49
@@ -9921,6 +10039,10 @@ msgstr "판매됨"
 msgid "Some collateral tokens from protocols like Aave and Convex differ technically from other collateral tokens. To ensure proper handling, they must be wrapped in a contract for effective monitoring. Once wrapped, the collateral remains the same but has a new interface for price and appreciation tracking."
 msgstr "Aave 및 Convex와 같은 프로토콜의 일부 담보 토큰은 기술적으로 다른 담보 토큰과 다릅니다. 적절한 처리와 효과적인 모니터링을 위해 컨트랙트로 래핑되어야 합니다. 래핑된 후에도 담보는 동일하게 유지되지만 가격 및 가치 상승 추적을 위한 새로운 인터페이스를 갖게 됩니다."
 
+#: src/components/governance/address-hovercard/address-profile-card.tsx:299
+msgid "Some history may be missing."
+msgstr "일부 기록이 누락되었을 수 있습니다."
+
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1628
 msgid "Some quotes couldn't be fetched."
 msgstr "일부 견적을 가져오지 못했습니다."
@@ -9950,7 +10072,7 @@ msgstr "죄송합니다. 요청이 Global Max Mint 한도를 초과합니다. Gl
 msgid "Sorry, your request exceeds the Global Max Redeem limit. The Global Max Redeem is set at {maxFormatted} {0}. You can only zap a maximum of {maxZap} {1}."
 msgstr "죄송합니다. 요청이 Global Max Redeem 한도를 초과합니다. Global Max Redeem은 {maxFormatted} {0}로 설정되어 있습니다. 최대 {maxZap} {1}까지만 Zap 할 수 있습니다."
 
-#: src/views/explorer/components/governance/filters.tsx:94
+#: src/views/explorer/components/governance/filters.tsx:98
 msgid "Sort by"
 msgstr "정렬 기준"
 
@@ -10162,7 +10284,7 @@ msgid "Starts the next {0} reward period once the current one ends. Disabled unt
 msgstr "현재 기간이 종료되면 다음 {0} 보상 기간을 시작합니다. 그때까지는 비활성화됩니다."
 
 #: src/components/proposal-sort-menu.tsx:20
-#: src/views/explorer/components/governance/filters.tsx:42
+#: src/views/explorer/components/governance/filters.tsx:46
 #: src/views/explorer/components/governance/index.tsx:180
 #: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:377
 #: src/views/portfolio-page/components/active-proposals.tsx:139
@@ -10265,7 +10387,7 @@ msgstr "제출됨!"
 msgid "Submitting..."
 msgstr "제출 중..."
 
-#: src/views/explorer/components/governance/filters.tsx:23
+#: src/views/explorer/components/governance/filters.tsx:27
 #: src/views/index-dtf/governance/views/proposal/components/proposal-deadline-alert.tsx:53
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalAlert.tsx:74
 msgid "Succeeded"
@@ -11207,7 +11329,7 @@ msgstr "거래에 매칭할 토큰"
 msgid "Top 100 DTFs"
 msgstr "상위 100개 DTFs"
 
-#: src/views/yield-dtf/governance/components/TopVoters.tsx:142
+#: src/views/yield-dtf/governance/components/TopVoters.tsx:145
 msgid "Top voting addresses"
 msgstr "상위 투표 주소"
 
@@ -12265,6 +12387,10 @@ msgstr "다음에서 보기:"
 msgid "View on <0>Tenderly <1/></0>"
 msgstr "<0>Tenderly <1/></0>에서 보기"
 
+#: src/components/governance/address-hovercard/address-profile-card.tsx:192
+msgid "View on block explorer"
+msgstr "블록 탐색기에서 보기"
+
 #: src/views/index-dtf/issuance/async-mint/components/leg-row.tsx:275
 msgid "View on CoW Swap"
 msgstr "CoW Swap에서 보기"
@@ -12423,8 +12549,8 @@ msgstr "투표 공급량"
 msgid "Vote to challenge"
 msgstr "이의 제기에 투표"
 
-#: src/views/index-dtf/governance/components/governance-delegate-list.tsx:67
-#: src/views/yield-dtf/governance/components/TopVoters.tsx:112
+#: src/views/index-dtf/governance/components/governance-delegate-list.tsx:63
+#: src/views/yield-dtf/governance/components/TopVoters.tsx:115
 msgid "Vote weight"
 msgstr "투표 가중치"
 
@@ -12494,8 +12620,8 @@ msgstr "투표 잠금자 주소"
 msgid "Vote-locking means locking an ERC20 governance token in a vault to receive governance power over one or more Index DTFs. While locked, your tokens cannot be transferred or sold."
 msgstr ""
 
-#: src/views/index-dtf/governance/components/governance-delegate-list.tsx:64
-#: src/views/yield-dtf/governance/components/TopVoters.tsx:108
+#: src/views/index-dtf/governance/components/governance-delegate-list.tsx:60
+#: src/views/yield-dtf/governance/components/TopVoters.tsx:111
 msgid "Votes"
 msgstr "투표"
 
@@ -12506,11 +12632,17 @@ msgstr "반대 투표"
 
 #: src/views/index-dtf/governance/views/proposal/components/proposal-detail-votes.tsx:109
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalVotes.tsx:68
+#: src/components/governance/address-hovercard/address-profile-card.tsx:246
+msgid "Votes cast"
+msgstr "투표 수"
+
+#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-votes.tsx:115
+#: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalVotes.tsx:69
 msgid "Votes for"
 msgstr "찬성 투표"
 
 #: src/views/portfolio-page/components/active-proposals.tsx:105
-#: src/views/yield-dtf/governance/components/ProposalList.tsx:125
+#: src/views/yield-dtf/governance/components/ProposalList.tsx:130
 msgid "Votes:"
 msgstr "투표:"
 
@@ -12561,8 +12693,8 @@ msgstr "투표 지연은 필수입니다"
 msgid "Voting Ends"
 msgstr "투표 종료"
 
-#: src/views/index-dtf/governance/components/proposal-list-item.tsx:50
-#: src/views/yield-dtf/governance/components/ProposalList.tsx:89
+#: src/views/index-dtf/governance/components/proposal-list-item.tsx:52
+#: src/views/yield-dtf/governance/components/ProposalList.tsx:94
 msgid "Voting ends in:"
 msgstr "투표 종료까지:"
 
@@ -12607,6 +12739,7 @@ msgstr "투표 기간 종료까지"
 msgid "Voting period is required"
 msgstr "투표 기간은 필수입니다"
 
+#: src/components/governance/address-hovercard/address-profile-card.tsx:219
 #: src/views/yield-dtf/governance/components/AccountVotes.tsx:83
 #: src/views/yield-dtf/governance/components/GovernanceOverview.tsx:104
 msgid "Voting power"
@@ -12627,6 +12760,11 @@ msgstr "투표권 위임"
 
 #: src/views/index-dtf/deploy/steps/governance-settings/voting-presets.tsx:42
 #: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/atoms.ts:214
+#: src/components/governance/address-hovercard/address-profile-card.tsx:268
+msgid "Voting power since"
+msgstr "투표권 보유 시작"
+
+#: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/atoms.ts:213
 #: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/components/basket-settings-proposal-section.tsx:70
 #: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/components/sections/propose-basket-governance.tsx:59
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/atoms.ts:177
@@ -12641,9 +12779,9 @@ msgstr "투표 정족수"
 msgid "Voting quorum is required"
 msgstr "투표 정족수는 필수입니다"
 
-#: src/views/index-dtf/governance/components/proposal-list-item.tsx:49
+#: src/views/index-dtf/governance/components/proposal-list-item.tsx:51
 #: src/views/portfolio-page/components/active-proposals.tsx:64
-#: src/views/yield-dtf/governance/components/ProposalList.tsx:102
+#: src/views/yield-dtf/governance/components/ProposalList.tsx:107
 msgid "Voting starts in:"
 msgstr "투표 시작까지:"
 
@@ -13059,12 +13197,12 @@ msgstr "연초 대비"
 #: src/views/index-dtf/auctions/views/rebalance/components/rebalance-overview.tsx:74
 #: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:204
 #: src/views/portfolio-page/components/active-proposals.tsx:100
-#: src/views/yield-dtf/governance/components/ProposalList.tsx:119
+#: src/views/yield-dtf/governance/components/ProposalList.tsx:124
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalDetailStats.tsx:166
 msgid "Yes"
 msgstr "예"
 
-#: src/views/explorer/components/governance/filters.tsx:57
+#: src/views/explorer/components/governance/filters.tsx:61
 #: src/views/index-dtf/overview/components/charts/data-type-selector.tsx:19
 #: src/views/yield-dtf/overview/components/backing/collateral-exposure.tsx:319
 msgid "Yield"

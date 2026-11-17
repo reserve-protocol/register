@@ -141,5 +141,7 @@ test('governance page renders snapshot proposal rows offline @smoke', async ({
     (a, b) => Number(b.creationTime) - Number(a.creationTime)
   )[0]
   const title = newest.description.split(/\r?\n/)[0].replaceAll('#', '').trim()
-  await expect(rows.first()).toContainText(title.slice(0, 40))
+  await expect(proposals.getByTestId('proposal-list-item').first()).toContainText(
+    title.slice(0, 40)
+  )
 })

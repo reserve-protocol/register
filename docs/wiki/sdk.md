@@ -113,6 +113,7 @@ Local SDK checkout linking: `docs/local-sdk-development.md`.
 | **Live** proposal state                                 | RPC (`governor.state()`) — NOT subgraph               |
 | **Live** rebalance/auction state                        | RPC (`getRebalance()`) — NOT subgraph                 |
 | Historical charts                                       | Reserve API                                           |
+| Per-address governance track record (governance hovercard) | Reserve API `/v1/portfolio/{address}/governance`. No SDK read filters by proposer or voter; the API aggregates every listed DTF and chain. `?fresh=true` reads past its caches (used next to a proposal created in the last 10 minutes). `/v1/governance/accounts?addresses=` returns up to 50 profiles in one call; the proposal lists and delegate tables use it to preload their other addresses on the first hover. |
 
 ## Top gotchas (full list: `dtf-interface/docs/known-gotchas.md`)
 

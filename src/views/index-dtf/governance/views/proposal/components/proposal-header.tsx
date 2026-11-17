@@ -1,8 +1,8 @@
 import { Button } from '@/components/ui/button'
 import CopyValue from '@/components/ui/copy-value'
-import ExplorerAddress from '@/components/utils/explorer-address'
+import EnsName from '@/components/utils/ens-name'
 import { cn } from '@/lib/utils'
-import { chainIdAtom } from '@/state/atoms'
+import AddressHovercard from '@/components/governance/address-hovercard'
 import { getProposalTitle, shortenString } from '@/utils'
 import { ROUTES } from '@/utils/constants'
 import { useLingui } from '@lingui/react/macro'
@@ -90,7 +90,6 @@ const ProposalTitle = () => {
 const ProposalParams = () => {
   const { t } = useLingui()
   const proposal = useAtomValue(proposalDetailAtom)
-  const chainId = useAtomValue(chainIdAtom)
 
   return (
     <div className="flex flex-col gap-5">
@@ -111,11 +110,13 @@ const ProposalParams = () => {
         >
           <div>
             {proposal?.proposer && (
-              <ExplorerAddress
-                address={proposal?.proposer?.address}
-                chain={chainId}
-                ens
-              />
+              <AddressHovercard
+                address={proposal.proposer.address}
+                surface="proposal_header"
+                eventAt={+proposal.creationTime}
+              >
+                <EnsName address={proposal.proposer.address} />
+              </AddressHovercard>
             )}
           </div>
         </StatItem>

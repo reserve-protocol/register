@@ -210,6 +210,16 @@ msgstr "Buffer de {0} como % del mcap:"
 msgid "{0} cover"
 msgstr "Portada de {0}"
 
+#. placeholder {0}: profile.thisDtf.defeated
+#: src/components/governance/address-hovercard/address-profile-card.tsx:162
+msgid "{0} defeated"
+msgstr "{0} rechazadas"
+
+#. placeholder {0}: formatCurrency(profile.delegatedPower, 2, { notation: 'compact' })
+#: src/components/governance/address-hovercard/address-profile-card.tsx:224
+msgid "{0} delegated"
+msgstr "{0} delegado"
+
 #. placeholder {0}: selectedDtfs.length
 #: src/views/earn/views/index-dtf/components/table-filters.tsx:54
 msgid "{0} DTFs"
@@ -219,6 +229,11 @@ msgstr "{0} DTFs"
 #: src/views/index-dtf/overview/components/charts/chart-overlay.tsx:80
 msgid "{0} Est. APY"
 msgstr "{0} APY est."
+
+#. placeholder {0}: profile.thisDtf.executed
+#: src/components/governance/address-hovercard/address-profile-card.tsx:159
+msgid "{0} executed"
+msgstr "{0} ejecutadas"
 
 #. placeholder {0}: dtf.token.symbol
 #: src/views/index-dtf/overview/components/landing-mint/dtf-cover.tsx:103
@@ -266,12 +281,18 @@ msgstr "{0} de {1}"
 msgid "{0} Performance"
 msgstr "Rendimiento de {0}"
 
+#. placeholder {0}: account.totals.proposals
+#. placeholder {1}: account.totals.votes
+#: src/components/governance/address-hovercard/address-profile-card.tsx:277
+msgid "{0} proposals · {1} votes"
+msgstr "{0} propuestas · {1} votos"
+
 #. placeholder {0}: props.selected.length
 #. placeholder {0}: selected.length
 #: src/components/ui/multiselect-dropdown.tsx:170
 #: src/views/explorer/components/filters/token-filter.tsx:75
 #: src/views/explorer/components/filters/TransactionTypeFilter.tsx:44
-#: src/views/explorer/components/governance/filters.tsx:47
+#: src/views/explorer/components/governance/filters.tsx:51
 msgid "{0} selected"
 msgstr "{0} seleccionados"
 
@@ -290,6 +311,11 @@ msgstr "Whitepapers del token {0}"
 #: src/views/yield-dtf/overview/components/StargateWarning.tsx:23
 msgid "{0} uses Stargate collateral and has pending STG rewards. As of January 5, 2026 the STG asset will no longer be functional, as Chainlink is deprecating the STG-USD oracle. The Stargate collateral will still function, but STG rewards will no longer be processed, causing a drop in real {1} yield."
 msgstr "{0} usa colateral de Stargate y tiene recompensas STG pendientes. A partir del 5 de enero de 2026, el activo STG dejará de funcionar, ya que Chainlink está descontinuando el oráculo STG-USD. El colateral de Stargate seguirá funcionando, pero las recompensas STG ya no se procesarán, lo que provocará una caída en el rendimiento real de {1}."
+
+#. placeholder {0}: profile.thisDtf.vetoed
+#: src/components/governance/address-hovercard/address-profile-card.tsx:165
+msgid "{0} vetoed"
+msgstr "{0} vetadas"
 
 #. placeholder {0}: removedAssets.map((a) => a.token.symbol).join(', ')
 #: src/views/index-dtf/governance/components/proposal-preview/rebalance-preview/rebalance-basket-preview.tsx:58
@@ -887,9 +913,11 @@ msgstr "Por encima del volumen mínimo de operación"
 
 #: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:330
 #: src/views/index-dtf/governance/views/proposal/components/proposal-detail-votes.tsx:115
+#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:298
+#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-votes.tsx:121
 #: src/views/index-dtf/governance/views/proposal/components/vote-modal.tsx:79
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalDetailStats.tsx:236
-#: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalVotes.tsx:90
+#: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalVotes.tsx:91
 #: src/views/yield-dtf/governance/views/proposal-detail/components/VoteModal.tsx:56
 msgid "Abstain"
 msgstr "Abstenerse"
@@ -906,6 +934,10 @@ msgstr "Cuentas que pueden enviar propuestas optimistas."
 msgid "Acquire assets before minting"
 msgstr "Adquirir activos antes del Mint"
 
+#: src/components/governance/address-hovercard/address-profile-card.tsx:275
+msgid "Across Reserve"
+msgstr "En todo Reserve"
+
 #: src/views/internal/dtf-list/components/dtf-table.tsx:201
 #: src/views/portfolio-page/components/pending-withdrawals.tsx:370
 #: src/views/portfolio-page/components/staked-positions.tsx:118
@@ -917,7 +949,7 @@ msgstr "Acción"
 msgid "Action needed"
 msgstr "Acción necesaria"
 
-#: src/views/explorer/components/governance/filters.tsx:18
+#: src/views/explorer/components/governance/filters.tsx:22
 msgid "Active"
 msgstr "Activa"
 
@@ -1086,7 +1118,7 @@ msgstr "Destinatarios adicionales:"
 #: src/views/index-dtf/deploy/steps/roles/roles-form.tsx:15
 #: src/views/index-dtf/deploy/steps/roles/roles-form.tsx:41
 #: src/views/index-dtf/deploy/steps/roles/roles-form.tsx:50
-#: src/views/index-dtf/governance/components/governance-delegate-list.tsx:61
+#: src/views/index-dtf/governance/components/governance-delegate-list.tsx:57
 #: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/components/sections/propose-basket-roles.tsx:24
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/sections/propose-dao-roles.tsx:24
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-dtf-roles.tsx:15
@@ -1096,7 +1128,7 @@ msgstr "Destinatarios adicionales:"
 #: src/views/index-dtf/settings/components/index-settings-basic.tsx:102
 #: src/views/internal/dtf-list/components/dtf-table.tsx:189
 #: src/views/internal/dtf-listed/components/listed-dtf-table.tsx:153
-#: src/views/yield-dtf/governance/components/TopVoters.tsx:90
+#: src/views/yield-dtf/governance/components/TopVoters.tsx:91
 msgid "Address"
 msgstr "Dirección"
 
@@ -1110,9 +1142,17 @@ msgstr "Avatar de la dirección"
 msgid "Address copied to clipboard"
 msgstr "Dirección copiada al portapapeles"
 
+#: src/components/governance/address-hovercard/index.tsx:99
+msgid "Address governance profile"
+msgstr "Perfil de gobernanza de la dirección"
+
 #: src/views/internal/dtf-listed/components/listed-dtf-table.tsx:162
 msgid "Admin Gov"
 msgstr "Gov de administración"
+
+#: src/components/governance/address-hovercard/address-profile-card.tsx:110
+msgid "Admin of this DTF"
+msgstr "Admin de este DTF"
 
 #: src/views/internal/dtf-listed/components/listed-dtf-table.tsx:165
 msgid "Admin Timelock"
@@ -1143,7 +1183,7 @@ msgstr "Alexios es la votación estándar por token adoptada de Compound Governo
 
 #: src/components/token-selector-drawer/index.tsx:142
 #: src/views/earn/components/table-filters.tsx:33
-#: src/views/explorer/components/governance/filters.tsx:56
+#: src/views/explorer/components/governance/filters.tsx:60
 #: src/views/explorer/components/tokens/index.tsx:44
 #: src/views/index-dtf/deploy/steps/basket/token-selector.tsx:244
 #: src/views/index-dtf/factsheet/components/chart-overlay.tsx:85
@@ -1187,7 +1227,7 @@ msgstr "Todos los DTFs"
 msgid "All options"
 msgstr "Todas las opciones"
 
-#: src/views/explorer/components/governance/filters.tsx:48
+#: src/views/explorer/components/governance/filters.tsx:52
 msgid "All statuses"
 msgstr "Todos los estados"
 
@@ -1612,6 +1652,7 @@ msgstr "La subasta expira en: <0>{0}</0>"
 msgid "Auction launched successfully"
 msgstr "Subasta lanzada correctamente"
 
+#: src/components/governance/address-hovercard/address-profile-card.tsx:113
 #: src/views/index-dtf/deploy/steps/roles/roles-form.tsx:45
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-dtf-roles.tsx:45
 msgid "Auction launcher"
@@ -2114,6 +2155,10 @@ msgstr "Tanto los lanzadores de subastas como los miembros de la comunidad puede
 msgid "Bought"
 msgstr "Comprado"
 
+#: src/components/governance/address-hovercard/address-profile-card.tsx:114
+msgid "Brand manager"
+msgstr "Gestor de marca"
+
 #: src/views/index-dtf/deploy/steps/roles/roles-form.tsx:19
 #: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:164
 #: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:213
@@ -2240,6 +2285,11 @@ msgstr "Comprando {0}"
 msgid "Buying:"
 msgstr "Comprando:"
 
+#: src/views/index-dtf/governance/components/proposal-list-item.tsx:204
+#: src/views/yield-dtf/governance/components/ProposalList.tsx:168
+msgid "by"
+msgstr "por"
+
 #. placeholder {0}: a.provider
 #: src/views/index-dtf/overview/components/yield-index/yield-index-composition-mobile.tsx:100
 msgid "by {0}"
@@ -2318,7 +2368,7 @@ msgstr "Cancelar propuesta"
 msgid "Cancel unstake"
 msgstr "Cancelar Unstake"
 
-#: src/views/explorer/components/governance/filters.tsx:22
+#: src/views/explorer/components/governance/filters.tsx:26
 #: src/views/index-dtf/governance/views/proposal/components/proposal-deadline-alert.tsx:41
 #: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:303
 #: src/views/yield-dtf/governance/views/proposal-detail/components/proposal-timeline/TimelineItem.tsx:258
@@ -2407,6 +2457,7 @@ msgid "Challenged"
 msgstr "Impugnada"
 
 #: src/views/index-dtf/governance/views/proposal/components/proposal-detail-votes.tsx:96
+#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-votes.tsx:102
 msgid "Challenged votes"
 msgstr "Votos impugnados"
 
@@ -2553,6 +2604,11 @@ msgid "Clear"
 msgstr "Limpiar"
 
 #: src/views/index-dtf/deploy/steps/confirm-deploy/manual/components/approve-all-deploy-button.tsx:123
+#: src/views/explorer/components/governance/filters.tsx:122
+msgid "Clear proposer filter"
+msgstr "Quitar filtro de proponente"
+
+#: src/views/index-dtf/deploy/steps/confirm-deploy/manual/components/approve-all-deploy-button.tsx:118
 #: src/views/index-dtf/issuance/manual/components/approve-all-button.tsx:111
 msgid "Click retry or use individual approve buttons below."
 msgstr "Haz clic en reintentar o usa los botones de aprobación individuales que aparecen abajo."
@@ -3127,7 +3183,7 @@ msgid "Create New Index DTF"
 msgstr "Crear nuevo Index DTF"
 
 #: src/views/index-dtf/governance/components/governance-proposal-list.tsx:29
-#: src/views/yield-dtf/governance/components/ProposalList.tsx:196
+#: src/views/yield-dtf/governance/components/ProposalList.tsx:214
 msgid "Create proposal"
 msgstr "Crear propuesta"
 
@@ -3428,7 +3484,7 @@ msgstr "Admin predeterminado"
 msgid "Default delay"
 msgstr "Retraso predeterminado"
 
-#: src/views/explorer/components/governance/filters.tsx:19
+#: src/views/explorer/components/governance/filters.tsx:23
 #: src/views/index-dtf/governance/views/proposal/components/proposal-deadline-alert.tsx:29
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalAlert.tsx:50
 msgid "Defeated"
@@ -3529,7 +3585,7 @@ msgstr "Delegado a sí mismo"
 msgid "Delegated to: "
 msgstr "Delegado a: "
 
-#: src/views/index-dtf/governance/components/governance-delegate-list.tsx:162
+#: src/views/index-dtf/governance/components/governance-delegate-list.tsx:153
 msgid "Delegates"
 msgstr "Delegados"
 
@@ -3540,6 +3596,10 @@ msgstr "Delegación"
 #: src/components/vote-lock/components/submit-delegate-button.tsx:159
 msgid "Delegation updated"
 msgstr "Delegación actualizada"
+
+#: src/components/governance/address-hovercard/address-profile-card.tsx:261
+msgid "Delegators"
+msgstr "Delegantes"
 
 #: src/components/index-basket-setup/basket-table.tsx:68
 #: src/views/index-dtf/governance/components/proposal-preview/rebalance-preview/rebalance-basket-preview.tsx:80
@@ -4448,8 +4508,8 @@ msgstr "Ejecutable hasta {deadlineDate}"
 msgid "Execute proposal"
 msgstr "Ejecutar propuesta"
 
-#: src/views/explorer/components/governance/filters.tsx:20
-#: src/views/index-dtf/governance/components/proposal-list-item.tsx:101
+#: src/views/explorer/components/governance/filters.tsx:24
+#: src/views/index-dtf/governance/components/proposal-list-item.tsx:103
 #: src/views/index-dtf/governance/views/proposal/components/proposal-deadline-alert.tsx:23
 #: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:302
 #: src/views/yield-dtf/governance/views/proposal-detail/components/proposal-timeline/TimelineItem.tsx:257
@@ -4457,8 +4517,8 @@ msgstr "Ejecutar propuesta"
 msgid "Executed"
 msgstr "Ejecutada"
 
-#: src/views/index-dtf/governance/components/proposal-list-item.tsx:51
-#: src/views/yield-dtf/governance/components/ProposalList.tsx:90
+#: src/views/index-dtf/governance/components/proposal-list-item.tsx:53
+#: src/views/yield-dtf/governance/components/ProposalList.tsx:95
 msgid "Execution available in:"
 msgstr "Ejecución disponible en:"
 
@@ -4541,7 +4601,7 @@ msgstr "Esperado"
 msgid "Expected volatility"
 msgstr "Volatilidad esperada"
 
-#: src/views/explorer/components/governance/filters.tsx:25
+#: src/views/explorer/components/governance/filters.tsx:29
 #: src/views/index-dtf/governance/views/proposal/components/proposal-deadline-alert.tsx:35
 #: src/views/index-dtf/issuance/async-mint/components/leg-row.tsx:74
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalAlert.tsx:56
@@ -4684,6 +4744,12 @@ msgstr "Distribución de comisiones"
 
 #: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:55
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/optimistic.ts:123
+#: src/components/governance/address-hovercard/address-profile-card.tsx:115
+msgid "Fee recipient"
+msgstr "Receptor de comisiones"
+
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:40
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/optimistic.ts:120
 msgid "Fee recipients"
 msgstr "Destinatarios de comisiones"
 
@@ -4840,6 +4906,14 @@ msgstr "Buscando ruta..."
 msgid "Finish re-locking your {symbol}"
 msgstr "Termina de volver a bloquear tu {symbol}"
 
+#: src/components/governance/address-hovercard/address-profile-card.tsx:286
+msgid "First action"
+msgstr "Primera acción"
+
+#: src/components/governance/address-hovercard/address-profile-card.tsx:240
+msgid "First proposal"
+msgstr "Primera propuesta"
+
 #: src/views/earn/views/yield-dtf/index.tsx:19
 msgid "First-loss capital is the pool of RSR staked by users to absorb losses before DTF holders are affected. If the underlying collateral in a Yield DTF devalues or defaults, staked RSR is sold to cover the shortfall. This protects regular users and aligns stakers with the long-term health of the DTF."
 msgstr "El capital de primera pérdida es el conjunto de RSR en Stake por los usuarios para absorber pérdidas antes de que los titulares del DTF se vean afectados. Si el colateral subyacente de un Yield DTF se desvaloriza o entra en impago, el RSR en Stake se vende para cubrir el déficit. Esto protege a los usuarios comunes y alinea a los stakers con la salud a largo plazo del DTF."
@@ -4908,6 +4982,10 @@ msgstr "Foro"
 #: src/views/yield-dtf/settings/components/freeze-manager.tsx:101
 msgid "Freeze State"
 msgstr "Estado de congelación"
+
+#: src/components/governance/address-hovercard/address-profile-card.tsx:117
+msgid "Freezer"
+msgstr "Freezer"
 
 #: src/views/yield-dtf/governance/views/proposal/components/RolesProposal.tsx:19
 msgid "Freezers"
@@ -5066,6 +5144,10 @@ msgstr "Foro de gobernanza"
 msgid "Governance gets deployed & your RToken is now usable (if unpaused)"
 msgstr "La gobernanza se despliega y tu RToken queda listo para usar (si está despausado)"
 
+#: src/components/governance/address-hovercard/address-profile-card.tsx:255
+msgid "Governance history is unavailable right now."
+msgstr "El historial de gobernanza no está disponible en este momento."
+
 #: src/components/rtoken-setup/governance/GovernanceParameters.tsx:48
 msgid "Governance parameters"
 msgstr "Parámetros de gobernanza"
@@ -5159,6 +5241,10 @@ msgstr "Guardián"
 #: src/components/rtoken-setup/governance/GovernanceSetup.tsx:97
 msgid "Guardian address"
 msgstr "Dirección del guardián"
+
+#: src/components/governance/address-hovercard/address-profile-card.tsx:111
+msgid "Guardian of this DTF"
+msgstr "Guardián de este DTF"
 
 #: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/components/changes/basket-role-changes.tsx:166
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/changes/dao-role-changes.tsx:166
@@ -5402,7 +5488,7 @@ msgid "I'm aware of the {delay}-day unstake delay"
 msgstr "Estoy al tanto del retraso de Unstake de {delay} días"
 
 #: src/views/index-dtf/governance/views/proposal/components/proposal-header.tsx:123
-#: src/views/yield-dtf/governance/views/proposal-detail/ProposalHeader.tsx:118
+#: src/views/yield-dtf/governance/views/proposal-detail/ProposalHeader.tsx:121
 msgid "ID"
 msgstr "ID"
 
@@ -5488,7 +5574,7 @@ msgstr "Wallet incompatible"
 msgid "Increase"
 msgstr "Aumentar"
 
-#: src/views/explorer/components/governance/filters.tsx:58
+#: src/views/explorer/components/governance/filters.tsx:62
 msgid "Index"
 msgstr "Index"
 
@@ -5830,6 +5916,10 @@ msgstr "Últimos 30 días"
 msgid "Last 7 days"
 msgstr "Últimos 7 días"
 
+#: src/components/governance/address-hovercard/address-profile-card.tsx:293
+msgid "Last action"
+msgstr "Última acción"
+
 #: src/views/index-dtf/governance/views/propose/basket/components/legacy-advance-controls.tsx:31
 #: src/views/index-dtf/governance/views/propose/basket/components/legacy-advance-controls.tsx:32
 msgid "Launch Settings"
@@ -6027,7 +6117,7 @@ msgstr "Cargando los datos de tu portafolio..."
 #: src/views/index-dtf/governance/components/proposal-preview/token-reward-preview.tsx:66
 #: src/views/index-dtf/governance/components/proposal-preview/token-reward-preview.tsx:66
 #: src/views/index-dtf/governance/views/proposal/components/proposal-header.tsx:58
-#: src/views/index-dtf/governance/views/proposal/components/proposal-header.tsx:105
+#: src/views/index-dtf/governance/views/proposal/components/proposal-header.tsx:104
 #: src/views/index-dtf/governance/views/proposal/components/proposal-header.tsx:128
 #: src/views/index-dtf/governance/views/proposal/components/vote-modal.tsx:140
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/sections/propose-revenue-tokens.tsx:63
@@ -6035,9 +6125,9 @@ msgstr "Cargando los datos de tu portafolio..."
 #: src/views/index-dtf/settings/components/distribute-fees.tsx:88
 #: src/views/yield-dtf/governance/components/GovernanceOverview.tsx:169
 #: src/views/yield-dtf/governance/views/proposal-detail/components/VoteModal.tsx:91
-#: src/views/yield-dtf/governance/views/proposal-detail/ProposalHeader.tsx:64
-#: src/views/yield-dtf/governance/views/proposal-detail/ProposalHeader.tsx:104
-#: src/views/yield-dtf/governance/views/proposal-detail/ProposalHeader.tsx:121
+#: src/views/yield-dtf/governance/views/proposal-detail/ProposalHeader.tsx:65
+#: src/views/yield-dtf/governance/views/proposal-detail/ProposalHeader.tsx:105
+#: src/views/yield-dtf/governance/views/proposal-detail/ProposalHeader.tsx:124
 #: src/views/yield-dtf/settings/components/setting-item.tsx:62
 msgid "Loading..."
 msgstr "Cargando..."
@@ -6100,6 +6190,10 @@ msgstr "Duración del congelamiento largo: congela el sistema de un RToken duran
 #: src/components/rtoken-setup/token/OtherForm.tsx:37
 msgid "Long freeze duration (s)"
 msgstr "Duración del congelamiento largo (s)"
+
+#: src/components/governance/address-hovercard/address-profile-card.tsx:118
+msgid "Long freezer"
+msgstr "Long freezer"
 
 #: src/components/rtoken-setup/governance/RoleSetup.tsx:29
 #: src/views/yield-dtf/governance/views/proposal/components/RolesProposal.tsx:20
@@ -6869,7 +6963,7 @@ msgstr ""
 #: src/views/index-dtf/auctions/views/rebalance/components/rebalance-overview.tsx:74
 #: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:204
 #: src/views/portfolio-page/components/active-proposals.tsx:100
-#: src/views/yield-dtf/governance/components/ProposalList.tsx:119
+#: src/views/yield-dtf/governance/components/ProposalList.tsx:124
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalDetailStats.tsx:166
 msgid "No"
 msgstr "No"
@@ -6922,7 +7016,7 @@ msgstr "Sin datos"
 msgid "No data available"
 msgstr "No hay datos disponibles"
 
-#: src/views/index-dtf/governance/components/governance-delegate-list.tsx:41
+#: src/views/index-dtf/governance/components/governance-delegate-list.tsx:39
 msgid "No delegates found"
 msgstr "No se encontraron delegados"
 
@@ -6986,7 +7080,7 @@ msgstr "No se permite el lanzamiento sin permisos"
 msgid "No plugins available"
 msgstr "No hay plugins disponibles"
 
-#: src/views/yield-dtf/governance/components/ProposalList.tsx:204
+#: src/views/yield-dtf/governance/components/ProposalList.tsx:222
 msgid "No proposals created..."
 msgstr "No se han creado propuestas..."
 
@@ -7068,12 +7162,12 @@ msgstr "Sin transacciones"
 msgid "No valid tokens found in the CSV file."
 msgstr "No se encontraron tokens válidos en el archivo CSV."
 
-#: src/views/yield-dtf/governance/components/TopVoters.tsx:149
+#: src/views/yield-dtf/governance/components/TopVoters.tsx:152
 msgid "No voters at this moment..."
 msgstr "No hay votantes en este momento..."
 
-#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-votes.tsx:51
-#: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalVotes.tsx:135
+#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-votes.tsx:52
+#: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalVotes.tsx:136
 msgid "No votes"
 msgstr "Sin votos"
 
@@ -7123,7 +7217,7 @@ msgid "None"
 msgstr "Ninguno"
 
 #: src/components/vote-lock/components/delegate.tsx:120
-#: src/views/index-dtf/governance/components/governance-delegate-list.tsx:117
+#: src/views/index-dtf/governance/components/governance-delegate-list.tsx:109
 msgid "Normal"
 msgstr "Normal"
 
@@ -7232,13 +7326,16 @@ msgid "Old weight / New weight"
 msgstr "Peso anterior / Peso nuevo"
 
 #. placeholder {0}: new Date(Number(proposal.executionTime) * 1000) .toLocaleString(undefined, { month: '2-digit', day: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit', hour12: true, }) .replace(',', '') .replace(/(\d{2})\/(\d{2})\/(\d{2})/, '$1/$2/$3 at')
-#: src/views/index-dtf/governance/components/proposal-list-item.tsx:114
+#: src/views/index-dtf/governance/components/proposal-list-item.tsx:116
 msgid "on {0}"
 msgstr "en {0}"
 
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-dtf-revenue.tsx:184
 msgid "On this DTF the shares below split the recipient pool: the holder share is kept first, and permanent recipients take their fixed part of what remains."
 msgstr "En este DTF, las participaciones de abajo dividen el pool de destinatarios: primero se reserva la participación de los holders y los destinatarios permanentes toman su parte fija de lo que queda."
+#: src/components/governance/address-hovercard/index.tsx:102
+msgid "On-chain governance history for this address"
+msgstr "Historial de gobernanza onchain de esta dirección"
 
 #: src/views/index-dtf/auctions/views/rebalance/components/rebalance-liquidity-checker.tsx:267
 #: src/views/index-dtf/governance/views/propose/basket/components/proposal-liquidity-checker.tsx:275
@@ -7337,7 +7434,7 @@ msgstr "Abrir menú de navegación"
 msgid "Open Safe website"
 msgstr "Abrir el sitio web de Safe"
 
-#: src/views/index-dtf/governance/components/governance-delegate-list.tsx:120
+#: src/views/index-dtf/governance/components/governance-delegate-list.tsx:112
 msgid "Optimistic"
 msgstr "Optimista"
 
@@ -7362,6 +7459,7 @@ msgstr "Parámetros optimistas"
 msgid "Optimistic proposals"
 msgstr "Propuestas optimistas"
 
+#: src/components/governance/address-hovercard/address-profile-card.tsx:112
 #: src/views/index-dtf/governance/components/governance-roles.tsx:169
 #: src/views/index-dtf/settings/components/index-settings-roles.tsx:66
 msgid "Optimistic proposer"
@@ -7530,6 +7628,10 @@ msgstr "Pausar emisión"
 msgid "Pause status"
 msgstr "Estado de pausa"
 
+#: src/components/governance/address-hovercard/address-profile-card.tsx:116
+msgid "Pauser"
+msgstr "Pauser"
+
 #: src/components/rtoken-setup/governance/RoleSetup.tsx:19
 #: src/views/yield-dtf/governance/views/proposal/components/RolesProposal.tsx:18
 msgid "Pausers"
@@ -7547,7 +7649,7 @@ msgstr "Pagos en RSR"
 msgid "Peg:"
 msgstr "Paridad:"
 
-#: src/views/explorer/components/governance/filters.tsx:17
+#: src/views/explorer/components/governance/filters.tsx:21
 #: src/views/index-dtf/issuance/async-mint/components/leg-row.tsx:80
 #: src/views/yield-dtf/issuance/components/issue/CollateralApprovals.tsx:109
 msgid "Pending"
@@ -7565,7 +7667,7 @@ msgstr "Subastas pendientes de liquidar"
 msgid "Pending distribution"
 msgstr "Distribución pendiente"
 
-#: src/views/index-dtf/governance/components/proposal-list-item.tsx:100
+#: src/views/index-dtf/governance/components/proposal-list-item.tsx:102
 msgid "Pending execution"
 msgstr "Pendiente de ejecución"
 
@@ -7573,7 +7675,7 @@ msgstr "Pendiente de ejecución"
 msgid "Pending Fees:"
 msgstr "Comisiones pendientes:"
 
-#: src/views/index-dtf/governance/components/proposal-list-item.tsx:98
+#: src/views/index-dtf/governance/components/proposal-list-item.tsx:100
 #: src/views/index-dtf/governance/views/proposal/components/proposal-deadline-alert.tsx:128
 msgid "Pending queue"
 msgstr "Cola de pendientes"
@@ -7845,6 +7947,7 @@ msgstr "Dirección del plugin"
 msgid "Pool"
 msgstr "Pool"
 
+#: src/components/governance/address-hovercard/address-profile-card.tsx:317
 #: src/components/layout/header/components/app-navigation.tsx:84
 #: src/components/layout/header/components/mobile-navigation-drawer.tsx:132
 #: src/views/portfolio-page/index.tsx:169
@@ -8103,6 +8206,8 @@ msgstr "Retraso de ejecución de propuestas (horas)"
 
 #: src/views/index-dtf/governance/components/proposal-list-item.tsx:104
 #: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:217
+#: src/views/index-dtf/governance/components/proposal-list-item.tsx:106
+#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:205
 #: src/views/yield-dtf/governance/views/proposal-detail/components/proposal-timeline/TimelineItem.tsx:176
 msgid "Proposal expired"
 msgstr "Propuesta expirada"
@@ -8155,11 +8260,11 @@ msgstr "Título de la propuesta"
 msgid "Proposal Title"
 msgstr "Título de la propuesta"
 
-#: src/views/index-dtf/governance/components/proposal-list-item.tsx:102
+#: src/views/index-dtf/governance/components/proposal-list-item.tsx:104
 msgid "Proposal was canceled"
 msgstr "La propuesta fue cancelada"
 
-#: src/views/index-dtf/governance/components/proposal-list-item.tsx:103
+#: src/views/index-dtf/governance/components/proposal-list-item.tsx:105
 msgid "Proposal was defeated"
 msgstr "La propuesta fue rechazada"
 
@@ -8167,6 +8272,8 @@ msgstr "La propuesta fue rechazada"
 msgid "proposals"
 msgstr "propuestas"
 
+#: src/components/governance/address-hovercard/address-profile-card.tsx:233
+#: src/components/governance/address-hovercard/address-profile-card.tsx:310
 #: src/views/explorer/components/governance/index.tsx:213
 #: src/views/index-dtf/governance/components/governance-stats.tsx:78
 #: src/views/yield-dtf/governance/components/GovernanceOverview.tsx:124
@@ -8182,6 +8289,7 @@ msgid "Proposals per 12 hours must be between 1 and 12"
 msgstr "Las propuestas cada 12 horas deben estar entre 1 y 12"
 
 #: src/views/yield-dtf/governance/components/TopVoters.tsx:131
+#: src/views/yield-dtf/governance/components/TopVoters.tsx:134
 msgid "Proposals voted"
 msgstr "Propuestas votadas"
 
@@ -8231,10 +8339,10 @@ msgstr "Proponer el retiro del vault"
 msgid "Proposed"
 msgstr "Propuesta"
 
-#: src/views/index-dtf/governance/views/proposal/components/proposal-header.tsx:109
+#: src/views/index-dtf/governance/views/proposal/components/proposal-header.tsx:108
 #: src/views/index-dtf/governance/views/proposal/components/vote-modal.tsx:145
 #: src/views/yield-dtf/governance/views/proposal-detail/components/VoteModal.tsx:95
-#: src/views/yield-dtf/governance/views/proposal-detail/ProposalHeader.tsx:107
+#: src/views/yield-dtf/governance/views/proposal-detail/ProposalHeader.tsx:108
 msgid "Proposed by"
 msgstr "Propuesta por"
 
@@ -8250,14 +8358,18 @@ msgstr "Propuesto por:"
 msgid "Proposed changes"
 msgstr "Cambios propuestos"
 
-#: src/views/index-dtf/governance/views/proposal/components/proposal-header.tsx:99
-#: src/views/yield-dtf/governance/views/proposal-detail/ProposalHeader.tsx:100
+#: src/views/index-dtf/governance/views/proposal/components/proposal-header.tsx:98
+#: src/views/yield-dtf/governance/views/proposal-detail/ProposalHeader.tsx:101
 msgid "Proposed on"
 msgstr "Propuesta el"
 
 #: src/views/index-dtf/auctions/views/rebalance-list/components/rebalance-item-footer.tsx:22
 msgid "Proposed:"
 msgstr "Propuesto:"
+
+#: src/views/explorer/components/governance/filters.tsx:118
+msgid "Proposer"
+msgstr "Proponente"
 
 #: src/views/explorer/components/collaterals/index.tsx:133
 #: src/views/yield-dtf/overview/components/backing/underlying-fees/fees-table.tsx:67
@@ -8297,6 +8409,8 @@ msgstr "Encolar propuesta"
 
 #: src/views/explorer/components/governance/filters.tsx:24
 #: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:281
+#: src/views/explorer/components/governance/filters.tsx:28
+#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:269
 #: src/views/yield-dtf/governance/views/proposal-detail/components/proposal-timeline/TimelineItem.tsx:241
 msgid "Queued"
 msgstr "En cola"
@@ -8311,8 +8425,8 @@ msgstr "Quórum"
 msgid "Quorum (%)"
 msgstr "Quórum (%)"
 
-#: src/views/explorer/components/governance/filters.tsx:21
-#: src/views/index-dtf/governance/components/proposal-list-item.tsx:105
+#: src/views/explorer/components/governance/filters.tsx:25
+#: src/views/index-dtf/governance/components/proposal-list-item.tsx:107
 #: src/views/index-dtf/governance/views/proposal/components/proposal-deadline-alert.tsx:47
 #: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:216
 #: src/views/yield-dtf/governance/views/proposal-detail/components/proposal-timeline/TimelineItem.tsx:175
@@ -8324,7 +8438,7 @@ msgstr "Quórum no alcanzado"
 msgid "Quorum?"
 msgstr "¿Quórum?"
 
-#: src/views/yield-dtf/governance/components/ProposalList.tsx:114
+#: src/views/yield-dtf/governance/components/ProposalList.tsx:119
 msgid "Quorum?:"
 msgstr "¿Quórum?:"
 
@@ -8419,7 +8533,7 @@ msgstr "Leer más sobre la distribución de ingresos"
 msgid "Ready"
 msgstr "Listo"
 
-#: src/views/index-dtf/governance/components/proposal-list-item.tsx:96
+#: src/views/index-dtf/governance/components/proposal-list-item.tsx:98
 #: src/views/index-dtf/governance/views/proposal/components/proposal-deadline-alert.tsx:117
 msgid "Ready to execute"
 msgstr "Listo para ejecutar"
@@ -8500,7 +8614,7 @@ msgid "Receiving eth address"
 msgstr "Dirección eth receptora"
 
 #: src/views/index-dtf/governance/components/governance-proposal-list.tsx:48
-#: src/views/yield-dtf/governance/components/ProposalList.tsx:188
+#: src/views/yield-dtf/governance/components/ProposalList.tsx:206
 msgid "Recent proposals"
 msgstr "Propuestas recientes"
 
@@ -9388,6 +9502,10 @@ msgstr "Ejecutar subastas"
 msgid "Run auctions as:"
 msgstr "Ejecutar subastas como:"
 
+#: src/components/governance/address-hovercard/address-profile-card.tsx:208
+msgid "Safe multisig"
+msgstr "Multisig Safe"
+
 #: src/components/rtoken-setup/basket/CustomCollateral.tsx:123
 #: src/components/rtoken-setup/components/RolesEdit.tsx:49
 #: src/views/yield-dtf/governance/views/proposal/components/ContractUpgrades.tsx:49
@@ -9921,6 +10039,10 @@ msgstr "Vendido"
 msgid "Some collateral tokens from protocols like Aave and Convex differ technically from other collateral tokens. To ensure proper handling, they must be wrapped in a contract for effective monitoring. Once wrapped, the collateral remains the same but has a new interface for price and appreciation tracking."
 msgstr "Algunos tokens de colateral de protocolos como Aave y Convex difieren técnicamente de otros tokens de colateral. Para garantizar un manejo adecuado, deben envolverse en un contrato para un monitoreo efectivo. Una vez envueltos, el colateral sigue siendo el mismo pero tiene una nueva interfaz para el seguimiento del precio y la apreciación."
 
+#: src/components/governance/address-hovercard/address-profile-card.tsx:299
+msgid "Some history may be missing."
+msgstr "Puede faltar parte del historial."
+
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1628
 msgid "Some quotes couldn't be fetched."
 msgstr "No se pudieron obtener algunas cotizaciones."
@@ -9950,7 +10072,7 @@ msgstr "Lo sentimos, tu solicitud supera el límite Global Max Mint. El Global M
 msgid "Sorry, your request exceeds the Global Max Redeem limit. The Global Max Redeem is set at {maxFormatted} {0}. You can only zap a maximum of {maxZap} {1}."
 msgstr "Lo sentimos, tu solicitud supera el límite Global Max Redeem. El Global Max Redeem está fijado en {maxFormatted} {0}. Solo puedes hacer Zap de un máximo de {maxZap} {1}."
 
-#: src/views/explorer/components/governance/filters.tsx:94
+#: src/views/explorer/components/governance/filters.tsx:98
 msgid "Sort by"
 msgstr "Ordenar por"
 
@@ -10162,7 +10284,7 @@ msgid "Starts the next {0} reward period once the current one ends. Disabled unt
 msgstr "Inicia el próximo período de recompensas de {0} una vez que finalice el actual. Deshabilitado hasta entonces."
 
 #: src/components/proposal-sort-menu.tsx:20
-#: src/views/explorer/components/governance/filters.tsx:42
+#: src/views/explorer/components/governance/filters.tsx:46
 #: src/views/explorer/components/governance/index.tsx:180
 #: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:377
 #: src/views/portfolio-page/components/active-proposals.tsx:139
@@ -10265,7 +10387,7 @@ msgstr "¡Enviada!"
 msgid "Submitting..."
 msgstr "Enviando..."
 
-#: src/views/explorer/components/governance/filters.tsx:23
+#: src/views/explorer/components/governance/filters.tsx:27
 #: src/views/index-dtf/governance/views/proposal/components/proposal-deadline-alert.tsx:53
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalAlert.tsx:74
 msgid "Succeeded"
@@ -11207,7 +11329,7 @@ msgstr "Tokens para igualar el intercambio"
 msgid "Top 100 DTFs"
 msgstr "Top 100 DTFs"
 
-#: src/views/yield-dtf/governance/components/TopVoters.tsx:142
+#: src/views/yield-dtf/governance/components/TopVoters.tsx:145
 msgid "Top voting addresses"
 msgstr "Principales direcciones votantes"
 
@@ -12265,6 +12387,10 @@ msgstr "Ver en"
 msgid "View on <0>Tenderly <1/></0>"
 msgstr "Ver en <0>Tenderly <1/></0>"
 
+#: src/components/governance/address-hovercard/address-profile-card.tsx:192
+msgid "View on block explorer"
+msgstr "Ver en el explorador de bloques"
+
 #: src/views/index-dtf/issuance/async-mint/components/leg-row.tsx:275
 msgid "View on CoW Swap"
 msgstr "Ver en CoW Swap"
@@ -12423,8 +12549,8 @@ msgstr "Suministro de votos"
 msgid "Vote to challenge"
 msgstr "Vota para impugnar"
 
-#: src/views/index-dtf/governance/components/governance-delegate-list.tsx:67
-#: src/views/yield-dtf/governance/components/TopVoters.tsx:112
+#: src/views/index-dtf/governance/components/governance-delegate-list.tsx:63
+#: src/views/yield-dtf/governance/components/TopVoters.tsx:115
 msgid "Vote weight"
 msgstr "Peso del voto"
 
@@ -12494,8 +12620,8 @@ msgstr "Dirección del bloqueador de votos"
 msgid "Vote-locking means locking an ERC20 governance token in a vault to receive governance power over one or more Index DTFs. While locked, your tokens cannot be transferred or sold."
 msgstr ""
 
-#: src/views/index-dtf/governance/components/governance-delegate-list.tsx:64
-#: src/views/yield-dtf/governance/components/TopVoters.tsx:108
+#: src/views/index-dtf/governance/components/governance-delegate-list.tsx:60
+#: src/views/yield-dtf/governance/components/TopVoters.tsx:111
 msgid "Votes"
 msgstr "Votos"
 
@@ -12506,11 +12632,17 @@ msgstr "Votos en contra"
 
 #: src/views/index-dtf/governance/views/proposal/components/proposal-detail-votes.tsx:109
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalVotes.tsx:68
+#: src/components/governance/address-hovercard/address-profile-card.tsx:246
+msgid "Votes cast"
+msgstr "Votos emitidos"
+
+#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-votes.tsx:115
+#: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalVotes.tsx:69
 msgid "Votes for"
 msgstr "Votos a favor"
 
 #: src/views/portfolio-page/components/active-proposals.tsx:105
-#: src/views/yield-dtf/governance/components/ProposalList.tsx:125
+#: src/views/yield-dtf/governance/components/ProposalList.tsx:130
 msgid "Votes:"
 msgstr "Votos:"
 
@@ -12561,8 +12693,8 @@ msgstr "El retraso de votación es obligatorio"
 msgid "Voting Ends"
 msgstr "Fin de la votación"
 
-#: src/views/index-dtf/governance/components/proposal-list-item.tsx:50
-#: src/views/yield-dtf/governance/components/ProposalList.tsx:89
+#: src/views/index-dtf/governance/components/proposal-list-item.tsx:52
+#: src/views/yield-dtf/governance/components/ProposalList.tsx:94
 msgid "Voting ends in:"
 msgstr "La votación termina en:"
 
@@ -12607,6 +12739,7 @@ msgstr "El período de votación termina en"
 msgid "Voting period is required"
 msgstr "El período de votación es obligatorio"
 
+#: src/components/governance/address-hovercard/address-profile-card.tsx:219
 #: src/views/yield-dtf/governance/components/AccountVotes.tsx:83
 #: src/views/yield-dtf/governance/components/GovernanceOverview.tsx:104
 msgid "Voting power"
@@ -12627,6 +12760,11 @@ msgstr "Delegación de poder de voto"
 
 #: src/views/index-dtf/deploy/steps/governance-settings/voting-presets.tsx:42
 #: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/atoms.ts:214
+#: src/components/governance/address-hovercard/address-profile-card.tsx:268
+msgid "Voting power since"
+msgstr "Poder de voto desde"
+
+#: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/atoms.ts:213
 #: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/components/basket-settings-proposal-section.tsx:70
 #: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/components/sections/propose-basket-governance.tsx:59
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/atoms.ts:177
@@ -12641,9 +12779,9 @@ msgstr "Quórum de votación"
 msgid "Voting quorum is required"
 msgstr "El quórum de votación es obligatorio"
 
-#: src/views/index-dtf/governance/components/proposal-list-item.tsx:49
+#: src/views/index-dtf/governance/components/proposal-list-item.tsx:51
 #: src/views/portfolio-page/components/active-proposals.tsx:64
-#: src/views/yield-dtf/governance/components/ProposalList.tsx:102
+#: src/views/yield-dtf/governance/components/ProposalList.tsx:107
 msgid "Voting starts in:"
 msgstr "La votación comienza en:"
 
@@ -13059,12 +13197,12 @@ msgstr "en lo que va del año"
 #: src/views/index-dtf/auctions/views/rebalance/components/rebalance-overview.tsx:74
 #: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:204
 #: src/views/portfolio-page/components/active-proposals.tsx:100
-#: src/views/yield-dtf/governance/components/ProposalList.tsx:119
+#: src/views/yield-dtf/governance/components/ProposalList.tsx:124
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalDetailStats.tsx:166
 msgid "Yes"
 msgstr "Sí"
 
-#: src/views/explorer/components/governance/filters.tsx:57
+#: src/views/explorer/components/governance/filters.tsx:61
 #: src/views/index-dtf/overview/components/charts/data-type-selector.tsx:19
 #: src/views/yield-dtf/overview/components/backing/collateral-exposure.tsx:319
 msgid "Yield"

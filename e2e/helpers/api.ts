@@ -9,6 +9,17 @@ import {
   YIELD_REGISTRY,
 } from './registry'
 import { loadSnapshot, snapshotExists } from './snapshots'
+import { getAddress } from 'viem'
+
+const emptyGovernanceProfile = (address: string) => ({
+  address,
+  totals: { proposals: 0, executed: 0, defeated: 0, vetoed: 0, canceled: 0, votes: 0 },
+  firstActionAt: null,
+  lastActionAt: null,
+  dtfs: [],
+  truncated: false,
+  degradedChains: [],
+})
 
 // api.reserve.org interception, dispatched by pathname. Per-DTF endpoints load
 // from snapshots keyed by the address/folio param. Unmocked endpoints fail loud
@@ -312,6 +323,28 @@ export async function mockApiRoutes(page: Page, options: ApiMockOptions) {
     // portfolio-object branch below (its path is a prefix of this one).
     if (path.includes('/v1/portfolio/') && path.endsWith('/transactions')) {
       return json(route, [])
+    }
+
+    // Address governance profile (governance hovercard) — no history.
+    if (path.includes('/v1/portfolio/') && path.endsWith('/governance')) {
+      return json(route, emptyGovernanceProfile(path.split('/').at(-2) ?? ''))
+    }
+
+    // Batch of governance profiles (hovercard preload) — each address answers
+    // what its single route would, so a spec seeds one route and both agree.
+    if (path === '/v1/governance/accounts') {
+      const addresses = (url.searchParams.get('addresses') ?? '').split(',').filter(Boolean)
+      const accounts = addresses.map((address) => {
+        for (const casing of [address, getAddress(address)]) {
+          const single = overrides?.lookupApi(
+            'GET',
+            new URL(`/v1/portfolio/${casing}/governance`, url)
+          )
+          if (single !== undefined) return single
+        }
+        return emptyGovernanceProfile(address)
+      })
+      return json(route, { accounts })
     }
 
     // Connected-portfolio history chart (per-period fan-out) — empty series.

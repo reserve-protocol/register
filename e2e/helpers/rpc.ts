@@ -190,6 +190,8 @@ const callOverrides: Record<string, Hex> = {
   '*:0x4d2301cc': ETH_BALANCE, // Multicall3.getEthBalance(address)
   '*:0xaa3b5568': IDLE_REBALANCE, // getRebalance() — no active rebalance by default
   '*:0xfc528482': ZERO_RETURN, // nextAuctionId() — no auction opened by default (SDK latest-auction read)
+  // getThreshold() — the governance hovercard's Safe probe; any address reads as "not a Safe".
+  '*:0xe75235b8': ZERO_RETURN,
   // Fee-display reads on the DTF container (peripheral to governance). A DTF
   // with no DAO fee registry reads as fee-free — a valid, deterministic state.
   '*:0x9980cb23': ZERO_RETURN, // daoFeeRegistry() → zero address

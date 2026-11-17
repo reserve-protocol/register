@@ -11,7 +11,11 @@ import MultiselectDropdrown, {
 } from '../MultiselectDropdown'
 import TokenFilter from '../filters/token-filter'
 import ProposalSortMenu from '@/components/proposal-sort-menu'
+import EnsName from '@/components/utils/ens-name'
+import { X } from 'lucide-react'
+import { useSearchParams } from 'react-router-dom'
 import { type DTFType, filtersAtom, proposalSortAtom } from './atoms'
+import { useProposerFilter } from './use-proposals-data'
 
 export const proposalStatus: Record<string, MessageDescriptor> = {
   [PROPOSAL_STATES.PENDING]: msg`Pending`,
@@ -94,6 +98,38 @@ const ProposalFilters = () => {
         <span className="text-legend">{t`Sort by`}</span>
         <ProposalSortMenu value={sort} onChange={setSort} />
       </div>
+      <ProposerFilterChip />
+    </div>
+  )
+}
+
+const ProposerFilterChip = () => {
+  const { t } = useLingui()
+  const proposer = useProposerFilter()
+  const [, setSearchParams] = useSearchParams()
+
+  if (!proposer) return null
+
+  return (
+    <div
+      className="flex items-center gap-2 rounded-full bg-card py-1 pl-3 pr-1 text-sm"
+      data-testid="explorer-proposer-filter"
+    >
+      <span className="text-legend">{t`Proposer`}</span>
+      <EnsName address={proposer} className="font-medium" />
+      <button
+        type="button"
+        aria-label={t`Clear proposer filter`}
+        onClick={() =>
+          setSearchParams((params) => {
+            params.delete('proposer')
+            return params
+          })
+        }
+        className="flex h-7 w-7 items-center justify-center rounded-full text-legend hover:bg-secondary hover:text-foreground"
+      >
+        <X size={14} />
+      </button>
     </div>
   )
 }

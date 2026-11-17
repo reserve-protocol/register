@@ -10,6 +10,7 @@ import { gql } from 'graphql-request'
 import { useMultichainQuery } from 'hooks/use-query'
 import { useAtomValue } from 'jotai'
 import { useMemo } from 'react'
+import { useSearchParams } from 'react-router-dom'
 import { walletAtom } from 'state/atoms'
 import { getCurrentTime } from 'utils'
 import { ChainId } from 'utils/chains'
@@ -18,7 +19,7 @@ import {
   LISTED_RTOKEN_ADDRESSES,
   supportedChainList,
 } from 'utils/constants'
-import { Address, formatEther, getAddress, zeroAddress } from 'viem'
+import { Address, formatEther, getAddress, isAddress, zeroAddress } from 'viem'
 import { useBlockNumber } from 'wagmi'
 import { type ProposalRecord, filtersAtom } from './atoms'
 
@@ -32,6 +33,9 @@ const yieldProposalsQuery = gql`
     proposals(orderBy: creationTime, orderDirection: desc, first: 1000) {
       id
       description
+      proposer {
+        address
+      }
       creationTime
       state
       forWeightedVotes
@@ -76,6 +80,9 @@ const indexProposalsQuery = gql`
     ) {
       id
       description
+      proposer {
+        address
+      }
       creationTime
       state
       isOptimistic
@@ -180,6 +187,7 @@ type IndexProposalsResponse = {
   proposals: {
     id: string
     description: string
+    proposer?: { address: string } | null
     creationTime: string
     state: string
     isOptimistic?: boolean
@@ -377,9 +385,17 @@ const useIndexDTFProposals = () => {
   })
 }
 
+// The proposer filter lives in the URL (?proposer=) so a hovercard link is shareable.
+export const useProposerFilter = () => {
+  const [searchParams] = useSearchParams()
+  const proposer = searchParams.get('proposer')
+  return proposer && isAddress(proposer) ? proposer.toLowerCase() : null
+}
+
 const useProposalsData = () => {
   const blocks = useBlockChains()
   const filters = useAtomValue(filtersAtom)
+  const proposer = useProposerFilter()
   const account = useAtomValue(walletAtom)
   const { data: yieldData } = useMultichainQuery(yieldProposalsQuery, {
     voter: account?.toLowerCase() ?? zeroAddress,
@@ -412,6 +428,7 @@ const useProposalsData = () => {
           proposals.push({
             id: entry.id,
             description: entry.description,
+            proposer: entry.proposer?.address?.toLowerCase() ?? '',
             creationTime: entry.creationTime,
             userVote: entry.votes?.[0]?.choice ?? null,
             governance: rToken.id,
@@ -453,6 +470,7 @@ const useProposalsData = () => {
           proposals.push({
             id: entry.id,
             description: entry.description,
+            proposer: entry.proposer?.address?.toLowerCase() ?? '',
             creationTime: entry.creationTime,
             userVote: entry.votes?.[0]?.choice ?? null,
             governance: govId,
@@ -484,9 +502,10 @@ const useProposalsData = () => {
       if (filters.status.length && !filters.status.includes(proposal.status)) {
         return false
       }
+      if (proposer && proposal.proposer !== proposer) return false
       return true
     })
-  }, [yieldData, indexData, blocks, filters])
+  }, [yieldData, indexData, blocks, filters, proposer])
 }
 
 export default useProposalsData

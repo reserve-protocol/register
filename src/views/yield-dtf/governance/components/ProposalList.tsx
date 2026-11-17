@@ -1,5 +1,9 @@
 import { Trans, useLingui } from '@lingui/react/macro'
+import AddressHovercard, {
+  AddressHovercardGroup,
+} from '@/components/governance/address-hovercard'
 import { Button } from '@/components/ui/button'
+import EnsName from '@/components/utils/ens-name'
 import EmptyBoxIcon from 'components/icons/EmptyBoxIcon'
 import { gql } from 'graphql-request'
 import useQuery from 'hooks/use-query'
@@ -29,6 +33,9 @@ const query = gql`
     ) {
       id
       description
+      proposer {
+        address
+      }
       creationTime
       state
       governance
@@ -155,9 +162,23 @@ const ProposalItem = ({ proposal }: { proposal: StringMap }) => {
       className="p-4 bg-background border-b border-border cursor-pointer hover:border-muted hover:bg-border flex items-center"
       onClick={() => navigate(`proposal/${proposal.id}`)}
     >
-      <div className="mr-4">
+      <div className="mr-4 flex min-w-0 flex-col">
         <span className="font-semibold">{getProposalTitle(proposal.description)}</span>
         <ProposalVotingState data={proposalState} />
+        {proposal.proposer?.address && (
+          <div className="mt-1 flex min-w-0 items-center gap-1 text-sm text-legend">
+            <Trans>by</Trans>
+            <AddressHovercard
+              address={proposal.proposer.address}
+              surface="proposal_list"
+              eventAt={+proposal.creationTime}
+              dtfType="yield"
+              className="text-foreground"
+            >
+              <EnsName address={proposal.proposer.address} className="truncate" />
+            </AddressHovercard>
+          </div>
+        )}
       </div>
       <span
         className={cn(
@@ -205,9 +226,15 @@ const ProposalList = () => {
             </span>
           </div>
         )}
-        {data.map((proposal: StringMap) => (
-          <ProposalItem key={proposal.id} proposal={proposal} />
-        ))}
+        <AddressHovercardGroup
+          addresses={data.flatMap(
+            (proposal: StringMap) => proposal.proposer?.address ?? []
+          )}
+        >
+          {data.map((proposal: StringMap) => (
+            <ProposalItem key={proposal.id} proposal={proposal} />
+          ))}
+        </AddressHovercardGroup>
       </div>
     </div>
   )

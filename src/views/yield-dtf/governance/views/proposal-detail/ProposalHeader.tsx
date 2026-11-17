@@ -1,5 +1,6 @@
 import { useLingui } from '@lingui/react/macro'
-import Address from '@/components/utils/explorer-address'
+import AddressHovercard from '@/components/governance/address-hovercard'
+import EnsName from '@/components/utils/ens-name'
 import { Button } from '@/components/ui/button'
 import CopyValue from '@/components/ui/copy-value'
 import FilesIcon from 'components/icons/FilesIcon'
@@ -107,11 +108,14 @@ const ProposalHeader = () => {
             <StatItem label={t`Proposed by`} icon={<WalletOutlineIcon />}>
               <div>
                 {proposal?.proposer && rToken?.chainId && (
-                  <Address
-                    address={proposal?.proposer}
-                    chain={rToken?.chainId}
-                    ens
-                  />
+                  <AddressHovercard
+                    address={proposal.proposer}
+                    surface="proposal_header"
+                    eventAt={+proposal.creationTime}
+                    dtfType="yield"
+                  >
+                    <EnsName address={proposal.proposer} />
+                  </AddressHovercard>
                 )}
               </div>
             </StatItem>
