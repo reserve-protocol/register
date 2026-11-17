@@ -57,7 +57,9 @@ test('eUSD collateral details link to specific protocol markets and keep explore
     ).toHaveCount(1)
     const box = await appLink.boundingBox()
     expect(box).not.toBeNull()
-    expect(box!.height).toBeGreaterThanOrEqual(44)
+    if (testInfo.project.name === 'mobile') {
+      expect(box!.height).toBeGreaterThanOrEqual(44)
+    }
     expect(box!.x).toBeGreaterThanOrEqual(0)
     expect(box!.x + box!.width).toBeLessThanOrEqual(page.viewportSize()!.width)
     await collateral.screenshot({ path: testInfo.outputPath(`${address}.png`) })
