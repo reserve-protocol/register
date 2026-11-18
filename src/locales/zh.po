@@ -3394,6 +3394,14 @@ msgstr "当前版本（v2）"
 msgid "Current votes"
 msgstr "当前投票"
 
+#: src/views/yield-dtf/issuance/components/zapV2/zap-throttle-warning.tsx:77
+msgid "Currently available to Mint: {capacity} {symbol}. The requested Mint amount is estimated from token prices."
+msgstr "当前可 Mint：{capacity} {symbol}。请求的 Mint 数量根据 token 价格估算。"
+
+#: src/views/yield-dtf/issuance/components/zapV2/zap-throttle-warning.tsx:73
+msgid "Currently available to Redeem: {capacity} {symbol}."
+msgstr "当前可 Redeem：{capacity} {symbol}。"
+
 #. placeholder {0}: current?.length ?? 0
 #: src/views/yield-dtf/governance/views/proposal/components/revenue-destinations-proposal.tsx:69
 msgid "Currently configured: {0} / {MAX_REVENUE_DESTINATIONS}"
@@ -4450,6 +4458,10 @@ msgstr "预计 gas 费用："
 #: src/views/index-dtf/governance/views/propose/basket/components/proposal-liquidity-checker.tsx:265
 msgid "Estimated loss: ~${0}"
 msgstr "预计损失：~${0}"
+
+#: src/views/yield-dtf/issuance/components/zapV2/zap-throttle-warning.tsx:67
+msgid "Estimated Mint amount exceeds capacity"
+msgstr "预计 Mint 数量超出当前限额"
 
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1408
 msgid "Estimated output"
@@ -5911,6 +5923,10 @@ msgstr "已知支持的 Wallets"
 #: src/components/layout/header/components/header-actions-menu.tsx:139
 msgid "Language"
 msgstr "语言"
+
+#: src/views/yield-dtf/issuance/components/zapV2/zap-throttle-warning.tsx:84
+msgid "Larger swaps may use market liquidity with worse pricing. Reduce the amount to stay within protocol capacity."
+msgstr "更大金额的兑换可能使用市场流动性，导致价格更差。请减少数量，使其不超过协议限额。"
 
 #. placeholder {0}: Math.ceil(amountUsd / ondo.capacityUsd)
 #: src/components/ondo-badge.tsx:156
@@ -8800,6 +8816,10 @@ msgstr "Redeem 数量超过全局最大 Redeem 量"
 #: src/views/index-dtf/issuance/manual/components/input-box.tsx:70
 msgid "Redeem Amount:"
 msgstr "Redeem 数量："
+
+#: src/views/yield-dtf/issuance/components/zapV2/zap-throttle-warning.tsx:65
+msgid "Redeem capacity exceeded"
+msgstr "超出当前 Redeem 限额"
 
 #: src/components/vote-lock/migration/migration-modal.tsx:71
 msgid "Redeem complete"

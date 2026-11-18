@@ -1,6 +1,6 @@
 ---
 title: Zapper
-updated: 2026-10-29
+updated: 2026-11-18
 type: context
 ---
 
@@ -31,6 +31,7 @@ CoW-Swap-backed mint/redeem at `src/views/index-dtf/issuance/async-mint/**` (`us
 
 - Non-2xx answers surface the JSON `error` (`readZapError`); 4xx quotes are not retried.
 - Arbitrum: the Rust zapper doesn't serve 42161, so every quote source falls back to Enso there.
+- `zap-throttle-warning.tsx` reads live `issuanceAvailable()`/`redemptionAvailable()` in RToken units, independently of wallet/quote errors. Redeem compares the typed RToken amount exactly; Mint estimates RToken demand from input/DTF prices and labels the estimate. This is advisory: market-liquidity swaps may still work above protocol capacity. Missing/failed reads or missing Mint prices never fabricate a limit. Boundary/replenishment browser coverage lives in `e2e/tests/yield-dtf/issuance/throttle.spec.ts` (desktop/mobile).
 
 ## Index deploy (direct calls)
 

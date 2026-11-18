@@ -6,6 +6,7 @@ import ZapTabs from './ZapTabs'
 import ZapInputContainer from './input/ZapInputContainer'
 import ZapOutputContainer from './output/ZapOutputContainer'
 import ZapSubmit from './submit/ZapSubmit'
+import ZapThrottleWarning from './zap-throttle-warning'
 
 const InputOutputSeparator = () => (
   <div className="flex items-center">
@@ -26,6 +27,7 @@ const RTokenZapIssuance = ({ disableRedeem }: { disableRedeem: boolean }) => {
       <div className="p-4 flex flex-col relative">
         <ZapRedeemDisabled disableRedeem={disableRedeem} />
         <ZapInputContainer />
+        <ZapThrottleWarning />
         <InputOutputSeparator />
         <ZapOutputContainer />
         <ZapOperationDetails />
