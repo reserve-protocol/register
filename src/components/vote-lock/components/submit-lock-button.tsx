@@ -15,7 +15,7 @@ import {
   closeDrawerAtom,
   lockCheckboxAtom,
   stakingInputAtom,
-  stTokenAtom,
+  type StTokenExtended,
   underlyingBalanceRawAtom,
   updateCurrentDtfStTokenSupplyAtom,
   voteLockStateAtom,
@@ -25,10 +25,17 @@ import { getWriteContractParams, isSameAddress } from '../utils'
 
 const PROCESSING_DELAY = 10_000
 
-const SubmitLockButton = ({ onSuccess }: { onSuccess?: () => void }) => {
+const SubmitLockButton = ({
+  stToken,
+  isVaultReady,
+  onSuccess,
+}: {
+  stToken: StTokenExtended
+  isVaultReady: boolean
+  onSuccess?: () => void
+}) => {
   const { t } = useLingui()
   const account = useAtomValue(walletAtom)
-  const stToken = useAtomValue(stTokenAtom)
   const voteLockState = useAtomValue(voteLockStateAtom)
   const input = useAtomValue(stakingInputAtom)
   const balance = useAtomValue(underlyingBalanceRawAtom)
@@ -121,7 +128,7 @@ const SubmitLockButton = ({ onSuccess }: { onSuccess?: () => void }) => {
   })
 
   const write = (call: ContractCall | undefined) => {
-    if (!account || !call) return
+    if (!isVaultReady || !account || !call) return
 
     pendingSupplyDelta.current =
       sharesToMint !== undefined && !quoteIsStale && quotedAmount === amountToLock
@@ -131,7 +138,7 @@ const SubmitLockButton = ({ onSuccess }: { onSuccess?: () => void }) => {
   }
 
   const approve = () => {
-    if (!account || !approvalCall) return
+    if (!isVaultReady || !account || !approvalCall) return
 
     pendingApprovalAmount.current = amountToLock
     writeApprove(getWriteContractParams(approvalCall))
@@ -191,6 +198,7 @@ const SubmitLockButton = ({ onSuccess }: { onSuccess?: () => void }) => {
     <TransactionButton
       chain={stToken.chainId}
       disabled={
+        !isVaultReady ||
         !checkbox ||
         receipt?.status === 'success' ||
         amountToLock === 0n ||

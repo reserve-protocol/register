@@ -18,7 +18,7 @@ import {
 import {
   closeDrawerAtom,
   stakingInputAtom,
-  stTokenAtom,
+  type StTokenExtended,
   unlockDelayAtom,
   unlockShareBalanceRawAtom,
   updateCurrentDtfStTokenSupplyAtom,
@@ -27,11 +27,18 @@ import { getWriteContractParams } from '../utils'
 
 const PROCESSING_DELAY = 10_000
 
-const SubmitUnlockButton = ({ onSuccess }: { onSuccess?: () => void }) => {
+const SubmitUnlockButton = ({
+  stToken,
+  isVaultReady,
+  onSuccess,
+}: {
+  stToken: StTokenExtended
+  isVaultReady: boolean
+  onSuccess?: () => void
+}) => {
   const { t } = useLingui()
   const account = useAtomValue(walletAtom)
   const { connector } = useAccount()
-  const stToken = useAtomValue(stTokenAtom)
   const input = useAtomValue(stakingInputAtom)
   const balance = useAtomValue(unlockShareBalanceRawAtom)
   const unlockDelay = useAtomValue(unlockDelayAtom)
@@ -55,7 +62,11 @@ const SubmitUnlockButton = ({ onSuccess }: { onSuccess?: () => void }) => {
     ? parseUnits(input || '0', stToken.token.decimals)
     : 0n
   const readyToSubmit =
-    !!account && !!balance && sharesToUnlock > 0n && sharesToUnlock <= balance
+    isVaultReady &&
+    !!account &&
+    !!balance &&
+    sharesToUnlock > 0n &&
+    sharesToUnlock <= balance
   const call =
     stToken && account
       ? prepareVoteLockRedeem({

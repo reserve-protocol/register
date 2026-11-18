@@ -7,8 +7,10 @@ import {
   lockCheckboxAtom,
   stTokenAtom,
   unlockDelayAtom,
+  type StTokenExtended,
   type VoteLockTab,
 } from '../atoms'
+import { isSameAddress } from '../utils'
 import SubmitDelegateButton from './submit-delegate-button'
 import SubmitLockButton from './submit-lock-button'
 import SubmitUnlockButton from './submit-unlock-button'
@@ -84,30 +86,48 @@ const UnlockProcess = () => {
 }
 
 const VoteLockDrawerFooter = ({
+  stToken,
   currentTab,
   isOptimisticGovernance,
   onRefresh,
 }: {
+  stToken: StTokenExtended
   currentTab: VoteLockTab
   isOptimisticGovernance: boolean
   onRefresh?: () => void
 }) => {
+  const activeStToken = useAtomValue(stTokenAtom)
+
+  const isVaultReady =
+    activeStToken?.chainId === stToken.chainId &&
+    isSameAddress(activeStToken?.id, stToken.id)
+
   return (
     <DrawerFooter className="flex-grow justify-end mb-2">
       {currentTab === 'lock' && (
         <>
           <LockCheckbox />
-          <SubmitLockButton onSuccess={onRefresh} />
+          <SubmitLockButton
+            stToken={stToken}
+            isVaultReady={isVaultReady}
+            onSuccess={onRefresh}
+          />
         </>
       )}
       {currentTab === 'unlock' && (
         <>
           <UnlockProcess />
-          <SubmitUnlockButton onSuccess={onRefresh} />
+          <SubmitUnlockButton
+            stToken={stToken}
+            isVaultReady={isVaultReady}
+            onSuccess={onRefresh}
+          />
         </>
       )}
       {currentTab === 'delegate' && (
         <SubmitDelegateButton
+          stToken={stToken}
+          isVaultReady={isVaultReady}
           isOptimisticGovernance={isOptimisticGovernance}
           onSuccess={onRefresh}
         />

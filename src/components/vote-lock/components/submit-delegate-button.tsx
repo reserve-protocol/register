@@ -15,7 +15,7 @@ import {
   hasVoteLockedBalanceAtom,
   normalDelegateAtom,
   optimisticDelegateAtom,
-  stTokenAtom,
+  type StTokenExtended,
   voteLockStateAtom,
 } from '../atoms'
 import { getWriteContractParams, isSameAddress } from '../utils'
@@ -26,15 +26,18 @@ type DelegateCall = {
 }
 
 const SubmitDelegateButton = ({
+  stToken,
+  isVaultReady,
   isOptimisticGovernance,
   onSuccess,
 }: {
+  stToken: StTokenExtended
+  isVaultReady: boolean
   isOptimisticGovernance: boolean
   onSuccess?: () => void
 }) => {
   const { t } = useLingui()
   const account = useAtomValue(walletAtom)
-  const stToken = useAtomValue(stTokenAtom)
   const voteLockState = useAtomValue(voteLockStateAtom)
   const hasVoteLockedBalance = useAtomValue(hasVoteLockedBalanceAtom)
   const normalDelegateInput = useAtomValue(normalDelegateAtom)
@@ -73,6 +76,7 @@ const SubmitDelegateButton = ({
     )
   )
   const disabled =
+    !isVaultReady ||
     !account ||
     !stToken ||
     !hasVoteLockedBalance ||
@@ -182,6 +186,7 @@ const SubmitDelegateButton = ({
       text={t`Update`}
       className="w-full"
       error={error || txError}
+      data-testid="vote-delegate-submit"
     />
   )
 }

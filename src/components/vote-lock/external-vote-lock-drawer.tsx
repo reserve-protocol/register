@@ -8,6 +8,7 @@ import { useAtomValue } from 'jotai'
 import type { Address } from 'viem'
 import { VoteLockDrawer, type VoteLockDrawerProps } from './drawer'
 import { useExternalVoteLockRefresh } from './hooks/use-vote-lock-refresh'
+import { isSameAddress } from './utils'
 
 export const ExternalVoteLockDrawer = ({
   stToken,
@@ -31,15 +32,28 @@ export const ExternalVoteLockDrawer = ({
     isError: isDtfVoteLockStateError,
     refetch,
   } = useIndexDtfVoteLockState(dtfParams)
-  const isFallbackStateEnabled = !dtfAddress || isDtfVoteLockStateError
+  const matchesSelectedVault = (
+    state: { stToken: Address; account: Address } | undefined
+  ) =>
+    isSameAddress(state?.stToken, stToken.id) &&
+    isSameAddress(state?.account, account)
+  const isDtfStateForVault = matchesSelectedVault(dtfVoteLockState)
+  const isFallbackStateEnabled =
+    !dtfAddress ||
+    isDtfVoteLockStateError ||
+    (!!dtfVoteLockState && !isDtfStateForVault)
   const fallbackState = useIndexDtfVoteLockVaultState(
     isFallbackStateEnabled && account
       ? { chainId: stToken.chainId, stToken: stToken.id, account }
       : undefined
   )
-  const voteLockState = dtfVoteLockState ?? fallbackState.data
+  const voteLockState = isDtfStateForVault
+    ? dtfVoteLockState
+    : matchesSelectedVault(fallbackState.data)
+      ? fallbackState.data
+      : undefined
   const isOptimisticGovernance =
-    !!dtf?.voteLockVault?.governance?.isOptimistic ||
+    (isDtfStateForVault && !!dtf?.voteLockVault?.governance?.isOptimistic) ||
     !!stToken.governance?.isOptimistic ||
     voteLockState?.optimisticDelegate != null ||
     voteLockState?.optimisticVotingPower != null

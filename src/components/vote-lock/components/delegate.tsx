@@ -24,6 +24,7 @@ const DelegateInput = ({
   disabled,
   error,
   placeholder,
+  testId,
 }: {
   label: ReactNode
   icon?: ReactNode
@@ -32,6 +33,7 @@ const DelegateInput = ({
   disabled: boolean
   error?: ReactNode
   placeholder?: string
+  testId: string
 }) => (
   <div className="space-y-2">
     <label className="flex items-center gap-2 text-sm font-medium text-foreground ml-3">
@@ -40,6 +42,7 @@ const DelegateInput = ({
     </label>
     <div>
       <Input
+        data-testid={testId}
         value={value}
         onChange={(e) => onChange(e.target.value)}
         disabled={disabled}
@@ -118,6 +121,7 @@ const DelegateView = ({
       <div className="space-y-4">
         <DelegateInput
           label={<Trans>Normal</Trans>}
+          testId="vote-lock-normal-delegate"
           icon={<Vote size={16} />}
           value={normalDelegate}
           onChange={(value) => {
@@ -135,6 +139,7 @@ const DelegateView = ({
         {isOptimisticGovernance && (
           <DelegateInput
             label={<Trans>Fast</Trans>}
+            testId="vote-lock-fast-delegate"
             icon={<Rocket size={16} className="text-primary" />}
             value={optimisticDelegate}
             onChange={(value) => {
