@@ -158,7 +158,7 @@ surface unless noted.
 
 ## Explorer error states (from the PR #1167 review, 2026-11-18)
 
-Confirmed in review and left out of the redesign because each one existed before it; none of them shows wrong data as long as every source answers.
+Confirmed in review and left out of the redesign because each one existed before it. The first four only show when a source fails; the last one is a calculation defect that shows with healthy sources.
 
 - Governance: when a subgraph read fails after its retries, the list reads "No proposals match these filters". `useIndexDTFProposals` runs its chains in one `Promise.all`, so one failing chain also discards the chains that answered. Pass the error to the table, keep the chains that answered, offer a retry.
 - Revenue › Yield and Trades: a failed `FacadeRead.revenues` read on one chain counts as zero revenue (`parseRevenue(data ?? [])`), so the header total looks complete. Mark the chain as unavailable and the total as partial.

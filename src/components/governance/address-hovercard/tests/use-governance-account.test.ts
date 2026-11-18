@@ -118,10 +118,15 @@ describe('preloadGovernanceAccount', () => {
       expect(queryClient.getQueryData<GovernanceAccount>(key(A))?.totals.votes).toBe(3)
     )
     preloadGovernanceAccount(queryClient, { address: B, fresh: false, group: [A, B] })
+    await vi.waitFor(() =>
+      expect(queryClient.getQueryData<GovernanceAccount>(key(B))?.totals.votes).toBe(3)
+    )
     release()
     await settled()
 
+    expect(calls.filter((call) => call.includes('/governance/accounts'))).toHaveLength(1)
     expect(queryClient.getQueryData<GovernanceAccount>(key(A))?.totals.votes).toBe(3)
+    expect(queryClient.getQueryData<GovernanceAccount>(key(B))?.totals.votes).toBe(3)
   })
 
   it('needs no call for another address of the list after the first hover', async () => {

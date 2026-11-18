@@ -19,17 +19,30 @@ vi.mock('@/hooks/use-wallet-modal', () => ({
 vi.mock('wagmi', () => ({
   useAccount: () => account,
   useSwitchChain: () => ({ switchChainAsync }),
-  useWriteContract: () => ({ data: undefined, writeContract, isPending: false }),
+  useWriteContract: () => ({ data: hash, writeContract, isPending: isSigning }),
   useWaitForTransactionReceipt: (params: {
-    onReplaced?: (replacement: { reason: string }) => void
+    hash?: string
+    onReplaced?: (replacement: Replacement) => void
   }) => {
     onReplaced = params.onReplaced
-    return { data: receipt, isLoading: false }
+    return {
+      data: params.hash ? receipts[params.hash] : undefined,
+      isLoading: false,
+    }
   },
 }))
 
-let receipt: { status: string } | undefined
-let onReplaced: ((replacement: { reason: string }) => void) | undefined
+type Replacement = { reason: string; replacedTransaction: { hash: string } }
+
+const FIRST = '0xaaa'
+const SECOND = '0xbbb'
+let hash: string | undefined
+let isSigning = false
+let receipts: Record<string, { status: string }> = {}
+let onReplaced: ((replacement: Replacement) => void) | undefined
+
+const replaced = (reason: string) =>
+  act(() => onReplaced?.({ reason, replacedTransaction: { hash: FIRST } }))
 
 const dtf = { address: DTF_ADDRESS, chainId: BASE } as unknown as IndexDTFItem
 
@@ -45,13 +58,16 @@ describe('DistributeButton', () => {
   beforeEach(() => {
     vi.clearAllMocks()
     account = {}
-    receipt = undefined
+    hash = undefined
+    isSigning = false
+    receipts = {}
   })
 
   it('shows Distributed after the distribution is mined, also when the wallet repriced it', () => {
-    receipt = { status: 'success' }
+    hash = FIRST
+    receipts = { [FIRST]: { status: 'success' } }
     render(<DistributeButton dtf={dtf} />)
-    act(() => onReplaced?.({ reason: 'repriced' }))
+    replaced('repriced')
 
     const button = screen.getByTestId('explorer-distribute')
     expect(button).toHaveTextContent('Distributed')
@@ -59,13 +75,40 @@ describe('DistributeButton', () => {
   })
 
   it('stays on Distribute when the user cancelled the transaction in the wallet', () => {
-    receipt = { status: 'success' }
+    hash = FIRST
+    receipts = { [FIRST]: { status: 'success' } }
     render(<DistributeButton dtf={dtf} />)
-    act(() => onReplaced?.({ reason: 'cancelled' }))
+    replaced('cancelled')
 
     const button = screen.getByTestId('explorer-distribute')
     expect(button).toHaveTextContent(/^Distribute$/)
     expect(button).toBeEnabled()
+  })
+
+  it('does not show Distributed for a cancelled attempt while the next one is in the wallet', async () => {
+    account = { address: '0x1111111111111111111111111111111111111111', chainId: BASE }
+    hash = FIRST
+    receipts = { [FIRST]: { status: 'success' } }
+    const { rerender } = render(<DistributeButton dtf={dtf} />)
+    replaced('cancelled')
+    const button = screen.getByTestId('explorer-distribute')
+
+    await userEvent.click(button)
+    expect(writeContract).toHaveBeenCalledTimes(1)
+    isSigning = true
+    rerender(<DistributeButton dtf={dtf} />)
+    expect(button).toHaveTextContent(/^Distribute$/)
+    expect(button).toBeDisabled()
+
+    isSigning = false
+    rerender(<DistributeButton dtf={dtf} />)
+    expect(button).toHaveTextContent(/^Distribute$/)
+    expect(button).toBeEnabled()
+
+    hash = SECOND
+    receipts = { ...receipts, [SECOND]: { status: 'success' } }
+    rerender(<DistributeButton dtf={dtf} />)
+    expect(button).toHaveTextContent('Distributed')
   })
 
   it('opens the connect modal when no wallet is connected', async () => {

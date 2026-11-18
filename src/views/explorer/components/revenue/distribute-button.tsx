@@ -19,13 +19,16 @@ const DistributeButton = ({ dtf }: { dtf: IndexDTFItem }) => {
   const { openConnectModal } = useWalletModal()
   const { switchChainAsync } = useSwitchChain()
   const { data: hash, writeContract, isPending } = useWriteContract()
-  // A cancelled or replaced transaction mines a different call; its receipt is not a distribution.
-  const [wasDropped, setDropped] = useState(false)
+  // A cancelled or replaced transaction mines a different call; its receipt is not a distribution. Kept per hash, so it holds until a new attempt has its own hash.
+  const [droppedHash, setDroppedHash] = useState<string>()
   const { data: receipt, isLoading } = useWaitForTransactionReceipt({
     hash,
     chainId: dtf.chainId,
-    onReplaced: ({ reason }) => setDropped(reason !== 'repriced'),
+    onReplaced: ({ reason, replacedTransaction }) => {
+      if (reason !== 'repriced') setDroppedHash(replacedTransaction.hash)
+    },
   })
+  const wasDropped = !!hash && droppedHash === hash
   const [isSwitching, setSwitching] = useState(false)
 
   const handleDistribute = async () => {
@@ -46,7 +49,6 @@ const DistributeButton = ({ dtf }: { dtf: IndexDTFItem }) => {
       }
     }
 
-    setDropped(false)
     writeContract({
       abi: dtfIndexAbi,
       address: dtf.address,

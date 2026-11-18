@@ -125,27 +125,35 @@ test('clicking the proposer opens the hovercard without leaving the list', async
   expect(page.url()).toBe(url)
 })
 
-// The preview that focus opens is out of the tab order; Enter must turn it into a dialog, not close it.
-test('keyboard: Enter on a focused proposer opens the profile as a dialog with its links in the tab order', async ({
-  page,
-  overrides,
-}, testInfo) => {
-  test.skip(testInfo.project.name === 'mobile', 'desktop keyboard path')
-  seedProfile(overrides, PROPOSER, profileFor(PROPOSER, { proposals: 1 }))
+// The preview that focus opens is out of the tab order; a key must turn it into a dialog, not close it.
+for (const key of ['Enter', 'Space']) {
+  test(`keyboard: ${key} on a focused proposer opens the profile as a dialog with its actions in the tab order`, async ({
+    page,
+    overrides,
+  }, testInfo) => {
+    test.skip(testInfo.project.name === 'mobile', 'desktop keyboard path')
+    seedProfile(overrides, PROPOSER, profileFor(PROPOSER, { proposals: 1 }))
 
-  await page.goto(dtfPath(dtf, 'governance'))
-  await page.getByTestId('proposal-list-item').first().getByTestId('address-hovercard-trigger').focus()
-  await expect(page.getByTestId('address-profile-card')).toBeVisible()
-  await expect(page.getByRole('dialog')).toHaveCount(0)
+    await page.goto(dtfPath(dtf, 'governance'))
+    const trigger = page.getByTestId('proposal-list-item').first().getByTestId('address-hovercard-trigger')
+    await trigger.focus()
+    await expect(page.getByTestId('address-profile-card')).toBeVisible()
+    await expect(page.getByRole('dialog')).toHaveCount(0)
 
-  await page.keyboard.press('Enter')
-  const dialog = page.getByRole('dialog')
-  await expect(dialog.getByTestId('address-profile-card')).toBeVisible()
+    await page.keyboard.press(key)
+    const dialog = page.getByRole('dialog')
+    await expect(dialog.getByTestId('address-profile-card')).toBeVisible()
 
-  await page.keyboard.press('Tab')
-  await page.keyboard.press('Tab')
-  await expect(dialog.locator('a[target="_blank"]').first()).toBeFocused()
-})
+    await page.keyboard.press('Tab')
+    await expect(dialog.locator('button').first()).toBeFocused()
+    await page.keyboard.press('Tab')
+    await expect(dialog.locator('a[target="_blank"]').first()).toBeFocused()
+    await page.keyboard.press('Tab')
+    await expect(dialog.locator('a[href*="/explorer/governance?proposer="]')).toBeFocused()
+    await page.keyboard.press('Tab')
+    await expect(dialog.locator('a[href*="/portfolio?account="]')).toBeFocused()
+  })
+}
 
 test('delegates table opens the hovercard for a delegate', async ({ page, overrides }) => {
   const gov = loadSnapshot<GovernanceSnapshot>(`${dtf.snapshotDir}/governance.json`)

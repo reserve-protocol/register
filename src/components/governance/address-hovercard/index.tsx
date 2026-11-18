@@ -138,6 +138,10 @@ const AddressHovercard = ({
         preload()
       }}
       onFocus={preload}
+      // WHY: once the dialog is closed and focus leaves, the next focus must get the preview again.
+      onBlur={() => {
+        if (!open) setAsDialog(false)
+      }}
       // WHY: HoverCard has no touch affordance, so a click also toggles it.
       onClick={(event) => {
         event.preventDefault()
@@ -178,7 +182,7 @@ const AddressHovercard = ({
               triggerRef.current?.focus()
             }}
             onClick={(event) => event.stopPropagation()}
-            className="max-w-full gap-0 overflow-hidden focus:outline-none border-none bg-card p-0 shadow-lg sm:max-w-[420px] top-[100%] translate-y-[-100%] sm:top-[50%] sm:translate-y-[-50%] rounded-b-none rounded-t-3xl sm:rounded-3xl data-[state=open]:animate-dialog-in data-[state=closed]:animate-dialog-out"
+            className="max-h-[100dvh] max-w-full gap-0 overflow-y-auto overflow-x-hidden focus:outline-none border-none bg-card p-0 shadow-lg sm:max-w-[420px] top-[100%] translate-y-[-100%] sm:top-[50%] sm:translate-y-[-50%] rounded-b-none rounded-t-3xl sm:rounded-3xl data-[state=open]:animate-dialog-in data-[state=closed]:animate-dialog-out"
           >
             <DialogTitle className="sr-only">
               <Trans>Address governance profile</Trans>

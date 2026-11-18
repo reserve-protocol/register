@@ -36,9 +36,12 @@ vi.mock('@/hooks/useIndexDTFList', () => ({
   default: () => ({ data: list }),
 }))
 
+let ethCalls = 0
+
 const transport = custom({
   request: async ({ method, params }) => {
     if (method !== 'eth_call') throw new Error(`unexpected ${method}`)
+    ethCalls += 1
     const [{ data }] = params as [{ data: Hex }]
     const { args } = decodeFunctionData({ abi: multicall3Abi, data })
     const calls = args?.[0] as readonly { target: string }[]
@@ -138,6 +141,21 @@ describe('useIndexDTFRevenue', () => {
     rerender()
 
     await waitFor(() => expect(result.current).toHaveLength(3))
+    expect(result.current?.map((item) => item.dtf.address).sort()).toEqual(
+      [A.address, B.address, C.address].sort()
+    )
     expectOwnFees(seen)
+  })
+
+  it('does not read the fees again when only the wallet chain changes', async () => {
+    const { config, result } = setup()
+    await act(() => connect(config, { connector: config.connectors[0] }))
+    await waitFor(() => expect(result.current).toHaveLength(2))
+    const readsBefore = ethCalls
+
+    await act(() => switchChain(config, { chainId: base.id }))
+    await settle()
+
+    expect(ethCalls).toBe(readsBefore)
   })
 })
