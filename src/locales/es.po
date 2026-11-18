@@ -56,9 +56,7 @@ msgid "{0, plural, one {# Auction run} other {# Auctions run}}"
 msgstr "{0, plural, one {# subasta ejecutada} other {# subastas ejecutadas}}"
 
 #. placeholder {0}: chains.length
-#. placeholder {0}: props.selected.length
 #: src/components/filters/chain/ChainFilter.tsx:79
-#: src/views/explorer/components/filters/ChainFilter.tsx:31
 msgid "{0, plural, one {# chain} other {# chains}}"
 msgstr "{0, plural, one {# chain} other {# chains}}"
 
@@ -74,6 +72,16 @@ msgstr "{0, plural, one {# hora} other {# horas}}"
 msgid "{0, plural, one {# minute} other {# minutes}}"
 msgstr "{0, plural, one {# minuto} other {# minutos}}"
 
+#. placeholder {0}: data.length
+#: src/views/explorer/components/collaterals/index.tsx:164
+msgid "{0, plural, one {# plugin} other {# plugins}}"
+msgstr "{0, plural, one {# plugin} other {# plugins}}"
+
+#. placeholder {0}: data.length
+#: src/views/explorer/components/governance/index.tsx:305
+msgid "{0, plural, one {# result} other {# results}}"
+msgstr "{0, plural, one {# resultado} other {# resultados}}"
+
 #. placeholder {0}: protocol.usedIn
 #: src/views/index-dtf/overview/components/yield-index/yield-index-composition-desktop.tsx:116
 msgid "{0, plural, one {# Strategy} other {# Strategies}}"
@@ -83,6 +91,13 @@ msgstr "{0, plural, one {# estrategia} other {# estrategias}}"
 #: src/views/home/components/discover-yield-dtf/token-stats.tsx:49
 msgid "{0, plural, one {# target} other {# targets}}"
 msgstr "{0, plural, one {# objetivo} other {# objetivos}}"
+
+#. placeholder {0}: data.n
+#. placeholder {0}: yieldRevenue.trades
+#: src/views/explorer/components/revenue/index.tsx:54
+#: src/views/explorer/components/revenue/yield-revenue.tsx:25
+msgid "{0, plural, one {# trade} other {# trades}}"
+msgstr "{0, plural, one {# operación} other {# operaciones}}"
 
 #. placeholder {0}: selectedTokens.length
 #: src/components/token-selector-drawer/index.tsx:282
@@ -95,10 +110,20 @@ msgstr "{0, plural, one {Agregar # token} other {Agregar # tokens}}"
 msgid "{0, plural, one {has >5% simulated price impact.} other {have >5% simulated price impact.}}"
 msgstr "{0, plural, one {tiene un impacto en el precio simulado >5%.} other {tienen un impacto en el precio simulado >5%.}}"
 
+#. placeholder {0}: transactions.length
+#: src/views/explorer/components/transactions/index.tsx:221
+msgid "{0, plural, one {Latest # transaction} other {Latest # transactions}}"
+msgstr "{0, plural, one {Última transacción} other {Últimas # transacciones}}"
+
 #. placeholder {0}: timeUntilCharged >= 1.5 ? 2 : 1
 #: src/views/yield-dtf/issuance/components/issue/IssuanceInfo.tsx:55
 msgid "{0, plural, one {minute} other {minutes}}"
 msgstr "{0, plural, one {minuto} other {minutos}}"
+
+#. placeholder {0}: indexRevenue.length
+#: src/views/explorer/components/revenue/index.tsx:45
+msgid "{0, plural, one {pending fees in # Index DTF} other {pending fees in # Index DTFs}}"
+msgstr "{0, plural, one {comisiones pendientes en # Index DTF} other {comisiones pendientes en # Index DTFs}}"
 
 #. placeholder {0}: p.usedIn
 #: src/views/index-dtf/overview/components/yield-index/yield-index-composition-mobile.tsx:133
@@ -191,7 +216,9 @@ msgid "{0} auctions"
 msgstr "{0} subastas"
 
 #. placeholder {0}: data.outstandingTrades
-#: src/views/explorer/components/revenue/index.tsx:430
+#. placeholder {0}: yieldRevenue.outstandingTrades
+#: src/views/explorer/components/revenue/index.tsx:56
+#: src/views/explorer/components/revenue/yield-revenue.tsx:30
 msgid "{0} available"
 msgstr "{0} disponibles"
 
@@ -211,12 +238,12 @@ msgid "{0} cover"
 msgstr "Portada de {0}"
 
 #. placeholder {0}: profile.thisDtf.defeated
-#: src/components/governance/address-hovercard/address-profile-card.tsx:162
+#: src/components/governance/address-hovercard/address-profile-card.tsx:180
 msgid "{0} defeated"
 msgstr "{0} rechazadas"
 
 #. placeholder {0}: formatCurrency(profile.delegatedPower, 2, { notation: 'compact' })
-#: src/components/governance/address-hovercard/address-profile-card.tsx:224
+#: src/components/governance/address-hovercard/address-profile-card.tsx:248
 msgid "{0} delegated"
 msgstr "{0} delegado"
 
@@ -231,7 +258,7 @@ msgid "{0} Est. APY"
 msgstr "{0} APY est."
 
 #. placeholder {0}: profile.thisDtf.executed
-#: src/components/governance/address-hovercard/address-profile-card.tsx:159
+#: src/components/governance/address-hovercard/address-profile-card.tsx:177
 msgid "{0} executed"
 msgstr "{0} ejecutadas"
 
@@ -260,7 +287,6 @@ msgid "{0} has"
 msgstr "{0} tiene"
 
 #. placeholder {0}: CHAIN_TAGS[chain]
-#: src/views/explorer/components/revenue/index.tsx:102
 #: src/views/home/components/discover-yield-dtf/yield-dtf-card.tsx:41
 msgid "{0} Native"
 msgstr "{0} Native"
@@ -283,16 +309,18 @@ msgstr "Rendimiento de {0}"
 
 #. placeholder {0}: account.totals.proposals
 #. placeholder {1}: account.totals.votes
-#: src/components/governance/address-hovercard/address-profile-card.tsx:277
+#: src/components/governance/address-hovercard/address-profile-card.tsx:306
 msgid "{0} proposals · {1} votes"
 msgstr "{0} propuestas · {1} votos"
 
 #. placeholder {0}: props.selected.length
 #. placeholder {0}: selected.length
 #: src/components/ui/multiselect-dropdown.tsx:170
-#: src/views/explorer/components/filters/token-filter.tsx:75
-#: src/views/explorer/components/filters/TransactionTypeFilter.tsx:44
-#: src/views/explorer/components/governance/filters.tsx:51
+#: src/views/explorer/components/collaterals/index.tsx:153
+#: src/views/explorer/components/filters/ChainFilter.tsx:39
+#: src/views/explorer/components/filters/token-filter.tsx:92
+#: src/views/explorer/components/filters/TransactionTypeFilter.tsx:41
+#: src/views/explorer/components/governance/filters.tsx:100
 msgid "{0} selected"
 msgstr "{0} seleccionados"
 
@@ -313,7 +341,7 @@ msgid "{0} uses Stargate collateral and has pending STG rewards. As of January 5
 msgstr "{0} usa colateral de Stargate y tiene recompensas STG pendientes. A partir del 5 de enero de 2026, el activo STG dejará de funcionar, ya que Chainlink está descontinuando el oráculo STG-USD. El colateral de Stargate seguirá funcionando, pero las recompensas STG ya no se procesarán, lo que provocará una caída en el rendimiento real de {1}."
 
 #. placeholder {0}: profile.thisDtf.vetoed
-#: src/components/governance/address-hovercard/address-profile-card.tsx:165
+#: src/components/governance/address-hovercard/address-profile-card.tsx:183
 msgid "{0} vetoed"
 msgstr "{0} vetadas"
 
@@ -934,7 +962,7 @@ msgstr "Cuentas que pueden enviar propuestas optimistas."
 msgid "Acquire assets before minting"
 msgstr "Adquirir activos antes del Mint"
 
-#: src/components/governance/address-hovercard/address-profile-card.tsx:275
+#: src/components/governance/address-hovercard/address-profile-card.tsx:304
 msgid "Across Reserve"
 msgstr "En todo Reserve"
 
@@ -949,7 +977,7 @@ msgstr "Acción"
 msgid "Action needed"
 msgstr "Acción necesaria"
 
-#: src/views/explorer/components/governance/filters.tsx:22
+#: src/views/explorer/components/governance/filters.tsx:40
 msgid "Active"
 msgstr "Activa"
 
@@ -1118,7 +1146,7 @@ msgstr "Destinatarios adicionales:"
 #: src/views/index-dtf/deploy/steps/roles/roles-form.tsx:15
 #: src/views/index-dtf/deploy/steps/roles/roles-form.tsx:41
 #: src/views/index-dtf/deploy/steps/roles/roles-form.tsx:50
-#: src/views/index-dtf/governance/components/governance-delegate-list.tsx:57
+#: src/views/index-dtf/governance/components/governance-delegate-list.tsx:59
 #: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/components/sections/propose-basket-roles.tsx:24
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/sections/propose-dao-roles.tsx:24
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-dtf-roles.tsx:15
@@ -1128,7 +1156,7 @@ msgstr "Destinatarios adicionales:"
 #: src/views/index-dtf/settings/components/index-settings-basic.tsx:102
 #: src/views/internal/dtf-list/components/dtf-table.tsx:189
 #: src/views/internal/dtf-listed/components/listed-dtf-table.tsx:153
-#: src/views/yield-dtf/governance/components/TopVoters.tsx:91
+#: src/views/yield-dtf/governance/components/TopVoters.tsx:93
 msgid "Address"
 msgstr "Dirección"
 
@@ -1142,7 +1170,7 @@ msgstr "Avatar de la dirección"
 msgid "Address copied to clipboard"
 msgstr "Dirección copiada al portapapeles"
 
-#: src/components/governance/address-hovercard/index.tsx:99
+#: src/components/governance/address-hovercard/index.tsx:149
 msgid "Address governance profile"
 msgstr "Perfil de gobernanza de la dirección"
 
@@ -1150,7 +1178,7 @@ msgstr "Perfil de gobernanza de la dirección"
 msgid "Admin Gov"
 msgstr "Gov de administración"
 
-#: src/components/governance/address-hovercard/address-profile-card.tsx:110
+#: src/components/governance/address-hovercard/address-profile-card.tsx:119
 msgid "Admin of this DTF"
 msgstr "Admin de este DTF"
 
@@ -1186,6 +1214,15 @@ msgstr "Alexios es la votación estándar por token adoptada de Compound Governo
 #: src/views/explorer/components/governance/filters.tsx:60
 #: src/views/explorer/components/tokens/index.tsx:44
 #: src/views/index-dtf/deploy/steps/basket/token-selector.tsx:244
+#: src/views/explorer/components/collaterals/index.tsx:153
+#: src/views/explorer/components/filters/ChainFilter.tsx:36
+#: src/views/explorer/components/filters/token-filter.tsx:92
+#: src/views/explorer/components/filters/TransactionTypeFilter.tsx:41
+#: src/views/explorer/components/governance/filters.tsx:55
+#: src/views/explorer/components/governance/filters.tsx:59
+#: src/views/explorer/components/governance/filters.tsx:100
+#: src/views/explorer/components/MultiselectDropdown.tsx:130
+#: src/views/index-dtf/deploy/steps/basket/token-selector.tsx:241
 #: src/views/index-dtf/factsheet/components/chart-overlay.tsx:85
 #: src/views/index-dtf/overview/components/charts/percentage-change.tsx:63
 #: src/views/index-dtf/overview/components/charts/time-range-menu.tsx:38
@@ -1218,18 +1255,12 @@ msgstr "Todas las Chains"
 
 #: src/views/earn/views/index-dtf/components/table-filters.tsx:52
 #: src/views/earn/views/yield-dtf/components/table-filters.tsx:51
-#: src/views/explorer/components/filters/token-filter.tsx:64
 msgid "All DTFs"
 msgstr "Todos los DTFs"
 
 #: src/components/ui/multiselect-dropdown.tsx:89
-#: src/views/explorer/components/MultiselectDropdown.tsx:82
 msgid "All options"
 msgstr "Todas las opciones"
-
-#: src/views/explorer/components/governance/filters.tsx:52
-msgid "All statuses"
-msgstr "Todos los estados"
 
 #: src/views/index-dtf/overview/components/basket-overview/performance-cell.tsx:24
 msgid "all time"
@@ -1248,14 +1279,6 @@ msgstr "Todo el tiempo"
 #: src/views/index-dtf/deploy/form-fields.ts:111
 msgid "All token units must be valid positive numbers"
 msgstr "Todas las unidades de token deben ser números positivos válidos"
-
-#: src/views/explorer/components/filters/token-filter.tsx:64
-msgid "All tokens"
-msgstr "Todos los tokens"
-
-#: src/views/explorer/components/filters/TransactionTypeFilter.tsx:45
-msgid "All types"
-msgstr "Todos los tipos"
 
 #: src/views/tokens/Tokens.tsx:28
 msgid "All unlisted RTokens"
@@ -1355,8 +1378,8 @@ msgid "Am I buying real stocks?"
 msgstr ""
 
 #: src/components/transactions/table/index.tsx:78
-#: src/views/explorer/components/revenue/index.tsx:348
-#: src/views/explorer/components/transactions/useTransactionColumns.tsx:81
+#: src/views/explorer/components/revenue/trades.tsx:188
+#: src/views/explorer/components/transactions/index.tsx:123
 #: src/views/index-dtf/overview/components/index-transaction-table-with-swaps/columns.tsx:53
 #: src/views/index-dtf/overview/components/index-transaction-table.tsx:52
 #: src/views/yield-dtf/auctions/components/useColumns.tsx:40
@@ -1368,8 +1391,6 @@ msgstr "Monto"
 msgid "Amount locked"
 msgstr "Cantidad bloqueada"
 
-#: src/views/explorer/components/revenue/index.tsx:435
-#: src/views/explorer/components/revenue/index.tsx:575
 #: src/views/index-dtf/issuance/manual/components/asset-list.tsx:179
 msgid "Amount:"
 msgstr "Monto:"
@@ -1452,12 +1473,16 @@ msgstr "La comisión anualizada sobre el TVL debe ser de 10% o menos"
 msgid "Annualized yield generated by DTFs on Reserve. Calculated based on the last 30 days."
 msgstr "Rendimiento anualizado generado por los DTF en Reserve. Calculado en función de los últimos 30 días."
 
+#: src/views/explorer/components/governance/filters.tsx:146
+msgid "Any"
+msgstr "Cualquiera"
+
 #: src/views/yield-dtf/auctions/components/About.tsx:74
 msgid "Anyone can click the button above to check and trigger an auction for any revenue that has accrued or for rebalances that need to happen. Please note that for RTokens with many collateral types in the basket, this may be an expensive transaction to execute."
 msgstr "Cualquiera puede hacer clic en el botón de arriba para comprobar y activar una subasta para cualquier ingreso acumulado o para reequilibrios que deban realizarse. Ten en cuenta que para RTokens con muchos tipos de colateral en la cesta, esta puede ser una transacción costosa de ejecutar."
 
 #: src/components/ui/multiselect-dropdown.tsx:135
-#: src/views/explorer/components/MultiselectDropdown.tsx:118
+#: src/views/explorer/components/governance/filters.tsx:185
 msgid "Apply"
 msgstr "Aplicar"
 
@@ -1543,6 +1568,7 @@ msgstr ""
 msgid "April 1"
 msgstr "1 de abril"
 
+#: src/views/explorer/components/collaterals/index.tsx:33
 #: src/views/portfolio-page/components/staked-positions.tsx:68
 #: src/views/portfolio-page/components/vote-locked-positions.tsx:222
 msgid "APY"
@@ -1652,7 +1678,7 @@ msgstr "La subasta expira en: <0>{0}</0>"
 msgid "Auction launched successfully"
 msgstr "Subasta lanzada correctamente"
 
-#: src/components/governance/address-hovercard/address-profile-card.tsx:113
+#: src/components/governance/address-hovercard/address-profile-card.tsx:122
 #: src/views/index-dtf/deploy/steps/roles/roles-form.tsx:45
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-dtf-roles.tsx:45
 msgid "Auction launcher"
@@ -1781,16 +1807,13 @@ msgid "Available Collaterals"
 msgstr "Colaterales disponibles"
 
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-optimistic-parameters.tsx:69
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-optimistic-parameters.tsx:66
 msgid "Available optimistic actions"
 msgstr "Acciones optimistas disponibles"
 
 #: src/views/portfolio-page/components/available-rewards.tsx:165
 msgid "Available Rewards"
 msgstr "Recompensas disponibles"
-
-#: src/views/explorer/components/revenue/index.tsx:677
-msgid "Available Trades:"
-msgstr "Operaciones disponibles:"
 
 #: src/views/earn/views/index-dtf/components/faq-graphics.tsx:155
 msgid "Average daily rewards × 365 ÷ vault value locked"
@@ -1949,6 +1972,7 @@ msgid "Basket APY"
 msgstr "APY de la cesta"
 
 #: src/views/index-dtf/governance/components/proposal-preview/rebalance-preview/index.tsx:39
+#: src/views/index-dtf/governance/components/proposal-preview/rebalance-preview/index.tsx:37
 #: src/views/index-dtf/governance/components/proposal-preview/rebalance-preview/legacy-basket-proposal-preview.tsx:114
 #: src/views/index-dtf/governance/views/propose/basket/components/proposal-basket-preview.tsx:119
 msgid "Basket Change"
@@ -2155,7 +2179,7 @@ msgstr "Tanto los lanzadores de subastas como los miembros de la comunidad puede
 msgid "Bought"
 msgstr "Comprado"
 
-#: src/components/governance/address-hovercard/address-profile-card.tsx:114
+#: src/components/governance/address-hovercard/address-profile-card.tsx:123
 msgid "Brand manager"
 msgstr "Gestor de marca"
 
@@ -2234,7 +2258,7 @@ msgstr "Explora DTFs Index y Yield"
 msgid "BTC"
 msgstr "BTC"
 
-#: src/views/explorer/components/revenue/index.tsx:287
+#: src/views/explorer/components/revenue/trades.tsx:147
 #: src/views/index-dtf/auctions/legacy/components/auction-item.tsx:132
 #: src/views/index-dtf/issuance/manual/components/mode-selector.tsx:12
 #: src/views/index-dtf/overview/components/index-transaction-table-with-swaps/columns.tsx:26
@@ -2285,8 +2309,9 @@ msgstr "Comprando {0}"
 msgid "Buying:"
 msgstr "Comprando:"
 
+#: src/views/explorer/components/governance/index.tsx:260
 #: src/views/index-dtf/governance/components/proposal-list-item.tsx:204
-#: src/views/yield-dtf/governance/components/ProposalList.tsx:168
+#: src/views/yield-dtf/governance/components/ProposalList.tsx:170
 msgid "by"
 msgstr "por"
 
@@ -2351,7 +2376,7 @@ msgid "Cancel"
 msgstr "Cancelar"
 
 #: src/components/transactions/table/index.tsx:53
-#: src/views/explorer/components/transactions/useTransactionColumns.tsx:37
+#: src/views/explorer/components/transactions/display.tsx:25
 #: src/views/yield-dtf/overview/components/rtoken-transactions.tsx:82
 msgid "Cancel Issue"
 msgstr "Cancelar emisión"
@@ -2368,7 +2393,7 @@ msgstr "Cancelar propuesta"
 msgid "Cancel unstake"
 msgstr "Cancelar Unstake"
 
-#: src/views/explorer/components/governance/filters.tsx:26
+#: src/views/explorer/components/governance/filters.tsx:44
 #: src/views/index-dtf/governance/views/proposal/components/proposal-deadline-alert.tsx:41
 #: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:303
 #: src/views/yield-dtf/governance/views/proposal-detail/components/proposal-timeline/TimelineItem.tsx:258
@@ -2559,7 +2584,7 @@ msgstr "Elige etiquetas..."
 
 #: src/components/transactions/table/index.tsx:52
 #: src/views/explorer/components/filters/TransactionTypeFilter.tsx:16
-#: src/views/explorer/components/transactions/useTransactionColumns.tsx:36
+#: src/views/explorer/components/transactions/display.tsx:24
 #: src/views/portfolio-page/components/available-rewards.tsx:79
 #: src/views/portfolio-page/components/available-rewards.tsx:147
 #: src/views/yield-dtf/overview/components/rtoken-transactions.tsx:81
@@ -2605,6 +2630,7 @@ msgstr "Limpiar"
 
 #: src/views/index-dtf/deploy/steps/confirm-deploy/manual/components/approve-all-deploy-button.tsx:123
 #: src/views/explorer/components/governance/filters.tsx:122
+#: src/views/explorer/components/governance/filters.tsx:124
 msgid "Clear proposer filter"
 msgstr "Quitar filtro de proponente"
 
@@ -2645,7 +2671,7 @@ msgstr "Cierra"
 msgid "Collapse orders"
 msgstr "Contraer órdenes"
 
-#: src/views/explorer/components/collaterals/index.tsx:80
+#: src/views/explorer/components/collaterals/index.tsx:77
 #: src/views/yield-dtf/overview/components/backing/underlying-fees/fees-table.tsx:217
 msgid "Collateral"
 msgstr "Colateral"
@@ -2714,7 +2740,8 @@ msgstr "Colateral:"
 msgid "Collateral(s)"
 msgstr "Colateral(es)"
 
-#: src/views/explorer/index.tsx:40
+#: src/views/explorer/components/collaterals/index.tsx:159
+#: src/views/explorer/components/kit/explorer-nav.tsx:53
 #: src/views/yield-dtf/overview/components/backing/asset-breakdown.tsx:33
 msgid "Collaterals"
 msgstr "Colaterales"
@@ -2931,13 +2958,16 @@ msgstr "Felicitaciones 🎉"
 msgid "Connect"
 msgstr "Conectar"
 
+#: src/views/explorer/components/governance/index.tsx:326
+msgid "Connect a wallet to see your votes"
+msgstr "Conecta un wallet para ver tus votos"
+
 #: src/components/vote-lock/migration/migration-card.tsx:233
 msgid "Connect to check"
 msgstr "Conecta para verificar"
 
 #: src/components/stake-drawer/components/submit-stake-button.tsx:160
 #: src/components/stake-drawer/components/submit-unstake-button.tsx:72
-#: src/views/explorer/components/governance/index.tsx:198
 #: src/views/portfolio-page/components/portfolio-connect-button.tsx:20
 msgid "Connect wallet"
 msgstr "Conectar Wallet"
@@ -3182,8 +3212,8 @@ msgstr "Crear Index DTF"
 msgid "Create New Index DTF"
 msgstr "Crear nuevo Index DTF"
 
-#: src/views/index-dtf/governance/components/governance-proposal-list.tsx:29
-#: src/views/yield-dtf/governance/components/ProposalList.tsx:214
+#: src/views/index-dtf/governance/components/governance-proposal-list.tsx:30
+#: src/views/yield-dtf/governance/components/ProposalList.tsx:217
 msgid "Create proposal"
 msgstr "Crear propuesta"
 
@@ -3213,6 +3243,8 @@ msgstr "Crear Yield DTF"
 #~ msgid "Create yours"
 #~ msgstr "Crea el tuyo"
 
+#: src/views/explorer/components/governance/index.tsx:211
+#: src/views/explorer/components/governance/index.tsx:269
 #: src/views/index-dtf/overview/components/fees-stats.tsx:105
 #: src/views/internal/dtf-list/components/dtf-date-chain-filters.tsx:67
 #: src/views/internal/dtf-list/components/dtf-table.tsx:198
@@ -3224,10 +3256,6 @@ msgstr "Creado"
 #: src/views/index-dtf/deploy/components/right-panel.tsx:49
 msgid "Created {stTokenSymbol} DAO"
 msgstr "DAO de {stTokenSymbol} creada"
-
-#: src/views/explorer/components/governance/index.tsx:155
-msgid "Created At"
-msgstr "Creada el"
 
 #: src/views/index-dtf/overview/components/index-about-meta.tsx:45
 msgid "Created by"
@@ -3480,11 +3508,10 @@ msgid "Default Admin"
 msgstr "Admin predeterminado"
 
 #: src/components/rtoken-setup/basket/PluginItem.tsx:56
-#: src/views/explorer/components/collaterals/index.tsx:150
 msgid "Default delay"
 msgstr "Retraso predeterminado"
 
-#: src/views/explorer/components/governance/filters.tsx:23
+#: src/views/explorer/components/governance/filters.tsx:41
 #: src/views/index-dtf/governance/views/proposal/components/proposal-deadline-alert.tsx:29
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalAlert.tsx:50
 msgid "Defeated"
@@ -3515,6 +3542,11 @@ msgstr "Define qué porción de los ingresos va al creador del DTF, a la vote-lo
 #: src/components/rtoken-setup/token/RevenueSplit.tsx:173
 msgid "Define what portion of the revenue goes to the RToken holders versus RSR stakers. It can also be configured to send a portion of the revenue of an RToken to any arbitrary Ethereum address (wallet or smart contract).<0/><1/>"
 msgstr "Define qué porción de los ingresos se destina a los titulares de RToken frente a los stakers de RSR. También se puede configurar para enviar una porción de los ingresos de un RToken a cualquier dirección arbitraria de Ethereum (Wallet o contrato inteligente).<0/><1/>"
+
+#: src/views/explorer/components/collaterals/collateral-item.tsx:97
+#: src/views/explorer/components/collaterals/index.tsx:135
+msgid "Delay"
+msgstr "Demora"
 
 #: src/components/rtoken-setup/governance/GovernanceParameters.tsx:57
 msgid "Delay (in number of blocks) since the proposal is submitted until voting power is fixed and voting starts. This can be used to enforce a delay after a proposal is published for users to buy tokens, or delegate their votes."
@@ -3585,7 +3617,7 @@ msgstr "Delegado a sí mismo"
 msgid "Delegated to: "
 msgstr "Delegado a: "
 
-#: src/views/index-dtf/governance/components/governance-delegate-list.tsx:153
+#: src/views/index-dtf/governance/components/governance-delegate-list.tsx:155
 msgid "Delegates"
 msgstr "Delegados"
 
@@ -3597,7 +3629,7 @@ msgstr "Delegación"
 msgid "Delegation updated"
 msgstr "Delegación actualizada"
 
-#: src/components/governance/address-hovercard/address-profile-card.tsx:261
+#: src/components/governance/address-hovercard/address-profile-card.tsx:290
 msgid "Delegators"
 msgstr "Delegantes"
 
@@ -3651,7 +3683,7 @@ msgid "Deploying through this UI doesn't require deep technical knowledge as lon
 msgstr "Desplegar a través de esta UI no requiere conocimientos técnicos profundos, siempre que no necesites plugins de colateral novedosos para tus cestas. Sin embargo, te recomendamos hablar con alguien con experiencia en el protocolo y leer la documentación para aprender más antes de confirmar cualquier transacción."
 
 #: src/components/transactions/table/index.tsx:57
-#: src/views/explorer/components/transactions/useTransactionColumns.tsx:41
+#: src/views/explorer/components/transactions/display.tsx:29
 #: src/views/yield-dtf/overview/components/rtoken-transactions.tsx:86
 msgid "Deposit"
 msgstr "Depositar"
@@ -3661,7 +3693,6 @@ msgid "DEPRECATED"
 msgstr "OBSOLETO"
 
 #: src/components/governance/proposal-description-form.tsx:64
-#: src/views/explorer/components/governance/index.tsx:138
 #: src/views/index-dtf/governance/views/proposal/components/proposal-detail-content.tsx:15
 #: src/views/index-dtf/governance/views/proposal/components/proposal-detail-content.tsx:41
 #: src/views/portfolio-page/components/transactions.tsx:114
@@ -3755,7 +3786,7 @@ msgstr "Mostrar solo los colaterales relacionados con {0}"
 msgid "Displayed estimate"
 msgstr ""
 
-#: src/views/explorer/components/revenue/index.tsx:550
+#: src/views/explorer/components/revenue/distribute-button.tsx:66
 msgid "Distribute"
 msgstr "Distribuir"
 
@@ -3773,7 +3804,7 @@ msgstr "Distribuir comisiones"
 msgid "Distribute weights equally among all tokens in the basket."
 msgstr "Distribuir los pesos de forma equitativa entre todos los tokens de la cesta."
 
-#: src/views/explorer/components/revenue/index.tsx:549
+#: src/views/explorer/components/revenue/distribute-button.tsx:66
 #: src/views/portfolio-page/components/available-rewards.tsx:80
 msgid "Distributed"
 msgstr "Distribuido"
@@ -3938,6 +3969,10 @@ msgstr "Propuesta de configuración del DTF"
 #: src/views/index-dtf/overview/components/index-token-logo.tsx:20
 msgid "dtf token logo"
 msgstr "logo del token dtf"
+
+#: src/views/explorer/components/governance/filters.tsx:207
+msgid "DTF type"
+msgstr "Tipo de DTF"
 
 #: src/views/index-dtf/manage/components/submit-button.tsx:292
 msgid "DTF updated successfully"
@@ -4178,7 +4213,7 @@ msgid "Enabled"
 msgstr "Habilitado"
 
 #: src/hooks/use-time-remaining.ts:23
-#: src/views/explorer/components/governance/index.tsx:169
+#: src/views/explorer/components/governance/index.tsx:184
 msgid "Ended"
 msgstr "Finalizado"
 
@@ -4235,6 +4270,9 @@ msgstr "Ingresa el monto de {0}"
 #: src/views/index-dtf/deploy/steps/governance-settings/voting-presets.tsx:47
 msgid "Enter custom"
 msgstr "Ingresar valor personalizado"
+#: src/views/explorer/components/governance/filters.tsx:176
+msgid "Enter a valid address"
+msgstr "Ingresa una dirección válida"
 
 #: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/components/basket-settings-proposal-section.tsx:39
 #: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/components/basket-settings-proposal-section.tsx:99
@@ -4508,7 +4546,7 @@ msgstr "Ejecutable hasta {deadlineDate}"
 msgid "Execute proposal"
 msgstr "Ejecutar propuesta"
 
-#: src/views/explorer/components/governance/filters.tsx:24
+#: src/views/explorer/components/governance/filters.tsx:42
 #: src/views/index-dtf/governance/components/proposal-list-item.tsx:103
 #: src/views/index-dtf/governance/views/proposal/components/proposal-deadline-alert.tsx:23
 #: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:302
@@ -4518,7 +4556,7 @@ msgid "Executed"
 msgstr "Ejecutada"
 
 #: src/views/index-dtf/governance/components/proposal-list-item.tsx:53
-#: src/views/yield-dtf/governance/components/ProposalList.tsx:95
+#: src/views/yield-dtf/governance/components/ProposalList.tsx:97
 msgid "Execution available in:"
 msgstr "Ejecución disponible en:"
 
@@ -4601,7 +4639,7 @@ msgstr "Esperado"
 msgid "Expected volatility"
 msgstr "Volatilidad esperada"
 
-#: src/views/explorer/components/governance/filters.tsx:29
+#: src/views/explorer/components/governance/filters.tsx:47
 #: src/views/index-dtf/governance/views/proposal/components/proposal-deadline-alert.tsx:35
 #: src/views/index-dtf/issuance/async-mint/components/leg-row.tsx:74
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalAlert.tsx:56
@@ -4726,9 +4764,6 @@ msgid "Fast proposal"
 msgstr "Propuesta rápida"
 
 #: src/views/explorer/components/tokens/index.tsx:194
-msgid "Featured RTokens"
-msgstr "RTokens destacados"
-
 #: src/views/index-dtf/overview/components/zap-mint/zap-details.tsx:91
 #~ msgid "Fee"
 #~ msgstr "Comisión"
@@ -4745,6 +4780,7 @@ msgstr "Distribución de comisiones"
 #: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:55
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/optimistic.ts:123
 #: src/components/governance/address-hovercard/address-profile-card.tsx:115
+#: src/components/governance/address-hovercard/address-profile-card.tsx:124
 msgid "Fee recipient"
 msgstr "Receptor de comisiones"
 
@@ -4868,6 +4904,10 @@ msgstr "Filtrar por DTFs"
 msgid "Filter by Role"
 msgstr "Filtrar por rol"
 
+#: src/views/explorer/components/transactions/Filters.tsx:24
+msgid "Filter by wallet address"
+msgstr "Filtrar por dirección de wallet"
+
 #: src/views/yield-dtf/auctions/dutch/components/DutchAuction.tsx:50
 msgid "Final price"
 msgstr "Precio final"
@@ -4906,11 +4946,11 @@ msgstr "Buscando ruta..."
 msgid "Finish re-locking your {symbol}"
 msgstr "Termina de volver a bloquear tu {symbol}"
 
-#: src/components/governance/address-hovercard/address-profile-card.tsx:286
+#: src/components/governance/address-hovercard/address-profile-card.tsx:315
 msgid "First action"
 msgstr "Primera acción"
 
-#: src/components/governance/address-hovercard/address-profile-card.tsx:240
+#: src/components/governance/address-hovercard/address-profile-card.tsx:265
 msgid "First proposal"
 msgstr "Primera propuesta"
 
@@ -4983,7 +5023,7 @@ msgstr "Foro"
 msgid "Freeze State"
 msgstr "Estado de congelación"
 
-#: src/components/governance/address-hovercard/address-profile-card.tsx:117
+#: src/components/governance/address-hovercard/address-profile-card.tsx:126
 msgid "Freezer"
 msgstr "Freezer"
 
@@ -4991,7 +5031,6 @@ msgstr "Freezer"
 msgid "Freezers"
 msgstr "Freezers"
 
-#: src/views/explorer/components/transactions/useTransactionColumns.tsx:119
 #: src/views/yield-dtf/overview/components/rtoken-transactions.tsx:153
 msgid "From"
 msgstr "De"
@@ -5095,7 +5134,7 @@ msgstr "Gobierna, haz Stake y encuentra oportunidades de rendimiento"
 #: src/components/layout/navigation/TokenNavigation.tsx:204
 #: src/components/layout/navigation/TokenNavigation.tsx:220
 #: src/components/rtoken-setup/governance/GovernanceSetup.tsx:39
-#: src/views/explorer/index.tsx:43
+#: src/views/explorer/components/kit/explorer-nav.tsx:56
 #: src/views/index-dtf/components/navigation/index.tsx:227
 #: src/views/index-dtf/deploy/steps/revenue/revenue-distribution-settings.tsx:42
 #: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:408
@@ -5144,7 +5183,7 @@ msgstr "Foro de gobernanza"
 msgid "Governance gets deployed & your RToken is now usable (if unpaused)"
 msgstr "La gobernanza se despliega y tu RToken queda listo para usar (si está despausado)"
 
-#: src/components/governance/address-hovercard/address-profile-card.tsx:255
+#: src/components/governance/address-hovercard/address-profile-card.tsx:284
 msgid "Governance history is unavailable right now."
 msgstr "El historial de gobernanza no está disponible en este momento."
 
@@ -5242,7 +5281,7 @@ msgstr "Guardián"
 msgid "Guardian address"
 msgstr "Dirección del guardián"
 
-#: src/components/governance/address-hovercard/address-profile-card.tsx:111
+#: src/components/governance/address-hovercard/address-profile-card.tsx:120
 msgid "Guardian of this DTF"
 msgstr "Guardián de este DTF"
 
@@ -5285,6 +5324,11 @@ msgstr "¿Tienes problemas con el Redeem?"
 #: src/views/index-dtf/deploy/steps/governance/form-existing-erc20.tsx:37
 msgid "hero-splash"
 msgstr "hero-splash"
+
+#. placeholder {0}: data.symbol
+#: src/views/explorer/components/revenue/yield-revenue.tsx:94
+msgid "Hide {0} trades"
+msgstr "Ocultar operaciones de {0}"
 
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:502
 msgid "Hide orders"
@@ -5348,10 +5392,6 @@ msgstr "Participación de los holders"
 #: src/views/top100/components/top100-table.tsx:204
 msgid "Holders"
 msgstr "Titulares"
-
-#: src/views/explorer/components/tokens/index.tsx:168
-msgid "Holders APY"
-msgstr "APY de titulares"
 
 #: src/views/index-dtf/overview/components/basket-overview/index.tsx:119
 msgid "Holdings"
@@ -5487,8 +5527,8 @@ msgstr "Estoy al tanto del retraso de desbloqueo de {delay} días"
 msgid "I'm aware of the {delay}-day unstake delay"
 msgstr "Estoy al tanto del retraso de Unstake de {delay} días"
 
-#: src/views/index-dtf/governance/views/proposal/components/proposal-header.tsx:123
-#: src/views/yield-dtf/governance/views/proposal-detail/ProposalHeader.tsx:121
+#: src/views/index-dtf/governance/views/proposal/components/proposal-header.tsx:124
+#: src/views/yield-dtf/governance/views/proposal-detail/ProposalHeader.tsx:122
 msgid "ID"
 msgstr "ID"
 
@@ -5574,7 +5614,8 @@ msgstr "Wallet incompatible"
 msgid "Increase"
 msgstr "Aumentar"
 
-#: src/views/explorer/components/governance/filters.tsx:62
+#: src/views/explorer/components/governance/filters.tsx:61
+#: src/views/explorer/components/revenue/index.tsx:22
 msgid "Index"
 msgstr "Index"
 
@@ -5691,10 +5732,6 @@ msgstr "Ingresa el nombre o símbolo del token"
 #: src/components/rtoken-setup/governance/GovernanceParameters.tsx:70
 msgid "Input voting period"
 msgstr "Ingresa el período de votación"
-
-#: src/views/explorer/components/transactions/Filters.tsx:23
-msgid "Input wallet"
-msgstr "Ingresa una Wallet"
 
 #: src/components/rtoken-setup/token/OtherForm.tsx:52
 msgid "Input withdrawal leak %"
@@ -5861,7 +5898,7 @@ msgstr "Tasa límite de emisión (%)"
 
 #: src/components/transactions/table/index.tsx:50
 #: src/views/explorer/components/filters/TransactionTypeFilter.tsx:15
-#: src/views/explorer/components/transactions/useTransactionColumns.tsx:34
+#: src/views/explorer/components/transactions/display.tsx:22
 #: src/views/yield-dtf/overview/components/rtoken-transactions.tsx:79
 msgid "Issue"
 msgstr "Emisión"
@@ -5908,6 +5945,10 @@ msgstr "Últimos 15 días"
 msgid "Last 24 hours"
 msgstr "Últimas 24 horas"
 
+#: src/views/explorer/components/governance/filters.tsx:53
+msgid "Last 3 months"
+msgstr "Últimos 3 meses"
+
 #: src/views/internal/dtf-list/components/dtf-date-chain-filters.tsx:88
 msgid "Last 30 days"
 msgstr "Últimos 30 días"
@@ -5916,9 +5957,21 @@ msgstr "Últimos 30 días"
 msgid "Last 7 days"
 msgstr "Últimos 7 días"
 
-#: src/components/governance/address-hovercard/address-profile-card.tsx:293
+#: src/components/governance/address-hovercard/address-profile-card.tsx:322
 msgid "Last action"
 msgstr "Última acción"
+
+#: src/views/explorer/components/governance/filters.tsx:52
+msgid "Last month"
+msgstr "Último mes"
+
+#: src/views/explorer/components/governance/filters.tsx:51
+msgid "Last week"
+msgstr "Última semana"
+
+#: src/views/explorer/components/governance/filters.tsx:54
+msgid "Last year"
+msgstr "Último año"
 
 #: src/views/index-dtf/governance/views/propose/basket/components/legacy-advance-controls.tsx:31
 #: src/views/index-dtf/governance/views/propose/basket/components/legacy-advance-controls.tsx:32
@@ -6114,11 +6167,14 @@ msgstr "Cargando los datos de tu portafolio..."
 #: src/components/stake-drawer/components/submit-stake-button.tsx:164
 #: src/views/explorer/components/revenue/index.tsx:547
 #: src/views/index-dtf/deploy/steps/confirm-deploy/simple/index.tsx:161
+#: src/views/explorer/components/kit/explorer-table.tsx:119
+#: src/views/explorer/components/kit/loading-bar.tsx:13
+#: src/views/index-dtf/deploy/steps/confirm-deploy/simple/index.tsx:158
 #: src/views/index-dtf/governance/components/proposal-preview/token-reward-preview.tsx:66
 #: src/views/index-dtf/governance/components/proposal-preview/token-reward-preview.tsx:66
 #: src/views/index-dtf/governance/views/proposal/components/proposal-header.tsx:58
 #: src/views/index-dtf/governance/views/proposal/components/proposal-header.tsx:104
-#: src/views/index-dtf/governance/views/proposal/components/proposal-header.tsx:128
+#: src/views/index-dtf/governance/views/proposal/components/proposal-header.tsx:129
 #: src/views/index-dtf/governance/views/proposal/components/vote-modal.tsx:140
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/sections/propose-revenue-tokens.tsx:63
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/vault-proposal-form.tsx:65
@@ -6127,7 +6183,7 @@ msgstr "Cargando los datos de tu portafolio..."
 #: src/views/yield-dtf/governance/views/proposal-detail/components/VoteModal.tsx:91
 #: src/views/yield-dtf/governance/views/proposal-detail/ProposalHeader.tsx:65
 #: src/views/yield-dtf/governance/views/proposal-detail/ProposalHeader.tsx:105
-#: src/views/yield-dtf/governance/views/proposal-detail/ProposalHeader.tsx:124
+#: src/views/yield-dtf/governance/views/proposal-detail/ProposalHeader.tsx:125
 #: src/views/yield-dtf/settings/components/setting-item.tsx:62
 msgid "Loading..."
 msgstr "Cargando..."
@@ -6191,7 +6247,7 @@ msgstr "Duración del congelamiento largo: congela el sistema de un RToken duran
 msgid "Long freeze duration (s)"
 msgstr "Duración del congelamiento largo (s)"
 
-#: src/components/governance/address-hovercard/address-profile-card.tsx:118
+#: src/components/governance/address-hovercard/address-profile-card.tsx:127
 msgid "Long freezer"
 msgstr "Long freezer"
 
@@ -6387,7 +6443,8 @@ msgid "Max slippage"
 msgstr "Slippage máximo"
 
 #: src/components/ondo-badge.tsx:147
-#: src/views/explorer/components/collaterals/index.tsx:139
+#: src/views/explorer/components/collaterals/collateral-item.tsx:91
+#: src/views/explorer/components/collaterals/index.tsx:128
 msgid "Max trade"
 msgstr "Operación máxima"
 
@@ -6469,7 +6526,7 @@ msgstr ""
 
 #: src/components/transactions/table/index.tsx:49
 #: src/views/explorer/components/filters/TransactionTypeFilter.tsx:14
-#: src/views/explorer/components/transactions/useTransactionColumns.tsx:33
+#: src/views/explorer/components/transactions/display.tsx:21
 #: src/views/yield-dtf/overview/components/rtoken-transactions.tsx:78
 msgid "Melt"
 msgstr "Melt"
@@ -6484,6 +6541,12 @@ msgstr "Escríbenos por Telegram"
 
 #: src/views/index-dtf/deploy/components/deploy-accordion.tsx:64
 #: src/views/index-dtf/deploy/components/deploy-accordion.tsx:65
+#: src/views/explorer/components/revenue/trades.tsx:72
+msgid "Met"
+msgstr "Cumplido"
+
+#: src/views/index-dtf/deploy/components/deploy-accordion.tsx:67
+#: src/views/index-dtf/deploy/components/deploy-accordion.tsx:68
 msgid "Metadata"
 msgstr "Metadatos"
 
@@ -6511,8 +6574,9 @@ msgstr "Migración necesaria"
 msgid "Min. amount out"
 msgstr "Cantidad mín. de salida"
 
-#: src/views/explorer/components/revenue/index.tsx:333
-msgid "Min. Trade"
+#: src/views/explorer/components/revenue/trades.tsx:98
+#: src/views/explorer/components/revenue/trades.tsx:181
+msgid "Min. trade"
 msgstr "Operación mín."
 
 #: src/components/rtoken-setup/token/OtherForm.tsx:92
@@ -6542,7 +6606,7 @@ msgstr "Edición menor de texto"
 #: src/components/layout/navigation/TokenNavigation.tsx:188
 #: src/components/transactions/table/index.tsx:46
 #: src/views/explorer/components/filters/TransactionTypeFilter.tsx:11
-#: src/views/explorer/components/transactions/useTransactionColumns.tsx:30
+#: src/views/explorer/components/transactions/display.tsx:18
 #: src/views/home/components/discover-yield-dtf/token-actions.tsx:42
 #: src/views/index-dtf/issuance/async-mint/steps/configure-mint.tsx:151
 #: src/views/index-dtf/issuance/async-mint/steps/success.tsx:149
@@ -6694,7 +6758,6 @@ msgid "Missing signature"
 msgstr "Falta la firma"
 
 #: src/components/tables/ListedTokensTable.tsx:42
-#: src/views/explorer/components/tokens/index.tsx:156
 #: src/views/tokens/components/UnlistedTokensTable.tsx:100
 msgid "Mkt Cap"
 msgstr "Cap. de mercado"
@@ -6838,16 +6901,11 @@ msgstr "Resumen de rendimiento neto"
 
 #: src/components/account/index.tsx:45
 #: src/components/tables/ListedTokensTable.tsx:60
-#: src/views/explorer/components/collaterals/index.tsx:71
-#: src/views/explorer/components/tokens/index.tsx:136
+#: src/views/explorer/components/filters/ChainFilter.tsx:32
 #: src/views/tokens/components/TableFilters.tsx:43
 #: src/views/tokens/components/UnlistedTokensTable.tsx:125
 msgid "Network"
 msgstr "Network"
-
-#: src/views/explorer/components/filters/ChainFilter.tsx:26
-msgid "Networks"
-msgstr "Networks"
 
 #: src/components/index-basket-setup/basket-table.tsx:66
 msgid "New %"
@@ -6937,6 +6995,8 @@ msgid "New voting quorum:"
 msgstr "Nuevo quórum de votación:"
 
 #: src/components/proposal-sort-menu.tsx:21
+#: src/views/explorer/components/governance/filters.tsx:66
+#: src/views/explorer/components/transactions/index.tsx:48
 msgid "Newest"
 msgstr "Más recientes"
 
@@ -6952,6 +7012,10 @@ msgstr "Monto de la oferta en el próximo bloque"
 msgid "Next open"
 msgstr "Próxima apertura"
 
+#: src/views/explorer/components/kit/explorer-pager.tsx:84
+msgid "Next page"
+msgstr "Página siguiente"
+
 #: src/views/yield-dtf/deploy/components/NavigationSidebar.tsx:28
 msgid "Next steps"
 msgstr "Próximos pasos"
@@ -6963,7 +7027,7 @@ msgstr ""
 #: src/views/index-dtf/auctions/views/rebalance/components/rebalance-overview.tsx:74
 #: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:204
 #: src/views/portfolio-page/components/active-proposals.tsx:100
-#: src/views/yield-dtf/governance/components/ProposalList.tsx:124
+#: src/views/yield-dtf/governance/components/ProposalList.tsx:126
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalDetailStats.tsx:166
 msgid "No"
 msgstr "No"
@@ -7003,6 +7067,10 @@ msgstr "No se necesitaron swaps de colateral para este Mint."
 msgid "No collateral swaps were needed for this redeem."
 msgstr "No se necesitaron swaps de colateral para este Redeem."
 
+#: src/views/explorer/components/collaterals/index.tsx:229
+msgid "No collaterals match these filters"
+msgstr "Ningún colateral coincide con estos filtros"
+
 #: src/components/charts/area/AreaChart.tsx:131
 #: src/views/home/components/discover-index-dtf/index-dtf-table-columns.tsx:109
 #: src/views/home/components/highlighted-dtfs/feature-card-header.tsx:160
@@ -7016,7 +7084,7 @@ msgstr "Sin datos"
 msgid "No data available"
 msgstr "No hay datos disponibles"
 
-#: src/views/index-dtf/governance/components/governance-delegate-list.tsx:39
+#: src/views/index-dtf/governance/components/governance-delegate-list.tsx:41
 msgid "No delegates found"
 msgstr "No se encontraron delegados"
 
@@ -7067,10 +7135,18 @@ msgstr "No se encontraron DTFs listados"
 msgid "No mandate set"
 msgstr "Sin mandato establecido"
 
+#: src/views/explorer/components/MultiselectDropdown.tsx:151
+msgid "No matches"
+msgstr "Sin coincidencias"
+
 #. placeholder {0}: rToken?.symbol ?? 'rtoken'
 #: src/views/yield-dtf/auctions/components/OngoingAuctionsSkeleton.tsx:13
 msgid "No ongoing {0}-related auctions. Check for available auctions/unrealized revenue <0>here</0> if you want to poke the protocol to start the next auction."
 msgstr "No hay subastas en curso relacionadas con {0}. Consulta las subastas disponibles o los ingresos no realizados <0>aquí</0> si quieres impulsar el protocolo para iniciar la próxima subasta."
+
+#: src/views/explorer/components/revenue/index-revenue.tsx:70
+msgid "No pending fees"
+msgstr "Sin comisiones pendientes"
 
 #: src/views/index-dtf/governance/views/propose/basket/components/proposal-rebalance-launch-settings.tsx:240
 msgid "No Permissionless Launching Allowed"
@@ -7080,13 +7156,17 @@ msgstr "No se permite el lanzamiento sin permisos"
 msgid "No plugins available"
 msgstr "No hay plugins disponibles"
 
-#: src/views/yield-dtf/governance/components/ProposalList.tsx:222
+#: src/views/yield-dtf/governance/components/ProposalList.tsx:225
 msgid "No proposals created..."
 msgstr "No se han creado propuestas..."
 
-#: src/views/index-dtf/governance/components/governance-proposal-list.tsx:62
+#: src/views/index-dtf/governance/components/governance-proposal-list.tsx:63
 msgid "No proposals found"
 msgstr "No se encontraron propuestas"
+
+#: src/views/explorer/components/governance/index.tsx:324
+msgid "No proposals match these filters"
+msgstr "Ninguna propuesta coincide con estos filtros"
 
 #: src/views/index-dtf/auctions/views/rebalance-list/index.tsx:37
 msgid "No rebalances found"
@@ -7095,6 +7175,10 @@ msgstr "No se encontraron reequilibrios"
 #: src/views/portfolio-page/index.tsx:61
 msgid "No Reserve activity found in this wallet"
 msgstr "No se encontró actividad de Reserve en esta Wallet"
+
+#: src/views/explorer/components/kit/explorer-table.tsx:121
+msgid "No results"
+msgstr "Sin resultados"
 
 #: src/components/command-menu/index.tsx:151
 msgid "No results found."
@@ -7150,6 +7234,11 @@ msgstr "No hay tokens en la cesta"
 msgid "No tokens to remove"
 msgstr "No hay tokens para eliminar"
 
+#: src/views/explorer/components/revenue/trades.tsx:221
+#: src/views/explorer/components/revenue/yield-revenue.tsx:18
+msgid "No trades"
+msgstr "Sin operaciones"
+
 #: src/views/index-dtf/governance/views/propose/basket/components/legacy-proposal-auction-price-ranges.tsx:238
 msgid "No trades available"
 msgstr "No hay operaciones disponibles"
@@ -7158,11 +7247,15 @@ msgstr "No hay operaciones disponibles"
 msgid "No transactions"
 msgstr "Sin transacciones"
 
+#: src/views/explorer/components/transactions/index.tsx:255
+msgid "No transactions match these filters"
+msgstr "Ninguna transacción coincide con estos filtros"
+
 #: src/views/index-dtf/deploy/steps/basket/basket-csv-setup.tsx:127
 msgid "No valid tokens found in the CSV file."
 msgstr "No se encontraron tokens válidos en el archivo CSV."
 
-#: src/views/yield-dtf/governance/components/TopVoters.tsx:152
+#: src/views/yield-dtf/governance/components/TopVoters.tsx:156
 msgid "No voters at this moment..."
 msgstr "No hay votantes en este momento..."
 
@@ -7217,7 +7310,7 @@ msgid "None"
 msgstr "Ninguno"
 
 #: src/components/vote-lock/components/delegate.tsx:120
-#: src/views/index-dtf/governance/components/governance-delegate-list.tsx:109
+#: src/views/index-dtf/governance/components/governance-delegate-list.tsx:111
 msgid "Normal"
 msgstr "Normal"
 
@@ -7274,12 +7367,16 @@ msgstr "Sin congelar"
 #: src/views/index-dtf/governance/views/propose/basket/components/submit-proposal-button.tsx:145
 msgid "Not in this DTF's trade allowlist: {symbols}"
 msgstr "No están en la lista de tokens permitidos de este DTF: {symbols}"
+#: src/views/explorer/components/revenue/trades.tsx:76
+msgid "Not met"
+msgstr "No cumplido"
 
 #: src/views/yield-dtf/deploy/components/GovernanceOverview.tsx:128
 msgid "Not ready to set up governance?"
 msgstr "¿No estás listo para configurar la gobernanza?"
 
-#: src/views/explorer/components/governance/index.tsx:201
+#: src/views/explorer/components/governance/index.tsx:223
+#: src/views/explorer/components/governance/index.tsx:290
 msgid "Not voted"
 msgstr "Sin votar"
 
@@ -7325,6 +7422,10 @@ msgstr "Los vote-locks anteriores deben pasar a {vault}"
 msgid "Old weight / New weight"
 msgstr "Peso anterior / Peso nuevo"
 
+#: src/views/explorer/components/transactions/index.tsx:49
+msgid "Oldest"
+msgstr "Más antiguos"
+
 #. placeholder {0}: new Date(Number(proposal.executionTime) * 1000) .toLocaleString(undefined, { month: '2-digit', day: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit', hour12: true, }) .replace(',', '') .replace(/(\d{2})\/(\d{2})\/(\d{2})/, '$1/$2/$3 at')
 #: src/views/index-dtf/governance/components/proposal-list-item.tsx:116
 msgid "on {0}"
@@ -7334,6 +7435,7 @@ msgstr "en {0}"
 msgid "On this DTF the shares below split the recipient pool: the holder share is kept first, and permanent recipients take their fixed part of what remains."
 msgstr "En este DTF, las participaciones de abajo dividen el pool de destinatarios: primero se reserva la participación de los holders y los destinatarios permanentes toman su parte fija de lo que queda."
 #: src/components/governance/address-hovercard/index.tsx:102
+#: src/components/governance/address-hovercard/index.tsx:152
 msgid "On-chain governance history for this address"
 msgstr "Historial de gobernanza onchain de esta dirección"
 
@@ -7434,7 +7536,7 @@ msgstr "Abrir menú de navegación"
 msgid "Open Safe website"
 msgstr "Abrir el sitio web de Safe"
 
-#: src/views/index-dtf/governance/components/governance-delegate-list.tsx:112
+#: src/views/index-dtf/governance/components/governance-delegate-list.tsx:114
 msgid "Optimistic"
 msgstr "Optimista"
 
@@ -7460,6 +7562,7 @@ msgid "Optimistic proposals"
 msgstr "Propuestas optimistas"
 
 #: src/components/governance/address-hovercard/address-profile-card.tsx:112
+#: src/components/governance/address-hovercard/address-profile-card.tsx:121
 #: src/views/index-dtf/governance/components/governance-roles.tsx:169
 #: src/views/index-dtf/settings/components/index-settings-roles.tsx:66
 msgid "Optimistic proposer"
@@ -7579,6 +7682,14 @@ msgstr "Dirección del propietario"
 msgid "Owners"
 msgstr "Propietarios"
 
+#: src/views/explorer/components/kit/explorer-pager.tsx:55
+msgid "Page {page} of {pageCount}"
+msgstr "Página {page} de {pageCount}"
+
+#: src/views/explorer/components/kit/explorer-pager.tsx:42
+msgid "Pages"
+msgstr "Páginas"
+
 #: src/views/yield-dtf/overview/components/backing/underlying-fees.tsx:152
 msgid "Paid in period"
 msgstr ""
@@ -7628,7 +7739,7 @@ msgstr "Pausar emisión"
 msgid "Pause status"
 msgstr "Estado de pausa"
 
-#: src/components/governance/address-hovercard/address-profile-card.tsx:116
+#: src/components/governance/address-hovercard/address-profile-card.tsx:125
 msgid "Pauser"
 msgstr "Pauser"
 
@@ -7649,7 +7760,7 @@ msgstr "Pagos en RSR"
 msgid "Peg:"
 msgstr "Paridad:"
 
-#: src/views/explorer/components/governance/filters.tsx:21
+#: src/views/explorer/components/governance/filters.tsx:39
 #: src/views/index-dtf/issuance/async-mint/components/leg-row.tsx:80
 #: src/views/yield-dtf/issuance/components/issue/CollateralApprovals.tsx:109
 msgid "Pending"
@@ -7671,9 +7782,9 @@ msgstr "Distribución pendiente"
 msgid "Pending execution"
 msgstr "Pendiente de ejecución"
 
-#: src/views/explorer/components/revenue/index.tsx:601
-msgid "Pending Fees:"
-msgstr "Comisiones pendientes:"
+#: src/views/explorer/components/revenue/index-revenue.tsx:46
+msgid "Pending fees"
+msgstr "Comisiones pendientes"
 
 #: src/views/index-dtf/governance/components/proposal-list-item.tsx:100
 #: src/views/index-dtf/governance/views/proposal/components/proposal-deadline-alert.tsx:128
@@ -7756,6 +7867,10 @@ msgstr "Rendimiento (últimos 7 días)"
 msgid "Performance from inception*"
 msgstr "Rendimiento desde el inicio*"
 
+#: src/views/explorer/components/governance/filters.tsx:223
+msgid "Period"
+msgstr "Período"
+
 #: src/components/rtoken-setup/token/BackingForm.tsx:47
 msgid "Period in seconds"
 msgstr "Período en segundos"
@@ -7809,6 +7924,8 @@ msgstr "PHOTON agrupa múltiples activos de colateral en un solo token DTF"
 #: src/views/explorer/components/transactions/useTransactionColumns.tsx:142
 #: src/views/index-dtf/deploy/steps/revenue/revenue-distribution-settings.tsx:23
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-revenue-distribution.tsx:271
+#: src/views/index-dtf/deploy/steps/revenue/revenue-distribution-settings.tsx:27
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-revenue-distribution.tsx:234
 msgid "Platform"
 msgstr "Plataforma"
 
@@ -7947,7 +8064,7 @@ msgstr "Dirección del plugin"
 msgid "Pool"
 msgstr "Pool"
 
-#: src/components/governance/address-hovercard/address-profile-card.tsx:317
+#: src/components/governance/address-hovercard/address-profile-card.tsx:346
 #: src/components/layout/header/components/app-navigation.tsx:84
 #: src/components/layout/header/components/mobile-navigation-drawer.tsx:132
 #: src/views/portfolio-page/index.tsx:169
@@ -8037,6 +8154,10 @@ msgstr "La vista previa de las llamadas a funciones y la incorporación de una d
 msgid "Previous basket"
 msgstr "Cesta anterior"
 
+#: src/views/explorer/components/kit/explorer-pager.tsx:47
+msgid "Previous page"
+msgstr "Página anterior"
+
 #: src/views/index-dtf/overview/components/index-disclousure.tsx:105
 msgid "Previous Version (v1)"
 msgstr "Versión anterior (v1)"
@@ -8047,7 +8168,6 @@ msgstr ""
 
 #: src/components/ondo-badge.tsx:124
 #: src/components/tables/ListedTokensTable.tsx:38
-#: src/views/explorer/components/tokens/index.tsx:152
 #: src/views/home/components/discover-index-dtf/index-dtf-table-columns.tsx:316
 #: src/views/index-dtf/auctions/views/rebalance/components/auction-bids-chart.tsx:159
 #: src/views/index-dtf/auctions/views/rebalance/components/auction-bids-chart.tsx:191
@@ -8170,6 +8290,11 @@ msgid "Projects recent reward activity forward."
 msgstr ""
 
 #: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:221
+#: src/views/explorer/components/governance/index.tsx:255
+msgid "Proposal"
+msgstr "Propuesta"
+
+#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:209
 msgid "Proposal canceled"
 msgstr "Propuesta cancelada"
 
@@ -8275,6 +8400,9 @@ msgstr "propuestas"
 #: src/components/governance/address-hovercard/address-profile-card.tsx:233
 #: src/components/governance/address-hovercard/address-profile-card.tsx:310
 #: src/views/explorer/components/governance/index.tsx:213
+#: src/components/governance/address-hovercard/address-profile-card.tsx:258
+#: src/components/governance/address-hovercard/address-profile-card.tsx:339
+#: src/views/explorer/components/governance/index.tsx:300
 #: src/views/index-dtf/governance/components/governance-stats.tsx:78
 #: src/views/yield-dtf/governance/components/GovernanceOverview.tsx:124
 msgid "Proposals"
@@ -8290,6 +8418,7 @@ msgstr "Las propuestas cada 12 horas deben estar entre 1 y 12"
 
 #: src/views/yield-dtf/governance/components/TopVoters.tsx:131
 #: src/views/yield-dtf/governance/components/TopVoters.tsx:134
+#: src/views/yield-dtf/governance/components/TopVoters.tsx:136
 msgid "Proposals voted"
 msgstr "Propuestas votadas"
 
@@ -8339,6 +8468,7 @@ msgstr "Proponer el retiro del vault"
 msgid "Proposed"
 msgstr "Propuesta"
 
+#: src/views/explorer/components/governance/index.tsx:208
 #: src/views/index-dtf/governance/views/proposal/components/proposal-header.tsx:108
 #: src/views/index-dtf/governance/views/proposal/components/vote-modal.tsx:145
 #: src/views/yield-dtf/governance/views/proposal-detail/components/VoteModal.tsx:95
@@ -8367,11 +8497,18 @@ msgstr "Propuesta el"
 msgid "Proposed:"
 msgstr "Propuesto:"
 
-#: src/views/explorer/components/governance/filters.tsx:118
+#: src/views/explorer/components/governance/filters.tsx:120
+#: src/views/explorer/components/governance/filters.tsx:143
 msgid "Proposer"
 msgstr "Proponente"
 
-#: src/views/explorer/components/collaterals/index.tsx:133
+#: src/views/explorer/components/governance/filters.tsx:164
+msgid "Proposer address"
+msgstr "Dirección del proponente"
+
+#: src/views/explorer/components/collaterals/collateral-item.tsx:94
+#: src/views/explorer/components/collaterals/index.tsx:96
+#: src/views/explorer/components/collaterals/index.tsx:194
 #: src/views/yield-dtf/overview/components/backing/underlying-fees/fees-table.tsx:67
 msgid "Protocol"
 msgstr "Protocolo"
@@ -8410,6 +8547,7 @@ msgstr "Encolar propuesta"
 #: src/views/explorer/components/governance/filters.tsx:24
 #: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:281
 #: src/views/explorer/components/governance/filters.tsx:28
+#: src/views/explorer/components/governance/filters.tsx:46
 #: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:269
 #: src/views/yield-dtf/governance/views/proposal-detail/components/proposal-timeline/TimelineItem.tsx:241
 msgid "Queued"
@@ -8425,7 +8563,7 @@ msgstr "Quórum"
 msgid "Quorum (%)"
 msgstr "Quórum (%)"
 
-#: src/views/explorer/components/governance/filters.tsx:25
+#: src/views/explorer/components/governance/filters.tsx:43
 #: src/views/index-dtf/governance/components/proposal-list-item.tsx:107
 #: src/views/index-dtf/governance/views/proposal/components/proposal-deadline-alert.tsx:47
 #: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:216
@@ -8438,7 +8576,7 @@ msgstr "Quórum no alcanzado"
 msgid "Quorum?"
 msgstr "¿Quórum?"
 
-#: src/views/yield-dtf/governance/components/ProposalList.tsx:119
+#: src/views/yield-dtf/governance/components/ProposalList.tsx:121
 msgid "Quorum?:"
 msgstr "¿Quórum?:"
 
@@ -8613,8 +8751,8 @@ msgstr "Recibido del redeem de tu vault anterior"
 msgid "Receiving eth address"
 msgstr "Dirección eth receptora"
 
-#: src/views/index-dtf/governance/components/governance-proposal-list.tsx:48
-#: src/views/yield-dtf/governance/components/ProposalList.tsx:206
+#: src/views/index-dtf/governance/components/governance-proposal-list.tsx:49
+#: src/views/yield-dtf/governance/components/ProposalList.tsx:209
 msgid "Recent proposals"
 msgstr "Propuestas recientes"
 
@@ -8648,7 +8786,7 @@ msgstr "Límite de registros"
 #: src/components/transactions/table/index.tsx:47
 #: src/components/vote-lock/migration/migration-modal.tsx:57
 #: src/views/explorer/components/filters/TransactionTypeFilter.tsx:12
-#: src/views/explorer/components/transactions/useTransactionColumns.tsx:31
+#: src/views/explorer/components/transactions/display.tsx:19
 #: src/views/index-dtf/issuance/async-mint/steps/configure-mint.tsx:154
 #: src/views/index-dtf/issuance/async-mint/steps/success.tsx:152
 #: src/views/index-dtf/issuance/manual/components/index-manual-issuance.tsx:195
@@ -8977,7 +9115,7 @@ msgstr "Solicita acceso a este producto"
 msgid "Request on Canny"
 msgstr "Solicitar en Canny"
 
-#: src/views/explorer/components/collaterals/index.tsx:200
+#: src/views/explorer/components/collaterals/index.tsx:175
 msgid "Request plugin"
 msgstr "Solicitar plugin"
 
@@ -9095,8 +9233,8 @@ msgstr "Reintentar {0} órdenes fallidas"
 msgid "Retrying…"
 msgstr "Reintentando…"
 
-#: src/views/explorer/components/revenue/index.tsx:729
-#: src/views/explorer/index.tsx:46
+#: src/views/explorer/components/kit/explorer-nav.tsx:59
+#: src/views/explorer/components/revenue/index.tsx:62
 #: src/views/portfolio-page/components/available-rewards.tsx:110
 msgid "Revenue"
 msgstr "Ingresos"
@@ -9159,9 +9297,9 @@ msgstr "División de ingresos"
 msgid "Revenue Tokens"
 msgstr "Tokens de ingresos"
 
-#: src/views/explorer/components/revenue/index.tsx:683
-msgid "Revenue:"
-msgstr "Ingresos:"
+#: src/views/explorer/components/revenue/index.tsx:66
+msgid "Revenue view"
+msgstr "Vista de ingresos"
 
 #: src/components/stake-drawer/index.tsx:208
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/components/changes/shared.tsx:27
@@ -9485,8 +9623,7 @@ msgstr "Los RTokens están respaldados al 100% por un conjunto diversificado de 
 msgid "RTokens in this list is not an endorsement or audited by us. It's simply RTokens that have gone through our listing process and don't seem like clear scams."
 msgstr "La presencia de RTokens en esta lista no implica respaldo ni auditoría de nuestra parte. Simplemente son RTokens que pasaron por nuestro proceso de listado y no parecen estafas evidentes."
 
-#: src/views/explorer/components/revenue/index.tsx:369
-#: src/views/explorer/components/revenue/index.tsx:448
+#: src/views/explorer/components/revenue/trades.tsx:41
 msgid "Run"
 msgstr "Ejecutar"
 
@@ -9502,7 +9639,7 @@ msgstr "Ejecutar subastas"
 msgid "Run auctions as:"
 msgstr "Ejecutar subastas como:"
 
-#: src/components/governance/address-hovercard/address-profile-card.tsx:208
+#: src/components/governance/address-hovercard/address-profile-card.tsx:226
 msgid "Safe multisig"
 msgstr "Multisig Safe"
 
@@ -9524,6 +9661,7 @@ msgstr "Evento programado"
 
 #: src/components/command-menu/index.tsx:123
 #: src/components/layout/header/components/header-actions-menu.tsx:72
+#: src/views/explorer/components/MultiselectDropdown.tsx:116
 #: src/views/internal/dtf-list/components/dtf-date-chain-filters.tsx:50
 #: src/views/tokens/components/TableFilters.tsx:20
 msgid "Search"
@@ -9551,6 +9689,14 @@ msgstr "Busca por nombre, ticker, etiqueta o colateral"
 msgid "Search by token name or address"
 msgstr "Buscar por nombre o dirección del token"
 
+#: src/views/explorer/components/collaterals/index.tsx:182
+msgid "Search collateral"
+msgstr "Buscar colateral"
+
+#: src/views/explorer/components/collaterals/index.tsx:181
+msgid "Search collaterals"
+msgstr "Buscar colaterales"
+
 #: src/views/earn/views/yield-dtf/components/table-filters.tsx:112
 msgid "Search DTF name or symbol"
 msgstr "Buscar nombre o símbolo de DTF"
@@ -9566,6 +9712,10 @@ msgstr "Buscar DTFs"
 #: src/views/earn/views/index-dtf/components/table-filters.tsx:112
 msgid "Search gov token or DTF"
 msgstr "Buscar token de gob. o DTF"
+
+#: src/views/explorer/components/MultiselectDropdown.tsx:117
+msgid "Search options"
+msgstr "Buscar opciones"
 
 #: src/views/earn/components/table-filters.tsx:121
 msgid "Search pool"
@@ -9629,7 +9779,7 @@ msgstr "El registro de selectores no está disponible para este governor optimis
 msgid "Self-delegation happens automatically when you vote-lock {0}. Come back here after vote-locking to update delegation."
 msgstr "La autodelegación ocurre automáticamente cuando haces vote-lock de {0}. Vuelve aquí después del vote-lock para actualizar la delegación."
 
-#: src/views/explorer/components/revenue/index.tsx:306
+#: src/views/explorer/components/revenue/trades.tsx:160
 #: src/views/index-dtf/auctions/legacy/components/auction-item.tsx:90
 #: src/views/index-dtf/issuance/manual/components/mode-selector.tsx:13
 #: src/views/index-dtf/overview/components/index-ctas-overview-mobile.tsx:148
@@ -9791,7 +9941,7 @@ msgstr "% de participación"
 msgid "Shared externally"
 msgstr "Compartido externamente"
 
-#: src/views/explorer/components/governance/index.tsx:82
+#: src/views/explorer/components/governance/index.tsx:94
 msgid "Shared governance"
 msgstr "Gobernanza compartida"
 
@@ -9829,7 +9979,12 @@ msgstr "Los short freezers tienen la responsabilidad de congelar un RToken si oc
 msgid "Show {0} more"
 msgstr ""
 
-#: src/views/index-dtf/governance/components/governance-proposal-list.tsx:76
+#. placeholder {0}: data.symbol
+#: src/views/explorer/components/revenue/yield-revenue.tsx:94
+msgid "Show {0} trades"
+msgstr "Mostrar operaciones de {0}"
+
+#: src/views/index-dtf/governance/components/governance-proposal-list.tsx:77
 msgid "Show all"
 msgstr "Mostrar todo"
 
@@ -9843,6 +9998,8 @@ msgstr "mostrar menos"
 
 #: src/views/index-dtf/governance/components/governance-proposal-list.tsx:76
 #: src/views/index-dtf/settings/components/index-settings-basic.tsx:124
+#: src/views/index-dtf/governance/components/governance-proposal-list.tsx:77
+#: src/views/index-dtf/settings/components/index-settings-basic.tsx:73
 #: src/views/portfolio-page/components/expand-toggle.tsx:33
 #: src/views/yield-dtf/issuance/components/zapV2/submit/ZapSubmitModal.tsx:61
 msgid "Show less"
@@ -9862,6 +10019,10 @@ msgstr "Mostrar órdenes"
 #: src/views/index-dtf/components/confirm-eligibility-modal.tsx:226
 msgid "Show restricted jurisdictions"
 msgstr "Mostrar jurisdicciones restringidas"
+
+#: src/views/explorer/components/kit/explorer-pager.tsx:36
+msgid "Showing {from}–{to} of {totalLabel}"
+msgstr "Mostrando {from}–{to} de {totalLabel}"
 
 #: src/views/internal/dtf-list/components/dtf-pagination.tsx:58
 msgid "Showing {startItem} to {endItem} of {totalCount} DTFs"
@@ -10039,7 +10200,7 @@ msgstr "Vendido"
 msgid "Some collateral tokens from protocols like Aave and Convex differ technically from other collateral tokens. To ensure proper handling, they must be wrapped in a contract for effective monitoring. Once wrapped, the collateral remains the same but has a new interface for price and appreciation tracking."
 msgstr "Algunos tokens de colateral de protocolos como Aave y Convex difieren técnicamente de otros tokens de colateral. Para garantizar un manejo adecuado, deben envolverse en un contrato para un monitoreo efectivo. Una vez envueltos, el colateral sigue siendo el mismo pero tiene una nueva interfaz para el seguimiento del precio y la apreciación."
 
-#: src/components/governance/address-hovercard/address-profile-card.tsx:299
+#: src/components/governance/address-hovercard/address-profile-card.tsx:328
 msgid "Some history may be missing."
 msgstr "Puede faltar parte del historial."
 
@@ -10072,9 +10233,11 @@ msgstr "Lo sentimos, tu solicitud supera el límite Global Max Mint. El Global M
 msgid "Sorry, your request exceeds the Global Max Redeem limit. The Global Max Redeem is set at {maxFormatted} {0}. You can only zap a maximum of {maxZap} {1}."
 msgstr "Lo sentimos, tu solicitud supera el límite Global Max Redeem. El Global Max Redeem está fijado en {maxFormatted} {0}. Solo puedes hacer Zap de un máximo de {maxZap} {1}."
 
-#: src/views/explorer/components/governance/filters.tsx:98
-msgid "Sort by"
-msgstr "Ordenar por"
+#: src/views/explorer/components/collaterals/index.tsx:211
+#: src/views/explorer/components/governance/filters.tsx:235
+#: src/views/explorer/components/transactions/index.tsx:235
+msgid "Sort"
+msgstr "Orden"
 
 #: src/views/portfolio-page/components/pending-withdrawals.tsx:332
 msgid "Source"
@@ -10130,7 +10293,7 @@ msgstr "Stables"
 #: src/components/layout/navigation/TokenNavigation.tsx:193
 #: src/components/transactions/table/index.tsx:54
 #: src/views/explorer/components/filters/TransactionTypeFilter.tsx:17
-#: src/views/explorer/components/transactions/useTransactionColumns.tsx:38
+#: src/views/explorer/components/transactions/display.tsx:26
 #: src/views/yield-dtf/overview/components/rtoken-transactions.tsx:83
 #: src/views/yield-dtf/staking/components/stake-container.tsx:21
 msgid "Stake"
@@ -10177,7 +10340,6 @@ msgstr "Haz Stake de tu RSR y gana recompensas de APY. <0>Más información</0>.
 msgid "Staked"
 msgstr "En Stake"
 
-#: src/views/explorer/components/tokens/index.tsx:160
 #: src/views/portfolio-page/components/portfolio-breakdown.tsx:38
 #: src/views/portfolio-page/components/portfolio-chart.tsx:75
 #: src/views/yield-dtf/overview/components/backing/backing-overview.tsx:99
@@ -10193,10 +10355,6 @@ msgstr "Sobrecolateralización del RSR en Stake"
 #: src/views/portfolio-page/components/staked-positions.tsx:158
 msgid "Staked RSR Positions"
 msgstr "Posiciones de RSR en Stake"
-
-#: src/views/explorer/components/tokens/index.tsx:172
-msgid "Stakers APY"
-msgstr "APY de stakers"
 
 #: src/views/portfolio-page/components/available-rewards.tsx:112
 msgid "Staking"
@@ -10252,7 +10410,7 @@ msgid "Start collateral trades"
 msgstr "Iniciar trades de colateral"
 
 #: src/components/transactions/table/index.tsx:51
-#: src/views/explorer/components/transactions/useTransactionColumns.tsx:35
+#: src/views/explorer/components/transactions/display.tsx:23
 #: src/views/yield-dtf/overview/components/rtoken-transactions.tsx:80
 msgid "Start Issue"
 msgstr "Iniciar emisión"
@@ -10287,6 +10445,10 @@ msgstr "Inicia el próximo período de recompensas de {0} una vez que finalice e
 #: src/views/explorer/components/governance/filters.tsx:46
 #: src/views/explorer/components/governance/index.tsx:180
 #: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:377
+#: src/views/explorer/components/governance/filters.tsx:65
+#: src/views/explorer/components/governance/filters.tsx:97
+#: src/views/explorer/components/governance/index.tsx:281
+#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:349
 #: src/views/portfolio-page/components/active-proposals.tsx:139
 #: src/views/yield-dtf/governance/views/proposal-detail/components/proposal-timeline/index.tsx:16
 msgid "Status"
@@ -10387,7 +10549,7 @@ msgstr "¡Enviada!"
 msgid "Submitting..."
 msgstr "Enviando..."
 
-#: src/views/explorer/components/governance/filters.tsx:27
+#: src/views/explorer/components/governance/filters.tsx:45
 #: src/views/index-dtf/governance/views/proposal/components/proposal-deadline-alert.tsx:53
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalAlert.tsx:74
 msgid "Succeeded"
@@ -10424,13 +10586,16 @@ msgstr "Resumen"
 msgid "Summary of Changes from v1"
 msgstr "Resumen de cambios desde la v1"
 
-#: src/views/explorer/components/collaterals/index.tsx:154
+#: src/views/explorer/components/collaterals/collateral-item.tsx:88
+#: src/views/explorer/components/collaterals/index.tsx:34
+#: src/views/explorer/components/collaterals/index.tsx:121
 #: src/views/index-dtf/overview/components/charts/data-type-selector.tsx:13
 #: src/views/yield-dtf/overview/components/charts/supply-chart.tsx:86
 msgid "Supply"
 msgstr "Suministro"
 
-#: src/views/explorer/components/revenue/index.tsx:325
+#: src/views/explorer/components/revenue/trades.tsx:91
+#: src/views/explorer/components/revenue/trades.tsx:173
 #: src/views/yield-dtf/auctions/auctions-sidebar/RevenueAuctionItem.tsx:75
 msgid "Surplus"
 msgstr "Superávit"
@@ -10510,7 +10675,9 @@ msgstr "Símbolo"
 msgid "Tags"
 msgstr "Etiquetas"
 
-#: src/views/explorer/components/collaterals/index.tsx:130
+#: src/views/explorer/components/collaterals/collateral-item.tsx:103
+#: src/views/explorer/components/collaterals/index.tsx:101
+#: src/views/explorer/components/collaterals/index.tsx:205
 msgid "Target"
 msgstr "Objetivo"
 
@@ -10520,7 +10687,6 @@ msgid "Target:"
 msgstr "Target:"
 
 #: src/components/tables/ListedTokensTable.tsx:54
-#: src/views/explorer/components/tokens/index.tsx:176
 #: src/views/tokens/components/UnlistedTokensTable.tsx:111
 msgid "Target(s)"
 msgstr "Objetivo(s)"
@@ -11126,7 +11292,8 @@ msgid "Ticker - symbol eg. USD+"
 msgstr "Ticker - símbolo, p. ej. USD+"
 
 #: src/components/transactions/table/index.tsx:88
-#: src/views/explorer/components/transactions/useTransactionColumns.tsx:115
+#: src/views/explorer/components/transactions/index.tsx:139
+#: src/views/explorer/components/transactions/index.tsx:198
 #: src/views/index-dtf/auctions/views/rebalance/components/auction-bids-chart.tsx:213
 #: src/views/index-dtf/auctions/views/rebalance/components/auction-bids-chart.tsx:322
 #: src/views/index-dtf/overview/components/index-transaction-table-with-swaps/columns.tsx:74
@@ -11177,9 +11344,9 @@ msgstr "Cambiar tema"
 
 #: src/components/index-basket-setup/basket-table.tsx:62
 #: src/components/tables/ListedTokensTable.tsx:28
-#: src/views/explorer/components/governance/index.tsx:120
-#: src/views/explorer/components/tokens/index.tsx:142
-#: src/views/explorer/components/transactions/useTransactionColumns.tsx:51
+#: src/views/explorer/components/filters/token-filter.tsx:89
+#: src/views/explorer/components/governance/index.tsx:250
+#: src/views/explorer/components/transactions/index.tsx:103
 #: src/views/index-dtf/governance/components/proposal-preview/rebalance-preview/rebalance-basket-preview.tsx:71
 #: src/views/index-dtf/governance/views/propose/basket/components/proposal-basket-preview.tsx:160
 #: src/views/index-dtf/governance/views/propose/basket/components/proposal-basket-setup/proposal-basket-table.tsx:49
@@ -11311,8 +11478,6 @@ msgstr "Activo tokenizado (mantenido en la cesta)"
 msgid "tokens"
 msgstr "tokens"
 
-#: src/views/explorer/components/filters/token-filter.tsx:69
-#: src/views/explorer/index.tsx:37
 #: src/views/yield-dtf/overview/components/backing/asset-breakdown.tsx:38
 msgid "Tokens"
 msgstr "Tokens"
@@ -11329,7 +11494,7 @@ msgstr "Tokens para igualar el intercambio"
 msgid "Top 100 DTFs"
 msgstr "Top 100 DTFs"
 
-#: src/views/yield-dtf/governance/components/TopVoters.tsx:145
+#: src/views/yield-dtf/governance/components/TopVoters.tsx:147
 msgid "Top voting addresses"
 msgstr "Principales direcciones votantes"
 
@@ -11459,16 +11624,11 @@ msgstr "Contrato del trader para operaciones Dutch."
 msgid "Trader implementations"
 msgstr "Implementaciones del trader"
 
-#: src/views/explorer/components/revenue/index.tsx:639
+#: src/views/explorer/components/revenue/index.tsx:24
 #: src/views/index-dtf/governance/components/proposal-preview/rebalance-preview/legacy-basket-proposal-preview.tsx:134
 #: src/views/index-dtf/governance/views/propose/basket/components/proposal-basket-preview.tsx:139
 msgid "Trades"
 msgstr "Operaciones"
-
-#: src/views/explorer/components/revenue/index.tsx:426
-#: src/views/explorer/components/revenue/index.tsx:671
-msgid "Trades:"
-msgstr "Operaciones:"
 
 #: src/views/yield-dtf/settings/components/backing-info.tsx:33
 msgid "Trading delay"
@@ -11518,6 +11678,11 @@ msgstr "Timelock de trading"
 #: src/views/index-dtf/components/zapper/large-mint-prompt-body.tsx:32
 msgid "Trading unavailable"
 msgstr "Trading no disponible"
+
+#: src/views/explorer/components/transactions/index.tsx:153
+#: src/views/explorer/components/transactions/index.tsx:204
+msgid "Transaction"
+msgstr "Transacción"
 
 #: src/views/yield-dtf/deploy/components/RTokenSetup.tsx:49
 #: src/views/yield-dtf/deploy/components/TransactionDivider.tsx:52
@@ -11598,8 +11763,8 @@ msgid "Transaction successful!"
 msgstr "¡Transacción exitosa!"
 
 #: src/components/layout/navigation/TokenNavigation.tsx:183
-#: src/views/explorer/components/transactions/index.tsx:38
-#: src/views/explorer/index.tsx:33
+#: src/views/explorer/components/kit/explorer-nav.tsx:49
+#: src/views/explorer/components/transactions/index.tsx:216
 #: src/views/index-dtf/overview/components/index-transaction-table-with-swaps/index.tsx:39
 #: src/views/index-dtf/overview/components/index-transaction-table.tsx:152
 #: src/views/portfolio-page/components/transactions.tsx:167
@@ -11613,7 +11778,7 @@ msgstr "¡Transacciones firmadas!"
 
 #: src/components/transactions/table/index.tsx:48
 #: src/views/explorer/components/filters/TransactionTypeFilter.tsx:13
-#: src/views/explorer/components/transactions/useTransactionColumns.tsx:32
+#: src/views/explorer/components/transactions/display.tsx:20
 #: src/views/index-dtf/overview/components/index-transaction-table-with-swaps/columns.tsx:25
 #: src/views/index-dtf/overview/components/index-transaction-table.tsx:26
 #: src/views/yield-dtf/overview/components/rtoken-transactions.tsx:77
@@ -11705,10 +11870,6 @@ msgstr "Tx Hash"
 msgid "Tx in process..."
 msgstr "Tx en proceso..."
 
-#: src/views/explorer/components/filters/TransactionTypeFilter.tsx:38
-msgid "Tx Type"
-msgstr "Tipo de Tx"
-
 #: src/views/yield-dtf/deploy/components/DeployOverview.tsx:124
 msgid "Tx1. RToken Deploy"
 msgstr "Tx1. Despliegue del RToken"
@@ -11718,13 +11879,14 @@ msgid "Tx2. Governance"
 msgstr "Tx2. Gobernanza"
 
 #: src/components/tables/ListedTokensTable.tsx:46
-#: src/views/explorer/index.tsx:30
+#: src/views/explorer/components/kit/explorer-nav.tsx:46
 #: src/views/tokens/components/UnlistedTokensTable.tsx:104
 msgid "Txs"
 msgstr "Txs"
 
 #: src/components/transactions/table/index.tsx:67
-#: src/views/explorer/components/transactions/useTransactionColumns.tsx:73
+#: src/views/explorer/components/filters/TransactionTypeFilter.tsx:38
+#: src/views/explorer/components/transactions/index.tsx:96
 #: src/views/index-dtf/overview/components/index-transaction-table-with-swaps/columns.tsx:41
 #: src/views/index-dtf/overview/components/index-transaction-table.tsx:40
 #: src/views/index-dtf/overview/components/yield-index/yield-index-composition-tabs.tsx:14
@@ -11751,7 +11913,8 @@ msgstr "No se pueden analizar los datos del contrato"
 msgid "Unavailable"
 msgstr "No disponible"
 
-#: src/views/explorer/components/collaterals/index.tsx:100
+#: src/views/explorer/components/collaterals/collateral-item.tsx:83
+#: src/views/explorer/components/collaterals/index.tsx:83
 #: src/views/portfolio-page/components/vote-locked-positions.tsx:177
 msgid "Underlying"
 msgstr "Subyacente"
@@ -11880,14 +12043,14 @@ msgstr "Anulando registro de activos"
 #: src/components/stake-drawer/index.tsx:64
 #: src/components/transactions/table/index.tsx:55
 #: src/views/explorer/components/filters/TransactionTypeFilter.tsx:18
-#: src/views/explorer/components/transactions/useTransactionColumns.tsx:39
+#: src/views/explorer/components/transactions/display.tsx:27
 #: src/views/yield-dtf/overview/components/rtoken-transactions.tsx:84
 #: src/views/yield-dtf/staking/components/stake-container.tsx:22
 msgid "Unstake"
 msgstr "Unstake"
 
 #: src/views/explorer/components/filters/TransactionTypeFilter.tsx:20
-#: src/views/explorer/components/transactions/useTransactionColumns.tsx:43
+#: src/views/explorer/components/transactions/display.tsx:31
 #: src/views/yield-dtf/overview/components/rtoken-transactions.tsx:88
 msgid "Unstake Cancelled"
 msgstr "Unstake cancelado"
@@ -12087,8 +12250,8 @@ msgstr "Subiendo archivos..."
 msgid "US stock market hours are <0>9:30 AM</0> to <1>4:00 PM</1> Eastern Time. Current time is: <2>{currentTimeLabel} ET</2>. Please try again in <3>{reopenInLabel}</3>."
 msgstr "El horario del mercado de valores de EE. UU. es de <0>9:30 AM</0> a <1>4:00 PM</1>, hora del Este. Hora actual: <2>{currentTimeLabel} ET</2>. Vuelve a intentarlo en <3>{reopenInLabel}</3>."
 
-#: src/views/explorer/components/transactions/useTransactionColumns.tsx:99
-msgid "USD Value"
+#: src/views/explorer/components/transactions/index.tsx:131
+msgid "USD value"
 msgstr "Valor en USD"
 
 #: src/views/index-dtf/issuance/manual/components/input-box.tsx:47
@@ -12220,6 +12383,9 @@ msgstr "Verificando transacción..."
 #: src/components/rtoken-setup/basket/PluginItem.tsx:64
 #: src/views/explorer/components/collaterals/index.tsx:136
 #: src/views/index-dtf/settings/components/index-settings-basic.tsx:143
+#: src/views/explorer/components/collaterals/collateral-item.tsx:100
+#: src/views/explorer/components/collaterals/index.tsx:142
+#: src/views/index-dtf/settings/components/index-settings-basic.tsx:92
 msgid "Version"
 msgstr "Versión"
 
@@ -12387,7 +12553,7 @@ msgstr "Ver en"
 msgid "View on <0>Tenderly <1/></0>"
 msgstr "Ver en <0>Tenderly <1/></0>"
 
-#: src/components/governance/address-hovercard/address-profile-card.tsx:192
+#: src/components/governance/address-hovercard/address-profile-card.tsx:210
 msgid "View on block explorer"
 msgstr "Ver en el explorador de bloques"
 
@@ -12458,6 +12624,10 @@ msgstr "Ver la propuesta estándar"
 #: src/views/index-dtf/overview/components/index-transaction-table.tsx:104
 msgid "View transaction on explorer"
 msgstr "Ver transacción en el explorador"
+
+#: src/views/explorer/components/transactions/index.tsx:206
+msgid "View tx"
+msgstr "Ver tx"
 
 #: src/views/portfolio-page/index.tsx:101
 msgid "Viewing portfolio of"
@@ -12549,8 +12719,8 @@ msgstr "Suministro de votos"
 msgid "Vote to challenge"
 msgstr "Vota para impugnar"
 
-#: src/views/index-dtf/governance/components/governance-delegate-list.tsx:63
-#: src/views/yield-dtf/governance/components/TopVoters.tsx:115
+#: src/views/index-dtf/governance/components/governance-delegate-list.tsx:65
+#: src/views/yield-dtf/governance/components/TopVoters.tsx:117
 msgid "Vote weight"
 msgstr "Peso del voto"
 
@@ -12620,8 +12790,8 @@ msgstr "Dirección del bloqueador de votos"
 msgid "Vote-locking means locking an ERC20 governance token in a vault to receive governance power over one or more Index DTFs. While locked, your tokens cannot be transferred or sold."
 msgstr ""
 
-#: src/views/index-dtf/governance/components/governance-delegate-list.tsx:60
-#: src/views/yield-dtf/governance/components/TopVoters.tsx:111
+#: src/views/index-dtf/governance/components/governance-delegate-list.tsx:62
+#: src/views/yield-dtf/governance/components/TopVoters.tsx:113
 msgid "Votes"
 msgstr "Votos"
 
@@ -12633,6 +12803,7 @@ msgstr "Votos en contra"
 #: src/views/index-dtf/governance/views/proposal/components/proposal-detail-votes.tsx:109
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalVotes.tsx:68
 #: src/components/governance/address-hovercard/address-profile-card.tsx:246
+#: src/components/governance/address-hovercard/address-profile-card.tsx:271
 msgid "Votes cast"
 msgstr "Votos emitidos"
 
@@ -12642,7 +12813,7 @@ msgid "Votes for"
 msgstr "Votos a favor"
 
 #: src/views/portfolio-page/components/active-proposals.tsx:105
-#: src/views/yield-dtf/governance/components/ProposalList.tsx:130
+#: src/views/yield-dtf/governance/components/ProposalList.tsx:132
 msgid "Votes:"
 msgstr "Votos:"
 
@@ -12689,12 +12860,13 @@ msgstr "Comienza el retraso de votación"
 msgid "Voting delay is required"
 msgstr "El retraso de votación es obligatorio"
 
-#: src/views/explorer/components/governance/index.tsx:162
-msgid "Voting Ends"
+#: src/views/explorer/components/governance/index.tsx:214
+#: src/views/explorer/components/governance/index.tsx:275
+msgid "Voting ends"
 msgstr "Fin de la votación"
 
 #: src/views/index-dtf/governance/components/proposal-list-item.tsx:52
-#: src/views/yield-dtf/governance/components/ProposalList.tsx:94
+#: src/views/yield-dtf/governance/components/ProposalList.tsx:96
 msgid "Voting ends in:"
 msgstr "La votación termina en:"
 
@@ -12739,7 +12911,7 @@ msgstr "El período de votación termina en"
 msgid "Voting period is required"
 msgstr "El período de votación es obligatorio"
 
-#: src/components/governance/address-hovercard/address-profile-card.tsx:219
+#: src/components/governance/address-hovercard/address-profile-card.tsx:243
 #: src/views/yield-dtf/governance/components/AccountVotes.tsx:83
 #: src/views/yield-dtf/governance/components/GovernanceOverview.tsx:104
 msgid "Voting power"
@@ -12761,6 +12933,7 @@ msgstr "Delegación de poder de voto"
 #: src/views/index-dtf/deploy/steps/governance-settings/voting-presets.tsx:42
 #: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/atoms.ts:214
 #: src/components/governance/address-hovercard/address-profile-card.tsx:268
+#: src/components/governance/address-hovercard/address-profile-card.tsx:297
 msgid "Voting power since"
 msgstr "Poder de voto desde"
 
@@ -12781,7 +12954,7 @@ msgstr "El quórum de votación es obligatorio"
 
 #: src/views/index-dtf/governance/components/proposal-list-item.tsx:51
 #: src/views/portfolio-page/components/active-proposals.tsx:64
-#: src/views/yield-dtf/governance/components/ProposalList.tsx:107
+#: src/views/yield-dtf/governance/components/ProposalList.tsx:109
 msgid "Voting starts in:"
 msgstr "La votación comienza en:"
 
@@ -12851,12 +13024,14 @@ msgstr "Esperando las órdenes"
 msgid "Waiting for your Safe to execute..."
 msgstr "Esperando que tu Safe ejecute..."
 
-#: src/views/explorer/components/transactions/Filters.tsx:17
+#: src/views/explorer/components/transactions/index.tsx:146
+#: src/views/explorer/components/transactions/index.tsx:201
 msgid "Wallet"
 msgstr "Wallet"
 
 #: src/components/vote-lock/components/delegate.tsx:133
 #: src/components/vote-lock/components/delegate.tsx:150
+#: src/views/explorer/components/transactions/Filters.tsx:25
 #: src/views/index-dtf/deploy/steps/governance/form-specific-wallet.tsx:11
 msgid "Wallet address"
 msgstr "Dirección del Wallet"
@@ -13100,8 +13275,8 @@ msgstr ""
 #: src/components/transactions/table/index.tsx:56
 #: src/components/transactions/table/index.tsx:58
 #: src/views/explorer/components/filters/TransactionTypeFilter.tsx:19
-#: src/views/explorer/components/transactions/useTransactionColumns.tsx:40
-#: src/views/explorer/components/transactions/useTransactionColumns.tsx:42
+#: src/views/explorer/components/transactions/display.tsx:28
+#: src/views/explorer/components/transactions/display.tsx:30
 #: src/views/portfolio-page/components/pending-withdrawals.tsx:101
 #: src/views/yield-dtf/overview/components/rtoken-transactions.tsx:85
 #: src/views/yield-dtf/overview/components/rtoken-transactions.tsx:87
@@ -13197,12 +13372,13 @@ msgstr "en lo que va del año"
 #: src/views/index-dtf/auctions/views/rebalance/components/rebalance-overview.tsx:74
 #: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:204
 #: src/views/portfolio-page/components/active-proposals.tsx:100
-#: src/views/yield-dtf/governance/components/ProposalList.tsx:124
+#: src/views/yield-dtf/governance/components/ProposalList.tsx:126
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalDetailStats.tsx:166
 msgid "Yes"
 msgstr "Sí"
 
-#: src/views/explorer/components/governance/filters.tsx:61
+#: src/views/explorer/components/governance/filters.tsx:60
+#: src/views/explorer/components/revenue/index.tsx:23
 #: src/views/index-dtf/overview/components/charts/data-type-selector.tsx:19
 #: src/views/yield-dtf/overview/components/backing/collateral-exposure.tsx:319
 msgid "Yield"
@@ -13494,8 +13670,9 @@ msgstr "Tus recompensas totales por participación disponibles en todos los Chai
 msgid "Your transaction was submitted. Check its status before taking another action."
 msgstr "Tu transacción fue enviada. Revisa su estado antes de hacer otra acción."
 
-#: src/views/explorer/components/governance/index.tsx:193
-msgid "Your Vote"
+#: src/views/explorer/components/governance/index.tsx:221
+#: src/views/explorer/components/governance/index.tsx:286
+msgid "Your vote"
 msgstr "Tu voto"
 
 #: src/views/index-dtf/governance/views/proposal/components/proposal-vote.tsx:111

@@ -18,6 +18,9 @@ import { createContext, useContext, useState, type ReactNode } from 'react'
 import type { Address } from 'viem'
 import { IndexAddressProfile, YieldAddressProfile } from './address-profile-card'
 import { needsFreshRead, type DtfType } from './address-profile'
+import StandaloneAddressProfile, {
+  type HovercardDtf,
+} from './standalone-address-profile'
 import { preloadGovernanceAccount } from './use-governance-account'
 
 const GroupContext = createContext<readonly string[] | undefined>(undefined)
@@ -36,11 +39,13 @@ export type AddressHovercardSurface =
   | 'proposal_list'
   | 'delegates'
   | 'votes'
+  | 'explorer_proposals'
 
 const AddressHovercard = ({
   address,
   surface,
   dtfType = 'index',
+  dtf,
   eventAt,
   children,
   className,
@@ -48,6 +53,8 @@ const AddressHovercard = ({
   address: string
   surface: AddressHovercardSurface
   dtfType?: DtfType
+  // Set outside a DTF page, where no DTF is loaded in state.
+  dtf?: HovercardDtf
   // Unix seconds of the proposal shown next to the address.
   eventAt?: number
   children: ReactNode
@@ -66,13 +73,18 @@ const AddressHovercard = ({
   const changeOpen = (next: boolean) => {
     if (next && !open) {
       // Same `tap` shape as useTrackIndexDTFClick, so Index boards keep working.
+      const type = dtf?.type ?? dtfType
       mixpanel.track('tap', {
-        page: dtfType === 'index' ? 'governance' : 'yield_governance',
+        page: dtf ? 'explorer' : type === 'index' ? 'governance' : 'yield_governance',
         subpage: surface,
         cta: 'address_profile',
-        ca: dtfType === 'index' ? indexDTF?.id : rToken?.address,
-        ticker: dtfType === 'index' ? indexDTF?.token.symbol : rToken?.symbol,
-        chain: dtfType === 'index' ? indexDTF?.chainId : rToken?.chainId,
+        ca: dtf?.address ?? (type === 'index' ? indexDTF?.id : rToken?.address),
+        ticker:
+          dtf?.symbol ??
+          (type === 'index' ? indexDTF?.token.symbol : rToken?.symbol),
+        chain:
+          dtf?.chainId ??
+          (type === 'index' ? indexDTF?.chainId : rToken?.chainId),
         address,
       })
     }
@@ -80,6 +92,16 @@ const AddressHovercard = ({
   }
 
   const card = (cardClassName?: string) => {
+    if (dtf) {
+      return (
+        <StandaloneAddressProfile
+          address={address as Address}
+          dtf={dtf}
+          fresh={fresh}
+          className={cardClassName}
+        />
+      )
+    }
     const Profile = dtfType === 'index' ? IndexAddressProfile : YieldAddressProfile
     return (
       <Profile
@@ -142,7 +164,10 @@ const AddressHovercard = ({
       {/* WHY: rows layer their proposer link above the row link, which would paint over an inline card. */}
       <HoverCardPortal>
         <HoverCardContent
+          // WHY: above or below the trigger the card was clipped near the page edges; Radix flips right to left when needed.
+          side="right"
           align="start"
+          collisionPadding={12}
           className="w-auto overflow-hidden rounded-3xl p-0"
           onClick={(event) => event.stopPropagation()}
         >

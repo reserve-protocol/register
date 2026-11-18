@@ -1,43 +1,32 @@
+import { useLingui } from '@lingui/react/macro'
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
-import { debouncedWalletInputAtom, filtersAtom, transactionChains } from './atoms'
+import type { ReactNode } from 'react'
 import ChainFilter from '../filters/ChainFilter'
 import TokenFilter from '../filters/token-filter'
 import TransactionTypeFilter from '../filters/TransactionTypeFilter'
-import { Trans, useLingui } from '@lingui/react/macro'
-import { Input } from 'components'
+import { ExplorerToolbar } from '../kit/explorer-layout'
+import SearchField from '../kit/search-field'
+import { debouncedWalletInputAtom, filtersAtom, transactionChains } from './atoms'
 
-const WalletFilter = () => {
+const TransactionFilters = ({ children }: { children?: ReactNode }) => {
   const { t } = useLingui()
-  const value = useAtomValue(debouncedWalletInputAtom.currentValueAtom)
-  const setValue = useSetAtom(debouncedWalletInputAtom.debouncedValueAtom)
-
-  return (
-    <div className="hidden md:block ml-0 md:ml-4 w-40">
-      <span className="ml-2 text-legend">
-        <Trans>Wallet</Trans>
-      </span>
-      <Input
-        className="mt-1 h-8 text-sm"
-        onChange={(e) => setValue(e.target.value)}
-        value={value}
-        placeholder={t`Input wallet`}
-      />
-    </div>
-  )
-}
-
-const TransactionFilters = () => {
   const [filters, setFilters] = useAtom(filtersAtom)
+  const wallet = useAtomValue(debouncedWalletInputAtom.currentValueAtom)
+  const setWallet = useSetAtom(debouncedWalletInputAtom.debouncedValueAtom)
 
   const handleChange = (key: string, selected: string[]) => {
     setFilters((prev) => ({ ...prev, [key]: selected }))
   }
 
   return (
-    <div className="flex items-center gap-4">
-      <WalletFilter />
+    <ExplorerToolbar>
+      <SearchField
+        label={t`Filter by wallet address`}
+        placeholder={t`Wallet address`}
+        value={wallet}
+        onChange={setWallet}
+      />
       <TokenFilter
-        className="hidden md:block"
         selected={filters.tokens}
         onChange={(selected) => handleChange('tokens', selected)}
       />
@@ -50,7 +39,8 @@ const TransactionFilters = () => {
         selected={filters.chains}
         onChange={(selected) => handleChange('chains', selected)}
       />
-    </div>
+      {children}
+    </ExplorerToolbar>
   )
 }
 

@@ -107,7 +107,7 @@ test('proposal row hovercard shows the proposer track record and links', async (
   await expect(card).toContainText('31')
   await expect(card).toContainText('96')
   await expect(card).toContainText('Safe multisig')
-  await expect(card.locator(`a[href="/explorer/governance?proposer=${getAddress(PROPOSER)}"], a[href="/explorer/governance?proposer=${PROPOSER}"]`)).toHaveCount(1)
+  await expect(card.locator(`a[href="/explorer/governance?proposer=${getAddress(PROPOSER)}&period=all"], a[href="/explorer/governance?proposer=${PROPOSER}&period=all"]`)).toHaveCount(1)
   await expect(card.locator('a[href*="/portfolio?account="]')).toHaveCount(1)
 })
 

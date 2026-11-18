@@ -22,6 +22,7 @@ import {
 import { Address, formatEther, getAddress, isAddress, zeroAddress } from 'viem'
 import { useBlockNumber } from 'wagmi'
 import { type ProposalRecord, filtersAtom } from './atoms'
+import { isWithinPeriod, parsePeriod } from './period'
 
 // Re-export for consumers
 export type { ProposalRecord } from './atoms'
@@ -277,11 +278,14 @@ const useBlockChains = () => {
   const { data: base } = useBlockNumber({ chainId: ChainId.Base })
   const { data: arbitrum } = useBlockNumber({ chainId: ChainId.Arbitrum })
 
-  return {
-    [ChainId.Mainnet]: Number(mainnet),
-    [ChainId.Base]: Number(base),
-    [ChainId.Arbitrum]: Number(arbitrum),
-  }
+  return useMemo(
+    () => ({
+      [ChainId.Mainnet]: Number(mainnet),
+      [ChainId.Base]: Number(base),
+      [ChainId.Arbitrum]: Number(arbitrum),
+    }),
+    [mainnet, base, arbitrum]
+  )
 }
 
 type DTFInfo = {
@@ -291,7 +295,7 @@ type DTFInfo = {
 }
 
 const useIndexDTFProposals = () => {
-  const { data: dtfList } = useIndexDTFList()
+  const { data: dtfList, isError: isListError } = useIndexDTFList()
   const account = useAtomValue(walletAtom)
 
   // Build per-chain address lists from whitelisted DTFs
@@ -322,7 +326,7 @@ const useIndexDTFProposals = () => {
     return map
   }, [dtfList])
 
-  return useQuery({
+  const query = useQuery({
     queryKey: ['explorer-index-dtf-proposals', dtfsByChain, account],
     queryFn: async () => {
       if (!dtfsByChain || !dtfInfoMap) return null
@@ -383,6 +387,9 @@ const useIndexDTFProposals = () => {
     enabled: !!dtfsByChain && !!dtfInfoMap,
     staleTime: 1000 * 60 * 5,
   })
+
+  // A failed DTF list keeps this query disabled, and a disabled query reports pending forever.
+  return { data: query.data, isPending: query.isPending && !isListError }
 }
 
 // The proposer filter lives in the URL (?proposer=) so a hovercard link is shareable.
@@ -392,17 +399,25 @@ export const useProposerFilter = () => {
   return proposer && isAddress(proposer) ? proposer.toLowerCase() : null
 }
 
+// The period also lives in the URL, so a link can open the full history (?period=all).
+export const usePeriodFilter = () => {
+  const [searchParams] = useSearchParams()
+  return parsePeriod(searchParams.get('period'))
+}
+
 const useProposalsData = () => {
   const blocks = useBlockChains()
   const filters = useAtomValue(filtersAtom)
   const proposer = useProposerFilter()
+  const period = usePeriodFilter()
   const account = useAtomValue(walletAtom)
-  const { data: yieldData } = useMultichainQuery(yieldProposalsQuery, {
-    voter: account?.toLowerCase() ?? zeroAddress,
-  })
-  const { data: indexData } = useIndexDTFProposals()
+  const { data: yieldData, isLoading: isYieldLoading } = useMultichainQuery(
+    yieldProposalsQuery,
+    { voter: account?.toLowerCase() ?? zeroAddress }
+  )
+  const { data: indexData, isPending: isIndexPending } = useIndexDTFProposals()
 
-  return useMemo(() => {
+  const proposals = useMemo(() => {
     const proposals: ProposalRecord[] = []
     const timestamp = getCurrentTime()
 
@@ -503,9 +518,18 @@ const useProposalsData = () => {
         return false
       }
       if (proposer && proposal.proposer !== proposer) return false
-      return true
+      return isWithinPeriod(+proposal.creationTime, period, timestamp)
     })
-  }, [yieldData, indexData, blocks, filters, proposer])
+  }, [yieldData, indexData, blocks, filters, proposer, period])
+
+  // Yield and Index proposals come from different subgraphs and land seconds apart.
+  const isFetching = isYieldLoading || isIndexPending
+
+  return {
+    proposals,
+    isLoading: isFetching && !yieldData && !indexData,
+    isFetching,
+  }
 }
 
 export default useProposalsData

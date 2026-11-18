@@ -32,6 +32,7 @@ type DTFStatusItem = {
   address: string
   chainId: number
   status: DTFStatus
+  marketCap: number
 }
 
 // WHY: deprecated and unsupported are treated the same in UI for now
@@ -49,6 +50,7 @@ const useDiscoverDTFs = () => {
         address: item.address?.toLowerCase(),
         chainId: item.chainId,
         status: item.status ?? 'active',
+        marketCap: Number(item.marketCap) || 0,
       }))
     },
     refetchInterval: REFRESH_INTERVAL,
@@ -94,6 +96,16 @@ export const useDTFStatus = (
   )
 
   return match?.status ?? 'active'
+}
+
+// Lowercase address -> market cap in USD, for ordering Index and Yield DTFs in one list.
+export const useDtfMarketCaps = (): Map<string, number> => {
+  const { data } = useDiscoverDTFs()
+
+  return useMemo(
+    () => new Map((data ?? []).map((item) => [item.address, item.marketCap])),
+    [data]
+  )
 }
 
 export const useDeprecatedAddresses = (): Set<string> => {

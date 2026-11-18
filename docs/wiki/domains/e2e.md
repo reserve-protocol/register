@@ -1,6 +1,6 @@
 ---
 title: E2E Suite
-updated: 2026-11-13
+updated: 2026-11-17
 type: domain
 sources:
   - e2e/**
@@ -64,6 +64,14 @@ lifecycle depth, and gaps live in `e2e/TEST_MAP.md`. `e2e/CLAUDE.md`
 ## Portfolio proposals
 
 `general/portfolio/proposal-coverage.spec.ts` and `proposal-sort.spec.ts` drive the Active Proposals section from a per-test `/v1/portfolio` override: shared-vault DTF attribution and row navigation, then status-first ordering with the Status/Newest toggle. Their vote-lock rows are delegated-only (`amount: '0'`) because an owned balance on Base fires vault-migration reads no central mock answers (tracked in `docs/wiki/progress.md` § E2E coverage debt). Proposal timestamps are anchored to the test's start, since the page derives state from the browser clock.
+
+## Governance address hovercard
+
+`index-dtf/governance/address-hovercard.spec.ts` seeds the reserve-api profile with a per-test `overrides.api` and asserts the track record, the Safe tag, the Proposals link (`/explorer/governance?proposer=…&period=all`) and the Portfolio link; one test proves a hover preloads the rest of the delegates table in a single batch call. The Yield twin (`yield-dtf/governance/address-hovercard.spec.ts`) runs on a frozen clock, so results render only while the spec pumps `harness.chain.advance` inside `toPass`. The yield replay ignores the `*:selector` wildcard table, so its Safe probe needs an exact `overrides.ethCall`. That spec opts out with `allowUnmocked` because the page's own governor `getVotes` carries a per-call block; it is the one committed exception to the trust contract and should be paid down by modelling that read.
+
+## Explorer
+
+`general/explorer/render.spec.ts` covers the transactions and governance tabs, the redirect of the removed `/explorer/tokens` route, the governance period default (`explorer-period-filter` exposes the choice as `data-value`, and each option has a `-option-<value>` testid, so no spec reads copy), and the row layout: `explorer-table` on desktop, `explorer-list` on mobile, zero sideways scroll. Rows are `explorer-row` in both layouts. The hovercard in the explorer Proposals list has no spec yet (the offline governance list is empty). Collaterals and Revenue have no spec: their RPC reads are unmodelled (`docs/wiki/progress.md` § E2E coverage debt).
 
 ## Transactions and time
 
@@ -214,7 +222,7 @@ Trust rules (a yield test can't go green while wrong):
   and within-chain key collisions.
 
 Covered: overview / issuance / staking render smokes, issuance active/paused
-states, partial staking history, stake/unstake writes, governance mandate edit/discard/validation/decoded preview, and eUSD revenue-router destinations (add/edit/remove delta, validation, failed read) on desktop and mobile. Yield capture also visits `governance/proposal`; its additional reads share the same pinned block. Mandate proposal tests assert the encoded Governor call at the RPC boundary, not a successful live submission. Remaining yield
+states, partial staking history, stake/unstake writes, governance mandate edit/discard/validation/decoded preview, the governance address hovercard, eUSD collateral app links (exact deep links per basket asset), and eUSD revenue-router destinations (add/edit/remove delta, validation, failed read) on desktop and mobile. Yield capture also visits `governance/proposal`; its additional reads share the same pinned block. Mandate proposal tests assert the encoded Governor call at the RPC boundary, not a successful live submission. Remaining yield
 phases and deferred writes are tracked in `e2e/TEST_MAP.md` § gaps.
 
 ## Wallet modal

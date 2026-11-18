@@ -80,11 +80,20 @@ const Stat = ({
     </span>
     <span className="text-xs text-legend">{label}</span>
     {loading ? (
-      <Skeleton className="h-6 w-12" />
+      <Skeleton className="h-5 w-12" />
     ) : (
       <span className="text-xl font-medium leading-none tabular-nums">{value}</span>
     )}
-    {sub && !loading && <span className="text-xs text-legend">{sub}</span>}
+    {/* WHY: captions take up to two lines; the space is always there, so the card keeps its height when the data lands. */}
+    <span className="min-h-8 text-xs text-legend">{!loading && sub}</span>
+  </div>
+)
+
+const RowSkeleton = () => (
+  <div className="flex h-5 items-center gap-2.5">
+    <Skeleton className="h-3.5 w-3.5 rounded-full" />
+    <Skeleton className="h-3.5 w-24" />
+    <Skeleton className="ml-auto h-3.5 w-28" />
   </div>
 )
 
@@ -127,11 +136,13 @@ type AddressProfileViewProps = {
   roles: AddressRole[]
   voter: VoterSource | undefined
   voterLoading: boolean
+  // Set when the vote token cannot be resolved, so the stat does not sit on a skeleton forever.
+  hideVotingPower?: boolean
   fresh?: boolean
   className?: string
 }
 
-const AddressProfileView = ({
+export const AddressProfileView = ({
   address,
   chainId,
   dtfAddress,
@@ -139,6 +150,7 @@ const AddressProfileView = ({
   roles,
   voter,
   voterLoading,
+  hideVotingPower,
   fresh,
   className,
 }: AddressProfileViewProps) => {
@@ -219,21 +231,28 @@ const AddressProfileView = ({
       </div>
 
       <div className="flex flex-col gap-4 bg-card p-4">
-        <div className="grid grid-cols-3 gap-3">
-          <Stat
-            icon={<Zap size={15} strokeWidth={1.75} />}
-            label={<Trans>Voting power</Trans>}
-            value={profile.votingWeight === null ? '—' : formatPercentage(profile.votingWeight)}
-            loading={voterLoading}
-            sub={
-              profile.delegatedPower ? (
-                <Trans>
-                  {formatCurrency(profile.delegatedPower, 2, { notation: 'compact' })}{' '}
-                  delegated
-                </Trans>
-              ) : null
-            }
-          />
+        <div
+          className={cn(
+            'grid gap-3',
+            hideVotingPower ? 'grid-cols-2' : 'grid-cols-3'
+          )}
+        >
+          {!hideVotingPower && (
+            <Stat
+              icon={<Zap size={15} strokeWidth={1.75} />}
+              label={<Trans>Voting power</Trans>}
+              value={profile.votingWeight === null ? '—' : formatPercentage(profile.votingWeight)}
+              loading={voterLoading}
+              sub={
+                profile.delegatedPower ? (
+                  <Trans>
+                    {formatCurrency(profile.delegatedPower, 2, { notation: 'compact' })}{' '}
+                    delegated
+                  </Trans>
+                ) : null
+              }
+            />
+          )}
           <Stat
             icon={<FileText size={15} strokeWidth={1.75} />}
             label={<Trans>Proposals</Trans>}
@@ -256,6 +275,10 @@ const AddressProfileView = ({
         </div>
 
         <div className="flex flex-col gap-2.5 border-t border-border pt-4">
+          {isLoading && (
+            // WHY: five rows is the full profile of a proposer or delegate, the addresses this card is opened on.
+            Array.from({ length: 5 }, (_, index) => <RowSkeleton key={index} />)
+          )}
           {isError && (
             <span className="text-sm text-legend">
               <Trans>Governance history is unavailable right now.</Trans>
@@ -309,7 +332,7 @@ const AddressProfileView = ({
 
         <div className="grid grid-cols-2 gap-2">
           <Link
-            to={`${ROUTES.EXPLORER_GOVERNANCE}?proposer=${address}`}
+            to={`${ROUTES.EXPLORER_GOVERNANCE}?proposer=${address}&period=all`}
             className="flex h-10 items-center justify-center gap-1.5 rounded-full border border-border text-sm font-medium text-foreground hover:bg-secondary"
           >
             <Landmark size={14} strokeWidth={1.75} />

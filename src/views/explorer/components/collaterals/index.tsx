@@ -1,209 +1,236 @@
-import { createColumnHelper } from '@tanstack/react-table'
-import { Trans, useLingui } from '@lingui/react/macro'
 import { Button } from '@/components/ui/button'
-import BasketCubeIcon from 'components/icons/BasketCubeIcon'
-import ChainLogo from 'components/icons/ChainLogo'
-import ExternalArrowIcon from 'components/icons/ExternalArrowIcon'
-import TokenLogo from 'components/icons/TokenLogo'
-import { Table } from '@/components/ui/legacy-table'
-import { useAtomValue } from 'jotai'
-import { useMemo } from 'react'
-import { collateralYieldAtom } from 'state/atoms'
-import CollateralYieldUpdater from 'state/updaters/CollateralYieldUpdater'
-import { CollateralPlugin } from 'types'
-import { formatCurrency, formatPercentage, parseDuration } from 'utils'
-import { atomWithLoadable } from 'utils/atoms/utils'
-import {
-  REGISTER_FEEDBACK,
-  supportedChainList,
-} from 'utils/constants'
-import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
-import collateralPlugins from 'utils/plugins'
-import { formatUnits } from 'viem'
 import YieldDTFDeployHero from '@/components/yield-dtf-deploy-hero'
-import { readContracts } from 'wagmi/actions'
-import { erc20Abi } from 'viem'
-import { wagmiConfig } from 'state/chain'
-import { AvailableChain } from 'utils/chains'
+import { msg } from '@lingui/core/macro'
+import type { MessageDescriptor } from '@lingui/core'
+import { Plural, Trans, useLingui } from '@lingui/react/macro'
+import type { ColumnDef, SortingState } from '@tanstack/react-table'
+import { useAtomValue } from 'jotai'
+import { useMemo, useState } from 'react'
+import CollateralYieldUpdater from 'state/updaters/CollateralYieldUpdater'
+import { formatPercentage, parseDuration } from 'utils'
+import { REGISTER_FEEDBACK, supportedChainList } from 'utils/constants'
+import MultiselectDropdrown from '../MultiselectDropdown'
+import ChainFilter from '../filters/ChainFilter'
+import {
+  ExplorerCard,
+  ExplorerHeader,
+  ExplorerSubtitle,
+  ExplorerToolbar,
+} from '../kit/explorer-layout'
+import ExplorerTable from '../kit/explorer-table'
+import { PillLabel, PillValue, SelectPill } from '../kit/filter-pill'
+import SearchField from '../kit/search-field'
+import { allPluginsAtom, type Plugin } from './atoms'
+import CollateralItem, {
+  AddressLink,
+  CollateralName,
+  compact,
+  getUnderlying,
+} from './collateral-item'
+import { filterCollaterals, getProtocolLabel } from './utils'
 
-interface Plugin extends CollateralPlugin {
-  apy: number
-  chainId: number
-  supply: number
-}
+const SORTS = {
+  apy: msg`APY`,
+  supply: msg`Supply`,
+} satisfies Record<string, MessageDescriptor>
 
-const allPluginsAtom = atomWithLoadable(async (get) => {
-  const collateralYield = get(collateralYieldAtom)
-  const pluginsMap: Plugin[] = supportedChainList.flatMap((chainId) =>
-    collateralPlugins[chainId].map((plugin) => ({
-      ...plugin,
-      apy:
-        collateralYield[chainId]?.[
-        plugin.symbol.toLowerCase().replace('-vault', '')
-        ] ?? 0,
-      supply: 0,
-      chainId,
-    }))
-  )
-
-  const supplies = await readContracts(wagmiConfig, {
-    allowFailure: false,
-    contracts: pluginsMap.map((plugin) => ({
-      abi: erc20Abi,
-      chainId: plugin.chainId as AvailableChain,
-      address: plugin.underlyingAddress || plugin.erc20,
-      functionName: 'totalSupply',
-    })),
-  })
-
-  return pluginsMap.map((plugin, index) => ({
-    ...plugin,
-    supply: formatUnits(supplies[index] as bigint, plugin.decimals),
-  }))
-})
-
-const PluginList = () => {
-  const { t } = useLingui()
-  const columnHelper = createColumnHelper<Plugin>()
-  const columns = useMemo(
-    () => [
-      columnHelper.accessor('chainId', {
-        header: t`Network`,
-        cell: (data) => (
-          <div className="flex items-center">
-            <ChainLogo chain={data.getValue()} />
-            {/* <span className="ml-2">{CHAIN_TAGS[data.getValue()]}</span> */}
-          </div>
-        ),
-      }),
-      columnHelper.accessor('symbol', {
-        header: t`Collateral`,
-        cell: (data) => {
-          return (
-            <a
-              href={getExplorerLink(
-                data.row.original.address,
-                data.row.original.chainId,
-                ExplorerDataType.ADDRESS
-              )}
-              target="_blank"
-              className="flex items-center text-foreground"
-            >
-              <TokenLogo symbol={data.getValue()} />
-              <span className="font-bold mx-2">{data.getValue()}</span>
-              <ExternalArrowIcon />
-            </a>
-          )
-        },
-      }),
-      columnHelper.accessor('underlyingAddress', {
-        header: t`Underlying`,
-        cell: (data) => {
-          const address = data.getValue() || data.row.original.erc20
-
-          return address ? (
-            <a
-              href={getExplorerLink(
-                address,
-                data.row.original.chainId,
-                ExplorerDataType.ADDRESS
-              )}
-              target="_blank"
-              className="flex items-center text-foreground"
-            >
-              <TokenLogo
-                symbol={
-                  data.row.original.underlyingToken || data.row.original.symbol
-                }
-              />
-              <span className="mx-2">
-                {data.row.original.underlyingToken || data.row.original.symbol}
-              </span>
-              <ExternalArrowIcon />
-            </a>
-          ) : (
-            <span>NA</span>
-          )
-        },
-      }),
-      columnHelper.accessor('targetName', {
-        header: t`Target`,
-      }),
-      columnHelper.accessor('protocol', {
-        header: t`Protocol`,
-      }),
-      columnHelper.accessor('version', {
-        header: t`Version`,
-      }),
-      columnHelper.accessor('maxTradeVolume', {
-        header: t`Max trade`,
-        cell: (data) => (
-          <span>
-            {formatCurrency(+data.getValue(), 0, {
-              notation: 'compact',
-              compactDisplay: 'short',
-            })}
-          </span>
-        ),
-      }),
-      columnHelper.accessor('delayUntilDefault', {
-        header: t`Default delay`,
-        cell: (data) => <span>{parseDuration(+data.getValue())}</span>,
-      }),
-      columnHelper.accessor('supply', {
-        header: t`Supply`,
-        cell: (data) => (
-          <span>
-            {formatCurrency(+data.getValue(), 0, {
-              notation: 'compact',
-              compactDisplay: 'short',
-            })}
-          </span>
-        ),
-      }),
-      columnHelper.accessor('apy', {
-        header: 'APY',
-        cell: (data) => <span>{formatPercentage(data.getValue())}</span>,
-      }),
-    ],
-    [columnHelper, t]
-  )
-  const data = useAtomValue(allPluginsAtom) ?? []
-
-  return (
-    <Table
-      sorting
-      className='border-2 pt-0 border-secondary'
-      sortBy={[{ id: 'apy', desc: true }]}
-      data={data}
-      columns={columns}
-    />
-  )
-}
+type SortKey = keyof typeof SORTS
 
 const Collaterals = () => {
-  return (
-    <div className="my-4 md:my-8 mx-2 md:mx-4">
-      <CollateralYieldUpdater />
-      <div className="flex items-center gap-2 pl-5 flex-wrap mb-4 md:mb-8">
-        <BasketCubeIcon fontSize={32} />
-        <h2 className="mr-auto text-xl font-medium">
-          <Trans>Available Collaterals</Trans>
-        </h2>
-        <div className="hidden md:flex gap-2 ml-2">
-          <Button
-            size="sm"
-            variant="outline"
-            className="border-2"
-            onClick={() => window.open(REGISTER_FEEDBACK, '_blank')}
+  const { t } = useLingui()
+  const plugins = useAtomValue(allPluginsAtom) as Plugin[] | undefined
+  const [search, setSearch] = useState('')
+  const [chains, setChains] = useState(() =>
+    supportedChainList.map((chain) => chain.toString())
+  )
+  const [protocols, setProtocols] = useState<string[]>([])
+  const [targets, setTargets] = useState<string[]>([])
+  const [sorting, setSorting] = useState<SortingState>([
+    { id: 'apy', desc: true },
+  ])
+
+  const data = useMemo(
+    () => filterCollaterals(plugins ?? [], { search, chains, protocols, targets }),
+    [plugins, search, chains, protocols, targets]
+  )
+
+  const options = useMemo(() => {
+    const unique = (values: string[]) => [...new Set(values)].sort()
+    return {
+      protocols: unique((plugins ?? []).map((plugin) => plugin.protocol)).map(
+        (protocol) => ({
+          label: getProtocolLabel(protocol),
+          value: protocol,
+          icon: null,
+        })
+      ),
+      targets: unique((plugins ?? []).map((plugin) => plugin.targetName)).map(
+        (target) => ({ label: target, value: target, icon: null })
+      ),
+    }
+  }, [plugins])
+
+  const columns = useMemo<ColumnDef<Plugin>[]>(
+    () => [
+      {
+        id: 'symbol',
+        header: t`Collateral`,
+        accessorFn: (plugin) => plugin.symbol,
+        cell: ({ row }) => <CollateralName plugin={row.original} size={30} />,
+      },
+      {
+        id: 'underlying',
+        header: t`Underlying`,
+        accessorFn: (plugin) => getUnderlying(plugin).symbol,
+        cell: ({ row }) => (
+          <AddressLink
+            address={getUnderlying(row.original).address}
+            chainId={row.original.chainId}
           >
-            <Trans>Request plugin</Trans>
-          </Button>
-        </div>
-      </div>
-      <PluginList />
-      <YieldDTFDeployHero className="mt-6" />
-    </div>
+            {getUnderlying(row.original).symbol}
+          </AddressLink>
+        ),
+      },
+      {
+        id: 'protocol',
+        header: t`Protocol`,
+        accessorFn: (plugin) => getProtocolLabel(plugin.protocol),
+      },
+      {
+        id: 'target',
+        header: t`Target`,
+        accessorFn: (plugin) => plugin.targetName,
+        cell: ({ row }) => (
+          <span
+            className="block max-w-[220px] truncate text-legend"
+            title={row.original.targetName}
+          >
+            {row.original.targetName}
+          </span>
+        ),
+      },
+      {
+        id: 'apy',
+        header: 'APY',
+        accessorFn: (plugin) => plugin.apy,
+        meta: { className: 'text-right' },
+        cell: ({ row }) => formatPercentage(row.original.apy),
+      },
+      {
+        id: 'supply',
+        header: t`Supply`,
+        accessorFn: (plugin) => plugin.supply,
+        meta: { className: 'text-right' },
+        cell: ({ row }) => compact(row.original.supply),
+      },
+      {
+        id: 'maxTrade',
+        header: t`Max trade`,
+        accessorFn: (plugin) => +plugin.maxTradeVolume,
+        meta: { className: 'text-right' },
+        cell: ({ row }) => compact(+row.original.maxTradeVolume),
+      },
+      {
+        id: 'delay',
+        header: t`Delay`,
+        accessorFn: (plugin) => +plugin.delayUntilDefault,
+        meta: { className: 'whitespace-nowrap' },
+        cell: ({ row }) => parseDuration(+row.original.delayUntilDefault),
+      },
+      {
+        id: 'version',
+        header: t`Version`,
+        accessorFn: (plugin) => plugin.version,
+        cell: ({ row }) => (
+          <span className="text-legend">{row.original.version}</span>
+        ),
+      },
+    ],
+    [t]
+  )
+
+  const allOrCount = (selected: string[]) =>
+    selected.length ? t`${selected.length} selected` : t`All`
+
+  return (
+    <>
+      <CollateralYieldUpdater />
+      <ExplorerHeader
+        title={<Trans>Collaterals</Trans>}
+        subtitle={
+          plugins && (
+            <ExplorerSubtitle
+              value={
+                <Plural value={data.length} one="# plugin" other="# plugins" />
+              }
+            />
+          )
+        }
+      >
+        <Button
+          variant="accent"
+          className="rounded-full font-semibold"
+          onClick={() => window.open(REGISTER_FEEDBACK, '_blank')}
+        >
+          <Trans>Request plugin</Trans>
+        </Button>
+      </ExplorerHeader>
+      <ExplorerCard>
+        <ExplorerToolbar>
+          <SearchField
+            label={t`Search collaterals`}
+            placeholder={t`Search collateral`}
+            value={search}
+            onChange={setSearch}
+          />
+          <ChainFilter selected={chains} onChange={setChains} />
+          <MultiselectDropdrown
+            options={options.protocols}
+            selected={protocols}
+            onChange={setProtocols}
+            allOption
+          >
+            <PillLabel>
+              <Trans>Protocol</Trans>
+            </PillLabel>
+            <PillValue>{allOrCount(protocols)}</PillValue>
+          </MultiselectDropdrown>
+          <MultiselectDropdrown
+            options={options.targets}
+            selected={targets}
+            onChange={setTargets}
+            allOption
+          >
+            <PillLabel>
+              <Trans>Target</Trans>
+            </PillLabel>
+            <PillValue>{allOrCount(targets)}</PillValue>
+          </MultiselectDropdrown>
+          <SelectPill
+            className="sm:hidden"
+            label={<Trans>Sort</Trans>}
+            value={(sorting[0]?.id in SORTS ? sorting[0].id : 'apy') as SortKey}
+            options={(Object.keys(SORTS) as SortKey[]).map((key) => ({
+              value: key,
+              label: t(SORTS[key]),
+            }))}
+            onChange={(id) => setSorting([{ id, desc: true }])}
+            highlighted
+          />
+        </ExplorerToolbar>
+        <ExplorerTable
+          data={data}
+          columns={columns}
+          getRowId={(plugin) => `${plugin.chainId}-${plugin.address}`}
+          renderItem={(plugin) => <CollateralItem plugin={plugin} />}
+          sorting={sorting}
+          onSortingChange={setSorting}
+          isLoading={!plugins}
+          emptyLabel={<Trans>No collaterals match these filters</Trans>}
+        />
+      </ExplorerCard>
+      <YieldDTFDeployHero className="mx-3 sm:mx-0" />
+    </>
   )
 }
 

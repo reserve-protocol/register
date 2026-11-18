@@ -21,6 +21,71 @@ test('explorer: governance tab renders the proposals surface @smoke', async ({
   await expect(page.getByTestId('explorer-page')).toBeVisible({ timeout: 15_000 })
 })
 
+test('explorer: proposals default to the last month and the period goes to the URL', async ({
+  harness,
+}) => {
+  const page = harness.page
+  await page.goto('/explorer/governance')
+
+  const period = page.getByTestId('explorer-period-filter')
+  await expect(period).toHaveAttribute('data-value', '1m', { timeout: 15_000 })
+
+  await period.click()
+  await page.getByTestId('explorer-period-filter-option-all').click()
+  await expect(page).toHaveURL(/period=all/)
+  await expect(period).toHaveAttribute('data-value', 'all')
+})
+
+test('explorer: rows are a table on desktop and a list on mobile, with no sideways scroll @mobile', async ({
+  harness,
+}, testInfo) => {
+  const page = harness.page
+  harness.mock.subgraph(
+    { operationName: 'Transactions' },
+    {
+      entries: [
+        {
+          id: 'e2e-entry-layout',
+          type: 'MINT',
+          amount: '1000000000000000000',
+          amountUSD: '1.02',
+          hash: `0x${'cd'.repeat(32)}`,
+          from: { id: '0x1111111111111111111111111111111111111111' },
+          to: { id: '0x2222222222222222222222222222222222222222' },
+          token: { id: '0x320623b8e4ff03373931769a31fc52a4e78b5d70', symbol: 'RSR' },
+          timestamp: 1700000000,
+        },
+      ],
+    }
+  )
+
+  await page.goto('/explorer')
+  await expect(page.getByTestId('explorer-row').first()).toBeVisible({
+    timeout: 15_000,
+  })
+
+  const isMobile = testInfo.project.name === 'mobile'
+  await expect(page.getByTestId('explorer-list')).toHaveCount(isMobile ? 1 : 0)
+  await expect(page.getByTestId('explorer-table')).toHaveCount(isMobile ? 0 : 1)
+
+  const overflow = await page.evaluate(
+    () => document.documentElement.scrollWidth - document.documentElement.clientWidth
+  )
+  expect(overflow).toBe(0)
+})
+
+test('explorer: the removed tokens tab sends old links to transactions', async ({
+  harness,
+}) => {
+  const page = harness.page
+  await page.goto('/explorer/tokens')
+  await expect(page).toHaveURL(/\/explorer\/transactions$/, { timeout: 15_000 })
+  await expect(page.getByTestId('explorer-nav')).toBeVisible()
+  await expect(
+    page.locator('[data-testid="explorer-nav"] a[href="/explorer/tokens"]')
+  ).toHaveCount(0)
+})
+
 // Regression: useTransactionData reads
 // `data[chain].entries.map` guarding only `data[chain]`. The crash needs ONE
 // chain truthy-but-`entries`-less while the others return real feeds — a shape

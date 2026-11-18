@@ -38,6 +38,16 @@ body {
   z-index: 0;
 }
 
+@keyframes explorer-progress {
+  from {
+    transform: translateX(-100%);
+  }
+
+  to {
+    transform: translateX(300%);
+  }
+}
+
 @keyframes large-order-card-in {
   from {
     opacity: 0;
