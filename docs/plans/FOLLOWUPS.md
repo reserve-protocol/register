@@ -152,6 +152,19 @@ surface unless noted.
 
 - `@playwright/test` is pinned at 1.61.1, the first line that installs Chromium on Ubuntu 26.04 (`ubuntu-latest`). 1.65.1 breaks the frozen-clock write specs on master (`flows/failures-governance`, `flows/governance-support-variants`, `flows/governance-queue-execute`, `flows/settings` registry failure: 12 failures in 50 runs, 0 on 1.59.1 and 1.61.1). Before going past 1.61, find the first breaking version in 1.62–1.65 and adapt `e2e/helpers/clock.ts`.
 
+## wagmi v3 / solariskit (2026-11-17)
+
+Contract: [solariskit-wagmi-v3.md](solariskit-wagmi-v3.md); current state in the wallet-connect wiki page.
+
+- Rename the deprecated wagmi v2 names (`useAccount` → `useConnection`, `writeContract` → `mutate`, …) as one codemod once `feat/index-dtf-v6` has merged and nobody is on wagmi v2.
+- Widen the `wagmi` peer of `@reserve-protocol/async-zap-sdk` (reserve-fillers-monorepo) to include v3, then drop the `peerDependencyRules` entry in `pnpm-workspace.yaml`.
+- Yield zap gas estimate (`zapV2/context/ZapContext.tsx`) reads a legacy `gasPrice` that is undefined on EIP-1559 chains, so the estimated gas cost is always 0. Predates the migration; kept as is.
+- Re-measure whether the build still needs `NODE_OPTIONS=--max-old-space-size=6144` now that AppKit is only a lazy WalletConnect peer.
+- Connect moves the wallet to wagmi's last chain (mainnet on a fresh browser) instead of connecting on the wallet's own chain. Same on AppKit before the swap. The fix is upstream in solariskit (`useWalletConnectors`: prefer the wallet's chain when it is configured); ask Akshat, then bump.
+- The fork lane's ABX case in `upgrade-v6.fork.spec.ts` fails on the untouched `feat/index-dtf-v6` tip too (the 6.0.0 banner shows where the spec expects it hidden); the offline suite also has pre-existing failures there (`dtf-nav-state-cleanup` ×2, `proposer-cancel` revert, `reload-chain-identity` intermittent).
+- `SeamlessTransactionContainer` (`src/components/ui/seamless-transaction.tsx`) has no importers; it is the only consumer of `useWalletModalOpen`.
+- Decide whether the generic "Browser Wallet" entry should stay: it lists next to every EIP-6963 wallet, but it is the only entry for injected wallets that do not announce themselves.
+
 ## Stack e2e lane (2026-09-21)
 
 - Closed: v6 rebalance metrics omitted `auctionLength` (the metrics updater now passes `maxAuctionLength` and waits for it, surfaced by the stack lane's "Unexpected error getting Rebalance data"); the Ondo cap sizing now carries it too.

@@ -1,16 +1,19 @@
 import {
   encodeFunctionData,
   encodeFunctionResult,
+  namehash,
   parseAbi,
+  toHex,
   zeroAddress,
 } from 'viem'
 import { mainnet } from 'viem/chains'
+import { packetToBytes } from 'viem/ens'
 import { connectWallet, expect, test } from '../../fixtures/wallet'
 import { TEST_ADDRESS } from '../../helpers/registry'
 
 // Wallet modal contract on top of the injected Test Wallet: connect through the
-// AppKit modal (legal footer present), open the account view, and an explicit
-// disconnect must not be undone by AppKit's own reconnect.
+// solariskit modal (legal footer present, no network picker), open the account
+// view, and an explicit disconnect must not be undone by a reconnect.
 test('wallet modal: connect, legal footer, account view, disconnect sticks @mobile', async ({
   page,
 }, testInfo) => {
@@ -20,7 +23,7 @@ test('wallet modal: connect, legal footer, account view, disconnect sticks @mobi
   const disconnect = page.getByRole('button', { name: /disconnect/i })
   const connectTitle = page.getByText('Connect Wallet', { exact: true })
 
-  // The injected test wallet is always authorized, so AppKit usually reconnects
+  // The injected test wallet is always authorized, so wagmi usually reconnects
   // it on mount; start from a known disconnected state either way.
   const autoConnected = await expect(wallet)
     .toBeVisible({ timeout: 10_000 })
@@ -40,11 +43,18 @@ test('wallet modal: connect, legal footer, account view, disconnect sticks @mobi
   await expect(page.getByText('By connecting your wallet')).toBeVisible()
   await expect(page.getByText('Terms of Service')).toBeVisible()
   await expect(page.getByText('Privacy Policy')).toBeVisible()
-  await expect(page.getByTestId('wallet-selector-safe')).toHaveCount(0)
-  await expect(page.getByRole('textbox', { name: 'Email', exact: true })).toBeVisible()
+  const connectDialog = page.getByRole('dialog', { name: 'Connect Wallet' })
+  for (const name of ['WalletConnect', 'Base']) {
+    await expect(
+      connectDialog.getByRole('button', { name, exact: true })
+    ).toBeVisible()
+  }
+  // Safe only lists inside a Safe iframe; chain selection stays in the app.
   await expect(
-    page.getByRole('button', { name: 'Continue with Google' })
-  ).toBeVisible()
+    connectDialog.getByRole('button', { name: 'Safe', exact: true })
+  ).toHaveCount(0)
+  await expect(page.getByText('Switch Network')).toHaveCount(0)
+  await expect(connectDialog.getByText('Arbitrum')).toHaveCount(0)
   await page.screenshot({ path: testInfo.outputPath('wallet-connect.png') })
   await page.getByRole('button', { name: 'Test Wallet' }).click()
   await expect(wallet).toBeVisible()
@@ -52,11 +62,8 @@ test('wallet modal: connect, legal footer, account view, disconnect sticks @mobi
 
   await wallet.click()
   await expect(disconnect).toBeVisible()
-  for (const name of ['Fund wallet', 'Swap', 'Send', 'Activity']) {
-    await expect(
-      page.getByRole('alertdialog').getByRole('button', { name, exact: true })
-    ).toBeVisible()
-  }
+  await expect(page.getByRole('button', { name: 'Copy Address' })).toBeVisible()
+  await expect(page.getByText('Switch Network')).toHaveCount(0)
   await page.screenshot({ path: testInfo.outputPath('wallet-account.png') })
   await disconnect.click()
   await expect(disconnect).not.toBeVisible()
@@ -68,6 +75,10 @@ test('wallet modal: connect, legal footer, account view, disconnect sticks @mobi
 
 const reverseResolverAbi = parseAbi([
   'function reverseWithGateways(bytes reverseName, uint256 coinType, string[] gateways) view returns (string resolvedName, address resolver, address reverseResolver)',
+])
+const textResolverAbi = parseAbi([
+  'function resolveWithGateways(bytes name, bytes data, string[] gateways) view returns (bytes resolvedData, address resolver)',
+  'function text(bytes32 node, string key) view returns (string)',
 ])
 
 for (const { name, expected, clipped } of [
@@ -96,6 +107,38 @@ for (const { name, expected, clipped } of [
         result: [name, zeroAddress, zeroAddress],
       })
     )
+
+    // The kit looks up the avatar record of a resolved name.
+    if (name) {
+      overrides.ethCall(
+        mainnet.contracts.ensUniversalResolver.address,
+        encodeFunctionData({
+          abi: textResolverAbi,
+          functionName: 'resolveWithGateways',
+          args: [
+            toHex(packetToBytes(name)),
+            encodeFunctionData({
+              abi: textResolverAbi,
+              functionName: 'text',
+              args: [namehash(name), 'avatar'],
+            }),
+            ['x-batch-gateway:true'],
+          ],
+        }),
+        encodeFunctionResult({
+          abi: textResolverAbi,
+          functionName: 'resolveWithGateways',
+          result: [
+            encodeFunctionResult({
+              abi: textResolverAbi,
+              functionName: 'text',
+              result: '',
+            }),
+            zeroAddress,
+          ],
+        })
+      )
+    }
 
     await page.goto('/')
     await connectWallet(page)

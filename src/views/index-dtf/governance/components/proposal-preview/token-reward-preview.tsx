@@ -5,7 +5,7 @@ import { ExplorerDataType, getExplorerLink } from '@/utils/getExplorerLink'
 import { Trans, useLingui } from '@lingui/react/macro'
 import { useAtomValue } from 'jotai'
 import { Address, erc20Abi } from 'viem'
-import { useReadContracts } from 'wagmi'
+import { useReadContracts } from '@/hooks/use-read-contracts'
 
 const TokenRewardPreview = ({
   decodedCalldata,

@@ -6,8 +6,8 @@ import { Trans } from '@lingui/react/macro'
 import { useAtomValue } from 'jotai'
 import { Lock, LockOpen } from 'lucide-react'
 import { useEffect } from 'react'
-import { Address, formatUnits } from 'viem'
-import { useBalance, useBlockNumber } from 'wagmi'
+import { Address, erc20Abi, formatUnits } from 'viem'
+import { useBlockNumber, useReadContract } from 'wagmi'
 
 const PositionBalance = ({
   address,
@@ -34,10 +34,13 @@ const PositionBalance = ({
     watch: true,
   })
 
-  const { data, refetch } = useBalance({
-    address: account ?? undefined,
+  const { data, refetch } = useReadContract({
+    abi: erc20Abi,
+    address,
+    functionName: 'balanceOf',
+    args: account ? [account] : undefined,
     chainId: chain,
-    token: address,
+    query: { enabled: !!account },
   })
 
   // Refetch balance when block changes
@@ -47,9 +50,9 @@ const PositionBalance = ({
     }
   }, [blockNumber, refetch, account])
 
-  const hasBalance = data && data?.value > 0n
+  const hasBalance = data !== undefined && data > 0n
   const amount =
-    Number(formatUnits(data?.value ?? 0n, decimals)) * conversionRate
+    Number(formatUnits(data ?? 0n, decimals)) * conversionRate
   const usdAmount = amount * price
 
   return (

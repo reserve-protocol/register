@@ -8,10 +8,10 @@ import { useCallback, useEffect } from 'react'
 import { toast } from 'sonner'
 import { keccak256, toHex, type Address } from 'viem'
 import {
-  useReadContracts,
   useWaitForTransactionReceipt,
   useWriteContract,
 } from 'wagmi'
+import { useReadContracts } from '@/hooks/use-read-contracts'
 import { governanceProposalsAtom, refetchTokenAtom } from '../../../atoms'
 import { useIsProposeAllowed } from '../../../hooks/use-is-propose-allowed'
 import useRecentProposalReceipt from '../../../hooks/use-recent-proposal-receipt'

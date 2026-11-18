@@ -27,3 +27,6 @@ overrides:
   axios: ^1.15.0
   react: 'catalog:'
   react-dom: 'catalog:'
+peerDependencyRules:
+  allowedVersions:
+    '@reserve-protocol/async-zap-sdk>wagmi': '3'

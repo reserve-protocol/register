@@ -5,7 +5,7 @@ import { Token } from '@/types'
 import { useAtomValue } from 'jotai'
 import { useMemo } from 'react'
 import { erc20Abi, type Address } from 'viem'
-import { useReadContracts } from 'wagmi'
+import { useReadContracts } from '@/hooks/use-read-contracts'
 
 const toKey = (address: string) => address.toLowerCase()
 

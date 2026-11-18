@@ -1,18 +1,19 @@
-import { useAppKit, useAppKitState } from '@reown/appkit/react'
+import { useAccountModal, useConnectModal } from 'solariskit'
 
+// WHY: the kit exposes each opener only in its own state (connect while disconnected, account while connected).
 export const useWalletModal = () => {
-  const { open } = useAppKit()
+  const { openConnectModal } = useConnectModal()
+  const { openAccountModal } = useAccountModal()
 
   return {
-    openConnectModal: () => {
-      open({ view: 'Connect' })
-    },
-    openAccountModal: () => {
-      open({ view: 'Account' })
-    },
+    openConnectModal: () => openConnectModal?.(),
+    openAccountModal: () => openAccountModal?.(),
   }
 }
 
-// WHY: separate hook — useAppKitState re-renders on every AppKit state change,
-// and only the seamless transaction flow needs the (any-view) open flag.
-export const useWalletModalOpen = () => useAppKitState().open
+export const useWalletModalOpen = () => {
+  const { connectModalOpen } = useConnectModal()
+  const { accountModalOpen } = useAccountModal()
+
+  return connectModalOpen || accountModalOpen
+}

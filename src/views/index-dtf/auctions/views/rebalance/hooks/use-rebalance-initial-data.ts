@@ -7,7 +7,7 @@ import {
 } from '@reserve-protocol/react-sdk'
 import { useAtomValue } from 'jotai'
 import { useMemo } from 'react'
-import { useReadContracts } from 'wagmi'
+import { useReadContracts } from '@/hooks/use-read-contracts'
 import { currentRebalanceAtom } from '../../../atoms'
 import { mapToAssets } from '../utils'
 

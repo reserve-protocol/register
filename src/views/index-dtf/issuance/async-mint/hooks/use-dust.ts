@@ -8,7 +8,7 @@ import {
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { useMemo } from 'react'
 import { Address, erc20Abi, formatUnits } from 'viem'
-import { useReadContracts } from 'wagmi'
+import { useReadContracts } from '@/hooks/use-read-contracts'
 
 export type DustItem = {
   token: TokenInfo

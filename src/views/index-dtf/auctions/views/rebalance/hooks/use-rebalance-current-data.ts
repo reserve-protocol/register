@@ -9,7 +9,7 @@ import {
   type IndexDtfCurrentRebalanceState,
 } from '@reserve-protocol/react-sdk'
 import { useAtomValue } from 'jotai'
-import { useReadContracts } from 'wagmi'
+import { useReadContracts } from '@/hooks/use-read-contracts'
 import { mapToAssets } from '../utils'
 import { isAuctionOngoingAtom } from '../atoms'
 import {

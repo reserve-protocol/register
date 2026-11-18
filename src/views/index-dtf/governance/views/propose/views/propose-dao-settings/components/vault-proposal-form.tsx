@@ -13,7 +13,7 @@ import { useAtom, useAtomValue } from 'jotai'
 import { useEffect, useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { erc20Abi, isAddress } from 'viem'
-import { useReadContracts } from 'wagmi'
+import { useReadContracts } from '@/hooks/use-read-contracts'
 import {
   addedRewardTokensAtom,
   currentRewardTokensAtom,

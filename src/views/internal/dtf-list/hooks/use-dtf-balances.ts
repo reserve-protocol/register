@@ -1,4 +1,4 @@
-import { useReadContracts } from 'wagmi'
+import { useReadContracts } from '@/hooks/use-read-contracts'
 import { erc20Abi, Address } from 'viem'
 import { InternalDTF } from './use-internal-dtf-list'
 import { useAtomValue } from 'jotai'
