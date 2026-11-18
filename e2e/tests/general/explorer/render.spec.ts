@@ -1,16 +1,25 @@
 import { test, expect } from '../../../harness'
 
-// Explorer — a general (non-DTF) surface with 5 tabs, previously zero-coverage.
+// Explorer — a general (non-DTF) surface with 4 tabs.
 // Disconnected: the explorer reads no wallet state to render. Cross-chain
 // subgraph queries are modelled empty-but-correctly-shaped centrally (subgraph.ts).
 test.use({ wallet: false })
 
-test('explorer: transactions tab (default route) renders offline @smoke', async ({
+test('explorer: transactions tab renders offline @smoke', async ({
+  harness,
+}) => {
+  const page = harness.page
+  await page.goto('/explorer/transactions')
+  await expect(page.getByTestId('explorer-page')).toBeVisible({ timeout: 15_000 })
+})
+
+test('explorer: the menu entry /explorer opens the governance tab @smoke', async ({
   harness,
 }) => {
   const page = harness.page
   await page.goto('/explorer')
-  await expect(page.getByTestId('explorer-page')).toBeVisible({ timeout: 15_000 })
+  await expect(page).toHaveURL(/\/explorer\/governance$/, { timeout: 15_000 })
+  await expect(page.getByTestId('explorer-page')).toBeVisible()
 })
 
 test('explorer: governance tab renders the proposals surface @smoke', async ({
@@ -59,7 +68,7 @@ test('explorer: rows are a table on desktop and a list on mobile, with no sidewa
     }
   )
 
-  await page.goto('/explorer')
+  await page.goto('/explorer/transactions')
   await expect(page.getByTestId('explorer-row').first()).toBeVisible({
     timeout: 15_000,
   })
@@ -118,7 +127,7 @@ test('explorer: one chain returning a malformed transactions body must not blank
   // ...except base: truthy response body MISSING `entries` (partial/drifted shape).
   harness.mock.subgraph({ operationName: 'Transactions', chain: 8453 }, {})
 
-  await page.goto('/explorer')
+  await page.goto('/explorer/transactions')
 
   // The healthy chain's row renders (its explorer link carries our tx hash) —
   // which also proves the multichain data actually landed, so the malformed

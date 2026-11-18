@@ -162,7 +162,7 @@ const AppRoutes = () => (
     <Route path={ROUTES.EXPLORER} element={<Explorer />}>
       <Route
         index
-        element={<Navigate replace to={ROUTES.EXPLORER_TRANSACTIONS} />}
+        element={<Navigate replace to={ROUTES.EXPLORER_GOVERNANCE} />}
       />
       <Route path={ROUTES.EXPLORER_COLLATERALS} element={<Collaterals />} />
       <Route
