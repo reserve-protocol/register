@@ -142,8 +142,12 @@ const AddressHovercard = ({
       onClick={(event) => {
         event.preventDefault()
         event.stopPropagation()
-        // `detail` is 0 when Enter or Space made the click.
-        if (event.detail === 0) setAsDialog(true)
+        // `detail` is 0 when Enter or Space made the click; focus alone already opened the preview, so the key must not close it.
+        if (event.detail === 0) {
+          setAsDialog(true)
+          changeOpen(true)
+          return
+        }
         changeOpen(!open)
       }}
       className={cn(

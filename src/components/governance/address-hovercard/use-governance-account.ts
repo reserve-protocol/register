@@ -90,7 +90,6 @@ export const preloadGovernanceAccount = (
   const batch = governanceAccountsBatch(group, address)
   if (!batch) return
   const batchKey = ['governance-accounts', batch]
-  const requestedAt = Date.now()
   queryClient
     .fetchQuery({
       queryKey: batchKey,
@@ -102,14 +101,12 @@ export const preloadGovernanceAccount = (
     })
     .then(({ accounts }) => {
       const updatedAt = queryClient.getQueryState(batchKey)?.dataUpdatedAt ?? 0
-      // WHY: a profile read after the list was requested is at least as new as the list, even if the list lands later.
-      const snapshotAt = Math.min(requestedAt, updatedAt)
+      // WHY: nothing orders a list snapshot against a single read, so the list only fills profiles that have no data.
       for (const account of accounts) {
         const key = accountKey(account.address, false)
         const state = queryClient.getQueryState(key)
         const isCurrent =
-          state?.fetchStatus === 'fetching' ||
-          (state?.dataUpdatedAt ?? 0) >= snapshotAt
+          state?.fetchStatus === 'fetching' || state?.data !== undefined
         if (!isCurrent) queryClient.setQueryData(key, account, { updatedAt })
       }
     })

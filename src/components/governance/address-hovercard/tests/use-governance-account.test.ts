@@ -107,6 +107,23 @@ describe('preloadGovernanceAccount', () => {
     expect(queryClient.getQueryData<GovernanceAccount>(key(A))?.totals.votes).toBe(3)
   })
 
+  it('keeps that profile when a second hover joins the list read', async () => {
+    let release = () => {}
+    releaseBatch = new Promise((resolve) => {
+      release = resolve
+    })
+
+    preloadGovernanceAccount(queryClient, { address: A, fresh: false, group: [A, B] })
+    await vi.waitFor(() =>
+      expect(queryClient.getQueryData<GovernanceAccount>(key(A))?.totals.votes).toBe(3)
+    )
+    preloadGovernanceAccount(queryClient, { address: B, fresh: false, group: [A, B] })
+    release()
+    await settled()
+
+    expect(queryClient.getQueryData<GovernanceAccount>(key(A))?.totals.votes).toBe(3)
+  })
+
   it('needs no call for another address of the list after the first hover', async () => {
     preloadGovernanceAccount(queryClient, { address: A, fresh: false, group: [A, B, C] })
     await settled()
