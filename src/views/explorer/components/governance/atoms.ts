@@ -13,6 +13,7 @@ export interface ProposalToken {
 export interface ProposalRecord {
   id: string
   description: string
+  proposer: string
   creationTime: string
   userVote: string | null
   votingState: VotingState

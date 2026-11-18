@@ -1,25 +1,26 @@
-import { Button } from '@/components/ui/button'
+import { Checkbox } from '@/components/ui/checkbox'
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover'
-import { Separator } from '@/components/ui/separator'
-import { Switch } from '@/components/ui/switch'
 import { cn } from '@/lib/utils'
-import { Trans } from '@lingui/react/macro'
-import { useCallback, useState } from 'react'
-import { ChevronDown, ChevronUp } from 'lucide-react'
+import { Trans, useLingui } from '@lingui/react/macro'
+import { Search } from 'lucide-react'
+import { useMemo, useState } from 'react'
+import { PillChevron, menuClassName, pillClassName } from './kit/filter-pill'
 
 export interface SelectOption {
   label: string
   value: string
   icon: React.ReactNode | null
+  suffix?: React.ReactNode
 }
 
 export interface IMultiselectDropdrown {
   options: SelectOption[]
   selected: string[]
+  // An empty selection means "all"; the list gets an All row.
   allOption?: boolean
   minLimit?: number
   onChange: (selected: string[]) => void
@@ -27,150 +28,130 @@ export interface IMultiselectDropdrown {
   children?: React.ReactNode
 }
 
-const OptionSelection = ({
-  options,
-  selected,
-  onChange,
-  allOption,
-  minLimit,
-}: IMultiselectDropdrown) => {
-  const [values, setValues] = useState(
-    options.reduce(
-      (acc, v) => {
-        acc[v.value] = selected.includes(v.value)
+const SEARCH_FROM = 12
 
-        return acc
-      },
-      {} as Record<string, boolean>
-    )
-  )
-
-  const handleApply = () => {
-    const selected = Object.entries(values).reduce((acc, [key, value]) => {
-      if (value) {
-        acc.push(key)
-      }
-
-      return acc
-    }, [] as string[])
-
-    onChange(selected)
-  }
-
-  const handleAll = () => {
-    setValues(
-      Object.keys(values).reduce(
-        (acc, key) => {
-          acc[key] = false
-          return acc
-        },
-        {} as Record<string, boolean>
-      )
-    )
-  }
-
-  const selectedCount = Object.values(values).filter((v) => v).length
-  const allSelected = !selectedCount
-  const lowerBound = allOption ? 0 : minLimit || 0
-
-  return (
-    <div className="bg-background rounded-xl mt-4">
-      <div className="max-h-[260px] overflow-auto hidden-scrollbar">
-        {allOption && (
-          <div className="flex items-center px-4 py-2">
-            <span className="mr-4 font-semibold">
-              <Trans>All options</Trans>
-            </span>
-            <div className="ml-auto">
-              <Switch
-                variant="small"
-                disabled={allSelected}
-                checked={allSelected}
-                onCheckedChange={handleAll}
-              />
-            </div>
-          </div>
-        )}
-        {options.map((option) => (
-          <div className="flex items-center px-4 py-2" key={option.value}>
-            {option.icon}
-            <span className="ml-1 mr-4">{option.label}</span>
-            <div className="ml-auto">
-              <Switch
-                variant="small"
-                checked={values[option.value]}
-                disabled={values[option.value] && selectedCount <= lowerBound}
-                onCheckedChange={() =>
-                  setValues({
-                    ...values,
-                    [option.value]: !values[option.value],
-                  })
-                }
-              />
-            </div>
-          </div>
-        ))}
-      </div>
-
-      <Separator className="mt-2 mb-4" />
-      <div className="px-4 pb-4">
-        <Button size="sm" className="w-full" onClick={handleApply}>
-          <Trans>Apply</Trans>
-        </Button>
-      </div>
-    </div>
-  )
-}
+const OptionRow = ({
+  checked,
+  disabled,
+  onToggle,
+  icon,
+  suffix,
+  children,
+  testId,
+}: {
+  checked: boolean
+  disabled?: boolean
+  onToggle: () => void
+  icon?: React.ReactNode
+  suffix?: React.ReactNode
+  children: React.ReactNode
+  testId?: string
+}) => (
+  <label
+    className={cn(
+      'flex cursor-pointer items-center gap-2.5 rounded-xl px-2.5 py-2 text-sm transition-colors hover:bg-muted',
+      checked && 'font-medium',
+      disabled && 'cursor-default'
+    )}
+    data-testid={testId}
+  >
+    <Checkbox
+      checked={checked}
+      disabled={disabled}
+      onCheckedChange={onToggle}
+      className="rounded-[5px] border-border data-[state=checked]:border-primary"
+    />
+    {icon}
+    <span className="min-w-0 truncate">{children}</span>
+    {suffix && <span className="ml-auto shrink-0">{suffix}</span>}
+  </label>
+)
 
 const MultiselectDropdrown = ({
   children,
   options,
   selected,
   allOption = false,
-  minLimit,
+  minLimit = 0,
   onChange,
   className,
 }: IMultiselectDropdrown) => {
-  const [isVisible, setVisible] = useState(false)
-
-  const handleChange = useCallback(
-    (selected: string[]) => {
-      setVisible(false)
-      onChange(selected)
-    },
-    [setVisible, onChange]
+  const { t } = useLingui()
+  const [search, setSearch] = useState('')
+  const query = search.trim().toLowerCase()
+  const visible = useMemo(
+    () =>
+      query
+        ? options.filter((option) => option.label.toLowerCase().includes(query))
+        : options,
+    [options, query]
   )
 
+  const toggle = (value: string) => {
+    const next = selected.includes(value)
+      ? selected.filter((item) => item !== value)
+      : [...selected, value]
+    if (next.length >= minLimit) onChange(next)
+  }
+
   return (
-    <Popover open={isVisible} onOpenChange={setVisible}>
+    <Popover onOpenChange={(open) => !open && setSearch('')}>
       <PopoverTrigger asChild>
-        <div
-          className={cn(
-            'flex items-center cursor-pointer justify-between gap-2',
-            className
-          )}
-        >
-          <div className="flex items-center">{children}</div>
-          <div className="flex items-center">
-            {isVisible ? (
-              <ChevronUp size={18} color="#808080" />
-            ) : (
-              <ChevronDown size={18} color="#808080" />
-            )}
-          </div>
-        </div>
+        <button type="button" className={cn(pillClassName, className)}>
+          {children}
+          <PillChevron />
+        </button>
       </PopoverTrigger>
       <PopoverContent
-        className="w-auto p-0 rounded-xl border-2 border-border shadow-lg"
         align="start"
+        className={cn(menuClassName, 'w-64 p-0')}
+        data-testid="explorer-filter-menu"
       >
-        <OptionSelection
-          options={options}
-          selected={selected}
-          onChange={handleChange}
-          allOption={allOption}
-          minLimit={minLimit}
-        />
+        {options.length >= SEARCH_FROM && (
+          <label className="flex items-center gap-2 border-b border-border px-3.5 py-2.5">
+            <Search size={15} className="shrink-0 text-legend" aria-hidden />
+            <input
+              value={search}
+              onChange={(event) => setSearch(event.target.value)}
+              placeholder={t`Search`}
+              aria-label={t`Search options`}
+              className="w-full bg-transparent text-sm outline-none placeholder:text-legend"
+            />
+          </label>
+        )}
+        <div className="max-h-72 overflow-y-auto p-1.5">
+          {allOption && !query && (
+            <OptionRow
+              checked={!selected.length}
+              disabled={!selected.length}
+              onToggle={() => onChange([])}
+              testId="explorer-filter-all"
+            >
+              <Trans>All</Trans>
+            </OptionRow>
+          )}
+          {visible.map((option) => {
+            const checked = selected.includes(option.value)
+            return (
+              <OptionRow
+                key={option.value}
+                checked={checked}
+                disabled={checked && selected.length <= minLimit}
+                onToggle={() => toggle(option.value)}
+                icon={option.icon}
+                suffix={option.suffix}
+                testId={`explorer-filter-option-${option.value}`}
+              >
+                {option.label}
+              </OptionRow>
+            )
+          })}
+          {!visible.length && (
+            <p className="px-3 py-6 text-center text-sm text-legend">
+              <Trans>No matches</Trans>
+            </p>
+          )}
+        </div>
       </PopoverContent>
     </Popover>
   )

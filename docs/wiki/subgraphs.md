@@ -29,6 +29,6 @@ Two separate Goldsky subgraph families. Neither is live truth: **live basket, li
 
 ## Register query surfaces
 
-- Yield views query the subgraph directly (legacy, expected): `src/views/yield-dtf/**`, `src/state/rtoken/**`, explorer/tokens hooks.
+- Yield views query the subgraph directly (legacy, expected): `src/views/yield-dtf/**`, `src/state/rtoken/**`, the listed-token hook (`src/hooks/useTokenList.tsx`).
 - Index views should go through the SDK; direct index-subgraph queries still exist (governed-dtfs, auctions updaters, deploy utils, top100, internal lists) — flagged in [[improvements]] as SDK-first migration targets.
 - Shared conventions when querying either: lowercase addresses in IDs, unix-seconds timestamps, `first`/`skip` pagination (max 1000), derived fields can't be filtered server-side.

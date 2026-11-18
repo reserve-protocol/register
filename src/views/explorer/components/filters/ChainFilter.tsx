@@ -1,17 +1,21 @@
+import { Trans, useLingui } from '@lingui/react/macro'
+import ChainLogo from 'components/icons/ChainLogo'
+import { useMemo } from 'react'
+import { CHAIN_TAGS, supportedChainList } from 'utils/constants'
 import MultiselectDropdrown, {
   IMultiselectDropdrown,
 } from '../MultiselectDropdown'
-import { useMemo } from 'react'
-import { CHAIN_TAGS, supportedChainList } from 'utils/constants'
-import ChainLogo from 'components/icons/ChainLogo'
-import StackedChainLogo from 'components/icons/StackedChainLogo'
-import { Plural, Trans } from '@lingui/react/macro'
+import { PillLabel, PillValue } from '../kit/filter-pill'
 
 interface ChainFilterProps extends Omit<IMultiselectDropdrown, 'options'> {
   chains?: number[]
 }
 
-const ChainFilter = ({ chains = supportedChainList, ...props }: ChainFilterProps) => {
+const ChainFilter = ({
+  chains = supportedChainList,
+  ...props
+}: ChainFilterProps) => {
+  const { t } = useLingui()
   const options = useMemo(() => {
     return chains.map((chainId) => ({
       label: CHAIN_TAGS[chainId],
@@ -19,23 +23,22 @@ const ChainFilter = ({ chains = supportedChainList, ...props }: ChainFilterProps
       icon: <ChainLogo chain={chainId} />,
     }))
   }, [chains])
+  const { selected } = props
+  const isFiltered = selected.length < chains.length
 
   return (
-    <div>
-      <span className="text-legend">
-        <Trans>Networks</Trans>
-      </span>
-      <MultiselectDropdrown className="mt-1" minLimit={1} options={options} {...props}>
-        <StackedChainLogo chains={props.selected.map((v) => Number(v))} />
-        <span className="text-legend">
-          <Plural
-            value={props.selected.length}
-            one="# chain"
-            other="# chains"
-          />
-        </span>
-      </MultiselectDropdrown>
-    </div>
+    <MultiselectDropdrown minLimit={1} options={options} {...props}>
+      <PillLabel>
+        <Trans>Network</Trans>
+      </PillLabel>
+      <PillValue highlighted={isFiltered}>
+        {!isFiltered
+          ? t`All`
+          : selected.length === 1
+            ? CHAIN_TAGS[Number(selected[0])]
+            : t`${selected.length} selected`}
+      </PillValue>
+    </MultiselectDropdrown>
   )
 }
 

@@ -1,4 +1,5 @@
 import { Trans } from '@lingui/react/macro'
+import AddressHovercard from '@/components/governance/address-hovercard'
 import BlockiesAvatar from '@/components/utils/blockies-avatar'
 import GoTo from '@/components/ui/go-to'
 import { useEnsAddresses } from 'hooks/useEnsAddresses'
@@ -100,9 +101,9 @@ const ProposalVotes = () => {
               key={vote.voter}
             >
               <BlockiesAvatar address={vote.voter} />
-              <span>
+              <AddressHovercard address={vote.voter} surface="votes" dtfType="yield">
                 {!!ensRes[index] ? ensRes[index] : shortenAddress(vote.voter)}
-              </span>
+              </AddressHovercard>
               <GoTo
                 href={getExplorerLink(
                   vote.voter,

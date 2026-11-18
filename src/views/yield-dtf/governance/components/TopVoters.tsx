@@ -1,5 +1,8 @@
 import { Trans, useLingui } from '@lingui/react/macro'
 import { createColumnHelper } from '@tanstack/react-table'
+import AddressHovercard, {
+  AddressHovercardGroup,
+} from '@/components/governance/address-hovercard'
 import GoTo from '@/components/ui/go-to'
 import EmptyBoxIcon from 'components/icons/EmptyBoxIcon'
 import { Table } from '@/components/ui/legacy-table'
@@ -92,7 +95,9 @@ const TopVoters = ({ className }: TopVotersProps) => {
           const { displayAddress, address } = data.row.original
           return (
             <div className="flex items-center">
-              <span>{displayAddress}</span>
+              <AddressHovercard address={address} surface="delegates" dtfType="yield">
+                {displayAddress}
+              </AddressHovercard>
               <GoTo
                 href={getExplorerLink(
                   address,
@@ -141,7 +146,9 @@ const TopVoters = ({ className }: TopVotersProps) => {
       <h2 className="text-2xl font-bold p-4">
         <Trans>Top voting addresses</Trans>
       </h2>
-      <Table columns={columns} data={data} className="rounded-3xl pt-6" />
+      <AddressHovercardGroup addresses={data.map((voter) => voter.address)}>
+        <Table columns={columns} data={data} className="rounded-3xl pt-6" />
+      </AddressHovercardGroup>
       {!data.length && (
         <div className="py-6 mt-4 text-center">
           <EmptyBoxIcon />

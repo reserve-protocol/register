@@ -138,7 +138,9 @@ for (const chain of CHAINS) {
         .split(/\r?\n/)[0]
         .replaceAll('#', '')
         .trim()
-      await expect(rows.first()).toContainText(title.slice(0, 40))
+      await expect(
+        proposals.getByTestId('proposal-list-item').first()
+      ).toContainText(title.slice(0, 40))
     })
 
     test('pending proposal shows a disabled vote CTA', async ({

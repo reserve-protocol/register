@@ -11,6 +11,7 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useTrackIndexDTFClick } from '../../hooks/useTrackIndexDTFPage'
 import { governanceProposalsAtom } from '../atoms'
+import { AddressHovercardGroup } from '@/components/governance/address-hovercard'
 import ProposalListItem from './proposal-list-item'
 
 const CreateProposalButton = () => {
@@ -99,9 +100,13 @@ const ProposalList = () => {
       <ScrollArea className="overflow-y-auto">
         <div className="space-y-1">
           {sortedProposals.length === 0 && <ProposalsPlaceholder />}
-          {displayedProposals.map((proposal) => (
-            <ProposalListItem key={proposal.id} proposal={proposal} />
-          ))}
+          <AddressHovercardGroup
+            addresses={displayedProposals.map((proposal) => proposal.proposer)}
+          >
+            {displayedProposals.map((proposal) => (
+              <ProposalListItem key={proposal.id} proposal={proposal} />
+            ))}
+          </AddressHovercardGroup>
         </div>
       </ScrollArea>
       {hasMoreProposals && (

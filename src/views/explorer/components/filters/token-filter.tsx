@@ -1,9 +1,11 @@
 import rtokens from '@reserve-protocol/rtokens'
+import { useDtfMarketCaps } from '@/hooks/use-dtf-status'
 import useIndexDTFList from '@/hooks/useIndexDTFList'
 import { type DTFType } from '@/views/explorer/components/governance/atoms'
 import { Trans, useLingui } from '@lingui/react/macro'
-import CirclesIcon from 'components/icons/CirclesIcon'
 import TokenLogo from 'components/icons/TokenLogo'
+import { PillLabel, PillValue } from '../kit/filter-pill'
+import InactiveTag from '../kit/inactive-tag'
 import useRTokenLogo from 'hooks/useRTokenLogo'
 import { useMemo } from 'react'
 import { supportedChainList } from 'utils/constants'
@@ -55,28 +57,41 @@ const TokenFilter = ({
   const yieldOptions = useYieldTokenOptions()
   const indexOptions = useIndexTokenOptions()
 
-  const options = useMemo(() => {
-    if (dtfType === 'index') return indexOptions
-    if (dtfType === 'yield') return yieldOptions
-    return [...yieldOptions, ...indexOptions]
-  }, [dtfType, yieldOptions, indexOptions])
+  const marketCaps = useDtfMarketCaps()
 
-  const allLabel = dtfType === 'index' ? t`All DTFs` : t`All tokens`
+  const options = useMemo(() => {
+    const list =
+      dtfType === 'index'
+        ? indexOptions
+        : dtfType === 'yield'
+          ? yieldOptions
+          : [...yieldOptions, ...indexOptions]
+
+    return list
+      .map((option) => ({
+        ...option,
+        suffix: <InactiveTag address={option.value} />,
+      }))
+      .sort(
+        (a, b) =>
+          (marketCaps.get(b.value) ?? 0) - (marketCaps.get(a.value) ?? 0)
+      )
+  }, [dtfType, yieldOptions, indexOptions, marketCaps])
 
   return (
-    <div className={className}>
-      <span className="text-legend">
-        <Trans>Tokens</Trans>
-      </span>
-      <MultiselectDropdrown className="mt-1" options={options} {...props} allOption>
-        <CirclesIcon />
-        <span className="ml-2 text-legend">
-          {props.selected.length
-            ? t`${props.selected.length} selected`
-            : allLabel}
-        </span>
-      </MultiselectDropdrown>
-    </div>
+    <MultiselectDropdrown
+      className={className}
+      options={options}
+      {...props}
+      allOption
+    >
+      <PillLabel>
+        <Trans>Token</Trans>
+      </PillLabel>
+      <PillValue>
+        {props.selected.length ? t`${props.selected.length} selected` : t`All`}
+      </PillValue>
+    </MultiselectDropdrown>
   )
 }
 

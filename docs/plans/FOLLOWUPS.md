@@ -155,3 +155,13 @@ surface unless noted.
 - Open: in the browser only Register's own API calls follow `VITE_RESERVE_API_URL`; the `DtfSdkProvider` gets no `apiBaseUrl`, so SDK-routed API reads stay on production in the fork lane.
 - Open: the production API returns 404 on `/dtf/rebalance` for sandbox folios and has no 6.0.0 decoding, so the stack lane does not verify the rebalance metrics surface; a local `reserve-api` on the sandbox closes that (`FORK_RESERVE_API_URL`).
 - Open: the SDK client appends default public RPCs after an override; the lane's scripts pass a viem client so the fork can never fall through to a public endpoint, Register still can (`docs/plans/FOLLOWUPS.md` earlier item).
+
+## Explorer error states (from the PR #1167 review, 2026-11-18)
+
+Confirmed in review and left out of the redesign because each one existed before it. The first four only show when a source fails; the last one is a calculation defect that shows with healthy sources.
+
+- Governance: when a subgraph read fails after its retries, the list reads "No proposals match these filters". `useIndexDTFProposals` runs its chains in one `Promise.all`, so one failing chain also discards the chains that answered. Pass the error to the table, keep the chains that answered, offer a retry.
+- Revenue › Yield and Trades: a failed `FacadeRead.revenues` read on one chain counts as zero revenue (`parseRevenue(data ?? [])`), so the header total looks complete. Mark the chain as unavailable and the total as partial.
+- Revenue › Index: if the DTF list fails the table stays on its skeleton; if every `getPendingFeeShares` read fails it reads "No pending fees". Show the failure and a retry, keep the rows that loaded.
+- Collaterals: when every supply read fails the table shows dashes with no message, and if `readContracts` rejects it stays on its skeleton. Show the failure and a retry.
+- Governance, Yield proposals on Alexios governors: `votingEndsIn` subtracts Unix seconds from `endBlock`, which is a block height there, so an active proposal reads "Ended". Use the block-to-seconds value the state helper already computes.

@@ -168,17 +168,19 @@ const useTransactionData = () => {
     }
   }, [filters, indexDTFs, variables])
 
-  const { data: yieldData } = useMultichainQuery(
-    explorerTransactionsQuery,
-    variables
-  )
-  const { data: indexData } = useMultichainQuery(
+  // WHY: a filter or sort change keeps the current rows on screen while the new ones load.
+  const yieldQuery = useMultichainQuery(explorerTransactionsQuery, variables, {
+    keepPreviousData: true,
+  })
+  const indexQuery = useMultichainQuery(
     indexTransferEventsQuery,
     indexVariables,
-    { clients: INDEX_GRAPH_CLIENTS }
+    { clients: INDEX_GRAPH_CLIENTS, keepPreviousData: true }
   )
+  const yieldData = yieldQuery.data
+  const indexData = indexQuery.data
 
-  return useMemo(() => {
+  const transactions = useMemo(() => {
     if (!yieldData && !indexData) return []
 
     const priceMap = (indexDTFs ?? []).reduce(
@@ -234,6 +236,17 @@ const useTransactionData = () => {
 
     return tx
   }, [yieldData, indexData, indexDTFs])
+
+  const isFetching = [yieldQuery, indexQuery].some(
+    (query) => query.isLoading || query.isValidating
+  )
+
+  return {
+    transactions,
+    // Both sources failing must end as an empty list, not as a skeleton.
+    isLoading: isFetching && !yieldData && !indexData,
+    isFetching,
+  }
 }
 
 export default useTransactionData

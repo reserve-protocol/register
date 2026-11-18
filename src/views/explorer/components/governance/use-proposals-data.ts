@@ -10,6 +10,7 @@ import { gql } from 'graphql-request'
 import { useMultichainQuery } from 'hooks/use-query'
 import { useAtomValue } from 'jotai'
 import { useMemo } from 'react'
+import { useSearchParams } from 'react-router-dom'
 import { walletAtom } from 'state/atoms'
 import { getCurrentTime } from 'utils'
 import { ChainId } from 'utils/chains'
@@ -18,9 +19,10 @@ import {
   LISTED_RTOKEN_ADDRESSES,
   supportedChainList,
 } from 'utils/constants'
-import { Address, formatEther, getAddress, zeroAddress } from 'viem'
+import { Address, formatEther, getAddress, isAddress, zeroAddress } from 'viem'
 import { useBlockNumber } from 'wagmi'
 import { type ProposalRecord, filtersAtom } from './atoms'
+import { isWithinPeriod, parsePeriod } from './period'
 
 // Re-export for consumers
 export type { ProposalRecord } from './atoms'
@@ -32,6 +34,9 @@ const yieldProposalsQuery = gql`
     proposals(orderBy: creationTime, orderDirection: desc, first: 1000) {
       id
       description
+      proposer {
+        address
+      }
       creationTime
       state
       forWeightedVotes
@@ -76,6 +81,9 @@ const indexProposalsQuery = gql`
     ) {
       id
       description
+      proposer {
+        address
+      }
       creationTime
       state
       isOptimistic
@@ -121,7 +129,14 @@ const indexDtfGovernanceQuery = gql`
       }
       legacyAdminGovernances {
         id
+        token {
+          governance {
+            id
+          }
+        }
       }
+      legacyAdmins
+      legacyAuctionApprovers
     }
   }
 `
@@ -137,13 +152,18 @@ type IndexDTFGovernanceRecord = {
     legacyGovernance?: string[]
   }
   legacyTradingGovernances?: GovernanceReference[]
-  legacyAdminGovernances?: GovernanceReference[]
+  legacyAdminGovernances?: (GovernanceReference & {
+    token?: { governance?: GovernanceReference | null }
+  })[]
+  legacyAdmins?: string[]
+  legacyAuctionApprovers?: string[]
 }
 
 type IndexDTFGovernanceResponse = {
   dtfs: IndexDTFGovernanceRecord[]
 }
 
+// Mirrors the SDK's `getDtfProposalGovernanceIds`: after a Folio 6.0 migration the old vault's governor hangs off the replaced admin governor.
 export const getGovernanceIds = (dtf: IndexDTFGovernanceRecord): string[] => {
   const governanceIds = [
     dtf.ownerGovernance?.id,
@@ -151,7 +171,12 @@ export const getGovernanceIds = (dtf: IndexDTFGovernanceRecord): string[] => {
     dtf.stToken?.governance?.id,
     ...(dtf.stToken?.legacyGovernance ?? []),
     ...(dtf.legacyTradingGovernances ?? []).map(({ id }) => id),
-    ...(dtf.legacyAdminGovernances ?? []).map(({ id }) => id),
+    ...(dtf.legacyAdminGovernances ?? []).flatMap(({ id, token }) => [
+      id,
+      token?.governance?.id,
+    ]),
+    ...(dtf.legacyAdmins ?? []),
+    ...(dtf.legacyAuctionApprovers ?? []),
   ].filter((id): id is string => !!id)
 
   return [...new Set(governanceIds.map((id) => id.toLowerCase()))]
@@ -180,6 +205,7 @@ type IndexProposalsResponse = {
   proposals: {
     id: string
     description: string
+    proposer?: { address: string } | null
     creationTime: string
     state: string
     isOptimistic?: boolean
@@ -269,11 +295,14 @@ const useBlockChains = () => {
   const { data: base } = useBlockNumber({ chainId: ChainId.Base })
   const { data: arbitrum } = useBlockNumber({ chainId: ChainId.Arbitrum })
 
-  return {
-    [ChainId.Mainnet]: Number(mainnet),
-    [ChainId.Base]: Number(base),
-    [ChainId.Arbitrum]: Number(arbitrum),
-  }
+  return useMemo(
+    () => ({
+      [ChainId.Mainnet]: Number(mainnet),
+      [ChainId.Base]: Number(base),
+      [ChainId.Arbitrum]: Number(arbitrum),
+    }),
+    [mainnet, base, arbitrum]
+  )
 }
 
 type DTFInfo = {
@@ -283,7 +312,7 @@ type DTFInfo = {
 }
 
 const useIndexDTFProposals = () => {
-  const { data: dtfList } = useIndexDTFList()
+  const { data: dtfList, isError: isListError } = useIndexDTFList()
   const account = useAtomValue(walletAtom)
 
   // Build per-chain address lists from whitelisted DTFs
@@ -314,7 +343,7 @@ const useIndexDTFProposals = () => {
     return map
   }, [dtfList])
 
-  return useQuery({
+  const query = useQuery({
     queryKey: ['explorer-index-dtf-proposals', dtfsByChain, account],
     queryFn: async () => {
       if (!dtfsByChain || !dtfInfoMap) return null
@@ -375,18 +404,37 @@ const useIndexDTFProposals = () => {
     enabled: !!dtfsByChain && !!dtfInfoMap,
     staleTime: 1000 * 60 * 5,
   })
+
+  // A failed DTF list keeps this query disabled, and a disabled query reports pending forever.
+  return { data: query.data, isPending: query.isPending && !isListError }
+}
+
+// The proposer filter lives in the URL (?proposer=) so a hovercard link is shareable.
+export const useProposerFilter = () => {
+  const [searchParams] = useSearchParams()
+  const proposer = searchParams.get('proposer')
+  return proposer && isAddress(proposer) ? proposer.toLowerCase() : null
+}
+
+// The period also lives in the URL, so a link can open the full history (?period=all).
+export const usePeriodFilter = () => {
+  const [searchParams] = useSearchParams()
+  return parsePeriod(searchParams.get('period'))
 }
 
 const useProposalsData = () => {
   const blocks = useBlockChains()
   const filters = useAtomValue(filtersAtom)
+  const proposer = useProposerFilter()
+  const period = usePeriodFilter()
   const account = useAtomValue(walletAtom)
-  const { data: yieldData } = useMultichainQuery(yieldProposalsQuery, {
-    voter: account?.toLowerCase() ?? zeroAddress,
-  })
-  const { data: indexData } = useIndexDTFProposals()
+  const { data: yieldData, isLoading: isYieldLoading } = useMultichainQuery(
+    yieldProposalsQuery,
+    { voter: account?.toLowerCase() ?? zeroAddress }
+  )
+  const { data: indexData, isPending: isIndexPending } = useIndexDTFProposals()
 
-  return useMemo(() => {
+  const proposals = useMemo(() => {
     const proposals: ProposalRecord[] = []
     const timestamp = getCurrentTime()
 
@@ -412,6 +460,7 @@ const useProposalsData = () => {
           proposals.push({
             id: entry.id,
             description: entry.description,
+            proposer: entry.proposer?.address?.toLowerCase() ?? '',
             creationTime: entry.creationTime,
             userVote: entry.votes?.[0]?.choice ?? null,
             governance: rToken.id,
@@ -453,6 +502,7 @@ const useProposalsData = () => {
           proposals.push({
             id: entry.id,
             description: entry.description,
+            proposer: entry.proposer?.address?.toLowerCase() ?? '',
             creationTime: entry.creationTime,
             userVote: entry.votes?.[0]?.choice ?? null,
             governance: govId,
@@ -484,9 +534,19 @@ const useProposalsData = () => {
       if (filters.status.length && !filters.status.includes(proposal.status)) {
         return false
       }
-      return true
+      if (proposer && proposal.proposer !== proposer) return false
+      return isWithinPeriod(+proposal.creationTime, period, timestamp)
     })
-  }, [yieldData, indexData, blocks, filters])
+  }, [yieldData, indexData, blocks, filters, proposer, period])
+
+  // Yield and Index proposals come from different subgraphs and land seconds apart.
+  const isFetching = isYieldLoading || isIndexPending
+
+  return {
+    proposals,
+    isLoading: isFetching && !yieldData && !indexData,
+    isFetching,
+  }
 }
 
 export default useProposalsData

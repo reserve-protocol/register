@@ -72,12 +72,6 @@ const STATIC_PAGES: StaticPage[] = [
       'Explore every DTF on the Reserve Protocol — tokens, governance, revenue, and on-chain activity.',
   },
   {
-    route: '/explorer/tokens',
-    title: 'Tokens explorer | Reserve',
-    description:
-      'All Index DTFs and Yield DTFs on the Reserve Protocol in one list.',
-  },
-  {
     route: '/explorer/governance',
     title: 'Governance explorer | Reserve',
     description:

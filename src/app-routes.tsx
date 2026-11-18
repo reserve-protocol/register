@@ -20,7 +20,6 @@ import Explorer from 'views/explorer'
 import Collaterals from 'views/explorer/components/collaterals'
 import ExploreGovernance from 'views/explorer/components/governance'
 import AvailableRevenue from 'views/explorer/components/revenue'
-import ExploreTokens from 'views/explorer/components/tokens'
 import ExploreTransactions from 'views/explorer/components/transactions'
 import IndexDTFAuctions from './views/index-dtf/auctions'
 import IndexDTFAuctionsLegacy from './views/index-dtf/auctions/legacy'
@@ -163,10 +162,18 @@ const AppRoutes = () => (
     <Route path={ROUTES.EXPLORER} element={<Explorer />}>
       <Route
         index
-        element={<Navigate replace to={ROUTES.EXPLORER_TRANSACTIONS} />}
+        element={<Navigate replace to={ROUTES.EXPLORER_GOVERNANCE} />}
       />
       <Route path={ROUTES.EXPLORER_COLLATERALS} element={<Collaterals />} />
-      <Route path={ROUTES.EXPLORER_TOKENS} element={<ExploreTokens />} />
+      <Route
+        path={ROUTES.EXPLORER_TOKENS}
+        element={
+          <Navigate
+            replace
+            to={`${ROUTES.EXPLORER}/${ROUTES.EXPLORER_TRANSACTIONS}`}
+          />
+        }
+      />
       <Route
         path={ROUTES.EXPLORER_TRANSACTIONS}
         element={<ExploreTransactions />}
