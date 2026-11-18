@@ -41,6 +41,9 @@ const ExplorerNav = () => (
     data-testid="explorer-nav"
     className="flex items-center justify-between gap-3 px-4 text-sm sm:mx-auto sm:w-fit sm:justify-center sm:gap-0.5 sm:rounded-full sm:bg-card sm:p-1 sm:text-base sm:shadow-sm sm:ring-1 sm:ring-border/60"
   >
+    <NavItem to={ROUTES.EXPLORER_GOVERNANCE} icon={Landmark}>
+      <Trans>Governance</Trans>
+    </NavItem>
     <NavItem to={ROUTES.EXPLORER_TRANSACTIONS} icon={ArrowLeftRight}>
       <span className="sm:hidden">
         <Trans>Txs</Trans>
@@ -49,14 +52,11 @@ const ExplorerNav = () => (
         <Trans>Transactions</Trans>
       </span>
     </NavItem>
-    <NavItem to={ROUTES.EXPLORER_COLLATERALS} icon={Package}>
-      <Trans>Collaterals</Trans>
-    </NavItem>
-    <NavItem to={ROUTES.EXPLORER_GOVERNANCE} icon={Landmark}>
-      <Trans>Governance</Trans>
-    </NavItem>
     <NavItem to={ROUTES.EXPLORER_REVENUE} icon={TrendingUp}>
       <Trans>Revenue</Trans>
+    </NavItem>
+    <NavItem to={ROUTES.EXPLORER_COLLATERALS} icon={Package}>
+      <Trans>Collaterals</Trans>
     </NavItem>
   </nav>
 )
