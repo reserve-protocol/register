@@ -940,9 +940,7 @@ msgid "Above minimum trade volume"
 msgstr "高于最低交易量"
 
 #: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:330
-#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-votes.tsx:115
-#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:298
-#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-votes.tsx:121
+#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-votes.tsx:118
 #: src/views/index-dtf/governance/views/proposal/components/vote-modal.tsx:79
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalDetailStats.tsx:236
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalVotes.tsx:91
@@ -1211,9 +1209,6 @@ msgstr "Alexios 是采用自 Compound Governor Bravo 的标准代币投票机制
 
 #: src/components/token-selector-drawer/index.tsx:142
 #: src/views/earn/components/table-filters.tsx:33
-#: src/views/explorer/components/governance/filters.tsx:60
-#: src/views/explorer/components/tokens/index.tsx:44
-#: src/views/index-dtf/deploy/steps/basket/token-selector.tsx:244
 #: src/views/explorer/components/collaterals/index.tsx:153
 #: src/views/explorer/components/filters/ChainFilter.tsx:36
 #: src/views/explorer/components/filters/token-filter.tsx:92
@@ -1222,7 +1217,7 @@ msgstr "Alexios 是采用自 Compound Governor Bravo 的标准代币投票机制
 #: src/views/explorer/components/governance/filters.tsx:59
 #: src/views/explorer/components/governance/filters.tsx:100
 #: src/views/explorer/components/MultiselectDropdown.tsx:130
-#: src/views/index-dtf/deploy/steps/basket/token-selector.tsx:241
+#: src/views/index-dtf/deploy/steps/basket/token-selector.tsx:244
 #: src/views/index-dtf/factsheet/components/chart-overlay.tsx:85
 #: src/views/index-dtf/overview/components/charts/percentage-change.tsx:63
 #: src/views/index-dtf/overview/components/charts/time-range-menu.tsx:38
@@ -1803,11 +1798,7 @@ msgid "Available collateral"
 msgstr "可用抵押品"
 
 #: src/views/explorer/components/collaterals/index.tsx:191
-msgid "Available Collaterals"
-msgstr "可用抵押品"
-
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-optimistic-parameters.tsx:69
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-optimistic-parameters.tsx:66
 msgid "Available optimistic actions"
 msgstr "可用的 Optimistic 操作"
 
@@ -1968,11 +1959,7 @@ msgid "Basket"
 msgstr "篮子"
 
 #: src/views/explorer/components/tokens/index.tsx:164
-msgid "Basket APY"
-msgstr "篮子 APY"
-
 #: src/views/index-dtf/governance/components/proposal-preview/rebalance-preview/index.tsx:39
-#: src/views/index-dtf/governance/components/proposal-preview/rebalance-preview/index.tsx:37
 #: src/views/index-dtf/governance/components/proposal-preview/rebalance-preview/legacy-basket-proposal-preview.tsx:114
 #: src/views/index-dtf/governance/views/propose/basket/components/proposal-basket-preview.tsx:119
 msgid "Basket Change"
@@ -2481,8 +2468,7 @@ msgstr "质疑提案"
 msgid "Challenged"
 msgstr "已质疑"
 
-#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-votes.tsx:96
-#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-votes.tsx:102
+#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-votes.tsx:99
 msgid "Challenged votes"
 msgstr "已质疑的投票"
 
@@ -2628,13 +2614,11 @@ msgstr "在 H.8/H.9 中澄清了 LCAP 代币合约基于 Reserve Index Protocol 
 msgid "Clear"
 msgstr "清除"
 
-#: src/views/index-dtf/deploy/steps/confirm-deploy/manual/components/approve-all-deploy-button.tsx:123
-#: src/views/explorer/components/governance/filters.tsx:122
 #: src/views/explorer/components/governance/filters.tsx:124
 msgid "Clear proposer filter"
 msgstr "清除提议人筛选"
 
-#: src/views/index-dtf/deploy/steps/confirm-deploy/manual/components/approve-all-deploy-button.tsx:118
+#: src/views/index-dtf/deploy/steps/confirm-deploy/manual/components/approve-all-deploy-button.tsx:123
 #: src/views/index-dtf/issuance/manual/components/approve-all-button.tsx:111
 msgid "Click retry or use individual approve buttons below."
 msgstr "点击重试或使用下方的单独授权按钮。"
@@ -4264,15 +4248,16 @@ msgstr "请确保你要取消注册的资产没有待领取的收入，否则它
 msgid "Enter {0} amount"
 msgstr "输入 {0} 数量"
 
+#: src/views/explorer/components/governance/filters.tsx:176
+msgid "Enter a valid address"
+msgstr "请输入有效地址"
+
 #: src/views/index-dtf/deploy/steps/governance-settings/optimistic-form.tsx:106
 #: src/views/index-dtf/deploy/steps/governance-settings/optimistic-form.tsx:116
 #: src/views/index-dtf/deploy/steps/governance-settings/voting-presets.tsx:38
 #: src/views/index-dtf/deploy/steps/governance-settings/voting-presets.tsx:47
 msgid "Enter custom"
 msgstr "自定义输入"
-#: src/views/explorer/components/governance/filters.tsx:176
-msgid "Enter a valid address"
-msgstr "请输入有效地址"
 
 #: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/components/basket-settings-proposal-section.tsx:39
 #: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/components/basket-settings-proposal-section.tsx:99
@@ -4777,15 +4762,12 @@ msgstr ""
 msgid "Fee Distribution"
 msgstr "费用分配"
 
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:55
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/optimistic.ts:123
-#: src/components/governance/address-hovercard/address-profile-card.tsx:115
 #: src/components/governance/address-hovercard/address-profile-card.tsx:124
 msgid "Fee recipient"
 msgstr "费用接收方"
 
-#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:40
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/optimistic.ts:120
+#: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:55
+#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/optimistic.ts:123
 msgid "Fee recipients"
 msgstr "费用接收方"
 
@@ -6165,11 +6147,9 @@ msgid "Loading your portfolio data..."
 msgstr "正在加载你的投资组合数据..."
 
 #: src/components/stake-drawer/components/submit-stake-button.tsx:164
-#: src/views/explorer/components/revenue/index.tsx:547
-#: src/views/index-dtf/deploy/steps/confirm-deploy/simple/index.tsx:161
 #: src/views/explorer/components/kit/explorer-table.tsx:119
 #: src/views/explorer/components/kit/loading-bar.tsx:13
-#: src/views/index-dtf/deploy/steps/confirm-deploy/simple/index.tsx:158
+#: src/views/index-dtf/deploy/steps/confirm-deploy/simple/index.tsx:161
 #: src/views/index-dtf/governance/components/proposal-preview/token-reward-preview.tsx:66
 #: src/views/index-dtf/governance/components/proposal-preview/token-reward-preview.tsx:66
 #: src/views/index-dtf/governance/views/proposal/components/proposal-header.tsx:58
@@ -6539,14 +6519,12 @@ msgstr "Melting"
 msgid "Message us on Telegram"
 msgstr "在 Telegram 上联系我们"
 
-#: src/views/index-dtf/deploy/components/deploy-accordion.tsx:64
-#: src/views/index-dtf/deploy/components/deploy-accordion.tsx:65
 #: src/views/explorer/components/revenue/trades.tsx:72
 msgid "Met"
 msgstr "已达到"
 
-#: src/views/index-dtf/deploy/components/deploy-accordion.tsx:67
-#: src/views/index-dtf/deploy/components/deploy-accordion.tsx:68
+#: src/views/index-dtf/deploy/components/deploy-accordion.tsx:64
+#: src/views/index-dtf/deploy/components/deploy-accordion.tsx:65
 msgid "Metadata"
 msgstr "元数据"
 
@@ -7367,6 +7345,7 @@ msgstr "未冻结"
 #: src/views/index-dtf/governance/views/propose/basket/components/submit-proposal-button.tsx:145
 msgid "Not in this DTF's trade allowlist: {symbols}"
 msgstr "不在此 DTF 的交易允许列表中：{symbols}"
+
 #: src/views/explorer/components/revenue/trades.tsx:76
 msgid "Not met"
 msgstr "未达到"
@@ -7434,7 +7413,7 @@ msgstr "在 {0} 上"
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-dtf-revenue.tsx:184
 msgid "On this DTF the shares below split the recipient pool: the holder share is kept first, and permanent recipients take their fixed part of what remains."
 msgstr "在此 DTF 中，以下份额分配接收方资金池：先保留持有者份额，永久接收方从剩余部分中获得其固定份额。"
-#: src/components/governance/address-hovercard/index.tsx:102
+
 #: src/components/governance/address-hovercard/index.tsx:152
 msgid "On-chain governance history for this address"
 msgstr "此地址的链上治理记录"
@@ -7561,7 +7540,6 @@ msgstr "Optimistic 参数"
 msgid "Optimistic proposals"
 msgstr "乐观提案"
 
-#: src/components/governance/address-hovercard/address-profile-card.tsx:112
 #: src/components/governance/address-hovercard/address-profile-card.tsx:121
 #: src/views/index-dtf/governance/components/governance-roles.tsx:169
 #: src/views/index-dtf/settings/components/index-settings-roles.tsx:66
@@ -7921,11 +7899,8 @@ msgid "PHOTON packs multiple collateral assets into one DTF token"
 msgstr "PHOTON 将多种抵押资产打包为一个 DTF token"
 
 #: src/components/transactions/table/index.tsx:92
-#: src/views/explorer/components/transactions/useTransactionColumns.tsx:142
 #: src/views/index-dtf/deploy/steps/revenue/revenue-distribution-settings.tsx:23
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-revenue-distribution.tsx:271
-#: src/views/index-dtf/deploy/steps/revenue/revenue-distribution-settings.tsx:27
-#: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-revenue-distribution.tsx:234
 msgid "Platform"
 msgstr "平台"
 
@@ -8289,12 +8264,11 @@ msgstr "项目"
 msgid "Projects recent reward activity forward."
 msgstr ""
 
-#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:221
 #: src/views/explorer/components/governance/index.tsx:255
 msgid "Proposal"
 msgstr "提案"
 
-#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:209
+#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:221
 msgid "Proposal canceled"
 msgstr "提案已取消"
 
@@ -8329,10 +8303,8 @@ msgstr "提案被否决"
 msgid "Proposal execution delay (hours)"
 msgstr "提案执行延迟（小时）"
 
-#: src/views/index-dtf/governance/components/proposal-list-item.tsx:104
-#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:217
 #: src/views/index-dtf/governance/components/proposal-list-item.tsx:106
-#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:205
+#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:217
 #: src/views/yield-dtf/governance/views/proposal-detail/components/proposal-timeline/TimelineItem.tsx:176
 msgid "Proposal expired"
 msgstr "提案已过期"
@@ -8397,9 +8369,6 @@ msgstr "提案未通过"
 msgid "proposals"
 msgstr "提案"
 
-#: src/components/governance/address-hovercard/address-profile-card.tsx:233
-#: src/components/governance/address-hovercard/address-profile-card.tsx:310
-#: src/views/explorer/components/governance/index.tsx:213
 #: src/components/governance/address-hovercard/address-profile-card.tsx:258
 #: src/components/governance/address-hovercard/address-profile-card.tsx:339
 #: src/views/explorer/components/governance/index.tsx:300
@@ -8416,8 +8385,6 @@ msgstr "每 12 小时提案数"
 msgid "Proposals per 12 hours must be between 1 and 12"
 msgstr "每 12 小时提案数必须在 1 到 12 之间"
 
-#: src/views/yield-dtf/governance/components/TopVoters.tsx:131
-#: src/views/yield-dtf/governance/components/TopVoters.tsx:134
 #: src/views/yield-dtf/governance/components/TopVoters.tsx:136
 msgid "Proposals voted"
 msgstr "已投票提案"
@@ -8544,11 +8511,8 @@ msgstr "发布于：{0}"
 msgid "Queue proposal"
 msgstr "将提案加入队列"
 
-#: src/views/explorer/components/governance/filters.tsx:24
-#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:281
-#: src/views/explorer/components/governance/filters.tsx:28
 #: src/views/explorer/components/governance/filters.tsx:46
-#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:269
+#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:281
 #: src/views/yield-dtf/governance/views/proposal-detail/components/proposal-timeline/TimelineItem.tsx:241
 msgid "Queued"
 msgstr "已入队"
@@ -9996,10 +9960,8 @@ msgstr "显示全部 ({total})"
 msgid "show less"
 msgstr "收起"
 
-#: src/views/index-dtf/governance/components/governance-proposal-list.tsx:76
-#: src/views/index-dtf/settings/components/index-settings-basic.tsx:124
 #: src/views/index-dtf/governance/components/governance-proposal-list.tsx:77
-#: src/views/index-dtf/settings/components/index-settings-basic.tsx:73
+#: src/views/index-dtf/settings/components/index-settings-basic.tsx:124
 #: src/views/portfolio-page/components/expand-toggle.tsx:33
 #: src/views/yield-dtf/issuance/components/zapV2/submit/ZapSubmitModal.tsx:61
 msgid "Show less"
@@ -10442,13 +10404,10 @@ msgid "Starts the next {0} reward period once the current one ends. Disabled unt
 msgstr "在当前周期结束后启动下一个 {0} 奖励周期。在此之前禁用。"
 
 #: src/components/proposal-sort-menu.tsx:20
-#: src/views/explorer/components/governance/filters.tsx:46
-#: src/views/explorer/components/governance/index.tsx:180
-#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:377
 #: src/views/explorer/components/governance/filters.tsx:65
 #: src/views/explorer/components/governance/filters.tsx:97
 #: src/views/explorer/components/governance/index.tsx:281
-#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:349
+#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-timeline.tsx:377
 #: src/views/portfolio-page/components/active-proposals.tsx:139
 #: src/views/yield-dtf/governance/views/proposal-detail/components/proposal-timeline/index.tsx:16
 msgid "Status"
@@ -12381,11 +12340,9 @@ msgid "Verifying transaction..."
 msgstr "正在验证交易……"
 
 #: src/components/rtoken-setup/basket/PluginItem.tsx:64
-#: src/views/explorer/components/collaterals/index.tsx:136
-#: src/views/index-dtf/settings/components/index-settings-basic.tsx:143
 #: src/views/explorer/components/collaterals/collateral-item.tsx:100
 #: src/views/explorer/components/collaterals/index.tsx:142
-#: src/views/index-dtf/settings/components/index-settings-basic.tsx:92
+#: src/views/index-dtf/settings/components/index-settings-basic.tsx:143
 msgid "Version"
 msgstr "版本"
 
@@ -12795,19 +12752,16 @@ msgstr ""
 msgid "Votes"
 msgstr "票数"
 
-#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-votes.tsx:112
-#: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalVotes.tsx:79
+#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-votes.tsx:115
+#: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalVotes.tsx:80
 msgid "Votes against"
 msgstr "反对票"
 
-#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-votes.tsx:109
-#: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalVotes.tsx:68
-#: src/components/governance/address-hovercard/address-profile-card.tsx:246
 #: src/components/governance/address-hovercard/address-profile-card.tsx:271
 msgid "Votes cast"
 msgstr "已投票数"
 
-#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-votes.tsx:115
+#: src/views/index-dtf/governance/views/proposal/components/proposal-detail-votes.tsx:112
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalVotes.tsx:69
 msgid "Votes for"
 msgstr "赞成票"
@@ -12930,14 +12884,12 @@ msgstr "投票权委托"
 msgid "Voting Power Delegation"
 msgstr "投票权委托"
 
-#: src/views/index-dtf/deploy/steps/governance-settings/voting-presets.tsx:42
-#: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/atoms.ts:214
-#: src/components/governance/address-hovercard/address-profile-card.tsx:268
 #: src/components/governance/address-hovercard/address-profile-card.tsx:297
 msgid "Voting power since"
 msgstr "投票权起始于"
 
-#: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/atoms.ts:213
+#: src/views/index-dtf/deploy/steps/governance-settings/voting-presets.tsx:42
+#: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/atoms.ts:214
 #: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/components/basket-settings-proposal-section.tsx:70
 #: src/views/index-dtf/governance/views/propose/views/propose-basket-settings/components/sections/propose-basket-governance.tsx:59
 #: src/views/index-dtf/governance/views/propose/views/propose-dao-settings/atoms.ts:177

@@ -129,7 +129,14 @@ const indexDtfGovernanceQuery = gql`
       }
       legacyAdminGovernances {
         id
+        token {
+          governance {
+            id
+          }
+        }
       }
+      legacyAdmins
+      legacyAuctionApprovers
     }
   }
 `
@@ -145,13 +152,18 @@ type IndexDTFGovernanceRecord = {
     legacyGovernance?: string[]
   }
   legacyTradingGovernances?: GovernanceReference[]
-  legacyAdminGovernances?: GovernanceReference[]
+  legacyAdminGovernances?: (GovernanceReference & {
+    token?: { governance?: GovernanceReference | null }
+  })[]
+  legacyAdmins?: string[]
+  legacyAuctionApprovers?: string[]
 }
 
 type IndexDTFGovernanceResponse = {
   dtfs: IndexDTFGovernanceRecord[]
 }
 
+// Mirrors the SDK's `getDtfProposalGovernanceIds`: after a Folio 6.0 migration the old vault's governor hangs off the replaced admin governor.
 export const getGovernanceIds = (dtf: IndexDTFGovernanceRecord): string[] => {
   const governanceIds = [
     dtf.ownerGovernance?.id,
@@ -159,7 +171,12 @@ export const getGovernanceIds = (dtf: IndexDTFGovernanceRecord): string[] => {
     dtf.stToken?.governance?.id,
     ...(dtf.stToken?.legacyGovernance ?? []),
     ...(dtf.legacyTradingGovernances ?? []).map(({ id }) => id),
-    ...(dtf.legacyAdminGovernances ?? []).map(({ id }) => id),
+    ...(dtf.legacyAdminGovernances ?? []).flatMap(({ id, token }) => [
+      id,
+      token?.governance?.id,
+    ]),
+    ...(dtf.legacyAdmins ?? []),
+    ...(dtf.legacyAuctionApprovers ?? []),
   ].filter((id): id is string => !!id)
 
   return [...new Set(governanceIds.map((id) => id.toLowerCase()))]
