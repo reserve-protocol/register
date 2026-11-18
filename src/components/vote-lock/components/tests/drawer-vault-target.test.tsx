@@ -88,6 +88,8 @@ const amount = (value: string) => ({
   formatted: value,
 })
 const state: VoteLockDrawerState = {
+  stToken: CURRENT_VAULT,
+  account: SAFE,
   underlyingBalance: amount('10'),
   underlyingAllowance: amount('10'),
   maxWithdraw: amount('10'),
@@ -145,7 +147,11 @@ describe('drawer-scoped vault target', () => {
     const store = createStore()
     store.set(walletAtom, SAFE)
     store.set(stTokenAtom, legacyVault)
-    store.set(voteLockStateAtom, { ...state, unstakingDelay: 0n })
+    store.set(voteLockStateAtom, {
+      ...state,
+      stToken: LEGACY_VAULT,
+      unstakingDelay: 0n,
+    })
     store.set(stakingInputAtom, '1')
 
     render(

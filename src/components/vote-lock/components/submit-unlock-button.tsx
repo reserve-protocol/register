@@ -58,24 +58,21 @@ const SubmitUnlockButton = ({
     }
   }, [])
 
-  const sharesToUnlock = stToken
-    ? parseUnits(input || '0', stToken.token.decimals)
-    : 0n
+  const sharesToUnlock = parseUnits(input || '0', stToken.token.decimals)
   const readyToSubmit =
     isVaultReady &&
     !!account &&
     !!balance &&
     sharesToUnlock > 0n &&
     sharesToUnlock <= balance
-  const call =
-    stToken && account
-      ? prepareVoteLockRedeem({
-          chainId: stToken.chainId,
-          stToken: stToken.id,
-          shares: sharesToUnlock,
-          account,
-        })
-      : undefined
+  const call = account
+    ? prepareVoteLockRedeem({
+        chainId: stToken.chainId,
+        stToken: stToken.id,
+        shares: sharesToUnlock,
+        account,
+      })
+    : undefined
 
   const {
     writeContract,
@@ -85,11 +82,11 @@ const SubmitUnlockButton = ({
   } = useWriteContract()
   const { data: receipt, error: txError } = useWaitForTransactionReceipt({
     hash,
-    chainId: stToken?.chainId,
+    chainId: stToken.chainId,
   })
 
   const write = () => {
-    if (!readyToSubmit || !call || !stToken) return
+    if (!readyToSubmit || !call) return
 
     trackClick(
       'vote_lock',
@@ -126,7 +123,7 @@ const SubmitUnlockButton = ({
     if (processedReceiptHash.current === receipt.transactionHash) return
 
     processedReceiptHash.current = receipt.transactionHash
-    if (stToken && pendingSupplyDelta.current !== 0n) {
+    if (pendingSupplyDelta.current !== 0n) {
       updateCurrentDtfStTokenSupply({
         stToken: stToken.id,
         delta: pendingSupplyDelta.current,
@@ -151,8 +148,6 @@ const SubmitUnlockButton = ({
     updateCurrentDtfStTokenSupply,
     onSuccess,
   ])
-
-  if (!stToken) return null
 
   return (
     <TransactionButton

@@ -1,11 +1,15 @@
 import { walletAtom } from '@/state/atoms'
 import { indexDTFAtom } from '@/state/dtf/atoms'
-import { useIndexDtfVoteLockState } from '@reserve-protocol/react-sdk'
+import {
+  useCurrentIndexDtf,
+  useIndexDtfVoteLockState,
+} from '@reserve-protocol/react-sdk'
 import { useAtomValue } from 'jotai'
-import type { ReactNode } from 'react'
+import { useEffect, type ReactNode } from 'react'
 import type { StTokenExtended, VoteLockTab } from './atoms'
 import { VoteLockDrawer } from './drawer'
 import { useCurrentDtfVoteLockRefresh } from './hooks/use-vote-lock-refresh'
+import { isSameAddress } from './utils'
 
 export const CurrentDtfVoteLock = ({
   children,
@@ -28,6 +32,20 @@ export const CurrentDtfVoteLock = ({
       ? { address: dtf.id, chainId: dtf.chainId, account }
       : undefined
   const { data: voteLockState, refetch } = useIndexDtfVoteLockState(params)
+  const { refetch: refetchDtf } = useCurrentIndexDtf({ enabled: false })
+  const isVaultOutOfSync =
+    !!stToken &&
+    !!voteLockState &&
+    !isSameAddress(voteLockState.stToken, stToken.id)
+
+  // The DTF is read once per session, so it can keep a replaced vault; the state read follows the new one.
+  useEffect(() => {
+    if (!isVaultOutOfSync) return
+
+    void refetchDtf()
+    void refetch()
+  }, [isVaultOutOfSync, refetchDtf, refetch])
+
   const refresh = useCurrentDtfVoteLockRefresh({
     account,
     dtfAddress: dtf?.id,

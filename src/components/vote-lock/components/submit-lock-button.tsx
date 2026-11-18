@@ -59,9 +59,7 @@ const SubmitLockButton = ({
     }
   }, [])
 
-  const amountToLock = stToken
-    ? parseUnits(input || '0', stToken.underlying.decimals)
-    : 0n
+  const amountToLock = parseUnits(input || '0', stToken.underlying.decimals)
   const allowance = voteLockState?.underlyingAllowance.raw ?? 0n
   const needsApproval = allowance < amountToLock
   const hasBalance = balance !== undefined && balance >= amountToLock
@@ -71,7 +69,7 @@ const SubmitLockButton = ({
     currentDelegate === zeroAddress ||
     isSameAddress(currentDelegate, account)
   const plan =
-    stToken && (shouldDelegateToSelf || account)
+    shouldDelegateToSelf || account
       ? prepareVoteLockDepositPlan({
           chainId: stToken.chainId,
           stToken: stToken.id,
@@ -107,7 +105,7 @@ const SubmitLockButton = ({
   const { data: approvalReceipt, error: approvalTxError } =
     useWaitForTransactionReceipt({
       hash: approvalHash,
-      chainId: stToken?.chainId,
+      chainId: stToken.chainId,
     })
 
   const readyToSubmit =
@@ -124,7 +122,7 @@ const SubmitLockButton = ({
   } = useWriteContract()
   const { data: receipt, error: txError } = useWaitForTransactionReceipt({
     hash,
-    chainId: stToken?.chainId,
+    chainId: stToken.chainId,
   })
 
   const write = (call: ContractCall | undefined) => {
@@ -160,9 +158,7 @@ const SubmitLockButton = ({
   }, [approvalReceipt?.status, approvalReceipt?.transactionHash, onSuccess])
 
   useEffect(() => {
-    if (receipt?.status !== 'success' || !receipt.transactionHash || !stToken) {
-      return
-    }
+    if (receipt?.status !== 'success' || !receipt.transactionHash) return
     if (processedReceiptHash.current === receipt.transactionHash) return
 
     processedReceiptHash.current = receipt.transactionHash
@@ -191,8 +187,6 @@ const SubmitLockButton = ({
     updateCurrentDtfStTokenSupply,
     onSuccess,
   ])
-
-  if (!stToken) return null
 
   return (
     <TransactionButton

@@ -78,7 +78,6 @@ const SubmitDelegateButton = ({
   const disabled =
     !isVaultReady ||
     !account ||
-    !stToken ||
     !hasVoteLockedBalance ||
     !isValidNormalDelegate ||
     !isValidOptimisticDelegate ||
@@ -87,7 +86,7 @@ const SubmitDelegateButton = ({
   const { writeContract, data: hash, isPending, error } = useWriteContract()
   const { data: receipt, error: txError } = useWaitForTransactionReceipt({
     hash,
-    chainId: stToken?.chainId,
+    chainId: stToken.chainId,
   })
   const currentCall = calls[currentCallIndex]
   const isLoading = isPending || (!!calls.length && (!receipt || !!hash))
@@ -102,7 +101,7 @@ const SubmitDelegateButton = ({
   }
 
   const write = () => {
-    if (disabled || !stToken || !normalizedNormalDelegate) return
+    if (disabled || !normalizedNormalDelegate) return
 
     const nextCalls: DelegateCall[] = []
 
@@ -174,7 +173,7 @@ const SubmitDelegateButton = ({
 
   return (
     <TransactionButton
-      chain={stToken?.chainId}
+      chain={stToken.chainId}
       disabled={disabled}
       loading={isLoading}
       loadingText={

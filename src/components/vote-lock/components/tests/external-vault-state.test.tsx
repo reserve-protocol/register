@@ -9,6 +9,7 @@ import type { VoteLockDrawer } from '../../drawer'
 import type { ComponentProps } from 'react'
 
 const mocks = vi.hoisted(() => ({
+  dtf: vi.fn(),
   dtfState: vi.fn(),
   vaultState: vi.fn(),
   drawer: vi.fn((_props: ComponentProps<typeof VoteLockDrawer>) => null),
@@ -18,9 +19,7 @@ vi.mock('@/state/atoms', async () => {
   return { walletAtom: atom<string | null>(null) }
 })
 vi.mock('@reserve-protocol/react-sdk', () => ({
-  useIndexDtf: () => ({
-    data: { voteLockVault: { governance: { isOptimistic: true } } },
-  }),
+  useIndexDtf: mocks.dtf,
   useIndexDtfVoteLockState: mocks.dtfState,
   useIndexDtfVoteLockVaultState: mocks.vaultState,
 }))
@@ -50,6 +49,12 @@ const successorState = {
   stToken: CURRENT,
   shareBalance: { raw: 2000000n, formatted: '2000000' },
 }
+const optimisticDtf = (vault: string) => ({
+  voteLockVault: {
+    token: { address: vault },
+    governance: { isOptimistic: true },
+  },
+})
 const refetch = vi.fn()
 
 function openDrawer() {
@@ -67,8 +72,22 @@ describe('external vault state identity', () => {
   beforeEach(() => {
     vi.clearAllMocks()
     mocks.vaultState.mockReturnValue({ data: selectedState, refetch })
+    mocks.dtf.mockReturnValue({ data: optimisticDtf(CURRENT) })
   })
   afterEach(cleanup)
+
+  it('keeps the optimistic governance of the DTF vault while the account state loads', () => {
+    mocks.dtf.mockReturnValue({ data: optimisticDtf(LEGACY) })
+    mocks.dtfState.mockReturnValue({
+      data: undefined,
+      isError: false,
+      refetch,
+    })
+    mocks.vaultState.mockReturnValue({ data: undefined, refetch })
+    const drawer = openDrawer()
+    expect(drawer.voteLockState).toBeUndefined()
+    expect(drawer.isOptimisticGovernance).toBe(true)
+  })
 
   it('reads the selected legacy vault instead of borrowing the successor balance', () => {
     mocks.dtfState.mockReturnValue({
