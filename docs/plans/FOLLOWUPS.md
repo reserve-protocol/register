@@ -163,7 +163,7 @@ Contract: [solariskit-wagmi-v3.md](solariskit-wagmi-v3.md); current state in the
 - Connect moves the wallet to wagmi's last chain (mainnet on a fresh browser) instead of connecting on the wallet's own chain. Same on AppKit before the swap. The fix is upstream in solariskit (`useWalletConnectors`: prefer the wallet's chain when it is configured); ask Akshat, then bump.
 - The fork lane's ABX case in `upgrade-v6.fork.spec.ts` fails on the untouched `feat/index-dtf-v6` tip too (the 6.0.0 banner shows where the spec expects it hidden); the offline suite also has pre-existing failures there (`dtf-nav-state-cleanup` ×2, `proposer-cancel` revert, `reload-chain-identity` intermittent).
 - `SeamlessTransactionContainer` (`src/components/ui/seamless-transaction.tsx`) has no importers; it is the only consumer of `useWalletModalOpen`.
-- Decide whether the generic "Browser Wallet" entry should stay: it lists next to every EIP-6963 wallet, but it is the only entry for injected wallets that do not announce themselves.
+- The generic "Browser Wallet" entry is listed only when `window.ethereum` exists, but it still shows next to every EIP-6963 wallet. It is the only entry for injected wallets that do not announce themselves; decide whether to keep it (product call).
 
 ## Stack e2e lane (2026-09-21)
 

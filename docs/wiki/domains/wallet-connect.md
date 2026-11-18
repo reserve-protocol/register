@@ -24,7 +24,8 @@ Shape:
   `SolarisEthereumProvider` inside `QueryClientProvider` (the provider calls
   wagmi query hooks). `wagmiConfig` is exported from the same module for the
   RToken atoms and `state/wallet/atoms.ts`.
-- Wallets: injected (EIP-6963 discovery, plus a generic "Browser Wallet"),
+- Wallets: injected (EIP-6963 discovery, plus a generic "Browser Wallet"
+  listed only when `window.ethereum` exists),
   WalletConnect, Base Account and Safe. The kit ships no other factories;
   Rabby, Bitget, Binance and MetaMask appear through EIP-6963, Ledger and
   mobile wallets through WalletConnect. Safe lists only inside an iframe.

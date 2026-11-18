@@ -23,12 +23,15 @@ import AtomUpdater from './updaters/AtomUpdater'
 
 const APP_NAME = 'Reserve Register'
 
+// WHY: the kit lists its generic injected entry even with no provider; EIP-6963 wallets are discovered either way.
+const hasInjectedProvider = 'ethereum' in window
+
 const connectors = connectorsForWallets(
   [
     {
       groupName: 'Popular',
       wallets: [
-        injectedWallet,
+        ...(hasInjectedProvider ? [injectedWallet] : []),
         walletConnectWallet,
         baseAccountWallet,
         safeWallet,

@@ -44,7 +44,7 @@ test('wallet modal: connect, legal footer, account view, disconnect sticks @mobi
   await expect(page.getByText('Terms of Service')).toBeVisible()
   await expect(page.getByText('Privacy Policy')).toBeVisible()
   const connectDialog = page.getByRole('dialog', { name: 'Connect Wallet' })
-  for (const name of ['WalletConnect', 'Base']) {
+  for (const name of ['Browser Wallet', 'WalletConnect', 'Base']) {
     await expect(
       connectDialog.getByRole('button', { name, exact: true })
     ).toBeVisible()
@@ -71,6 +71,26 @@ test('wallet modal: connect, legal footer, account view, disconnect sticks @mobi
   await page.waitForTimeout(5_000)
   await expect(wallet).not.toBeVisible()
   await expect(connectBtn).toBeVisible()
+})
+
+test.describe('without an injected wallet', () => {
+  test.use({ wallet: false })
+
+  test('wallet modal: no generic browser wallet entry when nothing is injected @mobile', async ({
+    page,
+  }) => {
+    await page.goto('/')
+    await page.getByTestId('header-connect-btn').click()
+    const connectDialog = page.getByRole('dialog', { name: 'Connect Wallet' })
+    for (const name of ['WalletConnect', 'Base']) {
+      await expect(
+        connectDialog.getByRole('button', { name, exact: true })
+      ).toBeVisible()
+    }
+    await expect(
+      connectDialog.getByRole('button', { name: 'Browser Wallet', exact: true })
+    ).toHaveCount(0)
+  })
 })
 
 const reverseResolverAbi = parseAbi([
