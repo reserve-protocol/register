@@ -15,7 +15,7 @@ const useContractWrite = <
 >(
   call:
     | UseSimulateContractParameters<TAbi, TFunctionName>
-    | UseSimulateContractParameters = {} as any
+    | UseSimulateContractParameters = {}
 ) => {
   const isWalletInvalid = useAtomValue(isWalletInvalidAtom)
   const { data, error, isLoading, isSuccess } = useSimulateContract<

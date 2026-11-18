@@ -80,6 +80,9 @@ const Disclaimer: DisclaimerComponent = ({ Text, Link }) => (
   </Text>
 )
 
+const KIT_THEME = darkTheme({ borderRadius: 'medium' })
+const KIT_APP_INFO = { appName: APP_NAME, disclaimer: Disclaimer }
+
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
@@ -94,10 +97,7 @@ const ChainProvider = ({ children }: { children: ReactNode }) => {
   return (
     <WagmiProvider config={wagmiConfig}>
       <QueryClientProvider client={queryClient}>
-        <SolarisEthereumProvider
-          theme={darkTheme({ borderRadius: 'medium' })}
-          appInfo={{ appName: APP_NAME, disclaimer: Disclaimer }}
-        >
+        <SolarisEthereumProvider theme={KIT_THEME} appInfo={KIT_APP_INFO}>
           <AtomUpdater />
           <DtfSdkProvider
             chains={dtfSdkChains}
