@@ -166,23 +166,22 @@ const VoteModal = (props: ModalProps) => {
         </h2>
       ) : (
         voteOptions.map((option, index) => (
-          <div
-            className={`flex items-center ${index ? 'mt-2' : ''}`}
+          <label
+            className={`flex items-center cursor-pointer ${index ? 'mt-2' : ''}`}
             key={option.value}
           >
             {option.value === VOTE_TYPE.FOR && <ThumbsUp size={16} />}
             {option.value === VOTE_TYPE.AGAINST && <ThumbsDown size={16} />}
             {option.value === VOTE_TYPE.ABSTAIN && <Slash size={16} />}
             <span className="font-semibold ml-2">{option.label}</span>
-            <label className="ml-auto cursor-pointer">
-              <Checkbox
-                data-testid={`vote-option-${VOTE_LABEL[option.value]?.toLowerCase()}`}
-                checked={vote === option.value}
-                onCheckedChange={() => setVote(option.value)}
-                disabled={isLoading || isMining}
-              />
-            </label>
-          </div>
+            <Checkbox
+              className="ml-auto"
+              data-testid={`vote-option-${VOTE_LABEL[option.value]?.toLowerCase()}`}
+              checked={vote === option.value}
+              onCheckedChange={() => setVote(option.value)}
+              disabled={isLoading || isMining}
+            />
+          </label>
         ))
       )}
 

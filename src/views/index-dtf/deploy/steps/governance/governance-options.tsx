@@ -3,7 +3,7 @@ import { msg } from '@lingui/core/macro'
 import { Trans, useLingui } from '@lingui/react/macro'
 import type { MessageDescriptor } from '@lingui/core'
 import { useAtom, useSetAtom } from 'jotai'
-import { Asterisk, GlobeLock, Landmark, SearchCode, Wallet } from 'lucide-react'
+import { Landmark, SearchCode, Wallet } from 'lucide-react'
 import { ReactNode } from 'react'
 import { useFormContext } from 'react-hook-form'
 import {
@@ -42,18 +42,10 @@ const GOVERNANCE_OPTIONS = [
     description: (
       <span>
         <Trans>
-          Enter the contract address of an existing vote-lock DAO to govern{' '}
-          <Ticker />. This DAO must have been created by the Reserve Index
-          Protocol, and the contract must implement{' '}
-          <a
-            href="https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/governance/utils/IVotes.sol"
-            target="_blank"
-            rel="noreferrer"
-            className="text-primary"
-          >
-            IVotes.sol
-          </a>
-          .
+          Enter the address of an existing vote-lock vault to govern{' '}
+          <Ticker />. It must be a vault created by the current Reserve
+          governance deployer, like vlRSR; older vote-locks can't govern a 6.0
+          DTF.
         </Trans>
       </span>
     ),
@@ -99,11 +91,13 @@ const GovernanceOption = ({
   form,
   selected,
   setSelected,
-}: GovernanceOptionProps) => {
+  type,
+}: GovernanceOptionProps & { type: string }) => {
   const { t } = useLingui()
   return (
   <div
     role="button"
+    data-testid={`deploy-governance-option-${type}`}
     onClick={setSelected}
     className={cn(
       'flex flex-col gap-2 rounded-xl border border-border cursor-pointer',

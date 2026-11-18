@@ -102,17 +102,20 @@ Register's write path and the RPC-first refresh, not governance coverage.
 
 ## The Register governance-upgrade lane (Base, LCAP)
 
-Plain Anvil on :8546 (no Docker stack) plus the subgraph proxy on :18310. The v6 SDK needs the
-1.11.x Index subgraph fields, so the proxy upstream is the `1.11.2-test` deployment until `prod`
-is promoted. `prepare-optimistic-governance.mjs` replays the protocol prerequisites by labelled
-impersonation (VersionRegistry `registerVersion` of the 1.1.0 deployer, vlRSR singleton upgrade
-to 1.1.0) and picks a real LCAP voter that clears threshold and quorum.
+Plain Anvil on :8546 (no Docker stack) plus the subgraph proxy on :18310 against `prod`.
+`prepare-optimistic-governance.mjs` replays the protocol prerequisites by labelled impersonation
+only when the fork predates them (VersionRegistry `registerVersion` of the 1.1.0 deployer, vlRSR
+singleton upgrade to 1.1.0, both live since 2026-11-04) and picks a real LCAP voter that clears
+threshold and quorum. `FORK_MIGRATION_DELEGATE=other` points the holder's old vault at a third
+party before the migration (their existing vlRSR delegation must win); `other-fresh` also clears
+the vlRSR delegations (the third party must carry over to both). The spec mutates the fork:
+restart Anvil and re-run the prepare script between runs.
 
 ```bash
 anvil --port 8546 --chain-id 8453 --fork-url https://base-mainnet.g.alchemy.com/v2/<key> &
 FORK_RPC_URL_8453=http://127.0.0.1:8546 node e2e/fork/scripts/prepare-optimistic-governance.mjs
 PORT=18310 FORK_BLOCK=$(jq -r .forkBlock e2e/fork/.state/8453/optimistic-governance-scenario.json) \
-  UPSTREAM=https://api.goldsky.com/api/public/project_cmgzim3e100095np2gjnbh6ry/subgraphs/dtf-index-base/1.11.2-test/gn \
+  UPSTREAM=https://api.goldsky.com/api/public/project_cmgzim3e100095np2gjnbh6ry/subgraphs/dtf-index-base/prod/gn \
   node e2e/fork/scripts/subgraph-proxy.mjs &
 FORK_CHAIN_ID=8453 pnpm exec playwright test -c playwright.fork.config.ts e2e/fork/tests/optimistic-governance-upgrade.fork.spec.ts
 ```
@@ -123,6 +126,75 @@ run. After a proposal is created Register navigates to its (unindexed) detail pa
 re-navigates instead of reloading. `fork-wallet.ts` pads gas estimates like a real wallet: Anvil
 fills the exact estimate and the legacy vault's `redeem` runs out of gas on nested calls. Use the
 Foundry `anvil`; an older one earlier on `PATH` rejects current `cast`/viem transaction fields.
+
+## The Register 6.0.0 upgrade lane (Base, MIDAS + ABX)
+
+ABX is a legacy DTF with a governance migration target, so its case only checks that the 6.0.0 banner stays
+hidden until it migrates (`migrationFirst`); the legacy cast path is covered by the unit and offline preview tests
+and by the full LCAP sequence below.
+
+`prepare-v6-upgrade.mjs` registers 6.0.0 in the Folio version registry by labelled impersonation of the
+RoleRegistry owner and picks a real voter per DTF; `upgrade-v6.fork.spec.ts` proposes from the banner and
+executes on the fork. MAG7 can't serve as the optimistic case: its basket tokens' code (`0xef`) is not
+executable on Anvil, so `totalAssets()` reverts and the DTF never loads.
+
+```bash
+FORK_RPC_URL_8453=http://127.0.0.1:8546 node e2e/fork/scripts/prepare-v6-upgrade.mjs
+PORT=18310 FORK_BLOCK=$(jq -r .forkBlock e2e/fork/.state/8453/v6-upgrade-scenario.json) UPSTREAM=<prod base> node e2e/fork/scripts/subgraph-proxy.mjs &
+FORK_CHAIN_ID=8453 pnpm exec playwright test -c playwright.fork.config.ts e2e/fork/tests/upgrade-v6.fork.spec.ts
+```
+
+Once MIDAS is on 6.0.0 on that Anvil, the 6.0 governance lanes drive Register's settings and basket
+proposals and execute them. Run them as separate invocations in this order (Playwright orders files
+alphabetically, and the basket allowlist case needs the settings lane's enforced allowlist):
+
+```bash
+FORK_CHAIN_ID=8453 pnpm exec playwright test -c playwright.fork.config.ts e2e/fork/tests/settings-v6.fork.spec.ts
+FORK_CHAIN_ID=8453 pnpm exec playwright test -c playwright.fork.config.ts e2e/fork/tests/basket-v6.fork.spec.ts
+```
+
+The settings lane skips once the allowlist is already enforced (restart Anvil and re-run the
+upgrade lane). Launching the new rebalance's auctions from the UI isn't reachable on this lane: the
+subgraph proxy serves the fork block, so the rebalance has no indexed proposal; launch is covered by
+the BSC CMC20 and native-v6 lanes.
+
+## The full 5.0.0 → migration → 6.0.0 sequence (Base, LCAP)
+
+One DTF through both upgrades on one Anvil: the governance migration lane first, then the 6.0.0 lane.
+The subgraph never sees the fork's new governor, so `governance-overlay.mjs` reads it from the fork and
+the proxy's `OVERLAY` serves it: ownerGovernance from a DTF on an optimistic 1.1.0 governor (MIDAS),
+stToken from a DTF on the target vault (MAG7 for vlRSR), ids, parameters, guardians, version and fee
+tables from the fork. `V6_TARGETS` points the 6.0.0 prepare at the migrated governor.
+
+```bash
+FORK_SCENARIO=lcap FORK_RPC_URL_8453=http://127.0.0.1:8546 node e2e/fork/scripts/prepare-optimistic-governance.mjs
+PORT=18310 FORK_BLOCK=<forkBlock> UPSTREAM=<prod base> node e2e/fork/scripts/subgraph-proxy.mjs &
+FORK_CHAIN_ID=8453 FORK_SCENARIO=lcap pnpm exec playwright test -c playwright.fork.config.ts e2e/fork/tests/optimistic-governance-upgrade.fork.spec.ts
+# newGovernor comes from temp/evidence/fork-lcap/optimistic-governance.json
+DTF=<lcap> GOVERNOR=<newGovernor> GOVERNANCE_FROM=<midas> STTOKEN_FROM=<mag7> OVERLAY=e2e/fork/.state/8453/governance-overlay-lcap.json \
+  FORK_RPC_URL_8453=http://127.0.0.1:8546 node e2e/fork/scripts/governance-overlay.mjs
+# restart the proxy with OVERLAY=$PWD/e2e/fork/.state/8453/governance-overlay-lcap.json (same FORK_BLOCK)
+V6_TARGETS='[{"symbol":"LCAP","dtf":"<lcap>","topology":"optimistic","governor":"<newGovernor>"}]' \
+  FORK_RPC_URL_8453=http://127.0.0.1:8546 node e2e/fork/scripts/prepare-v6-upgrade.mjs
+FORK_CHAIN_ID=8453 pnpm exec playwright test -c playwright.fork.config.ts e2e/fork/tests/upgrade-v6.fork.spec.ts
+```
+
+Rerun `governance-overlay.mjs` after the 6.0.0 upgrade so the overlay carries version 6.0.0 and the
+6.0 fee tables (the proxy reads the file on every request). The proxy identifies the DTF by its `id`,
+so a query that does not select `id` is not overlaid.
+
+## Archive RPC
+
+The Alchemy key in `.env` (`VITE_ALCHEMY`) is origin-allowlisted: Anvil must send the app origin or every
+fork read fails with "Unspecified origin not on whitelist". BNB is enabled on it, so the CMC20 lane forks
+Alchemy directly (public BSC endpoints rate-limit mid-spec):
+
+```bash
+anvil --port 8547 --chain-id 56 --fork-block-number 119967348 \
+  --fork-url https://bnb-mainnet.g.alchemy.com/v2/<key> --fork-header "Origin: https://app.reserve.org"
+```
+
+Use the same `--fork-header` for the Base lane.
 
 ## Adding a new fork-backed suite
 

@@ -1,0 +1,111 @@
+# Register-owned fork stack for ONE chain: Anvil fork + Graph Node + Postgres + IPFS.
+# Same shape as index-subgraph/docker-compose.fork.yml, generalized to any chain.
+#
+# Never run `docker compose` here directly — use ./fork.sh <chainId> <cmd>. It
+# names the project `reserve-fork-<chainId>` and loads chains/<chainId>.env so
+# three chains coexist on one host without port or state collisions.
+#
+# Required from the shell (never committed): FORK_RPC_URL (archive endpoint),
+# FORK_BLOCK (pinned block containing every source DTF for that chain).
+services:
+  anvil:
+    image: '${ANVIL_IMAGE:-ghcr.io/foundry-rs/foundry:v1.5.1}'
+    entrypoint: ['anvil']
+    command:
+      - '--host'
+      - '0.0.0.0'
+      - '--port'
+      - '8545'
+      - '--chain-id'
+      - '${FORK_CHAIN_ID:?FORK_CHAIN_ID is required (use fork.sh)}'
+      - '--fork-url'
+      - '${FORK_RPC_URL:?FORK_RPC_URL is required (archive RPC for this chain)}'
+      - '--fork-block-number'
+      - '${FORK_BLOCK:?FORK_BLOCK is required (pinned per-chain block)}'
+      - '--state'
+      - '/anvil-state/state.json'
+      - '--state-interval'
+      - '${ANVIL_STATE_INTERVAL_SECONDS:-5}'
+      - '--accounts'
+      - '20'
+      - '--balance'
+      - '1000000'
+      - '--mnemonic'
+      - 'test test test test test test test test test test test junk'
+    ports:
+      - '127.0.0.1:${FORK_ANVIL_PORT:?FORK_ANVIL_PORT is required (use fork.sh)}:8545'
+    volumes:
+      - '${FORK_STATE_DIR:?FORK_STATE_DIR is required (use fork.sh)}/anvil:/anvil-state'
+    cpus: '${ANVIL_CPUS:-2}'
+    mem_limit: '${ANVIL_MEMORY:-2g}'
+    healthcheck:
+      test:
+        ['CMD', 'cast', 'block-number', '--rpc-url', 'http://127.0.0.1:8545']
+      interval: 2s
+      timeout: 2s
+      retries: 30
+      start_period: 5s
+
+  postgres:
+    image: '${POSTGRES_IMAGE:-postgres:14}'
+    command:
+      [
+        'postgres',
+        '-cshared_preload_libraries=pg_stat_statements',
+        '-cmax_connections=200',
+      ]
+    environment:
+      POSTGRES_USER: graph-node
+      POSTGRES_PASSWORD: let-me-in
+      POSTGRES_DB: graph-node
+      PGDATA: '/var/lib/postgresql/data'
+      POSTGRES_INITDB_ARGS: '-E UTF8 --locale=C'
+    volumes:
+      - '${FORK_STATE_DIR}/postgres:/var/lib/postgresql/data'
+    cpus: '${POSTGRES_CPUS:-1}'
+    mem_limit: '${POSTGRES_MEMORY:-1g}'
+    # No host port: only graph-node talks to it.
+
+  ipfs:
+    image: '${IPFS_IMAGE:-ipfs/kubo:v0.17.0}'
+    ports:
+      - '127.0.0.1:${FORK_IPFS_API_PORT:?FORK_IPFS_API_PORT is required (use fork.sh)}:5001'
+    volumes:
+      - '${FORK_STATE_DIR}/ipfs:/data/ipfs'
+    cpus: '${IPFS_CPUS:-1}'
+    mem_limit: '${IPFS_MEMORY:-512m}'
+
+  graph-node:
+    image: '${GRAPH_NODE_IMAGE:-graphprotocol/graph-node:v0.45.0}'
+    platform: '${GRAPH_NODE_PLATFORM:-linux/amd64}'
+    depends_on:
+      anvil:
+        condition: service_healthy
+      ipfs:
+        condition: service_started
+      postgres:
+        condition: service_started
+    environment:
+      postgres_host: postgres
+      postgres_user: graph-node
+      postgres_pass: let-me-in
+      postgres_db: graph-node
+      ipfs: 'ipfs:5001'
+      # FORK_NETWORK must equal the subgraph manifest network name for this
+      # chain (mainnet / base / bsc) or graph-node refuses the deployment.
+      ethereum: '${FORK_NETWORK:?FORK_NETWORK is required (use fork.sh)}:http://anvil:8545'
+      GRAPH_LOG: '${GRAPH_LOG:-info}'
+      ETHEREUM_POLLING_INTERVAL: '${GRAPH_ETHEREUM_POLLING_INTERVAL_MS:-2000}'
+      GRAPH_ETHEREUM_CLEANUP_BLOCKS: '${GRAPH_ETHEREUM_CLEANUP_BLOCKS:-true}'
+      GRAPH_QUERY_CACHE_BLOCKS: '${GRAPH_QUERY_CACHE_BLOCKS:-1}'
+      GRAPH_QUERY_CACHE_MAX_MEM: '${GRAPH_QUERY_CACHE_MAX_MEM_MB:-64}'
+      GRAPH_ENTITY_CACHE_SIZE: '${GRAPH_ENTITY_CACHE_SIZE_KB:-10000}'
+      GRAPH_POI_ACCESS_TOKEN: '${GRAPH_POI_ACCESS_TOKEN:-local-fork-only}'
+    ports:
+      - '127.0.0.1:${FORK_GRAPH_HTTP_PORT:?use fork.sh}:8000'
+      - '127.0.0.1:${FORK_GRAPH_WS_PORT:?use fork.sh}:8001'
+      - '127.0.0.1:${FORK_GRAPH_ADMIN_PORT:?use fork.sh}:8020'
+      - '127.0.0.1:${FORK_GRAPH_STATUS_PORT:?use fork.sh}:8030'
+      - '127.0.0.1:${FORK_GRAPH_METRICS_PORT:?use fork.sh}:8040'
+    cpus: '${GRAPH_NODE_CPUS:-2}'
+    mem_limit: '${GRAPH_NODE_MEMORY:-2g}'

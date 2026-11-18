@@ -1,6 +1,10 @@
 import { describe, it, expect, vi } from 'vitest'
 import { isAddress } from 'viem'
 
+const { LEGACY_VAULT } = vi.hoisted(() => ({
+  LEGACY_VAULT: '0xeDAB3789D7D2283214d8F65A6E412B00b1cBfB7a',
+}))
+
 // Mock modules with side-effectful imports before importing the schema
 vi.mock('@/utils/chains', () => ({
   ChainId: { Mainnet: 1, Base: 8453, BSC: 56, Arbitrum: 42161 },
@@ -11,6 +15,7 @@ vi.mock('../utils', () => ({
   isAddressNotStrict: (address: string) => isAddress(address, { strict: false }),
   isERC20: vi.fn().mockResolvedValue(true),
   isVoteLockAddress: vi.fn().mockResolvedValue(true),
+  isOptimisticVault: vi.fn(async (address: string) => address !== LEGACY_VAULT),
   isNotVoteLockAddress: vi.fn().mockResolvedValue(true),
   isNotStRSR: vi.fn().mockResolvedValue(true),
   noSpecialCharacters: (value: string) => {
@@ -22,7 +27,7 @@ vi.mock('../utils', () => ({
   },
 }))
 
-import { DeployFormSchema } from '../form-fields'
+import { DeployFormSchema, dtfDeployDefaultValues } from '../form-fields'
 
 // Test addresses (enough for large basket tests)
 const ADDR_1 = '0x1111111111111111111111111111111111111111'
@@ -39,6 +44,7 @@ const ALL_ADDRS = [ADDR_1, ADDR_2, ADDR_3, ADDR_4, ADDR_5, ADDR_6, ADDR_7, ADDR_
 
 // Base valid form data - passes all validations
 const validFormData = () => ({
+  ...dtfDeployDefaultValues,
   tokenName: 'Test Token',
   symbol: 'TEST',
   mandate: '',
@@ -54,23 +60,6 @@ const validFormData = () => ({
   governanceShare: 50,
   deployerShare: 0,
   fixedPlatformFee: 50,
-  additionalRevenueRecipients: [],
-  auctionLength: 30,
-  weightControl: false,
-  bidsEnabled: true,
-  guardians: [],
-  brandManagers: [],
-  auctionLaunchers: [],
-  basketVotingDelay: 48,
-  basketVotingPeriod: 72,
-  basketVotingThreshold: 0.01,
-  basketVotingQuorum: 10,
-  basketExecutionDelay: 48,
-  governanceVotingDelay: 2,
-  governanceVotingPeriod: 3,
-  governanceVotingThreshold: 0.01,
-  governanceVotingQuorum: 10,
-  governanceExecutionDelay: 2,
 })
 
 const parse = (data: Record<string, unknown>) =>
@@ -161,13 +150,51 @@ describe('DeployFormSchema', () => {
     })
   })
 
-  describe('auctionLength', () => {
-    it('rejects above 45 minutes', async () => {
-      expect(await hasError({ ...validFormData(), auctionLength: 46 }, 'auctionLength')).toBe(true)
+  describe('maxAuctionLength (Folio 6.0: 2 minutes to 1 week)', () => {
+    it.each([
+      [1, true],
+      [2, false],
+      [10_080, false],
+      [10_081, true],
+    ])('%s minutes → error %s', async (minutes, rejected) => {
+      expect(await hasError({ ...validFormData(), maxAuctionLength: minutes }, 'maxAuctionLength')).toBe(rejected)
+    })
+  })
+
+  describe('optimistic governance bounds', () => {
+    it.each([
+      ['optimisticVetoDelay', 0, true],
+      ['optimisticVetoDelay', 1 / 3600, false],
+      ['optimisticVetoPeriod', 4 / 60, true],
+      ['optimisticVetoPeriod', 5 / 60, false],
+      ['optimisticVetoThreshold', 0, true],
+      ['optimisticVetoThreshold', 101, true],
+      ['proposalThrottleCapacity', 0, true],
+      ['proposalThrottleCapacity', 12, false],
+      ['proposalThrottleCapacity', 13, true],
+      ['proposalThrottleCapacity', 2.5, true],
+      ['governanceVotingThreshold', 0, true],
+      ['governanceVotingQuorum', 0, true],
+    ])('%s = %s → error %s', async (field, value, rejected) => {
+      expect(await hasError({ ...validFormData(), [field]: value }, field)).toBe(rejected)
     })
 
-    it('accepts 45 minutes', async () => {
-      expect(await hasError({ ...validFormData(), auctionLength: 45 }, 'auctionLength')).toBe(false)
+    it('rejects duplicated optimistic proposers', async () => {
+      const data = { ...validFormData(), optimisticProposers: [ADDR_2, ADDR_2.toUpperCase().replace('0X', '0x')] }
+      expect(await hasError(data, 'governance-settings')).toBe(true)
+    })
+  })
+
+  describe('new vault bounds (days)', () => {
+    it.each([
+      ['vaultUnstakingDelay', 28, false],
+      ['vaultUnstakingDelay', 29, true],
+      ['vaultRewardHalfLife', 0.5, true],
+      ['vaultRewardHalfLife', 1, false],
+      ['vaultRewardHalfLife', 14, false],
+      ['vaultRewardHalfLife', 15, true],
+    ])('%s = %s → error %s', async (field, value, rejected) => {
+      expect(await hasError({ ...validFormData(), [field]: value }, field)).toBe(rejected)
     })
   })
 
@@ -395,6 +422,15 @@ describe('DeployFormSchema', () => {
       expect(result.success).toBe(true)
     })
 
+    it('rejects a legacy vote-lock that 6.0.0 governance cannot use', async () => {
+      const data = {
+        ...validFormData(),
+        governanceWalletAddress: undefined,
+        governanceVoteLock: LEGACY_VAULT,
+      }
+      expect(await hasError(data, 'governanceVoteLock')).toBe(true)
+    })
+
     it('fails with no governance option selected', async () => {
       const data = {
         ...validFormData(),
@@ -429,6 +465,27 @@ describe('DeployFormSchema', () => {
   // --- Revenue distribution sum ---
 
   describe('revenue distribution', () => {
+    it('counts the holder share and permanent recipients toward 100%', async () => {
+      const data = {
+        ...validFormData(),
+        holderShare: 10,
+        governanceShare: 30,
+        permanentRevenueRecipients: [{ address: ADDR_2, share: 10 }],
+      }
+      expect((await parse(data)).success).toBe(true)
+      expect(await hasError({ ...data, holderShare: 11 }, 'revenue-distribution')).toBe(true)
+    })
+
+    it('rejects a permanent recipient that is also an additional recipient', async () => {
+      const data = {
+        ...validFormData(),
+        governanceShare: 30,
+        additionalRevenueRecipients: [{ address: ADDR_2, share: 10 }],
+        permanentRevenueRecipients: [{ address: ADDR_2, share: 10 }],
+      }
+      expect((await parse(data)).success).toBe(false)
+    })
+
     // --- Passing cases ---
 
     it('all to governance + platform: 50 + 50 = 100', async () => {
@@ -655,14 +712,6 @@ describe('DeployFormSchema', () => {
 
     it('rejects negative initialValue', async () => {
       expect(await hasError({ ...validFormData(), initialValue: -1 }, 'initialValue')).toBe(true)
-    })
-
-    it('accepts auctionLength of 0', async () => {
-      expect(await hasError({ ...validFormData(), auctionLength: 0 }, 'auctionLength')).toBe(false)
-    })
-
-    it('rejects negative auctionLength', async () => {
-      expect(await hasError({ ...validFormData(), auctionLength: -1 }, 'auctionLength')).toBe(true)
     })
 
     it('rejects governanceShare with more than 2 decimal places', async () => {

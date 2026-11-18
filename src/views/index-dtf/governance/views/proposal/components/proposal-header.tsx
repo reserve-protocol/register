@@ -3,7 +3,7 @@ import CopyValue from '@/components/ui/copy-value'
 import ExplorerAddress from '@/components/utils/explorer-address'
 import { cn } from '@/lib/utils'
 import { chainIdAtom } from '@/state/atoms'
-import { shortenString } from '@/utils'
+import { getProposalTitle, shortenString } from '@/utils'
 import { ROUTES } from '@/utils/constants'
 import { useLingui } from '@lingui/react/macro'
 import dayjs from 'dayjs'
@@ -59,8 +59,8 @@ const ProposalTitle = () => {
   let rfcLink = ''
 
   if (proposal?.description) {
-    const [heading, rfc, _] = proposal.description.split(/\r?\n/)
-    title = heading.replaceAll('#', '').trim()
+    const [, rfc] = proposal.description.split(/\r?\n/)
+    title = getProposalTitle(proposal.description)
     if (rfc?.includes('forum')) {
       rfcLink = rfc.match(/\(([^)]+)\)/)?.[1] ?? ''
     }

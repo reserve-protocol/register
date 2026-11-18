@@ -51,7 +51,11 @@ tests/RTokens.json
 src/locales/pseudo.po
 CODEX_REVIEW
 
-# fork e2e stack state — never commit
+# agent worktrees / local tool state
+.claude/worktrees/
+.wrangler/
+
+# fork e2e stack state (anvil/postgres/ipfs data, archives) — never commit
 /e2e/fork/.state/
 
 # fork e2e lane outputs

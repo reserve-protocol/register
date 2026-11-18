@@ -19,11 +19,12 @@ import {
   Crown,
   Scale,
   Landmark,
+  ListChecks,
   Wand2,
 } from 'lucide-react'
 import { ReactNode } from 'react'
 import { Link } from 'react-router-dom'
-import { selectedSectionAtom } from '../atoms'
+import { isFolioV6Atom, selectedSectionAtom } from '../atoms'
 import { indexDTFAtom } from '@/state/dtf/atoms'
 import ProposeAuctionSettings from './sections/propose-auction-settings'
 import ProposeDTFRevenue from './sections/propose-dtf-revenue'
@@ -32,6 +33,7 @@ import ProposeMetadata from './sections/propose-metadata'
 import RemoveDustTokens from './sections/remove-dust-tokens'
 import ProposeGovernanceSettings from './sections/propose-governance-settings'
 import ProposeOptimisticParameters from './sections/propose-optimistic-parameters'
+import ProposeTradeAllowlist from './sections/propose-trade-allowlist'
 
 type DTF_SETTINGS_ID =
   | 'mandate'
@@ -41,6 +43,7 @@ type DTF_SETTINGS_ID =
   | 'roles'
   | 'governance'
   | 'optimistic'
+  | 'allowlist'
 
 // Scroll utility function adapted from deploy
 const scrollToSection = (sectionId: string) => {
@@ -131,6 +134,7 @@ const DTFSettingsProposalSections = () => {
   const { t } = useLingui()
   const [section, setSection] = useAtom(selectedSectionAtom)
   const indexDTF = useAtomValue(indexDTFAtom)
+  const isV6 = useAtomValue(isFolioV6Atom)
 
   const dtfSettings: DTF_SETTING[] = [
     {
@@ -161,6 +165,17 @@ const DTFSettingsProposalSections = () => {
       titleSecondary: t`Auction settings`,
       content: <ProposeAuctionSettings />,
     },
+    ...(isV6
+      ? [
+          {
+            id: 'allowlist' as const,
+            icon: <ListChecks size={14} strokeWidth={1.5} />,
+            title: t`Trade Allowlist`,
+            titleSecondary: t`Trade allowlist`,
+            content: <ProposeTradeAllowlist />,
+          },
+        ]
+      : []),
     {
       id: 'tokens',
       icon: <Coins size={14} strokeWidth={1.5} />,

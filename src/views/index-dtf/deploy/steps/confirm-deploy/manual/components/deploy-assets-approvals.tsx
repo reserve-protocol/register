@@ -7,7 +7,7 @@ import useIsUSDT from '@/hooks/useIsUSDT'
 import { cn } from '@/lib/utils'
 import { chainIdAtom, walletAtom } from '@/state/atoms'
 import { formatCurrency, shortenAddress } from '@/utils'
-import { INDEX_DEPLOYER_ADDRESS } from '@/utils/addresses'
+import { INDEX_V6_DEPLOYER_ADDRESS } from '@/utils/addresses'
 import { BIGINT_MAX } from '@/utils/constants'
 import { basketAtom } from '@/views/index-dtf/deploy/atoms'
 import { useAtomValue, useSetAtom } from 'jotai'
@@ -108,7 +108,7 @@ const ApproveAsset = ({
   const { isUSDT, needsRevoke } = useIsUSDT(
     address,
     chainId,
-    INDEX_DEPLOYER_ADDRESS[chainId]
+    INDEX_V6_DEPLOYER_ADDRESS[chainId]
   )
 
   // Get batch approval state for this token
@@ -119,7 +119,7 @@ const ApproveAsset = ({
       abi: USDT,
       address,
       functionName: 'approve',
-      args: [INDEX_DEPLOYER_ADDRESS[chainId], 0n],
+      args: [INDEX_V6_DEPLOYER_ADDRESS[chainId], 0n],
       chainId,
     })
   }
@@ -130,7 +130,7 @@ const ApproveAsset = ({
       address,
       functionName: 'approve',
       args: [
-        INDEX_DEPLOYER_ADDRESS[chainId],
+        INDEX_V6_DEPLOYER_ADDRESS[chainId],
         isUSDT ? BIGINT_MAX : parseUnits((amount * 2).toString(), decimals),
       ],
       chainId,
@@ -203,6 +203,7 @@ const ApproveAsset = ({
 
   return (
     <Button
+      data-testid="deploy-asset-approve"
       variant="outline-primary"
       className="rounded-full "
       onClick={approve}

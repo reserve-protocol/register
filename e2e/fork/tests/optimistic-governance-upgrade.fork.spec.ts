@@ -40,6 +40,10 @@ const evidenceDir =
   process.env.E2E_EVIDENCE_DIR ??
   resolve(`temp/evidence/fork-${scenario}${safeMode ? '-safe' : ''}`)
 const LOCK_AMOUNT = 1000n * 10n ** 18n
+// FORK_MIGRATION_DELEGATE=other points the holder's old vault at a third party before migrating;
+// other-fresh also clears their new-vault delegations, so the migration must carry the third party over.
+const delegateMode = process.env.FORK_MIGRATION_DELEGATE
+const THIRD_PARTY = getAddress('0x7e57000000000000000000000000000000000001')
 const DEFAULT_ADMIN_ROLE = `0x${'0'.repeat(64)}` as Hex
 const REBALANCE_MANAGER = keccak256(toHex('REBALANCE_MANAGER'))
 
@@ -100,6 +104,11 @@ const readAbi = parseAbi([
   'function balanceOf(address) view returns (uint256)',
   'function getVotes(address) view returns (uint256)',
   'function delegates(address) view returns (address)',
+  'function optimisticDelegates(address) view returns (address)',
+])
+const delegationAbi = parseAbi([
+  'function delegate(address delegatee)',
+  'function delegateOptimistic(address delegatee)',
 ])
 
 test.skip(!['1', '8453'].includes(process.env.FORK_CHAIN_ID ?? ''), 'Ethereum and Base lanes only')
@@ -477,9 +486,36 @@ test(`${scenario.toUpperCase()}${safeMode ? ' (Safe)' : ''} migrates governance,
     [manifest.proposer]
   )
   expect(oldShares).toBeGreaterThan(0n)
+  if (delegateMode === 'other' || delegateMode === 'other-fresh') {
+    const delegateCall = (
+      functionName: 'delegate' | 'delegateOptimistic',
+      delegatee: Address
+    ) => encodeFunctionData({ abi: delegationAbi, functionName, args: [delegatee] })
+    await send(manifest.proposer, manifest.oldVault, delegateCall('delegate', THIRD_PARTY))
+    if (delegateMode === 'other-fresh') {
+      await send(manifest.proposer, manifest.newVault, delegateCall('delegate', zeroAddress))
+      await send(manifest.proposer, manifest.newVault, delegateCall('delegateOptimistic', zeroAddress))
+    }
+  }
   const oldDelegate = await read<Address>(manifest.oldVault, 'delegates', [
     manifest.proposer,
   ])
+  const isSet = (address: Address) => address.toLowerCase() !== zeroAddress
+  const [vaultDelegate, vaultOptimisticDelegate] = await Promise.all([
+    read<Address>(manifest.newVault, 'delegates', [manifest.proposer]),
+    read<Address>(manifest.newVault, 'optimisticDelegates', [manifest.proposer]),
+  ])
+  // An existing new-vault delegation wins; otherwise the old vault's delegate (self when none) carries over.
+  const expectedDelegate = isSet(vaultDelegate)
+    ? vaultDelegate
+    : isSet(oldDelegate)
+      ? oldDelegate
+      : manifest.proposer
+  const expectedOptimisticDelegate = isSet(vaultOptimisticDelegate)
+    ? vaultOptimisticDelegate
+    : expectedDelegate
+  if (delegateMode === 'other') expect(getAddress(oldDelegate)).toBe(THIRD_PARTY)
+  if (delegateMode === 'other-fresh') expect(getAddress(expectedDelegate)).toBe(THIRD_PARTY)
   await syncBrowserClock(page)
   const card = page.getByTestId('vote-lock-migration-card')
   const cta = page.getByTestId('vote-lock-migration-cta')
@@ -549,6 +585,14 @@ test(`${scenario.toUpperCase()}${safeMode ? ' (Safe)' : ''} migrates governance,
     })
     await expect(next).toBeEnabled({ timeout: 120_000 })
     await capture(`modal-${expected}`, page, modal)
+    if (expected === 'deposit') {
+      const shown = getAddress(expectedDelegate)
+      await expect(modal).toContainText(
+        shown === getAddress(manifest.proposer)
+          ? 'delegated to you'
+          : `${shown.slice(0, 6)}...${shown.slice(-4)}`
+      )
+    }
     await next.click()
   }
   await expect(page.getByTestId('vote-lock-migration-done')).toBeVisible({
@@ -573,9 +617,6 @@ test(`${scenario.toUpperCase()}${safeMode ? ' (Safe)' : ''} migrates governance,
       manifest.proposer,
     ])) - newSharesBefore
   expect(newShares).toBeGreaterThan(0n)
-  // The holder keeps the delegate they had on the old vault (self when they had none).
-  const expectedDelegate =
-    oldDelegate.toLowerCase() === zeroAddress ? manifest.proposer : oldDelegate
   expect(
     (
       await read<Address>(manifest.newVault, 'delegates', [
@@ -586,6 +627,11 @@ test(`${scenario.toUpperCase()}${safeMode ? ' (Safe)' : ''} migrates governance,
   expect(
     await read<bigint>(manifest.newVault, 'getVotes', [expectedDelegate])
   ).toBeGreaterThanOrEqual(newShares)
+  expect(
+    getAddress(
+      await read<Address>(manifest.newVault, 'optimisticDelegates', [manifest.proposer])
+    )
+  ).toBe(getAddress(expectedOptimisticDelegate))
 
   writeFileSync(
     `${evidenceDir}/optimistic-governance.json`,

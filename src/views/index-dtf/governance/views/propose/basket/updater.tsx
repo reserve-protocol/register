@@ -1,12 +1,21 @@
 import dtfIndexAbi from '@/abis/dtf-index-abi-v1'
+import dtfIndexGovernanceAbi from '@/abis/dtf-index-governance'
+import timelockAbi from '@/abis/Timelock'
 import { chainIdAtom } from '@/state/atoms'
 import {
+  folioVersionAtom,
+  indexDTFAtom,
   indexDTFBasketAtom,
   indexDTFBasketPricesAtom,
   indexDTFBasketSharesAtom,
   iTokenAddressAtom,
 } from '@/state/dtf/atoms'
 import { RESERVE_API } from '@/utils/constants'
+import {
+  dtfIndexGovernanceOptimisticAbi,
+  useIndexDtfIdentity,
+  useIndexDtfRebalanceNonce,
+} from '@reserve-protocol/react-sdk'
 import { useQuery } from '@tanstack/react-query'
 import { atom, useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { useEffect, useMemo } from 'react'
@@ -28,6 +37,9 @@ import {
   tradeVolatilityAtom,
   dtfBalancesAtom,
   tokenPriceVolatilityAtom,
+  proposalConfirmedAtAtom,
+  v6RebalanceContextAtom,
+  v6RebalanceContextErrorAtom,
 } from './atoms'
 import { resetMaxAuctionSizesAtom } from '@/state/max-auction-sizes'
 import { PermissionOptionId } from './components/proposal-rebalance-launch-settings'
@@ -298,10 +310,131 @@ const AtomStateUpdater = () => {
   return null
 }
 
+const V6_NONCE_POLL_MS = 30_000
+
+// Folio 6.0 startRebalance carries the next rebalance nonce and a deadline sized to the trading governor's lifecycle.
+const V6RebalanceContextUpdater = () => {
+  const versionState = useAtomValue(folioVersionAtom)
+  const governance = useAtomValue(indexDTFAtom)?.tradingGovernance
+  const identity = useIndexDtfIdentity()
+  const isConfirmed = useAtomValue(isProposalConfirmedAtom)
+  const setContext = useSetAtom(v6RebalanceContextAtom)
+  const setContextError = useSetAtom(v6RebalanceContextErrorAtom)
+  const setConfirmedAt = useSetAtom(proposalConfirmedAtAtom)
+  const isV6 = versionState.status === 'ready' && versionState.major === 6
+  const governor = governance?.id
+  const timelock = governance?.timelock?.id
+  const isOptimistic = !!governance?.isOptimistic
+
+  const { data: nonce, isError: nonceError } = useIndexDtfRebalanceNonce(
+    isV6 && identity.address ? identity : undefined,
+    { refetchInterval: V6_NONCE_POLL_MS }
+  )
+  const { data: timing, isError: timingError } = useReadContracts({
+    contracts: [
+      {
+        address: governor,
+        abi: dtfIndexGovernanceAbi,
+        functionName: 'votingDelay',
+        chainId: identity.chainId,
+      },
+      {
+        address: governor,
+        abi: dtfIndexGovernanceAbi,
+        functionName: 'votingPeriod',
+        chainId: identity.chainId,
+      },
+      {
+        address: timelock,
+        abi: timelockAbi,
+        functionName: 'getMinDelay',
+        chainId: identity.chainId,
+      },
+      ...(isOptimistic
+        ? [
+            {
+              address: governor,
+              abi: dtfIndexGovernanceOptimisticAbi,
+              functionName: 'optimisticParams',
+              chainId: identity.chainId,
+            } as const,
+          ]
+        : []),
+    ],
+    allowFailure: false,
+    query: { enabled: isV6 && !!governor && !!timelock },
+  })
+  // Governors without late quorum (version "1") revert here; they never extend a vote.
+  const { data: voteExtension, isError: noVoteExtension } = useReadContract({
+    address: governor,
+    abi: dtfIndexGovernanceAbi,
+    functionName: 'lateQuorumVoteExtension',
+    chainId: identity.chainId,
+    query: { enabled: isV6 && !!governor, retry: 1 },
+  })
+
+  useEffect(() => {
+    setContextError(isV6 && (nonceError || timingError))
+  }, [isV6, nonceError, timingError, setContextError])
+
+  useEffect(() => {
+    if (
+      !isV6 ||
+      nonce === undefined ||
+      !timing ||
+      (voteExtension === undefined && !noVoteExtension)
+    ) {
+      setContext(undefined)
+      return
+    }
+    const [votingDelay, votingPeriod, timelockDelay, optimistic] =
+      timing as unknown as [
+        bigint,
+        bigint,
+        bigint,
+        readonly [number, number, bigint] | undefined,
+      ]
+    setContext({
+      currentNonce: nonce,
+      timing: {
+        votingDelay: BigInt(votingDelay),
+        votingPeriod: BigInt(votingPeriod),
+        voteExtension: BigInt(voteExtension ?? 0),
+        timelockDelay: BigInt(timelockDelay),
+        ...(optimistic
+          ? {
+              veto: {
+                vetoDelay: BigInt(optimistic[0]),
+                vetoPeriod: BigInt(optimistic[1]),
+              },
+            }
+          : {}),
+      },
+    })
+  }, [isV6, nonce, timing, voteExtension, noVoteExtension, setContext])
+
+  useEffect(() => {
+    setConfirmedAt(
+      isConfirmed ? BigInt(Math.floor(Date.now() / 1000)) : undefined
+    )
+  }, [isConfirmed, setConfirmedAt])
+
+  useEffect(
+    () => () => {
+      setContext(undefined)
+      setConfirmedAt(undefined)
+    },
+    [setContext, setConfirmedAt]
+  )
+
+  return null
+}
+
 const Updater = () => {
   return (
     <>
       <AtomStateUpdater />
+      <V6RebalanceContextUpdater />
       <BasketPriceUpdater />
       <InitialBasketUpdater />
       <TokenPriceVolatilityUpdater />

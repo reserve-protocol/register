@@ -1,5 +1,8 @@
 import { Checkbox } from '@/components/ui/checkbox'
-import { currentOptimisticAllowedActionsAtom } from '../../atoms'
+import {
+  currentOptimisticAllowedActionsAtom,
+  optimisticActionsAtom,
+} from '../../atoms'
 import { indexDTFAtom } from '@/state/dtf/atoms'
 import { formatPercentage } from '@/utils'
 import InputWithTitle from '@/views/index-dtf/deploy/components/input-with-title'
@@ -9,7 +12,6 @@ import { useAtomValue } from 'jotai'
 import { Clock, FileLock2, ShieldHalf, Wand2 } from 'lucide-react'
 import { useFormContext } from 'react-hook-form'
 import { daysToSeconds, humanizeTimeFromSeconds } from '../../../../shared'
-import { OPTIMISTIC_ACTIONS } from '../../optimistic'
 import type { OptimisticActionId } from '../../optimistic'
 
 const Description = () => (
@@ -24,6 +26,7 @@ const Description = () => (
 const OptimisticActions = () => {
   const { t } = useLingui()
   const indexDTF = useAtomValue(indexDTFAtom)
+  const optimisticActions = useAtomValue(optimisticActionsAtom)
   const currentAllowedActions = useAtomValue(
     currentOptimisticAllowedActionsAtom
   )
@@ -80,7 +83,7 @@ const OptimisticActions = () => {
       )}
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
-        {OPTIMISTIC_ACTIONS.map((action) => {
+        {optimisticActions.map((action) => {
           const checked = selectedActions.includes(action.id)
 
           return (

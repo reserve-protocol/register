@@ -57,6 +57,7 @@ const TokenButton = ({ variant }: TokenButtonProps) => {
   return (
     <DrawerTrigger asChild>
       <Button
+        data-testid="deploy-basket-add-token"
         variant={isPrimary ? 'outline-primary' : 'accent'}
         className={cn(
           'flex gap-2 text-base pl-3 pr-4 rounded-xl',
@@ -155,6 +156,7 @@ const SearchToken = () => {
 
   return (
     <SearchInput
+      data-testid="deploy-token-search"
       className="mx-2"
       placeholder={t`Search by token name or address`}
       value={search}
@@ -223,6 +225,7 @@ const TokenListItem = ({
         </a>
         <div className="border-l-2 border-dashed border-muted-foreground h-[20px]" />
         <Checkbox
+          data-testid={`deploy-token-option-${address.toLowerCase()}`}
           checked={checked}
           id={address}
           onCheckedChange={onCheckedChange}
@@ -480,6 +483,7 @@ const SubmitSelectedTokens = () => {
         )}
         disabled={disabled}
         onClick={onSubmit}
+        data-testid="deploy-token-select-submit"
       >
         {disabled ? (
           <Trans>Select tokens</Trans>

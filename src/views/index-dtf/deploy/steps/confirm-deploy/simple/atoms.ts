@@ -12,10 +12,14 @@ import {
 import { reducedZappableTokens } from '@/views/yield-dtf/issuance/components/zapV2/constants'
 import { atom } from 'jotai'
 import { atomWithReset } from 'jotai/utils'
-import { Address, parseEther, parseUnits } from 'viem'
+import { Address, parseUnits } from 'viem'
 import { basketAtom, daoTokenAddressAtom } from '../../../atoms'
-import { calculateRevenueDistribution } from '../../../utils'
-import { indexDeployFormDataAtom } from '../atoms'
+import {
+  buildV6DeployParams,
+  resolveGovernanceRecipient,
+  type V6DeployParams,
+} from '../../../utils/v6-deploy-params'
+import { governanceRecipientAtom, indexDeployFormDataAtom } from '../atoms'
 import { basketRequiredAmountsAtom } from '../manual/atoms'
 import { PriceControl } from '@reserve-protocol/dtf-rebalance-lib'
 
@@ -45,6 +49,29 @@ export const tokensAtom = atom<(Token & { balance?: string })[]>((get) => {
 
 export const ongoingTxAtom = atom<boolean>(false)
 
+const str = (value: bigint | number) => value.toString()
+const feeTable = (table: readonly { recipient: Address; portion: bigint }[]) =>
+  table.map(({ recipient, portion }) => ({ recipient, portion: str(portion) }))
+
+export const zapDeployBuildErrorAtom = atom<string | undefined>((get) => {
+  const formData = get(indexDeployFormDataAtom)
+  const wallet = get(walletAtom)
+  const governance = resolveGovernanceRecipient(
+    get(daoTokenAddressAtom),
+    get(governanceRecipientAtom)
+  )
+  if (governance.error) return governance.error
+  if (!formData || !wallet || !governance.ready) return undefined
+  try {
+    buildV6DeployParams(formData, {
+      deployer: wallet,
+      governanceRecipient: governance.recipient,
+    })
+  } catch (error) {
+    return error instanceof Error ? error.message : String(error)
+  }
+})
+
 export const zapDeployPayloadAtom = atom<
   ZapDeployBody | ZapDeployUngovernedBody | undefined
 >((get) => {
@@ -56,122 +83,93 @@ export const zapDeployPayloadAtom = atom<
   const basket = get(basketAtom)
   const wallet = get(walletAtom)
   const slippage = get(slippageAtom)
+  const governance = resolveGovernanceRecipient(
+    stToken,
+    get(governanceRecipientAtom)
+  )
 
-  if (!formData || !wallet || !Number(amountIn)) {
+  if (!formData || !wallet || !Number(amountIn) || !governance.ready) {
     return undefined
   }
 
-  const commonZapParams = {
+  let params: V6DeployParams
+  try {
+    params = buildV6DeployParams(formData, {
+      deployer: wallet,
+      governanceRecipient: governance.recipient,
+    })
+  } catch (error) {
+    console.error('[deploy] could not build the zap deploy body', error)
+    return undefined
+  }
+
+  const { additionalDetails: details, governance: gov, roles, flags } = params
+
+  const common = {
     tokenIn: tokenIn.address,
     amountIn: parseUnits(amountIn, tokenIn.decimals).toString(),
     signer: wallet,
     slippage: slippage && Number(slippage) ? 1 / Number(slippage) : undefined,
-  }
-
-  const basicDetails = {
-    name: formData.tokenName,
-    symbol: formData.symbol,
-    assets: basket.map((token) => token.address),
-    amounts: basket.map((token) =>
-      parseUnits(
-        tokenAmounts[token.address].toFixed(token.decimals),
-        token.decimals
-      ).toString()
-    ),
-  }
-
-  const additionalDetails = {
-    auctionLength: Math.floor((formData.auctionLength || 0) * 60).toString(),
-    feeRecipients: calculateRevenueDistribution(formData, wallet, stToken).map(
-      ({ recipient, portion }) => ({ recipient, portion: portion.toString() })
-    ),
-    tvlFee: parseEther(((formData.folioFee || 0) / 100).toString()).toString(),
-    mintFee: parseEther(((formData.mintFee || 0) / 100).toString()).toString(),
-    mandate: formData.mandate || '',
-  }
-
-  const guardians = formData.guardians.filter(Boolean) as Address[]
-  const brandManagers = formData.brandManagers.filter(Boolean) as Address[]
-  const auctionLaunchers = formData.auctionLaunchers.filter(
-    Boolean
-  ) as Address[]
-  const basketManagers = [] as Address[]
-
-  const folioFlags = {
-    trustedFillerEnabled: true,
-    rebalanceControl: {
-      weightControl: formData.weightControl, // false -> tracking / true -> native
-      priceControl: PriceControl.PARTIAL,
+    basicDetails: {
+      name: formData.tokenName,
+      symbol: formData.symbol,
+      assets: basket.map((token) => token.address),
+      amounts: basket.map((token) =>
+        parseUnits(
+          tokenAmounts[token.address].toFixed(token.decimals),
+          token.decimals
+        ).toString()
+      ),
     },
-    bidsEnabled: formData.bidsEnabled, // true for cowswap
+    additionalDetails: {
+      maxAuctionLength: str(details.maxAuctionLength),
+      feeRecipients: feeTable(details.feeRecipients),
+      immutableFeeRecipients: feeTable(details.immutableFeeRecipients ?? []),
+      tvlFee: str(details.tvlFee),
+      mintFee: str(details.mintFee),
+      folioFeeForSelf: str(details.selfFee ?? 0n),
+      mandate: details.mandate,
+    },
+    folioFlags: {
+      trustedFillerEnabled: flags.trustedFillerEnabled,
+      rebalanceControl: {
+        weightControl: flags.rebalanceControl.weightControl,
+        priceControl: flags.rebalanceControl.priceControl as PriceControl,
+      },
+      bidsEnabled: flags.bidsEnabled,
+    },
+    basketManagers: [] as Address[],
+    auctionLaunchers: [...(roles.auctionLaunchers ?? [])],
+    brandManagers: [...(roles.brandManagers ?? [])],
   }
 
-  // Ungoverned DTF
   if (!stToken) {
     const owner = formData.governanceWalletAddress
     if (!owner) return undefined
-
-    return {
-      ...commonZapParams,
-      owner,
-      basicDetails,
-      additionalDetails,
-      folioFlags,
-      basketManagers,
-      auctionLaunchers,
-      brandManagers,
-    }
-  }
-
-  // Governed DTF
-  const ownerGovParams = {
-    votingDelay: Math.floor(
-      (formData.governanceVotingDelay || 0) * 86400
-    ).toString(),
-    votingPeriod: Math.floor(
-      (formData.governanceVotingPeriod || 0) * 86400
-    ).toString(),
-    proposalThreshold: parseEther(
-      ((formData.governanceVotingThreshold || 0) / 100).toString()
-    ).toString(),
-    quorumThreshold: parseEther(
-      ((formData.governanceVotingQuorum || 0) / 100).toString()
-    ).toString(),
-    timelockDelay: Math.floor(
-      (formData.governanceExecutionDelay || 0) * 86400
-    ).toString(),
-    guardians,
-  }
-
-  const tradingGovParams = {
-    votingDelay: Math.floor(
-      (formData.basketVotingDelay || 0) * 3600
-    ).toString(),
-    votingPeriod: Math.floor(
-      (formData.basketVotingPeriod || 0) * 3600
-    ).toString(),
-    proposalThreshold: parseEther(
-      ((formData.basketVotingThreshold || 0) / 100).toString()
-    ).toString(),
-    quorumThreshold: parseEther(
-      ((formData.basketVotingQuorum || 0) / 100).toString()
-    ).toString(),
-    timelockDelay: Math.floor(
-      (formData.basketExecutionDelay || 0) * 3600
-    ).toString(),
-    guardians,
+    return { ...common, owner }
   }
 
   return {
-    ...commonZapParams,
+    ...common,
     stToken,
-    basicDetails,
-    additionalDetails,
-    folioFlags,
-    ownerGovParams,
-    tradingGovParams,
-    basketManagers,
-    auctionLaunchers,
-    brandManagers,
+    govParams: {
+      optimisticParams: {
+        vetoDelay: str(gov.optimistic.vetoDelay),
+        vetoPeriod: str(gov.optimistic.vetoPeriod),
+        vetoThreshold: str(gov.optimistic.vetoThreshold),
+      },
+      standardParams: {
+        votingDelay: str(gov.standard.votingDelay),
+        votingPeriod: str(gov.standard.votingPeriod),
+        voteExtension: str(gov.standard.voteExtension),
+        proposalThreshold: str(gov.standard.proposalThreshold),
+        quorumNumerator: str(gov.standard.quorumNumerator),
+      },
+      optimisticSelectors: [...gov.optimisticSelectors],
+      optimisticProposers: [...gov.optimisticProposers],
+      additionalGuardians: [...gov.additionalGuardians],
+      timelockDelay: str(gov.timelockDelay),
+      proposalThrottleCapacity: str(gov.proposalThrottleCapacity),
+    },
   }
 })

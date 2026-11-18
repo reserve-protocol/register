@@ -34,6 +34,23 @@ vi.mock('@tanstack/react-query', async (importOriginal) => {
 // Liquidity hook depends on the wagmi-heavy useRebalanceParams — stub it.
 vi.mock('../hooks/use-rebalance-params', () => ({ default: () => undefined }))
 
+// The auctions history now goes through the SDK hook; capture the options
+// Register wires into it (the refetchInterval callback is the behavior under test).
+vi.mock('@reserve-protocol/react-sdk', async (importOriginal) => {
+  const actual = await importOriginal<typeof import('@reserve-protocol/react-sdk')>()
+  return {
+    ...actual,
+    useIndexDtfIdentity: () => ({
+      address: '0x2f8A339B5889FfaC4c5A956787cdA593b3c36867',
+      chainId: 56,
+    }),
+    useIndexDtfRebalanceAuctions: (_params: unknown, options: CapturedQuery) => {
+      captured['rebalance-auctions'] = options
+      return { data: undefined, isLoading: false, isFetching: false, refetch: vi.fn() }
+    },
+  }
+})
+
 import useRebalanceAuctions from '../hooks/use-rebalance-auctions'
 import useRebalanceLiquidityCheck from '../hooks/use-rebalance-liquidity-check'
 
@@ -44,6 +61,7 @@ const storeFor = (availableUntil: string) => {
   const store = createStore()
   store.set(rebalancesAtom, [
     {
+      id: '0xdtf-1',
       blockNumber: BLOCK,
       availableUntil,
       tokens: [],
@@ -77,12 +95,12 @@ describe('rebalance poll refetchInterval is gated on the window', () => {
     renderHook(() => useRebalanceAuctions(), {
       wrapper: wrapper(storeFor(String(NOW + 3600))),
     })
-    expect(invokeInterval('auctions')).toBe(1000 * 30)
+    expect(invokeInterval('rebalance-auctions')).toBe(1000 * 30)
 
     renderHook(() => useRebalanceAuctions(), {
       wrapper: wrapper(storeFor(String(NOW - 3600))),
     })
-    expect(invokeInterval('auctions')).toBe(false)
+    expect(invokeInterval('rebalance-auctions')).toBe(false)
   })
 
   it('use-rebalance-liquidity-check polls 30s while ongoing, stops when expired', () => {

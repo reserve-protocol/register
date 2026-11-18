@@ -5,7 +5,7 @@ import BlockiesAvatar from '@/components/utils/blockies-avatar'
 import EnsName from '@/components/utils/ens-name'
 import { cn } from '@/lib/utils'
 import { chainIdAtom } from '@/state/atoms'
-import { formatCurrency } from '@/utils'
+import { formatTokenAmount } from '@/utils'
 import { ExplorerDataType, getExplorerLink } from '@/utils/getExplorerLink'
 import { Trans } from '@lingui/react/macro'
 import type { Amount } from '@reserve-protocol/react-sdk'
@@ -76,10 +76,7 @@ const VoteList = ({ votes }: { votes: Vote[] }) => {
                 vote.choice === 'ABSTAIN' && 'text-legend'
               )}
             >
-              {formatCurrency(Number(vote.weight.formatted), 0, {
-                notation: 'compact',
-                compactDisplay: 'short',
-              })}
+              {formatTokenAmount(Number(vote.weight.formatted))}
             </span>
           </div>
         ))}

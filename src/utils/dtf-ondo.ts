@@ -14,10 +14,14 @@ const US_MARKET_TZ = 'America/New_York'
 // asset-paused case, where Ondo gives the next session name but no timestamp.
 export const getNextUsMarketOpen = (from: Date = new Date()): Date => {
   const nowEt = dayjs(from).tz(US_MARKET_TZ)
-  const openToday = nowEt.hour(9).minute(30).second(0).millisecond(0)
-  let target = nowEt.isBefore(openToday) ? openToday : openToday.add(1, 'day')
-  while (target.day() === 0 || target.day() === 6) {
-    target = target.add(1, 'day')
+  // Walk ET calendar dates in UTC and build each 9:30 in ET: adding days to a zoned time keeps its UTC offset across DST.
+  const openOn = (date: dayjs.Dayjs) =>
+    dayjs.tz(`${date.format('YYYY-MM-DD')} 09:30`, US_MARKET_TZ)
+  let date = dayjs.utc(nowEt.format('YYYY-MM-DD'))
+  let target = openOn(date)
+  while (!nowEt.isBefore(target) || target.day() === 0 || target.day() === 6) {
+    date = date.add(1, 'day')
+    target = openOn(date)
   }
   return target.toDate()
 }

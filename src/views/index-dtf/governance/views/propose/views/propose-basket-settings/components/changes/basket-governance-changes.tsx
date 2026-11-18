@@ -9,7 +9,7 @@ import {
   basketGovernanceChangesDisplayAtom,
 } from '../../atoms'
 import { ChangeSection, RevertButton } from '../../../propose-dao-settings/components/changes/shared'
-import { secondsToDays, proposalThresholdToPercentage } from '../../../../shared'
+import { secondsToDays, getCurrentProposalThreshold } from '../../../../shared'
 
 const iconMap = {
   'votingDelay': <Pause size={16} />,
@@ -45,7 +45,7 @@ const BasketGovernanceChanges = () => {
         setValue('basketVotingPeriod', secondsToDays(Number(governance.votingPeriod)))
         break
       case 'proposalThreshold':
-        setValue('basketVotingThreshold', proposalThresholdToPercentage(governance.proposalThreshold))
+        setValue('basketVotingThreshold', getCurrentProposalThreshold(governance) ?? '')
         break
       case 'quorumPercent':
         setValue('basketVotingQuorum', Number(governance.quorumNumerator))

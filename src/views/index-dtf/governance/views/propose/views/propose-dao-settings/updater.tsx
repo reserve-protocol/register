@@ -13,7 +13,7 @@ import {
 } from './atoms'
 import {
   isProposalThresholdChanged,
-  proposalThresholdToPercentage,
+  getCurrentProposalThreshold,
   secondsToDays,
 } from '../../shared'
 
@@ -48,9 +48,7 @@ const Updater = () => {
       // Get current governance values
       const currentVotingDelay = secondsToDays(Number(governance.votingDelay))
       const currentVotingPeriod = secondsToDays(Number(governance.votingPeriod))
-      const currentThreshold = proposalThresholdToPercentage(
-        governance.proposalThreshold
-      )
+      const currentThreshold = getCurrentProposalThreshold(governance)
       const currentExecutionDelay = secondsToDays(
         Number(governance.timelock.executionDelay)
       )
@@ -123,7 +121,7 @@ const Updater = () => {
           if (
             isProposalThresholdChanged(
               daoVotingThreshold,
-              governance.proposalThreshold
+              getCurrentProposalThreshold(governance)
             )
           ) {
             changes.proposalThreshold = daoVotingThreshold

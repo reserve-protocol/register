@@ -1,3 +1,4 @@
+import { maxUint256 } from 'viem'
 import { expect, test } from '../../fixtures/base'
 import { advanceTime, freezeTime, proposalTime } from '../../helpers/clock'
 import { dtfPath, findDtfByAddress } from '../../helpers/registry'
@@ -70,7 +71,14 @@ test('pending proposal shows a disabled vote CTA and no result', async ({
   // raw state is ACTIVE, which never derives back to PENDING).
   overrides.subgraph(
     { operationName: 'GetIndexDtfProposal', variables: { proposalId: PROPOSAL_ID } },
-    proposalDetailOverlay({ state: 'PENDING' })
+    // Before the vote snapshot the indexer has no quorum yet (max uint) and no votes.
+    proposalDetailOverlay({
+      state: 'PENDING',
+      quorumVotes: maxUint256.toString(),
+      forWeightedVotes: '0',
+      againstWeightedVotes: '0',
+      abstainWeightedVotes: '0',
+    })
   )
   await freezeTime(page, proposalTime(proposal, 'pending'))
 
@@ -84,6 +92,11 @@ test('pending proposal shows a disabled vote CTA and no result', async ({
   const voteBtn = page.getByTestId('proposal-vote-btn')
   await expect(voteBtn).toBeVisible()
   await expect(voteBtn).toBeDisabled()
+
+  // The quorum target comes from the vote snapshot, which does not exist yet:
+  // a neutral placeholder, not the red "Unavailable" of a failed read.
+  await expect(page.getByTestId('proposal-quorum')).toHaveAttribute('data-state', 'pending')
+  await expect(page.getByTestId('proposal-quorum-target')).toHaveText('—')
 
   // No terminal-result badge and no queue/execute CTAs in PENDING.
   await expect(page.locator('[data-testid^="proposal-result-"]')).toHaveCount(0)

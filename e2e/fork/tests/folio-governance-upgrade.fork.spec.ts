@@ -145,6 +145,11 @@ test(`${scenario.toUpperCase()} upgrades its governor and timelock to 1.1.0 from
   expect(proposal.targets.map((t) => getAddress(t))).toEqual([manifest.governor, manifest.timelock])
   expect(proposal.description).toBe('Upgrade DTF governance to 1.1.0 #1')
 
+  await expect(page).toHaveURL(new RegExp(`/proposal/${proposal.proposalId}`), { timeout: 60_000 })
+  const upgradeCard = page.getByTestId('proposal-vote-lock-upgrade')
+  await expect(upgradeCard).toContainText('Governance upgrade to 1.1.0', { timeout: 60_000 })
+  await page.screenshot({ path: `${evidenceDir}/01b-proposal-detail.png`, fullPage: true })
+
   await warpTo(proposal.voteStart + 1n)
   await send(encodeFunctionData({ abi, functionName: 'castVote', args: [proposal.proposalId, 1] }))
   await warpTo(proposal.voteEnd + 1n)

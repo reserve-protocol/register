@@ -158,7 +158,7 @@ const CandlestickChartBody = ({
   // Same proportional tick placement as the line chart so toggling chart
   // types keeps the perceived range. Values must be exact candle timestamps
   // (a band scale NaN-drops anything else); deduped for tiny candle counts.
-  const xAxisTicks = [...new Set(useXAxisTicks(candles, isMobile))]
+  const xAxisTicks = useXAxisTicks(candles, isMobile)
 
   return (
     <ChartContainer

@@ -25,7 +25,7 @@ import {
   useWriteContract,
 } from 'wagmi'
 import type { MigrationStepName } from './migration-record'
-import { chooseDeposit, getLockAmount, getSafeStepOutcome } from './migration-state'
+import { chooseDeposit, getLockAmount, getSafeStepOutcome, isUserRejection } from './migration-state'
 import { useMigrationRecord } from './use-migration-record'
 import { legacyVaultAbi, type VoteLockMigration } from './use-vote-lock-migrations'
 
@@ -263,7 +263,7 @@ export const useMigrationFlow = (migration: VoteLockMigration) => {
       : deposit.delegatee
 
   const { writeContract, isPending: isSigning } = useWriteContract()
-  const [rejected, setRejected] = useState(false)
+  const [sendError, setSendError] = useState<'rejected' | 'failed'>()
 
   const submit = () => {
     if (step === 'done' || recovering || nothingToLock || record.pending) return
@@ -295,7 +295,7 @@ export const useMigrationFlow = (migration: VoteLockMigration) => {
                   args: [lockAmount, deposit.delegatee, deposit.optimisticDelegatee] as const,
                 }
     if (!call) return
-    setRejected(false)
+    setSendError(undefined)
     setFailed(undefined)
     const submitted = step
     // Captured before sending: some Safes only resolve once the transaction has executed.
@@ -314,7 +314,11 @@ export const useMigrationFlow = (migration: VoteLockMigration) => {
           ...(submitted === 'redeem' && oldDelegate ? { delegate: oldDelegate } : {}),
           ...(submitted === 'deposit' ? { locked: lockAmount } : {}),
         })),
-      onError: () => setRejected(true),
+      onError: (error) => {
+        if (isUserRejection(error)) return setSendError('rejected')
+        console.error('[migration] could not send the transaction', error)
+        setSendError('failed')
+      },
     })
   }
 
@@ -334,7 +338,8 @@ export const useMigrationFlow = (migration: VoteLockMigration) => {
     cancelSafePending: () => update(({ pending: _, ...rest }) => rest),
     isRecovering: recovering,
     nothingToLock,
-    rejected,
+    rejected: sendError === 'rejected',
+    sendFailed: sendError === 'failed',
     failed,
     submit,
     acknowledge: () => update((current) => ({ ...current, acknowledged: true })),

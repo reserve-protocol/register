@@ -1,3 +1,4 @@
+import { Alert, AlertDescription } from '@/components/ui/alert'
 import { Button } from '@/components/ui/button'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import useRebalanceBasketPreview from '@/hooks/use-rebalance-basket-preview'
@@ -9,9 +10,10 @@ import {
   indexDTFBasketSharesAtom,
   isSingletonRebalanceAtom,
 } from '@/state/dtf/atoms'
+import { formatDate, getCurrentTime } from '@/utils'
 import { ExplorerDataType, getExplorerLink } from '@/utils/getExplorerLink'
 import { useAtomValue } from 'jotai'
-import { ArrowUpRightIcon } from 'lucide-react'
+import { AlertTriangle, ArrowUpRightIcon } from 'lucide-react'
 import { useMemo } from 'react'
 import { Link } from 'react-router-dom'
 import { Address, Hex } from 'viem'
@@ -62,6 +64,52 @@ const Header = ({ address }: { address: Address }) => {
   )
 }
 
+// Folio 6.0 startRebalance only executes up to its deadline and only as the next rebalance.
+const V6RebalanceTerms = ({
+  rebalanceNonce,
+  deadline,
+}: {
+  rebalanceNonce: bigint
+  deadline: bigint
+}) => {
+  const deadlineDate = formatDate(Number(deadline) * 1000)
+  const isExpired = BigInt(getCurrentTime()) > deadline
+
+  return (
+    <div
+      className="mx-1 mb-2 flex flex-col gap-2 text-sm"
+      data-testid="rebalance-preview-v6-terms"
+    >
+      <div className="flex flex-wrap justify-between gap-2 px-3">
+        <span className="text-legend">
+          <Trans>Rebalance #{rebalanceNonce.toString()}</Trans>
+        </span>
+        <span>
+          <Trans>Executable until {deadlineDate}</Trans>
+        </span>
+      </div>
+      {isExpired && (
+        <Alert
+          variant="warning"
+          className="rounded-xl"
+          data-testid="rebalance-preview-deadline-expired"
+        >
+          <AlertTriangle className="h-4 w-4" />
+          <AlertDescription>
+            <Trans>
+              The rebalance deadline has passed. If this proposal hasn't been
+              executed yet, executing it will revert; propose the basket
+              change again.
+            </Trans>
+          </AlertDescription>
+        </Alert>
+      )}
+    </div>
+  )
+}
+
+const SNAPSHOT_INDEXING_LAG = 2 * 60 * 60
+
 const RebalancePreview = ({
   calldatas,
   timestamp,
@@ -88,18 +136,33 @@ const RebalancePreview = ({
     }, {} as EstimatedBasket)
   }, [rebalanceBasketPreview])
 
-  if (snapshotUnavailable)
+  if (snapshotUnavailable) {
+    // The price history is indexed hourly, so a recent proposal has no snapshot yet rather than a lost one.
+    const isRecent =
+      !!timestamp && getCurrentTime() - timestamp < SNAPSHOT_INDEXING_LAG
     return (
       <div
         className="rounded-3xl border p-6 text-center text-legend"
-        data-testid="rebalance-preview-unavailable"
+        data-testid={
+          isRecent
+            ? 'rebalance-preview-pending'
+            : 'rebalance-preview-unavailable'
+        }
       >
-        <Trans>
-          Basket snapshot unavailable — historical data for this proposal's
-          rebalance window is no longer served.
-        </Trans>
+        {isRecent ? (
+          <Trans>
+            Basket snapshot not available yet. The price history for this
+            proposal is still being indexed; check back in about an hour.
+          </Trans>
+        ) : (
+          <Trans>
+            Basket snapshot unavailable — historical data for this proposal's
+            rebalance window is no longer served.
+          </Trans>
+        )}
       </div>
     )
+  }
 
   if (!dtf || !rebalanceBasketPreview)
     return <GovernanceProposalPreviewSkeleton />
@@ -111,6 +174,13 @@ const RebalancePreview = ({
     >
       <Header address={dtf.id.toLowerCase() as Address} />
       <TabsContent className="m-0" value={TABS.SUMMARY}>
+        {rebalanceBasketPreview.rebalance.rebalanceNonce !== undefined &&
+          rebalanceBasketPreview.rebalance.deadline !== undefined && (
+            <V6RebalanceTerms
+              rebalanceNonce={rebalanceBasketPreview.rebalance.rebalanceNonce}
+              deadline={rebalanceBasketPreview.rebalance.deadline}
+            />
+          )}
         <RebalanceBasketPreview basket={basket} />
       </TabsContent>
       <TabsContent className="m-0" value={TABS.RAW}>

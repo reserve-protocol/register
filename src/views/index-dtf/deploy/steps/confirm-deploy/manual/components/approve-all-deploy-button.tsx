@@ -3,7 +3,7 @@ import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Button } from '@/components/ui/button'
 import Spinner from '@/components/ui/spinner'
 import { useBatchApproval } from '@/hooks/use-batch-approval'
-import { INDEX_DEPLOYER_ADDRESS } from '@/utils/addresses'
+import { INDEX_V6_DEPLOYER_ADDRESS } from '@/utils/addresses'
 import { basketAtom } from '@/views/index-dtf/deploy/atoms'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { AlertCircle } from 'lucide-react'
@@ -36,7 +36,7 @@ const ApproveAllDeployButton = () => {
 
       return {
         token: token.address,
-        spender: INDEX_DEPLOYER_ADDRESS[chainId],
+        spender: INDEX_V6_DEPLOYER_ADDRESS[chainId],
         amount: approvalAmount,
       }
     })
@@ -102,7 +102,12 @@ const ApproveAllDeployButton = () => {
   return (
     <div className="flex flex-col gap-2">
       <TransactionButtonContainer chain={chainId}>
-        <Button disabled={disabled} className="gap-2 w-full" onClick={onClick}>
+        <Button
+          data-testid="deploy-approve-all"
+          disabled={disabled}
+          className="gap-2 w-full"
+          onClick={onClick}
+        >
           {isProcessing && <Spinner />}
           {label}
         </Button>

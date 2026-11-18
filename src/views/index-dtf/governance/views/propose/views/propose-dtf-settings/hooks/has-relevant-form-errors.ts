@@ -5,6 +5,7 @@ type SettingsErrors = FieldErrors<ProposeSettings> & {
   optimistic?: FieldError
   roles?: FieldError
   'revenue-distribution'?: FieldError
+  'trade-allowlist'?: FieldError
 }
 
 export type RelevantFormChanges = {
@@ -24,6 +25,7 @@ export type RelevantFormChanges = {
   auctionLengthChange?: unknown
   weightControlChange?: unknown
   bidsEnabledChange?: unknown
+  selfFeeChange?: unknown
   governanceChanges: {
     votingDelay?: unknown
     votingPeriod?: unknown
@@ -54,6 +56,7 @@ export const hasRelevantFormErrors = (
     auctionLengthChange,
     weightControlChange,
     bidsEnabledChange,
+    selfFeeChange,
     governanceChanges,
     optimisticChanges,
   } = changes
@@ -85,6 +88,10 @@ export const hasRelevantFormErrors = (
     (auctionLengthChange !== undefined && errors.auctionLength) ||
     (weightControlChange !== undefined && errors.weightControl) ||
     (bidsEnabledChange !== undefined && errors.bidsEnabled) ||
+    (selfFeeChange !== undefined && errors.selfFee) ||
+    // Seeded allowlist entries are on-chain addresses, so any error here is the user's edit.
+    errors.tradeAllowlistTokens ||
+    errors['trade-allowlist'] ||
     (governanceChanges.votingDelay !== undefined &&
       errors.governanceVotingDelay) ||
     (governanceChanges.votingPeriod !== undefined &&
