@@ -3394,6 +3394,14 @@ msgstr "현재 버전 (v2)"
 msgid "Current votes"
 msgstr "현재 투표"
 
+#: src/views/yield-dtf/issuance/components/zapV2/zap-throttle-warning.tsx:77
+msgid "Currently available to Mint: {capacity} {symbol}. The requested Mint amount is estimated from token prices."
+msgstr "현재 Mint 가능 수량: {capacity} {symbol}. 요청한 Mint 수량은 token 가격을 기준으로 추정됩니다."
+
+#: src/views/yield-dtf/issuance/components/zapV2/zap-throttle-warning.tsx:73
+msgid "Currently available to Redeem: {capacity} {symbol}."
+msgstr "현재 Redeem 가능 수량: {capacity} {symbol}."
+
 #. placeholder {0}: current?.length ?? 0
 #: src/views/yield-dtf/governance/views/proposal/components/revenue-destinations-proposal.tsx:69
 msgid "Currently configured: {0} / {MAX_REVENUE_DESTINATIONS}"
@@ -4450,6 +4458,10 @@ msgstr "예상 가스 비용:"
 #: src/views/index-dtf/governance/views/propose/basket/components/proposal-liquidity-checker.tsx:265
 msgid "Estimated loss: ~${0}"
 msgstr "예상 손실: ~${0}"
+
+#: src/views/yield-dtf/issuance/components/zapV2/zap-throttle-warning.tsx:67
+msgid "Estimated Mint amount exceeds capacity"
+msgstr "예상 Mint 수량이 현재 한도를 초과합니다"
 
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1408
 msgid "Estimated output"
@@ -5911,6 +5923,10 @@ msgstr "알려진 지원 Wallet"
 #: src/components/layout/header/components/header-actions-menu.tsx:139
 msgid "Language"
 msgstr "언어"
+
+#: src/views/yield-dtf/issuance/components/zapV2/zap-throttle-warning.tsx:84
+msgid "Larger swaps may use market liquidity with worse pricing. Reduce the amount to stay within protocol capacity."
+msgstr "더 큰 스왑은 시장 유동성을 사용해 가격이 불리해질 수 있습니다. 프로토콜 한도 이내로 수량을 줄이세요."
 
 #. placeholder {0}: Math.ceil(amountUsd / ondo.capacityUsd)
 #: src/components/ondo-badge.tsx:156
@@ -8800,6 +8816,10 @@ msgstr "Redeem 수량이 글로벌 최대 Redeem을 초과함"
 #: src/views/index-dtf/issuance/manual/components/input-box.tsx:70
 msgid "Redeem Amount:"
 msgstr "Redeem 수량:"
+
+#: src/views/yield-dtf/issuance/components/zapV2/zap-throttle-warning.tsx:65
+msgid "Redeem capacity exceeded"
+msgstr "현재 Redeem 한도를 초과합니다"
 
 #: src/components/vote-lock/migration/migration-modal.tsx:71
 msgid "Redeem complete"

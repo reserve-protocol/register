@@ -3394,6 +3394,14 @@ msgstr "Versión actual (v2)"
 msgid "Current votes"
 msgstr "Votos actuales"
 
+#: src/views/yield-dtf/issuance/components/zapV2/zap-throttle-warning.tsx:77
+msgid "Currently available to Mint: {capacity} {symbol}. The requested Mint amount is estimated from token prices."
+msgstr "Disponible para Mint ahora: {capacity} {symbol}. La cantidad solicitada de Mint se estima a partir de los precios de los tokens."
+
+#: src/views/yield-dtf/issuance/components/zapV2/zap-throttle-warning.tsx:73
+msgid "Currently available to Redeem: {capacity} {symbol}."
+msgstr "Disponible para Redeem ahora: {capacity} {symbol}."
+
 #. placeholder {0}: current?.length ?? 0
 #: src/views/yield-dtf/governance/views/proposal/components/revenue-destinations-proposal.tsx:69
 msgid "Currently configured: {0} / {MAX_REVENUE_DESTINATIONS}"
@@ -4450,6 +4458,10 @@ msgstr "Costo de gas estimado:"
 #: src/views/index-dtf/governance/views/propose/basket/components/proposal-liquidity-checker.tsx:265
 msgid "Estimated loss: ~${0}"
 msgstr "Pérdida estimada: ~${0}"
+
+#: src/views/yield-dtf/issuance/components/zapV2/zap-throttle-warning.tsx:67
+msgid "Estimated Mint amount exceeds capacity"
+msgstr "La cantidad estimada de Mint supera el límite disponible"
 
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1408
 msgid "Estimated output"
@@ -5911,6 +5923,10 @@ msgstr "Wallets compatibles conocidas"
 #: src/components/layout/header/components/header-actions-menu.tsx:139
 msgid "Language"
 msgstr "Idioma"
+
+#: src/views/yield-dtf/issuance/components/zapV2/zap-throttle-warning.tsx:84
+msgid "Larger swaps may use market liquidity with worse pricing. Reduce the amount to stay within protocol capacity."
+msgstr "Los swaps de mayor tamaño pueden usar liquidez de mercado con peores precios. Reduce la cantidad para mantenerte dentro del límite del protocolo."
 
 #. placeholder {0}: Math.ceil(amountUsd / ondo.capacityUsd)
 #: src/components/ondo-badge.tsx:156
@@ -8800,6 +8816,10 @@ msgstr "Cantidad de Redeem por encima del máximo global de Redeem"
 #: src/views/index-dtf/issuance/manual/components/input-box.tsx:70
 msgid "Redeem Amount:"
 msgstr "Monto a Redeem:"
+
+#: src/views/yield-dtf/issuance/components/zapV2/zap-throttle-warning.tsx:65
+msgid "Redeem capacity exceeded"
+msgstr "Se ha superado el límite disponible de Redeem"
 
 #: src/components/vote-lock/migration/migration-modal.tsx:71
 msgid "Redeem complete"

@@ -3394,6 +3394,14 @@ msgstr ""
 msgid "Current votes"
 msgstr ""
 
+#: src/views/yield-dtf/issuance/components/zapV2/zap-throttle-warning.tsx:77
+msgid "Currently available to Mint: {capacity} {symbol}. The requested Mint amount is estimated from token prices."
+msgstr "Currently available to Mint: {capacity} {symbol}. The requested Mint amount is estimated from token prices."
+
+#: src/views/yield-dtf/issuance/components/zapV2/zap-throttle-warning.tsx:73
+msgid "Currently available to Redeem: {capacity} {symbol}."
+msgstr "Currently available to Redeem: {capacity} {symbol}."
+
 #. placeholder {0}: current?.length ?? 0
 #: src/views/yield-dtf/governance/views/proposal/components/revenue-destinations-proposal.tsx:69
 msgid "Currently configured: {0} / {MAX_REVENUE_DESTINATIONS}"
@@ -4450,6 +4458,10 @@ msgstr ""
 #: src/views/index-dtf/governance/views/propose/basket/components/proposal-liquidity-checker.tsx:265
 msgid "Estimated loss: ~${0}"
 msgstr ""
+
+#: src/views/yield-dtf/issuance/components/zapV2/zap-throttle-warning.tsx:67
+msgid "Estimated Mint amount exceeds capacity"
+msgstr "Estimated Mint amount exceeds capacity"
 
 #: src/views/index-dtf/issuance/async-mint/steps/quote-summary.tsx:1408
 msgid "Estimated output"
@@ -5911,6 +5923,10 @@ msgstr ""
 #: src/components/layout/header/components/header-actions-menu.tsx:139
 msgid "Language"
 msgstr ""
+
+#: src/views/yield-dtf/issuance/components/zapV2/zap-throttle-warning.tsx:84
+msgid "Larger swaps may use market liquidity with worse pricing. Reduce the amount to stay within protocol capacity."
+msgstr "Larger swaps may use market liquidity with worse pricing. Reduce the amount to stay within protocol capacity."
 
 #. placeholder {0}: Math.ceil(amountUsd / ondo.capacityUsd)
 #: src/components/ondo-badge.tsx:156
@@ -8800,6 +8816,10 @@ msgstr ""
 #: src/views/index-dtf/issuance/manual/components/input-box.tsx:70
 msgid "Redeem Amount:"
 msgstr ""
+
+#: src/views/yield-dtf/issuance/components/zapV2/zap-throttle-warning.tsx:65
+msgid "Redeem capacity exceeded"
+msgstr "Redeem capacity exceeded"
 
 #: src/components/vote-lock/migration/migration-modal.tsx:71
 msgid "Redeem complete"

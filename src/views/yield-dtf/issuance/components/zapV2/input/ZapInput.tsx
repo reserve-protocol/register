@@ -9,6 +9,7 @@ const ZapInput = () => {
   return (
     <div className="relative z-0 w-full">
       <NumericalInput
+        data-testid="zap-amount-input"
         variant="transparent"
         placeholder={`0 ${symbol}`}
         value={amountIn}
