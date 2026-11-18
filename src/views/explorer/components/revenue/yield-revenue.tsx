@@ -111,7 +111,7 @@ const YieldRevenueRow = ({ data }: { data: RevenueDetail }) => {
       </div>
       {isOpen && (
         <div
-          className="mx-3 mb-3 overflow-hidden rounded-2xl border border-border bg-card sm:mx-5 [&_li:first-child]:border-t-0 [&_thead_tr]:border-t-0 [&_thead_tr]:bg-muted [&>div:first-child]:border-t-0"
+          className="mx-3 my-3 overflow-hidden rounded-2xl border border-border bg-card sm:mx-5 [&_li:first-child]:border-t-0 [&_thead_tr]:border-t-0 [&_thead_tr]:bg-muted [&>div:first-child]:border-t-0"
           data-testid="explorer-yield-trades"
         >
           <Trades trades={data.trades} nested />
