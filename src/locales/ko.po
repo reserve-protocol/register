@@ -1168,7 +1168,7 @@ msgstr "주소 아바타"
 msgid "Address copied to clipboard"
 msgstr "주소가 클립보드에 복사되었습니다"
 
-#: src/components/governance/address-hovercard/index.tsx:149
+#: src/components/governance/address-hovercard/index.tsx:180
 msgid "Address governance profile"
 msgstr "주소 거버넌스 프로필"
 
@@ -1797,7 +1797,6 @@ msgstr "리밸런싱 완료 후 이용 가능"
 msgid "Available collateral"
 msgstr "사용 가능한 담보"
 
-#: src/views/explorer/components/collaterals/index.tsx:191
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-optimistic-parameters.tsx:69
 msgid "Available optimistic actions"
 msgstr "사용 가능한 Optimistic 액션"
@@ -1958,7 +1957,6 @@ msgstr "기본 정보 업데이트"
 msgid "Basket"
 msgstr "바스켓"
 
-#: src/views/explorer/components/tokens/index.tsx:164
 #: src/views/index-dtf/governance/components/proposal-preview/rebalance-preview/index.tsx:39
 #: src/views/index-dtf/governance/components/proposal-preview/rebalance-preview/legacy-basket-proposal-preview.tsx:114
 #: src/views/index-dtf/governance/views/propose/basket/components/proposal-basket-preview.tsx:119
@@ -2725,7 +2723,7 @@ msgid "Collateral(s)"
 msgstr "담보"
 
 #: src/views/explorer/components/collaterals/index.tsx:159
-#: src/views/explorer/components/kit/explorer-nav.tsx:53
+#: src/views/explorer/components/kit/explorer-nav.tsx:59
 #: src/views/yield-dtf/overview/components/backing/asset-breakdown.tsx:33
 msgid "Collaterals"
 msgstr "담보"
@@ -3527,7 +3525,7 @@ msgstr "수익 중 DTF 생성자, vote-lock DAO 또는 임의의 주소(Wallet �
 msgid "Define what portion of the revenue goes to the RToken holders versus RSR stakers. It can also be configured to send a portion of the revenue of an RToken to any arbitrary Ethereum address (wallet or smart contract).<0/><1/>"
 msgstr "수익 중 어느 정도가 RToken 보유자에게 가고 어느 정도가 RSR staker에게 갈지를 정의합니다. RToken 수익의 일부를 임의의 Ethereum 주소(Wallet 또는 스마트 컨트랙트)로 보내도록 구성할 수도 있습니다.<0/><1/>"
 
-#: src/views/explorer/components/collaterals/collateral-item.tsx:97
+#: src/views/explorer/components/collaterals/collateral-item.tsx:99
 #: src/views/explorer/components/collaterals/index.tsx:135
 msgid "Delay"
 msgstr "지연"
@@ -3770,7 +3768,7 @@ msgstr "{0} 관련 담보만 표시"
 msgid "Displayed estimate"
 msgstr ""
 
-#: src/views/explorer/components/revenue/distribute-button.tsx:66
+#: src/views/explorer/components/revenue/distribute-button.tsx:70
 msgid "Distribute"
 msgstr "분배"
 
@@ -3788,7 +3786,7 @@ msgstr "수수료 분배"
 msgid "Distribute weights equally among all tokens in the basket."
 msgstr "바스켓 내 모든 토큰에 가중치를 균등하게 분배합니다."
 
-#: src/views/explorer/components/revenue/distribute-button.tsx:66
+#: src/views/explorer/components/revenue/distribute-button.tsx:70
 #: src/views/portfolio-page/components/available-rewards.tsx:80
 msgid "Distributed"
 msgstr "분배됨"
@@ -5116,7 +5114,7 @@ msgstr "거버넌스에 참여하고, Stake하고, 수익 기회를 찾아보세
 #: src/components/layout/navigation/TokenNavigation.tsx:204
 #: src/components/layout/navigation/TokenNavigation.tsx:220
 #: src/components/rtoken-setup/governance/GovernanceSetup.tsx:39
-#: src/views/explorer/components/kit/explorer-nav.tsx:56
+#: src/views/explorer/components/kit/explorer-nav.tsx:45
 #: src/views/index-dtf/components/navigation/index.tsx:227
 #: src/views/index-dtf/deploy/steps/revenue/revenue-distribution-settings.tsx:42
 #: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:408
@@ -6423,7 +6421,7 @@ msgid "Max slippage"
 msgstr "최대 슬리피지"
 
 #: src/components/ondo-badge.tsx:147
-#: src/views/explorer/components/collaterals/collateral-item.tsx:91
+#: src/views/explorer/components/collaterals/collateral-item.tsx:93
 #: src/views/explorer/components/collaterals/index.tsx:128
 msgid "Max trade"
 msgstr "최대 거래"
@@ -7414,7 +7412,7 @@ msgstr "{0}에서"
 msgid "On this DTF the shares below split the recipient pool: the holder share is kept first, and permanent recipients take their fixed part of what remains."
 msgstr "이 DTF에서는 아래 지분이 수령인 풀을 나눕니다: 보유자 지분이 먼저 유지되고, 영구 수령인은 나머지에서 고정된 몫을 가져갑니다."
 
-#: src/components/governance/address-hovercard/index.tsx:152
+#: src/components/governance/address-hovercard/index.tsx:183
 msgid "On-chain governance history for this address"
 msgstr "이 주소의 온체인 거버넌스 기록"
 
@@ -8473,7 +8471,7 @@ msgstr "제안자"
 msgid "Proposer address"
 msgstr "제안자 주소"
 
-#: src/views/explorer/components/collaterals/collateral-item.tsx:94
+#: src/views/explorer/components/collaterals/collateral-item.tsx:96
 #: src/views/explorer/components/collaterals/index.tsx:96
 #: src/views/explorer/components/collaterals/index.tsx:194
 #: src/views/yield-dtf/overview/components/backing/underlying-fees/fees-table.tsx:67
@@ -9197,7 +9195,7 @@ msgstr "실패한 주문 {0}건 재시도"
 msgid "Retrying…"
 msgstr "재시도 중…"
 
-#: src/views/explorer/components/kit/explorer-nav.tsx:59
+#: src/views/explorer/components/kit/explorer-nav.tsx:56
 #: src/views/explorer/components/revenue/index.tsx:62
 #: src/views/portfolio-page/components/available-rewards.tsx:110
 msgid "Revenue"
@@ -10545,7 +10543,7 @@ msgstr "요약"
 msgid "Summary of Changes from v1"
 msgstr "v1 대비 변경 사항 요약"
 
-#: src/views/explorer/components/collaterals/collateral-item.tsx:88
+#: src/views/explorer/components/collaterals/collateral-item.tsx:90
 #: src/views/explorer/components/collaterals/index.tsx:34
 #: src/views/explorer/components/collaterals/index.tsx:121
 #: src/views/index-dtf/overview/components/charts/data-type-selector.tsx:13
@@ -10634,7 +10632,7 @@ msgstr "심볼"
 msgid "Tags"
 msgstr "태그"
 
-#: src/views/explorer/components/collaterals/collateral-item.tsx:103
+#: src/views/explorer/components/collaterals/collateral-item.tsx:105
 #: src/views/explorer/components/collaterals/index.tsx:101
 #: src/views/explorer/components/collaterals/index.tsx:205
 msgid "Target"
@@ -11722,7 +11720,7 @@ msgid "Transaction successful!"
 msgstr "트랜잭션 성공!"
 
 #: src/components/layout/navigation/TokenNavigation.tsx:183
-#: src/views/explorer/components/kit/explorer-nav.tsx:49
+#: src/views/explorer/components/kit/explorer-nav.tsx:52
 #: src/views/explorer/components/transactions/index.tsx:216
 #: src/views/index-dtf/overview/components/index-transaction-table-with-swaps/index.tsx:39
 #: src/views/index-dtf/overview/components/index-transaction-table.tsx:152
@@ -11838,7 +11836,7 @@ msgid "Tx2. Governance"
 msgstr "Tx2. 거버넌스"
 
 #: src/components/tables/ListedTokensTable.tsx:46
-#: src/views/explorer/components/kit/explorer-nav.tsx:46
+#: src/views/explorer/components/kit/explorer-nav.tsx:49
 #: src/views/tokens/components/UnlistedTokensTable.tsx:104
 msgid "Txs"
 msgstr "Txs"
@@ -11872,7 +11870,7 @@ msgstr "컨트랙트 데이터를 파싱할 수 없습니다"
 msgid "Unavailable"
 msgstr "사용 불가"
 
-#: src/views/explorer/components/collaterals/collateral-item.tsx:83
+#: src/views/explorer/components/collaterals/collateral-item.tsx:85
 #: src/views/explorer/components/collaterals/index.tsx:83
 #: src/views/portfolio-page/components/vote-locked-positions.tsx:177
 msgid "Underlying"
@@ -12340,7 +12338,7 @@ msgid "Verifying transaction..."
 msgstr "트랜잭션 확인 중..."
 
 #: src/components/rtoken-setup/basket/PluginItem.tsx:64
-#: src/views/explorer/components/collaterals/collateral-item.tsx:100
+#: src/views/explorer/components/collaterals/collateral-item.tsx:102
 #: src/views/explorer/components/collaterals/index.tsx:142
 #: src/views/index-dtf/settings/components/index-settings-basic.tsx:143
 msgid "Version"

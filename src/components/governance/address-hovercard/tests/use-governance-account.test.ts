@@ -46,11 +46,13 @@ describe('preloadGovernanceAccount', () => {
   let queryClient: QueryClient
   let calls: string[]
   let batchFails: boolean
+  let releaseBatch: Promise<void> | undefined
 
   beforeEach(() => {
     queryClient = new QueryClient({ defaultOptions: { queries: { retry: false } } })
     calls = []
     batchFails = false
+    releaseBatch = undefined
     vi.stubGlobal(
       'fetch',
       vi.fn(async (input: string) => {
@@ -58,6 +60,7 @@ describe('preloadGovernanceAccount', () => {
         calls.push(url.pathname + url.search)
         if (url.pathname.endsWith('/governance/accounts')) {
           if (batchFails) return { ok: false, status: 503 }
+          await releaseBatch
           const addresses = url.searchParams.get('addresses')!.split(',')
           return { ok: true, json: async () => ({ accounts: addresses.map((address) => profile(address, 7)) }) }
         }
@@ -83,6 +86,25 @@ describe('preloadGovernanceAccount', () => {
     expect(queryClient.getQueryData<GovernanceAccount>(key(A))?.totals.votes).toBe(3)
     expect(queryClient.getQueryData<GovernanceAccount>(key(B))?.totals.votes).toBe(7)
     expect(queryClient.getQueryData<GovernanceAccount>(key(C))?.totals.votes).toBe(7)
+  })
+
+  it('keeps a profile that was read while the list was still on its way', async () => {
+    let release = () => {}
+    releaseBatch = new Promise((resolve) => {
+      release = resolve
+    })
+
+    preloadGovernanceAccount(queryClient, { address: A, fresh: false, group: [A, B] })
+    await vi.waitFor(() =>
+      expect(queryClient.getQueryData<GovernanceAccount>(key(A))?.totals.votes).toBe(3)
+    )
+    release()
+    await settled()
+    await vi.waitFor(() =>
+      expect(queryClient.getQueryData<GovernanceAccount>(key(B))?.totals.votes).toBe(7)
+    )
+
+    expect(queryClient.getQueryData<GovernanceAccount>(key(A))?.totals.votes).toBe(3)
   })
 
   it('needs no call for another address of the list after the first hover', async () => {

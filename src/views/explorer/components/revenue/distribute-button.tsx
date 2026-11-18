@@ -19,9 +19,12 @@ const DistributeButton = ({ dtf }: { dtf: IndexDTFItem }) => {
   const { openConnectModal } = useWalletModal()
   const { switchChainAsync } = useSwitchChain()
   const { data: hash, writeContract, isPending } = useWriteContract()
+  // A cancelled or replaced transaction mines a different call; its receipt is not a distribution.
+  const [wasDropped, setDropped] = useState(false)
   const { data: receipt, isLoading } = useWaitForTransactionReceipt({
     hash,
     chainId: dtf.chainId,
+    onReplaced: ({ reason }) => setDropped(reason !== 'repriced'),
   })
   const [isSwitching, setSwitching] = useState(false)
 
@@ -43,6 +46,7 @@ const DistributeButton = ({ dtf }: { dtf: IndexDTFItem }) => {
       }
     }
 
+    setDropped(false)
     writeContract({
       abi: dtfIndexAbi,
       address: dtf.address,
@@ -51,8 +55,8 @@ const DistributeButton = ({ dtf }: { dtf: IndexDTFItem }) => {
     })
   }
 
-  const isSuccess = receipt?.status === 'success'
-  const isBusy = isSwitching || isPending || isLoading
+  const isSuccess = receipt?.status === 'success' && !wasDropped
+  const isBusy = isSwitching || isPending || (isLoading && !wasDropped)
 
   return (
     <Button

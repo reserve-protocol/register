@@ -1168,7 +1168,7 @@ msgstr "Avatar de la dirección"
 msgid "Address copied to clipboard"
 msgstr "Dirección copiada al portapapeles"
 
-#: src/components/governance/address-hovercard/index.tsx:149
+#: src/components/governance/address-hovercard/index.tsx:180
 msgid "Address governance profile"
 msgstr "Perfil de gobernanza de la dirección"
 
@@ -1797,7 +1797,6 @@ msgstr "Disponible tras completarse el reequilibrio"
 msgid "Available collateral"
 msgstr "Colateral disponible"
 
-#: src/views/explorer/components/collaterals/index.tsx:191
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-optimistic-parameters.tsx:69
 msgid "Available optimistic actions"
 msgstr "Acciones optimistas disponibles"
@@ -1958,7 +1957,6 @@ msgstr "Actualización de aspectos básicos"
 msgid "Basket"
 msgstr "Cesta"
 
-#: src/views/explorer/components/tokens/index.tsx:164
 #: src/views/index-dtf/governance/components/proposal-preview/rebalance-preview/index.tsx:39
 #: src/views/index-dtf/governance/components/proposal-preview/rebalance-preview/legacy-basket-proposal-preview.tsx:114
 #: src/views/index-dtf/governance/views/propose/basket/components/proposal-basket-preview.tsx:119
@@ -2725,7 +2723,7 @@ msgid "Collateral(s)"
 msgstr "Colateral(es)"
 
 #: src/views/explorer/components/collaterals/index.tsx:159
-#: src/views/explorer/components/kit/explorer-nav.tsx:53
+#: src/views/explorer/components/kit/explorer-nav.tsx:59
 #: src/views/yield-dtf/overview/components/backing/asset-breakdown.tsx:33
 msgid "Collaterals"
 msgstr "Colaterales"
@@ -3527,7 +3525,7 @@ msgstr "Define qué porción de los ingresos va al creador del DTF, a la vote-lo
 msgid "Define what portion of the revenue goes to the RToken holders versus RSR stakers. It can also be configured to send a portion of the revenue of an RToken to any arbitrary Ethereum address (wallet or smart contract).<0/><1/>"
 msgstr "Define qué porción de los ingresos se destina a los titulares de RToken frente a los stakers de RSR. También se puede configurar para enviar una porción de los ingresos de un RToken a cualquier dirección arbitraria de Ethereum (Wallet o contrato inteligente).<0/><1/>"
 
-#: src/views/explorer/components/collaterals/collateral-item.tsx:97
+#: src/views/explorer/components/collaterals/collateral-item.tsx:99
 #: src/views/explorer/components/collaterals/index.tsx:135
 msgid "Delay"
 msgstr "Demora"
@@ -3770,7 +3768,7 @@ msgstr "Mostrar solo los colaterales relacionados con {0}"
 msgid "Displayed estimate"
 msgstr ""
 
-#: src/views/explorer/components/revenue/distribute-button.tsx:66
+#: src/views/explorer/components/revenue/distribute-button.tsx:70
 msgid "Distribute"
 msgstr "Distribuir"
 
@@ -3788,7 +3786,7 @@ msgstr "Distribuir comisiones"
 msgid "Distribute weights equally among all tokens in the basket."
 msgstr "Distribuir los pesos de forma equitativa entre todos los tokens de la cesta."
 
-#: src/views/explorer/components/revenue/distribute-button.tsx:66
+#: src/views/explorer/components/revenue/distribute-button.tsx:70
 #: src/views/portfolio-page/components/available-rewards.tsx:80
 msgid "Distributed"
 msgstr "Distribuido"
@@ -5116,7 +5114,7 @@ msgstr "Gobierna, haz Stake y encuentra oportunidades de rendimiento"
 #: src/components/layout/navigation/TokenNavigation.tsx:204
 #: src/components/layout/navigation/TokenNavigation.tsx:220
 #: src/components/rtoken-setup/governance/GovernanceSetup.tsx:39
-#: src/views/explorer/components/kit/explorer-nav.tsx:56
+#: src/views/explorer/components/kit/explorer-nav.tsx:45
 #: src/views/index-dtf/components/navigation/index.tsx:227
 #: src/views/index-dtf/deploy/steps/revenue/revenue-distribution-settings.tsx:42
 #: src/views/index-dtf/governance/components/proposal-preview/dtf-settings-preview.tsx:408
@@ -6423,7 +6421,7 @@ msgid "Max slippage"
 msgstr "Slippage máximo"
 
 #: src/components/ondo-badge.tsx:147
-#: src/views/explorer/components/collaterals/collateral-item.tsx:91
+#: src/views/explorer/components/collaterals/collateral-item.tsx:93
 #: src/views/explorer/components/collaterals/index.tsx:128
 msgid "Max trade"
 msgstr "Operación máxima"
@@ -7414,7 +7412,7 @@ msgstr "en {0}"
 msgid "On this DTF the shares below split the recipient pool: the holder share is kept first, and permanent recipients take their fixed part of what remains."
 msgstr "En este DTF, las participaciones de abajo dividen el pool de destinatarios: primero se reserva la participación de los holders y los destinatarios permanentes toman su parte fija de lo que queda."
 
-#: src/components/governance/address-hovercard/index.tsx:152
+#: src/components/governance/address-hovercard/index.tsx:183
 msgid "On-chain governance history for this address"
 msgstr "Historial de gobernanza onchain de esta dirección"
 
@@ -8473,7 +8471,7 @@ msgstr "Proponente"
 msgid "Proposer address"
 msgstr "Dirección del proponente"
 
-#: src/views/explorer/components/collaterals/collateral-item.tsx:94
+#: src/views/explorer/components/collaterals/collateral-item.tsx:96
 #: src/views/explorer/components/collaterals/index.tsx:96
 #: src/views/explorer/components/collaterals/index.tsx:194
 #: src/views/yield-dtf/overview/components/backing/underlying-fees/fees-table.tsx:67
@@ -9197,7 +9195,7 @@ msgstr "Reintentar {0} órdenes fallidas"
 msgid "Retrying…"
 msgstr "Reintentando…"
 
-#: src/views/explorer/components/kit/explorer-nav.tsx:59
+#: src/views/explorer/components/kit/explorer-nav.tsx:56
 #: src/views/explorer/components/revenue/index.tsx:62
 #: src/views/portfolio-page/components/available-rewards.tsx:110
 msgid "Revenue"
@@ -10545,7 +10543,7 @@ msgstr "Resumen"
 msgid "Summary of Changes from v1"
 msgstr "Resumen de cambios desde la v1"
 
-#: src/views/explorer/components/collaterals/collateral-item.tsx:88
+#: src/views/explorer/components/collaterals/collateral-item.tsx:90
 #: src/views/explorer/components/collaterals/index.tsx:34
 #: src/views/explorer/components/collaterals/index.tsx:121
 #: src/views/index-dtf/overview/components/charts/data-type-selector.tsx:13
@@ -10634,7 +10632,7 @@ msgstr "Símbolo"
 msgid "Tags"
 msgstr "Etiquetas"
 
-#: src/views/explorer/components/collaterals/collateral-item.tsx:103
+#: src/views/explorer/components/collaterals/collateral-item.tsx:105
 #: src/views/explorer/components/collaterals/index.tsx:101
 #: src/views/explorer/components/collaterals/index.tsx:205
 msgid "Target"
@@ -11722,7 +11720,7 @@ msgid "Transaction successful!"
 msgstr "¡Transacción exitosa!"
 
 #: src/components/layout/navigation/TokenNavigation.tsx:183
-#: src/views/explorer/components/kit/explorer-nav.tsx:49
+#: src/views/explorer/components/kit/explorer-nav.tsx:52
 #: src/views/explorer/components/transactions/index.tsx:216
 #: src/views/index-dtf/overview/components/index-transaction-table-with-swaps/index.tsx:39
 #: src/views/index-dtf/overview/components/index-transaction-table.tsx:152
@@ -11838,7 +11836,7 @@ msgid "Tx2. Governance"
 msgstr "Tx2. Gobernanza"
 
 #: src/components/tables/ListedTokensTable.tsx:46
-#: src/views/explorer/components/kit/explorer-nav.tsx:46
+#: src/views/explorer/components/kit/explorer-nav.tsx:49
 #: src/views/tokens/components/UnlistedTokensTable.tsx:104
 msgid "Txs"
 msgstr "Txs"
@@ -11872,7 +11870,7 @@ msgstr "No se pueden analizar los datos del contrato"
 msgid "Unavailable"
 msgstr "No disponible"
 
-#: src/views/explorer/components/collaterals/collateral-item.tsx:83
+#: src/views/explorer/components/collaterals/collateral-item.tsx:85
 #: src/views/explorer/components/collaterals/index.tsx:83
 #: src/views/portfolio-page/components/vote-locked-positions.tsx:177
 msgid "Underlying"
@@ -12340,7 +12338,7 @@ msgid "Verifying transaction..."
 msgstr "Verificando transacción..."
 
 #: src/components/rtoken-setup/basket/PluginItem.tsx:64
-#: src/views/explorer/components/collaterals/collateral-item.tsx:100
+#: src/views/explorer/components/collaterals/collateral-item.tsx:102
 #: src/views/explorer/components/collaterals/index.tsx:142
 #: src/views/index-dtf/settings/components/index-settings-basic.tsx:143
 msgid "Version"

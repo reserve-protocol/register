@@ -14,7 +14,13 @@ import { useAtomValue } from 'jotai'
 import mixpanel from 'mixpanel-browser/src/loaders/loader-module-core'
 import { Portal as HoverCardPortal } from '@radix-ui/react-hover-card'
 import { useQueryClient } from '@tanstack/react-query'
-import { createContext, useContext, useState, type ReactNode } from 'react'
+import {
+  createContext,
+  useContext,
+  useRef,
+  useState,
+  type ReactNode,
+} from 'react'
 import type { Address } from 'viem'
 import { IndexAddressProfile, YieldAddressProfile } from './address-profile-card'
 import { needsFreshRead, type DtfType } from './address-profile'
@@ -62,13 +68,23 @@ const AddressHovercard = ({
 }) => {
   const isMobile = useIsMobile()
   const [open, setOpen] = useState(false)
+  // Keyboard users get the dialog on desktop too: a HoverCard keeps its content out of the tab order.
+  const [asDialog, setAsDialog] = useState(false)
+  const triggerRef = useRef<HTMLButtonElement>(null)
+  const contentRef = useRef<HTMLDivElement>(null)
   const indexDTF = useAtomValue(indexDTFAtom)
   const rToken = useRToken()
   const queryClient = useQueryClient()
   const group = useContext(GroupContext)
-  const fresh = needsFreshRead(eventAt, Date.now() / 1000)
+  // Checked when the read starts, so a page left open does not keep asking for fresh data.
+  const isFresh = () => needsFreshRead(eventAt, Date.now() / 1000)
+  const fresh = isFresh()
   const preload = () =>
-    preloadGovernanceAccount(queryClient, { address, fresh, group })
+    preloadGovernanceAccount(queryClient, {
+      address,
+      fresh: isFresh(),
+      group,
+    })
 
   const changeOpen = (next: boolean) => {
     if (next && !open) {
@@ -115,13 +131,19 @@ const AddressHovercard = ({
   const trigger = (
     <button
       type="button"
+      ref={triggerRef}
       // WHY: the card opens 200 ms after the pointer arrives; the read starts now.
-      onPointerEnter={preload}
+      onPointerEnter={() => {
+        setAsDialog(false)
+        preload()
+      }}
       onFocus={preload}
       // WHY: HoverCard has no touch affordance, so a click also toggles it.
       onClick={(event) => {
         event.preventDefault()
         event.stopPropagation()
+        // `detail` is 0 when Enter or Space made the click.
+        if (event.detail === 0) setAsDialog(true)
         changeOpen(!open)
       }}
       className={cn(
@@ -134,16 +156,25 @@ const AddressHovercard = ({
     </button>
   )
 
-  if (isMobile) {
+  if (isMobile || asDialog) {
     return (
       <>
         {trigger}
         <Dialog open={open} onOpenChange={changeOpen}>
           <DialogContent
-            // WHY: the first focusable is the copy button, whose tooltip would open on focus.
-            onOpenAutoFocus={(event) => event.preventDefault()}
+            ref={contentRef}
+            // WHY: the first focusable is the copy button, whose tooltip would open on focus; the panel itself takes it.
+            onOpenAutoFocus={(event) => {
+              event.preventDefault()
+              contentRef.current?.focus()
+            }}
+            // WHY: the trigger is not a DialogTrigger, so Radix has nowhere to send focus back.
+            onCloseAutoFocus={(event) => {
+              event.preventDefault()
+              triggerRef.current?.focus()
+            }}
             onClick={(event) => event.stopPropagation()}
-            className="max-w-full gap-0 overflow-hidden border-none bg-card p-0 shadow-lg sm:max-w-[420px] top-[100%] translate-y-[-100%] sm:top-[50%] sm:translate-y-[-50%] rounded-b-none rounded-t-3xl sm:rounded-3xl data-[state=open]:animate-dialog-in data-[state=closed]:animate-dialog-out"
+            className="max-w-full gap-0 overflow-hidden focus:outline-none border-none bg-card p-0 shadow-lg sm:max-w-[420px] top-[100%] translate-y-[-100%] sm:top-[50%] sm:translate-y-[-50%] rounded-b-none rounded-t-3xl sm:rounded-3xl data-[state=open]:animate-dialog-in data-[state=closed]:animate-dialog-out"
           >
             <DialogTitle className="sr-only">
               <Trans>Address governance profile</Trans>

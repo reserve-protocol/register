@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest'
 import {
   filterCollaterals,
   getProtocolLabel,
+  getSupply,
   type CollateralFilters,
 } from '../utils'
 
@@ -29,6 +30,28 @@ describe('filterCollaterals', () => {
     expect(symbols({ chains: ['8453'], protocols: ['AAVEv3'] })).toEqual(['saBasUSDC'])
     expect(symbols({ targets: ['ETH'] })).toEqual(['wstETH'])
     expect(symbols({ chains: ['1'], targets: ['USD'] })).toEqual([])
+  })
+})
+
+describe('getSupply', () => {
+  it('scales the supply with the decimals of the token that was read', () => {
+    const oneMillionUsdc = 1_000_000n * 10n ** 6n
+
+    expect(
+      getSupply(
+        { status: 'success', result: oneMillionUsdc },
+        { status: 'success', result: 6 }
+      )
+    ).toBe(1_000_000)
+  })
+
+  it('has no supply when either read fails', () => {
+    expect(
+      getSupply({ status: 'failure' }, { status: 'success', result: 6 })
+    ).toBeNull()
+    expect(
+      getSupply({ status: 'success', result: 1n }, { status: 'failure' })
+    ).toBeNull()
   })
 })
 

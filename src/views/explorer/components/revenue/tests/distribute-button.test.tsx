@@ -1,5 +1,5 @@
 import { type IndexDTFItem } from '@/hooks/useIndexDTFList'
-import { render, screen, waitFor } from '@testing-library/react'
+import { act, render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import DistributeButton from '../distribute-button'
@@ -20,8 +20,16 @@ vi.mock('wagmi', () => ({
   useAccount: () => account,
   useSwitchChain: () => ({ switchChainAsync }),
   useWriteContract: () => ({ data: undefined, writeContract, isPending: false }),
-  useWaitForTransactionReceipt: () => ({ data: undefined, isLoading: false }),
+  useWaitForTransactionReceipt: (params: {
+    onReplaced?: (replacement: { reason: string }) => void
+  }) => {
+    onReplaced = params.onReplaced
+    return { data: receipt, isLoading: false }
+  },
 }))
+
+let receipt: { status: string } | undefined
+let onReplaced: ((replacement: { reason: string }) => void) | undefined
 
 const dtf = { address: DTF_ADDRESS, chainId: BASE } as unknown as IndexDTFItem
 
@@ -37,6 +45,27 @@ describe('DistributeButton', () => {
   beforeEach(() => {
     vi.clearAllMocks()
     account = {}
+    receipt = undefined
+  })
+
+  it('shows Distributed after the distribution is mined, also when the wallet repriced it', () => {
+    receipt = { status: 'success' }
+    render(<DistributeButton dtf={dtf} />)
+    act(() => onReplaced?.({ reason: 'repriced' }))
+
+    const button = screen.getByTestId('explorer-distribute')
+    expect(button).toHaveTextContent('Distributed')
+    expect(button).toBeDisabled()
+  })
+
+  it('stays on Distribute when the user cancelled the transaction in the wallet', () => {
+    receipt = { status: 'success' }
+    render(<DistributeButton dtf={dtf} />)
+    act(() => onReplaced?.({ reason: 'cancelled' }))
+
+    const button = screen.getByTestId('explorer-distribute')
+    expect(button).toHaveTextContent(/^Distribute$/)
+    expect(button).toBeEnabled()
   })
 
   it('opens the connect modal when no wallet is connected', async () => {

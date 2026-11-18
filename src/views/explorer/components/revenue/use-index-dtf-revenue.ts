@@ -1,7 +1,6 @@
 import dtfIndexAbi from '@/abis/dtf-index-abi'
 import useIndexDTFList, { type IndexDTFItem } from '@/hooks/useIndexDTFList'
-import { keepPreviousData } from '@tanstack/react-query'
-import { useMemo } from 'react'
+import { useMemo, useState } from 'react'
 import { formatEther } from 'viem'
 import { useReadContracts } from 'wagmi'
 
@@ -24,24 +23,36 @@ const useIndexDTFRevenue = (): IndexDTFRevenue[] | undefined => {
     }))
   }, [dtfList])
 
+  const sequence = useMemo(
+    () => contracts.map((call) => `${call.chainId}:${call.address}`).join(','),
+    [contracts]
+  )
+
   const { data: feeResults } = useReadContracts({
     contracts,
-    query: {
-      enabled: contracts.length > 0,
-      // wagmi keys a multi-chain read by the wallet chain, so a chain switch would empty the list and remount the table.
-      placeholderData: keepPreviousData,
-    },
+    query: { enabled: contracts.length > 0 },
   })
 
+  // wagmi keys a multi-chain read by the wallet chain, so a chain switch empties it; the last results stay valid only for the same contracts in the same order.
+  const [kept, setKept] = useState<{
+    sequence: string
+    results: NonNullable<typeof feeResults>
+  }>()
+  if (feeResults && kept?.results !== feeResults) {
+    setKept({ sequence, results: feeResults })
+  }
+  const results =
+    feeResults ?? (kept?.sequence === sequence ? kept.results : undefined)
+
   return useMemo(() => {
-    if (!dtfList?.length || !feeResults) return undefined
+    if (!dtfList?.length || !results) return undefined
 
     const items: IndexDTFRevenue[] = []
 
     for (let i = 0; i < dtfList.length; i++) {
       const dtf = dtfList[i]
-      const result = feeResults[i]
-      if (result.status !== 'success') continue
+      const result = results[i]
+      if (result?.status !== 'success') continue
 
       const pendingFees = result.result as bigint
       const pendingTokens = Number(formatEther(pendingFees))
@@ -51,7 +62,7 @@ const useIndexDTFRevenue = (): IndexDTFRevenue[] | undefined => {
     }
 
     return items.sort((a, b) => b.pendingUsd - a.pendingUsd)
-  }, [dtfList, feeResults])
+  }, [dtfList, results])
 }
 
 export default useIndexDTFRevenue

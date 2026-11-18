@@ -9,8 +9,10 @@ import { WithChainBadge } from '../kit/token-cell'
 import { type Plugin } from './atoms'
 import { getProtocolLabel } from './utils'
 
-export const compact = (value: number) =>
-  formatCurrency(value, 0, { notation: 'compact', compactDisplay: 'short' })
+export const compact = (value: number | null) =>
+  value === null
+    ? '—'
+    : formatCurrency(value, 0, { notation: 'compact', compactDisplay: 'short' })
 
 export const getUnderlying = (plugin: Plugin) => ({
   symbol: plugin.underlyingToken || plugin.symbol,

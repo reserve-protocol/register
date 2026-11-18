@@ -1,3 +1,5 @@
+import { formatUnits } from 'viem'
+
 const PROTOCOL_LABELS: Record<string, string> = {
   AAVE: 'Aave',
   AAVEv3: 'Aave V3',
@@ -16,6 +18,19 @@ const PROTOCOL_LABELS: Record<string, string> = {
 
 export const getProtocolLabel = (protocol: string) =>
   PROTOCOL_LABELS[protocol] ?? protocol
+
+export type SupplyRead<T> =
+  | { status: 'success'; result: T }
+  | { status: 'failure' }
+
+// The supply is read from the underlying token when there is one, so it takes that token's decimals, not the plugin's.
+export const getSupply = (
+  supply: SupplyRead<bigint>,
+  decimals: SupplyRead<number>
+): number | null =>
+  supply.status === 'success' && decimals.status === 'success'
+    ? +formatUnits(supply.result, decimals.result)
+    : null
 
 type FilterablePlugin = {
   symbol: string

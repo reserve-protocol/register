@@ -5,13 +5,15 @@ import { atomWithLoadable } from 'utils/atoms/utils'
 import { AvailableChain } from 'utils/chains'
 import { supportedChainList } from 'utils/constants'
 import collateralPlugins from 'utils/plugins'
-import { erc20Abi, formatUnits } from 'viem'
+import { erc20Abi } from 'viem'
 import { readContracts } from 'wagmi/actions'
+import { getSupply, type SupplyRead } from './utils'
 
 export interface Plugin extends CollateralPlugin {
   apy: number
   chainId: number
-  supply: number
+  // null when the on-chain read failed.
+  supply: number | null
 }
 
 export const allPluginsAtom = atomWithLoadable(async (get) => {
@@ -28,18 +30,27 @@ export const allPluginsAtom = atomWithLoadable(async (get) => {
     }))
   )
 
-  const supplies = await readContracts(wagmiConfig, {
-    allowFailure: false,
-    contracts: pluginsMap.map((plugin) => ({
-      abi: erc20Abi,
-      chainId: plugin.chainId as AvailableChain,
-      address: plugin.underlyingAddress || plugin.erc20,
-      functionName: 'totalSupply',
-    })),
+  // Per-call failures: one reverting token must not hide every other row.
+  const reads = await readContracts(wagmiConfig, {
+    allowFailure: true,
+    contracts: pluginsMap.flatMap((plugin) => {
+      const token = {
+        abi: erc20Abi,
+        chainId: plugin.chainId as AvailableChain,
+        address: plugin.underlyingAddress || plugin.erc20,
+      }
+      return [
+        { ...token, functionName: 'totalSupply' as const },
+        { ...token, functionName: 'decimals' as const },
+      ]
+    }),
   })
 
   return pluginsMap.map((plugin, index) => ({
     ...plugin,
-    supply: +formatUnits(supplies[index] as bigint, plugin.decimals),
+    supply: getSupply(
+      reads[index * 2] as SupplyRead<bigint>,
+      reads[index * 2 + 1] as SupplyRead<number>
+    ),
   }))
 })

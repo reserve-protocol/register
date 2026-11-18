@@ -119,7 +119,7 @@ const Collaterals = () => {
       {
         id: 'supply',
         header: t`Supply`,
-        accessorFn: (plugin) => plugin.supply,
+        accessorFn: (plugin) => plugin.supply ?? -1,
         meta: { className: 'text-right' },
         cell: ({ row }) => compact(row.original.supply),
       },
