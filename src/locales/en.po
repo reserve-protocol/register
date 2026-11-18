@@ -2023,7 +2023,7 @@ msgstr ""
 msgid "Before using automated minting"
 msgstr ""
 
-#: src/components/vote-lock/components/submit-unlock-button.tsx:132
+#: src/components/vote-lock/components/submit-unlock-button.tsx:166
 msgid "Begin {unlockDelay}-day unlock delay"
 msgstr ""
 
@@ -2043,7 +2043,7 @@ msgstr ""
 msgid "Begin redemption of {0} {1}"
 msgstr ""
 
-#: src/components/vote-lock/components/submit-unlock-button.tsx:133
+#: src/components/vote-lock/components/submit-unlock-button.tsx:167
 msgid "Begin unlock delay"
 msgstr ""
 
@@ -2617,7 +2617,7 @@ msgstr ""
 msgid "Collateral distribution"
 msgstr ""
 
-#: src/views/yield-dtf/overview/components/backing/collateral-exposure.tsx:225
+#: src/views/yield-dtf/overview/components/backing/collateral-exposure.tsx:296
 msgid "Collateral Exposure"
 msgstr ""
 
@@ -2846,7 +2846,7 @@ msgstr ""
 #: src/components/stake-drawer/components/submit-stake-button.tsx:217
 #: src/components/stake-drawer/components/submit-unstake-button.tsx:104
 #: src/components/vote-lock/components/submit-lock-button.tsx:211
-#: src/components/vote-lock/components/submit-unlock-button.tsx:124
+#: src/components/vote-lock/components/submit-unlock-button.tsx:158
 #: src/views/index-dtf/deploy/steps/confirm-deploy/manual/components/confirm-manual-deploy-button.tsx:182
 #: src/views/index-dtf/deploy/steps/confirm-deploy/simple/simple-deploy-button.tsx:141
 msgid "Confirming tx..."
@@ -2984,6 +2984,7 @@ msgstr ""
 #: src/views/index-dtf/components/navigation/index.tsx:316
 #: src/views/index-dtf/overview/components/index-token-address.tsx:135
 #: src/views/index-dtf/overview/components/index-token-address.tsx:155
+#: src/views/yield-dtf/overview/components/backing/collateral-exposure.tsx:127
 msgid "Copy address"
 msgstr ""
 
@@ -3615,7 +3616,7 @@ msgstr ""
 msgid "Destination {0}"
 msgstr ""
 
-#: src/views/yield-dtf/overview/components/backing/collateral-exposure.tsx:254
+#: src/views/yield-dtf/overview/components/backing/collateral-exposure.tsx:325
 msgid "Detail"
 msgstr ""
 
@@ -3746,7 +3747,7 @@ msgstr ""
 #: src/components/layout/header/components/app-navigation.tsx:167
 #: src/components/layout/header/components/mobile-navigation-drawer.tsx:186
 #: src/views/index-dtf/deploy/components/right-panel.tsx:137
-#: src/views/yield-dtf/overview/components/backing/collateral-exposure.tsx:143
+#: src/views/yield-dtf/overview/components/backing/collateral-exposure.tsx:245
 msgid "Docs"
 msgstr ""
 
@@ -7586,7 +7587,7 @@ msgstr ""
 #: src/components/transaction-modal/index.tsx:159
 #: src/components/vote-lock/components/submit-delegate-button.tsx:179
 #: src/components/vote-lock/components/submit-lock-button.tsx:212
-#: src/components/vote-lock/components/submit-unlock-button.tsx:125
+#: src/components/vote-lock/components/submit-unlock-button.tsx:159
 #: src/views/index-dtf/deploy/steps/confirm-deploy/manual/components/confirm-manual-deploy-button.tsx:182
 #: src/views/index-dtf/deploy/steps/confirm-deploy/simple/simple-deploy-button.tsx:142
 #: src/views/yield-dtf/deploy/components/DeployOverview.tsx:25
@@ -8039,7 +8040,7 @@ msgstr ""
 #: src/components/stake-drawer/components/submit-stake-button.tsx:215
 #: src/components/stake-drawer/components/submit-unstake-button.tsx:102
 #: src/components/vote-lock/components/submit-lock-button.tsx:209
-#: src/components/vote-lock/components/submit-unlock-button.tsx:122
+#: src/components/vote-lock/components/submit-unlock-button.tsx:156
 msgid "Processing transaction..."
 msgstr ""
 
@@ -8069,7 +8070,7 @@ msgstr ""
 msgid "Proposal canceled"
 msgstr ""
 
-#: src/components/transaction-error/TransactionError.tsx:25
+#: src/components/transaction-error/TransactionError.tsx:56
 msgid "Proposal cannot be executed while another auction is currently running"
 msgstr ""
 
@@ -11052,7 +11053,7 @@ msgstr ""
 #: src/views/portfolio-page/components/pending-withdrawals.tsx:307
 #: src/views/portfolio-page/components/transactions.tsx:100
 #: src/views/tokens/components/UnlistedTokensTable.tsx:83
-#: src/views/yield-dtf/overview/components/backing/collateral-exposure.tsx:245
+#: src/views/yield-dtf/overview/components/backing/collateral-exposure.tsx:316
 msgid "Token"
 msgstr ""
 
@@ -11213,7 +11214,7 @@ msgstr ""
 msgid "Total APY"
 msgstr ""
 
-#: src/views/yield-dtf/overview/components/backing/collateral-exposure.tsx:215
+#: src/views/yield-dtf/overview/components/backing/collateral-exposure.tsx:286
 msgid "Total backing"
 msgstr ""
 
@@ -11397,7 +11398,7 @@ msgstr ""
 #: src/components/stake-drawer/components/submit-stake-button.tsx:180
 #: src/components/stake-drawer/components/submit-unstake-button.tsx:80
 #: src/components/vote-lock/components/submit-lock-button.tsx:217
-#: src/components/vote-lock/components/submit-unlock-button.tsx:130
+#: src/components/vote-lock/components/submit-unlock-button.tsx:164
 #: src/hooks/useWatchTransaction.ts:56
 msgid "Transaction confirmed"
 msgstr ""
@@ -11705,7 +11706,7 @@ msgstr ""
 msgid "Unlock"
 msgstr ""
 
-#: src/components/vote-lock/components/submit-unlock-button.tsx:95
+#: src/components/vote-lock/components/submit-unlock-button.tsx:129
 msgid "Unlock initiated successfully"
 msgstr ""
 
@@ -12044,7 +12045,7 @@ msgstr ""
 #: src/views/portfolio-page/components/rsr-section.tsx:60
 #: src/views/portfolio-page/components/staked-positions.tsx:102
 #: src/views/portfolio-page/components/vote-locked-positions.tsx:250
-#: src/views/yield-dtf/overview/components/backing/collateral-exposure.tsx:251
+#: src/views/yield-dtf/overview/components/backing/collateral-exposure.tsx:322
 msgid "Value"
 msgstr ""
 
@@ -12052,7 +12053,7 @@ msgstr ""
 msgid "Value by asset type"
 msgstr ""
 
-#: src/views/yield-dtf/overview/components/backing/collateral-exposure.tsx:96
+#: src/views/yield-dtf/overview/components/backing/collateral-exposure.tsx:186
 msgid "Value:"
 msgstr ""
 
@@ -12263,6 +12264,7 @@ msgstr ""
 
 #: src/views/index-dtf/overview/components/index-token-address.tsx:142
 #: src/views/index-dtf/overview/components/index-token-address.tsx:161
+#: src/views/yield-dtf/overview/components/backing/collateral-exposure.tsx:137
 msgid "View on explorer"
 msgstr ""
 
@@ -12798,7 +12800,7 @@ msgstr ""
 
 #: src/views/index-dtf/overview/components/index-about-meta.tsx:59
 #: src/views/index-dtf/overview/components/yield-index/yield-index-about.tsx:38
-#: src/views/yield-dtf/overview/components/backing/collateral-exposure.tsx:157
+#: src/views/yield-dtf/overview/components/backing/collateral-exposure.tsx:238
 #: src/views/yield-dtf/overview/components/backing/platform-exposure.tsx:85
 #: src/views/yield-dtf/overview/components/backing/token-exposure.tsx:117
 msgid "Website"
@@ -13053,7 +13055,7 @@ msgstr ""
 
 #: src/views/explorer/components/governance/filters.tsx:57
 #: src/views/index-dtf/overview/components/charts/data-type-selector.tsx:19
-#: src/views/yield-dtf/overview/components/backing/collateral-exposure.tsx:248
+#: src/views/yield-dtf/overview/components/backing/collateral-exposure.tsx:319
 msgid "Yield"
 msgstr ""
 
@@ -13076,7 +13078,7 @@ msgstr ""
 msgid "Yield DTFs (created on the Reserve Yield Protocol) feature built-in overcollateralization — a defense mechanism that helps protect stability if any backing assets default."
 msgstr ""
 
-#: src/views/yield-dtf/overview/components/backing/collateral-exposure.tsx:89
+#: src/views/yield-dtf/overview/components/backing/collateral-exposure.tsx:179
 msgid "Yield:"
 msgstr ""
 
@@ -13350,6 +13352,14 @@ msgstr ""
 #: src/views/index-dtf/governance/views/proposal/components/proposal-vote.tsx:111
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalVote.tsx:124
 msgid "Your voting power:"
+msgstr ""
+
+#: src/components/transaction-error/TransactionError.tsx:64
+msgid "Your wallet couldn't send this transaction. Make sure you have enough funds to pay for gas and try again."
+msgstr ""
+
+#: src/components/transaction-error/TransactionError.tsx:60
+msgid "Your wallet doesn't have enough funds to pay for gas. Add some and try again."
 msgstr ""
 
 #: src/views/portfolio-page/components/dtf-positions.tsx:218
