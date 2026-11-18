@@ -15,7 +15,7 @@ import {
   closeDrawerAtom,
   lockCheckboxAtom,
   stakingInputAtom,
-  stTokenAtom,
+  type StTokenExtended,
   underlyingBalanceRawAtom,
   updateCurrentDtfStTokenSupplyAtom,
   voteLockStateAtom,
@@ -25,10 +25,17 @@ import { getWriteContractParams, isSameAddress } from '../utils'
 
 const PROCESSING_DELAY = 10_000
 
-const SubmitLockButton = ({ onSuccess }: { onSuccess?: () => void }) => {
+const SubmitLockButton = ({
+  stToken,
+  isVaultReady,
+  onSuccess,
+}: {
+  stToken: StTokenExtended
+  isVaultReady: boolean
+  onSuccess?: () => void
+}) => {
   const { t } = useLingui()
   const account = useAtomValue(walletAtom)
-  const stToken = useAtomValue(stTokenAtom)
   const voteLockState = useAtomValue(voteLockStateAtom)
   const input = useAtomValue(stakingInputAtom)
   const balance = useAtomValue(underlyingBalanceRawAtom)
@@ -52,9 +59,7 @@ const SubmitLockButton = ({ onSuccess }: { onSuccess?: () => void }) => {
     }
   }, [])
 
-  const amountToLock = stToken
-    ? parseUnits(input || '0', stToken.underlying.decimals)
-    : 0n
+  const amountToLock = parseUnits(input || '0', stToken.underlying.decimals)
   const allowance = voteLockState?.underlyingAllowance.raw ?? 0n
   const needsApproval = allowance < amountToLock
   const hasBalance = balance !== undefined && balance >= amountToLock
@@ -64,7 +69,7 @@ const SubmitLockButton = ({ onSuccess }: { onSuccess?: () => void }) => {
     currentDelegate === zeroAddress ||
     isSameAddress(currentDelegate, account)
   const plan =
-    stToken && (shouldDelegateToSelf || account)
+    shouldDelegateToSelf || account
       ? prepareVoteLockDepositPlan({
           chainId: stToken.chainId,
           stToken: stToken.id,
@@ -100,7 +105,7 @@ const SubmitLockButton = ({ onSuccess }: { onSuccess?: () => void }) => {
   const { data: approvalReceipt, error: approvalTxError } =
     useWaitForTransactionReceipt({
       hash: approvalHash,
-      chainId: stToken?.chainId,
+      chainId: stToken.chainId,
     })
 
   const readyToSubmit =
@@ -117,11 +122,11 @@ const SubmitLockButton = ({ onSuccess }: { onSuccess?: () => void }) => {
   } = useWriteContract()
   const { data: receipt, error: txError } = useWaitForTransactionReceipt({
     hash,
-    chainId: stToken?.chainId,
+    chainId: stToken.chainId,
   })
 
   const write = (call: ContractCall | undefined) => {
-    if (!account || !call) return
+    if (!isVaultReady || !account || !call) return
 
     pendingSupplyDelta.current =
       sharesToMint !== undefined && !quoteIsStale && quotedAmount === amountToLock
@@ -131,7 +136,7 @@ const SubmitLockButton = ({ onSuccess }: { onSuccess?: () => void }) => {
   }
 
   const approve = () => {
-    if (!account || !approvalCall) return
+    if (!isVaultReady || !account || !approvalCall) return
 
     pendingApprovalAmount.current = amountToLock
     writeApprove(getWriteContractParams(approvalCall))
@@ -153,9 +158,7 @@ const SubmitLockButton = ({ onSuccess }: { onSuccess?: () => void }) => {
   }, [approvalReceipt?.status, approvalReceipt?.transactionHash, onSuccess])
 
   useEffect(() => {
-    if (receipt?.status !== 'success' || !receipt.transactionHash || !stToken) {
-      return
-    }
+    if (receipt?.status !== 'success' || !receipt.transactionHash) return
     if (processedReceiptHash.current === receipt.transactionHash) return
 
     processedReceiptHash.current = receipt.transactionHash
@@ -185,12 +188,11 @@ const SubmitLockButton = ({ onSuccess }: { onSuccess?: () => void }) => {
     onSuccess,
   ])
 
-  if (!stToken) return null
-
   return (
     <TransactionButton
       chain={stToken.chainId}
       disabled={
+        !isVaultReady ||
         !checkbox ||
         receipt?.status === 'success' ||
         amountToLock === 0n ||

@@ -18,7 +18,7 @@ import {
 import {
   closeDrawerAtom,
   stakingInputAtom,
-  stTokenAtom,
+  type StTokenExtended,
   unlockDelayAtom,
   unlockShareBalanceRawAtom,
   updateCurrentDtfStTokenSupplyAtom,
@@ -27,11 +27,18 @@ import { getWriteContractParams } from '../utils'
 
 const PROCESSING_DELAY = 10_000
 
-const SubmitUnlockButton = ({ onSuccess }: { onSuccess?: () => void }) => {
+const SubmitUnlockButton = ({
+  stToken,
+  isVaultReady,
+  onSuccess,
+}: {
+  stToken: StTokenExtended
+  isVaultReady: boolean
+  onSuccess?: () => void
+}) => {
   const { t } = useLingui()
   const account = useAtomValue(walletAtom)
   const { connector } = useAccount()
-  const stToken = useAtomValue(stTokenAtom)
   const input = useAtomValue(stakingInputAtom)
   const balance = useAtomValue(unlockShareBalanceRawAtom)
   const unlockDelay = useAtomValue(unlockDelayAtom)
@@ -51,20 +58,21 @@ const SubmitUnlockButton = ({ onSuccess }: { onSuccess?: () => void }) => {
     }
   }, [])
 
-  const sharesToUnlock = stToken
-    ? parseUnits(input || '0', stToken.token.decimals)
-    : 0n
+  const sharesToUnlock = parseUnits(input || '0', stToken.token.decimals)
   const readyToSubmit =
-    !!account && !!balance && sharesToUnlock > 0n && sharesToUnlock <= balance
-  const call =
-    stToken && account
-      ? prepareVoteLockRedeem({
-          chainId: stToken.chainId,
-          stToken: stToken.id,
-          shares: sharesToUnlock,
-          account,
-        })
-      : undefined
+    isVaultReady &&
+    !!account &&
+    !!balance &&
+    sharesToUnlock > 0n &&
+    sharesToUnlock <= balance
+  const call = account
+    ? prepareVoteLockRedeem({
+        chainId: stToken.chainId,
+        stToken: stToken.id,
+        shares: sharesToUnlock,
+        account,
+      })
+    : undefined
 
   const {
     writeContract,
@@ -74,11 +82,11 @@ const SubmitUnlockButton = ({ onSuccess }: { onSuccess?: () => void }) => {
   } = useWriteContract()
   const { data: receipt, error: txError } = useWaitForTransactionReceipt({
     hash,
-    chainId: stToken?.chainId,
+    chainId: stToken.chainId,
   })
 
   const write = () => {
-    if (!readyToSubmit || !call || !stToken) return
+    if (!readyToSubmit || !call) return
 
     trackClick(
       'vote_lock',
@@ -115,7 +123,7 @@ const SubmitUnlockButton = ({ onSuccess }: { onSuccess?: () => void }) => {
     if (processedReceiptHash.current === receipt.transactionHash) return
 
     processedReceiptHash.current = receipt.transactionHash
-    if (stToken && pendingSupplyDelta.current !== 0n) {
+    if (pendingSupplyDelta.current !== 0n) {
       updateCurrentDtfStTokenSupply({
         stToken: stToken.id,
         delta: pendingSupplyDelta.current,
@@ -140,8 +148,6 @@ const SubmitUnlockButton = ({ onSuccess }: { onSuccess?: () => void }) => {
     updateCurrentDtfStTokenSupply,
     onSuccess,
   ])
-
-  if (!stToken) return null
 
   return (
     <TransactionButton

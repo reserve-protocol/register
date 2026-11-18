@@ -89,6 +89,7 @@ export const VoteLockDrawer = ({
           </TabsContent>
         </Tabs>
         <VoteLockDrawerFooter
+          stToken={stToken}
           currentTab={currentTab}
           isOptimisticGovernance={isOptimisticGovernance}
           onRefresh={onRefresh}
