@@ -151,7 +151,7 @@
     "@lingui/cli": "^5.9.5",
     "@lingui/vite-plugin": "^5.9.5",
     "@locator/babel-jsx": "^0.4.4",
-    "@playwright/test": "^1.59.1",
+    "@playwright/test": "1.61.1",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^14.6.1",

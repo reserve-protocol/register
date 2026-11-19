@@ -148,6 +148,10 @@ surface unless noted.
   `e2e/tests/flows/issuance-manual-boundaries.spec.ts`). Each keeps its
   `test.fixme` + this entry as owner until fixed.
 
+## Playwright (2026-11-19)
+
+- `@playwright/test` is pinned at 1.61.1, the first line that installs Chromium on Ubuntu 26.04 (`ubuntu-latest`). 1.65.1 breaks the frozen-clock write specs on master (`flows/failures-governance`, `flows/governance-support-variants`, `flows/governance-queue-execute`, `flows/settings` registry failure: 12 failures in 50 runs, 0 on 1.59.1 and 1.61.1). Before going past 1.61, find the first breaking version in 1.62–1.65 and adapt `e2e/helpers/clock.ts`.
+
 ## Stack e2e lane (2026-09-21)
 
 - Closed: v6 rebalance metrics omitted `auctionLength` (the metrics updater now passes `maxAuctionLength` and waits for it, surfaced by the stack lane's "Unexpected error getting Rebalance data"); the Ondo cap sizing now carries it too.
