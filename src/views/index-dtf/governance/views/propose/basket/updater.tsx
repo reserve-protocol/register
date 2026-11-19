@@ -20,7 +20,8 @@ import { useQuery } from '@tanstack/react-query'
 import { atom, useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { useEffect, useMemo } from 'react'
 import { formatUnits } from 'viem'
-import { useReadContract, useReadContracts } from 'wagmi'
+import { useReadContract } from 'wagmi'
+import { useReadContracts } from '@/hooks/use-read-contracts'
 import {
   dtfSupplyAtom,
   IndexAssetShares,

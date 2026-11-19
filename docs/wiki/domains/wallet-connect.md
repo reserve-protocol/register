@@ -1,156 +1,126 @@
 ---
-title: Wallet Connection (Reown AppKit)
-updated: 2026-09-16
+title: Wallet Connection (solariskit)
+updated: 2026-11-17
 type: domain
 sources:
   - src/state/chain/index.tsx
   - src/hooks/use-wallet-modal.ts
+  - src/hooks/use-read-contracts.ts
   - src/components/account/index.tsx
-  - src/views/index-dtf/deploy/steps/confirm-deploy/success/index.tsx
   - e2e/fixtures/wallet.ts
   - e2e/tests/flows/wallet-connect.spec.ts
 ---
 
-Wallet UI is **Reown AppKit** (`@reown/appkit` + `@reown/appkit-adapter-wagmi`)
-on top of wagmi/viem. Replaced RainbowKit in September 2026 because RainbowKit
-stopped shipping and its mobile handoff was poor; Reown owns WalletConnect, so
-mobile deep links and the relay are theirs end to end.
+Wallet UI is **solariskit** (Akshat's RainbowKit fork) on wagmi v3 / viem.
+It replaced Reown AppKit in November 2026; AppKit had replaced RainbowKit two
+months earlier because RainbowKit stopped shipping and its mobile handoff was
+poor. solariskit keeps AppKit only as the WalletConnect modal (mobile wallet
+list and the desktop "Open" button), so `@reown/appkit` stays installed as a
+lazily loaded peer. The version is pinned exact: the fork ships breaking minors.
 
 Shape:
-- `src/state/chain/index.tsx` builds one `WagmiAdapter` (networks, transports,
-  polling intervals; no custom connectors) and calls
-  `createAppKit` once at module load. `wagmiConfig` is still exported from the
-  same module, so the RToken atoms and `state/wallet/atoms.ts` are untouched.
-- AppKit adds the injected (EIP-6963), WalletConnect and Coinbase connectors
-  itself, and adds `safe()` when `location.ancestorOrigins` identifies an
-  `app.safe.global` iframe. Do not register `safe()` unconditionally: AppKit
-  lists that unusable connector outside Safe. Alternate Safe hosts and older
-  browsers without that API need separate compatibility validation.
-  Rabby, Bitget, Binance and Ledger are pinned to the top through
-  `featuredWalletIds` (WalletConnect explorer ids); everything else is
-  reachable through the searchable "all wallets" list.
+- `src/state/chain/index.tsx` builds the wagmi config with `createConfig`
+  (chains, transports, per-chain polling) and `connectorsForWallets`, and mounts
+  `SolarisEthereumProvider` inside `QueryClientProvider` (the provider calls
+  wagmi query hooks). `wagmiConfig` is exported from the same module for the
+  RToken atoms and `state/wallet/atoms.ts`.
+- Wallets: injected (EIP-6963 discovery, plus a generic "Browser Wallet"
+  listed only when `window.ethereum` exists),
+  WalletConnect, Base Account and Safe. The kit ships no other factories;
+  Rabby, Bitget, Binance and MetaMask appear through EIP-6963, Ledger and
+  mobile wallets through WalletConnect. Safe lists only inside an iframe.
+- Wallet SDKs are app dependencies now (wagmi v3 made them optional peers):
+  `@walletconnect/ethereum-provider`, `@reown/appkit`, `@base-org/account`,
+  `@safe-global/safe-apps-sdk`, `@safe-global/safe-apps-provider`. A missing
+  one fails when the wallet is clicked, not at build time. `@reown/appkit` is
+  pinned to the version `@walletconnect/ethereum-provider` depends on, so one
+  copy is installed. `vite.config.ts` keeps these out of the eager `wallet`
+  chunk so the kit can lazy-load them.
 - `useWalletModal()` (`src/hooks/use-wallet-modal.ts`) is the only app-side
-  seam: `openConnectModal`, `openAccountModal`; `useWalletModalOpen()` is a
-  separate subscription (true while *any* AppKit view is open) because only
-  `seamless-transaction.tsx` needs it and AppKit state re-renders often. Components never import AppKit directly, so the
-  vendor can be swapped again in one file.
+  seam: `openConnectModal`, `openAccountModal`; `useWalletModalOpen()` is true
+  while either modal is open. Components never import the kit directly.
+  The kit exposes each opener only in its own state: connect while no wallet
+  is connected (including while wagmi reconnects), account while connected.
+  The other one is a no-op, so a connect CTA must only render disconnected.
 - The header chip and the portfolio connect button render from wagmi
-  `useAccount()` plus `useEnsName`; AppKit only owns the modal. The header
-  shows addresses as 4+4 (`0xf3…2266`, RainbowKit parity — the 360px header
-  has no room for more), cuts ENS labels over 24 characters and width-caps
-  only ENS names (a plain address must never clip); the shared ENS hook still
-  returns the full name.
+  `useAccount()` plus `useEnsName`; the kit only owns the modals. The header
+  shows addresses as 4+4 (`0xf3…2266`), cuts ENS labels over 24 characters and
+  width-caps only ENS names (a plain address must never clip).
+- The provider wraps the app in a `<div data-solaris>`; `#root > div` in
+  `src/app.css` gives it full height so sticky children keep working.
 
-Disclaimer: the old custom RainbowKit disclaimer is now AppKit's built-in
-legal footer, fed by `termsConditionsUrl` / `privacyPolicyUrl`. AppKit renders
-its own wording ("By connecting your wallet, you agree to our Terms of Service
-and Privacy Policy"); the text is not customizable. `features.legalCheckbox`
-would turn it into a required checkbox if legal ever wants explicit consent.
+Not available any more: email and social login, onramp, swap, send and
+activity (AppKit features). Users who signed in that way cannot connect.
 
-Feature surface: AppKit defaults enable email, all supported social logins,
-onramp, swaps, send, history and analytics; no local `features` overrides remain.
-Reown's project dashboard controls remote availability for email/socials,
-onramp, swaps and activity, and can override those defaults. If a feature is
-absent in production, check the project's dashboard configuration and plan.
-Register's existing Mixpanel wallet tracking stays in the wallet updater;
-AppKit owns analytics for interactions inside its modal.
+Chain selection stays in the app (`chainIdAtom`). Never render the kit's
+`ConnectButton`, `ChainSelectButton` or call `useChainModal`, and never pass
+`initialChain`: those are the only ways to reach the kit's network picker,
+which would expose Arbitrum (deprecated for Index DTFs). The account modal has
+copy, disconnect and an explorer link only.
 
-Network switching inside the modal is off (`enableNetworkSwitch: false`):
-chain selection stays in the app (`chainIdAtom`) and the wrong-network state
-is the header tooltip, as before; the picker would also expose Arbitrum, which
-is deprecated for Index DTFs.
+Disclaimer: a custom `DisclaimerComponent` with the same wording AppKit showed
+("By connecting your wallet, you agree to our Terms of Service and Privacy
+Policy"). The kit is English only; the modals do not follow the app locale.
 
-Theming: `themeMode: 'dark'` (parity with the old always-dark RainbowKit
-theme) and `--apkt-font-family` set to the app font. The modal is shadow DOM:
-Tailwind and design tokens do not reach it; only `themeVariables` do.
+Theming: `darkTheme({ borderRadius: 'medium' })`; the font inherits from the
+page. The modals are light DOM under `[data-solaris]` with `--solaris-*`
+variables; do not style kit internals.
 
-Safe over WalletConnect (investigated 2026-09-15/16, not a blocker, no code):
-AppKit's WC connector proposes the session with `optionalNamespaces` only, then
-picks the connected chain from the session's approved chains (adapter
-`connectors/WalletConnectConnector.js` ~L60-69), so a chain-bound Safe never
-receives a switch to a chain it did not approve. The adapter's post-connect
-`switchChain(res.chainId)` (`client.js` ~L413) targets that same approved
-chain, and `@walletconnect/universal-provider` handles
-`wallet_switchEthereumChain` for an approved chain locally
-(`handleSwitchChain` → `isChainApproved` → `setDefaultChain`, no relay
-request). Residual behaviour, same as before the migration: the app's own
-`switchChainAsync` to the page chain does reach the wallet, and a Safe rejects
-it — that is the existing wrong-network toast. A Safe on a chain outside
-`networks` (e.g. Polygon) fails the connect with `ChainNotConfiguredError`
-instead of connecting on a wrong chain. `useConnectWithReset`
-(disconnect-before-open) stays.
+Connect-time chain: the kit connects on wagmi's current chain (`useChainId()`:
+the last connected chain, mainnet on a fresh browser), not the wallet's, and
+asks the wallet to switch if it is elsewhere. AppKit behaved the same way (a
+Test Wallet moved to Base while wagmi remembered BSC is switched back to BSC
+at connect on both kits), so this is not new. Fixing it means changing the
+target precedence in the kit's `useWalletConnectors`; it is a follow-up.
 
-Documented residual risk, deliberately not guarded in code (decision
-2026-09-16): if a wallet's settled session omits `namespaces.eip155.chains`,
-the connector falls back to chain 1 (`WalletConnectConnector.js` ~L63) and the
-adapter's post-connect switch to chain 1 can reach the wallet and be rejected,
-failing the connect. Universal-provider derives approvals from the CAIP-10
-accounts, so a Base/BSC-only account does not approve chain 1. Safe web's
-published session includes the chains field; the missing-field case was only
-reproduced with a provider fixture, never with a live Safe, and Safe Mobile
-was not verified. An app-owned `SafeWagmiAdapter` override (a verbatim copy of
-upstream `connectWalletConnect` that skipped that one switch) was written,
-reviewed and dropped: it guarded an unobserved case, needed a re-diff on every
-AppKit bump, and left wagmi reporting chain 1 while the Safe sat on another
-chain. If a real Safe session ever hits this, the fix is that override
-(history: commit 789016fdc) or an upstream AppKit fix — check released AppKit
-versions first. On 2026-09-16 AppKit 1.8.24 still had identical connector and
-post-connect switching logic.
+Safe over WalletConnect is unverified on this kit. The risk follows from the
+paragraph above: a chain-bound Safe on a chain other than wagmi's current one
+is asked to switch at connect and rejects. The RainbowKit-era setup stripped
+`chainId` from WalletConnect connects for this reason (git: `018a47b7e^`,
+`src/state/chain/index.tsx`); it is not restored because it would not cover
+the kit's follow-up switch. `useConnectWithReset` (disconnect-before-open)
+stays.
 
-Second residual risk: Safe App iframe reload — the adapter's `syncConnection`
-(`client.js` ~L376-390) reports the *requested* chain to AppKit instead of the
-Safe's chain, so AppKit's modal state and wagmi can disagree after a refresh.
-The app reads wagmi, so the header/wrong-network UX stays correct.
+Manual matrix (needs real wallets; rerun on every kit bump): MetaMask and
+Rabby extensions; WalletConnect QR and the mobile wallet list; Ledger via
+WalletConnect; Base Account; Binance and Bitget in-app browsers; Safe web over
+WalletConnect and Safe Mobile (fresh connect, then hard refresh) for Safe on
+Ethereum → Base DTF, Safe on Base → Ethereum DTF, Safe on BSC → Base DTF and
+Safe on Base → Base DTF; the Safe iframe for the same cases. Pass = no
+unexpected switch prompt, header reports the wallet's chain, cross-chain cases
+show the wrong-network tooltip, refresh reconnects without a prompt. Existing
+WalletConnect sessions from the AppKit build do not restore: reconnect once.
 
-Manual matrix (Safe web WC and Safe Mobile; fresh connect, then hard
-refresh): Safe on Ethereum → Base DTF; Safe on Base → Ethereum DTF; Safe on
-BSC → Base DTF; Safe on Base → Base DTF (control). Pass = Safe shows no
-chain-switch prompt, header reports the Safe's chain, cross-chain cases show
-the wrong-network tooltip, refresh reconnects without a prompt. Safe iframe
-via `safe()`: same three cross/control cases, checking wagmi and AppKit agree
-on the chain after refresh.
-
-Binance uses AppKit's wallet discovery and WalletConnect flow, with its
-explorer id retained in `featuredWalletIds`. The custom Binance wagmi connector
-and its SDK dependency are removed; AppKit also handles the injected provider
-inside the Binance in-app browser.
+wagmi v3 behaviour to know:
+- `useReadContracts` no longer skips the query while a contract has no
+  address (v2 did). `src/hooks/use-read-contracts.ts` restores that, and
+  oxlint rejects importing `useReadContracts` from `wagmi`. `useReadContract`
+  (singular) still guards itself.
+- `useBalance` lost `token` and `formatted`; ERC-20 balances are `balanceOf`
+  reads. `useFeeData` is gone (`useEstimateFeesPerGas`).
+- `useSimulateContract` now needs a connected account and is disabled without
+  one.
+- `useAccount`, `writeContract` and the other v2 names still work but are
+  deprecated; the rename is a follow-up in `docs/plans/FOLLOWUPS.md`.
+- `@reserve-protocol/async-zap-sdk` still declares a wagmi v2 peer; a
+  `peerDependencyRules` entry in `pnpm-workspace.yaml` allows v3.
 
 The deploy success page uses wagmi's `useWatchAsset` to add the new ERC-20 to
-the connected wallet, matching Index navigation. Direct `window.ethereum`
-access previously relied on types supplied transitively by Binance's package
-and could target a different injected wallet.
+the connected wallet, matching Index navigation.
 
-RPC: AppKit rewrites `chain.rpcUrls.default` to Reown's proxy
-(`rpc.walletconnect.org`) unless `customRpcUrls` is given, and wraps every
-wagmi transport as `fallback([ours, reownProxy])`. We pass `customRpcUrls`
-from `registerRpcUrls`, so chain objects keep our endpoints; the Reown proxy
-remains the last-resort transport fallback.
+E2E: `e2e/fixtures/base.ts` fulfils the WalletConnect/Reown hosts with `{}`.
+The injected Test Wallet is announced over EIP-6963 and lists under
+"Installed" by its announced name; a recently used wallet's button gains a
+"Recent" suffix, so do not match its name exactly. wagmi usually reconnects it
+on mount; `connectWallet(page)` tolerates both paths. The kit looks up the ENS
+avatar record of a resolved name, so a spec that gives the wallet an ENS name
+must also answer `resolveWithGateways`. `flows/wallet-connect` owns the modal
+contract: legal footer, WalletConnect and Base listed, Safe absent outside an
+iframe, no network picker, account view, disconnect that sticks, and header
+bounds for a plain address and short/long ENS names at 360/412/1280px. Unit
+tests need no kit mock; `src/hooks/tests/use-wallet-modal.test.tsx` covers the
+seam.
 
-E2E: `e2e/fixtures/base.ts` already fulfilled the WalletConnect/Reown API
-hosts with `{}`; the migration added the Coinbase SDK telemetry abort (AppKit
-initialises that connector eagerly). `e2e/helpers/provider.ts` answers
-`wallet_revokePermissions` (AppKit sends it on disconnect). The injected test
-wallet is always authorized, so AppKit usually auto-connects it on mount;
-`connectWallet(page)` tolerates both paths. Unit tests mock
-`@reown/appkit/react` in `src/setup-tests.ts` because AppKit boots
-WalletConnect at import time and jsdom has no provider for it.
-
-`flows/wallet-connect` checks that the iframe-only Safe option is absent from
-the normal modal and that default email/social and fund/swap/send/activity controls
-are visible. Exact ENS reverse-resolution RPC overrides exercise a plain
-address plus short and long names; header and mobile navigation bounds are
-checked at 360/412px, and the desktop header at 1280px. Screenshots go to
-Playwright's test results. The stubbed Reown response exercises local defaults;
-it does not prove production dashboard settings or live authentication/payment
-flows. The deploy success action has no end-to-end coverage yet.
-
-Build: the production bundle needs ~6 GB of JS heap while Rollup renders
-sourcemapped chunks (AppKit pushed it over Node's ~4 GB default), so the
-`build` script sets `NODE_OPTIONS=--max-old-space-size=6144`. Since 2026-09-16
-source maps and the Sentry plugin only run when `SENTRY_AUTH_TOKEN` (or
-`.env.sentry-build-plugin`) is present: maps are then `hidden` and deleted
-after upload, so they are never served publicly; without the token no maps are
-written. Local profile on 2026-09-16 (M-series, 14 cores): logos 7s (network,
-only when the mapping file is older than a week), tsc 13s, vite 25s with maps
-/ 17s without, SEO 0.5s. Cloudflare Pages must set the token for Sentry
-symbolication to keep working.
+Build: `NODE_OPTIONS=--max-old-space-size=6144` in the `build` script dates
+from AppKit; it has not been re-measured on this kit. Source maps and the
+Sentry plugin only run when `SENTRY_AUTH_TOKEN` is present.

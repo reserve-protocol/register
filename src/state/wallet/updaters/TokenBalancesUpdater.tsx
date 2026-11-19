@@ -113,7 +113,7 @@ export const TokenBalancesUpdater = () => {
       }, {} as TokenBalanceMap)
 
       balances['0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE'] = {
-        balance: balance ? balance.formatted : '0',
+        balance: balance ? formatUnits(balance.value, balance.decimals) : '0',
         value: balance ? balance.value : 0n,
         decimals: 18,
       }

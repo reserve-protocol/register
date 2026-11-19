@@ -16,7 +16,8 @@ import {
 import { atom, useAtomValue, useSetAtom } from 'jotai'
 import { useEffect, useMemo, useRef } from 'react'
 import { useFormContext, useWatch } from 'react-hook-form'
-import { useReadContract, useReadContracts } from 'wagmi'
+import { useReadContract } from 'wagmi'
+import { useReadContracts } from '@/hooks/use-read-contracts'
 import {
   feeRecipientsAtom,
   isProposalConfirmedAtom,

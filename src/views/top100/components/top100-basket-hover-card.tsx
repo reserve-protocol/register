@@ -14,7 +14,7 @@ import { ArrowRightIcon } from 'lucide-react'
 import { useMemo } from 'react'
 import { Address, erc20Abi } from 'viem'
 import { useNavigate } from 'react-router-dom'
-import { useReadContracts } from 'wagmi'
+import { useReadContracts } from '@/hooks/use-read-contracts'
 import { Top100DTF } from '../types'
 
 const LIMIT_ASSETS = 10

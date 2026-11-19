@@ -1,6 +1,6 @@
 ---
 title: Design System
-updated: 2026-09-16
+updated: 2026-11-17
 type: domain
 sources:
   - tailwind.config.ts
@@ -41,4 +41,4 @@ shadcn/ui primitives in `src/components/ui`: Dialog, Drawer, Modal, Card, Button
 
 ## Package-style containment
 
-Third-party package internals are not a styling surface. The one live exception (`.rc-*` overrides for `@reserve-protocol/dtf-chat` in `src/components/dtf-chat/overrides.css`, imported by its wrapper) is documented in [[project]] § Active Risks with upstream work backlogged. AppKit uses its supported `themeVariables` API; see [[wallet-connect]].
+Third-party package internals are not a styling surface. The one live exception (`.rc-*` overrides for `@reserve-protocol/dtf-chat` in `src/components/dtf-chat/overrides.css`, imported by its wrapper) is documented in [[project]] § Active Risks with upstream work backlogged. solariskit is themed through its `theme` prop only; see [[wallet-connect]].

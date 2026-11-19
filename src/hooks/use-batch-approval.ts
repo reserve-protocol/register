@@ -1,5 +1,5 @@
-import { writeContract, waitForTransactionReceipt } from '@wagmi/core'
 import { useConfig } from 'wagmi'
+import { writeContract, waitForTransactionReceipt } from 'wagmi/actions'
 import { erc20Abi, Address, Hex } from 'viem'
 import { useState, useEffect, useCallback, useRef } from 'react'
 

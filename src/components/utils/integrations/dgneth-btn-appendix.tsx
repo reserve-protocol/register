@@ -5,7 +5,7 @@ import { cn } from '@/lib/utils'
 import { RESERVE_API } from '@/utils/constants'
 import { ChainId } from 'utils/chains'
 import { erc20Abi, formatUnits } from 'viem'
-import { useReadContracts } from 'wagmi'
+import { useReadContracts } from '@/hooks/use-read-contracts'
 
 type Props = {
   rTokenSymbol?: string

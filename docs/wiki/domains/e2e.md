@@ -1,6 +1,6 @@
 ---
 title: E2E Suite
-updated: 2026-11-17
+updated: 2026-11-18
 type: domain
 sources:
   - e2e/**
@@ -227,12 +227,12 @@ phases and deferred writes are tracked in `e2e/TEST_MAP.md` § gaps.
 
 ## Wallet modal
 
-`flows/wallet-connect` covers AppKit connect/disconnect, the legal footer,
-default email/social and fund/swap/send/activity controls, Safe iframe-only visibility,
-and plain-address/short-ENS/long-ENS header bounds
-on desktop and mobile. Reown services are stubbed and Coinbase telemetry is
-aborted; this proves injected-wallet behavior, not live WalletConnect relay,
-email/social authentication, or fiat-provider flows. See [[wallet-connect]].
+`flows/wallet-connect` covers connect/disconnect through the solariskit modal,
+the legal footer, the listed wallets, the absent network picker, Safe
+iframe-only visibility, and plain-address/short-ENS/long-ENS header bounds
+on desktop and mobile. WalletConnect and Reown hosts are stubbed; this proves
+injected-wallet behavior, not the live WalletConnect relay, Base Account or
+Safe. See [[wallet-connect]].
 
 Related: [[project]], [[sdk]], [[yield-protocol]], [[subgraphs]].
 

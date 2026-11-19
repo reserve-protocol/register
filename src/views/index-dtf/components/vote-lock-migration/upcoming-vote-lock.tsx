@@ -9,7 +9,7 @@ import { useAtomValue } from 'jotai'
 import { ArrowRight } from 'lucide-react'
 import { useState } from 'react'
 import { erc20Abi, isAddressEqual } from 'viem'
-import { useReadContracts } from 'wagmi'
+import { useReadContracts } from '@/hooks/use-read-contracts'
 import { optimisticStakingVaultAddress } from '@/components/vote-lock/migration/migration-targets'
 import { useOptimisticUpgradeEligibility } from './use-upgrade-eligibility'
 

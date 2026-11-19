@@ -5,7 +5,6 @@ import { Abi, ContractFunctionArgs, ContractFunctionName } from 'viem'
 import {
   useBlockNumber,
   useReadContract,
-  useReadContracts,
   type UseReadContractsParameters,
   type UseReadContractParameters,
   type UseReadContractReturnType,
@@ -13,6 +12,7 @@ import {
   type Config,
   type ResolvedRegister,
 } from 'wagmi'
+import { useReadContracts } from '@/hooks/use-read-contracts'
 import { type ReadContractData, type ReadContractsData } from 'wagmi/query'
 
 // Returns the latest observed block number — used as a changing dependency to

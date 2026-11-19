@@ -15,8 +15,9 @@ import { CollateralPlugin } from 'types'
 import { formatCurrency, safeParseEther } from 'utils'
 import { ChainId } from 'utils/chains'
 import { BIGINT_MAX } from 'utils/constants'
-import { Address } from 'viem'
-import { useBalance, useReadContract } from 'wagmi'
+import { Address, erc20Abi, formatUnits } from 'viem'
+import { useReadContract } from 'wagmi'
+import { useReadContracts } from '@/hooks/use-read-contracts'
 import { cn } from '@/lib/utils'
 
 interface Props {
@@ -34,12 +35,29 @@ const CollateralItem = ({ collateral, wrapping, className }: Props) => {
   const [amount, setAmount] = useState('')
   const refreshSignal = useRefreshSignal(chainId)
 
-  const { data, refetch } = useBalance({
-    address: wallet ? wallet : undefined,
-    token: (wrapping
-      ? collateral.underlyingAddress
-      : collateral.erc20) as Address,
-    chainId,
+  const token = (
+    wrapping ? collateral.underlyingAddress : collateral.erc20
+  ) as Address
+  const { data, refetch } = useReadContracts({
+    contracts: [
+      {
+        abi: erc20Abi,
+        address: token,
+        functionName: 'balanceOf',
+        args: wallet ? [wallet] : undefined,
+        chainId,
+      },
+      { abi: erc20Abi, address: token, functionName: 'decimals', chainId },
+    ],
+    allowFailure: false,
+    query: {
+      enabled: !!wallet,
+      select: ([value, decimals]) => ({
+        value,
+        decimals,
+        formatted: formatUnits(value, decimals),
+      }),
+    },
   })
 
   useEffect(() => {

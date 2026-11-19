@@ -45,7 +45,7 @@ function nextTxHash(): string {
 // Two parts:
 // 1. exposeFunction — bridges browser RPC calls into Node (this process).
 // 2. addInitScript — injects the provider and announces it via EIP-6963, which
-//    AppKit's wallet discovery listens for, so "Test Wallet" appears in the
+//    the kit's wallet discovery listens for, so "Test Wallet" appears in the
 //    connect modal and window.ethereum is set as a fallback.
 //
 // READ PATH: the HTTP host interception (mockRpcRoutes) is the PRIMARY read

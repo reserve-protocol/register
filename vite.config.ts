@@ -64,15 +64,12 @@ export default defineConfig({
         manualChunks: (id) => {
           if (!id.includes('node_modules')) return undefined
 
-          // Wallet stack: ~4MB self-contained chunk
+          // Wallet stack: self-contained chunk
           // These packages form a cohesive unit and don't import from app code
           if (
             id.includes('/wagmi/') ||
             id.includes('/@wagmi/') ||
-            id.includes('/viem/') ||
-            id.includes('/@walletconnect/') ||
-            id.includes('/@coinbase/wallet-sdk') ||
-            id.includes('/@reown/')
+            id.includes('/viem/')
           ) {
             return 'wallet'
           }

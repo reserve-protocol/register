@@ -19,11 +19,11 @@ import {
 import {
   usePublicClient,
   useReadContract,
-  useReadContracts,
   useTransactionReceipt,
   useWaitForTransactionReceipt,
   useWriteContract,
 } from 'wagmi'
+import { useReadContracts } from '@/hooks/use-read-contracts'
 import type { MigrationStepName } from './migration-record'
 import { chooseDeposit, getLockAmount, getSafeStepOutcome, isUserRejection } from './migration-state'
 import { useMigrationRecord } from './use-migration-record'

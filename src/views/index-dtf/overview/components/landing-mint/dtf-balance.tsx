@@ -9,8 +9,8 @@ import { useAtomValue } from 'jotai'
 import { ArrowDown, ArrowRight, ArrowUp } from 'lucide-react'
 import { useEffect, useMemo } from 'react'
 import { Link } from 'react-router-dom'
-import { formatEther } from 'viem'
-import { useAccount, useBalance } from 'wagmi'
+import { erc20Abi, formatEther } from 'viem'
+import { useAccount, useReadContract } from 'wagmi'
 
 const DTFBalance = () => {
   const dtf = useAtomValue(indexDTFAtom)
@@ -21,10 +21,12 @@ const DTFBalance = () => {
   // of opening a second eth_blockNumber poll just for this balance.
   const block = useAtomValue(blockAtom)
 
-  const { data: userBalanceData, refetch: refetchBalance } = useBalance({
-    address: account.address,
+  const { data: userBalanceData, refetch: refetchBalance } = useReadContract({
+    abi: erc20Abi,
+    address: dtf?.id,
+    functionName: 'balanceOf',
+    args: account.address ? [account.address] : undefined,
     chainId: chainId,
-    token: dtf?.id,
     query: {
       enabled: !!dtf?.id && !!account.address,
     },
@@ -32,7 +34,7 @@ const DTFBalance = () => {
 
   const dtfAmount = useMemo(() => {
     if (userBalanceData === undefined) return undefined
-    return Number(formatEther(userBalanceData.value))
+    return Number(formatEther(userBalanceData))
   }, [userBalanceData])
 
   const balanceValue = useMemo(() => {

@@ -30,8 +30,8 @@ import { MessageCircle, Wallet } from 'lucide-react'
 import { ReactNode, useMemo } from 'react'
 import { createPortal } from 'react-dom'
 import { Link, useLocation, useParams } from 'react-router-dom'
-import { formatEther } from 'viem'
-import { useAccount, useBalance } from 'wagmi'
+import { erc20Abi, formatEther } from 'viem'
+import { useAccount, useReadContract } from 'wagmi'
 import EligibilityCard from './eligibility-card'
 import { isIndexDtfOverviewPathname } from '../../utils/index-dtf-pathname'
 
@@ -95,17 +95,19 @@ const IndexCTAsOverviewMobile = () => {
   const { isLoading, data: complianceData } = useComplianceRestrictions()
   const isRestricted = isLoading || complianceData?.restricted === true
   const isGeoRestricted = complianceData?.reason === 'geolocation-restricted'
-  const { data: userBalanceData } = useBalance({
-    address: account.address,
+  const { data: userBalanceData } = useReadContract({
+    abi: erc20Abi,
+    address: dtf?.id,
+    functionName: 'balanceOf',
+    args: account.address ? [account.address] : undefined,
     chainId: dtf?.chainId,
-    token: dtf?.id,
     query: {
       enabled: !!dtf?.id && !!account.address,
     },
   })
   const hasDtfBalance = useMemo(() => {
     if (userBalanceData === undefined) return false
-    return Number(formatEther(userBalanceData.value)) > 0
+    return Number(formatEther(userBalanceData)) > 0
   }, [userBalanceData])
 
   const renderTradeButton = (): ReactNode =>

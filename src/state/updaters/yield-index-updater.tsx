@@ -12,7 +12,7 @@ import { useQuery } from '@tanstack/react-query'
 import { atom, useAtomValue, useSetAtom } from 'jotai'
 import { useEffect, useMemo } from 'react'
 import { Address, erc20Abi } from 'viem'
-import { useReadContracts } from 'wagmi'
+import { useReadContracts } from '@/hooks/use-read-contracts'
 
 const underlyingAddressesAtom = atom<string[]>((get) => {
   const pools = get(indexDTFPoolsDataAtom)

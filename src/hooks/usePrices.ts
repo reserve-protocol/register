@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query'
 import { Address } from 'viem'
 import { AssetPrice, DTFPrice } from '@/types/prices'
 import { RESERVE_API } from '@/utils/constants'
-import { useReadContracts } from 'wagmi'
+import { useReadContracts } from '@/hooks/use-read-contracts'
 import { useMemo } from 'react'
 import dtfIndexAbi from '@/abis/dtf-index-abi-v1'
 
