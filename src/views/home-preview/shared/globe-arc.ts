@@ -10,6 +10,9 @@ export const arcGlobeRadius = (width: number, height: number) =>
 export const arcVisibility = (depth: number, distance: number, radius: number) =>
   Math.max(0, Math.min(1, Math.max(depth * radius, distance - radius) / 5))
 
+export const hasVisibleDeparture = (visibilityAt: (u: number) => number) =>
+  visibilityAt(0) >= 0.5 && visibilityAt(0.5) >= 0.5
+
 export const arcWindow = (progress: number) => ({
   head: Math.min(1, progress),
   tail: Math.max(0, Math.min(1, progress - (ARC_END - 1))),

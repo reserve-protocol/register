@@ -5,7 +5,7 @@ import globe from '../mock/globe-dots.json'
 import geography from '../mock/v26-geography.json'
 import { CATEGORIES } from '../mock/ugly-cash-series'
 import { CATEGORY_COLORS } from './category-colors'
-import { ARC_END, ARC_HEAD_RADIUS, ARC_LIFT, arcGlobeRadius, arcVisibility, arcWindow } from './globe-arc'
+import { ARC_END, ARC_HEAD_RADIUS, ARC_LIFT, arcGlobeRadius, arcVisibility, arcWindow, hasVisibleDeparture } from './globe-arc'
 
 const cssColor = (name: string, alpha = 1) => {
   const v = getComputedStyle(document.documentElement)
@@ -26,7 +26,8 @@ const useCanvasLoop = (
     dt: number,
     t: number
   ) => void,
-  setup?: (w: number, h: number) => void
+  setup?: (w: number, h: number) => void,
+  keepStill = false
 ) => {
   const ref = useRef<HTMLCanvasElement>(null)
   useEffect(() => {
@@ -39,6 +40,7 @@ const useCanvasLoop = (
     let visible = true
     let last = performance.now()
     const start = last
+    const motion = keepStill ? window.matchMedia('(prefers-reduced-motion: reduce)') : undefined
     const resize = () => {
       const dpr = Math.min(window.devicePixelRatio || 1, 2)
       w = canvas.clientWidth
@@ -47,13 +49,14 @@ const useCanvasLoop = (
       canvas.height = h * dpr
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
       setup?.(w, h)
+      if (motion?.matches) draw(ctx, w, h, 0, 4)
     }
     resize()
     const ro = new ResizeObserver(resize)
     ro.observe(canvas)
     const io = new IntersectionObserver(([e]) => {
       visible = e.isIntersecting
-      if (visible && !raf) {
+      if (visible && !raf && !motion?.matches) {
         last = performance.now()
         raf = requestAnimationFrame(loop)
       }
@@ -62,13 +65,17 @@ const useCanvasLoop = (
     const loop = (now: number) => {
       raf = 0
       if (!visible || document.hidden) return
+      if (motion?.matches) {
+        draw(ctx, w, h, 0, 4)
+        return
+      }
       const dt = Math.min(0.05, (now - last) / 1000)
       last = now
       draw(ctx, w, h, dt, (now - start) / 1000)
       raf = requestAnimationFrame(loop)
     }
-    if (prefersReducedMotion()) draw(ctx, w, h, 0, 4)
-    else raf = requestAnimationFrame(loop)
+    if (!prefersReducedMotion()) raf = requestAnimationFrame(loop)
+    else if (!keepStill) draw(ctx, w, h, 0, 4)
     const onVisibility = () => {
       if (!document.hidden && visible && !raf && !prefersReducedMotion()) {
         last = performance.now()
@@ -76,11 +83,13 @@ const useCanvasLoop = (
       }
     }
     document.addEventListener('visibilitychange', onVisibility)
+    motion?.addEventListener('change', onVisibility)
     return () => {
       cancelAnimationFrame(raf)
       ro.disconnect()
       io.disconnect()
       document.removeEventListener('visibilitychange', onVisibility)
+      motion?.removeEventListener('change', onVisibility)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
@@ -230,7 +239,7 @@ type GlobeCountryGroups = {
 
 // V21: a slowly turning dotted globe; active countries in blue, eUSD hopping between them.
 export const EusdGlobe = ({ countryGroups, smoothArcs = false }: { countryGroups?: GlobeCountryGroups; smoothArcs?: boolean } = {}) => {
-  const state = useRef({ rot: -60, arcs: [] as Arc[], next: 0 })
+  const state = useRef({ rot: -60, arcs: [] as Arc[], next: 0, elapsed: 0 })
   const pts = useMemo(() => {
     if (!countryGroups) return globe.pts as number[][]
     return (geography.globeDots as [number, number, string][]).map(([lon, lat, name]) => [
@@ -287,35 +296,47 @@ export const EusdGlobe = ({ countryGroups, smoothArcs = false }: { countryGroups
       ctx.fill()
     }
     ctx.globalAlpha = 1
-    if (dt > 0 && t > s.next && s.arcs.length < 4) {
-      const a = actives[Math.floor(Math.random() * actives.length)] as [
-        number,
-        number,
-      ]
-      const b = actives[Math.floor(Math.random() * actives.length)] as [
-        number,
-        number,
-      ]
-      if (a !== b) s.arcs.push({ from: a, to: b, t: 0 })
-      s.next = t + 0.7
+    if (smoothArcs && dt === 0) return
+    const sample = (va: number[], vb: number[], u: number) =>
+      project(slerp(va, vb, u), Math.sin(Math.PI * u) * ARC_LIFT)
+    const visible = ({ x, y, z }: ReturnType<typeof sample>) =>
+      arcVisibility(z, Math.hypot(x - cx, y - cy), R)
+    if (smoothArcs) {
+      s.elapsed += dt
+      for (const arc of s.arcs) arc.t += dt * 0.55
+      s.arcs = s.arcs.filter((arc) => arc.t < ARC_END)
     }
-    s.arcs = s.arcs.filter((arc) => arc.t < (smoothArcs ? ARC_END : 1.4))
+    const clock = smoothArcs ? s.elapsed : t
+    if (dt > 0 && clock > s.next && s.arcs.length < 4) {
+      for (let attempt = 0; attempt < (smoothArcs ? 12 : 1); attempt++) {
+        const a = actives[Math.floor(Math.random() * actives.length)] as [number, number]
+        const b = actives[Math.floor(Math.random() * actives.length)] as [number, number]
+        if (a === b) continue
+        if (smoothArcs) {
+          const va = toVec(a)
+          const vb = toVec(b)
+          if (!hasVisibleDeparture((u) => visible(sample(va, vb, u)))) continue
+        }
+        s.arcs.push({ from: a, to: b, t: 0 })
+        break
+      }
+      s.next = clock + 0.7
+    }
+    if (!smoothArcs) s.arcs = s.arcs.filter((arc) => arc.t < 1.4)
     for (const arc of s.arcs) {
-      arc.t += dt * 0.55
+      if (!smoothArcs) arc.t += dt * 0.55
       const va = toVec(arc.from)
       const vb = toVec(arc.to)
       if (smoothArcs) {
         const { head, tail, opacity } = arcWindow(arc.t)
-        const sample = (u: number) => project(slerp(va, vb, u), Math.sin(Math.PI * u) * ARC_LIFT)
-        const visible = ({ x, y, z }: ReturnType<typeof sample>) =>
-          arcVisibility(z, Math.hypot(x - cx, y - cy), R)
+
         ctx.strokeStyle = blue
         ctx.fillStyle = blue
         ctx.lineWidth = 2
         ctx.lineCap = 'butt'
-        let previous = sample(tail)
+        let previous = sample(va, vb, tail)
         for (let i = 1; i <= 24; i++) {
-          const point = sample(tail + ((head - tail) * i) / 24)
+          const point = sample(va, vb, tail + ((head - tail) * i) / 24)
           ctx.globalAlpha = (0.85 * opacity * (visible(previous) + visible(point))) / 2
           ctx.beginPath()
           ctx.moveTo(previous.x, previous.y)
@@ -360,12 +381,12 @@ export const EusdGlobe = ({ countryGroups, smoothArcs = false }: { countryGroups
         ctx.fill()
       }
     }
-  })
+  }, undefined, smoothArcs)
 
   return (
-    <div className="relative h-[320px] w-full" aria-hidden="true">
-      <canvas ref={canvasRef} className="h-full w-full" />
-      <div className="absolute bottom-1 left-1/2 flex -translate-x-1/2 items-center gap-3 rounded-full border-2 border-primary bg-card py-1.5 pl-1.5 pr-5 shadow-[0_10px_30px_rgba(0,0,0,0.08)]">
+    <div className={smoothArcs ? 'flex w-full flex-col items-center' : 'relative h-[320px] w-full'} aria-hidden="true">
+      <canvas ref={canvasRef} className={smoothArcs ? 'block h-[320px] w-full' : 'h-full w-full'} />
+      <div className={`flex items-center gap-3 rounded-full border-2 border-primary bg-card py-1.5 pl-1.5 pr-5 shadow-[0_10px_30px_rgba(0,0,0,0.08)] ${smoothArcs ? '' : 'absolute bottom-1 left-1/2 -translate-x-1/2'}`}>
         <img src="/svgs/eusd.svg" alt="" className="h-9 w-9" />
         <span className="flex flex-col text-left leading-tight">
           <span className="text-primary"><Trans>eUSD within UGLYCASH</Trans></span>

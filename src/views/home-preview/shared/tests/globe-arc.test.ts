@@ -1,7 +1,12 @@
 import { describe, expect, it } from 'vitest'
-import { ARC_HEAD_RADIUS, ARC_LIFT, arcGlobeRadius, arcVisibility, arcWindow } from '../globe-arc'
+import { ARC_HEAD_RADIUS, ARC_LIFT, arcGlobeRadius, arcVisibility, arcWindow, hasVisibleDeparture } from '../globe-arc'
 
 describe('globe arc visibility', () => {
+  it('only launches routes with a visible departure and middle', () => {
+    expect(hasVisibleDeparture(() => 0)).toBe(false)
+    expect(hasVisibleDeparture((u) => u === 0 ? 1 : 0)).toBe(false)
+    expect(hasVisibleDeparture(() => 1)).toBe(true)
+  })
   it.each([280, 520])('fits a raised trail and dot in a %ipx-wide canvas', (width) => {
     const height = 320
     const maxExtent = arcGlobeRadius(width, height) * (1 + ARC_LIFT) + ARC_HEAD_RADIUS
