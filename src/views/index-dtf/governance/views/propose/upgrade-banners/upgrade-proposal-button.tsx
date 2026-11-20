@@ -6,6 +6,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog'
+import { useIsMobile } from '@/hooks/use-media-query'
 import { useTrackIndexDTFClick } from '@/views/index-dtf/hooks/useTrackIndexDTFPage'
 import { Trans } from '@lingui/react/macro'
 import { useState } from 'react'
@@ -29,6 +30,7 @@ export default function UpgradeProposalButton({
 }: UpgradeProposalButtonProps) {
   const [isOpen, setIsOpen] = useState(false)
   const [description, setDescription] = useState('')
+  const isMobile = useIsMobile()
   const { trackClick } = useTrackIndexDTFClick('governance', 'propose')
 
   return (
@@ -50,7 +52,9 @@ export default function UpgradeProposalButton({
       <DialogContent
         data-testid="governance-upgrade-details"
         aria-describedby={undefined}
-        className="max-h-[90dvh] overflow-y-auto sm:max-w-2xl"
+        // Focus on open selects the default title, and one keystroke replaces the text that dedupe matches.
+        onOpenAutoFocus={(event) => event.preventDefault()}
+        className="max-h-[90dvh] overflow-y-auto max-w-full sm:max-w-2xl top-[100%] translate-y-[-100%] sm:top-[50%] sm:translate-y-[-50%] rounded-b-none rounded-t-3xl sm:rounded-3xl data-[state=open]:animate-dialog-in data-[state=closed]:animate-dialog-out"
       >
         <DialogTitle className="pr-8">
           <Trans>Create proposal</Trans>
@@ -59,8 +63,8 @@ export default function UpgradeProposalButton({
           <ProposalDescriptionForm
             initialTitle={initialTitle}
             initialDescription={initialDescription}
+            editorPreview={isMobile ? 'edit' : 'live'}
             onChange={setDescription}
-            onBack={() => setIsOpen(false)}
           />
         </fieldset>
         <Button
@@ -74,6 +78,14 @@ export default function UpgradeProposalButton({
         >
           {disabled ? children : <Trans>Create proposal</Trans>}
         </Button>
+        {!disabled && !description && (
+          <p
+            data-testid="governance-upgrade-title-required"
+            className="text-sm text-legend text-center"
+          >
+            <Trans>Enter a proposal title to continue.</Trans>
+          </p>
+        )}
       </DialogContent>
     </Dialog>
   )

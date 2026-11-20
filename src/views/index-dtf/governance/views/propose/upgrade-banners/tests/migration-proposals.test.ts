@@ -31,25 +31,19 @@ describe('upgradeFolio proposals', () => {
       nextUpgradeFolioDescription([proposal(description, 'DEFEATED')])
     ).toBe('Reserve Optimistic Governor upgrade #4')
   })
+
   it.each(['PENDING', 'ACTIVE', 'SUCCEEDED', 'QUEUED', 'EXECUTED'])(
     'counts a %s upgrade as live',
     (state) => {
-      expect(
-        hasLiveUpgradeFolio([proposal(`${UPGRADE_FOLIO_MESSAGE} #1`, state)])
-      ).toBe(true)
+      expect(hasLiveUpgradeFolio([proposal(`${UPGRADE_FOLIO_MESSAGE} #1`, state)])).toBe(true)
     }
   )
 
-  it.each(['DEFEATED', 'EXPIRED', 'CANCELED'])(
-    'lets a %s upgrade be proposed again',
-    (state) => {
-      const proposals = [proposal(`${UPGRADE_FOLIO_MESSAGE} #1`, state)]
-      expect(hasLiveUpgradeFolio(proposals)).toBe(false)
-      expect(nextUpgradeFolioDescription(proposals)).toBe(
-        `${UPGRADE_FOLIO_MESSAGE} #2`
-      )
-    }
-  )
+  it.each(['DEFEATED', 'EXPIRED', 'CANCELED'])('lets a %s upgrade be proposed again', (state) => {
+    const proposals = [proposal(`${UPGRADE_FOLIO_MESSAGE} #1`, state)]
+    expect(hasLiveUpgradeFolio(proposals)).toBe(false)
+    expect(nextUpgradeFolioDescription(proposals)).toBe(`${UPGRADE_FOLIO_MESSAGE} #2`)
+  })
 })
 
 describe('retire proposals', () => {
@@ -60,6 +54,7 @@ describe('retire proposals', () => {
       nextRetireDescription([proposal(description, 'DEFEATED')], VAULT)
     ).toBe(`Retire legacy vote-lock vault ${VAULT} #3`)
   })
+
   it('numbers retries per vault and only counts live attempts', () => {
     const description = nextRetireDescription([], VAULT)
     expect(description).toBe(`Retire legacy vote-lock vault ${VAULT} #1`)
@@ -83,9 +78,7 @@ describe('retire proposals', () => {
     expect(address).toBe(GOVERNOR)
     expect(targets).toEqual([VAULT, SPELL])
     expect(values).toEqual([0n, 0n])
-    expect(
-      calldatas.map((data) => decodeFunctionData({ abi: callAbi, data }))
-    ).toEqual([
+    expect(calldatas.map((data) => decodeFunctionData({ abi: callAbi, data }))).toEqual([
       { functionName: 'transferOwnership', args: [SPELL] },
       { functionName: 'retireOldStakingVault', args: [VAULT] },
     ])
@@ -94,33 +87,13 @@ describe('retire proposals', () => {
 
 describe('isUnusedDeployVault', () => {
   it('lists the seed-only deploy vaults of MAG7 and the AI DTFs on each chain', () => {
-    expect(
-      isUnusedDeployVault(
-        8453,
-        getAddress('0x9cff81dc5e5de6420e67d4986082158379927f9e')
-      )
-    ).toBe(true)
-    expect(
-      isUnusedDeployVault(
-        56,
-        getAddress('0x24f3248c9e9fc17577c92ffeed1afd15a5ebc80d')
-      )
-    ).toBe(true)
-    expect(
-      isUnusedDeployVault(
-        1,
-        getAddress('0x6d586c6ece79db0a5a3b7fde1e09d59724037769')
-      )
-    ).toBe(true)
+    expect(isUnusedDeployVault(8453, getAddress('0x9cff81dc5e5de6420e67d4986082158379927f9e'))).toBe(true)
+    expect(isUnusedDeployVault(56, getAddress('0x24f3248c9e9fc17577c92ffeed1afd15a5ebc80d'))).toBe(true)
+    expect(isUnusedDeployVault(1, getAddress('0x6d586c6ece79db0a5a3b7fde1e09d59724037769'))).toBe(true)
   })
 
   it('keeps every other vault retirable, and matches on the chain', () => {
     expect(isUnusedDeployVault(8453, VAULT)).toBe(false)
-    expect(
-      isUnusedDeployVault(
-        1,
-        getAddress('0x9cff81dc5e5de6420e67d4986082158379927f9e')
-      )
-    ).toBe(false)
+    expect(isUnusedDeployVault(1, getAddress('0x9cff81dc5e5de6420e67d4986082158379927f9e'))).toBe(false)
   })
 })

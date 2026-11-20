@@ -50,13 +50,7 @@ const RetireBanner = ({
   const handlePropose = (proposalDescription: string) => {
     if (!spell || isBlocked) return
 
-    trackClick(
-      'governance',
-      'propose_retire_vote_lock',
-      voteLock.address,
-      undefined,
-      chainId
-    )
+    trackClick('governance', 'propose_retire_vote_lock', voteLock.address, undefined, chainId)
     writeContract(
       buildRetireProposal({
         chainId,
@@ -161,8 +155,7 @@ export default function ProposeRetireVoteLock() {
     setRefetchToken(getCurrentTime())
   }, [setRefetchToken])
 
-  if (!retire || !proposals || !retire.isProposeAllowed || retire.isLive)
-    return null
+  if (!retire || !proposals || !retire.isProposeAllowed || retire.isLive) return null
   // The spell does not check dependents, so the retirement is proposed only after this DTF's upgrade executes.
   if (retire.selfPending) return null
 

@@ -13704,8 +13704,11 @@ msgstr "이 DTF를 버전 4.0.0으로 업그레이드하고 신뢰할 수 있는
 msgid "Upgrade this DTF to release 5.0.0, adding per-token auction size limits and the ability to disable bids for individual tokens."
 msgstr "이 DTF를 버전 5.0.0으로 업그레이드하여 토큰별 경매 규모 제한과 개별 토큰 입찰 비활성화 기능을 추가합니다."
 
-msgid "Upgrade this DTF to Folio 6.0.0. Governance, roles and fees remain unchanged. For optimistic governors, update rebalance permissions to the 6.0.0 call in the same proposal."
-msgstr "이 DTF를 Folio 6.0.0으로 업그레이드합니다. 거버넌스, 역할 및 수수료는 변경되지 않습니다. 낙관적 거버너의 경우 동일한 제안에서 리밸런싱 권한을 6.0.0 호출로 업데이트합니다."
+msgid "Upgrade this DTF to Folio 6.0.0. Governance, roles and fees remain unchanged."
+msgstr "이 DTF를 Folio 6.0.0으로 업그레이드합니다. 거버넌스, 역할 및 수수료는 변경되지 않습니다."
+
+msgid "Upgrade this DTF to Folio 6.0.0 and update its rebalance permissions to the 6.0.0 call. Governance, roles and fees remain unchanged."
+msgstr "이 DTF를 Folio 6.0.0으로 업그레이드하고 리밸런싱 권한을 6.0.0 호출로 업데이트합니다. 거버넌스, 역할 및 수수료는 변경되지 않습니다."
 
 msgid "Upgrade the vote-lock vault, its governor and timelock to release 1.1.0. This proposal is submitted to the vote-lock DAO."
 msgstr "투표 잠금 볼트, 거버너 및 타임록을 버전 1.1.0으로 업그레이드합니다. 이 제안은 투표 잠금 DAO에 제출됩니다."
@@ -13719,5 +13722,11 @@ msgstr "설정된 후속 투표 잠금 볼트를 사용하여 이 DTF를 Reserve
 msgid "Retire the legacy vote-lock vault by setting its unstaking delay to zero, allowing holders to move to the successor vault immediately."
 msgstr "기존 투표 잠금 볼트의 언스테이킹 지연을 0으로 설정하여 사용을 종료하고, 보유자가 후속 볼트로 즉시 이전할 수 있도록 합니다."
 
-msgid "Upgrade the governance contracts through the governance spell, preserving the configured guardians and applying the updated governance parameters."
-msgstr "거버넌스 스펠을 통해 거버넌스 계약을 업그레이드하고, 설정된 가디언을 유지하면서 업데이트된 거버넌스 매개변수를 적용합니다."
+msgid "Fix the proposal threshold on the Admin and Basket governors of this DTF through the governance spell, so that it matches the percentage intended at deployment."
+msgstr "거버넌스 스펠을 통해 이 DTF의 Admin 및 Basket 거버너의 제안 임계값을 수정하여 배포 시 의도한 비율과 일치하도록 합니다."
+
+msgid "Fix the proposal threshold on the vote-lock DAO governor of this DTF through the governance spell, so that it matches the percentage intended at deployment."
+msgstr "거버넌스 스펠을 통해 이 DTF의 Vote-lock DAO 거버너의 제안 임계값을 수정하여 배포 시 의도한 비율과 일치하도록 합니다."
+
+msgid "Enter a proposal title to continue."
+msgstr "계속하려면 제안 제목을 입력하세요."

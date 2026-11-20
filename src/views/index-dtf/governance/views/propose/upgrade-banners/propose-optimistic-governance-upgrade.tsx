@@ -21,10 +21,7 @@ import {
   optimisticStakingVaultAddress,
 } from '@/components/vote-lock/migration/migration-targets'
 import { useOptimisticUpgradeEligibility } from '@/views/index-dtf/components/vote-lock-migration/use-upgrade-eligibility'
-import {
-  hasLiveUpgradeFolio,
-  nextUpgradeFolioDescription,
-} from './migration-proposals'
+import { hasLiveUpgradeFolio, nextUpgradeFolioDescription } from './migration-proposals'
 
 const spellAbi = [
   {
@@ -200,13 +197,7 @@ const ProposeBanner = ({ refetch, initialTitle }: SpellUpgradeProps) => {
     )
       return
 
-    trackClick(
-      'governance',
-      'propose_governance_upgrade',
-      dtf.id,
-      dtf.token.symbol,
-      chainId
-    )
+    trackClick('governance', 'propose_governance_upgrade', dtf.id, dtf.token.symbol, chainId)
     const newVaultAddress = target.stakingVault
     const oldFolioGovernor = dtf.ownerGovernance.id
     const tradingGovernor = dtf.tradingGovernance.id

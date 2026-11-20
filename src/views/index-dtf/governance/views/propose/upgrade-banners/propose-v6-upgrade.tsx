@@ -44,9 +44,7 @@ export default function ProposeV6Upgrade() {
   const { isProposeAllowed } = useIsProposeAllowed()
   const handleRecentProposalReceipt = useRecentProposalReceipt()
   const chainId = dtf?.chainId
-  const spell = chainId
-    ? INDEX_DTF_UPGRADE_SPELL_6_0_0_ADDRESS[chainId]
-    : undefined
+  const spell = chainId ? INDEX_DTF_UPGRADE_SPELL_6_0_0_ADDRESS[chainId] : undefined
   const { data: versionRegistry } = useReadContract({
     address: dtf?.proxyAdmin,
     abi: dtfAdminAbi,
@@ -76,17 +74,12 @@ export default function ProposeV6Upgrade() {
     combine: (results) => ({
       data: results.flatMap(({ data }) => (data ? [data] : [])),
       // A proposal whose calls could not be read may already cast the spell: stay hidden rather than allow a duplicate.
-      isUnresolved: results.some(
-        ({ isPending, isError }) => isPending || isError
-      ),
+      isUnresolved: results.some(({ isPending, isError }) => isPending || isError),
     }),
   })
   const { writeContract, data: hash, isPending } = useWriteContract()
-  const {
-    data: receipt,
-    isSuccess,
-    error: receiptError,
-  } = useWaitForTransactionReceipt({ hash, chainId })
+  const { data: receipt, isSuccess, error: receiptError } =
+    useWaitForTransactionReceipt({ hash, chainId })
   const isSubmitted =
     (!!hash && !receipt && !receiptError) || receipt?.status === 'success'
 
@@ -172,8 +165,8 @@ export default function ProposeV6Upgrade() {
           </h4>
           <p className="text-sm">
             <Trans>
-              Upgrades this DTF's contract implementation to 6.0.0. Governance,
-              roles and fees stay as they are.
+              Upgrades this DTF's contract implementation to 6.0.0.
+              Governance, roles and fees stay as they are.
             </Trans>{' '}
             {isOptimistic && (
               <Trans>
@@ -222,7 +215,11 @@ export default function ProposeV6Upgrade() {
         </Alert>
       )}
       <UpgradeProposalButton
-        initialDescription={t`Upgrade this DTF to Folio 6.0.0. Governance, roles and fees remain unchanged. For optimistic governors, update rebalance permissions to the 6.0.0 call in the same proposal.`}
+        initialDescription={
+          isOptimistic
+            ? t`Upgrade this DTF to Folio 6.0.0 and update its rebalance permissions to the 6.0.0 call. Governance, roles and fees remain unchanged.`
+            : t`Upgrade this DTF to Folio 6.0.0. Governance, roles and fees remain unchanged.`
+        }
         initialTitle={nextV6UpgradeDescription(proposals)}
         data-testid="governance-v6-upgrade-btn"
         disabled={

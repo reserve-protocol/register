@@ -13693,7 +13693,10 @@ msgstr ""
 msgid "Upgrade this DTF to release 5.0.0, adding per-token auction size limits and the ability to disable bids for individual tokens."
 msgstr ""
 
-msgid "Upgrade this DTF to Folio 6.0.0. Governance, roles and fees remain unchanged. For optimistic governors, update rebalance permissions to the 6.0.0 call in the same proposal."
+msgid "Upgrade this DTF to Folio 6.0.0. Governance, roles and fees remain unchanged."
+msgstr ""
+
+msgid "Upgrade this DTF to Folio 6.0.0 and update its rebalance permissions to the 6.0.0 call. Governance, roles and fees remain unchanged."
 msgstr ""
 
 msgid "Upgrade the vote-lock vault, its governor and timelock to release 1.1.0. This proposal is submitted to the vote-lock DAO."
@@ -13708,5 +13711,11 @@ msgstr ""
 msgid "Retire the legacy vote-lock vault by setting its unstaking delay to zero, allowing holders to move to the successor vault immediately."
 msgstr ""
 
-msgid "Upgrade the governance contracts through the governance spell, preserving the configured guardians and applying the updated governance parameters."
+msgid "Fix the proposal threshold on the Admin and Basket governors of this DTF through the governance spell, so that it matches the percentage intended at deployment."
+msgstr ""
+
+msgid "Fix the proposal threshold on the vote-lock DAO governor of this DTF through the governance spell, so that it matches the percentage intended at deployment."
+msgstr ""
+
+msgid "Enter a proposal title to continue."
 msgstr ""

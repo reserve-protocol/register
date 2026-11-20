@@ -7,7 +7,10 @@ import { AlertCircle, Loader2 } from 'lucide-react'
 import { useCallback, useEffect } from 'react'
 import { toast } from 'sonner'
 import { keccak256, toHex, type Address } from 'viem'
-import { useWaitForTransactionReceipt, useWriteContract } from 'wagmi'
+import {
+  useWaitForTransactionReceipt,
+  useWriteContract,
+} from 'wagmi'
 import { useReadContracts } from '@/hooks/use-read-contracts'
 import { governanceProposalsAtom, refetchTokenAtom } from '../../../atoms'
 import { useIsProposeAllowed } from '../../../hooks/use-is-propose-allowed'
@@ -34,30 +37,10 @@ export const useVoteLockUpgradeReads = (
   const enabled = !!chainId && !!vault && !!governor
   const { data: base } = useReadContracts({
     contracts: [
-      {
-        address: vault,
-        abi: voteLockUpgradeAbi,
-        functionName: 'version',
-        chainId,
-      },
-      {
-        address: vault,
-        abi: voteLockUpgradeAbi,
-        functionName: 'versionRegistry',
-        chainId,
-      },
-      {
-        address: governor,
-        abi: voteLockUpgradeAbi,
-        functionName: 'version',
-        chainId,
-      },
-      {
-        address: governor,
-        abi: voteLockUpgradeAbi,
-        functionName: 'timelock',
-        chainId,
-      },
+      { address: vault, abi: voteLockUpgradeAbi, functionName: 'version', chainId },
+      { address: vault, abi: voteLockUpgradeAbi, functionName: 'versionRegistry', chainId },
+      { address: governor, abi: voteLockUpgradeAbi, functionName: 'version', chainId },
+      { address: governor, abi: voteLockUpgradeAbi, functionName: 'timelock', chainId },
     ],
     query: { enabled },
   })
@@ -67,18 +50,8 @@ export const useVoteLockUpgradeReads = (
 
   const { data: registryReads } = useReadContracts({
     contracts: [
-      {
-        address: timelock,
-        abi: voteLockUpgradeAbi,
-        functionName: 'version',
-        chainId,
-      },
-      {
-        address: registry,
-        abi: voteLockUpgradeAbi,
-        functionName: 'getLatestVersion',
-        chainId,
-      },
+      { address: timelock, abi: voteLockUpgradeAbi, functionName: 'version', chainId },
+      { address: registry, abi: voteLockUpgradeAbi, functionName: 'getLatestVersion', chainId },
       {
         address: registry,
         abi: voteLockUpgradeAbi,
@@ -136,11 +109,8 @@ export default function ProposeVoteLockUpgrade() {
   )
 
   const { writeContract, data: hash, isPending } = useWriteContract()
-  const {
-    data: receipt,
-    isSuccess,
-    error: receiptError,
-  } = useWaitForTransactionReceipt({ hash, chainId })
+  const { data: receipt, isSuccess, error: receiptError } =
+    useWaitForTransactionReceipt({ hash, chainId })
   const isSubmitted =
     (!!hash && !receipt && !receiptError) || receipt?.status === 'success'
 
@@ -186,11 +156,8 @@ export default function ProposeVoteLockUpgrade() {
   const symbol = dtf.stToken?.token.symbol ?? ''
 
   const handlePropose = (proposalDescription: string) => {
-    const {
-      vault: vaultImpl,
-      governor: governorImpl,
-      timelock: timelockImpl,
-    } = reads.implementations!
+    const { vault: vaultImpl, governor: governorImpl, timelock: timelockImpl } =
+      reads.implementations!
     writeContract(
       buildVoteLockUpgradeProposal({
         chainId,

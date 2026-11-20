@@ -294,7 +294,7 @@ const ProposeGovernanceSpell31032025Folio = ({
         </div>
       </div>
       <UpgradeProposalButton
-        initialDescription={t`Upgrade the governance contracts through the governance spell, preserving the configured guardians and applying the updated governance parameters.`}
+        initialDescription={t`Fix the proposal threshold on the Admin and Basket governors of this DTF through the governance spell, so that it matches the percentage intended at deployment.`}
         initialTitle={UPGRADE_FOLIO_MESSAGE}
         disabled={!isReady || isPending || !!hash}
         onSubmit={handlePropose}
@@ -422,7 +422,7 @@ const ProposeGovernanceSpell31032025StakingVault = ({
         </div>
       </div>
       <UpgradeProposalButton
-        initialDescription={t`Upgrade the governance contracts through the governance spell, preserving the configured guardians and applying the updated governance parameters.`}
+        initialDescription={t`Fix the proposal threshold on the vote-lock DAO governor of this DTF through the governance spell, so that it matches the percentage intended at deployment.`}
         initialTitle={UPGRADE_FOLIO_DAO_MESSAGE}
         disabled={!isReady || isPending || !!hash}
         onSubmit={handlePropose}

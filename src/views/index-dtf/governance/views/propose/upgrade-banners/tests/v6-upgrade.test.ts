@@ -13,10 +13,7 @@ const PROXY_ADMIN = getAddress('0x00000000000000000000000000000000000000Ad')
 const SPELL = getAddress('0x4BCD4101729C25f4E65b29357387440E357d43C1')
 const REGISTRY = getAddress('0x00000000000000000000000000000000000000Aa')
 const GOVERNOR = getAddress('0x00000000000000000000000000000000000000Bb')
-const LIVE = {
-  implementation: '0x00000000000000000000000000000000000000Cc',
-  deprecated: false,
-}
+const LIVE = { implementation: '0x00000000000000000000000000000000000000Cc', deprecated: false }
 
 const ready = {
   version: '5.0.0',
@@ -29,19 +26,12 @@ const ready = {
 
 describe('getV6UpgradeEligibility', () => {
   it('offers the optimistic upgrade with the governor selector registry', () => {
-    expect(getV6UpgradeEligibility(ready)).toEqual({
-      status: 'ready',
-      selectorRegistry: REGISTRY,
-    })
+    expect(getV6UpgradeEligibility(ready)).toEqual({ status: 'ready', selectorRegistry: REGISTRY })
   })
 
   it('offers the legacy upgrade with a zero selector registry', () => {
     expect(
-      getV6UpgradeEligibility({
-        ...ready,
-        isOptimistic: false,
-        selectorRegistry: undefined,
-      })
+      getV6UpgradeEligibility({ ...ready, isOptimistic: false, selectorRegistry: undefined })
     ).toEqual({ status: 'ready', selectorRegistry: zeroAddress })
   })
 
@@ -51,20 +41,8 @@ describe('getV6UpgradeEligibility', () => {
     ['no spell on this chain', { spell: undefined }, 'hidden'],
     ['6.0.0 not registered', { deployment: null }, 'hidden'],
     ['the registry read still loading', { deployment: undefined }, 'hidden'],
-    [
-      '6.0.0 deprecated',
-      { deployment: { ...LIVE, deprecated: true } },
-      'hidden',
-    ],
-    [
-      'a legacy DTF that still has to migrate governance',
-      {
-        isOptimistic: false,
-        selectorRegistry: undefined,
-        migrationPending: true,
-      },
-      'hidden',
-    ],
+    ['6.0.0 deprecated', { deployment: { ...LIVE, deprecated: true } }, 'hidden'],
+    ['a legacy DTF that still has to migrate governance', { isOptimistic: false, selectorRegistry: undefined, migrationPending: true }, 'hidden'],
   ])('hides it for %s', (_, change, status) => {
     expect(getV6UpgradeEligibility({ ...ready, ...change }).status).toBe(status)
   })
@@ -105,14 +83,8 @@ describe('buildV6UpgradeProposal', () => {
     expect(targets).toEqual([REGISTRY, REGISTRY, PROXY_ADMIN, SPELL])
     expect(values).toEqual([0n, 0n, 0n, 0n])
     expect(calldatas.map(decode)).toEqual([
-      {
-        functionName: 'registerSelectors',
-        args: [[{ target: FOLIO, selectors: ['0xc1e54b89'] }]],
-      },
-      {
-        functionName: 'unregisterSelectors',
-        args: [[{ target: FOLIO, selectors: ['0x207c8eed'] }]],
-      },
+      { functionName: 'registerSelectors', args: [[{ target: FOLIO, selectors: ['0xc1e54b89'] }]] },
+      { functionName: 'unregisterSelectors', args: [[{ target: FOLIO, selectors: ['0x207c8eed'] }]] },
       { functionName: 'transferOwnership', args: [SPELL] },
       { functionName: 'cast', args: [FOLIO, PROXY_ADMIN, REGISTRY] },
     ])
@@ -141,36 +113,14 @@ describe('buildV6UpgradeProposal', () => {
 })
 
 describe('upgrade proposal retries', () => {
-  const proposal = (
-    description: string,
-    state: string,
-    governance = GOVERNOR
-  ) => ({ description, governance, votingState: { state } }) as never
+  const proposal = (description: string, state: string, governance = GOVERNOR) =>
+    ({ description, governance, votingState: { state } }) as never
 
   it('hides the action while an equivalent proposal on this governor is live', () => {
+    expect(hasLiveV6Upgrade([proposal('Release 6.0.0 upgrade #1', 'ACTIVE')], GOVERNOR)).toBe(true)
+    expect(hasLiveV6Upgrade([proposal('Release 6.0.0 upgrade #1', 'DEFEATED')], GOVERNOR)).toBe(false)
     expect(
-      hasLiveV6Upgrade(
-        [proposal('Release 6.0.0 upgrade #1', 'ACTIVE')],
-        GOVERNOR
-      )
-    ).toBe(true)
-    expect(
-      hasLiveV6Upgrade(
-        [proposal('Release 6.0.0 upgrade #1', 'DEFEATED')],
-        GOVERNOR
-      )
-    ).toBe(false)
-    expect(
-      hasLiveV6Upgrade(
-        [
-          proposal(
-            'Release 6.0.0 upgrade #1',
-            'ACTIVE',
-            '0x00000000000000000000000000000000000000ee'
-          ),
-        ],
-        GOVERNOR
-      )
+      hasLiveV6Upgrade([proposal('Release 6.0.0 upgrade #1', 'ACTIVE', '0x00000000000000000000000000000000000000ee')], GOVERNOR)
     ).toBe(false)
   })
 
@@ -191,13 +141,7 @@ describe('upgrade proposal retries', () => {
     expect(hasLiveV6Upgrade([], GOVERNOR, [cast], other, SPELL)).toBe(false)
     expect(hasLiveV6Upgrade([], GOVERNOR, [cast], FOLIO, other)).toBe(false)
     expect(
-      hasLiveV6Upgrade(
-        [],
-        GOVERNOR,
-        [{ targets: [SPELL], calldatas: ['0x1234'] }],
-        FOLIO,
-        SPELL
-      )
+      hasLiveV6Upgrade([], GOVERNOR, [{ targets: [SPELL], calldatas: ['0x1234'] }], FOLIO, SPELL)
     ).toBe(false)
   })
 
@@ -208,11 +152,7 @@ describe('upgrade proposal retries', () => {
       proposal('Upgrade to 6.0', 'EXECUTED'),
       proposal('Release 6.0.0 upgrade #1', 'ACTIVE'),
     ])
-    expect(
-      candidates.map(
-        (p) => (p as { votingState: { state: string } }).votingState.state
-      )
-    ).toEqual(['ACTIVE'])
+    expect(candidates.map((p) => (p as { votingState: { state: string } }).votingState.state)).toEqual(['ACTIVE'])
   })
 
   it('numbers the next attempt after any earlier one, live or not', () => {

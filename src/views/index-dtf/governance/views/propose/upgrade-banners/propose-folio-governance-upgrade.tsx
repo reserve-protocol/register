@@ -42,11 +42,8 @@ export default function ProposeFolioGovernanceUpgrade() {
   )
 
   const { writeContract, data: hash, isPending } = useWriteContract()
-  const {
-    data: receipt,
-    isSuccess,
-    error: receiptError,
-  } = useWaitForTransactionReceipt({ hash, chainId })
+  const { data: receipt, isSuccess, error: receiptError } =
+    useWaitForTransactionReceipt({ hash, chainId })
   const isSubmitted =
     (!!hash && !receipt && !receiptError) || receipt?.status === 'success'
 
@@ -98,13 +95,7 @@ export default function ProposeFolioGovernanceUpgrade() {
   const symbol = dtf.token.symbol
 
   const handlePropose = (proposalDescription: string) => {
-    trackClick(
-      'governance',
-      'propose_folio_governance_upgrade',
-      dtf.id,
-      symbol,
-      chainId
-    )
+    trackClick('governance', 'propose_folio_governance_upgrade', dtf.id, symbol, chainId)
     const { governor: governorImpl, timelock: timelockImpl } =
       reads.implementations!
     writeContract(
