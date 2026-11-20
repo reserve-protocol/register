@@ -13697,3 +13697,27 @@ msgstr "Zapper 错误"
 #: src/views/index-dtf/overview/components/zap-mint/zap-healthcheck.tsx:24
 #~ msgid "Zaps are currently experiencing issues"
 #~ msgstr "Zap 当前出现问题"
+
+msgid "Upgrade this DTF to release 4.0.0 and enable the trusted filler registry. Rebalancing will consider the entire basket instead of isolated two-token auctions."
+msgstr "将此 DTF 升级至 4.0.0 版本并启用可信成交方注册表。再平衡将考虑整个篮子，而不是独立的双代币拍卖。"
+
+msgid "Upgrade this DTF to release 5.0.0, adding per-token auction size limits and the ability to disable bids for individual tokens."
+msgstr "将此 DTF 升级至 5.0.0 版本，增加各代币的拍卖规模限制以及禁用单个代币竞价的功能。"
+
+msgid "Upgrade this DTF to Folio 6.0.0. Governance, roles and fees remain unchanged. For optimistic governors, update rebalance permissions to the 6.0.0 call in the same proposal."
+msgstr "将此 DTF 升级至 Folio 6.0.0。治理、角色和费用保持不变。对于乐观治理合约，在同一提案中将再平衡权限更新为 6.0.0 调用。"
+
+msgid "Upgrade the vote-lock vault, its governor and timelock to release 1.1.0. This proposal is submitted to the vote-lock DAO."
+msgstr "将投票锁仓金库、其治理合约和时间锁升级至 1.1.0 版本。此提案提交至投票锁仓 DAO。"
+
+msgid "Upgrade this DTF's governor and timelock to release 1.1.0, adding a proposal throttle and time-weighted vote checks against proposal spam."
+msgstr "将此 DTF 的治理合约和时间锁升级至 1.1.0 版本，增加提案限流和时间加权投票检查，以防止垃圾提案。"
+
+msgid "Migrate this DTF to Reserve Optimistic Governor using the configured successor vote-lock vault. Update governance, roles and the governance fee recipient through the upgrade spell."
+msgstr "使用已配置的后继投票锁仓金库，将此 DTF 迁移至 Reserve Optimistic Governor。通过升级合约更新治理、角色和治理费用接收方。"
+
+msgid "Retire the legacy vote-lock vault by setting its unstaking delay to zero, allowing holders to move to the successor vault immediately."
+msgstr "将旧投票锁仓金库的解押延迟设为零，使其退役，让持有者可以立即迁移至后继金库。"
+
+msgid "Upgrade the governance contracts through the governance spell, preserving the configured guardians and applying the updated governance parameters."
+msgstr "通过治理升级合约升级治理合约，保留已配置的守护者并应用更新后的治理参数。"

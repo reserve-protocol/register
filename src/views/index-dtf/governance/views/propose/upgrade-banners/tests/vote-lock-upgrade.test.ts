@@ -43,21 +43,41 @@ describe('getVoteLockUpgradeEligibility', () => {
 
   it('matches the vlRSR singleton case-insensitively', () => {
     expect(
-      getVoteLockUpgradeEligibility({ ...ready, vault: VAULT.toLowerCase() as Address })
+      getVoteLockUpgradeEligibility({
+        ...ready,
+        vault: VAULT.toLowerCase() as Address,
+      })
     ).toBe(true)
   })
 
   it.each([
-    ['the vault is already upgraded', { versions: { ...ready.versions, vault: '1.1.0' } }],
-    ['a component read is missing', { versions: { ...ready.versions, governor: undefined } }],
-    ['the latest version is not 1.1.0', { latest: { version: '1.2.0', deprecated: false } }],
-    ['the latest version is deprecated', { latest: { version: '1.1.0', deprecated: true } }],
-    ['an implementation is unset', { implementations: { ...IMPLS, timelock: undefined } }],
+    [
+      'the vault is already upgraded',
+      { versions: { ...ready.versions, vault: '1.1.0' } },
+    ],
+    [
+      'a component read is missing',
+      { versions: { ...ready.versions, governor: undefined } },
+    ],
+    [
+      'the latest version is not 1.1.0',
+      { latest: { version: '1.2.0', deprecated: false } },
+    ],
+    [
+      'the latest version is deprecated',
+      { latest: { version: '1.1.0', deprecated: true } },
+    ],
+    [
+      'an implementation is unset',
+      { implementations: { ...IMPLS, timelock: undefined } },
+    ],
     ['the governor points at another timelock', { governorTimelock: VAULT }],
     ['the vault is not the vlRSR singleton', { vault: TIMELOCK }],
     ['the vault is another chain’s vlRSR singleton', { chainId: 56 }],
   ])('is hidden when %s', (_, patch) => {
-    expect(getVoteLockUpgradeEligibility({ ...ready, ...patch } as never)).toBe(false)
+    expect(getVoteLockUpgradeEligibility({ ...ready, ...patch } as never)).toBe(
+      false
+    )
   })
 })
 
@@ -80,32 +100,74 @@ describe('buildVoteLockUpgradeProposal', () => {
     expect(values).toEqual([0n, 0n, 0n])
     expect(description).toBe(`${VOTE_LOCK_UPGRADE_MESSAGE} #1`)
 
-    const upgrades = calldatas.map((data) => decodeFunctionData({ abi: voteLockUpgradeAbi, data }))
-    expect(upgrades.map((u) => [u.functionName, (u.args as [Address])[0]])).toEqual([
+    const upgrades = calldatas.map((data) =>
+      decodeFunctionData({ abi: voteLockUpgradeAbi, data })
+    )
+    expect(
+      upgrades.map((u) => [u.functionName, (u.args as [Address])[0]])
+    ).toEqual([
       ['upgradeToAndCall', IMPLS.vault],
       ['upgradeToAndCall', IMPLS.governor],
       ['upgradeToAndCall', IMPLS.timelock],
     ])
     const inits = upgrades.map((u) =>
-      decodeFunctionData({ abi: voteLockUpgradeAbi, data: (u.args as [Address, `0x${string}`])[1] })
+      decodeFunctionData({
+        abi: voteLockUpgradeAbi,
+        data: (u.args as [Address, `0x${string}`])[1],
+      })
     )
-    expect(inits[0]).toEqual({ functionName: 'initializeAverageVotes', args: undefined })
-    expect(inits[1]).toEqual({ functionName: 'initializeVersionRegistry', args: [REGISTRY] })
-    expect(inits[2]).toEqual({ functionName: 'initializeVersionRegistry', args: [REGISTRY] })
+    expect(inits[0]).toEqual({
+      functionName: 'initializeAverageVotes',
+      args: undefined,
+    })
+    expect(inits[1]).toEqual({
+      functionName: 'initializeVersionRegistry',
+      args: [REGISTRY],
+    })
+    expect(inits[2]).toEqual({
+      functionName: 'initializeVersionRegistry',
+      args: [REGISTRY],
+    })
   })
 })
 
 describe('proposal bookkeeping', () => {
+  it('recognizes Markdown titles with RFCs and descriptions', () => {
+    const description =
+      '# Upgrade vote-lock governance to 1.1.0 #3 \n [RFC](https://forum.reserve.org/t/rfc) \n Upgrade the vault and governance.'
+    expect(hasLiveVoteLockUpgrade([proposal(description, 'ACTIVE')])).toBe(true)
+    expect(
+      nextVoteLockUpgradeDescription([proposal(description, 'DEFEATED')])
+    ).toBe('Upgrade vote-lock governance to 1.1.0 #4')
+  })
   it('treats pending, active, succeeded, queued and executed upgrades as live', () => {
-    for (const state of ['PENDING', 'ACTIVE', 'SUCCEEDED', 'QUEUED', 'EXECUTED']) {
-      expect(hasLiveVoteLockUpgrade([proposal(`${VOTE_LOCK_UPGRADE_MESSAGE} #1`, state)])).toBe(true)
+    for (const state of [
+      'PENDING',
+      'ACTIVE',
+      'SUCCEEDED',
+      'QUEUED',
+      'EXECUTED',
+    ]) {
+      expect(
+        hasLiveVoteLockUpgrade([
+          proposal(`${VOTE_LOCK_UPGRADE_MESSAGE} #1`, state),
+        ])
+      ).toBe(true)
     }
-    expect(hasLiveVoteLockUpgrade([proposal(`${VOTE_LOCK_UPGRADE_MESSAGE} #1`, 'DEFEATED')])).toBe(false)
-    expect(hasLiveVoteLockUpgrade([proposal('Something else', 'ACTIVE')])).toBe(false)
+    expect(
+      hasLiveVoteLockUpgrade([
+        proposal(`${VOTE_LOCK_UPGRADE_MESSAGE} #1`, 'DEFEATED'),
+      ])
+    ).toBe(false)
+    expect(hasLiveVoteLockUpgrade([proposal('Something else', 'ACTIVE')])).toBe(
+      false
+    )
   })
 
   it('numbers the next attempt after the highest previous one', () => {
-    expect(nextVoteLockUpgradeDescription([])).toBe(`${VOTE_LOCK_UPGRADE_MESSAGE} #1`)
+    expect(nextVoteLockUpgradeDescription([])).toBe(
+      `${VOTE_LOCK_UPGRADE_MESSAGE} #1`
+    )
     expect(
       nextVoteLockUpgradeDescription([
         proposal(`${VOTE_LOCK_UPGRADE_MESSAGE} #2`, 'DEFEATED'),
@@ -129,8 +191,16 @@ describe('decodeVoteLockUpgradeCall', () => {
   it('reads the implementation and initializer from each upgrade call', () => {
     expect(calldatas.map(decodeVoteLockUpgradeCall)).toEqual([
       { implementation: IMPLS.vault, initializer: 'initializeAverageVotes' },
-      { implementation: IMPLS.governor, initializer: 'initializeVersionRegistry', registry: REGISTRY },
-      { implementation: IMPLS.timelock, initializer: 'initializeVersionRegistry', registry: REGISTRY },
+      {
+        implementation: IMPLS.governor,
+        initializer: 'initializeVersionRegistry',
+        registry: REGISTRY,
+      },
+      {
+        implementation: IMPLS.timelock,
+        initializer: 'initializeVersionRegistry',
+        registry: REGISTRY,
+      },
     ])
   })
 
@@ -157,18 +227,33 @@ describe('getFolioGovernanceUpgradeEligibility', () => {
   })
 
   it.each([
-    ['the singleton is still on 1.0.0', { versions: { ...folioReady.versions, vault: '1.0.0' } }],
-    ['the governor is already upgraded', { versions: { ...folioReady.versions, governor: '1.1.0' } }],
-    ['the timelock is already upgraded', { versions: { ...folioReady.versions, timelock: '1.1.0' } }],
+    [
+      'the singleton is still on 1.0.0',
+      { versions: { ...folioReady.versions, vault: '1.0.0' } },
+    ],
+    [
+      'the governor is already upgraded',
+      { versions: { ...folioReady.versions, governor: '1.1.0' } },
+    ],
+    [
+      'the timelock is already upgraded',
+      { versions: { ...folioReady.versions, timelock: '1.1.0' } },
+    ],
     ['the DTF has a separate trading governor', { tradingGovernor: TIMELOCK }],
     ['the DTF votes with another vault', { vault: TIMELOCK }],
-    ['the latest version is deprecated', { latest: { version: '1.1.0', deprecated: true } }],
-    ['an implementation is unset', { implementations: { ...IMPLS, governor: undefined } }],
+    [
+      'the latest version is deprecated',
+      { latest: { version: '1.1.0', deprecated: true } },
+    ],
+    [
+      'an implementation is unset',
+      { implementations: { ...IMPLS, governor: undefined } },
+    ],
     ['the governor points at another timelock', { governorTimelock: VAULT }],
   ])('is hidden when %s', (_, patch) => {
-    expect(getFolioGovernanceUpgradeEligibility({ ...folioReady, ...patch } as never)).toBe(
-      false
-    )
+    expect(
+      getFolioGovernanceUpgradeEligibility({ ...folioReady, ...patch } as never)
+    ).toBe(false)
   })
 })
 
@@ -187,8 +272,16 @@ describe('buildFolioGovernanceUpgradeProposal', () => {
     expect(targets).toEqual([FOLIO_GOVERNOR, FOLIO_TIMELOCK])
     expect(values).toEqual([0n, 0n])
     expect(calldatas.map(decodeVoteLockUpgradeCall)).toEqual([
-      { implementation: IMPLS.governor, initializer: 'initializeVersionRegistry', registry: REGISTRY },
-      { implementation: IMPLS.timelock, initializer: 'initializeVersionRegistry', registry: REGISTRY },
+      {
+        implementation: IMPLS.governor,
+        initializer: 'initializeVersionRegistry',
+        registry: REGISTRY,
+      },
+      {
+        implementation: IMPLS.timelock,
+        initializer: 'initializeVersionRegistry',
+        registry: REGISTRY,
+      },
     ])
     expect(description).toBe(`${FOLIO_GOVERNANCE_UPGRADE_MESSAGE} #1`)
   })
@@ -198,9 +291,14 @@ describe('buildFolioGovernanceUpgradeProposal', () => {
       proposal(`${VOTE_LOCK_UPGRADE_MESSAGE} #3`, 'EXECUTED'),
       proposal(`${FOLIO_GOVERNANCE_UPGRADE_MESSAGE} #1`, 'DEFEATED'),
     ]
-    expect(hasLiveVoteLockUpgrade(proposals, FOLIO_GOVERNANCE_UPGRADE_MESSAGE)).toBe(false)
-    expect(nextVoteLockUpgradeDescription(proposals, FOLIO_GOVERNANCE_UPGRADE_MESSAGE)).toBe(
-      `${FOLIO_GOVERNANCE_UPGRADE_MESSAGE} #2`
-    )
+    expect(
+      hasLiveVoteLockUpgrade(proposals, FOLIO_GOVERNANCE_UPGRADE_MESSAGE)
+    ).toBe(false)
+    expect(
+      nextVoteLockUpgradeDescription(
+        proposals,
+        FOLIO_GOVERNANCE_UPGRADE_MESSAGE
+      )
+    ).toBe(`${FOLIO_GOVERNANCE_UPGRADE_MESSAGE} #2`)
   })
 })

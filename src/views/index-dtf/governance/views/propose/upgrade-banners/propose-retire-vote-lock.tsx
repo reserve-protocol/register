@@ -1,5 +1,5 @@
 import { Alert, AlertDescription } from '@/components/ui/alert'
-import { Button } from '@/components/ui/button'
+import UpgradeProposalButton from './upgrade-proposal-button'
 import { trackClick } from '@/hooks/useTrackPage'
 import { chainIdAtom } from '@/state/atoms'
 import { getCurrentTime } from '@/utils'
@@ -22,7 +22,7 @@ type RetireBannerProps = {
   // True when holders move to the chain's shared vlRSR rather than a DTF's own vault.
   shared: boolean
   pending: readonly { symbol: string }[]
-  description: string
+  initialTitle: string
   refetch: () => void
 }
 
@@ -31,7 +31,7 @@ const RetireBanner = ({
   spell,
   shared,
   pending,
-  description,
+  initialTitle,
   refetch,
 }: RetireBannerProps) => {
   const { t } = useLingui()
@@ -47,17 +47,23 @@ const RetireBanner = ({
   const isSubmitted = isConfirming || receipt?.status === 'success'
   const isBlocked = pending.length > 0
 
-  const handlePropose = () => {
+  const handlePropose = (proposalDescription: string) => {
     if (!spell || isBlocked) return
 
-    trackClick('governance', 'propose_retire_vote_lock', voteLock.address, undefined, chainId)
+    trackClick(
+      'governance',
+      'propose_retire_vote_lock',
+      voteLock.address,
+      undefined,
+      chainId
+    )
     writeContract(
       buildRetireProposal({
         chainId,
         governor: voteLock.governance,
         voteLock: voteLock.address,
         spell,
-        description,
+        description: proposalDescription,
       })
     )
   }
@@ -127,10 +133,12 @@ const RetireBanner = ({
           </AlertDescription>
         </Alert>
       )}
-      <Button
+      <UpgradeProposalButton
+        initialDescription={t`Retire the legacy vote-lock vault by setting its unstaking delay to zero, allowing holders to move to the successor vault immediately.`}
+        initialTitle={initialTitle}
         data-testid="governance-retire-vote-lock-btn"
         disabled={isBlocked || isPending || isSubmitted}
-        onClick={handlePropose}
+        onSubmit={handlePropose}
         className="w-full mt-2"
       >
         {(isPending || isSubmitted) && (
@@ -139,7 +147,7 @@ const RetireBanner = ({
         {isPending && t`Pending, sign in wallet...`}
         {!isPending && isSubmitted && t`Waiting for confirmation...`}
         {!isPending && !isSubmitted && t`Propose vault retirement`}
-      </Button>
+      </UpgradeProposalButton>
     </div>
   )
 }
@@ -153,7 +161,8 @@ export default function ProposeRetireVoteLock() {
     setRefetchToken(getCurrentTime())
   }, [setRefetchToken])
 
-  if (!retire || !proposals || !retire.isProposeAllowed || retire.isLive) return null
+  if (!retire || !proposals || !retire.isProposeAllowed || retire.isLive)
+    return null
   // The spell does not check dependents, so the retirement is proposed only after this DTF's upgrade executes.
   if (retire.selfPending) return null
 
@@ -163,7 +172,7 @@ export default function ProposeRetireVoteLock() {
       spell={retire.spell}
       shared={retire.shared}
       pending={retire.othersPending}
-      description={retire.description}
+      initialTitle={retire.description}
       refetch={refetch}
     />
   )

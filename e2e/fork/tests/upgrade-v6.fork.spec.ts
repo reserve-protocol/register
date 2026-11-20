@@ -135,7 +135,8 @@ for (const target of manifest?.targets ?? []) {
       decodeFunctionData({ abi: callAbi, data })
     )
     expect(proposal.values.every((value) => value === 0n)).toBe(true)
-    expect(proposal.description).toMatch(/^Release 6\.0\.0 upgrade #\d+$/)
+    expect(proposal.description).toMatch(/^# Release 6\.0\.0 upgrade #\d+ /)
+    expect(proposal.description).toContain('https://forum.reserve.org/t/fork-upgrade-rfc')
     if (target.topology === 'optimistic') {
       expect(proposal.targets).toEqual([registry, registry, target.proxyAdmin, manifest!.spell])
       expect(calls).toEqual([

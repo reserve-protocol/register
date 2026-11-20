@@ -10,16 +10,22 @@ const MDEditor = lazy(() => import('@uiw/react-md-editor'))
 interface IProposalDescriptionForm {
   onChange: (description: string) => void // Proposal description
   onBack: () => void
+  initialTitle?: string
+  initialDescription?: string
 }
 
 const ProposalDescriptionForm = ({
   onChange,
   onBack,
+  initialTitle = '',
+  initialDescription = '',
 }: IProposalDescriptionForm) => {
   const { t } = useLingui()
-  const [title, setTitle] = useState('')
+  const [title, setTitle] = useState(initialTitle)
   const [rfc, setRFC] = useState('')
-  const [description, setDescription] = useState<string | undefined>('')
+  const [description, setDescription] = useState<string | undefined>(
+    initialDescription
+  )
 
   useEffect(() => {
     if (!title) return onChange('')

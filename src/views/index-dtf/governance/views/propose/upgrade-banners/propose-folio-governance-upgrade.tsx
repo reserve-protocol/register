@@ -1,4 +1,4 @@
-import { Button } from '@/components/ui/button'
+import UpgradeProposalButton from './upgrade-proposal-button'
 import { indexDTFAtom, indexDTFStatusAtom } from '@/state/dtf/atoms'
 import { trackClick } from '@/hooks/useTrackPage'
 import { getCurrentTime } from '@/utils'
@@ -42,8 +42,11 @@ export default function ProposeFolioGovernanceUpgrade() {
   )
 
   const { writeContract, data: hash, isPending } = useWriteContract()
-  const { data: receipt, isSuccess, error: receiptError } =
-    useWaitForTransactionReceipt({ hash, chainId })
+  const {
+    data: receipt,
+    isSuccess,
+    error: receiptError,
+  } = useWaitForTransactionReceipt({ hash, chainId })
   const isSubmitted =
     (!!hash && !receipt && !receiptError) || receipt?.status === 'success'
 
@@ -94,8 +97,14 @@ export default function ProposeFolioGovernanceUpgrade() {
 
   const symbol = dtf.token.symbol
 
-  const handlePropose = () => {
-    trackClick('governance', 'propose_folio_governance_upgrade', dtf.id, symbol, chainId)
+  const handlePropose = (proposalDescription: string) => {
+    trackClick(
+      'governance',
+      'propose_folio_governance_upgrade',
+      dtf.id,
+      symbol,
+      chainId
+    )
     const { governor: governorImpl, timelock: timelockImpl } =
       reads.implementations!
     writeContract(
@@ -105,10 +114,7 @@ export default function ProposeFolioGovernanceUpgrade() {
         timelock,
         registry,
         implementations: { governor: governorImpl!, timelock: timelockImpl! },
-        description: nextVoteLockUpgradeDescription(
-          proposals,
-          FOLIO_GOVERNANCE_UPGRADE_MESSAGE
-        ),
+        description: proposalDescription,
       })
     )
   }
@@ -142,10 +148,15 @@ export default function ProposeFolioGovernanceUpgrade() {
           </p>
         </div>
       </div>
-      <Button
+      <UpgradeProposalButton
+        initialDescription={t`Upgrade this DTF's governor and timelock to release 1.1.0, adding a proposal throttle and time-weighted vote checks against proposal spam.`}
+        initialTitle={nextVoteLockUpgradeDescription(
+          proposals,
+          FOLIO_GOVERNANCE_UPGRADE_MESSAGE
+        )}
         data-testid="governance-folio-governance-upgrade-btn"
         disabled={isPending || isSubmitted}
-        onClick={handlePropose}
+        onSubmit={handlePropose}
         className="w-full mt-2"
       >
         {(isPending || isSubmitted) && (
@@ -154,7 +165,7 @@ export default function ProposeFolioGovernanceUpgrade() {
         {isPending && t`Pending, sign in wallet...`}
         {!isPending && isSubmitted && t`Waiting for confirmation...`}
         {!isPending && !isSubmitted && t`Propose ${symbol} upgrade`}
-      </Button>
+      </UpgradeProposalButton>
     </div>
   )
 }

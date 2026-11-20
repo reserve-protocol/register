@@ -2,10 +2,10 @@ import dtfAdminAbi from '@/abis/dtf-admin-abi'
 import dtfIndexAbi from '@/abis/dtf-index-abi-v1'
 import DTFIndexGovernance from '@/abis/dtf-index-governance'
 import stakingVaultAbi from '@/abis/dtf-index-staking-vault'
-import { Button } from '@/components/ui/button'
+import UpgradeProposalButton from './upgrade-proposal-button'
 import { chainIdAtom } from '@/state/atoms'
 import { indexDTFAtom } from '@/state/dtf/atoms'
-import { getCurrentTime } from '@/utils'
+import { getCurrentTime, getProposalTitle } from '@/utils'
 import { ChainId } from '@/utils/chains'
 import { PROPOSAL_STATES } from '@/utils/constants'
 import type { IndexDtfProposalSummary } from '@reserve-protocol/react-sdk'
@@ -197,7 +197,7 @@ const ProposeGovernanceSpell31032025Folio = ({
     dtf?.tradingGovernance?.id
   const proposalAvailable = !!spell && qdOwnerGov === 100n
 
-  const handlePropose = () => {
+  const handlePropose = (proposalDescription: string) => {
     if (!dtf || !spell) return
     if (!dtf.ownerGovernance || !dtf.tradingGovernance || qdOwnerGov !== 100n)
       return
@@ -245,7 +245,7 @@ const ProposeGovernanceSpell31032025Folio = ({
             ],
           }),
         ],
-        UPGRADE_FOLIO_MESSAGE,
+        proposalDescription,
       ],
     })
   }
@@ -293,9 +293,11 @@ const ProposeGovernanceSpell31032025Folio = ({
           </p>
         </div>
       </div>
-      <Button
+      <UpgradeProposalButton
+        initialDescription={t`Upgrade the governance contracts through the governance spell, preserving the configured guardians and applying the updated governance parameters.`}
+        initialTitle={UPGRADE_FOLIO_MESSAGE}
         disabled={!isReady || isPending || !!hash}
-        onClick={handlePropose}
+        onSubmit={handlePropose}
         className="w-full mt-2"
       >
         {(isPending || !!hash) && (
@@ -304,7 +306,7 @@ const ProposeGovernanceSpell31032025Folio = ({
         {isPending && t`Pending, sign in wallet...`}
         {!isPending && !!hash && t`Waiting for confirmation...`}
         {!isPending && !hash && t`Create Spell Proposal`}
-      </Button>
+      </UpgradeProposalButton>
     </div>
   )
 }
@@ -336,7 +338,7 @@ const ProposeGovernanceSpell31032025StakingVault = ({
   const isReady = dtf?.id && dtf?.proxyAdmin && dtf?.stToken?.governance?.id
   const proposalAvailable = !!spell && qdStakingVaultGov === 100n
 
-  const handlePropose = () => {
+  const handlePropose = (proposalDescription: string) => {
     if (!dtf || !spell) return
     if (!dtf?.stToken?.governance || qdStakingVaultGov !== 100n) return
 
@@ -370,7 +372,7 @@ const ProposeGovernanceSpell31032025StakingVault = ({
             ],
           }),
         ],
-        UPGRADE_FOLIO_DAO_MESSAGE,
+        proposalDescription,
       ],
     })
   }
@@ -419,9 +421,11 @@ const ProposeGovernanceSpell31032025StakingVault = ({
           </p>
         </div>
       </div>
-      <Button
+      <UpgradeProposalButton
+        initialDescription={t`Upgrade the governance contracts through the governance spell, preserving the configured guardians and applying the updated governance parameters.`}
+        initialTitle={UPGRADE_FOLIO_DAO_MESSAGE}
         disabled={!isReady || isPending || !!hash}
-        onClick={handlePropose}
+        onSubmit={handlePropose}
         className="w-full mt-2"
       >
         {(isPending || !!hash) && (
@@ -430,7 +434,7 @@ const ProposeGovernanceSpell31032025StakingVault = ({
         {isPending && t`Pending, sign in wallet...`}
         {!isPending && !!hash && t`Waiting for confirmation...`}
         {!isPending && !hash && t`Create Spell Proposal`}
-      </Button>
+      </UpgradeProposalButton>
     </div>
   )
 }
@@ -447,7 +451,7 @@ const validProposalExists = (
     PROPOSAL_STATES.EXECUTED,
   ]
   return proposals.some((p) => {
-    if (p.description !== description) {
+    if (getProposalTitle(p.description) !== description) {
       return false
     }
 

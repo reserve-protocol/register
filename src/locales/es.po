@@ -13697,3 +13697,27 @@ msgstr "Error de Zapper"
 #: src/views/index-dtf/overview/components/zap-mint/zap-healthcheck.tsx:24
 #~ msgid "Zaps are currently experiencing issues"
 #~ msgstr "Los Zaps están presentando problemas actualmente"
+
+msgid "Upgrade this DTF to release 4.0.0 and enable the trusted filler registry. Rebalancing will consider the entire basket instead of isolated two-token auctions."
+msgstr "Actualiza este DTF a la versión 4.0.0 y habilita el registro de ejecutores de confianza. El rebalanceo considerará toda la cesta en lugar de subastas aisladas de dos tokens."
+
+msgid "Upgrade this DTF to release 5.0.0, adding per-token auction size limits and the ability to disable bids for individual tokens."
+msgstr "Actualiza este DTF a la versión 5.0.0, con límites de tamaño de subasta por token y la posibilidad de deshabilitar ofertas para tokens individuales."
+
+msgid "Upgrade this DTF to Folio 6.0.0. Governance, roles and fees remain unchanged. For optimistic governors, update rebalance permissions to the 6.0.0 call in the same proposal."
+msgstr "Actualiza este DTF a Folio 6.0.0. La gobernanza, los roles y las comisiones no cambian. Para los gobernadores optimistas, actualiza los permisos de rebalanceo a la llamada de 6.0.0 en la misma propuesta."
+
+msgid "Upgrade the vote-lock vault, its governor and timelock to release 1.1.0. This proposal is submitted to the vote-lock DAO."
+msgstr "Actualiza la bóveda de bloqueo de votos, su gobernador y su timelock a la versión 1.1.0. Esta propuesta se presenta al DAO de bloqueo de votos."
+
+msgid "Upgrade this DTF's governor and timelock to release 1.1.0, adding a proposal throttle and time-weighted vote checks against proposal spam."
+msgstr "Actualiza el gobernador y el timelock de este DTF a la versión 1.1.0, con limitación de propuestas y controles de votos ponderados por tiempo para evitar propuestas abusivas."
+
+msgid "Migrate this DTF to Reserve Optimistic Governor using the configured successor vote-lock vault. Update governance, roles and the governance fee recipient through the upgrade spell."
+msgstr "Migra este DTF a Reserve Optimistic Governor usando la bóveda sucesora de bloqueo de votos configurada. Actualiza la gobernanza, los roles y el destinatario de comisiones de gobernanza mediante el contrato de actualización."
+
+msgid "Retire the legacy vote-lock vault by setting its unstaking delay to zero, allowing holders to move to the successor vault immediately."
+msgstr "Retira la bóveda antigua de bloqueo de votos estableciendo su demora de retiro en cero, para que los titulares puedan migrar de inmediato a la bóveda sucesora."
+
+msgid "Upgrade the governance contracts through the governance spell, preserving the configured guardians and applying the updated governance parameters."
+msgstr "Actualiza los contratos de gobernanza mediante el contrato de actualización, conservando los guardianes configurados y aplicando los parámetros de gobernanza actualizados."

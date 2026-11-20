@@ -1,7 +1,7 @@
 import dtfAdminAbi from '@/abis/dtf-admin-abi'
 import dtfIndexAbi from '@/abis/dtf-index-abi-v1'
 import DTFIndexGovernance from '@/abis/dtf-index-governance'
-import { Button } from '@/components/ui/button'
+import UpgradeProposalButton from './upgrade-proposal-button'
 import { chainIdAtom } from '@/state/atoms'
 import { indexDTFAtom } from '@/state/dtf/atoms'
 import { trackClick } from '@/hooks/useTrackPage'
@@ -21,7 +21,10 @@ import {
   optimisticStakingVaultAddress,
 } from '@/components/vote-lock/migration/migration-targets'
 import { useOptimisticUpgradeEligibility } from '@/views/index-dtf/components/vote-lock-migration/use-upgrade-eligibility'
-import { hasLiveUpgradeFolio, nextUpgradeFolioDescription } from './migration-proposals'
+import {
+  hasLiveUpgradeFolio,
+  nextUpgradeFolioDescription,
+} from './migration-proposals'
 
 const spellAbi = [
   {
@@ -154,10 +157,10 @@ const spellAbi = [
 
 type SpellUpgradeProps = {
   refetch: () => void
-  description: string
+  initialTitle: string
 }
 
-const ProposeBanner = ({ refetch, description }: SpellUpgradeProps) => {
+const ProposeBanner = ({ refetch, initialTitle }: SpellUpgradeProps) => {
   const { t } = useLingui()
   const dtf = useAtomValue(indexDTFAtom)
   const chainId = useAtomValue(chainIdAtom)
@@ -187,7 +190,7 @@ const ProposeBanner = ({ refetch, description }: SpellUpgradeProps) => {
     dtf?.tradingGovernance?.id
   const proposalAvailable = !!spell
 
-  const handlePropose = () => {
+  const handlePropose = (proposalDescription: string) => {
     if (
       !dtf ||
       !target ||
@@ -197,7 +200,13 @@ const ProposeBanner = ({ refetch, description }: SpellUpgradeProps) => {
     )
       return
 
-    trackClick('governance', 'propose_governance_upgrade', dtf.id, dtf.token.symbol, chainId)
+    trackClick(
+      'governance',
+      'propose_governance_upgrade',
+      dtf.id,
+      dtf.token.symbol,
+      chainId
+    )
     const newVaultAddress = target.stakingVault
     const oldFolioGovernor = dtf.ownerGovernance.id
     const tradingGovernor = dtf.tradingGovernance.id
@@ -254,7 +263,7 @@ const ProposeBanner = ({ refetch, description }: SpellUpgradeProps) => {
             ],
           }),
         ],
-        description,
+        proposalDescription,
       ],
     })
   }
@@ -332,10 +341,12 @@ const ProposeBanner = ({ refetch, description }: SpellUpgradeProps) => {
           </p>
         </div>
       </div>
-      <Button
+      <UpgradeProposalButton
+        initialDescription={t`Migrate this DTF to Reserve Optimistic Governor using the configured successor vote-lock vault. Update governance, roles and the governance fee recipient through the upgrade spell.`}
+        initialTitle={initialTitle}
         data-testid="governance-optimistic-upgrade-btn"
         disabled={!isReady || isPending || isSubmitted}
-        onClick={handlePropose}
+        onSubmit={handlePropose}
         className="w-full mt-2"
       >
         {(isPending || isSubmitted) && (
@@ -344,7 +355,7 @@ const ProposeBanner = ({ refetch, description }: SpellUpgradeProps) => {
         {isPending && t`Pending, sign in wallet...`}
         {!isPending && isSubmitted && t`Waiting for confirmation...`}
         {!isPending && !isSubmitted && t`Propose upgrade`}
-      </Button>
+      </UpgradeProposalButton>
     </div>
   )
 }
@@ -362,7 +373,7 @@ export default function ProposeOptimisticGovernanceUpgrade() {
   if (!isProposeAllowed || !proposals) return null
   if (!isEligible || hasLiveUpgradeFolio(proposals)) return null
 
-  const description = nextUpgradeFolioDescription(proposals)
+  const initialTitle = nextUpgradeFolioDescription(proposals)
 
-  return <ProposeBanner refetch={refetch} description={description} />
+  return <ProposeBanner refetch={refetch} initialTitle={initialTitle} />
 }
