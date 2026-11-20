@@ -23,6 +23,15 @@ const callAbi = parseAbi([
 ])
 
 describe('upgradeFolio proposals', () => {
+  it('recognizes titles in descriptions with RFC links and body text', () => {
+    const description =
+      '# Reserve Optimistic Governor upgrade #3 \n [RFC](https://forum.reserve.org/t/rfc) \n Community-reviewed migration.'
+    expect(hasLiveUpgradeFolio([proposal(description, 'ACTIVE')])).toBe(true)
+    expect(
+      nextUpgradeFolioDescription([proposal(description, 'DEFEATED')])
+    ).toBe('Reserve Optimistic Governor upgrade #4')
+  })
+
   it.each(['PENDING', 'ACTIVE', 'SUCCEEDED', 'QUEUED', 'EXECUTED'])(
     'counts a %s upgrade as live',
     (state) => {
@@ -38,6 +47,14 @@ describe('upgradeFolio proposals', () => {
 })
 
 describe('retire proposals', () => {
+  it('recognizes Markdown retirement titles and advances their nonce', () => {
+    const description = `# Retire legacy vote-lock vault ${VAULT} #2 \n [RFC](https://forum.reserve.org/t/rfc) \n Retire the old vault.`
+    expect(hasLiveRetire([proposal(description, 'ACTIVE')], VAULT)).toBe(true)
+    expect(
+      nextRetireDescription([proposal(description, 'DEFEATED')], VAULT)
+    ).toBe(`Retire legacy vote-lock vault ${VAULT} #3`)
+  })
+
   it('numbers retries per vault and only counts live attempts', () => {
     const description = nextRetireDescription([], VAULT)
     expect(description).toBe(`Retire legacy vote-lock vault ${VAULT} #1`)

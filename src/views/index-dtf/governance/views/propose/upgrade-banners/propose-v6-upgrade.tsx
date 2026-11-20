@@ -1,6 +1,6 @@
 import dtfAdminAbi from '@/abis/dtf-admin-abi'
 import { Alert, AlertDescription } from '@/components/ui/alert'
-import { Button } from '@/components/ui/button'
+import UpgradeProposalButton from './upgrade-proposal-button'
 import { indexDTFAtom, indexDTFVersionAtom } from '@/state/dtf/atoms'
 import { getCurrentTime } from '@/utils'
 import { isGovernanceMigrationPending } from '@/views/index-dtf/components/vote-lock-migration/governance-migration'
@@ -137,7 +137,7 @@ export default function ProposeV6Upgrade() {
   const isOptimistic = !!dtf.ownerGovernance?.isOptimistic
   const isAuctionLengthTooShort = dtf.auctionLength < MIN_V6_AUCTION_LENGTH
 
-  const handlePropose = () => {
+  const handlePropose = (proposalDescription: string) => {
     if (eligibility.status !== 'ready' || !spell) return
     writeContract(
       buildV6UpgradeProposal({
@@ -147,7 +147,7 @@ export default function ProposeV6Upgrade() {
         spell,
         governor,
         selectorRegistry: eligibility.selectorRegistry,
-        description: nextV6UpgradeDescription(proposals),
+        description: proposalDescription,
       })
     )
   }
@@ -214,7 +214,13 @@ export default function ProposeV6Upgrade() {
           </AlertDescription>
         </Alert>
       )}
-      <Button
+      <UpgradeProposalButton
+        initialDescription={
+          isOptimistic
+            ? t`Upgrade this DTF to Folio 6.0.0 and update its rebalance permissions to the 6.0.0 call. Governance, roles and fees remain unchanged.`
+            : t`Upgrade this DTF to Folio 6.0.0. Governance, roles and fees remain unchanged.`
+        }
+        initialTitle={nextV6UpgradeDescription(proposals)}
         data-testid="governance-v6-upgrade-btn"
         disabled={
           eligibility.status !== 'ready' ||
@@ -222,7 +228,7 @@ export default function ProposeV6Upgrade() {
           isPending ||
           isSubmitted
         }
-        onClick={handlePropose}
+        onSubmit={handlePropose}
         className="w-full mt-2"
       >
         {(isPending || isSubmitted) && (
@@ -231,7 +237,7 @@ export default function ProposeV6Upgrade() {
         {isPending && t`Pending, sign in wallet...`}
         {!isPending && isSubmitted && t`Waiting for confirmation...`}
         {!isPending && !isSubmitted && t`Propose 6.0.0 upgrade`}
-      </Button>
+      </UpgradeProposalButton>
     </div>
   )
 }

@@ -13686,3 +13686,36 @@ msgstr ""
 #: src/views/index-dtf/overview/components/zap-mint/zap-healthcheck.tsx:24
 #~ msgid "Zaps are currently experiencing issues"
 #~ msgstr ""
+
+msgid "Upgrade this DTF to release 4.0.0 and enable the trusted filler registry. Rebalancing will consider the entire basket instead of isolated two-token auctions."
+msgstr ""
+
+msgid "Upgrade this DTF to release 5.0.0, adding per-token auction size limits and the ability to disable bids for individual tokens."
+msgstr ""
+
+msgid "Upgrade this DTF to Folio 6.0.0. Governance, roles and fees remain unchanged."
+msgstr ""
+
+msgid "Upgrade this DTF to Folio 6.0.0 and update its rebalance permissions to the 6.0.0 call. Governance, roles and fees remain unchanged."
+msgstr ""
+
+msgid "Upgrade the vote-lock vault, its governor and timelock to release 1.1.0. This proposal is submitted to the vote-lock DAO."
+msgstr ""
+
+msgid "Upgrade this DTF's governor and timelock to release 1.1.0, adding a proposal throttle and time-weighted vote checks against proposal spam."
+msgstr ""
+
+msgid "Migrate this DTF to Reserve Optimistic Governor using the configured successor vote-lock vault. Update governance, roles and the governance fee recipient through the upgrade spell."
+msgstr ""
+
+msgid "Retire the legacy vote-lock vault by setting its unstaking delay to zero, allowing holders to move to the successor vault immediately."
+msgstr ""
+
+msgid "Fix the proposal threshold on the Admin and Basket governors of this DTF through the governance spell, so that it matches the percentage intended at deployment."
+msgstr ""
+
+msgid "Fix the proposal threshold on the vote-lock DAO governor of this DTF through the governance spell, so that it matches the percentage intended at deployment."
+msgstr ""
+
+msgid "Enter a proposal title to continue."
+msgstr ""

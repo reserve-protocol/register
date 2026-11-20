@@ -1,4 +1,5 @@
 import DTFIndexGovernance from '@/abis/dtf-index-governance'
+import { getProposalTitle } from '@/utils'
 import { ChainId } from '@/utils/chains'
 import { PROPOSAL_STATES } from '@/utils/constants'
 import type { IndexDtfProposalSummary } from '@reserve-protocol/react-sdk'
@@ -204,8 +205,10 @@ const LIVE_STATES: string[] = [
   PROPOSAL_STATES.EXECUTED,
 ]
 
-const matchesMessage = (description: string, message: string) =>
-  description === message || description.startsWith(`${message} #`)
+const matchesMessage = (description: string, message: string) => {
+  const title = getProposalTitle(description)
+  return title === message || title.startsWith(`${message} #`)
+}
 
 export const hasLiveVoteLockUpgrade = (
   proposals: readonly IndexDtfProposalSummary[],
@@ -224,9 +227,10 @@ export const nextVoteLockUpgradeDescription = (
   const prefix = `${message} #`
   let max = 0
   for (const { description } of proposals) {
-    if (description === message) max = Math.max(max, 1)
-    else if (description.startsWith(prefix)) {
-      const n = Number.parseInt(description.slice(prefix.length), 10)
+    const title = getProposalTitle(description)
+    if (title === message) max = Math.max(max, 1)
+    else if (title.startsWith(prefix)) {
+      const n = Number.parseInt(title.slice(prefix.length), 10)
       if (Number.isFinite(n)) max = Math.max(max, n)
     }
   }

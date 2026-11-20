@@ -1,10 +1,10 @@
 import dtfAdminAbi from '@/abis/dtf-admin-abi'
 import dtfIndexAbi from '@/abis/dtf-index-abi-v1'
 import DTFIndexGovernance from '@/abis/dtf-index-governance'
-import { Button } from '@/components/ui/button'
+import UpgradeProposalButton from './upgrade-proposal-button'
 import { chainIdAtom } from '@/state/atoms'
 import { indexDTFAtom, indexDTFVersionAtom } from '@/state/dtf/atoms'
-import { getCurrentTime } from '@/utils'
+import { getCurrentTime, getProposalTitle } from '@/utils'
 import { ChainId } from '@/utils/chains'
 import { PROPOSAL_STATES } from '@/utils/constants'
 import type { IndexDtfProposalSummary } from '@reserve-protocol/react-sdk'
@@ -52,9 +52,13 @@ export const spellAddress: Record<number, `0x${string}`> = {
 
 const UPGRADE_FOLIO_MESSAGE = 'Release 5.0.0 upgrade'
 
-const matchesUpgradeMessage = (description: string) =>
-  description === UPGRADE_FOLIO_MESSAGE ||
-  description.startsWith(`${UPGRADE_FOLIO_MESSAGE} #`)
+const matchesUpgradeMessage = (description: string) => {
+  const title = getProposalTitle(description)
+  return (
+    title === UPGRADE_FOLIO_MESSAGE ||
+    title.startsWith(`${UPGRADE_FOLIO_MESSAGE} #`)
+  )
+}
 
 const getNextUpgradeDescription = (
   proposals: readonly IndexDtfProposalSummary[]
@@ -62,10 +66,11 @@ const getNextUpgradeDescription = (
   let maxNonce = 0
   const prefix = `${UPGRADE_FOLIO_MESSAGE} #`
   for (const p of proposals) {
-    if (p.description === UPGRADE_FOLIO_MESSAGE) {
+    const title = getProposalTitle(p.description)
+    if (title === UPGRADE_FOLIO_MESSAGE) {
       maxNonce = Math.max(maxNonce, 1)
-    } else if (p.description.startsWith(prefix)) {
-      const n = Number.parseInt(p.description.slice(prefix.length), 10)
+    } else if (title.startsWith(prefix)) {
+      const n = Number.parseInt(title.slice(prefix.length), 10)
       if (Number.isFinite(n)) maxNonce = Math.max(maxNonce, n)
     }
   }
@@ -74,10 +79,10 @@ const getNextUpgradeDescription = (
 
 type SpellUpgradeProps = {
   refetch: () => void
-  description: string
+  initialTitle: string
 }
 
-const ProposeBanner = ({ refetch, description }: SpellUpgradeProps) => {
+const ProposeBanner = ({ refetch, initialTitle }: SpellUpgradeProps) => {
   const { t } = useLingui()
   const dtf = useAtomValue(indexDTFAtom)
   const chainId = useAtomValue(chainIdAtom)
@@ -104,7 +109,7 @@ const ProposeBanner = ({ refetch, description }: SpellUpgradeProps) => {
     dtf?.tradingGovernance?.id
   const proposalAvailable = !!spell
 
-  const handlePropose = () => {
+  const handlePropose = (proposalDescription: string) => {
     if (!dtf || !spell || !dtf.ownerGovernance) return
 
     writeContract({
@@ -132,7 +137,7 @@ const ProposeBanner = ({ refetch, description }: SpellUpgradeProps) => {
             args: [dtf.id, dtf.proxyAdmin],
           }),
         ],
-        description,
+        proposalDescription,
       ],
     })
   }
@@ -206,9 +211,11 @@ const ProposeBanner = ({ refetch, description }: SpellUpgradeProps) => {
           </p>
         </div>
       </div>
-      <Button
+      <UpgradeProposalButton
+        initialDescription={t`Upgrade this DTF to release 5.0.0, adding per-token auction size limits and the ability to disable bids for individual tokens.`}
+        initialTitle={initialTitle}
         disabled={!isReady || isPending || isSubmitted}
-        onClick={handlePropose}
+        onSubmit={handlePropose}
         className="w-full mt-2"
       >
         {(isPending || isSubmitted) && (
@@ -217,7 +224,7 @@ const ProposeBanner = ({ refetch, description }: SpellUpgradeProps) => {
         {isPending && t`Pending, sign in wallet...`}
         {!isPending && isSubmitted && t`Waiting for confirmation...`}
         {!isPending && !isSubmitted && t`Propose upgrade`}
-      </Button>
+      </UpgradeProposalButton>
     </div>
   )
 }
@@ -267,7 +274,7 @@ export default function ProposeV5Upgrade() {
     return null
   }
 
-  const description = getNextUpgradeDescription(proposals)
+  const initialTitle = getNextUpgradeDescription(proposals)
 
-  return <ProposeBanner refetch={refetch} description={description} />
+  return <ProposeBanner refetch={refetch} initialTitle={initialTitle} />
 }

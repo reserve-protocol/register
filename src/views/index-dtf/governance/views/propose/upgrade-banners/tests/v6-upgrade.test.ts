@@ -156,6 +156,14 @@ describe('upgrade proposal retries', () => {
   })
 
   it('numbers the next attempt after any earlier one, live or not', () => {
+    expect(
+      nextV6UpgradeDescription([
+        proposal(
+          '# Release 6.0.0 upgrade #4 \n [RFC](https://forum.reserve.org/t/rfc) \n Upgrade the implementation.',
+          'DEFEATED'
+        ),
+      ])
+    ).toBe('Release 6.0.0 upgrade #5')
     expect(nextV6UpgradeDescription([])).toBe('Release 6.0.0 upgrade #1')
     expect(
       nextV6UpgradeDescription([

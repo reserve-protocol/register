@@ -1,6 +1,6 @@
 ---
 title: Progress
-updated: 2026-11-18
+updated: 2026-11-20
 type: ledger
 ---
 
@@ -10,6 +10,7 @@ Stage ledger. One row per stage; keep entries short. Verifier = exact fresh comm
 
 | Stage | Status | Verifier | Review | Next |
 |---|---|---|---|---|
+| Banner proposal descriptions | human-review-required (base d04d7253a) | `scope.mjs --base d04d7253a --gate` · upgrade metadata + upgrade previews + DAO flow desktop/mobile · smoke 64 passed, 1 pre-existing skip · `build:no-seo` · desktop/mobile visual inspection | Independent Intent + Engineering Risk review; defaults remain editable, RFC blank, explicit submit; Markdown-aware live-proposal dedupe/numbering. Fork helpers updated, fork lanes not run. | Engineer review of governance submission behavior; merge/deploy not authorized |
 | Bind vote-lock actions and state to the drawer vault | human-review-required (PR #1170) | RED `current-dtf-vault-state` (delegate sent to the legacy vault) · unit 1357 · e2e tsc · lint · `flows/vote-lock-drawer` smoke 4/4 + mobile 1/1 · first pass: smoke 64, `build:no-seo` | Self-review after an independent first pass. The drawer drops state read for another vault or account (the Governance drawer mixed a session-old vault with the current vault's balance); the DTF refetches on mismatch; external reads match the selected vault; explicit legacy unlock kept. Matches the reported transaction; the original session is not proven. | Engineer review of vote-lock writes before merge |
 | solariskit-wagmi-v3 ([plan](../plans/solariskit-wagmi-v3.md)) | human-review-required (base caabd37d1) | typecheck · lint · test:run 163 files · e2e all projects 276/291, failures all red or flaky on master too · fork Base: LCAP migration, upgrade-v6 MIDAS, settings-v6 green; basket-v6 5 of 7 (intermittent CSV step); ABX case red on master too · build | Dark: connect-chain wiki claim fixed (same on AppKit), modal queue removed. Light: TEST_MAP gaps fixed | human wallet matrix; Engineer review: wallet providers, wagmi major under every tx path |
 | index-dtf-v6 retire banner: skip the seed-only deploy vaults of MAG7 and the AI DTFs (fixed list per chain, by decision; no supply rule) | human-review-required (PR #1143) | unit upgrade-banners 54 (RED before the list) · tsc · flow governance-propose 1/1 · smoke 61 (7 contention failures pass with --workers=1) · supply of each listed vault read on chain (1e18, one at 1.01e18, all delegated to the deployer) | Engineer review: the vault list | — |

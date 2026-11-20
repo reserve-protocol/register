@@ -1,4 +1,5 @@
 import DTFIndexGovernance from '@/abis/dtf-index-governance'
+import { getProposalTitle } from '@/utils'
 import { PROPOSAL_STATES } from '@/utils/constants'
 import {
   buildIndexDtfUpgradeToV6Calls,
@@ -118,9 +119,10 @@ const spellCastAbi = parseAbi([
   'function cast(address folio, address proxyAdmin, address selectorRegistry)',
 ])
 
-const isUpgradeDescription = (description: string) =>
-  description === UPGRADE_V6_MESSAGE ||
-  description.startsWith(`${UPGRADE_V6_MESSAGE} #`)
+const isUpgradeDescription = (description: string) => {
+  const title = getProposalTitle(description)
+  return title === UPGRADE_V6_MESSAGE || title.startsWith(`${UPGRADE_V6_MESSAGE} #`)
+}
 
 // Live proposals whose calls must be read to find a spell cast under another description.
 export const getV6UpgradeCandidates = (
@@ -167,11 +169,12 @@ export const nextV6UpgradeDescription = (
 ) => {
   const prefix = `${UPGRADE_V6_MESSAGE} #`
   const nonces = proposals
-    .filter((p) => isUpgradeDescription(p.description))
-    .map((p) =>
-      p.description === UPGRADE_V6_MESSAGE
+    .map((p) => getProposalTitle(p.description))
+    .filter(isUpgradeDescription)
+    .map((title) =>
+      title === UPGRADE_V6_MESSAGE
         ? 1
-        : Number.parseInt(p.description.slice(prefix.length), 10)
+        : Number.parseInt(title.slice(prefix.length), 10)
     )
     .filter(Number.isFinite)
   return `${prefix}${Math.max(0, ...nonces) + 1}`

@@ -13697,3 +13697,36 @@ msgstr "Zapper 오류"
 #: src/views/index-dtf/overview/components/zap-mint/zap-healthcheck.tsx:24
 #~ msgid "Zaps are currently experiencing issues"
 #~ msgstr "현재 Zap에 문제가 발생하고 있습니다"
+
+msgid "Upgrade this DTF to release 4.0.0 and enable the trusted filler registry. Rebalancing will consider the entire basket instead of isolated two-token auctions."
+msgstr "이 DTF를 버전 4.0.0으로 업그레이드하고 신뢰할 수 있는 체결자 레지스트리를 활성화합니다. 리밸런싱은 개별 2토큰 경매 대신 전체 바스켓을 고려합니다."
+
+msgid "Upgrade this DTF to release 5.0.0, adding per-token auction size limits and the ability to disable bids for individual tokens."
+msgstr "이 DTF를 버전 5.0.0으로 업그레이드하여 토큰별 경매 규모 제한과 개별 토큰 입찰 비활성화 기능을 추가합니다."
+
+msgid "Upgrade this DTF to Folio 6.0.0. Governance, roles and fees remain unchanged."
+msgstr "이 DTF를 Folio 6.0.0으로 업그레이드합니다. 거버넌스, 역할 및 수수료는 변경되지 않습니다."
+
+msgid "Upgrade this DTF to Folio 6.0.0 and update its rebalance permissions to the 6.0.0 call. Governance, roles and fees remain unchanged."
+msgstr "이 DTF를 Folio 6.0.0으로 업그레이드하고 리밸런싱 권한을 6.0.0 호출로 업데이트합니다. 거버넌스, 역할 및 수수료는 변경되지 않습니다."
+
+msgid "Upgrade the vote-lock vault, its governor and timelock to release 1.1.0. This proposal is submitted to the vote-lock DAO."
+msgstr "투표 잠금 볼트, 거버너 및 타임록을 버전 1.1.0으로 업그레이드합니다. 이 제안은 투표 잠금 DAO에 제출됩니다."
+
+msgid "Upgrade this DTF's governor and timelock to release 1.1.0, adding a proposal throttle and time-weighted vote checks against proposal spam."
+msgstr "이 DTF의 거버너와 타임록을 버전 1.1.0으로 업그레이드하여 제안 빈도 제한과 시간 가중 투표 검사를 추가해 제안 스팸을 방지합니다."
+
+msgid "Migrate this DTF to Reserve Optimistic Governor using the configured successor vote-lock vault. Update governance, roles and the governance fee recipient through the upgrade spell."
+msgstr "설정된 후속 투표 잠금 볼트를 사용하여 이 DTF를 Reserve Optimistic Governor로 이전합니다. 업그레이드 스펠을 통해 거버넌스, 역할 및 거버넌스 수수료 수령자를 업데이트합니다."
+
+msgid "Retire the legacy vote-lock vault by setting its unstaking delay to zero, allowing holders to move to the successor vault immediately."
+msgstr "기존 투표 잠금 볼트의 언스테이킹 지연을 0으로 설정하여 사용을 종료하고, 보유자가 후속 볼트로 즉시 이전할 수 있도록 합니다."
+
+msgid "Fix the proposal threshold on the Admin and Basket governors of this DTF through the governance spell, so that it matches the percentage intended at deployment."
+msgstr "거버넌스 스펠을 통해 이 DTF의 Admin 및 Basket 거버너의 제안 임계값을 수정하여 배포 시 의도한 비율과 일치하도록 합니다."
+
+msgid "Fix the proposal threshold on the vote-lock DAO governor of this DTF through the governance spell, so that it matches the percentage intended at deployment."
+msgstr "거버넌스 스펠을 통해 이 DTF의 Vote-lock DAO 거버너의 제안 임계값을 수정하여 배포 시 의도한 비율과 일치하도록 합니다."
+
+msgid "Enter a proposal title to continue."
+msgstr "계속하려면 제안 제목을 입력하세요."

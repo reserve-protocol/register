@@ -1,4 +1,5 @@
 import DTFIndexGovernance from '@/abis/dtf-index-governance'
+import { getProposalTitle } from '@/utils'
 import { PROPOSAL_STATES } from '@/utils/constants'
 import type { IndexDtfProposalSummary } from '@reserve-protocol/react-sdk'
 import { encodeFunctionData, getAddress, parseAbi, type Address } from 'viem'
@@ -43,9 +44,13 @@ const retireSpellAbi = parseAbi([
   'function retireOldStakingVault(address oldStakingVault)',
 ])
 
-const matchesUpgradeMessage = (description: string) =>
-  description === UPGRADE_FOLIO_MESSAGE ||
-  description.startsWith(`${UPGRADE_FOLIO_MESSAGE} #`)
+const matchesUpgradeMessage = (description: string) => {
+  const title = getProposalTitle(description)
+  return (
+    title === UPGRADE_FOLIO_MESSAGE ||
+    title.startsWith(`${UPGRADE_FOLIO_MESSAGE} #`)
+  )
+}
 
 export const hasLiveUpgradeFolio = (proposals: readonly IndexDtfProposalSummary[]) =>
   proposals.some(
@@ -60,10 +65,11 @@ export const nextUpgradeFolioDescription = (
   let maxNonce = 0
   const prefix = `${UPGRADE_FOLIO_MESSAGE} #`
   for (const p of proposals) {
-    if (p.description === UPGRADE_FOLIO_MESSAGE) {
+    const title = getProposalTitle(p.description)
+    if (title === UPGRADE_FOLIO_MESSAGE) {
       maxNonce = Math.max(maxNonce, 1)
-    } else if (p.description.startsWith(prefix)) {
-      const n = Number.parseInt(p.description.slice(prefix.length), 10)
+    } else if (title.startsWith(prefix)) {
+      const n = Number.parseInt(title.slice(prefix.length), 10)
       if (Number.isFinite(n)) maxNonce = Math.max(maxNonce, n)
     }
   }
@@ -75,7 +81,10 @@ const retirePrefix = (voteLock: Address) => `${RETIRE_MESSAGE} ${voteLock} #`
 const retireProposals = (
   proposals: readonly IndexDtfProposalSummary[],
   voteLock: Address
-) => proposals.filter((p) => p.description.startsWith(retirePrefix(voteLock)))
+) =>
+  proposals.filter((p) =>
+    getProposalTitle(p.description).startsWith(retirePrefix(voteLock))
+  )
 
 export const hasLiveRetire = (
   proposals: readonly IndexDtfProposalSummary[],
@@ -91,7 +100,10 @@ export const nextRetireDescription = (
   voteLock: Address
 ) => {
   const nonces = retireProposals(proposals, voteLock).map((p) =>
-    Number.parseInt(p.description.slice(retirePrefix(voteLock).length), 10)
+    Number.parseInt(
+      getProposalTitle(p.description).slice(retirePrefix(voteLock).length),
+      10
+    )
   )
   return `${retirePrefix(voteLock)}${Math.max(0, ...nonces.filter(Number.isFinite)) + 1}`
 }

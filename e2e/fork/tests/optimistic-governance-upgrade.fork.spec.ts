@@ -16,6 +16,7 @@ import {
   zeroAddress,
 } from 'viem'
 import { installForkWallet } from '../helpers/fork-wallet'
+import { submitUpgradeDetails } from '../helpers/governance'
 
 // Real governance migration on a fork, driven from the Register UI: the
 // pre-upgrade card locks into the new vault, banner 1 proposes upgradeFolio on
@@ -211,6 +212,7 @@ test(`${scenario.toUpperCase()}${safeMode ? ' (Safe)' : ''} migrates governance,
       fullPage: true,
     })
     await action.click()
+    await submitUpgradeDetails(page)
     const created = () =>
       client.getContractEvents({
         address: governor,

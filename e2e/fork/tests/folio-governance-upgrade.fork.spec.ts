@@ -13,6 +13,7 @@ import {
   toHex,
 } from 'viem'
 import { installForkWallet } from '../helpers/fork-wallet'
+import { submitUpgradeDetails } from '../helpers/governance'
 
 // A single-governor DTF on a vlRSR singleton (AI DTFs, MAG7) upgrades its own
 // governor and timelock to 1.1.0 from the Register banner after the singleton runs
@@ -138,12 +139,14 @@ test(`${scenario.toUpperCase()} upgrades its governor and timelock to 1.1.0 from
 
   const fromBlock = await client.getBlockNumber()
   await page.getByTestId('governance-folio-governance-upgrade-btn').click()
+  await submitUpgradeDetails(page)
   await expect.poll(async () => (await createdSince(fromBlock)).length, { timeout: 120_000 }).toBe(1)
   const [log] = await createdSince(fromBlock)
   const proposal = log.args as Proposal
   expect(proposal.proposer).toBe(manifest.proposer)
   expect(proposal.targets.map((t) => getAddress(t))).toEqual([manifest.governor, manifest.timelock])
-  expect(proposal.description).toBe('Upgrade DTF governance to 1.1.0 #1')
+  expect(proposal.description).toMatch(/^# Upgrade DTF governance to 1\.1\.0 #1 /)
+  expect(proposal.description).toContain('https://forum.reserve.org/t/fork-upgrade-rfc')
 
   await expect(page).toHaveURL(new RegExp(`/proposal/${proposal.proposalId}`), { timeout: 60_000 })
   const upgradeCard = page.getByTestId('proposal-vote-lock-upgrade')

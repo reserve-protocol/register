@@ -20,6 +20,15 @@ export const governorAbi = parseAbi([
 ])
 const timelockAbi = parseAbi(['function getMinDelay() view returns (uint256)'])
 
+export const submitUpgradeDetails = async (page: Page) => {
+  const details = page.getByTestId('governance-upgrade-details')
+  await expect(details).toBeVisible()
+  await expect(details.locator('#title')).not.toHaveValue('')
+  await expect(details.locator('textarea')).not.toHaveValue('')
+  await details.locator('#rfc').fill('https://forum.reserve.org/t/fork-upgrade-rfc')
+  await page.getByTestId('governance-upgrade-submit-btn').click()
+}
+
 export type Proposal = {
   proposalId: bigint
   proposer: Address
@@ -72,6 +81,7 @@ export const forkGovernance = (client: PublicClient) => {
     await expect(action).toBeEnabled({ timeout: 120_000 })
     if (screenshot) await page.screenshot({ path: screenshot, fullPage: true })
     await action.click()
+    if (button === 'governance-v6-upgrade-btn') await submitUpgradeDetails(page)
     const created = () =>
       client.getContractEvents({
         address: governor,
