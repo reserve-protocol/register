@@ -3528,7 +3528,7 @@ msgstr ""
 msgid "Discover DTFs"
 msgstr ""
 
-#: src/views/home-preview/shared/v26-cards.tsx:119
+#: src/views/home-preview/shared/v26-cards.tsx:128
 msgid "Discover more DTFs"
 msgstr ""
 
@@ -4205,7 +4205,7 @@ msgstr ""
 msgid "eUSD revenue router destinations"
 msgstr ""
 
-#: src/views/home-preview/shared/hero-anims.tsx:344
+#: src/views/home-preview/shared/hero-anims.tsx:371
 msgid "eUSD within UGLYCASH"
 msgstr ""
 
@@ -4657,6 +4657,10 @@ msgstr ""
 msgid "Fixed Platform Share"
 msgstr ""
 
+#: src/views/home-preview/shared/v26-cards.tsx:88
+msgid "Focused on Latin America first"
+msgstr ""
+
 #: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:261
 #: src/views/index-dtf/governance/views/proposal/components/vote-modal.tsx:77
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalDetailStats.tsx:203
@@ -4737,7 +4741,7 @@ msgstr ""
 msgid "Frozen"
 msgstr ""
 
-#: src/views/home-preview/shared/v26-cards.tsx:96
+#: src/views/home-preview/shared/v26-cards.tsx:105
 msgid "Full custodial service ({custodialCount})"
 msgstr ""
 
@@ -5701,7 +5705,7 @@ msgstr ""
 msgid "Listed DTFs"
 msgstr ""
 
-#: src/views/home-preview/shared/v26-cards.tsx:83
+#: src/views/home-preview/shared/v26-cards.tsx:85
 msgid "Live in {V26_COUNTRY_COUNT} countries"
 msgstr ""
 
@@ -6374,7 +6378,7 @@ msgstr ""
 msgid "Most users should use Swap"
 msgstr ""
 
-#: src/views/home-preview/shared/hero-anims.tsx:346
+#: src/views/home-preview/shared/hero-anims.tsx:373
 msgid "moving across {countryCount} countries"
 msgstr ""
 
@@ -8537,8 +8541,12 @@ msgstr ""
 msgid "Reserve has been operating since 2018 with backing from <0><1>Coinbase</1>, <2>Sam Altman</2> and <3>Peter Thiel</3></0>. We exist to help you own your share of the world’s wealth."
 msgstr ""
 
-#: src/views/home-preview/variants/v26-live.tsx:24
+#: src/views/home-preview/variants/v26-live.tsx:27
 msgid "Reserve is building a better version of money."
+msgstr ""
+
+#: src/views/home-preview/variants/v26-live.tsx:29
+msgid "Reserve is building better versions of money, to help you hold and protect your share of the world’s wealth."
 msgstr ""
 
 #: src/views/home/components/homepage-hero.tsx:18
@@ -9105,7 +9113,7 @@ msgstr ""
 msgid "Selector registry is not available for this optimistic governor."
 msgstr ""
 
-#: src/views/home-preview/shared/v26-cards.tsx:99
+#: src/views/home-preview/shared/v26-cards.tsx:108
 msgid "Self-custody investment layer ({selfCustodyCount})"
 msgstr ""
 
@@ -9578,6 +9586,10 @@ msgstr ""
 msgid "Split {0} across basket assets."
 msgstr ""
 
+#: src/views/home-preview/variants/v26-live.tsx:26
+msgid "Spotlight: eUSD lets fintechs monetize their balances and offer GENIUS-compatible yield or rewards to their users"
+msgstr ""
+
 #: src/views/yield-dtf/deploy/components/TokenForm.tsx:45
 msgid "St Token Ticker"
 msgstr ""
@@ -9716,7 +9728,7 @@ msgstr ""
 msgid "Start migration"
 msgstr ""
 
-#: src/views/home-preview/shared/v18-page.tsx:96
+#: src/views/home-preview/shared/v18-page.tsx:100
 msgid "Start monetizing your stablecoin balances with eUSD the way UGLYCASH does."
 msgstr ""
 
@@ -10075,7 +10087,7 @@ msgstr ""
 msgid "The estimate is not guaranteed. It changes when rewards, vault deposits and withdrawals, token prices, or the calculation window change."
 msgstr ""
 
-#: src/views/home-preview/shared/v18-page.tsx:85
+#: src/views/home-preview/shared/v18-page.tsx:87
 msgid "The financial home for people that make money on the internet"
 msgstr ""
 
@@ -11096,17 +11108,21 @@ msgstr ""
 msgid "UGLYCASH figures are reported by UGLYCASH as daily aggregates. UGLYCASH is an off-chain app, so these numbers are not read from the blockchain."
 msgstr ""
 
-#: src/views/home-preview/shared/v18-page.tsx:88
+#: src/views/home-preview/shared/v18-page.tsx:90
+msgid "UGLYCASH is the Reserve App, and it’s fueling huge growth in eUSD"
+msgstr ""
+
+#: src/views/home-preview/shared/v18-page.tsx:92
 #: src/views/home-preview/variants/v26-home.tsx:25
 #: src/views/home-preview/variants/v26-home.tsx:37
 msgid "UGLYCASH is the Reserve App, and it’s on track to fuel huge growth in eUSD"
 msgstr ""
 
-#: src/views/home-preview/variants/v26-live.tsx:25
+#: src/views/home-preview/variants/v26-live.tsx:30
 msgid "UGLYCASH is the Reserve fintech app, and eUSD is its unit of account."
 msgstr ""
 
-#: src/views/home-preview/shared/v26-cards.tsx:106
+#: src/views/home-preview/shared/v26-cards.tsx:115
 msgid "UGLYCASH offers full service in {custodialCount} countries and self-custody investing in the US."
 msgstr ""
 

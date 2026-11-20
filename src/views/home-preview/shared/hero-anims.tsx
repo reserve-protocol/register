@@ -5,6 +5,7 @@ import globe from '../mock/globe-dots.json'
 import geography from '../mock/v26-geography.json'
 import { CATEGORIES } from '../mock/ugly-cash-series'
 import { CATEGORY_COLORS } from './category-colors'
+import { ARC_END, ARC_HEAD_RADIUS, ARC_LIFT, arcGlobeRadius, arcVisibility, arcWindow } from './globe-arc'
 
 const cssColor = (name: string, alpha = 1) => {
   const v = getComputedStyle(document.documentElement)
@@ -228,7 +229,7 @@ type GlobeCountryGroups = {
 
 
 // V21: a slowly turning dotted globe; active countries in blue, eUSD hopping between them.
-export const EusdGlobe = ({ countryGroups }: { countryGroups?: GlobeCountryGroups } = {}) => {
+export const EusdGlobe = ({ countryGroups, smoothArcs = false }: { countryGroups?: GlobeCountryGroups; smoothArcs?: boolean } = {}) => {
   const state = useRef({ rot: -60, arcs: [] as Arc[], next: 0 })
   const pts = useMemo(() => {
     if (!countryGroups) return globe.pts as number[][]
@@ -245,7 +246,7 @@ export const EusdGlobe = ({ countryGroups }: { countryGroups?: GlobeCountryGroup
   const canvasRef = useCanvasLoop((ctx, w, h, dt, t) => {
     const s = state.current
     s.rot += dt * 9
-    const R = Math.min(w, h) / 2 - 10
+    const R = smoothArcs ? arcGlobeRadius(w, h) : Math.min(w, h) / 2 - 10
     const cx = w / 2
     const cy = h / 2
     const lam = (s.rot * Math.PI) / 180
@@ -298,11 +299,37 @@ export const EusdGlobe = ({ countryGroups }: { countryGroups?: GlobeCountryGroup
       if (a !== b) s.arcs.push({ from: a, to: b, t: 0 })
       s.next = t + 0.7
     }
-    s.arcs = s.arcs.filter((arc) => arc.t < 1.4)
+    s.arcs = s.arcs.filter((arc) => arc.t < (smoothArcs ? ARC_END : 1.4))
     for (const arc of s.arcs) {
       arc.t += dt * 0.55
       const va = toVec(arc.from)
       const vb = toVec(arc.to)
+      if (smoothArcs) {
+        const { head, tail, opacity } = arcWindow(arc.t)
+        const sample = (u: number) => project(slerp(va, vb, u), Math.sin(Math.PI * u) * ARC_LIFT)
+        const visible = ({ x, y, z }: ReturnType<typeof sample>) =>
+          arcVisibility(z, Math.hypot(x - cx, y - cy), R)
+        ctx.strokeStyle = blue
+        ctx.fillStyle = blue
+        ctx.lineWidth = 2
+        ctx.lineCap = 'butt'
+        let previous = sample(tail)
+        for (let i = 1; i <= 24; i++) {
+          const point = sample(tail + ((head - tail) * i) / 24)
+          ctx.globalAlpha = (0.85 * opacity * (visible(previous) + visible(point))) / 2
+          ctx.beginPath()
+          ctx.moveTo(previous.x, previous.y)
+          ctx.lineTo(point.x, point.y)
+          ctx.stroke()
+          previous = point
+        }
+        ctx.globalAlpha = opacity * visible(previous)
+        ctx.beginPath()
+        ctx.arc(previous.x, previous.y, ARC_HEAD_RADIUS, 0, Math.PI * 2)
+        ctx.fill()
+        ctx.globalAlpha = 1
+        continue
+      }
       const head = Math.min(1, arc.t)
       const tail = Math.max(0, arc.t - 0.45)
       ctx.lineWidth = 2

@@ -51,6 +51,7 @@ const V18Page = ({
   sortTooltips = false,
   dataState = 'ready',
   v26 = false,
+  v27 = false,
 }: {
   left: React.ReactNode
   cardShadow?: boolean
@@ -58,6 +59,7 @@ const V18Page = ({
   sortTooltips?: boolean
   dataState?: 'ready' | 'error'
   v26?: boolean
+  v27?: boolean
 }) => {
   const { t } = useLingui()
   return (
@@ -78,13 +80,15 @@ const V18Page = ({
               <DataCardPlaceholder key={title} title={title} state="error" />
             ))
           )}
-          {v26 ? <CountriesCardV26 /> : <CountriesCardV18 />}
+          {v26 ? <CountriesCardV26 latinAmericaFocus={v27} /> : <CountriesCardV18 />}
           <UglyCashCardV18
             shadow={cardShadow}
             smoothTicker={v26}
             value={v26 ? t`The financial home for people that make money on the internet` : undefined}
             description={
-              v26 ? (
+              v27 ? (
+                <Trans>UGLYCASH is the Reserve App, and it’s fueling huge growth in eUSD</Trans>
+              ) : v26 ? (
                 <Trans>
                   UGLYCASH is the Reserve App, and it’s on track to fuel huge growth in eUSD
                 </Trans>

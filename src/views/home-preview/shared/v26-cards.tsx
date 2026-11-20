@@ -60,7 +60,7 @@ const Legend = ({ color, children }: { color: string; children: ReactNode }) => 
   </span>
 )
 
-export const CountriesCardV26 = () => {
+export const CountriesCardV26 = ({ latinAmericaFocus = false }: { latinAmericaFocus?: boolean }) => {
   const { t } = useLingui()
   const custodialCount = V26_COUNTRY_GROUPS.custodial.length
   const selfCustodyCount = V26_COUNTRY_GROUPS.selfCustody.length
@@ -80,7 +80,16 @@ export const CountriesCardV26 = () => {
   return (
     <HomeCard
       icon={<GlobeIcon />}
-      title={t`Live in ${V26_COUNTRY_COUNT} countries`}
+      title={
+        <>
+          {t`Live in ${V26_COUNTRY_COUNT} countries`}
+          {latinAmericaFocus && (
+            <span className="mt-1 block text-sm text-legend">
+              <Trans>Focused on Latin America first</Trans>
+            </span>
+          )}
+        </>
+      }
       mediaClassName="h-[230px]"
       media={
         <div className="flex h-full flex-col items-center justify-center gap-2 px-1">

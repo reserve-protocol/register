@@ -3528,7 +3528,7 @@ msgstr "探索我们的全部产品"
 msgid "Discover DTFs"
 msgstr "探索 DTF"
 
-#: src/views/home-preview/shared/v26-cards.tsx:119
+#: src/views/home-preview/shared/v26-cards.tsx:128
 msgid "Discover more DTFs"
 msgstr "探索更多 DTF"
 
@@ -4205,7 +4205,7 @@ msgstr "UGLYCASH 上的 eUSD 由 Best Friend Finance 托管，因此这些交易
 msgid "eUSD revenue router destinations"
 msgstr "eUSD 收入路由器目标"
 
-#: src/views/home-preview/shared/hero-anims.tsx:344
+#: src/views/home-preview/shared/hero-anims.tsx:371
 msgid "eUSD within UGLYCASH"
 msgstr "UGLYCASH 中的 eUSD"
 
@@ -4657,6 +4657,10 @@ msgstr "首损资本是由用户 staked 的 RSR 池，用于在 DTF 持有者受
 msgid "Fixed Platform Share"
 msgstr "固定平台份额"
 
+#: src/views/home-preview/shared/v26-cards.tsx:88
+msgid "Focused on Latin America first"
+msgstr "优先聚焦拉丁美洲"
+
 #: src/views/index-dtf/governance/views/proposal/components/proposal-detail-stats.tsx:261
 #: src/views/index-dtf/governance/views/proposal/components/vote-modal.tsx:77
 #: src/views/yield-dtf/governance/views/proposal-detail/components/ProposalDetailStats.tsx:203
@@ -4737,7 +4741,7 @@ msgstr "从 {0} 到 {1}"
 msgid "Frozen"
 msgstr "已冻结"
 
-#: src/views/home-preview/shared/v26-cards.tsx:96
+#: src/views/home-preview/shared/v26-cards.tsx:105
 msgid "Full custodial service ({custodialCount})"
 msgstr "完整托管服务 ({custodialCount})"
 
@@ -5701,7 +5705,7 @@ msgstr "流动性模拟金额"
 msgid "Listed DTFs"
 msgstr "已列出的 DTF"
 
-#: src/views/home-preview/shared/v26-cards.tsx:83
+#: src/views/home-preview/shared/v26-cards.tsx:85
 msgid "Live in {V26_COUNTRY_COUNT} countries"
 msgstr "覆盖 {V26_COUNTRY_COUNT} 个国家"
 
@@ -6374,7 +6378,7 @@ msgstr ""
 msgid "Most users should use Swap"
 msgstr "大多数用户应使用 Swap"
 
-#: src/views/home-preview/shared/hero-anims.tsx:346
+#: src/views/home-preview/shared/hero-anims.tsx:373
 msgid "moving across {countryCount} countries"
 msgstr "流转于 {countryCount} 个国家"
 
@@ -8537,9 +8541,13 @@ msgstr ""
 msgid "Reserve has been operating since 2018 with backing from <0><1>Coinbase</1>, <2>Sam Altman</2> and <3>Peter Thiel</3></0>. We exist to help you own your share of the world’s wealth."
 msgstr ""
 
-#: src/views/home-preview/variants/v26-live.tsx:24
+#: src/views/home-preview/variants/v26-live.tsx:27
 msgid "Reserve is building a better version of money."
 msgstr "Reserve 正在打造更好的货币。"
+
+#: src/views/home-preview/variants/v26-live.tsx:29
+msgid "Reserve is building better versions of money, to help you hold and protect your share of the world’s wealth."
+msgstr "Reserve 正在打造更好的货币，帮助你持有并守护属于你的那份全球财富。"
 
 #: src/views/home/components/homepage-hero.tsx:18
 msgid "Reserve lets you buy entire portfolios as a single token"
@@ -9105,7 +9113,7 @@ msgstr "选择器注册表"
 msgid "Selector registry is not available for this optimistic governor."
 msgstr "此 Optimistic governor 的函数选择器注册表不可用。"
 
-#: src/views/home-preview/shared/v26-cards.tsx:99
+#: src/views/home-preview/shared/v26-cards.tsx:108
 msgid "Self-custody investment layer ({selfCustodyCount})"
 msgstr "自托管投资层 ({selfCustodyCount})"
 
@@ -9578,6 +9586,10 @@ msgstr "已花费"
 msgid "Split {0} across basket assets."
 msgstr "将 {0} 分摊到篮子资产中。"
 
+#: src/views/home-preview/variants/v26-live.tsx:26
+msgid "Spotlight: eUSD lets fintechs monetize their balances and offer GENIUS-compatible yield or rewards to their users"
+msgstr "焦点：eUSD 让金融科技公司能够利用余额创收，并向用户提供符合《GENIUS 法案》的收益或奖励"
+
 #: src/views/yield-dtf/deploy/components/TokenForm.tsx:45
 msgid "St Token Ticker"
 msgstr "St Token 代号"
@@ -9716,7 +9728,7 @@ msgstr "开始发行"
 msgid "Start migration"
 msgstr "开始迁移"
 
-#: src/views/home-preview/shared/v18-page.tsx:96
+#: src/views/home-preview/shared/v18-page.tsx:100
 msgid "Start monetizing your stablecoin balances with eUSD the way UGLYCASH does."
 msgstr "像 UGLYCASH 一样，通过 eUSD 将您的稳定币余额转化为收入。"
 
@@ -10075,7 +10087,7 @@ msgstr "荷兰式拍卖时长是指降价荷兰式拍卖应持续的秒数。时
 msgid "The estimate is not guaranteed. It changes when rewards, vault deposits and withdrawals, token prices, or the calculation window change."
 msgstr ""
 
-#: src/views/home-preview/shared/v18-page.tsx:85
+#: src/views/home-preview/shared/v18-page.tsx:87
 msgid "The financial home for people that make money on the internet"
 msgstr "为在互联网上赚钱的人打造的金融之家"
 
@@ -11107,17 +11119,21 @@ msgstr "类型"
 msgid "UGLYCASH figures are reported by UGLYCASH as daily aggregates. UGLYCASH is an off-chain app, so these numbers are not read from the blockchain."
 msgstr "UGLYCASH 数字由 UGLYCASH 以每日汇总形式报告。UGLYCASH 是链下应用，因此这些数字不是从区块链读取的。"
 
-#: src/views/home-preview/shared/v18-page.tsx:88
+#: src/views/home-preview/shared/v18-page.tsx:90
+msgid "UGLYCASH is the Reserve App, and it’s fueling huge growth in eUSD"
+msgstr "UGLYCASH 是 Reserve 的应用，正在推动 eUSD 大幅增长"
+
+#: src/views/home-preview/shared/v18-page.tsx:92
 #: src/views/home-preview/variants/v26-home.tsx:25
 #: src/views/home-preview/variants/v26-home.tsx:37
 msgid "UGLYCASH is the Reserve App, and it’s on track to fuel huge growth in eUSD"
 msgstr "UGLYCASH 是 Reserve App，正朝着推动 eUSD 大幅增长的方向发展"
 
-#: src/views/home-preview/variants/v26-live.tsx:25
+#: src/views/home-preview/variants/v26-live.tsx:30
 msgid "UGLYCASH is the Reserve fintech app, and eUSD is its unit of account."
 msgstr "UGLYCASH 是 Reserve 的金融科技应用，eUSD 是其记账单位。"
 
-#: src/views/home-preview/shared/v26-cards.tsx:106
+#: src/views/home-preview/shared/v26-cards.tsx:115
 msgid "UGLYCASH offers full service in {custodialCount} countries and self-custody investing in the US."
 msgstr "UGLYCASH 在 {custodialCount} 个国家提供完整服务，并在美国提供自托管投资服务。"
 
