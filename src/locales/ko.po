@@ -8546,8 +8546,8 @@ msgid "Reserve is building a better version of money."
 msgstr "Reserve는 더 나은 돈을 만들고 있습니다."
 
 #: src/views/home-preview/variants/v26-live.tsx:29
-msgid "Reserve is building better versions of money, to help you hold and protect your share of the world’s wealth."
-msgstr "Reserve는 전 세계 부에서 여러분의 몫을 보유하고 지킬 수 있도록 더 나은 형태의 돈을 만들고 있습니다."
+msgid "User balances remain in eUSD while underlying collateral yield is directed to the fintech, simplifying the UX for the customer and the business."
+msgstr "사용자 잔액은 eUSD로 유지되고 기초 담보 자산의 수익은 핀테크 기업에 돌아가므로, 고객과 기업 모두 더 간편하게 이용할 수 있습니다."
 
 #: src/views/home/components/homepage-hero.tsx:18
 msgid "Reserve lets you buy entire portfolios as a single token"
@@ -9587,8 +9587,8 @@ msgid "Split {0} across basket assets."
 msgstr "{0}을(를) 바스켓 자산에 분배합니다."
 
 #: src/views/home-preview/variants/v26-live.tsx:26
-msgid "Spotlight: eUSD lets fintechs monetize their balances and offer GENIUS-compatible yield or rewards to their users"
-msgstr "주목할 소식: eUSD를 통해 핀테크 기업은 보유 잔액에서 수익을 창출하고, 사용자에게 GENIUS 법에 부합하는 수익이나 보상을 제공할 수 있습니다"
+msgid "eUSD lets fintechs monetize their user balances at the DeFi rate"
+msgstr "eUSD를 통해 핀테크 기업은 사용자 잔액으로 DeFi 수익률에 따른 수익을 얻을 수 있습니다"
 
 #: src/views/yield-dtf/deploy/components/TokenForm.tsx:45
 msgid "St Token Ticker"

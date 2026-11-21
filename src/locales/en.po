@@ -8546,7 +8546,7 @@ msgid "Reserve is building a better version of money."
 msgstr ""
 
 #: src/views/home-preview/variants/v26-live.tsx:29
-msgid "Reserve is building better versions of money, to help you hold and protect your share of the world’s wealth."
+msgid "User balances remain in eUSD while underlying collateral yield is directed to the fintech, simplifying the UX for the customer and the business."
 msgstr ""
 
 #: src/views/home/components/homepage-hero.tsx:18
@@ -9587,7 +9587,7 @@ msgid "Split {0} across basket assets."
 msgstr ""
 
 #: src/views/home-preview/variants/v26-live.tsx:26
-msgid "Spotlight: eUSD lets fintechs monetize their balances and offer GENIUS-compatible yield or rewards to their users"
+msgid "eUSD lets fintechs monetize their user balances at the DeFi rate"
 msgstr ""
 
 #: src/views/yield-dtf/deploy/components/TokenForm.tsx:45

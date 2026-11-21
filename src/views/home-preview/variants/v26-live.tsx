@@ -23,10 +23,13 @@ const V26Live = ({ v27 = false }: { v27?: boolean }) => {
           <AnimLeft
             anim={<EusdGlobe countryGroups={V26_COUNTRY_GROUPS} smoothArcs={v27} />}
             copy={v27 ? (
-              <Trans>Spotlight: eUSD lets fintechs monetize their balances and offer GENIUS-compatible yield or rewards to their users</Trans>
+              <Trans>eUSD lets fintechs monetize their user balances at the DeFi rate</Trans>
             ) : <Trans>Reserve is building a better version of money.</Trans>}
             subcopy={v27 ? (
-              <Trans>Reserve is building better versions of money, to help you hold and protect your share of the world’s wealth.</Trans>
+              <Trans>
+                User balances remain in eUSD while underlying collateral yield is directed to the
+                fintech, simplifying the UX for the customer and the business.
+              </Trans>
             ) : <Trans>UGLYCASH is the Reserve fintech app, and eUSD is its unit of account.</Trans>}
           />
         }

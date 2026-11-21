@@ -8546,8 +8546,8 @@ msgid "Reserve is building a better version of money."
 msgstr "Reserve está construyendo una mejor versión del dinero."
 
 #: src/views/home-preview/variants/v26-live.tsx:29
-msgid "Reserve is building better versions of money, to help you hold and protect your share of the world’s wealth."
-msgstr "Reserve está creando mejores formas de dinero para ayudarte a conservar y proteger tu parte de la riqueza mundial."
+msgid "User balances remain in eUSD while underlying collateral yield is directed to the fintech, simplifying the UX for the customer and the business."
+msgstr "Los saldos de los usuarios se mantienen en eUSD y el rendimiento de los activos de respaldo se destina a la fintech, lo que simplifica la experiencia tanto para el cliente como para la empresa."
 
 #: src/views/home/components/homepage-hero.tsx:18
 msgid "Reserve lets you buy entire portfolios as a single token"
@@ -9587,8 +9587,8 @@ msgid "Split {0} across basket assets."
 msgstr "Divide {0} entre los activos del basket."
 
 #: src/views/home-preview/variants/v26-live.tsx:26
-msgid "Spotlight: eUSD lets fintechs monetize their balances and offer GENIUS-compatible yield or rewards to their users"
-msgstr "En foco: eUSD permite a las fintech monetizar sus saldos y ofrecer a sus usuarios rendimientos o recompensas compatibles con la ley GENIUS"
+msgid "eUSD lets fintechs monetize their user balances at the DeFi rate"
+msgstr "eUSD permite a las fintech generar ingresos a la tasa de DeFi con los saldos de sus usuarios"
 
 #: src/views/yield-dtf/deploy/components/TokenForm.tsx:45
 msgid "St Token Ticker"
