@@ -62,6 +62,8 @@ const useMarketCaps = () =>
 
 const DiscoverDtfsCard = () => {
   const { data: marketCaps } = useMarketCaps()
+  const cap = (symbol: string) => marketCaps?.get(symbol) ?? 0
+  const dtfs = [...DISCOVER_DTFS].sort((a, b) => cap(b.symbol) - cap(a.symbol))
   return (
   <HomeCard
     href={ROUTES.DISCOVER}
@@ -76,10 +78,10 @@ const DiscoverDtfsCard = () => {
       </span>
     }
     title={<Trans>Discover more DTFs</Trans>}
-    mediaClassName="h-[300px] sm:h-[240px]"
+    mediaClassName="h-auto pb-3 sm:h-[240px] sm:pb-0"
     media={
-      <div className="grid h-full grid-cols-2 content-center gap-3 px-5 sm:grid-cols-3">
-        {DISCOVER_DTFS.map(({ symbol, logo }) => (
+      <div className="grid h-full grid-cols-1 content-center gap-2 px-5 sm:grid-cols-3 sm:gap-3">
+        {dtfs.map(({ symbol, logo }) => (
           <div
             key={symbol}
             className="flex min-w-0 items-center gap-2 rounded-full border border-border bg-card px-2 py-2"
