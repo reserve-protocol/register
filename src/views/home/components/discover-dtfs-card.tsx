@@ -1,3 +1,4 @@
+import { cn } from '@/lib/utils'
 import { formatCurrency } from '@/utils'
 import { RESERVE_API, ROUTES } from '@/utils/constants'
 import { Trans } from '@lingui/react/macro'
@@ -6,6 +7,7 @@ import { ArrowRight } from 'lucide-react'
 import { HomeCard } from './home-card'
 
 const BRAND_ICONS = 'https://l5394zf57b.ufs.sh/f'
+const MOBILE_DTF_COUNT = 6
 
 const DISCOVER_DTFS = [
   {
@@ -62,8 +64,6 @@ const useMarketCaps = () =>
 
 const DiscoverDtfsCard = () => {
   const { data: marketCaps } = useMarketCaps()
-  const cap = (symbol: string) => marketCaps?.get(symbol) ?? 0
-  const dtfs = [...DISCOVER_DTFS].sort((a, b) => cap(b.symbol) - cap(a.symbol))
   return (
   <HomeCard
     href={ROUTES.DISCOVER}
@@ -81,10 +81,13 @@ const DiscoverDtfsCard = () => {
     mediaClassName="h-auto pb-3 sm:h-[240px] sm:pb-0"
     media={
       <div className="grid h-full grid-cols-1 content-center gap-2 px-5 sm:grid-cols-3 sm:gap-3">
-        {dtfs.map(({ symbol, logo }) => (
+        {DISCOVER_DTFS.map(({ symbol, logo }, i) => (
           <div
             key={symbol}
-            className="flex min-w-0 items-center gap-2 rounded-full border border-border bg-card px-2 py-2"
+            className={cn(
+              'min-w-0 items-center gap-2 rounded-full border border-border bg-card px-2 py-2',
+              i < MOBILE_DTF_COUNT ? 'flex' : 'hidden sm:flex'
+            )}
           >
             <img
               src={logo}
