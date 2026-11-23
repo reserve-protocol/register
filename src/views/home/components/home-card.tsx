@@ -202,7 +202,7 @@ export const AutoTicker = ({ items }: { items: TickerItem[] }) => {
   const [duration, setDuration] = useState(20)
   // Short lists repeat inside each half so the track always outruns a wide card.
   const half = Array.from(
-    { length: Math.ceil(TICKER_MIN_ITEMS / items.length) },
+    { length: Math.ceil(TICKER_MIN_ITEMS / Math.max(1, items.length)) },
     () => items
   ).flat()
 
@@ -212,6 +212,7 @@ export const AutoTicker = ({ items }: { items: TickerItem[] }) => {
     setDuration(Math.max(8, track.scrollWidth / 2 / TICKER_PX_PER_SECOND))
   }, [items])
 
+  if (!items.length) return null
   return (
     <div className={FEATURE_CARD_TICKER_CLASS_NAME}>
       <style>{`@keyframes home-ticker { to { transform: translate3d(-50%, 0, 0); } }`}</style>
