@@ -59,7 +59,7 @@ snapshots — no spec-local `page.route`:
 Covered:
 - Boot / app-shell offline (boot smoke) and discover-table render (home smoke).
 - Home stage + cards: the held card shows the onchain balance from the
-  snapshot, six cards navigate, `unmockedCalls` empty — flow spec.
+  snapshot, all seven cards navigate, `unmockedCalls` empty — flow spec.
 - Discover search narrow-then-restore; index↔yield tab switch (index table
   unmounts on yield); row click → overview navigation (case-insensitive URL,
   `getFolioRoute` lowercases).
