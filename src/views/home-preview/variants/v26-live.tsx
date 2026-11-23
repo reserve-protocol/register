@@ -9,7 +9,7 @@ import { V26_COUNTRY_GROUPS } from '../mock/v26-countries'
 const LOADING = { ...mockData, status: 'loading' as const }
 
 const V26Live = ({ v27 = false }: { v27?: boolean }) => {
-  const { data, isError } = useUglycashApi()
+  const { data, isError } = useUglycashApi({ onchainHeld: v27 })
 
   return (
     <UglycashDataProvider value={data ?? LOADING}>

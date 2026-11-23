@@ -5,6 +5,7 @@ import { shortDate } from './format'
 import { PeriodPoint, UglycashData } from './uglycash-data'
 
 const UGLYCASH_METRICS_API = `${RESERVE_API}metrics/uglycash`
+const UGLYCASH_ONCHAIN_API = `${RESERVE_API}uglycash/onchain-balance`
 
 type Split = Record<CategoryKey, number>
 
@@ -28,6 +29,36 @@ const getJson = async <T>(path: string): Promise<ApiResponse<T>> => {
   const res = await fetch(`${UGLYCASH_METRICS_API}/${path}`)
   if (!res.ok) throw new Error(`UGLYCASH metrics ${path}: ${res.status}`)
   return res.json()
+}
+
+type OnchainSeries = { points: { date: string; balance: number }[] }
+
+const getOnchain = async (): Promise<OnchainSeries> => {
+  const res = await fetch(UGLYCASH_ONCHAIN_API)
+  if (!res.ok) throw new Error(`UGLYCASH onchain balance: ${res.status}`)
+  return res.json()
+}
+
+// The ledger balance is what members are owed; the onchain one is the eUSD in UGLYCASH's wallets.
+export const withOnchainHeld = (
+  data: UglycashData,
+  onchain: OnchainSeries
+): UglycashData => {
+  const byDate = new Map(onchain.points.map((p) => [p.date, p.balance]))
+  let last = onchain.points[0]?.balance ?? 0
+  const daily = data.daily.map((p) => {
+    last = byDate.get(p.date) ?? last
+    return { ...p, balance: last, texturedBalance: last }
+  })
+  return {
+    ...data,
+    daily,
+    headline: {
+      ...data.headline,
+      balance: onchain.points.at(-1)?.balance ?? last,
+      balanceStart: onchain.points[0]?.balance ?? data.headline.balanceStart,
+    },
+  }
 }
 
 const DAY = 86_400_000
@@ -118,16 +149,18 @@ const toUglycashData = (
   }
 }
 
-export const useUglycashApi = () =>
+export const useUglycashApi = ({ onchainHeld = false } = {}) =>
   useQuery({
-    queryKey: ['uglycash-metrics'],
+    queryKey: ['uglycash-metrics', onchainHeld],
     queryFn: async () => {
-      const [daily, weeklyRes, monthlyRes] = await Promise.all([
+      const [daily, weeklyRes, monthlyRes, onchain] = await Promise.all([
         getJson<{ date: string }>('daily'),
         getJson<{ weekStart: string }>('weekly'),
         getJson<{ month: string }>('monthly'),
+        onchainHeld ? getOnchain() : null,
       ])
-      return toUglycashData(daily, weeklyRes, monthlyRes)
+      const data = toUglycashData(daily, weeklyRes, monthlyRes)
+      return onchain ? withOnchainHeld(data, onchain) : data
     },
     staleTime: 60 * 60 * 1000,
   })

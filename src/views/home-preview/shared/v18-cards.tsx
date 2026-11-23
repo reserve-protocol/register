@@ -173,7 +173,13 @@ const EusdIcon = () => (
   <img src="/svgs/eusd.svg" alt="" aria-hidden="true" className="h-8 w-8" />
 )
 
-export const HeldCardV18 = ({ smoothTicker = false }: { smoothTicker?: boolean }) => {
+export const HeldCardV18 = ({
+  smoothTicker = false,
+  description = 'Every dollar people keep in UGLYCASH is eUSD, the stablecoin built on Reserve.',
+}: {
+  smoothTicker?: boolean
+  description?: string
+}) => {
   const anchor = useRef<HTMLDivElement>(null)
   const { daily, headline: HEADLINE, status } = useUglycashData()
   return (
@@ -217,7 +223,7 @@ export const HeldCardV18 = ({ smoothTicker = false }: { smoothTicker?: boolean }
           ]}
         />
       }
-      description="Every dollar people keep in UGLYCASH is eUSD, the stablecoin built on Reserve."
+      description={description}
     />
   )
 }

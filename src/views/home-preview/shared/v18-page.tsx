@@ -71,7 +71,14 @@ const V18Page = ({
         <>
           {dataState === 'ready' ? (
             <>
-              <HeldCardV18 smoothTicker={v26} />
+              <HeldCardV18
+                smoothTicker={v26}
+                description={
+                  v27
+                    ? "eUSD in UGLYCASH's wallets onchain, the stablecoin built on Reserve."
+                    : undefined
+                }
+              />
               <VolumeCardV18 scale={scale} sortTooltip={sortTooltips} smoothTicker={v26} />
               <TransactionsCardV18 scale={scale} sortTooltip={sortTooltips} smoothTicker={v26} />
             </>
