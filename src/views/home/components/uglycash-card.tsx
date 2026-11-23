@@ -1,5 +1,5 @@
 import { Trans, useLingui } from '@lingui/react/macro'
-import uglycashCard from '../assets/uglycash-card.png'
+import uglycashCard from '../assets/uglycash-card.webp'
 import uglycashLogo from '../assets/uglycash-logo.svg'
 import { AutoTicker, HomeCard } from './home-card'
 
@@ -23,8 +23,8 @@ const UglyCashCard = () => {
           <img
             src={uglycashCard}
             alt={t`The UGLYCASH Visa card`}
-            width={500}
-            height={315}
+            width={640}
+            height={404}
             className="w-[62%] max-w-[300px] -rotate-6 rounded-xl transition-transform duration-500 group-hover:rotate-0"
           />
         </div>
