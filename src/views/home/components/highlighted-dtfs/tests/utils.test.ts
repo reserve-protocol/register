@@ -1,10 +1,7 @@
 import type { Address } from 'viem'
 import { describe, expect, it } from 'vitest'
-import type {
-  FeaturedDTFItem,
-  FeaturedExposureGroup,
-} from '../../../hooks/use-featured-dtfs'
 import { BACKING_LIMIT } from '../constants'
+import type { FeaturedDTFItem, FeaturedExposureGroup } from '../types'
 import {
   formatPerformancePeriodLabel,
   getExposureTickerAssets,

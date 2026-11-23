@@ -1,10 +1,8 @@
 import IndexDTFTable from './index-dtf-table'
 import useFilteredDTFIndex from '../../hooks/use-filtered-index-dtf'
-import {
-  CollateralAssetAnimationStyles,
-  IndexDTFFeatureCard,
-  IndexDTFFeatureCardPlaceholder,
-} from '../highlighted-dtfs'
+import { CollateralAssetAnimationStyles } from '../highlighted-dtfs/collateral-asset-animation-styles'
+import { IndexDTFFeatureCard } from '../highlighted-dtfs/feature-card'
+import { IndexDTFFeatureCardPlaceholder } from '../highlighted-dtfs/skeletons'
 import { formatCurrency } from '@/utils'
 import { IndexDTFItem } from '@/hooks/useIndexDTFList'
 import { Trans } from '@lingui/react/macro'

@@ -8,7 +8,7 @@ import {
 } from '@/utils/chart-performance-colors'
 import { useEffect, useId, useMemo, useRef, useState } from 'react'
 import { AreaChart, Tooltip, XAxis, YAxis } from 'recharts'
-import type { FeaturedDTFItem } from '../../hooks/use-featured-dtfs'
+import type { FeaturedDTFItem } from './types'
 import {
   PerformanceChartLaunchMarker,
   type LaunchMarkerToken,

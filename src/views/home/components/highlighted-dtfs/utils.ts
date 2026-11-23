@@ -1,21 +1,10 @@
-import { ChainId } from '@/utils/chains'
-import type {
-  FeaturedDTFGroup,
-  FeaturedDTFItem,
-  FeaturedExposureGroup,
-} from '../../hooks/use-featured-dtfs'
 import { calculatePercentageChange } from '../discover-index-dtf/utils'
 import { BACKING_LIMIT } from './constants'
-import type { AssetTickerItem, HighlightedDTFItem } from './types'
-
-const CHAIN_LABELS: Record<number, string> = {
-  [ChainId.Mainnet]: 'ETH',
-  [ChainId.Base]: 'Base',
-  [ChainId.BSC]: 'BSC',
-}
-
-const getChainLabel = (chainId: number) =>
-  CHAIN_LABELS[chainId] ?? `Chain ${chainId}`
+import type {
+  AssetTickerItem,
+  FeaturedDTFItem,
+  FeaturedExposureGroup,
+} from './types'
 
 const tickerWeight = (asset: AssetTickerItem) => {
   const weight = Number(asset.weight)
@@ -36,67 +25,6 @@ const getBasketTickerAssets = (dtf: FeaturedDTFItem): AssetTickerItem[] =>
     .slice(0, BACKING_LIMIT)
 
 const stripTokenizedSuffix = (symbol: string) => symbol.replace(/on$/, '')
-
-const getVersionVideo = (version: FeaturedDTFItem) =>
-  version.video || version.brand?.video || ''
-
-const isDefaultTokenLogo = (icon?: string) => {
-  if (!icon) return true
-
-  const normalizedIcon = icon.toLowerCase()
-  return (
-    normalizedIcon.endsWith('/svgs/defaultlogo.svg') ||
-    normalizedIcon.endsWith('defaultlogo.svg') ||
-    normalizedIcon.includes('/defaultlogo.')
-  )
-}
-
-const getVersionBrandIcon = (version: FeaturedDTFItem) =>
-  isDefaultTokenLogo(version.brand?.icon) ? undefined : version.brand?.icon
-
-const normalizeVersionMetadata = (
-  version: FeaturedDTFItem,
-  fallback: { brandIcon?: string; video?: string }
-): FeaturedDTFItem => {
-  const video = getVersionVideo(version) || fallback.video
-  const brandIcon = getVersionBrandIcon(version) || fallback.brandIcon
-  const brand = {
-    ...version.brand,
-    ...(brandIcon ? { icon: brandIcon } : {}),
-    ...(video ? { video } : {}),
-  }
-
-  return {
-    ...version,
-    ...(video ? { video } : {}),
-    brand: Object.keys(brand).length ? brand : undefined,
-  }
-}
-
-export const toHighlightedDtf = (
-  group: FeaturedDTFGroup
-): HighlightedDTFItem | null => {
-  const versions = [...group.versions].sort((a, b) => b.marketCap - a.marketCap)
-  const fallback = {
-    brandIcon: versions.map(getVersionBrandIcon).find(Boolean),
-    video: versions.map(getVersionVideo).find(Boolean),
-  }
-  const normalizedVersions = versions.map((version) =>
-    normalizeVersionMetadata(version, fallback)
-  )
-  const primaryVersion = normalizedVersions[0]
-
-  if (!primaryVersion) return null
-  if (versions.length === 1) return primaryVersion
-
-  return {
-    ...primaryVersion,
-    chainVersions: normalizedVersions.map((version) => ({
-      ...version,
-      versionLabel: getChainLabel(version.chainId),
-    })),
-  }
-}
 
 export const getPaddedValueDomain = ([dataMin, dataMax]: [number, number]): [
   number,
