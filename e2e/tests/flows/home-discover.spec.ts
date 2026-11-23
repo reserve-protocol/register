@@ -114,9 +114,9 @@ test('home hero and UGLYCASH cards render without unmocked calls', async ({
   const cards = page.getByTestId('home-cards')
   // The held card shows the onchain balance, so the three UGLYCASH series loaded and merged.
   await expect(cards).toContainText(`$${Math.round(held).toLocaleString('en-US')}`)
-  // eUSD, UGLYCASH, fintech contact and discover: the only cards that navigate.
-  await expect(cards.locator('a')).toHaveCount(4)
-  await expect(cards.locator('a[href="/discover"]')).toHaveCount(1)
+  // eUSD, UGLYCASH and fintech contact cards, the discover link and its ten DTF pills.
+  await expect(cards.locator('a')).toHaveCount(14)
+  await expect(cards.locator('a[href="/discover"]').first()).toBeVisible()
 
   // Every boundary was answered — no live calls leaked.
   expect(unmockedCalls).toEqual([])

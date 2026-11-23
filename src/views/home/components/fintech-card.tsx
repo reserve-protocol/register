@@ -4,6 +4,7 @@ import type { MessageDescriptor } from '@lingui/core'
 import { msg } from '@lingui/core/macro'
 import { Trans, useLingui } from '@lingui/react/macro'
 import { ArrowRight } from 'lucide-react'
+import { toast } from 'sonner'
 
 const CONTACT_EMAIL = 'support@reserve.org'
 const ORBIT_SIZE = 220
@@ -69,10 +70,20 @@ const EusdOrbit = () => {
   )
 }
 
-const FintechCard = () => (
+const FintechCard = () => {
+  const { t } = useLingui()
+  // A mailto link does nothing without a default mail app, so the address is also copied.
+  const onClick = () => {
+    trackClick('home', 'fintech_contact')
+    navigator.clipboard
+      ?.writeText(CONTACT_EMAIL)
+      .then(() => toast.success(t`${CONTACT_EMAIL} copied to clipboard`))
+      .catch(() => undefined)
+  }
+  return (
   <a
     href={`mailto:${CONTACT_EMAIL}`}
-    onClick={() => trackClick('home', 'fintech_contact')}
+    onClick={onClick}
     className="group relative flex min-h-[460px] w-full flex-col justify-between overflow-hidden rounded-3xl bg-primary p-6 text-primary-foreground"
   >
     <div className="pt-4">
@@ -93,6 +104,7 @@ const FintechCard = () => (
       </span>
     </div>
   </a>
-)
+  )
+}
 
 export default FintechCard

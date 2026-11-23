@@ -62,7 +62,7 @@ const CountriesCard = () => {
           </span>
         </>
       }
-      mediaClassName="h-[230px]"
+      mediaClassName="h-[196px]"
       media={
         <div className="flex h-full flex-col items-center justify-center gap-2 px-1">
           <ActiveMap className="h-full w-auto max-w-full" />

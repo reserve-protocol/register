@@ -59,7 +59,8 @@ snapshots — no spec-local `page.route`:
 Covered:
 - Boot / app-shell offline (boot smoke) and discover-table render (home smoke).
 - Home stage + cards: the held card shows the onchain balance from the
-  snapshot, four cards navigate, `unmockedCalls` empty — flow spec.
+  snapshot, 14 links (three cards, the discover link, ten DTF pills),
+  `unmockedCalls` empty — flow spec.
 - Discover search narrow-then-restore; index↔yield tab switch (index table
   unmounts on yield); row click → overview navigation (case-insensitive URL,
   `getFolioRoute` lowercases).
@@ -83,9 +84,14 @@ Deferred (conscious skip):
 - **`data/geography.json` is generated** from `data/countries.ts`
   (`scripts/home-geography/generate.py`). Editing one without regenerating
   leaves a listed country with no dot; the unit test catches it.
-- **The DTF logos on the "Discover more DTFs" card are a fixed list** of
-  hosted brand icons, not a fetch. A renamed or delisted DTF needs a manual
-  edit.
+- **The DTF pills on the "Discover more DTFs" card are a fixed list** (symbol,
+  name, hosted logo). Route and hover-card numbers come from the discover list
+  (`useIndexDTFList`) matched by symbol; a symbol not in the list links to
+  `/discover`. A renamed or delisted DTF needs a manual edit.
+- **The fintech card copies the address as well as opening `mailto:`**, because
+  the link does nothing on a machine with no default mail app.
+- **Globe arcs launch only when both ends face the viewer from launch to
+  arrival** (`staysInFront`). Loosening it brings back trails cut by the limb.
 - **Perf invariants are load-bearing, not cosmetic** (see wiki): the globe is
   one ref-driven canvas loop (no per-frame `setState`) and
   `feature-card.tsx` / `feature-card-header.tsx` are `React.memo` with stable

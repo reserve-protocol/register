@@ -9,7 +9,7 @@ import {
   arcGlobeRadius,
   arcVisibility,
   arcWindow,
-  hasVisibleDeparture,
+  staysInFront,
 } from './globe-arc'
 
 type Vector = [number, number, number]
@@ -29,7 +29,16 @@ const ARC_SPEED = 0.55
 const ARC_INTERVAL_SECONDS = 0.7
 const MAX_ARCS = 4
 const ARC_SEGMENTS = 24
-const LAUNCH_ATTEMPTS = 12
+const LAUNCH_ATTEMPTS = 24
+const FLIGHT_ROTATION_DEG = (ROTATION_DEG_PER_SECOND * ARC_END) / ARC_SPEED
+
+const depthAt = (v: Vector, rotationDeg: number) => {
+  const lambda = (rotationDeg * Math.PI) / 180
+  return (
+    (v[0] * Math.cos(lambda) + v[1] * Math.sin(lambda)) * COS_TILT -
+    v[2] * SIN_TILT
+  )
+}
 
 const cssColor = (name: string, alpha = 1) => {
   const value = getComputedStyle(document.documentElement)
@@ -198,9 +207,13 @@ const EusdGlobe = () => {
         const from = HUBS[Math.floor(Math.random() * HUBS.length)]
         const to = HUBS[Math.floor(Math.random() * HUBS.length)]
         if (from === to) continue
-        const arc = { from, to, progress: 0 }
-        if (!hasVisibleDeparture((u) => visibility(sample(arc, u)))) continue
-        s.arcs.push(arc)
+        const arrival = s.rotation + FLIGHT_ROTATION_DEG
+        const depths = [from, to].flatMap((hub) => [
+          depthAt(hub, s.rotation),
+          depthAt(hub, arrival),
+        ])
+        if (!staysInFront(depths)) continue
+        s.arcs.push({ from, to, progress: 0 })
         break
       }
       s.next = s.elapsed + ARC_INTERVAL_SECONDS

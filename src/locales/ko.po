@@ -390,6 +390,10 @@ msgstr "{chainLabel} (브리지됨)"
 msgid "{chainLabel} (Native)"
 msgstr "{chainLabel} (네이티브)"
 
+#: src/views/home/components/fintech-card.tsx:80
+msgid "{CONTACT_EMAIL} copied to clipboard"
+msgstr "{CONTACT_EMAIL}이(가) 클립보드에 복사되었습니다"
+
 #: src/views/yield-dtf/overview/components/backing/index.tsx:79
 msgid "{count, plural, one {# Collateral pegged to} other {# Collaterals pegged to}}"
 msgstr "{count, plural, one {#개의 담보가 다음에 페그됨} other {#개의 담보가 다음에 페그됨}}"
@@ -2254,7 +2258,7 @@ msgstr "Index 및 Yield DTF 둘러보기"
 msgid "BTC"
 msgstr "BTC"
 
-#: src/views/home/components/fintech-card.tsx:83
+#: src/views/home/components/fintech-card.tsx:94
 msgid "Building a fintech?"
 msgstr "핀테크를 만들고 계신가요?"
 
@@ -3768,7 +3772,7 @@ msgstr "Discord 사용자 이름"
 msgid "Discover DTFs"
 msgstr "DTF 둘러보기"
 
-#: src/views/home/components/discover-dtfs-card.tsx:58
+#: src/views/home/components/discover-dtfs-card.tsx:169
 msgid "Discover more DTFs"
 msgstr "더 많은 DTF 알아보기"
 
@@ -4507,7 +4511,7 @@ msgstr "예상 총 영향"
 msgid "ETH address"
 msgstr "ETH 주소"
 
-#: src/views/home/components/chart-tooltips.tsx:129
+#: src/views/home/components/chart-tooltips.tsx:127
 msgid "eUSD held"
 msgstr "eUSD 보유량"
 
@@ -4540,7 +4544,7 @@ msgstr "UGLYCASH 내 eUSD 트랜잭션"
 msgid "eUSD volume in UGLYCASH"
 msgstr "UGLYCASH 내 eUSD 거래량"
 
-#: src/views/home/components/eusd-globe.tsx:245
+#: src/views/home/components/eusd-globe.tsx:258
 msgid "eUSD within UGLYCASH"
 msgstr "UGLYCASH 내 eUSD"
 
@@ -6466,6 +6470,7 @@ msgstr "시장"
 msgid "Market Access and Redemption Risk: Minting and redemption for Ondo Tokenized Stocks may be permissioned, capacity-limited, subject to eligibility/whitelisting, and available only during defined windows or business-hour cutoffs tied to traditional market operations. These frictions can prevent arbitrage, impair exits at or near NAV, and amplify secondary-market dislocations, thereby resulting in a partial or total loss of the DTFs' holdings."
 msgstr "시장 접근 및 상환 위험: Ondo Tokenized Stocks의 Mint와 Redeem은 허가제이거나, 한도가 제한되거나, 적격성/화이트리스트 요건이 적용되거나, 전통 시장 운영에 연동된 특정 시간대 또는 영업시간 마감에만 가능할 수 있습니다. 이러한 마찰은 차익거래를 막고, NAV 또는 그 부근에서의 청산을 어렵게 하며, 2차 시장의 왜곡을 증폭시켜 DTF 보유 자산의 부분적 또는 전체적 손실로 이어질 수 있습니다."
 
+#: src/views/home/components/discover-dtfs-card.tsx:131
 #: src/views/home/components/discover-index-dtf/index-dtf-table-columns.tsx:294
 #: src/views/home/components/discover-index-dtf/index-dtf-table-placeholder.tsx:21
 #: src/views/index-dtf/overview/components/basket-overview/basket-table-header.tsx:141
@@ -6910,7 +6915,7 @@ msgstr ""
 msgid "Most users should use Swap"
 msgstr "대부분의 사용자는 Swap을 사용해야 합니다"
 
-#: src/views/home/components/eusd-globe.tsx:248
+#: src/views/home/components/eusd-globe.tsx:261
 msgid "moving across {COUNTRY_COUNT} countries"
 msgstr "{COUNTRY_COUNT}개 국가를 연결합니다"
 
@@ -8273,6 +8278,7 @@ msgstr ""
 
 #: src/components/ondo-badge.tsx:124
 #: src/components/tables/ListedTokensTable.tsx:38
+#: src/views/home/components/discover-dtfs-card.tsx:130
 #: src/views/home/components/discover-index-dtf/index-dtf-table-columns.tsx:316
 #: src/views/index-dtf/auctions/views/rebalance/components/auction-bids-chart.tsx:159
 #: src/views/index-dtf/auctions/views/rebalance/components/auction-bids-chart.tsx:191
@@ -10528,7 +10534,7 @@ msgstr "Issue 시작"
 msgid "Start migration"
 msgstr "마이그레이션 시작"
 
-#: src/views/home/components/fintech-card.tsx:86
+#: src/views/home/components/fintech-card.tsx:97
 msgid "Start monetizing your stablecoin balances with eUSD the way UGLYCASH does."
 msgstr "UGLYCASH처럼 eUSD로 스테이블코인 잔액에서 수익을 창출해 보세요."
 
@@ -10785,7 +10791,7 @@ msgstr "심볼"
 msgid "Tags"
 msgstr "태그"
 
-#: src/views/home/components/fintech-card.tsx:92
+#: src/views/home/components/fintech-card.tsx:103
 msgid "Talk to us"
 msgstr "문의하기"
 
@@ -11620,7 +11626,7 @@ msgstr "상위 100개 DTFs"
 msgid "Top voting addresses"
 msgstr "상위 투표 주소"
 
-#: src/views/home/components/chart-tooltips.tsx:104
+#: src/views/home/components/chart-tooltips.tsx:102
 #: src/views/portfolio-page/components/portfolio-chart.tsx:125
 #: src/views/yield-dtf/overview/components/backing/backing-overview.tsx:120
 #: src/views/yield-dtf/overview/components/backing/underlying-fees/fees-table.tsx:225
@@ -11892,7 +11898,7 @@ msgstr "트랜잭션"
 #: src/components/layout/navigation/TokenNavigation.tsx:183
 #: src/views/explorer/components/kit/explorer-nav.tsx:52
 #: src/views/explorer/components/transactions/index.tsx:216
-#: src/views/home/components/chart-tooltips.tsx:139
+#: src/views/home/components/chart-tooltips.tsx:137
 #: src/views/index-dtf/overview/components/index-transaction-table-with-swaps/index.tsx:39
 #: src/views/index-dtf/overview/components/index-transaction-table.tsx:152
 #: src/views/portfolio-page/components/transactions.tsx:167
@@ -12827,7 +12833,7 @@ msgstr "거래량 (최근 7일)"
 msgid "volume since launch"
 msgstr "출시 이후 거래량"
 
-#: src/views/home/components/chart-tooltips.tsx:134
+#: src/views/home/components/chart-tooltips.tsx:132
 msgid "Volume that day"
 msgstr "당일 거래량"
 
@@ -13750,11 +13756,11 @@ msgstr "{vault} 투표권이 {0}에게 위임되어 있습니다."
 msgid "Your {vault} votes are delegated to you."
 msgstr "{vault} 투표권이 본인에게 위임되어 있습니다."
 
-#: src/views/home/components/fintech-card.tsx:13
+#: src/views/home/components/fintech-card.tsx:14
 msgid "Your app"
 msgstr "내 앱"
 
-#: src/views/home/components/fintech-card.tsx:15
+#: src/views/home/components/fintech-card.tsx:16
 msgid "Your card"
 msgstr "내 카드"
 
@@ -13853,7 +13859,7 @@ msgstr "내 투표"
 msgid "Your voting power:"
 msgstr "내 투표권:"
 
-#: src/views/home/components/fintech-card.tsx:16
+#: src/views/home/components/fintech-card.tsx:17
 msgid "Your wallet"
 msgstr "내 Wallet"
 

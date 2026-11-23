@@ -10,8 +10,11 @@ export const arcGlobeRadius = (width: number, height: number) =>
 export const arcVisibility = (depth: number, distance: number, radius: number) =>
   Math.max(0, Math.min(1, Math.max(depth * radius, distance - radius) / 5))
 
-export const hasVisibleDeparture = (visibilityAt: (u: number) => number) =>
-  visibilityAt(0) >= 0.5 && visibilityAt(0.5) >= 0.5
+const ARC_FRONT_MARGIN = 0.2
+
+// Depths of both ends at launch and at arrival: a flight that stays in front is never cut by the limb.
+export const staysInFront = (depths: number[]) =>
+  depths.every((depth) => depth >= ARC_FRONT_MARGIN)
 
 export const arcWindow = (progress: number) => ({
   head: Math.min(1, progress),
