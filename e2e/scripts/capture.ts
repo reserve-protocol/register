@@ -136,7 +136,7 @@ function evenSample<T>(arr: T[], max: number): T[] {
 }
 
 // Recursively downsample any array longer than MAX_SERIES_POINTS. Used only on
-// historical/exposure payloads, where long arrays are the time series.
+// time-series payloads (historical, exposure, UGLYCASH), where long arrays are the series.
 function capSeries(value: unknown, path: string, report: DownsampleReport[]): unknown {
   if (Array.isArray(value)) {
     let arr = value

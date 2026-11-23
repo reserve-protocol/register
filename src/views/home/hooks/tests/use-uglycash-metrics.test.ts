@@ -87,6 +87,12 @@ describe('withOnchainHeld', () => {
     expect(data.headline.cumulativeVolume).toBe(150)
   })
 
+  it('fails loud on an empty onchain series instead of showing $0', () => {
+    expect(() => withOnchainHeld(ledger, { points: [] })).toThrow(
+      'empty series'
+    )
+  })
+
   it('heads with the latest onchain day even when the ledger stops earlier', () => {
     const data = withOnchainHeld(ledger, {
       points: [

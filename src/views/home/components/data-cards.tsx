@@ -25,20 +25,24 @@ const EusdIcon = () => (
   <img src="/svgs/eusd.svg" alt="" aria-hidden="true" className="h-8 w-8" />
 )
 
-const DataCardError = ({ title }: { title: string }) => (
-  <HomeCard
-    icon={<EusdIcon />}
-    title={title}
-    media={
-      <div className="flex h-full items-center justify-center px-6 text-center text-sm text-legend">
-        <Trans>
-          UGLYCASH metrics could not be loaded. The rest of the page still
-          works.
-        </Trans>
-      </div>
-    }
-  />
-)
+const DataCardError = ({ title }: { title: string }) => {
+  const { t } = useLingui()
+  return (
+    <HomeCard
+      icon={<EusdIcon />}
+      title={title}
+      value={t`Data unavailable right now`}
+      media={
+        <div className="flex h-full items-center justify-center px-6 text-center text-sm text-legend">
+          <Trans>
+            UGLYCASH metrics could not be loaded. The rest of the page still
+            works.
+          </Trans>
+        </div>
+      }
+    />
+  )
+}
 
 const rankByLatest = (
   categories: Category[],

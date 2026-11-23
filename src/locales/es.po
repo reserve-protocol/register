@@ -366,7 +366,7 @@ msgstr "{0}% de impacto en el precio al comprar ${1} de {2} con {3}"
 msgid "{0}% price impact selling ${1} of {2} for {3}"
 msgstr "{0}% de impacto en el precio al vender ${1} de {2} por {3}"
 
-#: src/views/home/components/data-cards.tsx:135
+#: src/views/home/components/data-cards.tsx:139
 msgid "{amount} in {month}"
 msgstr "{amount} en {month}"
 
@@ -394,7 +394,7 @@ msgstr "{chainLabel} (Nativo)"
 msgid "{count, plural, one {# Collateral pegged to} other {# Collaterals pegged to}}"
 msgstr "{count, plural, one {# colateral vinculado a} other {# colaterales vinculados a}}"
 
-#: src/views/home/components/data-cards.tsx:207
+#: src/views/home/components/data-cards.tsx:211
 msgid "{count} in {month}"
 msgstr "{count} en {month}"
 
@@ -422,7 +422,7 @@ msgstr "{count}s"
 msgid "{count}y"
 msgstr "{count}a"
 
-#: src/views/home/components/data-cards.tsx:84
+#: src/views/home/components/data-cards.tsx:88
 msgid "{days} days"
 msgstr "{days} días"
 
@@ -3469,6 +3469,10 @@ msgstr "Propuesta de configuración del DAO"
 msgid "Dark"
 msgstr "Oscuro"
 
+#: src/views/home/components/data-cards.tsx:34
+msgid "Data unavailable right now"
+msgstr "Datos no disponibles en este momento"
+
 #: src/views/portfolio-page/components/transactions.tsx:91
 msgid "Date"
 msgstr "Fecha"
@@ -4507,11 +4511,11 @@ msgstr "Dirección ETH"
 msgid "eUSD held"
 msgstr "Saldo en eUSD"
 
-#: src/views/home/components/data-cards.tsx:56
+#: src/views/home/components/data-cards.tsx:60
 msgid "eUSD held in UGLYCASH"
 msgstr "eUSD en UGLYCASH"
 
-#: src/views/home/components/data-cards.tsx:105
+#: src/views/home/components/data-cards.tsx:109
 msgid "eUSD in UGLYCASH's wallets onchain, the stablecoin built on Reserve."
 msgstr "eUSD en las wallets onchain de UGLYCASH: la stablecoin creada sobre Reserve."
 
@@ -4528,11 +4532,11 @@ msgstr "eUSD en UGLYCASH está bajo custodia de Best Friend Finance, por lo que 
 msgid "eUSD revenue router destinations"
 msgstr "Destinos del revenue router de eUSD"
 
-#: src/views/home/components/data-cards.tsx:194
+#: src/views/home/components/data-cards.tsx:198
 msgid "eUSD transactions in UGLYCASH"
 msgstr "Transacciones de eUSD en UGLYCASH"
 
-#: src/views/home/components/data-cards.tsx:122
+#: src/views/home/components/data-cards.tsx:126
 msgid "eUSD volume in UGLYCASH"
 msgstr "Volumen de eUSD en UGLYCASH"
 
@@ -5388,7 +5392,7 @@ msgstr "¿Problemas para hacer Mint? Los Zaps están en beta"
 msgid "Having issues redeeming?"
 msgstr "¿Tienes problemas con el Redeem?"
 
-#: src/views/home/components/data-cards.tsx:98
+#: src/views/home/components/data-cards.tsx:102
 msgid "held today"
 msgstr "en saldo hoy"
 
@@ -6172,7 +6176,7 @@ msgstr "Monto de simulación de liquidez"
 msgid "Listed DTFs"
 msgstr "DTFs listados"
 
-#: src/views/home/components/data-cards.tsx:84
+#: src/views/home/components/data-cards.tsx:88
 msgid "live"
 msgstr "en operación"
 
@@ -6874,11 +6878,11 @@ msgstr "Modificar"
 msgid "Monthly P&L"
 msgstr "P&L mensual"
 
-#: src/views/home/components/data-cards.tsx:239
+#: src/views/home/components/data-cards.tsx:243
 msgid "Monthly transactions since launch: {total} so far."
 msgstr "Transacciones mensuales desde el lanzamiento: {total} hasta ahora."
 
-#: src/views/home/components/data-cards.tsx:185
+#: src/views/home/components/data-cards.tsx:189
 msgid "Monthly volume since launch: {total} so far. Hover a month for the split by type."
 msgstr "Volumen mensual desde el lanzamiento: {total} hasta ahora. Pasa el cursor sobre un mes para ver el desglose por tipo."
 
@@ -11881,7 +11885,7 @@ msgstr "Transacción exitosa"
 msgid "Transaction successful!"
 msgstr "¡Transacción exitosa!"
 
-#: src/views/home/components/data-cards.tsx:88
+#: src/views/home/components/data-cards.tsx:92
 msgid "transactions"
 msgstr "transacciones"
 
@@ -12023,7 +12027,7 @@ msgstr "Tipo"
 msgid "UGLYCASH is the Reserve App, and it’s fueling huge growth in eUSD"
 msgstr "UGLYCASH es la aplicación de Reserve y está impulsando un gran crecimiento de eUSD"
 
-#: src/views/home/components/data-cards.tsx:34
+#: src/views/home/components/data-cards.tsx:37
 msgid "UGLYCASH metrics could not be loaded. The rest of the page still works."
 msgstr "No se pudieron cargar las métricas de UGLYCASH. El resto de la página sigue funcionando."
 
@@ -12819,7 +12823,7 @@ msgstr "Volumen (histórico)"
 msgid "Volume (last 7d)"
 msgstr "Volumen (últimos 7d)"
 
-#: src/views/home/components/data-cards.tsx:93
+#: src/views/home/components/data-cards.tsx:97
 msgid "volume since launch"
 msgstr "de volumen desde el lanzamiento"
 

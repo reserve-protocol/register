@@ -80,7 +80,7 @@ const useCanvasLoop = (draw: Draw) => {
       canvas.width = width * dpr
       canvas.height = height * dpr
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
-      if (motion.matches) drawRef.current(ctx, width, height, 0)
+      drawRef.current(ctx, width, height, 0)
     }
 
     resize()

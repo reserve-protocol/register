@@ -14,6 +14,7 @@ import {
 type TickerItem = { key: string; label: string; value?: string; color?: string }
 
 const TICKER_PX_PER_SECOND = 48
+const TICKER_MIN_ITEMS = 10
 
 const CardRoot = ({
   href,
@@ -199,6 +200,11 @@ export const HomeCard = ({
 export const AutoTicker = ({ items }: { items: TickerItem[] }) => {
   const trackRef = useRef<HTMLDivElement>(null)
   const [duration, setDuration] = useState(20)
+  // Short lists repeat inside each half so the track always outruns a wide card.
+  const half = Array.from(
+    { length: Math.ceil(TICKER_MIN_ITEMS / items.length) },
+    () => items
+  ).flat()
 
   useLayoutEffect(() => {
     const track = trackRef.current
@@ -216,7 +222,7 @@ export const AutoTicker = ({ items }: { items: TickerItem[] }) => {
           className="flex w-max gap-0 motion-reduce:[animation:none!important]"
           style={{ animation: `home-ticker ${duration}s linear infinite` }}
         >
-          {[...items, ...items].map((item, i) => (
+          {[...half, ...half].map((item, i) => (
             <div
               key={`${item.key}-${i}`}
               className="flex shrink-0 items-center gap-1 rounded-full px-1.5 py-1"

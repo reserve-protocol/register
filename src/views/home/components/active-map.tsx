@@ -74,9 +74,10 @@ const ActiveMap = ({ className }: { className?: string }) => {
       <style>{`
         @keyframes home-dot-on { from { fill: ${INACTIVE_FILL}; } to { fill: var(--home-dot-color); } }
         .home-dot-active { fill: var(--home-dot-color); }
+        .home-dots-waiting .home-dot-active { fill: ${INACTIVE_FILL}; }
         .home-dots-animate .home-dot-active { fill: ${INACTIVE_FILL}; animation: home-dot-on 420ms ease-out forwards; }
       `}</style>
-      <g className={animate ? 'home-dots-animate' : undefined}>
+      <g className={reduced ? undefined : visible ? 'home-dots-animate' : 'home-dots-waiting'}>
         {DOTS.map(({ x, y, service }) => (
           <circle
             key={`${x}-${y}`}

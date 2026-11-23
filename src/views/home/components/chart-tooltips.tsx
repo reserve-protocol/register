@@ -27,10 +27,8 @@ const PortalTip = ({
   if (!active || !coordinate || !anchor.current) return null
   const rect = anchor.current.getBoundingClientRect()
   const x = rect.left + coordinate.x
-  const left =
-    x + 16 + TOOLTIP_WIDTH > window.innerWidth
-      ? x - TOOLTIP_WIDTH - 16
-      : x + 16
+  const flipped = x + 16 + TOOLTIP_WIDTH > window.innerWidth
+  const left = Math.max(8, flipped ? x - TOOLTIP_WIDTH - 16 : x + 16)
   const top = Math.max(
     8,
     Math.min(rect.top + coordinate.y - 60, window.innerHeight - 280)

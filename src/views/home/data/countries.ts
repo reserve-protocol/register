@@ -2,8 +2,7 @@ export type CountryService = 'custodial' | 'selfCustody'
 
 type Country = { code: string; name: string }
 
-// `name` is the tag in geography.json; `code` gives the localized display name.
-// Full service is BFF United's approved list plus BFF Classic (Venezuela); only the US is confirmed for self-custody.
+// Compliance input (BFF United + BFF Classic; US self-custody only): `name` tags geography.json dots, `code` localizes.
 export const COUNTRIES: Record<CountryService, Country[]> = {
   custodial: [
     { code: 'AR', name: 'Argentina' },

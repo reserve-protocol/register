@@ -101,8 +101,10 @@ export const withOnchainHeld = (
   metrics: UglycashMetrics,
   onchain: OnchainSeries
 ): UglycashMetrics => {
+  if (!onchain.points.length)
+    throw new Error('UGLYCASH onchain balance: empty series')
   const byDate = new Map(onchain.points.map((p) => [p.date, p.balance]))
-  let held = onchain.points[0]?.balance ?? 0
+  let held = onchain.points[0].balance
   const daily = metrics.daily.map((point) => {
     held = byDate.get(point.date) ?? held
     return { ...point, balance: held }
@@ -112,7 +114,7 @@ export const withOnchainHeld = (
     daily,
     headline: {
       ...metrics.headline,
-      balance: onchain.points.at(-1)?.balance ?? held,
+      balance: onchain.points[onchain.points.length - 1].balance,
     },
   }
 }

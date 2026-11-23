@@ -608,8 +608,7 @@ export async function mockApiRoutes(page: Page, options: ApiMockOptions) {
   }
 
   await page.route('**/api.reserve.org/**', handler)
-  // The glob above can't match the staging host (no `api.reserve.org` substring),
-  // which staging builds use — route it explicitly.
+  // Staging builds call a host the glob above can't match — route it explicitly.
   await page.route('**/api-staging.reserve.org/**', handler)
 
   await page.route('**/api.etherscan.io/**', async (route) => {

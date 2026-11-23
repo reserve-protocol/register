@@ -366,7 +366,7 @@ msgstr "用 {3} 买入价值 ${1} 的 {2} 时价格影响为 {0}%"
 msgid "{0}% price impact selling ${1} of {2} for {3}"
 msgstr "卖出价值 ${1} 的 {2} 换取 {3} 时价格影响为 {0}%"
 
-#: src/views/home/components/data-cards.tsx:135
+#: src/views/home/components/data-cards.tsx:139
 msgid "{amount} in {month}"
 msgstr "{month} {amount}"
 
@@ -394,7 +394,7 @@ msgstr "{chainLabel}（原生）"
 msgid "{count, plural, one {# Collateral pegged to} other {# Collaterals pegged to}}"
 msgstr "{count, plural, one {# 个抵押品锚定于} other {# 个抵押品锚定于}}"
 
-#: src/views/home/components/data-cards.tsx:207
+#: src/views/home/components/data-cards.tsx:211
 msgid "{count} in {month}"
 msgstr "{month} {count} 笔"
 
@@ -422,7 +422,7 @@ msgstr "{count}秒"
 msgid "{count}y"
 msgstr "{count}年"
 
-#: src/views/home/components/data-cards.tsx:84
+#: src/views/home/components/data-cards.tsx:88
 msgid "{days} days"
 msgstr "{days} 天"
 
@@ -3469,6 +3469,10 @@ msgstr "DAO 设置提案"
 msgid "Dark"
 msgstr "深色"
 
+#: src/views/home/components/data-cards.tsx:34
+msgid "Data unavailable right now"
+msgstr "数据暂时不可用"
+
 #: src/views/portfolio-page/components/transactions.tsx:91
 msgid "Date"
 msgstr "日期"
@@ -4507,11 +4511,11 @@ msgstr "ETH 地址"
 msgid "eUSD held"
 msgstr "eUSD 持有量"
 
-#: src/views/home/components/data-cards.tsx:56
+#: src/views/home/components/data-cards.tsx:60
 msgid "eUSD held in UGLYCASH"
 msgstr "UGLYCASH 中持有的 eUSD"
 
-#: src/views/home/components/data-cards.tsx:105
+#: src/views/home/components/data-cards.tsx:109
 msgid "eUSD in UGLYCASH's wallets onchain, the stablecoin built on Reserve."
 msgstr "UGLYCASH 链上 Wallet 中的 eUSD，即基于 Reserve 构建的稳定币。"
 
@@ -4528,11 +4532,11 @@ msgstr "UGLYCASH 上的 eUSD 由 Best Friend Finance 托管，因此这些交易
 msgid "eUSD revenue router destinations"
 msgstr "eUSD 收入路由器目标"
 
-#: src/views/home/components/data-cards.tsx:194
+#: src/views/home/components/data-cards.tsx:198
 msgid "eUSD transactions in UGLYCASH"
 msgstr "UGLYCASH 中的 eUSD 交易"
 
-#: src/views/home/components/data-cards.tsx:122
+#: src/views/home/components/data-cards.tsx:126
 msgid "eUSD volume in UGLYCASH"
 msgstr "UGLYCASH 中的 eUSD 交易量"
 
@@ -5388,7 +5392,7 @@ msgstr "Mint 遇到问题？Zaps 处于 beta 阶段"
 msgid "Having issues redeeming?"
 msgstr "Redeem 遇到问题？"
 
-#: src/views/home/components/data-cards.tsx:98
+#: src/views/home/components/data-cards.tsx:102
 msgid "held today"
 msgstr "当前持有"
 
@@ -6172,7 +6176,7 @@ msgstr "流动性模拟金额"
 msgid "Listed DTFs"
 msgstr "已列出的 DTF"
 
-#: src/views/home/components/data-cards.tsx:84
+#: src/views/home/components/data-cards.tsx:88
 msgid "live"
 msgstr "已上线"
 
@@ -6874,11 +6878,11 @@ msgstr "修改"
 msgid "Monthly P&L"
 msgstr "每月 P&L"
 
-#: src/views/home/components/data-cards.tsx:239
+#: src/views/home/components/data-cards.tsx:243
 msgid "Monthly transactions since launch: {total} so far."
 msgstr "上线以来的月度交易：迄今共 {total} 笔。"
 
-#: src/views/home/components/data-cards.tsx:185
+#: src/views/home/components/data-cards.tsx:189
 msgid "Monthly volume since launch: {total} so far. Hover a month for the split by type."
 msgstr "上线以来的月度交易量：迄今共 {total}。将鼠标悬停在某个月份上可查看按类型的细分。"
 
@@ -11881,7 +11885,7 @@ msgstr "交易成功"
 msgid "Transaction successful!"
 msgstr "交易成功!"
 
-#: src/views/home/components/data-cards.tsx:88
+#: src/views/home/components/data-cards.tsx:92
 msgid "transactions"
 msgstr "笔交易"
 
@@ -12023,7 +12027,7 @@ msgstr "类型"
 msgid "UGLYCASH is the Reserve App, and it’s fueling huge growth in eUSD"
 msgstr "UGLYCASH 是 Reserve 的应用，正在推动 eUSD 大幅增长"
 
-#: src/views/home/components/data-cards.tsx:34
+#: src/views/home/components/data-cards.tsx:37
 msgid "UGLYCASH metrics could not be loaded. The rest of the page still works."
 msgstr "无法加载 UGLYCASH 指标。页面其余部分仍可正常使用。"
 
@@ -12819,7 +12823,7 @@ msgstr "交易量（历史总计）"
 msgid "Volume (last 7d)"
 msgstr "交易量（近 7 天）"
 
-#: src/views/home/components/data-cards.tsx:93
+#: src/views/home/components/data-cards.tsx:97
 msgid "volume since launch"
 msgstr "上线以来交易量"
 

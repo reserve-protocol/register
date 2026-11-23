@@ -366,7 +366,7 @@ msgstr ""
 msgid "{0}% price impact selling ${1} of {2} for {3}"
 msgstr ""
 
-#: src/views/home/components/data-cards.tsx:135
+#: src/views/home/components/data-cards.tsx:139
 msgid "{amount} in {month}"
 msgstr ""
 
@@ -394,7 +394,7 @@ msgstr ""
 msgid "{count, plural, one {# Collateral pegged to} other {# Collaterals pegged to}}"
 msgstr ""
 
-#: src/views/home/components/data-cards.tsx:207
+#: src/views/home/components/data-cards.tsx:211
 msgid "{count} in {month}"
 msgstr ""
 
@@ -422,7 +422,7 @@ msgstr ""
 msgid "{count}y"
 msgstr ""
 
-#: src/views/home/components/data-cards.tsx:84
+#: src/views/home/components/data-cards.tsx:88
 msgid "{days} days"
 msgstr ""
 
@@ -3469,6 +3469,10 @@ msgstr ""
 msgid "Dark"
 msgstr ""
 
+#: src/views/home/components/data-cards.tsx:34
+msgid "Data unavailable right now"
+msgstr ""
+
 #: src/views/portfolio-page/components/transactions.tsx:91
 msgid "Date"
 msgstr ""
@@ -4507,11 +4511,11 @@ msgstr ""
 msgid "eUSD held"
 msgstr ""
 
-#: src/views/home/components/data-cards.tsx:56
+#: src/views/home/components/data-cards.tsx:60
 msgid "eUSD held in UGLYCASH"
 msgstr ""
 
-#: src/views/home/components/data-cards.tsx:105
+#: src/views/home/components/data-cards.tsx:109
 msgid "eUSD in UGLYCASH's wallets onchain, the stablecoin built on Reserve."
 msgstr ""
 
@@ -4528,11 +4532,11 @@ msgstr ""
 msgid "eUSD revenue router destinations"
 msgstr ""
 
-#: src/views/home/components/data-cards.tsx:194
+#: src/views/home/components/data-cards.tsx:198
 msgid "eUSD transactions in UGLYCASH"
 msgstr ""
 
-#: src/views/home/components/data-cards.tsx:122
+#: src/views/home/components/data-cards.tsx:126
 msgid "eUSD volume in UGLYCASH"
 msgstr ""
 
@@ -5388,7 +5392,7 @@ msgstr ""
 msgid "Having issues redeeming?"
 msgstr ""
 
-#: src/views/home/components/data-cards.tsx:98
+#: src/views/home/components/data-cards.tsx:102
 msgid "held today"
 msgstr ""
 
@@ -6172,7 +6176,7 @@ msgstr ""
 msgid "Listed DTFs"
 msgstr ""
 
-#: src/views/home/components/data-cards.tsx:84
+#: src/views/home/components/data-cards.tsx:88
 msgid "live"
 msgstr ""
 
@@ -6874,11 +6878,11 @@ msgstr ""
 msgid "Monthly P&L"
 msgstr ""
 
-#: src/views/home/components/data-cards.tsx:239
+#: src/views/home/components/data-cards.tsx:243
 msgid "Monthly transactions since launch: {total} so far."
 msgstr ""
 
-#: src/views/home/components/data-cards.tsx:185
+#: src/views/home/components/data-cards.tsx:189
 msgid "Monthly volume since launch: {total} so far. Hover a month for the split by type."
 msgstr ""
 
@@ -11870,7 +11874,7 @@ msgstr ""
 msgid "Transaction successful!"
 msgstr ""
 
-#: src/views/home/components/data-cards.tsx:88
+#: src/views/home/components/data-cards.tsx:92
 msgid "transactions"
 msgstr ""
 
@@ -12012,7 +12016,7 @@ msgstr ""
 msgid "UGLYCASH is the Reserve App, and it’s fueling huge growth in eUSD"
 msgstr ""
 
-#: src/views/home/components/data-cards.tsx:34
+#: src/views/home/components/data-cards.tsx:37
 msgid "UGLYCASH metrics could not be loaded. The rest of the page still works."
 msgstr ""
 
@@ -12808,7 +12812,7 @@ msgstr ""
 msgid "Volume (last 7d)"
 msgstr ""
 
-#: src/views/home/components/data-cards.tsx:93
+#: src/views/home/components/data-cards.tsx:97
 msgid "volume since launch"
 msgstr ""
 

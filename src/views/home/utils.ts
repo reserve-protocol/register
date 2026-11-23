@@ -8,7 +8,7 @@ export const usdCompact = (value: number, decimals = 1) =>
   `$${formatCurrency(value, decimals, COMPACT)}`
 
 export const countCompact = (value: number, decimals = 1) =>
-  formatCurrency(value, decimals, COMPACT)
+  formatCurrency(value, value < 1000 ? 0 : decimals, COMPACT)
 
 const utcDate = (iso: string) => new Date(`${iso}T00:00:00Z`)
 
