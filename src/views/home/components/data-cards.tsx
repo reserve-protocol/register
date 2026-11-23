@@ -21,6 +21,8 @@ import { AutoTicker, HomeCard } from './home-card'
 
 const EUSD_ROUTE = getTokenRoute(EUSD_ADDRESS[ChainId.Mainnet], ChainId.Mainnet)
 
+const EUSD_TRANSACTIONS_ROUTE = `${EUSD_ROUTE}#transactions`
+
 const EusdIcon = () => (
   <img src="/svgs/eusd.svg" alt="" aria-hidden="true" className="h-8 w-8" />
 )
@@ -134,6 +136,8 @@ export const VolumeCard = () => {
   return (
     <HomeCard
       revealed={!!data}
+      href={EUSD_TRANSACTIONS_ROUTE}
+      cta="eusd_volume"
       icon={<EusdIcon />}
       title={title}
       value={latest && t`${amount} in ${month}`}
@@ -206,6 +210,8 @@ export const TransactionsCard = () => {
   return (
     <HomeCard
       revealed={!!data}
+      href={EUSD_TRANSACTIONS_ROUTE}
+      cta="eusd_transactions"
       icon={<EusdIcon />}
       title={title}
       value={latest && t`${count} in ${month}`}

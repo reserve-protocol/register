@@ -62,7 +62,7 @@ const DiscoverDtfsCard = () => (
         {DISCOVER_DTFS.map(({ symbol, logo }) => (
           <div
             key={symbol}
-            className="flex min-w-0 items-center gap-2 rounded-full bg-card px-2 py-2"
+            className="flex min-w-0 items-center gap-2 rounded-full border border-border bg-card px-2 py-2"
           >
             <img
               src={logo}
