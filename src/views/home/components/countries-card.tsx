@@ -46,6 +46,8 @@ const CountriesCard = () => {
 
   return (
     <HomeCard
+      href="https://ugly.cash/"
+      cta="uglycash_countries"
       icon={
         <span
           className="flex h-8 w-8 items-center justify-center rounded-full border-2 border-foreground"

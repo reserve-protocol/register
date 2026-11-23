@@ -366,7 +366,7 @@ msgstr "{3}로 {2} ${1}어치를 매수할 때 가격 영향 {0}%"
 msgid "{0}% price impact selling ${1} of {2} for {3}"
 msgstr "{2} ${1}어치를 {3}로 매도할 때 가격 영향 {0}%"
 
-#: src/views/home/components/data-cards.tsx:139
+#: src/views/home/components/data-cards.tsx:145
 msgid "{amount} in {month}"
 msgstr "{month} {amount}"
 
@@ -398,7 +398,7 @@ msgstr "{CONTACT_EMAIL}이(가) 클립보드에 복사되었습니다"
 msgid "{count, plural, one {# Collateral pegged to} other {# Collaterals pegged to}}"
 msgstr "{count, plural, one {#개의 담보가 다음에 페그됨} other {#개의 담보가 다음에 페그됨}}"
 
-#: src/views/home/components/data-cards.tsx:211
+#: src/views/home/components/data-cards.tsx:219
 msgid "{count} in {month}"
 msgstr "{month} {count}건"
 
@@ -426,7 +426,7 @@ msgstr "{count}초"
 msgid "{count}y"
 msgstr "{count}년"
 
-#: src/views/home/components/data-cards.tsx:88
+#: src/views/home/components/data-cards.tsx:90
 msgid "{days} days"
 msgstr "{days}일"
 
@@ -3473,7 +3473,7 @@ msgstr "DAO 설정 제안"
 msgid "Dark"
 msgstr "다크"
 
-#: src/views/home/components/data-cards.tsx:34
+#: src/views/home/components/data-cards.tsx:36
 msgid "Data unavailable right now"
 msgstr "현재 데이터를 사용할 수 없습니다"
 
@@ -3772,7 +3772,7 @@ msgstr "Discord 사용자 이름"
 msgid "Discover DTFs"
 msgstr "DTF 둘러보기"
 
-#: src/views/home/components/discover-dtfs-card.tsx:169
+#: src/views/home/components/discover-dtfs-card.tsx:78
 msgid "Discover more DTFs"
 msgstr "더 많은 DTF 알아보기"
 
@@ -4515,11 +4515,11 @@ msgstr "ETH 주소"
 msgid "eUSD held"
 msgstr "eUSD 보유량"
 
-#: src/views/home/components/data-cards.tsx:60
+#: src/views/home/components/data-cards.tsx:62
 msgid "eUSD held in UGLYCASH"
 msgstr "UGLYCASH 내 eUSD 보유량"
 
-#: src/views/home/components/data-cards.tsx:109
+#: src/views/home/components/data-cards.tsx:111
 msgid "eUSD in UGLYCASH's wallets onchain, the stablecoin built on Reserve."
 msgstr "UGLYCASH의 온체인 Wallet에 있는 eUSD. Reserve 기반으로 만들어진 스테이블코인입니다."
 
@@ -4536,11 +4536,11 @@ msgstr "UGLYCASH의 eUSD는 Best Friend Finance가 보관하므로, 이러한 �
 msgid "eUSD revenue router destinations"
 msgstr "eUSD 수익 라우터 대상"
 
-#: src/views/home/components/data-cards.tsx:198
+#: src/views/home/components/data-cards.tsx:204
 msgid "eUSD transactions in UGLYCASH"
 msgstr "UGLYCASH 내 eUSD 트랜잭션"
 
-#: src/views/home/components/data-cards.tsx:126
+#: src/views/home/components/data-cards.tsx:128
 msgid "eUSD volume in UGLYCASH"
 msgstr "UGLYCASH 내 eUSD 거래량"
 
@@ -5025,7 +5025,7 @@ msgstr "거버넌스 스펠을 통해 이 DTF의 Vote-lock DAO 거버너의 제�
 msgid "Fixed Platform Share"
 msgstr "고정 플랫폼 지분"
 
-#: src/views/home/components/countries-card.tsx:61
+#: src/views/home/components/countries-card.tsx:63
 msgid "Focused on Latin America first"
 msgstr "중남미를 우선으로"
 
@@ -5120,7 +5120,7 @@ msgstr "{0}에서 {1}(으)로"
 msgid "Frozen"
 msgstr "동결됨"
 
-#: src/views/home/components/countries-card.tsx:71
+#: src/views/home/components/countries-card.tsx:73
 msgid "Full custodial service ({CUSTODIAL_COUNT})"
 msgstr "완전 수탁 서비스 ({CUSTODIAL_COUNT})"
 
@@ -5396,7 +5396,7 @@ msgstr "Mint에 문제가 있나요? Zap은 베타 버전입니다"
 msgid "Having issues redeeming?"
 msgstr "Redeem에 문제가 있나요?"
 
-#: src/views/home/components/data-cards.tsx:102
+#: src/views/home/components/data-cards.tsx:104
 msgid "held today"
 msgstr "현재 보유"
 
@@ -5697,6 +5697,10 @@ msgstr "증가"
 #: src/views/explorer/components/revenue/index.tsx:22
 msgid "Index"
 msgstr "Index"
+
+#: src/views/home/components/discover-dtfs-card.tsx:109
+msgid "Index and Yield DTFs are onchain portfolios in a single token. Browse all of them, with prices, baskets and performance."
+msgstr "Index DTF와 Yield DTF는 하나의 토큰에 담긴 온체인 포트폴리오입니다. 가격, 바스켓, 성과와 함께 모두 살펴보세요."
 
 #: src/views/index-dtf/deploy/steps/revenue/index.tsx:13
 #: src/views/index-dtf/governance/views/propose/views/propose-dtf-settings/components/sections/propose-dtf-revenue.tsx:50
@@ -6180,7 +6184,7 @@ msgstr "유동성 시뮬레이션 금액"
 msgid "Listed DTFs"
 msgstr "등록된 DTF"
 
-#: src/views/home/components/data-cards.tsx:88
+#: src/views/home/components/data-cards.tsx:90
 msgid "live"
 msgstr "운영 중"
 
@@ -6190,7 +6194,7 @@ msgstr "운영 중"
 msgid "Live auction state unavailable — retrying before launch"
 msgstr "실시간 경매 상태를 불러올 수 없습니다 — 시작 전에 다시 시도 중"
 
-#: src/views/home/components/countries-card.tsx:59
+#: src/views/home/components/countries-card.tsx:61
 msgid "Live in {COUNTRY_COUNT} countries"
 msgstr "{COUNTRY_COUNT}개 국가에서 이용 가능"
 
@@ -6470,7 +6474,6 @@ msgstr "시장"
 msgid "Market Access and Redemption Risk: Minting and redemption for Ondo Tokenized Stocks may be permissioned, capacity-limited, subject to eligibility/whitelisting, and available only during defined windows or business-hour cutoffs tied to traditional market operations. These frictions can prevent arbitrage, impair exits at or near NAV, and amplify secondary-market dislocations, thereby resulting in a partial or total loss of the DTFs' holdings."
 msgstr "시장 접근 및 상환 위험: Ondo Tokenized Stocks의 Mint와 Redeem은 허가제이거나, 한도가 제한되거나, 적격성/화이트리스트 요건이 적용되거나, 전통 시장 운영에 연동된 특정 시간대 또는 영업시간 마감에만 가능할 수 있습니다. 이러한 마찰은 차익거래를 막고, NAV 또는 그 부근에서의 청산을 어렵게 하며, 2차 시장의 왜곡을 증폭시켜 DTF 보유 자산의 부분적 또는 전체적 손실로 이어질 수 있습니다."
 
-#: src/views/home/components/discover-dtfs-card.tsx:131
 #: src/views/home/components/discover-index-dtf/index-dtf-table-columns.tsx:294
 #: src/views/home/components/discover-index-dtf/index-dtf-table-placeholder.tsx:21
 #: src/views/index-dtf/overview/components/basket-overview/basket-table-header.tsx:141
@@ -6883,11 +6886,11 @@ msgstr "수정"
 msgid "Monthly P&L"
 msgstr "월간 P&L"
 
-#: src/views/home/components/data-cards.tsx:243
+#: src/views/home/components/data-cards.tsx:251
 msgid "Monthly transactions since launch: {total} so far."
 msgstr "출시 이후 월별 트랜잭션: 현재까지 {total}건."
 
-#: src/views/home/components/data-cards.tsx:189
+#: src/views/home/components/data-cards.tsx:195
 msgid "Monthly volume since launch: {total} so far. Hover a month for the split by type."
 msgstr "출시 이후 월별 거래량: 현재까지 {total}. 월에 마우스를 올리면 유형별 내역을 볼 수 있습니다."
 
@@ -8278,7 +8281,6 @@ msgstr ""
 
 #: src/components/ondo-badge.tsx:124
 #: src/components/tables/ListedTokensTable.tsx:38
-#: src/views/home/components/discover-dtfs-card.tsx:130
 #: src/views/home/components/discover-index-dtf/index-dtf-table-columns.tsx:316
 #: src/views/index-dtf/auctions/views/rebalance/components/auction-bids-chart.tsx:159
 #: src/views/index-dtf/auctions/views/rebalance/components/auction-bids-chart.tsx:191
@@ -9883,7 +9885,7 @@ msgstr "셀렉터 레지스트리"
 msgid "Selector registry is not available for this optimistic governor."
 msgstr "이 Optimistic Governor에는 셀렉터 레지스트리를 사용할 수 없습니다."
 
-#: src/views/home/components/countries-card.tsx:74
+#: src/views/home/components/countries-card.tsx:76
 msgid "Self-custody investment layer ({SELF_CUSTODY_COUNT})"
 msgstr "자기 보관 투자 레이어 ({SELF_CUSTODY_COUNT})"
 
@@ -11891,7 +11893,7 @@ msgstr "트랜잭션 성공"
 msgid "Transaction successful!"
 msgstr "트랜잭션 성공!"
 
-#: src/views/home/components/data-cards.tsx:92
+#: src/views/home/components/data-cards.tsx:94
 msgid "transactions"
 msgstr "트랜잭션"
 
@@ -12033,11 +12035,11 @@ msgstr "유형"
 msgid "UGLYCASH is the Reserve App, and it’s fueling huge growth in eUSD"
 msgstr "UGLYCASH는 Reserve의 앱으로, eUSD의 큰 성장을 이끌고 있습니다"
 
-#: src/views/home/components/data-cards.tsx:37
+#: src/views/home/components/data-cards.tsx:39
 msgid "UGLYCASH metrics could not be loaded. The rest of the page still works."
 msgstr "UGLYCASH 지표를 불러오지 못했습니다. 페이지의 나머지 부분은 정상적으로 작동합니다."
 
-#: src/views/home/components/countries-card.tsx:81
+#: src/views/home/components/countries-card.tsx:83
 msgid "UGLYCASH offers full service in {CUSTODIAL_COUNT} countries and self-custody investing in the US."
 msgstr "UGLYCASH는 {CUSTODIAL_COUNT}개 국가에서 전체 서비스를 제공하며, 미국에서는 자기 보관 방식의 투자 서비스를 제공합니다."
 
@@ -12829,7 +12831,7 @@ msgstr "거래량 (전체 기간)"
 msgid "Volume (last 7d)"
 msgstr "거래량 (최근 7일)"
 
-#: src/views/home/components/data-cards.tsx:97
+#: src/views/home/components/data-cards.tsx:99
 msgid "volume since launch"
 msgstr "출시 이후 거래량"
 

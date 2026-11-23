@@ -1,5 +1,7 @@
-import { ROUTES } from '@/utils/constants'
+import { formatCurrency } from '@/utils'
+import { RESERVE_API, ROUTES } from '@/utils/constants'
 import { Trans } from '@lingui/react/macro'
+import { useQuery } from '@tanstack/react-query'
 import { ArrowRight } from 'lucide-react'
 import { HomeCard } from './home-card'
 
@@ -42,7 +44,25 @@ const DISCOVER_DTFS = [
   },
 ]
 
-const DiscoverDtfsCard = () => (
+type DiscoverListItem = { symbol: string; marketCap?: number }
+
+const useMarketCaps = () =>
+  useQuery({
+    queryKey: ['home-discover-market-caps'],
+    queryFn: async () => {
+      const res = await fetch(`${RESERVE_API}v1/discover/dtfs`)
+      if (!res.ok) throw new Error(`Discover DTFs: ${res.status}`)
+      const caps = new Map<string, number>()
+      for (const { symbol, marketCap = 0 } of (await res.json()) as DiscoverListItem[])
+        caps.set(symbol, Math.max(caps.get(symbol) ?? 0, marketCap))
+      return caps
+    },
+    staleTime: 10 * 60 * 1000,
+  })
+
+const DiscoverDtfsCard = () => {
+  const { data: marketCaps } = useMarketCaps()
+  return (
   <HomeCard
     href={ROUTES.DISCOVER}
     cta="discover_dtfs"
@@ -70,12 +90,29 @@ const DiscoverDtfsCard = () => (
               aria-hidden="true"
               className="h-7 w-7 shrink-0 rounded-full"
             />
-            <span className="text-sm text-foreground">{symbol}</span>
+            <span className="truncate text-sm text-foreground">{symbol}</span>
+            {!!marketCaps?.get(symbol) && (
+              <span className="ml-auto pr-2 text-sm tabular-nums text-legend">
+                $
+                {formatCurrency(marketCaps.get(symbol)!, 1, {
+                  notation: 'compact',
+                  compactDisplay: 'short',
+                  minimumFractionDigits: 0,
+                })}
+              </span>
+            )}
           </div>
         ))}
       </div>
     }
+    description={
+      <Trans>
+        Index and Yield DTFs are onchain portfolios in a single token. Browse
+        all of them, with prices, baskets and performance.
+      </Trans>
+    }
   />
-)
+  )
+}
 
 export default DiscoverDtfsCard

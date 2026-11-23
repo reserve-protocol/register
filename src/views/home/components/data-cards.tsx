@@ -128,8 +128,10 @@ export const VolumeCard = () => {
   const title = t`eUSD volume in UGLYCASH`
   if (isError && !data) return <DataCardError title={title} />
 
-  const categories = data?.categories.volume ?? []
   const latest = data?.monthly[data.monthly.length - 1]
+  // Largest type first: the stack reads bottom to top in the tooltip's order.
+  const categories =
+    data && latest ? rankByLatest(data.categories.volume, latest, 'volume') : []
   const amount = latest && usd(latest.totalVolume)
   const month = latest && monthName(latest.month, i18n.locale)
   const total = data && usdCompact(data.headline.cumulativeVolume)
@@ -157,7 +159,7 @@ export const VolumeCard = () => {
                     <MonthTip
                       anchor={anchor}
                       metric="volume"
-                      categories={rankByLatest(categories, latest, 'volume')}
+                      categories={categories}
                     />
                   }
                   cursor={{ fill: 'hsl(var(--primary))', fillOpacity: 0.06 }}
