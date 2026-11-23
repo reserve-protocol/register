@@ -5,7 +5,7 @@ import { msg } from '@lingui/core/macro'
 import { Trans, useLingui } from '@lingui/react/macro'
 import { ArrowRight } from 'lucide-react'
 
-const CONTACT_EMAIL = 'gabo@reserve.org'
+const CONTACT_EMAIL = 'support@reserve.org'
 const ORBIT_SIZE = 220
 const ORBIT_RADIUS = 100
 
