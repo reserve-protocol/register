@@ -1,6 +1,6 @@
 ---
 title: Log
-updated: 2026-11-04
+updated: 2026-11-23
 type: log
 ---
 
@@ -302,3 +302,10 @@ PR #1094 merged on 2026-08-28. The following records the original stage evidence
 - react-zapper 3.0.0 published (PR #66) and pinned exact; the `file:` tarball is gone. Moved again onto master `caabd37d1` (explorer rebuild): one conflict, `explorer/components/revenue/index.tsx`, taken from master since it no longer uses `useReadContracts`. Offline e2e 276 passed, 11 failed, all red or flaky on master; `governance-propose-dtf-settings:452` failed once under load and passed 5 of 5 on repeat.
 - Fork `basket-v6` is intermittent on this branch (2 failures in 7 runs, 4 of 4 green from a snapshot): the CSV step leaves one row. `basket-csv-setup.tsx` rejects the upload while the unfiltered token list is still loading and the spec does not wait for it; neither file is touched here. Not sampled on master beyond one green run.
 
+
+## 2026-11-23 — homepage: eUSD and UGLYCASH page replaces the DTF hero
+
+- Deleting "the old home" by folder was wrong: `views/home/components/highlighted-dtfs/` is also the Discover mobile card (`discover-index-dtf/index.tsx`). Prune by reachability from `src/index.tsx`, not by folder name. The card keeps transcript and chain-version options that nothing uses now (follow-up, it changes a Discover surface).
+- The exploration branch was 207 commits behind master. Merge first, take master's `.po` files on conflict, then `pnpm extract` and fill; resolving catalog conflicts by hand is not worth it.
+- Dark mode: `--border-secondary` is near-black, and `--tvl` is near-white, so neither works as a chart or map color in both themes. The home uses `--primary` and opacity steps, and switches the land color in dark.
+- Independent review, reconciled. Fixed: tooltip clamp on phones, counts under 1000 without a forced decimal, empty onchain series now an error instead of `$0`, map dots no longer flash before the reveal, short tickers repeat to cover wide cards, globe repaints on resize. Kept by decision: one failed UGLYCASH endpoint puts the three data cards in the error state (one query, as designed in the approved variant).

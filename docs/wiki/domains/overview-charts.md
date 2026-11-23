@@ -37,9 +37,8 @@ range → `from`/`to`/`interval`/`bucket`. `interval` is what the API is asked
 for; `bucket` (seconds) is the display density applied client-side by
 `downsampleToBucket` (`src/utils/chart-downsample.ts`; keeps last point per
 bucket plus the first and last points — the last is the live "now" point).
-The home featured cards no longer use it: reserve-api serves the
-`discover/featured` series as a YTD daily grid, matching the overview default
-range and its displayed % (see [[home]]):
+Register no longer reads `discover/featured` (the home featured cards were
+removed 2026-11-23, see [[home]]); the table below is the overview's own:
 
 - 24H → fetch `5m`, bucket 15m (~97 pts)
 - 7D → fetch `1h`, no bucket (~169 pts)
