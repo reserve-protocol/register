@@ -21,7 +21,10 @@ const IndexDTFBasketSettingsProposal = () => {
   const indexDTF = useAtomValue(indexDTFAtom)
   const quorumDenominator = indexDTF?.tradingGovernance?.quorumDenominator
 
-  const schema = useProposeBasketSettingsSchema(Number(quorumDenominator))
+  const schema = useProposeBasketSettingsSchema(
+    Number(quorumDenominator),
+    indexDTF?.tradingGovernance?.proposalThresholdExact !== false
+  )
 
   const methods = useForm({
     mode: 'onTouched',

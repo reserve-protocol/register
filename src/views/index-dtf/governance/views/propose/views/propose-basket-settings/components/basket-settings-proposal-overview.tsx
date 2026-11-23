@@ -18,6 +18,7 @@ import BasketSettingsProposalChanges from './basket-settings-proposal-changes'
 import SimulateProposalCard from '@/views/index-dtf/governance/components/simulate-proposal-card'
 import { chainIdAtom } from '@/state/atoms'
 import { Address } from 'viem'
+import { useProposalStartStep } from '@/views/index-dtf/governance/views/propose/shared'
 
 const ConfirmProposalButton = () => {
   const isValid = useAtomValue(isProposalValidAtom)
@@ -64,6 +65,8 @@ const ProposalInstructions = () => {
 
   const canProceed = isValid && isFormValid
 
+  const startStep = useProposalStartStep()
+
   const timelineItems = [
     {
       title: t`Configure proposal`,
@@ -82,7 +85,7 @@ const ProposalInstructions = () => {
       isActive: confirmed,
     },
     {
-      title: t`Voting delay begins`,
+      title: startStep,
     },
   ]
 

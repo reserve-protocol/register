@@ -46,6 +46,7 @@ const InitialFolioInput = () => {
         <div className="flex items-center">
           <div className="flex flex-col flex-grow min-w-0">
             <NumericalInput
+              data-testid="deploy-manual-amount"
               value={initialTokens}
               variant="transparent"
               placeholder="0"

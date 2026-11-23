@@ -112,8 +112,7 @@ const ProposalTypeSelector = ({
           title={<Trans>Standard Governance</Trans>}
           description={
             <Trans>
-              Governance with an execution delay greater than 1 week unstaking
-              delay
+              Goes to a vote of all governors, then waits the execution delay.
             </Trans>
           }
           selected={proposalType === 'standard'}

@@ -1,4 +1,5 @@
 import ProposalStatusBar from '@/components/proposal-status-bar'
+import EnsName from '@/components/utils/ens-name'
 import { cn } from '@/lib/utils'
 import { formatPercentage, getProposalTitle, parseDuration } from '@/utils'
 import { PROPOSAL_STATES } from '@/utils/constants'
@@ -16,6 +17,7 @@ import {
 } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import useProposalStages from '../hooks/use-proposal-stages'
+import AddressHovercard from '@/components/governance/address-hovercard'
 import ContestedBadge from './contest-badge'
 import OptimisticBadge from './optimistic-badge'
 import { useMemo } from 'react'
@@ -197,23 +199,47 @@ const ProposalProgress = ({ proposal }: IProposalListItem) => {
   return <ProposalStatusBar className="my-1" stages={stages} />
 }
 
+const ProposalProposer = ({ proposal }: IProposalListItem) => (
+  <div className="pointer-events-auto relative z-10 flex min-w-0 items-center gap-1 text-sm text-legend">
+    <Trans>by</Trans>
+    <AddressHovercard
+      address={proposal.proposer}
+      surface="proposal_list"
+      eventAt={proposal.creationTime}
+      className="text-foreground"
+    >
+      <EnsName address={proposal.proposer} className="truncate" />
+    </AddressHovercard>
+  </div>
+)
+
+// The row link is an overlay so the proposer hovercard can be a real button
+// (a button nested in an <a> is invalid and the click would navigate).
 const ProposalListItem = ({ proposal }: IProposalListItem) => (
-  <Link
-    to={`proposal/${proposal.id}`}
+  <div
+    data-testid="proposal-list-item"
     className={cn(
-      'flex flex-col gap-2 rounded-3xl p-4 cursor-pointer transition-colors',
+      'relative flex flex-col gap-2 rounded-3xl p-4 transition-colors',
       ACTIVE_STATES.has(proposal.state)
         ? 'bg-card hover:bg-background'
         : 'bg-background/80 hover:bg-background'
     )}
   >
-    <ProposalTitle proposal={proposal} />
-    <ProposalProgress proposal={proposal} />
-    <div className="flex items-center">
-      <ProposalState proposal={proposal} />
-      <ProposalVoteState proposal={proposal} />
+    <Link
+      to={`proposal/${proposal.id}`}
+      className="absolute inset-0 rounded-3xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+      aria-label={getProposalTitle(proposal.description)}
+    />
+    <div className="pointer-events-none flex flex-col gap-2">
+      <ProposalTitle proposal={proposal} />
+      <ProposalProgress proposal={proposal} />
+      <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
+        <ProposalState proposal={proposal} />
+        <ProposalVoteState proposal={proposal} />
+      </div>
+      <ProposalProposer proposal={proposal} />
     </div>
-  </Link>
+  </div>
 )
 
 export default ProposalListItem

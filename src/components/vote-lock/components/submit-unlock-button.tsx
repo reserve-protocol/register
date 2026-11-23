@@ -1,17 +1,24 @@
 import TransactionButton from '@/components/ui/transaction-button'
+import { getWalletFailure } from '@/components/transaction-error/TransactionError'
+import { trackClick } from '@/hooks/useTrackPage'
 import { walletAtom } from '@/state/atoms'
 import { useLingui } from '@lingui/react/macro'
 import { prepareVoteLockRedeem } from '@reserve-protocol/react-sdk'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { useResetAtom } from 'jotai/utils'
+import mixpanel from 'mixpanel-browser/src/loaders/loader-module-core'
 import { useEffect, useRef, useState } from 'react'
 import { toast } from 'sonner'
-import { parseUnits } from 'viem'
-import { useWaitForTransactionReceipt, useWriteContract } from 'wagmi'
+import { BaseError, parseUnits } from 'viem'
+import {
+  useAccount,
+  useWaitForTransactionReceipt,
+  useWriteContract,
+} from 'wagmi'
 import {
   closeDrawerAtom,
   stakingInputAtom,
-  stTokenAtom,
+  type StTokenExtended,
   unlockDelayAtom,
   unlockShareBalanceRawAtom,
   updateCurrentDtfStTokenSupplyAtom,
@@ -20,10 +27,18 @@ import { getWriteContractParams } from '../utils'
 
 const PROCESSING_DELAY = 10_000
 
-const SubmitUnlockButton = ({ onSuccess }: { onSuccess?: () => void }) => {
+const SubmitUnlockButton = ({
+  stToken,
+  isVaultReady,
+  onSuccess,
+}: {
+  stToken: StTokenExtended
+  isVaultReady: boolean
+  onSuccess?: () => void
+}) => {
   const { t } = useLingui()
   const account = useAtomValue(walletAtom)
-  const stToken = useAtomValue(stTokenAtom)
+  const { connector } = useAccount()
   const input = useAtomValue(stakingInputAtom)
   const balance = useAtomValue(unlockShareBalanceRawAtom)
   const unlockDelay = useAtomValue(unlockDelayAtom)
@@ -43,20 +58,21 @@ const SubmitUnlockButton = ({ onSuccess }: { onSuccess?: () => void }) => {
     }
   }, [])
 
-  const sharesToUnlock = stToken
-    ? parseUnits(input || '0', stToken.token.decimals)
-    : 0n
+  const sharesToUnlock = parseUnits(input || '0', stToken.token.decimals)
   const readyToSubmit =
-    !!account && !!balance && sharesToUnlock > 0n && sharesToUnlock <= balance
-  const call =
-    stToken && account
-      ? prepareVoteLockRedeem({
-          chainId: stToken.chainId,
-          stToken: stToken.id,
-          shares: sharesToUnlock,
-          account,
-        })
-      : undefined
+    isVaultReady &&
+    !!account &&
+    !!balance &&
+    sharesToUnlock > 0n &&
+    sharesToUnlock <= balance
+  const call = account
+    ? prepareVoteLockRedeem({
+        chainId: stToken.chainId,
+        stToken: stToken.id,
+        shares: sharesToUnlock,
+        account,
+      })
+    : undefined
 
   const {
     writeContract,
@@ -66,14 +82,40 @@ const SubmitUnlockButton = ({ onSuccess }: { onSuccess?: () => void }) => {
   } = useWriteContract()
   const { data: receipt, error: txError } = useWaitForTransactionReceipt({
     hash,
-    chainId: stToken?.chainId,
+    chainId: stToken.chainId,
   })
 
   const write = () => {
     if (!readyToSubmit || !call) return
 
+    trackClick(
+      'vote_lock',
+      'vote_lock_unlock_submit',
+      stToken.dtfAddress ?? stToken.id,
+      stToken.token.symbol,
+      stToken.chainId
+    )
     pendingSupplyDelta.current = -sharesToUnlock
-    writeContract(getWriteContractParams(call))
+    writeContract(getWriteContractParams(call), {
+      onError: (failure) =>
+        mixpanel.track('transaction', {
+          product: 'vote_lock_unlock',
+          action: 'transaction_failed',
+          ca: stToken.dtfAddress ?? stToken.id,
+          ticker: stToken.token.symbol,
+          chain: stToken.chainId,
+          wallet: connector?.name,
+          payload: {
+            stToken: stToken.id,
+            error_name: failure.name,
+            error:
+              failure instanceof BaseError
+                ? failure.shortMessage
+                : failure.message,
+            wallet_failure: getWalletFailure(failure),
+          },
+        }),
+    })
   }
 
   useEffect(() => {
@@ -81,7 +123,7 @@ const SubmitUnlockButton = ({ onSuccess }: { onSuccess?: () => void }) => {
     if (processedReceiptHash.current === receipt.transactionHash) return
 
     processedReceiptHash.current = receipt.transactionHash
-    if (stToken && pendingSupplyDelta.current !== 0n) {
+    if (pendingSupplyDelta.current !== 0n) {
       updateCurrentDtfStTokenSupply({
         stToken: stToken.id,
         delta: pendingSupplyDelta.current,
@@ -106,8 +148,6 @@ const SubmitUnlockButton = ({ onSuccess }: { onSuccess?: () => void }) => {
     updateCurrentDtfStTokenSupply,
     onSuccess,
   ])
-
-  if (!stToken) return null
 
   return (
     <TransactionButton

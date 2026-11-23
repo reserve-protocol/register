@@ -29,14 +29,15 @@ import { isRTokenMintEnabled } from 'state/geolocation/atoms'
 import { formatCurrency } from 'utils'
 import { ChainId } from 'utils/chains'
 import { CHAIN_TAGS, REGISTER_BUGS } from 'utils/constants'
-import { Address, formatUnits, parseUnits, zeroAddress } from 'viem'
-import { useFeeData } from 'wagmi'
+import { Address, formatGwei, formatUnits, parseUnits, zeroAddress } from 'viem'
+import { useEstimateFeesPerGas } from 'wagmi'
 import { ZapErrorType } from '../ZapError'
 import zapper, { ZapResponse, ZapResult } from '../api'
 import {
   ZapQuoteProvider,
   ZapQuoteSource,
   fetchZapQuote,
+  isClientError,
 } from '../api/quote-providers'
 import {
   PRICE_IMPACT_THRESHOLD,
@@ -186,7 +187,8 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
   const isEnabled = useAtomValue(isRTokenMintEnabled)
   const [showEliteProgramModal, setShowEliteProgramModal] = useState(false)
 
-  const { data: gas } = useFeeData()
+  const { data: gas } = useEstimateFeesPerGas()
+  const gasPrice = gas?.gasPrice ? formatGwei(gas.gasPrice) : undefined
 
   const tokens: ZapToken[] = useMemo(
     () =>
@@ -424,7 +426,7 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
       return selected.response
     },
     enabled: !!endpoint,
-    retry: 10,
+    retry: (failureCount, error) => failureCount < 10 && !isClientError(error),
     retryDelay: 500,
     refetchInterval: openSubmitModal ? false : REFRESH_INTERVAL,
   })
@@ -466,8 +468,8 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
         ? formatUnits(BigInt(data.result.minAmountOut), tokenOut.decimals)
         : undefined
 
-      const estimatedGasCost = gas?.formatted?.gasPrice
-        ? (+(data.result.gas ?? 0) * +gas?.formatted?.gasPrice * ethPrice) / 1e9
+      const estimatedGasCost = gasPrice
+        ? (+(data.result.gas ?? 0) * +gasPrice * ethPrice) / 1e9
         : 0
 
       const inputPriceValue = (tokenIn?.price || 0) * Number(_amountIn) || 1
@@ -494,7 +496,7 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
       tokenIn?.price,
       tokenOut.decimals,
       tokenOut?.price,
-      gas?.formatted?.gasPrice,
+      gasPrice,
       ethPrice,
     ])
 

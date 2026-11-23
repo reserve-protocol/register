@@ -111,7 +111,9 @@ export const MigrationModal = ({ migration, flow, open, onOpenChange, onTrack }:
             ? t`Transaction failed · Retry`
             : flow.rejected
               ? t`Request rejected · Retry`
-              : buttonLabels[step as Stage]
+              : flow.sendFailed
+                ? t`Couldn't send the transaction · Retry`
+                : buttonLabels[step as Stage]
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>

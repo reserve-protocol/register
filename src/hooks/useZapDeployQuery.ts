@@ -1,4 +1,7 @@
-import { ZapResponse } from '@/views/yield-dtf/issuance/components/zapV2/api'
+import {
+  readZapError,
+  ZapResponse,
+} from '@/views/yield-dtf/issuance/components/zapV2/api'
 import {
   ZapDeployBody,
   ZapDeployUngovernedBody,
@@ -26,7 +29,9 @@ export const useZapDeployQuery = (
       })
 
       if (!response.ok) {
-        throw new Error(`Error: ${response.status}`)
+        throw new Error(
+          (await readZapError(response)) || `Error: ${response.status}`
+        )
       }
 
       return response.json()

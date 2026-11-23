@@ -2,6 +2,11 @@ import { ZAPPER_API } from '@/utils/constants'
 import { Address } from 'viem'
 
 const getBaseZapApiUrl = (chain: number) => ZAPPER_API + `api/zapper/${chain}`
+// Development override for the deploy endpoints only (a local zapper-api through the Vite proxy).
+const DEPLOY_API: string =
+  (import.meta.env.DEV && import.meta.env.VITE_ZAPPER_DEPLOY_API) || ZAPPER_API
+const getBaseDeployApiUrl = (chain: number) =>
+  DEPLOY_API + `api/zapper/${chain}`
 
 export type ZapPayload = {
   chainId: number
@@ -11,7 +16,6 @@ export type ZapPayload = {
   slippage: number
   signer: Address
   trade?: boolean
-  bypassCache?: boolean
 }
 
 export type ZapResult = {
@@ -52,6 +56,23 @@ export type ZapResponse = {
 
 export const fetcher = (url: string) => fetch(url).then((res) => res.json())
 
+// Rust zapper failures are a non-2xx JSON envelope, or plain text for rejected request shapes
+export const readZapError = async (
+  response: Response
+): Promise<string | undefined> => {
+  const body = await response.text().catch(() => '')
+  let parsed: unknown
+  try {
+    parsed = JSON.parse(body)
+  } catch {
+    return response.headers.get('content-type')?.startsWith('text/plain')
+      ? body
+      : undefined
+  }
+  const error = (parsed as { error?: unknown } | null)?.error
+  return typeof error === 'string' ? error : undefined
+}
+
 const zapper = {
   oldZap: ({
     chainId,
@@ -63,23 +84,11 @@ const zapper = {
     trade = true,
   }: ZapPayload) =>
     `${getBaseZapApiUrl(chainId)}/swap?chainId=${chainId}&signer=${signer}&tokenIn=${tokenIn}&amountIn=${amountIn}&tokenOut=${tokenOut}&slippage=${slippage}&trade=${trade}`,
-  zap: ({
-    chainId,
-    tokenIn,
-    tokenOut,
-    amountIn,
-    slippage,
-    signer,
-    trade = true,
-    bypassCache = false,
-  }: ZapPayload) =>
-    `${getBaseZapApiUrl(chainId)}/swap?chainId=${chainId}&signer=${signer}&tokenIn=${tokenIn}&amountIn=${amountIn}&tokenOut=${tokenOut}&slippage=${slippage}&trade=${trade}&bypassCache=${bypassCache}`,
-
   zapDeploy: (chainId: number) =>
-    `${getBaseZapApiUrl(chainId)}/deploy?chainId=${chainId}`,
+    `${getBaseDeployApiUrl(chainId)}/deploy?chainId=${chainId}`,
 
   zapDeployUngoverned: (chainId: number) =>
-    `${getBaseZapApiUrl(chainId)}/deploy-ungoverned?chainId=${chainId}`,
+    `${getBaseDeployApiUrl(chainId)}/deploy-ungoverned?chainId=${chainId}`,
 }
 
 export default zapper

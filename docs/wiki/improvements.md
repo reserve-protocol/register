@@ -1,6 +1,6 @@
 ---
 title: Improvements
-updated: 2026-07-03
+updated: 2026-10-29
 type: context
 ---
 
@@ -26,13 +26,13 @@ Synthesized from a 7-dimension architecture audit (2026-07-03: structure, state,
 1. **Staging pins ship staging data to prod.** `src/utils/constants.ts` `RESERVE_API = true ? VITE_STAGING_API : …` (38 importers) **plus** hardcoded staging URLs in `src/hooks/useIndexDTFList.ts:5` and `src/views/home/hooks/use-featured-dtfs.ts:7`, **plus** `src/hooks/use-dtf-status.ts:4` re-defining `RESERVE_API` as prod (two environments served in one session). Fix: restore the `isStaging` ternary, replace both literals with `${RESERVE_API}…`, delete the shadow constant. Quick win. *Status: acknowledged (Luis 2026-07-03) — deliberate while staging-testing the release; MUST flip at the release cut. All three sites, not just constants.ts.*
 2. **Vitest never runs in CI.** No workflow runs `pnpm test:run` — 45 test files of pinned money-math can't fail a PR. Fix: add a test job to `.github/workflows/lint.yml` (reuse its pnpm/node setup); also bump playwright.yml node 18→24 and add `release/**` triggers. Quick win.
 3. **Highest-blast-radius calldata is untested.** Pin in this order: (a) `governance/views/propose/shared/utils/governance.ts` encoders (`encodeQuorum`, `encodeProposalThreshold` — pure, round-trippable); (b) `auctions/views/rebalance/utils/transforms.ts` `transformV4/V5Rebalance` RPC tuple decoders; (c) `src/lib/index-rebalance/numbers.ts` then `get-auctions.ts`; (d) extract `args` assembly from `confirm-manual-deploy-button.tsx` into a pure `build-deploy-params.ts`, then pin it.
-4. **Float round-trips in deploy money paths.** `deploy-assets-approvals.tsx:134` `parseUnits((amount * 2).toString(), decimals)` (throws on scientific notation for large balances — approvals break); `use-liquidity-check.ts:66` similar. Fix: stay in bigint (`data * 2n`). Quick win.
+4. **Float round-trips in deploy money paths.** `deploy-assets-approvals.tsx:134` `parseUnits((amount * 2).toString(), decimals)` (throws on scientific notation for large balances — approvals break). Fix: stay in bigint (`data * 2n`). Quick win.
 
 ## P1 — high-leverage correctness & performance
 
 5. **Routes are NOT lazy — the ~10MB bundle cause.** `src/app-routes.tsx` statically imports ~50 views (deploy ≈10.5k LOC, propose ≈17.2k LOC, factsheet, internal, explorer); only `AsyncMintWizard` is `lazy()`. Fix: wrap route elements in `React.lazy` (Suspense pattern already in-file at line ~118), heaviest first: deploy, propose/*, factsheet, internal, explorer, auctions/rebalance. Recharts (15 files) then falls into route chunks. Mechanical, big TTI payoff.
 6. **`useWatchReadContract` refetches every block.** `hooks/useWatchReadContract.ts` `useRefreshSignal` reads raw `blockAtom` (Base ≈2s blocks) — every mounted watched read refetches per block. Fix: point it at the existing `debouncedBlockAtom` (one-line) or a min-interval gate. Quick win, high leverage.
-7. **Auction/rebalance query keys omit `chainId`** (`auctions/updater.tsx:43`, `use-rebalance-auctions.ts:67`, legacy updater) → cross-chain cache collisions; also a `console.log('response', …)` ships at `updater.tsx:55`. Fix: add `chainId` to keys now; proper fix is SDK `useIndexDtfRebalances`/`useIndexDtfRebalanceAuctions` (exist in installed 0.2.0). Quick win for keys+log.
+7. **Legacy auctions updater query key omits `chainId`** (`auctions/legacy/updater.tsx`) → cross-chain cache collision on the v2 UI. The v5+ list and history moved to SDK hooks (chain-aware keys, no console.log) in the v6 rebalance vertical; the legacy updater is the remaining site.
 8. **Zod at network boundaries.** ~20 `as`-cast `json()` sites, zero runtime validation outside forms. Start with the 4 price/performance endpoints: `use-dtf-price.ts`, `use-dtf-price-history.ts`, `useIndexPrice.ts`, `use-btc-price-history.ts`; add `if (!res.ok) throw` to the no-check `fetch()` sites (`index-dtf-icons-updater`, `useSnapshotBasket`, `useSimulatedBasket`, `use-asset-prices-with-snapshot`, `use-query.ts useMultiFetch`).
 9. **Effect-mirror state machine in propose-dtf-settings.** `updater.tsx` (731 lines, 16 effects syncing 18 atoms, `setTimeout(…,100)` ordering hack) + `atoms.ts` (952). Fix: replace per-field mirror effects with one derived change-set (`useMemo`/derived atom → `proposalChangesAtom`); split `atoms.ts` into an `atoms/` folder with barrel (import paths stable).
 10. **Per-row recharts sparklines** in `top100-table.tsx` and `index-dtf-table-columns.tsx` (≈20 chart instances per page turn). Fix: memoized inline `<svg><polyline>`. Quick win.

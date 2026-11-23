@@ -21,6 +21,21 @@ This will:
 2. Add new pools (with auto-generated URLs where possible)
 3. Report pools that need manual URL fixes
 
+## Data source and the reserve-api allowlist
+
+The free DefiLlama yield API shut down on 2026-11-13. The script reads pools from
+reserve-api `GET /v1/yields/pools` (set `RESERVE_API_URL` to use staging or a
+local worker). Generated URLs for new pools need the LP token address from the
+paid `/yields/v1/pools` endpoint (`pool_old`): export `DEFILLAMA_API_KEY` to get them
+(the key is in reserve-api's `.env`).
+
+reserve-api serves only Reserve-related pools: Yield/Index DTF collaterals,
+pools with a Reserve token as underlying, and the pool ids in its
+`src/config/defillamaYieldPools.ts` `EARN_POOL_IDS`. A pool whose DefiLlama
+`underlyingTokens` does not name a Reserve token never reaches the app unless
+its id is in that list. **Every llamaId you add to `earn-pools.json` must
+also go into `EARN_POOL_IDS` in reserve-api**, or the pool does not show in Earn.
+
 ## Script Options
 
 ```bash

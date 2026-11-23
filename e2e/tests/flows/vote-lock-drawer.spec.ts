@@ -18,7 +18,8 @@ import {
   parseUnits,
   type Hex,
 } from 'viem'
-import { test, expect } from '../../harness'
+import { test, expect, type DtfHarness } from '../../harness'
+import type { MockOverrides } from '../../helpers/overrides'
 import { REGISTRY, TEST_ADDRESS } from '../../helpers/registry'
 import { loadSnapshot } from '../../helpers/snapshots'
 
@@ -49,6 +50,7 @@ const VAULT_ABI = parseAbi([
   'function maxWithdraw(address) view returns (uint256)',
   'function unstakingDelay() view returns (uint256)',
   'function redeem(uint256,address,address) returns (uint256)',
+  'function delegate(address)',
 ])
 const ERC20_BALANCE_ABI = parseAbi([
   'function balanceOf(address) view returns (uint256)',
@@ -75,10 +77,10 @@ function encodeUint(value: bigint): Hex {
 // "Switch network" instead of a submit button.
 test.use({ walletChain: 56 })
 
-test('vote-lock drawer: unlock submits redeem() with share-denominated args @smoke', async ({
-  harness,
-  overrides,
-}) => {
+async function openUnlockReadyToSubmit(
+  harness: DtfHarness,
+  overrides: MockOverrides
+) {
   const page = harness.page
 
   overrides.ethCall(
@@ -154,6 +156,15 @@ test('vote-lock drawer: unlock submits redeem() with share-denominated args @smo
     await expect(submit).toBeEnabled()
   }).toPass({ timeout: 20_000 })
 
+  return submit
+}
+
+test('vote-lock drawer: unlock submits redeem() with share-denominated args @smoke', async ({
+  harness,
+  overrides,
+}) => {
+  const submit = await openUnlockReadyToSubmit(harness, overrides)
+
   harness.tx.confirm()
   await submit.click()
   await harness.chain.advance(10_000)
@@ -227,4 +238,51 @@ test('vote-lock drawer: lock tab shows previewDeposit shares-out quote @smoke', 
       LOCK_SHARES_OUT
     )
   }).toPass({ timeout: 20_000 })
+})
+
+test('vote-lock drawer: delegation targets the same vault as lock and unlock @smoke @mobile', async ({
+  harness,
+  overrides,
+}) => {
+  await openUnlockReadyToSubmit(harness, overrides)
+  const page = harness.page
+  const delegatee = getAddress('0xb209eed4d80fb47e5c16577e44dad1073c5c5015')
+
+  await page.getByTestId('vote-lock-tab-delegate').click()
+  await page.getByTestId('vote-lock-normal-delegate').fill(delegatee)
+  const submit = page.getByTestId('vote-delegate-submit')
+  await expect(submit).toBeEnabled()
+  harness.tx.confirm()
+  await submit.click()
+  await harness.chain.advance(10_000)
+
+  await expect.poll(() => harness.tx.log.length).toBe(1)
+  const sent = harness.tx.last()!
+  expect(sent.to.toLowerCase()).toBe(VAULT.toLowerCase())
+  expect(sent.chainId).toBe(dtf.chainId)
+  expect(decodeFunctionData({ abi: VAULT_ABI, data: sent.data as Hex })).toEqual({
+    functionName: 'delegate',
+    args: [delegatee],
+  })
+})
+
+test('vote-lock drawer: a generic wallet failure is not shown as a contract revert @smoke', async ({
+  harness,
+  overrides,
+}) => {
+  const submit = await openUnlockReadyToSubmit(harness, overrides)
+
+  // Some wallets answer an underfunded send with this instead of "insufficient funds".
+  overrides.transaction({ kind: 'reject', code: -32603, message: 'Unexpected error' })
+  await submit.click()
+
+  const error = harness.page.getByTestId('transaction-error')
+  await expect(async () => {
+    await harness.chain.advance(4_000)
+    await expect(error).toBeVisible()
+  }).toPass({ timeout: 20_000 })
+  await expect(error).toHaveAttribute('data-error-kind', 'wallet-error')
+  await expect(error).not.toContainText('ContractFunctionExecutionError')
+  await expect(error).not.toContainText('Unexpected error')
+  expect(harness.tx.log).toHaveLength(0)
 })

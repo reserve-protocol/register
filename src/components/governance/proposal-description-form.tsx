@@ -9,17 +9,25 @@ const MDEditor = lazy(() => import('@uiw/react-md-editor'))
 
 interface IProposalDescriptionForm {
   onChange: (description: string) => void // Proposal description
-  onBack: () => void
+  onBack?: () => void
+  initialTitle?: string
+  initialDescription?: string
+  editorPreview?: 'live' | 'edit'
 }
 
 const ProposalDescriptionForm = ({
   onChange,
   onBack,
+  initialTitle = '',
+  initialDescription = '',
+  editorPreview = 'live',
 }: IProposalDescriptionForm) => {
   const { t } = useLingui()
-  const [title, setTitle] = useState('')
+  const [title, setTitle] = useState(initialTitle)
   const [rfc, setRFC] = useState('')
-  const [description, setDescription] = useState<string | undefined>('')
+  const [description, setDescription] = useState<string | undefined>(
+    initialDescription
+  )
 
   useEffect(() => {
     if (!title) return onChange('')
@@ -29,14 +37,16 @@ const ProposalDescriptionForm = ({
 
   return (
     <div className="flex flex-col gap-4 p-2 pt-4 rounded-3xl bg-background">
-      <Button
-        variant="outline"
-        size="icon-rounded"
-        className="-mb-1 ml-1"
-        onClick={onBack}
-      >
-        <ArrowLeftIcon size={24} strokeWidth={1.5} />
-      </Button>
+      {onBack && (
+        <Button
+          variant="outline"
+          size="icon-rounded"
+          className="-mb-1 ml-1"
+          onClick={onBack}
+        >
+          <ArrowLeftIcon size={24} strokeWidth={1.5} />
+        </Button>
+      )}
       <div>
         <label className="font-semibold ml-3 mb-2 block" htmlFor="title">
           <Trans>Proposal title</Trans>
@@ -67,6 +77,7 @@ const ProposalDescriptionForm = ({
           <MDEditor
             id="description"
             value={description}
+            preview={editorPreview}
             onChange={setDescription}
           />
         </Suspense>

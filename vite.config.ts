@@ -64,15 +64,12 @@ export default defineConfig({
         manualChunks: (id) => {
           if (!id.includes('node_modules')) return undefined
 
-          // Wallet stack: ~4MB self-contained chunk
+          // Wallet stack: self-contained chunk
           // These packages form a cohesive unit and don't import from app code
           if (
             id.includes('/wagmi/') ||
             id.includes('/@wagmi/') ||
-            id.includes('/viem/') ||
-            id.includes('/@walletconnect/') ||
-            id.includes('/@coinbase/wallet-sdk') ||
-            id.includes('/@reown/')
+            id.includes('/viem/')
           ) {
             return 'wallet'
           }
@@ -113,6 +110,18 @@ export default defineConfig({
 
   server: {
     port: 3000,
+    // A local zapper-api has no CORS; pair ZAPPER_LOCAL_URL with VITE_ZAPPER_DEPLOY_API=/zapper-local/.
+    ...(process.env.ZAPPER_LOCAL_URL
+      ? {
+          proxy: {
+            '/zapper-local': {
+              target: process.env.ZAPPER_LOCAL_URL,
+              changeOrigin: true,
+              rewrite: (path: string) => path.replace(/^\/zapper-local/, ''),
+            },
+          },
+        }
+      : {}),
   },
 
   test: {

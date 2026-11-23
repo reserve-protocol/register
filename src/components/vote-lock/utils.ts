@@ -19,3 +19,11 @@ export const getWriteContractParams = (
 
 export const isSameAddress = (left?: string | null, right?: string | null) =>
   !!left && !!right && left.toLowerCase() === right.toLowerCase()
+
+export const isVoteLockStateFor = (
+  state: { stToken: string; account: string } | undefined,
+  stToken: string,
+  account: string | null | undefined
+) =>
+  isSameAddress(state?.stToken, stToken) &&
+  isSameAddress(state?.account, account)

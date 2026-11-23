@@ -1,6 +1,5 @@
 import { INDEX_GRAPH_CLIENTS } from '@/state/chain/atoms/chainAtoms'
 import { RESERVE_API } from '@/utils/constants'
-import { PERMISSIONLESS_VOTE_LOCK } from '@/views/index-dtf/deploy/permissionless-defaults'
 import { Address, formatEther } from 'viem'
 import {
   ACTIVE_CHAINS,
@@ -8,6 +7,7 @@ import {
   BLOCKED_DTFS,
   DTF_BY_ID_QUERY,
   TOP100_QUERY,
+  TOP100_VOTE_LOCK,
 } from './constants'
 import { Performance, Top100DTF } from './types'
 
@@ -93,7 +93,7 @@ export const fetchSubgraphDTFs = async (): Promise<Top100DTF[]> => {
       const client = INDEX_GRAPH_CLIENTS[chainId]
       if (!client) continue
 
-      const voteLockAddr = PERMISSIONLESS_VOTE_LOCK[chainId]
+      const voteLockAddr = TOP100_VOTE_LOCK[chainId]
       if (!voteLockAddr) continue
 
       const response = await client.request<{ dtfs: SubgraphDTF[] }>(

@@ -12,7 +12,7 @@ import {
 import { isAddress } from 'utils'
 import { Address } from 'viem'
 import { isTimeunitGovernance } from '@/views/yield-dtf/governance/utils'
-import { useReadContracts } from 'wagmi'
+import { useReadContracts } from '@/hooks/use-read-contracts'
 
 const query = gql`
   query getRTokenOwner($id: String!) {

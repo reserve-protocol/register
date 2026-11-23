@@ -33,6 +33,7 @@ const ProposalStepTrigger = ({
   return (
     <AccordionTrigger
       withChevron={false}
+      data-testid={`basket-step-${id}`}
       className={cn(
         'flex items-center justify-between w-full p-4 sm:p-6',
         isActive ? 'pb-3' : ''

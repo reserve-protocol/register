@@ -1,10 +1,10 @@
 import dtfAdminAbi from '@/abis/dtf-admin-abi'
 import dtfIndexAbi from '@/abis/dtf-index-abi-v1'
 import DTFIndexGovernance from '@/abis/dtf-index-governance'
-import { Button } from '@/components/ui/button'
+import UpgradeProposalButton from './upgrade-proposal-button'
 import { chainIdAtom } from '@/state/atoms'
 import { indexDTFAtom, indexDTFVersionAtom } from '@/state/dtf/atoms'
-import { getCurrentTime } from '@/utils'
+import { getCurrentTime, getProposalTitle } from '@/utils'
 import { ChainId } from '@/utils/chains'
 import { PROPOSAL_STATES } from '@/utils/constants'
 import type { IndexDtfProposalSummary } from '@reserve-protocol/react-sdk'
@@ -84,7 +84,7 @@ const ProposeBanner = ({ refetch }: SpellUpgradeProps) => {
     dtf?.tradingGovernance?.id
   const proposalAvailable = !!spell
 
-  const handlePropose = () => {
+  const handlePropose = (proposalDescription: string) => {
     if (!dtf || !spell || !dtf.ownerGovernance) return
 
     writeContract({
@@ -117,7 +117,7 @@ const ProposeBanner = ({ refetch }: SpellUpgradeProps) => {
             args: [fillerRegistryMapping[chainId], true],
           }),
         ],
-        UPGRADE_FOLIO_MESSAGE,
+        proposalDescription,
       ],
     })
   }
@@ -177,9 +177,11 @@ const ProposeBanner = ({ refetch }: SpellUpgradeProps) => {
           </p>
         </div>
       </div>
-      <Button
+      <UpgradeProposalButton
+        initialDescription={t`Upgrade this DTF to release 4.0.0 and enable the trusted filler registry. Rebalancing will consider the entire basket instead of isolated two-token auctions.`}
+        initialTitle={UPGRADE_FOLIO_MESSAGE}
         disabled={!isReady || isPending || !!hash}
-        onClick={handlePropose}
+        onSubmit={handlePropose}
         className="w-full mt-2"
       >
         {(isPending || !!hash) && (
@@ -188,7 +190,7 @@ const ProposeBanner = ({ refetch }: SpellUpgradeProps) => {
         {isPending && t`Pending, sign in wallet...`}
         {!isPending && !!hash && t`Waiting for confirmation...`}
         {!isPending && !hash && t`Propose upgrade`}
-      </Button>
+      </UpgradeProposalButton>
     </div>
   )
 }
@@ -205,7 +207,7 @@ const validProposalExists = (
     PROPOSAL_STATES.EXECUTED,
   ]
   return proposals.some((p) => {
-    if (p.description !== description) {
+    if (getProposalTitle(p.description) !== description) {
       return false
     }
 

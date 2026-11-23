@@ -2,7 +2,7 @@ import RToken from 'abis/RToken'
 import { ListedToken } from 'hooks/useTokenList'
 import { useMemo } from 'react'
 import { formatEther, getAddress } from 'viem'
-import { useReadContracts } from 'wagmi'
+import { useReadContracts } from '@/hooks/use-read-contracts'
 
 const usePriceETH = ({
   id,

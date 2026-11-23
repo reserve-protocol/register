@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
 import { erc20Abi, parseAbi, type Address } from 'viem'
-import { useReadContracts } from 'wagmi'
+import { useReadContracts } from '@/hooks/use-read-contracts'
 import { readMigrationRecord, type MigrationRecord } from './migration-record'
 import { isRetired } from './migration-state'
 import { useMigrationRecordsVersion } from './use-migration-record'

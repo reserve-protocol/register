@@ -14,9 +14,9 @@ vi.mock('@/state/atoms', () => ({
 }))
 
 vi.mock('@/utils/addresses', () => ({
-  INDEX_DEPLOYER_ADDRESS: {
-    1: '0xBE3B47587cEeff7D48008A0114f51cD571beC63A',
-    8453: '0xA203AA351723cf943f91684e9F5eFcA7175Ae7EA',
+  INDEX_V6_DEPLOYER_ADDRESS: {
+    1: '0x2B1Cd9aEF0CD3B9fF5DCa1C66348eCfC46F37392',
+    8453: '0x4c891fCa6319d492866672E3D2AfdAAA5bDcfF67',
   },
 }))
 
@@ -695,21 +695,18 @@ describe('basketAllowanceAtom', () => {
     const { result } = renderHook(() => useTest(), { wrapper })
 
     act(() => {
-      result.current.setBasket([
-        createToken(ADDR_A),
-        createToken(ADDR_B),
-      ])
+      result.current.setBasket([createToken(ADDR_A), createToken(ADDR_B)])
     })
 
     expect(result.current.value).toHaveLength(2)
     // chainIdAtom is mocked to 1, deployer for chain 1
     expect(result.current.value[0]).toEqual([
       ADDR_A,
-      '0xBE3B47587cEeff7D48008A0114f51cD571beC63A',
+      '0x2B1Cd9aEF0CD3B9fF5DCa1C66348eCfC46F37392',
     ])
     expect(result.current.value[1]).toEqual([
       ADDR_B,
-      '0xBE3B47587cEeff7D48008A0114f51cD571beC63A',
+      '0x2B1Cd9aEF0CD3B9fF5DCa1C66348eCfC46F37392',
     ])
   })
 

@@ -9,6 +9,7 @@ import { Link } from 'react-router-dom'
 import { isProposalConfirmedAtom, isProposalValidAtom, isFormValidAtom } from '../atoms'
 import SubmitProposalButton from './submit-proposal-button'
 import DaoSettingsProposalChanges from './dao-settings-proposal-changes'
+import { useProposalStartStep } from '@/views/index-dtf/governance/views/propose/shared'
 
 const ConfirmProposalButton = () => {
   const isValid = useAtomValue(isProposalValidAtom)
@@ -56,6 +57,8 @@ const ProposalInstructions = () => {
 
   const canProceed = isValid && isFormValid
 
+  const startStep = useProposalStartStep()
+
   const timelineItems = [
     {
       title: t`Configure proposal`,
@@ -74,7 +77,7 @@ const ProposalInstructions = () => {
       isActive: confirmed,
     },
     {
-      title: t`Voting delay begins`,
+      title: startStep,
     },
   ]
 

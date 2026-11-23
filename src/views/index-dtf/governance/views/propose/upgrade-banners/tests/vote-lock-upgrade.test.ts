@@ -96,6 +96,15 @@ describe('buildVoteLockUpgradeProposal', () => {
 })
 
 describe('proposal bookkeeping', () => {
+  it('recognizes Markdown titles with RFCs and descriptions', () => {
+    const description =
+      '# Upgrade vote-lock governance to 1.1.0 #3 \n [RFC](https://forum.reserve.org/t/rfc) \n Upgrade the vault and governance.'
+    expect(hasLiveVoteLockUpgrade([proposal(description, 'ACTIVE')])).toBe(true)
+    expect(
+      nextVoteLockUpgradeDescription([proposal(description, 'DEFEATED')])
+    ).toBe('Upgrade vote-lock governance to 1.1.0 #4')
+  })
+
   it('treats pending, active, succeeded, queued and executed upgrades as live', () => {
     for (const state of ['PENDING', 'ACTIVE', 'SUCCEEDED', 'QUEUED', 'EXECUTED']) {
       expect(hasLiveVoteLockUpgrade([proposal(`${VOTE_LOCK_UPGRADE_MESSAGE} #1`, state)])).toBe(true)

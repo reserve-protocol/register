@@ -61,7 +61,6 @@ const STATIC_ROUTES = [
   '/',
   '/discover',
   '/explorer',
-  '/explorer/tokens',
   '/explorer/governance',
   '/explorer/revenue',
   '/earn',

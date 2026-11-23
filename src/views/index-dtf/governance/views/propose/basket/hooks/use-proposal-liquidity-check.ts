@@ -6,7 +6,6 @@ import { chainIdAtom } from '@/state/atoms'
 import { ethPriceAtom } from '@/state/chain/atoms/chainAtoms'
 import { indexDTFPriceAtom } from '@/state/dtf/atoms'
 import { TokenLiquidity } from '@/utils/liquidity'
-import { isNativeToken, fetchZapperTokens } from '@/utils/zapper'
 import {
   fetchRebalanceLiquidity,
   toTokenLiquidity,
@@ -36,14 +35,12 @@ type LiquidityData = {
   liquidityMap: Record<string, TokenLiquidity>
   ondoMap: Record<string, OndoInfo>
   market: OndoMarket | null
-  unsupportedTokens: Set<string>
 }
 
 const EMPTY: LiquidityData = {
   liquidityMap: {},
   ondoMap: {},
   market: null,
-  unsupportedTokens: new Set<string>(),
 }
 
 const DEBOUNCE_DELAY = 2_500
@@ -176,19 +173,6 @@ const useProposalLiquidityCheck = () => {
     queryFn: async () => {
       if (!tokens.length || !chainId) return EMPTY
 
-      // Flag tokens the aggregator can't route (unchanged client-side check).
-      const supportedTokens = await fetchZapperTokens(chainId)
-      const unsupportedTokens = new Set<string>()
-      for (const token of tokens) {
-        if (
-          !isNativeToken(token.tokenAddress, chainId) &&
-          supportedTokens.size > 0 &&
-          !supportedTokens.has(token.tokenAddress)
-        ) {
-          unsupportedTokens.add(token.tokenAddress)
-        }
-      }
-
       const liquidityMap: Record<string, TokenLiquidity> = {}
       const ondoMap: Record<string, OndoInfo> = {}
       let market: OndoMarket | null = null
@@ -204,17 +188,16 @@ const useProposalLiquidityCheck = () => {
           if (asset.ondo) ondoMap[asset.address] = asset.ondo
         }
       } catch (e) {
-        // keep empty maps; unsupported-token info is still useful
         console.error('Failed to fetch proposal liquidity', e)
       }
 
-      return { liquidityMap, ondoMap, market, unsupportedTokens }
+      return { liquidityMap, ondoMap, market }
     },
     enabled: !!tokens.length && !!chainId && !!ethPrice,
     staleTime: 30_000,
   })
 
-  const { liquidityMap, ondoMap, market, unsupportedTokens } = data
+  const { liquidityMap, ondoMap, market } = data
 
   const retryToken = async (tokenAddress: string) => {
     const token = tokens.find((t) => t.tokenAddress === tokenAddress)
@@ -230,7 +213,6 @@ const useProposalLiquidityCheck = () => {
       const asset = res.assets[0]
       if (!asset) return
       queryClient.setQueryData<LiquidityData>(queryKey, (old) => ({
-        unsupportedTokens: old?.unsupportedTokens ?? new Set<string>(),
         market: res.market ?? old?.market ?? null,
         liquidityMap: {
           ...old?.liquidityMap,
@@ -254,7 +236,6 @@ const useProposalLiquidityCheck = () => {
     liquidityMap,
     ondoMap,
     market,
-    unsupportedTokens,
     isLoading,
     isFetching,
     isDebouncing,

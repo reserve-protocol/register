@@ -11,11 +11,12 @@ import {
 import { useIndexDtfVoteLockDependents } from '@reserve-protocol/react-sdk'
 import { useAtomValue } from 'jotai'
 import { type Address, isAddressEqual, parseAbi, zeroAddress } from 'viem'
-import { useReadContracts } from 'wagmi'
+import { useReadContracts } from '@/hooks/use-read-contracts'
 import { governanceProposalsAtom } from '../../../atoms'
 import { useIsProposeAllowed } from '../../../hooks/use-is-propose-allowed'
 import {
   hasLiveRetire,
+  isUnusedDeployVault,
   nextRetireDescription,
   ownableVaultAbi,
 } from './migration-proposals'
@@ -29,7 +30,8 @@ export const useRetirableVoteLock = () => {
   const proposals = useAtomValue(governanceProposalsAtom)
   const candidates = dtf
     ? getOldVoteLocks(dtf, chainId).filter(
-        (candidate): candidate is Required<OldVoteLock> => !!candidate.governance
+        (candidate): candidate is Required<OldVoteLock> =>
+          !!candidate.governance && !isUnusedDeployVault(chainId, candidate.address)
       )
     : []
   const { data: ownership } = useReadContracts({

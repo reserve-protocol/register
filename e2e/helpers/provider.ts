@@ -45,7 +45,7 @@ function nextTxHash(): string {
 // Two parts:
 // 1. exposeFunction — bridges browser RPC calls into Node (this process).
 // 2. addInitScript — injects the provider and announces it via EIP-6963, which
-//    AppKit's wallet discovery listens for, so "Test Wallet" appears in the
+//    the kit's wallet discovery listens for, so "Test Wallet" appears in the
 //    connect modal and window.ethereum is set as a fallback.
 //
 // READ PATH: the HTTP host interception (mockRpcRoutes) is the PRIMARY read
@@ -108,12 +108,14 @@ export async function installTestWallet(page: Page, config: TestWalletConfig) {
             kind: 'success' as const,
             pendingPolls: 1,
           }
+          // Returned, not thrown: exposeFunction drops every Error field but the message.
           if (outcome.kind === 'reject') {
-            const error = new Error(outcome.message ?? 'User rejected the request') as Error & {
-              code?: number
+            return {
+              e2eRpcError: {
+                code: outcome.code ?? 4001,
+                message: outcome.message ?? 'User rejected the request',
+              },
             }
-            error.code = outcome.code ?? 4001
-            throw error
           }
 
           const hash = nextTxHash()
@@ -161,10 +163,15 @@ export async function installTestWallet(page: Page, config: TestWalletConfig) {
 
     const provider = {
       isTestWallet: true,
-      request: (req: { method: string; params?: unknown[] }) =>
-        (window as unknown as {
+      request: async (req: { method: string; params?: unknown[] }) => {
+        const result = await (window as unknown as {
           e2eWalletRequest: (r: { method: string; params?: unknown[] }) => Promise<unknown>
-        }).e2eWalletRequest({ method: req.method, params: req.params }),
+        }).e2eWalletRequest({ method: req.method, params: req.params })
+        const rpcError = (result as { e2eRpcError?: { code: number; message: string } } | null)
+          ?.e2eRpcError
+        if (rpcError) throw Object.assign(new Error(rpcError.message), { code: rpcError.code })
+        return result
+      },
       on(event: string, fn: (...args: unknown[]) => void) {
         ;(listeners[event] ??= []).push(fn)
         return provider

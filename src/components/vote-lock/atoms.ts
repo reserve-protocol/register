@@ -27,6 +27,8 @@ export type StTokenExtended = {
 
 export type VoteLockDrawerState = Pick<
   VoteLockState,
+  | 'stToken'
+  | 'account'
   | 'underlyingBalance'
   | 'underlyingAllowance'
   | 'delegate'

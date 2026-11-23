@@ -1,4 +1,4 @@
-import { zeroAddress, type Address } from 'viem'
+import { BaseError, UserRejectedRequestError, zeroAddress, type Address } from 'viem'
 
 export type MigrationStep = 'redeem' | 'approve' | 'deposit' | 'done'
 
@@ -118,3 +118,7 @@ export const getSafeStepOutcome = ({
     ? { step }
     : undefined
 }
+
+// viem maps a wallet's EIP-1193 4001 to UserRejectedRequestError somewhere in the cause chain.
+export const isUserRejection = (error: unknown) =>
+  error instanceof BaseError && !!error.walk((cause) => cause instanceof UserRejectedRequestError)

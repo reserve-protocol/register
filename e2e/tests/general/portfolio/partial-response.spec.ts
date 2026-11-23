@@ -1,5 +1,7 @@
 import { connectWallet, expect, test } from '../../../fixtures/wallet'
+import { encodeAbiParameters, encodeFunctionData, parseAbi } from 'viem'
 import { TEST_ADDRESS } from '../../../helpers/registry'
+import type { MockOverrides } from '../../../helpers/overrides'
 
 // A partial 200 portfolio response with one malformed proposal row must not
 // blank the route: the page renders, the healthy proposal survives, the
@@ -116,10 +118,40 @@ test('portfolio survives a malformed proposal row and keeps the healthy one', as
 // opposed proposal ACTIVE forever, pinning it to the active list.
 // RED: revert the malformed-optimistic guard in portfolio atoms — the broken
 // row stays ACTIVE and the count reads 2.
+// The vote-lock migration check reads the old vault; an owned vault with a delay is not retired, so nothing migrates.
+const LEGACY_VAULT_ABI = parseAbi([
+  'function owner() view returns (address)',
+  'function unstakingDelay() view returns (uint256)',
+  'function asset() view returns (address)',
+  'function symbol() view returns (string)',
+  'function balanceOf(address) view returns (uint256)',
+])
+function seedActiveVoteLock(overrides: MockOverrides) {
+  const vault = VOTE_LOCK_POSITION.stTokenAddress as `0x${string}`
+  const call = (functionName: string, args: readonly unknown[] = []) =>
+    encodeFunctionData({ abi: LEGACY_VAULT_ABI, functionName, args } as never)
+  const answers: Array<[string, readonly unknown[], `0x${string}`]> = [
+    ['owner', [], encodeAbiParameters([{ type: 'address' }], [TEST_ADDRESS])],
+    ['unstakingDelay', [], encodeAbiParameters([{ type: 'uint256' }], [604_800n])],
+    ['asset', [], encodeAbiParameters([{ type: 'address' }], [VOTE_LOCK_POSITION.underlying.address as `0x${string}`])],
+    ['symbol', [], encodeAbiParameters([{ type: 'string' }], [VOTE_LOCK_POSITION.symbol])],
+    ['balanceOf', [TEST_ADDRESS], encodeAbiParameters([{ type: 'uint256' }], [10n ** 19n])],
+  ]
+  for (const [functionName, args, answer] of answers) {
+    overrides.ethCall(vault, call(functionName, args), answer)
+  }
+  overrides.ethCall(
+    VOTE_LOCK_POSITION.underlying.address,
+    call('symbol'),
+    encodeAbiParameters([{ type: 'string' }], [VOTE_LOCK_POSITION.underlying.symbol])
+  )
+}
+
 test('portfolio drops an optimistic proposal with malformed veto fields, keeps the healthy one', async ({
   page,
   overrides,
 }) => {
+  seedActiveVoteLock(overrides)
   const expired = { voteEnd: '200', againstWeightedVotes: '10' }
   overrides.api(
     { pathname: `/v1/portfolio/${TEST_ADDRESS}` },

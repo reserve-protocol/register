@@ -1,6 +1,6 @@
 ---
 title: E2E Suite
-updated: 2026-10-26
+updated: 2026-11-18
 type: domain
 sources:
   - e2e/**
@@ -56,6 +56,22 @@ lifecycle depth, and gaps live in `e2e/TEST_MAP.md`. `e2e/CLAUDE.md`
 - The webServer boots its own :3005 every run (`reuseExistingServer: false`) —
   a foreign server can't bypass the pinned env (`VITE_E2E` keeps production
   form validation ON, so zod bounds ARE assertable in specs).
+
+## Proposer cancellation
+
+`index-dtf/governance/proposer-cancel.spec.ts` covers the new governor cancel confirmation on desktop and mobile: exact calldata, pending disable, proposer-only access, standard/optimistic cancellation windows, dismissal, rejection and revert. Existing guardian timelock cancellation stays in `flows/governance-permissions.spec.ts`. The settled-state suite does not prove account switching or SPA navigation during mining. Optimistic proposals omit the standard For-votes statistic; use the proposal title’s `data-state` as the shared loaded-state oracle.
+
+## Portfolio proposals
+
+`general/portfolio/proposal-coverage.spec.ts` and `proposal-sort.spec.ts` drive the Active Proposals section from a per-test `/v1/portfolio` override: shared-vault DTF attribution and row navigation, then status-first ordering with the Status/Newest toggle. Their vote-lock rows are delegated-only (`amount: '0'`) because an owned balance on Base fires vault-migration reads no central mock answers (tracked in `docs/wiki/progress.md` § E2E coverage debt). Proposal timestamps are anchored to the test's start, since the page derives state from the browser clock.
+
+## Governance address hovercard
+
+`index-dtf/governance/address-hovercard.spec.ts` seeds the reserve-api profile with a per-test `overrides.api` and asserts the track record, the Safe tag, the Proposals link (`/explorer/governance?proposer=…&period=all`) and the Portfolio link; one test proves a hover preloads the rest of the delegates table in a single batch call. The Yield twin (`yield-dtf/governance/address-hovercard.spec.ts`) runs on a frozen clock, so results render only while the spec pumps `harness.chain.advance` inside `toPass`. The yield replay ignores the `*:selector` wildcard table, so its Safe probe needs an exact `overrides.ethCall`. That spec opts out with `allowUnmocked` because the page's own governor `getVotes` carries a per-call block; it is the one committed exception to the trust contract and should be paid down by modelling that read.
+
+## Explorer
+
+`general/explorer/render.spec.ts` covers the transactions and governance tabs, the redirect of the removed `/explorer/tokens` route, the governance period default (`explorer-period-filter` exposes the choice as `data-value`, and each option has a `-option-<value>` testid, so no spec reads copy), and the row layout: `explorer-table` on desktop, `explorer-list` on mobile, zero sideways scroll. Rows are `explorer-row` in both layouts. The hovercard in the explorer Proposals list has no spec yet (the offline governance list is empty). Collaterals and Revenue have no spec: their RPC reads are unmodelled (`docs/wiki/progress.md` § E2E coverage debt).
 
 ## Transactions and time
 
@@ -117,8 +133,43 @@ hand-copied `GetIndexDTF` query in `e2e/scripts/capture.ts` from the new SDK
 dist (it is not exported) and re-run `pnpm e2e:capture` — the `dtf-data` canary
 smoke fails on drift but only a fresh capture fixes it.
 
-Non-goals: visual/pixel regression. Forked-chain execution lives in the
-separate fork lane below, never in the offline suite.
+## Fork lane (real transactions)
+
+`playwright.fork.config.ts` runs `e2e/fork/tests` against the per-chain Anvil
+fork in `e2e/fork/docker` (skill: `.claude/skills/fork-e2e/SKILL.md`): Vite on
+:3006, `VITE_RPC_URL_<chainId>` and `VITE_INDEX_SUBGRAPH_URL_<chainId>` overrides,
+`VITE_DISABLE_COWBOT=true`, nothing intercepted. The subgraph override points at
+`e2e/fork/scripts/subgraph-proxy.mjs`, the production subgraph truncated at the
+fork block, so the UI cannot know auctions that happened after the fork. The
+wallet (`e2e/fork/helpers/fork-wallet.ts`) forwards sends to Anvil for an
+impersonated account; the spec verifies state with viem, never from the page.
+First case: `launch-cmc20.fork.spec.ts` (auction 29, nonce 12, 2026-09-17).
+
+- Governance migration: `FORK_SCENARIO` picks `lcap` (Base, vlRSR), `abx`
+  (Base, vlALTT) or `open` (Ethereum, vlSQUILL). `prepare-optimistic-governance.mjs`
+  writes `.state/<chainId>/optimistic-governance-<scenario>.json`; for LCAP it also
+  upgrades the vlRSR singleton to 1.1.0 by labelled impersonation of its timelock.
+  `optimistic-governance-upgrade.fork.spec.ts` locks into the new vault from the
+  pre-upgrade card, proposes and executes `upgradeFolio`, retires the old vault and
+  migrates a holder. `FORK_SAFE=1` gives the holder contract code and puts the fork
+  wallet in Safe mode (sends return a hash that is never mined).
+  `FORK_MIGRATION_DELEGATE=other|other-fresh` gives the holder a third-party delegate
+  on the old vault (with and without an existing vlRSR delegation) and checks the
+  modal's delegate line and both vlRSR delegations after the lock.
+- DTF governance 1.1.0 upgrade (AI DTFs, MAG7): `prepare-folio-governance-upgrade.mjs`
+  upgrades the chain's vlRSR singleton to 1.1.0 and writes
+  `.state/<chainId>/folio-governance-upgrade-<scenario>.json`;
+  `folio-governance-upgrade.fork.spec.ts` proposes from the banner, executes, and
+  checks that the 1.1.0 governor still accepts a proposal. Use `FORK_SCENARIO=power`
+  on a BSC fork: MAG7 does not load on Anvil.
+- The subgraph proxy is frozen at the fork block, so views that read the DTF from
+  the subgraph keep the pre-upgrade state after an on-chain upgrade.
+- The Alchemy archive RPC needs the app origin header
+  (`--fork-header "Origin: https://app.reserve.org"` on Anvil).
+- Restart Anvil (or revert a snapshot) before a re-run: the spec spends the
+  scenario state.
+
+Non-goals of the offline suite: forked-chain execution (fork lane), visual/pixel regression.
 Coverage state and open gaps live in `e2e/TEST_MAP.md`; harness-level debt in
 [[progress]] § Backlog. Governance, issuance, compliance, and
 transaction-contract edits require engineer review.
@@ -136,38 +187,6 @@ Hard-won spec traps:
 - Brand is ONE folio-manager request (the SDK full-DTF read); unbranded (`{}`)
   is a settled state — the cover slot collapses, not a skeleton forever.
 
-## Fork lane (real transactions)
-
-`playwright.fork.config.ts` runs `e2e/fork/tests/*.fork.spec.ts` against a local
-Anvil fork, outside CI. The app reads the fork through `VITE_RPC_URL_<chainId>`
-and `VITE_INDEX_SUBGRAPH_URL_<chainId>`; both overrides are unused outside this
-lane. `e2e/fork/scripts/subgraph-proxy.mjs` serves the production Index subgraph
-truncated at the fork block, so indexed history matches the fork state.
-`e2e/fork/helpers/fork-wallet.ts` forwards transactions from an Anvil-impersonated account.
-
-- Governance migration: `FORK_SCENARIO` picks `lcap` (Base, vlRSR), `abx`
-  (Base, vlALTT) or `open` (Ethereum, vlSQUILL). `prepare-optimistic-governance.mjs`
-  writes `.state/<chainId>/optimistic-governance-<scenario>.json`; for LCAP it also
-  upgrades the vlRSR singleton to 1.1.0 by labelled impersonation of its timelock.
-  `optimistic-governance-upgrade.fork.spec.ts` locks into the new vault from the
-  pre-upgrade card, proposes and executes `upgradeFolio`, retires the old vault and
-  migrates a holder. Run it with `FORK_CHAIN_ID`, `FORK_RPC_URL_<chainId>` and
-  `FORK_SUBGRAPH_URL_<chainId>` pointing at the fork and its subgraph proxy.
-  `FORK_SAFE=1` gives the holder contract code and puts the fork wallet in Safe mode
-  (sends return a hash that is never mined).
-- DTF governance 1.1.0 upgrade (AI DTFs, MAG7): `prepare-folio-governance-upgrade.mjs`
-  upgrades the chain's vlRSR singleton to 1.1.0 and writes
-  `.state/<chainId>/folio-governance-upgrade-<scenario>.json`;
-  `folio-governance-upgrade.fork.spec.ts` proposes from the banner, executes, and
-  checks that the 1.1.0 governor still accepts a proposal. Use `FORK_SCENARIO=power`
-  on a BSC Anvil fork: MAG7 does not load on Anvil.
-- The subgraph proxy is frozen at the fork block, so views that read the DTF from
-  the subgraph keep the pre-upgrade state after an on-chain upgrade.
-- The Alchemy archive RPC needs the app origin header
-  (`--fork-header "Origin: https://app.reserve.org"` on Anvil).
-- Restart Anvil (or revert a snapshot) before a re-run: the spec spends the
-  scenario state.
-
 ## Yield DTF (RToken) replay architecture
 
 Yield views read almost everything from RPC via vendored ABIs (FacadeRead,
@@ -184,6 +203,9 @@ captured at a pinned block per RToken (eUSD mainnet, hyUSD base;
 - **Yield geo-compliance** — RToken issuance probes Cloudflare `cdn-cgi/trace`
   (distinct from index compliance); the base fixture serves a deterministic
   trace carrying the `compliance` fixture's country.
+- **Etherscan v2 lookups** — the SDK's proposal decoder asks Etherscan for ABIs and
+  source; `helpers/api.ts` `etherscanResponse` answers `getabi`/`getsourcecode` as
+  an unverified contract and leaves every other action unmodeled (fail loud).
 
 Trust rules (a yield test can't go green while wrong):
 
@@ -200,16 +222,41 @@ Trust rules (a yield test can't go green while wrong):
   and within-chain key collisions.
 
 Covered: overview / issuance / staking render smokes, issuance active/paused
-states, partial staking history, stake/unstake writes, governance mandate edit/discard/validation/decoded preview, and eUSD revenue-router destinations (add/edit/remove delta, validation, failed read) on desktop and mobile. Yield capture also visits `governance/proposal`; its additional reads share the same pinned block. Mandate proposal tests assert the encoded Governor call at the RPC boundary, not a successful live submission. Remaining yield
+states, partial staking history, stake/unstake writes, governance mandate edit/discard/validation/decoded preview, the governance address hovercard, eUSD collateral app links (exact deep links per basket asset), and eUSD revenue-router destinations (add/edit/remove delta, validation, failed read) on desktop and mobile. Yield capture also visits `governance/proposal`; its additional reads share the same pinned block. Mandate proposal tests assert the encoded Governor call at the RPC boundary, not a successful live submission. Remaining yield
 phases and deferred writes are tracked in `e2e/TEST_MAP.md` § gaps.
 
 ## Wallet modal
 
-`flows/wallet-connect` covers AppKit connect/disconnect, the legal footer,
-default email/social and fund/swap/send/activity controls, Safe iframe-only visibility,
-and plain-address/short-ENS/long-ENS header bounds
-on desktop and mobile. Reown services are stubbed and Coinbase telemetry is
-aborted; this proves injected-wallet behavior, not live WalletConnect relay,
-email/social authentication, or fiat-provider flows. See [[wallet-connect]].
+`flows/wallet-connect` covers connect/disconnect through the solariskit modal,
+the legal footer, the listed wallets, the absent network picker, Safe
+iframe-only visibility, and plain-address/short-ENS/long-ENS header bounds
+on desktop and mobile. WalletConnect and Reown hosts are stubbed; this proves
+injected-wallet behavior, not the live WalletConnect relay, Base Account or
+Safe. See [[wallet-connect]].
 
 Related: [[project]], [[sdk]], [[yield-protocol]], [[subgraphs]].
+
+### Base governance lanes
+
+Plain Anvil on :8546 (Alchemy fork with `--fork-header "Origin: https://app.reserve.org"`, the key is
+origin-allowlisted) plus the subgraph proxy on :18310 against `prod` (1.11.4 has every field the v6 SDK queries). `optimistic-governance-upgrade.fork.spec.ts` (LCAP) drives the governance migration
+from the UI: upgrade banner → execute → retire banner → execute → overview migration modal with a real holder.
+`upgrade-v6.fork.spec.ts` drives the Folio 6.0.0 upgrade for MIDAS (optimistic); ABX (legacy, governance migration pending) checks that the 6.0.0 banner stays hidden until the DTF migrates. Both prepare
+scripts replay protocol prerequisites by labelled impersonation (version registrations, vault upgrade) and pick
+real voters; `e2e/fork/helpers/governance.ts` votes, queues and executes by time travel. Register navigates to a
+new proposal's (unindexed) detail page, so specs re-navigate instead of reloading. `fork-wallet.ts` pads gas
+estimates like a real wallet: Anvil fills the exact estimate and nested calls run out of gas (63/64 rule).
+`deploy-v6.fork.spec.ts` drives the Folio 6.0.0 deploy wizard on the same Anvil with a fresh funded wallet per
+run: a manual deploy governed by vlRSR (read back on chain) and, with `ZAPPER_LOCAL_URL` +
+`VITE_ZAPPER_DEPLOY_API=/zapper-local/`, an ungoverned zap deploy through a local zapper-api (the spec mines blocks
+because the zap route waits for 3 confirmations on Base). `CAPTURE=1` writes desktop and phone shots per section.
+
+The full sequence on one DTF (LCAP: legacy 5.0.0 → governance migration → 6.0.0) runs both specs on one Anvil.
+The subgraph never indexes the fork's new governor, so `governance-overlay.mjs` reads it from the fork and the
+proxy's `OVERLAY` splices it in (shape from real entities: MIDAS for the optimistic governor, MAG7 for the vlRSR
+vault; ids, parameters, guardians, version and fee tables from the fork); `V6_TARGETS` points the 6.0.0 prepare at
+the migrated governor. Commands: `.claude/skills/fork-e2e/SKILL.md`.
+
+### Stack lane
+
+`e2e/fork/scripts/stack-lane.sh` runs the whole stack on the protocol sandbox (chain 1): `sandbox.sh all` (protocol + fork subgraph + parity + SDK fork smoke), then `propose-native-v6-rebalance.mjs` (SDK `buildBasketProposal` from live prices through the optimistic governor, seven-day deadline, appended blocks only), `prepare-native-v6.mjs` (moves the clock past the last auction, impersonates the sandbox actor as launcher, writes `e2e/fork/.state/1/native-v6-scenario.json`) and `launch-native-v6.fork.spec.ts` (six-arg launch from the UI, receipt and calldata checked on the fork, auction id checked on the fork subgraph, cold reload shows that auction live with the launcher hidden). The fork is persistent: the propose script records its proposal in `e2e/fork/.state/1/native-v6-proposal.json`, the manifest carries it, and the spec waits for the fork subgraph to reach the manifest block before picking the active item by description. `playwright.fork.config.ts` picks the chain profile from `FORK_CHAIN_ID` and the port from `FORK_WEB_PORT`; `VITE_RESERVE_API_URL` overrides the API base. Skill: hub `.claude/skills/stack-e2e/SKILL.md`.

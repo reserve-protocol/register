@@ -5,8 +5,9 @@ import BlockiesAvatar from '@/components/utils/blockies-avatar'
 import EnsName from '@/components/utils/ens-name'
 import { cn } from '@/lib/utils'
 import { chainIdAtom } from '@/state/atoms'
-import { formatCurrency } from '@/utils'
+import { formatTokenAmount } from '@/utils'
 import { ExplorerDataType, getExplorerLink } from '@/utils/getExplorerLink'
+import AddressHovercard from '@/components/governance/address-hovercard'
 import { Trans } from '@lingui/react/macro'
 import type { Amount } from '@reserve-protocol/react-sdk'
 import { atom, useAtomValue } from 'jotai'
@@ -60,7 +61,9 @@ const VoteList = ({ votes }: { votes: Vote[] }) => {
         {votes.map((vote) => (
           <div className="flex items-center gap-2 mb-1" key={vote.voter}>
             <BlockiesAvatar address={vote.voter} />
-            <EnsName address={vote.voter} />
+            <AddressHovercard address={vote.voter} surface="votes">
+              <EnsName address={vote.voter} />
+            </AddressHovercard>
             <GoTo
               href={getExplorerLink(
                 vote.voter,
@@ -76,10 +79,7 @@ const VoteList = ({ votes }: { votes: Vote[] }) => {
                 vote.choice === 'ABSTAIN' && 'text-legend'
               )}
             >
-              {formatCurrency(Number(vote.weight.formatted), 0, {
-                notation: 'compact',
-                compactDisplay: 'short',
-              })}
+              {formatTokenAmount(Number(vote.weight.formatted))}
             </span>
           </div>
         ))}

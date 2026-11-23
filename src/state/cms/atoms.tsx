@@ -23,6 +23,7 @@ export interface CollateralMetadata {
   id: string
   name: string
   displaySymbol: string
+  appUrls?: Record<number, string>
   description?: string
   llamaId?: string
   color: string

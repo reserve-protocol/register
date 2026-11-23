@@ -10,7 +10,7 @@ import { formatCurrency, formatPercentage } from 'utils'
 import { rTokenAtom } from 'state/atoms'
 import { isTimeunitGovernance } from '@/views/yield-dtf/governance/utils'
 import { PROPOSAL_STATES } from 'utils/constants'
-import { useReadContracts } from 'wagmi'
+import { useReadContracts } from '@/hooks/use-read-contracts'
 import { Progress } from '@/components/ui/progress'
 import { cn } from '@/lib/utils'
 

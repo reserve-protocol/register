@@ -12,7 +12,7 @@ import {
 import { AvailableChain } from 'utils/chains'
 import { NETWORKS, ROUTES } from 'utils/constants'
 import { Address, getAddress } from 'viem'
-import { useReadContracts } from 'wagmi'
+import { useReadContracts } from '@/hooks/use-read-contracts'
 
 const getListedRToken = (tokenId: string, chainId: number) => {
   if (!tokenId || !rtokens[chainId]) {

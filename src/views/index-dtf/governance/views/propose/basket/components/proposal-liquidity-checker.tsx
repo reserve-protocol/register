@@ -7,16 +7,12 @@ import Help from '@/components/ui/help'
 import { chainIdAtom } from '@/state/atoms'
 import { cn } from '@/lib/utils'
 import { formatCurrency } from '@/utils'
-import {
-  ExplorerDataType,
-  getExplorerLink,
-} from '@/utils/getExplorerLink'
 import { LiquidityLevel } from '@/utils/liquidity'
 import { OndoInfo, OndoMarket } from '@/utils/rebalance-liquidity'
 import { NATIVE_SYMBOL, WRAPPED_NATIVE, SwapLeg } from '@/utils/zapper'
 import { Plural, Trans, useLingui } from '@lingui/react/macro'
 import { useAtomValue, useSetAtom } from 'jotai'
-import { AlertTriangle, ArrowUpRight, RefreshCw } from 'lucide-react'
+import { AlertTriangle, RefreshCw } from 'lucide-react'
 import useProposalLiquidityCheck, {
   TokenInfo,
 } from '../hooks/use-proposal-liquidity-check'
@@ -167,61 +163,9 @@ const TokenSection = ({
   )
 }
 
-const UnsupportedTokensWarning = ({
-  unsupportedTokens,
-  basket,
-  chainId,
-}: {
-  unsupportedTokens: Set<string>
-  basket: Record<string, { token: { symbol: string } }> | undefined
-  chainId: number
-}) => {
-  if (!unsupportedTokens.size) return null
-
-  const tokens = Array.from(unsupportedTokens).map((addr) => {
-    const entry = basket?.[addr] ?? basket?.[addr.toLowerCase()]
-    return { symbol: entry?.token.symbol ?? addr.slice(0, 10), address: addr }
-  })
-
-  return (
-    <Alert
-      variant="warning"
-      className="rounded-xl bg-warning/10 border-warning/20"
-    >
-      <AlertTriangle className="h-4 w-4" />
-      <AlertTitle>
-        <Trans>Tokens not available</Trans>
-      </AlertTitle>
-      <AlertDescription>
-        <ul className="mt-1 list-disc pl-4 space-y-0.5">
-          {tokens.map((t) => (
-            <li key={t.address}>
-              <span className="font-medium">{t.symbol}</span>{' '}
-              <a
-                href={getExplorerLink(
-                  t.address,
-                  chainId,
-                  ExplorerDataType.ADDRESS
-                )}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-0.5 font-mono text-xs hover:text-foreground"
-              >
-                {t.address.slice(0, 6)}...{t.address.slice(-4)}
-                <ArrowUpRight size={12} strokeWidth={1.5} />
-              </a>
-            </li>
-          ))}
-        </ul>
-      </AlertDescription>
-    </Alert>
-  )
-}
-
 const ProposalLiquidityChecker = () => {
   const { t } = useLingui()
-  const chainId = useAtomValue(chainIdAtom)
-  const { tokens, liquidityMap, ondoMap, market, unsupportedTokens, isLoading, isFetching, isDebouncing, retryingTokens, refetch, retryToken } =
+  const { tokens, liquidityMap, ondoMap, market, isLoading, isFetching, isDebouncing, retryingTokens, refetch, retryToken } =
     useProposalLiquidityCheck()
   const basket = useAtomValue(proposedIndexBasketAtom)
   const setLiquidityLoading = useSetAtom(proposalLiquidityLoadingAtom)
@@ -324,11 +268,6 @@ const ProposalLiquidityChecker = () => {
           </AlertDescription>
         </Alert>
       )}
-      <UnsupportedTokensWarning
-        unsupportedTokens={unsupportedTokens}
-        basket={basket}
-        chainId={chainId}
-      />
       {ondoProblems.length > 0 && !isLoading && (
         <Alert variant="warning" className="rounded-xl bg-warning/10 border-warning/20">
           <AlertTriangle className="h-4 w-4" />

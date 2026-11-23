@@ -1,14 +1,15 @@
 import SharedLiquidityBadge from '@/components/liquidity-badge'
 import { LiquidityLevel } from '@/utils/liquidity'
+import { NATIVE_SYMBOL } from '@/utils/zapper'
 import { useLingui } from '@lingui/react/macro'
 import { useAtomValue } from 'jotai'
 import { liquiditySimulationAmountAtom } from '../atoms'
-import { getLiquidityCheckTokenSymbol } from '../hooks/use-liquidity-check'
 
 interface LiquidityBadgeProps {
   level: LiquidityLevel
   priceImpact?: number
   tokenSymbol?: string
+  counterpart?: string
   chainId: number
   isLoading?: boolean
   error?: string
@@ -22,17 +23,23 @@ const LiquidityBadge = ({
   level,
   priceImpact,
   tokenSymbol,
+  counterpart,
   chainId,
   isLoading,
   error,
 }: LiquidityBadgeProps) => {
   const { t } = useLingui()
   const simulationAmount = useAtomValue(liquiditySimulationAmountAtom)
-  const inputTokenSymbol = getLiquidityCheckTokenSymbol(chainId)
+  const inputTokenSymbol = counterpart ?? NATIVE_SYMBOL[chainId]
   const amountLabel = formatAmount(simulationAmount)
 
+  // Other levels carry a placeholder priceImpact of 0
+  const measuredImpact =
+    level === 'high' || level === 'medium' || level === 'low'
+      ? priceImpact
+      : undefined
   const priceImpactLabel =
-    priceImpact !== undefined ? priceImpact.toFixed(2) : undefined
+    measuredImpact !== undefined ? measuredImpact.toFixed(2) : undefined
   const tradeDescription =
     priceImpactLabel !== undefined && tokenSymbol
       ? t`${priceImpactLabel}% price impact swapping ${amountLabel} ${inputTokenSymbol} for ${tokenSymbol}`
@@ -41,7 +48,7 @@ const LiquidityBadge = ({
   return (
     <SharedLiquidityBadge
       level={level}
-      priceImpact={priceImpact}
+      priceImpact={measuredImpact}
       isLoading={isLoading}
       error={error}
       tradeDescription={tradeDescription}

@@ -6,13 +6,14 @@ import { useChainlinkPrice } from '@/hooks/useChainlinkPrice'
 import useDebounce from '@/hooks/useDebounce'
 import { useZapDeployQuery } from '@/hooks/useZapDeployQuery'
 import { chainIdAtom } from '@/state/atoms'
-import { formatCurrency } from '@/utils'
+import { formatCurrency, safeParseEther } from '@/utils'
 import zapper from '@/views/yield-dtf/issuance/components/zapV2/api'
 import { Trans, useLingui } from '@lingui/react/macro'
 import { useAtom, useAtomValue } from 'jotai'
 import { RefreshCw } from 'lucide-react'
 import { useEffect } from 'react'
-import { Address, formatEther, parseUnits } from 'viem'
+import { Address, formatEther } from 'viem'
+import { basketAtom, daoTokenAddressAtom } from '../../../atoms'
 import { indexDeployFormDataAtom } from '../atoms'
 import {
   defaultInputTokenAtom,
@@ -22,6 +23,7 @@ import {
   ongoingTxAtom,
   slippageAtom,
   tokensAtom,
+  zapDeployBuildErrorAtom,
   zapDeployPayloadAtom,
 } from './atoms'
 import SimpleDeployButton from './simple-deploy-button'
@@ -68,13 +70,18 @@ const SimpleIndexDeploy = () => {
   const [inputAmount, setInputAmount] = useAtom(inputAmountAtom)
   const [slippage, setSlippage] = useAtom(slippageAtom)
   const zapDeployPayload = useAtomValue(zapDeployPayloadAtom)
+  const buildError = useAtomValue(zapDeployBuildErrorAtom)
   const tokens = useAtomValue(tokensAtom)
   const [ongoingTx, setOngoingTx] = useAtom(ongoingTxAtom)
+  const basket = useAtomValue(basketAtom)
   const formChainId = form?.chain as number
+  const stToken = useAtomValue(daoTokenAddressAtom)
+  // The zapper rejects deploys of baskets with fewer than 2 assets
+  const isBasketTooSmall = basket.length < 2
 
-  const url = form?.governanceWalletAddress
-    ? zapper.zapDeployUngoverned(formChainId)
-    : zapper.zapDeploy(formChainId)
+  const url = stToken
+    ? zapper.zapDeploy(formChainId)
+    : zapper.zapDeployUngoverned(formChainId)
   const requestBody = useDebounce(zapDeployPayload, 500)
 
   const tokenIn = inputToken || defaultInputToken
@@ -87,11 +94,11 @@ const SimpleIndexDeploy = () => {
 
   const insufficientBalance =
     !ongoingTx && inputBalance?.value
-      ? parseUnits(inputAmount, tokenIn.decimals) > inputBalance?.value
+      ? safeParseEther(inputAmount, tokenIn.decimals) > inputBalance?.value
       : false
 
   const { data, isLoading, isFetching, refetch, failureReason } =
-    useZapDeployQuery(url, requestBody, ongoingTx)
+    useZapDeployQuery(url, requestBody, ongoingTx || isBasketTooSmall)
 
   const priceTo = data?.result?.amountOutValue
   const valueTo = data?.result?.amountOut
@@ -103,7 +110,7 @@ const SimpleIndexDeploy = () => {
   if (!form) return null
 
   return (
-    <div className="flex flex-col h-full gap-2">
+    <div className="flex flex-col h-full gap-2" data-testid="deploy-simple">
       <div>
         <div className="flex items-center mx-2 mb-1">
           <h4 className="font-bold ml-4 mr-auto">
@@ -111,7 +118,9 @@ const SimpleIndexDeploy = () => {
           </h4>
           <RefreshQuote
             onClick={refetch}
-            disabled={isFetching || ongoingTx || !zapDeployPayload}
+            disabled={
+              isFetching || ongoingTx || !zapDeployPayload || isBasketTooSmall
+            }
           />
         </div>
         <div className="flex flex-col gap-1 px-2">
@@ -154,10 +163,21 @@ const SimpleIndexDeploy = () => {
                     ? t`Insufficient balance`
                     : t`Deploy`}
               </Button>
-              {(data?.error || failureReason?.message) && (
+              {isBasketTooSmall && (
+                <div className="text-red-500 text-sm text-center mt-2">
+                  <Trans>
+                    Simple deploy needs at least 2 tokens in the basket. Use
+                    Manual deploy instead.
+                  </Trans>
+                </div>
+              )}
+              {(buildError || data?.error || failureReason?.message) && (
                 <div className="flex flex-col items-center gap-2">
-                  <div className="text-red-500 text-sm text-center mt-2">
-                    {data?.error || failureReason?.message}
+                  <div
+                    className="text-red-500 text-sm text-center mt-2"
+                    data-testid="deploy-zap-error"
+                  >
+                    {buildError || data?.error || failureReason?.message}
                   </div>
                   <CopyPayloadButton />
                 </div>

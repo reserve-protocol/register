@@ -154,6 +154,7 @@ const TokenPreview = ({
               level={liquidity?.liquidityLevel ?? 'unknown'}
               priceImpact={liquidity?.priceImpact}
               tokenSymbol={symbol}
+              counterpart={liquidity?.counterpart}
               chainId={chainId}
               isLoading={isCheckingLiquidity}
               error={liquidity?.error}
@@ -224,12 +225,14 @@ const BasketSetting = () => {
         <ToggleGroupItem
           className="px-3 rounded-md data-[state=on]:bg-card text-secondary-foreground/80 data-[state=on]:text-primary"
           value="unit"
+          data-testid="deploy-basket-input-unit"
         >
           <Trans>Unit</Trans>
         </ToggleGroupItem>
         <ToggleGroupItem
           className="px-3 rounded-md data-[state=on]:bg-card text-secondary-foreground/80 data-[state=on]:text-primary"
           value="share"
+          data-testid="deploy-basket-input-share"
         >
           <Trans>Share</Trans>
         </ToggleGroupItem>

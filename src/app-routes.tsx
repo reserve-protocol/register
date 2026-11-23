@@ -20,14 +20,12 @@ import Explorer from 'views/explorer'
 import Collaterals from 'views/explorer/components/collaterals'
 import ExploreGovernance from 'views/explorer/components/governance'
 import AvailableRevenue from 'views/explorer/components/revenue'
-import ExploreTokens from 'views/explorer/components/tokens'
 import ExploreTransactions from 'views/explorer/components/transactions'
 import IndexDTFAuctions from './views/index-dtf/auctions'
 import IndexDTFAuctionsLegacy from './views/index-dtf/auctions/legacy'
 import Rebalance from './views/index-dtf/auctions/views/rebalance'
 import RebalanceList from './views/index-dtf/auctions/views/rebalance-list'
 import DeployComingSoon from './views/index-dtf/deploy/components/deploy-coming-soon'
-import PermissionlessDeploy from './views/index-dtf/deploy/permissionless'
 import IndexDTFGovernance from './views/index-dtf/governance'
 import IndexProposal from './views/index-dtf/governance/views/proposal'
 import IndexDTFPropose from './views/index-dtf/governance/views/propose'
@@ -74,7 +72,6 @@ const AppRoutes = () => (
     <Route path={ROUTES.BRIDGE} element={<Bridge />} />
     <Route path={ROUTES.DEPLOY_YIELD} element={<DeployYieldDTF />} />
     <Route path={ROUTES.DEPLOY_INDEX} element={<DeployComingSoon />} />
-    <Route path="/deploy-index" element={<PermissionlessDeploy />} />
     <Route path={ROUTES.TOKENS} element={<AllYieldDTFList />} />
     {/* EARN DTF */}
     <Route path={ROUTES.EARN} element={<Earn />}>
@@ -167,10 +164,18 @@ const AppRoutes = () => (
     <Route path={ROUTES.EXPLORER} element={<Explorer />}>
       <Route
         index
-        element={<Navigate replace to={ROUTES.EXPLORER_TRANSACTIONS} />}
+        element={<Navigate replace to={ROUTES.EXPLORER_GOVERNANCE} />}
       />
       <Route path={ROUTES.EXPLORER_COLLATERALS} element={<Collaterals />} />
-      <Route path={ROUTES.EXPLORER_TOKENS} element={<ExploreTokens />} />
+      <Route
+        path={ROUTES.EXPLORER_TOKENS}
+        element={
+          <Navigate
+            replace
+            to={`${ROUTES.EXPLORER}/${ROUTES.EXPLORER_TRANSACTIONS}`}
+          />
+        }
+      />
       <Route
         path={ROUTES.EXPLORER_TRANSACTIONS}
         element={<ExploreTransactions />}

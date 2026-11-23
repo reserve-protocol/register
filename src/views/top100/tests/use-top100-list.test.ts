@@ -19,12 +19,6 @@ vi.mock('@/utils/constants', () => ({
   RESERVE_API: 'https://api.reserve.org/',
 }))
 
-vi.mock('@/views/index-dtf/deploy/permissionless-defaults', () => ({
-  PERMISSIONLESS_VOTE_LOCK: {
-    8453: '0xeDAB3789D7D2283214d8F65A6E412B00b1cBfB7a',
-  },
-}))
-
 vi.mock('@/utils/chains', () => ({
   ChainId: { Base: 8453, Mainnet: 1, BSC: 56 },
 }))
@@ -34,6 +28,7 @@ vi.mock('../constants', async () => {
   const { gql } = await import('graphql-request')
   return {
     ACTIVE_CHAINS: [8453],
+    TOP100_VOTE_LOCK: { 8453: '0xeDAB3789D7D2283214d8F65A6E412B00b1cBfB7a' },
     ALL_TOP100_CHAINS: [8453],
     BLOCKED_DTFS: {},
     ALLOWED_DTFS: {},

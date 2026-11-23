@@ -22,7 +22,11 @@ minimumReleaseAgeExclude:
   - '@reserve-protocol/dtf-catalog'
   - '@reserve-protocol/async-zap-sdk'
   - '@reserve-protocol/dtf-chat'
+  - '@reserve-protocol/trusted-fillers-sdk'
 overrides:
   axios: ^1.15.0
   react: 'catalog:'
   react-dom: 'catalog:'
+peerDependencyRules:
+  allowedVersions:
+    '@reserve-protocol/async-zap-sdk>wagmi': '3'

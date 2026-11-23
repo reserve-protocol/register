@@ -9,18 +9,18 @@ import {
 } from '@/components/ui/table'
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import EnsName from '@/components/utils/ens-name'
-import { chainIdAtom } from '@/state/atoms'
 import { indexDTFAtom } from '@/state/dtf/atoms'
 import { formatCurrency, formatPercentage } from '@/utils'
-import { ExplorerDataType, getExplorerLink } from '@/utils/getExplorerLink'
 import { Trans } from '@lingui/react/macro'
+import AddressHovercard, {
+  AddressHovercardGroup,
+} from '@/components/governance/address-hovercard'
 import {
   IndexDtfDelegate,
   useIndexDtfDelegates,
 } from '@reserve-protocol/react-sdk'
 import { useAtomValue } from 'jotai'
 import { useEffect, useMemo, useState } from 'react'
-import { Link } from 'react-router-dom'
 
 type DelegateTabs = 'normal' | 'optimistic'
 
@@ -46,12 +46,10 @@ const EmptySkeleton = () => (
 const DelegateTable = ({
   delegates,
   isLoading,
-  chainId,
   isOptimistic,
 }: {
   delegates: readonly IndexDtfDelegate[] | undefined
   isLoading: boolean
-  chainId: number
   isOptimistic: boolean
 }) => (
   <Table>
@@ -76,17 +74,13 @@ const DelegateTable = ({
         delegates.map((delegate) => (
           <TableRow key={delegate.address}>
             <TableCell>
-              <Link
-                target="_blank"
-                className="text-legend underline"
-                to={getExplorerLink(
-                  delegate.address,
-                  chainId,
-                  ExplorerDataType.ADDRESS
-                )}
+              <AddressHovercard
+                address={delegate.address}
+                surface="delegates"
+                className="text-legend"
               >
                 <EnsName address={delegate.address} />
-              </Link>
+              </AddressHovercard>
             </TableCell>
             <TableCell>
               {formatCurrency(
@@ -124,7 +118,6 @@ const DelegateListOptions = () => (
 
 const GovernanceDelegateList = () => {
   const dtf = useAtomValue(indexDTFAtom)
-  const chainId = useAtomValue(chainIdAtom)
   const { data, isLoading } = useIndexDtfDelegates(
     !dtf?.stToken
       ? undefined
@@ -164,12 +157,15 @@ const GovernanceDelegateList = () => {
         {hasOptimisticGovernance && <DelegateListOptions />}
       </div>
       <div className="overflow-auto px-2 pb-2 pt-2">
-        <DelegateTable
-          delegates={delegates}
-          isLoading={!dtf || isLoading}
-          chainId={chainId}
-          isOptimistic={isOptimistic}
-        />
+        <AddressHovercardGroup
+          addresses={(delegates ?? []).map((delegate) => delegate.address)}
+        >
+          <DelegateTable
+            delegates={delegates}
+            isLoading={!dtf || isLoading}
+            isOptimistic={isOptimistic}
+          />
+        </AddressHovercardGroup>
       </div>
     </Tabs>
   )

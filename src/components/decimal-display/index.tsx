@@ -6,6 +6,7 @@ const suffixes = ['', 'K', 'M', 'B', 'T']
 // A money-display component must never turn a garbage value into a confident
 // "0" / "∞" — surface it as unavailable instead (Z11).
 const UNAVAILABLE = '—'
+const SUBSCRIPT_MIN_ZEROS = 3
 
 export const formatNumberValue = (
   value: number | string,
@@ -59,20 +60,18 @@ export const formatNumberValue = (
       : formatted
     return `${num < 0 ? '-' : ''}${withCommas}`
   } else {
-    // For numbers < 1, use the original formatting with subscript
-    const fullNumber = absNum.toFixed(27)
-    const [, decimalPart = ''] = fullNumber.split('.')
-    const leadingZeros = decimalPart.match(/^0+/)?.[0] || ''
-    const significantDecimals = decimalPart.slice(leadingZeros.length)
-
-    let formattedNumber = '0'
-    if (leadingZeros.length > 0) {
-      formattedNumber += `.0<sub>${leadingZeros.length}</sub>${significantDecimals.slice(0, decimals)}`
-    } else if (significantDecimals) {
-      formattedNumber += `.${significantDecimals.slice(0, decimals)}`
+    // Zeros and digits come from one rounded exponential, so a value that rounds up to the next power of ten
+    // (0.0009996 → 1.0e-3) loses a zero with it; slicing toFixed(27) truncated float error (0.0012 → 11).
+    const [mantissa, exponent] = absNum
+      .toExponential(Math.max(decimals - 1, 0))
+      .split('e')
+    const leadingZeros = -Number(exponent) - 1
+    const sign = num < 0 ? '-' : ''
+    // A subscript only pays off from three zeros on.
+    if (leadingZeros < SUBSCRIPT_MIN_ZEROS) {
+      return `${sign}${absNum.toFixed(leadingZeros + decimals)}`
     }
-
-    return `${num < 0 ? '-' : ''}${formattedNumber}`
+    return `${sign}0.0<sub>${leadingZeros}</sub>${mantissa.replace('.', '')}`
   }
 }
 

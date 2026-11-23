@@ -1,11 +1,19 @@
 import { type VotingState } from '@/lib/governance'
+import { type ProposalSort } from '@/lib/proposal-sort'
 import { atom } from 'jotai'
 
 export type DTFType = 'all' | 'yield' | 'index'
 
+export interface ProposalToken {
+  address: string
+  symbol: string
+  logo?: string
+}
+
 export interface ProposalRecord {
   id: string
   description: string
+  proposer: string
   creationTime: string
   userVote: string | null
   votingState: VotingState
@@ -18,6 +26,7 @@ export interface ProposalRecord {
   tokenAddress: string
   tokenSymbol: string
   tokenLogo?: string
+  tokens: ProposalToken[]
   chain: number
   type: DTFType
 }
@@ -33,3 +42,5 @@ export const filtersAtom = atom<IFilters>({
   status: [],
   type: 'all',
 })
+
+export const proposalSortAtom = atom<ProposalSort>('status')

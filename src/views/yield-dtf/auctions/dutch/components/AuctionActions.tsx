@@ -8,8 +8,8 @@ import { useCallback, useMemo, useState } from 'react'
 import { chainIdAtom, walletAtom } from 'state/atoms'
 import { formatCurrency } from 'utils'
 import { BIGINT_MAX } from 'utils/constants'
-import { Address, Hex, formatUnits } from 'viem'
-import { useBalance } from 'wagmi'
+import { Address, Hex, erc20Abi, formatUnits } from 'viem'
+import { useReadContract } from 'wagmi'
 import { DutchTrade } from '../atoms'
 import AuctionTimeIndicators from './AuctionTimeIndicators'
 
@@ -24,13 +24,16 @@ const AuctionActions = ({
   const chainId = useAtomValue(chainIdAtom)
   const wallet = useAtomValue(walletAtom)
   const [bidded, setBidded] = useState(false)
-  const bidBalance = useBalance({
-    address: wallet ?? undefined,
-    token: data.buying as Address,
+  const { data: bidBalance } = useReadContract({
+    abi: erc20Abi,
+    address: data.buying as Address,
+    functionName: 'balanceOf',
+    args: wallet ? [wallet] : undefined,
     chainId,
+    query: { enabled: !!wallet },
   })
 
-  const hasBalance = (bidBalance?.data?.value ?? 0n) >= currentPrice
+  const hasBalance = (bidBalance ?? 0n) >= currentPrice
 
   const [hasAllowance] = useHasAllowance([
     {

@@ -14,6 +14,26 @@
     "playwright-report-fork/**"
   ],
   "plugins": ["typescript", "unicorn", "oxc", "react", "react-perf"],
+  "rules": {
+    "no-restricted-imports": [
+      "error",
+      {
+        "paths": [
+          {
+            "name": "wagmi",
+            "importNames": ["useReadContracts"],
+            "message": "Import useReadContracts from @/hooks/use-read-contracts: wagmi v3 no longer skips the query while a contract has no address."
+          }
+        ]
+      }
+    ]
+  },
+  "overrides": [
+    {
+      "files": ["src/hooks/use-read-contracts.ts"],
+      "rules": { "no-restricted-imports": "off" }
+    }
+  ],
   "settings": {
     "react": {
       "version": "18.3.1"

@@ -24,6 +24,9 @@
     "name": "Aave V3 USDT",
     "id": "saethusdt",
     "displaySymbol": "Aave V3 USDT",
+    "appUrls": {
+      "1": "https://app.aave.com/reserve-overview/?underlyingAsset=0xdac17f958d2ee523a2206206994597c13d831ec7&marketName=proto_mainnet_v3"
+    },
     "addresses": {
       "1": "0x18A8D9088433aE749cE6c33070b2Fe95e8a263d9"
     },
@@ -307,6 +310,9 @@
     "name": "Compound V3 USDC",
     "id": "wcusdcv3",
     "displaySymbol": "Compound V3 USDC",
+    "appUrls": {
+      "1": "https://app.compound.xyz/markets/usdc-mainnet"
+    },
     "addresses": {
       "1": "0x33Ba1BC07b0fafb4BBC1520B330081b91ca6bdf0",
       "8453": "0xf7a9D27c3B60c78c6F6e2c2d6ED6E8B94b352461",
@@ -1461,6 +1467,9 @@
     "name": "Morpho V2 Sentora PYUSD",
     "id": "senpyusdmain",
     "displaySymbol": "Morpho V2 Sentora PYUSD",
+    "appUrls": {
+      "1": "https://app.morpho.org/ethereum/vault/0xb576765fB15505433aF24FEe2c0325895C559FB2/paypal-usd-main"
+    },
     "addresses": {
       "1": "0xb576765fB15505433aF24FEe2c0325895C559FB2"
     },
@@ -1482,6 +1491,9 @@
     "name": "Morpho V2 Gauntlet USDC Frontier",
     "id": "gtusdcf",
     "displaySymbol": "Morpho V2 Gauntlet USDC Frontier",
+    "appUrls": {
+      "1": "https://app.morpho.org/ethereum/vault/0x9a1D6bd5b8642C41F25e0958129B85f8E1176F3e/gauntlet-usdc-frontier"
+    },
     "addresses": {
       "1": "0x9a1D6bd5b8642C41F25e0958129B85f8E1176F3e"
     },
@@ -1503,6 +1515,9 @@
     "name": "Morpho V2 Gauntlet USDC Prime",
     "id": "gtusdcp",
     "displaySymbol": "Morpho V2 Gauntlet USDC Prime",
+    "appUrls": {
+      "1": "https://app.morpho.org/ethereum/vault/0x8c106EEDAd96553e64287A5A6839c3Cc78afA3D0/gauntlet-usdc-prime"
+    },
     "addresses": {
       "1": "0x8c106EEDAd96553e64287A5A6839c3Cc78afA3D0"
     },

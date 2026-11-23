@@ -1,5 +1,10 @@
 import { describe, expect, it } from 'vitest'
-import { etherscanResponse, knownPriceResponse } from '../api'
+import {
+  etherscanResponse,
+  knownPriceResponse,
+  oneInchFusionQuote,
+  yieldsResponse,
+} from '../api'
 import { MockOverrides } from '../overrides'
 import { REGISTRY } from '../registry'
 import { loadSnapshot } from '../snapshots'
@@ -66,6 +71,23 @@ describe('knownPriceResponse price gaps', () => {
   })
 })
 
+describe('1inch Fusion quotes', () => {
+  const quote = (search: string) =>
+    oneInchFusionQuote(new URL(`https://api.reserve.org/1inch/fusion/quote?${search}`))
+
+  it('answers "no route" on a supported chain so the zapper keeps its pinned quote', () => {
+    expect(quote('chainId=8453&tokenIn=0x1&tokenOut=0x2&amountIn=1')).toEqual({
+      status: 'ok',
+      result: expect.objectContaining({ available: false }),
+    })
+  })
+
+  it('fails loud for a chain the app does not quote on', () => {
+    expect(quote('chainId=42161&tokenIn=0x1&tokenOut=0x2&amountIn=1')).toBeUndefined()
+    expect(quote('tokenIn=0x1')).toBeUndefined()
+  })
+})
+
 describe('etherscanResponse', () => {
   const url = (query: string) => new URL(`https://api.etherscan.io/v2/api?chainid=8453&${query}`)
 
@@ -86,5 +108,33 @@ describe('etherscanResponse', () => {
   it('leaves every other action unmodeled so it fails loud', () => {
     expect(etherscanResponse(url('module=contract&action=getcontractcreation&address=0x1'))).toBeUndefined()
     expect(etherscanResponse(url('module=account&action=balance&address=0x1'))).toBeUndefined()
+  })
+})
+
+describe('yieldsResponse', () => {
+  const POOL = 'a349fea4-d780-4e16-973e-70ca9b606db2'
+
+  it('answers the reserve-api yield endpoints empty', () => {
+    expect(yieldsResponse('/v1/yields/pools')).toEqual({ data: [] })
+    expect(yieldsResponse(`/v1/yields/chart/${POOL}`)).toEqual({ data: [] })
+    expect(yieldsResponse('/v1/yield-dtf/yields')).toEqual({
+      collaterals: {},
+      rtokens: {},
+      rtokensBasketAPY: {},
+      defiTVL: {},
+    })
+    expect(yieldsResponse('/v1/yield-dtf/yields/pools')).toEqual({})
+  })
+
+  it('leaves a chart request without a DefiLlama pool id unmodeled so it fails loud', () => {
+    expect(yieldsResponse('/v1/yields/chart/undefined')).toBeUndefined()
+    expect(yieldsResponse('/v1/yields/chart/')).toBeUndefined()
+    expect(yieldsResponse(`/v1/yields/chart/${POOL}/extra`)).toBeUndefined()
+  })
+
+  it('leaves unknown yield paths unmodeled so they fail loud', () => {
+    expect(yieldsResponse('/v1/yields/typo')).toBeUndefined()
+    expect(yieldsResponse('/v1/yields/pools/extra')).toBeUndefined()
+    expect(yieldsResponse('/v1/yield-dtf/yields/typo')).toBeUndefined()
   })
 })

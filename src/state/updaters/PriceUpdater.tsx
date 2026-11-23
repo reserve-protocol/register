@@ -14,7 +14,8 @@ import {
 import { FACADE_ADDRESS } from 'utils/addresses'
 import { ChainId } from 'utils/chains'
 import { Address, formatEther, formatUnits } from 'viem'
-import { useEstimateFeesPerGas, useReadContract, useReadContracts } from 'wagmi'
+import { useEstimateFeesPerGas, useReadContract } from 'wagmi'
+import { useReadContracts } from '@/hooks/use-read-contracts'
 
 const CHAINLINK_FEES: Address[] = [
   '0x759bbc1be8f90ee6457c44abc7d443842a976d02', // RSR/USD

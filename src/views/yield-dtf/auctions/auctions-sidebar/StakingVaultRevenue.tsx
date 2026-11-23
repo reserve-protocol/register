@@ -15,7 +15,7 @@ import { formatCurrency, formatPercentage } from 'utils'
 import { RTOKEN_VAULT_STAKE } from 'utils/constants'
 import { erc20Abi, formatUnits } from 'viem'
 import RevenueOverviewHeader from './RevenueOverviewHeader'
-import { useReadContracts } from 'wagmi'
+import { useReadContracts } from '@/hooks/use-read-contracts'
 
 const StakingVaultRevenue = () => {
   const { t } = useLingui()

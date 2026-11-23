@@ -5,7 +5,7 @@ import { useMemo } from 'react'
 import MultiselectDropdrown, {
   IMultiselectDropdrown,
 } from '../MultiselectDropdown'
-import TransactionsIcon from 'components/icons/TransactionsIcon'
+import { PillLabel, PillValue } from '../kit/filter-pill'
 
 export const entryTypes: Record<string, MessageDescriptor> = {
   MINT: msg`Mint`,
@@ -33,19 +33,14 @@ const TransactionTypeFilter = (
   }, [t])
 
   return (
-    <div>
-      <span className="text-legend">
-        <Trans>Tx Type</Trans>
-      </span>
-      <MultiselectDropdrown className="mt-1" options={options} {...props} allOption>
-        <TransactionsIcon width={18} />
-        <span className="ml-2 text-legend">
-          {props.selected.length
-            ? t`${props.selected.length} selected`
-            : t`All types`}
-        </span>
-      </MultiselectDropdrown>
-    </div>
+    <MultiselectDropdrown options={options} {...props} allOption>
+      <PillLabel>
+        <Trans>Type</Trans>
+      </PillLabel>
+      <PillValue>
+        {props.selected.length ? t`${props.selected.length} selected` : t`All`}
+      </PillValue>
+    </MultiselectDropdrown>
   )
 }
 

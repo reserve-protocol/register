@@ -1,5 +1,11 @@
 import { describe, expect, it } from 'vitest'
-import { getFeePercentAdjust, isDisplayablePlatformFee } from '../fees'
+import {
+  getFeePercentAdjust,
+  getHolderSharePercent,
+  getRecipientPercentAdjust,
+  getShareOfAllFees,
+  isDisplayablePlatformFee,
+} from '../fees'
 
 describe('isDisplayablePlatformFee', () => {
   it('accepts a finite fee in [0, 100)', () => {
@@ -32,5 +38,27 @@ describe('getFeePercentAdjust', () => {
     // platformFee 50 → 100/50 = 2 → a contract 80% displays as 40%
     expect(getFeePercentAdjust(50)).toBe(2)
     expect(getFeePercentAdjust(20)).toBe(100 / 80)
+  })
+})
+
+describe('Folio 6.0 shares of total fees', () => {
+  it('keeps the holder share out of the recipient tables', () => {
+    expect(getHolderSharePercent(50, 0.2)).toBeCloseTo(10)
+    expect(70 / getRecipientPercentAdjust(50, 0.2)).toBeCloseTo(28)
+  })
+
+  it('matches the platform-only adjust when holders keep nothing', () => {
+    expect(getRecipientPercentAdjust(33.33, 0)).toBe(getFeePercentAdjust(33.33))
+  })
+})
+
+describe('getShareOfAllFees', () => {
+  it('turns a settings form share into its share of all fees (QASIX: 0.8246 mutable, 20% holders)', () => {
+    expect(getShareOfAllFees(20, 0.8246, 20)).toBeCloseTo(13.19, 2)
+    expect(getShareOfAllFees(46.67, 0.8246, 20)).toBeCloseTo(30.78, 1)
+  })
+
+  it('is the form share itself without permanent recipients or holder share', () => {
+    expect(getShareOfAllFees(40, 1, 0)).toBe(40)
   })
 })

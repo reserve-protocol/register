@@ -37,8 +37,7 @@ export const validatedSectionsAtom = atomWithReset<
   'revenue-distribution': false,
   auctions: false,
   roles: false,
-  'basket-changes': false,
-  'other-changes': false,
+  'governance-settings': false,
 })
 
 export const formReadyForSubmitAtom = atom((get) => {
@@ -48,5 +47,3 @@ export const formReadyForSubmitAtom = atom((get) => {
 
 export const deployedDTFAtom = atomWithReset<Address | undefined>(undefined)
 
-// Permissionless deploy: steps that are readonly (empty = all editable)
-export const readonlyStepsAtom = atom<Set<DeployStepId>>(new Set<DeployStepId>())

@@ -117,7 +117,11 @@ const CollateralPieChartWrapper: FC<Props> = ({ token }) => {
         />
         </div>
       </TooltipTrigger>
-      <TooltipContent className="p-0 border-0 bg-transparent">
+      <TooltipContent
+        side="right"
+        collisionPadding={16}
+        className="p-0 border-0 bg-transparent"
+      >
         <CollateralPieChartTooltip token={token} />
       </TooltipContent>
     </Tooltip>

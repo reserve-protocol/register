@@ -18,6 +18,7 @@ import {
   type VoteLockDrawerState,
   type VoteLockTab,
 } from '../atoms'
+import { isVoteLockStateFor } from '../utils'
 
 const delegateOrWallet = (
   delegate: Address | null | undefined,
@@ -34,7 +35,7 @@ const delegateOrEmpty = (delegate: Address | null | undefined) => {
 
 export const useVoteLockDrawer = ({
   stToken,
-  voteLockState,
+  voteLockState: readVoteLockState,
   initialTab,
   controlledOpen,
   controlledOnOpenChange,
@@ -48,6 +49,14 @@ export const useVoteLockDrawer = ({
   onClose?: () => void
 }) => {
   const account = useAtomValue(walletAtom)
+  // The state can come from a different read than the vault; a mismatch must not enable a write.
+  const voteLockState = isVoteLockStateFor(
+    readVoteLockState,
+    stToken.id,
+    account
+  )
+    ? readVoteLockState
+    : undefined
   const [currentTab, setCurrentTab] = useAtom(currentStakingTabAtom)
   const resetInput = useResetAtom(stakingInputAtom)
   const resetCheckbox = useResetAtom(lockCheckboxAtom)

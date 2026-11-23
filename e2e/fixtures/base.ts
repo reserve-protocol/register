@@ -164,9 +164,7 @@ export const test = base.extend<BaseFixtures>({
       )
 
       // Yield/reward aggregators the overview polls.
-      await page.route('**yields.llama.fi**', (r) => fulfillEmpty(r, { status: 'success', data: [] }))
       await page.route('**api.llama.fi**', (r) => fulfillEmpty(r, { status: 'success', data: [] }))
-      await page.route('**yields.reserve.org**', (r) => fulfillEmpty(r, { status: 'success', data: [] }))
       await page.route('**api.merkl.xyz**', (r) => fulfillEmpty(r, []))
 
       // Tenderly simulation stays DEFAULT-DENIED (audit P1): a blanket fulfill
@@ -182,8 +180,6 @@ export const test = base.extend<BaseFixtures>({
       // Analytics — abort is safe, they are fire-and-forget beacons.
       await page.route('**sentry.io**', (r) => r.abort())
       await page.route('**mixpanel.com**', (r) => r.abort())
-      // Coinbase Wallet SDK telemetry, initialised eagerly by AppKit's connector.
-      await page.route('**cca-lite.coinbase.com**', (r) => r.abort())
       await page.route('**segment.io**', (r) => r.abort())
       await page.route('**googletagmanager.com**', (r) => r.abort())
       await page.route('**connect.facebook.net**', (r) => r.abort())

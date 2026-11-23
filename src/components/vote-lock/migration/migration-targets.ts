@@ -3,10 +3,10 @@ import { ChainId } from '@/utils/chains'
 import { Address, getAddress, isAddressEqual, zeroAddress } from 'viem'
 
 export const governanceSpellAddress: Record<number, Address> = {
-  // GovernanceSpell_09_18_2026 (2% proposal threshold).
-  [ChainId.Mainnet]: getAddress('0xC72fD080F4CF5Ce6a3314192888419f45c562d87'),
-  [ChainId.Base]: getAddress('0x24a4B37F9c40fB0E80ec436Df2e9989FBAFa8bB7'),
-  [ChainId.BSC]: getAddress('0xE19ae8D1f3FFf987aaEaa65248BAB3A0d1FDC809'),
+  // GovernanceSpell_09_18_2026 (1% proposal threshold).
+  [ChainId.Mainnet]: getAddress('0xeE6066Df6E27F142b921FD38e6766a9D6aF35c2f'),
+  [ChainId.Base]: getAddress('0x971c890ACb9EeB084f292996Be667bB9A2889AE9'),
+  [ChainId.BSC]: getAddress('0x281EDD83b9b3C7cD05E260EF7E17A9734731A52B'),
 }
 
 export const optimisticStakingVaultAddress: Record<number, Address> = {
@@ -44,7 +44,7 @@ const DTF_UPGRADE_TARGETS: Record<number, Record<string, DtfUpgradeTarget>> = {
     },
   },
   [ChainId.Base]: {
-    // ABX: the shared spell into vlALTT.
+    // ABX: the earlier 2% shared spell into vlALTT; this upgrade has already executed.
     '0xebcda5b80f62dd4dd2a96357b42bb6facbf30267': {
       spell: getAddress('0x24a4B37F9c40fB0E80ec436Df2e9989FBAFa8bB7'),
       stakingVault: getAddress('0xcb99d380302220E9896776d559AC98D552357a00'),

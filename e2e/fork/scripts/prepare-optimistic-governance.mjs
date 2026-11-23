@@ -24,7 +24,7 @@ const SCENARIOS = {
     chainId: 8453,
     symbol: 'LCAP',
     dtf: '0x4dA9A0f397dB1397902070f93a4D6ddBC0E0E6e8',
-    spell: '0x24a4B37F9c40fB0E80ec436Df2e9989FBAFa8bB7',
+    spell: '0x971c890ACb9EeB084f292996Be667bB9A2889AE9',
     newVault: '0x2F0D6538807a77d4AdDCd4b4DAf214Ea2E818E3D',
     feeRecipient: TOKEN_JAR_BASE,
     upgradesSharedVault: true,
@@ -80,8 +80,8 @@ const abi = parseAbi([
 const client = createPublicClient({ transport: http(rpcUrl, { timeout: 120_000 }) })
 const chainId = await client.getChainId()
 const clientVersion = await client.request({ method: 'web3_clientVersion' })
-if (chainId !== scenario.chainId || !String(clientVersion).startsWith('anvil') || !/127\.0\.0\.1|localhost/.test(rpcUrl)) {
-  throw new Error(`refusing: rpc ${rpcUrl} chainId ${chainId} client ${clientVersion}`)
+if (chainId !== scenario.chainId || !String(clientVersion).startsWith('anvil') || !['127.0.0.1', 'localhost'].includes(new URL(rpcUrl).hostname)) {
+  throw new Error(`refusing: rpc ${rpcUrl.replace(/(\/v[23]\/)[A-Za-z0-9_-]{8,}/g, '$1***')} chainId ${chainId} client ${clientVersion}`)
 }
 
 const read = (address, functionName, args = []) => client.readContract({ address, abi, functionName, args })

@@ -19,9 +19,9 @@ const ZapTabs = () => {
   const backingOptions = useMemo(() => {
     return [
       ...(!disableMint
-        ? [{ key: 'mint', label: t`Mint`, icon: <Plus size={16} /> }]
+        ? [{ key: 'mint', label: t`Mint`, icon: <Plus size={16} />, testid: 'zap-mint-tab' }]
         : []),
-      { key: 'redeem', label: t`Redeem`, icon: <Minus size={16} /> },
+      { key: 'redeem', label: t`Redeem`, icon: <Minus size={16} />, testid: 'zap-redeem-tab' },
     ]
   }, [disableMint, t])
 

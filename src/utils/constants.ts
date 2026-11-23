@@ -18,9 +18,10 @@ const isStaging =
     import.meta.env.VITE_USE_STAGING) &&
   import.meta.env.VITE_STAGING_API
 
-export const RESERVE_API = isStaging
-  ? import.meta.env.VITE_STAGING_API
-  : 'https://api.reserve.org/'
+// Fork e2e lane points this at a local reserve-api; production otherwise.
+export const RESERVE_API =
+  import.meta.env.VITE_RESERVE_API_URL ||
+  (isStaging ? import.meta.env.VITE_STAGING_API : 'https://api.reserve.org/')
 
 // Cloudflare Turnstile widget shared by the Reserve API public forms
 export const FORMS_TURNSTILE_SITE_KEY = '0x4AAAAAAFJhIu3VZKkEMd1j'
@@ -632,14 +633,12 @@ export const SELF_APPRECIATING_VOTE_LOCK_VAULTS: Record<
   number,
   readonly string[]
 > = {
+  [ChainId.Mainnet]: ['0xabbdd9ac016e43c7ca85e2258e669948f029bc0c'],
   [ChainId.Base]: ['0x2f0d6538807a77d4addcd4b4daf214ea2e818e3d'],
   [ChainId.BSC]: ['0xe744c8157c346b2931807f42552c8cbc0bb6d34f'],
 }
 
-export const isSelfAppreciatingVoteLock = (
-  chainId: number,
-  address?: string
-) =>
+export const isSelfAppreciatingVoteLock = (chainId: number, address?: string) =>
   !!address &&
   (SELF_APPRECIATING_VOTE_LOCK_VAULTS[chainId] ?? []).includes(
     address.toLowerCase()

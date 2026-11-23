@@ -15,7 +15,7 @@ import {
   hasVoteLockedBalanceAtom,
   normalDelegateAtom,
   optimisticDelegateAtom,
-  stTokenAtom,
+  type StTokenExtended,
   voteLockStateAtom,
 } from '../atoms'
 import { getWriteContractParams, isSameAddress } from '../utils'
@@ -26,15 +26,18 @@ type DelegateCall = {
 }
 
 const SubmitDelegateButton = ({
+  stToken,
+  isVaultReady,
   isOptimisticGovernance,
   onSuccess,
 }: {
+  stToken: StTokenExtended
+  isVaultReady: boolean
   isOptimisticGovernance: boolean
   onSuccess?: () => void
 }) => {
   const { t } = useLingui()
   const account = useAtomValue(walletAtom)
-  const stToken = useAtomValue(stTokenAtom)
   const voteLockState = useAtomValue(voteLockStateAtom)
   const hasVoteLockedBalance = useAtomValue(hasVoteLockedBalanceAtom)
   const normalDelegateInput = useAtomValue(normalDelegateAtom)
@@ -73,8 +76,8 @@ const SubmitDelegateButton = ({
     )
   )
   const disabled =
+    !isVaultReady ||
     !account ||
-    !stToken ||
     !hasVoteLockedBalance ||
     !isValidNormalDelegate ||
     !isValidOptimisticDelegate ||
@@ -83,7 +86,7 @@ const SubmitDelegateButton = ({
   const { writeContract, data: hash, isPending, error } = useWriteContract()
   const { data: receipt, error: txError } = useWaitForTransactionReceipt({
     hash,
-    chainId: stToken?.chainId,
+    chainId: stToken.chainId,
   })
   const currentCall = calls[currentCallIndex]
   const isLoading = isPending || (!!calls.length && (!receipt || !!hash))
@@ -98,7 +101,7 @@ const SubmitDelegateButton = ({
   }
 
   const write = () => {
-    if (disabled || !stToken || !normalizedNormalDelegate) return
+    if (disabled || !normalizedNormalDelegate) return
 
     const nextCalls: DelegateCall[] = []
 
@@ -170,7 +173,7 @@ const SubmitDelegateButton = ({
 
   return (
     <TransactionButton
-      chain={stToken?.chainId}
+      chain={stToken.chainId}
       disabled={disabled}
       loading={isLoading}
       loadingText={
@@ -182,6 +185,7 @@ const SubmitDelegateButton = ({
       text={t`Update`}
       className="w-full"
       error={error || txError}
+      data-testid="vote-delegate-submit"
     />
   )
 }

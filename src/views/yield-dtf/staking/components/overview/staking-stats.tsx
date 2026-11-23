@@ -10,6 +10,7 @@ import {
 } from 'state/atoms'
 import { formatCurrency, formatPercentage, parseDuration } from 'utils'
 import { cn } from '@/lib/utils'
+import StakingApyCalculation from './staking-apy-calculation'
 
 const IconInfo = ({
   icon,
@@ -61,7 +62,7 @@ const StakingStats = ({ className }: StakingStatsProps) => {
             <span className="mr-2 text-sm text-muted-foreground">
               <Trans>Est. Staking APY</Trans>
             </span>
-            <Help content="Manually estimated APY base on basket averaged yield, Calculation = [avgCollateralYield * rTokenMarketCap / rsrStaked]" />
+            <Help content={<StakingApyCalculation />} />
           </div>
           <IconInfo
             icon={<img src="/svgs/trendup.svg" alt="" />}
@@ -86,9 +87,9 @@ const StakingStats = ({ className }: StakingStatsProps) => {
           <IconInfo
             icon={<img src="/svgs/staked.svg" alt="" />}
             title={t`Current`}
-            text={`${
+            text={formatPercentage(
               (distribution?.backing ?? 0) + (distribution?.staked ?? 0)
-            }%`}
+            )}
           />
         </div>
       </div>

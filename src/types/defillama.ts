@@ -1,5 +1,4 @@
-// Raw pool response shape from https://yields.llama.fi/pools and /poolsEnriched.
-// Only covers the fields we consume; the API returns more.
+// DefiLlama pool as served by reserve-api GET /v1/yields/pools.
 export interface DefiLlamaPool {
   pool: string
   symbol: string
@@ -8,10 +7,11 @@ export interface DefiLlamaPool {
   apy: number
   apyBase: number
   apyReward: number | null
+  apyMean30d: number | null
   stablecoin?: boolean
   tvlUsd: number
   poolMeta: string | null
-  underlyingTokens: string[]
-  rewardTokens?: string[]
+  underlyingTokens: string[] | null
+  rewardTokens?: string[] | null
   url?: string
 }

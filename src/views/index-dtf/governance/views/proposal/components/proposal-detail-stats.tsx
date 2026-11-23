@@ -1,10 +1,11 @@
 import { Separator } from '@/components/ui/separator'
+import { Skeleton } from '@/components/ui/skeleton'
 import { cn } from '@/lib/utils'
-import { formatCurrency, formatPercentage, formatTokenAmount } from '@/utils'
+import { formatPercentage, formatTokenAmount } from '@/utils'
 import { PROPOSAL_STATES } from '@/utils/constants'
 import { Trans } from '@lingui/react/macro'
 import { useAtomValue } from 'jotai'
-import { Check, CircleSlash, ThumbsDown, ThumbsUp, X } from 'lucide-react'
+import { Check, CircleSlash, Clock, ThumbsDown, ThumbsUp, X } from 'lucide-react'
 import { useMemo } from 'react'
 import { proposalDetailAtom, proposalStateAtom } from '../atom'
 
@@ -45,6 +46,10 @@ const useProposalDetailStats = () => {
   const quorumNeeded = Number(threshold?.targetVotes?.formatted ?? 0)
   const quorumReached = threshold?.reached ?? false
   const hasQuorumTarget = threshold?.hasTarget ?? false
+  // The quorum target is read at the vote snapshot, which a pending proposal does not have yet.
+  const awaitingSnapshot =
+    !hasQuorumTarget &&
+    proposal?.votingState.state === PROPOSAL_STATES.PENDING
 
   const [majorityWeight, majoritySupport] = useMemo(() => {
     const totalVotes = +forVotes + +againstVotes
@@ -67,6 +72,7 @@ const useProposalDetailStats = () => {
     quorumNeeded,
     quorumReached,
     hasQuorumTarget,
+    awaitingSnapshot,
     majorityWeight,
     majoritySupport,
   }
@@ -79,6 +85,7 @@ const QuorumStat = ({
   quorumNeeded,
   quorumReached,
   hasQuorumTarget,
+  awaitingSnapshot,
 }: {
   isOptimistic?: boolean
   quorumWeight: number
@@ -86,25 +93,43 @@ const QuorumStat = ({
   quorumNeeded: number
   quorumReached: boolean
   hasQuorumTarget: boolean
+  awaitingSnapshot: boolean
 }) => {
   const isGood = hasQuorumTarget && (isOptimistic ? !quorumReached : quorumReached)
 
   return (
-    <div className="flex flex-col gap-3 p-4">
+    <div
+      className="flex flex-col gap-3 p-4"
+      data-testid="proposal-quorum"
+      data-state={awaitingSnapshot ? 'pending' : isGood ? 'reached' : 'missing'}
+    >
       <div className="flex flex-wrap items-center justify-between gap-2">
         <div className="flex items-center gap-3">
-          <BooleanIcon
-            value={isGood}
-            colorSuccess="green-500"
-            colorFailure="red-500"
-          />
+          {awaitingSnapshot ? (
+            <div className="flex items-center p-0.5 bg-muted rounded text-legend">
+              <Clock size={18} strokeWidth={1.5} />
+            </div>
+          ) : (
+            <BooleanIcon
+              value={isGood}
+              colorSuccess="green-500"
+              colorFailure="red-500"
+            />
+          )}
           <span>
             {isOptimistic ? <Trans>Challenge</Trans> : <Trans>Quorum</Trans>}
           </span>
         </div>
         <div className="flex items-center gap-2 text-base sm:text-lg">
           <span
-            className={`font-bold ${isGood ? 'text-green-500' : 'text-red-500'}`}
+            className={cn(
+              'font-bold',
+              awaitingSnapshot
+                ? 'text-legend'
+                : isGood
+                  ? 'text-green-500'
+                  : 'text-red-500'
+            )}
           >
             {formatPercentage(Math.min(quorumWeight * 100, 100))}
           </span>
@@ -113,7 +138,13 @@ const QuorumStat = ({
             {formatTokenAmount(currentQuorum)} <Trans>of</Trans>{' '}
             {/* WHY: keyed spans so browser translation can't break the target swap */}
             {hasQuorumTarget ? (
-              <span key="target">{formatTokenAmount(quorumNeeded)}</span>
+              <span key="target" data-testid="proposal-quorum-target">
+                {formatTokenAmount(quorumNeeded)}
+              </span>
+            ) : awaitingSnapshot ? (
+              <span key="pending" data-testid="proposal-quorum-target">
+                —
+              </span>
             ) : (
               <span key="unavailable">
                 <Trans>Unavailable</Trans>
@@ -124,7 +155,10 @@ const QuorumStat = ({
       </div>
       <div className=" relative h-1 bg-gray-200 rounded-full">
         <div
-          className={`h-full rounded-full ${isGood ? 'bg-green-500' : 'bg-red-500'}`}
+          className={cn(
+            'h-full rounded-full',
+            isGood ? 'bg-green-500' : 'bg-red-500'
+          )}
           style={{
             width: `${Math.min(quorumWeight * 100, 100)}%`,
           }}
@@ -198,11 +232,13 @@ const ChallengeStat = ({
   currentQuorum,
   quorumNeeded,
   hasQuorumTarget,
+  awaitingSnapshot,
 }: {
   quorumWeight: number
   currentQuorum: number
   quorumNeeded: number
   hasQuorumTarget: boolean
+  awaitingSnapshot: boolean
 }) => {
   const challengeProgress = Math.min(quorumWeight * 100, 100)
 
@@ -223,6 +259,8 @@ const ChallengeStat = ({
             <span key="target">
               {`${formatTokenAmount(quorumNeeded)} (${formatPercentage(challengeProgress)})`}
             </span>
+          ) : awaitingSnapshot ? (
+            <span key="pending">—</span>
           ) : (
             <span key="unavailable">
               <Trans>Unavailable</Trans>
@@ -264,10 +302,7 @@ const VoteDistributionStat = ({
               data-testid="proposal-for-votes"
               className="font-bold text-accent-inverted"
             >
-              {formatCurrency(+forVotes, 0, {
-                notation: 'compact',
-                compactDisplay: 'short',
-              })}
+              {formatTokenAmount(+forVotes)}
             </span>
           </div>
         </div>
@@ -277,10 +312,7 @@ const VoteDistributionStat = ({
               <Trans>Against</Trans>
             </span>
             <span className="font-bold text-destructive">
-              {formatCurrency(+againstVotes, 0, {
-                notation: 'compact',
-                compactDisplay: 'short',
-              })}
+              {formatTokenAmount(+againstVotes)}
             </span>
           </div>
           <div className="flex items-center justify-center w-7 h-7 text-destructive bg-muted rounded">
@@ -299,17 +331,35 @@ const VoteDistributionStat = ({
           </span>
         </div>
         <span className="font-bold text-gray-500">
-          {formatCurrency(+abstainVotes, 0, {
-            notation: 'compact',
-            compactDisplay: 'short',
-          })}
+          {formatTokenAmount(+abstainVotes)}
         </span>
       </div>
     </>
   )
 }
 
+const ProposalDetailStatsSkeleton = () => (
+  <div
+    data-testid="proposal-stats-skeleton"
+    className="bg-background rounded-3xl p-2"
+  >
+    <Skeleton className="h-7 w-32 m-4" />
+    <div className="flex flex-col bg-card rounded-3xl border">
+      {[0, 1, 2].map((i) => (
+        <div key={i}>
+          {!!i && <Separator />}
+          <div className="flex flex-col gap-3 p-4">
+            <Skeleton className="h-7" />
+            <Skeleton className="h-1" />
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+)
+
 const ProposalDetailStats = () => {
+  const proposal = useAtomValue(proposalDetailAtom)
   const state = useAtomValue(proposalStateAtom) ?? ''
   const {
     quorumWeight,
@@ -318,6 +368,7 @@ const ProposalDetailStats = () => {
     quorumReached,
     hasQuorumTarget,
     isOptimistic,
+    awaitingSnapshot,
     majorityWeight,
     majoritySupport,
     againstVotes,
@@ -327,6 +378,8 @@ const ProposalDetailStats = () => {
   const isVotingLive = [PROPOSAL_STATES.ACTIVE, PROPOSAL_STATES.PENDING].includes(
     state
   )
+
+  if (!proposal) return <ProposalDetailStatsSkeleton />
 
   return (
     <div className="bg-background rounded-3xl p-2">
@@ -344,6 +397,7 @@ const ProposalDetailStats = () => {
             currentQuorum={currentQuorum}
             quorumNeeded={quorumNeeded}
             hasQuorumTarget={hasQuorumTarget}
+            awaitingSnapshot={awaitingSnapshot}
           />
         ) : (
           <>
@@ -354,6 +408,7 @@ const ProposalDetailStats = () => {
               quorumNeeded={quorumNeeded}
               quorumReached={quorumReached}
               hasQuorumTarget={hasQuorumTarget}
+              awaitingSnapshot={awaitingSnapshot}
             />
             <Separator />
             <MajoritySupportStat

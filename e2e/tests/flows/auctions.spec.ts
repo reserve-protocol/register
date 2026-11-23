@@ -13,7 +13,7 @@ import {
 // Rebalance / auctions flows on base/lcap (v5).
 //
 // LIVE rebalance/auction state comes from RPC getRebalance() (selector
-// 0xaa3b5568), NOT the subgraph — getRebalances is history only. The shared rpc
+// 0xaa3b5568), NOT the subgraph — GetIndexDtfRebalances is history only. The shared rpc
 // table answers getRebalance() with an encoded EMPTY rebalance (idle) by
 // default; the active-detail test overrides it per-address with a tuple built
 // from the snapshot's own limits/tokens.
@@ -71,9 +71,9 @@ function includesEthCall(
 // The list/detail data resolves in TWO react-query flush rounds under a frozen
 // clock (notifyManager batches on setTimeout):
 //   pump 1 — flush GetIndexDTF: indexDTFAtom hydrates, which ENABLES the
-//            dependent getRebalances + proposal-list queries (gated on dtf.id);
+//            dependent GetIndexDtfRebalances + proposal-list queries (gated on dtf.id);
 //   (real-time yield so the dependent queries' mocked responses land)
-//   pump 2 — flush getRebalances + proposal list into React so rows/detail can
+//   pump 2 — flush GetIndexDtfRebalances + proposal list into React so rows/detail can
 //            bucket by executionBlock.
 async function settleListData(
   page: import('@playwright/test').Page,
@@ -86,7 +86,7 @@ async function settleListData(
         boundaryRequests.filter(
           (request) =>
             request.boundary === 'subgraph' &&
-            ['getRebalances', 'GetIndexDtfProposals'].includes(request.operationName)
+            ['GetIndexDtfRebalances', 'GetIndexDtfProposals'].includes(request.operationName)
         ).length
     )
     .toBeGreaterThanOrEqual(2)

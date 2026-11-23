@@ -3,11 +3,7 @@ import { msg } from '@lingui/core/macro'
 import { Trans, useLingui } from '@lingui/react/macro'
 import type { MessageDescriptor } from '@lingui/core'
 import { useAtomValue } from 'jotai'
-import {
-  Landmark,
-  LandPlot,
-  TrainTrack,
-} from 'lucide-react'
+import { Coins, Landmark, LandPlot, Lock, TrainTrack } from 'lucide-react'
 import { ReactNode, useCallback, useEffect } from 'react'
 import { useFormContext, useWatch } from 'react-hook-form'
 import { selectedGovernanceOptionAtom } from '../../atoms'
@@ -29,6 +25,12 @@ const SETTINGS: {
     field: 'fixedPlatformFee',
     icon: <TrainTrack size={14} strokeWidth={1.5} />,
     disabled: true,
+  },
+  {
+    title: msg`Holders`,
+    description: msg`Percentage of fee revenue kept inside the DTF for its holders.`,
+    icon: <Coins size={14} strokeWidth={1.5} />,
+    field: 'holderShare',
   },
   {
     title: msg`Creator`,
@@ -65,11 +67,15 @@ const RemainingAllocation = () => {
     governanceShare,
     deployerShare,
     additionalRevenueRecipients,
+    holderShare,
+    permanentRevenueRecipients,
   ] = watch([
     'fixedPlatformFee',
     'governanceShare',
     'deployerShare',
     'additionalRevenueRecipients',
+    'holderShare',
+    'permanentRevenueRecipients',
   ])
 
   const platformFee = fixedPlatformFee ?? 0
@@ -78,8 +84,12 @@ const RemainingAllocation = () => {
     new Decimal(platformFee)
       .plus(new Decimal(governanceShare || 0))
       .plus(new Decimal(deployerShare || 0))
+      .plus(new Decimal(holderShare || 0))
       .plus(
-        additionalRevenueRecipients?.reduce(
+        [
+          ...(additionalRevenueRecipients ?? []),
+          ...(permanentRevenueRecipients ?? []),
+        ].reduce(
           (sum: Decimal, recipient: { share: number }) =>
             sum.plus(new Decimal(recipient.share || 0)),
           new Decimal(0)
@@ -119,26 +129,43 @@ const EvenDistributionButton = () => {
       ...additionalRecipients.map(Boolean),
     ].filter(Boolean).length
 
-    const remainingPercentage = new Decimal(100).minus(platformFee)
+    // Holders and permanent recipients are set apart; the even split covers the rest.
+    const reserved = [
+      getValues('holderShare') ?? 0,
+      ...(getValues('permanentRevenueRecipients') ?? []).map(
+        (recipient: { share: number }) => recipient.share ?? 0
+      ),
+    ].reduce(
+      (sum: Decimal, share: number) => sum.plus(new Decimal(share)),
+      new Decimal(0)
+    )
+    const remainingPercentage = Math.max(
+      new Decimal(100).minus(platformFee).minus(reserved).value,
+      0
+    )
     const baseShare =
-      Math.floor((remainingPercentage.value / participantsCount) * 100) / 100
-    const totalPercentage = baseShare * (participantsCount - 1)
-    const lastShare = +(remainingPercentage.value - totalPercentage).toFixed(2)
+      Math.floor((remainingPercentage / participantsCount) * 100) / 100
+    const lastShare = +(
+      remainingPercentage -
+      baseShare * (participantsCount - 1)
+    ).toFixed(2)
+    const shareAt = (index: number) =>
+      index === participantsCount - 1 ? lastShare : baseShare
 
-    setValue('deployerShare', baseShare)
+    setValue('deployerShare', shareAt(0))
 
     if (isGovSharePresent) {
-      setValue('governanceShare', baseShare)
+      setValue('governanceShare', shareAt(1))
     }
 
     if (isAdditionalRecipientsPresent) {
+      const offset = isGovSharePresent ? 2 : 1
       setValue(
         'additionalRevenueRecipients',
         additionalRecipients.map(
           (recipient: { address: string; share: number }, index: number) => ({
             ...recipient,
-            share:
-              index === additionalRecipients.length - 1 ? lastShare : baseShare,
+            share: shareAt(offset + index),
           })
         )
       )
@@ -148,7 +175,7 @@ const EvenDistributionButton = () => {
   return (
     <Button
       variant="accent"
-      className="flex gap-2 text-base pl-3 pr-4 rounded-xl text-nowrap w-48 py-7 -mr-2 bg-muted/80"
+      className="flex gap-2 text-base pl-3 pr-4 rounded-xl text-nowrap w-full sm:w-48 py-7 sm:-mr-2 bg-muted/80"
       onClick={onEvenDistribution}
     >
       <Trans>Even distribution</Trans>
@@ -158,7 +185,7 @@ const EvenDistributionButton = () => {
 
 const RevenueDistributionSettings = () => {
   const { t } = useLingui()
-  const { getValues, watch, setValue } = useFormContext()
+  const { watch, setValue } = useFormContext()
   const selectedGovOption = useAtomValue(selectedGovernanceOptionAtom)
   const chain = watch('chain')
   const platformFee = usePlatformFee(chain)
@@ -217,6 +244,27 @@ const RevenueDistributionSettings = () => {
       <AdditionalRevenueRecipients>
         <EvenDistributionButton />
       </AdditionalRevenueRecipients>
+      <div
+        className="mt-2 flex flex-col gap-2"
+        data-testid="deploy-permanent-recipients"
+      >
+        <div className="flex items-center gap-2 px-2">
+          <Lock size={14} />
+          <span className="text-base font-bold">
+            <Trans>Permanent recipients</Trans>
+          </span>
+        </div>
+        <p className="px-2 text-sm text-muted-foreground">
+          <Trans>
+            Set at deployment. Governance can't remove them or lower their
+            share of the recipient revenue.
+          </Trans>
+        </p>
+        <AdditionalRevenueRecipients
+          field="permanentRevenueRecipients"
+          addLabel={<Trans>Add permanent recipient</Trans>}
+        />
+      </div>
     </div>
   )
 }

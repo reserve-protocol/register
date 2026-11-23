@@ -1,4 +1,4 @@
-import { Button } from '@/components/ui/button'
+import UpgradeProposalButton from './upgrade-proposal-button'
 import { indexDTFAtom, indexDTFStatusAtom } from '@/state/dtf/atoms'
 import { getCurrentTime } from '@/utils'
 import { Trans, useLingui } from '@lingui/react/macro'
@@ -8,10 +8,10 @@ import { useCallback, useEffect } from 'react'
 import { toast } from 'sonner'
 import { keccak256, toHex, type Address } from 'viem'
 import {
-  useReadContracts,
   useWaitForTransactionReceipt,
   useWriteContract,
 } from 'wagmi'
+import { useReadContracts } from '@/hooks/use-read-contracts'
 import { governanceProposalsAtom, refetchTokenAtom } from '../../../atoms'
 import { useIsProposeAllowed } from '../../../hooks/use-is-propose-allowed'
 import useRecentProposalReceipt from '../../../hooks/use-recent-proposal-receipt'
@@ -155,7 +155,7 @@ export default function ProposeVoteLockUpgrade() {
 
   const symbol = dtf.stToken?.token.symbol ?? ''
 
-  const handlePropose = () => {
+  const handlePropose = (proposalDescription: string) => {
     const { vault: vaultImpl, governor: governorImpl, timelock: timelockImpl } =
       reads.implementations!
     writeContract(
@@ -170,7 +170,7 @@ export default function ProposeVoteLockUpgrade() {
           governor: governorImpl!,
           timelock: timelockImpl!,
         },
-        description: nextVoteLockUpgradeDescription(proposals),
+        description: proposalDescription,
       })
     )
   }
@@ -203,10 +203,12 @@ export default function ProposeVoteLockUpgrade() {
           </p>
         </div>
       </div>
-      <Button
+      <UpgradeProposalButton
+        initialDescription={t`Upgrade the vote-lock vault, its governor and timelock to release 1.1.0. This proposal is submitted to the vote-lock DAO.`}
+        initialTitle={nextVoteLockUpgradeDescription(proposals)}
         data-testid="governance-vote-lock-upgrade-btn"
         disabled={isPending || isSubmitted}
-        onClick={handlePropose}
+        onSubmit={handlePropose}
         className="w-full mt-2"
       >
         {(isPending || isSubmitted) && (
@@ -215,7 +217,7 @@ export default function ProposeVoteLockUpgrade() {
         {isPending && t`Pending, sign in wallet...`}
         {!isPending && isSubmitted && t`Waiting for confirmation...`}
         {!isPending && !isSubmitted && t`Propose ${symbol} upgrade`}
-      </Button>
+      </UpgradeProposalButton>
     </div>
   )
 }

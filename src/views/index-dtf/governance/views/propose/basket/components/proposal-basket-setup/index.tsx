@@ -47,6 +47,7 @@ const NextButton = () => {
       )}
 
       <Button
+        data-testid="basket-confirm-btn"
         disabled={!isValid}
         onClick={handleNext}
         className="w-full mb-2 rounded-xl"

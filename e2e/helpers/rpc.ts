@@ -190,6 +190,8 @@ const callOverrides: Record<string, Hex> = {
   '*:0x4d2301cc': ETH_BALANCE, // Multicall3.getEthBalance(address)
   '*:0xaa3b5568': IDLE_REBALANCE, // getRebalance() — no active rebalance by default
   '*:0xfc528482': ZERO_RETURN, // nextAuctionId() — no auction opened by default (SDK latest-auction read)
+  // getThreshold() — the governance hovercard's Safe probe; any address reads as "not a Safe".
+  '*:0xe75235b8': ZERO_RETURN,
   // Fee-display reads on the DTF container (peripheral to governance). A DTF
   // with no DAO fee registry reads as fee-free — a valid, deterministic state.
   '*:0x9980cb23': ZERO_RETURN, // daoFeeRegistry() → zero address
@@ -319,6 +321,7 @@ interface DtfMetadataSnapshot {
     }
     ownerGovernance?: { id: string; timelock?: { id: string } }
     tradingGovernance?: { id: string; timelock?: { id: string } }
+    proxyAdmin?: string
   }
 }
 
@@ -331,8 +334,21 @@ const SELECTOR = {
   symbol: '0x95d89b41',
   owner: '0x8da5cb5b',
   asset: '0x38d52e0f',
+  token: '0xfc0c546a',
   timelock: '0xd33219b4',
+  versionRegistry: '0x60893515',
 } as const
+
+const FOLIO_VERSION_REGISTRY: Record<number, `0x${string}`> = {
+  1: '0xa665b273997f70b647b66fa7ed021287544849db',
+  8453: '0xa665b273997f70b647b66fa7ed021287544849db',
+  56: '0x79a4e963378ae34fc6c796a24c764322fc6c9390',
+}
+const VERSION_REGISTRY_ABI = parseAbi([
+  'function deployments(bytes32) view returns (address)',
+  'function getImplementationForVersion(bytes32) view returns (address)',
+  'function isDeprecated(bytes32) view returns (bool)',
+])
 
 const HAS_ROLE_ABI = parseAbi([
   'function hasRole(bytes32 role, address account) view returns (bool)',
@@ -546,6 +562,16 @@ function seedChainState() {
         callOverrides[`${daoGovernor.toLowerCase()}:${SELECTOR.timelock}`] =
           encodeAbiParameters([{ type: 'address' }], [daoTimelock as `0x${string}`])
       }
+      // Governors vote with the vault; the SDK reads token() to format votes in its decimals.
+      for (const governor of [
+        metadata.ownerGovernance?.id,
+        metadata.tradingGovernance?.id,
+        daoGovernor,
+      ]) {
+        if (!governor) continue
+        callOverrides[`${governor.toLowerCase()}:${SELECTOR.token}`] =
+          encodeAbiParameters([{ type: 'address' }], [vault as `0x${string}`])
+      }
       if (metadata.stToken.underlying) {
         callOverrides[`${vault}:${SELECTOR.asset}`] = encodeAbiParameters(
           [{ type: 'address' }],
@@ -558,6 +584,28 @@ function seedChainState() {
       [DEFAULT_ADMIN_ROLE, metadata.ownerGovernance?.timelock?.id],
       [REBALANCE_MANAGER_ROLE, metadata.tradingGovernance?.timelock?.id],
     ]
+    // The 6.0.0 upgrade banner resolves the version registry through the ProxyAdmin; 6.0.0 is not registered on any chain yet.
+    const versionRegistry = FOLIO_VERSION_REGISTRY[dtf.chainId]
+    if (metadata.proxyAdmin && versionRegistry) {
+      callOverrides[`${metadata.proxyAdmin.toLowerCase()}:${SELECTOR.versionRegistry}`] =
+        encodeAbiParameters([{ type: 'address' }], [versionRegistry])
+      const v6 = keccak256(toHex('6.0.0'))
+      const unregistered: Array<[string, Hex]> = [
+        ['deployments', encodeAbiParameters([{ type: 'address' }], [ZERO_ADDRESS])],
+        ['getImplementationForVersion', encodeAbiParameters([{ type: 'address' }], [ZERO_ADDRESS])],
+        ['isDeprecated', encodeAbiParameters([{ type: 'bool' }], [false])],
+      ]
+      for (const [functionName, answer] of unregistered) {
+        exactCallOverrides.set(
+          `${versionRegistry}:${encodeFunctionData({
+            abi: VERSION_REGISTRY_ABI,
+            functionName: functionName as 'deployments',
+            args: [v6],
+          })}`.toLowerCase(),
+          answer
+        )
+      }
+    }
     for (const [role, timelock] of legacyRoles) {
       if (!timelock) continue
       exactCallOverrides.set(

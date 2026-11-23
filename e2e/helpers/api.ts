@@ -9,6 +9,17 @@ import {
   YIELD_REGISTRY,
 } from './registry'
 import { loadSnapshot, snapshotExists } from './snapshots'
+import { getAddress } from 'viem'
+
+const emptyGovernanceProfile = (address: string) => ({
+  address,
+  totals: { proposals: 0, executed: 0, defeated: 0, vetoed: 0, canceled: 0, votes: 0 },
+  firstActionAt: null,
+  lastActionAt: null,
+  dtfs: [],
+  truncated: false,
+  degradedChains: [],
+})
 
 // api.reserve.org interception, dispatched by pathname. Per-DTF endpoints load
 // from snapshots keyed by the address/folio param. Unmocked endpoints fail loud
@@ -33,6 +44,17 @@ export interface ApiMockOptions {
   geolocation: GeolocationStatus
   overrides?: MockOverrides
   requests?: BoundaryRequest[]
+}
+
+const ONE_INCH_CHAINS = new Set(['1', '8453', '56'])
+
+// No Fusion route offline: the zapper drops 1inch and keeps the pinned zapper quote. Specs wanting a 1inch route overlay it.
+export function oneInchFusionQuote(url: URL) {
+  if (!ONE_INCH_CHAINS.has(url.searchParams.get('chainId') ?? '')) return undefined
+  return {
+    status: 'ok',
+    result: { available: false, reason: 'no 1inch route in the offline suite' },
+  }
 }
 
 function json(
@@ -221,6 +243,22 @@ export function etherscanResponse(
   return undefined
 }
 
+const YIELD_PATHS: Array<[RegExp, unknown]> = [
+  [/^(\/v[12])?\/yields\/pools$/, { data: [] }],
+  [/^(\/v[12])?\/yields\/chart\/[0-9a-f]{8}(-[0-9a-f]{4}){3}-[0-9a-f]{12}$/, { data: [] }],
+  [
+    /^(\/v[12])?\/yield-dtf\/yields\/?$/,
+    { collaterals: {}, rtokens: {}, rtokensBasketAPY: {}, defiTVL: {} },
+  ],
+  [/^(\/v[12])?\/yield-dtf\/yields\/pools$/, {}],
+]
+
+// DefiLlama data served by reserve-api: empty by default. Exact paths only, and a chart id must
+// be a DefiLlama pool id, so `/yields/chart/undefined` or a typo fails loud as unmocked.
+export function yieldsResponse(path: string): unknown | undefined {
+  return YIELD_PATHS.find(([pattern]) => pattern.test(path))?.[1]
+}
+
 export async function mockApiRoutes(page: Page, options: ApiMockOptions) {
   const { log, geolocation, overrides, requests } = options
 
@@ -285,6 +323,28 @@ export async function mockApiRoutes(page: Page, options: ApiMockOptions) {
     // portfolio-object branch below (its path is a prefix of this one).
     if (path.includes('/v1/portfolio/') && path.endsWith('/transactions')) {
       return json(route, [])
+    }
+
+    // Address governance profile (governance hovercard) — no history.
+    if (path.includes('/v1/portfolio/') && path.endsWith('/governance')) {
+      return json(route, emptyGovernanceProfile(path.split('/').at(-2) ?? ''))
+    }
+
+    // Batch of governance profiles (hovercard preload) — each address answers
+    // what its single route would, so a spec seeds one route and both agree.
+    if (path === '/v1/governance/accounts') {
+      const addresses = (url.searchParams.get('addresses') ?? '').split(',').filter(Boolean)
+      const accounts = addresses.map((address) => {
+        for (const casing of [address, getAddress(address)]) {
+          const single = overrides?.lookupApi(
+            'GET',
+            new URL(`/v1/portfolio/${casing}/governance`, url)
+          )
+          if (single !== undefined) return single
+        }
+        return emptyGovernanceProfile(address)
+      })
+      return json(route, { accounts })
     }
 
     // Connected-portfolio history chart (per-period fan-out) — empty series.
@@ -454,6 +514,14 @@ export async function mockApiRoutes(page: Page, options: ApiMockOptions) {
       return json(route, [])
     }
 
+    // react-zapper >= 2.14 also asks 1inch Fusion for a route on every quote.
+    if (path.includes('/1inch/fusion/quote')) {
+      const answer = oneInchFusionQuote(url)
+      if (answer) return json(route, answer)
+      log('unmocked operation identity', { path, search: url.search })
+      return json(route, { status: 'error', error: 'unmocked 1inch quote' }, 404)
+    }
+
     // Token LIST endpoint — must match before the generic /zapper healthcheck:
     // an object here crashes use-asset-price-volatility's tokens.map and takes
     // the whole rebalance detail down via its error boundary.
@@ -508,6 +576,11 @@ export async function mockApiRoutes(page: Page, options: ApiMockOptions) {
     // Yield APY updater polls this for index DTFs — empty keeps it quiet.
     if (path.includes('/dtf/apy')) {
       return json(route, {})
+    }
+
+    const yields = yieldsResponse(path)
+    if (yields !== undefined) {
+      return json(route, yields)
     }
 
     // Rebalance metrics (historical MetricsRow) — empty by default; auctions

@@ -203,88 +203,125 @@ const QUERIES = {
   // omitted — so a legacy-shaped snapshot made mapIndexDtf throw.
   //
   // NOT importable: @reserve-protocol/sdk@0.2.0 does not export the document.
-  // Source: @reserve-protocol/sdk@0.2.0 dist/index.mjs, const GetIndexDtfDocument
+  // Source: @reserve-protocol/sdk@0.8.0 dist/index-dtf/subgraph/dtf.generated.mjs, const GetIndexDtfDocument
   // (query GetIndexDTF). Keep in sync on SDK bumps — the dtf-data.spec canary
   // catches drift. `$block` is omitted at call time (always latest).
   getDTF: `query GetIndexDTF($id: ID!, $block: Block_height) {
-    dtf(id: $id, block: $block) {
+  dtf(id: $id, block: $block) {
+    id
+    version
+    proxyAdmin
+    timestamp
+    deployer
+    ownerAddress
+    admins
+    mintingFee
+    tvlFee
+    annualizedTvlFee
+    mandate
+    auctionDelay
+    auctionLength
+    maxAuctionLength
+    tradeAllowlistEnabled
+    tradeTokenAllowlist
+    auctionApprovers
+    auctionLaunchers
+    brandManagers
+    totalRevenue
+    protocolRevenue
+    governanceRevenue
+    externalRevenue
+    selfRevenue
+    feeRecipients
+    immutableFeeRecipients
+    folioFeeForSelf
+    bidsEnabled
+    trustedFillerRegistry
+    trustedFillerEnabled
+    weightControl
+    priceControl
+    ownerGovernance {
       id
-      proxyAdmin
-      timestamp
-      deployer
-      ownerAddress
-      admins
-      mintingFee
-      tvlFee
-      annualizedTvlFee
-      mandate
-      auctionDelay
-      auctionLength
-      auctionApprovers
-      auctionLaunchers
-      brandManagers
-      totalRevenue
-      protocolRevenue
-      governanceRevenue
-      externalRevenue
-      feeRecipients
-      bidsEnabled
-      trustedFillerRegistry
-      trustedFillerEnabled
-      weightControl
-      priceControl
-      ownerGovernance {
+      name
+      version
+      votingDelay
+      votingPeriod
+      proposalThreshold
+      proposalThresholdExact
+      lateQuorumVoteExtension
+      quorumVotes
+      quorumNumerator
+      quorumDenominator
+      isOptimistic
+      optimisticVetoDelay
+      optimisticVetoPeriod
+      optimisticVetoThreshold
+      optimisticProposalThrottleCapacity
+      optimisticSelectorRegistry
+      optimisticProposers
+      timelock {
         id
-        name
-        version
-        votingDelay
-        votingPeriod
-        proposalThreshold
-        quorumVotes
-        quorumNumerator
-        quorumDenominator
-        isOptimistic
-        optimisticVetoDelay
-        optimisticVetoPeriod
-        optimisticVetoThreshold
-        optimisticProposalThrottleCapacity
-        optimisticSelectorRegistry
+        guardians
         optimisticProposers
-        timelock {
+        executionDelay
+        type
+      }
+    }
+    legacyAdmins
+    legacyAdminGovernances {
+      id
+      token {
+        id
+        governance {
           id
-          guardians
-          optimisticProposers
-          executionDelay
-          type
         }
       }
-      legacyAdmins
-      tradingGovernance {
+    }
+    tradingGovernance {
+      id
+      name
+      version
+      votingDelay
+      votingPeriod
+      proposalThreshold
+      proposalThresholdExact
+      lateQuorumVoteExtension
+      quorumVotes
+      quorumNumerator
+      quorumDenominator
+      isOptimistic
+      optimisticVetoDelay
+      optimisticVetoPeriod
+      optimisticVetoThreshold
+      optimisticProposalThrottleCapacity
+      optimisticSelectorRegistry
+      optimisticProposers
+      timelock {
         id
-        name
-        version
-        votingDelay
-        votingPeriod
-        proposalThreshold
-        quorumVotes
-        quorumNumerator
-        quorumDenominator
-        isOptimistic
-        optimisticVetoDelay
-        optimisticVetoPeriod
-        optimisticVetoThreshold
-        optimisticProposalThrottleCapacity
-        optimisticSelectorRegistry
+        guardians
         optimisticProposers
-        timelock {
-          id
-          guardians
-          optimisticProposers
-          executionDelay
-          type
-        }
+        executionDelay
+        type
       }
-      legacyAuctionApprovers
+    }
+    legacyAuctionApprovers
+    token {
+      id
+      address
+      name
+      symbol
+      decimals
+      totalSupply
+      currentHolderCount
+      cumulativeHolderCount
+      transferCount
+      mintCount
+      burnCount
+      totalBurned
+      totalMinted
+    }
+    stToken {
+      id
       token {
         id
         address
@@ -300,72 +337,57 @@ const QUERIES = {
         totalBurned
         totalMinted
       }
-      stToken {
+      currentDelegates
+      totalDelegates
+      delegatedVotesRaw
+      currentOptimisticDelegates
+      totalOptimisticDelegates
+      optimisticDelegatedVotesRaw
+      underlying {
+        name
+        symbol
+        address
+        decimals
+      }
+      governance {
         id
-        token {
+        name
+        version
+        votingDelay
+        votingPeriod
+        proposalThreshold
+        proposalThresholdExact
+        lateQuorumVoteExtension
+        quorumVotes
+        quorumNumerator
+        quorumDenominator
+        isOptimistic
+        optimisticVetoDelay
+        optimisticVetoPeriod
+        optimisticVetoThreshold
+        optimisticProposalThrottleCapacity
+        optimisticSelectorRegistry
+        optimisticProposers
+        timelock {
           id
-          address
-          name
-          symbol
-          decimals
-          totalSupply
-          currentHolderCount
-          cumulativeHolderCount
-          transferCount
-          mintCount
-          burnCount
-          totalBurned
-          totalMinted
-        }
-        currentDelegates
-        totalDelegates
-        delegatedVotesRaw
-        currentOptimisticDelegates
-        totalOptimisticDelegates
-        optimisticDelegatedVotesRaw
-        underlying {
-          name
-          symbol
-          address
-          decimals
-        }
-        governance {
-          id
-          name
-          version
-          votingDelay
-          votingPeriod
-          proposalThreshold
-          quorumVotes
-          quorumNumerator
-          quorumDenominator
-          isOptimistic
-          optimisticVetoDelay
-          optimisticVetoPeriod
-          optimisticVetoThreshold
-          optimisticProposalThrottleCapacity
-          optimisticSelectorRegistry
+          guardians
           optimisticProposers
-          timelock {
-            id
-            guardians
-            optimisticProposers
-            executionDelay
-            type
-          }
+          executionDelay
+          type
         }
-        legacyGovernance
-        rewards(where: {active: true}) {
-          rewardToken {
-            address
-            name
-            symbol
-            decimals
-          }
+      }
+      legacyGovernance
+      rewards(where: {active: true}) {
+        rewardToken {
+          address
+          name
+          symbol
+          decimals
         }
       }
     }
-  }`,
+  }
+}`,
   getGovernanceStats: `query getGovernanceStats($governanceIds: [String!]!, $stToken: String!) {
     governances(where: { id_in: $governanceIds }) {
       id proposalCount

@@ -20,7 +20,9 @@ const messages = {
 
 export const buildProposeBasketSettingsSchema = (
   t: (descriptor: MessageDescriptor) => string,
-  quorumDenominator?: number
+  quorumDenominator?: number,
+  // Optional while the indexed threshold is a placeholder: the form cannot show the governor's value.
+  thresholdRequired = true
 ) =>
   z
     .object({
@@ -74,7 +76,7 @@ export const buildProposeBasketSettingsSchema = (
           return Number(val)
         })
         .refine(
-          (val) => val !== undefined,
+          (val) => !thresholdRequired || val !== undefined,
           t(messages.proposalThresholdRequired)
         )
         .refine(
@@ -112,11 +114,14 @@ export const buildProposeBasketSettingsSchema = (
       }
     )
 
-export const useProposeBasketSettingsSchema = (quorumDenominator?: number) => {
+export const useProposeBasketSettingsSchema = (
+  quorumDenominator?: number,
+  thresholdRequired = true
+) => {
   const { t } = useLingui()
   return useMemo(
-    () => buildProposeBasketSettingsSchema(t, quorumDenominator),
-    [t, quorumDenominator]
+    () => buildProposeBasketSettingsSchema(t, quorumDenominator, thresholdRequired),
+    [t, quorumDenominator, thresholdRequired]
   )
 }
 
