@@ -29,4 +29,4 @@ One line per page. Agents: start here, follow links, keep this list current on i
 - [[basket-overview]] — Holdings table (Exposure/Collateral tabs): two mcap numbers, one per tab (underlying tradfi vs tokenized supply, never cross them); exposure route schema strips undeclared fields; lowercased mcap-map keys
 - [[wallet-connect]] — solariskit wallet modal on wagmi v3: single `useWalletModal` seam, wallet list and SDK peers, no kit network picker, wagmi v3 behaviour changes, manual wallet matrix
 - [[e2e]] — strict offline Playwright contract: exact boundary identity, correlated transactions, atomic snapshots, smoke/full CI split
-- [[home]] — landing page: featured cards downsample the server's hourly 90d series to daily at the data layer; ref-driven packing animation and memoized cards are perf invariants
+- [[home]] — landing page (eUSD through UGLYCASH) and Discover: UGLYCASH data sources (ledger aggregates vs onchain held), generated map/globe geography, ref-driven globe canvas and memoized Discover cards as perf invariants

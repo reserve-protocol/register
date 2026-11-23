@@ -1,0 +1,4028 @@
+{
+  "_meta": {
+    "source": "https://api.reserve.org/metrics/uglycash/daily",
+    "capturedAt": "2026-11-23T14:22:51.695Z",
+    "window": {
+      "downsampledSeries": [
+        {
+          "path": "points",
+          "from": 1069,
+          "to": 200
+        }
+      ]
+    }
+  },
+  "data": {
+    "generatedAt": "2026-11-23T00:14:03Z",
+    "launchDate": "2023-12-20",
+    "categories": [
+      "deposits",
+      "withdrawals",
+      "sends",
+      "card",
+      "other"
+    ],
+    "points": [
+      {
+        "date": "2023-12-20",
+        "volume": {
+          "deposits": 87903,
+          "withdrawals": 95,
+          "sends": 5,
+          "card": 0,
+          "other": 0
+        },
+        "count": {
+          "deposits": 158,
+          "withdrawals": 10,
+          "sends": 6,
+          "card": 0,
+          "other": 0
+        },
+        "totalVolume": 88003,
+        "totalCount": 174,
+        "balance": 87809
+      },
+      {
+        "date": "2023-12-25",
+        "volume": {
+          "deposits": 648,
+          "withdrawals": 12,
+          "sends": 0,
+          "card": 0,
+          "other": 16
+        },
+        "count": {
+          "deposits": 103,
+          "withdrawals": 1,
+          "sends": 0,
+          "card": 0,
+          "other": 3
+        },
+        "totalVolume": 676,
+        "totalCount": 107,
+        "balance": 136780
+      },
+      {
+        "date": "2023-12-30",
+        "volume": {
+          "deposits": 547,
+          "withdrawals": 305,
+          "sends": 22,
+          "card": 0,
+          "other": 124
+        },
+        "count": {
+          "deposits": 64,
+          "withdrawals": 6,
+          "sends": 2,
+          "card": 0,
+          "other": 6
+        },
+        "totalVolume": 998,
+        "totalCount": 78,
+        "balance": 152117
+      },
+      {
+        "date": "2024-01-05",
+        "volume": {
+          "deposits": 78382,
+          "withdrawals": 15385,
+          "sends": 18,
+          "card": 0,
+          "other": 9
+        },
+        "count": {
+          "deposits": 55,
+          "withdrawals": 19,
+          "sends": 1,
+          "card": 0,
+          "other": 3
+        },
+        "totalVolume": 93794,
+        "totalCount": 78,
+        "balance": 225973
+      },
+      {
+        "date": "2024-01-10",
+        "volume": {
+          "deposits": 5781,
+          "withdrawals": 7347,
+          "sends": 0,
+          "card": 0,
+          "other": 64
+        },
+        "count": {
+          "deposits": 36,
+          "withdrawals": 10,
+          "sends": 0,
+          "card": 0,
+          "other": 14
+        },
+        "totalVolume": 13192,
+        "totalCount": 60,
+        "balance": 195623
+      },
+      {
+        "date": "2024-01-15",
+        "volume": {
+          "deposits": 121,
+          "withdrawals": 542,
+          "sends": 48,
+          "card": 0,
+          "other": 96
+        },
+        "count": {
+          "deposits": 30,
+          "withdrawals": 6,
+          "sends": 2,
+          "card": 0,
+          "other": 2
+        },
+        "totalVolume": 807,
+        "totalCount": 40,
+        "balance": 180560
+      },
+      {
+        "date": "2024-01-21",
+        "volume": {
+          "deposits": 24,
+          "withdrawals": 5,
+          "sends": 0,
+          "card": 0,
+          "other": 4
+        },
+        "count": {
+          "deposits": 16,
+          "withdrawals": 2,
+          "sends": 0,
+          "card": 0,
+          "other": 1
+        },
+        "totalVolume": 33,
+        "totalCount": 19,
+        "balance": 171487
+      },
+      {
+        "date": "2024-01-26",
+        "volume": {
+          "deposits": 215,
+          "withdrawals": 62323,
+          "sends": 2050,
+          "card": 0,
+          "other": 108751
+        },
+        "count": {
+          "deposits": 20,
+          "withdrawals": 41,
+          "sends": 1,
+          "card": 0,
+          "other": 37
+        },
+        "totalVolume": 173339,
+        "totalCount": 99,
+        "balance": 227144
+      },
+      {
+        "date": "2024-01-31",
+        "volume": {
+          "deposits": 788,
+          "withdrawals": 15672,
+          "sends": 0,
+          "card": 0,
+          "other": 79
+        },
+        "count": {
+          "deposits": 20,
+          "withdrawals": 10,
+          "sends": 0,
+          "card": 0,
+          "other": 1
+        },
+        "totalVolume": 16539,
+        "totalCount": 31,
+        "balance": 193957
+      },
+      {
+        "date": "2024-02-06",
+        "volume": {
+          "deposits": 2421,
+          "withdrawals": 3605,
+          "sends": 180,
+          "card": 0,
+          "other": 60
+        },
+        "count": {
+          "deposits": 17,
+          "withdrawals": 11,
+          "sends": 3,
+          "card": 0,
+          "other": 2
+        },
+        "totalVolume": 6266,
+        "totalCount": 33,
+        "balance": 190894
+      },
+      {
+        "date": "2024-02-11",
+        "volume": {
+          "deposits": 137,
+          "withdrawals": 35,
+          "sends": 22,
+          "card": 0,
+          "other": 85
+        },
+        "count": {
+          "deposits": 22,
+          "withdrawals": 1,
+          "sends": 4,
+          "card": 0,
+          "other": 2
+        },
+        "totalVolume": 279,
+        "totalCount": 29,
+        "balance": 197665
+      },
+      {
+        "date": "2024-02-16",
+        "volume": {
+          "deposits": 2436,
+          "withdrawals": 1051,
+          "sends": 0,
+          "card": 0,
+          "other": 89
+        },
+        "count": {
+          "deposits": 16,
+          "withdrawals": 6,
+          "sends": 0,
+          "card": 0,
+          "other": 4
+        },
+        "totalVolume": 3576,
+        "totalCount": 26,
+        "balance": 196685
+      },
+      {
+        "date": "2024-02-22",
+        "volume": {
+          "deposits": 14,
+          "withdrawals": 2887,
+          "sends": 0,
+          "card": 0,
+          "other": 2
+        },
+        "count": {
+          "deposits": 11,
+          "withdrawals": 9,
+          "sends": 0,
+          "card": 0,
+          "other": 1
+        },
+        "totalVolume": 2903,
+        "totalCount": 21,
+        "balance": 186004
+      },
+      {
+        "date": "2024-02-27",
+        "volume": {
+          "deposits": 1431,
+          "withdrawals": 12553,
+          "sends": 300,
+          "card": 0,
+          "other": 88894
+        },
+        "count": {
+          "deposits": 13,
+          "withdrawals": 26,
+          "sends": 2,
+          "card": 0,
+          "other": 51
+        },
+        "totalVolume": 103178,
+        "totalCount": 92,
+        "balance": 259015
+      },
+      {
+        "date": "2024-03-03",
+        "volume": {
+          "deposits": 55,
+          "withdrawals": 3193,
+          "sends": 0,
+          "card": 0,
+          "other": 67
+        },
+        "count": {
+          "deposits": 7,
+          "withdrawals": 8,
+          "sends": 0,
+          "card": 0,
+          "other": 4
+        },
+        "totalVolume": 3315,
+        "totalCount": 19,
+        "balance": 218522
+      },
+      {
+        "date": "2024-03-09",
+        "volume": {
+          "deposits": 25,
+          "withdrawals": 379,
+          "sends": 2,
+          "card": 0,
+          "other": 7
+        },
+        "count": {
+          "deposits": 10,
+          "withdrawals": 7,
+          "sends": 3,
+          "card": 0,
+          "other": 3
+        },
+        "totalVolume": 413,
+        "totalCount": 23,
+        "balance": 199027
+      },
+      {
+        "date": "2024-03-14",
+        "volume": {
+          "deposits": 2023,
+          "withdrawals": 2424,
+          "sends": 2,
+          "card": 0,
+          "other": 403
+        },
+        "count": {
+          "deposits": 15,
+          "withdrawals": 6,
+          "sends": 4,
+          "card": 0,
+          "other": 23
+        },
+        "totalVolume": 4852,
+        "totalCount": 48,
+        "balance": 191980
+      },
+      {
+        "date": "2024-03-19",
+        "volume": {
+          "deposits": 88,
+          "withdrawals": 2712,
+          "sends": 2,
+          "card": 0,
+          "other": 32
+        },
+        "count": {
+          "deposits": 18,
+          "withdrawals": 13,
+          "sends": 2,
+          "card": 0,
+          "other": 9
+        },
+        "totalVolume": 2834,
+        "totalCount": 42,
+        "balance": 187126
+      },
+      {
+        "date": "2024-03-25",
+        "volume": {
+          "deposits": 504,
+          "withdrawals": 907,
+          "sends": 0,
+          "card": 0,
+          "other": 11
+        },
+        "count": {
+          "deposits": 5,
+          "withdrawals": 9,
+          "sends": 0,
+          "card": 0,
+          "other": 1
+        },
+        "totalVolume": 1422,
+        "totalCount": 15,
+        "balance": 183443
+      },
+      {
+        "date": "2024-03-30",
+        "volume": {
+          "deposits": 0,
+          "withdrawals": 30,
+          "sends": 0,
+          "card": 0,
+          "other": 16
+        },
+        "count": {
+          "deposits": 2,
+          "withdrawals": 1,
+          "sends": 0,
+          "card": 0,
+          "other": 2
+        },
+        "totalVolume": 46,
+        "totalCount": 5,
+        "balance": 229808
+      },
+      {
+        "date": "2024-04-04",
+        "volume": {
+          "deposits": 5,
+          "withdrawals": 8204,
+          "sends": 1,
+          "card": 0,
+          "other": 202
+        },
+        "count": {
+          "deposits": 8,
+          "withdrawals": 15,
+          "sends": 1,
+          "card": 0,
+          "other": 2
+        },
+        "totalVolume": 8412,
+        "totalCount": 26,
+        "balance": 197622
+      },
+      {
+        "date": "2024-04-10",
+        "volume": {
+          "deposits": 10,
+          "withdrawals": 1275,
+          "sends": 15,
+          "card": 0,
+          "other": 19
+        },
+        "count": {
+          "deposits": 3,
+          "withdrawals": 10,
+          "sends": 1,
+          "card": 0,
+          "other": 2
+        },
+        "totalVolume": 1319,
+        "totalCount": 16,
+        "balance": 185356
+      },
+      {
+        "date": "2024-04-15",
+        "volume": {
+          "deposits": 64,
+          "withdrawals": 1431,
+          "sends": 30,
+          "card": 0,
+          "other": 0
+        },
+        "count": {
+          "deposits": 7,
+          "withdrawals": 9,
+          "sends": 2,
+          "card": 0,
+          "other": 0
+        },
+        "totalVolume": 1525,
+        "totalCount": 18,
+        "balance": 179568
+      },
+      {
+        "date": "2024-04-20",
+        "volume": {
+          "deposits": 159,
+          "withdrawals": 1185,
+          "sends": 0,
+          "card": 0,
+          "other": 12
+        },
+        "count": {
+          "deposits": 4,
+          "withdrawals": 9,
+          "sends": 0,
+          "card": 0,
+          "other": 3
+        },
+        "totalVolume": 1356,
+        "totalCount": 16,
+        "balance": 172846
+      },
+      {
+        "date": "2024-04-26",
+        "volume": {
+          "deposits": 2663,
+          "withdrawals": 20019,
+          "sends": 107,
+          "card": 0,
+          "other": 87783
+        },
+        "count": {
+          "deposits": 14,
+          "withdrawals": 26,
+          "sends": 8,
+          "card": 0,
+          "other": 31
+        },
+        "totalVolume": 110572,
+        "totalCount": 79,
+        "balance": 236541
+      },
+      {
+        "date": "2024-05-01",
+        "volume": {
+          "deposits": 20,
+          "withdrawals": 2900,
+          "sends": 0,
+          "card": 0,
+          "other": 1957
+        },
+        "count": {
+          "deposits": 10,
+          "withdrawals": 11,
+          "sends": 0,
+          "card": 0,
+          "other": 6
+        },
+        "totalVolume": 4877,
+        "totalCount": 27,
+        "balance": 212532
+      },
+      {
+        "date": "2024-05-06",
+        "volume": {
+          "deposits": 116,
+          "withdrawals": 1727,
+          "sends": 0,
+          "card": 0,
+          "other": 0
+        },
+        "count": {
+          "deposits": 8,
+          "withdrawals": 13,
+          "sends": 0,
+          "card": 0,
+          "other": 0
+        },
+        "totalVolume": 1843,
+        "totalCount": 21,
+        "balance": 195948
+      },
+      {
+        "date": "2024-05-12",
+        "volume": {
+          "deposits": 43,
+          "withdrawals": 354,
+          "sends": 0,
+          "card": 0,
+          "other": 1
+        },
+        "count": {
+          "deposits": 6,
+          "withdrawals": 9,
+          "sends": 0,
+          "card": 0,
+          "other": 1
+        },
+        "totalVolume": 398,
+        "totalCount": 16,
+        "balance": 181939
+      },
+      {
+        "date": "2024-05-17",
+        "volume": {
+          "deposits": 13,
+          "withdrawals": 1521,
+          "sends": 0,
+          "card": 0,
+          "other": 211
+        },
+        "count": {
+          "deposits": 8,
+          "withdrawals": 6,
+          "sends": 0,
+          "card": 0,
+          "other": 2
+        },
+        "totalVolume": 1745,
+        "totalCount": 16,
+        "balance": 169431
+      },
+      {
+        "date": "2024-05-23",
+        "volume": {
+          "deposits": 64,
+          "withdrawals": 1583,
+          "sends": 14,
+          "card": 0,
+          "other": 568
+        },
+        "count": {
+          "deposits": 8,
+          "withdrawals": 11,
+          "sends": 1,
+          "card": 0,
+          "other": 3
+        },
+        "totalVolume": 2229,
+        "totalCount": 23,
+        "balance": 161072
+      },
+      {
+        "date": "2024-05-28",
+        "volume": {
+          "deposits": 184,
+          "withdrawals": 10859,
+          "sends": 111,
+          "card": 0,
+          "other": 22
+        },
+        "count": {
+          "deposits": 7,
+          "withdrawals": 16,
+          "sends": 3,
+          "card": 0,
+          "other": 2
+        },
+        "totalVolume": 11176,
+        "totalCount": 28,
+        "balance": 206447
+      },
+      {
+        "date": "2024-06-02",
+        "volume": {
+          "deposits": 31,
+          "withdrawals": 1190,
+          "sends": 5,
+          "card": 0,
+          "other": 0
+        },
+        "count": {
+          "deposits": 8,
+          "withdrawals": 11,
+          "sends": 1,
+          "card": 0,
+          "other": 0
+        },
+        "totalVolume": 1226,
+        "totalCount": 20,
+        "balance": 187137
+      },
+      {
+        "date": "2024-06-08",
+        "volume": {
+          "deposits": 10,
+          "withdrawals": 1939,
+          "sends": 0,
+          "card": 0,
+          "other": 12
+        },
+        "count": {
+          "deposits": 4,
+          "withdrawals": 8,
+          "sends": 0,
+          "card": 0,
+          "other": 1
+        },
+        "totalVolume": 1961,
+        "totalCount": 13,
+        "balance": 172245
+      },
+      {
+        "date": "2024-06-13",
+        "volume": {
+          "deposits": 34,
+          "withdrawals": 2680,
+          "sends": 0,
+          "card": 0,
+          "other": 152
+        },
+        "count": {
+          "deposits": 9,
+          "withdrawals": 12,
+          "sends": 0,
+          "card": 0,
+          "other": 2
+        },
+        "totalVolume": 2866,
+        "totalCount": 23,
+        "balance": 165434
+      },
+      {
+        "date": "2024-06-18",
+        "volume": {
+          "deposits": 197,
+          "withdrawals": 1112,
+          "sends": 108,
+          "card": 0,
+          "other": 385
+        },
+        "count": {
+          "deposits": 12,
+          "withdrawals": 11,
+          "sends": 3,
+          "card": 0,
+          "other": 3
+        },
+        "totalVolume": 1802,
+        "totalCount": 29,
+        "balance": 162523
+      },
+      {
+        "date": "2024-06-24",
+        "volume": {
+          "deposits": 244,
+          "withdrawals": 454,
+          "sends": 97,
+          "card": 0,
+          "other": 604
+        },
+        "count": {
+          "deposits": 6,
+          "withdrawals": 6,
+          "sends": 3,
+          "card": 0,
+          "other": 11
+        },
+        "totalVolume": 1399,
+        "totalCount": 26,
+        "balance": 160410
+      },
+      {
+        "date": "2024-06-29",
+        "volume": {
+          "deposits": 3,
+          "withdrawals": 318,
+          "sends": 30,
+          "card": 0,
+          "other": 70
+        },
+        "count": {
+          "deposits": 3,
+          "withdrawals": 4,
+          "sends": 1,
+          "card": 0,
+          "other": 3
+        },
+        "totalVolume": 421,
+        "totalCount": 11,
+        "balance": 210758
+      },
+      {
+        "date": "2024-07-04",
+        "volume": {
+          "deposits": 18,
+          "withdrawals": 2662,
+          "sends": 15,
+          "card": 0,
+          "other": 94
+        },
+        "count": {
+          "deposits": 2,
+          "withdrawals": 9,
+          "sends": 1,
+          "card": 0,
+          "other": 3
+        },
+        "totalVolume": 2789,
+        "totalCount": 15,
+        "balance": 196070
+      },
+      {
+        "date": "2024-07-10",
+        "volume": {
+          "deposits": 49,
+          "withdrawals": 1497,
+          "sends": 3,
+          "card": 0,
+          "other": 0
+        },
+        "count": {
+          "deposits": 1,
+          "withdrawals": 10,
+          "sends": 1,
+          "card": 0,
+          "other": 0
+        },
+        "totalVolume": 1549,
+        "totalCount": 12,
+        "balance": 189005
+      },
+      {
+        "date": "2024-07-15",
+        "volume": {
+          "deposits": 101,
+          "withdrawals": 172,
+          "sends": 0,
+          "card": 0,
+          "other": 225
+        },
+        "count": {
+          "deposits": 3,
+          "withdrawals": 3,
+          "sends": 0,
+          "card": 0,
+          "other": 4
+        },
+        "totalVolume": 498,
+        "totalCount": 10,
+        "balance": 185075
+      },
+      {
+        "date": "2024-07-20",
+        "volume": {
+          "deposits": 3,
+          "withdrawals": 929,
+          "sends": 0,
+          "card": 0,
+          "other": 63
+        },
+        "count": {
+          "deposits": 4,
+          "withdrawals": 10,
+          "sends": 0,
+          "card": 0,
+          "other": 13
+        },
+        "totalVolume": 995,
+        "totalCount": 27,
+        "balance": 189004
+      },
+      {
+        "date": "2024-07-26",
+        "volume": {
+          "deposits": 55,
+          "withdrawals": 1294,
+          "sends": 555,
+          "card": 0,
+          "other": 72099
+        },
+        "count": {
+          "deposits": 7,
+          "withdrawals": 9,
+          "sends": 6,
+          "card": 0,
+          "other": 42
+        },
+        "totalVolume": 74003,
+        "totalCount": 64,
+        "balance": 258662
+      },
+      {
+        "date": "2024-07-31",
+        "volume": {
+          "deposits": 290,
+          "withdrawals": 3320,
+          "sends": 0,
+          "card": 0,
+          "other": 91
+        },
+        "count": {
+          "deposits": 2,
+          "withdrawals": 10,
+          "sends": 0,
+          "card": 0,
+          "other": 11
+        },
+        "totalVolume": 3701,
+        "totalCount": 23,
+        "balance": 243904
+      },
+      {
+        "date": "2024-08-05",
+        "volume": {
+          "deposits": 3091,
+          "withdrawals": 10169,
+          "sends": 0,
+          "card": 0,
+          "other": 1711
+        },
+        "count": {
+          "deposits": 7,
+          "withdrawals": 27,
+          "sends": 0,
+          "card": 0,
+          "other": 24
+        },
+        "totalVolume": 14971,
+        "totalCount": 58,
+        "balance": 224266
+      },
+      {
+        "date": "2024-08-11",
+        "volume": {
+          "deposits": 5,
+          "withdrawals": 178,
+          "sends": 0,
+          "card": 0,
+          "other": 0
+        },
+        "count": {
+          "deposits": 4,
+          "withdrawals": 8,
+          "sends": 0,
+          "card": 0,
+          "other": 9
+        },
+        "totalVolume": 183,
+        "totalCount": 21,
+        "balance": 223433
+      },
+      {
+        "date": "2024-08-16",
+        "volume": {
+          "deposits": 2302,
+          "withdrawals": 2861,
+          "sends": 12,
+          "card": 11,
+          "other": 1005
+        },
+        "count": {
+          "deposits": 8,
+          "withdrawals": 12,
+          "sends": 2,
+          "card": 2,
+          "other": 14
+        },
+        "totalVolume": 6191,
+        "totalCount": 38,
+        "balance": 215330
+      },
+      {
+        "date": "2024-08-21",
+        "volume": {
+          "deposits": 341,
+          "withdrawals": 170,
+          "sends": 1700,
+          "card": 0,
+          "other": 20
+        },
+        "count": {
+          "deposits": 4,
+          "withdrawals": 2,
+          "sends": 1,
+          "card": 0,
+          "other": 15
+        },
+        "totalVolume": 2231,
+        "totalCount": 22,
+        "balance": 212942
+      },
+      {
+        "date": "2024-08-27",
+        "volume": {
+          "deposits": 101,
+          "withdrawals": 2412,
+          "sends": 11,
+          "card": 0,
+          "other": 13
+        },
+        "count": {
+          "deposits": 2,
+          "withdrawals": 4,
+          "sends": 1,
+          "card": 0,
+          "other": 15
+        },
+        "totalVolume": 2537,
+        "totalCount": 22,
+        "balance": 207896
+      },
+      {
+        "date": "2024-09-01",
+        "volume": {
+          "deposits": 0,
+          "withdrawals": 3289,
+          "sends": 1432,
+          "card": 0,
+          "other": 0
+        },
+        "count": {
+          "deposits": 0,
+          "withdrawals": 11,
+          "sends": 2,
+          "card": 0,
+          "other": 14
+        },
+        "totalVolume": 4721,
+        "totalCount": 27,
+        "balance": 259521
+      },
+      {
+        "date": "2024-09-06",
+        "volume": {
+          "deposits": 3116,
+          "withdrawals": 3049,
+          "sends": 15,
+          "card": 39,
+          "other": 15
+        },
+        "count": {
+          "deposits": 9,
+          "withdrawals": 8,
+          "sends": 1,
+          "card": 3,
+          "other": 16
+        },
+        "totalVolume": 6234,
+        "totalCount": 37,
+        "balance": 264067
+      },
+      {
+        "date": "2024-09-12",
+        "volume": {
+          "deposits": 324,
+          "withdrawals": 1233,
+          "sends": 25,
+          "card": 115,
+          "other": 51
+        },
+        "count": {
+          "deposits": 4,
+          "withdrawals": 13,
+          "sends": 2,
+          "card": 4,
+          "other": 16
+        },
+        "totalVolume": 1748,
+        "totalCount": 39,
+        "balance": 276122
+      },
+      {
+        "date": "2024-09-17",
+        "volume": {
+          "deposits": 1585,
+          "withdrawals": 447,
+          "sends": 20,
+          "card": 37,
+          "other": 10
+        },
+        "count": {
+          "deposits": 2,
+          "withdrawals": 6,
+          "sends": 1,
+          "card": 2,
+          "other": 18
+        },
+        "totalVolume": 2099,
+        "totalCount": 29,
+        "balance": 273739
+      },
+      {
+        "date": "2024-09-22",
+        "volume": {
+          "deposits": 2,
+          "withdrawals": 0,
+          "sends": 0,
+          "card": 12,
+          "other": 4
+        },
+        "count": {
+          "deposits": 3,
+          "withdrawals": 0,
+          "sends": 0,
+          "card": 1,
+          "other": 17
+        },
+        "totalVolume": 18,
+        "totalCount": 21,
+        "balance": 267578
+      },
+      {
+        "date": "2024-09-28",
+        "volume": {
+          "deposits": 101,
+          "withdrawals": 2102,
+          "sends": 31,
+          "card": 150,
+          "other": 51
+        },
+        "count": {
+          "deposits": 4,
+          "withdrawals": 11,
+          "sends": 2,
+          "card": 4,
+          "other": 16
+        },
+        "totalVolume": 2435,
+        "totalCount": 37,
+        "balance": 325818
+      },
+      {
+        "date": "2024-10-03",
+        "volume": {
+          "deposits": 5,
+          "withdrawals": 3296,
+          "sends": 450,
+          "card": 54,
+          "other": 1749
+        },
+        "count": {
+          "deposits": 2,
+          "withdrawals": 17,
+          "sends": 6,
+          "card": 3,
+          "other": 24
+        },
+        "totalVolume": 5554,
+        "totalCount": 52,
+        "balance": 300054
+      },
+      {
+        "date": "2024-10-08",
+        "volume": {
+          "deposits": 4066,
+          "withdrawals": 2034,
+          "sends": 60,
+          "card": 66,
+          "other": 35
+        },
+        "count": {
+          "deposits": 11,
+          "withdrawals": 6,
+          "sends": 5,
+          "card": 4,
+          "other": 20
+        },
+        "totalVolume": 6261,
+        "totalCount": 46,
+        "balance": 293272
+      },
+      {
+        "date": "2024-10-14",
+        "volume": {
+          "deposits": 8,
+          "withdrawals": 2986,
+          "sends": 19,
+          "card": 201,
+          "other": 48
+        },
+        "count": {
+          "deposits": 3,
+          "withdrawals": 9,
+          "sends": 1,
+          "card": 8,
+          "other": 25
+        },
+        "totalVolume": 3262,
+        "totalCount": 46,
+        "balance": 288639
+      },
+      {
+        "date": "2024-10-19",
+        "volume": {
+          "deposits": 1,
+          "withdrawals": 1645,
+          "sends": 800,
+          "card": 468,
+          "other": 41
+        },
+        "count": {
+          "deposits": 2,
+          "withdrawals": 14,
+          "sends": 1,
+          "card": 6,
+          "other": 20
+        },
+        "totalVolume": 2955,
+        "totalCount": 43,
+        "balance": 279731
+      },
+      {
+        "date": "2024-10-25",
+        "volume": {
+          "deposits": 4816,
+          "withdrawals": 1849,
+          "sends": 564,
+          "card": 554,
+          "other": 350
+        },
+        "count": {
+          "deposits": 15,
+          "withdrawals": 13,
+          "sends": 28,
+          "card": 12,
+          "other": 26
+        },
+        "totalVolume": 8133,
+        "totalCount": 94,
+        "balance": 294125
+      },
+      {
+        "date": "2024-10-30",
+        "volume": {
+          "deposits": 337,
+          "withdrawals": 2175,
+          "sends": 482,
+          "card": 462,
+          "other": 491
+        },
+        "count": {
+          "deposits": 7,
+          "withdrawals": 13,
+          "sends": 17,
+          "card": 18,
+          "other": 32
+        },
+        "totalVolume": 3947,
+        "totalCount": 87,
+        "balance": 339827
+      },
+      {
+        "date": "2024-11-04",
+        "volume": {
+          "deposits": 12313,
+          "withdrawals": 12496,
+          "sends": 2014,
+          "card": 2371,
+          "other": 497
+        },
+        "count": {
+          "deposits": 26,
+          "withdrawals": 36,
+          "sends": 13,
+          "card": 17,
+          "other": 44
+        },
+        "totalVolume": 29691,
+        "totalCount": 136,
+        "balance": 337089
+      },
+      {
+        "date": "2024-11-10",
+        "volume": {
+          "deposits": 268,
+          "withdrawals": 2764,
+          "sends": 193,
+          "card": 734,
+          "other": 660
+        },
+        "count": {
+          "deposits": 6,
+          "withdrawals": 15,
+          "sends": 9,
+          "card": 25,
+          "other": 44
+        },
+        "totalVolume": 4619,
+        "totalCount": 99,
+        "balance": 326717
+      },
+      {
+        "date": "2024-11-15",
+        "volume": {
+          "deposits": 21289,
+          "withdrawals": 4629,
+          "sends": 176,
+          "card": 2443,
+          "other": 1624
+        },
+        "count": {
+          "deposits": 82,
+          "withdrawals": 16,
+          "sends": 12,
+          "card": 79,
+          "other": 121
+        },
+        "totalVolume": 30161,
+        "totalCount": 310,
+        "balance": 344973
+      },
+      {
+        "date": "2024-11-20",
+        "volume": {
+          "deposits": 17334,
+          "withdrawals": 7543,
+          "sends": 1715,
+          "card": 5534,
+          "other": 2524
+        },
+        "count": {
+          "deposits": 84,
+          "withdrawals": 20,
+          "sends": 16,
+          "card": 121,
+          "other": 143
+        },
+        "totalVolume": 34650,
+        "totalCount": 384,
+        "balance": 361515
+      },
+      {
+        "date": "2024-11-26",
+        "volume": {
+          "deposits": 31216,
+          "withdrawals": 10036,
+          "sends": 2035,
+          "card": 9160,
+          "other": 81540
+        },
+        "count": {
+          "deposits": 105,
+          "withdrawals": 22,
+          "sends": 19,
+          "card": 164,
+          "other": 132
+        },
+        "totalVolume": 133987,
+        "totalCount": 442,
+        "balance": 460364
+      },
+      {
+        "date": "2024-12-01",
+        "volume": {
+          "deposits": 8456,
+          "withdrawals": 1830,
+          "sends": 521,
+          "card": 4413,
+          "other": 2776
+        },
+        "count": {
+          "deposits": 27,
+          "withdrawals": 23,
+          "sends": 17,
+          "card": 128,
+          "other": 92
+        },
+        "totalVolume": 17996,
+        "totalCount": 287,
+        "balance": 461197
+      },
+      {
+        "date": "2024-12-06",
+        "volume": {
+          "deposits": 37492,
+          "withdrawals": 8371,
+          "sends": 1052,
+          "card": 11306,
+          "other": 7606
+        },
+        "count": {
+          "deposits": 131,
+          "withdrawals": 34,
+          "sends": 21,
+          "card": 305,
+          "other": 218
+        },
+        "totalVolume": 65827,
+        "totalCount": 709,
+        "balance": 538643
+      },
+      {
+        "date": "2024-12-12",
+        "volume": {
+          "deposits": 32619,
+          "withdrawals": 4691,
+          "sends": 1248,
+          "card": 16872,
+          "other": 9965
+        },
+        "count": {
+          "deposits": 125,
+          "withdrawals": 28,
+          "sends": 18,
+          "card": 333,
+          "other": 187
+        },
+        "totalVolume": 65395,
+        "totalCount": 691,
+        "balance": 574727
+      },
+      {
+        "date": "2024-12-17",
+        "volume": {
+          "deposits": 30486,
+          "withdrawals": 14725,
+          "sends": 2775,
+          "card": 17165,
+          "other": 7148
+        },
+        "count": {
+          "deposits": 161,
+          "withdrawals": 41,
+          "sends": 18,
+          "card": 385,
+          "other": 243
+        },
+        "totalVolume": 72299,
+        "totalCount": 848,
+        "balance": 567060
+      },
+      {
+        "date": "2024-12-22",
+        "volume": {
+          "deposits": 1028,
+          "withdrawals": 6717,
+          "sends": 301,
+          "card": 10374,
+          "other": 4538
+        },
+        "count": {
+          "deposits": 17,
+          "withdrawals": 20,
+          "sends": 14,
+          "card": 382,
+          "other": 118
+        },
+        "totalVolume": 22958,
+        "totalCount": 551,
+        "balance": 543399
+      },
+      {
+        "date": "2024-12-28",
+        "volume": {
+          "deposits": 22670,
+          "withdrawals": 4477,
+          "sends": 479,
+          "card": 16838,
+          "other": 6098
+        },
+        "count": {
+          "deposits": 94,
+          "withdrawals": 33,
+          "sends": 21,
+          "card": 534,
+          "other": 194
+        },
+        "totalVolume": 50562,
+        "totalCount": 876,
+        "balance": 660106
+      },
+      {
+        "date": "2025-01-02",
+        "volume": {
+          "deposits": 64374,
+          "withdrawals": 18403,
+          "sends": 1907,
+          "card": 22158,
+          "other": 6462
+        },
+        "count": {
+          "deposits": 252,
+          "withdrawals": 52,
+          "sends": 35,
+          "card": 423,
+          "other": 181
+        },
+        "totalVolume": 113304,
+        "totalCount": 943,
+        "balance": 718413
+      },
+      {
+        "date": "2025-01-07",
+        "volume": {
+          "deposits": 73232,
+          "withdrawals": 15844,
+          "sends": 4185,
+          "card": 22106,
+          "other": 6098
+        },
+        "count": {
+          "deposits": 209,
+          "withdrawals": 55,
+          "sends": 54,
+          "card": 518,
+          "other": 206
+        },
+        "totalVolume": 121465,
+        "totalCount": 1042,
+        "balance": 786620
+      },
+      {
+        "date": "2025-01-13",
+        "volume": {
+          "deposits": 42778,
+          "withdrawals": 8036,
+          "sends": 1811,
+          "card": 27217,
+          "other": 9498
+        },
+        "count": {
+          "deposits": 285,
+          "withdrawals": 56,
+          "sends": 96,
+          "card": 478,
+          "other": 218
+        },
+        "totalVolume": 89340,
+        "totalCount": 1133,
+        "balance": 772199
+      },
+      {
+        "date": "2025-01-18",
+        "volume": {
+          "deposits": 16694,
+          "withdrawals": 14782,
+          "sends": 1308,
+          "card": 26447,
+          "other": 6999
+        },
+        "count": {
+          "deposits": 92,
+          "withdrawals": 76,
+          "sends": 122,
+          "card": 734,
+          "other": 146
+        },
+        "totalVolume": 66230,
+        "totalCount": 1170,
+        "balance": 823769
+      },
+      {
+        "date": "2025-01-23",
+        "volume": {
+          "deposits": 42590,
+          "withdrawals": 15845,
+          "sends": 3336,
+          "card": 23993,
+          "other": 12537
+        },
+        "count": {
+          "deposits": 227,
+          "withdrawals": 80,
+          "sends": 135,
+          "card": 521,
+          "other": 119
+        },
+        "totalVolume": 98301,
+        "totalCount": 1082,
+        "balance": 853383
+      },
+      {
+        "date": "2025-01-29",
+        "volume": {
+          "deposits": 53469,
+          "withdrawals": 16606,
+          "sends": 2486,
+          "card": 20632,
+          "other": 14189
+        },
+        "count": {
+          "deposits": 196,
+          "withdrawals": 88,
+          "sends": 104,
+          "card": 511,
+          "other": 105
+        },
+        "totalVolume": 107382,
+        "totalCount": 1004,
+        "balance": 995055
+      },
+      {
+        "date": "2025-02-03",
+        "volume": {
+          "deposits": 114951,
+          "withdrawals": 37568,
+          "sends": 6864,
+          "card": 17612,
+          "other": 26995
+        },
+        "count": {
+          "deposits": 467,
+          "withdrawals": 140,
+          "sends": 77,
+          "card": 425,
+          "other": 236
+        },
+        "totalVolume": 203990,
+        "totalCount": 1345,
+        "balance": 1089676
+      },
+      {
+        "date": "2025-02-08",
+        "volume": {
+          "deposits": 37140,
+          "withdrawals": 30575,
+          "sends": 1587,
+          "card": 25461,
+          "other": 6178
+        },
+        "count": {
+          "deposits": 184,
+          "withdrawals": 115,
+          "sends": 38,
+          "card": 615,
+          "other": 183
+        },
+        "totalVolume": 100941,
+        "totalCount": 1135,
+        "balance": 1149741
+      },
+      {
+        "date": "2025-02-14",
+        "volume": {
+          "deposits": 70847,
+          "withdrawals": 34297,
+          "sends": 10135,
+          "card": 32160,
+          "other": 15195
+        },
+        "count": {
+          "deposits": 423,
+          "withdrawals": 177,
+          "sends": 159,
+          "card": 614,
+          "other": 491
+        },
+        "totalVolume": 162634,
+        "totalCount": 1864,
+        "balance": 1251608
+      },
+      {
+        "date": "2025-02-19",
+        "volume": {
+          "deposits": 77435,
+          "withdrawals": 39217,
+          "sends": 7958,
+          "card": 26137,
+          "other": 5438
+        },
+        "count": {
+          "deposits": 396,
+          "withdrawals": 163,
+          "sends": 131,
+          "card": 590,
+          "other": 177
+        },
+        "totalVolume": 156185,
+        "totalCount": 1457,
+        "balance": 1278678
+      },
+      {
+        "date": "2025-02-24",
+        "volume": {
+          "deposits": 94068,
+          "withdrawals": 57741,
+          "sends": 22881,
+          "card": 27993,
+          "other": 20857
+        },
+        "count": {
+          "deposits": 576,
+          "withdrawals": 193,
+          "sends": 137,
+          "card": 581,
+          "other": 252
+        },
+        "totalVolume": 223540,
+        "totalCount": 1739,
+        "balance": 1348117
+      },
+      {
+        "date": "2025-03-02",
+        "volume": {
+          "deposits": 26936,
+          "withdrawals": 21710,
+          "sends": 3957,
+          "card": 24294,
+          "other": 22433
+        },
+        "count": {
+          "deposits": 181,
+          "withdrawals": 118,
+          "sends": 57,
+          "card": 695,
+          "other": 248
+        },
+        "totalVolume": 99330,
+        "totalCount": 1299,
+        "balance": 1474189
+      },
+      {
+        "date": "2025-03-07",
+        "volume": {
+          "deposits": 118023,
+          "withdrawals": 39613,
+          "sends": 36940,
+          "card": 43345,
+          "other": 8381
+        },
+        "count": {
+          "deposits": 455,
+          "withdrawals": 189,
+          "sends": 92,
+          "card": 794,
+          "other": 552
+        },
+        "totalVolume": 246302,
+        "totalCount": 2082,
+        "balance": 1775830
+      },
+      {
+        "date": "2025-03-12",
+        "volume": {
+          "deposits": 122201,
+          "withdrawals": 51739,
+          "sends": 10990,
+          "card": 39386,
+          "other": 8520
+        },
+        "count": {
+          "deposits": 670,
+          "withdrawals": 228,
+          "sends": 70,
+          "card": 829,
+          "other": 187
+        },
+        "totalVolume": 232836,
+        "totalCount": 1984,
+        "balance": 1820685
+      },
+      {
+        "date": "2025-03-18",
+        "volume": {
+          "deposits": 110359,
+          "withdrawals": 68025,
+          "sends": 6950,
+          "card": 37610,
+          "other": 11860
+        },
+        "count": {
+          "deposits": 546,
+          "withdrawals": 217,
+          "sends": 75,
+          "card": 862,
+          "other": 188
+        },
+        "totalVolume": 234804,
+        "totalCount": 1888,
+        "balance": 1908847
+      },
+      {
+        "date": "2025-03-23",
+        "volume": {
+          "deposits": 17167,
+          "withdrawals": 10923,
+          "sends": 4836,
+          "card": 31243,
+          "other": 2979
+        },
+        "count": {
+          "deposits": 125,
+          "withdrawals": 98,
+          "sends": 38,
+          "card": 977,
+          "other": 194
+        },
+        "totalVolume": 67148,
+        "totalCount": 1432,
+        "balance": 1929701
+      },
+      {
+        "date": "2025-03-29",
+        "volume": {
+          "deposits": 25509,
+          "withdrawals": 32738,
+          "sends": 5135,
+          "card": 41498,
+          "other": 6992
+        },
+        "count": {
+          "deposits": 183,
+          "withdrawals": 162,
+          "sends": 47,
+          "card": 1148,
+          "other": 242
+        },
+        "totalVolume": 111872,
+        "totalCount": 1782,
+        "balance": 2135112
+      },
+      {
+        "date": "2025-04-03",
+        "volume": {
+          "deposits": 178605,
+          "withdrawals": 60200,
+          "sends": 13497,
+          "card": 52956,
+          "other": 17467
+        },
+        "count": {
+          "deposits": 558,
+          "withdrawals": 270,
+          "sends": 84,
+          "card": 1003,
+          "other": 212
+        },
+        "totalVolume": 322725,
+        "totalCount": 2127,
+        "balance": 2433128
+      },
+      {
+        "date": "2025-04-08",
+        "volume": {
+          "deposits": 186848,
+          "withdrawals": 103341,
+          "sends": 10805,
+          "card": 51259,
+          "other": 68423
+        },
+        "count": {
+          "deposits": 594,
+          "withdrawals": 292,
+          "sends": 52,
+          "card": 1006,
+          "other": 293
+        },
+        "totalVolume": 420676,
+        "totalCount": 2237,
+        "balance": 2531996
+      },
+      {
+        "date": "2025-04-14",
+        "volume": {
+          "deposits": 170999,
+          "withdrawals": 59385,
+          "sends": 11122,
+          "card": 56544,
+          "other": 13652
+        },
+        "count": {
+          "deposits": 832,
+          "withdrawals": 243,
+          "sends": 72,
+          "card": 1122,
+          "other": 227
+        },
+        "totalVolume": 311702,
+        "totalCount": 2496,
+        "balance": 2635269
+      },
+      {
+        "date": "2025-04-19",
+        "volume": {
+          "deposits": 33343,
+          "withdrawals": 37713,
+          "sends": 6959,
+          "card": 45961,
+          "other": 5422
+        },
+        "count": {
+          "deposits": 233,
+          "withdrawals": 213,
+          "sends": 64,
+          "card": 1202,
+          "other": 385
+        },
+        "totalVolume": 129398,
+        "totalCount": 2097,
+        "balance": 2711348
+      },
+      {
+        "date": "2025-04-24",
+        "volume": {
+          "deposits": 156537,
+          "withdrawals": 74043,
+          "sends": 28570,
+          "card": 55593,
+          "other": 13698
+        },
+        "count": {
+          "deposits": 705,
+          "withdrawals": 302,
+          "sends": 113,
+          "card": 1269,
+          "other": 279
+        },
+        "totalVolume": 328441,
+        "totalCount": 2668,
+        "balance": 2817394
+      },
+      {
+        "date": "2025-04-30",
+        "volume": {
+          "deposits": 287843,
+          "withdrawals": 115365,
+          "sends": 17891,
+          "card": 70762,
+          "other": 19426
+        },
+        "count": {
+          "deposits": 768,
+          "withdrawals": 376,
+          "sends": 100,
+          "card": 1382,
+          "other": 274
+        },
+        "totalVolume": 511287,
+        "totalCount": 2900,
+        "balance": 3183918
+      },
+      {
+        "date": "2025-05-05",
+        "volume": {
+          "deposits": 293014,
+          "withdrawals": 140540,
+          "sends": 42896,
+          "card": 48718,
+          "other": 14852
+        },
+        "count": {
+          "deposits": 1010,
+          "withdrawals": 388,
+          "sends": 127,
+          "card": 1130,
+          "other": 329
+        },
+        "totalVolume": 540020,
+        "totalCount": 2984,
+        "balance": 3334922
+      },
+      {
+        "date": "2025-05-10",
+        "volume": {
+          "deposits": 96139,
+          "withdrawals": 66199,
+          "sends": 11729,
+          "card": 80982,
+          "other": 16606
+        },
+        "count": {
+          "deposits": 949,
+          "withdrawals": 328,
+          "sends": 79,
+          "card": 1655,
+          "other": 565
+        },
+        "totalVolume": 271655,
+        "totalCount": 3576,
+        "balance": 3537623
+      },
+      {
+        "date": "2025-05-16",
+        "volume": {
+          "deposits": 215217,
+          "withdrawals": 90723,
+          "sends": 21448,
+          "card": 88067,
+          "other": 16476
+        },
+        "count": {
+          "deposits": 838,
+          "withdrawals": 416,
+          "sends": 123,
+          "card": 1571,
+          "other": 995
+        },
+        "totalVolume": 431931,
+        "totalCount": 3943,
+        "balance": 3776887
+      },
+      {
+        "date": "2025-05-21",
+        "volume": {
+          "deposits": 169063,
+          "withdrawals": 90523,
+          "sends": 10090,
+          "card": 66751,
+          "other": 29741
+        },
+        "count": {
+          "deposits": 623,
+          "withdrawals": 342,
+          "sends": 87,
+          "card": 1417,
+          "other": 414
+        },
+        "totalVolume": 366168,
+        "totalCount": 2883,
+        "balance": 3752365
+      },
+      {
+        "date": "2025-05-26",
+        "volume": {
+          "deposits": 54400,
+          "withdrawals": 44696,
+          "sends": 11550,
+          "card": 57299,
+          "other": 23994
+        },
+        "count": {
+          "deposits": 307,
+          "withdrawals": 288,
+          "sends": 90,
+          "card": 1347,
+          "other": 334
+        },
+        "totalVolume": 191939,
+        "totalCount": 2366,
+        "balance": 3660562
+      },
+      {
+        "date": "2025-06-01",
+        "volume": {
+          "deposits": 44285,
+          "withdrawals": 54303,
+          "sends": 7615,
+          "card": 61159,
+          "other": 20663
+        },
+        "count": {
+          "deposits": 322,
+          "withdrawals": 267,
+          "sends": 84,
+          "card": 1756,
+          "other": 199
+        },
+        "totalVolume": 188025,
+        "totalCount": 2628,
+        "balance": 4045258
+      },
+      {
+        "date": "2025-06-06",
+        "volume": {
+          "deposits": 245336,
+          "withdrawals": 151182,
+          "sends": 23462,
+          "card": 69868,
+          "other": 31364
+        },
+        "count": {
+          "deposits": 785,
+          "withdrawals": 438,
+          "sends": 134,
+          "card": 1720,
+          "other": 506
+        },
+        "totalVolume": 521212,
+        "totalCount": 3583,
+        "balance": 4217961
+      },
+      {
+        "date": "2025-06-11",
+        "volume": {
+          "deposits": 189646,
+          "withdrawals": 123280,
+          "sends": 22562,
+          "card": 80808,
+          "other": 16235
+        },
+        "count": {
+          "deposits": 758,
+          "withdrawals": 468,
+          "sends": 146,
+          "card": 1721,
+          "other": 286
+        },
+        "totalVolume": 432531,
+        "totalCount": 3379,
+        "balance": 4256818
+      },
+      {
+        "date": "2025-06-17",
+        "volume": {
+          "deposits": 318641,
+          "withdrawals": 152572,
+          "sends": 37063,
+          "card": 81399,
+          "other": 38743
+        },
+        "count": {
+          "deposits": 993,
+          "withdrawals": 507,
+          "sends": 134,
+          "card": 1666,
+          "other": 302
+        },
+        "totalVolume": 628418,
+        "totalCount": 3602,
+        "balance": 4324490
+      },
+      {
+        "date": "2025-06-22",
+        "volume": {
+          "deposits": 59501,
+          "withdrawals": 70785,
+          "sends": 5236,
+          "card": 62417,
+          "other": 39169
+        },
+        "count": {
+          "deposits": 353,
+          "withdrawals": 290,
+          "sends": 93,
+          "card": 1746,
+          "other": 313
+        },
+        "totalVolume": 237108,
+        "totalCount": 2795,
+        "balance": 4149270
+      },
+      {
+        "date": "2025-06-27",
+        "volume": {
+          "deposits": 283331,
+          "withdrawals": 160591,
+          "sends": 17155,
+          "card": 95419,
+          "other": 190808
+        },
+        "count": {
+          "deposits": 990,
+          "withdrawals": 542,
+          "sends": 156,
+          "card": 2044,
+          "other": 477
+        },
+        "totalVolume": 747304,
+        "totalCount": 4209,
+        "balance": 4589348
+      },
+      {
+        "date": "2025-07-03",
+        "volume": {
+          "deposits": 410778,
+          "withdrawals": 191928,
+          "sends": 43832,
+          "card": 102333,
+          "other": 13237
+        },
+        "count": {
+          "deposits": 1170,
+          "withdrawals": 538,
+          "sends": 191,
+          "card": 1844,
+          "other": 291
+        },
+        "totalVolume": 762108,
+        "totalCount": 4034,
+        "balance": 5030229
+      },
+      {
+        "date": "2025-07-08",
+        "volume": {
+          "deposits": 451794,
+          "withdrawals": 269565,
+          "sends": 23827,
+          "card": 132272,
+          "other": 15796
+        },
+        "count": {
+          "deposits": 1247,
+          "withdrawals": 612,
+          "sends": 162,
+          "card": 1952,
+          "other": 302
+        },
+        "totalVolume": 893254,
+        "totalCount": 4275,
+        "balance": 4929008
+      },
+      {
+        "date": "2025-07-13",
+        "volume": {
+          "deposits": 50312,
+          "withdrawals": 49426,
+          "sends": 17601,
+          "card": 91386,
+          "other": 22544
+        },
+        "count": {
+          "deposits": 412,
+          "withdrawals": 298,
+          "sends": 118,
+          "card": 1989,
+          "other": 203
+        },
+        "totalVolume": 231269,
+        "totalCount": 3020,
+        "balance": 4778485
+      },
+      {
+        "date": "2025-07-19",
+        "volume": {
+          "deposits": 84445,
+          "withdrawals": 73988,
+          "sends": 15633,
+          "card": 99707,
+          "other": 17933
+        },
+        "count": {
+          "deposits": 518,
+          "withdrawals": 409,
+          "sends": 131,
+          "card": 2494,
+          "other": 372
+        },
+        "totalVolume": 291706,
+        "totalCount": 3924,
+        "balance": 4795159
+      },
+      {
+        "date": "2025-07-24",
+        "volume": {
+          "deposits": 301021,
+          "withdrawals": 192187,
+          "sends": 38646,
+          "card": 99350,
+          "other": 17574
+        },
+        "count": {
+          "deposits": 1032,
+          "withdrawals": 484,
+          "sends": 181,
+          "card": 2111,
+          "other": 258
+        },
+        "totalVolume": 648778,
+        "totalCount": 4066,
+        "balance": 4829821
+      },
+      {
+        "date": "2025-07-29",
+        "volume": {
+          "deposits": 268474,
+          "withdrawals": 167925,
+          "sends": 27150,
+          "card": 100516,
+          "other": 6487
+        },
+        "count": {
+          "deposits": 1043,
+          "withdrawals": 395,
+          "sends": 162,
+          "card": 1984,
+          "other": 236
+        },
+        "totalVolume": 570552,
+        "totalCount": 3820,
+        "balance": 4869643
+      },
+      {
+        "date": "2025-08-04",
+        "volume": {
+          "deposits": 488245,
+          "withdrawals": 217155,
+          "sends": 17233,
+          "card": 100326,
+          "other": 9294
+        },
+        "count": {
+          "deposits": 1175,
+          "withdrawals": 451,
+          "sends": 108,
+          "card": 2018,
+          "other": 253
+        },
+        "totalVolume": 832253,
+        "totalCount": 4005,
+        "balance": 5092007
+      },
+      {
+        "date": "2025-08-09",
+        "volume": {
+          "deposits": 76036,
+          "withdrawals": 76578,
+          "sends": 7493,
+          "card": 98302,
+          "other": 9031
+        },
+        "count": {
+          "deposits": 514,
+          "withdrawals": 296,
+          "sends": 110,
+          "card": 2463,
+          "other": 331
+        },
+        "totalVolume": 267440,
+        "totalCount": 3714,
+        "balance": 5203370
+      },
+      {
+        "date": "2025-08-14",
+        "volume": {
+          "deposits": 307675,
+          "withdrawals": 128158,
+          "sends": 28519,
+          "card": 108003,
+          "other": 29471
+        },
+        "count": {
+          "deposits": 1127,
+          "withdrawals": 425,
+          "sends": 169,
+          "card": 2276,
+          "other": 444
+        },
+        "totalVolume": 601826,
+        "totalCount": 4441,
+        "balance": 5364551
+      },
+      {
+        "date": "2025-08-20",
+        "volume": {
+          "deposits": 339058,
+          "withdrawals": 197701,
+          "sends": 40995,
+          "card": 109178,
+          "other": 25097
+        },
+        "count": {
+          "deposits": 1086,
+          "withdrawals": 462,
+          "sends": 174,
+          "card": 2379,
+          "other": 293
+        },
+        "totalVolume": 712029,
+        "totalCount": 4394,
+        "balance": 5413411
+      },
+      {
+        "date": "2025-08-25",
+        "volume": {
+          "deposits": 358083,
+          "withdrawals": 182754,
+          "sends": 24206,
+          "card": 112642,
+          "other": 21514
+        },
+        "count": {
+          "deposits": 1212,
+          "withdrawals": 439,
+          "sends": 141,
+          "card": 2275,
+          "other": 280
+        },
+        "totalVolume": 699199,
+        "totalCount": 4347,
+        "balance": 5452153
+      },
+      {
+        "date": "2025-08-31",
+        "volume": {
+          "deposits": 77597,
+          "withdrawals": 74909,
+          "sends": 9108,
+          "card": 85095,
+          "other": 5517
+        },
+        "count": {
+          "deposits": 525,
+          "withdrawals": 258,
+          "sends": 137,
+          "card": 2389,
+          "other": 166
+        },
+        "totalVolume": 252226,
+        "totalCount": 3475,
+        "balance": 5707570
+      },
+      {
+        "date": "2025-09-05",
+        "volume": {
+          "deposits": 388562,
+          "withdrawals": 308285,
+          "sends": 33997,
+          "card": 137425,
+          "other": 19481
+        },
+        "count": {
+          "deposits": 1190,
+          "withdrawals": 704,
+          "sends": 192,
+          "card": 2735,
+          "other": 642
+        },
+        "totalVolume": 887750,
+        "totalCount": 5463,
+        "balance": 5990328
+      },
+      {
+        "date": "2025-09-10",
+        "volume": {
+          "deposits": 442555,
+          "withdrawals": 246143,
+          "sends": 34386,
+          "card": 113720,
+          "other": 58624
+        },
+        "count": {
+          "deposits": 1260,
+          "withdrawals": 639,
+          "sends": 178,
+          "card": 2326,
+          "other": 236
+        },
+        "totalVolume": 895428,
+        "totalCount": 4639,
+        "balance": 6067771
+      },
+      {
+        "date": "2025-09-16",
+        "volume": {
+          "deposits": 477641,
+          "withdrawals": 267021,
+          "sends": 61831,
+          "card": 134182,
+          "other": 12421
+        },
+        "count": {
+          "deposits": 1353,
+          "withdrawals": 626,
+          "sends": 174,
+          "card": 2577,
+          "other": 227
+        },
+        "totalVolume": 953096,
+        "totalCount": 4957,
+        "balance": 6318710
+      },
+      {
+        "date": "2025-09-21",
+        "volume": {
+          "deposits": 95822,
+          "withdrawals": 83504,
+          "sends": 14407,
+          "card": 104064,
+          "other": 2271
+        },
+        "count": {
+          "deposits": 531,
+          "withdrawals": 271,
+          "sends": 121,
+          "card": 2857,
+          "other": 157
+        },
+        "totalVolume": 300068,
+        "totalCount": 3937,
+        "balance": 6214857
+      },
+      {
+        "date": "2025-09-26",
+        "volume": {
+          "deposits": 441964,
+          "withdrawals": 294616,
+          "sends": 28376,
+          "card": 127981,
+          "other": 183633
+        },
+        "count": {
+          "deposits": 1233,
+          "withdrawals": 720,
+          "sends": 192,
+          "card": 2920,
+          "other": 576
+        },
+        "totalVolume": 1076570,
+        "totalCount": 5641,
+        "balance": 6601230
+      },
+      {
+        "date": "2025-10-02",
+        "volume": {
+          "deposits": 626325,
+          "withdrawals": 379727,
+          "sends": 51386,
+          "card": 146452,
+          "other": 21654
+        },
+        "count": {
+          "deposits": 1536,
+          "withdrawals": 818,
+          "sends": 199,
+          "card": 2963,
+          "other": 382
+        },
+        "totalVolume": 1225544,
+        "totalCount": 5898,
+        "balance": 6889877
+      },
+      {
+        "date": "2025-10-07",
+        "volume": {
+          "deposits": 503437,
+          "withdrawals": 284815,
+          "sends": 27321,
+          "card": 134715,
+          "other": 24501
+        },
+        "count": {
+          "deposits": 1469,
+          "withdrawals": 675,
+          "sends": 159,
+          "card": 2682,
+          "other": 327
+        },
+        "totalVolume": 974789,
+        "totalCount": 5312,
+        "balance": 6970522
+      },
+      {
+        "date": "2025-10-12",
+        "volume": {
+          "deposits": 93247,
+          "withdrawals": 84278,
+          "sends": 10329,
+          "card": 105918,
+          "other": 20855
+        },
+        "count": {
+          "deposits": 560,
+          "withdrawals": 346,
+          "sends": 162,
+          "card": 2764,
+          "other": 247
+        },
+        "totalVolume": 314627,
+        "totalCount": 4079,
+        "balance": 6643965
+      },
+      {
+        "date": "2025-10-18",
+        "volume": {
+          "deposits": 118944,
+          "withdrawals": 81111,
+          "sends": 35712,
+          "card": 132401,
+          "other": 6982
+        },
+        "count": {
+          "deposits": 759,
+          "withdrawals": 440,
+          "sends": 203,
+          "card": 3546,
+          "other": 279
+        },
+        "totalVolume": 375150,
+        "totalCount": 5227,
+        "balance": 6801995
+      },
+      {
+        "date": "2025-10-23",
+        "volume": {
+          "deposits": 508434,
+          "withdrawals": 258207,
+          "sends": 38640,
+          "card": 145587,
+          "other": 11037
+        },
+        "count": {
+          "deposits": 1490,
+          "withdrawals": 677,
+          "sends": 171,
+          "card": 3161,
+          "other": 269
+        },
+        "totalVolume": 961905,
+        "totalCount": 5768,
+        "balance": 6985760
+      },
+      {
+        "date": "2025-10-28",
+        "volume": {
+          "deposits": 541650,
+          "withdrawals": 343600,
+          "sends": 38916,
+          "card": 136128,
+          "other": 28265
+        },
+        "count": {
+          "deposits": 1819,
+          "withdrawals": 828,
+          "sends": 224,
+          "card": 3091,
+          "other": 677
+        },
+        "totalVolume": 1088559,
+        "totalCount": 6639,
+        "balance": 7234816
+      },
+      {
+        "date": "2025-11-03",
+        "volume": {
+          "deposits": 677556,
+          "withdrawals": 416606,
+          "sends": 68849,
+          "card": 130839,
+          "other": 18710
+        },
+        "count": {
+          "deposits": 1981,
+          "withdrawals": 876,
+          "sends": 178,
+          "card": 2752,
+          "other": 481
+        },
+        "totalVolume": 1312560,
+        "totalCount": 6268,
+        "balance": 7312467
+      },
+      {
+        "date": "2025-11-08",
+        "volume": {
+          "deposits": 150343,
+          "withdrawals": 121696,
+          "sends": 25010,
+          "card": 130482,
+          "other": 8138
+        },
+        "count": {
+          "deposits": 1250,
+          "withdrawals": 643,
+          "sends": 188,
+          "card": 3631,
+          "other": 374
+        },
+        "totalVolume": 435669,
+        "totalCount": 6086,
+        "balance": 7454829
+      },
+      {
+        "date": "2025-11-13",
+        "volume": {
+          "deposits": 572955,
+          "withdrawals": 345613,
+          "sends": 31748,
+          "card": 182656,
+          "other": 37984
+        },
+        "count": {
+          "deposits": 2050,
+          "withdrawals": 959,
+          "sends": 173,
+          "card": 3564,
+          "other": 445
+        },
+        "totalVolume": 1170956,
+        "totalCount": 7191,
+        "balance": 7585150
+      },
+      {
+        "date": "2025-11-19",
+        "volume": {
+          "deposits": 441527,
+          "withdrawals": 295129,
+          "sends": 35390,
+          "card": 170603,
+          "other": 16728
+        },
+        "count": {
+          "deposits": 1728,
+          "withdrawals": 798,
+          "sends": 205,
+          "card": 3607,
+          "other": 351
+        },
+        "totalVolume": 959377,
+        "totalCount": 6689,
+        "balance": 7795167
+      },
+      {
+        "date": "2025-11-24",
+        "volume": {
+          "deposits": 419997,
+          "withdrawals": 203168,
+          "sends": 43027,
+          "card": 170209,
+          "other": 10627
+        },
+        "count": {
+          "deposits": 1865,
+          "withdrawals": 643,
+          "sends": 198,
+          "card": 3509,
+          "other": 284
+        },
+        "totalVolume": 847028,
+        "totalCount": 6499,
+        "balance": 7740161
+      },
+      {
+        "date": "2025-11-29",
+        "volume": {
+          "deposits": 198066,
+          "withdrawals": 131750,
+          "sends": 31202,
+          "card": 210767,
+          "other": 13051
+        },
+        "count": {
+          "deposits": 1366,
+          "withdrawals": 695,
+          "sends": 207,
+          "card": 4747,
+          "other": 337
+        },
+        "totalVolume": 584836,
+        "totalCount": 7352,
+        "balance": 8226247
+      },
+      {
+        "date": "2025-12-05",
+        "volume": {
+          "deposits": 651866,
+          "withdrawals": 489142,
+          "sends": 50927,
+          "card": 194067,
+          "other": 19838
+        },
+        "count": {
+          "deposits": 1821,
+          "withdrawals": 952,
+          "sends": 216,
+          "card": 4257,
+          "other": 677
+        },
+        "totalVolume": 1405840,
+        "totalCount": 7923,
+        "balance": 8694174
+      },
+      {
+        "date": "2025-12-10",
+        "volume": {
+          "deposits": 570980,
+          "withdrawals": 416984,
+          "sends": 54293,
+          "card": 174576,
+          "other": 12597
+        },
+        "count": {
+          "deposits": 1874,
+          "withdrawals": 838,
+          "sends": 207,
+          "card": 3948,
+          "other": 266
+        },
+        "totalVolume": 1229430,
+        "totalCount": 7133,
+        "balance": 8705996
+      },
+      {
+        "date": "2025-12-15",
+        "volume": {
+          "deposits": 650765,
+          "withdrawals": 372237,
+          "sends": 60541,
+          "card": 158970,
+          "other": 13326
+        },
+        "count": {
+          "deposits": 1914,
+          "withdrawals": 853,
+          "sends": 211,
+          "card": 4038,
+          "other": 275
+        },
+        "totalVolume": 1255839,
+        "totalCount": 7291,
+        "balance": 8656470
+      },
+      {
+        "date": "2025-12-21",
+        "volume": {
+          "deposits": 107240,
+          "withdrawals": 93649,
+          "sends": 16634,
+          "card": 137941,
+          "other": 12021
+        },
+        "count": {
+          "deposits": 1259,
+          "withdrawals": 450,
+          "sends": 107,
+          "card": 4572,
+          "other": 171
+        },
+        "totalVolume": 367485,
+        "totalCount": 6559,
+        "balance": 8655072
+      },
+      {
+        "date": "2025-12-26",
+        "volume": {
+          "deposits": 621361,
+          "withdrawals": 322567,
+          "sends": 35306,
+          "card": 139241,
+          "other": 12539
+        },
+        "count": {
+          "deposits": 2143,
+          "withdrawals": 780,
+          "sends": 187,
+          "card": 4798,
+          "other": 690
+        },
+        "totalVolume": 1131014,
+        "totalCount": 8598,
+        "balance": 9452979
+      },
+      {
+        "date": "2025-12-31",
+        "volume": {
+          "deposits": 895615,
+          "withdrawals": 461004,
+          "sends": 122501,
+          "card": 193002,
+          "other": 7648
+        },
+        "count": {
+          "deposits": 2212,
+          "withdrawals": 872,
+          "sends": 224,
+          "card": 5086,
+          "other": 173
+        },
+        "totalVolume": 1679770,
+        "totalCount": 8567,
+        "balance": 10293226
+      },
+      {
+        "date": "2026-01-06",
+        "volume": {
+          "deposits": 774975,
+          "withdrawals": 515775,
+          "sends": 63380,
+          "card": 183191,
+          "other": 14661
+        },
+        "count": {
+          "deposits": 2271,
+          "withdrawals": 1022,
+          "sends": 208,
+          "card": 4913,
+          "other": 308
+        },
+        "totalVolume": 1551982,
+        "totalCount": 8722,
+        "balance": 10284381
+      },
+      {
+        "date": "2026-01-11",
+        "volume": {
+          "deposits": 155204,
+          "withdrawals": 114663,
+          "sends": 25657,
+          "card": 127809,
+          "other": 4645
+        },
+        "count": {
+          "deposits": 1216,
+          "withdrawals": 495,
+          "sends": 128,
+          "card": 4476,
+          "other": 250
+        },
+        "totalVolume": 427978,
+        "totalCount": 6565,
+        "balance": 10201437
+      },
+      {
+        "date": "2026-01-16",
+        "volume": {
+          "deposits": 609145,
+          "withdrawals": 335561,
+          "sends": 41311,
+          "card": 224250,
+          "other": 9692
+        },
+        "count": {
+          "deposits": 2424,
+          "withdrawals": 906,
+          "sends": 220,
+          "card": 5151,
+          "other": 742
+        },
+        "totalVolume": 1219959,
+        "totalCount": 9443,
+        "balance": 10580701
+      },
+      {
+        "date": "2026-01-22",
+        "volume": {
+          "deposits": 480070,
+          "withdrawals": 257279,
+          "sends": 25436,
+          "card": 199778,
+          "other": 14174
+        },
+        "count": {
+          "deposits": 2202,
+          "withdrawals": 794,
+          "sends": 194,
+          "card": 4710,
+          "other": 268
+        },
+        "totalVolume": 976737,
+        "totalCount": 8168,
+        "balance": 10523893
+      },
+      {
+        "date": "2026-01-27",
+        "volume": {
+          "deposits": 725173,
+          "withdrawals": 322249,
+          "sends": 50441,
+          "card": 175400,
+          "other": 64342
+        },
+        "count": {
+          "deposits": 2681,
+          "withdrawals": 891,
+          "sends": 211,
+          "card": 5179,
+          "other": 339
+        },
+        "totalVolume": 1337605,
+        "totalCount": 9301,
+        "balance": 10722691
+      },
+      {
+        "date": "2026-02-02",
+        "volume": {
+          "deposits": 1052415,
+          "withdrawals": 635856,
+          "sends": 58770,
+          "card": 223902,
+          "other": 13722
+        },
+        "count": {
+          "deposits": 2887,
+          "withdrawals": 1129,
+          "sends": 223,
+          "card": 5181,
+          "other": 362
+        },
+        "totalVolume": 1984665,
+        "totalCount": 9782,
+        "balance": 11074735
+      },
+      {
+        "date": "2026-02-07",
+        "volume": {
+          "deposits": 166250,
+          "withdrawals": 146393,
+          "sends": 24555,
+          "card": 184314,
+          "other": 15551
+        },
+        "count": {
+          "deposits": 1735,
+          "withdrawals": 660,
+          "sends": 156,
+          "card": 5423,
+          "other": 331
+        },
+        "totalVolume": 537063,
+        "totalCount": 8305,
+        "balance": 10958121
+      },
+      {
+        "date": "2026-02-12",
+        "volume": {
+          "deposits": 561517,
+          "withdrawals": 398431,
+          "sends": 32186,
+          "card": 200331,
+          "other": 30391
+        },
+        "count": {
+          "deposits": 2335,
+          "withdrawals": 1012,
+          "sends": 173,
+          "card": 4723,
+          "other": 304
+        },
+        "totalVolume": 1222856,
+        "totalCount": 8547,
+        "balance": 11143562
+      },
+      {
+        "date": "2026-02-18",
+        "volume": {
+          "deposits": 551842,
+          "withdrawals": 347288,
+          "sends": 37351,
+          "card": 182618,
+          "other": 15138
+        },
+        "count": {
+          "deposits": 2324,
+          "withdrawals": 875,
+          "sends": 201,
+          "card": 4380,
+          "other": 285
+        },
+        "totalVolume": 1134237,
+        "totalCount": 8065,
+        "balance": 11189879
+      },
+      {
+        "date": "2026-02-23",
+        "volume": {
+          "deposits": 558660,
+          "withdrawals": 233007,
+          "sends": 29399,
+          "card": 167423,
+          "other": 6215
+        },
+        "count": {
+          "deposits": 2421,
+          "withdrawals": 786,
+          "sends": 167,
+          "card": 4443,
+          "other": 312
+        },
+        "totalVolume": 994704,
+        "totalCount": 8129,
+        "balance": 11239486
+      },
+      {
+        "date": "2026-02-28",
+        "volume": {
+          "deposits": 209109,
+          "withdrawals": 243049,
+          "sends": 34220,
+          "card": 212618,
+          "other": 10895
+        },
+        "count": {
+          "deposits": 1925,
+          "withdrawals": 730,
+          "sends": 179,
+          "card": 5908,
+          "other": 352
+        },
+        "totalVolume": 709891,
+        "totalCount": 9094,
+        "balance": 11901150
+      },
+      {
+        "date": "2026-03-06",
+        "volume": {
+          "deposits": 764426,
+          "withdrawals": 524763,
+          "sends": 51425,
+          "card": 221476,
+          "other": 22384
+        },
+        "count": {
+          "deposits": 2625,
+          "withdrawals": 967,
+          "sends": 241,
+          "card": 4843,
+          "other": 1139
+        },
+        "totalVolume": 1584474,
+        "totalCount": 9815,
+        "balance": 12258628
+      },
+      {
+        "date": "2026-03-11",
+        "volume": {
+          "deposits": 578892,
+          "withdrawals": 386380,
+          "sends": 38644,
+          "card": 264304,
+          "other": 9901
+        },
+        "count": {
+          "deposits": 2780,
+          "withdrawals": 946,
+          "sends": 185,
+          "card": 4793,
+          "other": 438
+        },
+        "totalVolume": 1278121,
+        "totalCount": 9142,
+        "balance": 12087811
+      },
+      {
+        "date": "2026-03-16",
+        "volume": {
+          "deposits": 683471,
+          "withdrawals": 397657,
+          "sends": 52342,
+          "card": 207281,
+          "other": 11485
+        },
+        "count": {
+          "deposits": 2907,
+          "withdrawals": 901,
+          "sends": 234,
+          "card": 4575,
+          "other": 346
+        },
+        "totalVolume": 1352236,
+        "totalCount": 8963,
+        "balance": 12040374
+      },
+      {
+        "date": "2026-03-22",
+        "volume": {
+          "deposits": 118814,
+          "withdrawals": 68098,
+          "sends": 9496,
+          "card": 136986,
+          "other": 3929
+        },
+        "count": {
+          "deposits": 1713,
+          "withdrawals": 516,
+          "sends": 115,
+          "card": 4856,
+          "other": 207
+        },
+        "totalVolume": 337323,
+        "totalCount": 7407,
+        "balance": 11807741
+      },
+      {
+        "date": "2026-03-27",
+        "volume": {
+          "deposits": 770299,
+          "withdrawals": 497855,
+          "sends": 40166,
+          "card": 228622,
+          "other": 24503
+        },
+        "count": {
+          "deposits": 2553,
+          "withdrawals": 1007,
+          "sends": 191,
+          "card": 5113,
+          "other": 908
+        },
+        "totalVolume": 1561445,
+        "totalCount": 9772,
+        "balance": 12060324
+      },
+      {
+        "date": "2026-04-01",
+        "volume": {
+          "deposits": 1087151,
+          "withdrawals": 636029,
+          "sends": 48522,
+          "card": 265380,
+          "other": 16272
+        },
+        "count": {
+          "deposits": 2792,
+          "withdrawals": 1104,
+          "sends": 233,
+          "card": 5307,
+          "other": 274
+        },
+        "totalVolume": 2053354,
+        "totalCount": 9710,
+        "balance": 12459723
+      },
+      {
+        "date": "2026-04-07",
+        "volume": {
+          "deposits": 1092000,
+          "withdrawals": 599515,
+          "sends": 63456,
+          "card": 258139,
+          "other": 17515
+        },
+        "count": {
+          "deposits": 2891,
+          "withdrawals": 987,
+          "sends": 219,
+          "card": 4941,
+          "other": 324
+        },
+        "totalVolume": 2030625,
+        "totalCount": 9362,
+        "balance": 12850383
+      },
+      {
+        "date": "2026-04-12",
+        "volume": {
+          "deposits": 138509,
+          "withdrawals": 99364,
+          "sends": 14770,
+          "card": 156887,
+          "other": 6704
+        },
+        "count": {
+          "deposits": 1386,
+          "withdrawals": 395,
+          "sends": 119,
+          "card": 4867,
+          "other": 239
+        },
+        "totalVolume": 416234,
+        "totalCount": 7006,
+        "balance": 12529866
+      },
+      {
+        "date": "2026-04-17",
+        "volume": {
+          "deposits": 995178,
+          "withdrawals": 344233,
+          "sends": 53734,
+          "card": 224276,
+          "other": 24138
+        },
+        "count": {
+          "deposits": 2444,
+          "withdrawals": 842,
+          "sends": 249,
+          "card": 5163,
+          "other": 918
+        },
+        "totalVolume": 1641559,
+        "totalCount": 9616,
+        "balance": 13150786
+      },
+      {
+        "date": "2026-04-23",
+        "volume": {
+          "deposits": 571167,
+          "withdrawals": 322572,
+          "sends": 35311,
+          "card": 214176,
+          "other": 19621
+        },
+        "count": {
+          "deposits": 2266,
+          "withdrawals": 803,
+          "sends": 181,
+          "card": 4587,
+          "other": 281
+        },
+        "totalVolume": 1162847,
+        "totalCount": 8118,
+        "balance": 13307598
+      },
+      {
+        "date": "2026-04-28",
+        "volume": {
+          "deposits": 811633,
+          "withdrawals": 451821,
+          "sends": 37457,
+          "card": 227371,
+          "other": 21544
+        },
+        "count": {
+          "deposits": 2954,
+          "withdrawals": 915,
+          "sends": 182,
+          "card": 4785,
+          "other": 404
+        },
+        "totalVolume": 1549826,
+        "totalCount": 9240,
+        "balance": 13465462
+      },
+      {
+        "date": "2026-05-03",
+        "volume": {
+          "deposits": 157355,
+          "withdrawals": 158957,
+          "sends": 15510,
+          "card": 146224,
+          "other": 7721
+        },
+        "count": {
+          "deposits": 1448,
+          "withdrawals": 532,
+          "sends": 111,
+          "card": 4546,
+          "other": 239
+        },
+        "totalVolume": 485767,
+        "totalCount": 6876,
+        "balance": 13675530
+      },
+      {
+        "date": "2026-05-09",
+        "volume": {
+          "deposits": 274523,
+          "withdrawals": 225471,
+          "sends": 37923,
+          "card": 217965,
+          "other": 15856
+        },
+        "count": {
+          "deposits": 1752,
+          "withdrawals": 680,
+          "sends": 156,
+          "card": 5579,
+          "other": 395
+        },
+        "totalVolume": 771738,
+        "totalCount": 8562,
+        "balance": 14159203
+      },
+      {
+        "date": "2026-05-14",
+        "volume": {
+          "deposits": 695286,
+          "withdrawals": 440328,
+          "sends": 41332,
+          "card": 239767,
+          "other": 22766
+        },
+        "count": {
+          "deposits": 2436,
+          "withdrawals": 1006,
+          "sends": 194,
+          "card": 4669,
+          "other": 347
+        },
+        "totalVolume": 1439479,
+        "totalCount": 8652,
+        "balance": 14073101
+      },
+      {
+        "date": "2026-05-19",
+        "volume": {
+          "deposits": 635637,
+          "withdrawals": 434565,
+          "sends": 46740,
+          "card": 228300,
+          "other": 21165
+        },
+        "count": {
+          "deposits": 2484,
+          "withdrawals": 992,
+          "sends": 198,
+          "card": 4603,
+          "other": 404
+        },
+        "totalVolume": 1366407,
+        "totalCount": 8681,
+        "balance": 13925382
+      },
+      {
+        "date": "2026-05-25",
+        "volume": {
+          "deposits": 237622,
+          "withdrawals": 162580,
+          "sends": 24431,
+          "card": 181556,
+          "other": 26456
+        },
+        "count": {
+          "deposits": 1575,
+          "withdrawals": 677,
+          "sends": 195,
+          "card": 4316,
+          "other": 364
+        },
+        "totalVolume": 632645,
+        "totalCount": 7127,
+        "balance": 13094259
+      },
+      {
+        "date": "2026-05-30",
+        "volume": {
+          "deposits": 195346,
+          "withdrawals": 227003,
+          "sends": 29489,
+          "card": 195006,
+          "other": 12819
+        },
+        "count": {
+          "deposits": 1603,
+          "withdrawals": 670,
+          "sends": 167,
+          "card": 5076,
+          "other": 409
+        },
+        "totalVolume": 659663,
+        "totalCount": 7925,
+        "balance": 13762656
+      },
+      {
+        "date": "2026-06-04",
+        "volume": {
+          "deposits": 751095,
+          "withdrawals": 530009,
+          "sends": 46014,
+          "card": 223076,
+          "other": 59152
+        },
+        "count": {
+          "deposits": 2656,
+          "withdrawals": 1287,
+          "sends": 242,
+          "card": 4620,
+          "other": 828
+        },
+        "totalVolume": 1609346,
+        "totalCount": 9633,
+        "balance": 14074873
+      },
+      {
+        "date": "2026-06-10",
+        "volume": {
+          "deposits": 735929,
+          "withdrawals": 499060,
+          "sends": 38203,
+          "card": 261231,
+          "other": 28097
+        },
+        "count": {
+          "deposits": 2580,
+          "withdrawals": 1175,
+          "sends": 345,
+          "card": 4493,
+          "other": 680
+        },
+        "totalVolume": 1562520,
+        "totalCount": 9273,
+        "balance": 13966561
+      },
+      {
+        "date": "2026-06-15",
+        "volume": {
+          "deposits": 996817,
+          "withdrawals": 437071,
+          "sends": 83050,
+          "card": 237360,
+          "other": 24095
+        },
+        "count": {
+          "deposits": 3062,
+          "withdrawals": 1295,
+          "sends": 457,
+          "card": 4458,
+          "other": 1180
+        },
+        "totalVolume": 1778393,
+        "totalCount": 10452,
+        "balance": 14169077
+      },
+      {
+        "date": "2026-06-20",
+        "volume": {
+          "deposits": 155293,
+          "withdrawals": 123857,
+          "sends": 20563,
+          "card": 180518,
+          "other": 10591
+        },
+        "count": {
+          "deposits": 1509,
+          "withdrawals": 600,
+          "sends": 228,
+          "card": 5068,
+          "other": 468
+        },
+        "totalVolume": 490822,
+        "totalCount": 7873,
+        "balance": 13894483
+      },
+      {
+        "date": "2026-06-26",
+        "volume": {
+          "deposits": 975706,
+          "withdrawals": 581056,
+          "sends": 69604,
+          "card": 296028,
+          "other": 149070
+        },
+        "count": {
+          "deposits": 2951,
+          "withdrawals": 1278,
+          "sends": 278,
+          "card": 5347,
+          "other": 1094
+        },
+        "totalVolume": 2071464,
+        "totalCount": 10948,
+        "balance": 14291932
+      },
+      {
+        "date": "2026-07-01",
+        "volume": {
+          "deposits": 1184987,
+          "withdrawals": 714765,
+          "sends": 68752,
+          "card": 250195,
+          "other": 18081
+        },
+        "count": {
+          "deposits": 2662,
+          "withdrawals": 1304,
+          "sends": 281,
+          "card": 5125,
+          "other": 443
+        },
+        "totalVolume": 2236780,
+        "totalCount": 9815,
+        "balance": 14415212
+      },
+      {
+        "date": "2026-07-07",
+        "volume": {
+          "deposits": 923285,
+          "withdrawals": 520546,
+          "sends": 66096,
+          "card": 254437,
+          "other": 19333
+        },
+        "count": {
+          "deposits": 2642,
+          "withdrawals": 1101,
+          "sends": 206,
+          "card": 4639,
+          "other": 457
+        },
+        "totalVolume": 1783697,
+        "totalCount": 9045,
+        "balance": 14645017
+      },
+      {
+        "date": "2026-07-12",
+        "volume": {
+          "deposits": 138746,
+          "withdrawals": 100685,
+          "sends": 22013,
+          "card": 146823,
+          "other": 10127
+        },
+        "count": {
+          "deposits": 1370,
+          "withdrawals": 597,
+          "sends": 338,
+          "card": 4479,
+          "other": 302
+        },
+        "totalVolume": 418394,
+        "totalCount": 7086,
+        "balance": 14351697
+      },
+      {
+        "date": "2026-07-17",
+        "volume": {
+          "deposits": 790620,
+          "withdrawals": 489432,
+          "sends": 68250,
+          "card": 226734,
+          "other": 28028
+        },
+        "count": {
+          "deposits": 2584,
+          "withdrawals": 1136,
+          "sends": 223,
+          "card": 4925,
+          "other": 954
+        },
+        "totalVolume": 1603064,
+        "totalCount": 9822,
+        "balance": 14590792
+      },
+      {
+        "date": "2026-07-23",
+        "volume": {
+          "deposits": 642641,
+          "withdrawals": 374494,
+          "sends": 67728,
+          "card": 237830,
+          "other": 33872
+        },
+        "count": {
+          "deposits": 2483,
+          "withdrawals": 952,
+          "sends": 229,
+          "card": 4843,
+          "other": 481
+        },
+        "totalVolume": 1356565,
+        "totalCount": 8988,
+        "balance": 14553283
+      },
+      {
+        "date": "2026-07-28",
+        "volume": {
+          "deposits": 983809,
+          "withdrawals": 491382,
+          "sends": 29238,
+          "card": 227473,
+          "other": 21187
+        },
+        "count": {
+          "deposits": 2720,
+          "withdrawals": 1135,
+          "sends": 242,
+          "card": 4868,
+          "other": 531
+        },
+        "totalVolume": 1753089,
+        "totalCount": 9496,
+        "balance": 14916360
+      },
+      {
+        "date": "2026-08-02",
+        "volume": {
+          "deposits": 157453,
+          "withdrawals": 147691,
+          "sends": 24417,
+          "card": 188194,
+          "other": 10367
+        },
+        "count": {
+          "deposits": 1614,
+          "withdrawals": 713,
+          "sends": 159,
+          "card": 4822,
+          "other": 357
+        },
+        "totalVolume": 528122,
+        "totalCount": 7665,
+        "balance": 14933849
+      },
+      {
+        "date": "2026-08-08",
+        "volume": {
+          "deposits": 192074,
+          "withdrawals": 184816,
+          "sends": 25267,
+          "card": 211554,
+          "other": 16838
+        },
+        "count": {
+          "deposits": 1720,
+          "withdrawals": 919,
+          "sends": 187,
+          "card": 5723,
+          "other": 467
+        },
+        "totalVolume": 630549,
+        "totalCount": 9016,
+        "balance": 15563258
+      },
+      {
+        "date": "2026-08-13",
+        "volume": {
+          "deposits": 734599,
+          "withdrawals": 485779,
+          "sends": 58102,
+          "card": 257034,
+          "other": 18089
+        },
+        "count": {
+          "deposits": 2807,
+          "withdrawals": 1384,
+          "sends": 266,
+          "card": 5105,
+          "other": 439
+        },
+        "totalVolume": 1553603,
+        "totalCount": 10001,
+        "balance": 15680908
+      },
+      {
+        "date": "2026-08-18",
+        "volume": {
+          "deposits": 788746,
+          "withdrawals": 518259,
+          "sends": 54018,
+          "card": 246974,
+          "other": 20961
+        },
+        "count": {
+          "deposits": 3129,
+          "withdrawals": 1361,
+          "sends": 254,
+          "card": 4862,
+          "other": 420
+        },
+        "totalVolume": 1628958,
+        "totalCount": 10026,
+        "balance": 15705336
+      },
+      {
+        "date": "2026-08-24",
+        "volume": {
+          "deposits": 757169,
+          "withdrawals": 455994,
+          "sends": 51179,
+          "card": 200708,
+          "other": 25863
+        },
+        "count": {
+          "deposits": 2876,
+          "withdrawals": 1267,
+          "sends": 241,
+          "card": 4665,
+          "other": 411
+        },
+        "totalVolume": 1490913,
+        "totalCount": 9460,
+        "balance": 15614641
+      },
+      {
+        "date": "2026-08-29",
+        "volume": {
+          "deposits": 262500,
+          "withdrawals": 217510,
+          "sends": 45389,
+          "card": 224758,
+          "other": 9922
+        },
+        "count": {
+          "deposits": 1399,
+          "withdrawals": 957,
+          "sends": 212,
+          "card": 5819,
+          "other": 348
+        },
+        "totalVolume": 760079,
+        "totalCount": 8735,
+        "balance": 15954178
+      },
+      {
+        "date": "2026-09-03",
+        "volume": {
+          "deposits": 1103189,
+          "withdrawals": 665680,
+          "sends": 95770,
+          "card": 279494,
+          "other": 32773
+        },
+        "count": {
+          "deposits": 2842,
+          "withdrawals": 1515,
+          "sends": 369,
+          "card": 5155,
+          "other": 360
+        },
+        "totalVolume": 2176906,
+        "totalCount": 10241,
+        "balance": 16661121
+      },
+      {
+        "date": "2026-09-09",
+        "volume": {
+          "deposits": 1025712,
+          "withdrawals": 709278,
+          "sends": 99894,
+          "card": 267367,
+          "other": 31835
+        },
+        "count": {
+          "deposits": 2501,
+          "withdrawals": 1536,
+          "sends": 286,
+          "card": 4809,
+          "other": 382
+        },
+        "totalVolume": 2134086,
+        "totalCount": 9514,
+        "balance": 16388966
+      },
+      {
+        "date": "2026-09-14",
+        "volume": {
+          "deposits": 804869,
+          "withdrawals": 580999,
+          "sends": 84669,
+          "card": 251230,
+          "other": 19601
+        },
+        "count": {
+          "deposits": 2530,
+          "withdrawals": 1525,
+          "sends": 333,
+          "card": 4741,
+          "other": 411
+        },
+        "totalVolume": 1741368,
+        "totalCount": 9540,
+        "balance": 16413220
+      },
+      {
+        "date": "2026-09-19",
+        "volume": {
+          "deposits": 382600,
+          "withdrawals": 207950,
+          "sends": 39417,
+          "card": 235588,
+          "other": 22170
+        },
+        "count": {
+          "deposits": 1682,
+          "withdrawals": 968,
+          "sends": 201,
+          "card": 5881,
+          "other": 420
+        },
+        "totalVolume": 887725,
+        "totalCount": 9152,
+        "balance": 16201637
+      },
+      {
+        "date": "2026-09-25",
+        "volume": {
+          "deposits": 1233605,
+          "withdrawals": 680916,
+          "sends": 155871,
+          "card": 273873,
+          "other": 40923
+        },
+        "count": {
+          "deposits": 3084,
+          "withdrawals": 1752,
+          "sends": 272,
+          "card": 5144,
+          "other": 848
+        },
+        "totalVolume": 2385188,
+        "totalCount": 11100,
+        "balance": 16286957
+      },
+      {
+        "date": "2026-09-30",
+        "volume": {
+          "deposits": 1431519,
+          "withdrawals": 795140,
+          "sends": 70285,
+          "card": 262753,
+          "other": 31425
+        },
+        "count": {
+          "deposits": 3007,
+          "withdrawals": 1822,
+          "sends": 338,
+          "card": 4762,
+          "other": 406
+        },
+        "totalVolume": 2591122,
+        "totalCount": 10335,
+        "balance": 16381005
+      },
+      {
+        "date": "2026-10-05",
+        "volume": {
+          "deposits": 1072225,
+          "withdrawals": 817067,
+          "sends": 84900,
+          "card": 238614,
+          "other": 19439
+        },
+        "count": {
+          "deposits": 2629,
+          "withdrawals": 1820,
+          "sends": 269,
+          "card": 4565,
+          "other": 401
+        },
+        "totalVolume": 2232245,
+        "totalCount": 9684,
+        "balance": 16541735
+      },
+      {
+        "date": "2026-10-11",
+        "volume": {
+          "deposits": 179267,
+          "withdrawals": 153555,
+          "sends": 21209,
+          "card": 194045,
+          "other": 23547
+        },
+        "count": {
+          "deposits": 1218,
+          "withdrawals": 817,
+          "sends": 141,
+          "card": 4858,
+          "other": 275
+        },
+        "totalVolume": 571623,
+        "totalCount": 7309,
+        "balance": 16181533
+      },
+      {
+        "date": "2026-10-16",
+        "volume": {
+          "deposits": 946550,
+          "withdrawals": 727123,
+          "sends": 71971,
+          "card": 265114,
+          "other": 18041
+        },
+        "count": {
+          "deposits": 2702,
+          "withdrawals": 1833,
+          "sends": 271,
+          "card": 5324,
+          "other": 517
+        },
+        "totalVolume": 2028799,
+        "totalCount": 10647,
+        "balance": 17939053
+      },
+      {
+        "date": "2026-10-21",
+        "volume": {
+          "deposits": 730424,
+          "withdrawals": 520412,
+          "sends": 52274,
+          "card": 253875,
+          "other": 14529
+        },
+        "count": {
+          "deposits": 2211,
+          "withdrawals": 1471,
+          "sends": 204,
+          "card": 4738,
+          "other": 394
+        },
+        "totalVolume": 1571514,
+        "totalCount": 9018,
+        "balance": 17615468
+      },
+      {
+        "date": "2026-10-27",
+        "volume": {
+          "deposits": 935170,
+          "withdrawals": 619889,
+          "sends": 77297,
+          "card": 255608,
+          "other": 23514
+        },
+        "count": {
+          "deposits": 2537,
+          "withdrawals": 1599,
+          "sends": 291,
+          "card": 4679,
+          "other": 487
+        },
+        "totalVolume": 1911478,
+        "totalCount": 9593,
+        "balance": 17621624
+      },
+      {
+        "date": "2026-11-01",
+        "volume": {
+          "deposits": 379214,
+          "withdrawals": 283582,
+          "sends": 55149,
+          "card": 182818,
+          "other": 12964
+        },
+        "count": {
+          "deposits": 1518,
+          "withdrawals": 1000,
+          "sends": 215,
+          "card": 5112,
+          "other": 430
+        },
+        "totalVolume": 913727,
+        "totalCount": 8275,
+        "balance": 17520787
+      },
+      {
+        "date": "2026-11-06",
+        "volume": {
+          "deposits": 1152902,
+          "withdrawals": 1048543,
+          "sends": 131041,
+          "card": 237144,
+          "other": 19423
+        },
+        "count": {
+          "deposits": 2672,
+          "withdrawals": 2034,
+          "sends": 320,
+          "card": 4950,
+          "other": 906
+        },
+        "totalVolume": 2589053,
+        "totalCount": 10882,
+        "balance": 18291068
+      },
+      {
+        "date": "2026-11-12",
+        "volume": {
+          "deposits": 1038242,
+          "withdrawals": 740574,
+          "sends": 113646,
+          "card": 265443,
+          "other": 31734
+        },
+        "count": {
+          "deposits": 2830,
+          "withdrawals": 2028,
+          "sends": 370,
+          "card": 4886,
+          "other": 555
+        },
+        "totalVolume": 2189639,
+        "totalCount": 10669,
+        "balance": 17790537
+      },
+      {
+        "date": "2026-11-22",
+        "volume": {
+          "deposits": 149546,
+          "withdrawals": 215312,
+          "sends": 40013,
+          "card": 17604,
+          "other": 19759
+        },
+        "count": {
+          "deposits": 1152,
+          "withdrawals": 810,
+          "sends": 202,
+          "card": 436,
+          "other": 374
+        },
+        "totalVolume": 442234,
+        "totalCount": 2974,
+        "balance": 16946196
+      }
+    ]
+  }
+}

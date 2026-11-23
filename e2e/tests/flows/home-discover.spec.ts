@@ -98,22 +98,25 @@ test('clicking a DTF row navigates to its overview page', async ({ page }) => {
   await expect(page).toHaveURL(new RegExp(expected, 'i'))
 })
 
-test('home hero and featured section render without unmocked calls', async ({
+test('home hero and UGLYCASH cards render without unmocked calls', async ({
   page,
   unmockedCalls,
 }) => {
-  const featured = loadSnapshot<{ order: string[] }>('shared/featured-dtfs.json')
+  const onchain = loadSnapshot<{ points: { balance: number }[] }>(
+    'shared/uglycash-onchain-balance.json'
+  )
+  const held = onchain.points[onchain.points.length - 1].balance
 
   await page.goto('/')
 
-  // Hero shell renders.
   await expect(page.getByTestId('home-hero')).toBeVisible()
 
-  // Featured/highlighted section rendered its cards (each card is a link).
-  const highlighted = page.getByTestId('home-highlighted')
-  await expect(highlighted).toBeAttached()
-  // One link per captured feature plus the intentional "discover all" end card.
-  await expect(highlighted.locator('a')).toHaveCount(featured.order.length + 1)
+  const cards = page.getByTestId('home-cards')
+  // The held card shows the onchain balance, so the three UGLYCASH series loaded and merged.
+  await expect(cards).toContainText(`$${Math.round(held).toLocaleString('en-US')}`)
+  // Every card navigates: three eUSD data cards, countries, UGLYCASH, fintech contact and discover.
+  await expect(cards.locator('a')).toHaveCount(7)
+  await expect(cards.locator('a[href="/discover"]')).toHaveCount(1)
 
   // Every boundary was answered — no live calls leaked.
   expect(unmockedCalls).toEqual([])

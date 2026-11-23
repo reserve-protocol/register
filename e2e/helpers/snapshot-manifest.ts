@@ -2,8 +2,10 @@ import { REGISTRY, YIELD_REGISTRY } from './registry'
 
 const SHARED_FILES = [
   'shared/discover-dtfs.json',
-  'shared/featured-dtfs.json',
   'shared/protocol-metrics.json',
+  'shared/uglycash-daily.json',
+  'shared/uglycash-monthly.json',
+  'shared/uglycash-onchain-balance.json',
 ] as const
 
 const DTF_FILES = [

@@ -162,11 +162,15 @@ const DashedDivider = () => (
 /**
  * Section: Home > About footer
  */
-const RegisterAbout = () => (
+const RegisterAbout = ({ showIntro = true }: { showIntro?: boolean }) => (
   <div className="w-full mt-12 pb-6">
     <div className="mt-[28px] md:mt-[32px] px-[16px] md:px-8">
-      <Intro />
-      <DashedDivider />
+      {showIntro && (
+        <>
+          <Intro />
+          <DashedDivider />
+        </>
+      )}
       <About />
       <SocialLinks />
       <div className="text-primary flex flex-col items-center mt-4 gap-2">

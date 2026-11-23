@@ -364,10 +364,13 @@ export async function mockApiRoutes(page: Page, options: ApiMockOptions) {
       })
     }
 
-    // Featured DTFs — src deliberately hits the STAGING host for this
-    // (use-featured-dtfs.ts TODO), which is why the staging host is routed too.
-    if (path.includes('/discover/featured')) {
-      return json(route, loadSnapshot('shared/featured-dtfs.json'))
+    if (path.endsWith('/uglycash/onchain-balance')) {
+      return json(route, loadSnapshot('shared/uglycash-onchain-balance.json'))
+    }
+
+    const uglycashSeries = path.match(/\/metrics\/uglycash\/(daily|monthly)$/)
+    if (uglycashSeries) {
+      return json(route, loadSnapshot(`shared/uglycash-${uglycashSeries[1]}.json`))
     }
 
     if (path.includes('/discover/dtf')) {
@@ -605,8 +608,7 @@ export async function mockApiRoutes(page: Page, options: ApiMockOptions) {
   }
 
   await page.route('**/api.reserve.org/**', handler)
-  // The glob above can't match the staging host (no `api.reserve.org` substring)
-  // and src deliberately hits staging for featured DTFs — route it explicitly.
+  // Staging builds call a host the glob above can't match — route it explicitly.
   await page.route('**/api-staging.reserve.org/**', handler)
 
   await page.route('**/api.etherscan.io/**', async (route) => {

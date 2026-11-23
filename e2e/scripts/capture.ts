@@ -43,6 +43,11 @@ let outputDir = snapshotsDir
 const captureFailures: string[] = []
 const RESERVE_API = 'https://api.reserve.org'
 const MAX_SERIES_POINTS = 200
+const UGLYCASH_ENDPOINTS = {
+  'uglycash-daily': 'metrics/uglycash/daily',
+  'uglycash-monthly': 'metrics/uglycash/monthly',
+  'uglycash-onchain-balance': 'uglycash/onchain-balance',
+}
 const MAX_SNAPSHOT_AGE_MS = 45 * 86_400_000
 
 // Targeted capture mode from `--only=<dtf|chain>`; undefined = full capture.
@@ -131,7 +136,7 @@ function evenSample<T>(arr: T[], max: number): T[] {
 }
 
 // Recursively downsample any array longer than MAX_SERIES_POINTS. Used only on
-// historical/exposure payloads, where long arrays are the time series.
+// time-series payloads (historical, exposure, UGLYCASH), where long arrays are the series.
 function capSeries(value: unknown, path: string, report: DownsampleReport[]): unknown {
   if (Array.isArray(value)) {
     let arr = value
@@ -449,10 +454,16 @@ async function captureShared() {
     const url = `${RESERVE_API}/discover/dtfs?performance=true&brand=true`
     saveSnapshot('shared/discover-dtfs.json', url, await fetchApi(url))
   })
-  await tryCapture('featured-dtfs', async () => {
-    const url = 'https://api-staging.reserve.org/v1/discover/featured'
-    saveSnapshot('shared/featured-dtfs.json', url, await fetchApi(url))
-  })
+  for (const [name, path] of Object.entries(UGLYCASH_ENDPOINTS)) {
+    await tryCapture(name, async () => {
+      const url = `${RESERVE_API}/${path}`
+      const report: DownsampleReport[] = []
+      const data = capSeries(await fetchApi(url), '', report)
+      saveSnapshot(`shared/${name}.json`, url, data, {
+        window: { downsampledSeries: report },
+      })
+    })
+  }
   await tryCapture('protocol-metrics', async () => {
     const url = `${RESERVE_API}/protocol/metrics`
     saveSnapshot('shared/protocol-metrics.json', url, await fetchApi(url))
