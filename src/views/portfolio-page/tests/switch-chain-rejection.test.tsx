@@ -4,7 +4,7 @@ import userEvent from '@testing-library/user-event'
 import { Provider, createStore } from 'jotai'
 import type { ReactNode } from 'react'
 import { MemoryRouter } from 'react-router-dom'
-import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { ClaimButton } from '../components/available-rewards'
 import { WithdrawButton } from '../components/pending-withdrawals'
 import type { PortfolioRewardRow } from '../atoms'
@@ -54,8 +54,11 @@ describe('portfolio actions when the wallet refuses the chain switch', () => {
     vi.clearAllMocks()
     switchChainAsync.mockRejectedValue(new Error('User rejected the request.'))
     vi.spyOn(console, 'error').mockImplementation(() => {})
-    process.removeAllListeners('unhandledRejection')
     process.on('unhandledRejection', unhandled)
+  })
+
+  afterEach(() => {
+    process.off('unhandledRejection', unhandled)
   })
 
   const settle = () => new Promise((resolve) => setTimeout(resolve, 0))
