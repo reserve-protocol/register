@@ -175,22 +175,31 @@ export const useMigrationFlow = (migration: VoteLockMigration) => {
     if (!pending || !pendingError || !client) return
     let cancelled = false
     let retry: ReturnType<typeof setTimeout> | undefined
-    client.getTransaction({ hash: pending.hash }).then(
-      () => {
-        if (!cancelled) void refetchPending()
-      },
-      (error) => {
-        if (cancelled) return
-        if (!(error instanceof TransactionNotFoundError)) {
+    const free = (reason: string) => {
+      console.warn(`[migration] ${pending.step} transaction ${reason}`, pending.hash)
+      setFailed(pending.step)
+      update(({ pending: _, ...rest }) => rest)
+      void refetchAllowance()
+      migration.refetch()
+    }
+    const check = async () => {
+      // wagmi's receipt wait rejects on a reverted transaction instead of returning its receipt.
+      const receipt = await client.getTransactionReceipt({ hash: pending.hash }).catch(() => undefined)
+      if (cancelled) return
+      if (receipt?.status === 'reverted') return free('reverted')
+      if (receipt) return void refetchPending()
+      client.getTransaction({ hash: pending.hash }).then(
+        () => {
+          if (!cancelled) void refetchPending()
+        },
+        (error) => {
+          if (cancelled) return
+          if (error instanceof TransactionNotFoundError) return free('was dropped')
           retry = setTimeout(() => void refetchPending(), 5_000)
-          return
         }
-        setFailed(pending.step)
-        update(({ pending: _, ...rest }) => rest)
-        void refetchAllowance()
-        migration.refetch()
-      }
-    )
+      )
+    }
+    void check()
     return () => {
       cancelled = true
       clearTimeout(retry)

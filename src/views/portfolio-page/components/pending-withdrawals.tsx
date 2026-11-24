@@ -36,7 +36,7 @@ import {
 import { ExpandToggle, useExpandable } from './expand-toggle'
 import SectionHeader from './section-header'
 
-const WithdrawButton = ({
+export const WithdrawButton = ({
   chainId,
   isReady,
   getWriteConfig,
@@ -73,7 +73,12 @@ const WithdrawButton = ({
         return
       }
       if (walletChain !== chainId) {
-        await switchChainAsync?.({ chainId })
+        try {
+          await switchChainAsync?.({ chainId })
+        } catch (error) {
+          console.error('withdraw: chain switch failed', error)
+          return
+        }
       }
       const config = getWriteConfig()
       if (!config) return
