@@ -23,7 +23,7 @@ import SectionHeader from './section-header'
 
 type RewardRow = PortfolioRewardRow
 
-const ClaimButton = ({ reward }: { reward: RewardRow }) => {
+export const ClaimButton = ({ reward }: { reward: RewardRow }) => {
   const { t } = useLingui()
   const wallet = useAtomValue(walletAtom)
   const walletChain = useAtomValue(walletChainAtom)
@@ -53,7 +53,12 @@ const ClaimButton = ({ reward }: { reward: RewardRow }) => {
       return
     }
     if (walletChain !== reward.chainId) {
-      await switchChainAsync?.({ chainId: reward.chainId })
+      try {
+        await switchChainAsync?.({ chainId: reward.chainId })
+      } catch (error) {
+        console.error('claim: chain switch failed', error)
+        return
+      }
     }
     if (reward.source === 'revenue' && reward.dtfAddress) {
       writeContract({
